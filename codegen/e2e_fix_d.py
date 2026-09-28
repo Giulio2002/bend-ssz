@@ -3483,6 +3483,478 @@ VENC_SHAPES = {}
 
 
 
+# ---- FuluBlobSidecar (ii)/(iii): the loader's tree at depth 1 + dd (dd = 15) cut into the decode law's shape ----
+def bsd_text(EB):
+    src = (EB.OBJ / 'spec_arr_BlobSidecar.bend').read_text()
+    def sig_of(name):
+        i = src.index(f'def {name}(')
+        j = re.search(r'\n  (?! )', src[i:]).start() + i
+        return src[i:j].replace('\n    ', ' ')
+    dsig = sig_of('BlobSidecar_spec_decode')
+    esig = sig_of('BlobSidecar_spec_encode')
+    dparams = re.findall(r'\+(\w+): ', dsig[:dsig.index(') -> ')])
+    eparams = re.findall(r'\+(\w+): ', esig[:esig.index(') -> ')])
+    OBJT = dsig[dsig.index('Some{'):]
+    OBJT = OBJT[:OBJT.rindex(') : B.Buf & Maybe')]   # Some{...}
+    assert OBJT.startswith('Some{') and OBJT.endswith('}')
+    OBJT = OBJT[len('Some{'):-1]
+    dec = esig[esig.index('-> Decoding.decodes(s, ') + len('-> Decoding.decodes(s, '):]
+    dec = dec[:dec.rindex(')')]
+    depth = 0
+    for k, ch in enumerate(dec):
+        if ch in '({[':
+            depth += 1
+        elif ch in ')}]':
+            depth -= 1
+        elif ch == ',' and depth == 0:
+            break
+    ENCB, ENCV = dec[:k].strip(), dec[k + 1:].strip()
+
+    def subst(text, mp):
+        return re.sub(r'(?<![\w.])(' + '|'.join(sorted(mp, key=len, reverse=True)) + r')(?![\w])', lambda m: mp[m.group(1)], text)
+
+    def lo(m, t):
+        for _ in range(m):
+            t = f'E3.lo({t})'
+        return t
+    OT = 'FuluBlobSidecar_d.BlobSidecar'
+    M1 = f'Maybe<&1, {OT}>'
+    MV = 'Maybe<&2, S.Value>'
+    MB = 'Maybe<&2, +List<U32>>'
+    LEN = 'List.length(&2, U32, bs)'
+    IN = 'B.fill_at(B.alloc(n), 0, bs)'
+    DEC = f'FuluBlobSidecar_r.BlobSidecar_decode({IN}, n)'
+    RES = f'Pair.snd(B.Buf, {M1}, {DEC})'
+    API = 'API.deserialize(Spec.BlobSidecar(), bs)'
+    HN = f'+hn: {{{LEN} == U32.to_nat(n) : Nat}}'
+    HD = '+hd: {SP.bytes_domain(bs) == True{} : Bool}'
+    EC = lambda c: f'+ec: {{U32.is_eq(n, 131928) == {c} : Bool}}'  # noqa: E731
+    DP = '+dd: Nat, +ed: {dd == 15n : Nat}'
+    Wl = 'L.wlp(bs)'
+    TT = f'AC.segt(1n+dd, 0n, {Wl})'
+    A = f'AC.segt(dd, 0n, {Wl})'
+    Bt = f'AC.segt(dd, Nat.add(FD.spec_common__pow2(dd), 0n), {Wl})'
+    PTT = f'L.seg_pf(1n+dd, {Wl})'
+    PA = f'XW.spl(dd, {TT}, {PTT})'
+    PBr = f'XW.spr(dd, {TT}, {PTT})'
+    PA15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {A}) == True{{}} : Bool}}, dd, 15n, ed, {PA})'
+    PB15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {Bt}) == True{{}} : Bool}}, dd, 15n, ed, {PBr})'
+    # left spine: base depth 1 (x0, x1), m1..m14
+    Ps = {0: PA15}
+    for m in range(14):
+        Ps[m + 1] = f'XW.spl({14 - m}n, {lo(m, A)}, {Ps[m]})'
+    mv = {14 - m: f'E3.hi({lo(m, A)})' for m in range(14)}
+    pmv = {14 - m: f'XW.spr({14 - m}n, {lo(m, A)}, {Ps[m]})' for m in range(14)}
+    x0 = f'E3.leaf({lo(15, A)})'
+    x1 = f'E3.leaf(E3.hi({lo(14, A)}))'
+    SPl = f'FD.TNode{{FD.TLeaf{{{x0}}}, FD.TLeaf{{{x1}}}}}'
+    for k in range(1, 15):
+        SPl = f'FD.TNode{{{SPl}, {mv[k]}}}'
+    # right spine: base depth 8 (256 leaves), p8..p14
+    Qs = {0: PB15}
+    for m in range(7):
+        Qs[m + 1] = f'XW.spl({14 - m}n, {lo(m, Bt)}, {Qs[m]})'
+    pv = {14 - m: f'E3.hi({lo(m, Bt)})' for m in range(7)}
+    ppv = {14 - m: f'XW.spr({14 - m}n, {lo(m, Bt)}, {Qs[m]})' for m in range(7)}
+    X8 = lo(7, Bt)
+    leaves = [re.sub(r'\(t\)', f'({X8})', EB.leafterm(i, 8)) for i in range(256)]
+    def tf(d, ls):
+        if d == 0:
+            return f'FD.TLeaf{{{ls[0]}}}'
+        h = len(ls) // 2
+        return f'FD.TNode{{{tf(d - 1, ls[:h])}, {tf(d - 1, ls[h:])}}}'
+    BTl = tf(8, leaves)
+    for k in range(8, 15):
+        BTl = f'FD.TNode{{{BTl}, {pv[k]}}}'
+    TGT = f'FD.TNode{{{SPl}, {BTl}}}'
+    # the decode law's arguments
+    mp = {'x0': x0, 'x1': x1, 't0': leaves[0], 't1': leaves[1]}
+    for k in range(1, 15):
+        mp[f'm{k}'] = mv[k]
+        mp[f'pm{k}'] = pmv[k]
+    for i in range(212):
+        mp[f'f{i}'] = leaves[2 + i]
+    for i in range(42):
+        mp[f'z{i}'] = leaves[214 + i]
+    for k in range(8, 15):
+        mp[f'p{k}'] = pv[k]
+        mp[f'pp{k}'] = ppv[k]
+    dec_args = ', '.join(mp[p] for p in dparams)
+    FIX = lambda t: t.replace('F.', 'FD.').replace('SFD.', 'SF.')  # noqa: E731  (the codec module's F is found)
+    OW = FIX(subst(OBJT, mp))
+    S_ = f'FD.array__slots(U32, {TGT})'
+    X = f'AH.tk(AH.dp({S_}, 2n), 32768n)'
+    Fl = [leaves[2 + i] for i in range(212)]
+    FL = '[' + ', '.join(Fl) + ']'
+    emp = {'x0': x0, 'x1': x1, 'bw': X}
+    for i in range(212):
+        emp[f'f{i}'] = Fl[i]
+    SV = FIX(subst(ENCV, emp))
+    BY = FIX(subst(ENCB, emp))
+    PFX = f'FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, {FL}))'
+    assert BY == f'SF.limbs({PFX})', (BY[:200], PFX[:200])
+    SBT = f'FD.array__slots(U32, {BTl})'
+    SSP = f'FD.array__slots(U32, {SPl})'
+    R = f'AH.dp({SBT}, 214n)'
+    SLT = f'SF.limbs(FD.array__slots(U32, {TT}))'
+    PSPl = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 15n, z) == True{{}} : Bool}}, {A}, {SPl}, lspke(1n, 14n, {A}, {PA15}), {PA15})'
+    ETT = (f'Equal.trans(FD.array__Tree<U32>, {TT}, FD.TNode{{{SPl}, {Bt}}}, {TGT},\n'
+           f'      Equal.cong(FD.array__Tree<U32>, FD.array__Tree<U32>, z => FD.TNode{{z, {Bt}}}, {A}, {SPl}, lspke(1n, 14n, {A}, {PA15})),\n'
+           f'      Equal.cong(FD.array__Tree<U32>, FD.array__Tree<U32>, z => FD.TNode{{{SPl}, z}}, {Bt}, {BTl}, lspke(8n, 7n, {Bt}, {PB15})))')
+    PTGT = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 16n, z) == True{{}} : Bool}}, {TT}, {TGT}, ett(dd, ed, bs), FD.logic__subst(Nat, z => {{FD.array__perfect(U32, 1n+z, {TT}) == True{{}} : Bool}}, dd, 15n, ed, {PTT}))'
+    # the view of the decoded object, the blob's words abstracted
+    fl = EB.RR.split_args(OW)[1] if hasattr(EB, 'RR') and hasattr(EB.RR, 'split_args') else None
+    return dict(OW=OW, SV=SV, BY=BY, PFX=PFX, X=X, FL=FL, SBT=SBT, SSP=SSP, R=R, SLT=SLT, TGT=TGT, TT=TT, A=A, Bt=Bt, SPl=SPl, BTl=BTl, PSPl=PSPl, ETT=ETT, PTGT=PTGT,
+                dec_args=dec_args, eparams=eparams, x0=x0, x1=x1, Fl=Fl, mv=mv, M1=M1, MV=MV, MB=MB, LEN=LEN, IN=IN, DEC=DEC, RES=RES, API=API, HN=HN, HD=HD, EC=EC, DP=DP, Wl=Wl,
+                PTT=PTT, OT=OT)
+
+
+def bsd_file(EB):
+    d = bsd_text(EB)
+    g = lambda k: d[k]  # noqa: E731
+    OT, M1, MV, MB, IN, DEC, RES, API, HN, HD, EC, DP, Wl = (d[k] for k in ('OT', 'M1', 'MV', 'MB', 'IN', 'DEC', 'RES', 'API', 'HN', 'HD', 'EC', 'DP', 'Wl'))
+    TT, A, Bt = d['TT'], d['A'], d['Bt']
+    SPlL, BTlL = d['SPl'], d['BTl']
+    SPl, BTl = 'SPLd(dd, bs)', 'BTLd(dd, bs)'
+    TGTl = d['TGT']
+    TG = 'TGTd(dd, bs)'
+    S = f'FD.array__slots(U32, {TG})'
+    X = f'AH.tk(AH.dp({S}, 2n), 32768n)'
+    x0L, x1L, FLL = d['x0'], d['x1'], d['FL']
+    x0, x1, FL = 'X0d(dd, bs)', 'X1d(dd, bs)', 'FLd(dd, bs)'
+    SSP = f'FD.array__slots(U32, {SPl})'
+    SBT = f'FD.array__slots(U32, {BTl})'
+    R = f'AH.dp({SBT}, 214n)'
+    PFX = f'FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, {FL}))'
+    BY = f'SF.limbs({PFX})'
+    SLT = f'SF.limbs(FD.array__slots(U32, {TT}))'
+    # the object and the value with the tree as TGTd
+    OW = d['OW'].replace(f'FD.array__slots(U32, {TGTl})', S)
+    SV = d['SV'].replace(f'FD.array__slots(U32, {TGTl})', S)
+    assert TGTl not in OW and TGTl not in SV
+    PA15 = d['PSPl'].split(', lspke(')[0]  # unused
+    PA = f'XW.spl(dd, {TT}, {d["PTT"]})'
+    PBr = f'XW.spr(dd, {TT}, {d["PTT"]})'
+    PA15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {A}) == True{{}} : Bool}}, dd, 15n, ed, {PA})'
+    PB15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {Bt}) == True{{}} : Bool}}, dd, 15n, ed, {PBr})'
+    PSPl = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 15n, z) == True{{}} : Bool}}, {A}, {SPl}, lspke(1n, 14n, {A}, {PA15}), {PA15})'
+    PTGT = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 16n, z) == True{{}} : Bool}}, {TT}, {TG}, ett(dd, ed, bs), FD.logic__subst(Nat, z => {{FD.array__perfect(U32, 1n+z, {TT}) == True{{}} : Bool}}, dd, 15n, ed, {d["PTT"]}))'
+    # the view with the blob's words abstracted (fields of OW)
+    RTa = 'RT'
+    fl = bsd_split(OW)
+    UV = lambda blob: (f'S.Sequence{{S.Items{{RN.v_u64({fl[0]}), S.Items{{S.BytesValue{{{blob}}}, S.Items{{RN.v_b48({fl[2]}), S.Items{{RN.v_b48({fl[3]}), '  # noqa: E731
+                       f'S.Items{{{RTa}.v_SignedBeaconBlockHeader_bx({fl[4]}), S.Items{{PV.pview({fl[5]}), S.EmptyItems{{}}}}}}}}}}}}}}}}')
+    BLOBW = fl[1]
+    s = f'''
+# ---- trees and lists ----
+def SPLd(+dd: Nat, +bs: +List<U32>) -> FD.array__Tree<U32>: {SPlL}
+
+def BTLd(+dd: Nat, +bs: +List<U32>) -> FD.array__Tree<U32>: {BTlL}
+
+def TGTd(+dd: Nat, +bs: +List<U32>) -> FD.array__Tree<U32>: {TGTl}
+
+def X0d(+dd: Nat, +bs: +List<U32>) -> U32: {x0L}
+
+def X1d(+dd: Nat, +bs: +List<U32>) -> U32: {x1L}
+
+def FLd(+dd: Nat, +bs: +List<U32>) -> List<&2, U32>: {FLL}
+
+def OWd(+dd: Nat, +bs: +List<U32>) -> {OT}: {OW}
+
+def SVd(+dd: Nat, +bs: +List<U32>) -> S.Value: {SV}
+
+# the left spine of a perfect tree down to a literal depth-k subtree
+def lspk(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
+  match d:
+    case 0n: E3.tf(k, t)
+    case 1n+ +p: FD.TNode{{lspk(k, p, E3.lo(t)), E3.hi(t)}}
+
+def lspke(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, Nat.add(d, k), t) == True{{}} : Bool}}) -> {{t == lspk(k, d, t) : FD.array__Tree<U32>}}:
+  match d t:
+    case 0n +t0: E3.eta(k, t0, pf)
+    case 1n+ +p FD.TLeaf{{x}}: Empty.absurd({{FD.TLeaf{{x}} == lspk(k, 1n+p, FD.TLeaf{{x}}) : FD.array__Tree<U32>}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{{+l, +r}}:
+      Equal.cong(FD.array__Tree<U32>, FD.array__Tree<U32>, z => FD.TNode{{z, r}}, l, lspk(k, p, l), lspke(k, p, l, FD.logic__and_left(FD.array__perfect(U32, Nat.add(p, k), l), FD.array__perfect(U32, Nat.add(p, k), r), pf)))
+
+# a list is its first k words, then the rest
+law tdz:
+  for +xs: List<&2, U32>
+  for +k: Nat
+  {{FD.spec_common__append(U32, AH.tk(xs, k), AH.dp(xs, k)) == xs : List<&2, U32>}}
+def tdz(xs, k):
+  match xs k:
+    case Nil{{}} _: {{==}}
+    case Con{{h, t}} 0n: {{==}}
+    case Con{{+h, +t}} 1n+ +p: FD.list__cons_cong(U32, h, FD.spec_common__append(U32, AH.tk(t, p), AH.dp(t, p)), t, tdz(t, p))
+
+# the canonical tree of a list is perfect
+law bperf:
+  for +d: Nat
+  for +xs: List<&2, U32>
+  {{FD.array__perfect(U32, d, R.build(d, xs)) == True{{}} : Bool}}
+def bperf(d, xs):
+  match d:
+    case 0n: {{==}}
+    case 1n+ +p: FD.logic__and_intro(FD.array__perfect(U32, p, R.build(p, AH.tk(xs, FD.spec_common__pow2(p)))), FD.array__perfect(U32, p, R.build(p, AH.dp(xs, FD.spec_common__pow2(p)))),
+      bperf(p, AH.tk(xs, FD.spec_common__pow2(p))), bperf(p, AH.dp(xs, FD.spec_common__pow2(p))))
+
+def one(+t: List<&2, U32>, +h: {{FD.spec_common__length(U32, t) == 0n : Nat}}) -> {{t == Nil{{}} : List<&2, U32>}}:
+  match t:
+    case Nil{{}}: {{==}}
+    case Con{{x, r}}: Empty.absurd({{Con{{x, r}} == Nil{{}} : List<&2, U32>}}, FD.nat__succ_zero(FD.spec_common__length(U32, r), h))
+
+# ... and its words are the list, of 2^d words
+law bslots:
+  for +d: Nat
+  for +xs: List<&2, U32>
+  for +h: {{FD.spec_common__length(U32, xs) == FD.spec_common__pow2(d) : Nat}}
+  {{FD.array__slots(U32, R.build(d, xs)) == xs : List<&2, U32>}}
+def bslots(d, xs, h):
+  match d xs:
+    case _ Nil{{}}: Empty.absurd({{FD.array__slots(U32, R.build(d, Nil{{}})) == Nil{{}} : List<&2, U32>}}, FD.logic__false_true(FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, FD.spec_common__pow2(d), 0n, Equal.sym(Nat, 0n, FD.spec_common__pow2(d), h), VBG.pw_pos(d))))
+    case 0n Con{{+x, +t}}:
+      %Equal.sym(List<&2, U32>, t, Nil{{}}, one(t, FD.nat__succ_inj(FD.spec_common__length(U32, t), 0n, h))) : {{FD.array__slots(U32, R.build(0n, Con{{x, _}})) == Con{{x, _}} : List<&2, U32>}}
+      {{==}}
+    case 1n+ +p Con{{+x, +t}}:
+      +P = FD.spec_common__pow2(p)
+      +hl = Equal.trans(Nat, FD.spec_common__length(U32, Con{{x, t}}), FD.spec_common__pow2(1n+p), Nat.add(P, P), h, FD.lru_nat_algebra__double_self(P))
+      +h1 = FD.logic__subst(Nat, z => {{Nat.is_le(P, z) == True{{}} : Bool}}, Nat.add(P, P), FD.spec_common__length(U32, Con{{x, t}}), Equal.sym(Nat, FD.spec_common__length(U32, Con{{x, t}}), Nat.add(P, P), hl), FD.nat__le_add_right(P, P))
+      +lt = FD.list__sc_length_take(U32, Con{{x, t}}, P, h1)
+      +ld = Equal.trans(Nat, FD.spec_common__length(U32, AH.dp(Con{{x, t}}, P)), Nat.sub(FD.spec_common__length(U32, Con{{x, t}}), P), P, AH.len_drop(Con{{x, t}}, P),
+        Equal.trans(Nat, Nat.sub(FD.spec_common__length(U32, Con{{x, t}}), P), Nat.sub(Nat.add(P, P), P), P, Equal.cong(Nat, Nat, z => Nat.sub(z, P), FD.spec_common__length(U32, Con{{x, t}}), Nat.add(P, P), hl), FD.nat__add_sub_cancel(P, P)))
+      %Equal.sym(List<&2, U32>, FD.array__slots(U32, R.build(p, AH.tk(Con{{x, t}}, P))), AH.tk(Con{{x, t}}, P), bslots(p, AH.tk(Con{{x, t}}, P), lt)) : {{FD.spec_common__append(U32, _, FD.array__slots(U32, R.build(p, AH.dp(Con{{x, t}}, P)))) == Con{{x, t}} : List<&2, U32>}}
+      %Equal.sym(List<&2, U32>, FD.array__slots(U32, R.build(p, AH.dp(Con{{x, t}}, P))), AH.dp(Con{{x, t}}, P), bslots(p, AH.dp(Con{{x, t}}, P), ld)) : {{FD.spec_common__append(U32, AH.tk(Con{{x, t}}, P), _) == Con{{x, t}} : List<&2, U32>}}
+      tdz(Con{{x, t}}, P)
+
+# a blob decoded as the canonical tree of its words, beside zero storage: its bytes are its words'
+def blobv(+d: Nat, +xs: List<&2, U32>, +T: FD.array__Tree<U32>, +N: U32, +K: Nat, +h: {{FD.spec_common__length(U32, xs) == FD.spec_common__pow2(d) : Nat}},
+    +eN: {{U32.to_nat(N) == K : Nat}}, +hK: {{Nat.is_eq(A.quad(FD.spec_common__pow2(d)), K) == True{{}} : Bool}})
+    -> {{WO.wview(O.Words{{ANode{{FD.array__thaw(U32, AH.bq(d, xs, T)), Array.new(U32, d, 0)}}, N}}) == SF.limbs(xs) : +List<U32>}}:
+  %Equal.sym(FD.array__Tree<U32>, AH.bq(d, xs, T), R.build(d, xs), AH.bq_build(d, xs, T)) : {{WO.wview(O.Words{{ANode{{FD.array__thaw(U32, _), Array.new(U32, d, 0)}}, N}}) == SF.limbs(xs) : +List<U32>}}
+  %Equal.sym(Array<U32>, Array.new(U32, d, 0), FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.array__new(U32, d, 0)) : {{WO.wview(O.Words{{ANode{{FD.array__thaw(U32, R.build(d, xs)), _}}, N}}) == SF.limbs(xs) : +List<U32>}}
+  Equal.trans(+List<U32>, WO.wview(O.Words{{ANode{{FD.array__thaw(U32, R.build(d, xs)), FD.array__thaw(U32, FD.array__trep(U32, d, 0))}}, N}}), SF.limbs(FD.array__slots(U32, R.build(d, xs))), SF.limbs(xs),
+    XW.vb(R.build(d, xs), FD.array__trep(U32, d, 0), N, XW.vleng(d, R.build(d, xs), bperf(d, xs), N, K, eN, hK)),
+    Equal.cong(List<&2, U32>, +List<U32>, z => SF.limbs(z), FD.array__slots(U32, R.build(d, xs)), xs, bslots(d, xs, h)))
+
+# 131928 = 2^17 + 856 as a Nat (never its unary form)
+def k131928() -> {{U32.to_nat(131928) == 131928n : Nat}}:
+  +ea = FD.u32__pow2u_value(17n, {{==}})
+  +h = FD.nat__lt_le_trans(Nat.add(U32.to_nat(856), FD.spec_common__pow2(17n)), FD.spec_common__pow2(19n), FD.spec_common__pow2(32n), {{==}}, VBG.pw_mono(19n, 32n, {{==}}))
+  +e1 = VB.add_lt32(FD.u32__pow2u(17n), 856, FD.spec_common__pow2(17n), ea, h)
+  +e2 = FD.nat__eq_from_is_eq(Nat.add(U32.to_nat(856), FD.spec_common__pow2(17n)), 131928n, {{==}})
+  FD.logic__subst(U32, z => {{U32.to_nat(z) == 131928n : Nat}}, U32.add(FD.u32__pow2u(17n), 856), 131928, {{==}},
+    Equal.trans(Nat, U32.to_nat(U32.add(FD.u32__pow2u(17n), 856)), Nat.add(U32.to_nat(856), FD.spec_common__pow2(17n)), 131928n, e1, e2))
+
+# ---- (ii) / (iii) ----
+def bs_mv(m: {M1}) -> {MV}:
+  match m:
+    case None{{}}: None{{}}
+    case Some{{o}}: Some{{RT.v_BlobSidecar(o)}}
+
+def d_none(+bs: +List<U32>, +n: U32, {EC("False{}")}) -> {{{RES} == None{{}} : {M1}}}:
+  Equal.cong(B.Buf & {M1}, {M1}, q => Pair.snd(B.Buf, {M1}, q), {DEC}, ({IN}, None{{}}), M.BlobSidecar_spec_reject({IN}, n, ec))
+
+def d_anone(+bs: +List<U32>, +n: U32, {HN}, {EC("False{}")}) -> {{{API} == None{{}} : {MV}}}:
+  EY.outside_none(Spec.BlobSidecar(), bs, RJ.BlobSidecar_decode_reject(bs, XW.rz(bs, n, hn, 131928, VRF.SZ(Spec.BlobSidecar()),
+    Equal.trans(Nat, U32.to_nat(131928), 131928n, VRF.SZ(Spec.BlobSidecar()), k131928(), FD.nat__eq_from_is_eq(131928n, VRF.SZ(Spec.BlobSidecar()), {{==}})), ec)))
+
+def ekn(+n: U32, +en: {{n == 131928 : U32}}) -> {{U32.to_nat(n) == 131928n : Nat}}:
+  FD.logic__subst(U32, z => {{U32.to_nat(z) == 131928n : Nat}}, 131928, n, Equal.sym(U32, n, 131928, en), k131928())
+
+def hcap({DP}, +n: U32, +en: {{n == 131928 : U32}}) -> {{B.capacity(n) == 1n+dd : Nat}}:
+  Equal.trans(Nat, B.capacity(n), 16n, 1n+dd, FD.logic__subst(U32, z => {{B.capacity(z) == 16n : Nat}}, 131928, n, Equal.sym(U32, n, 131928, en), {{==}}), Equal.cong(Nat, Nat, z => 1n+z, 15n, dd, Equal.sym(Nat, dd, 15n, ed)))
+
+def hw({DP}, +bs: +List<U32>, +n: U32, {HN}, +en: {{n == 131928 : U32}}) -> {{Nat.is_le(FD.spec_common__length(U32, {Wl}), FD.spec_common__pow2(1n+dd)) == True{{}} : Bool}}:
+  +h = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(FD.spec_common__pow2(16n))) == True{{}} : Bool}}, 131928n, U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), 131928n, ekn(n, en)), {{==}})
+  FD.logic__subst(Nat, z => {{Nat.is_le(FD.spec_common__length(U32, {Wl}), FD.spec_common__pow2(z)) == True{{}} : Bool}}, B.capacity(n), 1n+dd, hcap(dd, ed, n, en), C.cap_w(bs, n, 16n, hn, {{==}}, h))
+
+def ett({DP}, +bs: +List<U32>) -> {{{TT} == {TG} : FD.array__Tree<U32>}}:
+  {d["ETT"].replace(TGTl, TG).replace(SPlL, SPl).replace(BTlL, BTl)}
+
+# the blob's words: 2^15 of them
+def hbw({DP}, +bs: +List<U32>) -> {{FD.spec_common__length(U32, {X}) == 32768n : Nat}}:
+  +hl = FD.array__slots_length(U32, 16n, {TG}, {PTGT})
+  AH.len_seg({S}, 2n, 32768n, FD.spec_common__pow2(16n), hl, {{==}})
+
+def hbw15({DP}, +bs: +List<U32>) -> {{FD.spec_common__length(U32, {X}) == FD.spec_common__pow2(dd) : Nat}}:
+  Equal.trans(Nat, FD.spec_common__length(U32, {X}), 32768n, FD.spec_common__pow2(dd), hbw(dd, ed, bs),
+    Equal.sym(Nat, FD.spec_common__pow2(dd), 32768n, FD.nat__eq_from_is_eq(FD.spec_common__pow2(dd), 32768n, FD.logic__subst(Nat, z => {{Nat.is_eq(FD.spec_common__pow2(z), 32768n) == True{{}} : Bool}}, 15n, dd, Equal.sym(Nat, dd, 15n, ed), {{==}}))))
+
+# the tree's words are its halves'
+def sS(+dd: Nat, +bs: +List<U32>) -> {{{S} == FD.spec_common__append(U32, {SSP}, {SBT}) : List<&2, U32>}}: {{==}}
+
+# the right half's words past the blob's last two: the rest of the fixed part, then the rest
+def e4d({DP}, +bs: +List<U32>) -> {{AH.dp({SBT}, 2n) == FD.spec_common__append(U32, {FL}, {R}) : List<&2, U32>}}: {{==}}
+
+# the first two words are the header's
+def tk2e({DP}, +bs: +List<U32>) -> {{AH.tk({S}, 2n) == [{x0}, {x1}] : List<&2, U32>}}:
+  +hl = FD.array__slots_length(U32, 16n, {TG}, {PTGT})
+  AH.tk2({S}, FD.logic__subst(Nat, z => {{Nat.is_le(2n, z) == True{{}} : Bool}}, FD.spec_common__pow2(16n), FD.spec_common__length(U32, {S}), Equal.sym(Nat, FD.spec_common__length(U32, {S}), FD.spec_common__pow2(16n), hl), {{==}}))
+
+# the words: the two header words, the blob, the rest of the fixed part, then the rest
+def d_sl({DP}, +bs: +List<U32>) -> {{{S} == FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R}))) : List<&2, U32>}}:
+  +hl = FD.array__slots_length(U32, 15n, {SPl}, {PSPl})
+  +hl2 = Equal.trans(Nat, FD.spec_common__length(U32, {SSP}), FD.spec_common__pow2(15n), 32768n, hl, FD.nat__eq_from_is_eq(FD.spec_common__pow2(15n), 32768n, {{==}}))
+  +e1 = Equal.sym(List<&2, U32>, FD.spec_common__append(U32, AH.tk({S}, 2n), AH.dp({S}, 2n)), {S}, tdz({S}, 2n))
+  +e2 = Equal.sym(List<&2, U32>, FD.spec_common__append(U32, {X}, AH.dp(AH.dp({S}, 2n), 32768n)), AH.dp({S}, 2n), tdz(AH.dp({S}, 2n), 32768n))
+  +e3 = Equal.trans(List<&2, U32>, AH.dp(AH.dp({S}, 2n), 32768n), AH.dp({S}, 32770n), AH.dp({SBT}, 2n), AH.drop_drop_lit({S}, 2n, 32768n, 32770n, {{==}}),
+    Equal.trans(List<&2, U32>, AH.dp({S}, 32770n), AH.dp(FD.spec_common__append(U32, {SSP}, {SBT}), 32770n), AH.dp({SBT}, 2n),
+      Equal.cong(List<&2, U32>, List<&2, U32>, z => AH.dp(z, 32770n), {S}, FD.spec_common__append(U32, {SSP}, {SBT}), sS(dd, bs)),
+      AH.drop_app_lit({SSP}, {SBT}, 32770n, 32768n, 2n, hl2, {{==}}, {{==}})))
+  +e4 = e4d(dd, ed, bs)
+  +e1b = Equal.trans(List<&2, U32>, {S}, FD.spec_common__append(U32, AH.tk({S}, 2n), AH.dp({S}, 2n)), FD.spec_common__append(U32, [{x0}, {x1}], AH.dp({S}, 2n)), e1,
+    Equal.cong(List<&2, U32>, List<&2, U32>, z => FD.spec_common__append(U32, z, AH.dp({S}, 2n)), AH.tk({S}, 2n), [{x0}, {x1}], tk2e(dd, ed, bs)))
+  Equal.trans(List<&2, U32>, {S}, FD.spec_common__append(U32, [{x0}, {x1}], AH.dp({S}, 2n)), FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R}))), e1b,
+    Equal.cong(List<&2, U32>, List<&2, U32>, z => FD.spec_common__append(U32, [{x0}, {x1}], z), AH.dp({S}, 2n), FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R})),
+      Equal.trans(List<&2, U32>, AH.dp({S}, 2n), FD.spec_common__append(U32, {X}, AH.dp(AH.dp({S}, 2n), 32768n)), FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R})), e2,
+        Equal.cong(List<&2, U32>, List<&2, U32>, z => FD.spec_common__append(U32, {X}, z), AH.dp(AH.dp({S}, 2n), 32768n), FD.spec_common__append(U32, {FL}, {R}), Equal.trans(List<&2, U32>, AH.dp(AH.dp({S}, 2n), 32768n), AH.dp({SBT}, 2n), FD.spec_common__append(U32, {FL}, {R}), e3, e4)))))
+
+def d_len({DP}, +bs: +List<U32>) -> {{List.length(&2, U32, {BY}) == U32.to_nat(131928) : Nat}}:
+  +ep = Equal.trans(Nat, FD.spec_common__length(U32, FD.spec_common__append(U32, {X}, {FL})), Nat.add(FD.spec_common__length(U32, {X}), 212n), Nat.add(32768n, 212n),
+    FD.list__length_append(U32, {X}, {FL}), Equal.cong(Nat, Nat, z => Nat.add(z, 212n), FD.spec_common__length(U32, {X}), 32768n, hbw(dd, ed, bs)))
+  +eq = Equal.cong(Nat, Nat, z => A.quad(2n+z), FD.spec_common__length(U32, FD.spec_common__append(U32, {X}, {FL})), Nat.add(32768n, 212n), ep)
+  Equal.trans(Nat, List.length(&2, U32, {BY}), A.quad(FD.spec_common__length(U32, {PFX})), U32.to_nat(131928),
+    Equal.trans(Nat, List.length(&2, U32, {BY}), SF.wlen({PFX}), A.quad(FD.spec_common__length(U32, {PFX})), AS.len_limbs({PFX}), AS.wlen_quad({PFX})),
+    Equal.trans(Nat, A.quad(FD.spec_common__length(U32, {PFX})), A.quad(2n+Nat.add(32768n, 212n)), U32.to_nat(131928), eq,
+      Equal.trans(Nat, A.quad(2n+Nat.add(32768n, 212n)), 131928n, U32.to_nat(131928), FD.nat__eq_from_is_eq(A.quad(2n+Nat.add(32768n, 212n)), 131928n, {{==}}), Equal.sym(Nat, U32.to_nat(131928), 131928n, k131928()))))
+
+def d_split({DP}, +bs: +List<U32>) -> {{{SLT} == List.append(&2, U32, {BY}, SF.limbs({R})) : +List<U32>}}:
+  +e0 = Equal.cong(FD.array__Tree<U32>, List<&2, U32>, z => FD.array__slots(U32, z), {TT}, {TG}, ett(dd, ed, bs))
+  +e1 = Equal.trans(List<&2, U32>, FD.array__slots(U32, {TT}), {S}, FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R}))), e0, d_sl(dd, ed, bs))
+  +e2 = Equal.cong(List<&2, U32>, List<&2, U32>, z => FD.spec_common__append(U32, [{x0}, {x1}], z), FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R})), FD.spec_common__append(U32, FD.spec_common__append(U32, {X}, {FL}), {R}),
+    Equal.sym(List<&2, U32>, FD.spec_common__append(U32, FD.spec_common__append(U32, {X}, {FL}), {R}), FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R})), FD.list__append_assoc(U32, {X}, {FL}, {R})))
+  +e3 = Equal.trans(List<&2, U32>, FD.array__slots(U32, {TT}), FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R}))), FD.spec_common__append(U32, {PFX}, {R}), e1, e2)
+  Equal.trans(+List<U32>, {SLT}, SF.limbs(FD.spec_common__append(U32, {PFX}, {R})), List.append(&2, U32, {BY}, SF.limbs({R})),
+    Equal.cong(List<&2, U32>, +List<U32>, z => SF.limbs(z), FD.array__slots(U32, {TT}), FD.spec_common__append(U32, {PFX}, {R}), e3),
+    AS.limbs_app({PFX}, {R}))
+
+def d_by({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +en: {{n == 131928 : U32}}) -> {{{BY} == bs : +List<U32>}}:
+  +vw = L.vw(bs, n, 1n+dd, hd, hn, hw(dd, ed, bs, n, hn, en))
+  %Equal.sym(U32, n, 131928, en) : {{{BY} == bs : +List<U32>}}
+  Equal.trans(+List<U32>, {BY}, VSP.bt(U32.to_nat(n), {SLT}), bs,
+    Equal.sym(+List<U32>, VSP.bt(U32.to_nat(n), {SLT}), {BY},
+      Equal.trans(+List<U32>, VSP.bt(U32.to_nat(n), {SLT}), VSP.bt(List.length(&2, U32, {BY}), List.append(&2, U32, {BY}, SF.limbs({R}))), {BY},
+        Equal.trans(+List<U32>, VSP.bt(U32.to_nat(n), {SLT}), VSP.bt(U32.to_nat(n), List.append(&2, U32, {BY}, SF.limbs({R}))), VSP.bt(List.length(&2, U32, {BY}), List.append(&2, U32, {BY}, SF.limbs({R}))),
+          Equal.cong(+List<U32>, +List<U32>, z => VSP.bt(U32.to_nat(n), z), {SLT}, List.append(&2, U32, {BY}, SF.limbs({R})), d_split(dd, ed, bs)),
+          Equal.cong(Nat, +List<U32>, z => VSP.bt(z, List.append(&2, U32, {BY}, SF.limbs({R}))), U32.to_nat(n), List.length(&2, U32, {BY}),
+            Equal.trans(Nat, U32.to_nat(n), U32.to_nat(131928), List.length(&2, U32, {BY}), Equal.cong(U32, Nat, z => U32.to_nat(z), n, 131928, en), Equal.sym(Nat, List.length(&2, U32, {BY}), U32.to_nat(131928), d_len(dd, ed, bs))))),
+        L.n3({BY}, SF.limbs({R})))),
+    vw)
+
+def d_some({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +en: {{n == 131928 : U32}}) -> {{{RES} == Some{{OWd(dd, bs)}} : {M1}}}:
+  %Equal.sym(B.Buf, {IN}, B.Buf{{FD.array__thaw(U32, {TT}), n}}, L.bf(bs, n, 1n+dd, hd, hcap(dd, ed, n, en), FD.logic__subst(Nat, z => {{Nat.is_lt(1n+z, 32n) == True{{}} : Bool}}, 15n, dd, Equal.sym(Nat, dd, 15n, ed), {{==}}), hw(dd, ed, bs, n, hn, en))) :
+    {{Pair.snd(B.Buf, {M1}, FuluBlobSidecar_r.BlobSidecar_decode(_, n)) == Some{{OWd(dd, bs)}} : {M1}}}
+  %Equal.sym(U32, n, 131928, en) : {{Pair.snd(B.Buf, {M1}, FuluBlobSidecar_r.BlobSidecar_decode(B.Buf{{FD.array__thaw(U32, {TT}), _}}, _)) == Some{{OWd(dd, bs)}} : {M1}}}
+  %Equal.sym(FD.array__Tree<U32>, {TT}, {TGTl}, ett(dd, ed, bs)) : {{Pair.snd(B.Buf, {M1}, FuluBlobSidecar_r.BlobSidecar_decode(B.Buf{{FD.array__thaw(U32, _), 131928}}, 131928)) == Some{{OWd(dd, bs)}} : {M1}}}
+  Equal.cong(B.Buf & {M1}, {M1}, q => Pair.snd(B.Buf, {M1}, q), FuluBlobSidecar_r.BlobSidecar_decode(B.Buf{{FD.array__thaw(U32, {TGTl}), 131928}}, 131928), (B.Buf{{FD.array__thaw(U32, {TGTl}), 131928}}, Some{{OWd(dd, bs)}}),
+    M.BlobSidecar_spec_decode({d["dec_args"]}))
+
+def d_asome({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +en: {{n == 131928 : U32}}) -> {{{API} == Some{{SVd(dd, bs)}} : {MV}}}:
+  E2E.spec_accepted(Spec.BlobSidecar(), bs, SVd(dd, bs), (VS.public_sound(Spec.BlobSidecar(), {{==}}),
+    %d_by(dd, ed, bs, n, hn, hd, en) : {{Encoding.encoding_for_legal_type(Spec.BlobSidecar(), SVd(dd, bs)) == Some{{_}} : {MB}}}
+    M.BlobSidecar_spec_encode({x0}, {x1}, {X}, hbw(dd, ed, bs), {", ".join(d["Fl"])}, Spec.BlobSidecar(), {{==}})))
+
+def d_br({DP}, +bs: +List<U32>) -> {{RT.v_BlobSidecar(OWd(dd, bs)) == SVd(dd, bs) : S.Value}}:
+  +eb = FD.logic__subst(Nat, z => {{WO.wview(O.Words{{ANode{{FD.array__thaw(U32, AH.bq(z, {X}, {d["mv"][1]})), Array.new(U32, z, 0)}}, 131072}}) == SF.limbs({X}) : +List<U32>}}, dd, 15n, ed,
+    blobv(dd, {X}, {d["mv"][1]}, 131072, 131072n, hbw15(dd, ed, bs), XW.nk(17n, {{==}}, 131072, {{==}}, 131072n, {{==}}),
+      FD.logic__subst(Nat, z => {{Nat.is_eq(A.quad(FD.spec_common__pow2(z)), 131072n) == True{{}} : Bool}}, 15n, dd, Equal.sym(Nat, dd, 15n, ed), {{==}})))
+  Equal.trans(S.Value, {UV("WO.wview(" + BLOBW + ")")}, {UV("SF.limbs(" + X + ")")}, SVd(dd, bs),
+    Equal.cong(+List<U32>, S.Value, z => {UV("z")}, WO.wview({BLOBW}), SF.limbs({X}), eb),
+    {{==}})
+
+def d_v({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +c: Bool, {EC("c")}) -> {{bs_mv({RES}) == {API} : {MV}}}:
+  match c:
+    case False{{}}:
+      %Equal.sym({M1}, {RES}, None{{}}, d_none(bs, n, ec)) : {{bs_mv(_) == {API} : {MV}}}
+      %Equal.sym({MV}, {API}, None{{}}, d_anone(bs, n, hn, ec)) : {{bs_mv(None{{}}) == _ : {MV}}}
+      {{==}}
+    case True{{}}:
+      +en = WF.u32_equal_sound(n, 131928, ec)
+      %Equal.sym({M1}, {RES}, Some{{OWd(dd, bs)}}, d_some(dd, ed, bs, n, hn, hd, en)) : {{bs_mv(_) == {API} : {MV}}}
+      %Equal.sym({MV}, {API}, Some{{SVd(dd, bs)}}, d_asome(dd, ed, bs, n, hn, hd, en)) : {{bs_mv(Some{{OWd(dd, bs)}}) == _ : {MV}}}
+      Equal.cong(S.Value, {MV}, v => Some{{v}}, RT.v_BlobSidecar(OWd(dd, bs)), SVd(dd, bs), d_br(dd, ed, bs))
+
+# (ii) through the view
+def FuluBlobSidecar_e2e_decode_view(+bs: +List<U32>, +n: U32, {HN}, {HD}) -> {{bs_mv({RES}) == {API} : {MV}}}:
+  d_v(15n, {{==}}, bs, n, hn, hd, U32.is_eq(n, 131928), {{==}})
+
+def d_bn(m: {M1}, +e: {{Maybe.is_some(&2, S.Value, bs_mv(m)) == False{{}} : Bool}}) -> {{m == None{{}} : {M1}}}:
+  match m:
+    case None{{}}: {{==}}
+    case Some{{x}}: Empty.absurd({{Some{{x}} == None{{}} : {M1}}}, FD.logic__false_true(Equal.sym(Bool, True{{}}, False{{}}, e)))
+
+# (iii)
+def FuluBlobSidecar_e2e_decode_reject(+bs: +List<U32>, +n: U32, {HN}, {HD})
+    -> ({{{RES} == None{{}} : {M1}}} -> {{{API} == None{{}} : {MV}}}) & ({{{API} == None{{}} : {MV}}} -> {{{RES} == None{{}} : {M1}}}):
+  (dn => Equal.trans({MV}, {API}, bs_mv({RES}), None{{}}, Equal.sym({MV}, bs_mv({RES}), {API}, FuluBlobSidecar_e2e_decode_view(bs, n, hn, hd)),
+     Equal.cong({M1}, {MV}, q => bs_mv(q), {RES}, None{{}}, dn)),
+   an => d_bn({RES}, Equal.cong({MV}, Bool, z => Maybe.is_some(&2, S.Value, z), bs_mv({RES}), None{{}}, Equal.trans({MV}, bs_mv({RES}), {API}, None{{}}, FuluBlobSidecar_e2e_decode_view(bs, n, hn, hd), an))))
+'''
+    hdr = '''import Base
+import ../END_TO_END.bend as E2E
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/obj.bend as O
+import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
+import ../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
+import ../types/schema.bend as S
+import ../types/primitive.bend as P
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/codec.bend as Encoding
+import ../spec/primitives.bend as SP
+import ../proofs/type_validator_soundness.bend as VS
+import ../proofs/compact/found.bend as FD
+import ../proofs/compact/arith.bend as A
+import ../proofs/obj/spec_fixed.bend as SF
+import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/vspec.bend as VSP
+import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/vbig.bend as VBG
+import ../proofs/obj/arr_copy.bend as AC
+import ../proofs/obj/arr_spec.bend as AS
+import ../proofs/obj/arr_shift.bend as AH
+import ../proofs/obj/repr.bend as R
+import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/spec_arr_BlobSidecar.bend as M
+import ../proofs/obj/fixrej_BlobSidecar.bend as RJ
+import ../proofs/obj/vrejf.bend as VRF
+import ../proofs/word_facts.bend as WF
+import ./e2e_bytes.bend as EY
+import ./e2e_load.bend as L
+import ./e2e_cap.bend as C
+import ./e2e_tree.bend as E3
+import ./e2e_fixdw.bend as XW
+'''
+    return hdr + '\n# GENERATED by codegen/e2e_bridge.py. Do not edit.\n# FuluBlobSidecar: (ii) through the view and (iii), through the loader at depth 1 + dd (dd = 15): the left half a spine to the\n# header words, the right a spine to a literal depth-8 subtree; the blob the canonical tree of its 2^15 words.\n' + s
+
+
+def bsd_split(OW):
+    # the six fields of T{...}
+    i = OW.index('{')
+    body = OW[i + 1:-1]
+    out, dd, cur = [], 0, ''
+    for ch in body:
+        if ch in '({[':
+            dd += 1
+        elif ch in ')}]':
+            dd -= 1
+        if ch == ',' and dd == 0:
+            out.append(cur.strip())
+            cur = ''
+        else:
+            cur += ch
+    out.append(cur.strip())
+    return out
+
+
+
 HB_ENC = r"""import Base
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
@@ -3980,7 +4452,8 @@ def build(EB, amap, cache, vidx):
                                                         'premise': 'rep (the root law\'s representation invariant); (i) also hc0, hc1: each field\'s storage at the encoder\'s depth 17'})
     if 'BlobSidecar' in todo:
         files['FuluBlobSidecar_e2e_generated.bend'] = bs_enc_text(EB, amap)
-        cover.setdefault('BlobSidecar', {}).update({'i': 'FuluBlobSidecar_e2e_generated.bend',
+        files['FuluBlobSidecar_e2e_dec_generated.bend'] = bsd_file(EB)
+        cover.setdefault('BlobSidecar', {}).update({'i': 'FuluBlobSidecar_e2e_generated.bend', 'ii_iii': 'FuluBlobSidecar_e2e_dec_generated.bend', 'ii': 'view',
                                                     'premise': 'rep (the root law\'s representation invariant); (i) also hcb, hcp: the blob\'s storage at the encoder\'s depth 16, the proof\'s at depth 8'})
     files['ProgressiveBitsStruct_e2e_root_generated.bend'] = pbs_root_text()
     files['ProgressiveBitsStruct_e2e_generated.bend'] = pbs_main_text()
