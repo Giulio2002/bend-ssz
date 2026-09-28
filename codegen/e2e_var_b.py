@@ -5890,6 +5890,123 @@ def elx(+m: {RMB}, +sE: S.Schema, +r0: RT.rep_{E}_bx(RT.th_{E}_bx(m), sE), +h0: 
         case RT.M_{E}{{{cmf}}}: ({{==}}, elv({', '.join(fa)}))
 """
         extra = {'@ESP@': '', '@ESA@': '', '@ESPS@': '', '@ESAS@': '', '@SDNOTE@': ''}
+    elif EL == 'deposit':   # a0 a word store (the proof, Vector[Bytes32, C]), a1 a Data record
+        okw = _band(_re.search(r'^def OKW\(.*?\) -> Bool: (.*)$', ew, _re.M).group(1))
+        KW = _re.fullmatch(r'Nat\.is_lt\(TDW\(t\), (\d+)n\)', okw[0]).group(1)
+        NB = int(_re.fullmatch(r'U32\.is_eq\(n, (\d+)\)', okw[3]).group(1))
+        C = NB // 32
+        A1 = fa[1]
+        cm = f"""def cm(m: {RMB}) -> {EMB}:
+  match m:
+    case RT.MNone{{}}: EW.MNone{{}}
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_{E}{{+a0, +a1}}:
+          match a0:
+            case RT.WMr{{+t, +n}}: EW.MSome{{EW.M_{E}{{EW.WMr{{t, n}}, a1}}}}
+
+def thcm(+x: {RMB}) -> {{EW.th_{E}_bx(cm(x)) == RT.th_{E}_bx(x) : {BX}}}:
+  match x:
+    case RT.MNone{{}}: {{==}}
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_{E}{{+a0, +a1}}:
+          match a0:
+            case RT.WMr{{+t, +n}}: {{==}}"""
+        obj = lambda tt, nn: f'RT.MSome{{RT.M_{E}{{RT.WMr{{{tt}, {nn}}}, a1}}}}'
+        pjt = 'O.Words{FD.array__thaw(U32, t), n}'
+        SC0 = 'SH.Chain_head(SH.Container_fields(sE))'
+        pv = [l.replace(f'SH.Vector_length({SC0})', f'{C}n') for l in _pv_lets(pjt, SC0, 'T', 'N', 'q', 'eoP', 'eN', 'hc', 'nb2', C, NB)]
+        leaf = ' '.join(ev.split('\n')[-2].split()) if ev.split('\n')[-1] == '' else ' '.join(ev.split())
+        leaf = _re.search(r'(S\.Sequence\{.*)$', leaf).group(1)
+        leaf = _re.sub(r'(?<![\w.])(RVW_|AV\.|VS\.|UW\.)', lambda mm: 'EW.RVW_' if mm.group(1) == 'RVW_' else mm.group(1), leaf).replace('UW.SLW(t)', 'FD.array__slots(U32, T)')
+        rv1 = [c for c in _re.findall(r'EW\.RVW_\w+\(\w+\)', leaf)]
+        pvpart = _re.search(r'S\.Sequence\{AV\.ch8\(VS\.wtake\(\d+n, FD\.array__slots\(U32, T\)\)\)\}', leaf).group(0)
+        cur = leaf.replace(pvpart, 'PV.pview(O.Words{FD.array__thaw(U32, T), ' + str(NB) + '})')
+        rw = [f'  %EP8.pv8(T, dw, pf, {NB}, {C}n, {{==}}, hr) :',
+              f'    {{RT.v_{E}_bx(RT.th_{E}_bx({obj("T", NB)})) == {leaf.replace(pvpart, "_", 1)} : S.Value}}']
+        cur2 = leaf.replace(pvpart, 'PV.pview(O.Words{FD.array__thaw(U32, T), ' + str(NB) + '})', 1)
+        for c in rv1:
+            nm, ar = _re.match(r'EW\.RVW_(\w+)\((\w+)\)', c).groups()
+            rw.append(f'  %Equal.sym(S.Value, {c}, RN.v_{nm}({ar}), rvw_{nm}({ar})) :\n    {{RT.v_{E}_bx(RT.th_{E}_bx({obj("T", NB)})) == {cur2.replace(c, "_", 1)} : S.Value}}')
+            cur2 = cur2.replace(c, f'RN.v_{nm}({ar})', 1)
+        wok = ' '.join(okw)
+        okT = _andc([f'Nat.is_lt(EW.TDW(T), {KW}n)', 'FD.array__perfect(U32, EW.TDW(T), T)', f'Nat.is_le({NB // 4}n, VB.pw(EW.TDW(T)))', f'U32.is_eq({NB}, {NB})'],
+                    ['hdT', 'pfT', 'hrT', '{==}'])
+        elem = '\n'.join(lem) + f"""
+# the per-element premise: the proof's words at depth below {KW} (a decoded-object gap)
+def SDE(+m: {RMB}) -> Data:
+  match m:
+    case RT.MNone{{}}: {{True{{}} == True{{}} : Bool}}
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_{E}{{+a0, +a1}}: BL.sdpv(RT.th_w(a0), {KW}n)
+
+def isS(b: {BX}) -> Bool:
+  match b:
+    case O.BSome{{v, rest}}: True{{}}
+    case O.BNone{{}}: False{{}}
+
+def FZW(w: O.Words) -> FD.array__Tree<U32>:
+  match w:
+    case O.Words{{ws, +k}}: FD.array__freeze(U32, ws)
+
+def tdW(+d: Nat, +t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}) -> {{EW.TDW(t) == d : Nat}}:
+  match d t:
+    case 0n FD.TLeaf{{+x}}: {{==}}
+    case 0n FD.TNode{{+l, +r}}: Empty.absurd({{EW.TDW(FD.TNode{{l, r}}) == 0n : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{{+x}}: Empty.absurd({{EW.TDW(FD.TLeaf{{x}}) == 1n+p : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{{+l, +r}}: Equal.cong(Nat, Nat, z => 1n+z, EW.TDW(l), p, tdW(p, l, FD.array__pf_left(U32, p, l, r, pf)))
+
+def evD(+T: FD.array__Tree<U32>, +dw: Nat, +a1: {mf[1][1]}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}},
+    +hr: {{Nat.is_le(O.e8({C}n), FD.spec_common__pow2(dw)) == True{{}} : Bool}}) -> {{RT.v_{E}_bx(RT.th_{E}_bx({obj("T", NB)})) == EW.EVm(cm({obj("T", NB)})) : S.Value}}:
+""" + '\n'.join(rw) + f"""
+  {{==}}
+
+# an element whose proof is the words of T (N = {NB} bytes, depth dw < {KW})
+def elT(+T: FD.array__Tree<U32>, +dw: Nat, +a1: {mf[1][1]}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}},
+    +hd: {{Nat.is_lt(dw, {KW}n) == True{{}} : Bool}}, +hr: {{Nat.is_le(O.e8({C}n), FD.spec_common__pow2(dw)) == True{{}} : Bool}}) -> ELF({obj("T", NB)}):
+  +et = Equal.sym(Nat, EW.TDW(T), dw, tdW(dw, T, pf))
+  +hdT = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {KW}n) == True{{}} : Bool}}, dw, EW.TDW(T), et, hd)
+  +pfT = FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, T) == True{{}} : Bool}}, dw, EW.TDW(T), et, pf)
+  +hrT = FD.logic__subst(Nat, z => {{Nat.is_le({NB // 4}n, VB.pw(z)) == True{{}} : Bool}}, dw, EW.TDW(T), et, hr)
+  ({okT}, evD(T, dw, a1, pf, hr))
+
+def elx(+m: {RMB}, +sE: S.Schema, +es: {{SH.Vector_length({SC0}) == {C}n : Nat}}, +r0: RT.rep_{E}_bx(RT.th_{E}_bx(m), sE), +h0: SDE(m)) -> ELF(m):
+  match m:
+    case RT.MNone{{}}:
+      (+eb, +rl) = r0
+      Empty.absurd(ELF(RT.MNone{{}}), FD.logic__false_true(Equal.cong({BX}, Bool, z => isS(z), O.BNone{{}}, O.BSome{{RT.pjb_{E}_bx(O.BNone{{}}), O.BNone{{}}}}, eb)))
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_{E}{{+a0, +a1}}:
+          match a0:
+            case RT.WMr{{+t, +n}}:
+              (+eb, +rd) = r0
+              (+eo2, rd1) = rd
+              (+rpv, +rdd) = rd1
+              (+wfv, +nb) = rpv
+              (+T, s1) = h0
+              (+dw, s2) = s1
+              (+N, s3) = s2
+              (+q, s4) = s3
+              (+eoP, s5) = s4
+              (+pf, s6) = s5
+              (+hd, s7) = s6
+              (+eN, +hc) = s7
+              +nb2 = FD.logic__subst(Nat, z => {{Nat.is_eq(O.chunks_of(WO.len({pjt})), z) == True{{}} : Bool}}, SH.Vector_length({SC0}), {C}n, es, nb)
+""" + '\n'.join('          ' + l for l in pv) + f"""
+              +et = Equal.trans(FD.array__Tree<U32>, t, FZW({pjt}), T, Equal.sym(FD.array__Tree<U32>, FZW({pjt}), t, FD.array__freeze_thaw(U32, t)),
+                Equal.trans(FD.array__Tree<U32>, FZW({pjt}), FZW(O.Words{{FD.array__thaw(U32, T), {NB}}}), T, Equal.cong(O.Words, FD.array__Tree<U32>, z => FZW(z), {pjt}, O.Words{{FD.array__thaw(U32, T), {NB}}}, ew),
+                  FD.array__freeze_thaw(U32, T)))
+              +en = Equal.cong(O.Words, U32, z => WO.len(z), {pjt}, O.Words{{FD.array__thaw(U32, T), {NB}}}, ew)
+              %Equal.sym(FD.array__Tree<U32>, t, T, et) : ELF(RT.MSome{{RT.M_{E}{{RT.WMr{{_, n}}, a1}}}})
+              %Equal.sym(U32, n, {NB}, en) : ELF(RT.MSome{{RT.M_{E}{{RT.WMr{{T, _}}, a1}}}})
+              elT(T, dw, a1, pf, hd, hr)
+"""
+        extra = {'@ESP@': f', +es: {{SH.Vector_length({SC0}) == {C}n : Nat}}', '@ESA@': ', es',
+                 '@ESPS@': f', +es: {{SH.Vector_length(SH.Chain_head(SH.Container_fields(SH.ListOf_element(s)))) == {C}n : Nat}}', '@ESAS@': ', es',
+                 '@SDNOTE@': f', and each proof\'s words below {KW}'}
     else:
         raise SystemExit(f'ml_text: element kind {EL}')
     t = _MLX
@@ -5903,6 +6020,7 @@ def elx(+m: {RMB}, +sE: S.Schema, +r0: RT.rep_{E}_bx(RT.th_{E}_bx(m), sE), +h0: 
 
 ELEM_KIND = {'l16_Deposit': 'deposit'}
 SUPPORT_OUT['e2e_ml_l16_ProposerSlashing.bend'] = ml_text('l16_ProposerSlashing', 'ProposerSlashing')
+SUPPORT_OUT['e2e_ml_l16_Deposit.bend'] = ml_text('l16_Deposit', 'Deposit')
 
 for _X, (_m, _ls) in RL_LISTS.items():
     SUPPORT_OUT[f'e2e_rl_{_X}.bend'] = rl_module(_X, _m, _ls)
