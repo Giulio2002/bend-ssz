@@ -1459,3 +1459,216 @@ def a1({WP}, {STO}, {HYP}) -> {G(OBJE)}:
 # ---- (i) from the representation: the fields' words, one match per field ----
 
 ''' + '\n\n'.join(helpers) + '\n\n' + top
+
+
+# ---- (i) for the aggregates (big_var_codec_*_enc): an Attestation boxed in one or two container layers ----
+
+def _parse(e):
+    """a constructor term Name{f1, f2, ...} as (Name, [fields]) or a leaf string"""
+    e = e.strip()
+    m = re.match(r'^([\w.]+)\{(.*)\}$', e, re.S)
+    if not m:
+        return e
+    return (m.group(1), [_parse(f) for f in _split_top(m.group(2))] if m.group(2).strip() else [])
+
+
+def _show(t):
+    return t if isinstance(t, str) else f'{t[0]}{{{", ".join(_show(f) for f in t[1])}}}'
+
+
+def _has_bits(t):
+    return not isinstance(t, str) and (t[0] == 'O.Bits' or any(_has_bits(f) for f in t[1]))
+
+
+def _def_body(s, name):
+    return re.search(rf'^def {name}\((.*?)\) -> (\S+): (.*)$', s, re.M)
+
+
+def venc_agg(obj_dir, R, X, pmod, cR, cX):
+    """(i) for an aggregate whose encode module pmod reads its child cX's words (the child's (i) module: vx)."""
+    s = (Path(obj_dir) / pmod).read_text()
+    sa = (Path(obj_dir) / 'big_var_bitc_enc_Attestation.bend').read_text()
+    sc = (Path(obj_dir) / 'big_var_codec_AggregateAndProof_enc.bend').read_text()
+    m = _def_body(s, 'OBJX')
+    W = [p.split(':')[0].strip()[1:] for p in _split_top(m.group(1)) if re.match(r'\+[a-z]\d+:', p.strip())]
+    WS_ = ', '.join(W)
+    WP = ', '.join(f'+{w}: U32' for w in W)
+    Dt = m.group(2)
+    # the object with every child call expanded: E.OBJE (the Attestation), C.OBJX (the AggregateAndProof)
+    full = m.group(3)
+    ea = _def_body(sa, 'OBJE').group(3).replace('OB(T, K)', 'O.Bits{FD.array__thaw(U32, T), K}')
+    ec = _def_body(sc, 'OBJX').group(3)
+    for _ in range(3):
+        full = re.sub(r'C\.OBJX\([^)]*\)', lambda _m: ec, full)
+        full = re.sub(r'E\.OBJE\([^)]*\)', lambda _m: ea, full)
+    tree = _parse(full)
+    # walk the layers down to the bit list: rep's lets, the rebuilt object, its equation, the slots to match
+    lets, slots, cnt = [], [], [0]
+    def walk(t, P, sch, rep):
+        """-> (abstract term, equation proof of P == it, its type)"""
+        name, fs = t
+        if name == 'O.Bits':
+            lets.append(('rb', rep))
+            return 'O.Bits{FD.array__thaw(U32, T), K}', 'ew', 'O.Bits', sch
+        if name == 'O.BSome':
+            cnt[0] += 1
+            e, r = f'eb{cnt[0]}', f'rr{cnt[0]}'
+            lets.append((f'(+{e}, +{r})', rep))
+            cn = fs[0][0]
+            cx = cn.split('.')[-1]
+            Pc = f'RT.pjb_{cx}_bx({P})'
+            A, ecp, Dc, schb = walk(fs[0], Pc, sch, r)
+            Bx = f'O.BSome{{{A}, O.BNone{{}}}}'
+            prf = (f'Equal.trans(O.Boxed<{Dc}>, {P}, O.BSome{{{Pc}, O.BNone{{}}}}, {Bx}, {e}, '
+                   f'Equal.cong({Dc}, O.Boxed<{Dc}>, z => O.BSome{{z, O.BNone{{}}}}, {Pc}, {A}, {ecp}))')
+            return Bx, prf, f'O.Boxed<{Dc}>', schb
+        xn = name.split('.')[-1]
+        j = [i for i, f in enumerate(fs) if _has_bits(f)]
+        assert len(j) == 1
+        j = j[0]
+        vs = []
+        q = rep
+        for i, f in enumerate(fs):
+            if i == j:
+                continue
+            cnt[0] += 1
+            v = f'x{cnt[0]}'
+            lets.append((f'(+{v}, q{cnt[0]})', q))
+            q = f'q{cnt[0]}'
+            vs.append(v)
+            slots.append((v, f[0], _show(f)))
+        cnt[0] += 1
+        e, r = f'eo{cnt[0]}', f'rr{cnt[0]}'
+        lets.append((f'(+{e}, +{r})', q))
+        Pc = f'RT.pj_{xn}_{j}({P})'
+        schc = f'SH.Chain_head({"SH.Chain_tail(" * j}SH.Container_fields({sch}){")" * j})'
+        A, ecp, Dc, schb = walk(fs[j], Pc, schc, r)
+        mk = lambda z: f'{name}{{{", ".join((vs[:j] + [z] + vs[j:]))}}}'
+        prf = (f'Equal.trans({name}, {P}, {mk(Pc)}, {mk(A)}, {e}, '
+               f'Equal.cong({Dc}, {name}, z => {mk("z")}, {Pc}, {A}, {ecp}))')
+        return mk(A), prf, name, schb
+    OA, EQ, _, SCH = walk(tree, 'o', f'Spec.{X}()', 'rep')
+    PB = [r for v, r in lets if v == 'rb']
+    # the path to the bit list, for the premise
+    def path(t, P):
+        name, fs = t
+        if name == 'O.Bits':
+            return P
+        if name == 'O.BSome':
+            return path(fs[0], f'RT.pjb_{fs[0][0].split(".")[-1]}_bx({P})')
+        j = [i for i, f in enumerate(fs) if _has_bits(f)][0]
+        return path(fs[j], f'RT.pj_{name.split(".")[-1]}_{j}({P})')
+    PBITS = path(tree, 'o')
+    enc = f'{R}_e.{X}_encode'
+    G = lambda o: f'{{Some{{E2.obytes(Pair.snd({Dt}, B.Buf, {enc}({o})))}} == API.serialize(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'
+    OBJX = f'PRV.OBJX({WS_}, T, K)'
+    OUT = f'PRV.OUT({WS_}, T, K)'
+    SF_ = 'PRV.SFSX(K)'
+    BT = f'VSP.bt(U32.to_nat({SF_}), SF.limbs(FD.array__slots(U32, {OUT})))'
+    VAL = f'PRV.VALX({WS_}, T, K)'
+    law = re.search(r'^law encode_eval:\n(.*?)\n  \{', s, re.M | re.S).group(1)
+    LIM = re.search(r'for \+rep: BO\.rep_bits\(E\.OB\(T, K\), S\.BitList\{(.*)\}\)$', law, re.M).group(1)
+    H = int(re.search(r'^def eSX\(.*-> \{U32\.to_nat\(SFSX\(K\)\) == Nat\.add\((\d+)n, U32\.to_nat\(CO\.NK\(K\)\)\) : Nat\}:$', s, re.M).group(1))
+    lim_n = int(re.sub(r'\D', '', LIM))
+    kS = 0
+    while 4 * 2 ** kS < H + lim_n + 1:
+        kS += 1
+    oq = s[s.index('def out_eq'):]
+    pfa = re.search(r'pfW\(' + re.escape(WS_) + r', (.*?), dw, pfT, hdw, rep, hcap, hv\)', oq).group(1)
+    pfa = re.sub(r'(?<![\w.])(DO|hDO29|hDq)\(', r'PRV.\1(', pfa)
+    PFO = f'PRV.pfW({WS_}, {pfa}, dw, pf, hdw, rep, hcap, hv)'
+    vbody = _def_body(s, 'VALX').group(3)
+    cv = re.search(r'(E\.VAL|C\.VALX)\(([^)]*)\)', vbody)
+    ctx = vbody.replace(cv.group(0), 'z').replace('C.', 'CC.').replace('E.', 'EA.')
+    chv = cv.group(0).replace('C.', 'CC.').replace('E.', 'EA.')
+    cobj = chv.replace('EA.VAL(', 'EA.OBJE(').replace('CC.VALX(', 'CC.OBJX(')
+    STO = '+dw: Nat, +T: FD.array__Tree<U32>, +K: U32'
+    HYP = ('+pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},\n'
+           f'    +rep: BO.rep_bits(O.Bits{{FD.array__thaw(U32, T), K}}, {SCH}), +hcap: {{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}},\n'
+           '    +hv: {O.bits_above_zero(U32.and(K, 31), VB.slot(T, VBT.QK(K))) == True{} : Bool}')
+    HA = 'dw, T, K, pf, hdw, rep, hcap, hv'
+    # the chain of matches over the slots
+    helpers = []
+    n = len(slots)
+    for i in range(n, -1, -1):
+        known = [w for _, _, p in slots[:i] for w in re.findall(r'\b[a-z]\d+\b', p) if w in W]
+        obj = OA
+        for v, _, p in slots[:i]:
+            obj = re.sub(rf'(?<![\w.]){v}(?![\w])', p, obj)
+        args = ', '.join([f'+{w}: U32' for w in known] + [f'+{v}: {ty}' for v, ty, _ in slots[i:]])
+        sig = f'def e{i}(-o: {Dt}, {args + ", " if args else ""}{STO}, {HYP},\n    +eo: {{o == {obj} : {Dt}}}) -> {G("o")}:'
+        if i == n:
+            bodyi = f'  %Equal.sym({Dt}, o, {OBJX}, eo) : {G("_")}\n  encw({WS_}, {HA})'
+        else:
+            nxt = [w for _, _, p in slots[:i + 1] for w in re.findall(r'\b[a-z]\d+\b', p) if w in W]
+            call = ', '.join(nxt + [v for v, _, _ in slots[i + 1:]])
+            pat = re.sub(r'(?<![\w.])([a-z]\d+)\b', lambda mm: '+' + mm.group(1) if mm.group(1) in W else mm.group(1), slots[i][2])
+            bodyi = f'  match {slots[i][0]}:\n    case {pat}:\n      e{i + 1}(o, {call + ", " if call else ""}{HA}, eo)'
+        helpers.append(sig + '\n' + bodyi)
+    rlets = '\n'.join(f'  {v} = {r}' for v, r in lets if v != 'rb')
+    mods = sorted(set(re.findall(r'\b(Fulu\w*?)_d\.', full + ' ' + Dt)))
+    imps = ['import Base', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
+            'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec',
+            'import ../spec/codec.bend as Encoding', 'import ../proofs/obj/spec_fixed.bend as F',
+            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
+            'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vspec.bend as VSP',
+            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbytes.bend as VY',
+            'import ../proofs/obj/vbitenc.bend as VBT', 'import ../proofs/obj/vbitcore.bend as CO', 'import ../proofs/obj/vbitrep.bend as VR',
+            'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_types.bend as RT',
+            f'import ../proofs/obj/{pmod} as PRV', 'import ../proofs/obj/big_var_bitc_enc_Attestation.bend as EA',
+            'import ../proofs/obj/big_var_codec_AggregateAndProof_enc.bend as CC',
+            f'import ../types/{R}_encode_ssz_generated.bend as {R}_e'] + \
+           [f'import ../types/{mm}_def_generated.bend as {mm}_d' for mm in mods] + \
+           ['import ./e2e_support.bend as E2', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM', 'import ./e2e_bitv.bend as BTV',
+            f'import ./{cR}_e2e_generated.bend as CX']
+    return '\n'.join(imps) + f'''
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_bview_gen.py). Do not edit.
+# {R} (variable size, a boxed Attestation): the object API's encoder's bytes are END_TO_END's serialize of the
+# object's view, for every object the root law represents (rep) whose bit list's storage meets the encode laws'
+# premises (hs: BTV.sdbv, hv included).
+
+# the view of the encoded object is the encode laws' value (the {cX}'s through its (i) module)
+def vx({WP}, +T: FD.array__Tree<U32>, +K: U32) -> {{RT.v_{X}({OBJX}) == {VAL} : S.Value}}:
+  Equal.cong(S.Value, S.Value, z => {ctx}, RT.v_{cX}({cobj}), {chv}, CX.vx({cv.group(2)}))
+
+# the encoder's buffer is within {4 * 2 ** kS} bytes
+def hS(+K: U32, +hN: {{Nat.is_le(U32.to_nat(K), {LIM}) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat({SF_}), A.quad(FD.spec_common__pow2({kS}n))) == True{{}} : Bool}}:
+  FD.nat__le_trans(U32.to_nat({SF_}), Nat.add({H}n, Nat.add({LIM}, 1n)), A.quad(FD.spec_common__pow2({kS}n)),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add({H}n, Nat.add({LIM}, 1n))) == True{{}} : Bool}}, Nat.add({H}n, U32.to_nat(CO.NK(K))), U32.to_nat({SF_}),
+      Equal.sym(Nat, U32.to_nat({SF_}), Nat.add({H}n, U32.to_nat(CO.NK(K))), PRV.eSX(K, hN)),
+      Order.add_left({H}n, U32.to_nat(CO.NK(K)), Nat.add({LIM}, 1n), EA.eNK(K, hN))),
+    {{==}})
+
+# (i) over the encode laws' free words
+def encw({WP}, {STO}, {HYP}) -> {G(OBJX)}:
+  +hN = VR.rep_N(T, K, {LIM}, rep)
+  +h = hS(K, hN)
+  %Equal.sym({Dt} & B.Buf, {enc}({OBJX}), ({OBJX}, B.Buf{{FD.array__thaw(U32, {OUT}), {SF_}}}), PRV.encode_eval({WS_}, {HA})) :
+    {{Some{{E2.obytes(Pair.snd({Dt}, B.Buf, _))}} == API.serialize(Spec.{X}(), RT.v_{X}({OBJX})) : Maybe<&2, +List<U32>>}}
+  %Equal.sym(+List<U32>, E2.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SF_}}}), {BT},
+      EM.ob(PRV.DO(K), {OUT}, {SF_}, {PFO}, FD.nat__le_lt_trans(B.capacity({SF_}), {kS}n, 29n, C.cap_le({SF_}, {kS}n, {{==}}, h), {{==}}), C.cap_q({SF_}, {kS}n, {{==}}, h))) :
+    {{Some{{_}} == API.serialize(Spec.{X}(), RT.v_{X}({OBJX})) : Maybe<&2, +List<U32>>}}
+  %Equal.sym(S.Value, RT.v_{X}({OBJX}), {VAL}, vx({WS_}, T, K)) : {{Some{{{BT}}} == API.serialize(Spec.{X}(), _) : Maybe<&2, +List<U32>>}}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), {VAL}), Some{{{BT}}},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), {VAL}), Encoding.encoding_for_legal_type(Spec.{X}(), {VAL}), Some{{{BT}}},
+      E2.serialize_legal(Spec.{X}(), {VAL}, VS.public_sound(Spec.{X}(), {{==}})), PRV.encode_spec({WS_}, {HA})))
+
+# ---- (i) from the representation: the fixed fields' words, one match per field ----
+
+''' + '\n\n'.join(helpers) + f'''
+
+# (i): for every object the root law represents (rep) whose bit list's storage meets the encode laws' premises (hs)
+def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({PBITS})) -> {G("o")}:
+{rlets}
+  (+T, s1) = hs
+  (+dw, s2) = s1
+  (+K, s3) = s2
+  (+ew, s4) = s3
+  (+pf, s5) = s4
+  (+hdw, s6) = s5
+  (+hcap, +hv) = s6
+  +rb1 = FD.logic__subst(O.Bits, z => BO.rep_bits(z, {SCH}), {PBITS}, O.Bits{{FD.array__thaw(U32, T), K}}, ew, {PB[0]})
+  e0(o, {", ".join(v for v, _, _ in slots)}, dw, T, K, pf, hdw, rb1, hcap, hv,
+    {EQ})
+'''

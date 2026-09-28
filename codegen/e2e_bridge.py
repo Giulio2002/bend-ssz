@@ -2940,6 +2940,11 @@ def outputs():
         if (OBJ / mod0).exists():
             VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0: BVG.venc_bitc(OBJ, R, X, m))
             VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
+    for X0, mod0, cR0, cX0 in (('AggregateAndProof', 'big_var_codec_AggregateAndProof_enc.bend', 'FuluAttestation', 'Attestation'),
+                               ('SignedAggregateAndProof', 'big_var_codec_SignedAggregateAndProof_enc.bend', 'FuluAggregateAndProof', 'AggregateAndProof')):
+        if (OBJ / mod0).exists():
+            VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0, c=cR0, cx=cX0: BVG.venc_agg(OBJ, R, X, m, c, cx))
+            VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
