@@ -3341,6 +3341,16 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "BitsStruct_e2e_root_generated.bend": [
+   {
+    "name": "BitsStruct",
+    "generated_name": "Gc85FA758A04",
+    "laws": [
+     "BitsStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()) (the root law's representation invariant)"
+   }
+  ],
   "CompatibleUnionA_e2e_root_generated.bend": [
    {
     "name": "CompatibleUnionA",
@@ -6400,7 +6410,8 @@
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "BitsStruct_e2e_dec_generated.bend"
+   "decode": "BitsStruct_e2e_dec_generated.bend",
+   "root": "BitsStruct_e2e_root_generated.bend"
   }
  },
  "decode_uncovered": {

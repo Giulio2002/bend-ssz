@@ -2948,6 +2948,7 @@ def outputs():
     # BitsStruct: two windowed bit lists (e2e_bsw) and three sub-word bit vectors (e2e_bvsub)
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         VDEC_VIEWS.setdefault('Gc85FA758A04', BVG.bs_view())
+        VROOT_SHAPES.setdefault('Gc85FA758A04', BVG.vroot_bs_text)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
