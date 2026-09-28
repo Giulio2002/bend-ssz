@@ -3223,6 +3223,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
    }
   ],
+  "FuluExecutionPayload_e2e_root_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_root"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) (the root law's representation invariant)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_root_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -5885,7 +5895,8 @@
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluExecutionPayload_e2e_root_generated.bend"
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
