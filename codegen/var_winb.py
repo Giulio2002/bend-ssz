@@ -1820,7 +1820,7 @@ def top_of(L, fn, al):
         w = _OUT[ROOT / 'proofs/obj' / fn]
         ends = {}
         for j in pb:
-            m = re.search(rf'\+hP{j}: \{{Bool\.or\(Nat\.is_lt\(U32\.to_nat\(len\), U32\.to_nat\((.*?)\)\), Nat\.is_le\(Nat\.sub\(U32\.to_nat\(\1\), U32\.to_nat\((.*?)\)\)', w)
+            m = re.search(rf'\+hP{j}: \{{Bool\.or\(Nat\.is_lt\(U32\.to_nat\(len\), U32\.to_nat\((.*?)\)\), Nat\.is_le\(Nat\.sub\(U32\.to_nat\(\1\), U32\.to_nat\((.*?)\)\), U32\.to_nat\(VP\.PMAX', w)
             ends[j] = (m.group(2), m.group(1))
     return top_deep(txt, al, dm[0], ends)
 
@@ -1874,25 +1874,49 @@ def top_deep(text, al, mode, ends=None):
                   lambda m: f'{al}.{m.group(1)}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, {term}, pf', text)
     assert n0 == len(re.findall(rf'(?<![\w.]){al}\.(?:ok_evalw|readw|specw|invw)D\(', text)), al
     if ends:
+        if 'import ./vpb29.bend as VP\n' not in text:
+            a = text.index('\nimport ./') + 1
+            text = text[:a] + 'import ./vpb29.bend as VP\n' + text[a:]
         js = sorted(ends)
-        prem = {j: pb_prem(*ends[j]).replace('len', 'n') for j in js}
+        conj = {}
         for j in js:
-            prem[j] = re.sub(r'(?<![\w.])(O\d+)\(t, x\)', rf'{al}.\1(t, 0n)', prem[j])
+            c = pb_prem(*ends[j]).replace('len', 'n')
+            c = re.sub(r'(?<![\w.])(O\d+)\(t, x\)', rf'{al}.\1(t, 0n)', c)
+            conj[j] = c[1:c.index(' == True{} : Bool}')]
+        # PBQ: every pbits field's guarded bound (E <= n implies E - O <= PMAX), one Bool premise of the
+        # rejection law (the object API's input premise: the progressive bit lists of at most 2^29 bytes)
+        body = conj[js[-1]]
+        for j in reversed(js[:-1]):
+            body = f'Bool.and({conj[j]}, {body})'
+        T_ = 'True{} : Bool'
+        defs = ['', '# The progressive bit lists\' representation bound on the buffer: each pbits field [O, E) with E <= n',
+                '# has E - O <= PMAX = 2^29 bytes (the runtime refuses a longer one, which the spec would accept).',
+                f'def PBQ(+t: FD.array__Tree<U32>, +n: U32) -> Bool: {body}']
+        rest = body
+        for i, j in enumerate(js):
+            if i == len(js) - 1:
+                defs.append(f'def pbq{j}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{conj[j]} == {T_}}}: ' + ('h' if i == 0 else f'pbr{i}(t, n, h)'))
+                break
+            tail = rest[len(f'Bool.and({conj[j]}, '):-1]
+            prev = 'h' if i == 0 else f'pbr{i}(t, n, h)'
+            defs.append(f'def pbq{j}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{conj[j]} == {T_}}}: FD.logic__and_left({conj[j]}, {tail}, {prev})')
+            defs.append(f'def pbr{i + 1}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{tail} == {T_}}}: FD.logic__and_right({conj[j]}, {tail}, {prev})')
+            rest = tail
+        a0 = text.index('\ndef rej_v(')
+        text = text[:a0] + '\n'.join(defs) + '\n' + text[a0:]
         # the inversion's call: its premises last
         m = re.search(rf'{al}\.invwD\(', text)
-        b = deep._close(text, m.end())
-        text = text[:b] + ''.join(f', hP{j}' for j in js) + text[b:]
-        # rej_v: parameters last
-        a = text.index('\ndef rej_v(') + len('\ndef rej_v(')
-        b = deep._close(text, a)
-        text = text[:b] + ''.join(f', +hP{j}: {prem[j]}' for j in js) + text[b:]
-        # decode_reject: its law's premises last
+        b0 = deep._close(text, m.end())
+        text = text[:b0] + ''.join(f', pbq{j}(t, n, hPB)' for j in js) + text[b0:]
+        # rej_v and decode_reject: the premise last
+        a0 = text.index('\ndef rej_v(') + len('\ndef rej_v(')
+        b0 = deep._close(text, a0)
+        text = text[:b0] + f', +hPB: {{PBQ(t, n) == {T_}}}' + text[b0:]
         m = re.search(r'^law decode_reject:\n((?:  for .*\n)+)', text, re.M)
-        text = text[:m.end()] + ''.join(f'  for +hP{j}: {prem[j]}\n' for j in js) + text[m.end():]
+        text = text[:m.end()] + f'  for +hPB: {{PBQ(t, n) == {T_}}}\n' + text[m.end():]
         m = re.search(r'^def decode_reject\(([^)]*)\):\n  v => e => rej_v\(([^)]*)\)', text, re.M)
         assert m, 'decode_reject'
-        extra = ''.join(f', hP{j}' for j in js)
-        text = text[:m.start(1)] + m.group(1) + extra + text[m.end(1):m.start(2)] + m.group(2) + extra + text[m.end(2):]
+        text = text[:m.start(1)] + m.group(1) + ', hPB' + text[m.end(1):m.start(2)] + m.group(2) + ', hPB' + text[m.end(2):]
     return text
 
 
