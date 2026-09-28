@@ -46,10 +46,10 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> BitsStruct_d.Gc85FA758A04:
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 
 # The validator returns the buffer and CHK(t, n).
-def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {BitsStruct_r.Gc85FA758A04_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
-  W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
+  W.ok_evalwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
 law decode_accept:
@@ -57,7 +57,7 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {BitsStruct_r.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
@@ -66,7 +66,7 @@ def decode_accept(d, t, n, pf, hd, hn, hchk):
     {BitsStruct_r.Gc85FA758A04_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {BitsStruct_r.Gc85FA758A04_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
-  %Equal.sym(B.Buf & BitsStruct_d.Gc85FA758A04, BitsStruct_r.Gc85FA758A04_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(B.Buf & BitsStruct_d.Gc85FA758A04, BitsStruct_r.Gc85FA758A04_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {BitsStruct_r.Gc85FA758A04_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   {==}
 
@@ -76,7 +76,7 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {BitsStruct_r.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
@@ -93,7 +93,7 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.Gc85FA758A04(), VW(t, n), VAL(t, n))
@@ -101,7 +101,7 @@ def decode_spec(d, t, n, pf, hd, hn, hchk):
   # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
   # Codec.bytes was compared with the spec encoding by running the encoder
   %F.efl_bytes(Spec.Gc85FA758A04(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Gc85FA758A04()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Gc85FA758A04()), Some{[S.Variable{VW(t, n)}]}, W.specwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}
 
@@ -124,13 +124,13 @@ def agg_var(+m: Maybe<&2, +List<S.Part>>, +bs: +List<U32>, +e: {Codec.bytes(Code
     case None{}: Empty.absurd({Codec.aggregate(None{}, None{}) == Some{[S.Variable{bs}]} : Maybe<&2, +List<S.Part>>}, FD.logic__none_some(+List<U32>, bs, e))
     case Some{+ps}: agg2(ps, Layout.encoding(ps), {==}, bs, e)
 
-def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool},
     +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.Gc85FA758A04(), v) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match v:
     case S.Sequence{+items}:
       FD.logic__true_false(Equal.trans(Bool, True{}, CHK(t, n), False{},
-        Equal.sym(Bool, CHK(t, n), True{}, W.invw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, S.Sequence{items}, agg_var(Codec.parts(items, S.Chain{S.BitList{5n}, S.Chain{S.BitVector{2n}, S.Chain{S.BitVector{1n}, S.Chain{S.BitList{6n}, S.Chain{S.BitVector{8n}, S.End{}}}}}}), VW(t, n), e))), hchk))
+        Equal.sym(Bool, CHK(t, n), True{}, W.invwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, S.Sequence{items}, agg_var(Codec.parts(items, S.Chain{S.BitList{5n}, S.Chain{S.BitVector{2n}, S.Chain{S.BitVector{1n}, S.Chain{S.BitList{6n}, S.Chain{S.BitVector{8n}, S.End{}}}}}}), VW(t, n), e))), hchk))
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
     case S.UnsignedValue{+u0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
     case S.BytesValue{+xs0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
@@ -146,7 +146,7 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   Decoding.outside_image(Spec.Gc85FA758A04(), VW(t, n))

@@ -2460,6 +2460,10 @@ def text_vdec(R, X, info):
             n0 = body.count('C.capM_q(n, hS), hchk)')
             body = body.replace('C.capM_q(n, hS), hchk)', 'C.capM_q(n, hS), hS, hchk)')
             assert n0 == 4, n0
+            if '+hN: {U32.is_le(n, VB.NMAX())' in vw['text']:
+                # the view vv takes the laws' premise too
+                assert body.count('C.capM_q(n, hS), ec))') == 1
+                body = body.replace('C.capM_q(n, hS), ec))', 'C.capM_q(n, hS), hS, ec))')
         if info.get('pbq'):
             # the rejection law's premise on the progressive bit lists, a premise of (ii) and (iii) on the input
             ra = [a for p_, a in alias.items() if p_ == info['rej']][0]
