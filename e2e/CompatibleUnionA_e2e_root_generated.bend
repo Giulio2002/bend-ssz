@@ -12,6 +12,7 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../proofs/obj/gvalid_gtypes2.bend as GV
 import ../proofs/obj/dk.bend as DK
 import ./e2e_support.bend as E
@@ -20,16 +21,16 @@ import ./e2e_support.bend as E
 # CompatibleUnionA (a CompatibleUnion): the object API's root is END_TO_END's hash_tree_root, for every object the
 # root law represents (rep_GuA2212AE21F: the selected arm's value, represented).
 
-def rt1_0(h: B.Buf, +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rep: RT.rep_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v})) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, CompatibleUnionA_d.GuA2212AE21F_c0{v}))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v}), VS.public_sound(Spec.GuA2212AE21F(), {==}), D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, CompatibleUnionA_d.GuA2212AE21F_c0{v})))),
+def rt1_0(h: B.Buf, +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rep: RT_L.rep_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v})) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, CompatibleUnionA_d.GuA2212AE21F_c0{v}))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT_L.v_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.GuA2212AE21F(), RT_L.v_GuA2212AE21F(CompatibleUnionA_d.GuA2212AE21F_c0{v}), VS.public_sound(Spec.GuA2212AE21F(), {==}), D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, CompatibleUnionA_d.GuA2212AE21F_c0{v})))),
     GV.GuA2212AE21F_root_valid(CompatibleUnionA_d.GuA2212AE21F_c0{v}, rep), RT.GuA2212AE21F_root_correct(h, CompatibleUnionA_d.GuA2212AE21F_c0{v}, rep))
 
-def rt2_0(h: B.Buf, -o: CompatibleUnionA_d.GuA2212AE21F, +rep: RT.rep_GuA2212AE21F(o), +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +eo: {o == CompatibleUnionA_d.GuA2212AE21F_c0{v} : CompatibleUnionA_d.GuA2212AE21F}) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(CompatibleUnionA_d.GuA2212AE21F, o, CompatibleUnionA_d.GuA2212AE21F_c0{v}, eo) : {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(_)) : Maybe<&2, +List<U32>>}
-  rt1_0(h, v, FD.logic__subst(CompatibleUnionA_d.GuA2212AE21F, z => RT.rep_GuA2212AE21F(z), o, CompatibleUnionA_d.GuA2212AE21F_c0{v}, eo, rep))
+def rt2_0(h: B.Buf, -o: CompatibleUnionA_d.GuA2212AE21F, +rep: RT_L.rep_GuA2212AE21F(o), +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +eo: {o == CompatibleUnionA_d.GuA2212AE21F_c0{v} : CompatibleUnionA_d.GuA2212AE21F}) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT_L.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(CompatibleUnionA_d.GuA2212AE21F, o, CompatibleUnionA_d.GuA2212AE21F_c0{v}, eo) : {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT_L.v_GuA2212AE21F(_)) : Maybe<&2, +List<U32>>}
+  rt1_0(h, v, FD.logic__subst(CompatibleUnionA_d.GuA2212AE21F, z => RT_L.rep_GuA2212AE21F(z), o, CompatibleUnionA_d.GuA2212AE21F_c0{v}, eo, rep))
 
 # (iv)
-def CompatibleUnionA_e2e_root(h: B.Buf, -o: CompatibleUnionA_d.GuA2212AE21F, +rep: RT.rep_GuA2212AE21F(o)) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
+def CompatibleUnionA_e2e_root(h: B.Buf, -o: CompatibleUnionA_d.GuA2212AE21F, +rep: RT_L.rep_GuA2212AE21F(o)) -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.GuA2212AE21F & D.Digest, CompatibleUnionA_h.GuA2212AE21F_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GuA2212AE21F(), RT_L.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
   (+v, +q) = rep
   (+eo, +rp) = q
   rt2_0(h, o, rep, v, eo)

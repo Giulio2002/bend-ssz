@@ -27,7 +27,7 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vua_lay.bend as LY
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_BeaconBlockBody_enc.bend as EN
 import ../proofs/obj/big_encx_BeaconBlockBody_iface.bend as CI
 import ../proofs/obj/big_encx_BeaconBlockBody.bend as K
@@ -41,11 +41,17 @@ import ./e2e_ml_l16_ProposerSlashing.bend as PS3
 import ./e2e_bbsl.bend as AS4
 import ./e2e_bbatt.bend as AT5
 import ./e2e_ml_l16_Deposit.bend as DP6
+import ./e2e_dl_l16_SignedVoluntaryExit.bend as VE7
 import ./e2e_rl_l16_SignedVoluntaryExit.bend as RV7
 import ./e2e_epr.bend as RC9
+import ./e2e_dl_l16_SignedBLSToExecutionChange.bend as BC10
 import ./e2e_rl_l16_SignedBLSToExecutionChange.bend as RV10
 import ./e2e_bl48.bend as K11
 import ../proofs/obj/words_obj_light.bend as WO
+import ./e2e_rec_ExecutionRequests.bend as RQ12
+import ./e2e_dl_l8192_DepositRequest.bend as DQ0
+import ./e2e_dl_l16_WithdrawalRequest.bend as DQ1
+import ./e2e_dl_l2_ConsolidationRequest.bend as DQ2
 import ./e2e_rl_l8192_DepositRequest.bend as RQ0
 import ./e2e_rl_l16_WithdrawalRequest.bend as RQ1
 import ./e2e_rl_l2_ConsolidationRequest.bend as RQ2

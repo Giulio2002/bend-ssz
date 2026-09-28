@@ -27,7 +27,7 @@ import ../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncComm
 import ../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
 import ../types/FuluContributionAndProof_decode_ssz_generated.bend as FuluContributionAndProof_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/root_types.bend as M0
+import ../proofs/obj/root_types_light.bend as M0
 import ../proofs/obj/spec_codec_ContributionAndProof.bend as M1
 import ../proofs/obj/fixrej_f2.bend as M2
 import ../proofs/obj/spec_bits.bend as M1_FB

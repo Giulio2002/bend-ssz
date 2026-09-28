@@ -7,6 +7,7 @@ import ../../types/primitive.bend as P
 import ../../src/obj.bend as O
 import ./obj_support.bend as OS
 import ./ulist_obj.bend as UL
+import ./ulist_obj_light.bend as UL_L
 import ./big_lim_sym.bend as LSY
 
 # The closed schema fact of IndexedAttestation's attesting_indices (List[uint64,
@@ -18,7 +19,7 @@ import ./big_lim_sym.bend as LSY
 # List[uint64, 2^(2 + d)]: 2^(5 + d) bytes, 2^d chunks, minimal at depth d.
 law ul_okp:
   for +d: Nat
-  {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(Nat.add(2n, d))}, d) == True{} : Bool}
+  {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(Nat.add(2n, d))}, d) == True{} : Bool}
 def ul_okp(d):
   %Equal.sym(Nat, Nat.mul(TR.capacity(Nat.add(2n, d)), 8n), O.e8(TR.capacity(Nat.add(2n, d))), Equal.sym(Nat, O.e8(TR.capacity(Nat.add(2n, d))), Nat.mul(TR.capacity(Nat.add(2n, d)), 8n), UL.e8_mul(TR.capacity(Nat.add(2n, d))))) :
     {Lim.minimal(Nat.div(Nat.add(_, 31n), 32n), d) == True{} : Bool}
@@ -34,13 +35,13 @@ def pow17() -> {U32.to_nat(131072) == TR.capacity(17n) : Nat}:
 law ia_ok_at:
   for +s: S.Schema
   for +es: {s == Spec.Schema45() : S.Schema}
-  {UL.ok_ul(s, OS.dv_15(OS.DV0())) == True{} : Bool}
+  {UL_L.ok_ul(s, OS.dv_15(OS.DV0())) == True{} : Bool}
 def ia_ok_at(s, es):
-  %Equal.sym(S.Schema, s, Spec.Schema45(), es) : {UL.ok_ul(_, OS.dv_15(OS.DV0())) == True{} : Bool}
-  %Equal.sym(S.Schema, Spec.Schema45(), S.ListOf{S.Unsigned{P.U64{}}, U32.to_nat(131072)}, {==}) : {UL.ok_ul(_, OS.dv_15(OS.DV0())) == True{} : Bool}
-  %Equal.sym(Nat, U32.to_nat(131072), TR.capacity(17n), pow17()) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, OS.dv_15(OS.DV0())) == True{} : Bool}
-  %Equal.sym(Nat, OS.dv_15(OS.DV0()), 15n, {==}) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(17n)}, _) == True{} : Bool}
-  %Equal.sym(Nat, TR.capacity(17n), TR.capacity(Nat.add(2n, 15n)), {==}) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, 15n) == True{} : Bool}
+  %Equal.sym(S.Schema, s, Spec.Schema45(), es) : {UL_L.ok_ul(_, OS.dv_15(OS.DV0())) == True{} : Bool}
+  %Equal.sym(S.Schema, Spec.Schema45(), S.ListOf{S.Unsigned{P.U64{}}, U32.to_nat(131072)}, {==}) : {UL_L.ok_ul(_, OS.dv_15(OS.DV0())) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(131072), TR.capacity(17n), pow17()) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, OS.dv_15(OS.DV0())) == True{} : Bool}
+  %Equal.sym(Nat, OS.dv_15(OS.DV0()), 15n, {==}) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(17n)}, _) == True{} : Bool}
+  %Equal.sym(Nat, TR.capacity(17n), TR.capacity(Nat.add(2n, 15n)), {==}) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, 15n) == True{} : Bool}
   ul_okp(15n)
 
 # A conjunction from its two facts (the okI lemmas of root_laws_b).

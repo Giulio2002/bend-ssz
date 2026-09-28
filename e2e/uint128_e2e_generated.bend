@@ -17,6 +17,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_Gt604E28A301.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/root_gnames_light.bend as M1_L
 import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -24,16 +25,16 @@ import ../proofs/obj/generic_specs.bend as GS
 # uint128 and the next names (family A): the object API's encoder bytes and roots are END_TO_END's model API's.
 
 # uint128 (Gt604E28A301)
-def uint128_e2e_encode(+o: uint128_d.Uint128) -> {Some{E.obytes(uint128_e.Gt604E28A301_encode(o))} == API.serialize(GS.Gt604E28A301(), M1.v_u128(o)) : Maybe<&2, +List<U32>>}:
+def uint128_e2e_encode(+o: uint128_d.Uint128) -> {Some{E.obytes(uint128_e.Gt604E28A301_encode(o))} == API.serialize(GS.Gt604E28A301(), M1_L.v_u128(o)) : Maybe<&2, +List<U32>>}:
   match o:
     case uint128_d.Uint128{+x0, +x1, +x2, +x3}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}))}, Some{F.limbs([x0, x1, x2, x3])}, API.serialize(GS.Gt604E28A301(), M1.v_u128(uint128_d.Uint128{x0, x1, x2, x3})),
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}))}, Some{F.limbs([x0, x1, x2, x3])}, API.serialize(GS.Gt604E28A301(), M1_L.v_u128(uint128_d.Uint128{x0, x1, x2, x3})),
         Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), 0, 4), (uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), F.limbs([x0, x1, x2, x3])), M0.Gt604E28A301_spec_bytes(x0, x1, x2, x3)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Encoding.encoding_for_legal_type(GS.Gt604E28A301(), M1.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
-            E.serialize_legal(GS.Gt604E28A301(), M1.v_u128(uint128_d.Uint128{x0, x1, x2, x3}), VS.public_sound(GS.Gt604E28A301(), {==})), M0.Gt604E28A301_spec_encode(x0, x1, x2, x3))))
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1_L.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1_L.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Encoding.encoding_for_legal_type(GS.Gt604E28A301(), M1_L.v_u128(uint128_d.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
+            E.serialize_legal(GS.Gt604E28A301(), M1_L.v_u128(uint128_d.Uint128{x0, x1, x2, x3}), VS.public_sound(GS.Gt604E28A301(), {==})), M0.Gt604E28A301_spec_encode(x0, x1, x2, x3))))
 
-def uint128_e2e_root(h: B.Buf, +o: uint128_d.Uint128) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt604E28A301(), M1.v_u128(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt604E28A301(), M1.v_u128(o), VS.public_sound(GS.Gt604E28A301(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o))),
+def uint128_e2e_root(h: B.Buf, +o: uint128_d.Uint128) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt604E28A301(), M1_L.v_u128(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt604E28A301(), M1_L.v_u128(o), VS.public_sound(GS.Gt604E28A301(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o))),
     M2.Gt604E28A301_root_valid(o), M1.Gt604E28A301_root_correct(h, o))
 

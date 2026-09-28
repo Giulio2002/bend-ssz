@@ -10,8 +10,8 @@ import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/mtree_run.bend as MR
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/cells.bend as CE
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/cells_light.bend as CE
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/compact/arith.bend as A4
 import ../src/primitives.bend as P4
 import ./e2e_blist.bend as BL

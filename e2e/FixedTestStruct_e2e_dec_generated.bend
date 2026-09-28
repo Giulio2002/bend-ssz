@@ -23,7 +23,7 @@ import ./e2e_cap.bend as C
 import ../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
 import ../types/FixedTestStruct_decode_ssz_generated.bend as FixedTestStruct_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames.bend as M0
+import ../proofs/obj/root_gnames_light.bend as M0
 import ../proofs/obj/sub_GcDC3E457711.bend as M1
 import ../proofs/obj/fixrej_g3.bend as M2
 

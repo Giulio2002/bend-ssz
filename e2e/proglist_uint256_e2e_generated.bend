@@ -18,7 +18,7 @@ import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/prog_list.bend as PG
+import ../proofs/obj/prog_list_light.bend as PG
 import ../proofs/obj/packed_obj_light.bend as PK
 import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/big_var_plist_GtA8457965E2_enc.bend as EN

@@ -7,9 +7,10 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/pv_obj_light.bend as PV
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_winx_LightClientUpdate.bend as W
+import ./e2e_bx.bend as BX
 import ./e2e_vbx_LightClientHeader.bend as YV
 import ./e2e_fx.bend as FXV
 import ../proofs/obj/root_names_light.bend as RN

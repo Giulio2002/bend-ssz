@@ -23,7 +23,7 @@ import ./e2e_cap.bend as C
 import ../types/bitvector_2_def_generated.bend as bitvector_2_d
 import ../types/bitvector_2_decode_ssz_generated.bend as bitvector_2_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/gbits_small.bend as M0
+import ../proofs/obj/gbits_small_light.bend as M0
 import ../proofs/obj/sub_Gt9368483BAB.bend as M1
 import ../proofs/obj/fixchk_pad.bend as M2
 import ../proofs/obj/vrejp.bend as M2_VRP

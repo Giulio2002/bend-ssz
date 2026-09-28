@@ -11,6 +11,7 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT_L
 import ../proofs/obj/gvalid_gtypes.bend as GV
 import ./e2e_support.bend as E
 
@@ -18,18 +19,18 @@ import ./e2e_support.bend as E
 # VarTestStruct (variable size): the object API's root is END_TO_END's hash_tree_root, for every object the
 # root law represents (rep_Gc465214E502: its list field's words in a perfect tree of depth below 32).
 
-def rt1(h: B.Buf, +x0: U32, +x2: U32, +t: FD.array__Tree<U32>, +N: U32, +rep: RT.rep_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, Spec.Gc465214E502())) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}))))} == API.hash_tree_root(Spec.Gc465214E502(), RT.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gc465214E502(), RT.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}), VS.public_sound(Spec.Gc465214E502(), {==}), D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2})))),
+def rt1(h: B.Buf, +x0: U32, +x2: U32, +t: FD.array__Tree<U32>, +N: U32, +rep: RT_L.rep_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, Spec.Gc465214E502())) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}))))} == API.hash_tree_root(Spec.Gc465214E502(), RT_L.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gc465214E502(), RT_L.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}), VS.public_sound(Spec.Gc465214E502(), {==}), D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2})))),
     GV.Gc465214E502_root_valid(VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, Spec.Gc465214E502(), {==}, rep), RT.Gc465214E502_root_correct(h, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, Spec.Gc465214E502(), {==}, rep))
 
 # the object as rep's witnesses name it
-def rt2(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()), +x0: U32, +x2: U32, +t: FD.array__Tree<U32>, +N: U32,
-    +eo: {o == VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2} : VarTestStruct_d.Gc465214E502}) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc465214E502(), RT.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo) : {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gc465214E502(), RT.v_Gc465214E502(_)) : Maybe<&2, +List<U32>>}
-  rt1(h, x0, x2, t, N, FD.logic__subst(VarTestStruct_d.Gc465214E502, z => RT.rep_Gc465214E502(z, Spec.Gc465214E502()), o, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo, rep))
+def rt2(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT_L.rep_Gc465214E502(o, Spec.Gc465214E502()), +x0: U32, +x2: U32, +t: FD.array__Tree<U32>, +N: U32,
+    +eo: {o == VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2} : VarTestStruct_d.Gc465214E502}) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc465214E502(), RT_L.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo) : {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gc465214E502(), RT_L.v_Gc465214E502(_)) : Maybe<&2, +List<U32>>}
+  rt1(h, x0, x2, t, N, FD.logic__subst(VarTestStruct_d.Gc465214E502, z => RT_L.rep_Gc465214E502(z, Spec.Gc465214E502()), o, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo, rep))
 
 # (iv)
-def VarTestStruct_e2e_root(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502())) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc465214E502(), RT.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
+def VarTestStruct_e2e_root(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT_L.rep_Gc465214E502(o, Spec.Gc465214E502())) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.Gc465214E502, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.Gc465214E502 & D.Digest, VarTestStruct_h.Gc465214E502_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc465214E502(), RT_L.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
   (+x0, +r0) = rep
   (+x2, +r1) = r0
   (+eo, +q1) = r1
@@ -42,8 +43,8 @@ def VarTestStruct_e2e_root(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT.
       (+dw, w2) = w1
       (+N, w3) = w2
       (+ew, w4) = w3
-      rt2(h, o, rep, x0, x2, t, N, Equal.trans(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo,
-        Equal.cong(O.Words, VarTestStruct_d.Gc465214E502, z => VarTestStruct_d.Gc465214E502{x0, z, x2}, RT.pj_Gc465214E502_1(o), O.Words{FD.array__thaw(U32, t), N}, ew)))
+      rt2(h, o, rep, x0, x2, t, N, Equal.trans(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, RT_L.pj_Gc465214E502_1(o), x2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo,
+        Equal.cong(O.Words, VarTestStruct_d.Gc465214E502, z => VarTestStruct_d.Gc465214E502{x0, z, x2}, RT_L.pj_Gc465214E502_1(o), O.Words{FD.array__thaw(U32, t), N}, ew)))
     case Inr{w}:
       (+t, w1) = w
       (+dw, w2) = w1
@@ -51,5 +52,5 @@ def VarTestStruct_e2e_root(h: B.Buf, -o: VarTestStruct_d.Gc465214E502, +rep: RT.
       (+q, w4) = w3
       (+r, w5) = w4
       (+ew, w6) = w5
-      rt2(h, o, rep, x0, x2, t, N, Equal.trans(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo,
-        Equal.cong(O.Words, VarTestStruct_d.Gc465214E502, z => VarTestStruct_d.Gc465214E502{x0, z, x2}, RT.pj_Gc465214E502_1(o), O.Words{FD.array__thaw(U32, t), N}, ew)))
+      rt2(h, o, rep, x0, x2, t, N, Equal.trans(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, RT_L.pj_Gc465214E502_1(o), x2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), N}, x2}, eo,
+        Equal.cong(O.Words, VarTestStruct_d.Gc465214E502, z => VarTestStruct_d.Gc465214E502{x0, z, x2}, RT_L.pj_Gc465214E502_1(o), O.Words{FD.array__thaw(U32, t), N}, ew)))

@@ -22,7 +22,7 @@ import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vbspec.bend as VZ
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/list_obj.bend as LO
+import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_var_codec_Transaction_enc.bend as EN
 import ./e2e_support.bend as E

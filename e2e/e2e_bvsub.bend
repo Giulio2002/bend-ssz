@@ -12,7 +12,7 @@ import ../proofs/obj/vua.bend as UA
 import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/vua_bits.bend as UB
 import ../proofs/obj/bitlist_pack.bend as BLP
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vfx_bv1.bend as FX1
 import ../proofs/obj/vfx_bv2.bend as FX2
 import ../proofs/obj/vfx_bv8.bend as FX8

@@ -27,7 +27,7 @@ import ../types/bitvector_33_encode_ssz_generated.bend as bitvector_33_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/sub_Gt6F0D97A69E.bend as M0
 import ../proofs/obj/spec_bits.bend as M0_FB
-import ../proofs/obj/gbits_small.bend as M2
+import ../proofs/obj/gbits_small_light.bend as M2
 import ../proofs/obj/bitlist_pack.bend as M3
 import ../proofs/word_split.bend as M2_WSp
 import ../proofs/power_division.bend as M2_PD

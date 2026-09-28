@@ -3092,6 +3092,9 @@ def main():
     if '--no-big' in sys.argv:
         bigtext = {}
     extra = [(STATE_OUT, gen.state_text)] if gen.state_text is not None else []
+    import root_laws_generic as RLG  # the object views, mirrors and invariants: light companions (codegen/light_split.py)
+    both = RLG.light_outs([(OUT, text)] + extra, 'codegen/root_laws_b.py')
+    text, extra = both[0][1], both[1:]
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     text = RR.rewire(text)
     extra = RR.rewire_out(extra)

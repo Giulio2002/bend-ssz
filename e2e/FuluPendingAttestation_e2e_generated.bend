@@ -18,9 +18,9 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vbitenc.bend as VBT
 import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/vbitrep.bend as VR
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_bitc_enc_PendingAttestation.bend as PRV
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d

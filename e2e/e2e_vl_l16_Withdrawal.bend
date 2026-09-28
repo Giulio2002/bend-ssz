@@ -8,6 +8,7 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l16_Withdrawal.bend as W
 import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
@@ -104,7 +105,7 @@ def some_inj(+a: FuluWithdrawal_d.Withdrawal, +b: FuluWithdrawal_d.Withdrawal, +
 # the root view's element walk over the record tree is the window's items
 def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(FuluWithdrawal_d.Withdrawal, dd, D) == True{} : Bool},
     +hb: {Nat.is_lt(Nat.add(Q, 0n), FD.spec_common__pow2(dd)) == True{} : Bool}, +hm: {Nat.is_le(Nat.add(m, i), 1n+Q) == True{} : Bool})
-    -> {RT.xi_l16_Withdrawal(m, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i) == W.RITEMS(m, t, VRL.pos(i, 44n, x)) : S.Value}:
+    -> {RT_L.xi_l16_Withdrawal(m, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i) == W.RITEMS(m, t, VRL.pos(i, 44n, x)) : S.Value}:
   match m:
     case 0n: {==}
     case 1n+ +k:
@@ -114,13 +115,13 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluWithdrawal_d.
       +hi = FD.logic__subst(Nat, z => {Nat.is_lt(i, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x))),
         Equal.sym(Nat, FD.spec_common__length(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x))), FD.spec_common__pow2(dd), FD.array__slots_length(FuluWithdrawal_d.Withdrawal, dd, W.RT(Q, 0n, dd, D, t, x), pfRT(Q, 0n, dd, D, t, x, pf))),
         FD.nat__le_lt_trans(i, Nat.add(Q, 0n), FD.spec_common__pow2(dd), hq0, hb))
-      +ex = some_inj(RT.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 44n, x)),
-        Equal.trans(Maybe<&2, FuluWithdrawal_d.Withdrawal>, Some{RT.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i)}, FD.spec_common__nth(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), Some{W.RX(t, VRL.pos(i, 44n, x))},
-          Equal.sym(Maybe<&2, FuluWithdrawal_d.Withdrawal>, FD.spec_common__nth(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
+      +ex = some_inj(RT_L.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 44n, x)),
+        Equal.trans(Maybe<&2, FuluWithdrawal_d.Withdrawal>, Some{RT_L.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i)}, FD.spec_common__nth(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), Some{W.RX(t, VRL.pos(i, 44n, x))},
+          Equal.sym(Maybe<&2, FuluWithdrawal_d.Withdrawal>, FD.spec_common__nth(FuluWithdrawal_d.Withdrawal, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT_L.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
-      %Equal.sym(FuluWithdrawal_d.Withdrawal, RT.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 44n, x)), ex) :
-        {S.Items{RN.v_Withdrawal(_), RT.xi_l16_Withdrawal(k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 44n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_Withdrawal(W.RX(t, VRL.pos(i, 44n, x))), z}, RT.xi_l16_Withdrawal(k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+      %Equal.sym(FuluWithdrawal_d.Withdrawal, RT_L.xat_l16_Withdrawal(FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 44n, x)), ex) :
+        {S.Items{RN.v_Withdrawal(_), RT_L.xi_l16_Withdrawal(k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 44n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_Withdrawal(W.RX(t, VRL.pos(i, 44n, x))), z}, RT_L.xi_l16_Withdrawal(k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 44n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
@@ -130,11 +131,11 @@ def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
 
 # the list's element count is positive when its length is not 0
 def vlf(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len) == True{} : Bool}, +c: Nat, +ecc: {W.CC(len) == c : Nat}, +eb: {U32.is_eq(len, 0) == False{} : Bool})
-    -> {RT.xv_l16_Withdrawal(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}:
+    -> {RT_L.xv_l16_Withdrawal(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}:
   match c:
     case 0n:
       +e0 = FD.u32__injective(len, 0, Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 44n), 0n, W.ecw(len, hchk), Equal.cong(Nat, Nat, z => Nat.mul(z, 44n), W.CC(len), 0n, ecc)))
-      Empty.absurd({RT.xv_l16_Withdrawal(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, len, 0, e0, eb))))
+      Empty.absurd({RT_L.xv_l16_Withdrawal(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, len, 0, e0, eb))))
     case 1n+ +k:
       +hN = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(1), z) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__zero_le(k))
       +eQ = FD.u32__sub_nat(W.NN(len), 1, hN)
@@ -148,22 +149,22 @@ def vlf(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len
       %Equal.sym(FD.array__Tree<FuluWithdrawal_d.Withdrawal>, FD.array__freeze(FuluWithdrawal_d.Withdrawal, FD.array__thaw(FuluWithdrawal_d.Withdrawal, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x))),
           W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x),
           FD.array__freeze_thaw(FuluWithdrawal_d.Withdrawal, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x))) :
-        {S.Sequence{RT.xi_l16_Withdrawal(U32.to_nat(W.NN(len)), FD.array__slots(FuluWithdrawal_d.Withdrawal, _), 0n)} == W.VALw(t, x, len) : S.Value}
-      %Equal.sym(Nat, U32.to_nat(U32.sub(W.NN(len), 1)), Nat.sub(U32.to_nat(W.NN(len)), U32.to_nat(1)), eQ) : {S.Sequence{RT.xi_l16_Withdrawal(U32.to_nat(W.NN(len)), FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == W.VALw(t, x, len) : S.Value}
-      %Equal.sym(Nat, W.CC(len), 1n+k, ecc) : {S.Sequence{RT.xi_l16_Withdrawal(_, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Nat.sub(_, U32.to_nat(1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == S.Sequence{W.RITEMS(_, t, x)} : S.Value}
-      %Equal.sym(Nat, Nat.sub(1n+k, U32.to_nat(1)), k, subz(k)) : {S.Sequence{RT.xi_l16_Withdrawal(1n+k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == S.Sequence{W.RITEMS(1n+k, t, x)} : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT.xi_l16_Withdrawal(1n+k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(k, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n), W.RITEMS(1n+k, t, x),
+        {S.Sequence{RT_L.xi_l16_Withdrawal(U32.to_nat(W.NN(len)), FD.array__slots(FuluWithdrawal_d.Withdrawal, _), 0n)} == W.VALw(t, x, len) : S.Value}
+      %Equal.sym(Nat, U32.to_nat(U32.sub(W.NN(len), 1)), Nat.sub(U32.to_nat(W.NN(len)), U32.to_nat(1)), eQ) : {S.Sequence{RT_L.xi_l16_Withdrawal(U32.to_nat(W.NN(len)), FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == W.VALw(t, x, len) : S.Value}
+      %Equal.sym(Nat, W.CC(len), 1n+k, ecc) : {S.Sequence{RT_L.xi_l16_Withdrawal(_, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(Nat.sub(_, U32.to_nat(1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == S.Sequence{W.RITEMS(_, t, x)} : S.Value}
+      %Equal.sym(Nat, Nat.sub(1n+k, U32.to_nat(1)), k, subz(k)) : {S.Sequence{RT_L.xi_l16_Withdrawal(1n+k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n)} == S.Sequence{W.RITEMS(1n+k, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT_L.xi_l16_Withdrawal(1n+k, FD.array__slots(FuluWithdrawal_d.Withdrawal, W.RT(k, 0n, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x)), 0n), W.RITEMS(1n+k, t, x),
         xiR(1n+k, 0n, k, B.words_depth(W.NN(len)), FD.array__trep(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), t, x, FD.array__trep_perfect(FuluWithdrawal_d.Withdrawal, B.words_depth(W.NN(len)), FuluWithdrawal_d.Withdrawal_default()), hb, hm))
 
 def vlc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {RT.xv_l16_Withdrawal(W.LOBJ(b, t, x, len)) == W.VALw(t, x, len) : S.Value}:
+    -> {RT_L.xv_l16_Withdrawal(W.LOBJ(b, t, x, len)) == W.VALw(t, x, len) : S.Value}:
   match b:
     case True{}:
-      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT.xv_l16_Withdrawal(W.LOBJ(True{}, t, x, _)) == W.VALw(t, x, _) : S.Value}
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT_L.xv_l16_Withdrawal(W.LOBJ(True{}, t, x, _)) == W.VALw(t, x, _) : S.Value}
       {==}
     case False{}: vlf(t, x, len, hchk, W.CC(len), {==}, eb)
 
 # the list object a window reads views as the window's value
 def vl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT.xv_l16_Withdrawal(W.OBJw(d, t, x, off, len)) == W.VALw(t, x, len) : S.Value}:
+    -> {RT_L.xv_l16_Withdrawal(W.OBJw(d, t, x, off, len)) == W.VALw(t, x, len) : S.Value}:
   vlc(t, x, len, hchk, U32.is_eq(len, 0), {==})

@@ -17,7 +17,7 @@ import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/vbitrep.bend as VBR
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/big_encx_pbits.bend as EXP
