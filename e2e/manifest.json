@@ -3323,6 +3323,16 @@
     "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) (the root law's representation invariant)"
    }
   ],
+  "progbitlist_e2e_root_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtF7582E0E9A(o, Spec.GtF7582E0E9A()) (the root law's representation invariant)"
+   }
+  ],
   "proglist_bool_e2e_root_generated.bend": [
    {
     "name": "proglist_bool",
@@ -5931,7 +5941,8 @@
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "progbitlist_e2e_root_generated.bend"
   }
  },
  "decode_uncovered": {
