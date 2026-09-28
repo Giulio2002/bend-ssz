@@ -6316,13 +6316,6 @@
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "ProgressiveBitsStruct": {
-   "generated_name": "Gc60805EC295",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "ProgressiveBitsStruct_e2e_dec_generated.bend",
-   "i": "ProgressiveBitsStruct_e2e_generated.bend",
-   "iv": "ProgressiveBitsStruct_e2e_root_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6833,6 +6826,12 @@
    "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
    "iv": "FuluTransaction_e2e_root_generated.bend"
   },
+  "ProgressiveBitsStruct": {
+   "generated_name": "Gc60805EC295",
+   "i": "ProgressiveBitsStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveBitsStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveBitsStruct_e2e_root_generated.bend"
+  },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
    "i": "ProgressiveSingleListContainerTestStruct_e2e_generated.bend",
@@ -7250,7 +7249,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": "ProgressiveBitsStruct_e2e_dec_generated.bend"
+   "bridged": null
   },
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
