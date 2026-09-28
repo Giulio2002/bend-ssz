@@ -2897,6 +2897,18 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "ProgressiveComplexTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_decode_view",
+     "ProgressiveComplexTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -2904,6 +2916,18 @@
     "laws": [
      "ProgressiveSingleListContainerTestStruct_e2e_decode_view",
      "ProgressiveSingleListContainerTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ProgressiveTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_decode_view",
+     "ProgressiveTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -6100,6 +6124,7 @@
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "ProgressiveComplexTestStruct_e2e_dec_generated.bend",
    "root": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveSingleFieldContainerTestStruct": {
@@ -6109,6 +6134,7 @@
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "ProgressiveTestStruct_e2e_dec_generated.bend",
    "root": "ProgressiveTestStruct_e2e_root_generated.bend"
   },
   "BitsStruct": {
@@ -7018,7 +7044,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "ProgressiveComplexTestStruct_e2e_dec_generated.bend"
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
@@ -7036,7 +7062,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "ProgressiveTestStruct_e2e_dec_generated.bend"
   },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
