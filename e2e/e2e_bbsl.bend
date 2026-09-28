@@ -102,6 +102,14 @@ def lv96(+o: FuluBytes96_d.Bytes96) -> {RN_L.v_b96(o) == EI.LV_b96(o) : S.Value}
   match o:
     case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: {==}
 
+# 2^30 as 4 * 2^28, kept symbolic (the exponent a variable): comparing A.quad(VB.pw(28n)) with VB.pw(30n) by
+# conversion builds both in unary (about 10^9 steps)
+def pwq(+k: Nat, +r: Nat, +er: {r == 2n+k : Nat}) -> {VB.pw(r) == A.quad(VB.pw(k)) : Nat}:
+  %Equal.sym(Nat, r, 2n+k, er) : {VB.pw(_) == A.quad(VB.pw(k)) : Nat}
+  {==}
+def le30(+a: Nat, +h: {Nat.is_le(a, 30n) == True{} : Bool}) -> {Nat.is_le(VB.pw(a), A.quad(VB.pw(28n))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(VB.pw(a), z) == True{} : Bool}, VB.pw(30n), A.quad(VB.pw(28n)), pwq(28n, 30n, {==}), VG.pw_mono(a, 30n, h))
+
 def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationData, +c: FuluBytes96_d.Bytes96, +sI: S.Schema,
     +el: {SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == U32.to_nat(131072) : Nat}, +rp: RT.rep_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation{O.Words{FD.array__thaw(U32, t), n}, b, c}, sI), +hs: U.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n)) -> DK.P2({EI.OKT(EXu.MW{U.LDEP(U32, t), t, n}, b, c) == True{} : Bool}, DK.P2({RT.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation{O.Words{FD.array__thaw(U32, t), n}, b, c}) == EI.VALC(EXu.MW{U.LDEP(U32, t), t, n}, b, c) : S.Value}, {Nat.is_le(LY.LN(EI.ENC(EI.MW{EXu.MW{U.LDEP(U32, t), t, n}, b, c})), VB.pw(21n)) == True{} : Bool})):
   (+x1, +r1) = rp
@@ -124,7 +132,7 @@ def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationD
   +h228 = FD.nat__le_trans(228n, VB.pw(8n), VB.pw(20n), {==}, VG.pw_mono(8n, 20n, {==}))
   +h21 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC(EXu.MW{U.LDEP(U32, t), t, n}))), z) == True{} : Bool}, Nat.add(VB.pw(20n), VB.pw(20n)), VB.pw(21n), VG.two_pw(VB.pw(20n)),
     U.addle(228n, LY.LN(EXu.ENC(EXu.MW{U.LDEP(U32, t), t, n})), VB.pw(20n), VB.pw(20n), h228, h20))
-  +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC(EXu.MW{U.LDEP(U32, t), t, n}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, VG.pw_mono(21n, 30n, {==}))
+  +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC(EXu.MW{U.LDEP(U32, t), t, n}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, le30(21n, {==}))
   +okI = FD.logic__and_intro(EXu.OK(EXu.MW{U.LDEP(U32, t), t, n}), Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC(EXu.MW{U.LDEP(U32, t), t, n}))), A.quad(VB.pw(28n))), hok, hsz)
   +ev = Equal.trans(S.Value, UL.uview(O.Words{FD.array__thaw(U32, t), n}), WU.VALw(t, 0n, n), EXu.VAL(EXu.MW{U.LDEP(U32, t), t, n}), lvU(U.LDEP(U32, t), t, n, k, pfT, hN, ex8, emul), {==})
   +vq = Equal.trans(S.Value, S.Sequence{S.Items{UL.uview(O.Words{FD.array__thaw(U32, t), n}), S.Items{RN_L.v_AttestationData(b), S.Items{RN_L.v_b96(c), S.EmptyItems{}}}}}, S.Sequence{S.Items{EXu.VAL(EXu.MW{U.LDEP(U32, t), t, n}), S.Items{RN_L.v_AttestationData(b), S.Items{RN_L.v_b96(c), S.EmptyItems{}}}}}, S.Sequence{S.Items{EXu.VAL(EXu.MW{U.LDEP(U32, t), t, n}), S.Items{EI.LV_AttestationData(b), S.Items{EI.LV_b96(c), S.EmptyItems{}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{z, S.Items{RN_L.v_AttestationData(b), S.Items{RN_L.v_b96(c), S.EmptyItems{}}}}}, UL.uview(O.Words{FD.array__thaw(U32, t), n}), EXu.VAL(EXu.MW{U.LDEP(U32, t), t, n}), ev),
@@ -208,7 +216,7 @@ def ea2(+a0: RT.M_IndexedAttestation, +a1: RT.M_IndexedAttestation, +f0: ELA(a0)
   +hB = U.addle(Nat.add(8n, A0), A1, VB.pw(22n), P, hA, l1)
   +hC = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), Nat.add(VB.pw(22n), P), Nat.add(VB.pw(22n), VB.pw(22n)), hB, FD.nat__le_add_left(P, VB.pw(22n), VB.pw(22n), VG.pw_mono(21n, 22n, {==})))
   +hD = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(Nat.add(8n, A0), A1), z) == True{} : Bool}, Nat.add(VB.pw(22n), VB.pw(22n)), VB.pw(23n), VG.two_pw(VB.pw(22n)), hC)
-  +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, VG.pw_mono(23n, 30n, {==}))
+  +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, le30(23n, {==}))
   +ok = FD.logic__and_intro(EI.OK(cvI(a0)), Bool.and(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n)))), o0,
     FD.logic__and_intro(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n))), o1, hsz))
   +vq = Equal.trans(S.Value, S.Sequence{S.Items{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a0)), S.Items{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), S.EmptyItems{}}}},

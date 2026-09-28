@@ -26,7 +26,6 @@ import ../proofs/obj/root_names_light.bend as RN_L
 import ../proofs/obj/big_encx_bits131072.bend as EXb
 import ../proofs/obj/big_encx_Attestation_iface.bend as EM
 import ../proofs/obj/big_encx_l8_Attestation.bend as W8
-import ../proofs/obj/big_var_bitc_enc_Attestation.bend as EAB
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
@@ -59,7 +58,18 @@ def SDB(o: O.Bits, +Kd: Nat) -> Data:
     DK.P2({Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool},
     {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool})))))))
 
-def k8_131072() -> {Nat.is_le(Nat.add(U32.to_nat(131072), 8n), O.pow2n(18n)) == True{} : Bool}: EAB.hNk0()
+
+# 2^17 + 8 <= 2^18 (a bit list of at most 131072 bits: the records' kb bound), over the variable-exponent powers
+def k8s() -> {Nat.is_le(Nat.add(U32.to_nat(131072), 8n), O.pow2n(18n)) == True{} : Bool}:
+  +P = VB.pw(17n)
+  +e17 = VG.u32pow(131072, 17n, {==}, {==})
+  +h8 = FD.nat__le_trans(8n, VB.pw(3n), P, {==}, VG.pw_mono(3n, 17n, {==}))
+  +h1 = FD.nat__le_add_left(8n, P, P, h8)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(P, 8n), z) == True{} : Bool}, Nat.add(P, P), VB.pw(18n), VG.two_pw(P), h1)
+  +h3 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(P, 8n), z) == True{} : Bool}, VB.pw(18n), O.pow2n(18n), VD.s_pow2_eq(18n), h2)
+  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 8n), O.pow2n(18n)) == True{} : Bool}, P, U32.to_nat(131072), Equal.sym(Nat, U32.to_nat(131072), P, e17), h3)
+
+def k8_131072() -> {Nat.is_le(Nat.add(U32.to_nat(131072), 8n), O.pow2n(18n)) == True{} : Bool}: k8s()
 
 def BR131072(w: O.Bits) -> Data:
   DK.Ex(EXb.MB, m => DK.P2({w == EXb.TH(m) : O.Bits}, DK.P2({S.BitsValue{BO.bview(EXb.TH(m))} == EXb.VAL(m) : S.Value},
@@ -120,16 +130,24 @@ def ok131072(+T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +pf: {FD.array__perfect
 # ---- an attestation's size: 236 + (K / 8 + 1) <= 4 * 2^28 for K <= 2^17 (no closed power evaluated) ----
 def a1s(+P: Nat) -> {Nat.add(P, 1n) == 1n+P : Nat}: FD.nat__add_comm(P, 1n)
 
+# 2^30 as 4 * 2^28, kept symbolic (the exponent a variable): comparing A.quad(VB.pw(28n)) with VB.pw(30n) by
+# conversion builds both in unary (about 10^9 steps)
+def pwq(+k: Nat, +r: Nat, +er: {r == 2n+k : Nat}) -> {VB.pw(r) == A.quad(VB.pw(k)) : Nat}:
+  %Equal.sym(Nat, r, 2n+k, er) : {VB.pw(_) == A.quad(VB.pw(k)) : Nat}
+  {==}
+def le30(+a: Nat, +h: {Nat.is_le(a, 30n) == True{} : Bool}) -> {Nat.is_le(VB.pw(a), A.quad(VB.pw(28n))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(VB.pw(a), z) == True{} : Bool}, VB.pw(30n), A.quad(VB.pw(28n)), pwq(28n, 30n, {==}), VG.pw_mono(a, 30n, h))
+
 def szA(+K: U32, +hN: {Nat.is_le(U32.to_nat(K), U32.to_nat(131072)) == True{} : Bool}) -> {Nat.is_le(Nat.add(236n, U32.to_nat(CO.NK(K))), A.quad(VB.pw(28n))) == True{} : Bool}:
   +P = VB.pw(17n)
   +e17 = VG.u32pow(131072, 17n, {==}, {==})
-  +h1 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(z, 1n)) == True{} : Bool}, U32.to_nat(131072), P, e17, CO.nk_le(K, 18n, U32.to_nat(131072), {==}, hN, EAB.hNk0()))
+  +h1 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(z, 1n)) == True{} : Bool}, U32.to_nat(131072), P, e17, CO.nk_le(K, 18n, U32.to_nat(131072), {==}, hN, k8s()))
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(CO.NK(K)), z) == True{} : Bool}, Nat.add(P, 1n), 1n+P, a1s(P), h1)
   +h3 = Order.add_left(236n, U32.to_nat(CO.NK(K)), 1n+P, h2)
   +h237 = FD.nat__le_trans(237n, VB.pw(8n), P, {==}, VG.pw_mono(8n, 17n, {==}))
   +h4 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(237n, P), z) == True{} : Bool}, Nat.add(P, P), VB.pw(18n), VG.two_pw(P), Order.add_right(237n, P, P, h237))
   FD.nat__le_trans(Nat.add(236n, U32.to_nat(CO.NK(K))), VB.pw(18n), A.quad(VB.pw(28n)), FD.nat__le_trans(Nat.add(236n, U32.to_nat(CO.NK(K))), Nat.add(237n, P), VB.pw(18n), h3, h4),
-    VG.pw_mono(18n, 30n, {==}))
+    le30(18n, {==}))
 
 # ---- the element conversion: root_types' mirror record to the encoder's record ----
 def cvE(m: RT.MB<RT.M_Attestation>) -> W8.MB<EM.MW>:

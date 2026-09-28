@@ -29,7 +29,7 @@ IMPORTS = [
     'import ../proofs/obj/spec_bits.bend as FB',
     'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
     'import ../proofs/obj/big_encx_bits131072.bend as EXb', 'import ../proofs/obj/big_encx_Attestation_iface.bend as EM',
-    'import ../proofs/obj/big_encx_l8_Attestation.bend as W8', 'import ../proofs/obj/big_var_bitc_enc_Attestation.bend as EAB',
+    'import ../proofs/obj/big_encx_l8_Attestation.bend as W8',
     'import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d', 'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d',
     'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d', 'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d',
     'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d', 'import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d',
@@ -42,7 +42,7 @@ def _wp(n, p='w'):
 
 
 def text():
-    bits = '\n'.join(BVG.bits_part(131072, 18, 18, NB=NB, k8='EAB.hNk0()', EX='EXb'))
+    bits = '\n'.join(BVG.bits_part(131072, 18, 18, NB=NB, k8='k8s()', EX='EXb'))
     bits = bits.replace('def k8_131072', 'def k8_131072', 1)
     # the bits record's validity alone (bb131072b's hok), for the element records
     lets = bits[bits.index('def bb131072b('):]
@@ -72,20 +72,39 @@ def SDB(o: O.Bits, +Kd: Nat) -> Data:
     DK.P2({{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}},
     {{O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{{}} : Bool}})))))))
 
+
+# 2^17 + 8 <= 2^18 (a bit list of at most 131072 bits: the records' kb bound), over the variable-exponent powers
+def k8s() -> {{Nat.is_le(Nat.add(U32.to_nat(131072), 8n), O.pow2n(18n)) == True{{}} : Bool}}:
+  +P = VB.pw(17n)
+  +e17 = VG.u32pow(131072, 17n, {{==}}, {{==}})
+  +h8 = FD.nat__le_trans(8n, VB.pw(3n), P, {{==}}, VG.pw_mono(3n, 17n, {{==}}))
+  +h1 = FD.nat__le_add_left(8n, P, P, h8)
+  +h2 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(P, 8n), z) == True{{}} : Bool}}, Nat.add(P, P), VB.pw(18n), VG.two_pw(P), h1)
+  +h3 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(P, 8n), z) == True{{}} : Bool}}, VB.pw(18n), O.pow2n(18n), VD.s_pow2_eq(18n), h2)
+  FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, 8n), O.pow2n(18n)) == True{{}} : Bool}}, P, U32.to_nat(131072), Equal.sym(Nat, U32.to_nat(131072), P, e17), h3)
+
 ''' + bits + '\n' + ok + f'''
 # ---- an attestation's size: 236 + (K / 8 + 1) <= 4 * 2^28 for K <= 2^17 (no closed power evaluated) ----
 def a1s(+P: Nat) -> {{Nat.add(P, 1n) == 1n+P : Nat}}: FD.nat__add_comm(P, 1n)
 
+# 2^30 as 4 * 2^28, kept symbolic (the exponent a variable): comparing A.quad(VB.pw(28n)) with VB.pw(30n) by
+# conversion builds both in unary (about 10^9 steps)
+def pwq(+k: Nat, +r: Nat, +er: {{r == 2n+k : Nat}}) -> {{VB.pw(r) == A.quad(VB.pw(k)) : Nat}}:
+  %Equal.sym(Nat, r, 2n+k, er) : {{VB.pw(_) == A.quad(VB.pw(k)) : Nat}}
+  {{==}}
+def le30(+a: Nat, +h: {{Nat.is_le(a, 30n) == True{{}} : Bool}}) -> {{Nat.is_le(VB.pw(a), A.quad(VB.pw(28n))) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(VB.pw(a), z) == True{{}} : Bool}}, VB.pw(30n), A.quad(VB.pw(28n)), pwq(28n, 30n, {{==}}), VG.pw_mono(a, 30n, h))
+
 def szA(+K: U32, +hN: {{Nat.is_le(U32.to_nat(K), {NB}) == True{{}} : Bool}}) -> {{Nat.is_le(Nat.add(236n, U32.to_nat(CO.NK(K))), A.quad(VB.pw(28n))) == True{{}} : Bool}}:
   +P = VB.pw(17n)
   +e17 = VG.u32pow(131072, 17n, {{==}}, {{==}})
-  +h1 = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(z, 1n)) == True{{}} : Bool}}, {NB}, P, e17, CO.nk_le(K, 18n, {NB}, {{==}}, hN, EAB.hNk0()))
+  +h1 = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(z, 1n)) == True{{}} : Bool}}, {NB}, P, e17, CO.nk_le(K, 18n, {NB}, {{==}}, hN, k8s()))
   +h2 = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(CO.NK(K)), z) == True{{}} : Bool}}, Nat.add(P, 1n), 1n+P, a1s(P), h1)
   +h3 = Order.add_left(236n, U32.to_nat(CO.NK(K)), 1n+P, h2)
   +h237 = FD.nat__le_trans(237n, VB.pw(8n), P, {{==}}, VG.pw_mono(8n, 17n, {{==}}))
   +h4 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(237n, P), z) == True{{}} : Bool}}, Nat.add(P, P), VB.pw(18n), VG.two_pw(P), Order.add_right(237n, P, P, h237))
   FD.nat__le_trans(Nat.add(236n, U32.to_nat(CO.NK(K))), VB.pw(18n), A.quad(VB.pw(28n)), FD.nat__le_trans(Nat.add(236n, U32.to_nat(CO.NK(K))), Nat.add(237n, P), VB.pw(18n), h3, h4),
-    VG.pw_mono(18n, 30n, {{==}}))
+    le30(18n, {{==}}))
 
 # ---- the element conversion: root_types' mirror record to the encoder's record ----
 def cvE(m: {RMB}) -> {EMB}:
@@ -525,6 +544,14 @@ def lv96(+o: FuluBytes96_d.Bytes96) -> {{RN_L.v_b96(o) == EI.LV_b96(o) : S.Value
   match o:
     case FuluBytes96_d.Bytes96{{{_wp(24)}}}: {{==}}
 
+# 2^30 as 4 * 2^28, kept symbolic (the exponent a variable): comparing A.quad(VB.pw(28n)) with VB.pw(30n) by
+# conversion builds both in unary (about 10^9 steps)
+def pwq(+k: Nat, +r: Nat, +er: {{r == 2n+k : Nat}}) -> {{VB.pw(r) == A.quad(VB.pw(k)) : Nat}}:
+  %Equal.sym(Nat, r, 2n+k, er) : {{VB.pw(_) == A.quad(VB.pw(k)) : Nat}}
+  {{==}}
+def le30(+a: Nat, +h: {{Nat.is_le(a, 30n) == True{{}} : Bool}}) -> {{Nat.is_le(VB.pw(a), A.quad(VB.pw(28n))) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(VB.pw(a), z) == True{{}} : Bool}}, VB.pw(30n), A.quad(VB.pw(28n)), pwq(28n, 30n, {{==}}), VG.pw_mono(a, 30n, h))
+
 def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationData, +c: FuluBytes96_d.Bytes96, +sI: S.Schema,
     +el: {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == {NB1} : Nat}}, +rp: {RI('sI')}, +hs: U.sdk(O.Words{{FD.array__thaw(U32, t), n}}, 28n)) -> {ELI}:
   (+x1, +r1) = rp
@@ -547,7 +574,7 @@ def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationD
   +h228 = FD.nat__le_trans(228n, VB.pw(8n), VB.pw(20n), {{==}}, VG.pw_mono(8n, 20n, {{==}}))
   +h21 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), z) == True{{}} : Bool}}, Nat.add(VB.pw(20n), VB.pw(20n)), VB.pw(21n), VG.two_pw(VB.pw(20n)),
     U.addle(228n, LY.LN(EXu.ENC({MU})), VB.pw(20n), VB.pw(20n), h228, h20))
-  +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC({MU}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, VG.pw_mono(21n, 30n, {{==}}))
+  +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC({MU}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, le30(21n, {{==}}))
   +okI = FD.logic__and_intro(EXu.OK({MU}), Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), A.quad(VB.pw(28n))), hok, hsz)
   +ev = Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), WU.VALw(t, 0n, n), EXu.VAL({MU}), lvU(U.LDEP(U32, t), t, n, k, pfT, hN, ex8, emul), {{==}})
   +vq = Equal.trans(S.Value, S.Sequence{{S.Items{{UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{EI.LV_b96(c), S.EmptyItems{{}}}}}}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), EXu.VAL({MU}), ev),
@@ -631,7 +658,7 @@ def ea2(+a0: RT.M_IndexedAttestation, +a1: RT.M_IndexedAttestation, +f0: ELA(a0)
   +hB = U.addle(Nat.add(8n, A0), A1, VB.pw(22n), P, hA, l1)
   +hC = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), Nat.add(VB.pw(22n), P), Nat.add(VB.pw(22n), VB.pw(22n)), hB, FD.nat__le_add_left(P, VB.pw(22n), VB.pw(22n), VG.pw_mono(21n, 22n, {{==}})))
   +hD = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(Nat.add(8n, A0), A1), z) == True{{}} : Bool}}, Nat.add(VB.pw(22n), VB.pw(22n)), VB.pw(23n), VG.two_pw(VB.pw(22n)), hC)
-  +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, VG.pw_mono(23n, 30n, {{==}}))
+  +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, le30(23n, {{==}}))
   +ok = FD.logic__and_intro(EI.OK(cvI(a0)), Bool.and(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n)))), o0,
     FD.logic__and_intro(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n))), o1, hsz))
   +vq = Equal.trans(S.Value, S.Sequence{{S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a0)), S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), S.EmptyItems{{}}}}}}}},
