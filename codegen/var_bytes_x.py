@@ -365,6 +365,8 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>, +hdom: {{SP.bytes_do
 
 # The byte list's value: the window's bytes after the header.
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: XVw(t, x, {YX})
+# VALw's body, as a rewrite (a spec-parts goal over VALw compared with one over its body ran the spec encoder)
+def VALq(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {{XVw(t, x, {YX}) == VALw(t, x, len) : S.Value}}: {{==}}
 
 # The window is the header's words and the byte list's bytes.
 def hwH(+d: Nat, +x: Nat, +len: U32, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})
@@ -396,8 +398,10 @@ def bytesw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, {PF},
 def specw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +len: U32, {PF},
     +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, {HX})
     -> {{Codec.parts(VALw(t, x, len), Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}}:
+  %VALq(t, x, len) :
+    {{Codec.parts(_, Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}}
   %bytesw(d, t, x, len, pf, hw, ha, epo) :
-    {{Codec.parts(VALw(t, x, len), Spec.{n}()) == Some{{[S.Variable{{_}}]}} : {MP}}}
+    {{Codec.parts(XVw(t, x, {YX}), Spec.{n}()) == Some{{[S.Variable{{_}}]}} : {MP}}}
   encpw(t, x, {YX}, UW.domWX(t, Nat.add(A.quad({H}n), x), {L4}), len_y(d, t, x, len, pf, hw, ha, hx))
 
 # When the window's checks hold, the spec parts of VALw are its bytes, as one variable part.
@@ -689,6 +693,8 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value, +Yb: +List<U32>,
   {{==}}
 
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: XVw(t, x, {VY_})
+# VALw's body, as a rewrite (a spec-parts goal over VALw compared with one over its body ran the spec encoder)
+def VALq(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {{XVw(t, x, {VY_}) == VALw(t, x, len) : S.Value}}: {{==}}
 
 def hwH(+d: Nat, +x: Nat, +len: U32, {HW}, {HA})
     -> {{Nat.is_le(Nat.add(x, Nat.add(A.quad({H}n), {L4})), {P4}) == True{{}} : Bool}}:
@@ -719,8 +725,10 @@ def fitw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, {PF}, +hd: {{Nat.
 def specw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}},
     +hY: {{{YCHK} == True{{}} : Bool}})
     -> {{Codec.parts(VALw(t, x, len), Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}}:
+  %VALq(t, x, len) :
+    {{Codec.parts(_, Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}}
   %bytesw(d, t, x, len, pf, hw, ha, epo) :
-    {{Codec.parts(VALw(t, x, len), Spec.{n}()) == Some{{[S.Variable{{_}}]}} : {MP}}}
+    {{Codec.parts(XVw(t, x, {VY_}), Spec.{n}()) == Some{{[S.Variable{{_}}]}} : {MP}}}
   encpw(t, x, {VY_}, {YX}, YW.specw(d, t, n, {JX}, U32.add(off, {FS}), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf, hY),
     UW.domWX(t, {JX}, {L4}), fitw(d, t, x, len, pf, hd, hw, ha))
 
