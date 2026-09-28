@@ -1,4 +1,8 @@
 import Base
+import ./e2e_tree.bend as E3
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/schema_shapes.bend as SH
 import ./e2e_bits.bend as EBT
 import ../proofs/obj/valid_lib.bend as VL
 import ./e2e_fixdb.bend as XB
@@ -20,12 +24,8 @@ import ../proofs/integer_decoding.bend as ID
 import ./e2e_support.bend as E
 import ./e2e_fixd.bend as X
 import ./e2e_fixd16.bend as X16
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/words_obj.bend as WO
-import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
-import ./e2e_tree.bend as E3
 import ../types/vec_uint16_5_encode_ssz_generated.bend as vec_uint16_5_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/sub_Gt89824BEACE.bend as M0

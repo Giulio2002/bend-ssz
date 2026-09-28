@@ -3879,6 +3879,14 @@
     "premise": "+rep: WO.rep_bv(o, s)"
    },
    {
+    "name": "FuluBlobSidecar",
+    "generated_name": "BlobSidecar",
+    "laws": [
+     "FuluBlobSidecar_e2e_root"
+    ],
+    "premise": "+rep: rep_BlobSidecar(o, s)"
+   },
+   {
     "name": "FuluCell",
     "generated_name": "Cell",
     "laws": [
@@ -3895,20 +3903,36 @@
     "premise": "+rep: rep_ContributionAndProof(o, s)"
    },
    {
+    "name": "FuluDeposit",
+    "generated_name": "Deposit",
+    "laws": [
+     "FuluDeposit_e2e_root"
+    ],
+    "premise": "+rep: rep_Deposit(o, s)"
+   },
+   {
+    "name": "FuluHistoricalBatch",
+    "generated_name": "HistoricalBatch",
+    "laws": [
+     "FuluHistoricalBatch_e2e_root"
+    ],
+    "premise": "+rep: rep_HistoricalBatch(o, s)"
+   },
+   {
+    "name": "FuluMatrixEntry",
+    "generated_name": "MatrixEntry",
+    "laws": [
+     "FuluMatrixEntry_e2e_root"
+    ],
+    "premise": "+rep: rep_MatrixEntry(o, s)"
+   },
+   {
     "name": "FuluProposerSlashing",
     "generated_name": "ProposerSlashing",
     "laws": [
      "FuluProposerSlashing_e2e_root"
     ],
     "premise": "+rep: rep_ProposerSlashing(o, s)"
-   },
-   {
-    "name": "FuluSignedContributionAndProof",
-    "generated_name": "SignedContributionAndProof",
-    "laws": [
-     "FuluSignedContributionAndProof_e2e_root"
-    ],
-    "premise": "+rep: rep_SignedContributionAndProof(o, s)"
    }
   ],
   "FuluBytes1_e2e_generated.bend": [
@@ -3993,6 +4017,28 @@
     ],
     "ii": "view",
     "premise": "+rep: rep_ContributionAndProof(o, s)"
+   }
+  ],
+  "FuluDeposit_e2e_generated.bend": [
+   {
+    "name": "FuluDeposit",
+    "generated_name": "Deposit",
+    "laws": [
+     "FuluDeposit_e2e_encode"
+    ],
+    "premise": "+rep: rep_Deposit(o, s)"
+   }
+  ],
+  "FuluDeposit_e2e_dec_generated.bend": [
+   {
+    "name": "FuluDeposit",
+    "generated_name": "Deposit",
+    "laws": [
+     "FuluDeposit_e2e_decode_view",
+     "FuluDeposit_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "+rep: rep_Deposit(o, s)"
    }
   ],
   "SmallTestStruct_e2e_generated.bend": [
@@ -5609,6 +5655,28 @@
     "premise": "+e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32}"
    }
   ],
+  "FuluMatrixEntry_e2e_generated.bend": [
+   {
+    "name": "FuluMatrixEntry",
+    "generated_name": "MatrixEntry",
+    "laws": [
+     "FuluMatrixEntry_e2e_encode"
+    ],
+    "premise": "+rep: rep_MatrixEntry(o, s)"
+   }
+  ],
+  "FuluMatrixEntry_e2e_dec_generated.bend": [
+   {
+    "name": "FuluMatrixEntry",
+    "generated_name": "MatrixEntry",
+    "laws": [
+     "FuluMatrixEntry_e2e_decode_view",
+     "FuluMatrixEntry_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "+rep: rep_MatrixEntry(o, s)"
+   }
+  ],
   "FuluParticipationFlags_e2e_generated.bend": [
    {
     "name": "FuluParticipationFlags",
@@ -5674,12 +5742,31 @@
     "ii": "view",
     "premise": "+rep: rep_SignedContributionAndProof(o, s)"
    }
+  ],
+  "FuluSignedContributionAndProof_e2e_root_generated.bend": [
+   {
+    "name": "FuluSignedContributionAndProof",
+    "generated_name": "SignedContributionAndProof",
+    "laws": [
+     "FuluSignedContributionAndProof_e2e_root"
+    ],
+    "premise": "+rep: rep_SignedContributionAndProof(o, s)"
+   },
+   {
+    "name": "FuluSyncCommittee",
+    "generated_name": "SyncCommittee",
+    "laws": [
+     "FuluSyncCommittee_e2e_root"
+    ],
+    "premise": "+rep: rep_SyncCommittee(o, s)"
+   }
   ]
  },
  "uncovered": {
   "FuluHistoricalBatch": {
    "generated_name": "HistoricalBatch",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "FuluAttestation": {
    "generated_name": "Attestation",
@@ -5699,11 +5786,8 @@
   },
   "FuluSyncCommittee": {
    "generated_name": "SyncCommittee",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluDeposit": {
-   "generated_name": "Deposit",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
@@ -5740,11 +5824,8 @@
   },
   "FuluBlobSidecar": {
    "generated_name": "BlobSidecar",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluMatrixEntry": {
-   "generated_name": "MatrixEntry",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
@@ -5817,6 +5898,12 @@
    "generated_name": "ContributionAndProof",
    "i": "FuluContributionAndProof_e2e_generated.bend",
    "ii_iii": "FuluContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
+  "FuluDeposit": {
+   "generated_name": "Deposit",
+   "i": "FuluDeposit_e2e_generated.bend",
+   "ii_iii": "FuluDeposit_e2e_dec_generated.bend",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
@@ -6137,6 +6224,12 @@
    "ii_iii": "bitvector_17_e2e_dec_generated.bend",
    "iv": "bitvector_1_e2e_root_generated.bend"
   },
+  "FuluMatrixEntry": {
+   "generated_name": "MatrixEntry",
+   "i": "FuluMatrixEntry_e2e_generated.bend",
+   "ii_iii": "FuluMatrixEntry_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
   "FuluParticipationFlags": {
    "generated_name": "ParticipationFlags",
    "i": "FuluParticipationFlags_e2e_generated.bend",
@@ -6153,7 +6246,7 @@
    "generated_name": "SignedContributionAndProof",
    "i": "FuluSignedContributionAndProof_e2e_generated.bend",
    "ii_iii": "FuluSignedContributionAndProof_e2e_dec_generated.bend",
-   "iv": "FuluBlob_e2e_root_generated.bend"
+   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   }
  },
  "variable_size": {
