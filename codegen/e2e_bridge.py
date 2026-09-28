@@ -2991,7 +2991,7 @@ def outputs():
     # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
     import e2e_state_gen as ESG
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
-        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state())
+        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state_deep())
     # BeaconState (i): its encode record from the parts' records (e2e_state_enc: e2e_bsx, e2e_bsl, e2e_rls)
     import e2e_state_enc as ESE
     if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
@@ -3239,8 +3239,8 @@ def outputs():
         out[OUT / 'e2e_rls.bend'] = ESE.rls_text()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
-        out[OUT / 'e2e_stv.bend'] = ESG.text()
-        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state()
+        out[OUT / 'e2e_stv.bend'] = ESG.text_deep()
+        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state_deep()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()

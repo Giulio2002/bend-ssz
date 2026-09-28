@@ -94,6 +94,29 @@ def bvg(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat,
   %eo : {VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == VS.bt(U32.to_nat(L), VS.bdr(_, UA.BYT(t))) : +List<U32>}
   UCT.ct_bytes(d, t, off, L, dz, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, L, hL), pf, UW.hsx(d, off, x, L, eo, hd, hw), hr, hB)
 
+# the bytes of a word list's own words, before anything appended
+def btl(+A_: List<&2, U32>, +R: List<&2, U32>) -> {VS.bt(A.quad(VB.len(A_)), FX.limbs(VF.app(A_, R))) == FX.limbs(A_) : +List<U32>}:
+  match A_:
+    case Nil{}: {==}
+    case Con{+a, +r}: Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, I.limb(a), z), VS.bt(A.quad(VB.len(r)), FX.limbs(VF.app(r, R))), FX.limbs(r), btl(r, R))
+
+# a copied fixed byte vector of K words: its view is the window's words' bytes
+def fbv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
+    -> {WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}:
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, off, L, dz))), UCT.CT(d, t, off, L, dz), FD.array__freeze_thaw(U32, UCT.CT(d, t, off, L, dz))) :
+    {WS.btake(U32.to_nat(L), FX.limbs(FD.array__slots(U32, _))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(+List<U32>, WS.btake(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), BL.btake_bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))) :
+    {_ == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(Nat, U32.to_nat(L), A.quad(K), eL) : {VS.bt(_, FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)), VF.app(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), tdl(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) :
+    {VS.bt(A.quad(K), FX.limbs(_)) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x), ctw(d, t, off, L, dz, x, K, eo, hd, hw, pf, hr, eL)) :
+    {VS.bt(A.quad(K), FX.limbs(VF.app(_, VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %UR.rws_len(K, t, x) : {VS.bt(A.quad(_), FX.limbs(VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  btl(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))
+
 # ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----
 def cwlY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
@@ -132,14 +155,7 @@ def bvgY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat
   %eo : {VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == VS.bt(U32.to_nat(L), VS.bdr(_, UA.BYT(t))) : +List<U32>}
   UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)
 
-# the bytes of a word list's own words, before anything appended
-def btl(+A_: List<&2, U32>, +R: List<&2, U32>) -> {VS.bt(A.quad(VB.len(A_)), FX.limbs(VF.app(A_, R))) == FX.limbs(A_) : +List<U32>}:
-  match A_:
-    case Nil{}: {==}
-    case Con{+a, +r}: Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, I.limb(a), z), VS.bt(A.quad(VB.len(r)), FX.limbs(VF.app(r, R))), FX.limbs(r), btl(r, R))
-
-# a copied fixed byte vector of K words: its view is the window's words' bytes
-def fbv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def fbvY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
     -> {WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}:
@@ -150,7 +166,7 @@ def fbv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat,
   %Equal.sym(Nat, U32.to_nat(L), A.quad(K), eL) : {VS.bt(_, FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
   %Equal.sym(List<&2, U32>, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)), VF.app(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), tdl(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) :
     {VS.bt(A.quad(K), FX.limbs(_)) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
-  %Equal.sym(List<&2, U32>, VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x), ctw(d, t, off, L, dz, x, K, eo, hd, hw, pf, hr, eL)) :
+  %Equal.sym(List<&2, U32>, VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x), ctwY(d, t, off, L, dz, x, K, eo, hy, hw, pf, hr, eL)) :
     {VS.bt(A.quad(K), FX.limbs(VF.app(_, VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
   %UR.rws_len(K, t, x) : {VS.bt(A.quad(_), FX.limbs(VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
   btl(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))
