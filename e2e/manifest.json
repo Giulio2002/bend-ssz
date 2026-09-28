@@ -3149,6 +3149,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "progbitlist_e2e_dec_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_decode_view",
+     "progbitlist_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+   }
+  ],
   "proglist_bool_e2e_dec_generated.bend": [
    {
     "name": "proglist_bool",
@@ -6106,12 +6118,6 @@
   "ProgressiveBitsStruct": {
    "generated_name": "Gc60805EC295",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "progbitlist": {
-   "generated_name": "GtF7582E0E9A",
-   "reason": "encode laws not over the same free words / bits",
-   "root": "progbitlist_e2e_root_generated.bend",
-   "encode": "progbitlist_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6712,6 +6718,12 @@
    "ii_iii": "bitlist_9_e2e_dec_generated.bend",
    "iv": "bitlist_1_e2e_root_generated.bend"
   },
+  "progbitlist": {
+   "generated_name": "GtF7582E0E9A",
+   "i": "progbitlist_e2e_generated.bend",
+   "ii_iii": "progbitlist_e2e_dec_generated.bend",
+   "iv": "progbitlist_e2e_root_generated.bend"
+  },
   "proglist_bool": {
    "generated_name": "Gt83D8B3D008",
    "i": "proglist_bool_e2e_generated.bend",
@@ -7209,8 +7221,8 @@
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "depth_bound": 31,
-   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
-   "input_bound_bytes": 4294967264,
+   "input_bound": "2^29",
+   "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
@@ -7360,7 +7372,7 @@
   },
   {
    "name": "progbitlist",
-   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound": "2^29",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },

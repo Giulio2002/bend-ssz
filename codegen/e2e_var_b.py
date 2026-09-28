@@ -4888,6 +4888,14 @@ VENC_PREMISE['GtF7582E0E9A'] = 'rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 
 def vdec_pbits(X):
     text = """def bvw(o: O.Bits) -> S.Value: S.BitsValue{BO.bview(o)}
 
+# the reject law's bound: n <= 4 * 2^27 = 2^29 = PMAX (through the U32 power: the Nat literal 2^29 would unfold)
+def hPk(+n: U32, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}) -> {U32.is_le(n, VP.PMAX()) == True{} : Bool}:
+  +h1 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(n), z) == True{} : Bool}, VB.pw(29n), O.pow2n(29n), VD.s_pow2_eq(29n), hS)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(n), z) == True{} : Bool}, O.pow2n(29n), U32.to_nat(O.pow2u(29n)), Equal.sym(Nat, U32.to_nat(O.pow2u(29n)), O.pow2n(29n), VD.s_pow2u_val(29n, {==})), h1)
+  +h3 = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(O.pow2u(29n), VP.PMAX()), Nat.is_le(U32.to_nat(O.pow2u(29n)), U32.to_nat(VP.PMAX())), VB.le_u32n(O.pow2u(29n), VP.PMAX()), {==})
+  Equal.trans(Bool, U32.is_le(n, VP.PMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VP.PMAX())), True{}, VB.le_u32n(n, VP.PMAX()),
+    FD.nat__le_trans(U32.to_nat(n), U32.to_nat(O.pow2u(29n)), U32.to_nat(VP.PMAX()), h2, h3))
+
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   +h1 = DC.c1(t, n, hchk)
@@ -4926,11 +4934,11 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
             'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vbuf.bend as VB',
             'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vbrt.bend as VR',
             'import ../proofs/obj/vbytes.bend as VBY', 'import ../proofs/obj/vpb29.bend as VP', 'import ../proofs/obj/vua_win.bend as UW',
-            'import ./e2e_bview.bend as BV', 'import ./e2e_gpb.bend as GPB']   # e2e_cap (C) is the template's
-    return {'view': 'bvw', 'imports': imps, 'text': '# ---- the view of a decoded object is the codec law\'s value ----\n\n' + text}
+            'import ./e2e_bview.bend as BV', 'import ./e2e_gpb.bend as GPB', 'import ../proofs/obj/vdepth.bend as VD']   # e2e_cap (C) is the template's
+    return {'view': 'bvw', 'kmode': 27, 'rej_args': ', hPk(n, hS)', 'imports': imps, 'text': '# ---- the view of a decoded object is the codec law\'s value ----\n\n' + text}
 
 
-# VDEC_VIEWS['GtF7582E0E9A'] = vdec_pbits('GtF7582E0E9A')   # (ii) checks; (iii) waits on a decode-template hook (K mode + the reject law's hP premise)
+VDEC_VIEWS['GtF7582E0E9A'] = vdec_pbits('GtF7582E0E9A')
 VROOT_SHAPES['ExecutionPayload'] = vroot_container
 SUPPORT_OUT['e2e_vtx.bend'] = vtx_text()
 
