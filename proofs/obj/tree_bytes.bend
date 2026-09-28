@@ -69,3 +69,14 @@ def tparts(+d: Nat, +l: F.array__Tree<U32>, +n: Nat, +pl: {F.array__perfect(U32,
 def pk(e: B.Buf & +List<U32>) -> {Pair.snd(B.Buf, +List<U32>, e) == SF.listed(e) : +List<U32>}:
   (b, xs) = e
   {==}
+
+# the first |xs| + k elements of xs ++ ys are xs then the first k of ys
+law take_app:
+  for +xs: List<&2, U32>
+  for +ys: List<&2, U32>
+  for +k: Nat
+  {F.spec_common__take(U32, F.spec_common__append(U32, xs, ys), Nat.add(F.spec_common__length(U32, xs), k)) == F.spec_common__append(U32, xs, F.spec_common__take(U32, ys, k)) : List<&2, U32>}
+def take_app(xs, ys, k):
+  match xs:
+    case Nil{}: {==}
+    case Con{+h, +t}: Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{h, z}, F.spec_common__take(U32, F.spec_common__append(U32, t, ys), Nat.add(F.spec_common__length(U32, t), k)), F.spec_common__append(U32, t, F.spec_common__take(U32, ys, k)), take_app(t, ys, k))
