@@ -1283,16 +1283,17 @@ def union_view(R, X):
         sel, vw = ctor[cidx]
         assert sel == sels[k], (X, k, sel, sels[k])
         vw = vw if '.' in vw else f'RT.{vw}'
-        obj = f'W.{ch}.OBJw(d, t, W.{WIN.replace("XJ(", "XJ(").replace("FJ(", "FJ(").replace("LJ(", "LJ(")})'
         obj = f'{ch}.OBJw(d, t, W.XJ(t, x), W.FJ(off), W.LJ(len))'
         val = f'{ch}.VALw(t, W.XJ(t, x), W.LJ(len))'
         cv = UNION_CHILD[alias_mod[ch]]
-        cvp = '{==}' if cv is None else cv(obj, val)
+        cvp = '{==}' if cv is None else (f'{cv}(d, t, n, W.XJ(t, x), W.FJ(off), W.LJ(len), W.eoJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), hd, '
+                                          f'W.hwJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), pf, hk)')
         GOAL = f'{{RT.v_{X}(W.OB{k}(c, W.BX(t, x), d, t, x, off, len)) == S.Selected{{W.BX(t, x), W.VV{k}(c, W.BX(t, x), t, x, len)}} : S.Value}}'
-        nxt = (f'      u{k + 1}(d, t, x, off, len, U32.is_eq(W.BX(t, x), {sels[k + 1]}), {{==}}, hk)' if k != last else
+        nxt = (f'      u{k + 1}(d, t, n, x, off, len, eo, hd, hw, pf, h1, U32.is_eq(W.BX(t, x), {sels[k + 1]}), {{==}}, hk)' if k != last else
                f'      Empty.absurd({GOAL.replace("(c, ", "(False{}, ")}, FD.logic__false_true(hk))')
-        L.append(f'''def u{k}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +c: Bool, +ec: {{U32.is_eq(W.BX(t, x), {sel}) == c : Bool}},
-    +hk: {{W.K{k}(c, W.BX(t, x), t, x, off, len) == True{{}} : Bool}}) -> {GOAL}:
+        L.append(f'''def u{k}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},
+    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +h1: W.H1(t, x, off, len),
+    +c: Bool, +ec: {{U32.is_eq(W.BX(t, x), {sel}) == c : Bool}}, +hk: {{W.K{k}(c, W.BX(t, x), t, x, off, len) == True{{}} : Bool}}) -> {GOAL}:
   match c:
     case True{{}}:
       %Equal.sym(U32, W.BX(t, x), {sel}, FD.u32alg__eq_of(W.BX(t, x), {sel}, ec)) : {{RT.v_{X}(W.OB{k}(True{{}}, W.BX(t, x), d, t, x, off, len)) == S.Selected{{_, W.VV{k}(True{{}}, W.BX(t, x), t, x, len)}} : S.Value}}
@@ -1305,12 +1306,12 @@ def union_view(R, X):
 {chr(10).join(L)}
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  u0(d, t, 0n, 0, n, U32.is_eq(W.BX(t, 0n), {sels[0]}), {{==}}, FD.logic__and_right(U32.is_le(1, n), W.K0(U32.is_eq(W.BX(t, 0n), {sels[0]}), W.BX(t, 0n), t, 0n, 0, n), hchk))
+  u0(d, t, n, 0n, 0, n, {{==}}, hd, hn, pf, W.le_nat(1, n, W.hch1(t, 0n, 0, n, hchk)), U32.is_eq(W.BX(t, 0n), {sels[0]}), {{==}}, W.hchk0(t, 0n, 0, n, hchk))
 
 '''
     chs = sorted(set(arm.values()))
     return {'view': f'RT.v_{X}',
-            'imports': [f'import ../proofs/obj/{rt}.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', f'import ../proofs/obj/{wm} as W']
+            'imports': [f'import ../proofs/obj/{rt}.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', f'import ../proofs/obj/{wm} as W', 'import ../proofs/obj/vbuf.bend as VB', 'import ./e2e_gprog.bend as GP']
             + [f'import ../proofs/obj/{alias_mod[c]} as {c}' for c in chs],
             'text': text}
 
@@ -3119,3 +3120,103 @@ def pbv({WP}, +hchk: {{PBW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{BO.bv
 
 
 SUPPORT_OUT['e2e_gpb.bend'] = gpb_text()
+
+
+# ==== e2e_gprog: the progressive containers read at a byte window: root view == codec value (vw_X) ====
+GP_WA = 'd, t, n, x, off, len, eo, hd, hw, pf, h'
+GP_WP = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n'
+         '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}')
+
+
+def gp_lv(tag, CH):
+    """lv_<tag>: a List[uint16, N] child (window module CH) read at a byte window: root view == codec value."""
+    return f'''def lv_{tag}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},
+    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},
+    +hc: {{{CH}.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{PBF.vview2({CH}.OBJw(d, t, x, off, len)) == {CH}.VALw(t, x, len) : S.Value}}:
+  +ec = PL.c2(len, {CH}.CQ(len), {CH}.eLc(t, x, off, len, hc))
+  +eb = BL.bview(d, t, off, len, x, eo, hd, hw, pf)
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(len, 1n)), {CH}.CQ(len), ec) : {{S.Sequence{{PBF.it2(_, WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}}))}} == {CH}.VALw(t, x, len) : S.Value}}
+  %Equal.sym(+List<U32>, WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}}), UW.WX(t, x, U32.to_nat(len)), eb) : {{S.Sequence{{PBF.it2({CH}.CQ(len), _)}} == {CH}.VALw(t, x, len) : S.Value}}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, PBF.it2({CH}.CQ(len), UW.WX(t, x, U32.to_nat(len))), PBM.it2({CH}.CQ(len), UW.WX(t, x, U32.to_nat(len))), PL.it2eq({CH}.CQ(len), UW.WX(t, x, U32.to_nat(len))))
+'''
+
+
+def _gp_seq(items):
+    out = 'S.EmptyItems{}'
+    for it in reversed(items):
+        out = f'S.Items{{{it}, {out}}}'
+    return f'S.Sequence{{{out}}}'
+
+
+def gp_view(X, W, fields):
+    """vw_X: fields [(lhs item of the object's view, rhs item of VALw, proof of lhs == rhs or None when they convert)]."""
+    lets, steps = [], []
+    lhs = [f[0] for f in fields]
+    rhs = [f[1] for f in fields]
+    for i, (_, _, pr) in enumerate(fields):
+        if pr is None:
+            continue
+        lets.append(f'  +e{i} = {pr}')
+    idx = [i for i, f in enumerate(fields) if f[2] is not None]
+    for i in idx:
+        it = [lhs[q] if (q < i or fields[q][2] is None) else ('_' if q == i else rhs[q]) for q in range(len(fields))]
+        steps.append(f'  %e{i} : {{RT2.v_{X}({W}.OBJw(d, t, x, off, len)) == {_gp_seq(it)} : S.Value}}')
+    return (f'def vw_{X}({GP_WP}, +h: {{{W}.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
+            f'    -> {{RT2.v_{X}({W}.OBJw(d, t, x, off, len)) == {W}.VALw(t, x, len) : S.Value}}:\n' + '\n'.join(lets + steps) + '\n  {==}\n')
+
+
+def gprog_text():
+    J = lambda W, k, ln=False: (f'{W}.XJ{k}(t, x)', f'{W}.FJ{k}(off, t, x)', f'{W}.LJ{k}(t, x' + (', len)' if ln else ')'))  # noqa: E731
+    def jargs(W, k, ln=False):
+        xj, fj, lj = J(W, k, ln)
+        return f'd, t, {xj}, {fj}, {lj}, {W}.eoJ{k}({GP_WA}), hd, {W}.hwJ{k}({GP_WA}), pf, {W}.itD{k}(t, x, off, len, h)'
+    PBJ = lambda W, k, CH, ln: (f'S.BitsValue{{BO.bview({CH}.OBJw({", ".join(("d", "t") + J(W, k, ln))}))}}', f'{CH}.VALw(t, {J(W, k, ln)[0]}, {J(W, k, ln)[2]})',  # noqa: E731
+                                f'Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{{z}}, BO.bview({CH}.OBJw({", ".join(("d", "t") + J(W, k, ln))})), '
+                                f'VBL.bl(UW.WX(t, {J(W, k, ln)[0]}, U32.to_nat({J(W, k, ln)[2]}))), GPB.pbv({jargs(W, k, ln)}))')
+    L16 = lambda W, k, CH, tag, ln: (f'PBF.vview2({CH}.OBJw({", ".join(("d", "t") + J(W, k, ln))}))', f'{CH}.VALw(t, {J(W, k, ln)[0]}, {J(W, k, ln)[2]})',  # noqa: E731
+                                     f'lv_{tag}({jargs(W, k, ln)})')
+    U8 = lambda W, o: (f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat({o}))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat({o})))', None)  # noqa: E731
+    body = [gp_lv('l123', 'L123'),
+            '# ProgressiveSingleListContainerTestStruct: one progressive bit list',
+            gp_view('Gp4B0CA2906A', 'W4B', [PBJ('W4B', 0, 'W4B_CH0', True)]),
+            '# ProgressiveVarTestStruct: a uint8, a List[uint16, 123], a progressive bit list',
+            gp_view('Gp66304057C3', 'W663', [U8('W663', 0), L16('W663', 0, 'L123', 'l123', False), PBJ('W663', 1, 'PBW', True)])]
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/words_obj.bend as WO',
+            'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/bitlist_obj.bend as BO',
+            'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vfx_u8.bend as FX8',
+            'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_l123_u16.bend as L123',
+            'import ../proofs/obj/big_var_winx_Gp4B0CA2906A.bend as W4B', 'import ../proofs/obj/big_var_winp_pbits.bend as W4B_CH0',
+            'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as W663',
+            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB']
+    return '\n'.join(head) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# The progressive containers read at a byte window (x, off, len): the object's root view is its codec
+# value (vw_X), part by part: a uint8 by evaluation, a List[uint16, N] (lv_N), a progressive bit list
+# (e2e_gpb.pbv).
+
+''' + '\n'.join(body)
+
+
+SUPPORT_OUT['e2e_gprog.bend'] = gprog_text()
+UNION_CHILD['big_var_winx_Gp4B0CA2906A.bend'] = 'GP.vw_Gp4B0CA2906A'
+UNION_CHILD['big_var_winx_Gp66304057C3.bend'] = 'GP.vw_Gp66304057C3'
+
+
+def prog_view(R, X):
+    """(ii)/(iii) of a progressive container: its window view (e2e_gprog.vw_X) at the whole buffer."""
+    text = f'''# ---- the view of a decoded object is the codec law's value (e2e_gprog.vw_{X} at the window (0, 0, n)) ----
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  GP.vw_{X}(d, t, n, 0n, 0, n, {{==}}, hd, hn, pf, hchk)
+
+'''
+    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_gprog.bend as GP'], 'text': text}
+
+
+VDEC_VIEWS['Gp4B0CA2906A'] = prog_view('ProgressiveSingleListContainerTestStruct', 'Gp4B0CA2906A')
+VDEC_VIEWS['Gp66304057C3'] = prog_view('ProgressiveVarTestStruct', 'Gp66304057C3')
+VDEC_VIEWS['GuAD91DEB870'] = union_view('CompatibleUnionBC', 'GuAD91DEB870')
+VDEC_VIEWS['Gu6DDF182530'] = union_view('CompatibleUnionABCA', 'Gu6DDF182530')

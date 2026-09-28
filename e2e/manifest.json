@@ -2705,6 +2705,30 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "CompatibleUnionABCA_e2e_dec_generated.bend": [
+   {
+    "name": "CompatibleUnionABCA",
+    "generated_name": "Gu6DDF182530",
+    "laws": [
+     "CompatibleUnionABCA_e2e_decode_view",
+     "CompatibleUnionABCA_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "CompatibleUnionBC_e2e_dec_generated.bend": [
+   {
+    "name": "CompatibleUnionBC",
+    "generated_name": "GuAD91DEB870",
+    "laws": [
+     "CompatibleUnionBC_e2e_decode_view",
+     "CompatibleUnionBC_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "ComplexTestStruct_e2e_dec_generated.bend": [
    {
     "name": "ComplexTestStruct",
@@ -2832,6 +2856,30 @@
     "laws": [
      "FuluTransaction_e2e_decode_view",
      "FuluTransaction_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveSingleListContainerTestStruct",
+    "generated_name": "Gp4B0CA2906A",
+    "laws": [
+     "ProgressiveSingleListContainerTestStruct_e2e_decode_view",
+     "ProgressiveSingleListContainerTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ProgressiveVarTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveVarTestStruct",
+    "generated_name": "Gp66304057C3",
+    "laws": [
+     "ProgressiveVarTestStruct_e2e_decode_view",
+     "ProgressiveVarTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -5839,7 +5887,8 @@
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend"
   },
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
@@ -5847,7 +5896,8 @@
   },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "ProgressiveVarTestStruct_e2e_dec_generated.bend"
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "generated_name": "GpF350A3C486",
@@ -5867,11 +5917,13 @@
   },
   "CompatibleUnionBC": {
    "generated_name": "GuAD91DEB870",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "CompatibleUnionBC_e2e_dec_generated.bend"
   },
   "CompatibleUnionABCA": {
    "generated_name": "Gu6DDF182530",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "CompatibleUnionABCA_e2e_dec_generated.bend"
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
@@ -6500,7 +6552,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "CompatibleUnionABCA_e2e_dec_generated.bend"
   },
   "CompatibleUnionA": {
    "generated_name": "GuA2212AE21F",
@@ -6518,7 +6570,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "CompatibleUnionBC_e2e_dec_generated.bend"
   },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
@@ -6743,7 +6795,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend"
   },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
@@ -6761,7 +6813,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "ProgressiveVarTestStruct_e2e_dec_generated.bend"
   },
   "VarTestStruct": {
    "generated_name": "Gc465214E502",
