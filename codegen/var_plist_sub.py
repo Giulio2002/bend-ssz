@@ -21,6 +21,7 @@ The window modules are BIG (checked with `checkq --big`): the reader's list stor
 is B.zeros(u) at every depth u (big_vvlz.bend's zg).  With --no-big nothing is
 written.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -1168,7 +1169,86 @@ def pbits_text():
     L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', 'import ./vpb29.bend as VP', '', HDR,
                              '# ProgressiveBits (GtF7582E0E9A, runtime pbits) at a window of any byte offset x: the',
                              '# interface of proofs/obj/vua_win.bend (var_win BitList window with the bound removed).', '']
-    return '\n'.join(L) + body
+    return pbits_deep('\n'.join(L) + body)
+
+
+PB_HP = '{U32.is_le(len, VP.PMAX()) == True{} : Bool}'
+PB_WRAP_HELP = '''
+# len <= 4 2^d <= 2^29 = PMAX on a tree of depth d < 28: the old interface's representation bound.
+def hPof(+d: Nat, +len: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hl: {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {U32.is_le(len, VP.PMAX()) == True{} : Bool}:
+  +hq = FD.nat__le_trans(U32.to_nat(len), FD.spec_common__pow2(2n+d), FD.spec_common__pow2(29n), hl,
+    FD.nat__pow2_mono(2n+d, 29n, FD.nat__lt_succ_le(d, 27n, hd)))
+  +hu = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(len), z) == True{} : Bool}, FD.spec_common__pow2(29n), U32.to_nat(FD.u32__pow2u(29n)),
+    Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(29n)), FD.spec_common__pow2(29n), FD.u32__pow2u_value(29n, {==})), hq)
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(len), U32.to_nat(FD.u32__pow2u(29n))), U32.is_le(len, FD.u32__pow2u(29n)),
+    Equal.sym(Bool, U32.is_le(len, FD.u32__pow2u(29n)), Nat.is_le(U32.to_nat(len), U32.to_nat(FD.u32__pow2u(29n))), VB.le_u32n(len, FD.u32__pow2u(29n))), hu)
+'''
+
+
+def pbits_deep(text):
+    """The pbits window at any depth d < 31: the window ends by NMAX (hwN), the copy is vua_ct's U chain
+    (var_win.deep_xN's pattern). The validator's representation bound len - 1 < 2^29 is no longer implied
+    by the depth: the inversion (invwD) takes it as the premise hP: len <= PMAX (proofs/obj/vpb29.bend);
+    the containers holding pbits supply it for their child's window. The old interface (d < 28) stays
+    under the old names (hwN from VB.hwNof, hP from hPof)."""
+    import deep
+    hl_old = '''def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)'''
+    PF = '+pf: {FD.array__perfect(U32, d, t) == True{} : Bool},'
+    reps = [
+        (hl_old, hl_old.replace('+hw:', '+hl:').replace(', hw)', ', hl)')),
+        ('  +hL = hlen(d, x, len, hw)\n', ''),
+        ('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})\n', ''),
+        ('  +hz = VLS.hdz29(d, len, hd, hL)', '  +hy = VC.hyW(x, len, hwN)\n  +hz = VC.dz30(len, hy)'),
+        ('      UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, hd31, FD.nat__le_lt_trans(VLS.DZ(len), 29n, 31n, hz, {==}), ez,\n'
+         '        UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))',
+         '      UCT.copy_in_atU(d, t, n, off, len, VLS.DZ(len), pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), 30n, 31n, hz, {==}), ez,\n'
+         '        UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hy)'),
+        ('VB.lt32(d, hd31)', 'VB.lt32(d, hd)'),
+        ('VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==}))', 'VB.lt32(d, hd)'),
+        ('  UW.eXN(d, off, x, len, M1(len), eo, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), hw, e1)',
+         '  UW.eXNw(off, x, len, M1(len), eo, VB.le_n_lt32(Nat.add(x, U32.to_nat(len)), VB.NMAX(), hwN), e1)'),
+        # the representation bound: the premise hP
+        ('    +d: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n    +nz:',
+         '    +hP: ' + PB_HP + ',\n    +nz:'),
+        ('''  VP.lt29(d, len, m, hd,
+    FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), A.le_skip(x, U32.to_nat(len)), hw), e1)''',
+         '  VP.lt29P(len, m, e1, hP)'),
+        ('chk_true(t, x, off, len, m, e1, d, hd, hw, nz)', 'chk_true(t, x, off, len, m, e1, hP, nz)'),
+        ('inv_t(d, t, x, off, len, eo, hd, hw, pf, bits,', 'inv_t(d, t, x, off, len, eo, hd, hw, pf, hP, bits,'),
+        ('inv_b(d, t, x, off, len, eo, hd, hw, pf, bits,', 'inv_b(d, t, x, off, len, eo, hd, hw, pf, hP, bits,'),
+    ]
+    # eX stays as it was (e2e_gpb calls it): the deep one is eXD
+    a = text.index('\ndef eX(') + 1
+    ex_old = text[a:text.index('\n\n', a)]
+    text = re.sub(r'(?<![\w.])eX\(', 'eXD(', text)
+    for a, b in reps:
+        assert text.count(a) >= 1, a[:80]
+        text = text.replace(a, b)
+    # hP after pf in the inversion's defs
+    for nm in ('inv_t', 'inv_b', 'invw'):
+        a = text.index(f'\ndef {nm}(')
+        b = text.index(PF, a)
+        text = text[:b] + PF + ' +hP: ' + PB_HP + ',' + text[b + len(PF):]
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    for bad in ['VLS.KK(', 'VLS.hrg(', 'UW.hsx(', 'hd31', 'hL', 'VP.lt29(', 'lt_trans(d, 28n']:
+        assert bad not in text, bad
+    assert not re.search(r'(?<!\d)28n(?!\+x)', text), 'pbits_deep leftover'
+    text = deep.thread(text, VW.HWX, VW.HWNX, hw32='hwN')
+    names = VW.XIFACE
+    text = deep.compat(text, names, VW.HWX, VW.HWNX, 'Nat.add(x, U32.to_nat(len))', hw32='hwN',
+                       hw32_term='VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)')
+    # the old invw: no hP (the depth gives it)
+    a = text.index('\ndef invw(')
+    b = text.index('\n\n', a) if '\n\n' in text[a:] else len(text)
+    w = text[a:b]
+    assert w.count(' +hP: ' + PB_HP + ',') == 1 and w.count(', hP, ') == 1, w
+    w = w.replace(' +hP: ' + PB_HP + ',', '').replace(', hP, ', ', hPof(d, len, hd, hlen(d, x, len, hw)), ')
+    text = text[:a] + w + text[b:]
+    k = text.index('\n# ---- the window interface as it was')
+    return text[:k] + '\n' + PB_WRAP_HELP + '\n' + ex_old + '\n' + text[k:]
 
 
 PBITS_FNAME = ROOT / 'proofs/obj/big_var_winp_pbits.bend'
