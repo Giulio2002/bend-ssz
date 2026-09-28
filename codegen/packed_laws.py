@@ -18,6 +18,7 @@ root_support at_depth_tree); a vector mixes no length in.
 
     python3 codegen/packed_laws.py [--check]
 """
+import re
 import sys
 from pathlib import Path
 
@@ -918,7 +919,15 @@ def emit2():
 
 
 def main():
-    outs = [(OUT, emit()), (OUT2, emit2())]
+    # the views and representation invariants go to light companions: e2e files stating against them do
+    # not import the root laws (codegen/light_split.py)
+    import light_split as LS
+    t1, l1 = LS.split(emit(), lambda n: re.match(r'(vview|rep_v|it|cnt|e)(4|8|16|32)$', n) is not None,
+                      './packed_obj_light.bend', 'codegen/packed_laws.py')
+    t2, l2 = LS.split(emit2(), lambda n: re.match(r'(vview(1|2|b)|rep_v(1|2|b)|it(1|2|b)|cnt2|bscope|v16of)$', n) is not None,
+                      './packed_bytes_light.bend', 'codegen/packed_laws.py')
+    outs = [(p, LS.light(t)) for p, t in [(OUT, t1), (OUT.with_name('packed_obj_light.bend'), l1),
+                                          (OUT2, t2), (OUT2.with_name('packed_bytes_light.bend'), l2)]]
     if '--check' in sys.argv:
         for path, text in outs:
             if not path.exists() or path.read_text() != text:

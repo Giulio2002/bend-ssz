@@ -8,7 +8,7 @@ import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
 import ../compact/found.bend as F
 import ./spec_fixed.bend as SF
-import ./words_root.bend as WR
+import ./words_root_light.bend as WR
 import ./vspec.bend as VS
 import ./arr_copy.bend as AC
 import ./arr_emit.bend as AE

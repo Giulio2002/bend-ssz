@@ -19,12 +19,14 @@ import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./list_obj.bend as LO
 import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
+import ./packed_obj_light.bend as PK_L
 import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB_L
 import ./prog_root.bend as PR
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
@@ -55,11 +57,11 @@ def dz(c, e):
     case 1n+ +p: Empty.absurd({0n == 1n+p : Nat}, MD.false_true(Equal.sym(Bool, True{}, False{}, Equal.cong(Nat, Bool, x => Nat.is_eq(x, 0n), 0n, Nat.double(1n+p), e))))
 
 def dbl_zero(+c: Nat, +e: {0n == Nat.double(c) : Nat}) -> {c == 0n : Nat}: Equal.sym(Nat, 0n, c, dz(c, e))
-def e4_zero(+c: Nat, +e: {0n == PK.e4(c) : Nat}) -> {c == 0n : Nat}:
+def e4_zero(+c: Nat, +e: {0n == PK_L.e4(c) : Nat}) -> {c == 0n : Nat}:
   Equal.sym(Nat, 0n, c, dz(c, dz(Nat.double(c), e)))
-def e16_zero(+c: Nat, +e: {0n == PK.e16(c) : Nat}) -> {c == 0n : Nat}:
+def e16_zero(+c: Nat, +e: {0n == PK_L.e16(c) : Nat}) -> {c == 0n : Nat}:
   Equal.sym(Nat, 0n, c, dz(c, dz(Nat.double(c), dz(Nat.double(Nat.double(c)), dz(Nat.double(Nat.double(Nat.double(c))), e)))))
-def e32_zero(+c: Nat, +e: {0n == PK.e32(c) : Nat}) -> {c == 0n : Nat}:
+def e32_zero(+c: Nat, +e: {0n == PK_L.e32(c) : Nat}) -> {c == 0n : Nat}:
   Equal.sym(Nat, 0n, c, dz(c, dz(Nat.double(c), dz(Nat.double(Nat.double(c)), dz(Nat.double(Nat.double(Nat.double(c))), dz(Nat.double(Nat.double(Nat.double(Nat.double(c)))), e))))))
 
 # The runtime root of byte storage as a progressive tree, with the count mixed in.
@@ -161,125 +163,125 @@ def plen0(+hl: Nat, +ehl: {hl == 64n : Nat}, +N: U32, +sh: Nat, +R: D.Digest, +c
 law pc4:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m4(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {Codec.count(PK.it4(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m4(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {Codec.count(PK_L.it4(k, W)) == k : Nat}
 def pc4(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({Codec.count(PK.it4(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({Codec.count(PK_L.it4(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +rest}:
-          %Equal.sym(Nat, Codec.count(PK.it4(c, rest)), c, pc4(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, Codec.count(PK_L.it4(c, rest)), c, pc4(c, rest, hl)) : {1n+_ == 1n+c : Nat}
           {==}
 
 law pc16:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m16(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {Codec.count(PK.it16(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m16(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {Codec.count(PK_L.it16(k, W)) == k : Nat}
 def pc16(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({Codec.count(PK.it16(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({Codec.count(PK_L.it16(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({Codec.count(PK.it16(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
+            case Nil{}: Empty.absurd({Codec.count(PK_L.it16(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
             case Con{+a1, +t1}:
               match t1:
-                case Nil{}: Empty.absurd({Codec.count(PK.it16(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
+                case Nil{}: Empty.absurd({Codec.count(PK_L.it16(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
                 case Con{+a2, +t2}:
                   match t2:
-                    case Nil{}: Empty.absurd({Codec.count(PK.it16(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                    case Nil{}: Empty.absurd({Codec.count(PK_L.it16(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
                     case Con{+a3, +rest}:
-                      %Equal.sym(Nat, Codec.count(PK.it16(c, rest)), c, pc16(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+                      %Equal.sym(Nat, Codec.count(PK_L.it16(c, rest)), c, pc16(c, rest, hl)) : {1n+_ == 1n+c : Nat}
                       {==}
 
 law pc32:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m32(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {Codec.count(PK.it32(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m32(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {Codec.count(PK_L.it32(k, W)) == k : Nat}
 def pc32(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
+            case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
             case Con{+a1, +t1}:
               match t1:
-                case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
+                case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
                 case Con{+a2, +t2}:
                   match t2:
-                    case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                    case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
                     case Con{+a3, +t3}:
                       match t3:
-                        case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Nil{}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                        case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Nil{}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                         case Con{+a4, +t4}:
                           match t4:
-                            case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Nil{}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                            case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Nil{}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                             case Con{+a5, +t5}:
                               match t5:
-                                case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Nil{}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                                case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Nil{}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                                 case Con{+a6, +t6}:
                                   match t6:
-                                    case Nil{}: Empty.absurd({Codec.count(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Nil{}}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                                    case Nil{}: Empty.absurd({Codec.count(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Nil{}}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                                     case Con{+a7, +rest}:
-                                      %Equal.sym(Nat, Codec.count(PK.it32(c, rest)), c, pc32(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+                                      %Equal.sym(Nat, Codec.count(PK_L.it32(c, rest)), c, pc32(c, rest, hl)) : {1n+_ == 1n+c : Nat}
                                       {==}
 
 law pc1:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(k, xs) == True{} : Bool}
-  {Codec.count(PB.it1(k, xs)) == k : Nat}
+  {Codec.count(PB_L.it1(k, xs)) == k : Nat}
 def pc1(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({Codec.count(PB.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({Codec.count(PB_L.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+h, +t}:
-          %Equal.sym(Nat, Codec.count(PB.it1(c, t)), c, pc1(c, t, V.and_right(U32.is_lt(h, 256), SP.byte_scope(c, t), hs))) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, Codec.count(PB_L.it1(c, t)), c, pc1(c, t, V.and_right(U32.is_lt(h, 256), SP.byte_scope(c, t), hs))) : {1n+_ == 1n+c : Nat}
           {==}
 
 law pcb:
   for +k: Nat
   for +xs: +List<U32>
-  for +hs: {PB.bscope(k, xs) == True{} : Bool}
-  {Codec.count(PB.itb(k, xs)) == k : Nat}
+  for +hs: {PB_L.bscope(k, xs) == True{} : Bool}
+  {Codec.count(PB_L.itb(k, xs)) == k : Nat}
 def pcb(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({Codec.count(PB.itb(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({Codec.count(PB_L.itb(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+h, +t}:
-          %Equal.sym(Nat, Codec.count(PB.itb(c, t)), c, pcb(c, t, V.and_right(U32.is_lt(h, 2), PB.bscope(c, t), hs))) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, Codec.count(PB_L.itb(c, t)), c, pcb(c, t, V.and_right(U32.is_lt(h, 2), PB_L.bscope(c, t), hs))) : {1n+_ == 1n+c : Nat}
           {==}
 
 law pc2:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
-  {Codec.count(PB.it2(k, xs)) == k : Nat}
+  {Codec.count(PB_L.it2(k, xs)) == k : Nat}
 def pc2(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({Codec.count(PB.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({Codec.count(PB_L.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+x0, +t}:
           match t:
-            case Nil{}: Empty.absurd({Codec.count(PB.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(V.and_right(U32.is_lt(x0, 256), False{}, hs)))
+            case Nil{}: Empty.absurd({Codec.count(PB_L.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(V.and_right(U32.is_lt(x0, 256), False{}, hs)))
             case Con{+x1, +rest}:
               +k1 = V.and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
-              %Equal.sym(Nat, Codec.count(PB.it2(c, rest)), c, pc2(c, rest, V.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
+              %Equal.sym(Nat, Codec.count(PB_L.it2(c, rest)), c, pc2(c, rest, V.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
               {==}
 
 # ---- ProgressiveList[uint64] ----------------------------------------
@@ -361,7 +363,7 @@ def pl8_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: r
 # The object represents a value of the progressive list schema s: byte storage
 # of whole elements (any count; a progressive list has no limit).
 def rep_pl4(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK.e4(PK.cnt4(o)) : Nat})
+  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK_L.e4(PK_L.cnt4(o)) : Nat})
 
 def rep_wf4(-o: O.Words, +s: S.Schema, +rep: rep_pl4(o, s)) -> LO.wfl(o):
   (+wf, +r) = rep
@@ -369,8 +371,8 @@ def rep_wf4(-o: O.Words, +s: S.Schema, +rep: rep_pl4(o, s)) -> LO.wfl(o):
 
 def ok_pl4(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s)))))
 
-def pl4_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK.e4(PK.cnt4(o)) : Nat})
-    -> RR.roots(PK.vview4(o), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, o, 2n))]):
+def pl4_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK_L.e4(PK_L.cnt4(o)) : Nat})
+    -> RR.roots(PK_L.vview4(o), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, o, 2n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -380,11 +382,11 @@ def pl4_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN
       (+pf, w5) = w4
       (+hd, +en0) = w5
       +eNN = PK.eq_n4(o, t, N, eo, eN)
-      +c0 = e4_zero(U32.to_nat(U32.shrn(N, 2n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
+      +c0 = e4_zero(U32.to_nat(U32.shrn(N, 2n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK_L.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, _, 2n))])
+        RR.roots(PK_L.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, _, 2n))])
       %Equal.sym(Nat, U32.to_nat(U32.shrn(N, 2n)), 0n, c0) :
-        RR.roots(S.Sequence{PK.it4(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 2n))])
+        RR.roots(S.Sequence{PK_L.it4(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 2n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 2n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 2n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -402,32 +404,32 @@ def pl4_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN
       (+h32, w11) = w10
       (+room, +slack) = w11
       +eNN = PK.eq_n4(o, t, N, eo, eN)
-      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, _, 2n))])
+        RR.roots(PK_L.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(pdig(hl, _, 2n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 2n)))])
+        RR.roots(S.Sequence{PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 2n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 2n)))])
+        RR.roots(S.Sequence{PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U32Width{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 2n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PK.v4_enc(N, q, r, dw, t, eNN, enq, h32, pf, room), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 2n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))), pc4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t), PK.words_fit4(U32.to_nat(U32.shrn(N, 2n)), q, r, dw, t, ec, h32, pf, room)))))))
+           plen(hl, ehl, N, 2n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))), pc4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t), PK.words_fit4(U32.to_nat(U32.shrn(N, 2n)), q, r, dw, t, ec, h32, pf, room)))))))
 
 # A progressive list of uint32: its digest is a specification root of its elements.
 def pl4_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_pl4(o, s), +ok: {ok_pl4(s) == True{} : Bool})
-    -> RR.roots(PK.vview4(o), s, [D.bytes(pdig(hl, o, 2n))]):
+    -> RR.roots(PK_L.vview4(o), s, [D.bytes(pdig(hl, o, 2n))]):
   (+wf, +eN) = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PK.vview4(o), _, [D.bytes(pdig(hl, o, 2n))])
+    RR.roots(PK_L.vview4(o), _, [D.bytes(pdig(hl, o, 2n))])
   +c1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   +c2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), c1)) :
-    RR.roots(PK.vview4(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 2n))])
+    RR.roots(PK_L.vview4(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 2n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U32Width{}, PK.is_U32Width_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), c2)) :
-    RR.roots(PK.vview4(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 2n))])
+    RR.roots(PK_L.vview4(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 2n))])
   pl4_body(hl, ehl, o, wf, eN)
 
 # ---- ProgressiveList[uint128] ----------------------------------------
@@ -435,7 +437,7 @@ def pl4_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: r
 # The object represents a value of the progressive list schema s: byte storage
 # of whole elements (any count; a progressive list has no limit).
 def rep_pl16(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK.e16(PK.cnt16(o)) : Nat})
+  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK_L.e16(PK_L.cnt16(o)) : Nat})
 
 def rep_wf16(-o: O.Words, +s: S.Schema, +rep: rep_pl16(o, s)) -> LO.wfl(o):
   (+wf, +r) = rep
@@ -443,8 +445,8 @@ def rep_wf16(-o: O.Words, +s: S.Schema, +rep: rep_pl16(o, s)) -> LO.wfl(o):
 
 def ok_pl16(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s)))))
 
-def pl16_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK.e16(PK.cnt16(o)) : Nat})
-    -> RR.roots(PK.vview16(o), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, o, 4n))]):
+def pl16_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK_L.e16(PK_L.cnt16(o)) : Nat})
+    -> RR.roots(PK_L.vview16(o), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, o, 4n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -454,11 +456,11 @@ def pl16_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +e
       (+pf, w5) = w4
       (+hd, +en0) = w5
       +eNN = PK.eq_n16(o, t, N, eo, eN)
-      +c0 = e16_zero(U32.to_nat(U32.shrn(N, 4n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
+      +c0 = e16_zero(U32.to_nat(U32.shrn(N, 4n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, _, 4n))])
+        RR.roots(PK_L.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, _, 4n))])
       %Equal.sym(Nat, U32.to_nat(U32.shrn(N, 4n)), 0n, c0) :
-        RR.roots(S.Sequence{PK.it16(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 4n))])
+        RR.roots(S.Sequence{PK_L.it16(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 4n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 4n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 4n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -476,32 +478,32 @@ def pl16_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +e
       (+h32, w11) = w10
       (+room, +slack) = w11
       +eNN = PK.eq_n16(o, t, N, eo, eN)
-      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, _, 4n))])
+        RR.roots(PK_L.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(pdig(hl, _, 4n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 4n)))])
+        RR.roots(S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 4n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 4n)))])
+        RR.roots(S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U128{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 4n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PK.v16_enc(N, q, r, dw, t, eNN, enq, h32, pf, room), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 4n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))), pc16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t), PK.words_fit16(U32.to_nat(U32.shrn(N, 4n)), q, r, dw, t, ec, h32, pf, room)))))))
+           plen(hl, ehl, N, 4n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))), pc16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t), PK.words_fit16(U32.to_nat(U32.shrn(N, 4n)), q, r, dw, t, ec, h32, pf, room)))))))
 
 # A progressive list of uint128: its digest is a specification root of its elements.
 def pl16_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_pl16(o, s), +ok: {ok_pl16(s) == True{} : Bool})
-    -> RR.roots(PK.vview16(o), s, [D.bytes(pdig(hl, o, 4n))]):
+    -> RR.roots(PK_L.vview16(o), s, [D.bytes(pdig(hl, o, 4n))]):
   (+wf, +eN) = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PK.vview16(o), _, [D.bytes(pdig(hl, o, 4n))])
+    RR.roots(PK_L.vview16(o), _, [D.bytes(pdig(hl, o, 4n))])
   +c1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   +c2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), c1)) :
-    RR.roots(PK.vview16(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 4n))])
+    RR.roots(PK_L.vview16(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 4n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U128{}, PK.is_U128_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), c2)) :
-    RR.roots(PK.vview16(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 4n))])
+    RR.roots(PK_L.vview16(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 4n))])
   pl16_body(hl, ehl, o, wf, eN)
 
 # ---- ProgressiveList[uint256] ----------------------------------------
@@ -509,7 +511,7 @@ def pl16_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: 
 # The object represents a value of the progressive list schema s: byte storage
 # of whole elements (any count; a progressive list has no limit).
 def rep_pl32(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK.e32(PK.cnt32(o)) : Nat})
+  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == PK_L.e32(PK_L.cnt32(o)) : Nat})
 
 def rep_wf32(-o: O.Words, +s: S.Schema, +rep: rep_pl32(o, s)) -> LO.wfl(o):
   (+wf, +r) = rep
@@ -517,8 +519,8 @@ def rep_wf32(-o: O.Words, +s: S.Schema, +rep: rep_pl32(o, s)) -> LO.wfl(o):
 
 def ok_pl32(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s)))))
 
-def pl32_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK.e32(PK.cnt32(o)) : Nat})
-    -> RR.roots(PK.vview32(o), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, o, 5n))]):
+def pl32_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == PK_L.e32(PK_L.cnt32(o)) : Nat})
+    -> RR.roots(PK_L.vview32(o), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, o, 5n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -528,11 +530,11 @@ def pl32_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +e
       (+pf, w5) = w4
       (+hd, +en0) = w5
       +eNN = PK.eq_n32(o, t, N, eo, eN)
-      +c0 = e32_zero(U32.to_nat(U32.shrn(N, 5n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
+      +c0 = e32_zero(U32.to_nat(U32.shrn(N, 5n)), Equal.trans(Nat, 0n, U32.to_nat(N), PK_L.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, _, 5n))])
+        RR.roots(PK_L.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, _, 5n))])
       %Equal.sym(Nat, U32.to_nat(U32.shrn(N, 5n)), 0n, c0) :
-        RR.roots(S.Sequence{PK.it32(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 5n))])
+        RR.roots(S.Sequence{PK_L.it32(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 5n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 5n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 5n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -550,32 +552,32 @@ def pl32_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +e
       (+h32, w11) = w10
       (+room, +slack) = w11
       +eNN = PK.eq_n32(o, t, N, eo, eN)
-      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PK.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, _, 5n))])
+        RR.roots(PK_L.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(pdig(hl, _, 5n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 5n)))])
+        RR.roots(S.Sequence{PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 5n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 5n)))])
+        RR.roots(S.Sequence{PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))}, S.ProgressiveList{S.Unsigned{P.U256{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 5n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PK.v32_enc(N, q, r, dw, t, eNN, enq, h32, pf, room), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 5n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))), pc32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), PK.words_fit32(U32.to_nat(U32.shrn(N, 5n)), q, r, dw, t, ec, h32, pf, room)))))))
+           plen(hl, ehl, N, 5n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))), pc32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), PK.words_fit32(U32.to_nat(U32.shrn(N, 5n)), q, r, dw, t, ec, h32, pf, room)))))))
 
 # A progressive list of uint256: its digest is a specification root of its elements.
 def pl32_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_pl32(o, s), +ok: {ok_pl32(s) == True{} : Bool})
-    -> RR.roots(PK.vview32(o), s, [D.bytes(pdig(hl, o, 5n))]):
+    -> RR.roots(PK_L.vview32(o), s, [D.bytes(pdig(hl, o, 5n))]):
   (+wf, +eN) = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PK.vview32(o), _, [D.bytes(pdig(hl, o, 5n))])
+    RR.roots(PK_L.vview32(o), _, [D.bytes(pdig(hl, o, 5n))])
   +c1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   +c2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), c1)) :
-    RR.roots(PK.vview32(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 5n))])
+    RR.roots(PK_L.vview32(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 5n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U256{}, PK.is_U256_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), c2)) :
-    RR.roots(PK.vview32(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 5n))])
+    RR.roots(PK_L.vview32(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 5n))])
   pl32_body(hl, ehl, o, wf, eN)
 
 # ---- ProgressiveList[uint8] ----------------------------------------
@@ -591,7 +593,7 @@ def rep_wf1(-o: O.Words, +s: S.Schema, +rep: rep_pl1(o, s)) -> LO.wfl(o):
 def ok_pl1(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s)))))
 
 def pl1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o))
-    -> RR.roots(PB.vview1(o), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, o, 0n))]):
+    -> RR.roots(PB_L.vview1(o), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, o, 0n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -602,9 +604,9 @@ def pl1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o))
       (+hd, +en0) = w5
       +c0 = Equal.sym(Nat, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, en0))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, _, 0n))])
+        RR.roots(PB_L.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, _, 0n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, c0) :
-        RR.roots(S.Sequence{PB.it1(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 0n))])
+        RR.roots(S.Sequence{PB_L.it1(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 0n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 0n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 0n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -622,30 +624,30 @@ def pl1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o))
       (+h32, w11) = w10
       (+room, +slack) = w11
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, _, 0n))])
+        RR.roots(PB_L.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(pdig(hl, _, 0n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 0n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U8{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 0n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PB.pb1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 0n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))))))
+           plen(hl, ehl, N, 0n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))))))
 
 # A progressive list of uint8: its digest is a specification root of its elements.
 def pl1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_pl1(o, s), +ok: {ok_pl1(s) == True{} : Bool})
-    -> RR.roots(PB.vview1(o), s, [D.bytes(pdig(hl, o, 0n))]):
+    -> RR.roots(PB_L.vview1(o), s, [D.bytes(pdig(hl, o, 0n))]):
   +wf = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PB.vview1(o), _, [D.bytes(pdig(hl, o, 0n))])
+    RR.roots(PB_L.vview1(o), _, [D.bytes(pdig(hl, o, 0n))])
   +c1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   +c2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), c1)) :
-    RR.roots(PB.vview1(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 0n))])
+    RR.roots(PB_L.vview1(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 0n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U8{}, PB.is_U8_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), c2)) :
-    RR.roots(PB.vview1(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 0n))])
+    RR.roots(PB_L.vview1(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 0n))])
   pl1_body(hl, ehl, o, wf)
 
 # ---- ProgressiveList[uint16] ----------------------------------------
@@ -653,7 +655,7 @@ def pl1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: r
 # The object represents a value of the progressive list schema s: byte storage
 # of whole elements (any count; a progressive list has no limit).
 def rep_pl2(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == Nat.double(PB.cnt2(o)) : Nat})
+  DK.P2(LO.wfl(o), {U32.to_nat(WO.len(o)) == Nat.double(PB_L.cnt2(o)) : Nat})
 
 def rep_wf2(-o: O.Words, +s: S.Schema, +rep: rep_pl2(o, s)) -> LO.wfl(o):
   (+wf, +r) = rep
@@ -661,8 +663,8 @@ def rep_wf2(-o: O.Words, +s: S.Schema, +rep: rep_pl2(o, s)) -> LO.wfl(o):
 
 def ok_pl2(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s)))))
 
-def pl2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == Nat.double(PB.cnt2(o)) : Nat})
-    -> RR.roots(PB.vview2(o), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, o, 1n))]):
+def pl2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == Nat.double(PB_L.cnt2(o)) : Nat})
+    -> RR.roots(PB_L.vview2(o), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, o, 1n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -674,9 +676,9 @@ def pl2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN
       +eNN = PB.eq_n2(o, t, N, eo, eN)
       +c0 = dbl_zero(U32.to_nat(U32.shrn(N, 1n)), Equal.trans(Nat, 0n, U32.to_nat(N), Nat.double(U32.to_nat(U32.shrn(N, 1n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, _, 1n))])
+        RR.roots(PB_L.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, _, 1n))])
       %Equal.sym(Nat, U32.to_nat(U32.shrn(N, 1n)), 0n, c0) :
-        RR.roots(S.Sequence{PB.it2(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 1n))])
+        RR.roots(S.Sequence{PB_L.it2(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 1n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 1n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 1n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -696,30 +698,30 @@ def pl2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +eN
       +eNN = PB.eq_n2(o, t, N, eo, eN)
       +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), Nat.double(U32.to_nat(U32.shrn(N, 1n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, _, 1n))])
+        RR.roots(PB_L.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(pdig(hl, _, 1n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 1n)))])
+        RR.roots(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 1n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 1n)))])
+        RR.roots(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Unsigned{P.U16{}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 1n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PB.v2_enc(N, q, r, dw, t, eNN, enq, h32, pf, room), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 1n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.v2_scope(N, q, r, dw, t, eNN, enq, h32, pf, room)))))))
+           plen(hl, ehl, N, 1n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.v2_scope(N, q, r, dw, t, eNN, enq, h32, pf, room)))))))
 
 # A progressive list of uint16: its digest is a specification root of its elements.
 def pl2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_pl2(o, s), +ok: {ok_pl2(s) == True{} : Bool})
-    -> RR.roots(PB.vview2(o), s, [D.bytes(pdig(hl, o, 1n))]):
+    -> RR.roots(PB_L.vview2(o), s, [D.bytes(pdig(hl, o, 1n))]):
   (+wf, +eN) = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PB.vview2(o), _, [D.bytes(pdig(hl, o, 1n))])
+    RR.roots(PB_L.vview2(o), _, [D.bytes(pdig(hl, o, 1n))])
   +c1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   +c2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s))), k1)
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), c1)) :
-    RR.roots(PB.vview2(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 1n))])
+    RR.roots(PB_L.vview2(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 1n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U16{}, PB.is_U16_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), c2)) :
-    RR.roots(PB.vview2(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 1n))])
+    RR.roots(PB_L.vview2(o), S.ProgressiveList{S.Unsigned{_}}, [D.bytes(pdig(hl, o, 1n))])
   pl2_body(hl, ehl, o, wf, eN)
 
 # ---- ProgressiveList[boolean] ----------------------------------------
@@ -727,7 +729,7 @@ def pl2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: r
 # The object represents a value of the progressive list schema s: byte storage
 # of whole elements (any count; a progressive list has no limit).
 def rep_plb(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), {PB.bscope(U32.to_nat(WO.len(o)), WO.wview(o)) == True{} : Bool})
+  DK.P2(LO.wfl(o), {PB_L.bscope(U32.to_nat(WO.len(o)), WO.wview(o)) == True{} : Bool})
 
 def rep_wfb(-o: O.Words, +s: S.Schema, +rep: rep_plb(o, s)) -> LO.wfl(o):
   (+wf, +r) = rep
@@ -735,8 +737,8 @@ def rep_wfb(-o: O.Words, +s: S.Schema, +rep: rep_plb(o, s)) -> LO.wfl(o):
 
 def ok_plb(+s: S.Schema) -> Bool: Bool.and(SH.is_ProgressiveList(s), SH.is_Boolean(SH.ProgressiveList_element(s)))
 
-def plb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +hb: {PB.bscope(U32.to_nat(WO.len(o)), WO.wview(o)) == True{} : Bool})
-    -> RR.roots(PB.vviewb(o), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, o, 0n))]):
+def plb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +hb: {PB_L.bscope(U32.to_nat(WO.len(o)), WO.wview(o)) == True{} : Bool})
+    -> RR.roots(PB_L.vviewb(o), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, o, 0n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -747,9 +749,9 @@ def plb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +hb
       (+hd, +en0) = w5
       +c0 = Equal.sym(Nat, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, en0))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vviewb(_), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, _, 0n))])
+        RR.roots(PB_L.vviewb(_), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, _, 0n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, c0) :
-        RR.roots(S.Sequence{PB.itb(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 0n))])
+        RR.roots(S.Sequence{PB_L.itb(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, O.Words{F.array__thaw(U32, t), N}, 0n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ProgressiveList{S.Boolean{}}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, 0n)))])
       ([], (([], ({==}, {==})), (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, 0n, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), c0)))))
@@ -767,25 +769,25 @@ def plb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +wf: LO.wfl(o), +hb
       (+h32, w11) = w10
       (+room, +slack) = w11
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vviewb(_), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, _, 0n))])
+        RR.roots(PB_L.vviewb(_), S.ProgressiveList{S.Boolean{}}, [D.bytes(pdig(hl, _, 0n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n)), U32.shrn(N, 0n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ProgressiveList{S.Boolean{}}, [D.bytes(O.mix_len(hl, PR.pr(1n+_, Nat.is_lt(0n, _), hl, 0n, 0n, _, MR.clist(_, F.array__slots(U32, t), 0n)), U32.shrn(N, 0n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PB.pbb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.bsc(o, t, N, eo, hb)), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n))), (pl_merk(hl, ehl, q, dw, t, hd, room),
-           plen(hl, ehl, N, 0n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pcb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.bsc(o, t, N, eo, hb)))))))
+           plen(hl, ehl, N, 0n, PR.pr(2n+q, True{}, hl, 0n, 0n, 1n+q, MR.clist(1n+q, F.array__slots(U32, t), 0n)), Codec.count(PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pcb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.bsc(o, t, N, eo, hb)))))))
 
 # A progressive list of boolean: its digest is a specification root of its elements.
 def plb_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: rep_plb(o, s), +ok: {ok_plb(s) == True{} : Bool})
-    -> RR.roots(PB.vviewb(o), s, [D.bytes(pdig(hl, o, 0n))]):
+    -> RR.roots(PB_L.vviewb(o), s, [D.bytes(pdig(hl, o, 0n))]):
   (+wf, +hb) = rep
   +c0 = DK.and_l(SH.is_ProgressiveList(s), SH.is_Boolean(SH.ProgressiveList_element(s)), ok)
   +k1 = DK.and_r(SH.is_ProgressiveList(s), SH.is_Boolean(SH.ProgressiveList_element(s)), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, c0)) :
-    RR.roots(PB.vviewb(o), _, [D.bytes(pdig(hl, o, 0n))])
+    RR.roots(PB_L.vviewb(o), _, [D.bytes(pdig(hl, o, 0n))])
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Boolean{}, SH.Boolean_shape(SH.ProgressiveList_element(s), k1)) :
-    RR.roots(PB.vviewb(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 0n))])
+    RR.roots(PB_L.vviewb(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 0n))])
   plb_body(hl, ehl, o, wf, hb)
 

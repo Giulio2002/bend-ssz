@@ -12,8 +12,11 @@ import ../obj/generic_specs.bend as P0_Spec
 import ../obj/schema_shapes.bend as P0_SH
 import ../obj/dk.bend as P0_DK
 import ../obj/mtree_defs.bend as P0_MD
+import ../obj/words_obj_light.bend as P0_WO_L
 import ../obj/bitlist_obj.bend as P0_BO
 import ../obj/obj_support.bend as P0_OS
+import ../obj/packed_obj_light.bend as P0_PK_L
+import ../obj/packed_bytes_light.bend as P0_PB_L
 import ../obj/xlist_support.bend as P0_XS
 import ../obj/mtree_run.bend as P0_MR
 import ../../spec/codec.bend as P0_Codec

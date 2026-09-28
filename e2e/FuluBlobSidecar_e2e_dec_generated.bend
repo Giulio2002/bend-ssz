@@ -19,7 +19,7 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as SF
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vbig.bend as VBG

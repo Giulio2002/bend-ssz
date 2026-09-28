@@ -15,13 +15,13 @@ import ./mtree_run.bend as MR
 import ./mtree_spec.bend as MS
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
-import ./words_root.bend as WR
+import ./words_root_light.bend as WR
 import ./spec_fixed.bend as FX
 import ./elems_obj.bend as EL
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_root.bend as Mix
 import ../../spec/nat_bytes.bend as Len
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK

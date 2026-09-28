@@ -6,7 +6,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader_win.bend as W
 import ./e2e_blist.bend as BL

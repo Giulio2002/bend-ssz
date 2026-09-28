@@ -17,9 +17,9 @@ import ../proofs/obj/vua.bend as UA
 import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/vua_ct.bend as UCT
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/words_root_light.bend as WR
 import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL
 

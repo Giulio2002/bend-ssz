@@ -8,7 +8,7 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/spec_fixed.bend as SF
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbyte.bend as VY

@@ -8,8 +8,8 @@ import ../spec/codec.bend as Encoding
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/packed_obj.bend as PK
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/vspec.bend as VSP
 import ./e2e_support.bend as E
 import ../types/vec_uint256_513_encode_ssz_generated.bend as vec_uint256_513_e

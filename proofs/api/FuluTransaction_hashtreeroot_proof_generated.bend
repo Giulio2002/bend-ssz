@@ -12,7 +12,7 @@ import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/schema_shapes.bend as P0_SH
 import ../obj/dk.bend as P0_DK
 import ../obj/mtree_defs.bend as P0_MD
-import ../obj/words_obj.bend as P0_WO
+import ../obj/words_obj_light.bend as P0_WO
 import ../obj/list_obj.bend as P0_LO
 import ../obj/obj_support.bend as P0_OS
 import ../obj/xlist_support.bend as P0_XS

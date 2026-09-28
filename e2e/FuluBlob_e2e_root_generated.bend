@@ -1,7 +1,7 @@
 import Base
 import ./e2e_fixd.bend as X
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -33,7 +33,7 @@ import ../types/FuluMatrixEntry_hashtreeroot_generated.bend as FuluMatrixEntry_h
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/root_types.bend as M0
 import ../proofs/obj/gvalid_types.bend as M1
-import ../proofs/obj/words_obj.bend as M0_WO
+import ../proofs/obj/words_obj_light.bend as M0_WO
 import ../proofs/obj/schema_shapes.bend as M0_SH
 import ../proofs/obj/words_spec.bend as M0_WO_WS
 import ../spec/primitives.bend as M0_WO_SP

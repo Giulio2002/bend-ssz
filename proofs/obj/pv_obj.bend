@@ -8,7 +8,9 @@ import ../../spec/limits.bend as Lim
 import ../compact/found.bend as F
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
+import ./words_root_light.bend as WR_L
 import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO_L
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 
@@ -18,7 +20,7 @@ import ./dk.bend as DK
 
 def pview(o: O.Words) -> S.Value:
   match o:
-    case O.Words{ws, +n}: S.Sequence{WR.items(O.chunks_of(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)}
+    case O.Words{ws, +n}: S.Sequence{WR_L.items(O.chunks_of(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)}
 
 # The representation invariant: a perfect word tree with room for 1 + q whole chunks.
 def wfv(o: O.Words) -> Data:
@@ -29,7 +31,7 @@ def wfv(o: O.Words) -> Data:
     DK.P2({U32.to_nat(N) == Nat.add(WS.e32(q), 32n) : Nat},
           {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool}))))))))
 
-def to_wf1(-o: O.Words, +w: wfv(o)) -> WO.wf1(o):
+def to_wf1(-o: O.Words, +w: wfv(o)) -> WO_L.wf1(o):
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
@@ -42,26 +44,26 @@ def to_wf1(-o: O.Words, +w: wfv(o)) -> WO.wf1(o):
 
 # The object represents a value of the vector schema s: it holds one chunk per element.
 def rep_pv(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(wfv(o), {Nat.is_eq(O.chunks_of(WO.len(o)), SH.Vector_length(s)) == True{} : Bool})
+  DK.P2(wfv(o), {Nat.is_eq(O.chunks_of(WO_L.len(o)), SH.Vector_length(s)) == True{} : Bool})
 
 # The schema is a vector of Bytes32 whose length has minimal depth `depth`.
 def ok_pv(+s: S.Schema, +depth: Nat) -> Bool:
   Bool.and(SH.is_Vector(s), Bool.and(SH.is_ByteVector(SH.Vector_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.Vector_element(s)), 32n), Lim.minimal(SH.Vector_length(s), depth))))
 
 def pv_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: wfv(o), +edu: {U32.to_nat(dU) == depth : Nat})
-    -> {O.words_root(hl, h, o, dU, seg) == (h, (o, WO.wdig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
+    -> {O.words_root(hl, h, o, dU, seg) == (h, (o, WO_L.wdig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
   WO.bv_st(hl, h, o, dU, seg, depth, to_wf1(o, wf), edu)
 
 def k_len1(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +K: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +ks: {Nat.is_eq(O.chunks_of(WO.len(o)), K) == True{} : Bool}) -> {Nat.is_eq(O.chunks_of(N), K) == True{} : Bool}:
-  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(O.chunks_of(_), K) == True{} : Bool}
+    +ks: {Nat.is_eq(O.chunks_of(WO_L.len(o)), K) == True{} : Bool}) -> {Nat.is_eq(O.chunks_of(N), K) == True{} : Bool}:
+  %Equal.cong(O.Words, U32, WO_L.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(O.chunks_of(_), K) == True{} : Bool}
   ks
 
 def k_len(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +q: Nat, +K: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
     +en: {U32.to_nat(N) == Nat.add(WS.e32(q), 32n) : Nat},
-    +ks: {Nat.is_eq(O.chunks_of(WO.len(o)), K) == True{} : Bool}) -> {K == 1n+q : Nat}:
+    +ks: {Nat.is_eq(O.chunks_of(WO_L.len(o)), K) == True{} : Bool}) -> {K == 1n+q : Nat}:
   +ks1 = k_len1(o, t, N, K, eo, ks)
-  Equal.trans(Nat, K, O.chunks_of(N), 1n+q, Equal.sym(Nat, O.chunks_of(N), K, WS.nat_eq(O.chunks_of(N), K, ks1)), WO.chunks_q(N, q, 32n, en, {==}, {==}))
+  Equal.trans(Nat, K, O.chunks_of(N), 1n+q, Equal.sym(Nat, O.chunks_of(N), K, WS.nat_eq(O.chunks_of(N), K, ks1)), WO_L.chunks_q(N, q, 32n, en, {==}, {==}))
 
 def min_k(+K: Nat, +q: Nat, +depth: Nat, +kq: {K == 1n+q : Nat}, +hm: {Lim.minimal(K, depth) == True{} : Bool}) -> {Lim.minimal(1n+q, depth) == True{} : Bool}:
   %kq : {Lim.minimal(_, depth) == True{} : Bool}
@@ -69,7 +71,7 @@ def min_k(+K: Nat, +q: Nat, +depth: Nat, +kq: {K == 1n+q : Nat}, +hm: {Lim.minim
 
 def pv_body(+hl: Nat, -h: B.Buf, -o: O.Words, +K: Nat, +depth: Nat, +dU: U32, +seg: U32,
     +wf: wfv(o),
-    +ks: {Nat.is_eq(O.chunks_of(WO.len(o)), K) == True{} : Bool},
+    +ks: {Nat.is_eq(O.chunks_of(WO_L.len(o)), K) == True{} : Bool},
     +hm: {Lim.minimal(K, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
@@ -88,9 +90,9 @@ def pv_body(+hl: Nat, -h: B.Buf, -o: O.Words, +K: Nat, +depth: Nat, +dU: U32, +s
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
     RR.roots(pview(_), S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, _, dU, seg))))])
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    RR.roots(S.Sequence{WR.items(O.chunks_of(N), F.array__slots(U32, _), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))])
-  %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, 32n, en, {==}, {==})) :
-    RR.roots(S.Sequence{WR.items(_, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))])
+    RR.roots(S.Sequence{WR_L.items(O.chunks_of(N), F.array__slots(U32, _), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))])
+  %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO_L.chunks_q(N, q, 32n, en, {==}, {==})) :
+    RR.roots(S.Sequence{WR_L.items(_, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))])
   WR.pv_full(hl, h, dU, seg, N, depth, q, dw, t, en, pf, room, edu, hd, min_k(K, q, depth, kq, hm), hdep, ehl)
 
 # A vector of Bytes32: its digest is a specification root of its elements.
@@ -99,7 +101,7 @@ def pv_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
     +ok: {ok_pv(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(pview(o), s, [D.bytes(WO.wdig(hl, o, depth))]):
+    -> RR.roots(pview(o), s, [D.bytes(WO_L.wdig(hl, o, depth))]):
   (+wf, +ks) = rep
   +c0 = DK.and_l(SH.is_Vector(s), Bool.and(SH.is_ByteVector(SH.Vector_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.Vector_element(s)), 32n), Lim.minimal(SH.Vector_length(s), depth))), ok)
   +r1 = DK.and_r(SH.is_Vector(s), Bool.and(SH.is_ByteVector(SH.Vector_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.Vector_element(s)), 32n), Lim.minimal(SH.Vector_length(s), depth))), ok)

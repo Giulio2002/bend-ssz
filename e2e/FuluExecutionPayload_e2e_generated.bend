@@ -29,7 +29,7 @@ import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vconts.bend as CS
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN

@@ -30,8 +30,10 @@ import ../obj/generic_specs.bend as Spec
 import ../obj/schema_shapes.bend as SH
 import ../obj/dk.bend as DK
 import ../obj/mtree_defs.bend as MD
+import ../obj/words_obj_light.bend as WO
 import ../obj/bitlist_obj.bend as BO
 import ../obj/obj_support.bend as OS
+import ../obj/packed_bytes_light.bend as PB
 import ../obj/xlist_support.bend as XS
 import ../obj/mtree_run.bend as MR
 import ../../spec/codec.bend as Codec

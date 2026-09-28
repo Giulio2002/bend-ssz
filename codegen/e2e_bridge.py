@@ -48,6 +48,7 @@ together), and e2e/manifest.json. Batches keep each file's check within 60 s / 8
 """
 import json
 import re
+from light_split import unlight as _unlight   # parse modules as before their light split (codegen/light_split.py)
 import sys
 from pathlib import Path
 
@@ -799,7 +800,7 @@ def seg_pf(+d: Nat, +sl: List<&2, U32>) -> {FD.array__perfect(U32, d, AC.segt(d,
 def blocks_of(f, cache):
     if f not in cache:
         # the runtime's symbols read as T.<sym> (a proving module imports the split files: RR.unwire)
-        cache[f] = AG.blocks(RR.unwire((OBJ / f).read_text()))
+        cache[f] = AG.blocks(RR.unwire(_unlight((OBJ / f).read_text())))
     return cache[f]
 
 
@@ -898,7 +899,7 @@ def valid_index():
     <alias>.<view>(o) of the root file they import."""
     idx = {}
     for f in sorted(OBJ.glob('valid_*.bend')):
-        src = RR.unwire(f.read_text())   # light companions read as their modules (codegen/light_split.py)
+        src = RR.unwire(_unlight(f.read_text()))   # light companions read as their modules (codegen/light_split.py)
         al = {m.group(2): m.group(1) for m in re.finditer(r'import \./(\w+\.bend) as (\w+)', src)}
         for m in re.finditer(r'^def (rv_\w+)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), ', src, re.M):
             if m.group(2) in al:
@@ -906,7 +907,7 @@ def valid_index():
     # the per-name lemmas at the Spec schema (codegen/valid_laws.py: gvalid_*.bend):
     # <X>_root_valid(+o: R) -> {VD.root_valid(<alias>.<view>(o), Spec.<X>()) == True{} : Bool}
     for f in sorted(OBJ.glob('gvalid_*.bend')):
-        src = RR.unwire(f.read_text())
+        src = RR.unwire(_unlight(f.read_text()))
         al = {m.group(2): m.group(1) for m in re.finditer(r'import \./(\w+\.bend) as (\w+)', src)}
         for m in re.finditer(r'^def ((\w+)_root_valid)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), Spec\.(\w+)\(\)\) == True', src, re.M):
             if m.group(3) in al and m.group(2) == m.group(5):
@@ -1019,7 +1020,7 @@ def requal(s, amap):
 def file_aliases(f):
     """a proving file's import aliases, mapped to this file's (T/O/B/S/P/Spec/D/F/SP)."""
     out = {}
-    for m in re.finditer(r'^import (\S+) as (\w+)$', (OBJ / f).read_text(), re.M):
+    for m in re.finditer(r'^import (\S+) as (\w+)$', _unlight((OBJ / f).read_text()), re.M):
         path, a = m.group(1), m.group(2)
         base = path.split('/')[-1]
         known = {'fulu_obj.bend': 'T', 'generic_obj.bend': 'T', 'obj.bend': 'O', 'buffer.bend': 'B',
@@ -1193,7 +1194,7 @@ def family_w(X, m, cache):
     if not re.match(r'RR\.roots\(PK\.vview' + K + r'\(o\), s, ', b_rt[3]):
         return None
     return {'X': X, 'ename': ename, 'sname': sname, 'N': N, 'NW': NW, 'd': d, 'leaves': leaves, 'xs': xs, 'K': K, 'value': ms.group(4),
-            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': RR.runtime_of((OBJ / ee[0]['file']).read_text()) == 'generic'}
+            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': RR.runtime_of(_unlight((OBJ / ee[0]['file']).read_text())) == 'generic'}
 
 
 def leafterm(i, d):
@@ -1426,7 +1427,7 @@ def wvalid(r):
     """the name's structural-validity lemma over the root law's binders (codegen/valid_laws.py)"""
     for f in sorted(OBJ.glob('gvalid_*.bend')):
         if re.search(r'^def ' + r['X'] + r'_root_valid\(-o: O\.Words, \+s: S\.Schema, \+es: \{s == Spec\.' + r['sname'] +
-                     r'\(\) : S\.Schema\}, \+rep: PK\.rep_v' + r['K'] + r'\(o, s\)\)', f.read_text(), re.M):
+                     r'\(\) : S\.Schema\}, \+rep: PK\.rep_v' + r['K'] + r'\(o, s\)\)', _unlight(f.read_text()), re.M):
             return f.name
     return None
 
@@ -1485,14 +1486,14 @@ ANYHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/mod
 def any_info(X):
     """the any-depth laws and the encoder's shape: (file, law binders, NW, value, put, out depth, N)"""
     for f in sorted(OBJ.glob('spec_[gw]any_*.bend')):
-        src = RR.unwire(f.read_text())   # the runtime's symbols as T.<sym> (the module imports the split files)
+        src = RR.unwire(_unlight(f.read_text()))   # the runtime's symbols as T.<sym> (the module imports the split files)
         m = re.search(r'^def ' + X + r'_encode_any\((.*)\)\n    -> \{SF\.emitted\(O\.Words, T\.' + X + r'_encode\((.*?)\), (\d+)\) == ', src, re.M)
         if not m:
             continue
         md = re.search(r'^def ' + X + r'_decodes_any\((.*)\)\n    -> Decoding\.decodes\((\w+|Spec\.\w+\(\)), (.*)\):$', src, re.M)
         if not md:
             return None
-        rt = RR.mono_text(RR.runtime_of(f.read_text()))
+        rt = RR.mono_text(RR.runtime_of(_unlight(f.read_text())))
         me = re.search(r'^def ' + X + r'_encode\(o: O\.Words\) -> O\.Words & B\.Buf: ' + X + r'_enc_out\((\w+)\(O\.out_at\((\d+)n\), 0, o\)\)$', rt, re.M)
         mo = re.search(r'^def ' + X + r'_enc_out\(pair: Array<U32> & O\.Words\) -> O\.Words & B\.Buf:\n  \(out, o\) = pair\n  \(o, O\.out_done\((\d+), out\)\)$', rt, re.M)
         if not (me and mo):
@@ -2331,7 +2332,7 @@ def vdec_info(R):
     f = ROOT / 'proofs/api' / f'{R}_decode_ssz_proof_generated.bend'
     if not f.exists():
         return None
-    s = f.read_text()
+    s = _unlight(f.read_text())
     imp = dict((a, p) for p, a in re.findall(r'^import \.\./obj/(\S+) as (\w+)$', s, re.M))
     mods = {}
     for op in ('decode_accept', 'decode_spec', 'decode_none', 'decode_reject'):
@@ -2515,7 +2516,7 @@ def input_bounds(readable, bridged):
     rows, short = {}, []
     for f in sorted((ROOT / 'proofs/api').glob('*_decode_ssz_proof_generated.bend')):
         R = f.name[:-len('_decode_ssz_proof_generated.bend')]
-        mb = re.search(r'__decode_accept__decode_accept\(\+d: Nat, \+t: [^\n]*?\+hd: \{Nat\.is_lt\(d, (\d+)n\)', f.read_text())
+        mb = re.search(r'__decode_accept__decode_accept\(\+d: Nat, \+t: [^\n]*?\+hd: \{Nat\.is_lt\(d, (\d+)n\)', _unlight(f.read_text()))
         if not mb or inv.get(R) not in tys:
             continue
         info = {'bound': int(mb.group(1)), 'kmode': VDEC_VIEWS.get(inv.get(R), {}).get('kmode')}
@@ -2915,7 +2916,7 @@ def bit_lists(amap_map):
     rows = []
     for f in sorted(OBJ.glob('var_bits_enc_Gt*.bend')):
         X = f.stem[len('var_bits_enc_'):]
-        s = f.read_text()
+        s = _unlight(f.read_text())
         ml = re.search(r'rep_N\(T, K, (\d+)n', s)
         mo = re.search(r'def OUT\(.*DL\.OZ\(([^,]+),', s)
         if ml and mo:
@@ -2971,7 +2972,7 @@ def outputs():
             continue
         r['R'] = R
         r['ee_alias'] = file_aliases(r['ee']['file'])
-        r['generic'] = RR.runtime_of((OBJ / r['ee']['file']).read_text()) == 'generic'
+        r['generic'] = RR.runtime_of(_unlight((OBJ / r['ee']['file']).read_text())) == 'generic'
         fam.append(r)
     # a readable name shared by a Fulu name and a generic form (the basic types): the generic
     # form's laws carry its generated name
@@ -3053,14 +3054,14 @@ def outputs():
         a['alias'] = file_aliases(a['file'])
         b_rt = law(cache, m0['root'][0])
         rp = [q.strip() for q in b_rt[2]]
-        gen = RR.runtime_of((OBJ / a['file']).read_text()) == 'generic'
+        gen = RR.runtime_of(_unlight((OBJ / a['file']).read_text())) == 'generic'
         ms_ = re.search(r'\{s == Spec\.(\w+)\(\) : S\.Schema\}', ' '.join(rp))
         mk = re.match(r'\+rep: PK\.rep_v(\d+)\(o, s\)$', rp[-1]) if len(rp) == 5 else None
         if mk and ms_ and rp[1] == '-o: O.Words' and re.match(r'RR\.roots\(PK\.vview' + mk.group(1) + r'\(o\), s, ', b_rt[3]):
             row = {'X': X0, 'R': R0, 'sname': ms_.group(1), 'K': mk.group(1), 'ename': X0, 'rt': m0['root'][0], 'generic': gen, 'a': a, 'kind': 'rep'}
         elif rp[:1] == ['-h: B.Buf'] and [q.split(':')[0] for q in rp[1:]] == ['+t', '+dw', '+hd', '+pf', '+cap']:
             mv = re.match(r'(Spec\.\w+\(\)|\w+), (.*)$', a['dec'])
-            wv = re.search(r'== \(O\.Words\{.*?\}, (.*)\) : O\.Words & \+List<U32>\}', (OBJ / a['file']).read_text().split('def ' + X0 + '_encode_any(')[1].split('\n')[1])
+            wv = re.search(r'== \(O\.Words\{.*?\}, (.*)\) : O\.Words & \+List<U32>\}', _unlight((OBJ / a['file']).read_text()).split('def ' + X0 + '_encode_any(')[1].split('\n')[1])
             dv = call_args('D(' + a['dec'] + ')', 'D')
             row = {'X': X0, 'R': R0, 'sname': X0, 'rt': m0['root'][0], 'generic': gen, 'a': dict(a, dec_value=dv[1], wv=wv.group(1)), 'kind': 'words'}
         else:
@@ -3135,7 +3136,7 @@ def outputs():
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_root'],
                              'premise': f'rep: PK.rep_v{r["K"]}(o, Spec.{r["sname"]}())'} for r in rows]
     brows = [x for x in wrows_extra if x['kind'] == 'words' and (OBJ / 'gvalid_words.bend').exists() and
-             re.search(r'^def ' + x['X'] + r'_root_valid\(', (OBJ / 'gvalid_words.bend').read_text(), re.M)]
+             re.search(r'^def ' + x['X'] + r'_root_valid\(', _unlight((OBJ / 'gvalid_words.bend').read_text()), re.M)]
     if brows:
         fn = f'{brows[0]["R"]}_e2e_root_generated.bend'
         out[OUT / fn] = text_broot(brows)

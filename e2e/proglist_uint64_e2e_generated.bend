@@ -16,7 +16,7 @@ import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vdepth.bend as VD
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/prog_list.bend as PG
 import ../proofs/obj/ulist_obj.bend as UL

@@ -17,8 +17,8 @@ import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/venc.bend as VEN
-import ../proofs/obj/words_obj.bend as WO
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/vu32.bend as VU

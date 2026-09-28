@@ -18,8 +18,9 @@ import ../compact/arith.bend as A
 import ./spec_fixed.bend as SF
 import ./schema_shapes.bend as SH
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./packed_obj.bend as PK
+import ./packed_obj_light.bend as PK_L
 import ./arr_copy.bend as AC
 import ./arr_emit.bend as AE
 import ./arr_vec.bend as AV
@@ -625,7 +626,7 @@ def Gt3EC8B89B94_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 6n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(6n, 64n, 0n, 0n, D, F.array__slots(U32, t))), 64n), F.spec_common__take(U32, F.array__slots(U32, t), 64n), WA.cpt_take(6n, 64n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 256}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 256}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n))) : O.Words & +List<U32>}
   {==}
-def Gt3EC8B89B94_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89B94() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt3EC8B89B94_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89B94() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_16_e.Gt3EC8B89B94_encode(o), 64) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -642,8 +643,8 @@ def Gt3EC8B89B94_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 16n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3EC8B89B94(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(64n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(16n), A.quad(64n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 16n, eC), F.nat__eq_from_is_eq(PK.e16(16n), A.quad(64n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(64n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(16n), A.quad(64n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 16n, eC), F.nat__eq_from_is_eq(PK_L.e16(16n), A.quad(64n), {==})))
   +eNN = F.u32__injective(N, 256, Equal.trans(Nat, U32.to_nat(N), A.quad(64n), U32.to_nat(256), eNB, F.nat__eq_from_is_eq(A.quad(64n), U32.to_nat(256), {==})))
   +hn = F.nat__le_trans(64n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(64n, q, r, Equal.trans(Nat, A.quad(64n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(64n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_16_e.Gt3EC8B89B94_encode(_), 64) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -654,8 +655,8 @@ def Gt3EC8B89B94_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89
   %Equal.sym(Array<U32>, Array.new(U32, 6n, 0), F.array__thaw(U32, F.array__trep(U32, 6n, 0)), F.array__new(U32, 6n, 0)) :
     {SF.emitted(O.Words, vec_uint128_16_e.Gt3EC8B89B94_enc_out(vec_uint128_16_e.v16_u128_pal(256, vec_uint128_16_e.v16_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 64) == (O.Words{F.array__thaw(U32, t), 256}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n))) : O.Words & +List<U32>}
   Gt3EC8B89B94_emit(F.array__trep(U32, 6n, 0), F.array__trep_perfect(U32, 6n, 0), t, dw, hd, pf, hn)
-def Gt3EC8B89B94_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89B94() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt3EC8B89B94_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B89B94() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -671,16 +672,16 @@ def Gt3EC8B89B94_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3EC8B8
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 16n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3EC8B89B94(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(64n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(16n), A.quad(64n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 16n, eC), F.nat__eq_from_is_eq(PK.e16(16n), A.quad(64n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(64n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(16n), A.quad(64n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 16n, eC), F.nat__eq_from_is_eq(PK_L.e16(16n), A.quad(64n), {==})))
   +eNN = F.u32__injective(N, 256, Equal.trans(Nat, U32.to_nat(N), A.quad(64n), U32.to_nat(256), eNB, F.nat__eq_from_is_eq(A.quad(64n), U32.to_nat(256), {==})))
   +hn = F.nat__le_trans(64n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(64n, q, r, Equal.trans(Nat, A.quad(64n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(64n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 256, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 256}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n)), WA.wview_take(t, 256, 64n, F.nat__eq_from_is_eq(U32.to_nat(256), A.quad(64n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 256}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 256, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 256}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n)), WA.wview_take(t, 256, 64n, F.nat__eq_from_is_eq(U32.to_nat(256), A.quad(64n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 256}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(256, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(16n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(16n))), WA.it16c(16n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(256, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(16n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(16n))), WA.it16c(16n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 64n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(64n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 64n, hlen)
@@ -744,7 +745,7 @@ def Gt3FD98F54A5_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 2n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), 4n), F.spec_common__take(U32, F.array__slots(U32, t), 4n), WA.cpt_take(2n, 4n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 16}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   {==}
-def Gt3FD98F54A5_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F54A5() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt3FD98F54A5_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F54A5() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_1_e.Gt3FD98F54A5_encode(o), 4) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -761,8 +762,8 @@ def Gt3FD98F54A5_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F5
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 1n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3FD98F54A5(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(4n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(1n), A.quad(4n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 1n, eC), F.nat__eq_from_is_eq(PK.e16(1n), A.quad(4n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(4n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(1n), A.quad(4n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 1n, eC), F.nat__eq_from_is_eq(PK_L.e16(1n), A.quad(4n), {==})))
   +eNN = F.u32__injective(N, 16, Equal.trans(Nat, U32.to_nat(N), A.quad(4n), U32.to_nat(16), eNB, F.nat__eq_from_is_eq(A.quad(4n), U32.to_nat(16), {==})))
   +hn = F.nat__le_trans(4n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(4n, q, r, Equal.trans(Nat, A.quad(4n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(4n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_1_e.Gt3FD98F54A5_encode(_), 4) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -773,8 +774,8 @@ def Gt3FD98F54A5_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F5
   %Equal.sym(Array<U32>, Array.new(U32, 2n, 0), F.array__thaw(U32, F.array__trep(U32, 2n, 0)), F.array__new(U32, 2n, 0)) :
     {SF.emitted(O.Words, vec_uint128_1_e.Gt3FD98F54A5_enc_out(vec_uint128_1_e.v1_u128_pal(16, vec_uint128_1_e.v1_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   Gt3FD98F54A5_emit(F.array__trep(U32, 2n, 0), F.array__trep_perfect(U32, 2n, 0), t, dw, hd, pf, hn)
-def Gt3FD98F54A5_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F54A5() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt3FD98F54A5_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F54A5() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -790,16 +791,16 @@ def Gt3FD98F54A5_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3FD98F
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 1n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3FD98F54A5(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(4n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(1n), A.quad(4n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 1n, eC), F.nat__eq_from_is_eq(PK.e16(1n), A.quad(4n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(4n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(1n), A.quad(4n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 1n, eC), F.nat__eq_from_is_eq(PK_L.e16(1n), A.quad(4n), {==})))
   +eNN = F.u32__injective(N, 16, Equal.trans(Nat, U32.to_nat(N), A.quad(4n), U32.to_nat(16), eNB, F.nat__eq_from_is_eq(A.quad(4n), U32.to_nat(16), {==})))
   +hn = F.nat__le_trans(4n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(4n, q, r, Equal.trans(Nat, A.quad(4n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(4n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 16, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 16}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), WA.wview_take(t, 16, 4n, F.nat__eq_from_is_eq(U32.to_nat(16), A.quad(4n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 16}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 16, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 16}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), WA.wview_take(t, 16, 4n, F.nat__eq_from_is_eq(U32.to_nat(16), A.quad(4n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 16}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(16, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(1n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(1n))), WA.it16c(1n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(16, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(1n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(1n))), WA.it16c(1n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(4n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 4n, hlen)
@@ -899,7 +900,7 @@ def Gt7D65FF3A10_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 3n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), 8n), F.spec_common__take(U32, F.array__slots(U32, t), 8n), WA.cpt_take(3n, 8n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 32}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   {==}
-def Gt7D65FF3A10_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3A10() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt7D65FF3A10_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3A10() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_2_e.Gt7D65FF3A10_encode(o), 8) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -916,8 +917,8 @@ def Gt7D65FF3A10_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 2n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt7D65FF3A10(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(8n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(2n), A.quad(8n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 2n, eC), F.nat__eq_from_is_eq(PK.e16(2n), A.quad(8n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(8n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(2n), A.quad(8n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 2n, eC), F.nat__eq_from_is_eq(PK_L.e16(2n), A.quad(8n), {==})))
   +eNN = F.u32__injective(N, 32, Equal.trans(Nat, U32.to_nat(N), A.quad(8n), U32.to_nat(32), eNB, F.nat__eq_from_is_eq(A.quad(8n), U32.to_nat(32), {==})))
   +hn = F.nat__le_trans(8n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(8n, q, r, Equal.trans(Nat, A.quad(8n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(8n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_2_e.Gt7D65FF3A10_encode(_), 8) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -928,8 +929,8 @@ def Gt7D65FF3A10_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3
   %Equal.sym(Array<U32>, Array.new(U32, 3n, 0), F.array__thaw(U32, F.array__trep(U32, 3n, 0)), F.array__new(U32, 3n, 0)) :
     {SF.emitted(O.Words, vec_uint128_2_e.Gt7D65FF3A10_enc_out(vec_uint128_2_e.v2_u128_pal(32, vec_uint128_2_e.v2_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   Gt7D65FF3A10_emit(F.array__trep(U32, 3n, 0), F.array__trep_perfect(U32, 3n, 0), t, dw, hd, pf, hn)
-def Gt7D65FF3A10_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3A10() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt7D65FF3A10_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF3A10() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -945,16 +946,16 @@ def Gt7D65FF3A10_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7D65FF
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 2n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt7D65FF3A10(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(8n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(2n), A.quad(8n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 2n, eC), F.nat__eq_from_is_eq(PK.e16(2n), A.quad(8n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(8n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(2n), A.quad(8n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 2n, eC), F.nat__eq_from_is_eq(PK_L.e16(2n), A.quad(8n), {==})))
   +eNN = F.u32__injective(N, 32, Equal.trans(Nat, U32.to_nat(N), A.quad(8n), U32.to_nat(32), eNB, F.nat__eq_from_is_eq(A.quad(8n), U32.to_nat(32), {==})))
   +hn = F.nat__le_trans(8n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(8n, q, r, Equal.trans(Nat, A.quad(8n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(8n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 32, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 32}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), WA.wview_take(t, 32, 8n, F.nat__eq_from_is_eq(U32.to_nat(32), A.quad(8n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 32}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 32, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 32}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), WA.wview_take(t, 32, 8n, F.nat__eq_from_is_eq(U32.to_nat(32), A.quad(8n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 32}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(32, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(2n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(2n))), WA.it16c(2n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(32, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(2n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(2n))), WA.it16c(2n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(8n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 8n, hlen)
@@ -992,7 +993,7 @@ def Gt6B1336E534_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 7n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(7n, Nat.add(M, 4n), 0n, 0n, D, F.array__slots(U32, t))), Nat.add(M, 4n)), F.spec_common__take(U32, F.array__slots(U32, t), Nat.add(M, 4n)), WA.cpt_take(7n, Nat.add(M, 4n), D, F.array__slots(U32, t), pD, hK, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 4n), F.spec_common__length(U32, F.array__slots(U32, t))) == True{} : Bool}, 120n, M, Equal.sym(Nat, M, 120n, eM), F.nat__le_trans(Nat.add(120n, 4n), 124n, F.spec_common__length(U32, F.array__slots(U32, t)), {==}, hlen)))) :
     {(O.Words{F.array__thaw(U32, t), 496}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 496}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), Nat.add(M, 4n)))) : O.Words & +List<U32>}
   {==}
-def Gt6B1336E534_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E534() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt6B1336E534_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E534() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_31_e.Gt6B1336E534_encode(o), 124) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -1009,8 +1010,8 @@ def Gt6B1336E534_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 31n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt6B1336E534(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(124n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(31n), A.quad(124n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 31n, eC), F.nat__eq_from_is_eq(PK.e16(31n), A.quad(124n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(124n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(31n), A.quad(124n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 31n, eC), F.nat__eq_from_is_eq(PK_L.e16(31n), A.quad(124n), {==})))
   +eNN = F.u32__injective(N, 496, Equal.trans(Nat, U32.to_nat(N), A.quad(124n), U32.to_nat(496), eNB, F.nat__eq_from_is_eq(A.quad(124n), U32.to_nat(496), {==})))
   +hn = F.nat__le_trans(124n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(124n, q, r, Equal.trans(Nat, A.quad(124n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(124n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_31_e.Gt6B1336E534_encode(_), 124) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -1021,8 +1022,8 @@ def Gt6B1336E534_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E
   %Equal.sym(Array<U32>, Array.new(U32, 7n, 0), F.array__thaw(U32, F.array__trep(U32, 7n, 0)), F.array__new(U32, 7n, 0)) :
     {SF.emitted(O.Words, vec_uint128_31_e.Gt6B1336E534_enc_out(O.put_words(_, 0, O.Words{F.array__thaw(U32, t), 496})), 124) == (O.Words{F.array__thaw(U32, t), 496}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), Nat.add(120n, 4n)))) : O.Words & +List<U32>}
   Gt6B1336E534_emit(F.array__trep(U32, 7n, 0), F.array__trep_perfect(U32, 7n, 0), t, dw, hd, pf, hn, 120n, {==})
-def Gt6B1336E534_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E534() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt6B1336E534_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336E534() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1038,16 +1039,16 @@ def Gt6B1336E534_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt6B1336
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 31n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt6B1336E534(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(124n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(31n), A.quad(124n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 31n, eC), F.nat__eq_from_is_eq(PK.e16(31n), A.quad(124n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(124n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(31n), A.quad(124n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 31n, eC), F.nat__eq_from_is_eq(PK_L.e16(31n), A.quad(124n), {==})))
   +eNN = F.u32__injective(N, 496, Equal.trans(Nat, U32.to_nat(N), A.quad(124n), U32.to_nat(496), eNB, F.nat__eq_from_is_eq(A.quad(124n), U32.to_nat(496), {==})))
   +hn = F.nat__le_trans(124n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(124n, q, r, Equal.trans(Nat, A.quad(124n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(124n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 496, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 496}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 124n)), WA.wview_take(t, 496, 124n, F.nat__eq_from_is_eq(U32.to_nat(496), A.quad(124n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 496}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 496, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 496}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 124n)), WA.wview_take(t, 496, 124n, F.nat__eq_from_is_eq(U32.to_nat(496), A.quad(124n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 496}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 124n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(496, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(31n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(31n))), WA.it16c(31n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 124n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(496, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(31n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(31n))), WA.it16c(31n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 124n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(124n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 124n, hlen)
@@ -1183,7 +1184,7 @@ def Gt7600AB7870_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 4n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(4n, 12n, 0n, 0n, D, F.array__slots(U32, t))), 12n), F.spec_common__take(U32, F.array__slots(U32, t), 12n), WA.cpt_take(4n, 12n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 48}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 48}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n))) : O.Words & +List<U32>}
   {==}
-def Gt7600AB7870_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7870() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt7600AB7870_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7870() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_3_e.Gt7600AB7870_encode(o), 12) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -1200,8 +1201,8 @@ def Gt7600AB7870_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 3n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt7600AB7870(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(12n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(3n), A.quad(12n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 3n, eC), F.nat__eq_from_is_eq(PK.e16(3n), A.quad(12n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(12n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(3n), A.quad(12n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 3n, eC), F.nat__eq_from_is_eq(PK_L.e16(3n), A.quad(12n), {==})))
   +eNN = F.u32__injective(N, 48, Equal.trans(Nat, U32.to_nat(N), A.quad(12n), U32.to_nat(48), eNB, F.nat__eq_from_is_eq(A.quad(12n), U32.to_nat(48), {==})))
   +hn = F.nat__le_trans(12n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(12n, q, r, Equal.trans(Nat, A.quad(12n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(12n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_3_e.Gt7600AB7870_encode(_), 12) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -1212,8 +1213,8 @@ def Gt7600AB7870_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7
   %Equal.sym(Array<U32>, Array.new(U32, 4n, 0), F.array__thaw(U32, F.array__trep(U32, 4n, 0)), F.array__new(U32, 4n, 0)) :
     {SF.emitted(O.Words, vec_uint128_3_e.Gt7600AB7870_enc_out(vec_uint128_3_e.v3_u128_pal(48, vec_uint128_3_e.v3_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 12) == (O.Words{F.array__thaw(U32, t), 48}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n))) : O.Words & +List<U32>}
   Gt7600AB7870_emit(F.array__trep(U32, 4n, 0), F.array__trep_perfect(U32, 4n, 0), t, dw, hd, pf, hn)
-def Gt7600AB7870_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7870() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt7600AB7870_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB7870() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1229,16 +1230,16 @@ def Gt7600AB7870_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt7600AB
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 3n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt7600AB7870(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(12n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(3n), A.quad(12n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 3n, eC), F.nat__eq_from_is_eq(PK.e16(3n), A.quad(12n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(12n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(3n), A.quad(12n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 3n, eC), F.nat__eq_from_is_eq(PK_L.e16(3n), A.quad(12n), {==})))
   +eNN = F.u32__injective(N, 48, Equal.trans(Nat, U32.to_nat(N), A.quad(12n), U32.to_nat(48), eNB, F.nat__eq_from_is_eq(A.quad(12n), U32.to_nat(48), {==})))
   +hn = F.nat__le_trans(12n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(12n, q, r, Equal.trans(Nat, A.quad(12n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(12n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 48, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 48}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n)), WA.wview_take(t, 48, 12n, F.nat__eq_from_is_eq(U32.to_nat(48), A.quad(12n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 48}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 48, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 48}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n)), WA.wview_take(t, 48, 12n, F.nat__eq_from_is_eq(U32.to_nat(48), A.quad(12n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 48}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(48, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(3n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(3n))), WA.it16c(3n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(48, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(3n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(3n))), WA.it16c(3n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 12n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(12n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 12n, hlen)
@@ -1410,7 +1411,7 @@ def GtB0CCEA154C_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 4n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), 16n), F.spec_common__take(U32, F.array__slots(U32, t), 16n), WA.cpt_take(4n, 16n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 64}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   {==}
-def GtB0CCEA154C_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA154C() : S.Schema}, +rep: PK.rep_v16(o, s))
+def GtB0CCEA154C_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA154C() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_4_e.GtB0CCEA154C_encode(o), 16) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -1427,8 +1428,8 @@ def GtB0CCEA154C_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA1
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 4n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.GtB0CCEA154C(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(16n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(4n), A.quad(16n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 4n, eC), F.nat__eq_from_is_eq(PK.e16(4n), A.quad(16n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(16n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(4n), A.quad(16n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 4n, eC), F.nat__eq_from_is_eq(PK_L.e16(4n), A.quad(16n), {==})))
   +eNN = F.u32__injective(N, 64, Equal.trans(Nat, U32.to_nat(N), A.quad(16n), U32.to_nat(64), eNB, F.nat__eq_from_is_eq(A.quad(16n), U32.to_nat(64), {==})))
   +hn = F.nat__le_trans(16n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(16n, q, r, Equal.trans(Nat, A.quad(16n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(16n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_4_e.GtB0CCEA154C_encode(_), 16) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -1439,8 +1440,8 @@ def GtB0CCEA154C_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA1
   %Equal.sym(Array<U32>, Array.new(U32, 4n, 0), F.array__thaw(U32, F.array__trep(U32, 4n, 0)), F.array__new(U32, 4n, 0)) :
     {SF.emitted(O.Words, vec_uint128_4_e.GtB0CCEA154C_enc_out(vec_uint128_4_e.v4_u128_pal(64, vec_uint128_4_e.v4_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   GtB0CCEA154C_emit(F.array__trep(U32, 4n, 0), F.array__trep_perfect(U32, 4n, 0), t, dw, hd, pf, hn)
-def GtB0CCEA154C_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA154C() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def GtB0CCEA154C_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA154C() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1456,16 +1457,16 @@ def GtB0CCEA154C_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtB0CCEA
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 4n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.GtB0CCEA154C(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(16n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(4n), A.quad(16n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 4n, eC), F.nat__eq_from_is_eq(PK.e16(4n), A.quad(16n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(16n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(4n), A.quad(16n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 4n, eC), F.nat__eq_from_is_eq(PK_L.e16(4n), A.quad(16n), {==})))
   +eNN = F.u32__injective(N, 64, Equal.trans(Nat, U32.to_nat(N), A.quad(16n), U32.to_nat(64), eNB, F.nat__eq_from_is_eq(A.quad(16n), U32.to_nat(64), {==})))
   +hn = F.nat__le_trans(16n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(16n, q, r, Equal.trans(Nat, A.quad(16n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(16n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 64, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 64}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), WA.wview_take(t, 64, 16n, F.nat__eq_from_is_eq(U32.to_nat(64), A.quad(16n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 64}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 64, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 64}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), WA.wview_take(t, 64, 16n, F.nat__eq_from_is_eq(U32.to_nat(64), A.quad(16n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 64}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(64, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(4n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(4n))), WA.it16c(4n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(64, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(4n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(4n))), WA.it16c(4n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(16n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 16n, hlen)
@@ -1673,7 +1674,7 @@ def GtBB42F83A45_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 5n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(5n, 20n, 0n, 0n, D, F.array__slots(U32, t))), 20n), F.spec_common__take(U32, F.array__slots(U32, t), 20n), WA.cpt_take(5n, 20n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 80}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 80}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n))) : O.Words & +List<U32>}
   {==}
-def GtBB42F83A45_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83A45() : S.Schema}, +rep: PK.rep_v16(o, s))
+def GtBB42F83A45_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83A45() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_5_e.GtBB42F83A45_encode(o), 20) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -1690,8 +1691,8 @@ def GtBB42F83A45_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 5n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.GtBB42F83A45(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(20n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(5n), A.quad(20n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 5n, eC), F.nat__eq_from_is_eq(PK.e16(5n), A.quad(20n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(20n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(5n), A.quad(20n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 5n, eC), F.nat__eq_from_is_eq(PK_L.e16(5n), A.quad(20n), {==})))
   +eNN = F.u32__injective(N, 80, Equal.trans(Nat, U32.to_nat(N), A.quad(20n), U32.to_nat(80), eNB, F.nat__eq_from_is_eq(A.quad(20n), U32.to_nat(80), {==})))
   +hn = F.nat__le_trans(20n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(20n, q, r, Equal.trans(Nat, A.quad(20n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(20n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_5_e.GtBB42F83A45_encode(_), 20) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -1702,8 +1703,8 @@ def GtBB42F83A45_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83
   %Equal.sym(Array<U32>, Array.new(U32, 5n, 0), F.array__thaw(U32, F.array__trep(U32, 5n, 0)), F.array__new(U32, 5n, 0)) :
     {SF.emitted(O.Words, vec_uint128_5_e.GtBB42F83A45_enc_out(vec_uint128_5_e.v5_u128_pal(80, vec_uint128_5_e.v5_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 20) == (O.Words{F.array__thaw(U32, t), 80}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n))) : O.Words & +List<U32>}
   GtBB42F83A45_emit(F.array__trep(U32, 5n, 0), F.array__trep_perfect(U32, 5n, 0), t, dw, hd, pf, hn)
-def GtBB42F83A45_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83A45() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def GtBB42F83A45_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F83A45() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1719,16 +1720,16 @@ def GtBB42F83A45_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtBB42F8
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 5n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.GtBB42F83A45(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(20n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(5n), A.quad(20n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 5n, eC), F.nat__eq_from_is_eq(PK.e16(5n), A.quad(20n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(20n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(5n), A.quad(20n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 5n, eC), F.nat__eq_from_is_eq(PK_L.e16(5n), A.quad(20n), {==})))
   +eNN = F.u32__injective(N, 80, Equal.trans(Nat, U32.to_nat(N), A.quad(20n), U32.to_nat(80), eNB, F.nat__eq_from_is_eq(A.quad(20n), U32.to_nat(80), {==})))
   +hn = F.nat__le_trans(20n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(20n, q, r, Equal.trans(Nat, A.quad(20n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(20n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 80, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 80}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n)), WA.wview_take(t, 80, 20n, F.nat__eq_from_is_eq(U32.to_nat(80), A.quad(20n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 80}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 80, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 80}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n)), WA.wview_take(t, 80, 20n, F.nat__eq_from_is_eq(U32.to_nat(80), A.quad(20n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 80}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(80, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(5n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(5n))), WA.it16c(5n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(80, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(5n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(5n))), WA.it16c(5n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 20n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(20n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 20n, hlen)
@@ -2044,7 +2045,7 @@ def Gt3E2A057F33_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 5n, D)
   %Equal.sym(List<&2, U32>, F.spec_common__take(U32, F.array__slots(U32, AC.cpt(5n, 32n, 0n, 0n, D, F.array__slots(U32, t))), 32n), F.spec_common__take(U32, F.array__slots(U32, t), 32n), WA.cpt_take(5n, 32n, D, F.array__slots(U32, t), pD, hK, hlen)) :
     {(O.Words{F.array__thaw(U32, t), 128}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 128}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n))) : O.Words & +List<U32>}
   {==}
-def Gt3E2A057F33_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057F33() : S.Schema}, +rep: PK.rep_v16(o, s))
+def Gt3E2A057F33_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057F33() : S.Schema}, +rep: PK_L.rep_v16(o, s))
     -> {SF.emitted(O.Words, vec_uint128_8_e.Gt3E2A057F33_encode(o), 32) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
@@ -2061,8 +2062,8 @@ def Gt3E2A057F33_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 8n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3E2A057F33(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(32n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(8n), A.quad(32n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 8n, eC), F.nat__eq_from_is_eq(PK.e16(8n), A.quad(32n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(32n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(8n), A.quad(32n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 8n, eC), F.nat__eq_from_is_eq(PK_L.e16(8n), A.quad(32n), {==})))
   +eNN = F.u32__injective(N, 128, Equal.trans(Nat, U32.to_nat(N), A.quad(32n), U32.to_nat(128), eNB, F.nat__eq_from_is_eq(A.quad(32n), U32.to_nat(128), {==})))
   +hn = F.nat__le_trans(32n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(32n, q, r, Equal.trans(Nat, A.quad(32n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(32n), eNB), en), h32), cap)
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint128_8_e.Gt3E2A057F33_encode(_), 32) == (_, WO.wview(_)) : O.Words & +List<U32>}
@@ -2073,8 +2074,8 @@ def Gt3E2A057F33_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057
   %Equal.sym(Array<U32>, Array.new(U32, 5n, 0), F.array__thaw(U32, F.array__trep(U32, 5n, 0)), F.array__new(U32, 5n, 0)) :
     {SF.emitted(O.Words, vec_uint128_8_e.Gt3E2A057F33_enc_out(vec_uint128_8_e.v8_u128_pal(128, vec_uint128_8_e.v8_u128_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 32) == (O.Words{F.array__thaw(U32, t), 128}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n))) : O.Words & +List<U32>}
   Gt3E2A057F33_emit(F.array__trep(U32, 5n, 0), F.array__trep_perfect(U32, 5n, 0), t, dw, hd, pf, hn)
-def Gt3E2A057F33_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057F33() : S.Schema}, +rep: PK.rep_v16(o, s))
-    -> Decoding.decodes(s, WO.wview(o), PK.vview16(o)):
+def Gt3E2A057F33_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057F33() : S.Schema}, +rep: PK_L.rep_v16(o, s))
+    -> Decoding.decodes(s, WO.wview(o), PK_L.vview16(o)):
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -2090,16 +2091,16 @@ def Gt3E2A057F33_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A05
   (+cap, +zt) = w11
   (+eN, +hv) = r1
   +eC = F.nat__eq_from_is_eq(U32.to_nat(U32.shrn(N, 4n)), 8n, F.logic__subst(S.Schema, z => {Nat.is_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(z)) == True{} : Bool}, s, Spec.Gt3E2A057F33(), es, PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)))
-  +eNB = Equal.trans(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(32n), PK.eq_n16(o, t, N, eo, eN),
-    Equal.trans(Nat, PK.e16(U32.to_nat(U32.shrn(N, 4n))), PK.e16(8n), A.quad(32n), Equal.cong(Nat, Nat, x => PK.e16(x), U32.to_nat(U32.shrn(N, 4n)), 8n, eC), F.nat__eq_from_is_eq(PK.e16(8n), A.quad(32n), {==})))
+  +eNB = Equal.trans(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), A.quad(32n), PK.eq_n16(o, t, N, eo, eN),
+    Equal.trans(Nat, PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), PK_L.e16(8n), A.quad(32n), Equal.cong(Nat, Nat, x => PK_L.e16(x), U32.to_nat(U32.shrn(N, 4n)), 8n, eC), F.nat__eq_from_is_eq(PK_L.e16(8n), A.quad(32n), {==})))
   +eNN = F.u32__injective(N, 128, Equal.trans(Nat, U32.to_nat(N), A.quad(32n), U32.to_nat(128), eNB, F.nat__eq_from_is_eq(A.quad(32n), U32.to_nat(128), {==})))
   +hn = F.nat__le_trans(32n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(32n, q, r, Equal.trans(Nat, A.quad(32n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(32n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK.vview16(_))
-  %Equal.sym(U32, N, 128, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK.vview16(O.Words{F.array__thaw(U32, t), _}))
-  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 128}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n)), WA.wview_take(t, 128, 32n, F.nat__eq_from_is_eq(U32.to_nat(128), A.quad(32n), {==}))) : Decoding.decodes(s, _, PK.vview16(O.Words{F.array__thaw(U32, t), 128}))
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : Decoding.decodes(s, WO.wview(_), PK_L.vview16(_))
+  %Equal.sym(U32, N, 128, eNN) : Decoding.decodes(s, WO.wview(O.Words{F.array__thaw(U32, t), _}), PK_L.vview16(O.Words{F.array__thaw(U32, t), _}))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 128}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n)), WA.wview_take(t, 128, 32n, F.nat__eq_from_is_eq(U32.to_nat(128), A.quad(32n), {==}))) : Decoding.decodes(s, _, PK_L.vview16(O.Words{F.array__thaw(U32, t), 128}))
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n)), S.Sequence{PK.it16(U32.to_nat(U32.shrn(128, 4n)), F.array__slots(U32, _))})
-  %Equal.sym(S.Value, PK.it16(8n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(8n))), WA.it16c(8n, F.array__slots(U32, t))) :
+    Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(128, 4n)), F.array__slots(U32, _))})
+  %Equal.sym(S.Value, PK_L.it16(8n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(8n))), WA.it16c(8n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 32n)), S.Sequence{_})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(32n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 32n, hlen)

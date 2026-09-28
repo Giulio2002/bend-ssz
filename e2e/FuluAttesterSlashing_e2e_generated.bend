@@ -31,7 +31,7 @@ import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_emit.bend as EM
 import ./e2e_ulist.bend as U
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/dk.bend as DK
