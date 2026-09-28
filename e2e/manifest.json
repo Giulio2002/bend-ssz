@@ -3353,6 +3353,16 @@
     "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) (the root law's representation invariant)"
    }
   ],
+  "FuluBeaconState_e2e_root_generated.bend": [
+   {
+    "name": "FuluBeaconState",
+    "generated_name": "BeaconState",
+    "laws": [
+     "FuluBeaconState_e2e_root"
+    ],
+    "premise": "rep: RT.rep_BeaconState(o, Spec.BeaconState()) (the root law's representation invariant)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_root_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -6149,7 +6159,8 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluBeaconState_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",

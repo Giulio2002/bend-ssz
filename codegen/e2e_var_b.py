@@ -4804,9 +4804,8 @@ SUPPORT_OUT['e2e_vwx_ExecutionRequests.bend'] = vwx_module('ExecutionRequests', 
 VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', None, 'e2e_vwx_ExecutionRequests')
 VROOT_SHAPES['ExecutionRequests'] = vroot_container
 SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
-# BeaconState (iv): in progress (not registered yet)
-# SUPPORT_OUT['e2e_rbs.bend'] = st_qualify(rb_text(['BeaconState'], state=True))
-# VROOT_SHAPES['BeaconState'] = vroot_container
+SUPPORT_OUT['e2e_rbs.bend'] = st_qualify(rb_text(['BeaconState'], state=True))
+VROOT_SHAPES['BeaconState'] = vroot_container
 # ---- ExecutionPayload (i) through its encode record (CI.MW): the premises are the record's own bounds (OKT, and
 # the lists' OKL / WOK), each a decoded-object gap the root law's invariant does not give: the logs bloom and the
 # lists' trees at depth below 31, the extra data and each transaction's bytes below 28, the whole encoding within
