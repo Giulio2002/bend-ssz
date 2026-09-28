@@ -6,7 +6,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_win_Attestation.bend as WT
 import ../proofs/obj/big_var_win_AggregateAndProof.bend as WA
 import ../proofs/obj/big_var_win_SignedAggregateAndProof.bend as WS

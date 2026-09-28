@@ -18,10 +18,10 @@ import ../proofs/obj/vconts.bend as CS
 import ../proofs/obj/vfixw_spec.bend as FWS
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_encx_bl32.bend as IB
 import ../proofs/obj/big_encx_ExecutionPayloadHeader_iface.bend as IE
 import ../proofs/obj/big_encx_LightClientHeader_iface.bend as IL
@@ -32,6 +32,7 @@ import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeade
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ./e2e_cap.bend as C
+import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL
 import ./e2e_tz.bend as TZ
 import ./e2e_pv8.bend as EP8

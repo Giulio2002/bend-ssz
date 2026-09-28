@@ -1263,7 +1263,7 @@ def ok_def(mod_file, name, alias):
     """The conjuncts of `def <name>(...) -> Bool: <expr>` of a module, qualified."""
     import re
     src = _unlight((OBJ / mod_file).read_text())
-    m = re.search(r'^def ' + name + r'\(.*?\) -> Bool:\s*(.*?)\n(?=\S|\n)', src, re.M | re.S)
+    m = re.search(r'^def ' + name + r'\(.*?\) -> Bool:\s*(.*?)(?:\n(?=\S|\n)|\n?\Z)', src, re.M | re.S)
     expr = ' '.join(m.group(1).split())
     loc = set(re.findall(r'^def (\w+)\(', src, re.M))
     expr = re.sub(r'(?<![\w.])(\w+)\(', lambda mm: (f'{alias}.{mm.group(1)}(' if mm.group(1) in loc else mm.group(0)), expr)

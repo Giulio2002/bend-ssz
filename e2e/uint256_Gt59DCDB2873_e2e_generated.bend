@@ -17,6 +17,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_Gt59DCDB2873.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/root_gnames_light.bend as M1_L
 import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -24,16 +25,16 @@ import ../proofs/obj/generic_specs.bend as GS
 # uint256_Gt59DCDB2873 and the next names (family A): the object API's encoder bytes and roots are END_TO_END's model API's.
 
 # uint256_Gt59DCDB2873 (Gt59DCDB2873)
-def uint256_Gt59DCDB2873_e2e_encode(+o: uint256_d.Uint256) -> {Some{E.obytes(uint256_e.Gt59DCDB2873_encode(o))} == API.serialize(GS.Gt59DCDB2873(), M1.v_u256(o)) : Maybe<&2, +List<U32>>}:
+def uint256_Gt59DCDB2873_e2e_encode(+o: uint256_d.Uint256) -> {Some{E.obytes(uint256_e.Gt59DCDB2873_encode(o))} == API.serialize(GS.Gt59DCDB2873(), M1_L.v_u256(o)) : Maybe<&2, +List<U32>>}:
   match o:
     case uint256_d.Uint256{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(GS.Gt59DCDB2873(), M1.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})),
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(GS.Gt59DCDB2873(), M1_L.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})),
         Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8), (uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), M0.Gt59DCDB2873_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(GS.Gt59DCDB2873(), M1.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-            E.serialize_legal(GS.Gt59DCDB2873(), M1.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(GS.Gt59DCDB2873(), {==})), M0.Gt59DCDB2873_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1_L.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1_L.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(GS.Gt59DCDB2873(), M1_L.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
+            E.serialize_legal(GS.Gt59DCDB2873(), M1_L.v_u256(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(GS.Gt59DCDB2873(), {==})), M0.Gt59DCDB2873_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
 
-def uint256_Gt59DCDB2873_e2e_root(h: B.Buf, +o: uint256_d.Uint256) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt59DCDB2873(), M1.v_u256(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt59DCDB2873(), M1.v_u256(o), VS.public_sound(GS.Gt59DCDB2873(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o))),
+def uint256_Gt59DCDB2873_e2e_root(h: B.Buf, +o: uint256_d.Uint256) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt59DCDB2873(), M1_L.v_u256(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt59DCDB2873(), M1_L.v_u256(o), VS.public_sound(GS.Gt59DCDB2873(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o))),
     M2.Gt59DCDB2873_root_valid(o), M1.Gt59DCDB2873_root_correct(h, o))
 

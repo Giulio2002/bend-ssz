@@ -16,6 +16,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/big_encx_l1048576_bl1073741824.bend as ET
 import ../proofs/obj/encx_l16_Withdrawal.bend as EWL
 import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
@@ -40,48 +41,48 @@ def PB(-X: Data, -Y: Data, +p: DK.P2(X, Y)) -> Y:
 
 # ---- the conversion of the root law's mirror to the encode record's ----
 
-def cm(m: RT.MB<RT.WMr>) -> ET.MB<ET.WMr>:
+def cm(m: RT_L.MB<RT_L.WMr>) -> ET.MB<ET.WMr>:
   match m:
-    case RT.MNone{}: ET.MNone{}
-    case RT.MSome{+w}:
+    case RT_L.MNone{}: ET.MNone{}
+    case RT_L.MSome{+w}:
       match w:
-        case RT.WMr{+t, +n}: ET.MSome{ET.WMr{t, n}}
+        case RT_L.WMr{+t, +n}: ET.MSome{ET.WMr{t, n}}
 
-def CV(t: FD.array__Tree<RT.MB<RT.WMr>>) -> FD.array__Tree<ET.MB<ET.WMr>>:
+def CV(t: FD.array__Tree<RT_L.MB<RT_L.WMr>>) -> FD.array__Tree<ET.MB<ET.WMr>>:
   match t:
     case FD.TLeaf{+x}: FD.TLeaf{cm(x)}
     case FD.TNode{l, r}: FD.TNode{CV(l), CV(r)}
 
-def LM(W: List<&2, RT.MB<RT.WMr>>) -> List<&2, ET.MB<ET.WMr>>:
+def LM(W: List<&2, RT_L.MB<RT_L.WMr>>) -> List<&2, ET.MB<ET.WMr>>:
   match W:
     case Nil{}: Nil{}
     case Con{+x, t}: Con{cm(x), LM(t)}
 
-def thcm(+x: RT.MB<RT.WMr>) -> {ET.th_bl1073741824_bx(cm(x)) == RT.th_bl1073741824_bx(x) : O.Boxed<O.Words>}:
+def thcm(+x: RT_L.MB<RT_L.WMr>) -> {ET.th_bl1073741824_bx(cm(x)) == RT_L.th_bl1073741824_bx(x) : O.Boxed<O.Words>}:
   match x:
-    case RT.MNone{}: {==}
-    case RT.MSome{+w}:
+    case RT_L.MNone{}: {==}
+    case RT_L.MSome{+w}:
       match w:
-        case RT.WMr{+t, +n}: {==}
+        case RT_L.WMr{+t, +n}: {==}
 
-def amcv(+t: FD.array__Tree<RT.MB<RT.WMr>>) -> {ET.am_l1048576_bl1073741824(CV(t)) == RT.am_l1048576_bl1073741824(t) : Array<O.Boxed<O.Words>>}:
+def amcv(+t: FD.array__Tree<RT_L.MB<RT_L.WMr>>) -> {ET.am_l1048576_bl1073741824(CV(t)) == RT_L.am_l1048576_bl1073741824(t) : Array<O.Boxed<O.Words>>}:
   match t:
-    case FD.TLeaf{+x}: Equal.cong(O.Boxed<O.Words>, Array<O.Boxed<O.Words>>, z => ALeaf{z}, ET.th_bl1073741824_bx(cm(x)), RT.th_bl1073741824_bx(x), thcm(x))
+    case FD.TLeaf{+x}: Equal.cong(O.Boxed<O.Words>, Array<O.Boxed<O.Words>>, z => ALeaf{z}, ET.th_bl1073741824_bx(cm(x)), RT_L.th_bl1073741824_bx(x), thcm(x))
     case FD.TNode{+l, +r}:
-      %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(l)), RT.am_l1048576_bl1073741824(l), amcv(l)) :
-        {ANode{_, ET.am_l1048576_bl1073741824(CV(r))} == ANode{RT.am_l1048576_bl1073741824(l), RT.am_l1048576_bl1073741824(r)} : Array<O.Boxed<O.Words>>}
-      %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(r)), RT.am_l1048576_bl1073741824(r), amcv(r)) :
-        {ANode{RT.am_l1048576_bl1073741824(l), _} == ANode{RT.am_l1048576_bl1073741824(l), RT.am_l1048576_bl1073741824(r)} : Array<O.Boxed<O.Words>>}
+      %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(l)), RT_L.am_l1048576_bl1073741824(l), amcv(l)) :
+        {ANode{_, ET.am_l1048576_bl1073741824(CV(r))} == ANode{RT_L.am_l1048576_bl1073741824(l), RT_L.am_l1048576_bl1073741824(r)} : Array<O.Boxed<O.Words>>}
+      %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(r)), RT_L.am_l1048576_bl1073741824(r), amcv(r)) :
+        {ANode{RT_L.am_l1048576_bl1073741824(l), _} == ANode{RT_L.am_l1048576_bl1073741824(l), RT_L.am_l1048576_bl1073741824(r)} : Array<O.Boxed<O.Words>>}
       {==}
 
-def pfcv(+d: Nat, +t: FD.array__Tree<RT.MB<RT.WMr>>, +pf: {FD.array__perfect(RT.MB<RT.WMr>, d, t) == True{} : Bool}) -> {FD.array__perfect(ET.MB<ET.WMr>, d, CV(t)) == True{} : Bool}:
+def pfcv(+d: Nat, +t: FD.array__Tree<RT_L.MB<RT_L.WMr>>, +pf: {FD.array__perfect(RT_L.MB<RT_L.WMr>, d, t) == True{} : Bool}) -> {FD.array__perfect(ET.MB<ET.WMr>, d, CV(t)) == True{} : Bool}:
   match d t:
     case 0n FD.TLeaf{+x}: {==}
     case 0n FD.TNode{+l, +r}: Empty.absurd({FD.array__perfect(ET.MB<ET.WMr>, 0n, CV(FD.TNode{l, r})) == True{} : Bool}, FD.logic__false_true(pf))
     case 1n+ +p FD.TLeaf{+x}: Empty.absurd({FD.array__perfect(ET.MB<ET.WMr>, 1n+p, CV(FD.TLeaf{x})) == True{} : Bool}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r}:
       FD.logic__and_intro(FD.array__perfect(ET.MB<ET.WMr>, p, CV(l)), FD.array__perfect(ET.MB<ET.WMr>, p, CV(r)),
-        pfcv(p, l, FD.array__pf_left(RT.MB<RT.WMr>, p, l, r, pf)), pfcv(p, r, FD.array__pf_right(RT.MB<RT.WMr>, p, l, r, pf)))
+        pfcv(p, l, FD.array__pf_left(RT_L.MB<RT_L.WMr>, p, l, r, pf)), pfcv(p, r, FD.array__pf_right(RT_L.MB<RT_L.WMr>, p, l, r, pf)))
 
 # a perfect tree's left spine is its depth
 def tdmE(+d: Nat, +t: FD.array__Tree<ET.MB<ET.WMr>>, +pf: {FD.array__perfect(ET.MB<ET.WMr>, d, t) == True{} : Bool}) -> {ET.TDM(t) == d : Nat}:
@@ -105,25 +106,25 @@ def tdW(+d: Nat, +t: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +pf: {FD.array
     case 1n+ +p FD.TLeaf{+x}: Empty.absurd({EWL.TDM_l16_Withdrawal(FD.TLeaf{x}) == 1n+p : Nat}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r}: Equal.cong(Nat, Nat, z => 1n+z, EWL.TDM_l16_Withdrawal(l), p, tdW(p, l, FD.array__pf_left(FuluWithdrawal_d.Withdrawal, p, l, r, pf)))
 
-def lmapp(+X: List<&2, RT.MB<RT.WMr>>, +Y: List<&2, RT.MB<RT.WMr>>) -> {LM(FD.spec_common__append(RT.MB<RT.WMr>, X, Y)) == FD.spec_common__append(ET.MB<ET.WMr>, LM(X), LM(Y)) : List<&2, ET.MB<ET.WMr>>}:
+def lmapp(+X: List<&2, RT_L.MB<RT_L.WMr>>, +Y: List<&2, RT_L.MB<RT_L.WMr>>) -> {LM(FD.spec_common__append(RT_L.MB<RT_L.WMr>, X, Y)) == FD.spec_common__append(ET.MB<ET.WMr>, LM(X), LM(Y)) : List<&2, ET.MB<ET.WMr>>}:
   match X:
     case Nil{}: {==}
-    case Con{+x, +t}: Equal.cong(List<&2, ET.MB<ET.WMr>>, List<&2, ET.MB<ET.WMr>>, z => Con{cm(x), z}, LM(FD.spec_common__append(RT.MB<RT.WMr>, t, Y)), FD.spec_common__append(ET.MB<ET.WMr>, LM(t), LM(Y)), lmapp(t, Y))
+    case Con{+x, +t}: Equal.cong(List<&2, ET.MB<ET.WMr>>, List<&2, ET.MB<ET.WMr>>, z => Con{cm(x), z}, LM(FD.spec_common__append(RT_L.MB<RT_L.WMr>, t, Y)), FD.spec_common__append(ET.MB<ET.WMr>, LM(t), LM(Y)), lmapp(t, Y))
 
-def slcv(+t: FD.array__Tree<RT.MB<RT.WMr>>) -> {FD.array__slots(ET.MB<ET.WMr>, CV(t)) == LM(FD.array__slots(RT.MB<RT.WMr>, t)) : List<&2, ET.MB<ET.WMr>>}:
+def slcv(+t: FD.array__Tree<RT_L.MB<RT_L.WMr>>) -> {FD.array__slots(ET.MB<ET.WMr>, CV(t)) == LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)) : List<&2, ET.MB<ET.WMr>>}:
   match t:
     case FD.TLeaf{+x}: {==}
     case FD.TNode{+l, +r}:
-      %Equal.sym(List<&2, ET.MB<ET.WMr>>, LM(FD.spec_common__append(RT.MB<RT.WMr>, FD.array__slots(RT.MB<RT.WMr>, l), FD.array__slots(RT.MB<RT.WMr>, r))), FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT.MB<RT.WMr>, l)), LM(FD.array__slots(RT.MB<RT.WMr>, r))),
-          lmapp(FD.array__slots(RT.MB<RT.WMr>, l), FD.array__slots(RT.MB<RT.WMr>, r))) :
+      %Equal.sym(List<&2, ET.MB<ET.WMr>>, LM(FD.spec_common__append(RT_L.MB<RT_L.WMr>, FD.array__slots(RT_L.MB<RT_L.WMr>, l), FD.array__slots(RT_L.MB<RT_L.WMr>, r))), FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT_L.MB<RT_L.WMr>, l)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, r))),
+          lmapp(FD.array__slots(RT_L.MB<RT_L.WMr>, l), FD.array__slots(RT_L.MB<RT_L.WMr>, r))) :
         {FD.spec_common__append(ET.MB<ET.WMr>, FD.array__slots(ET.MB<ET.WMr>, CV(l)), FD.array__slots(ET.MB<ET.WMr>, CV(r))) == _ : List<&2, ET.MB<ET.WMr>>}
-      %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(l)), LM(FD.array__slots(RT.MB<RT.WMr>, l)), slcv(l)) :
-        {FD.spec_common__append(ET.MB<ET.WMr>, _, FD.array__slots(ET.MB<ET.WMr>, CV(r))) == FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT.MB<RT.WMr>, l)), LM(FD.array__slots(RT.MB<RT.WMr>, r))) : List<&2, ET.MB<ET.WMr>>}
-      %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(r)), LM(FD.array__slots(RT.MB<RT.WMr>, r)), slcv(r)) :
-        {FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT.MB<RT.WMr>, l)), _) == FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT.MB<RT.WMr>, l)), LM(FD.array__slots(RT.MB<RT.WMr>, r))) : List<&2, ET.MB<ET.WMr>>}
+      %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(l)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, l)), slcv(l)) :
+        {FD.spec_common__append(ET.MB<ET.WMr>, _, FD.array__slots(ET.MB<ET.WMr>, CV(r))) == FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT_L.MB<RT_L.WMr>, l)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, r))) : List<&2, ET.MB<ET.WMr>>}
+      %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(r)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, r)), slcv(r)) :
+        {FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT_L.MB<RT_L.WMr>, l)), _) == FD.spec_common__append(ET.MB<ET.WMr>, LM(FD.array__slots(RT_L.MB<RT_L.WMr>, l)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, r))) : List<&2, ET.MB<ET.WMr>>}
       {==}
 
-def xatlm(+W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> {ET.xat_l1048576_bl1073741824(LM(W), i) == cm(RT.xat_l1048576_bl1073741824(W, i)) : ET.MB<ET.WMr>}:
+def xatlm(+W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat) -> {ET.xat_l1048576_bl1073741824(LM(W), i) == cm(RT_L.xat_l1048576_bl1073741824(W, i)) : ET.MB<ET.WMr>}:
   match W i:
     case Nil{} _: {==}
     case Con{+x, +t} 0n: {==}
@@ -131,35 +132,35 @@ def xatlm(+W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> {ET.xat_l1048576_bl1073741824
 
 # ---- one element: its record facts and its view, from rep and its storage premise ----
 
-def ELF(+m: RT.MB<RT.WMr>) -> Data: DK.P2({ET.EOK(cm(m)) == True{} : Bool}, {RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(m)) == S.BytesValue{ET.YE(cm(m))} : S.Value})
+def ELF(+m: RT_L.MB<RT_L.WMr>) -> Data: DK.P2({ET.EOK(cm(m)) == True{} : Bool}, {RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)) == S.BytesValue{ET.YE(cm(m))} : S.Value})
 
 def fE(+T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))) == True{} : Bool},
-    +hN: {U32.is_le(N, 1073741824) == True{} : Bool}) -> ELF(RT.MSome{RT.WMr{T, N}}):
+    +hN: {U32.is_le(N, 1073741824) == True{} : Bool}) -> ELF(RT_L.MSome{RT_L.WMr{T, N}}):
   +okd = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)))), hdw, FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))), pf, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)), hn, FD.logic__and_intro(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824), htz, hN))))
   +ok = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(U32, z, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(z))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))))) == True{} : Bool}, dw, ET.TD(T), Equal.sym(Nat, ET.TD(T), dw, tdU(dw, T, pf)), okd)
   (ok, Equal.cong(+List<U32>, S.Value, z => S.BytesValue{z}, WO.wview(O.Words{FD.array__thaw(U32, T), N}), VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, T))), BL.wvb(T, N)))
 
-def gE(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
-    +eb: {RT.th_bl1073741824_bx(m) == O.BSome{RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.BNone{}} : O.Boxed<O.Words>},
-    +hl: {Nat.is_le(U32.to_nat(WO.len(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)))), SH.ByteList_limit(sE)) == True{} : Bool},
-    +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)) == O.Words{FD.array__thaw(U32, T), N} : O.Words},
+def gE(+m: RT_L.MB<RT_L.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
+    +eb: {RT_L.th_bl1073741824_bx(m) == O.BSome{RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), O.BNone{}} : O.Boxed<O.Words>},
+    +hl: {Nat.is_le(U32.to_nat(WO.len(RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)))), SH.ByteList_limit(sE)) == True{} : Bool},
+    +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)) == O.Words{FD.array__thaw(U32, T), N} : O.Words},
     +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))) == True{} : Bool}) -> ELF(m):
-  +h1 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), SH.ByteList_limit(sE)) == True{} : Bool}, RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.Words{FD.array__thaw(U32, T), N}, eo, hl)
+  +h1 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), SH.ByteList_limit(sE)) == True{} : Bool}, RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), O.Words{FD.array__thaw(U32, T), N}, eo, hl)
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, SH.ByteList_limit(sE), U32.to_nat(1073741824), es, h1)
   +hN = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(1073741824)), U32.is_le(N, 1073741824), Equal.sym(Bool, U32.is_le(N, 1073741824), Nat.is_le(U32.to_nat(N), U32.to_nat(1073741824)), VU.le_u32(N, 1073741824)), h2)
-  +e1 = Equal.cong(O.Boxed<O.Words>, RT.MB<RT.WMr>, z => RT.fz_bl1073741824_bx(z), RT.th_bl1073741824_bx(m), O.BSome{RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.BNone{}}, eb)
-  +e2 = Equal.cong(O.Words, RT.MB<RT.WMr>, z => RT.MSome{RT.fz_w(z)}, RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.Words{FD.array__thaw(U32, T), N}, eo)
-  +e3 = Equal.cong(FD.array__Tree<U32>, RT.MB<RT.WMr>, z => RT.MSome{RT.WMr{z, N}}, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T))
-  +em = Equal.trans(RT.MB<RT.WMr>, m, RT.fz_bl1073741824_bx(RT.th_bl1073741824_bx(m)), RT.MSome{RT.WMr{T, N}}, Equal.sym(RT.MB<RT.WMr>, RT.fz_bl1073741824_bx(RT.th_bl1073741824_bx(m)), m, RT.fzth_bl1073741824_bx(m)),
-    Equal.trans(RT.MB<RT.WMr>, RT.fz_bl1073741824_bx(RT.th_bl1073741824_bx(m)), RT.MSome{RT.fz_w(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)))}, RT.MSome{RT.WMr{T, N}}, e1,
-      Equal.trans(RT.MB<RT.WMr>, RT.MSome{RT.fz_w(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)))}, RT.MSome{RT.WMr{FD.array__freeze(U32, FD.array__thaw(U32, T)), N}}, RT.MSome{RT.WMr{T, N}}, e2, e3)))
-  %Equal.sym(RT.MB<RT.WMr>, m, RT.MSome{RT.WMr{T, N}}, em) : ELF(_)
+  +e1 = Equal.cong(O.Boxed<O.Words>, RT_L.MB<RT_L.WMr>, z => RT_L.fz_bl1073741824_bx(z), RT_L.th_bl1073741824_bx(m), O.BSome{RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), O.BNone{}}, eb)
+  +e2 = Equal.cong(O.Words, RT_L.MB<RT_L.WMr>, z => RT_L.MSome{RT_L.fz_w(z)}, RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), O.Words{FD.array__thaw(U32, T), N}, eo)
+  +e3 = Equal.cong(FD.array__Tree<U32>, RT_L.MB<RT_L.WMr>, z => RT_L.MSome{RT_L.WMr{z, N}}, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T))
+  +em = Equal.trans(RT_L.MB<RT_L.WMr>, m, RT_L.fz_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), RT_L.MSome{RT_L.WMr{T, N}}, Equal.sym(RT_L.MB<RT_L.WMr>, RT_L.fz_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), m, RT.fzth_bl1073741824_bx(m)),
+    Equal.trans(RT_L.MB<RT_L.WMr>, RT_L.fz_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), RT_L.MSome{RT_L.fz_w(RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)))}, RT_L.MSome{RT_L.WMr{T, N}}, e1,
+      Equal.trans(RT_L.MB<RT_L.WMr>, RT_L.MSome{RT_L.fz_w(RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)))}, RT_L.MSome{RT_L.WMr{FD.array__freeze(U32, FD.array__thaw(U32, T)), N}}, RT_L.MSome{RT_L.WMr{T, N}}, e2, e3)))
+  %Equal.sym(RT_L.MB<RT_L.WMr>, m, RT_L.MSome{RT_L.WMr{T, N}}, em) : ELF(_)
   fE(T, dw, N, pf, hdw, hn, htz, hN)
 
-def elx(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat}, +r0: RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(m), sE),
-    +hs: BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), 31n)) -> ELF(m):
+def elx(+m: RT_L.MB<RT_L.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat}, +r0: RT_L.rep_bl1073741824_bx(RT_L.th_bl1073741824_bx(m), sE),
+    +hs: BL.sdk(RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(m)), 31n)) -> ELF(m):
   (+eb, +rl) = r0
   (+wf, +hl) = rl
   match hs:
@@ -195,65 +196,65 @@ def elx(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_
 # ---- the elements from i on ----
 
 # the (i) premise per element: its bytes' storage at depth below 31
-def SDKS(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> Data:
+def SDKS(k: Nat, +W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
-    case 1n+q: DK.P2(BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(RT.xat_l1048576_bl1073741824(W, i))), 31n), SDKS(q, W, 1n+i))
+    case 1n+q: DK.P2(BL.sdk(RT_L.pjb_bl1073741824_bx(RT_L.th_bl1073741824_bx(RT_L.xat_l1048576_bl1073741824(W, i))), 31n), SDKS(q, W, 1n+i))
 
-def wOK(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
-    +er: RT.ereps_l1048576_bl1073741824(k, W, i, sE), +hs: SDKS(k, W, i)) -> {ET.EOKS(k, LM(W), i) == True{} : Bool}:
+def wOK(k: Nat, +W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
+    +er: RT_L.ereps_l1048576_bl1073741824(k, W, i, sE), +hs: SDKS(k, W, i)) -> {ET.EOKS(k, LM(W), i) == True{} : Bool}:
   match k:
     case 0n: {==}
     case 1n+ +q:
       (+r0, +er1) = er
       (+h0, +hs1) = hs
-      +x = RT.xat_l1048576_bl1073741824(W, i)
-      +ok0 = PA({ET.EOK(cm(x)) == True{} : Bool}, {RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(x)) == S.BytesValue{ET.YE(cm(x))} : S.Value}, elx(x, sE, es, r0, h0))
+      +x = RT_L.xat_l1048576_bl1073741824(W, i)
+      +ok0 = PA({ET.EOK(cm(x)) == True{} : Bool}, {RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(x)) == S.BytesValue{ET.YE(cm(x))} : S.Value}, elx(x, sE, es, r0, h0))
       FD.logic__and_intro(ET.EOK(ET.xat_l1048576_bl1073741824(LM(W), i)), ET.EOKS(q, LM(W), 1n+i),
         FD.logic__subst(ET.MB<ET.WMr>, z => {ET.EOK(z) == True{} : Bool}, cm(x), ET.xat_l1048576_bl1073741824(LM(W), i), Equal.sym(ET.MB<ET.WMr>, ET.xat_l1048576_bl1073741824(LM(W), i), cm(x), xatlm(W, i)), ok0),
         wOK(q, W, 1n+i, sE, es, er1, hs1))
 
-def wV(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
-    +er: RT.ereps_l1048576_bl1073741824(k, W, i, sE), +hs: SDKS(k, W, i)) -> {RT.xi_l1048576_bl1073741824(k, W, i) == ET.XI(k, LM(W), i) : S.Value}:
+def wV(k: Nat, +W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
+    +er: RT_L.ereps_l1048576_bl1073741824(k, W, i, sE), +hs: SDKS(k, W, i)) -> {RT_L.xi_l1048576_bl1073741824(k, W, i) == ET.XI(k, LM(W), i) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +q:
       (+r0, +er1) = er
       (+h0, +hs1) = hs
-      +x = RT.xat_l1048576_bl1073741824(W, i)
-      +ev0 = PB({ET.EOK(cm(x)) == True{} : Bool}, {RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(x)) == S.BytesValue{ET.YE(cm(x))} : S.Value}, elx(x, sE, es, r0, h0))
+      +x = RT_L.xat_l1048576_bl1073741824(W, i)
+      +ev0 = PB({ET.EOK(cm(x)) == True{} : Bool}, {RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(x)) == S.BytesValue{ET.YE(cm(x))} : S.Value}, elx(x, sE, es, r0, h0))
       %Equal.sym(ET.MB<ET.WMr>, ET.xat_l1048576_bl1073741824(LM(W), i), cm(x), xatlm(W, i)) :
-        {S.Items{RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(x)), RT.xi_l1048576_bl1073741824(q, W, 1n+i)} == S.Items{S.BytesValue{ET.YE(_)}, ET.XI(q, LM(W), 1n+i)} : S.Value}
-      %Equal.sym(S.Value, RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(x)), S.BytesValue{ET.YE(cm(x))}, ev0) :
-        {S.Items{_, RT.xi_l1048576_bl1073741824(q, W, 1n+i)} == S.Items{S.BytesValue{ET.YE(cm(x))}, ET.XI(q, LM(W), 1n+i)} : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{S.BytesValue{ET.YE(cm(x))}, z}, RT.xi_l1048576_bl1073741824(q, W, 1n+i), ET.XI(q, LM(W), 1n+i), wV(q, W, 1n+i, sE, es, er1, hs1))
+        {S.Items{RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(x)), RT_L.xi_l1048576_bl1073741824(q, W, 1n+i)} == S.Items{S.BytesValue{ET.YE(_)}, ET.XI(q, LM(W), 1n+i)} : S.Value}
+      %Equal.sym(S.Value, RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(x)), S.BytesValue{ET.YE(cm(x))}, ev0) :
+        {S.Items{_, RT_L.xi_l1048576_bl1073741824(q, W, 1n+i)} == S.Items{S.BytesValue{ET.YE(cm(x))}, ET.XI(q, LM(W), 1n+i)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{S.BytesValue{ET.YE(cm(x))}, z}, RT_L.xi_l1048576_bl1073741824(q, W, 1n+i), ET.XI(q, LM(W), 1n+i), wV(q, W, 1n+i, sE, es, er1, hs1))
 
 # the elements' byte counts, on the root law's mirror
-def NR(+m: RT.MB<RT.WMr>) -> U32:
+def NR(+m: RT_L.MB<RT_L.WMr>) -> U32:
   match m:
-    case RT.MNone{}: 0
-    case RT.MSome{+w}:
+    case RT_L.MNone{}: 0
+    case RT_L.MSome{+w}:
       match w:
-        case RT.WMr{+t, +n}: n
+        case RT_L.WMr{+t, +n}: n
 
-def SUMN(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> Nat:
+def SUMN(k: Nat, +W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat) -> Nat:
   match k:
     case 0n: 0n
-    case 1n+q: Nat.add(U32.to_nat(NR(RT.xat_l1048576_bl1073741824(W, i))), SUMN(q, W, 1n+i))
+    case 1n+q: Nat.add(U32.to_nat(NR(RT_L.xat_l1048576_bl1073741824(W, i))), SUMN(q, W, 1n+i))
 
-def necm(+m: RT.MB<RT.WMr>) -> {ET.NE(cm(m)) == NR(m) : U32}:
+def necm(+m: RT_L.MB<RT_L.WMr>) -> {ET.NE(cm(m)) == NR(m) : U32}:
   match m:
-    case RT.MNone{}: {==}
-    case RT.MSome{+w}:
+    case RT_L.MNone{}: {==}
+    case RT_L.MSome{+w}:
       match w:
-        case RT.WMr{+t, +n}: {==}
+        case RT_L.WMr{+t, +n}: {==}
 
-def blw(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +hok: {ET.EOKS(k, LM(W), i) == True{} : Bool}) -> {ET.BL(k, LM(W), i) == SUMN(k, W, i) : Nat}:
+def blw(k: Nat, +W: List<&2, RT_L.MB<RT_L.WMr>>, +i: Nat, +hok: {ET.EOKS(k, LM(W), i) == True{} : Bool}) -> {ET.BL(k, LM(W), i) == SUMN(k, W, i) : Nat}:
   match k:
     case 0n: {==}
     case 1n+ +q:
       +a = ET.xat_l1048576_bl1073741824(LM(W), i)
-      +x = RT.xat_l1048576_bl1073741824(W, i)
+      +x = RT_L.xat_l1048576_bl1073741824(W, i)
       +h0 = FD.logic__and_left(ET.EOK(a), ET.EOKS(q, LM(W), 1n+i), hok)
       +h1 = FD.logic__and_right(ET.EOK(a), ET.EOKS(q, LM(W), 1n+i), hok)
       +e0 = Equal.trans(Nat, VE2.LEN(ET.YE(a)), U32.to_nat(ET.NE(a)), U32.to_nat(NR(x)), ET.len_ye(a, h0),
@@ -269,21 +270,21 @@ def blw(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +hok: {ET.EOKS(k, LM(W), i
 # the (i) premise (a decoded-object gap: the encode record takes the list's tree at depth below 31 and each
 # transaction's bytes at depth below 31; the root law's invariant gives below 32)
 def sdt(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> Data:
-  DK.Ex(FD.array__Tree<RT.MB<RT.WMr>>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
-    DK.P2({w == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
-    DK.P2({FD.array__perfect(RT.MB<RT.WMr>, dw, t) == True{} : Bool},
+  DK.Ex(FD.array__Tree<RT_L.MB<RT_L.WMr>>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({w == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
+    DK.P2({FD.array__perfect(RT_L.MB<RT_L.WMr>, dw, t) == True{} : Bool},
     DK.P2({Nat.is_lt(dw, 31n) == True{} : Bool},
     DK.P2({Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-          SDKS(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n))))))))
+          SDKS(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n))))))))
 
 # the list's encoded byte count, on the object: 4 per element and its bytes
 def TXL(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> Nat:
   match w:
-    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: Nat.add(A.quad(U32.to_nat(n)), SUMN(U32.to_nat(n), FD.array__slots(RT.MB<RT.WMr>, RT.tfz_l1048576_bl1073741824(arr)), 0n))
+    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: Nat.add(A.quad(U32.to_nat(n)), SUMN(U32.to_nat(n), FD.array__slots(RT_L.MB<RT_L.WMr>, RT_L.tfz_l1048576_bl1073741824(arr)), 0n))
 
-def ARZ(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> FD.array__Tree<RT.MB<RT.WMr>>:
+def ARZ(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> FD.array__Tree<RT_L.MB<RT_L.WMr>>:
   match w:
-    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: RT.tfz_l1048576_bl1073741824(arr)
+    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: RT_L.tfz_l1048576_bl1073741824(arr)
 def LNZ(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> U32:
   match w:
     case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: n
@@ -291,62 +292,62 @@ def LNZ(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) ->
 def R_T(po: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> Data:
   DK.Ex(FD.array__Tree<ET.MB<ET.WMr>>, t => DK.Ex(U32, N =>
     DK.P2({po == ET.THL(t, N) : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
-    DK.P2({RT.xv_l1048576_bl1073741824(ET.THL(t, N)) == ET.VALL(t, N) : S.Value},
+    DK.P2({RT_L.xv_l1048576_bl1073741824(ET.THL(t, N)) == ET.VALL(t, N) : S.Value},
     DK.P2({ET.OKL(t, N) == True{} : Bool},
           {LY.LN(ET.ENCL(t, N)) == TXL(po) : Nat})))))
 
-def lnT(+t: FD.array__Tree<RT.MB<RT.WMr>>, +N: U32, +okE: {ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n) == True{} : Bool})
-    -> {ET.LL(CV(t), N) == TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}) : Nat}:
-  %Equal.sym(FD.array__Tree<RT.MB<RT.WMr>>, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
-    {ET.LL(CV(t), N) == Nat.add(A.quad(U32.to_nat(N)), SUMN(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, _), 0n)) : Nat}
-  %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT.MB<RT.WMr>, t)), slcv(t)) :
-    {Nat.add(A.quad(U32.to_nat(N)), ET.BL(U32.to_nat(N), _, 0n)) == Nat.add(A.quad(U32.to_nat(N)), SUMN(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n)) : Nat}
-  Equal.cong(Nat, Nat, z => Nat.add(A.quad(U32.to_nat(N)), z), ET.BL(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n), SUMN(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n),
-    blw(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n, okE))
+def lnT(+t: FD.array__Tree<RT_L.MB<RT_L.WMr>>, +N: U32, +okE: {ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n) == True{} : Bool})
+    -> {ET.LL(CV(t), N) == TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}) : Nat}:
+  %Equal.sym(FD.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
+    {ET.LL(CV(t), N) == Nat.add(A.quad(U32.to_nat(N)), SUMN(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, _), 0n)) : Nat}
+  %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), slcv(t)) :
+    {Nat.add(A.quad(U32.to_nat(N)), ET.BL(U32.to_nat(N), _, 0n)) == Nat.add(A.quad(U32.to_nat(N)), SUMN(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n)) : Nat}
+  Equal.cong(Nat, Nat, z => Nat.add(A.quad(U32.to_nat(N)), z), ET.BL(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n), SUMN(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n),
+    blw(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, okE))
 
-def evT(+t: FD.array__Tree<RT.MB<RT.WMr>>, +N: U32, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
-    +er: RT.ereps_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n, sE), +sd: SDKS(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n))
-    -> {RT.xv_l1048576_bl1073741824(ET.THL(CV(t), N)) == ET.VALL(CV(t), N) : S.Value}:
-  %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(t)), RT.am_l1048576_bl1073741824(t), amcv(t)) :
-    {RT.xv_l1048576_bl1073741824(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{_, N}) == ET.VALL(CV(t), N) : S.Value}
-  %Equal.sym(FD.array__Tree<RT.MB<RT.WMr>>, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
-    {S.Sequence{RT.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, _), 0n)} == ET.VALL(CV(t), N) : S.Value}
-  %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT.MB<RT.WMr>, t)), slcv(t)) :
-    {S.Sequence{RT.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n)} == S.Sequence{ET.XI(U32.to_nat(N), _, 0n)} : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n), ET.XI(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n),
-    wV(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n, sE, es, er, sd))
+def evT(+t: FD.array__Tree<RT_L.MB<RT_L.WMr>>, +N: U32, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
+    +er: RT_L.ereps_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, sE), +sd: SDKS(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n))
+    -> {RT_L.xv_l1048576_bl1073741824(ET.THL(CV(t), N)) == ET.VALL(CV(t), N) : S.Value}:
+  %Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(t)), RT_L.am_l1048576_bl1073741824(t), amcv(t)) :
+    {RT_L.xv_l1048576_bl1073741824(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{_, N}) == ET.VALL(CV(t), N) : S.Value}
+  %Equal.sym(FD.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
+    {S.Sequence{RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, _), 0n)} == ET.VALL(CV(t), N) : S.Value}
+  %Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), slcv(t)) :
+    {S.Sequence{RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n)} == S.Sequence{ET.XI(U32.to_nat(N), _, 0n)} : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n), ET.XI(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n),
+    wV(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, sE, es, er, sd))
 
 def kT(-po: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, +s: S.Schema, +es: {SH.ByteList_limit(SH.ListOf_element(s)) == U32.to_nat(1073741824) : Nat}, +el: {SH.ListOf_limit(s) == U32.to_nat(1048576) : Nat},
-    +hl: {Nat.is_le(U32.to_nat(RT.xlen_o_l1048576_bl1073741824(po)), SH.ListOf_limit(s)) == True{} : Bool},
-    +t1: FD.array__Tree<RT.MB<RT.WMr>>, +N1: U32, +eo1: {po == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t1), N1} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
-    +er1: RT.ereps_l1048576_bl1073741824(U32.to_nat(N1), FD.array__slots(RT.MB<RT.WMr>, t1), 0n, SH.ListOf_element(s)),
-    +t: FD.array__Tree<RT.MB<RT.WMr>>, +dw: Nat, +N: U32, +eo: {po == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
-    +pf: {FD.array__perfect(RT.MB<RT.WMr>, dw, t) == True{} : Bool}, +hd: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +sd: SDKS(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n)) -> R_T(po):
+    +hl: {Nat.is_le(U32.to_nat(RT_L.xlen_o_l1048576_bl1073741824(po)), SH.ListOf_limit(s)) == True{} : Bool},
+    +t1: FD.array__Tree<RT_L.MB<RT_L.WMr>>, +N1: U32, +eo1: {po == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t1), N1} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
+    +er1: RT_L.ereps_l1048576_bl1073741824(U32.to_nat(N1), FD.array__slots(RT_L.MB<RT_L.WMr>, t1), 0n, SH.ListOf_element(s)),
+    +t: FD.array__Tree<RT_L.MB<RT_L.WMr>>, +dw: Nat, +N: U32, +eo: {po == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},
+    +pf: {FD.array__perfect(RT_L.MB<RT_L.WMr>, dw, t) == True{} : Bool}, +hd: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
+    +sd: SDKS(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n)) -> R_T(po):
   +sE = SH.ListOf_element(s)
-  +e12 = Equal.trans(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t1), N1}, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, Equal.sym(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t1), N1}, eo1), eo)
-  +et = Equal.trans(FD.array__Tree<RT.MB<RT.WMr>>, t1, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t1)), t, Equal.sym(FD.array__Tree<RT.MB<RT.WMr>>, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t1)), t1, RT.tfzam_l1048576_bl1073741824(t1)),
-    Equal.trans(FD.array__Tree<RT.MB<RT.WMr>>, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t1)), RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t)), t,
-      Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, FD.array__Tree<RT.MB<RT.WMr>>, z => ARZ(z), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t1), N1}, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, e12), RT.tfzam_l1048576_bl1073741824(t)))
-  +en = Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, U32, z => LNZ(z), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t1), N1}, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, e12)
-  +erA = FD.logic__subst(FD.array__Tree<RT.MB<RT.WMr>>, z => RT.ereps_l1048576_bl1073741824(U32.to_nat(N1), FD.array__slots(RT.MB<RT.WMr>, z), 0n, sE), t1, t, et, er1)
-  +er = FD.logic__subst(U32, z => RT.ereps_l1048576_bl1073741824(U32.to_nat(z), FD.array__slots(RT.MB<RT.WMr>, t), 0n, sE), N1, N, en, erA)
-  +h1 = FD.logic__subst(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l1048576_bl1073741824(z)), SH.ListOf_limit(s)) == True{} : Bool}, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, eo, hl)
+  +e12 = Equal.trans(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t1), N1}, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, Equal.sym(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t1), N1}, eo1), eo)
+  +et = Equal.trans(FD.array__Tree<RT_L.MB<RT_L.WMr>>, t1, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t1)), t, Equal.sym(FD.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t1)), t1, RT.tfzam_l1048576_bl1073741824(t1)),
+    Equal.trans(FD.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t1)), RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t)), t,
+      Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, FD.array__Tree<RT_L.MB<RT_L.WMr>>, z => ARZ(z), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t1), N1}, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, e12), RT.tfzam_l1048576_bl1073741824(t)))
+  +en = Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, U32, z => LNZ(z), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t1), N1}, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, e12)
+  +erA = FD.logic__subst(FD.array__Tree<RT_L.MB<RT_L.WMr>>, z => RT_L.ereps_l1048576_bl1073741824(U32.to_nat(N1), FD.array__slots(RT_L.MB<RT_L.WMr>, z), 0n, sE), t1, t, et, er1)
+  +er = FD.logic__subst(U32, z => RT_L.ereps_l1048576_bl1073741824(U32.to_nat(z), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, sE), N1, N, en, erA)
+  +h1 = FD.logic__subst(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, z => {Nat.is_le(U32.to_nat(RT_L.xlen_o_l1048576_bl1073741824(z)), SH.ListOf_limit(s)) == True{} : Bool}, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, eo, hl)
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, SH.ListOf_limit(s), U32.to_nat(1048576), el, h1)
   +hlN = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(1048576)), U32.is_le(N, 1048576), Equal.sym(Bool, U32.is_le(N, 1048576), Nat.is_le(U32.to_nat(N), U32.to_nat(1048576)), VU.le_u32(N, 1048576)), h2)
   +pf2 = pfcv(dw, t, pf)
-  +okE = wOK(U32.to_nat(N), FD.array__slots(RT.MB<RT.WMr>, t), 0n, sE, es, er, sd)
-  +okd = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n)))), hd, FD.logic__and_intro(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n))), pf2, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n)), hn, FD.logic__and_intro(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT.MB<RT.WMr>, t)), 0n), hlN, okE))))
-  +okS = FD.logic__subst(List<&2, ET.MB<ET.WMr>>, z => {Bool.and(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), z, 0n))))) == True{} : Bool}, LM(FD.array__slots(RT.MB<RT.WMr>, t)), FD.array__slots(ET.MB<ET.WMr>, CV(t)), Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT.MB<RT.WMr>, t)), slcv(t)), okd)
+  +okE = wOK(U32.to_nat(N), FD.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, sE, es, er, sd)
+  +okd = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n)))), hd, FD.logic__and_intro(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n))), pf2, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n)), hn, FD.logic__and_intro(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), 0n), hlN, okE))))
+  +okS = FD.logic__subst(List<&2, ET.MB<ET.WMr>>, z => {Bool.and(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(ET.MB<ET.WMr>, dw, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), z, 0n))))) == True{} : Bool}, LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), FD.array__slots(ET.MB<ET.WMr>, CV(t)), Equal.sym(List<&2, ET.MB<ET.WMr>>, FD.array__slots(ET.MB<ET.WMr>, CV(t)), LM(FD.array__slots(RT_L.MB<RT_L.WMr>, t)), slcv(t)), okd)
   +ok = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(ET.MB<ET.WMr>, z, CV(t)), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(U32.is_le(N, 1048576), ET.EOKS(U32.to_nat(N), ET.SL(CV(t)), 0n))))) == True{} : Bool}, dw, ET.TDM(CV(t)), Equal.sym(Nat, ET.TDM(CV(t)), dw, tdmE(dw, CV(t), pf2)), okS)
-  +eoT = Equal.trans(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, ET.THL(CV(t), N), eo, Equal.cong(Array<O.Boxed<O.Words>>, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, z => Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{z, N}, RT.am_l1048576_bl1073741824(t), ET.am_l1048576_bl1073741824(CV(t)),
-    Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(t)), RT.am_l1048576_bl1073741824(t), amcv(t))))
-  +eL = Equal.trans(Nat, LY.LN(ET.ENCL(CV(t), N)), ET.LL(CV(t), N), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}), ET.len_encl(CV(t), N), lnT(t, N, okE))
-  +eL2 = Equal.trans(Nat, LY.LN(ET.ENCL(CV(t), N)), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}), TXL(po), eL, Equal.sym(Nat, TXL(po), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}), Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, Nat, z => TXL(z), po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, eo)))
+  +eoT = Equal.trans(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, ET.THL(CV(t), N), eo, Equal.cong(Array<O.Boxed<O.Words>>, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, z => Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{z, N}, RT_L.am_l1048576_bl1073741824(t), ET.am_l1048576_bl1073741824(CV(t)),
+    Equal.sym(Array<O.Boxed<O.Words>>, ET.am_l1048576_bl1073741824(CV(t)), RT_L.am_l1048576_bl1073741824(t), amcv(t))))
+  +eL = Equal.trans(Nat, LY.LN(ET.ENCL(CV(t), N)), ET.LL(CV(t), N), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}), ET.len_encl(CV(t), N), lnT(t, N, okE))
+  +eL2 = Equal.trans(Nat, LY.LN(ET.ENCL(CV(t), N)), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}), TXL(po), eL, Equal.sym(Nat, TXL(po), TXL(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}), Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, Nat, z => TXL(z), po, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, eo)))
   (CV(t), (N, (eoT, (evT(t, N, sE, es, er, sd), (ok, eL2)))))
 
 def mk_T(-po: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, +s: S.Schema, +es: {SH.ByteList_limit(SH.ListOf_element(s)) == U32.to_nat(1073741824) : Nat}, +el: {SH.ListOf_limit(s) == U32.to_nat(1048576) : Nat},
-    +rep: RT.rep_l1048576_bl1073741824(po, s), +hs: sdt(po)) -> R_T(po):
+    +rep: RT_L.rep_l1048576_bl1073741824(po, s), +hs: sdt(po)) -> R_T(po):
   (+w1, +hl) = rep
   (+t1, a1) = w1
   (+dw1, a2) = a1
@@ -373,16 +374,16 @@ def WLL(w: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq) -> Nat:
 def R_W(po: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq) -> Data:
   DK.Ex(FD.array__Tree<FuluWithdrawal_d.Withdrawal>, a => DK.Ex(U32, N =>
     DK.P2({po == EWL.THL_l16_Withdrawal(a, N) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq},
-    DK.P2({RT.xv_l16_Withdrawal(EWL.THL_l16_Withdrawal(a, N)) == EWL.VALL_l16_Withdrawal(a, N) : S.Value},
+    DK.P2({RT_L.xv_l16_Withdrawal(EWL.THL_l16_Withdrawal(a, N)) == EWL.VALL_l16_Withdrawal(a, N) : S.Value},
     DK.P2({EWL.OKL_l16_Withdrawal(a, N) == True{} : Bool},
           {LY.LN(EWL.ENCL_l16_Withdrawal(a, N)) == WLL(po) : Nat})))))
 
 def kW(-po: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(16) : Nat},
-    +hl: {Nat.is_le(U32.to_nat(RT.xlen_o_l16_Withdrawal(po)), SH.ListOf_limit(s)) == True{} : Bool},
+    +hl: {Nat.is_le(U32.to_nat(RT_L.xlen_o_l16_Withdrawal(po)), SH.ListOf_limit(s)) == True{} : Bool},
     +a: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +dw: Nat, +N: U32, +eo: {po == Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, a), N} : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq},
     +pf: {FD.array__perfect(FuluWithdrawal_d.Withdrawal, dw, a) == True{} : Bool}, +hd: {Nat.is_lt(dw, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool}) -> R_W(po):
-  +h1 = FD.logic__subst(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l16_Withdrawal(z)), SH.ListOf_limit(s)) == True{} : Bool}, po, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, a), N}, eo, hl)
+  +h1 = FD.logic__subst(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, z => {Nat.is_le(U32.to_nat(RT_L.xlen_o_l16_Withdrawal(z)), SH.ListOf_limit(s)) == True{} : Bool}, po, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, a), N}, eo, hl)
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, SH.ListOf_limit(s), U32.to_nat(16), el, h1)
   +hlN = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(16)), U32.is_le(N, 16), Equal.sym(Bool, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16)), h2)
   +okd = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(FuluWithdrawal_d.Withdrawal, dw, a), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), U32.is_le(N, 16))), hd, FD.logic__and_intro(FD.array__perfect(FuluWithdrawal_d.Withdrawal, dw, a), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), U32.is_le(N, 16)), pf, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), VB.pw(dw)), U32.is_le(N, 16), hn, hlN)))
@@ -390,7 +391,7 @@ def kW(-po: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +el: {SH
   +eL = Equal.trans(Nat, LY.LN(EWL.ENCL_l16_Withdrawal(a, N)), EWL.LL_l16_Withdrawal(a, N), WLL(po), EWL.len_encl_l16_Withdrawal(a, N), Equal.sym(Nat, WLL(po), WLL(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, a), N}), Equal.cong(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, Nat, z => WLL(z), po, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, a), N}, eo)))
   (a, (N, (eo, (RLV.xvl_l16_Withdrawal(a, N), (ok, eL)))))
 
-def mk_W(-po: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(16) : Nat}, +rep: RT.rep_l16_Withdrawal(po, s), +hs: RLV.sda_l16_Withdrawal(po, 31n)) -> R_W(po):
+def mk_W(-po: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(16) : Nat}, +rep: RT_L.rep_l16_Withdrawal(po, s), +hs: RLV.sda_l16_Withdrawal(po, 31n)) -> R_W(po):
   (+w1, +hl) = rep
   (+a, b1) = hs
   (+dw, b2) = b1

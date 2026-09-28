@@ -8,11 +8,12 @@ import ../types/schema.bend as S
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../proofs/obj/gvalid_gtypes2.bend as GV
 import ./e2e_support.bend as E
 import ../types/bitvector_1_def_generated.bend as bitvector_1_d
@@ -25,18 +26,18 @@ import ../types/BitsStruct_hashtreeroot_generated.bend as BitsStruct_h
 # BitsStruct (variable size, two bit lists and three bit vectors): the object API's root is END_TO_END's hash_tree_root,
 # for every object the root law represents (rep_Gc85FA758A04: its bit vectors, its bit lists' rep_bits).
 
-def rt1(h: B.Buf, +t0: FD.array__Tree<U32>, +K0: U32, +t3: FD.array__Tree<U32>, +K3: U32, +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8, +rep: RT.rep_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, Spec.Gc85FA758A04())) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}), VS.public_sound(Spec.Gc85FA758A04(), {==}), D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4})))),
+def rt1(h: B.Buf, +t0: FD.array__Tree<U32>, +K0: U32, +t3: FD.array__Tree<U32>, +K3: U32, +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8, +rep: RT_L.rep_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, Spec.Gc85FA758A04())) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}), VS.public_sound(Spec.Gc85FA758A04(), {==}), D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4})))),
     GV.Gc85FA758A04_root_valid(BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, Spec.Gc85FA758A04(), {==}, rep), RT.Gc85FA758A04_root_correct(h, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, Spec.Gc85FA758A04(), {==}, rep))
 
-def rt2(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +t0: FD.array__Tree<U32>, +K0: U32, +t3: FD.array__Tree<U32>, +K3: U32, +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8,
-    +eo: {o == BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4} : BitsStruct_d.Gc85FA758A04}) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo) : {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(_)) : Maybe<&2, +List<U32>>}
-  rt1(h, t0, K0, t3, K3, x1, x2, x4, FD.logic__subst(BitsStruct_d.Gc85FA758A04, z => RT.rep_Gc85FA758A04(z, Spec.Gc85FA758A04()), o, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo, rep))
+def rt2(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT_L.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +t0: FD.array__Tree<U32>, +K0: U32, +t3: FD.array__Tree<U32>, +K3: U32, +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8,
+    +eo: {o == BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4} : BitsStruct_d.Gc85FA758A04}) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo) : {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(_)) : Maybe<&2, +List<U32>>}
+  rt1(h, t0, K0, t3, K3, x1, x2, x4, FD.logic__subst(BitsStruct_d.Gc85FA758A04, z => RT_L.rep_Gc85FA758A04(z, Spec.Gc85FA758A04()), o, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo, rep))
 
 # the second bit list's words
-def rt3(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8, +eo: {o == BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4} : BitsStruct_d.Gc85FA758A04},
-    +t0: FD.array__Tree<U32>, +K0: U32, +ew0: {RT.pj_Gc85FA758A04_0(o) == O.Bits{FD.array__thaw(U32, t0), K0} : O.Bits}, +r1: DK.P2(RN.rp_bv2(x1), DK.P2(RN.rp_bv1(x2), DK.P2(BO.rep_bits(RT.pj_Gc85FA758A04_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.Gc85FA758A04())))))), RN.rp_bv8(x4))))) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
+def rt3(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT_L.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8, +eo: {o == BitsStruct_d.Gc85FA758A04{RT_L.pj_Gc85FA758A04_0(o), x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4} : BitsStruct_d.Gc85FA758A04},
+    +t0: FD.array__Tree<U32>, +K0: U32, +ew0: {RT_L.pj_Gc85FA758A04_0(o) == O.Bits{FD.array__thaw(U32, t0), K0} : O.Bits}, +r1: DK.P2(RN.rp_bv2(x1), DK.P2(RN.rp_bv1(x2), DK.P2(BO.rep_bits(RT_L.pj_Gc85FA758A04_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.Gc85FA758A04())))))), RN.rp_bv8(x4))))) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
   (+rp1, r2) = r1
   (+rp2, r3) = r2
   (+rb3, +rp4) = r3
@@ -48,10 +49,10 @@ def rt3(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Sp
       (+K3, w3) = w2
       (+ew3, w4) = w3
       rt2(h, o, rep, t0, K0, t3, K3, x1, x2, x4,
-        Equal.trans(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo,
-        Equal.trans(BitsStruct_d.Gc85FA758A04, BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4},
-          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{z, x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, RT.pj_Gc85FA758A04_0(o), O.Bits{FD.array__thaw(U32, t0), K0}, ew0),
-          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, z, x4}, RT.pj_Gc85FA758A04_3(o), O.Bits{FD.array__thaw(U32, t3), K3}, ew3))))
+        Equal.trans(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{RT_L.pj_Gc85FA758A04_0(o), x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo,
+        Equal.trans(BitsStruct_d.Gc85FA758A04, BitsStruct_d.Gc85FA758A04{RT_L.pj_Gc85FA758A04_0(o), x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4},
+          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{z, x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, RT_L.pj_Gc85FA758A04_0(o), O.Bits{FD.array__thaw(U32, t0), K0}, ew0),
+          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, z, x4}, RT_L.pj_Gc85FA758A04_3(o), O.Bits{FD.array__thaw(U32, t3), K3}, ew3))))
     case Inr{w}:
       (+t3, w1) = w
       (+dw, w2) = w1
@@ -60,13 +61,13 @@ def rt3(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Sp
       (+r, w5) = w4
       (+ew3, w6) = w5
       rt2(h, o, rep, t0, K0, t3, K3, x1, x2, x4,
-        Equal.trans(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo,
-        Equal.trans(BitsStruct_d.Gc85FA758A04, BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4},
-          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{z, x1, x2, RT.pj_Gc85FA758A04_3(o), x4}, RT.pj_Gc85FA758A04_0(o), O.Bits{FD.array__thaw(U32, t0), K0}, ew0),
-          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, z, x4}, RT.pj_Gc85FA758A04_3(o), O.Bits{FD.array__thaw(U32, t3), K3}, ew3))))
+        Equal.trans(BitsStruct_d.Gc85FA758A04, o, BitsStruct_d.Gc85FA758A04{RT_L.pj_Gc85FA758A04_0(o), x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4}, eo,
+        Equal.trans(BitsStruct_d.Gc85FA758A04, BitsStruct_d.Gc85FA758A04{RT_L.pj_Gc85FA758A04_0(o), x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, O.Bits{FD.array__thaw(U32, t3), K3}, x4},
+          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{z, x1, x2, RT_L.pj_Gc85FA758A04_3(o), x4}, RT_L.pj_Gc85FA758A04_0(o), O.Bits{FD.array__thaw(U32, t0), K0}, ew0),
+          Equal.cong(O.Bits, BitsStruct_d.Gc85FA758A04, z => BitsStruct_d.Gc85FA758A04{O.Bits{FD.array__thaw(U32, t0), K0}, x1, x2, z, x4}, RT_L.pj_Gc85FA758A04_3(o), O.Bits{FD.array__thaw(U32, t3), K3}, ew3))))
 
 # (iv)
-def BitsStruct_e2e_root(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04())) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
+def BitsStruct_e2e_root(h: B.Buf, -o: BitsStruct_d.Gc85FA758A04, +rep: RT_L.rep_Gc85FA758A04(o, Spec.Gc85FA758A04())) -> {Some{D.bytes(Pair.snd(BitsStruct_d.Gc85FA758A04, D.Digest, Pair.snd(B.Buf, BitsStruct_d.Gc85FA758A04 & D.Digest, BitsStruct_h.Gc85FA758A04_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gc85FA758A04(), RT_L.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
   (+x1, q1) = rep
   (+x2, q2) = q1
   (+x4, q3) = q2

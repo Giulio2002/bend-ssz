@@ -7,7 +7,7 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/encx_l16_WithdrawalRequest.bend as EW
 import ../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
 import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d

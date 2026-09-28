@@ -17,25 +17,14 @@ import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ../../spec/primitives.bend as SP
+import ./list_obj_light.bend as LV
 
 # Byte lists as objects (see proofs/obj/words_obj.bend for the object form and
 # why the schema is a variable).
 
-# The representation invariant of empty byte storage.
-def wf0(o: O.Words) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
-    DK.P2({o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-          {U32.to_nat(N) == 0n : Nat}))))))
-
-# Byte storage of any length.
-def wfl(o: O.Words) -> Data:
-  DK.Or2(wf0(o), WO.wf1(o))
-
 # The runtime root of a byte list (data tree and length) hands back the hasher
 # and the object, with the digest it computed.
-def bl_eta(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: wfl(o), +edu: {U32.to_nat(dU) == depth : Nat})
+def bl_eta(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: LV.wfl(o), +edu: {U32.to_nat(dU) == depth : Nat})
     -> {O.mix_count(hl, 0n, O.words_root(hl, h, o, dU, seg)) == (h, (o, Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.mix_count(hl, 0n, O.words_root(hl, h, o, dU, seg)))))) : B.Buf & (O.Words & D.Digest)}:
   match wf:
     case Inl{w}:
@@ -71,15 +60,6 @@ def bl_eta(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +
         {_ == (h, (O.Words{F.array__thaw(U32, t), N}, Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))) : B.Buf & (O.Words & D.Digest)}
       {==}
 
-# The object represents a value of the byte list schema s: its length is within
-# the schema's limit.
-def rep_bl(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(wfl(o), {Nat.is_le(U32.to_nat(WO.len(o)), SH.ByteList_limit(s)) == True{} : Bool})
-
-# The schema is a byte list whose chunk limit has minimal depth `depth`.
-def ok_bl(+s: S.Schema, +depth: Nat) -> Bool:
-  Bool.and(SH.is_ByteList(s), Lim.minimal(BL.chunk_limit(SH.ByteList_limit(s)), depth))
-
 def le_len(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +cap: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
     +hn: {Nat.is_le(U32.to_nat(WO.len(o)), cap) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), cap) == True{} : Bool}:
   %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(U32.to_nat(_), cap) == True{} : Bool}
@@ -90,7 +70,7 @@ def rw_le(+a: Nat, +b: Nat, +cap: Nat, +e: {a == b : Nat}, +h: {Nat.is_le(a, cap
   h
 
 def bl_body(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +cap: Nat, -o: O.Words, +depth: Nat,
-    +wf: wfl(o),
+    +wf: LV.wfl(o),
     +hn: {Nat.is_le(U32.to_nat(WO.len(o)), cap) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hmin: {Lim.minimal(BL.chunk_limit(cap), depth) == True{} : Bool},
@@ -133,8 +113,8 @@ def bl_body(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +cap: Nat, -o: O.Words, +d
 # A byte list of any length within its capacity: the runtime root (the data
 # tree with the length mixed in) is a specification root of the object's bytes.
 def bl_gen(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +s: S.Schema, -o: O.Words, +depth: Nat,
-    +rep: rep_bl(o, s),
-    +ok: {ok_bl(s, depth) == True{} : Bool},
+    +rep: LV.rep_bl(o, s),
+    +ok: {LV.ok_bl(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
     -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.mix_count(hl, 0n, O.words_root(hl, h, o, dU, seg)))))]):
@@ -151,7 +131,7 @@ def ldig(+hl: Nat, o: O.Words, +depth: Nat) -> D.Digest:
   match o:
     case O.Words{ws, +n}: O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(n)), hl, MR.clist(O.chunks_of(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n), 0n), n)
 
-def bl_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: wfl(o), +edu: {U32.to_nat(dU) == depth : Nat})
+def bl_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: LV.wfl(o), +edu: {U32.to_nat(dU) == depth : Nat})
     -> {O.mix_count(hl, 0n, O.words_root(hl, h, o, dU, seg)) == (h, (o, ldig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
   match wf:
     case Inl{w}:
@@ -197,8 +177,8 @@ def bl_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +w
 
 # A byte list's digest is a specification root of its bytes.
 def bl_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32,
-    +rep: rep_bl(o, s),
-    +ok: {ok_bl(s, depth) == True{} : Bool},
+    +rep: LV.rep_bl(o, s),
+    +ok: {LV.ok_bl(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
     -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(ldig(hl, o, depth))]):
@@ -206,7 +186,3 @@ def bl_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
   %bl_st(hl, h, o, dU, seg, depth, wf, edu) :
     RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   bl_gen(hl, h, dU, seg, s, o, depth, rep, ok, edu, hdep, ehl)
-
-def rep_wf(-o: O.Words, +s: S.Schema, +rep: rep_bl(o, s)) -> wfl(o):
-  (+w, +n) = rep
-  w

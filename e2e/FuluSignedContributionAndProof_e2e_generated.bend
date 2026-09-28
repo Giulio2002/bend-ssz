@@ -31,7 +31,7 @@ import ../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedC
 import ../types/FuluSignedContributionAndProof_encode_ssz_generated.bend as FuluSignedContributionAndProof_e
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/spec_codec_SignedContributionAndProof.bend as M0
-import ../proofs/obj/root_types.bend as M1
+import ../proofs/obj/root_types_light.bend as M1
 import ../proofs/obj/schema_shapes.bend as M1_SH
 import ../proofs/obj/spec_bits.bend as M0_FB
 

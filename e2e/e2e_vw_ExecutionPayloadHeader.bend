@@ -7,7 +7,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/words_obj_light.bend as WO
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader_win.bend as W
 import ./e2e_blist.bend as BL
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d

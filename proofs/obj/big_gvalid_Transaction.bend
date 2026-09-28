@@ -5,6 +5,7 @@ import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
+import ./cform.bend as CF
 import ./amap.bend as AM
 import ../../spec/root_relation.bend as RR
 import ../../spec/fulu_schemas.bend as Spec
@@ -12,7 +13,7 @@ import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./words_obj_light.bend as WO
-import ./list_obj.bend as LO
+import ./list_obj_light.bend as LO
 import ./obj_support.bend as OS
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR

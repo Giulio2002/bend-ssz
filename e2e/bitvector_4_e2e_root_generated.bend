@@ -24,6 +24,7 @@ import ../types/bitvector_9_hashtreeroot_generated.bend as bitvector_9_h
 import ../types/bitvector_4_hashtreeroot_generated.bend as bitvector_4_h
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/gbits_small.bend as M0
+import ../proofs/obj/gbits_small_light.bend as M0_L
 import ../proofs/obj/gvalid_gbits_small.bend as M1
 import ../proofs/word_split.bend as M0_WSp
 import ../proofs/power_division.bend as M0_PD
@@ -33,37 +34,37 @@ import ../proofs/power_division.bend as M0_PD
 
 # bitvector_4 (GtB1E9093D65)
 # (iv) over the root law's binders (o, e).
-def bitvector_4_e2e_root(h: B.Buf, +o: Fulu_bitvector_4_d.Bitvector4, +e: {M0.GtB1E9093D65_last(o) == U32{M0_WSp.join(4n, 28n, M0_WSp.take(4n, 32n, M0_PD.bits(M0.GtB1E9093D65_last(o))), Word.zero(28n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtB1E9093D65(), S.BitsValue{M0.GtB1E9093D65_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.GtB1E9093D65(), S.BitsValue{M0.GtB1E9093D65_bits(o)}, VS.public_sound(Spec.GtB1E9093D65(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o))),
+def bitvector_4_e2e_root(h: B.Buf, +o: Fulu_bitvector_4_d.Bitvector4, +e: {M0_L.GtB1E9093D65_last(o) == U32{M0_WSp.join(4n, 28n, M0_WSp.take(4n, 32n, M0_PD.bits(M0_L.GtB1E9093D65_last(o))), Word.zero(28n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtB1E9093D65(), S.BitsValue{M0_L.GtB1E9093D65_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.GtB1E9093D65(), S.BitsValue{M0_L.GtB1E9093D65_bits(o)}, VS.public_sound(Spec.GtB1E9093D65(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o))),
     M1.GtB1E9093D65_root_valid(o, e), M0.GtB1E9093D65_root_correct(h, o, e))
 
 # bitvector_5 (Gt27CDB122DD)
 # (iv) over the root law's binders (o, e).
-def bitvector_5_e2e_root(h: B.Buf, +o: bitvector_5_d.Bitvector5, +e: {M0.Gt27CDB122DD_last(o) == U32{M0_WSp.join(5n, 27n, M0_WSp.take(5n, 32n, M0_PD.bits(M0.Gt27CDB122DD_last(o))), Word.zero(27n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt27CDB122DD(), S.BitsValue{M0.Gt27CDB122DD_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gt27CDB122DD(), S.BitsValue{M0.Gt27CDB122DD_bits(o)}, VS.public_sound(Spec.Gt27CDB122DD(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o))),
+def bitvector_5_e2e_root(h: B.Buf, +o: bitvector_5_d.Bitvector5, +e: {M0_L.Gt27CDB122DD_last(o) == U32{M0_WSp.join(5n, 27n, M0_WSp.take(5n, 32n, M0_PD.bits(M0_L.Gt27CDB122DD_last(o))), Word.zero(27n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt27CDB122DD(), S.BitsValue{M0_L.Gt27CDB122DD_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gt27CDB122DD(), S.BitsValue{M0_L.Gt27CDB122DD_bits(o)}, VS.public_sound(Spec.Gt27CDB122DD(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o))),
     M1.Gt27CDB122DD_root_valid(o, e), M0.Gt27CDB122DD_root_correct(h, o, e))
 
 # bitvector_6 (GtAD3CF815B7)
 # (iv) over the root law's binders (o, e).
-def bitvector_6_e2e_root(h: B.Buf, +o: bitvector_6_d.Bitvector6, +e: {M0.GtAD3CF815B7_last(o) == U32{M0_WSp.join(6n, 26n, M0_WSp.take(6n, 32n, M0_PD.bits(M0.GtAD3CF815B7_last(o))), Word.zero(26n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtAD3CF815B7(), S.BitsValue{M0.GtAD3CF815B7_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.GtAD3CF815B7(), S.BitsValue{M0.GtAD3CF815B7_bits(o)}, VS.public_sound(Spec.GtAD3CF815B7(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o))),
+def bitvector_6_e2e_root(h: B.Buf, +o: bitvector_6_d.Bitvector6, +e: {M0_L.GtAD3CF815B7_last(o) == U32{M0_WSp.join(6n, 26n, M0_WSp.take(6n, 32n, M0_PD.bits(M0_L.GtAD3CF815B7_last(o))), Word.zero(26n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtAD3CF815B7(), S.BitsValue{M0_L.GtAD3CF815B7_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.GtAD3CF815B7(), S.BitsValue{M0_L.GtAD3CF815B7_bits(o)}, VS.public_sound(Spec.GtAD3CF815B7(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o))),
     M1.GtAD3CF815B7_root_valid(o, e), M0.GtAD3CF815B7_root_correct(h, o, e))
 
 # bitvector_7 (GtAA8D1478A7)
 # (iv) over the root law's binders (o, e).
-def bitvector_7_e2e_root(h: B.Buf, +o: bitvector_7_d.Bitvector7, +e: {M0.GtAA8D1478A7_last(o) == U32{M0_WSp.join(7n, 25n, M0_WSp.take(7n, 32n, M0_PD.bits(M0.GtAA8D1478A7_last(o))), Word.zero(25n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtAA8D1478A7(), S.BitsValue{M0.GtAA8D1478A7_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.GtAA8D1478A7(), S.BitsValue{M0.GtAA8D1478A7_bits(o)}, VS.public_sound(Spec.GtAA8D1478A7(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o))),
+def bitvector_7_e2e_root(h: B.Buf, +o: bitvector_7_d.Bitvector7, +e: {M0_L.GtAA8D1478A7_last(o) == U32{M0_WSp.join(7n, 25n, M0_WSp.take(7n, 32n, M0_PD.bits(M0_L.GtAA8D1478A7_last(o))), Word.zero(25n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GtAA8D1478A7(), S.BitsValue{M0_L.GtAA8D1478A7_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.GtAA8D1478A7(), S.BitsValue{M0_L.GtAA8D1478A7_bits(o)}, VS.public_sound(Spec.GtAA8D1478A7(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o))),
     M1.GtAA8D1478A7_root_valid(o, e), M0.GtAA8D1478A7_root_correct(h, o, e))
 
 # bitvector_8 (Gt0366A291C1)
 # (iv) over the root law's binders (o, e).
-def bitvector_8_e2e_root(h: B.Buf, +o: bitvector_8_d.Bitvector8, +e: {M0.Gt0366A291C1_last(o) == U32{M0_WSp.join(8n, 24n, M0_WSp.take(8n, 32n, M0_PD.bits(M0.Gt0366A291C1_last(o))), Word.zero(24n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt0366A291C1(), S.BitsValue{M0.Gt0366A291C1_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gt0366A291C1(), S.BitsValue{M0.Gt0366A291C1_bits(o)}, VS.public_sound(Spec.Gt0366A291C1(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o))),
+def bitvector_8_e2e_root(h: B.Buf, +o: bitvector_8_d.Bitvector8, +e: {M0_L.Gt0366A291C1_last(o) == U32{M0_WSp.join(8n, 24n, M0_WSp.take(8n, 32n, M0_PD.bits(M0_L.Gt0366A291C1_last(o))), Word.zero(24n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt0366A291C1(), S.BitsValue{M0_L.Gt0366A291C1_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gt0366A291C1(), S.BitsValue{M0_L.Gt0366A291C1_bits(o)}, VS.public_sound(Spec.Gt0366A291C1(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o))),
     M1.Gt0366A291C1_root_valid(o, e), M0.Gt0366A291C1_root_correct(h, o, e))
 
 # bitvector_9 (Gt1BD4B4358D)
 # (iv) over the root law's binders (o, e).
-def bitvector_9_e2e_root(h: B.Buf, +o: bitvector_9_d.Bitvector9, +e: {M0.Gt1BD4B4358D_last(o) == U32{M0_WSp.join(9n, 23n, M0_WSp.take(9n, 32n, M0_PD.bits(M0.Gt1BD4B4358D_last(o))), Word.zero(23n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt1BD4B4358D(), S.BitsValue{M0.Gt1BD4B4358D_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gt1BD4B4358D(), S.BitsValue{M0.Gt1BD4B4358D_bits(o)}, VS.public_sound(Spec.Gt1BD4B4358D(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o))),
+def bitvector_9_e2e_root(h: B.Buf, +o: bitvector_9_d.Bitvector9, +e: {M0_L.Gt1BD4B4358D_last(o) == U32{M0_WSp.join(9n, 23n, M0_WSp.take(9n, 32n, M0_PD.bits(M0_L.Gt1BD4B4358D_last(o))), Word.zero(23n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt1BD4B4358D(), S.BitsValue{M0_L.Gt1BD4B4358D_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gt1BD4B4358D(), S.BitsValue{M0_L.Gt1BD4B4358D_bits(o)}, VS.public_sound(Spec.Gt1BD4B4358D(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o))),
     M1.Gt1BD4B4358D_root_valid(o, e), M0.Gt1BD4B4358D_root_correct(h, o, e))
 

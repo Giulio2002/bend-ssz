@@ -30,9 +30,9 @@ import ../types/BitsStruct_def_generated.bend as BitsStruct_d
 import ../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
-import ../proofs/obj/root_gtypes2.bend as RT
-import ../proofs/obj/root_gnames.bend as RN
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/root_gtypes2_light.bend as RT
+import ../proofs/obj/root_gnames_light.bend as RN
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BLP
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/vbitb.bend as VBB

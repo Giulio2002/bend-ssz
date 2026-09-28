@@ -20,9 +20,9 @@ import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbv1281d.bend as V81
-import ../proofs/obj/bitlist_obj.bend as BO
-import ../proofs/obj/wbits_obj.bend as WBV
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../proofs/obj/wbits_obj_light.bend as WBV
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vbv257s.bend as V2S
 import ../proofs/obj/vbv128s.bend as V2S8
 import ../proofs/obj/big_encx_bits256.bend as EX_bits256
@@ -37,7 +37,7 @@ import ../types/bitvector_257_def_generated.bend as bitvector_257_d
 import ../types/bitvector_257_encode_ssz_generated.bend as bitvector_257_e
 import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
 import ../types/ProgressiveBitsStruct_encode_ssz_generated.bend as ProgressiveBitsStruct_e
-import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/root_gtypes2_light.bend as RT
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
 import ./e2e_encp.bend as EP

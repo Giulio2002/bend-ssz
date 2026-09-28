@@ -19,9 +19,9 @@ import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/vbitenc.bend as VBT
 import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/vbitrep.bend as VR
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_AggregateAndProof_enc.bend as PRV
 import ../proofs/obj/big_var_bitc_enc_Attestation.bend as EA
 import ../proofs/obj/big_var_codec_AggregateAndProof_enc.bend as CC

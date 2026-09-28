@@ -17,10 +17,10 @@ import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/list_obj.bend as LO
-import ../proofs/obj/blist_obj.bend as BLI
+import ../proofs/obj/list_obj_light.bend as LO
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT
 import ../proofs/obj/big_encx_Gc465214E502_iface.bend as EM
 import ../proofs/obj/big_encx_Gc465214E502.bend as EK
 import ../types/uint8_encode_ssz_generated.bend as uint8_e

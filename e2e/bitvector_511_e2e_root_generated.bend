@@ -14,6 +14,7 @@ import ../types/bitvector_511_def_generated.bend as bitvector_511_d
 import ../types/bitvector_511_hashtreeroot_generated.bend as bitvector_511_h
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/gbits_Gt05340E1F7E.bend as M0
+import ../proofs/obj/gbits_Gt05340E1F7E_light.bend as M0_L
 import ../proofs/obj/gvalid_gbits_Gt05340E1F7E.bend as M1
 import ../proofs/word_split.bend as M0_WSp
 import ../proofs/power_division.bend as M0_PD
@@ -23,7 +24,7 @@ import ../proofs/power_division.bend as M0_PD
 
 # bitvector_511 (Gt05340E1F7E)
 # (iv) over the root law's binders (o, e).
-def bitvector_511_e2e_root(h: B.Buf, +o: bitvector_511_d.Bitvector511, +e: {M0.Gt05340E1F7E_last(o) == U32{M0_WSp.join(31n, 1n, M0_WSp.take(31n, 32n, M0_PD.bits(M0.Gt05340E1F7E_last(o))), Word.zero(1n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_511_h.Gt05340E1F7E_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt05340E1F7E(), S.BitsValue{M0.Gt05340E1F7E_bits(o)}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gt05340E1F7E(), S.BitsValue{M0.Gt05340E1F7E_bits(o)}, VS.public_sound(Spec.Gt05340E1F7E(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_511_h.Gt05340E1F7E_hash_tree_root(h, o))),
+def bitvector_511_e2e_root(h: B.Buf, +o: bitvector_511_d.Bitvector511, +e: {M0_L.Gt05340E1F7E_last(o) == U32{M0_WSp.join(31n, 1n, M0_WSp.take(31n, 32n, M0_PD.bits(M0_L.Gt05340E1F7E_last(o))), Word.zero(1n))} : U32}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_511_h.Gt05340E1F7E_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gt05340E1F7E(), S.BitsValue{M0_L.Gt05340E1F7E_bits(o)}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gt05340E1F7E(), S.BitsValue{M0_L.Gt05340E1F7E_bits(o)}, VS.public_sound(Spec.Gt05340E1F7E(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_511_h.Gt05340E1F7E_hash_tree_root(h, o))),
     M1.Gt05340E1F7E_root_valid(o, e), M0.Gt05340E1F7E_root_correct(h, o, e))
 

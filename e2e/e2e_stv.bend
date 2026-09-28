@@ -20,18 +20,19 @@ import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/vbig.bend as VG
 import ../proofs/obj/vbig.bend as VBG
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/packed_obj_light.bend as PK
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
-import ../proofs/obj/ulist_obj.bend as UL
+import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/blist_obj.bend as BLI
+import ../proofs/obj/blist_obj_light.bend as BLI_L
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/words_root_light.bend as WR
 import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/bitlist_pack.bend as BLP
-import ../proofs/obj/root_state.bend as ST
+import ../proofs/obj/root_state_light.bend as ST
 import ../proofs/obj/vfx_bv4.bend as F4
 import ../proofs/obj/big_var_winx_l1099511627776_u8.bend as W8
 import ../proofs/obj/big_var_winx_l1099511627776_u64.bend as W64
@@ -167,7 +168,7 @@ def lwt(n, W):
 
 def shr(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hc: {WH.CHKw(t, x, off, len) == True{} : Bool}) -> {BLI.hview(WH.OBJw(d, t, x, off, len)) == WH.VALw(t, x, len) : S.Value}:
+    +hc: {WH.CHKw(t, x, off, len) == True{} : Bool}) -> {BLI_L.hview(WH.OBJw(d, t, x, off, len)) == WH.VALw(t, x, len) : S.Value}:
   +c = WH.CC(len)
   +Mq = WH.MQ(len)
   +M = UCT.CT(d, t, off, len, VLS.DZ(len))

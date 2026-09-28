@@ -7,7 +7,7 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/encx_l2_ConsolidationRequest.bend as EW
 import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
 import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d

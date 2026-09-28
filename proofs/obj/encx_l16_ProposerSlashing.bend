@@ -68,7 +68,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- box of SyncCommitteeContribution ----
 type M_ProposerSlashing is Data:
   M_ProposerSlashing{a0: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, a1: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader}
 def th_ProposerSlashing(m: M_ProposerSlashing) -> FuluProposerSlashing_d.ProposerSlashing:

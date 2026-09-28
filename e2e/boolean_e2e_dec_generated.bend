@@ -22,7 +22,7 @@ import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../types/boolean_decode_ssz_generated.bend as boolean_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames.bend as M0
+import ../proofs/obj/root_gnames_light.bend as M0
 import ../proofs/obj/sub_GtAD72FD256A.bend as M1
 import ../proofs/obj/fixchk_boolg.bend as M2
 import ../proofs/obj/vrejb.bend as M2_VRB

@@ -21,8 +21,8 @@ import ./e2e_cap.bend as C
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/ulist_obj.bend as UL
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/ulist_obj_light.bend as UL
+import ../proofs/obj/root_types_light.bend as RT
 import ./e2e_ulist.bend as U
 import ../proofs/obj/big_var_codec_IndexedAttestation.bend as DC
 import ../proofs/obj/big_var_codec_IndexedAttestation_rej.bend as DN

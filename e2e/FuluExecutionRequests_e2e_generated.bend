@@ -21,7 +21,7 @@ import ../proofs/obj/spec_fixed.bend as SF
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_ExecutionRequests_enc.bend as EN
 import ../proofs/obj/var_rlenc_ExecutionRequests.bend as RL
 import ./e2e_support.bend as E

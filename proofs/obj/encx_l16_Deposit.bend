@@ -74,7 +74,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- box of SyncCommitteeContribution ----
 type M_Deposit is Data:
   M_Deposit{a0: WMr, a1: FuluDepositData_d.DepositData}
 def th_Deposit(m: M_Deposit) -> FuluDeposit_d.Deposit:

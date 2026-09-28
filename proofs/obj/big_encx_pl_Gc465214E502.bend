@@ -55,7 +55,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- Gp4B0CA2906A (Type-kind container, 1 fields) ----
 def th_Gc465214E502_bx(m: MB<EM.MW>) -> O.Boxed<VarTestStruct_d.Gc465214E502>:
   match m:
     case MSome{+v}: O.BSome{EM.TH(v), O.BNone{}}

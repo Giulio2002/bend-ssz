@@ -4,7 +4,7 @@ import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_encx_ExecutionRequests_iface.bend as CI
 import ../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d

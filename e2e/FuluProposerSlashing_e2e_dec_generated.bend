@@ -27,7 +27,7 @@ import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeac
 import ../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
 import ../types/FuluProposerSlashing_decode_ssz_generated.bend as FuluProposerSlashing_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/root_types.bend as M0
+import ../proofs/obj/root_types_light.bend as M0
 import ../proofs/obj/spec_codec_ProposerSlashing.bend as M1
 import ../proofs/obj/fixrej_f2.bend as M2
 

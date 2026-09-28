@@ -6,11 +6,12 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_bytes_LightClientBootstrap_win.bend as W
+import ./e2e_blist.bend as BL
 import ../proofs/obj/var_bytes_LightClientHeader_win.bend as YW
 import ./e2e_vw_LightClientHeader.bend as YWV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/vfix.bend as VF
 import ./e2e_e48w.bend as EW

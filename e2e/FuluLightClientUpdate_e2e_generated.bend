@@ -28,14 +28,14 @@ import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/arr_vec.bend as AV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/vfixw_spec.bend as FWS
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_LightClientUpdate_enc.bend as EN
 import ../proofs/obj/big_encx_LightClientUpdate_iface.bend as CI
 import ../proofs/obj/big_encx_LightClientUpdate.bend as K

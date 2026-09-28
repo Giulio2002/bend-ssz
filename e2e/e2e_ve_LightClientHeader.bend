@@ -11,8 +11,8 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader_enc.bend as YE
 import ../proofs/obj/var_bytes_LightClientHeader_enc.bend as EN
-import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/root_types_light.bend as RT
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/nat_order.bend as Order
 import ./e2e_blist.bend as BL

@@ -28,7 +28,7 @@ import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vbrt.bend as VR
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/nat_order.bend as Order
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ./e2e_bview.bend as BV
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_bits.bend as E2B

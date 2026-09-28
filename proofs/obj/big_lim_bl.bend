@@ -4,7 +4,7 @@ import ../../spec/limits.bend as Lim
 import ../../spec/byte_list.bend as BL
 import ../../spec/fulu_schemas.bend as Spec
 import ../../types/schema.bend as S
-import ./list_obj.bend as LO
+import ./list_obj_light.bend as LO
 import ./obj_support.bend as OS
 import ./big_lim_sym.bend as LSY
 

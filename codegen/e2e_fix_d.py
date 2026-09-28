@@ -795,6 +795,85 @@ VHEAD = EHEAD + ['import ./e2e_fixd16.bend as X16', 'import ../proofs/primitive_
                  'import ../proofs/word_facts.bend as WF']
 
 
+def _encoder_put(en):
+    """the encoder T.<en>_encode(o) = T.<en>_enc_out(T.<put>(O.out_at(<D>n), 0, o)): (put, D), read from the runtime"""
+    import glob
+    from pathlib import Path as _Pp
+    R_ = _Pp(__file__).resolve().parents[1]
+    for fp in glob.glob(str(R_ / 'types' / '*_encode_ssz_generated.bend')) + [str(R_ / 'types/fulu_obj.bend'), str(R_ / 'types/generic_obj.bend')]:
+        try:
+            src = _Pp(fp).read_text()
+        except OSError:
+            continue
+        mm = re.search(r'^def ' + en + r'_encode\(o: [^)]*\) -> [^:]*: ' + en + r'_enc_out\((\w+)\(O\.out_at\((\d+)n\), 0, o\)\)$', src, re.M)
+        if mm:
+            return mm.group(1), int(mm.group(2))
+    return None
+
+
+def tree_w3(EB, imp, R, sn, en, N, NW, d, kind, ee, es, VIEW, Gw, OT):
+    """(i)'s w3 for a byte vector of 2^(d-1) words (Cell) over the variable halves l, r of its storage tree:
+    the tree-form laws <n>_tb (encoder bytes) and <n>_spec_encode_t (spec), tree_bytes.view (the value's
+    bytes) and an obytes lemma over the encoder's output pair. The literal laws, instantiated at 2^d leaf
+    terms, exceed the checker's identity budget and make it run the encoder (FuluCell: w3 22 s -> 11 ms).
+    None when the proving modules have no tree forms."""
+    base = es['law'][:-len('_spec_encode')] if es['law'].endswith('_spec_encode') else None
+    if base is None or int(NW) != 1 << (d - 1):
+        return None
+    aes, ass = module_info(EB, ee['file'])[1], module_info(EB, es['file'])[1]
+    if f'{base}_tb' not in aes or f'{base}_spec_encode_t' not in ass:
+        return None
+    pd = _encoder_put(en)
+    if pd is None:
+        return None
+    put, D = pd
+    AE, AS = imp.alias('proofs/obj/' + ee['file']), imp.alias('proofs/obj/' + es['file'])
+    TB = imp.alias('proofs/obj/tree_bytes.bend', 'TB')
+    TV = 'FD.array__Tree<U32>'
+    p = d - 1
+    Av = 'ANode{FD.array__thaw(U32, l), FD.array__thaw(U32, r)}'
+    W = f'O.Words{{{Av}, {N}}}'
+    LS = 'F.limbs(FD.array__slots(U32, l))'
+    enc = f'T.{en}_encode({W})'
+    A0 = f'Some{{E.obytes(Pair.snd(O.Words, B.Buf, {enc}))}}'
+    A1 = f'Some{{Pair.snd(O.Words, +List<U32>, F.emitted(O.Words, {enc}, {NW}))}}'
+    VW = VIEW(W)
+    mv = re.match(r'S\.BytesValue\{(.*)\}$', VW)
+    if not mv:
+        return None
+    WV = mv.group(1)
+    SER = f'API.serialize(Spec.{sn}(), {VW})'
+    EF = lambda v: f'Encoding.encoding_for_legal_type(Spec.{sn}(), {v})'  # noqa: E731
+    ob = lambda x: (f'{{Some{{E.obytes(Pair.snd(O.Words, B.Buf, {x}))}} == Some{{Pair.snd(O.Words, +List<U32>, '  # noqa: E731
+                    f'F.emitted(O.Words, {x}, {NW}))}} : {MB}}}')
+    EM = f'B.emit(B.Buf{{out, {N}}}, 0, {NW})'
+    TH = f'FD.array__thaw(U32, E3.tf({d}n, t))'
+    AT = f'ANode{{FD.array__thaw(U32, E3.tf({p}n, E3.lo(t))), FD.array__thaw(U32, E3.tf({p}n, E3.hi(t)))}}'
+    pl = lambda u: f'{{FD.array__perfect(U32, {p}n, {u}) == True{{}} : Bool}}'  # noqa: E731
+    return [
+        f'# {R}: (i) over the halves l, r of the storage tree (tree-form laws; no leaf term is spelled out)',
+        f'def {R}_obq(q: Array<U32> & O.Words) -> {ob(f"T.{en}_enc_out(q)")}:', '  (out, o) = q',
+        f'  Equal.cong(+List<U32>, {MB}, z => Some{{z}}, Pair.snd(B.Buf, +List<U32>, {EM}), F.listed({EM}), {TB}.pk({EM}))',
+        f'def {R}_ob(o: O.Words) -> {ob(f"T.{en}_encode(o)")}:',
+        f'  {R}_obq(T.{put}(O.out_at({D}n), 0, o))',
+        f'def {R}_th(+t: {TV}) -> {{{AT} == {TH} : Array<U32>}}: {{==}}',
+        f'def {R}_w3c(+l: {TV}, +r: {TV}, +pl: {pl("l")}, +pr: {pl("r")}) -> {Gw(W)}:',
+        f'  Equal.trans({MB}, {A0}, {A1}, {SER}, {R}_ob({W}),',
+        f'    Equal.trans({MB}, {A1}, Some{{{LS}}}, {SER},',
+        f'      Equal.cong(O.Words & +List<U32>, {MB}, p => Some{{Pair.snd(O.Words, +List<U32>, p)}}, F.emitted(O.Words, {enc}, {NW}), ({W}, {LS}), {AE}.{base}_tb(l, r, pl, pr)),',
+        f'      Equal.sym({MB}, {SER}, Some{{{LS}}},',
+        f'        Equal.trans({MB}, {SER}, {EF(VW)}, Some{{{LS}}},',
+        f'          E.serialize_legal(Spec.{sn}(), {VW}, VS.public_sound(Spec.{sn}(), {{==}})),',
+        f'          FD.logic__subst(+List<U32>, z => {{{EF("S.BytesValue{z}")} == Some{{{LS}}} : {MB}}}, {LS}, {WV}, Equal.sym(+List<U32>, {WV}, {LS}, {TB}.view({p}n, l, r, {N}, pl, {{==}})),',
+        f'            {AS}.{base}_spec_encode_t(l, pl))))))',
+        f'def {R}_w3(+t: {TV}, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}) -> {Gw(OT)}:',
+        f'  %Equal.sym({TV}, t, E3.tf({d}n, t), E3.eta({d}n, t, pf)) :',
+        f'    {Gw("O.Words{FD.array__thaw(U32, _), " + N + "}")}',
+        f'  %{R}_th(t) :',
+        f'    {Gw("O.Words{_, " + N + "}")}',
+        f'  {R}_w3c(E3.tf({p}n, E3.lo(t)), E3.tf({p}n, E3.hi(t)), {{==}}, {{==}})', '']
+
+
 def enc_vec(EB, imp, R, X, sn, m, cache, ri):
     f = ri['rt']['file']
     ee, es = m['encode_eval'][0], m['encode_spec'][0]
@@ -875,7 +954,11 @@ def enc_vec(EB, imp, R, X, sn, m, cache, ri):
     w3b = f', +bsc: {BSC(OT)}' if kind == 'vb' else ''
     lemb = 'X16.ab' if 'xs' in [n for _, n, _ in sps] else 'X16.bl'
     esa = [a.replace('@HB@', f'{lemb}(U32.to_nat({N}), {BYq}, FD.logic__subst(FD.array__Tree<U32>, z => {BSC("O.Words{FD.array__thaw(U32, z), " + N + "}")}, t, E3.tf({d}n, t), E3.eta({d}n, t, pf), bsc))') for a in esa]
-    L += [f'def {R}_w3(+t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}{w3b}) -> {Gw(OT)}:',
+    tw3 = tree_w3(EB, imp, R, sn, en, N, NW, d, kind, ee, es, VIEW, Gw, OT) if kind == 'bv' else None
+    if tw3 is not None:
+        L += tw3
+    else:
+      L += [f'def {R}_w3(+t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}{w3b}) -> {Gw(OT)}:',
          f'  %Equal.sym(FD.array__Tree<U32>, t, E3.tf({d}n, t), E3.eta({d}n, t, pf)) :',
          f'    {Gw("O.Words{FD.array__thaw(U32, _), " + N + "}")}'] + pre + [
          f'  Equal.trans({MB}, Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{en}_encode({OBJ})))}}, Some{{{BYq}}}, API.serialize(Spec.{sn}(), {VV}),',
@@ -1636,6 +1719,109 @@ def enc_box(EB, imp, R, X, sn, m, cache, ri):
     return '\n'.join(L)
 
 
+def tree_w3_boxs(EB, imp, R, X, sn, ee, es, cache, d, NL, NW, xs, LT, WfP, V, Gb, ot, SVt):
+    """(i)'s w3 for a container whose first field is a 2^(d-1)-word byte vector (MatrixEntry) over the
+    spine of its storage's left half and a free right half q: the tree-form laws <n>_ltb and
+    <n>_spec_encode_t, tree_bytes.view, an obytes lemma. ([helpers], [w3 tail after the eta rewrite]),
+    or None when the proving modules have no tree forms (see tree_w3)."""
+    base = es['law'][:-len('_spec_encode')] if es['law'].endswith('_spec_encode') else None
+    p = d - 1
+    H = 1 << p
+    if base is None:
+        return None
+    aes, ass = module_info(EB, ee['file'])[1], module_info(EB, es['file'])[1]
+    if f'{base}_ltb' not in aes or f'{base}_spec_encode_t' not in ass:
+        return None
+    pd = _encoder_put(X)
+    if pd is None:
+        return None
+    put, D = pd
+    G = [x for x in xs if x not in LT]
+    AE, AS = imp.alias('proofs/obj/' + ee['file']), imp.alias('proofs/obj/' + es['file'])
+    TB = imp.alias('proofs/obj/tree_bytes.bend', 'TB')
+    TV = 'FD.array__Tree<U32>'
+    ms = [f'm{j}' for j in range(p)]
+
+    def spine(y0, mm):
+        o = f'FD.TNode{{FD.TLeaf{{{y0}}}, {mm[0]}}}'
+        for m_ in mm[1:]:
+            o = f'FD.TNode{{{o}, {m_}}}'
+        return o
+
+    def ttree(ls):
+        if len(ls) == 1:
+            return f'FD.TLeaf{{{ls[0]}}}'
+        h = len(ls) // 2
+        return f'FD.TNode{{{ttree(ls[:h])}, {ttree(ls[h:])}}}'
+    U = spine('y0', ms)
+    pU = 'FD.logic__and_intro(FD.array__perfect(U32, 0n, FD.TLeaf{y0}), FD.array__perfect(U32, 0n, m0), {==}, pm0)'
+    cur = 'FD.TNode{FD.TLeaf{y0}, m0}'
+    for j in range(1, p):
+        pU = f'FD.logic__and_intro(FD.array__perfect(U32, {j}n, {cur}), FD.array__perfect(U32, {j}n, m{j}), {pU}, pm{j})'
+        cur = f'FD.TNode{{{cur}, m{j}}}'
+    TRo = ttree(G + ['0'] * (H - len(G)))
+    OBJ = WfP(f'FD.TNode{{{U}, q}}')
+    mw = re.search(r'O\.Words\{FD\.array__thaw\(U32, FD\.TNode\{' + re.escape(U) + r', q\}\), \d+\}', OBJ)
+    if not mw:
+        return None
+    W = mw.group(0)
+    enc = f'T.{X}_encode({OBJ})'
+    A0 = f'Some{{E.obytes(Pair.snd({ot}, B.Buf, {enc}))}}'
+    A1 = f'Some{{Pair.snd({ot}, +List<U32>, F.emitted({ot}, {enc}, {NW}))}}'
+    BT = f'F.limbs(FD.spec_common__take(U32, FD.array__slots(U32, FD.TNode{{{U}, {TRo}}}), {NW}n))'
+    VO = V(OBJ)
+    SER = f'API.serialize(Spec.{sn}(), {VO})'
+    X0 = [x for x in xs if x in LT][:H]
+    LX = f'F.limbs([{", ".join(X0)}])'
+    if LX not in SVt:
+        return None
+    VZ = lambda z: SVt.replace(LX, z, 1)  # noqa: E731
+    WV = f'{imp.alias("proofs/obj/words_obj_light.bend")}.wview({W})'
+    LSU = f'F.limbs(FD.array__slots(U32, {U}))'
+    EF = lambda v: f'Encoding.encoding_for_legal_type(Spec.{sn}(), {v})'  # noqa: E731
+    ob = lambda x: (f'{{Some{{E.obytes(Pair.snd({ot}, B.Buf, {x}))}} == Some{{Pair.snd({ot}, +List<U32>, '  # noqa: E731
+                    f'F.emitted({ot}, {x}, {NW}))}} : {MB}}}')
+    size = int(NW) * 4
+    EM = f'B.emit(B.Buf{{out, {size}}}, 0, {NW})'
+    sp = ('+y0: U32, ' + ', '.join(f'+{m_}: {TV}' for m_ in ms) + ', '
+          + ', '.join(f'+pm{j}: {{FD.array__perfect(U32, {j}n, m{j}) == True{{}} : Bool}}' for j in range(p))
+          + f', +q: {TV}, +pq: {{FD.array__perfect(U32, {p}n, q) == True{{}} : Bool}}, ' + ', '.join(f'+{x}: U32' for x in G))
+    spa = 'y0, ' + ', '.join(ms) + ', ' + ', '.join(f'pm{j}' for j in range(p))
+    Ga = ', '.join(G)
+    helpers = [
+        f'# {R}: (i) over the spine of the storage\'s left half and its free right half (tree-form laws)',
+        f'def {R}_obq(q: Array<U32> & {ot}) -> {ob(f"T.{X}_enc_out(q)")}:', '  (out, o) = q',
+        f'  Equal.cong(+List<U32>, {MB}, z => Some{{z}}, Pair.snd(B.Buf, +List<U32>, {EM}), F.listed({EM}), {TB}.pk({EM}))',
+        f'def {R}_ob(o: {ot}) -> {ob(f"T.{X}_encode(o)")}:',
+        f'  {R}_obq(T.{put}(O.out_at({D}n), 0, o))',
+        f'def {R}_vo({sp}) -> {{{VZ(WV)} == {VO} : S.Value}}: {{==}}',
+        f'def {R}_w3c({sp}) -> {{{A0} == {SER} : {MB}}}:',
+        f'  Equal.trans({MB}, {A0}, {A1}, {SER}, {R}_ob({OBJ}),',
+        f'    Equal.trans({MB}, {A1}, Some{{{BT}}}, {SER},',
+        f'      Equal.cong({ot} & +List<U32>, {MB}, p => Some{{Pair.snd({ot}, +List<U32>, p)}}, F.emitted({ot}, {enc}, {NW}), ({OBJ}, {BT}), {AE}.{base}_ltb({spa}, q, pq, {Ga})),',
+        f'      Equal.sym({MB}, {SER}, Some{{{BT}}},',
+        f'        Equal.trans({MB}, {SER}, {EF(VO)}, Some{{{BT}}}, E.serialize_legal(Spec.{sn}(), {VO}, VS.public_sound(Spec.{sn}(), {{==}})),',
+        f'          Equal.trans({MB}, {EF(VO)}, {EF(VZ(WV))}, Some{{{BT}}}, Equal.cong(S.Value, {MB}, v => {EF("v")}, {VO}, {VZ(WV)}, Equal.sym(S.Value, {VZ(WV)}, {VO}, {R}_vo({spa}, q, pq, {Ga}))),',
+        f'            Equal.trans({MB}, {EF(VZ(WV))}, {EF(VZ(LSU))}, Some{{{BT}}}, Equal.cong(+List<U32>, {MB}, z => {EF(VZ("z"))}, {WV}, {LSU}, {TB}.view({p}n, {U}, q, {NL}, {pU}, {{==}})),',
+        f'              {AS}.{base}_spec_encode_t({spa}, {Ga})))))))']
+
+    def path(ps):
+        s_ = 't'
+        for x in ps:
+            s_ = f'E3.{x}({s_})'
+        return s_
+    y0 = f'E3.leaf({path(["lo"] * (p + 1))})'
+    mj = [f'E3.tf({j}n, {path(["lo"] + ["lo"] * (p - 1 - j) + ["hi"])})' for j in range(p)]
+    Ut = spine(y0, mj)
+    TH = f'FD.array__thaw(U32, E3.tf({d}n, t))'
+    THL = f'FD.array__thaw(U32, FD.TNode{{{Ut}, E3.tf({p}n, E3.hi(t))}})'
+    helpers.append(f'def {R}_th(+t: {TV}) -> {{{THL} == {TH} : Array<U32>}}: {{==}}')
+    O_ = WfP('@').replace('FD.array__thaw(U32, @)', '_')
+    tail = [f'      %{R}_th(t) : {Gb(O_, V(O_))}',
+            f'      {R}_w3c({y0}, {", ".join(mj)}, {", ".join(["{==}"] * p)}, E3.tf({p}n, E3.hi(t)), {{==}}, {Ga})']
+    return helpers, tail
+
+
 def enc_boxs(EB, imp, R, X, sn, m, cache, ri):
     """(i) for a container with one byte-vector storage field (MatrixEntry): rep's witnesses, the storage
     at the encoder's depth (hc, as the word-storage family), its length from rep's ByteVector fact"""
@@ -1701,10 +1887,15 @@ def enc_boxs(EB, imp, R, X, sn, m, cache, ri):
     witp = ', '.join(f'+{x}: {t}' for x, t in rb.wits if x in others)
     wita = ', '.join(others)
     pats = [re.sub(r'(?<![\w.])(' + '|'.join(map(re.escape, xs)) + r')(?![\w{(])', r'+\1', wmap[w]) for w in others]
-    L = [f'# {R} ({X})',
+    tw3 = tree_w3_boxs(EB, imp, R, X, sn, ee, es, cache, d, NL, NW, xs, LT, WfP, V, Gb, ot, SVt) if not pvk else None
+    L = [f'# {R} ({X})'] + (tw3[0] if tw3 else []) + [
          f'def {R}_w3(+t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}, {witp}) -> {Gb(Wf("t", NL), V(Wf("t", NL)))}:',
          f'  match {" ".join(others)}:', f'    case {" ".join(pats)}:',
-         f'      %Equal.sym(FD.array__Tree<U32>, t, E3.tf({d}n, t), E3.eta({d}n, t, pf)) : {Gb(WfP("_"), V(WfP("_")))}',
+         f'      %Equal.sym(FD.array__Tree<U32>, t, E3.tf({d}n, t), E3.eta({d}n, t, pf)) : {Gb(WfP("_"), V(WfP("_")))}']
+    if tw3:
+        L += tw3[1] + ['']
+    else:
+      L += [
          f'      Equal.trans({MB}, Some{{E.obytes(Pair.snd({ot}, B.Buf, T.{X}_encode({OBJt})))}}, Some{{{subv(BY, LT)}}}, API.serialize(Spec.{sn}(), {V(OBJt)}),',
          f'        Equal.cong({ot} & +List<U32>, {MB}, p => Some{{Pair.snd({ot}, +List<U32>, p)}}, F.emitted({ot}, T.{X}_encode({OBJt}), {NW}), ({OBJt}, {subv(BY, LT)}), {AE}.{ee["law"]}({eargs})),',
          f'        Equal.sym({MB}, API.serialize(Spec.{sn}(), {V(OBJt)}), Some{{{subv(BY, LT)}}},',

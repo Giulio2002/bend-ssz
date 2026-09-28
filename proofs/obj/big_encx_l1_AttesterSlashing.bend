@@ -55,7 +55,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- box of SyncCommitteeContribution ----
 def th_AttesterSlashing_bx(m: MB<EM.MW>) -> O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>:
   match m:
     case MSome{+v}: O.BSome{EM.TH(v), O.BNone{}}

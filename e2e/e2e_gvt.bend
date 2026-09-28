@@ -13,7 +13,7 @@ import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
-import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT
 import ../proofs/obj/vfx_u16.bend as FX16
 import ../proofs/obj/vfx_u8.bend as FX8
 import ../proofs/obj/var_winx_Gc465214E502.bend as YW
