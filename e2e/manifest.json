@@ -3483,6 +3483,16 @@
     "premise": "rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) and the hs premises: each storage field's invariant at depth below 31 (the sync committee's pubkeys: e2e_e48w.sdsc; BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32)"
    }
   ],
+  "FuluLightClientFinalityUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientFinalityUpdate",
+    "generated_name": "LightClientFinalityUpdate",
+    "laws": [
+     "FuluLightClientFinalityUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mw.SHS_L of the two headers (their execution payload headers' logs bloom at depth below 31 and extra data below 28, their branches below 31); hB: BL.sdpv of the finality branch at depth below 31"
+   }
+  ],
   "FuluLightClientHeader_e2e_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3501,6 +3511,16 @@
      "FuluLightClientOptimisticUpdate_e2e_encode"
     ],
     "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluLightClientUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientUpdate",
+    "generated_name": "LightClientUpdate",
+    "laws": [
+     "FuluLightClientUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee's pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -5851,18 +5871,6 @@
    "generated_name": "BeaconState",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluLightClientFinalityUpdate": {
-   "generated_name": "LightClientFinalityUpdate",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend",
-   "root": "FuluLightClientFinalityUpdate_e2e_root_generated.bend"
-  },
-  "FuluLightClientUpdate": {
-   "generated_name": "LightClientUpdate",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluLightClientUpdate_e2e_dec_generated.bend",
-   "root": "FuluLightClientUpdate_e2e_root_generated.bend"
-  },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits"
@@ -6356,6 +6364,12 @@
    "ii_iii": "FuluLightClientBootstrap_e2e_dec_generated.bend",
    "iv": "FuluLightClientBootstrap_e2e_root_generated.bend"
   },
+  "FuluLightClientFinalityUpdate": {
+   "generated_name": "LightClientFinalityUpdate",
+   "i": "FuluLightClientFinalityUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientFinalityUpdate_e2e_root_generated.bend"
+  },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",
    "i": "FuluLightClientHeader_e2e_generated.bend",
@@ -6367,6 +6381,12 @@
    "i": "FuluLightClientOptimisticUpdate_e2e_generated.bend",
    "ii_iii": "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend",
    "iv": "FuluLightClientOptimisticUpdate_e2e_root_generated.bend"
+  },
+  "FuluLightClientUpdate": {
+   "generated_name": "LightClientUpdate",
+   "i": "FuluLightClientUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientUpdate_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
@@ -6701,7 +6721,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 2120,
    "covered": true,
-   "bridged": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",
@@ -6728,7 +6748,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 26936,
    "covered": true,
-   "bridged": "FuluLightClientUpdate_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
