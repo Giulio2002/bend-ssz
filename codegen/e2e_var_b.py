@@ -1784,6 +1784,11 @@ def vl_module(win):
     body = _VL_TEXT
     for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):
         body = body.replace(k, v)
+    if _re.search(r'^def RITEMS\(c: Nat, \+j: Nat, ', text, _re.M):   # the items walk by record index (big windows)
+        body = _re.sub(r'W\.RITEMS\(([^,()]+), t, VRL\.pos\(([^,()]+), \d+n, x\)\)', r'W.RITEMS(\1, \2, t, x)', body)
+        body = _re.sub(r'W\.RITEMS\(([^,()]+), t, x\)', r'W.RITEMS(\1, 0n, t, x)', body)
+    if not _re.search(r'^def ecw\(\+len: U32, \+h: \{Bool\.and', text, _re.M):   # the length check alone (hwh from CHKw)
+        body = body.replace('W.ecw(len, hchk)', 'W.ecw(len, W.hwh(t, x, 0, len, hchk))')
     imps = ['import Base', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/vdepth.bend as VD',
             'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN',
@@ -4795,7 +4800,7 @@ for _X in PLB:
     VENC_SHAPES[_X] = venc_plist_b
     VENC_PREMISE[_X] = f'rep: {PL_ROOT[_X][0]}(o, Spec.{_X}()), hM: WO.len(o) <= VB.NMAX() (the object API\'s limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)'
 for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest', 'var_winx_l16_Withdrawal',
-           'var_winx_l2048_Eth1Data', 'big_var_winx_l16777216_HistoricalSummary',
+           'var_winx_l2048_Eth1Data', 'big_var_winx_l1099511627776_Validator', 'big_var_winx_l16777216_HistoricalSummary',
            'big_var_winx_l134217728_PendingDeposit', 'big_var_winx_l134217728_PendingPartialWithdrawal', 'big_var_winx_l262144_PendingConsolidation'):
     SUPPORT_OUT[f'e2e_vl_{_re.sub(r'^(big_)?var_winx_', '', _w)}.bend'] = vl_module(_w)
 for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest'):
