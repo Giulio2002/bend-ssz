@@ -59,7 +59,7 @@ HEAD = list(VL.DEC_HEAD) + [
     'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp', 'import ./bitlist_pack.bend as BK',
     'import ./bitlist_rep.bend as BO', 'import ./vbitenc.bend as VBT', 'import ./vbitdl.bend as DL', 'import ./vbitcore.bend as CO',
     'import ./vbitcont.bend as CT', 'import ./vbitrep.bend as VR', 'import ./var_bits_enc_bw.bend as BW', 'import ../compact/reads.bend as RD',
-    'import ../../proofs/primitive_invariants.bend as V', 'import ./big_var_bitc_enc_Attestation.bend as E']
+    'import ../../proofs/primitive_invariants.bend as V', 'import ./big_var_bitc_enc_Attestation.bend as E'] + list(VL.SPEC_IMPORTS)
 
 
 def wsig(ws):
@@ -168,6 +168,25 @@ def leaf():
     I = Iface('Attestation', 'A', ws, H, f'E.OBJE({WA}, T, K)', f'E.VAL({WA}, T, K)', hdr, 'E.SFS(K)', 'Spec.Attestation()')
     return g, x, fixed, I
 
+
+
+def seq_steps(val, sch, items0, names, chn0, parts, pre, y, post, RHSp, MP):
+    """partsE's steps around the parts chain, each a rewrite whose motive is the goal's exact form (the
+    heads Codec.parts / aggregate / Layout.encoding are strict: a conversion between two of their
+    spellings evaluates the value's parts; scratchpad checker_findings item 2b): open the container by
+    VSQ.seq_parts, its width None, then (after the chain) aggregate by one step (E.agg1) and the parts
+    list as VS.fpv."""
+    P = '[' + ', '.join(parts) + ']'
+    head = [f'  %Equal.sym({MP}, Codec.parts({val}, {sch}), Codec.aggregate(Codec.parts({items0}, {chn0}), SC.fixed_size({chn0})),',
+            f'      VSQ.seq_parts({val}, {sch}, {items0}, {names}, {chn0}, {{==}}, {{==}})) :',
+            f'    {{_ == {RHSp} : {MP}}}',
+            f'  %Equal.sym(Maybe<&2, Nat>, SC.fixed_size({chn0}), None{{}}, {{==}}) :',
+            f'    {{Codec.aggregate(Codec.parts({items0}, {chn0}), _) == {RHSp} : {MP}}}']
+    tail = [f'  %Equal.sym({MP}, Codec.aggregate(Some{{{P}}}, None{{}}), Codec.one(Layout.encoding({P}), None{{}}), E.agg1({P}, None{{}})) :',
+            f'    {{_ == {RHSp} : {MP}}}',
+            f'  %Equal.sym(+List<S.Part>, {P}, VS.fpv({pre}, {y}, {post}), {{==}}) :',
+            f'    {{Codec.one(Layout.encoding(_), None{{}}) == {RHSp} : {MP}}}']
+    return '\n'.join(head), '\n'.join(tail)
 
 def Y0(I):
     return 'VS.bt(U32.to_nat(CO.NK(K)), F.limbs(VB.wdr(59n, FD.array__slots(U32, E.OUTA(T, K)))))'
@@ -420,12 +439,16 @@ def payw({CW}, {HW})
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
     ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), {Y})'
     RHSp = f'Some{{[S.Variable{{List.append(&2, U32, F.limbs({HDRL}), {Y})}}]}}'
+    NAMES = '[' + ', '.join('"' + f['name'] + '"' for f in x.fields) + ']'
+    SH_, ST_ = seq_steps(I.val, 'Spec.Attestation()', items(0), NAMES, chn(0), parts, PRE, Y, POST, RHSp, MP)
     w(f'''# The spec parts of the value: one variable part, the header's limbs and the bit list's bytes.
 def partsE({SRC})
     -> {{Codec.parts({I.val}, Spec.Attestation()) == {RHSp} : {MP}}}:
+{SH_}
   %Equal.sym({MP}, Codec.parts({items(0)}, {chn(0)}), Some{{[{', '.join(parts)}]}},
-      {cat(0)}) :
+      {VL.seqwrap(cat(0))}) :
     {{Codec.aggregate(_, None{{}}) == {RHSp} : {MP}}}
+{ST_}
   %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, {Y}, {POST})), Some{{{ENCR}}}, VBC.enc_fpvb({PRE}, {Y}, {POST}, VZ.bd_btl(U32.to_nat(CO.NK(K)), VB.wdr(59n, FD.array__slots(U32, E.OUTA(T, K)))), E.fitY({SRCa}))) :
     {{Codec.one(_, None{{}}) == {RHSp} : {MP}}}
   {{==}}
@@ -802,9 +825,13 @@ def parent_text(n, pre, ch, doc):
     w('# The spec parts of the value: one variable part, the header\'s limbs and the bit list\'s bytes.')
     w(f'def partsE({SRC})')
     w(f'    -> {{Codec.parts(VALX({WA}, T, K), Spec.{n}()) == {RHSp} : {MP}}}:')
+    NAMES = '[' + ', '.join('"' + f['name'] + '"' for f in fields) + ']'
+    SH_, ST_ = seq_steps(f'VALX({WA}, T, K)', f'Spec.{n}()', items(0), NAMES, chn(0), parts, PRE, XC_, POST, RHSp, MP)
+    w(SH_)
     w(f'  %Equal.sym({MP}, Codec.parts({items(0)}, {chn(0)}), Some{{[{", ".join(parts)}]}},')
-    w(f'      {cat(0)}) :')
+    w(f'      {VL.seqwrap(cat(0))}) :')
     w(f'    {{Codec.aggregate(_, None{{}}) == {RHSp} : {MP}}}')
+    w(ST_)
     w(f'  %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, {XC_}, {POST})), Some{{{ENCR}}}, VBC.enc_fpvb({PRE}, {XC_}, {POST}, {ca}.domX({CSRCa}), fitX({SRCa}))) :')
     w(f'    {{Codec.one(_, None{{}}) == {RHSp} : {MP}}}')
     w('  {==}')
