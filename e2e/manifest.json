@@ -5549,6 +5549,16 @@
     "premise": "+e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32}"
    }
   ],
+  "FuluMatrixEntry_e2e_generated.bend": [
+   {
+    "name": "FuluMatrixEntry",
+    "generated_name": "MatrixEntry",
+    "laws": [
+     "FuluMatrixEntry_e2e_encode"
+    ],
+    "premise": "+rep: rep_MatrixEntry(o, s)"
+   }
+  ],
   "FuluMatrixEntry_e2e_dec_generated.bend": [
    {
     "name": "FuluMatrixEntry",
@@ -5723,12 +5733,6 @@
   "FuluBlobSidecar": {
    "generated_name": "BlobSidecar",
    "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
-  "FuluMatrixEntry": {
-   "generated_name": "MatrixEntry",
-   "reason": "encode laws not over the same free words / bits",
-   "ii_iii": "FuluMatrixEntry_e2e_dec_generated.bend",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "FuluDataColumnSidecar": {
@@ -6125,6 +6129,12 @@
    "i": "bitvector_17_e2e_generated.bend",
    "ii_iii": "bitvector_17_e2e_dec_generated.bend",
    "iv": "bitvector_1_e2e_root_generated.bend"
+  },
+  "FuluMatrixEntry": {
+   "generated_name": "MatrixEntry",
+   "i": "FuluMatrixEntry_e2e_generated.bend",
+   "ii_iii": "FuluMatrixEntry_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "FuluParticipationFlags": {
    "generated_name": "ParticipationFlags",

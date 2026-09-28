@@ -1,4 +1,8 @@
 import Base
+import ./e2e_tree.bend as E3
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/schema_shapes.bend as SH
 import ./e2e_bits.bend as EBT
 import ../proofs/obj/valid_lib.bend as VL
 import ./e2e_fixdb.bend as XB
