@@ -22,7 +22,7 @@ import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../types/uint16_decode_ssz_generated.bend as uint16_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames.bend as M0
+import ../proofs/obj/root_gnames_light.bend as M0
 import ../proofs/obj/sub_GtECF9BB18D8.bend as M1
 import ../proofs/obj/fixrej_g4.bend as M2
 

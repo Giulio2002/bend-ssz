@@ -211,18 +211,18 @@ def RTX(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_Exe
 def BYX(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)))))) : +List<U32>}
 
-def go(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OKT(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch))))), VB.pw(dd)) == True{} : Bool},
+def goW(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OKT(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_lt(List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), VB.pw(31n)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), WD.PADB(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), WD.PADB(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch))))) : +List<U32>})
     -> DK.P2(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r)):
   +LLv = K.LLC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r)
   +el = lenC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r)
   +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), LLv, el, hl)
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), LLv, el, hz)
-  +ex = CS.exq(X, q, r, LLv, dd, e, hd, hl2)
+  +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
   +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
-  +g = K.putx(beacon, m_execution, dB_execution_branch, TB_execution_branch, ok_hok_execution(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_pfB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_hdB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_hrB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, pf, hz2)
+  +g = K.putxW(beacon, m_execution, dB_execution_branch, TB_execution_branch, ok_hok_execution(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_pfB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_hdB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), ok_hrB_execution_branch(beacon, m_execution, dB_execution_branch, TB_execution_branch, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), LLv, el, hl32), pf, hz2)
   +rt = K.putk_bridge(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r, PA(K.RTC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), K.SZXC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), K.SZXC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r), K.SZXC(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, XQ(q, r), q, r)), g2)
@@ -232,7 +232,35 @@ def go(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_Exec
     LLv, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), LLv, el), by)
   (rt2, by2)
 
+def go(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OKT(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch))))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), WD.PADB(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), WD.PADB(r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch))))) : +List<U32>})
+    -> DK.P2(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r)):
+  goW(beacon, m_execution, dB_execution_branch, TB_execution_branch, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), dd, hd, hl), hz)
+
 # ---- the interface's laws ----------------------------------------------------------------------
+
+law putxW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {FuluLightClientHeader_e.LightClientHeader_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluLightClientHeader_d.LightClientHeader & U32)}
+def putxW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
+  match m:
+    case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: PA(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r), goW(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
 law putx:
   for +m: MW
@@ -250,8 +278,28 @@ law putx:
   for +hok: {OK(m) == True{} : Bool}
   {FuluLightClientHeader_e.LightClientHeader_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluLightClientHeader_d.LightClientHeader & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
+  putxW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), hz, hok)
+
+law putx_bytesW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
+def putx_bytesW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
-    case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: PA(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r), go(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
+    case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: PB(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r), goW(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
 law putx_bytes:
   for +m: MW
@@ -269,8 +317,7 @@ law putx_bytes:
   for +hok: {OK(m) == True{} : Bool}
   {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
 def putx_bytes(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
-  match m:
-    case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: PB(RTX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, X, q, r), BYX(beacon, m_execution, dB_execution_branch, TB_execution_branch, dd, D, q, r), go(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
+  putx_bytesW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), hz, hok)
 
 law szx:
   for +m: MW

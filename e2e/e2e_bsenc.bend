@@ -16,7 +16,7 @@ import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/vbitrep.bend as VBR
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vu32.bend as VU
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
 import ../proofs/obj/dk.bend as DK
 import ./e2e_bitl.bend as BLB

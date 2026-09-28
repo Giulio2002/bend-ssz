@@ -185,18 +185,18 @@ def RTX(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW
 def BYX(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)))))) : +List<U32>}
 
-def go(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D))))), VB.pw(dd)) == True{} : Bool},
+def goW(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_lt(List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), VB.pw(31n)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D))))) : +List<U32>})
     -> DK.P2(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r)):
   +LLv = K.LLC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)
   +el = lenC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)
   +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el, hl)
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el, hz)
-  +ex = CS.exq(X, q, r, LLv, dd, e, hd, hl2)
+  +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
   +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
-  +g = K.putx(m_f_A, m_f_B, m_f_C, m_f_D, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, pf, hz2)
+  +g = K.putxW(m_f_A, m_f_B, m_f_C, m_f_D, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h), ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el, hl32), pf, hz2)
   +rt = K.putk_bridge(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r, PA(K.RTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), g2)
@@ -206,7 +206,35 @@ def go(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW,
     LLv, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el), by)
   (rt2, by2)
 
+def go(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D))))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D))))) : +List<U32>})
+    -> DK.P2(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r)):
+  goW(m_f_A, m_f_B, m_f_C, m_f_D, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), dd, hd, hl), hz)
+
 # ---- the interface's laws ----------------------------------------------------------------------
+
+law putxW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {ProgressiveTestStruct_e.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (ProgressiveTestStruct_d.Gc221EC01D83 & U32)}
+def putxW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
+  match m:
+    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: PA(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r), goW(m_f_A, m_f_B, m_f_C, m_f_D, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
 law putx:
   for +m: MW
@@ -224,8 +252,28 @@ law putx:
   for +hok: {OK(m) == True{} : Bool}
   {ProgressiveTestStruct_e.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (ProgressiveTestStruct_d.Gc221EC01D83 & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
+  putxW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), hz, hok)
+
+law putx_bytesW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
+def putx_bytesW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
-    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: PA(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r), go(m_f_A, m_f_B, m_f_C, m_f_D, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
+    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: PB(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r), goW(m_f_A, m_f_B, m_f_C, m_f_D, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
 law putx_bytes:
   for +m: MW
@@ -243,8 +291,7 @@ law putx_bytes:
   for +hok: {OK(m) == True{} : Bool}
   {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
 def putx_bytes(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
-  match m:
-    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: PB(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r), go(m_f_A, m_f_B, m_f_C, m_f_D, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
+  putx_bytesW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hs31w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), VRX.hl32w(q, r, List.length(&2, U32, ENC(m)), dd, hd, hl), hz, hok)
 
 law szx:
   for +m: MW

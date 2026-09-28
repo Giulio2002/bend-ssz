@@ -13,7 +13,7 @@ import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/vconts.bend as CS
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/list_obj.bend as LO
+import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_encx_bl32.bend as IB
 import ./e2e_cap.bend as C

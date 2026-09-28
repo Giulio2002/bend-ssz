@@ -3,8 +3,8 @@ import ../compact/found.bend as F
 import ../../src/obj.bend as O
 import ./dk.bend as DK
 import ./words_obj_light.bend as WO
-import ./list_obj.bend as LO
-import ./pv_obj.bend as PV
+import ./list_obj_light.bend as LO
+import ./pv_obj_light.bend as PV
 
 # The concrete form of byte storage held by a representation invariant: its
 # word tree and length as values. A container law computes the digest witness

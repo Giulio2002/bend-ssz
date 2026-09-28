@@ -127,10 +127,12 @@ def sel_by(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +s: U32
 
 # Its position: X + 1 is at 4 AQ + AR.
 def arm_eW(+dd: Nat, +X: U32, +q: Nat, +r: Nat, +E: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(X0(q, r), 1n+E), FD.spec_common__pow2(32n)) == True{} : Bool})
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 1n+E)), FD.spec_common__pow2(32n)) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, 1)) == Nat.add(A.quad(AQ(q, r)), AR(r)) : Nat}:
   +hb = FD.nat__le_lt_trans(1n+X0(q, r), 1n+Nat.add(X0(q, r), E), FD.spec_common__pow2(32n), FD.nat__le_add_right(X0(q, r), E),
-    FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(X0(q, r), 1n+E), 1n+Nat.add(X0(q, r), E), FD.nat__add_succ(X0(q, r), E), hl32))
+    FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(X0(q, r), 1n+E), 1n+Nat.add(X0(q, r), E), FD.nat__add_succ(X0(q, r), E),
+      FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(A.quad(q), Nat.add(r, 1n+E)), Nat.add(X0(q, r), 1n+E),
+        Equal.sym(Nat, Nat.add(X0(q, r), 1n+E), Nat.add(A.quad(q), Nat.add(r, 1n+E)), FD.nat__add_assoc(A.quad(q), r, 1n+E)), hl32)))
   Equal.trans(Nat, U32.to_nat(U32.add(X, 1)), 1n+X0(q, r), Nat.add(A.quad(AQ(q, r)), AR(r)), VB.add_lt32(X, 1, X0(q, r), e, hb),
     Equal.sym(Nat, Nat.add(A.quad(AQ(q, r)), AR(r)), 1n+X0(q, r), apos(q, r, hr)))
 
@@ -179,3 +181,21 @@ def tag_f(+s: U32, +v: S.Value, +sc: S.Schema, +xs: +List<U32>, +h: {Codec.parts
     -> {Codec.tagged(s, Codec.parts(v, sc)) == Some{[S.Variable{Con{s, xs}}]} : Maybe<&2, +List<S.Part>>}:
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(v, sc), Some{[S.Fixed{xs}]}, h) : {Codec.tagged(s, _) == Some{[S.Variable{Con{s, xs}}]} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# aroom's arm region below 2^32 (from the union's region, 1 + E bytes at X0).
+def aroom32(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 1n+E)), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  +e1 = Equal.trans(Nat, Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)), Nat.add(Nat.add(A.quad(AQ(q, r)), AR(r)), E), Nat.add(1n+X0(q, r), E),
+    Equal.sym(Nat, Nat.add(Nat.add(A.quad(AQ(q, r)), AR(r)), E), Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)), FD.nat__add_assoc(A.quad(AQ(q, r)), AR(r), E)),
+    Equal.cong(Nat, Nat, z => Nat.add(z, E), Nat.add(A.quad(AQ(q, r)), AR(r)), 1n+X0(q, r), apos(q, r, hr)))
+  +e2 = Equal.trans(Nat, Nat.add(1n+X0(q, r), E), Nat.add(X0(q, r), 1n+E), Nat.add(A.quad(q), Nat.add(r, 1n+E)),
+    Equal.sym(Nat, Nat.add(X0(q, r), 1n+E), Nat.add(1n+X0(q, r), E), FD.nat__add_succ(X0(q, r), E)),
+    FD.nat__add_assoc(A.quad(q), r, 1n+E))
+  FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(A.quad(q), Nat.add(r, 1n+E)), Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)),
+    Equal.sym(Nat, Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)), Nat.add(A.quad(q), Nat.add(r, 1n+E)), Equal.trans(Nat, Nat.add(A.quad(AQ(q, r)), Nat.add(AR(r), E)), Nat.add(1n+X0(q, r), E), Nat.add(A.quad(q), Nat.add(r, 1n+E)), e1, e2)), hl32)
+
+# aroom's arm of E bytes (the union's 1 + E below 2^31).
+def aroom31(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hs31: {Nat.is_lt(1n+E, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(E, VB.pw(31n)) == True{} : Bool}:
+  FD.nat__lt_trans(E, 1n+E, VB.pw(31n), FD.nat__lt_succ(E), hs31)

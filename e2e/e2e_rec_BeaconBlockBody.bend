@@ -5,9 +5,9 @@ import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/big_encx_BeaconBlockBody_iface.bend as CI
 import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d

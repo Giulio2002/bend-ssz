@@ -6,7 +6,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/mtree_run.bend as MR
 import ../proofs/obj/arr_vec.bend as AV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/root_names_light.bend as RN
 import ./e2e_fixdw.bend as XW
 

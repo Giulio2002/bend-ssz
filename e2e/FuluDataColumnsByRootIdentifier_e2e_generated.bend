@@ -15,8 +15,8 @@ import ../proofs/obj/spec_fixed.bend as SF
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/ulist_obj.bend as UL
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/ulist_obj_light.bend as UL
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_codec_DataColumnsByRootIdentifier_enc.bend as EN
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d

@@ -27,9 +27,9 @@ import ../proofs/obj/arr_copy.bend as AC
 import ../proofs/obj/arr_spec.bend as AS
 import ../proofs/obj/arr_shift.bend as AH
 import ../proofs/obj/repr.bend as R
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/spec_arr_BlobSidecar.bend as M
 import ../proofs/obj/fixrej_BlobSidecar.bend as RJ
 import ../proofs/obj/vrejf.bend as VRF

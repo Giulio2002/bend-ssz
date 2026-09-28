@@ -10,9 +10,9 @@ import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
-import ../proofs/obj/bitlist_obj.bend as BO
-import ../proofs/obj/root_gtypes2.bend as RT2
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../proofs/obj/root_gtypes2_light.bend as RT2
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vfx_u8.bend as FX8
 import ../proofs/obj/big_var_winp_pbits.bend as PBW
 import ../proofs/obj/var_winx_l123_u16.bend as L123
@@ -24,7 +24,7 @@ import ./e2e_plist.bend as PL
 import ./e2e_gpb.bend as GPB
 import ../proofs/obj/big_var_winp_u8.bend as PU8
 import ../proofs/obj/big_var_winp_pl_u64.bend as PU64
-import ../proofs/obj/ulist_obj.bend as UL
+import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/vspec.bend as VS
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vcopy.bend as VC

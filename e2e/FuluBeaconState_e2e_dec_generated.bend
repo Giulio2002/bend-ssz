@@ -18,7 +18,7 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/root_state.bend as ST
+import ../proofs/obj/root_state_light.bend as ST
 import ./e2e_vbx_BeaconState.bend as VWX
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/big_var_codec_BeaconState.bend as DC

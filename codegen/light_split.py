@@ -99,6 +99,11 @@ def blocks(text):
     return head, out
 
 
+def _ctors(bl):
+    """the constructor names of the type blocks among bl (a moved type takes its constructors along)"""
+    return {m.group(1) for b in bl if b[1] == 'type' for l in b[2][1:] if (m := re.match(r'\s+([A-Za-z_]\w*)\{', l))}
+
+
 def _refs(lines, names):
     code = _code('\n'.join(lines))
     return {m.group(1) for m in IDENT.finditer(code)} & names
@@ -138,7 +143,8 @@ def split(text, seeds, light_rel, gen, alias=None):
                                     f'# The definitions of {base[:-len(SUFFIX)]}.bend that state no root law (its'
                                     f' light companion, codegen/light_split.py): importers that only',
                                     '# state against them skip the root laws\' imports.', ''] + mv_lines).rstrip('\n') + '\n'
-    _MEM[base] = set(moved)
+    ctors = _ctors([b for b in bl if b[0] in moved]) - names
+    _MEM[base] = set(moved) | ctors
     _MEMT[base] = light_text
     taken = {m.group(3) for m in IMP.finditer(text)}
     if alias is None:
@@ -146,7 +152,7 @@ def split(text, seeds, light_rel, gen, alias=None):
         while alias in taken:
             k += 1
             alias = f'LV{k}'
-    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(moved, key=len, reverse=True)) + r')\b(?!\.)')
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(moved | ctors, key=len, reverse=True)) + r')\b(?!\.)')
     keep = [b for b in bl if b[0] not in moved]
     body = []
     for b in keep:
@@ -175,7 +181,7 @@ def light_defs(base):
         return _MEM[base]
     if base not in _DISK:
         ps = _byname().get(base, [])
-        _DISK[base] = None if len(ps) != 1 else {b[0] for b in blocks(ps[0].read_text())[1]}
+        _DISK[base] = None if len(ps) != 1 else (lambda bl: {b[0] for b in bl} | _ctors(bl))(blocks(ps[0].read_text())[1])
     return _DISK[base]
 
 

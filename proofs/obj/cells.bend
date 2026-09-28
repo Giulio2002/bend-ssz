@@ -27,6 +27,7 @@ import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ../compact/arith.bend as AR
 import ../../proofs/nat_algebra.bend as NA
+import ./cells_light.bend as LV
 
 # Byte vectors of whole chunks packed in words, as list elements (the cells of
 # DataColumnSidecar: 2048 bytes, 512 words, 64 chunks, element depth 6). The
@@ -158,19 +159,15 @@ def er_cells(+W: List<&2, U32>, +j: Nat, +hl: Nat)
   %Equal.sym(Nat, Nat.add(Nat.mul(j, 64n), 0n), Nat.mul(j, 64n), MR.add_zero(Nat.mul(j, 64n))) : {MD.rtree(6n, True{}, hl, MR.clist(64n, W, _), 0n) == MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n) : D.Digest}
   {==}
 
-# The bytes of cell j.
-def cbytes(+W: List<&2, U32>, +j: Nat) -> +List<U32>:
-  WS.btake(Nat.add(WS.e32(63n), 32n), FX.limbs(WS.wdrop(O.e8(Nat.mul(j, 64n)), W)))
-
 def cchunks(+W: List<&2, U32>, +j: Nat,
     +cap: {Nat.is_le(O.e8(Nat.add(64n, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
-    -> {Br.chunks(cbytes(W, j)) == MD.bytes_list(MR.clist(64n, W, Nat.mul(j, 64n))) : +List<+List<U32>>}:
+    -> {Br.chunks(LV.cbytes(W, j)) == MD.bytes_list(MR.clist(64n, W, Nat.mul(j, 64n))) : +List<+List<U32>>}:
   WS.chunk_scan(63n, 32n, W, Nat.mul(j, 64n), [], {==}, {==}, cap, {==})
 
 def ccanon(+W: List<&2, U32>, +j: Nat,
     +cap: {Nat.is_le(O.e8(Nat.add(64n, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
-    -> {Br.canonical_depth(cbytes(W, j), 6n) == True{} : Bool}:
-  %Equal.sym(+List<+List<U32>>, Br.chunks(cbytes(W, j)), MD.bytes_list(MR.clist(64n, W, Nat.mul(j, 64n))), cchunks(W, j, cap)) :
+    -> {Br.canonical_depth(LV.cbytes(W, j), 6n) == True{} : Bool}:
+  %Equal.sym(+List<+List<U32>>, Br.chunks(LV.cbytes(W, j)), MD.bytes_list(MR.clist(64n, W, Nat.mul(j, 64n))), cchunks(W, j, cap)) :
     {Lim.minimal(List.length(&2, +List<U32>, _), 6n) == True{} : Bool}
   {==}
 
@@ -201,15 +198,10 @@ def cgq(+hl: Nat, +ehl: {hl == 64n : Nat}, +W: List<&2, U32>, +j: Nat, +q: Nat, 
 # A cell is a specification root of its bytes.
 def celem(+hl: Nat, +ehl: {hl == 64n : Nat}, +W: List<&2, U32>, +j: Nat,
     +cap: {Nat.is_le(O.e8(Nat.add(64n, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
-    -> RR.roots(S.BytesValue{cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(EL.er(W, j, 512n, 6n, 64n, hl))]):
+    -> RR.roots(S.BytesValue{LV.cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(EL.er(W, j, 512n, 6n, 64n, hl))]):
   %Equal.sym(D.Digest, EL.er(W, j, 512n, 6n, 64n, hl), MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n), er_cells(W, j, hl)) :
-    RR.roots(S.BytesValue{cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(_)])
+    RR.roots(S.BytesValue{LV.cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(_)])
   (6n, (ccanon(W, j, cap), cgq(hl, ehl, W, j, 63n, 6n, {==}, cap)))
-
-def citems(k: Nat, +W: List<&2, U32>, +i: Nat) -> S.Value:
-  match k:
-    case 0n: S.EmptyItems{}
-    case 1n+q: S.Items{S.BytesValue{cbytes(W, i)}, citems(q, W, 1n+i)}
 
 law croots:
   for +k: Nat
@@ -218,7 +210,7 @@ law croots:
   for +hl: Nat
   for +ehl: {hl == 64n : Nat}
   for +cap: {Nat.is_le(Nat.mul(Nat.add(k, i), 512n), F.spec_common__length(U32, W)) == True{} : Bool}
-  RR.roots(citems(k, W, i), S.Repeat{S.ByteVector{2048n}}, MD.bytes_list(EL.elist(k, W, i, 512n, 6n, 64n, hl)))
+  RR.roots(LV.citems(k, W, i), S.Repeat{S.ByteVector{2048n}}, MD.bytes_list(EL.elist(k, W, i, 512n, 6n, 64n, hl)))
 def croots(k, W, i, hl, ehl, cap):
   match k:
     case 0n: {==}
@@ -235,12 +227,12 @@ law ccount:
   for +k: Nat
   for +W: List<&2, U32>
   for +i: Nat
-  {Codec.count(citems(k, W, i)) == k : Nat}
+  {Codec.count(LV.citems(k, W, i)) == k : Nat}
 def ccount(k, W, i):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      %Equal.sym(Nat, Codec.count(citems(q, W, 1n+i)), q, ccount(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
+      %Equal.sym(Nat, Codec.count(LV.citems(q, W, 1n+i)), q, ccount(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
       {==}
 
 # The storage holds every cell.
@@ -255,40 +247,16 @@ def ccap(+K: Nat, +dw: Nat, +t: F.array__Tree<U32>,
 
 # ---- the object -------------------------------------------------------------------
 
-def kc(+n: U32) -> Nat: U32.to_nat(U32.div(n, 2048))
-
-def eview(o: O.Words) -> S.Value:
-  match o:
-    case O.Words{ws, +n}: S.Sequence{citems(kc(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)}
-
 def edig(+hl: Nat, o: O.Words, +depth: Nat) -> D.Digest:
   match o:
-    case O.Words{ws, +n}: MD.rtree(depth, Nat.is_lt(0n, kc(n)), hl, EL.elist(kc(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n, 512n, 6n, 64n, hl), 0n)
+    case O.Words{ws, +n}: MD.rtree(depth, Nat.is_lt(0n, LV.kc(n)), hl, EL.elist(LV.kc(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n, 512n, 6n, 64n, hl), 0n)
 
 def ldig(+hl: Nat, o: O.Words, +depth: Nat) -> D.Digest:
   match o:
-    case O.Words{ws, +n}: O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, kc(n)), hl, EL.elist(kc(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n, 512n, 6n, 64n, hl), 0n), U32.div(n, 2048))
-
-# The representation invariant: a perfect word tree holding the elements.
-def wfe(o: O.Words) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
-    DK.P2({o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-          {Nat.is_le(Nat.mul(kc(N), 512n), F.spec_common__pow2(dw)) == True{} : Bool}))))))
-
-def rep_el(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(wfe(o), {Nat.is_le(kc(WO.len(o)), SH.ListOf_limit(s)) == True{} : Bool})
-
-def rep_wfl(-o: O.Words, +s: S.Schema, +rep: rep_el(o, s)) -> wfe(o):
-  (+w, +n) = rep
-  w
-
-def ok_el(+s: S.Schema, +depth: Nat) -> Bool:
-  Bool.and(SH.is_ListOf(s), Bool.and(SH.is_ByteVector(SH.ListOf_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 2048n), Lim.minimal(SH.ListOf_limit(s), depth))))
+    case O.Words{ws, +n}: O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, LV.kc(n)), hl, EL.elist(LV.kc(n), F.array__slots(U32, F.array__freeze(U32, ws)), 0n, 512n, 6n, 64n, hl), 0n), U32.div(n, 2048))
 
 # The runtime root of the packed elements (O.elems_root, no length).
-def ev_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: wfe(o), +edu: {U32.to_nat(dU) == depth : Nat})
+def ev_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +wf: LV.wfe(o), +edu: {U32.to_nat(dU) == depth : Nat})
     -> {O.elems_root(hl, h, o, 512, 6, dU, seg) == (h, (o, edig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -299,27 +267,27 @@ def ev_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +w
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
     {O.elems_root(hl, h, _, 512, 6, dU, seg) == (h, (_, edig(hl, _, depth))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(dU), depth, edu) :
-    {O.mt_words(N, O.mtree(_, 0n, Nat.is_lt(0n, kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(_), 0n, kc(N), (h, (F.array__thaw(U32, t), D.zero())))) == (h, (O.Words{F.array__thaw(U32, t), N}, edig(hl, O.Words{F.array__thaw(U32, t), N}, depth))) : B.Buf & (O.Words & D.Digest)}
-  %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.mtree(depth, 0n, Nat.is_lt(0n, kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(depth), 0n, kc(N), (h, (F.array__thaw(U32, t), D.zero()))),
-      (h, (F.array__thaw(U32, t), MD.rtree(depth, Nat.is_lt(0n, kc(N)), hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n))),
-      EL.mt_elems(depth, Nat.is_lt(0n, kc(N)), hl, dw, t, 512n, 6n, 64n, 0n, kc(N), h, D.zero(), {==}, hd, pf, room)) :
+    {O.mt_words(N, O.mtree(_, 0n, Nat.is_lt(0n, LV.kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(_), 0n, LV.kc(N), (h, (F.array__thaw(U32, t), D.zero())))) == (h, (O.Words{F.array__thaw(U32, t), N}, edig(hl, O.Words{F.array__thaw(U32, t), N}, depth))) : B.Buf & (O.Words & D.Digest)}
+  %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.mtree(depth, 0n, Nat.is_lt(0n, LV.kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(depth), 0n, LV.kc(N), (h, (F.array__thaw(U32, t), D.zero()))),
+      (h, (F.array__thaw(U32, t), MD.rtree(depth, Nat.is_lt(0n, LV.kc(N)), hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n))),
+      EL.mt_elems(depth, Nat.is_lt(0n, LV.kc(N)), hl, dw, t, 512n, 6n, 64n, 0n, LV.kc(N), h, D.zero(), {==}, hd, pf, room)) :
     {O.mt_words(N, _) == (h, (O.Words{F.array__thaw(U32, t), N}, edig(hl, O.Words{F.array__thaw(U32, t), N}, depth))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {(h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, Nat.is_lt(0n, kc(N)), hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n))) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, Nat.is_lt(0n, kc(N)), hl, EL.elist(kc(N), F.array__slots(U32, _), 0n, 512n, 6n, 64n, hl), 0n))) : B.Buf & (O.Words & D.Digest)}
+    {(h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, Nat.is_lt(0n, LV.kc(N)), hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n))) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, Nat.is_lt(0n, LV.kc(N)), hl, EL.elist(LV.kc(N), F.array__slots(U32, _), 0n, 512n, 6n, 64n, hl), 0n))) : B.Buf & (O.Words & D.Digest)}
   {==}
 
 def klen(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +K: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +ks: {Nat.is_eq(kc(WO.len(o)), K) == True{} : Bool}) -> {Nat.is_eq(kc(N), K) == True{} : Bool}:
-  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(kc(_), K) == True{} : Bool}
+    +ks: {Nat.is_eq(LV.kc(WO.len(o)), K) == True{} : Bool}) -> {Nat.is_eq(LV.kc(N), K) == True{} : Bool}:
+  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(LV.kc(_), K) == True{} : Bool}
   ks
 
 def keq(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +K: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +ks: {Nat.is_eq(kc(WO.len(o)), K) == True{} : Bool}) -> {kc(N) == K : Nat}:
-  WS.nat_eq(kc(N), K, klen(o, t, N, K, eo, ks))
+    +ks: {Nat.is_eq(LV.kc(WO.len(o)), K) == True{} : Bool}) -> {LV.kc(N) == K : Nat}:
+  WS.nat_eq(LV.kc(N), K, klen(o, t, N, K, eo, ks))
 
 def kle(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +hv: {Nat.is_le(kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_le(kc(N), L) == True{} : Bool}:
-  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(kc(_), L) == True{} : Bool}
+    +hv: {Nat.is_le(LV.kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_le(LV.kc(N), L) == True{} : Bool}:
+  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(LV.kc(_), L) == True{} : Bool}
   hv
 
 def hlen_k(+K: Nat, +L: Nat, +W: List<&2, U32>, +hl: Nat, +hv: {Nat.is_le(K, L) == True{} : Bool})
@@ -333,18 +301,18 @@ def minK(+K: Nat, +K2: Nat, +depth: Nat, +e: {K == K2 : Nat}, +hm: {Lim.minimal(
 
 # A vector of cells: its digest is a specification root of its elements.
 def elenc(+hl: Nat, +ehl: {hl == 64n : Nat}, +N: U32, +R: D.Digest, +W: List<&2, U32>)
-    -> {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, Codec.count(citems(kc(N), W, 0n)))) == Some{D.bytes(O.mix_len(hl, R, U32.div(N, 2048)))} : Maybe<&2, +List<U32>>}:
-  %Equal.sym(Nat, Codec.count(citems(kc(N), W, 0n)), kc(N), ccount(kc(N), W, 0n)) :
+    -> {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, Codec.count(LV.citems(LV.kc(N), W, 0n)))) == Some{D.bytes(O.mix_len(hl, R, U32.div(N, 2048)))} : Maybe<&2, +List<U32>>}:
+  %Equal.sym(Nat, Codec.count(LV.citems(LV.kc(N), W, 0n)), LV.kc(N), ccount(LV.kc(N), W, 0n)) :
     {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, _)) == Some{D.bytes(O.mix_len(hl, R, U32.div(N, 2048)))} : Maybe<&2, +List<U32>>}
   LR.mix_bytes(hl, ehl, R, U32.div(N, 2048))
 
 # A list of cells: its digest (the element tree with the count mixed in) is a
 # specification root of its elements.
 def el_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat,
-    +rep: rep_el(o, s),
-    +ok: {ok_el(s, depth) == True{} : Bool},
+    +rep: LV.rep_el(o, s),
+    +ok: {LV.ok_el(s, depth) == True{} : Bool},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(eview(o), s, [D.bytes(ldig(hl, o, depth))]):
+    -> RR.roots(LV.eview(o), s, [D.bytes(ldig(hl, o, depth))]):
   (+wf, +hv) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -360,18 +328,18 @@ def el_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
   +c3 = DK.and_r(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 2048n), Lim.minimal(SH.ListOf_limit(s), depth), r2)
   +hvN = kle(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, c0)) :
-    RR.roots(eview(o), _, [D.bytes(ldig(hl, o, depth))])
+    RR.roots(LV.eview(o), _, [D.bytes(ldig(hl, o, depth))])
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.ByteVector{SH.ByteVector_length(SH.ListOf_element(s))}, SH.ByteVector_shape(SH.ListOf_element(s), c1)) :
-    RR.roots(eview(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
+    RR.roots(LV.eview(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
   %Equal.sym(Nat, SH.ByteVector_length(SH.ListOf_element(s)), 2048n, WS.nat_eq(SH.ByteVector_length(SH.ListOf_element(s)), 2048n, c2)) :
-    RR.roots(eview(o), S.ListOf{S.ByteVector{_}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
+    RR.roots(LV.eview(o), S.ListOf{S.ByteVector{_}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    RR.roots(eview(_), S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, _, depth))])
+    RR.roots(LV.eview(_), S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, _, depth))])
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    RR.roots(S.Sequence{citems(kc(N), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, kc(N)), hl, EL.elist(kc(N), F.array__slots(U32, _), 0n, 512n, 6n, 64n, hl), 0n), U32.div(N, 2048)))])
-  %EL.elist_len(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl) :
-    RR.roots(S.Sequence{citems(kc(N), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n), U32.div(N, 2048)))])
-  (MD.bytes_list(EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl)), (croots(kc(N), F.array__slots(U32, t), 0n, hl, ehl, ccap(kc(N), dw, t, pf, room)),
-    (D.bytes(MD.rtree(depth, Nat.is_lt(0n, MD.dlen(EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl))), hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n)),
-     ((depth, (c3, RS.at_depth_tree(SH.ListOf_limit(s), depth, hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), hdep, hlen_k(kc(N), SH.ListOf_limit(s), F.array__slots(U32, t), hl, hvN), ehl))),
-      elenc(hl, ehl, N, MD.rtree(depth, Nat.is_lt(0n, MD.dlen(EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl))), hl, EL.elist(kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n), F.array__slots(U32, t))))))
+    RR.roots(S.Sequence{LV.citems(LV.kc(N), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, LV.kc(N)), hl, EL.elist(LV.kc(N), F.array__slots(U32, _), 0n, 512n, 6n, 64n, hl), 0n), U32.div(N, 2048)))])
+  %EL.elist_len(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl) :
+    RR.roots(S.Sequence{LV.citems(LV.kc(N), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n), U32.div(N, 2048)))])
+  (MD.bytes_list(EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl)), (croots(LV.kc(N), F.array__slots(U32, t), 0n, hl, ehl, ccap(LV.kc(N), dw, t, pf, room)),
+    (D.bytes(MD.rtree(depth, Nat.is_lt(0n, MD.dlen(EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl))), hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n)),
+     ((depth, (c3, RS.at_depth_tree(SH.ListOf_limit(s), depth, hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), hdep, hlen_k(LV.kc(N), SH.ListOf_limit(s), F.array__slots(U32, t), hl, hvN), ehl))),
+      elenc(hl, ehl, N, MD.rtree(depth, Nat.is_lt(0n, MD.dlen(EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl))), hl, EL.elist(LV.kc(N), F.array__slots(U32, t), 0n, 512n, 6n, 64n, hl), 0n), F.array__slots(U32, t))))))

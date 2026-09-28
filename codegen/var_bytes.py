@@ -1059,6 +1059,104 @@ def rej_facts(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array
 """
 
 
+# ---- the encoders' dd < 31 twins (deep.dify_out's post pass) -----------------------------------------------
+# At dd = 30 a header offset 4 (k + P) can reach 2^32, so eocW takes it strictly below 2^32 (VF.off_add_lt), from
+# hr32: 4 ROOM(N, P) < 2^32 (the object ends inside U32 positions), a premise of every twin that takes hdst.
+EOC_OLD = (
+    "def eoc(+k: Nat, +c: U32, +P: Nat, +pos: U32, +dd: Nat, +eP: {U32.to_nat(pos) == A.quad(P) : Nat},\n"
+    "    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},\n"
+    "    +hq: {Nat.is_le(A.quad(Nat.add(k, P)), VB.pw(2n+dd)) == True{} : Bool})\n"
+    "    -> {U32.to_nat(U32.add(pos, c)) == A.quad(Nat.add(k, P)) : Nat}:\n"
+    "  VF.off_add(pos, c, P, k, 2n+dd, eP, ec, hdd, hq)\n")
+P32 = 'FD.spec_common__pow2(32n)'
+HQ4S = """
+# A run of W >= 1 words at word k + i lies strictly inside the tree: its first word k + i < 2^d.
+def hq4S(+k: Nat, +i: Nat, +d: Nat, +W: Nat, +hW: {Nat.is_le(1n, W) == True{} : Bool}, +h: {Nat.is_le(Nat.add(W, Nat.add(k, i)), VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(k, i), VB.pw(d)) == True{} : Bool}:
+  +x = Nat.add(k, i)
+  FD.nat__lt_le_trans(x, Nat.add(W, x), VB.pw(d), FD.nat__lt_le_trans(x, 1n+x, Nat.add(W, x), FD.nat__lt_succ(x), Order.add_right(1n, W, x, hW)), h)
+"""
+
+
+def enc_strict(q, t, res):
+    import deep
+    if 'def eocW(' not in t:
+        return t, []
+    m = re.search(r'^def hHP\(\+N: U32, \+dd: Nat, \+P: Nat, [^\n]*-> \{Nat\.is_le\(Nat\.add\((\d+)n, P\), VB\.pw\(dd\)\) == True\{\} : Bool\}:\n  FD\.nat__le_trans\(', t, re.M)
+    H = m.group(1)
+    args, _ = deep._args(t, m.end())
+    A_, B_, prf = args[0], args[1], args[3]
+    lem = f"""# The header's end H + P lies in the object's room; a header offset 4 (k + P), k <= H, is below 2^32 by hr32.
+def hHR(+N: U32, +P: Nat) -> {{Nat.is_le({A_}, {B_}) == True{{}} : Bool}}: {prf}
+
+def hq32(+k: Nat, +N: U32, +P: Nat, +hk: {{Nat.is_le(k, {H}n) == True{{}} : Bool}},
+    +hr32: {{Nat.is_lt(A.quad(ROOM(N, P)), {P32}) == True{{}} : Bool}}) -> {{Nat.is_lt(A.quad(Nat.add(k, P)), {P32}) == True{{}} : Bool}}:
+  +h1 = FD.nat__le_trans(Nat.add(k, P), {A_}, ROOM(N, P), Order.add_right(k, {H}n, P, hk), hHR(N, P))
+  FD.nat__le_lt_trans(A.quad(Nat.add(k, P)), A.quad(ROOM(N, P)), {P32},
+    Order.double_monotone(Nat.double(Nat.add(k, P)), Nat.double(ROOM(N, P)), Order.double_monotone(Nat.add(k, P), ROOM(N, P), h1)), hr32)
+
+# At dd < 29 (the old names): 4 ROOM <= 4 2^dd = 2^(2+dd) < 2^(3+dd) <= 2^32.
+def hr32w(+N: U32, +P: Nat, +dd: Nat, +hdd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hdst: {{Nat.is_le(ROOM(N, P), VB.pw(dd)) == True{{}} : Bool}})
+    -> {{Nat.is_lt(A.quad(ROOM(N, P)), {P32}) == True{{}} : Bool}}:
+  +hq = Order.double_monotone(Nat.double(ROOM(N, P)), Nat.double(VB.pw(dd)), Order.double_monotone(ROOM(N, P), VB.pw(dd), hdst))
+  +hk = FD.nat__lt_succ_le(dd, 28n, hdd)
+  FD.nat__le_lt_trans(A.quad(ROOM(N, P)), VB.pw(2n+dd), {P32}, hq,
+    FD.nat__lt_le_trans(VB.pw(2n+dd), VB.pw(Nat.add(3n, dd)), {P32}, FD.nat__pow2_lt_succ(2n+dd),
+      FD.nat__pow2_mono(Nat.add(3n, dd), 32n, FD.nat__le_trans(Nat.add(3n, dd), 31n, 32n, hk, {{==}}))))
+
+def eocW(+k: Nat, +c: U32, +P: Nat, +pos: U32, +dd: Nat, +eP: {{U32.to_nat(pos) == A.quad(P) : Nat}},
+    +hdd: {{Nat.is_lt(dd, 31n) == True{{}} : Bool}}, +ec: {{U32.to_nat(c) == A.quad(k) : Nat}},
+    +hq: {{Nat.is_lt(A.quad(Nat.add(k, P)), {P32}) == True{{}} : Bool}})
+    -> {{U32.to_nat(U32.add(pos, c)) == A.quad(Nat.add(k, P)) : Nat}}:
+  VF.off_add_lt(pos, c, P, k, eP, ec, hq)
+
+"""
+    # eocW (and its wrapper eoc) give way to the strict eocW and the original eoc
+    a = t.index('def eocW(')
+    a = t.rfind('\n# ', 0, a) + 1 if t.rfind('\n\n', 0, a) < t.rfind('\n# ', 0, a) else a
+    b = t.index('\ndef ', t.index('def eoc(', a) + 1) + 1
+    t = t[:a] + lem + EOC_OLD + '\n' + t[b:]
+    # the calls: the strict bound from hr32
+    out, pos = [], 0
+    for mm in re.finditer(r'(?<![\w.])eocW\(', t):
+        if mm.start() < pos:
+            continue
+        ar, end = deep._args(t, mm.end())
+        if t[mm.start() - 4:mm.start()] == 'def ':
+            continue
+        ar[8] = f'hq32({ar[0]}, N, P, {{==}}, hr32)'
+        out.append(t[pos:mm.start()] + 'eocW(' + ', '.join(ar) + ')')
+        pos = end
+    out.append(t[pos:])
+    t = ''.join(out)
+    # a run's own words W >= 1 (the SyncCommittee writer's hq4): strict by q32lt
+    k, out, pos = 0, [], 0
+    for mm in re.finditer(r'VF\.off_add\(', t):
+        ar, end = deep._args(t, mm.end())
+        if len(ar) == 9 and ar[4] == '2n+dd' and ar[7] == 'hdd' and ar[8].startswith('hq4('):
+            hq, _ = deep._args(ar[8], len('hq4('))
+            if hq[0] == ar[3] and hq[1] == ar[2] and hq[2] == 'dd' and re.fullmatch(r'\d+n', hq[3]) and int(hq[3][:-1]) >= 1:
+                out.append(t[pos:mm.start()] + f'VF.off_add_lt({ar[0]}, {ar[1]}, {ar[2]}, {ar[3]}, {ar[5]}, {ar[6]}, '
+                           f'VF.q32lt({ar[3]}, {ar[2]}, dd, hdd, hq4S({ar[3]}, {ar[2]}, dd, {hq[3]}, {{==}}, {hq[4]})))')
+                pos, k = end, k + 1
+    out.append(t[pos:])
+    t = ''.join(out)
+    if k:
+        t = t.replace('\ndef hq4(', HQ4S + '\ndef hq4(', 1)
+    imp = {}
+    for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
+        src = res.get(q.parent / f'{mi.group(1)}.bend')
+        if src:
+            h = deep.premise_sigs(src, 'hdst')
+            d = {n: h[n] for n in deep.premise_sigs(src, 'hr32')}
+            if d:
+                imp[mi.group(2) + '.'] = d
+    t, bad = deep.add_premise(t, 'hdst', 'hr32',
+                              lambda ty: ty.replace('Nat.is_le(ROOM(N, P), VB.pw(dd))', f'Nat.is_lt(A.quad(ROOM(N, P)), {P32})'), imp,
+                              wrap='hr32w(N, P, dd, hdd, hdst)', wrap_needs=('N', 'P', 'dd', 'hdd', 'hdst'))
+    return t, bad
+
+
 def main():
     SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed, container_fixed, ...)
     names = schema.load(ROOT / 'codegen/fulu.yaml')
@@ -1087,6 +1185,8 @@ def main():
     nb = '--no-big' in sys.argv
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (nb and q.name.startswith('big_'))]
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out, post=enc_strict)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale or orphans:

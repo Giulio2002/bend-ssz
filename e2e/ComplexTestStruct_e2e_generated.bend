@@ -29,7 +29,7 @@ import ../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
 import ../types/ComplexTestStruct_encode_ssz_generated.bend as ComplexTestStruct_e
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
-import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB

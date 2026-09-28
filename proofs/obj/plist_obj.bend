@@ -8,7 +8,7 @@ import ./schema_shapes.bend as SH
 import ../compact/found.bend as F
 import ./obj_support.bend as OS
 import ./cform.bend as CF
-import ./list_obj.bend as LO
+import ./list_obj_light.bend as LO
 import ./prog_list.bend as PG
 
 # Support for progressive lists as container fields (codegen/root_laws_b.py,

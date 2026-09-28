@@ -17,7 +17,7 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
 import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/vspec.bend as VSP

@@ -68,7 +68,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- box of SyncCommitteeContribution ----
 type M_ProposerSlashing is Data:
   M_ProposerSlashing{a0: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, a1: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader}
 def th_ProposerSlashing(m: M_ProposerSlashing) -> FuluProposerSlashing_d.ProposerSlashing:
@@ -309,9 +309,9 @@ def RTo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBl
 def BYo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_SignedBeaconBlockHeader(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_SignedBeaconBlockHeader(o))) : +List<U32>}
 
-def putxo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 208n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxo_SignedBeaconBlockHeaderW(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 208n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 208n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(208n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(208n) : +List<U32>})
     -> DK.P2(RTo_SignedBeaconBlockHeader(o, dd, D, X, q, r), BYo_SignedBeaconBlockHeader(o, dd, D, q, r)):
   match o:
@@ -330,7 +330,14 @@ def putxo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeacon
                             case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match o_1:
                                 case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
-                                  ERC.putx_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+                                  ERC.putx_SignedBeaconBlockHeaderW(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
+
+def putxo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 208n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(208n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(208n) : +List<U32>})
+    -> DK.P2(RTo_SignedBeaconBlockHeader(o, dd, D, X, q, r), BYo_SignedBeaconBlockHeader(o, dd, D, q, r)):
+  putxo_SignedBeaconBlockHeaderW(o, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 208n, dd, hd, hl), pf, hz)
 
 def lenb_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(o))) == 208n : Nat}:
   match o:
@@ -383,27 +390,27 @@ def BYE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: 
 def mkE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D, X, q, r), +b: BYE(v, dd, D, q, r)) -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
   (a, b)
 
-def putxE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxEW(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 416n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(416n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(416n) : +List<U32>})
     -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
   match v:
     case M_ProposerSlashing{+a0, +a1}:
-      +ep0 = VRX.fpos(X, q, r, 0n, 0, 416n, dd, e, {==}, hd, {==}, hl)
+      +ep0 = VRX.fposW(X, q, r, 0n, 0, 416n, dd, e, {==}, hd, {==}, hl)
       +hl0 = VRX.froom(q, r, dd, 0n, 208n, 416n, {==}, hl)
       +hz0 = VRX.zhead(208n, 208n, VS.bdr(Nat.add(A.quad(Nat.add(0n, q)), r), UA.BYT(D)), hz)
-      +g0 = putxo_SignedBeaconBlockHeader(a0, dd, D, U32.add(X, 0), Nat.add(0n, q), r, ep0, hr, hd, hl0, pf, hz0)
+      +g0 = putxo_SignedBeaconBlockHeaderW(a0, dd, D, U32.add(X, 0), Nat.add(0n, q), r, ep0, hr, hd, hl0, VRX.froom32(q, r, dd, 0n, 208n, 416n, {==}, hl32), pf, hz0)
       +rt0 = PA(RTo_SignedBeaconBlockHeader(a0, dd, D, U32.add(X, 0), Nat.add(0n, q), r), BYo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), g0)
       +by0 = PB(RTo_SignedBeaconBlockHeader(a0, dd, D, U32.add(X, 0), Nat.add(0n, q), r), BYo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), g0)
       +pf1 = pfo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r, pf)
       +hX0 = VRX.xstart(Nat.add(0n, q), r, 208n, dd, D, pf, hl0)
       +eX0 = UW.pos_eq(52n, Nat.add(0n, q), r)
       +Z1 = VRX.znext(UA.BYT(D), Nat.add(A.quad(Nat.add(0n, q)), r), F.limbs(RWD_SignedBeaconBlockHeader(a0)), Nat.add(A.quad(Nat.add(52n, q)), r), 208n, 208n, UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), hX0, lenb_SignedBeaconBlockHeader(a0), eX0, by0, hz)
-      +ep1 = VRX.fpos(X, q, r, 52n, 208, 416n, dd, e, {==}, hd, {==}, hl)
+      +ep1 = VRX.fposW(X, q, r, 52n, 208, 416n, dd, e, {==}, hd, {==}, hl)
       +hl1 = VRX.froom(q, r, dd, 52n, 208n, 416n, {==}, hl)
       +hz1 = VRX.zhead(208n, 0n, VS.bdr(Nat.add(A.quad(Nat.add(52n, q)), r), UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r))), Z1)
-      +g1 = putxo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), U32.add(X, 208), Nat.add(52n, q), r, ep1, hr, hd, hl1, pf1, hz1)
+      +g1 = putxo_SignedBeaconBlockHeaderW(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), U32.add(X, 208), Nat.add(52n, q), r, ep1, hr, hd, hl1, VRX.froom32(q, r, dd, 52n, 208n, 416n, {==}, hl32), pf1, hz1)
       +rt1 = PA(RTo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), U32.add(X, 208), Nat.add(52n, q), r), BYo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r), g1)
       +by1 = PB(RTo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), U32.add(X, 208), Nat.add(52n, q), r), BYo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r), g1)
       +pf2 = pfo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r, pf1)
@@ -412,6 +419,13 @@ def putxE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: F
       +eXn0 = Equal.trans(Nat, Nat.add(A.quad(Nat.add(52n, q)), r), Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), 208n), Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0)))), eX0, Equal.cong(Nat, Nat, z => Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), z), 208n, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), Equal.sym(Nat, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), 208n, lenb_SignedBeaconBlockHeader(a0))))
       +S0 = Equal.trans(+List<U32>, UA.BYT(PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), UW.SPL(UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), Nat.add(A.quad(Nat.add(52n, q)), r), F.limbs(RWD_SignedBeaconBlockHeader(a1))), UW.SPL(UA.BYT(D), Nat.add(A.quad(Nat.add(0n, q)), r), VRX.AP(F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)))), S1, VRX.spl_catx(UA.BYT(D), Nat.add(A.quad(Nat.add(0n, q)), r), F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)), Nat.add(A.quad(Nat.add(52n, q)), r), UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), hX0, eXn0, by0))
       mkE(M_ProposerSlashing{a0, a1}, dd, D, X, q, r, Equal.trans(Array<U32> & FuluProposerSlashing_d.ProposerSlashing, FuluProposerSlashing_e.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(M_ProposerSlashing{a0, a1})), FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), (O.BSome{a0, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)))))), (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), th_ProposerSlashing(M_ProposerSlashing{a0, a1})), Equal.cong(Array<U32>, Array<U32> & FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (z, (O.BSome{a0, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)))))), FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_put(FD.array__thaw(U32, D), U32.add(X, 0), a0), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), rt0), Equal.cong(Array<U32>, Array<U32> & FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw1(X, (0 .|. O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)) : U32), O.BSome{a0, O.BNone{}}, (z, (O.BSome{a1, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a1)))))), FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_put(FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), U32.add(X, 208), a1), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), rt1)), S0)
+
+def putxE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(416n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(416n) : +List<U32>})
+    -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
+  putxEW(v, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 416n, dd, hd, hl), pf, hz)
 
 
 # The encoding of fixed parts of words, as aggregate_fixed takes it.
@@ -462,19 +476,26 @@ def BYEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat,
   {UA.BYT(PXEm(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), YEm(m)) : +List<U32>}
 def mkEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTEm(m, dd, D, X, q, r), +b: BYEm(m, dd, D, q, r)) -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
   (a, b)
-def putxEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxEmW(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 416n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(416n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(416n) : +List<U32>})
     -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
   match m:
     case MNone{}: Empty.absurd(DK.P2(RTEm(MNone{}, dd, D, X, q, r), BYEm(MNone{}, dd, D, q, r)), FD.logic__false_true(h))
     case MSome{+v}:
-      +g = putxE(v, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+      +g = putxEW(v, h, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
       +rt = PA(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
       +by = PB(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
       mkEm(MSome{v}, dd, D, X, q, r, Equal.cong(Array<U32> & FuluProposerSlashing_d.ProposerSlashing, Array<U32> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, z => FuluProposerSlashing_e.ProposerSlashing_bx_put_back(z), FuluProposerSlashing_e.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(v)),
         (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_ProposerSlashing(v)), rt), by)
+
+def putxEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 416n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(416n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(416n) : +List<U32>})
+    -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
+  putxEmW(m, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 416n, dd, hd, hl), pf, hz)
 def EVm(+m: MB<M_ProposerSlashing>) -> S.Value:
   match m:
     case MNone{}: S.NullValue{}
@@ -677,11 +698,11 @@ def mk2(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.ar
   (a, b)
 
 # The loop from element j (index i) on, k elements, into LT bytes at X whose last k elements' bytes are zero.
-def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +LT: Nat,
+def ptxW(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +ek: {Nat.add(j, k) == n : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(k, j), 104n)), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(k, 104n)), VS.bdr(VRX.YP(j, 104n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(k, 104n))) : +List<U32>},
     +pfA: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}, +hda: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool},
     +hok: {EOKS(k, SL(t), j) == True{} : Bool})
@@ -693,13 +714,13 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
       +hx = and_l(EOK(x), EOKS(p, SL(t), 1n+j), hok)
       +qj = Nat.add(Nat.mul(j, 104n), q)
       +Xj = U32.add(X, U32.mul(i, 416))
-      +ej = VRX.rpos(X, i, j, p, q, r, 104n, 416, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, p, q, r, 104n, 416, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, p, q, r, 104n, LT, dd, hj, hl)
       +bm = A.quad(Nat.mul(p, 104n))
       +B0 = UA.BYT(D)
       +Yj = VRX.YP(j, 104n, q, r)
       +hz0 = VRX.zhead(416n, bm, VS.bdr(Yj, B0), hz)
-      +g = putxEm(x, hx, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz0)
+      +g = putxEmW(x, hx, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, p, q, r, 104n, LT, dd, hj, hl32), pfD, hz0)
       +rt = PA(RTEm(x, dd, D, Xj, qj, r), BYEm(x, dd, D, qj, r), g)
       +by = PB(RTEm(x, dd, D, Xj, qj, r), BYEm(x, dd, D, qj, r), g)
       +D1 = PXEm(x, dd, D, qj, r)
@@ -715,7 +736,7 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
       +ei1 = inc(i, j, n, d, ei, hs, hn, hda)
       +ek1 = Equal.trans(Nat, Nat.add(1n+j, p), 1n+Nat.add(j, p), n, {==}, Equal.trans(Nat, 1n+Nat.add(j, p), Nat.add(j, 1n+p), n, Equal.sym(Nat, Nat.add(j, 1n+p), 1n+Nat.add(j, p), FD.nat__add_succ(j, p)), ek))
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(z, 104n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
-      +ih = ptx(p, U32.add(i, 1), 1n+j, n, X, q, r, dd, D1, d, t, LT, ei1, ek1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hn, and_r(EOK(x), EOKS(p, SL(t), 1n+j), hok))
+      +ih = ptxW(p, U32.add(i, 1), 1n+j, n, X, q, r, dd, D1, d, t, LT, ei1, ek1, e, hr, hd, pf1, hj2, hl, hl32, z1, pfA, hda, hn, and_r(EOK(x), EOKS(p, SL(t), 1n+j), hok))
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +t2 = FD.array__upd(MB<M_ProposerSlashing>, d, t, j, MNone{})
@@ -747,6 +768,17 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
         VRX.spl_catx(B0, Yj, Y, rest, VRX.YP(1n+j, 104n, q, r), UA.BYT(D1), hX, eXn, by))
       mk2(1n+p, i, j, X, q, r, dd, D, t, rtf, byf)
 
+def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +ek: {Nat.add(j, k) == n : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(k, j), 104n)), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(A.quad(Nat.mul(k, 104n)), VS.bdr(VRX.YP(j, 104n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(k, 104n))) : +List<U32>},
+    +pfA: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}, +hda: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool},
+    +hok: {EOKS(k, SL(t), j) == True{} : Bool})
+    -> DK.P2(RTK(k, i, j, X, q, r, dd, D, t), BYK(k, j, q, r, dd, D, t)):
+  ptxW(k, i, j, n, X, q, r, dd, D, d, t, LT, ei, ek, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz, pfA, hda, hn, hok)
+
 # ---- the list's encoder window ---------------------------------------------------------------------
 
 def LL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 104n))
@@ -768,10 +800,10 @@ def BYN(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat,
   {UA.BYT(PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_ProposerSlashing(t, N)) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool},
+def ptnzW(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool},
     +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_ProposerSlashing(t, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
     -> DK.P2(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r)):
   match b:
@@ -781,13 +813,21 @@ def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U3
         Equal.sym(+List<U32>, UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), []), UA.BYT(D), VRX.spl_nil(UA.BYT(D), Nat.add(A.quad(q), r)))))
     case False{}:
       +c = U32.to_nat(N)
-      +g = ptx(c, 0, 0n, c, X, q, r, dd, D, TDM(t), t, LL_l16_ProposerSlashing(t, N), {==}, {==}, e, hr, hd, pf,
-        FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(z, 104n)), LL_l16_ProposerSlashing(t, N)) == True{} : Bool}, c, Nat.add(c, 0n), Equal.sym(Nat, Nat.add(c, 0n), c, FD.nat__add_zero(c)), FD.nat__le_refl(LL_l16_ProposerSlashing(t, N))), hl, hz,
+      +g = ptxW(c, 0, 0n, c, X, q, r, dd, D, TDM(t), t, LL_l16_ProposerSlashing(t, N), {==}, {==}, e, hr, hd, pf,
+        FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(z, 104n)), LL_l16_ProposerSlashing(t, N)) == True{} : Bool}, c, Nat.add(c, 0n), Equal.sym(Nat, Nat.add(c, 0n), c, FD.nat__add_zero(c)), FD.nat__le_refl(LL_l16_ProposerSlashing(t, N))), hl, hl32, hz,
         okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))
       +rt = PA(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       +by = PB(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       (Equal.cong(Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>), Array<U32> & Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, z => Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_fin(N, z),
          Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
+
+def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool},
+    +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
+    -> DK.P2(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r)):
+  ptnzW(t, N, b, eb, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_ProposerSlashing(t, N), dd, hd, hl), pf, hz)
 
 def RTL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_putk(FD.array__thaw(U32, D), X, THL_l16_ProposerSlashing(t, N)) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32)}
@@ -812,18 +852,25 @@ def mk3(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.ar
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its elements write their data bytes only), and whose tree is perfect.
-def putx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putx_l16_ProposerSlashingW(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_ProposerSlashing(t, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
     -> DK.P2(RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r), DK.P2(BYL_l16_ProposerSlashing(t, N, dd, D, q, r), PFL_l16_ProposerSlashing(t, N, dd, D, q, r))):
   +b = U32.is_eq(N, 0)
-  +g = ptnz(t, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+  +g = ptnzW(t, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
   +rtb = PA(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r), g)
   +byb = PB(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r), g)
   mk3(t, N, dd, D, X, q, r, putk_rt(t, N, h, dd, D, X, q, r, rtb), byb, pfLb_l16_ProposerSlashing(b, t, N, dd, D, q, r, pf))
 
 # ---- sizes ----
+
+def putx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
+    -> DK.P2(RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r), DK.P2(BYL_l16_ProposerSlashing(t, N, dd, D, q, r), PFL_l16_ProposerSlashing(t, N, dd, D, q, r))):
+  putx_l16_ProposerSlashingW(t, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_ProposerSlashing(t, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
 def sizex_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_size(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32}:
@@ -835,12 +882,15 @@ def sizex_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 416)) == LL_l16_ProposerSlashing(t, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), 416, 104n, {==}, {==}, hd,
-    FD.nat__le_trans(LL_l16_ProposerSlashing(t, N), Nat.add(Nat.add(A.quad(q), r), LL_l16_ProposerSlashing(t, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l16_ProposerSlashing(t, N)), VRX.xend(q, r, LL_l16_ProposerSlashing(t, N), dd, hl)))
+def szx_l16_ProposerSlashingW(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_ProposerSlashing(t, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 416)) == LL_l16_ProposerSlashing(t, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 416, 104n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_ProposerSlashing(t, N), A.quad(Nat.mul(U32.to_nat(N), 104n)), {==}, VRX.yl32(q, r, LL_l16_ProposerSlashing(t, N), hl32)))
 
 # ---- the spec side: the list's value, its parts, one variable part of its bytes ---------------------
+
+def szx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 416)) == LL_l16_ProposerSlashing(t, N) : Nat}:
+  szx_l16_ProposerSlashingW(t, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_ProposerSlashing(t, N), dd, hd, hl))
 
 # The values of elements i .. i + c - 1 of W, and their fixed parts.
 def ITE(c: Nat, +W: List<&2, MB<M_ProposerSlashing>>, +i: Nat) -> S.Value:

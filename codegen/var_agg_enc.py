@@ -982,6 +982,8 @@ def main():
         out[OBJ / 'big_var_codec_SignedAggregateAndProof_enc.bend'] = t2
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out, post=deep.chain_posts(deep.rename_in_twins({'CT.enc_at': 'CT.enc_atW'}), deep.strict_eoff()))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

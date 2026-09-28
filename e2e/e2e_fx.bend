@@ -11,11 +11,11 @@ import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vfix.bend as VF
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/spec_bits.bend as FB
-import ../proofs/obj/elems48.bend as E48
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/elems48_light.bend as E48
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/words_root_light.bend as WR
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/vua_fixb.bend as VXB

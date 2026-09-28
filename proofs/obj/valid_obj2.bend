@@ -13,8 +13,9 @@ import ./schema_shapes.bend as SH
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
 import ./elems_obj.bend as EL
-import ./elems48.bend as E48
+import ./elems48_light.bend as E48
 import ./cells.bend as CE
+import ./cells_light.bend as CE_L
 import ./root_names_light.bend as RN
 import ./valid_names.bend as VN
 import ./valid_obj.bend as VO
@@ -154,18 +155,18 @@ law clen:
   for +k: Nat
   for +W: List<&2, U32>
   for +i: Nat
-  {VD.items_length(CE.citems(k, W, i)) == k : Nat}
+  {VD.items_length(CE_L.citems(k, W, i)) == k : Nat}
 def clen(k, W, i):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      %Equal.sym(Nat, VD.items_length(CE.citems(q, W, 1n+i)), q, clen(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
+      %Equal.sym(Nat, VD.items_length(CE_L.citems(q, W, 1n+i)), q, clen(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
       {==}
 
 def cone(+W: List<&2, U32>, +j: Nat,
     +cap: {Nat.is_le(O.e8(Nat.add(64n, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
-    -> {VD.root_valid(S.BytesValue{CE.cbytes(W, j)}, S.ByteVector{2048n}) == True{} : Bool}:
-  %Equal.sym(Bool, SP.byte_scope(Nat.add(WS.e32(63n), 32n), CE.cbytes(W, j)), True{}, WS.chunk_scope(63n, 32n, W, Nat.mul(j, 64n), {==}, cap)) :
+    -> {VD.root_valid(S.BytesValue{CE_L.cbytes(W, j)}, S.ByteVector{2048n}) == True{} : Bool}:
+  %Equal.sym(Bool, SP.byte_scope(Nat.add(WS.e32(63n), 32n), CE_L.cbytes(W, j)), True{}, WS.chunk_scope(63n, 32n, W, Nat.mul(j, 64n), {==}, cap)) :
     {_ == True{} : Bool}
   {==}
 
@@ -174,7 +175,7 @@ law cvalid:
   for +W: List<&2, U32>
   for +i: Nat
   for +cap: {Nat.is_le(Nat.mul(Nat.add(k, i), 512n), F.spec_common__length(U32, W)) == True{} : Bool}
-  {VD.root_valid(CE.citems(k, W, i), S.Repeat{S.ByteVector{2048n}}) == True{} : Bool}
+  {VD.root_valid(CE_L.citems(k, W, i), S.Repeat{S.ByteVector{2048n}}) == True{} : Bool}
 def cvalid(k, W, i, cap):
   match k:
     case 0n: {==}
@@ -185,23 +186,23 @@ def cvalid(k, W, i, cap):
       +capi = CE.rw_le(Nat.mul(1n+i, 512n), O.e8(Nat.add(64n, Nat.mul(i, 64n))), len, CE.mul_e8(1n+i), capm)
       +capq = CE.rw_le(Nat.mul(Nat.add(1n+q, i), 512n), Nat.mul(Nat.add(q, 1n+i), 512n), len,
         Equal.cong(Nat, Nat, x => Nat.mul(x, 512n), Nat.add(1n+q, i), Nat.add(q, 1n+i), Equal.sym(Nat, Nat.add(q, 1n+i), 1n+Nat.add(q, i), MR.add_succ(q, i))), cap)
-      %Equal.sym(Bool, VD.root_valid(S.BytesValue{CE.cbytes(W, i)}, S.ByteVector{2048n}), True{}, cone(W, i, capi)) :
-        {Bool.and(_, VD.root_valid(CE.citems(q, W, 1n+i), S.Repeat{S.ByteVector{2048n}})) == True{} : Bool}
+      %Equal.sym(Bool, VD.root_valid(S.BytesValue{CE_L.cbytes(W, i)}, S.ByteVector{2048n}), True{}, cone(W, i, capi)) :
+        {Bool.and(_, VD.root_valid(CE_L.citems(q, W, 1n+i), S.Repeat{S.ByteVector{2048n}})) == True{} : Bool}
       cvalid(q, W, 1n+i, capq)
 
 def kc_eq(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +ns: {Nat.is_eq(CE.kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_eq(CE.kc(N), L) == True{} : Bool}:
-  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(CE.kc(_), L) == True{} : Bool}
+    +ns: {Nat.is_eq(CE_L.kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_eq(CE_L.kc(N), L) == True{} : Bool}:
+  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_eq(CE_L.kc(_), L) == True{} : Bool}
   ns
 
 def kc_le(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +hv: {Nat.is_le(CE.kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_le(CE.kc(N), L) == True{} : Bool}:
-  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(CE.kc(_), L) == True{} : Bool}
+    +hv: {Nat.is_le(CE_L.kc(WO.len(o)), L) == True{} : Bool}) -> {Nat.is_le(CE_L.kc(N), L) == True{} : Bool}:
+  %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(CE_L.kc(_), L) == True{} : Bool}
   hv
 
 # A list of cells (cells rep_el / ok_el).
-def vcl(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: CE.rep_el(o, s), +ok: {CE.ok_el(s, depth) == True{} : Bool})
-    -> {VD.root_valid(CE.eview(o), s) == True{} : Bool}:
+def vcl(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: CE_L.rep_el(o, s), +ok: {CE_L.ok_el(s, depth) == True{} : Bool})
+    -> {VD.root_valid(CE_L.eview(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -217,20 +218,20 @@ def vcl(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: CE.rep_el(o, s), +ok: {CE.
   +r2 = DK.and_r(SH.is_ByteVector(E), Bool.and(Nat.is_eq(SH.ByteVector_length(E), 2048n), Lim.minimal(L, depth)), r1)
   +k2 = DK.and_l(Nat.is_eq(SH.ByteVector_length(E), 2048n), Lim.minimal(L, depth), r2)
   +hvN = kc_le(o, t, N, L, eo, hv)
-  +cap = CE.ccap(CE.kc(N), dw, t, pf, room)
+  +cap = CE.ccap(CE_L.kc(N), dw, t, pf, room)
   %Equal.sym(S.Schema, s, S.ListOf{E, L}, SH.ListOf_shape(s, k0)) :
-    {VD.root_valid(CE.eview(o), _) == True{} : Bool}
+    {VD.root_valid(CE_L.eview(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, E, S.ByteVector{SH.ByteVector_length(E)}, SH.ByteVector_shape(E, k1)) :
-    {VD.root_valid(CE.eview(o), S.ListOf{_, L}) == True{} : Bool}
+    {VD.root_valid(CE_L.eview(o), S.ListOf{_, L}) == True{} : Bool}
   %Equal.sym(Nat, SH.ByteVector_length(E), 2048n, WS.nat_eq(SH.ByteVector_length(E), 2048n, k2)) :
-    {VD.root_valid(CE.eview(o), S.ListOf{S.ByteVector{_}, L}) == True{} : Bool}
+    {VD.root_valid(CE_L.eview(o), S.ListOf{S.ByteVector{_}, L}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(CE.eview(_), S.ListOf{S.ByteVector{2048n}, L}) == True{} : Bool}
+    {VD.root_valid(CE_L.eview(_), S.ListOf{S.ByteVector{2048n}, L}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{CE.citems(CE.kc(N), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{2048n}, L}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(CE.citems(CE.kc(N), F.array__slots(U32, t), 0n), S.Repeat{S.ByteVector{2048n}}), True{}, cvalid(CE.kc(N), F.array__slots(U32, t), 0n, cap)) :
-    {Bool.and(Nat.is_le(VD.items_length(CE.citems(CE.kc(N), F.array__slots(U32, t), 0n)), L), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(CE.citems(CE.kc(N), F.array__slots(U32, t), 0n)), CE.kc(N), clen(CE.kc(N), F.array__slots(U32, t), 0n)) :
+    {VD.root_valid(S.Sequence{CE_L.citems(CE_L.kc(N), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{2048n}, L}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(CE_L.citems(CE_L.kc(N), F.array__slots(U32, t), 0n), S.Repeat{S.ByteVector{2048n}}), True{}, cvalid(CE_L.kc(N), F.array__slots(U32, t), 0n, cap)) :
+    {Bool.and(Nat.is_le(VD.items_length(CE_L.citems(CE_L.kc(N), F.array__slots(U32, t), 0n)), L), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(CE_L.citems(CE_L.kc(N), F.array__slots(U32, t), 0n)), CE_L.kc(N), clen(CE_L.kc(N), F.array__slots(U32, t), 0n)) :
     {Bool.and(Nat.is_le(_, L), True{}) == True{} : Bool}
-  %Equal.sym(Bool, Nat.is_le(CE.kc(N), L), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
+  %Equal.sym(Bool, Nat.is_le(CE_L.kc(N), L), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}

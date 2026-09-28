@@ -12,6 +12,7 @@ import ../spec/fulu_schemas.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/gvalid_types.bend as GV
 import ./e2e_support.bend as E
 
@@ -19,17 +20,17 @@ import ./e2e_support.bend as E
 # FuluPendingAttestation (variable size, a bit list and fixed fields): the object API's root is END_TO_END's hash_tree_root, for
 # every object the root law represents (rep_PendingAttestation: its fixed fields, its bit list's rep_bits).
 
-def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +K: U32, +x1: FuluAttestationData_d.AttestationData, +x2: O.U64, +x3: O.U64, +rep: RT.rep_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, Spec.PendingAttestation())) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}))))} == API.hash_tree_root(Spec.PendingAttestation(), RT.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.PendingAttestation(), RT.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}), VS.public_sound(Spec.PendingAttestation(), {==}), D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3})))),
+def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +K: U32, +x1: FuluAttestationData_d.AttestationData, +x2: O.U64, +x3: O.U64, +rep: RT_L.rep_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, Spec.PendingAttestation())) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}))))} == API.hash_tree_root(Spec.PendingAttestation(), RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.PendingAttestation(), RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}), VS.public_sound(Spec.PendingAttestation(), {==}), D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3})))),
     GV.PendingAttestation_root_valid(FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, Spec.PendingAttestation(), {==}, rep), RT.PendingAttestation_root_correct(h, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, Spec.PendingAttestation(), {==}, rep))
 
-def rt2(h: B.Buf, -o: FuluPendingAttestation_d.PendingAttestation, +rep: RT.rep_PendingAttestation(o, Spec.PendingAttestation()), +t: FD.array__Tree<U32>, +K: U32, +x1: FuluAttestationData_d.AttestationData, +x2: O.U64, +x3: O.U64,
-    +eo: {o == FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3} : FuluPendingAttestation_d.PendingAttestation}) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.PendingAttestation(), RT.v_PendingAttestation(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo) : {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.PendingAttestation(), RT.v_PendingAttestation(_)) : Maybe<&2, +List<U32>>}
-  rt1(h, t, K, x1, x2, x3, FD.logic__subst(FuluPendingAttestation_d.PendingAttestation, z => RT.rep_PendingAttestation(z, Spec.PendingAttestation()), o, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo, rep))
+def rt2(h: B.Buf, -o: FuluPendingAttestation_d.PendingAttestation, +rep: RT_L.rep_PendingAttestation(o, Spec.PendingAttestation()), +t: FD.array__Tree<U32>, +K: U32, +x1: FuluAttestationData_d.AttestationData, +x2: O.U64, +x3: O.U64,
+    +eo: {o == FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3} : FuluPendingAttestation_d.PendingAttestation}) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.PendingAttestation(), RT_L.v_PendingAttestation(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo) : {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.PendingAttestation(), RT_L.v_PendingAttestation(_)) : Maybe<&2, +List<U32>>}
+  rt1(h, t, K, x1, x2, x3, FD.logic__subst(FuluPendingAttestation_d.PendingAttestation, z => RT_L.rep_PendingAttestation(z, Spec.PendingAttestation()), o, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo, rep))
 
 # (iv)
-def FuluPendingAttestation_e2e_root(h: B.Buf, -o: FuluPendingAttestation_d.PendingAttestation, +rep: RT.rep_PendingAttestation(o, Spec.PendingAttestation())) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.PendingAttestation(), RT.v_PendingAttestation(o)) : Maybe<&2, +List<U32>>}:
+def FuluPendingAttestation_e2e_root(h: B.Buf, -o: FuluPendingAttestation_d.PendingAttestation, +rep: RT_L.rep_PendingAttestation(o, Spec.PendingAttestation())) -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.PendingAttestation(), RT_L.v_PendingAttestation(o)) : Maybe<&2, +List<U32>>}:
   (+x1, q1) = rep
   (+x2, q2) = q1
   (+x3, q3) = q2
@@ -41,8 +42,8 @@ def FuluPendingAttestation_e2e_root(h: B.Buf, -o: FuluPendingAttestation_d.Pendi
       (+dw, w2) = w1
       (+K, w3) = w2
       (+ew, w4) = w3
-      rt2(h, o, rep, t, K, x1, x2, x3, Equal.trans(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo,
-        Equal.cong(O.Bits, FuluPendingAttestation_d.PendingAttestation, z => FuluPendingAttestation_d.PendingAttestation{z, x1, x2, x3}, RT.pj_PendingAttestation_0(o), O.Bits{FD.array__thaw(U32, t), K}, ew)))
+      rt2(h, o, rep, t, K, x1, x2, x3, Equal.trans(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{RT_L.pj_PendingAttestation_0(o), x1, x2, x3}, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo,
+        Equal.cong(O.Bits, FuluPendingAttestation_d.PendingAttestation, z => FuluPendingAttestation_d.PendingAttestation{z, x1, x2, x3}, RT_L.pj_PendingAttestation_0(o), O.Bits{FD.array__thaw(U32, t), K}, ew)))
     case Inr{w}:
       (+t, w1) = w
       (+dw, w2) = w1
@@ -50,5 +51,5 @@ def FuluPendingAttestation_e2e_root(h: B.Buf, -o: FuluPendingAttestation_d.Pendi
       (+q, w4) = w3
       (+r, w5) = w4
       (+ew, w6) = w5
-      rt2(h, o, rep, t, K, x1, x2, x3, Equal.trans(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo,
-        Equal.cong(O.Bits, FuluPendingAttestation_d.PendingAttestation, z => FuluPendingAttestation_d.PendingAttestation{z, x1, x2, x3}, RT.pj_PendingAttestation_0(o), O.Bits{FD.array__thaw(U32, t), K}, ew)))
+      rt2(h, o, rep, t, K, x1, x2, x3, Equal.trans(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{RT_L.pj_PendingAttestation_0(o), x1, x2, x3}, FuluPendingAttestation_d.PendingAttestation{O.Bits{FD.array__thaw(U32, t), K}, x1, x2, x3}, eo,
+        Equal.cong(O.Bits, FuluPendingAttestation_d.PendingAttestation, z => FuluPendingAttestation_d.PendingAttestation{z, x1, x2, x3}, RT_L.pj_PendingAttestation_0(o), O.Bits{FD.array__thaw(U32, t), K}, ew)))

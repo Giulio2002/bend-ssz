@@ -10,7 +10,7 @@ import ../spec/fulu_schemas.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/words_obj_light.bend as WO
-import ../proofs/obj/list_obj.bend as LO
+import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/big_root_Transaction.bend as BR
 import ../proofs/obj/big_gvalid_Transaction.bend as GV
 import ./e2e_support.bend as E

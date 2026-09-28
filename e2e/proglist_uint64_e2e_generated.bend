@@ -18,8 +18,8 @@ import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/prog_list.bend as PG
-import ../proofs/obj/ulist_obj.bend as UL
+import ../proofs/obj/prog_list_light.bend as PG
+import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/big_var_plist_GtE83F21B20A_enc.bend as EN
 import ./e2e_support.bend as E

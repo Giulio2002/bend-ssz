@@ -5,7 +5,7 @@ import ../types/primitive.bend as P
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vdepth.bend as VD
-import ../proofs/obj/ulist_obj.bend as UL
+import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/dk.bend as DK
 import ../spec/primitives.bend as SP

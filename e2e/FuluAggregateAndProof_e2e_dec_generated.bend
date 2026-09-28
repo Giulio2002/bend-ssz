@@ -19,7 +19,7 @@ import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ./e2e_aapw.bend as AW
 import ./e2e_bitv.bend as BTV
 import ../proofs/obj/big_var_win_AggregateAndProof_top.bend as DC

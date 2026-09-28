@@ -18,12 +18,12 @@ import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/arr_copy.bend as AC
 import ../proofs/obj/arr_spec.bend as AS
 import ../proofs/obj/arr_vec.bend as AV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/spec_arr_SyncCommittee.bend as M
 import ../proofs/obj/fixrej_SyncCommittee.bend as RJ
 import ../proofs/obj/vrejf.bend as VRF
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/word_facts.bend as WF
 import ./e2e_bytes.bend as EY
 import ./e2e_load.bend as L

@@ -9,8 +9,8 @@ import ../types/schema.bend as S
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/bitlist_obj.bend as BO
-import ../proofs/obj/pbits_obj.bend as PBO
+import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../proofs/obj/root_gtypes2.bend as RG
 import ../proofs/obj/gvalid_gpacked.bend as GV
 import ./e2e_support.bend as E
