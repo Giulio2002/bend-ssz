@@ -566,7 +566,7 @@ CHANGED = {
 }
 
 
-def dify_out(out, strict=True, handled=()):
+def dify_out(out, strict=True, handled=(), post=None):
     """dify every generated module of out ({path: text}, in dependency order): each call into an imported module's
     twinned name (from out itself or from proofs/obj on disk) goes to its W version. Returns the new out; with strict,
     leftover dd < 29 steps (the spots that need a strict bound by hand) and calls of a CHANGED twin raise, except the
@@ -618,9 +618,245 @@ def dify_out(out, strict=True, handled=()):
                     ln = t2[t2.rfind('\n', 0, m.start()) + 1:t2.find('\n', m.start())]
                     if not ln.startswith('def '):
                         bad.append((n, 'changed premise (' + why + '): ' + ln.strip()[:120]))
+        if post:
+            # the generator's own strict-bound pass: it may change the twins (and report its own leftovers)
+            t2, pbad = post(q, t2, res)
+            tw = ''.join(t2[a:b] for _, _, a, b in _twin_blocks(t2))
+            bad = [b for b in bad if b[1].startswith('changed premise') or (re.search(r'(?<![\w.])' + re.escape(b[0]) + r'\(', tw) if b[1].startswith('a dd < 31') else b[1] in tw)] + list(pbad)
+            if any(b[1].startswith('changed premise') for b in bad):
+                bad = [b for b in bad if not b[1].startswith('changed premise') or b[1].split(': ', 1)[1] in tw]
         reg[q.stem] = mine
         res[q] = t2
         allbad += [(q.name,) + b for b in bad]
     if strict and allbad:
         raise SystemExit('deep.dify_out: steps left at dd < 29: ' + repr(allbad[:6]))
     return res
+
+
+def _twin_blocks(text):
+    """[(name, kind, start, end)] of the W twins (name ends in W and its dd < 29 original is defined too)."""
+    bl = _blocks(text)
+    names = {n for n, _, _, _ in bl}
+    return [b for b in bl if b[0].endswith('W') and b[0][:-1] in names and b[1] != 'lawonly']
+
+
+def _params(blk, kind, name):
+    """(start index of the def's parameter list in blk, [params]) of a def or a law's def."""
+    i = blk.index(f'def {name}(') + len(f'def {name}(')
+    args, _ = _args(blk, i)
+    return i, args
+
+
+def premise_sigs(text, new):
+    """{twin name: index of its parameter new} (the twins that take premise new)."""
+    out = {}
+    for name, kind, a, b in _twin_blocks(text):
+        _, ps = _params(text[a:b], kind, name)
+        for k, p in enumerate(ps):
+            if p.lstrip('+').split(':')[0].strip() == new:
+                out[name] = k
+    return out
+
+
+def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=()):
+    """The W twins of text that take premise anchor also take new (right after it, of type decl(anchor's type)), and
+    every call in a twin to a twin taking new (local, or imported: {'X.': {name: index of new}}) passes new right
+    after the argument at anchor's place. Returns (text, bad): bad lists the calls whose anchor argument is not
+    the caller's own anchor (a derived region: its new bound must be supplied by hand)."""
+    # 1. the headers
+    tb = _twin_blocks(text)
+    out, pos = [], 0
+    for name, kind, a, b in tb:
+        blk = text[a:b]
+        if kind == 'def':
+            i, ps = _params(blk, kind, name)
+            hit = [p for p in ps if p.lstrip('+').split(':')[0].strip() == anchor and ':' in p]
+            if hit:
+                p = hit[0]
+                ty = p.split(':', 1)[1].strip()
+                j = blk.index(p, i)
+                blk = blk[:j + len(p)] + f', +{new}: {decl(ty)}' + blk[j + len(p):]
+        else:
+            m = re.search(r'^  for \+' + re.escape(anchor) + r': (.*)$', blk, re.M)
+            if m:
+                blk = blk[:m.end()] + f'\n  for +{new}: {decl(m.group(1))}' + blk[m.end():]
+                i, ps = _params(blk, kind, name)
+                k = [q.strip() for q in ps].index(anchor)
+                j = blk.index(ps[k], i)
+                blk = blk[:j + len(ps[k])] + f', {new}' + blk[j + len(ps[k]):]
+        out.append(text[pos:a] + blk)
+        pos = b
+    out.append(text[pos:])
+    text = ''.join(out)
+    # 2. the calls
+    sigs = {n: k for n, k in premise_sigs(text, new).items()}
+    anc = {n: k for n, k in premise_sigs(text, anchor).items()}
+    callee = {n: anc[n] for n in sigs}
+    for p, d in imported.items():
+        for n, k in d.items():
+            callee[p + n] = k
+    bad = []
+    if not callee:
+        return text, bad
+    cre = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(callee, key=len, reverse=True)) + r')\(')
+    out, pos = [], 0
+    for name, kind, a, b in _twin_blocks(text):
+        blk = text[a:b]
+        hdr_end = len(_hdr(blk)) if kind == 'def' else blk.index(f'def {name}(')
+        has = name in sigs
+        edits = []
+        for m in cre.finditer(blk):
+            if m.start() < hdr_end:
+                continue
+            args, _ = _args(blk, m.end())
+            k = callee[m.group(1)]
+            if not has:
+                bad.append((name, f'calls {m.group(1)} (takes {new}) without {new} in scope'))
+                continue
+            if args[k] != anchor:
+                bad.append((name, f'{m.group(1)}: the {anchor} argument is derived ({args[k][:60]}): supply its {new} by hand'))
+                continue
+            # the end of argument k
+            j, d, cnt = m.end(), 0, 0
+            while True:
+                c = blk[j]
+                if c in '([{':
+                    d += 1
+                elif c in ')]}':
+                    if d == 0:
+                        break
+                    d -= 1
+                elif c == ',' and d == 0:
+                    if cnt == k:
+                        break
+                    cnt += 1
+                j += 1
+            edits.append(j)
+        for j in sorted(edits, reverse=True):
+            blk = blk[:j] + f', {new}' + blk[j:]
+        out.append(text[pos:a] + blk)
+        pos = b
+    out.append(text[pos:])
+    text = ''.join(out)
+    # 3. the old names' wrappers: their call of the twin gets wrap (the premise derived at dd < 29)
+    if wrap and sigs:
+        wre = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(sigs, key=len, reverse=True)) + r')\(')
+        out, pos = [], 0
+        for name, kind, a, b in _blocks(text):
+            if name + 'W' not in sigs or kind == 'lawonly':
+                continue
+            blk = text[a:b]
+            _, ps = _params(blk, kind, name)
+            pn = {p.lstrip('+').split(':')[0].strip() for p in ps}
+            body = blk.index(f'def {name}(')
+            start = len(_hdr(blk[body:])) + body if kind == 'def' else blk.index('):\n', body) + 3
+            m = wre.search(blk, start)
+            if not m or m.group(1) != name + 'W':
+                continue
+            if not set(wrap_needs) <= pn:
+                bad.append((name, f'the wrapper lacks {sorted(set(wrap_needs) - pn)} for {new}'))
+                continue
+            args, _ = _args(blk, m.end())
+            k = anc[name + 'W']
+            j, d, cnt = m.end(), 0, 0
+            while True:
+                c = blk[j]
+                if c in '([{':
+                    d += 1
+                elif c in ')]}':
+                    if d == 0:
+                        break
+                    d -= 1
+                elif c == ',' and d == 0:
+                    if cnt == k:
+                        break
+                    cnt += 1
+                j += 1
+            w = wrap(ps[[q.lstrip('+').split(':')[0].strip() for q in ps].index(anchor)].split(':', 1)[1].strip()) if callable(wrap) else wrap
+            blk = blk[:j] + f', {w}' + blk[j:]
+            out.append(text[pos:a] + blk)
+            pos = b
+        out.append(text[pos:])
+        text = ''.join(out)
+    return text, bad
+
+
+def region_x(ty):
+    """X of a premise type {Nat.is_le(X, VB.pw(dd)) == True{} : Bool} (a region's end in the output tree)."""
+    m = re.fullmatch(r'\{Nat\.is_le\((.*), VB\.pw\(dd\)\) == True\{\} : Bool\}', ty.strip())
+    return m.group(1) if m else None
+
+
+def region32(fd):
+    """The decl of hr32 from its anchor's type: 4 X < 2^32 (the region ends inside U32 positions)."""
+    return lambda ty: '{Nat.is_lt(A.quad(' + region_x(ty) + '), ' + fd + '.spec_common__pow2(32n)) == True{} : Bool}'
+
+
+def strict_eoff(anchor='hR', off='eoff', hq='hq'):
+    """A dify_out post pass for the container encoders' header offsets: every twin taking the region premise anchor
+    (X <= 2^dd) also takes hr32: 4 X < 2^32, and offW's sum pos + c is taken strictly below 2^32 (VF.off_add_lt,
+    VF.q32r with hqX: hq's k + P <= X). The old names' wrappers derive hr32 at dd < 29 (VF.r32w)."""
+    def post(q, t, res):
+        fdm = re.search(r'^import \.\./compact/found\.bend as (\w+)', t, re.M)
+        fd = fdm.group(1) if fdm else 'FD'
+        bad = []
+        imp = {}
+        for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
+            src = res.get(q.parent / f'{mi.group(1)}.bend')
+            if src is None and (q.parent / f'{mi.group(1)}.bend').exists():
+                src = (q.parent / f'{mi.group(1)}.bend').read_text()
+            if src:
+                h = premise_sigs(src, anchor)
+                d = {n: h[n] for n in premise_sigs(src, 'hr32') if n in h}
+                if d:
+                    imp[mi.group(2) + '.'] = d
+        t, b1 = add_premise(t, anchor, 'hr32', region32(fd), imp,
+                            wrap=lambda ty: f'VF.r32w({region_x(ty)}, dd, hdd, {anchor})', wrap_needs=('dd', 'hdd', anchor))
+        bad += b1
+        W = off + 'W'
+        if f'def {W}(' in t:
+            a = t.index(f'def {W}(')
+            b = t.index('\ndef ', a + 1) + 1
+            blk = t[a:b]
+            _, ps = _params(blk, 'def', W)
+            X = region_x([p for p in ps if p.lstrip('+').startswith(anchor + ':')][0].split(':', 1)[1])
+            m = re.search(r'VF\.off_add\(pos, c, P, k, 2n\+dd, (\w+), ec, hdd, VF\.in_q\(k, P, dd, ' + hq + r'\((k, dd, P, \w+, hk), ' + anchor + r'\)\)\)', blk)
+            if not m:
+                bad.append((W, 'unrecognized body'))
+            else:
+                blk = blk[:m.start()] + (f'VF.off_add_lt(pos, c, P, k, {m.group(1)}, ec, VF.q32r(Nat.add(k, P), {X}, '
+                                         f'{hq}X({m.group(2)}, {fd}.nat__le_refl({X})), hr32))') + blk[m.end():]
+                t = t[:a] + blk + t[b:]
+                # hqX: hq with the tree's 2^dd replaced by X itself (its anchor premise becomes X <= X)
+                ha = t.index(f'def {hq}(')
+                hb = t.index('\ndef ', ha + 1) + 1
+                hx = t[ha:hb].replace(f'def {hq}(', f'def {hq}X(', 1).replace('VB.pw(dd)', X)
+                t = t[:hb] + hx + '\n' + t[hb:] if not t[hb - 2:hb] == '\n\n' else t[:hb] + hx + t[hb:]
+        return t, bad
+    return post
+
+
+def chain_posts(*ps):
+    """dify_out post passes applied in turn."""
+    def post(q, t, res):
+        bad = []
+        for p in ps:
+            t, b = p(q, t, res)
+            bad += b
+        return t, bad
+    return post
+
+
+def rename_in_twins(pairs):
+    """A post pass: in the W twins, each call old( becomes new( (a library twin whose depth variable is not dd)."""
+    def post(q, t, res):
+        out, pos = [], 0
+        for _, _, a, b in _twin_blocks(t):
+            blk = t[a:b]
+            for o, n in pairs.items():
+                blk = re.sub(r'(?<![\w.])' + re.escape(o) + r'\(', n + '(', blk)
+            out.append(t[pos:a] + blk)
+            pos = b
+        out.append(t[pos:])
+        return ''.join(out), []
+    return post

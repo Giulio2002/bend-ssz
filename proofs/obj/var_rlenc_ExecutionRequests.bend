@@ -112,8 +112,8 @@ def rlen_DepositRequest(+r: FuluDepositRequest_d.DepositRequest) -> {VF.slen(RWD
                         case O.U64{+x46, +x47}:
                           {==}
 
-def putR_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putR_DepositRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluDepositRequest_d.DepositRequest)
     -> {FuluDepositRequest_e.DepositRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_DepositRequest(r), dd, D, P)) : Array<U32>}:
   match r:
@@ -128,7 +128,13 @@ def putR_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +
                     case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       match r_4:
                         case O.U64{+x46, +x47}:
-                          VT2.put_DepositRequest(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47)
+                          VT2.put_DepositRequestW(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47)
+
+def putR_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluDepositRequest_d.DepositRequest)
+    -> {FuluDepositRequest_e.DepositRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_DepositRequest(r), dd, D, P)) : Array<U32>}:
+  putR_DepositRequestW(dd, D, pos, P, e, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, r)
 
 
 # ---- l8192_DepositRequest: the write loop and the list writer ----
@@ -141,15 +147,15 @@ def WT_l8192_DepositRequest(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +
     case 0n: VF.updv(RWD_DepositRequest(EL_l8192_DepositRequest(A, j)), dd, D, VRL.pos(j, 48n, Q))
     case 1n+q: WT_l8192_DepositRequest(q, 1n+j, dd, VF.updv(RWD_DepositRequest(EL_l8192_DepositRequest(A, j)), dd, D, VRL.pos(j, 48n, Q)), Q, A)
 
-def ptl_l8192_DepositRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
-    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptl_l8192_DepositRequestW(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 48n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), EL_l8192_DepositRequest(A, j))) == (FD.array__thaw(U32, WT_l8192_DepositRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) : Array<U32> & Array<FuluDepositRequest_d.DepositRequest>}:
   match k:
     case 0n:
       %Equal.sym(Array<U32>, FuluDepositRequest_e.DepositRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 192)), EL_l8192_DepositRequest(A, j)), FD.array__thaw(U32, VF.updv(RWD_DepositRequest(EL_l8192_DepositRequest(A, j)), dd, D, VRL.pos(j, 48n, Q))),
-          putR_DepositRequest(dd, D, U32.add(pos, U32.mul(i, 192)), VRL.pos(j, 48n, Q), VRL.posW(dd, pos, Q, i, j, 192, 48n, {==}, ep, ei, hdd, VRL.fit0(j, 48n, Q, VB.pw(dd), hb)), hdd, pfD,
+          putR_DepositRequestW(dd, D, U32.add(pos, U32.mul(i, 192)), VRL.pos(j, 48n, Q), VRL.posWW(dd, pos, Q, i, j, 192, 48n, {==}, ep, ei, hdd, {==}, VRL.fit0(j, 48n, Q, VB.pw(dd), hb)), hdd, pfD,
             VRL.fit0(j, 48n, Q, VB.pw(dd), hb), EL_l8192_DepositRequest(A, j))) :
         {(_, FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) == (FD.array__thaw(U32, WT_l8192_DepositRequest(0n, j, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) : Array<U32> & Array<FuluDepositRequest_d.DepositRequest>}
       {==}
@@ -164,12 +170,19 @@ def ptl_l8192_DepositRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: 
       +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluDepositRequest_d.DepositRequest, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), z) == Some{EL_l8192_DepositRequest(A, 1n+j)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
         VRL.nth_get(FuluDepositRequest_d.DepositRequest, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 1n+j, FuluDepositRequest_d.DepositRequest_default(), FD.array__len_lt(FuluDepositRequest_d.DepositRequest, da, A, 1n+j, pfA, h1)))
       %Equal.sym(Array<U32>, FuluDepositRequest_e.DepositRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 192)), EL_l8192_DepositRequest(A, j)), FD.array__thaw(U32, D1),
-          putR_DepositRequest(dd, D, U32.add(pos, U32.mul(i, 192)), VRL.pos(j, 48n, Q), VRL.posW(dd, pos, Q, i, j, 192, 48n, {==}, ep, ei, hdd, hbj), hdd, pfD, hbj, EL_l8192_DepositRequest(A, j))) :
+          putR_DepositRequestW(dd, D, U32.add(pos, U32.mul(i, 192)), VRL.pos(j, 48n, Q), VRL.posWW(dd, pos, Q, i, j, 192, 48n, {==}, ep, ei, hdd, {==}, hbj), hdd, pfD, hbj, EL_l8192_DepositRequest(A, j))) :
         {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(q, U32.add(i, 1), pos, _, Array.get(FuluDepositRequest_d.DepositRequest, FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), U32.add(i, 1))) == (FD.array__thaw(U32, WT_l8192_DepositRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) : Array<U32> & Array<FuluDepositRequest_d.DepositRequest>}
       %Equal.sym(Array<FuluDepositRequest_d.DepositRequest> & FuluDepositRequest_d.DepositRequest, Array.get(FuluDepositRequest_d.DepositRequest, FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), U32.add(i, 1)), (FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), EL_l8192_DepositRequest(A, 1n+j)),
           FD.array__get(FuluDepositRequest_d.DepositRequest, da, A, U32.add(i, 1), EL_l8192_DepositRequest(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)) :
         {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(q, U32.add(i, 1), pos, FD.array__thaw(U32, D1), _) == (FD.array__thaw(U32, WT_l8192_DepositRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) : Array<U32> & Array<FuluDepositRequest_d.DepositRequest>}
-      ptl_l8192_DepositRequest(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_DepositRequest(EL_l8192_DepositRequest(A, j)), dd, D, VRL.pos(j, 48n, Q), pfD), hb2, pfA, hda, hk2)
+      ptl_l8192_DepositRequestW(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_DepositRequest(EL_l8192_DepositRequest(A, j)), dd, D, VRL.pos(j, 48n, Q), pfD), hb2, pfA, hda, hk2)
+
+def ptl_l8192_DepositRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 48n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), EL_l8192_DepositRequest(A, j))) == (FD.array__thaw(U32, WT_l8192_DepositRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) : Array<U32> & Array<FuluDepositRequest_d.DepositRequest>}:
+  ptl_l8192_DepositRequestW(k, i, j, pos, Q, dd, D, da, A, ei, ep, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hb, pfA, hda, hk)
 
 law pfWT_l8192_DepositRequest:
   for +k: Nat
@@ -197,8 +210,8 @@ def pfLW_l8192_DepositRequest(+e: Bool, +n: U32, +dd: Nat, +D: FD.array__Tree<U3
     case True{}: pf
     case False{}: pfWT_l8192_DepositRequest(U32.to_nat(U32.sub(n, 1)), 0n, dd, D, Q, A, pf)
 
-def ptnz_l8192_DepositRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 48n, Q), VB.pw(dd)) == True{} : Bool},
+def ptnz_l8192_DepositRequestW(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 48n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
     -> {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) == (FD.array__thaw(U32, LW_l8192_DepositRequest(e, n, dd, D, Q, A)), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}) : Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}:
@@ -218,14 +231,21 @@ def ptnz_l8192_DepositRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat},
           FD.array__get(FuluDepositRequest_d.DepositRequest, da, A, 0, EL_l8192_DepositRequest(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluDepositRequest_d.DepositRequest, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 0n, FuluDepositRequest_d.DepositRequest_default(), FD.array__len_lt(FuluDepositRequest_d.DepositRequest, da, A, 0n, pfA, h0)), pfA)) :
         {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt_fin(n, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(k, 0, S, FD.array__thaw(U32, D), _)) == (FD.array__thaw(U32, LW_l8192_DepositRequest(False{}, n, dd, D, Q, A)), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}) : Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}
       %Equal.sym(Array<U32> & Array<FuluDepositRequest_d.DepositRequest>, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt(k, 0, S, FD.array__thaw(U32, D), (FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), EL_l8192_DepositRequest(A, 0n))), (FD.array__thaw(U32, WT_l8192_DepositRequest(k, 0n, dd, D, Q, A)), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)),
-          ptl_l8192_DepositRequest(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
+          ptl_l8192_DepositRequestW(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
         {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt_fin(n, _) == (FD.array__thaw(U32, LW_l8192_DepositRequest(False{}, n, dd, D, Q, A)), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}) : Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}
       {==}
 
+def ptnz_l8192_DepositRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 48n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
+    -> {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)) == (FD.array__thaw(U32, LW_l8192_DepositRequest(e, n, dd, D, Q, A)), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}) : Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}:
+  ptnz_l8192_DepositRequestW(n, c, ec, S, Q, eS, dd, D, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hbd, pfA, hda, hca, e, ee)
+
 # The list writer at header word h (byte 4 h) and word position Q (byte S = 4 Q).
-def pvl_l8192_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+def pvl_l8192_DepositRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
     +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
     +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 48n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +hlim: {Nat.is_le(c, U32.to_nat(8192)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
@@ -238,7 +258,7 @@ def pvl_l8192_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U3
     Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, VB.lt32(da, hda))), hca))
   %Equal.sym(Array<U32>, O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S), Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), w32) : {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pvb(S, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putk(_, U32.add(0, S), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n})) == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}
   %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), FD.array__thaw(U32, FD.array__upd(U32, dd, D, h, S)),
-      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==})), hh, pfD)) :
+      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, hdd), hh, pfD)) :
     {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pvb(S, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putk(_, U32.add(0, S), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n})) == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}
   %Equal.sym(U32, U32.add(0, S), S, pa) : {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pvb(S, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putk(FD.array__thaw(U32, D1), _, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n})) == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}
   %Equal.sym(Array<FuluDepositRequest_d.DepositRequest> & U32, Array.size(FuluDepositRequest_d.DepositRequest, FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)), (FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), FD.u32__pow2u(da)), FD.array__size_thaw(FuluDepositRequest_d.DepositRequest, da, A, pfA)) :
@@ -248,9 +268,20 @@ def pvl_l8192_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U3
   %Equal.sym(Bool, U32.is_le(n, FD.u32__pow2u(da)), True{}, hc) :
     {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pvb(S, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pk(FD.array__thaw(U32, D1), S, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, Bool.and(True{}, _)))) == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pt_nz(U32.is_eq(n, 0), S, n, FD.array__thaw(U32, D1), FD.array__thaw(FuluDepositRequest_d.DepositRequest, A)), (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}),
-      ptnz_l8192_DepositRequest(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
+      ptnz_l8192_DepositRequestW(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
     {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_pvb(S, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_ptn_fin(n, _)) == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}
   {==}
+
+def pvl_l8192_DepositRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+    +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 48n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluDepositRequest_d.DepositRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +hlim: {Nat.is_le(c, U32.to_nat(8192)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
+    +pa: {U32.add(0, S) == S : U32})
+    -> {Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putv(FD.array__thaw(U32, D), 0, hB, S, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n})
+        == (FD.array__thaw(U32, LW_l8192_DepositRequest(U32.is_eq(n, 0), n, dd, VF.updv([S], dd, D, h), Q, A)), (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, A), n}, O.padd(S, U32.mul(n, 192)))) : Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32)}:
+  pvl_l8192_DepositRequestW(dd, D, h, hB, S, Q, eS, n, c, ec, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hh, ehh, hbd, pfA, hda, hca, hlim, w32, pa)
 
 
 # ---- l8192_DepositRequest: the object's value, and the windows of its writes ----
@@ -531,8 +562,8 @@ def rlen_WithdrawalRequest(+r: FuluWithdrawalRequest_d.WithdrawalRequest) -> {VF
                 case O.U64{+x17, +x18}:
                   {==}
 
-def putR_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putR_WithdrawalRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(19n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluWithdrawalRequest_d.WithdrawalRequest)
     -> {FuluWithdrawalRequest_e.WithdrawalRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_WithdrawalRequest(r), dd, D, P)) : Array<U32>}:
   match r:
@@ -543,7 +574,13 @@ def putR_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat
             case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
                 case O.U64{+x17, +x18}:
-                  VT2.put_WithdrawalRequest(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18)
+                  VT2.put_WithdrawalRequestW(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18)
+
+def putR_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(19n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluWithdrawalRequest_d.WithdrawalRequest)
+    -> {FuluWithdrawalRequest_e.WithdrawalRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_WithdrawalRequest(r), dd, D, P)) : Array<U32>}:
+  putR_WithdrawalRequestW(dd, D, pos, P, e, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, r)
 
 
 # ---- l16_WithdrawalRequest: the write loop and the list writer ----
@@ -556,15 +593,15 @@ def WT_l16_WithdrawalRequest(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, 
     case 0n: VF.updv(RWD_WithdrawalRequest(EL_l16_WithdrawalRequest(A, j)), dd, D, VRL.pos(j, 19n, Q))
     case 1n+q: WT_l16_WithdrawalRequest(q, 1n+j, dd, VF.updv(RWD_WithdrawalRequest(EL_l16_WithdrawalRequest(A, j)), dd, D, VRL.pos(j, 19n, Q)), Q, A)
 
-def ptl_l16_WithdrawalRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
-    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptl_l16_WithdrawalRequestW(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 19n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), EL_l16_WithdrawalRequest(A, j))) == (FD.array__thaw(U32, WT_l16_WithdrawalRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) : Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}:
   match k:
     case 0n:
       %Equal.sym(Array<U32>, FuluWithdrawalRequest_e.WithdrawalRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 76)), EL_l16_WithdrawalRequest(A, j)), FD.array__thaw(U32, VF.updv(RWD_WithdrawalRequest(EL_l16_WithdrawalRequest(A, j)), dd, D, VRL.pos(j, 19n, Q))),
-          putR_WithdrawalRequest(dd, D, U32.add(pos, U32.mul(i, 76)), VRL.pos(j, 19n, Q), VRL.posW(dd, pos, Q, i, j, 76, 19n, {==}, ep, ei, hdd, VRL.fit0(j, 19n, Q, VB.pw(dd), hb)), hdd, pfD,
+          putR_WithdrawalRequestW(dd, D, U32.add(pos, U32.mul(i, 76)), VRL.pos(j, 19n, Q), VRL.posWW(dd, pos, Q, i, j, 76, 19n, {==}, ep, ei, hdd, {==}, VRL.fit0(j, 19n, Q, VB.pw(dd), hb)), hdd, pfD,
             VRL.fit0(j, 19n, Q, VB.pw(dd), hb), EL_l16_WithdrawalRequest(A, j))) :
         {(_, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) == (FD.array__thaw(U32, WT_l16_WithdrawalRequest(0n, j, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) : Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
       {==}
@@ -579,12 +616,19 @@ def ptl_l16_WithdrawalRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd:
       +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), z) == Some{EL_l16_WithdrawalRequest(A, 1n+j)} : Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
         VRL.nth_get(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 1n+j, FuluWithdrawalRequest_d.WithdrawalRequest_default(), FD.array__len_lt(FuluWithdrawalRequest_d.WithdrawalRequest, da, A, 1n+j, pfA, h1)))
       %Equal.sym(Array<U32>, FuluWithdrawalRequest_e.WithdrawalRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 76)), EL_l16_WithdrawalRequest(A, j)), FD.array__thaw(U32, D1),
-          putR_WithdrawalRequest(dd, D, U32.add(pos, U32.mul(i, 76)), VRL.pos(j, 19n, Q), VRL.posW(dd, pos, Q, i, j, 76, 19n, {==}, ep, ei, hdd, hbj), hdd, pfD, hbj, EL_l16_WithdrawalRequest(A, j))) :
+          putR_WithdrawalRequestW(dd, D, U32.add(pos, U32.mul(i, 76)), VRL.pos(j, 19n, Q), VRL.posWW(dd, pos, Q, i, j, 76, 19n, {==}, ep, ei, hdd, {==}, hbj), hdd, pfD, hbj, EL_l16_WithdrawalRequest(A, j))) :
         {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(q, U32.add(i, 1), pos, _, Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), U32.add(i, 1))) == (FD.array__thaw(U32, WT_l16_WithdrawalRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) : Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
       %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest> & FuluWithdrawalRequest_d.WithdrawalRequest, Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), U32.add(i, 1)), (FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), EL_l16_WithdrawalRequest(A, 1n+j)),
           FD.array__get(FuluWithdrawalRequest_d.WithdrawalRequest, da, A, U32.add(i, 1), EL_l16_WithdrawalRequest(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)) :
         {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(q, U32.add(i, 1), pos, FD.array__thaw(U32, D1), _) == (FD.array__thaw(U32, WT_l16_WithdrawalRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) : Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
-      ptl_l16_WithdrawalRequest(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_WithdrawalRequest(EL_l16_WithdrawalRequest(A, j)), dd, D, VRL.pos(j, 19n, Q), pfD), hb2, pfA, hda, hk2)
+      ptl_l16_WithdrawalRequestW(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_WithdrawalRequest(EL_l16_WithdrawalRequest(A, j)), dd, D, VRL.pos(j, 19n, Q), pfD), hb2, pfA, hda, hk2)
+
+def ptl_l16_WithdrawalRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 19n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), EL_l16_WithdrawalRequest(A, j))) == (FD.array__thaw(U32, WT_l16_WithdrawalRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) : Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}:
+  ptl_l16_WithdrawalRequestW(k, i, j, pos, Q, dd, D, da, A, ei, ep, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hb, pfA, hda, hk)
 
 law pfWT_l16_WithdrawalRequest:
   for +k: Nat
@@ -612,8 +656,8 @@ def pfLW_l16_WithdrawalRequest(+e: Bool, +n: U32, +dd: Nat, +D: FD.array__Tree<U
     case True{}: pf
     case False{}: pfWT_l16_WithdrawalRequest(U32.to_nat(U32.sub(n, 1)), 0n, dd, D, Q, A, pf)
 
-def ptnz_l16_WithdrawalRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 19n, Q), VB.pw(dd)) == True{} : Bool},
+def ptnz_l16_WithdrawalRequestW(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 19n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
     -> {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(e, n, dd, D, Q, A)), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}) : Array<U32> & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}:
@@ -633,14 +677,21 @@ def ptnz_l16_WithdrawalRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}
           FD.array__get(FuluWithdrawalRequest_d.WithdrawalRequest, da, A, 0, EL_l16_WithdrawalRequest(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 0n, FuluWithdrawalRequest_d.WithdrawalRequest_default(), FD.array__len_lt(FuluWithdrawalRequest_d.WithdrawalRequest, da, A, 0n, pfA, h0)), pfA)) :
         {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt_fin(n, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(k, 0, S, FD.array__thaw(U32, D), _)) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(False{}, n, dd, D, Q, A)), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}) : Array<U32> & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}
       %Equal.sym(Array<U32> & Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt(k, 0, S, FD.array__thaw(U32, D), (FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), EL_l16_WithdrawalRequest(A, 0n))), (FD.array__thaw(U32, WT_l16_WithdrawalRequest(k, 0n, dd, D, Q, A)), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)),
-          ptl_l16_WithdrawalRequest(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
+          ptl_l16_WithdrawalRequestW(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
         {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt_fin(n, _) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(False{}, n, dd, D, Q, A)), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}) : Array<U32> & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}
       {==}
 
+def ptnz_l16_WithdrawalRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 19n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
+    -> {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(e, n, dd, D, Q, A)), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}) : Array<U32> & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}:
+  ptnz_l16_WithdrawalRequestW(n, c, ec, S, Q, eS, dd, D, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hbd, pfA, hda, hca, e, ee)
+
 # The list writer at header word h (byte 4 h) and word position Q (byte S = 4 Q).
-def pvl_l16_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+def pvl_l16_WithdrawalRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
     +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
     +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 19n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +hlim: {Nat.is_le(c, U32.to_nat(16)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
@@ -653,7 +704,7 @@ def pvl_l16_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U
     Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, VB.lt32(da, hda))), hca))
   %Equal.sym(Array<U32>, O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S), Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), w32) : {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pvb(S, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putk(_, U32.add(0, S), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n})) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}
   %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), FD.array__thaw(U32, FD.array__upd(U32, dd, D, h, S)),
-      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==})), hh, pfD)) :
+      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, hdd), hh, pfD)) :
     {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pvb(S, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putk(_, U32.add(0, S), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n})) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}
   %Equal.sym(U32, U32.add(0, S), S, pa) : {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pvb(S, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putk(FD.array__thaw(U32, D1), _, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n})) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}
   %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)), (FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), FD.u32__pow2u(da)), FD.array__size_thaw(FuluWithdrawalRequest_d.WithdrawalRequest, da, A, pfA)) :
@@ -663,9 +714,20 @@ def pvl_l16_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U
   %Equal.sym(Bool, U32.is_le(n, FD.u32__pow2u(da)), True{}, hc) :
     {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pvb(S, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pk(FD.array__thaw(U32, D1), S, (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, Bool.and(True{}, _)))) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pt_nz(U32.is_eq(n, 0), S, n, FD.array__thaw(U32, D1), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A)), (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}),
-      ptnz_l16_WithdrawalRequest(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
+      ptnz_l16_WithdrawalRequestW(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
     {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_pvb(S, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_ptn_fin(n, _)) == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}
   {==}
+
+def pvl_l16_WithdrawalRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+    +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 19n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +hlim: {Nat.is_le(c, U32.to_nat(16)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
+    +pa: {U32.add(0, S) == S : U32})
+    -> {Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putv(FD.array__thaw(U32, D), 0, hB, S, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n})
+        == (FD.array__thaw(U32, LW_l16_WithdrawalRequest(U32.is_eq(n, 0), n, dd, VF.updv([S], dd, D, h), Q, A)), (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, A), n}, O.padd(S, U32.mul(n, 76)))) : Array<U32> & (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq & U32)}:
+  pvl_l16_WithdrawalRequestW(dd, D, h, hB, S, Q, eS, n, c, ec, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hh, ehh, hbd, pfA, hda, hca, hlim, w32, pa)
 
 
 # ---- l16_WithdrawalRequest: the object's value, and the windows of its writes ----
@@ -946,8 +1008,8 @@ def rlen_ConsolidationRequest(+r: FuluConsolidationRequest_d.ConsolidationReques
                 case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   {==}
 
-def putR_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putR_ConsolidationRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(29n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluConsolidationRequest_d.ConsolidationRequest)
     -> {FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_ConsolidationRequest(r), dd, D, P)) : Array<U32>}:
   match r:
@@ -958,7 +1020,13 @@ def putR_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: 
             case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
                 case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
-                  VT2.put_ConsolidationRequest(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28)
+                  VT2.put_ConsolidationRequestW(dd, D, pos, P, e, hdd, pf, hb, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28)
+
+def putR_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(29n, P), VB.pw(dd)) == True{} : Bool}, +r: FuluConsolidationRequest_d.ConsolidationRequest)
+    -> {FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), pos, r) == FD.array__thaw(U32, VF.updv(RWD_ConsolidationRequest(r), dd, D, P)) : Array<U32>}:
+  putR_ConsolidationRequestW(dd, D, pos, P, e, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, r)
 
 
 # ---- l2_ConsolidationRequest: the write loop and the list writer ----
@@ -971,15 +1039,15 @@ def WT_l2_ConsolidationRequest(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>
     case 0n: VF.updv(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), dd, D, VRL.pos(j, 29n, Q))
     case 1n+q: WT_l2_ConsolidationRequest(q, 1n+j, dd, VF.updv(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), dd, D, VRL.pos(j, 29n, Q)), Q, A)
 
-def ptl_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
-    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptl_l2_ConsolidationRequestW(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 29n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, j))) == (FD.array__thaw(U32, WT_l2_ConsolidationRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}:
   match k:
     case 0n:
       %Equal.sym(Array<U32>, FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 116)), EL_l2_ConsolidationRequest(A, j)), FD.array__thaw(U32, VF.updv(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), dd, D, VRL.pos(j, 29n, Q))),
-          putR_ConsolidationRequest(dd, D, U32.add(pos, U32.mul(i, 116)), VRL.pos(j, 29n, Q), VRL.posW(dd, pos, Q, i, j, 116, 29n, {==}, ep, ei, hdd, VRL.fit0(j, 29n, Q, VB.pw(dd), hb)), hdd, pfD,
+          putR_ConsolidationRequestW(dd, D, U32.add(pos, U32.mul(i, 116)), VRL.pos(j, 29n, Q), VRL.posWW(dd, pos, Q, i, j, 116, 29n, {==}, ep, ei, hdd, {==}, VRL.fit0(j, 29n, Q, VB.pw(dd), hb)), hdd, pfD,
             VRL.fit0(j, 29n, Q, VB.pw(dd), hb), EL_l2_ConsolidationRequest(A, j))) :
         {(_, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) == (FD.array__thaw(U32, WT_l2_ConsolidationRequest(0n, j, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}
       {==}
@@ -994,12 +1062,19 @@ def ptl_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +d
       +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), z) == Some{EL_l2_ConsolidationRequest(A, 1n+j)} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
         VRL.nth_get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j, FuluConsolidationRequest_d.ConsolidationRequest_default(), FD.array__len_lt(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 1n+j, pfA, h1)))
       %Equal.sym(Array<U32>, FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), U32.add(pos, U32.mul(i, 116)), EL_l2_ConsolidationRequest(A, j)), FD.array__thaw(U32, D1),
-          putR_ConsolidationRequest(dd, D, U32.add(pos, U32.mul(i, 116)), VRL.pos(j, 29n, Q), VRL.posW(dd, pos, Q, i, j, 116, 29n, {==}, ep, ei, hdd, hbj), hdd, pfD, hbj, EL_l2_ConsolidationRequest(A, j))) :
+          putR_ConsolidationRequestW(dd, D, U32.add(pos, U32.mul(i, 116)), VRL.pos(j, 29n, Q), VRL.posWW(dd, pos, Q, i, j, 116, 29n, {==}, ep, ei, hdd, {==}, hbj), hdd, pfD, hbj, EL_l2_ConsolidationRequest(A, j))) :
         {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(q, U32.add(i, 1), pos, _, Array.get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), U32.add(i, 1))) == (FD.array__thaw(U32, WT_l2_ConsolidationRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}
       %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest> & FuluConsolidationRequest_d.ConsolidationRequest, Array.get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), U32.add(i, 1)), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 1n+j)),
           FD.array__get(FuluConsolidationRequest_d.ConsolidationRequest, da, A, U32.add(i, 1), EL_l2_ConsolidationRequest(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)) :
         {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(q, U32.add(i, 1), pos, FD.array__thaw(U32, D1), _) == (FD.array__thaw(U32, WT_l2_ConsolidationRequest(1n+q, j, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}
-      ptl_l2_ConsolidationRequest(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), dd, D, VRL.pos(j, 29n, Q), pfD), hb2, pfA, hda, hk2)
+      ptl_l2_ConsolidationRequestW(q, U32.add(i, 1), 1n+j, pos, Q, dd, D1, da, A, ei1, ep, hdd, VF.updv_perfect(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), dd, D, VRL.pos(j, 29n, Q), pfD), hb2, pfA, hda, hk2)
+
+def ptl_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +pos: U32, +Q: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
+    +ei: {U32.to_nat(i) == j : Nat}, +ep: {U32.to_nat(pos) == A.quad(Q) : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 29n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, i, pos, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, j))) == (FD.array__thaw(U32, WT_l2_ConsolidationRequest(k, j, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}:
+  ptl_l2_ConsolidationRequestW(k, i, j, pos, Q, dd, D, da, A, ei, ep, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hb, pfA, hda, hk)
 
 law pfWT_l2_ConsolidationRequest:
   for +k: Nat
@@ -1027,8 +1102,8 @@ def pfLW_l2_ConsolidationRequest(+e: Bool, +n: U32, +dd: Nat, +D: FD.array__Tree
     case True{}: pf
     case False{}: pfWT_l2_ConsolidationRequest(U32.to_nat(U32.sub(n, 1)), 0n, dd, D, Q, A, pf)
 
-def ptnz_l2_ConsolidationRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 29n, Q), VB.pw(dd)) == True{} : Bool},
+def ptnz_l2_ConsolidationRequestW(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 29n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
     -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(e, n, dd, D, Q, A)), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}) : Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}:
@@ -1048,14 +1123,21 @@ def ptnz_l2_ConsolidationRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Na
           FD.array__get(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 0, EL_l2_ConsolidationRequest(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 0n, FuluConsolidationRequest_d.ConsolidationRequest_default(), FD.array__len_lt(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 0n, pfA, h0)), pfA)) :
         {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(n, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, S, FD.array__thaw(U32, D), _)) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(False{}, n, dd, D, Q, A)), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}) : Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}
       %Equal.sym(Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, S, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n))), (FD.array__thaw(U32, WT_l2_ConsolidationRequest(k, 0n, dd, D, Q, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)),
-          ptl_l2_ConsolidationRequest(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
+          ptl_l2_ConsolidationRequestW(k, 0, 0n, S, Q, dd, D, da, A, {==}, eS, hdd, pfD, hb, pfA, hda, hk)) :
         {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(n, _) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(False{}, n, dd, D, Q, A)), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}) : Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}
       {==}
 
+def ptnz_l2_ConsolidationRequest(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat}, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hbd: {Nat.is_le(VRL.pos(c, 29n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +e: Bool, +ee: {U32.is_eq(n, 0) == e : Bool})
+    -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_nz(e, S, n, FD.array__thaw(U32, D), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(e, n, dd, D, Q, A)), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}) : Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}:
+  ptnz_l2_ConsolidationRequestW(n, c, ec, S, Q, eS, dd, D, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hbd, pfA, hda, hca, e, ee)
+
 # The list writer at header word h (byte 4 h) and word position Q (byte S = 4 Q).
-def pvl_l2_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+def pvl_l2_ConsolidationRequestW(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
     +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
     +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 29n, Q), VB.pw(dd)) == True{} : Bool},
     +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
     +hlim: {Nat.is_le(c, U32.to_nat(2)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
@@ -1068,7 +1150,7 @@ def pvl_l2_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB:
     Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, VB.lt32(da, hda))), hca))
   %Equal.sym(Array<U32>, O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S), Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), w32) : {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pvb(S, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_putk(_, U32.add(0, S), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n})) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S), FD.array__thaw(U32, FD.array__upd(U32, dd, D, h, S)),
-      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==})), hh, pfD)) :
+      VB.set_n(dd, D, U32.from_nat(h), h, S, ehh, VB.lt32(dd, hdd), hh, pfD)) :
     {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pvb(S, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_putk(_, U32.add(0, S), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n})) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   %Equal.sym(U32, U32.add(0, S), S, pa) : {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pvb(S, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_putk(FD.array__thaw(U32, D1), _, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n})) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), FD.u32__pow2u(da)), FD.array__size_thaw(FuluConsolidationRequest_d.ConsolidationRequest, da, A, pfA)) :
@@ -1078,9 +1160,20 @@ def pvl_l2_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB:
   %Equal.sym(Bool, U32.is_le(n, FD.u32__pow2u(da)), True{}, hc) :
     {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pvb(S, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pk(FD.array__thaw(U32, D1), S, (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, Bool.and(True{}, _)))) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_nz(U32.is_eq(n, 0), S, n, FD.array__thaw(U32, D1), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}),
-      ptnz_l2_ConsolidationRequest(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
+      ptnz_l2_ConsolidationRequestW(n, c, ec, S, Q, eS, dd, D1, da, A, hdd, VF.updv_perfect([S], dd, D, h, pfD), hbd, pfA, hda, hca, U32.is_eq(n, 0), {==})) :
     {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pvb(S, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_ptn_fin(n, _)) == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, D1, Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   {==}
+
+def pvl_l2_ConsolidationRequest(+dd: Nat, +D: FD.array__Tree<U32>, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32.to_nat(S) == A.quad(Q) : Nat},
+    +n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>,
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hh: {Nat.is_lt(h, VB.pw(dd)) == True{} : Bool},
+    +ehh: {U32.to_nat(U32.from_nat(h)) == h : Nat}, +hbd: {Nat.is_le(VRL.pos(c, 29n, Q), VB.pw(dd)) == True{} : Bool},
+    +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hca: {Nat.is_le(c, VB.pw(da)) == True{} : Bool},
+    +hlim: {Nat.is_le(c, U32.to_nat(2)) == True{} : Bool}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
+    +pa: {U32.add(0, S) == S : U32})
+    -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_putv(FD.array__thaw(U32, D), 0, hB, S, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n})
+        == (FD.array__thaw(U32, LW_l2_ConsolidationRequest(U32.is_eq(n, 0), n, dd, VF.updv([S], dd, D, h), Q, A)), (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), n}, O.padd(S, U32.mul(n, 116)))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}:
+  pvl_l2_ConsolidationRequestW(dd, D, h, hB, S, Q, eS, n, c, ec, da, A, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pfD, hh, ehh, hbd, pfA, hda, hca, hlim, w32, pa)
 
 
 # ---- l2_ConsolidationRequest: the object's value, and the windows of its writes ----
