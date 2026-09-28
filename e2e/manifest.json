@@ -3207,6 +3207,26 @@
     "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) (the root law's representation invariant)"
    }
   ],
+  "CompatibleUnionABCA_e2e_root_generated.bend": [
+   {
+    "name": "CompatibleUnionABCA",
+    "generated_name": "Gu6DDF182530",
+    "laws": [
+     "CompatibleUnionABCA_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gu6DDF182530(o, Spec.Gu6DDF182530()) (the root law's representation invariant)"
+   }
+  ],
+  "CompatibleUnionBC_e2e_root_generated.bend": [
+   {
+    "name": "CompatibleUnionBC",
+    "generated_name": "GuAD91DEB870",
+    "laws": [
+     "CompatibleUnionBC_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GuAD91DEB870(o, Spec.GuAD91DEB870()) (the root law's representation invariant)"
+   }
+  ],
   "ComplexTestStruct_e2e_root_generated.bend": [
    {
     "name": "ComplexTestStruct",
@@ -3315,6 +3335,26 @@
      "FuluTransaction_e2e_root"
     ],
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
+   }
+  ],
+  "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveSingleListContainerTestStruct",
+    "generated_name": "Gp4B0CA2906A",
+    "laws": [
+     "ProgressiveSingleListContainerTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) (the root law's representation invariant)"
+   }
+  ],
+  "ProgressiveVarTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveVarTestStruct",
+    "generated_name": "Gp66304057C3",
+    "laws": [
+     "ProgressiveVarTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) (the root law's representation invariant)"
    }
   ],
   "VarTestStruct_e2e_root_generated.bend": [
@@ -5888,7 +5928,8 @@
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend"
+   "decode": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend",
+   "root": "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
@@ -5897,7 +5938,8 @@
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "ProgressiveVarTestStruct_e2e_dec_generated.bend"
+   "decode": "ProgressiveVarTestStruct_e2e_dec_generated.bend",
+   "root": "ProgressiveVarTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "generated_name": "GpF350A3C486",
@@ -5918,12 +5960,14 @@
   "CompatibleUnionBC": {
    "generated_name": "GuAD91DEB870",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "CompatibleUnionBC_e2e_dec_generated.bend"
+   "decode": "CompatibleUnionBC_e2e_dec_generated.bend",
+   "root": "CompatibleUnionBC_e2e_root_generated.bend"
   },
   "CompatibleUnionABCA": {
    "generated_name": "Gu6DDF182530",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "CompatibleUnionABCA_e2e_dec_generated.bend"
+   "decode": "CompatibleUnionABCA_e2e_dec_generated.bend",
+   "root": "CompatibleUnionABCA_e2e_root_generated.bend"
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
