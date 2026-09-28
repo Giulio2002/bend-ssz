@@ -350,6 +350,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 _RT = (_OBJ / 'root_types.bend')
 _RS = (_OBJ / 'root_state.bend')   # BeaconState's root law (its own module, ST)
 STATE_RB = {'BeaconState': 'e2e_rbs'}
+ROOT_BO = {'SignedBeaconBlock'}   # (iv) with the rebuilt object as a named function
 BLOCK_RB = {'BeaconBlockBody': 'e2e_rbb', 'BeaconBlock': 'e2e_rbb', 'SignedBeaconBlock': 'e2e_rbb'}   # names whose rebuild module is separate (it imports root_state)
 
 WORDS_KINDS = {  # storage invariant: (its wf's Ex binders before the equation, a wfl-like Or2?)
@@ -561,7 +562,11 @@ def vroot_container(R, X):
     RX = lambda o: f'D.bytes(Pair.snd({OT}, D.Digest, Pair.snd(B.Buf, {OT} & D.Digest, {R}_h.{X}_hash_tree_root(h, {o}))))'
     G = lambda o: f'{{Some{{{RX(o)}}} == API.hash_tree_root(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'
     ps = ', '.join(f'+{a[i]}: {w.tys[i]}' for i in range(n))
-    body = '\n'.join([
+    pre = []
+    if X in ROOT_BO:   # the rebuilt object named (BO): the laws' terms stay small
+        pre = [f'def BO({ps}) -> {OT}: {B_}', '']
+        B_ = f'BO({", ".join(a)})'
+    body = '\n'.join(pre + [
         f'def rt1(h: B.Buf, {ps}, +rep: RT.rep_{X}({B_}, Spec.{X}())) -> {G(B_)}:',
         f'  E.root_legal(Spec.{X}(), RT.v_{X}({B_}), VS.public_sound(Spec.{X}(), {{==}}), {RX(B_)},',
         f'    GV.{X}_root_valid({B_}, Spec.{X}(), {{==}}, rep), {RCA}.{X}_root_correct(h, {B_}, Spec.{X}(), {{==}}, rep))', '',
