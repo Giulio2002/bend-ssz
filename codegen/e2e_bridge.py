@@ -2936,6 +2936,8 @@ def outputs():
         if (OBJ / f'big_var_win_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.top_view(X0, lem0))
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
+    for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
+        VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
     VROOT_SHAPES.setdefault('Attestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'T.Bytes96', 'T.Bitvector64']))
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())

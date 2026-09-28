@@ -3333,6 +3333,16 @@
     "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) (the root law's representation invariant)"
    }
   ],
+  "FuluAggregateAndProof_e2e_root_generated.bend": [
+   {
+    "name": "FuluAggregateAndProof",
+    "generated_name": "AggregateAndProof",
+    "laws": [
+     "FuluAggregateAndProof_e2e_root"
+    ],
+    "premise": "rep: RT.rep_AggregateAndProof(o, Spec.AggregateAndProof()) (the root law's representation invariant)"
+   }
+  ],
   "FuluAttestation_e2e_root_generated.bend": [
    {
     "name": "FuluAttestation",
@@ -3471,6 +3481,16 @@
      "FuluPendingAttestation_e2e_root"
     ],
     "premise": "rep: RT.rep_PendingAttestation(o, Spec.PendingAttestation()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluSignedAggregateAndProof_e2e_root_generated.bend": [
+   {
+    "name": "FuluSignedAggregateAndProof",
+    "generated_name": "SignedAggregateAndProof",
+    "laws": [
+     "FuluSignedAggregateAndProof_e2e_root"
+    ],
+    "premise": "rep: RT.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()) (the root law's representation invariant)"
    }
   ],
   "FuluTransaction_e2e_root_generated.bend": [
@@ -6121,12 +6141,14 @@
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluAggregateAndProof_e2e_dec_generated.bend"
+   "decode": "FuluAggregateAndProof_e2e_dec_generated.bend",
+   "root": "FuluAggregateAndProof_e2e_root_generated.bend"
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluSignedAggregateAndProof_e2e_dec_generated.bend"
+   "decode": "FuluSignedAggregateAndProof_e2e_dec_generated.bend",
+   "root": "FuluSignedAggregateAndProof_e2e_root_generated.bend"
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
