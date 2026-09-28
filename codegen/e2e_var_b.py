@@ -348,10 +348,13 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 # container's own witnesses) and o == BUILD_Y(witnesses), so a law about o can be restated over a
 # copyable object (the laws of END_TO_END take the value as a + parameter).
 _RT = (_OBJ / 'root_types.bend')
+_RS = (_OBJ / 'root_state.bend')   # BeaconState's root law (its own module, ST)
+STATE_RB = {'BeaconState': 'e2e_rbs'}   # names whose rebuild module is separate (it imports root_state)
 
 WORDS_KINDS = {  # storage invariant: (its wf's Ex binders before the equation, a wfl-like Or2?)
     'WO.rep_bv': (['t', 'dw', 'N', 'q', 'rr'], False), 'LO.rep_bl': (None, True), 'PV.rep_pv': (['t', 'dw', 'N', 'q'], False),
-    'E48.rep_ev': (['t', 'dw', 'N'], False), 'E48.rep_el': (['t', 'dw', 'N'], False), 'CE.rep_el': (['t', 'dw', 'N'], False)}
+    'E48.rep_ev': (['t', 'dw', 'N'], False), 'E48.rep_el': (['t', 'dw', 'N'], False), 'CE.rep_el': (['t', 'dw', 'N'], False),
+    'BLI.rep_l1': (None, True), 'BLI.rep_lh': (None, True), 'UL.rep_ul': (None, True), 'PK.rep_v8': (['t', 'dw', 'N', 'q', 'rr'], False)}
 
 
 def split_args(s):
@@ -382,13 +385,35 @@ _rt_cache = {}
 
 def rt_def(name):
     if 'text' not in _rt_cache:
-        _rt_cache['text'] = _RT.read_text()
+        _rt_cache['text'] = _RT.read_text() + '\n' + _RS.read_text()
     t = _rt_cache['text']
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', t, _re.M)
     if m:
         return m.group(1), m.group(2), ' '.join(m.group(3).split())
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?): (.*)$', t, _re.M)
     return (m.group(1), m.group(2), m.group(3)) if m else None
+
+
+# names of root_state (BeaconState's root law, imported as ST): the generators write RT.<name>; for those
+# names the text is requalified, and root_state's type imports added
+def _st_names():
+    if 'st' not in _rt_cache:
+        _rt_cache['st'] = set(_re.findall(r'^(?:def|law|type) (\w+)', _RS.read_text(), _re.M))
+    return _rt_cache['st']
+
+
+def st_qualify(text):
+    st = _st_names()
+    text = _re.sub(r'(?<![\w.])RT\.(\w+)', lambda m: ('ST.' if m.group(1) in st else 'RT.') + m.group(1), text)
+    if 'ST.' not in text:
+        return text
+    head, _, rest = text.partition('\n\n')
+    imps = head.splitlines()
+    add = ['import ../proofs/obj/root_state.bend as ST']
+    add += [l.replace('import ../../', 'import ../').replace('import ./', 'import ../proofs/obj/') for l in _RS.read_text().splitlines()
+            if _re.match(r'import (\.\./\.\./types/\S+ as \w+_d|\./\w+\.bend as (BLI|UL|PK|PV))$', l) and (l.split()[-1] + '.') in rest]
+    imps += [a for a in add if a not in imps]
+    return '\n'.join(imps) + '\n\n' + rest
 
 
 def rep_info(Y):
@@ -412,8 +437,12 @@ def rep_info(Y):
         else:
             f, rest = rest, None
         fn, fa = call(f)
+        fn = fn[3:] if fn.startswith('RT.') else fn   # root_state's own reps name root_types' as RT.rep_Y
         pj = fa[0]
         pjn = call(pj)[0]
+        if pjn is None or not pjn.startswith('pj'):   # a fact about a binder (e.g. rp_bv4(x)): no witnesses
+            fields.append((pj, fn, None, None))
+            continue
         fty = rt_def(pjn)[1]
         fields.append((pj, fn, fa[1], fty))
     return binders, cons, otype, fields
@@ -452,7 +481,7 @@ class Wit:
         self.tys = [ty for _, ty in binders]
         self.parts = []  # per field: (kind, info, slice of witness indices)
         for pj, fn, sch, fty in fields:
-            k, info = field_kind(fn)
+            k, info = field_kind(fn) if fty is not None else ('fact', None)
             i0 = len(self.tys)
             if k == 'words':
                 self.tys += ['FD.array__Tree<U32>', 'U32']
@@ -460,6 +489,8 @@ class Wit:
                 self.tys += [f'FD.array__Tree<{info[0]}>', 'U32']
             elif k == 'dbox':
                 self.tys += [info]
+            elif k == 'fact':
+                pass
             else:
                 sub = wit(info)
                 self.tys += sub.tys
@@ -484,7 +515,8 @@ class Wit:
         for (x, _), nm in zip(self.binders, names):
             c = _re.sub(r'(?<![\w.])' + x + r'(?![\w])', nm, c)
         for j in range(upto):
-            c = c.replace(self.fields[j][0], self.field_term(j, names), 1)
+            if self.parts[j][0] != 'fact':
+                c = c.replace(self.fields[j][0], self.field_term(j, names), 1)
         if o != 'o':
             c = c.replace('(o)', f'({o})')
         return c
@@ -548,14 +580,14 @@ def vroot_container(R, X):
             'import ../src/digest.bend as D', 'import ../src/obj.bend as O', f'import ../types/{R}_hashtreeroot_generated.bend as {R}_h',
             'import ../types/schema.bend as S', 'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{gvm}.bend as GV',
-            'import ./e2e_support.bend as E', 'import ./e2e_rb.bend as RB'] + ([f'import ../proofs/obj/{rcm}.bend as RC'] if rcm else []) + dimps
-    return '\n'.join(dict.fromkeys(imps)) + f"""
+            'import ./e2e_support.bend as E', f'import ./{STATE_RB.get(X, "e2e_rb")}.bend as RB'] + ([f'import ../proofs/obj/{rcm}.bend as RC'] if rcm else []) + dimps
+    return (st_qualify if X in STATE_RB else (lambda t_: t_))('\n'.join(dict.fromkeys(imps)) + f"""
 
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
 # {R} (variable size): the object API's root is END_TO_END's hash_tree_root, for every object the root
 # law represents (rep_{X}); the object is rebuilt from rep's witnesses (e2e_rb.nw_{X}).
 
-""" + body + '\n'
+""" + body + '\n')
 
 
 
@@ -1346,6 +1378,8 @@ class RBFlat:
                     q = self.fresh('q')
                     self.lines.append(f'  (+{rs[j]}, {q}) = {rest}')
                     rest = q
+            if fty is None:   # a fact about a binder: nothing to rebuild
+                continue
             k, info = field_kind(fn)
             pjt = f'RT.{pj}'.replace('(o)', f'({PO})')
             scht = _re.sub(r'(?<![\w.])s(?![\w])', SC, sch)
@@ -1435,7 +1469,7 @@ def rb_flat_defs(X, al=None):
     return L
 
 
-def rb_text(names):
+def rb_text(names, state=False):
     L = []
     al = {}
     for Y in names:
@@ -1467,6 +1501,8 @@ def rb_text(names):
           'def WW(w: O.Words) -> Data: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, N => {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}))', '',
           'def mkw(-w: O.Words, +t: FD.array__Tree<U32>, +N: U32, +e: {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}) -> WW(w): (t, (N, e))', '']
     for fn, (bs, orr) in WORDS_KINDS.items():
+        if fn.split('.')[0] in ('BLI', 'UL', 'PK') and not state:   # root_state's kinds: only in its own module
+            continue
         nm = fn.replace('.', '_')
         ww.append(f'def ww_{nm}(-w: O.Words, +s: S.Schema, +r: {fn}(w, s)) -> WW(w):')
         ww.append('  (+f, +n) = r')
@@ -4152,7 +4188,7 @@ def vtx_text():
 
 
 # ---- registrations (after every helper is defined) ----
-ROOT_MODS = {'ExecutionPayload': ('big_root_ExecutionPayload', 'big_gvalid_ExecutionPayload')}
+ROOT_MODS = {'ExecutionPayload': ('big_root_ExecutionPayload', 'big_gvalid_ExecutionPayload'), 'BeaconState': ('big_root_BeaconState', 'big_gvalid_BeaconState')}
 _OUTPF = {'LightClientBootstrap': (13, 'EN.pfL4({ps}, 13n, VC.ZT(13n), 0n, FD.array__trep_perfect(U32, 13n, 0))')}
 RB_NAMES = ['ExecutionPayloadHeader', 'LightClientHeader']
 PLIST = r"""import Base
@@ -4768,6 +4804,9 @@ SUPPORT_OUT['e2e_vwx_ExecutionRequests.bend'] = vwx_module('ExecutionRequests', 
 VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', None, 'e2e_vwx_ExecutionRequests')
 VROOT_SHAPES['ExecutionRequests'] = vroot_container
 SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
+# BeaconState (iv): in progress (not registered yet)
+# SUPPORT_OUT['e2e_rbs.bend'] = st_qualify(rb_text(['BeaconState'], state=True))
+# VROOT_SHAPES['BeaconState'] = vroot_container
 # ---- ExecutionPayload (i) through its encode record (CI.MW): the premises are the record's own bounds (OKT, and
 # the lists' OKL / WOK), each a decoded-object gap the root law's invariant does not give: the logs bloom and the
 # lists' trees at depth below 31, the extra data and each transaction's bytes below 28, the whole encoding within
