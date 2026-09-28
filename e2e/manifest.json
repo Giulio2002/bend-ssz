@@ -3923,6 +3923,16 @@
     "premise": "+rep: rep_ContributionAndProof(o, s)"
    }
   ],
+  "FuluDeposit_e2e_generated.bend": [
+   {
+    "name": "FuluDeposit",
+    "generated_name": "Deposit",
+    "laws": [
+     "FuluDeposit_e2e_encode"
+    ],
+    "premise": "+rep: rep_Deposit(o, s)"
+   }
+  ],
   "FuluDeposit_e2e_dec_generated.bend": [
    {
     "name": "FuluDeposit",
@@ -5683,12 +5693,6 @@
    "reason": "encode laws not over the same free words / bits",
    "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   },
-  "FuluDeposit": {
-   "generated_name": "Deposit",
-   "reason": "encode laws not over the same free words / bits",
-   "ii_iii": "FuluDeposit_e2e_dec_generated.bend",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
    "reason": "encode laws not over the same free words / bits"
@@ -5810,6 +5814,12 @@
    "generated_name": "ContributionAndProof",
    "i": "FuluContributionAndProof_e2e_generated.bend",
    "ii_iii": "FuluContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
+  "FuluDeposit": {
+   "generated_name": "Deposit",
+   "i": "FuluDeposit_e2e_generated.bend",
+   "ii_iii": "FuluDeposit_e2e_dec_generated.bend",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
