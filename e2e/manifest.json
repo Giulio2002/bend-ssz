@@ -3715,6 +3715,16 @@
     "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 28n) (field 0's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
+  "ProgressiveTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
+   }
+  ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
    {
     "name": "ProgressiveVarTestStruct",
@@ -6106,12 +6116,6 @@
    "generated_name": "GpF350A3C486",
    "reason": "encode laws not over the same free words / bits"
   },
-  "ProgressiveTestStruct": {
-   "generated_name": "Gc221EC01D83",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "ProgressiveTestStruct_e2e_dec_generated.bend",
-   "root": "ProgressiveTestStruct_e2e_root_generated.bend"
-  },
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
    "reason": "encode laws not over the same free words / bits"
@@ -6605,6 +6609,12 @@
    "ii_iii": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend",
    "iv": "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend"
   },
+  "ProgressiveTestStruct": {
+   "generated_name": "Gc221EC01D83",
+   "i": "ProgressiveTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveTestStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveTestStruct_e2e_root_generated.bend"
+  },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
    "i": "ProgressiveVarTestStruct_e2e_generated.bend",
@@ -7037,7 +7047,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": "ProgressiveTestStruct_e2e_dec_generated.bend"
+   "bridged": null
   },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
