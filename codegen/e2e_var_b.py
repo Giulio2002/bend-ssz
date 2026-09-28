@@ -4880,6 +4880,57 @@ VENC_PREMISE['LightClientUpdate'] = 'rep: RT.rep_LightClientUpdate(o, Spec.Light
 VROOT_SHAPES['GtF7582E0E9A'] = vroot_pbits
 VENC_SHAPES['GtF7582E0E9A'] = venc_pbits
 VENC_PREMISE['GtF7582E0E9A'] = 'rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws\' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)'
+
+
+# ---- progbitlist (ii): the decoded bits' view through e2e_gpb.pbc (depth-independent) ----
+# OBJ = Bits{clear_bit(mask_last(n, thaw(MMg)), NB), NB}: mask_last is thaw of MK(n, DZ(n), MMg) (vbytes.mask_ok), MK keeps
+# the first n bytes (mk_bytes) and MMg holds the buffer's (e2e_bview.win); the delimiter bound n - 1 < 2^29 is the check's.
+def vdec_pbits(X):
+    text = """def bvw(o: O.Bits) -> S.Value: S.BitsValue{BO.bview(o)}
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
+  +h1 = DC.c1(t, n, hchk)
+  +h29 = DC.cL(t, n, h1, DC.cB(t, n, h1))
+  +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
+  +m = DC.M1(n)
+  +dz = VL.DZ(n)
+  +M0 = VL.MMg(t, n)
+  +pf0 = VB.mone_perfect(VC.NW(n), 0n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
+  +M = VBY.MK(n, dz, M0)
+  +hdz = FD.nat__le_lt_trans(dz, 29n, 32n, VP.hdzP(n, m, e1, h29), {==})
+  +hr0 = VP.hrgP(n, m, e1, h29)
+  +hr = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(n), 0n), VC.NW(n), FD.nat__add_zero(VC.NW(n)), hr0)
+  +hy = VP.hyP(n, m, e1, h29)
+  +em = VP.em1(n, m, e1)
+  +hb29 = Equal.trans(Bool, Nat.is_lt(U32.to_nat(U32.sub(n, 1)), FD.spec_common__pow2(29n)), U32.is_lt(U32.sub(n, 1), FD.u32__pow2u(29n)), True{},
+    FD.array__lt_bridge(U32.sub(n, 1), 29n, {==}, U32.is_lt(U32.sub(n, 1), FD.u32__pow2u(29n)), {==}), h29)
+  +hm = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(29n)) == True{} : Bool}, U32.to_nat(U32.sub(n, 1)), m, em, hb29)
+  +hkc = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, 1n+m, U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), 1n+m, e1),
+    FD.nat__lt_succ_le_succ(m, FD.spec_common__pow2(29n), hm))
+  +ew0 = BV.win(d, t, n, m, pf, hn, e1, C.nw(n, 27n, {==}, hkc), hr0)
+  +ew1 = FD.logic__subst(Nat, z => {VSP.bt(z, SF.limbs(FD.array__slots(U32, M0))) == VSP.bt(z, SF.limbs(FD.array__slots(U32, t))) : +List<U32>}, 1n+m, U32.to_nat(n),
+    Equal.sym(Nat, U32.to_nat(n), 1n+m, e1), ew0)
+  +ewl = Equal.trans(+List<U32>, VSP.bt(U32.to_nat(n), SF.limbs(FD.array__slots(U32, M))), VSP.bt(U32.to_nat(n), SF.limbs(FD.array__slots(U32, M0))), UW.WX(t, 0n, U32.to_nat(n)),
+    VBY.mk_bytes(n, dz, M0, 30n, {==}, hy, hr, pf0), ew1)
+  +hw1 = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(n), 1n+m, e1, hn)
+  +R = GPB.pbc(t, 0n, 0, n, M, VBY.mk_perfect(n, dz, M0, pf0), m, e1, h29, ewl, UW.lenWX(d, t, 0n, 1n+m, pf, hw1),
+    UW.lastWX(d, t, 0n, m, VR.XN(0, n), pf, hw1, VR.eXN0(n, m, e1)))
+  %Equal.sym(Array<U32>, O.mask_last(n, FD.array__thaw(U32, M0)), FD.array__thaw(U32, M), VBY.mask_ok(n, dz, M0, 30n, {==}, hy, hdz, hr, pf0)) :
+    {S.BitsValue{BK.btk(U32.to_nat(DC.NBu(t, n)), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(_, DC.NBu(t, n))))))} == DC.VAL(t, n) : S.Value}
+  Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{z}, BK.btk(U32.to_nat(DC.NBu(t, n)), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), DC.NBu(t, n)))))),
+    VBL.bl(UW.WX(t, 0n, U32.to_nat(n))), R)
+
+"""
+    imps = ['import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/vbitl.bend as VBL',
+            'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vbrt.bend as VR',
+            'import ../proofs/obj/vbytes.bend as VBY', 'import ../proofs/obj/vpb29.bend as VP', 'import ../proofs/obj/vua_win.bend as UW',
+            'import ./e2e_bview.bend as BV', 'import ./e2e_gpb.bend as GPB']   # e2e_cap (C) is the template's
+    return {'view': 'bvw', 'imports': imps, 'text': '# ---- the view of a decoded object is the codec law\'s value ----\n\n' + text}
+
+
+# VDEC_VIEWS['GtF7582E0E9A'] = vdec_pbits('GtF7582E0E9A')   # (ii) checks; (iii) waits on a decode-template hook (K mode + the reject law's hP premise)
 VROOT_SHAPES['ExecutionPayload'] = vroot_container
 SUPPORT_OUT['e2e_vtx.bend'] = vtx_text()
 
