@@ -1995,7 +1995,7 @@ def vv2w({P_}, +h: {{V2.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.xv_v2
 
 
 
-def deep_twins(text, names, reps=(), callee_ok=None):
+def deep_twins(text, names, reps=(), callee_ok=None, mode='hw32'):
     """Deep twins (name + 'D') of the defs `names` of text, appended after them: hd d < 31, hw32 threaded after
     hw (the window's end below 2^32), the calls among them to the twins; reps: [(old, new)] on the twins' text."""
     import deep
@@ -2011,7 +2011,10 @@ def deep_twins(text, names, reps=(), callee_ok=None):
     for x_, y_ in reps:
         assert x_ in tw, x_[:80]
         tw = tw.replace(x_, y_)
-    tw = deep.thread(tw, VWN.HWX, VWN.HW32X, callee_ok=callee_ok)
+    if mode == 'hwN':
+        tw = deep.thread(tw, VWN.HWX, VWN.HWNX, hw32='hwN', callee_ok=callee_ok)
+    else:
+        tw = deep.thread(tw, VWN.HWX, VWN.HW32X, callee_ok=callee_ok)
     assert 'Nat.is_lt(d, 28n)' not in tw
     return text.rstrip('\n') + '\n\n# ---- the same at any tree depth d < 31 (hw32: the window\'s end below 2^32) ----\n' + tw + '\n'
 
@@ -3256,13 +3259,29 @@ def pbv({WP}, +hchk: {{PBW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{BO.bv
 '''
 
 
-SUPPORT_OUT['e2e_gpb.bend'] = gpb_text()
+def gpb_deep_text():
+    """e2e_gpb with pbvD: a progressive bit list's view at any tree depth (its window ends by NMAX: hwN; the copy
+    bounded by the window's length, BL.bviewY)."""
+    t = gpb_text()
+    reps = [('BL.bview(d, t, off, len, x, eo, hd, hw, pf)', 'BL.bviewY(d, t, off, len, x, eo, hw, pf, VC.hyW(x, len, hwN))'),
+            ('PBW.eX(d, x, off, len, eo, hd, hw, e1)', 'PBW.eXD(d, x, off, len, eo, hd, hw, hwN, e1)')]
+    t = deep_twins(t, ['pbv'], reps, mode='hwN')
+    if 'vcopy.bend as VC' not in t:
+        t = t.replace('import ./e2e_blist.bend as BL\n', 'import ./e2e_blist.bend as BL\nimport ../proofs/obj/vcopy.bend as VC\n', 1)
+    assert 'vcopy.bend as VC' in t
+    return t
+
+
+SUPPORT_OUT['e2e_gpb.bend'] = gpb_deep_text()
 
 
 # ==== e2e_gprog: the progressive containers read at a byte window: root view == codec value (vw_X) ====
 GP_WA = 'd, t, n, x, off, len, eo, hd, hw, pf, h'
 GP_WP = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n'
          '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}')
+GP_WPN = GP_WP.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace(
+    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}',
+    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}')
 
 
 def gp_lv(tag, CH):
@@ -3391,6 +3410,39 @@ def gprog_text():
 ''' + '\n'.join(body)
 
 
+GPROG_DEEP = ['Gp4B0CA2906A', 'Gp66304057C3']
+
+
+def gp_view_deep(v, X):
+    """vw_XD from vw_X: at any tree depth over its (hwN) window's D facts, the children through their deep
+    view twins (GPB.pbvD, lv_<tag>D)."""
+    import deep
+    assert v.startswith(f'def vw_{X}({GP_WP}')
+    v = f'def vw_{X}D({GP_WPN}' + v[len(f'def vw_{X}({GP_WP}'):]
+    WD = 'd, t, n, x, off, len, eo, hd, hw, hwN, pf, h'
+    pat = re.compile(r'(GPB\.pbv|lv_\w+)\(')
+    out, i = [], 0
+    while True:
+        m = pat.search(v, i)
+        if not m:
+            out.append(v[i:])
+            break
+        a = m.end()
+        b = deep._close(v, a)
+        args = [x_.strip() for x_ in deep._split_args(v[a:b])]
+        # (d, t, x, off, len, eo, hd, hw, pf, hc): eo / hw are W.eoJk / W.hwJk of the window
+        mm = re.match(r'(\w+)\.eoJ(\d+)\(', args[5])
+        W, k = mm.group(1), mm.group(2)
+        eo, hw_, hN = f'{W}.eoJ{k}D({WD})', f'{W}.hwJ{k}D({WD})', f'{W}.hwJ{k}N({WD})'
+        if m.group(1) == 'GPB.pbv':
+            call = f'GPB.pbvD({", ".join(args[:5])}, {eo}, hd, {hw_}, {hN}, {args[8]}, {args[9]})'
+        else:
+            call = f'{m.group(1)}D({", ".join(args[:5])}, {eo}, {hw_}, {args[8]}, {args[9]})'
+        out.append(v[i:m.start()] + call)
+        i = b + 1
+    return ''.join(out)
+
+
 def gprog_deep_text():
     """e2e_gprog with pu8D / pu64D: the progressive lists of uint8 / uint64 at any tree depth, the window ending
     by NMAX (hwN: 31 + len <= UMAX, vua_ct's U chain; their windows are hwN)."""
@@ -3418,6 +3470,17 @@ def gprog_deep_text():
     a = t.index('\ndef pu64(') + 1
     e = t.index('\n\n', a)
     t = t[:e] + '\n\n# ---- the same at any tree depth (the window ends by NMAX: hwN) ----\n' + tw + t[e:]
+    # lv_l123D (the child's copy bounded by its limit) and the progressive containers' views at any depth
+    K = int(re.search(r'^def hyB\(.*?VB\.pw\((\d+)n\)\) == True', _unlight((ROOT / 'proofs/obj/var_winx_l123_u16.bend').read_text()), re.M).group(1))
+    lvd = gwin_u16list_deep_text(K).replace('CH0.', 'L123.').replace('def lvD(', 'def lv_l123D(')
+    a = t.index('\ndef lv_l123(') + 1
+    e = t.index('\n\n', a)
+    t = t[:e] + '\n' + lvd.rstrip('\n') + t[e:]
+    for X in GPROG_DEEP:
+        a = t.index(f'\ndef vw_{X}(') + 1
+        e = t.find('\n\n', a)
+        e = len(t) if e < 0 else e
+        t = t[:e] + '\n\n' + gp_view_deep(t[a:e], X) + t[e:]
     if 'vcopy.bend as VC' not in t:
         t = t.replace('import ./e2e_blist.bend as BL\n', 'import ./e2e_blist.bend as BL\nimport ../proofs/obj/vcopy.bend as VC\n', 1)
     return t
@@ -4210,9 +4273,6 @@ GCX = {
 
 # the progressive containers whose views have deep twins (e2e_gcx.vw_XD; their laws at any depth)
 GCX_DEEP = {'Gc221EC01D83'}
-GP_WPN = GP_WP.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace(
-    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}',
-    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}')
 
 
 def gcx_deep_view(X, W, fields):
@@ -5165,18 +5225,23 @@ SUPPORT_OUT['e2e_encl.bend'] = encl_text()
 
 
 
-def prog_view(R, X, mod='e2e_gprog'):
-    """(ii)/(iii) of a progressive container: its window view (<mod>.vw_X) at the whole buffer."""
-    if X in GCX_DEEP:
-        # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
-        return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./{mod}.bend as GP', 'import ../proofs/obj/vbuf.bend as VB'],
-                'text': f'''# ---- the view of a decoded object is the codec law's value ({mod}.vw_{X}D at the window (0, 0, n)) ----
+def deep_vv_text(X, fn, mod):
+    """vv at any tree depth over an hwN window's deep view twin fn: the laws' premise hN (n <= NMAX)."""
+    return f'''# ---- the view of a decoded object is the codec law's value ({mod}.{fn.split('.')[-1]} at the window (0, 0, n)) ----
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}},
     +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  GP.vw_{X}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+  {fn}(d, t, n, 0n, 0, n, {{==}}, hd, hn, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
 
-'''}
+'''
+
+
+def prog_view(R, X, mod='e2e_gprog'):
+    """(ii)/(iii) of a progressive container: its window view (<mod>.vw_X) at the whole buffer."""
+    if (X in GCX_DEEP or X in GPROG_DEEP) and 'Nat.is_lt(d, 31n)' in _unlight(_dc_module(R).read_text()):
+        # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
+        return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./{mod}.bend as GP', 'import ../proofs/obj/vbuf.bend as VB'],
+                'text': deep_vv_text(X, f'GP.vw_{X}D', mod)}
     text = f'''# ---- the view of a decoded object is the codec law's value ({mod}.vw_{X} at the window (0, 0, n)) ----
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:

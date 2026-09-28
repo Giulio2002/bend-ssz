@@ -1853,7 +1853,7 @@ HNN_TERM = ('FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NM
             'VB.le_u32n(n, VB.NMAX()), hN)')
 
 
-KEEP_PB_REJECT = True
+KEEP_PB_REJECT = False
 TOP_SHALLOW = set()
 
 
