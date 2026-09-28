@@ -3293,6 +3293,16 @@
     "premise": "rep: RT.rep_GuA2212AE21F(o) (the root law's representation invariant; no storage premise)"
    }
   ],
+  "ComplexTestStruct_e2e_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 28n) (f_B's words below depth 28), hsD: BL.sdk(pj_3(o), 28n) (f_D's bytes below depth 28), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 28n) (f_E's list below depth 28), hsF: EV.sv4(pj_5(o), 28n) (f_F's record tree below depth 28, its 13 N bytes within 4 2^depth), hsG: EV.sv2(pj_6(o), 31n, 28n) (f_G's mirror tree below depth 31, each element's list below depth 28)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -3370,7 +3380,7 @@
     "laws": [
      "VarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage below its encode law's depth bound 28, read from the law; the root law gives dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_bool_e2e_generated.bend": [
@@ -4047,12 +4057,6 @@
    "generated_name": "Gc74A8F5F17F",
    "reason": "encode laws not over the same free words / bits"
   },
-  "ComplexTestStruct": {
-   "generated_name": "Gc56D855869F",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "ComplexTestStruct_e2e_dec_generated.bend",
-   "root": "ComplexTestStruct_e2e_root_generated.bend"
-  },
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",
    "reason": "encode laws not over the same free words / bits"
@@ -4152,6 +4156,12 @@
    "i": "CompatibleUnionA_e2e_generated.bend",
    "ii_iii": "CompatibleUnionA_e2e_dec_generated.bend",
    "iv": "CompatibleUnionA_e2e_root_generated.bend"
+  },
+  "ComplexTestStruct": {
+   "generated_name": "Gc56D855869F",
+   "i": "ComplexTestStruct_e2e_generated.bend",
+   "ii_iii": "ComplexTestStruct_e2e_dec_generated.bend",
+   "iv": "ComplexTestStruct_e2e_root_generated.bend"
   },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
@@ -4396,7 +4406,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 6756,
    "covered": true,
-   "bridged": "ComplexTestStruct_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
