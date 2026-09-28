@@ -32,6 +32,8 @@ import ../proofs/obj/big_encx_l128_u16.bend as Xl128
 import ../proofs/obj/var_winx_l128_u16.bend as Wl128
 import ../proofs/obj/big_encx_bl256.bend as Xb256
 import ../proofs/obj/big_vvlb_bl256.bend as Wb256
+import ../proofs/obj/big_encx_l123_u16.bend as Xl123
+import ../proofs/obj/var_winx_l123_u16.bend as Wl123
 import ./e2e_blist.bend as BL
 import ./e2e_plist.bend as PL
 import ./e2e_tz.bend as TZ
@@ -273,6 +275,54 @@ def lb2_b256(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {
 def lb_b256(-w: O.Words, +rep: LO.rep_bl(w, S.ByteList{256n}), +hs: BL.sdk(w, 28n)) -> LR_b256(w):
   (+wf, +hl) = rep
   lb2_b256(w, cpw(w, wf), hl, hs)
+
+# ---- l123: a List[uint16, 123] field ----
+def h2_l123(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 123n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), 246n) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, 246n) == True{} : Bool}, Nat.double(c), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), Nat.double(c), ec), FD.nat__double_le(c, 123n, hk))
+
+def ok_l123(+tt: FD.array__Tree<U32>, +n: U32, +sf: SFT(tt, n, 28n), +c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 123n) == True{} : Bool}) -> {Xl123.OK(Xl123.MW{LDEP(U32, tt), tt, n}) == True{} : Bool}:
+  (+pf, +s1) = sf
+  (+hdw, +s2) = s1
+  (+hN, +htz) = s2
+  +h2 = h2_l123(n, c, ec, hk)
+  FD.logic__and_intro(FD.array__perfect(U32, LDEP(U32, tt), tt), Bool.and(Nat.is_lt(LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(Nat.is_le(U32.to_nat(n), U32.to_nat(246)), Bool.and(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n)))))), pf,
+    FD.logic__and_intro(Nat.is_lt(LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(Nat.is_le(U32.to_nat(n), U32.to_nat(246)), Bool.and(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n))))), hdw,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(Nat.is_le(U32.to_nat(n), U32.to_nat(246)), Bool.and(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n)))), hN,
+    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(Nat.is_le(U32.to_nat(n), U32.to_nat(246)), Bool.and(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n))), htz,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), U32.to_nat(246)), Bool.and(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n)), h2,
+    FD.logic__and_intro(U32.is_eq(U32.and(n, 1), 0), Wl123.CHKw(tt, 0n, 0, n), GW.ev(n, c, ec),
+    Wl123.chk2(tt, 0n, 0, n, c, ec, hk)))))))
+
+def lv_l123(+tt: FD.array__Tree<U32>, +n: U32, +c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 123n) == True{} : Bool}) -> {PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}) == Wl123.VALw(tt, 0n, n) : S.Value}:
+  +eq = PL.c2(n, Wl123.CQ(n), Wl123.eLc(tt, 0n, 0, n, Wl123.chk2(tt, 0n, 0, n, c, ec, hk)))
+  +e0 = Equal.cong(Nat, S.Value, z => S.Sequence{PBF.it2(z, WO.wview(O.Words{FD.array__thaw(U32, tt), n}))}, U32.to_nat(U32.shrn(n, 1n)), Wl123.CQ(n), eq)
+  +e1 = Equal.cong(+List<U32>, S.Value, z => S.Sequence{PBF.it2(Wl123.CQ(n), z)}, WO.wview(O.Words{FD.array__thaw(U32, tt), n}), BL.WX0(tt, n), BL.wv0(tt, n))
+  +e2 = Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it2(Wl123.CQ(n), BL.WX0(tt, n)), PBM.it2(Wl123.CQ(n), BL.WX0(tt, n)), PL.it2eq(Wl123.CQ(n), BL.WX0(tt, n)))
+  Equal.trans(S.Value, PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}), S.Sequence{PBF.it2(Wl123.CQ(n), WO.wview(O.Words{FD.array__thaw(U32, tt), n}))}, Wl123.VALw(tt, 0n, n), e0,
+    Equal.trans(S.Value, S.Sequence{PBF.it2(Wl123.CQ(n), WO.wview(O.Words{FD.array__thaw(U32, tt), n}))}, S.Sequence{PBF.it2(Wl123.CQ(n), BL.WX0(tt, n))}, Wl123.VALw(tt, 0n, n), e1, e2))
+
+def ln_l123(+tt: FD.array__Tree<U32>, +n: U32, +hok: {Xl123.OK(Xl123.MW{LDEP(U32, tt), tt, n}) == True{} : Bool}, +c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 123n) == True{} : Bool}) -> {Nat.is_le(LY.LN(Xl123.ENC(Xl123.MW{LDEP(U32, tt), tt, n})), 246n) == True{} : Bool}:
+  %Equal.sym(Nat, List.length(&2, U32, Xl123.ENC(Xl123.MW{LDEP(U32, tt), tt, n})), U32.to_nat(n), Xl123.eL(LDEP(U32, tt), tt, n, hok)) : {Nat.is_le(_, 246n) == True{} : Bool}
+  h2_l123(n, c, ec, hk)
+
+# the field's record from its words (rep_l2) and the premise
+def LR_l123(w: O.Words) -> Data:
+  DK.Ex(Xl123.MW, m => DK.P2({w == Xl123.TH(m) : O.Words}, DK.P2({PBF.vview2(Xl123.TH(m)) == Xl123.VAL(m) : S.Value}, DK.P2({Xl123.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(Xl123.ENC(m)), 246n) == True{} : Bool}))))
+
+def lb2_l123(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hx: {U32.to_nat(WO.len(w)) == Nat.double(PBF.cnt2(w)) : Nat},
+    +hl: {Nat.is_le(PBF.cnt2(w), 123n) == True{} : Bool}, +hs: BL.sdk(w, 28n)) -> LR_l123(w):
+  (+tt, +c1) = cw
+  (+n, +ew) = c1
+  +hx2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hx)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(PBF.cnt2(z), 123n) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 28n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
+  +hok = ok_l123(tt, n, sfk(tt, n, 28n, hs2), PBF.cnt2(O.Words{FD.array__thaw(U32, tt), n}), hx2, hl2)
+  (Xl123.MW{LDEP(U32, tt), tt, n}, (ew, (lv_l123(tt, n, PBF.cnt2(O.Words{FD.array__thaw(U32, tt), n}), hx2, hl2), (hok, ln_l123(tt, n, hok, PBF.cnt2(O.Words{FD.array__thaw(U32, tt), n}), hx2, hl2)))))
+
+def lb_l123(-w: O.Words, +rep: BLI.rep_l2(w, S.ListOf{S.Unsigned{P.U16{}}, 123n}), +hs: BL.sdk(w, 28n)) -> LR_l123(w):
+  (+wf, +z) = rep
+  (+hx, +hl) = z
+  lb2_l123(w, cpw(w, wf), hx, hl, hs)
 
 # ---- VarTestStruct: the record EM.MW{a0, Xl1024.MW{LDEP(tt), tt, n}, a2} ----
 def okp_vt(+a0: U32, +a2: U32, +mB: Xl1024.MW, +hB: {Xl1024.OK(mB) == True{} : Bool}, +h0: {U32.is_lt(a0, 65536) == True{} : Bool}, +h2: {U32.is_lt(a2, 256) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(7n, LY.LN(Xl1024.ENC(mB))), A.quad(VB.pw(28n))) == True{} : Bool}) -> {EM.OK(EM.MW{a0, mB, a2}) == True{} : Bool}:
