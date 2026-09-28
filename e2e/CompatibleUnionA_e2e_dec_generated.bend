@@ -21,6 +21,8 @@ import ./e2e_cap.bend as C
 import ../proofs/obj/root_gtypes2.bend as RT
 import ../proofs/obj/root_gnames.bend as RN
 import ../proofs/obj/var_winx_GuA2212AE21F.bend as W
+import ../proofs/obj/vbuf.bend as VB
+import ./e2e_gprog.bend as GP
 import ../proofs/obj/var_winx_GpF350A3C486.bend as CH0
 import ../proofs/obj/var_codec_GuA2212AE21F.bend as DC
 import ../proofs/obj/generic_specs.bend as GS
@@ -33,8 +35,9 @@ import ../proofs/obj/generic_specs.bend as GS
 
 # ---- the view of a decoded object is the codec law's value: the selected arm's view at its window ----
 
-def u0(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +c: Bool, +ec: {U32.is_eq(W.BX(t, x), 1) == c : Bool},
-    +hk: {W.K0(c, W.BX(t, x), t, x, off, len) == True{} : Bool}) -> {RT.v_GuA2212AE21F(W.OB0(c, W.BX(t, x), d, t, x, off, len)) == S.Selected{W.BX(t, x), W.VV0(c, W.BX(t, x), t, x, len)} : S.Value}:
+def u0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h1: W.H1(t, x, off, len),
+    +c: Bool, +ec: {U32.is_eq(W.BX(t, x), 1) == c : Bool}, +hk: {W.K0(c, W.BX(t, x), t, x, off, len) == True{} : Bool}) -> {RT.v_GuA2212AE21F(W.OB0(c, W.BX(t, x), d, t, x, off, len)) == S.Selected{W.BX(t, x), W.VV0(c, W.BX(t, x), t, x, len)} : S.Value}:
   match c:
     case True{}:
       %Equal.sym(U32, W.BX(t, x), 1, FD.u32alg__eq_of(W.BX(t, x), 1, ec)) : {RT.v_GuA2212AE21F(W.OB0(True{}, W.BX(t, x), d, t, x, off, len)) == S.Selected{_, W.VV0(True{}, W.BX(t, x), t, x, len)} : S.Value}
@@ -44,7 +47,7 @@ def u0(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +c: Bool
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_GuA2212AE21F(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
-  u0(d, t, 0n, 0, n, U32.is_eq(W.BX(t, 0n), 1), {==}, FD.logic__and_right(U32.is_le(1, n), W.K0(U32.is_eq(W.BX(t, 0n), 1), W.BX(t, 0n), t, 0n, 0, n), hchk))
+  u0(d, t, n, 0n, 0, n, {==}, hd, hn, pf, W.le_nat(1, n, W.hch1(t, 0n, 0, n, hchk)), U32.is_eq(W.BX(t, 0n), 1), {==}, W.hchk0(t, 0n, 0, n, hchk))
 
 # ---- the loaded buffer ----
 
