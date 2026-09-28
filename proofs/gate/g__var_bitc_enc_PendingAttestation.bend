@@ -33,6 +33,8 @@ import ../../spec/bit_packing.bend as Bp
 import ../obj/bitlist_pack.bend as BK
 import ../obj/bitlist_rep.bend as BO
 import ../obj/vbitenc.bend as VBT
+import ../obj/vseq.bend as VSQ
+import ../../spec/schema.bend as SC
 import ../obj/vbitdl.bend as DL
 import ../obj/vbitcore.bend as CO
 import ../obj/vbitcont.bend as CT
