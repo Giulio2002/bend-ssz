@@ -2825,6 +2825,18 @@
     "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
    }
   ],
+  "FuluLightClientUpdate_e2e_dec_generated.bend": [
+   {
+    "name": "FuluLightClientUpdate",
+    "generated_name": "LightClientUpdate",
+    "laws": [
+     "FuluLightClientUpdate_e2e_decode_view",
+     "FuluLightClientUpdate_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluTransaction_e2e_dec_generated.bend": [
    {
     "name": "FuluTransaction",
@@ -3968,6 +3980,7 @@
   "FuluLightClientUpdate": {
    "generated_name": "LightClientUpdate",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluLightClientUpdate_e2e_dec_generated.bend",
    "root": "FuluLightClientUpdate_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
@@ -4673,7 +4686,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 26936,
    "covered": true,
-   "bridged": null
+   "bridged": "FuluLightClientUpdate_e2e_dec_generated.bend"
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",

@@ -3348,10 +3348,10 @@ SUPPORT_OUT['e2e_bx.bend'] = bx_text()
 # the child windows' own vb). VALH is VALw with its XCV chain inlined and the holes' values as parameters.
 def _xcv_inline(text, body):
     defs = {}
-    for m in _re.finditer(r'^def (XCV\d+)\((.*?)\) -> S\.Value: (.*)$', text, _re.M):
+    for m in _re.finditer(r'^def (XCV\d+|ITS\d+)\((.*?)\) -> S\.Value: (.*)$', text, _re.M):
         defs[m.group(1)] = ([n for n, _ in _params(m.group(2))], m.group(3))
     while True:
-        m = _re.search(r'(XCV\d+)\(', body)
+        m = _re.search(r'(?<![\w.])(XCV\d+|ITS\d+)\(', body)
         if not m:
             return body
         name = m.group(1)
@@ -3381,10 +3381,13 @@ def vbx_module(X, win, holes, lets, extra_imports=()):
     """holes: dicts obj (text in OBJw), ty, view, vty, pf, and 'xvt' (its value's text in the inlined value) or 'arg' (k: VALw's k-th XVw argument)."""
     text = (_OBJ / f'{win}.bend').read_text()
     _, oty, obody = _def_any(text, 'OBJw')
-    xps, _, xbody = _def_any(text, 'XVw')
     _, _, vbody = _def_any(text, 'VALw')
-    vargs = split_args(_re.match(r'XVw\(t, x, (.*)\)$', vbody).group(1))
-    xpn = [n for n, _ in _params(xps)][2:]
+    if _re.search(r'^def XVw\(', text, _re.M):
+        xps, _, xbody = _def_any(text, 'XVw')
+        vargs = split_args(_re.match(r'XVw\(t, x, (.*)\)$', vbody).group(1))
+        xpn = [n for n, _ in _params(xps)][2:]
+    else:   # a var_winx window: its value is the ITS chain
+        xbody, vargs, xpn = vbody, [], []
     xin = _xcv_inline(text, xbody)
     own = set(_re.findall(r'^def (\w+)\(', text, _re.M))
     q = lambda s_: _re.sub(r'(?<![\w.])(' + '|'.join(sorted(own, key=len, reverse=True)) + r')\(', r'W.\1(', s_)
@@ -3518,3 +3521,124 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 
 '''}
 VDEC_VIEWS['LightClientFinalityUpdate'] = vdec_bx('LightClientFinalityUpdate', 'e2e_vbx_LightClientFinalityUpdate')
+
+
+# ---- the fixed children of var_winx windows (vfx_*: copies at a Nat offset, CTN) as views (e2e/e2e_fx.bend) ----
+def fx_text():
+    sc = (_OBJ / 'vfx_SyncCommittee.bend').read_text()
+    sa = (_OBJ / 'vfx_SyncAggregate.bend').read_text()
+    ren = lambda s_: _re.sub(r'(?<![\w.])x(?![\w])', 'y', s_)
+    b48 = ren(_re.search(r'FuluBytes48_d\.Bytes48\{[^{}]*\}', _def_any(sc, 'OBJ')[2]).group(0))
+    sab = ren(_def_any(sa, 'OBJ')[2])
+    bv = _re.search(r'Fulu_bitvector_512_d\.Bitvector512\{([^{}]*)\}', sab)
+    b96 = _re.search(r'FuluBytes96_d\.Bytes96\{[^{}]*\}', sab).group(0)
+    CT = lambda L, dz: f'UCT.CT(d, t, off, {L}, {dz})'
+    HY = lambda L: (f'+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {{U32.to_nat(off) == y : Nat}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},\n'
+                    f'    +hw: {{Nat.is_le(Nat.add(y, U32.to_nat({L})), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}')
+    S6 = f'FD.array__slots(U32, {CT(24576, "13n")})'
+    pvs = []
+    for mod, al, L, dz, K in [('vfx_v6_b32', 'F6', 192, '6n', 48), ('vfx_v7_b32', 'F7', 224, '6n', 56)]:
+        SS = f'FD.array__slots(U32, {CT(L, dz)})'
+        pvs.append(f'''# {mod}: a copied vector of Bytes32 at y
+def ev{K}(+t: FD.array__Tree<U32>, +y: Nat, +R: List<&2, U32>) -> {{S.Sequence{{WR.items(O.chunks_of({L}), VF.app(UR.RWS({K}n, t, y), R), 0n)}} == S.Sequence{{AV.ch8(UR.RWS({K}n, t, y))}} : S.Value}}: {{==}}
+
+def fxpv{K}({HY(L)}) -> {{PV.pview({al}.OBJ(d, t, y)) == {al}.VAL(t, y) : S.Value}}:
+  Equal.trans(S.Value, PV.pview(O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, y, {L}, {dz})), {L}}}), PV.pview(O.Words{{FD.array__thaw(U32, {CT(L, dz)}), {L}}}), S.Sequence{{AV.ch8(UR.RWS(VXG.CNT(y, {K}n), t, y))}},
+    Equal.cong(FD.array__Tree<U32>, S.Value, z => PV.pview(O.Words{{FD.array__thaw(U32, z), {L}}}), VXB.CTN(d, t, y, {L}, {dz}), {CT(L, dz)}, Equal.sym(FD.array__Tree<U32>, {CT(L, dz)}, VXB.CTN(d, t, y, {L}, {dz}), VXB.ct_n(d, t, off, y, {L}, {dz}, eo))),
+    Equal.trans(S.Value, PV.pview(O.Words{{FD.array__thaw(U32, {CT(L, dz)}), {L}}}), S.Sequence{{WR.items(O.chunks_of({L}), VF.app(UR.RWS({K}n, t, y), VB.wdr({K}n, {SS})), 0n)}}, S.Sequence{{AV.ch8(UR.RWS(VXG.CNT(y, {K}n), t, y))}},
+      BX.pvx(d, t, off, {L}, {dz}, y, {K}n, eo, hd, hw, pf, {{==}}, {{==}}),
+      Equal.trans(S.Value, S.Sequence{{WR.items(O.chunks_of({L}), VF.app(UR.RWS({K}n, t, y), VB.wdr({K}n, {SS})), 0n)}}, S.Sequence{{AV.ch8(UR.RWS({K}n, t, y))}}, S.Sequence{{AV.ch8(UR.RWS(VXG.CNT(y, {K}n), t, y))}},
+        ev{K}(t, y, VB.wdr({K}n, {SS})),
+        Equal.cong(Nat, S.Value, z => S.Sequence{{AV.ch8(UR.RWS(z, t, y))}}, {K}n, VXG.CNT(y, {K}n), Equal.sym(Nat, VXG.CNT(y, {K}n), {K}n, VXG.cnt_eq(y, {K}n))))))
+''')
+    return f'''import Base
+import ../src/obj.bend as O
+import ../types/schema.bend as S
+import ../proofs/compact/found.bend as FD
+import ../proofs/compact/arith.bend as A
+import ../proofs/nat_order.bend as Order
+import ../proofs/obj/spec_fixed.bend as F
+import ../proofs/obj/vspec.bend as VS
+import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/vcopy.bend as VC
+import ../proofs/obj/vfix.bend as VF
+import ../proofs/obj/arr_vec.bend as AV
+import ../proofs/obj/spec_bits.bend as FB
+import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/vua_rd.bend as UR
+import ../proofs/obj/vua_ct.bend as UCT
+import ../proofs/obj/vua_fixb.bend as VXB
+import ../proofs/obj/vfxg.bend as VXG
+import ../proofs/obj/vfx_SyncCommittee.bend as FSC
+import ../proofs/obj/vfx_SyncAggregate.bend as FSA
+import ../proofs/obj/vfx_v6_b32.bend as F6
+import ../proofs/obj/vfx_v7_b32.bend as F7
+import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
+import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ./e2e_bx.bend as BX
+import ./e2e_e48w.bend as EW
+import ./e2e_bvh.bend as BV
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# The fixed children of var_winx windows (vfx_*: copies at a Nat offset y, VXB.CTN) as views: each object's root
+# view is its value when the copy's window lies in the buffer.
+
+# a word list's first n words are no longer than it
+def ltk(n: Nat, +W: List<&2, U32>) -> {{Nat.is_le(VB.len(VS.wtake(n, W)), VB.len(W)) == True{{}} : Bool}}:
+  match n W:
+    case 0n _: Order.zero_le(VB.len(W))
+    case 1n+ +p Nil{{}}: {{==}}
+    case 1n+ +p Con{{+h, +r}}: ltk(p, r)
+
+# a sync committee's pubkeys copied from byte y: the copy's view is the window's value
+def pkc({HY(24576)}) -> {{E48.eview(O.Words{{FD.array__thaw(U32, {CT(24576, "13n")}), 24576}}) == S.Sequence{{AV.ch12(UR.RWS(6144n, t, y))}} : S.Value}}:
+  +ew = BX.ctw(d, t, off, 24576, 13n, y, 6144n, eo, hd, hw, pf, {{==}}, FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {{==}}))
+  +hc1 = FD.logic__subst(List<&2, U32>, z => {{Nat.is_le(VB.len(z), VB.len({S6})) == True{{}} : Bool}}, VS.wtake(6144n, {S6}), UR.RWS(6144n, t, y), ew, ltk(6144n, {S6}))
+  +hc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.len({S6})) == True{{}} : Bool}}, VB.len(UR.RWS(6144n, t, y)), 6144n, UR.rws_len(6144n, t, y), hc1)
+  EW.pkg({CT(24576, "13n")}, UR.RWS(6144n, t, y), hc, ew)
+
+# vfx_SyncCommittee at y
+def fxsc({HY(24576)}) -> {{RT.v_SyncCommittee(FSC.OBJ(d, t, y)) == FSC.VAL(t, y) : S.Value}}:
+  +e1 = Equal.trans(S.Value, E48.eview(O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, y, 24576, 13n)), 24576}}), E48.eview(O.Words{{FD.array__thaw(U32, {CT(24576, "13n")}), 24576}}), S.Sequence{{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))}},
+    Equal.cong(FD.array__Tree<U32>, S.Value, z => E48.eview(O.Words{{FD.array__thaw(U32, z), 24576}}), VXB.CTN(d, t, y, 24576, 13n), {CT(24576, "13n")}, Equal.sym(FD.array__Tree<U32>, {CT(24576, "13n")}, VXB.CTN(d, t, y, 24576, 13n), VXB.ct_n(d, t, off, y, 24576, 13n, eo))),
+    Equal.trans(S.Value, E48.eview(O.Words{{FD.array__thaw(U32, {CT(24576, "13n")}), 24576}}), S.Sequence{{AV.ch12(UR.RWS(6144n, t, y))}}, S.Sequence{{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))}},
+      pkc(d, t, off, y, eo, hd, hw, pf),
+      Equal.cong(Nat, S.Value, z => S.Sequence{{AV.ch12(UR.RWS(z, t, y))}}, 6144n, VXG.CNT(y, 6144n), Equal.sym(Nat, VXG.CNT(y, 6144n), 6144n, VXG.cnt_eq(y, 6144n)))))
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RN.v_b48({b48}), S.EmptyItems{{}}}}}}}}, E48.eview(O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, y, 24576, 13n)), 24576}}), S.Sequence{{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))}}, e1)
+
+''' + '\n'.join(pvs) + f'''
+# vfx_SyncAggregate at y (its bits: e2e_bvh)
+def fxsa(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> {{RN.v_SyncAggregate(FSA.OBJ(d, t, y)) == FSA.VAL(t, y) : S.Value}}:
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RN.v_b96({b96}), S.EmptyItems{{}}}}}}}}, RN.v_bv512({bv.group(0)}), S.BitsValue{{FB.bitsof([{bv.group(1)}])}}, BV.bvh512({bv.group(1)}))
+'''
+SUPPORT_OUT['e2e_fx.bend'] = fx_text()
+_UEW = lambda o, e, h1, h2: f'W.eoW(d, t, len, x, off, len, eo, hd, hw, pf, {o}, {e}, {h1}, {h2})'
+_UHW = lambda o, e, h1, h2: f'W.hwj(d, t, len, x, off, len, eo, hd, hw, pf, {o}, {e}, {h1}, {h2})'
+_UFX = lambda c, s_: (f'W.eocX(d, t, len, x, off, len, eo, hd, hw, pf, hF, {c}, U32.to_nat({c}), {{==}}, {{==}}), hd, '
+                      f'W.roomFX(d, t, len, x, off, len, eo, hd, hw, pf, hF, U32.to_nat({c}), U32.to_nat({s_}), {{==}}), pf')
+SUPPORT_OUT['e2e_vbx_LightClientUpdate.bend'] = vbx_module('LightClientUpdate', 'var_winx_LightClientUpdate', [
+    {'obj': 'CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))', 'ty': 'FuluLightClientHeader_d.LightClientHeader', 'view': 'RT.v_LightClientHeader', 'vty': 'S.Value',
+     'xvt': 'CH0.VALw(t, XJ0(t, x), LJ0(t, x))',
+     'pf': f'YV.vb(d, t, W.XJ0(t, x), W.FJ0(off, t, x), W.LJ0(t, x), {_UEW("W.O0(t, x)", "W.O1(t, x)", "r1", "r2")}, hd, {_UHW("W.O0(t, x)", "W.O1(t, x)", "r1", "r2")}, pf, h3)'},
+    {'obj': 'FX_SyncCommittee.OBJ(d, t, Nat.add(x, U32.to_nat(4)))', 'ty': 'FuluSyncCommittee_d.SyncCommittee', 'view': 'RT.v_SyncCommittee', 'vty': 'S.Value',
+     'xvt': 'FX_SyncCommittee.VAL(t, Nat.add(x, U32.to_nat(4)))', 'pf': f'FXV.fxsc(d, t, U32.add(off, 4), Nat.add(x, U32.to_nat(4)), {_UFX(4, 24576)})'},
+    {'obj': 'FX_v6_b32.OBJ(d, t, Nat.add(x, U32.to_nat(24628)))', 'ty': 'O.Words', 'view': 'PV.pview', 'vty': 'S.Value',
+     'xvt': 'FX_v6_b32.VAL(t, Nat.add(x, U32.to_nat(24628)))', 'pf': f'FXV.fxpv48(d, t, U32.add(off, 24628), Nat.add(x, U32.to_nat(24628)), {_UFX(24628, 192)})'},
+    {'obj': 'CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))', 'ty': 'FuluLightClientHeader_d.LightClientHeader', 'view': 'RT.v_LightClientHeader', 'vty': 'S.Value',
+     'xvt': 'CH1.VALw(t, XJ1(t, x), LJ1(t, x, len))',
+     'pf': f'YV.vb(d, t, W.XJ1(t, x), W.FJ1(off, t, x), W.LJ1(t, x, len), {_UEW("W.O1(t, x)", "len", "r2", "FD.nat__le_refl(U32.to_nat(len))")}, hd, {_UHW("W.O1(t, x)", "len", "r2", "FD.nat__le_refl(U32.to_nat(len))")}, pf, h4)'},
+    {'obj': 'FX_v7_b32.OBJ(d, t, Nat.add(x, U32.to_nat(24824)))', 'ty': 'O.Words', 'view': 'PV.pview', 'vty': 'S.Value',
+     'xvt': 'FX_v7_b32.VAL(t, Nat.add(x, U32.to_nat(24824)))', 'pf': f'FXV.fxpv56(d, t, U32.add(off, 24824), Nat.add(x, U32.to_nat(24824)), {_UFX(24824, 224)})'},
+    {'obj': 'FX_SyncAggregate_bx.OBJ(d, t, Nat.add(x, U32.to_nat(25048)))', 'ty': 'FuluSyncAggregate_d.SyncAggregate', 'view': 'RN.v_SyncAggregate', 'vty': 'S.Value',
+     'xvt': 'FX_SyncAggregate_bx.VAL(t, Nat.add(x, U32.to_nat(25048)))', 'pf': 'FXV.fxsa(d, t, Nat.add(x, U32.to_nat(25048)))'}],
+    ['+hF = W.hFc(t, x, off, len, hchk)', '+r1 = W.r10(t, x, off, len, hchk)', '+r2 = W.r20(t, x, off, len, hchk)',
+     '+h3 = W.it3(t, x, off, len, hchk)', '+h4 = W.it4(t, x, off, len, hchk)'],
+    ['import ./e2e_vbx_LightClientHeader.bend as YV', 'import ./e2e_fx.bend as FXV', 'import ../proofs/obj/root_names.bend as RN'])
+VDEC_VIEWS['LightClientUpdate'] = vdec_bx('LightClientUpdate', 'e2e_vbx_LightClientUpdate')
