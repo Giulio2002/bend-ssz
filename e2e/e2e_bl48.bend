@@ -15,7 +15,7 @@ import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vua_rd.bend as UR
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/vbytes.bend as VYS
 import ../proofs/obj/elems48.bend as E48

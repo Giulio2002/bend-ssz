@@ -19,11 +19,13 @@ import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
-import ./words_obj.bend as WO
+import ./words_root_light.bend as WR_L
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./list_obj.bend as LO
 import ./ulist_obj.bend as UL
 import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB_L
 import ./nat_facts.bend as NF
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
@@ -134,46 +136,46 @@ law pc1:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(k, xs) == True{} : Bool}
-  {Codec.count(PB.it1(k, xs)) == k : Nat}
+  {Codec.count(PB_L.it1(k, xs)) == k : Nat}
 def pc1(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({Codec.count(PB.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({Codec.count(PB_L.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+h, +t}:
-          %Equal.sym(Nat, Codec.count(PB.it1(c, t)), c, pc1(c, t, V.and_right(U32.is_lt(h, 256), SP.byte_scope(c, t), hs))) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, Codec.count(PB_L.it1(c, t)), c, pc1(c, t, V.and_right(U32.is_lt(h, 256), SP.byte_scope(c, t), hs))) : {1n+_ == 1n+c : Nat}
           {==}
 
 law pc2:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
-  {Codec.count(PB.it2(k, xs)) == k : Nat}
+  {Codec.count(PB_L.it2(k, xs)) == k : Nat}
 def pc2(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({Codec.count(PB.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({Codec.count(PB_L.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+x0, +t}:
           match t:
-            case Nil{}: Empty.absurd({Codec.count(PB.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(V.and_right(U32.is_lt(x0, 256), False{}, hs)))
+            case Nil{}: Empty.absurd({Codec.count(PB_L.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(V.and_right(U32.is_lt(x0, 256), False{}, hs)))
             case Con{+x1, +rest}:
               +k1 = V.and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
-              %Equal.sym(Nat, Codec.count(PB.it2(c, rest)), c, pc2(c, rest, V.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
+              %Equal.sym(Nat, Codec.count(PB_L.it2(c, rest)), c, pc2(c, rest, V.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
               {==}
 
 law hcount:
   for +k: Nat
   for +W: List<&2, U32>
   for +i: Nat
-  {Codec.count(WR.items(k, W, i)) == k : Nat}
+  {Codec.count(WR_L.items(k, W, i)) == k : Nat}
 def hcount(k, W, i):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      %Equal.sym(Nat, Codec.count(WR.items(q, W, 1n+i)), q, hcount(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
+      %Equal.sym(Nat, Codec.count(WR_L.items(q, W, 1n+i)), q, hcount(q, W, 1n+i)) : {1n+_ == 1n+q : Nat}
       {==}
 
 def cnth(o: O.Words) -> Nat: U32.to_nat(U32.shrn(WO.len(o), 5n))
@@ -184,7 +186,7 @@ def len1(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Wor
   hv
 
 def LO_len2(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +hv: {Nat.is_le(PB.cnt2(o), L) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.shrn(N, 1n)), L) == True{} : Bool}:
+    +hv: {Nat.is_le(PB_L.cnt2(o), L) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.shrn(N, 1n)), L) == True{} : Bool}:
   %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(U32.to_nat(U32.shrn(_, 1n)), L) == True{} : Bool}
   hv
 
@@ -197,7 +199,7 @@ def lenh(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Wor
 
 def hview(o: O.Words) -> S.Value:
   match o:
-    case O.Words{ws, +n}: S.Sequence{WR.items(U32.to_nat(U32.shrn(n, 5n)), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)}
+    case O.Words{ws, +n}: S.Sequence{WR_L.items(U32.to_nat(U32.shrn(n, 5n)), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)}
 
 # The object represents a value of the list schema s: byte storage of whole
 # 32-byte elements, at most the limit of them.
@@ -226,14 +228,14 @@ def lh_core(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: F.array__Tree<U32>, +N: U32, 
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
     -> RR.roots(hview(O.Words{F.array__thaw(U32, t), N}), S.ListOf{S.ByteVector{32n}, L}, [D.bytes(bdig(hl, O.Words{F.array__thaw(U32, t), N}, depth, 5n))]):
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    RR.roots(S.Sequence{WR.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 5n)))])
+    RR.roots(S.Sequence{WR_L.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 5n)))])
   %Equal.sym(Nat, O.chunks_of(N), U32.to_nat(U32.shrn(N, 5n)), chq(N, eNN)) :
-    RR.roots(S.Sequence{WR.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 5n)))])
+    RR.roots(S.Sequence{WR_L.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 5n)))])
   %MR.clist_len(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n) :
-    RR.roots(S.Sequence{WR.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 5n)))])
+    RR.roots(S.Sequence{WR_L.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)}, S.ListOf{S.ByteVector{32n}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 5n)))])
   (MD.bytes_list(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), (WR.items_roots(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), (D.bytes(MD.rtree(depth, Nat.is_lt(0n, MD.dlen(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n))), hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), 0n)),
     ((depth, (hmin, RS.at_depth_tree(L, depth, hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), hdep, UL.rw_le_l(U32.to_nat(U32.shrn(N, 5n)), MD.dlen(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), L, Equal.sym(Nat, MD.dlen(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), U32.to_nat(U32.shrn(N, 5n)), MR.clist_len(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), hvN), ehl))),
-     plen(hl, ehl, N, 5n, MD.rtree(depth, Nat.is_lt(0n, MD.dlen(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n))), hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), 0n), Codec.count(WR.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), hcount(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n))))))
+     plen(hl, ehl, N, 5n, MD.rtree(depth, Nat.is_lt(0n, MD.dlen(MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n))), hl, MR.clist(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n), 0n), Codec.count(WR_L.items(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n)), hcount(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), 0n))))))
 
 def lh_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat, +wf: LO.wfl(o),
     +eN: {U32.to_nat(WO.len(o)) == WS.e32(cnth(o)) : Nat},
@@ -305,7 +307,7 @@ def l1_lim(+N: U32, +q: Nat, +r: Nat, +L: Nat, +t: F.array__Tree<U32>,
   LR.bl_hlen(q, t, Nat.mul(L, 1n), NF.chunk_le(q, r, Nat.mul(L, 1n), h1, h32, hm))
 
 def l1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(U32.to_nat(WO.len(o)), L) == True{} : Bool}, +hmin: {Lim.minimal(Nat.div(Nat.add(Nat.mul(L, 1n), 31n), 32n), depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(PB.vview1(o), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, o, depth, 0n))]):
+    -> RR.roots(PB_L.vview1(o), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, o, depth, 0n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -316,9 +318,9 @@ def l1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat
       (+hd, +en0) = w5
       +c0 = Equal.sym(Nat, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, en0))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, _, depth, 0n))])
+        RR.roots(PB_L.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, _, depth, 0n))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, c0) :
-        RR.roots(S.Sequence{PB.it1(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, O.Words{F.array__thaw(U32, t), N}, depth, 0n))])
+        RR.roots(S.Sequence{PB_L.it1(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, O.Words{F.array__thaw(U32, t), N}, depth, 0n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 0n)))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
@@ -341,15 +343,15 @@ def l1_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat
       (+room, +slack) = w11
       +hvN = len1(o, t, N, L, eo, hv)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, _, depth, 0n))])
+        RR.roots(PB_L.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(bdig(hl, _, depth, 0n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 0n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 0n)))])
+        RR.roots(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ListOf{S.Unsigned{P.U8{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 0n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PB.pb1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n)), ((depth, (hmin, RS.at_depth_tree(Nat.div(Nat.add(Nat.mul(L, 1n), 31n), 32n), depth, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), hdep, l1_lim(N, q, r, L, t, enq, h1, h32, hvN), ehl))),
-           plen(hl, ehl, N, 0n, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), Codec.count(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))))))
+           plen(hl, ehl, N, 0n, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), Codec.count(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))))))
 
 # A list of uint8: its digest is a specification root of its elements.
 def l1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32,
@@ -357,7 +359,7 @@ def l1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
     +ok: {ok_l1(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(PB.vview1(o), s, [D.bytes(bdig(hl, o, depth, 0n))]):
+    -> RR.roots(PB_L.vview1(o), s, [D.bytes(bdig(hl, o, depth, 0n))]):
   (+wf, +hv) = rep
   +c0 = DK.and_l(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth))), ok)
   +k1 = DK.and_r(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth))), ok)
@@ -366,11 +368,11 @@ def l1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
   +c2 = DK.and_l(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth), k2)
   +c3 = DK.and_r(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth), k2)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, c0)) :
-    RR.roots(PB.vview1(o), _, [D.bytes(bdig(hl, o, depth, 0n))])
+    RR.roots(PB_L.vview1(o), _, [D.bytes(bdig(hl, o, depth, 0n))])
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Unsigned{SH.Unsigned_width(SH.ListOf_element(s))}, SH.Unsigned_shape(SH.ListOf_element(s), c1)) :
-    RR.roots(PB.vview1(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 0n))])
+    RR.roots(PB_L.vview1(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 0n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ListOf_element(s)), P.U8{}, PB.is_U8_shape(SH.Unsigned_width(SH.ListOf_element(s)), c2)) :
-    RR.roots(PB.vview1(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 0n))])
+    RR.roots(PB_L.vview1(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 0n))])
   l1_body(hl, ehl, o, SH.ListOf_limit(s), depth, wf, hv, c3, hdep)
 
 # ---- List[uint16] --------------------------------------------------
@@ -378,7 +380,7 @@ def l1_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
 # The object represents a value of the list schema s: byte storage of whole
 # elements, at most the limit of them.
 def rep_l2(o: O.Words, +s: S.Schema) -> Data:
-  DK.P2(LO.wfl(o), DK.P2({U32.to_nat(WO.len(o)) == Nat.double(PB.cnt2(o)) : Nat}, {Nat.is_le(PB.cnt2(o), SH.ListOf_limit(s)) == True{} : Bool}))
+  DK.P2(LO.wfl(o), DK.P2({U32.to_nat(WO.len(o)) == Nat.double(PB_L.cnt2(o)) : Nat}, {Nat.is_le(PB_L.cnt2(o), SH.ListOf_limit(s)) == True{} : Bool}))
 def rep_wf2(-o: O.Words, +s: S.Schema, +rep: rep_l2(o, s)) -> LO.wfl(o):
   (+wf, +r1) = rep
   wf
@@ -398,8 +400,8 @@ def l2_lim(+N: U32, +q: Nat, +r: Nat, +L: Nat, +t: F.array__Tree<U32>,
   +hm = UL.rw_le_l(Nat.double(U32.to_nat(U32.shrn(N, 1n))), Nat.add(WS.e32(q), r), Nat.mul(L, 2n), ec, hm1)
   LR.bl_hlen(q, t, Nat.mul(L, 2n), NF.chunk_le(q, r, Nat.mul(L, 2n), h1, h32, hm))
 
-def l2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == Nat.double(PB.cnt2(o)) : Nat}, +hv: {Nat.is_le(PB.cnt2(o), L) == True{} : Bool}, +hmin: {Lim.minimal(Nat.div(Nat.add(Nat.mul(L, 2n), 31n), 32n), depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(PB.vview2(o), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, o, depth, 1n))]):
+def l2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat, +wf: LO.wfl(o), +eN: {U32.to_nat(WO.len(o)) == Nat.double(PB_L.cnt2(o)) : Nat}, +hv: {Nat.is_le(PB_L.cnt2(o), L) == True{} : Bool}, +hmin: {Lim.minimal(Nat.div(Nat.add(Nat.mul(L, 2n), 31n), 32n), depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
+    -> RR.roots(PB_L.vview2(o), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, o, depth, 1n))]):
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -411,9 +413,9 @@ def l2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat
       +eNN = PB.eq_n2(o, t, N, eo, eN)
       +c0 = dbl_zero(U32.to_nat(U32.shrn(N, 1n)), Equal.trans(Nat, 0n, U32.to_nat(N), Nat.double(U32.to_nat(U32.shrn(N, 1n))), Equal.sym(Nat, U32.to_nat(N), 0n, en0), eNN))
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, _, depth, 1n))])
+        RR.roots(PB_L.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, _, depth, 1n))])
       %Equal.sym(Nat, U32.to_nat(U32.shrn(N, 1n)), 0n, c0) :
-        RR.roots(S.Sequence{PB.it2(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, O.Words{F.array__thaw(U32, t), N}, depth, 1n))])
+        RR.roots(S.Sequence{PB_L.it2(_, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, O.Words{F.array__thaw(U32, t), N}, depth, 1n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
         RR.roots(S.Sequence{S.EmptyItems{}}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 1n)))])
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
@@ -437,15 +439,15 @@ def l2_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +L: Nat, +depth: Nat
       +eNN = PB.eq_n2(o, t, N, eo, eN)
       +hvN = LO_len2(o, t, N, L, eo, hv)
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-        RR.roots(PB.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, _, depth, 1n))])
+        RR.roots(PB_L.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(bdig(hl, _, depth, 1n))])
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        RR.roots(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 1n)))])
+        RR.roots(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n), U32.shrn(N, 1n)))])
       %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
-        RR.roots(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 1n)))])
+        RR.roots(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))}, S.ListOf{S.Unsigned{P.U16{}}, L}, [D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n), U32.shrn(N, 1n)))])
       (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
         ((WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), (PB.v2_enc(N, q, r, dw, t, eNN, enq, h32, pf, room), UL.ul_pack(N, q, r, dw, t, enq, h1, h32, pf, room, slack))),
          (D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n)), ((depth, (hmin, RS.at_depth_tree(Nat.div(Nat.add(Nat.mul(L, 2n), 31n), 32n), depth, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), hdep, l2_lim(N, q, r, L, t, eNN, enq, h1, h32, hvN), ehl))),
-           plen(hl, ehl, N, 1n, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), Codec.count(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.v2_scope(N, q, r, dw, t, eNN, enq, h32, pf, room)))))))
+           plen(hl, ehl, N, 1n, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), Codec.count(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), pc2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.v2_scope(N, q, r, dw, t, eNN, enq, h32, pf, room)))))))
 
 # A list of uint16: its digest is a specification root of its elements.
 def l2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32,
@@ -453,7 +455,7 @@ def l2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
     +ok: {ok_l2(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(PB.vview2(o), s, [D.bytes(bdig(hl, o, depth, 1n))]):
+    -> RR.roots(PB_L.vview2(o), s, [D.bytes(bdig(hl, o, depth, 1n))]):
   (+wf, +r1) = rep
   (+eN, +hv) = r1
   +c0 = DK.and_l(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth))), ok)
@@ -463,10 +465,10 @@ def l2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
   +c2 = DK.and_l(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth), k2)
   +c3 = DK.and_r(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth), k2)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, c0)) :
-    RR.roots(PB.vview2(o), _, [D.bytes(bdig(hl, o, depth, 1n))])
+    RR.roots(PB_L.vview2(o), _, [D.bytes(bdig(hl, o, depth, 1n))])
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Unsigned{SH.Unsigned_width(SH.ListOf_element(s))}, SH.Unsigned_shape(SH.ListOf_element(s), c1)) :
-    RR.roots(PB.vview2(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 1n))])
+    RR.roots(PB_L.vview2(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 1n))])
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ListOf_element(s)), P.U16{}, PB.is_U16_shape(SH.Unsigned_width(SH.ListOf_element(s)), c2)) :
-    RR.roots(PB.vview2(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 1n))])
+    RR.roots(PB_L.vview2(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}, [D.bytes(bdig(hl, o, depth, 1n))])
   l2_body(hl, ehl, o, SH.ListOf_limit(s), depth, wf, eN, hv, c3, hdep)
 

@@ -4,7 +4,7 @@ import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/compact/bits.bend as BT
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/packed_bytes.bend as PB
+import ../proofs/obj/packed_bytes_light.bend as PB
 import ../proofs/obj/sub_pack.bend as SP2
 import ../proofs/obj/vrejb.bend as VRB
 import ../proofs/u32_order.bend as UO

@@ -22,7 +22,7 @@ import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../types/vec_uint16_3_decode_ssz_generated.bend as vec_uint16_3_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/packed_bytes.bend as M0_PB
+import ../proofs/obj/packed_bytes_light.bend as M0_PB
 import ../proofs/obj/sub_Gt19F04F79B8.bend as M2
 import ../proofs/obj/fixrej_g1.bend as M3
 import ../proofs/obj/sub_pack.bend as M2_SP2

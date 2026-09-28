@@ -3,7 +3,7 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/big_var_winp_bool.bend as WB
 import ../proofs/obj/vdepth.bend as VD

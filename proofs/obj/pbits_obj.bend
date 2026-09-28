@@ -13,8 +13,8 @@ import ../../spec/primitives.bend as SP
 import ../../proofs/nat_order.bend as Order
 import ../compact/found.bend as F
 import ./words_spec.bend as WS
-import ./words_root.bend as WR
-import ./words_obj.bend as WO
+import ./words_root_light.bend as WR
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK

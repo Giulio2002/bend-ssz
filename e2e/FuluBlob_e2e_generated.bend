@@ -12,7 +12,7 @@ import ../spec/primitives.bend as SP
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/arr_copy.bend as AC

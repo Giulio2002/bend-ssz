@@ -22,7 +22,8 @@ import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
-import ./words_obj.bend as WO
+import ./words_root_light.bend as WR_L
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./list_obj.bend as LO
 import ./nat_facts.bend as NF
@@ -252,7 +253,7 @@ def cap_q(+q: Nat, +dw: Nat, +t: F.array__Tree<U32>, +pf: {F.array__perfect(U32,
     +room: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool})
     -> {Nat.is_le(O.e8(1n+q), F.spec_common__length(U32, F.array__slots(U32, t))) == True{} : Bool}:
   %MR.add_zero(1n+q) : {Nat.is_le(O.e8(_), F.spec_common__length(U32, F.array__slots(U32, t))) == True{} : Bool}
-  WR.cap_at(q, dw, t, pf, room)
+  WR_L.cap_at(q, dw, t, pf, room)
 
 def e8_mono(+a: Nat, +b: Nat, +e: {Nat.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(O.e8(a), O.e8(b)) == True{} : Bool}:
   Order.double_monotone(Nat.double(Nat.double(a)), Nat.double(Nat.double(b)), Order.double_monotone(Nat.double(a), Nat.double(b), Order.double_monotone(a, b, e)))
@@ -292,10 +293,10 @@ def ul_pack(+N: U32, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tree<U32>,
   %Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq) :
     {Pack.pack(WS.btake(_, FX.limbs(F.array__slots(U32, t)))) == Some{MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n))} : Maybe<&2, +List<+List<U32>>>}
   %Equal.sym(Bool, SP.bytes_domain(WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t)))), True{},
-      WS.scope_dom(Nat.add(WS.e32(q), r), WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t))), WS.chunk_scope(q, r, F.array__slots(U32, t), 0n, h32, WR.cap_at(q, dw, t, pf, room)))) :
+      WS.scope_dom(Nat.add(WS.e32(q), r), WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t))), WS.chunk_scope(q, r, F.array__slots(U32, t), 0n, h32, WR_L.cap_at(q, dw, t, pf, room)))) :
     {Pack.checked(_, WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t)))) == Some{MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n))} : Maybe<&2, +List<+List<U32>>>}
   %Equal.sym(+List<+List<U32>>, Pack.scan(WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t))), 31n, [], []), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
-      WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, WR.cap_at(q, dw, t, pf, room), slack)) :
+      WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, WR_L.cap_at(q, dw, t, pf, room), slack)) :
     {Some{_} == Some{MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n))} : Maybe<&2, +List<+List<U32>>>}
   {==}
 

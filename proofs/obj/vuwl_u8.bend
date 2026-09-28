@@ -42,14 +42,19 @@ def hq1(+q: Nat, +r: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +h
     case 4n+ +t: Empty.absurd({Nat.is_lt(q, VB.pw(dd)) == True{} : Bool}, FD.nat__lt_zero_absurd(t, hr))
 
 # T.u8_put (O.w8) at any byte position.
-def w8_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def w8_anyW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}:
   %Equal.sym(U32, O.shl_bytes(U32.and(x, 255), U32.and(X, 3)), VWB.SHB(U32.and(x, 255), U32.to_nat(U32.and(X, 3))), VWB.shb_u(U32.and(x, 255), X)) :
     {O.or_word(FD.array__thaw(U32, D), U32.shrn(X, 2n), _) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}
   %Equal.sym(Nat, U32.to_nat(U32.and(X, 3)), r, Pair.snd({U32.to_nat(U32.shrn(X, 2n)) == q : Nat}, {U32.to_nat(U32.and(X, 3)) == r : Nat}, UW.ua_pair(X, q, r, e, hr))) :
     {O.or_word(FD.array__thaw(U32, D), U32.shrn(X, 2n), VWB.SHB(U32.and(x, 255), _)) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}
-  UW.orw_rt(dd, D, U32.shrn(X, 2n), q, VWB.SHB(U32.and(x, 255), r), UW.ua_q(X, q, r, e, hr), FD.nat__lt_trans(dd, 29n, 32n, hd, {==}), hq1(q, r, dd, hr, hl), pf)
+  UW.orw_rt(dd, D, U32.shrn(X, 2n), q, VWB.SHB(U32.and(x, 255), r), UW.ua_q(X, q, r, e, hr), FD.nat__lt_trans(dd, 31n, 32n, hd, {==}), hq1(q, r, dd, hr, hl), pf)
+
+def w8_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}:
+  w8_anyW(dd, D, X, q, r, x, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf)
 
 # 4 q + r is a byte of the tree.
 def hxP(+q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hq: {Nat.is_lt(q, VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
@@ -58,8 +63,8 @@ def hxP(+q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +hr: {Nat.is_lt(r, 
     FD.nat__lt_le(Nat.add(A.quad(q), r), A.quad(VB.pw(dd)), bnd(q, r, VB.pw(dd), hq, hr)))
 
 # Its bytes: the byte x & 255 at X, when the byte there was zero.
-def w8_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def w8_any_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(1n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
     -> {UA.BYT(W8X(r, dd, D, q, x)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), [U32.and(x, 255)]) : +List<U32>}:
   +B = UA.BYT(D)
@@ -75,3 +80,9 @@ def w8_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +
     Equal.trans(+List<U32>, VWB.ORB(B, P, v), VWB.ORB(UW.SPL(B, P, [0]), P, v), UW.SPL(B, P, [v]), e2,
       Equal.trans(+List<U32>, VWB.ORB(UW.SPL(B, P, [0]), P, v), UW.SPL(B, P, [U32.or(0, v)]), UW.SPL(B, P, [v]), e3,
         Equal.cong(U32, +List<U32>, z => UW.SPL(B, P, [z]), U32.or(0, v), v, VBE.zero_or(v)))))
+
+def w8_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(1n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
+    -> {UA.BYT(W8X(r, dd, D, q, x)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), [U32.and(x, 255)]) : +List<U32>}:
+  w8_any_bytesW(dd, D, X, q, r, x, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, hz)

@@ -2,7 +2,7 @@ import Base
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/packed_obj.bend as PK
+import ../proofs/obj/packed_obj_light.bend as PK
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/vdepth.bend as VD

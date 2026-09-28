@@ -8,7 +8,7 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ./e2e_support.bend as E
 import ../types/schema.bend as S
-import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/words_root_light.bend as WR
 import ../types/FuluFinalityBranch_hashtreeroot_generated.bend as FuluFinalityBranch_h
 import ../types/FuluCurrentSyncCommitteeBranch_hashtreeroot_generated.bend as FuluCurrentSyncCommitteeBranch_h
 import ../types/FuluExecutionBranch_hashtreeroot_generated.bend as FuluExecutionBranch_h

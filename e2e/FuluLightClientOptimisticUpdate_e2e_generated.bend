@@ -27,7 +27,7 @@ import ../proofs/obj/spec_fixed.bend as SF
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types.bend as RT

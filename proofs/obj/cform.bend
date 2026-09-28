@@ -2,7 +2,7 @@ import Base
 import ../compact/found.bend as F
 import ../../src/obj.bend as O
 import ./dk.bend as DK
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_obj.bend as LO
 import ./pv_obj.bend as PV
 

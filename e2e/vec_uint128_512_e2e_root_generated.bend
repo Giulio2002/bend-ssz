@@ -6,8 +6,8 @@ import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/packed_obj.bend as PK
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/obj/words_obj_light.bend as WO
 import ./e2e_support.bend as E
 import ../types/vec_uint128_512_hashtreeroot_generated.bend as vec_uint128_512_h
 import ../types/vec_uint128_513_hashtreeroot_generated.bend as vec_uint128_513_h

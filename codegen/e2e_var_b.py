@@ -224,6 +224,7 @@ def {R}_e2e_encode(-o: O.Words, +rep: LO.rep_bl(o, Spec.{X}()), +hs: BL.sdk(o, {
 # variable parts as holes (OBJH) views as XVw over the holes' values (vz: rewrite each hole's view,
 # then evaluate the fixed fields); vw fills the holes.
 import re as _re
+from light_split import unlight as _unlight   # parse modules as before their light split (codegen/light_split.py)
 import json
 from pathlib import Path as _Path
 _OBJ = _Path(__file__).resolve().parents[1] / 'proofs/obj'
@@ -261,7 +262,7 @@ def _qualw(t, qual):
 
 def vw_module(X, win, holes, xvp, extra_imports=(), vhyps=()):
     """xvp(ys): XVw's parameters after (t, i), over the param holes' values (in order)."""
-    text = (_OBJ / f'{win}.bend').read_text()
+    text = _unlight((_OBJ / f'{win}.bend').read_text())
     _, oty, body = _defline(text, 'OBJw')
     xps, _, xbody = _defline(text, 'XVw')
     holes = list(holes) + _bv_holes(body, xbody)
@@ -284,7 +285,7 @@ def vw_module(X, win, holes, xvp, extra_imports=(), vhyps=()):
             f'import ../proofs/obj/{win}.bend as W', 'import ./e2e_blist.bend as BL'] + list(extra_imports)
     if inb:
         imps += ['import ../proofs/obj/spec_bits.bend as FB', 'import ../proofs/obj/root_names.bend as RN', 'import ./e2e_bvh.bend as BV']
-    imps += _d_imports(text + '\n' + _RT.read_text(), body + oty + xbody + ' '.join(h['ty'] for h in holes))
+    imps += _d_imports(text + '\n' + _unlight(_RT.read_text()), body + oty + xbody + ' '.join(h['ty'] for h in holes))
     extra_x = [n for n, _ in _params(xps)][2:]
     zp = ', '.join(f'{z}: {h["ty"]}' for z, h in zip(zs, holes))
     L = ['\n'.join(dict.fromkeys(imps)), '',
@@ -387,7 +388,7 @@ _rt_cache = {}
 
 def rt_def(name):
     if 'text' not in _rt_cache:
-        _rt_cache['text'] = _RT.read_text() + '\n' + _RS.read_text()
+        _rt_cache['text'] = _unlight(_RT.read_text()) + '\n' + _unlight(_RS.read_text())
     t = _rt_cache['text']
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', t, _re.M)
     if m:
@@ -400,7 +401,7 @@ def rt_def(name):
 # names the text is requalified, and root_state's type imports added
 def _st_names():
     if 'st' not in _rt_cache:
-        _rt_cache['st'] = set(_re.findall(r'^(?:def|law|type) (\w+)', _RS.read_text(), _re.M))
+        _rt_cache['st'] = set(_re.findall(r'^(?:def|law|type) (\w+)', _unlight(_RS.read_text()), _re.M))
     return _rt_cache['st']
 
 
@@ -412,7 +413,7 @@ def st_qualify(text):
     head, _, rest = text.partition('\n\n')
     imps = head.splitlines()
     add = ['import ../proofs/obj/root_state.bend as ST']
-    add += [l.replace('import ../../', 'import ../').replace('import ./', 'import ../proofs/obj/') for l in _RS.read_text().splitlines()
+    add += [l.replace('import ../../', 'import ../').replace('import ./', 'import ../proofs/obj/') for l in _unlight(_RS.read_text()).splitlines()
             if _re.match(r'import (\.\./\.\./types/\S+ as \w+_d|\./\w+\.bend as (BLI|UL|PK|PV))$', l) and (l.split()[-1] + '.') in rest]
     imps += [a for a in add if a not in imps]
     return '\n'.join(imps) + '\n\n' + rest
@@ -467,7 +468,7 @@ def field_kind(fn):
             return ('alist', (m.group(1), m.group(2), 'FD.array__thaw(' + m.group(1) + ', {t})'))
         m = _re.match(r'DK\.P2\(DK\.Ex\(F\.array__Tree<(.*?)>, t => .*?\{o == ([\w.]+)\{(am_\w+)\(t\), N\}', body, _re.S)
         if m:   # the array is a map of the element tree (am_*); root_types' own types qualified
-            rtt = set(_re.findall(r'^type (\w+)', _RT.read_text(), _re.M))
+            rtt = set(_re.findall(r'^type (\w+)', _unlight(_RT.read_text()), _re.M))
             ET = _re.sub(r'(?<![\w.])(' + '|'.join(sorted(rtt, key=len, reverse=True)) + r')(?![\w])', r'RT.\1', m.group(1)) if rtt else m.group(1)
             return ('alist', (ET, m.group(2), 'RT.' + m.group(3) + '({t})'))
         return ('rec', fn[4:])
@@ -579,7 +580,7 @@ def vroot_container(R, X):
         [f'  rt2(h, o, rep, {", ".join(a)}, eo)', '', '# (iv)',
          f'def {R}_e2e_root(h: B.Buf, -o: {OT}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G("o")}:',
          f'  rt3(h, o, rep, RB.nw_{X}(o, Spec.{X}(), rep))'])
-    rtt = _RT.read_text()
+    rtt = _unlight(_RT.read_text())
     dimps = [l.replace('import ../../', 'import ../') for l in rtt.splitlines()
              if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
     imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
@@ -746,7 +747,7 @@ def _flat_fields(body):
 
 def _view_fields(X):
     body = rt_def('v_' + X)[2]
-    t = _RT.read_text()
+    t = _unlight(_RT.read_text())
     m = _re.search(r'^def v_' + X + r'\(o: .*?\) -> S\.Value:\n((?:  .*\n)+)', t, _re.M)
     lines = m.group(1).rstrip('\n').split('\n')
     expr = lines[-1].strip()
@@ -787,7 +788,7 @@ def _rel(l):
 
 
 def ve_module(X, enc):
-    text = (_OBJ / f'{enc}.bend').read_text()
+    text = _unlight((_OBJ / f'{enc}.bend').read_text())
     ps_o, oty, obody = _def_full(text, 'OBJE')
     ps_xe, _, xebody = _def_full(text, 'XE')
     ps_xey, _, xeybody = _def_full(text, 'XEY')
@@ -844,7 +845,7 @@ def ve_module(X, enc):
             val = f'{al}.XE({args})'
             k = xargs.index(val)
             sub_hyps = VE_HYPS[vmod]
-            sub_p = [n for n, _ in _params(_def_full((_OBJ / f'{sub}.bend').read_text(), 'OBJE')[0])]
+            sub_p = [n for n, _ in _params(_def_full(_unlight((_OBJ / f'{sub}.bend').read_text()), 'OBJE')[0])]
             amap = dict(zip(sub_p, split_args(args)))
             hs = []
             for hn, ht in sub_hyps:
@@ -918,7 +919,7 @@ def ve_module(X, enc):
     body = _re.sub(r'(?<![\w.])(' + '|'.join(sorted(own, key=len, reverse=True)) + r')\(', lambda m: m.group(0) if m.group(1) in ('OBJEH', 'XEYH', 'vz', 've') else f'EN.{m.group(0)}', body)
     enc_imps = [_rel(l) for l in text.splitlines() if l.startswith('import ') and l != 'import Base' and _re.search(r'(?<![\w.])' + l.split()[-1] + r'\.', body)]
     have = {l.split()[-1] for l in enc_imps}
-    enc_imps += [l.replace('import ../../', 'import ../') for l in _RT.read_text().splitlines()
+    enc_imps += [l.replace('import ../../', 'import ../') for l in _unlight(_RT.read_text()).splitlines()
                  if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and l.split()[-1] not in have and (l.split()[-1] + '.') in body]
     imps = ['import Base'] + enc_imps + [f'import ../proofs/obj/{enc}.bend as EN', 'import ../proofs/obj/root_types.bend as RT',
             'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/pv_obj.bend as PV', 'import ../proofs/obj/vdepth.bend as VD',
@@ -982,7 +983,7 @@ VE_HYPS = {}
 class EncX:
     def __init__(self, X, enc):
         self.X, self.enc = X, enc
-        self.text = (_OBJ / f'{enc}.bend').read_text()
+        self.text = _unlight((_OBJ / f'{enc}.bend').read_text())
         ps, _, body = _def_full(self.text, 'OBJE')
         self.P = _params(ps)
         self.pn = [n for n, _ in self.P]
@@ -1069,7 +1070,7 @@ class EncX:
                 m = _re.match(r'O\.BSome\{(\w+)\.OBJE\((.*)\), O\.BNone\{\}\}$', of)
                 al, args = m.groups()
                 subenc = _re.search(r'^import \./(\S+)\.bend as ' + al + '$', text, _re.M).group(1)
-                subtext = (_OBJ / f'{subenc}.bend').read_text()
+                subtext = _unlight((_OBJ / f'{subenc}.bend').read_text())
                 sps, _, sbody = _def_full(subtext, 'OBJE')
                 spn = [n for n, _ in _params(sps)]
                 sa = split_args(args)
@@ -1096,7 +1097,7 @@ class EncX:
                 m = _re.match(r'(\w+)\.OBJE\((.*)\)$', of)
                 al, args = m.groups()
                 subenc = _re.search(r'^import \./(\S+)\.bend as ' + al + '$', text, _re.M).group(1)
-                subtext = (_OBJ / f'{subenc}.bend').read_text()
+                subtext = _unlight((_OBJ / f'{subenc}.bend').read_text())
                 sps, _, sbody = _def_full(subtext, 'OBJE')
                 amap2 = {a_: amap.get(b_, b_) for a_, b_ in zip([n for n, _ in _params(sps)], split_args(args))}
                 isch = _re.sub(r'(?<![\w.])s(?![\w])', SC, sch)
@@ -1213,7 +1214,7 @@ def core({", ".join(f"+{n}: {t}" for n, t in ex.P)}, {", ".join(f"+{n}: {t}" for
     have = {l.split()[-1] for l in imps}
     dimps += [_rel(l) for l in ex.text.splitlines() if l.startswith('import ./') and l.split()[-1] not in have
               and _re.search(r'(?<![\w.])' + l.split()[-1] + r'\.', OUT)]
-    rtt = _RT.read_text()
+    rtt = _unlight(_RT.read_text())
     dimps += [l.replace('import ../../', 'import ../') for l in rtt.splitlines()
               if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
     return '\n'.join(dict.fromkeys(imps + dimps)) + f'''
@@ -1492,7 +1493,7 @@ def rb_text(names, state=False):
         A.append('  mka_' + nm + '(w, t, N, eo)\n')
     body = '\n'.join(A + L)
     body = _re.sub(r'(?<![\w.])(pj_\w+|pjb_\w+)\(', r'RT.\1(', body).replace('RT.RT.', 'RT.')
-    rtt = _RT.read_text()
+    rtt = _unlight(_RT.read_text())
     dimps = [l.replace('import ../../', 'import ../') for l in rtt.splitlines()
              if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
     head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
@@ -1780,7 +1781,7 @@ def venc_plist_b(R, X):
 
 
 def vl_module(win):
-    text = (_OBJ / f'{win}.bend').read_text()
+    text = _unlight((_OBJ / f'{win}.bend').read_text())
     E = _re.search(r'^def RT\(k: Nat, \+j: Nat, \+dd: Nat, D: FD\.array__Tree<(.*?)>, ', text, _re.M).group(1)
     R = int(_re.search(r'VRL\.pos\(j, (\d+)n, x\)', text).group(1))
     L = _re.search(r'_d\.(l\d+_\w+)_Seq:', text).group(1)
@@ -1822,7 +1823,7 @@ def _def_any(text, name):
 
 
 def vwx_module(X, win):
-    text = (_OBJ / f'{win}.bend').read_text()
+    text = _unlight((_OBJ / f'{win}.bend').read_text())
     _, oty, obody = _def_any(text, 'OBJw')
     _, _, vbody = _def_any(text, 'VALw')
     kids = _re.findall(r'(\w+)\.OBJw\(d, t, ((?:[^()]|\([^()]*\))*)\)', obody)
@@ -1847,7 +1848,7 @@ def vwx_module(X, win):
         vw = [v for v in views if _re.search(r'\(x' + str(k) + r'\)$', v)] or [views[k]]
         view = _re.match(r'(\w+)\(', vw[0]).group(1)
         view = view if '.' in view else f'RT.{view}'
-        ty = _re.search(r'^def OBJw\(.*?\) -> (.*?):', (_OBJ / f'{mod}.bend').read_text(), _re.M).group(1)
+        ty = _re.search(r'^def OBJw\(.*?\) -> (.*?):', _unlight((_OBJ / f'{mod}.bend').read_text()), _re.M).group(1)
         ty = ty if not _re.match(r'\w+_d\.', ty) or True else ty
         chk = hname[chk_of[al]]
         q = lambda s_: _qual_w(s_, text)
@@ -1926,7 +1927,7 @@ def _rvw_pattern(text, E):
 
 def rl_module(X, rlmod, lists):
     """lists: [(L, E, ET, CT, list type)]: E the element name (RVW_E), ET its type, CT the list constructor."""
-    text = (_OBJ / f'{rlmod}.bend').read_text()
+    text = _unlight((_OBJ / f'{rlmod}.bend').read_text())
     L_ = []
     for L, E, ET, CT, LT in lists:
         body_ = _re.search(r'^def RVW_' + E + r'\(r: .*?\n((?:  .*\n)+)', text, _re.M).group(1)
@@ -1983,7 +1984,7 @@ def sda_{L}(w: {LT}, +k: Nat) -> Data:
     imps = ['import Base', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../proofs/compact/found.bend as FD',
             'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vrl.bend as VRL',
             'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN', f'import ../proofs/obj/{rlmod}.bend as RL', 'import ../src/obj.bend as O']
-    rtt = _RT.read_text()
+    rtt = _unlight(_RT.read_text())
     imps += [l.replace('import ../../', 'import ../') for l in rtt.splitlines() + text.splitlines()
              if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
     return '\n'.join(dict.fromkeys(imps)) + f"""
@@ -2000,7 +2001,7 @@ def sda_{L}(w: {LT}, +k: Nat) -> Data:
 def venc_rlist(R, X):
     m = json.loads((_OBJ.parents[1] / 'proofs/gate/api_map.json').read_text())['map'][X]
     enc = m['encode_eval'][0]['file'][:-5]
-    text = (_OBJ / f'{enc}.bend').read_text()
+    text = _unlight((_OBJ / f'{enc}.bend').read_text())
     sig = _re.search(r'^def encode_eval\((.*?)\)\n    -> \{', text, _re.M | _re.S).group(1)
     P = _params(' '.join(sig.split()))
     pn = [n for n, _ in P]
@@ -2215,8 +2216,8 @@ def e48v(+M: FD.array__Tree<U32>, +L: U32, +h: {Nat.is_le(Nat.add(VM.mulE(12n, E
 # the three block lists are holes (cells: e2e_chunks.celv; Bytes48 lists: e48v, their words covering them by
 # the codec's own size facts), the header box and the branch evaluate.
 def vdec_dcs(X):
-    acc = (_OBJ / f'var_codec_{X}_acc.bend').read_text()
-    dc = (_OBJ / f'var_codec_{X}.bend').read_text()
+    acc = _unlight((_OBJ / f'var_codec_{X}_acc.bend').read_text())
+    dc = _unlight((_OBJ / f'var_codec_{X}.bend').read_text())
     _, oty, obody = _def_full(acc, 'OBJ')
     _, _, vbody = _def_full(dc, 'VAL')
     own = set(_re.findall(r'^def (\w+)\(', dc, _re.M))
@@ -2295,7 +2296,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 def _dcs_enc():
     m = json.loads((_OBJ.parents[1] / 'proofs/gate/api_map.json').read_text())['map']['DataColumnSidecar']
     enc = m['encode_eval'][0]['file'][:-5]
-    text = (_OBJ / f'{enc}.bend').read_text()
+    text = _unlight((_OBJ / f'{enc}.bend').read_text())
     sig = _re.search(r'^def encode_eval\((.*?)\)\n    -> \{', text, _re.M | _re.S).group(1)
     own = sorted(set(_re.findall(r'^def (\w+)\(', text, _re.M)), key=len, reverse=True)
     P = [(n, _re.sub(r'(?<![\w.])(' + '|'.join(own) + r')\(', r'EN.\1(', t)) for n, t in _params(' '.join(sig.split()))]
@@ -2896,7 +2897,7 @@ def _balanced(s_, i):
 def vbx_module(X, win, holes, lets, extra_imports=()):
     """holes: dicts obj (text in OBJw), ty, view, vty, pf, and 'xvt' (its value's text in the inlined value; with 'wrap' / 'val': the
     value there is wrap around the view, val the view's value) or 'arg' (k: VALw's k-th XVw argument)."""
-    text = (_OBJ / f'{win}.bend').read_text()
+    text = _unlight((_OBJ / f'{win}.bend').read_text())
     _, oty, obody = _def_any(text, 'OBJw')
     _, _, vbody = _def_any(text, 'VALw')
     if _re.search(r'^def XVw\(', text, _re.M):
@@ -2950,7 +2951,7 @@ def vbx_module(X, win, holes, lets, extra_imports=()):
             'import ./e2e_bx.bend as BX'] + list(extra_imports)
     imps += [_rel(l) for l in text.splitlines() if l.startswith('import ') and l != 'import Base' and _re.search(r'(?<![\w.])' + l.split()[-1] + r'\.', body)
              and not any(i_.split()[-1] == l.split()[-1] for i_ in extra_imports)]
-    imps += _d_imports(_RT.read_text(), body + oty)
+    imps += _d_imports(_unlight(_RT.read_text()), body + oty)
     return '\n'.join(dict.fromkeys(imps)) + f'''
 
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
@@ -3001,8 +3002,8 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 
 # ---- the fixed children of var_winx windows (vfx_*: copies at a Nat offset, CTN) as views (e2e/e2e_fx.bend) ----
 def fx_text():
-    sc = (_OBJ / 'vfx_SyncCommittee.bend').read_text()
-    sa = (_OBJ / 'vfx_SyncAggregate.bend').read_text()
+    sc = _unlight((_OBJ / 'vfx_SyncCommittee.bend').read_text())
+    sa = _unlight((_OBJ / 'vfx_SyncAggregate.bend').read_text())
     ren = lambda s_: _re.sub(r'(?<![\w.])x(?![\w])', 'y', s_)
     b48 = ren(_re.search(r'FuluBytes48_d\.Bytes48\{[^{}]*\}', _def_any(sc, 'OBJ')[2]).group(0))
     sab = ren(_def_any(sa, 'OBJ')[2])
@@ -4915,8 +4916,8 @@ def venc_ep(R, X):
     SC = 'Spec.ExecutionPayload()'
     sch = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.Container_fields({SC})' + ')' * k + ')'
     pj = lambda k: f'RT.pj_{X}_{k}(o)'
-    it = (_OBJ / 'big_encx_ExecutionPayload_iface.bend').read_text()
-    en = (_OBJ / 'big_var_codec_ExecutionPayload_enc.bend').read_text()
+    it = _unlight((_OBJ / 'big_encx_ExecutionPayload_iface.bend').read_text())
+    en = _unlight((_OBJ / 'big_var_codec_ExecutionPayload_enc.bend').read_text())
     mw = _re.search(r'^type MW is Data:\n  MW\{(.*)\}$', it, _re.M).group(1)
     F = [tuple(x.strip().split(': ', 1)) for x in split_args(mw)]
     fn = [n for n, _ in F]
@@ -4930,7 +4931,7 @@ def venc_ep(R, X):
                .replace('LY.LN(EW_l16_Withdrawal.ENCL_l16_Withdrawal(A_withdrawals, N_withdrawals))', f'TX.WLL({pj(14)})'))
     assert 'm_extra_data' not in szok and 't_transactions' not in szok and 'A_withdrawals' not in szok, szok
     KLB = _re.fullmatch(r'Nat\.is_lt\(dB_logs_bloom, (\d+)n\)', okt[1]).group(1)
-    ib = (_OBJ / 'big_encx_bl32.bend').read_text()
+    ib = _unlight((_OBJ / 'big_encx_bl32.bend').read_text())
     KB = _re.search(r'Nat\.is_lt\(dw, (\d+)n\)', _re.search(r'^def OKT\(.*?\) -> Bool:\n((?:  .*\n)+)', ib, _re.M).group(1)).group(1)
     i0 = en.index('def putx0('); j0 = en.index('\n  K.putx(', i0)
     want = ('es', 'hS', 'eNW', 'nw', 'nwp', 'hd', 'hcov', 'hl0')
@@ -5525,8 +5526,8 @@ def _body(text, name):
 
 
 def _ep_bounds():
-    et = (_OBJ / 'big_encx_l1048576_bl1073741824.bend').read_text()
-    ew = (_OBJ / 'encx_l16_Withdrawal.bend').read_text()
+    et = _unlight((_OBJ / 'big_encx_l1048576_bl1073741824.bend').read_text())
+    ew = _unlight((_OBJ / 'encx_l16_Withdrawal.bend').read_text())
     wok = _band(_body(et, 'WOK'))
     okl = _band(_body(et, 'OKL'))
     okw = _band(_body(ew, 'OKL_l16_Withdrawal'))
@@ -6360,7 +6361,7 @@ VENC_PREMISE['LightClientBootstrap'] = 'rep: RT.rep_LightClientBootstrap(o, Spec
 VROOT_SHAPES['LightClientFinalityUpdate'] = vroot_container
 VROOT_SHAPES['LightClientUpdate'] = vroot_container
 SUPPORT_OUT['e2e_bx.bend'] = bx_text()
-_EPHX = (_OBJ / 'var_bytesx_ExecutionPayloadHeader.bend').read_text()
+_EPHX = _unlight((_OBJ / 'var_bytesx_ExecutionPayloadHeader.bend').read_text())
 SUPPORT_OUT['e2e_vbx_ExecutionPayloadHeader.bend'] = vbx_module('ExecutionPayloadHeader', 'var_bytesx_ExecutionPayloadHeader', [
     {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 256, 7n)), 256}', 'ty': 'O.Words', 'view': 'WO.wview', 'vty': '+List<U32>',
      'xvt': _re.search(r'F\.limbs\(\[UR\.RWN\(t, 116n\+x\).*?\]\)', _EPHX).group(0),
@@ -6371,7 +6372,7 @@ SUPPORT_OUT['e2e_vbx_ExecutionPayloadHeader.bend'] = vbx_module('ExecutionPayloa
      '+hb = W.chk_b(U32.is_le(584, len), U32.is_eq(W.SPOw(t, x), 584), W.BLW(U32.sub(len, W.SPOw(t, x))), hchk)',
      '+hc = W.chk_c(U32.is_le(584, len), U32.is_eq(W.SPOw(t, x), 584), W.BLW(U32.sub(len, W.SPOw(t, x))), hchk)',
      '+hx = FD.logic__subst(U32, z => {W.BLW(U32.sub(len, z)) == True{} : Bool}, W.SPOw(t, x), 584, FD.u32alg__eq_of(W.SPOw(t, x), 584, hb), hc)'])
-_LCHX = (_OBJ / 'var_bytesx_LightClientHeader.bend').read_text()
+_LCHX = _unlight((_OBJ / 'var_bytesx_LightClientHeader.bend').read_text())
 SUPPORT_OUT['e2e_vbx_LightClientHeader.bend'] = vbx_module('LightClientHeader', 'var_bytesx_LightClientHeader', [
     {'obj': 'YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len))', 'ty': 'FuluExecutionPayloadHeader_d.ExecutionPayloadHeader', 'view': 'RT.v_ExecutionPayloadHeader',
      'vty': 'S.Value', 'arg': 0,
@@ -6382,7 +6383,7 @@ SUPPORT_OUT['e2e_vbx_LightClientHeader.bend'] = vbx_module('LightClientHeader', 
     ['+ha = W.chk_a(U32.is_le(244, len), U32.is_eq(W.SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), W.LL(len)), hchk)',
      '+hc = W.chk_c(U32.is_le(244, len), U32.is_eq(W.SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), W.LL(len)), hchk)'],
     ['import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as YW', 'import ./e2e_vbx_ExecutionPayloadHeader.bend as YV'])
-_FUX = (_OBJ / 'var_bytesx_LightClientFinalityUpdate.bend').read_text()
+_FUX = _unlight((_OBJ / 'var_bytesx_LightClientFinalityUpdate.bend').read_text())
 _FU_BV = _re.search(r'Fulu_bitvector_512_d\.Bitvector512\{([^{}]*)\}', _def_any(_FUX, 'OBJw')[2])
 SUPPORT_OUT['e2e_vbx_LightClientFinalityUpdate.bend'] = vbx_module('LightClientFinalityUpdate', 'var_bytesx_LightClientFinalityUpdate', [
     {'obj': 'YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x))', 'ty': 'FuluLightClientHeader_d.LightClientHeader', 'view': 'RT.v_LightClientHeader',
@@ -6496,7 +6497,7 @@ VROOT_SHAPES['ExecutionPayload'] = vroot_container
 SUPPORT_OUT['e2e_vtx.bend'] = vtx_text()
 
 # ---- ExecutionPayload (ii): its var_winx window with the logs bloom, extra data, transactions and withdrawals as holes ----
-_EPX = (_OBJ / 'var_winx_ExecutionPayload.bend').read_text()
+_EPX = _unlight((_OBJ / 'var_winx_ExecutionPayload.bend').read_text())
 SUPPORT_OUT['e2e_vbx_ExecutionPayload.bend'] = vbx_module('ExecutionPayload', 'var_winx_ExecutionPayload', [
     {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 256, 7n)), 256}', 'ty': 'O.Words', 'view': 'WO.wview', 'vty': '+List<U32>',
      'xvt': _re.search(r'F\.limbs\(\[UR\.RWN\(t, 116n\+x\).*?\]\)', _EPX).group(0),

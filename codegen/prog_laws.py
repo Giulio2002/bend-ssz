@@ -445,7 +445,8 @@ def emit():
 
 
 def main():
-    text = emit()
+    import light_split as LS
+    text = LS.light(emit())   # imports at light definition companions (codegen/light_split.py)
     if '--check' in sys.argv:
         if not OUT.exists() or OUT.read_text() != text:
             print(f'{OUT} is stale; run codegen/prog_laws.py')

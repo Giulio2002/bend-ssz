@@ -13,8 +13,8 @@ import ../proofs/obj/big_var_winx_BeaconState.bend as W
 import ./e2e_stv.bend as SV
 import ./e2e_fx.bend as FXE
 import ./e2e_vbx_ExecutionPayloadHeader.bend as VEH
-import ../proofs/obj/packed_bytes.bend as PB
-import ../proofs/obj/packed_obj.bend as PK
+import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/packed_obj_light.bend as PK
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/blist_obj.bend as BLI
 import ../proofs/obj/arr_vec.bend as AV

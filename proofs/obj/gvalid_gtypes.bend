@@ -16,11 +16,11 @@ import ./generic_specs.bend as Spec
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_obj.bend as LO
 import ./obj_support.bend as OS
 import ./root_gnames.bend as RN
-import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB
 import ./blist_obj.bend as BLI
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR

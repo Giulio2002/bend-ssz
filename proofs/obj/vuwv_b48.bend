@@ -45,20 +45,25 @@ def b48x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +w0: U32, 
     case 4n+ +t: pf
 
 # T.b48_put at any byte position X = 4 q + r.
+def b48_anyW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(48n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(48n) : +List<U32>})
+    -> {FuluBytes48_e.b48_put(FD.array__thaw(U32, D), X, FuluBytes48_d.Bytes48{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11}) == FD.array__thaw(U32, PX_b48(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) : Array<U32>}:
+  match r:
+    case 0n: VBF.put_b48W(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
+      FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 12n), Nat.add(12n, q), FD.nat__add_comm(q, 12n), hl), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)
+    case 1n: UF1.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, hd, UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
+    case 2n: UF2.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, hd, UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
+    case 3n: UF3.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, hd, UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
+    case 4n+ +t: Empty.absurd({FuluBytes48_e.b48_put(FD.array__thaw(U32, D), X, FuluBytes48_d.Bytes48{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11}) == FD.array__thaw(U32, PX_b48(4n+t, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+
 def b48_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(48n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(48n) : +List<U32>})
     -> {FuluBytes48_e.b48_put(FD.array__thaw(U32, D), X, FuluBytes48_d.Bytes48{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11}) == FD.array__thaw(U32, PX_b48(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) : Array<U32>}:
-  match r:
-    case 0n: VBF.put_b48(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
-      FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 12n), Nat.add(12n, q), FD.nat__add_comm(q, 12n), hl), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)
-    case 1n: UF1.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
-    case 2n: UF2.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
-    case 3n: UF3.putu_b48(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 12n, VB.pw(dd), hl), pf, hz)
-    case 4n+ +t: Empty.absurd({FuluBytes48_e.b48_put(FD.array__thaw(U32, D), X, FuluBytes48_d.Bytes48{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11}) == FD.array__thaw(U32, PX_b48(4n+t, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+  b48_anyW(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, hz)
 
 # Its bytes: the words' limbs at X, when the 48 bytes there were zero.
-def b48_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(48n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(48n) : +List<U32>})
+def b48_any_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(48n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(48n) : +List<U32>})
     -> {UA.BYT(PX_b48(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11])) : +List<U32>}:
   match r:
     case 0n:
@@ -68,3 +73,8 @@ def b48_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
     case 2n: UB2.swcb([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11], dd, D, q, pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(12n, q), Nat.add(q, 12n), FD.nat__add_comm(12n, q), UWD.le_q(q, 12n, VB.pw(dd), hl)), hz)
     case 3n: UB3.swcb([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11], dd, D, q, pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(12n, q), Nat.add(q, 12n), FD.nat__add_comm(12n, q), UWD.le_q(q, 12n, VB.pw(dd), hl)), hz)
     case 4n+ +t: Empty.absurd({UA.BYT(PX_b48(4n+t, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11])) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+
+def b48_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(48n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(48n) : +List<U32>})
+    -> {UA.BYT(PX_b48(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11])) : +List<U32>}:
+  b48_any_bytesW(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, hz)

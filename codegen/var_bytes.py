@@ -1073,8 +1073,8 @@ def main():
                 for dft in (f['ft'] if f['kind'] == 'fix' else f['rft']).deps():
                     if dft.p not in [q.p for q in fts]:
                         fts.append(dft)
-    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts),
-           ROOT / 'proofs/obj/var_bytes_wput.bend': VBE.wput_module(xs + [VBN.NName(g, nm, names[nm]) for nm in VBN.ORDER])}
+    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': __import__('deep').dify_fix(fix_module(fts)),
+           ROOT / 'proofs/obj/var_bytes_wput.bend': __import__('deep').dify_out({ROOT / 'proofs/obj/var_bytes_wput.bend': VBE.wput_module(xs + [VBN.NName(g, nm, names[nm]) for nm in VBN.ORDER])}).popitem()[1]}
     for x in xs:
         out[fname(x, '_win')] = win_text(x)
         out[fname(x)] = top_text(x)

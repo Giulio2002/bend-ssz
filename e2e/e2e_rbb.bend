@@ -3,7 +3,7 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/list_obj.bend as LO
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/elems48.bend as E48

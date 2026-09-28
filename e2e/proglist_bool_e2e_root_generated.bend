@@ -10,7 +10,7 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/prog_list.bend as PG
-import ../proofs/obj/packed_bytes.bend as PB
+import ../proofs/obj/packed_bytes_light.bend as PB
 import ../proofs/obj/root_gtypes.bend as RG
 import ../proofs/obj/gvalid_gpacked.bend as GV
 import ./e2e_support.bend as E

@@ -3,6 +3,7 @@ import ./e2e_fixd.bend as X
 import ./e2e_bits.bend as EBT
 import ./e2e_fixdb.bend as XB
 import ../proofs/compact/bits.bend as BT
+import ./e2e_fixd16.bend as X16
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
 import ../END_TO_END.bend as E2E
@@ -21,7 +22,7 @@ import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../types/FuluCell_decode_ssz_generated.bend as FuluCell_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/words_obj.bend as M0_WO
+import ../proofs/obj/words_obj_light.bend as M0_WO
 import ../proofs/obj/spec_codec_Cell.bend as M2
 import ../proofs/obj/fixrej_f4.bend as M3
 

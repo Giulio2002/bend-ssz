@@ -8,8 +8,8 @@ import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as SF
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
-import ./packed_obj.bend as PK
+import ./words_obj_light.bend as WO
+import ./packed_obj_light.bend as PK
 import ./arr_copy.bend as AC
 import ./arr_vec.bend as AV
 import ./arr_emit.bend as AE

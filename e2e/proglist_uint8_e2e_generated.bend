@@ -15,10 +15,10 @@ import ../proofs/obj/spec_fixed.bend as SF
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vlist.bend as VL
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/prog_list.bend as PG
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/big_var_plist_GtDE4B86A990_enc.bend as EN
