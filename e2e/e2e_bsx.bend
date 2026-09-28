@@ -15,7 +15,7 @@ import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/vbig.bend as VG
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/words_obj_light.bend as WO_L
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/packed_obj_light.bend as PK_L
 import ../proofs/obj/vfixw_spec.bend as FWS
 import ../proofs/obj/schema_shapes.bend as SH

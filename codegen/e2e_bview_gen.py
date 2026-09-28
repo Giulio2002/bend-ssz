@@ -5,7 +5,8 @@ import itertools
 def _src(p):
     """a proving module's text as it reads before the light split (runtime_refs.unwire)"""
     import runtime_refs as RR
-    return RR.unwire(Path(p).read_text())
+    from light_split import unlight
+    return RR.unwire(unlight(Path(p).read_text()))
 
 
 B = lambda b: 'True{}' if b else 'False{}'
@@ -1823,7 +1824,7 @@ def bs_view():
     # the laws at any depth (the top at d < 31): the window's D facts, hw32 = VB.u32_lt(n) at the window 0 .. n
     from pathlib import Path as _P
     top = _P(__file__).resolve().parents[1] / 'proofs/obj/var_codec_Gc85FA758A04.bend'
-    deep = top.exists() and 'Nat.is_lt(d, 31n)' in top.read_text()
+    deep = top.exists() and 'Nat.is_lt(d, 31n)' in _src(top)
     AD = f'd, t, n, {x}, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk'
     if deep:
         PR = [f'BSW.b5_bw(d, t, {J0}, BW.eoJ0D({AD}), hd, BW.hwJ0D({AD}), BW.hwJ0_32({AD}), pf, BW.itD0(t, {x}, 0, n, hchk))',

@@ -26,8 +26,8 @@ import ../proofs/obj/words_obj_light.bend as WO_L
 import ../proofs/obj/words_root_light.bend as WR_L
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
-import ../proofs/obj/ulist_obj.bend as UL
-import ../proofs/obj/blist_obj.bend as BLI
+import ../proofs/obj/ulist_obj_light.bend as UL
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_encx_l16777216_b32.bend as EXh
 import ../proofs/obj/big_var_winx_l16777216_b32.bend as WH

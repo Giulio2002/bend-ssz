@@ -46,9 +46,9 @@ import ./e2e_blist.bend as BL
 import ./e2e_plist.bend as PL
 import ./e2e_plw.bend as PW
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/vfx_SyncCommittee.bend as FSC
 import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as XW
 import ./e2e_fx.bend as FXE
@@ -319,7 +319,7 @@ def vv8Y(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +x: Nat, +eo: {U32.to_nat(
       Equal.cong(List<&2, U32>, S.Value, z => AV.chu2(z), VS.wtake(K, FD.array__slots(U32, CT)), UR.RWS(K, t, x), B1)))
 def shrY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(len), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hc: {WH.CHKw(t, x, off, len) == True{} : Bool}) -> {BLI.hview(WH.OBJw(d, t, x, off, len)) == WH.VALw(t, x, len) : S.Value}:
+    +hc: {WH.CHKw(t, x, off, len) == True{} : Bool}) -> {BLI_L.hview(WH.OBJw(d, t, x, off, len)) == WH.VALw(t, x, len) : S.Value}:
   +c = WH.CC(len)
   +Mq = WH.MQ(len)
   +M = UCT.CT(d, t, off, len, VLS.DZ(len))

@@ -15,6 +15,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OBJ = ROOT / 'proofs' / 'obj'
 
+
+def _rd(p):
+    """a proving module's text as it read before the light split (light_split.unlight: the definitions its *_light companion holds)"""
+    from light_split import unlight
+    return unlight(Path(p).read_text())
+
 BSX_IMPORTS = [
     'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
     'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
@@ -31,7 +37,7 @@ LV_TY = {'u64': 'O.U64', 'b32': 'FuluBytes32_d.Bytes32', 'Fork': 'FuluFork_d.For
 
 
 def _iface():
-    return (OBJ / 'big_encx_BeaconState_iface.bend').read_text()
+    return _rd(OBJ / 'big_encx_BeaconState_iface.bend')
 
 
 def lv_lemmas():
@@ -702,7 +708,7 @@ def _andc(c, p):
 
 
 def rls_text():
-    rs = (OBJ / 'root_state.bend').read_text()
+    rs = _rd(OBJ / 'root_state.bend')
     imps = ['import Base', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../proofs/compact/found.bend as FD',
             'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vrl.bend as VRL',
             'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vua_lay.bend as LY',
@@ -710,7 +716,7 @@ def rls_text():
             'import ../proofs/obj/root_state.bend as ST', 'import ../src/obj.bend as O']
     body = []
     for i, (L, E, LIM) in enumerate(RLS):
-        text = (OBJ / f'encx_{L}.bend').read_text()
+        text = _rd(OBJ / f'encx_{L}.bend')
         al = f'EW{i}'
         imps.append(f'import ../proofs/obj/encx_{L}.bend as {al}')
         imps.append(f'import ../types/Fulu{E}_def_generated.bend as Fulu{E}_d')
@@ -824,7 +830,7 @@ def mk_W_{L}(-po: {SEQ}, +s: S.Schema{mk_lim}, +rep: ST.rep_{L}(po, s), +hs: sda
 ''')
     bt = '\n'.join(body)
     for L, E, LIM in RLS:
-        for l in (OBJ / f'encx_{L}.bend').read_text().splitlines():
+        for l in _rd(OBJ / f'encx_{L}.bend').splitlines():
             m = re.match(r'import \.\./\.\./types/(\S+) as (\w+_d)$', l)
             if m and (m.group(2) + '.') in bt:
                 imps.append(f'import ../types/{m.group(1)} as {m.group(2)}')
@@ -925,11 +931,11 @@ def venc_state(R, X):
     assert X == 'BeaconState'
     OT = 'FuluBeaconState_d.BeaconState'
     SC = 'Spec.BeaconState()'
-    it = (OBJ / 'big_encx_BeaconState_iface.bend').read_text()
-    Kt = (OBJ / 'big_encx_BeaconState.bend').read_text()
-    en = (OBJ / 'big_var_codec_BeaconState_enc.bend').read_text()
-    rs = (OBJ / 'root_state.bend').read_text()
-    eph = (OBJ / 'big_encx_ExecutionPayloadHeader_iface.bend').read_text()
+    it = _rd(OBJ / 'big_encx_BeaconState_iface.bend')
+    Kt = _rd(OBJ / 'big_encx_BeaconState.bend')
+    en = _rd(OBJ / 'big_var_codec_BeaconState_enc.bend')
+    rs = _rd(OBJ / 'root_state.bend')
+    eph = _rd(OBJ / 'big_encx_ExecutionPayloadHeader_iface.bend')
     sch = lambda j: 'SH.Chain_head(' + 'SH.Chain_tail(' * j + f'SH.Container_fields({SC})' + ')' * j + ')'
     pj = lambda j: f'ST.pj_BeaconState_{j}(o)'
     # the record's names, the object's positions (over them)
@@ -1162,7 +1168,7 @@ def venc_state(R, X):
             else: mkc[j] = f'PL.mk_B8({pj(j)}, hs{j})'
         elif j in RECL:
             L = RECL[j]
-            KWb = re.fullmatch(r'Nat\.is_lt\(TDM_' + L + r'\(A\), (\d+)n\)', _band(re.search(r'^def OKL_' + L + r'\(.*?\) -> Bool:\n((?:  .*\n)+)', (OBJ / f'encx_{L}.bend').read_text(), re.M).group(1))[0]).group(1)
+            KWb = re.fullmatch(r'Nat\.is_lt\(TDM_' + L + r'\(A\), (\d+)n\)', _band(re.search(r'^def OKL_' + L + r'\(.*?\) -> Bool:\n((?:  .*\n)+)', _rd(OBJ / f'encx_{L}.bend'), re.M).group(1))[0]).group(1)
             top_p.append((f'hs{j}', f'RLS.sda_{L}({pj(j)}, {KWb}n)'))
             lim = ', {==}' if L != 'l1099511627776_Validator' else ''
             mkc[j] = f'RLS.mk_W_{L}({pj(j)}, {s_}{lim}, r{j}, hs{j})'

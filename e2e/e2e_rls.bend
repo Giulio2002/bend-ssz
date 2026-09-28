@@ -9,8 +9,9 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/root_state.bend as ST
+import ../proofs/obj/root_state_light.bend as ST
 import ../src/obj.bend as O
 import ../proofs/obj/encx_l2048_Eth1Data.bend as EW0
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -46,7 +47,7 @@ def xm_l2048_Eth1Data(+W: List<&2, FuluEth1Data_d.Eth1Data>, +i: Nat) -> {ST.xat
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l2048_Eth1Data(t, p)
 
-def rv_l2048_Eth1Data(+r: FuluEth1Data_d.Eth1Data) -> {EW0.RVW_Eth1Data(r) == RN_L.v_Eth1Data(r) : S.Value}:
+def rv_l2048_Eth1Data(+r: FuluEth1Data_d.Eth1Data) -> {EW0.RVW_Eth1Data(r) == RN.v_Eth1Data(r) : S.Value}:
   match r:
     case FuluEth1Data_d.Eth1Data{+r_0, +r_1, +r_2}:
       match r_0:
@@ -62,8 +63,8 @@ def itw_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +j: 
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluEth1Data_d.Eth1Data, ST.xat_l2048_Eth1Data(FD.array__slots(FuluEth1Data_d.Eth1Data, A), j), EW0.EL_l2048_Eth1Data(A, j), xm_l2048_Eth1Data(FD.array__slots(FuluEth1Data_d.Eth1Data, A), j)) :
-        {S.Items{RN_L.v_Eth1Data(_), ST.xi_l2048_Eth1Data(q, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 1n+j)} == EW0.ITW_l2048_Eth1Data(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), EW0.RVW_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), Equal.sym(S.Value, EW0.RVW_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), RN_L.v_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), rv_l2048_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)))) :
+        {S.Items{RN.v_Eth1Data(_), ST.xi_l2048_Eth1Data(q, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 1n+j)} == EW0.ITW_l2048_Eth1Data(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), EW0.RVW_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), Equal.sym(S.Value, EW0.RVW_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), RN.v_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), rv_l2048_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)))) :
         {S.Items{_, ST.xi_l2048_Eth1Data(q, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 1n+j)} == EW0.ITW_l2048_Eth1Data(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW0.RVW_Eth1Data(EW0.EL_l2048_Eth1Data(A, j)), z}, ST.xi_l2048_Eth1Data(q, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 1n+j), EW0.ITW_l2048_Eth1Data(q, A, 1n+j), itw_l2048_Eth1Data(q, A, 1n+j))
 
@@ -131,7 +132,7 @@ def xm_l1099511627776_Validator(+W: List<&2, FuluValidator_d.Validator>, +i: Nat
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l1099511627776_Validator(t, p)
 
-def rv_l1099511627776_Validator(+o: FuluValidator_d.Validator) -> {EW1.RVV(o) == RN_L.v_Validator(o) : S.Value}:
+def rv_l1099511627776_Validator(+o: FuluValidator_d.Validator) -> {EW1.RVV(o) == RN.v_Validator(o) : S.Value}:
   match o:
     case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
@@ -155,8 +156,8 @@ def itw_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<FuluValidator_d.Vali
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluValidator_d.Validator, ST.xat_l1099511627776_Validator(FD.array__slots(FuluValidator_d.Validator, A), j), EW1.EL_l1099511627776_Validator(A, j), xm_l1099511627776_Validator(FD.array__slots(FuluValidator_d.Validator, A), j)) :
-        {S.Items{RN_L.v_Validator(_), ST.xi_l1099511627776_Validator(q, FD.array__slots(FuluValidator_d.Validator, A), 1n+j)} == EW1.ITV_l1099511627776_Validator(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_Validator(EW1.EL_l1099511627776_Validator(A, j)), EW1.RVV(EW1.EL_l1099511627776_Validator(A, j)), Equal.sym(S.Value, EW1.RVV(EW1.EL_l1099511627776_Validator(A, j)), RN_L.v_Validator(EW1.EL_l1099511627776_Validator(A, j)), rv_l1099511627776_Validator(EW1.EL_l1099511627776_Validator(A, j)))) :
+        {S.Items{RN.v_Validator(_), ST.xi_l1099511627776_Validator(q, FD.array__slots(FuluValidator_d.Validator, A), 1n+j)} == EW1.ITV_l1099511627776_Validator(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_Validator(EW1.EL_l1099511627776_Validator(A, j)), EW1.RVV(EW1.EL_l1099511627776_Validator(A, j)), Equal.sym(S.Value, EW1.RVV(EW1.EL_l1099511627776_Validator(A, j)), RN.v_Validator(EW1.EL_l1099511627776_Validator(A, j)), rv_l1099511627776_Validator(EW1.EL_l1099511627776_Validator(A, j)))) :
         {S.Items{_, ST.xi_l1099511627776_Validator(q, FD.array__slots(FuluValidator_d.Validator, A), 1n+j)} == EW1.ITV_l1099511627776_Validator(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW1.RVV(EW1.EL_l1099511627776_Validator(A, j)), z}, ST.xi_l1099511627776_Validator(q, FD.array__slots(FuluValidator_d.Validator, A), 1n+j), EW1.ITV_l1099511627776_Validator(q, A, 1n+j), itw_l1099511627776_Validator(q, A, 1n+j))
 
@@ -221,7 +222,7 @@ def xm_l16777216_HistoricalSummary(+W: List<&2, FuluHistoricalSummary_d.Historic
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l16777216_HistoricalSummary(t, p)
 
-def rv_l16777216_HistoricalSummary(+r: FuluHistoricalSummary_d.HistoricalSummary) -> {EW2.RVW_HistoricalSummary(r) == RN_L.v_HistoricalSummary(r) : S.Value}:
+def rv_l16777216_HistoricalSummary(+r: FuluHistoricalSummary_d.HistoricalSummary) -> {EW2.RVW_HistoricalSummary(r) == RN.v_HistoricalSummary(r) : S.Value}:
   match r:
     case FuluHistoricalSummary_d.HistoricalSummary{+r_0, +r_1}:
       match r_0:
@@ -235,8 +236,8 @@ def itw_l16777216_HistoricalSummary(c: Nat, +A: FD.array__Tree<FuluHistoricalSum
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluHistoricalSummary_d.HistoricalSummary, ST.xat_l16777216_HistoricalSummary(FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), j), EW2.EL_l16777216_HistoricalSummary(A, j), xm_l16777216_HistoricalSummary(FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), j)) :
-        {S.Items{RN_L.v_HistoricalSummary(_), ST.xi_l16777216_HistoricalSummary(q, FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), 1n+j)} == EW2.ITW_l16777216_HistoricalSummary(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), EW2.RVW_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), Equal.sym(S.Value, EW2.RVW_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), RN_L.v_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), rv_l16777216_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)))) :
+        {S.Items{RN.v_HistoricalSummary(_), ST.xi_l16777216_HistoricalSummary(q, FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), 1n+j)} == EW2.ITW_l16777216_HistoricalSummary(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), EW2.RVW_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), Equal.sym(S.Value, EW2.RVW_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), RN.v_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), rv_l16777216_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)))) :
         {S.Items{_, ST.xi_l16777216_HistoricalSummary(q, FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), 1n+j)} == EW2.ITW_l16777216_HistoricalSummary(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW2.RVW_HistoricalSummary(EW2.EL_l16777216_HistoricalSummary(A, j)), z}, ST.xi_l16777216_HistoricalSummary(q, FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), 1n+j), EW2.ITW_l16777216_HistoricalSummary(q, A, 1n+j), itw_l16777216_HistoricalSummary(q, A, 1n+j))
 
@@ -304,7 +305,7 @@ def xm_l134217728_PendingDeposit(+W: List<&2, FuluPendingDeposit_d.PendingDeposi
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l134217728_PendingDeposit(t, p)
 
-def rv_l134217728_PendingDeposit(+r: FuluPendingDeposit_d.PendingDeposit) -> {EW3.RVW_PendingDeposit(r) == RN_L.v_PendingDeposit(r) : S.Value}:
+def rv_l134217728_PendingDeposit(+r: FuluPendingDeposit_d.PendingDeposit) -> {EW3.RVW_PendingDeposit(r) == RN.v_PendingDeposit(r) : S.Value}:
   match r:
     case FuluPendingDeposit_d.PendingDeposit{+r_0, +r_1, +r_2, +r_3, +r_4}:
       match r_0:
@@ -324,8 +325,8 @@ def itw_l134217728_PendingDeposit(c: Nat, +A: FD.array__Tree<FuluPendingDeposit_
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluPendingDeposit_d.PendingDeposit, ST.xat_l134217728_PendingDeposit(FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), j), EW3.EL_l134217728_PendingDeposit(A, j), xm_l134217728_PendingDeposit(FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), j)) :
-        {S.Items{RN_L.v_PendingDeposit(_), ST.xi_l134217728_PendingDeposit(q, FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), 1n+j)} == EW3.ITW_l134217728_PendingDeposit(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), EW3.RVW_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), Equal.sym(S.Value, EW3.RVW_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), RN_L.v_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), rv_l134217728_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)))) :
+        {S.Items{RN.v_PendingDeposit(_), ST.xi_l134217728_PendingDeposit(q, FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), 1n+j)} == EW3.ITW_l134217728_PendingDeposit(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), EW3.RVW_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), Equal.sym(S.Value, EW3.RVW_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), RN.v_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), rv_l134217728_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)))) :
         {S.Items{_, ST.xi_l134217728_PendingDeposit(q, FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), 1n+j)} == EW3.ITW_l134217728_PendingDeposit(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW3.RVW_PendingDeposit(EW3.EL_l134217728_PendingDeposit(A, j)), z}, ST.xi_l134217728_PendingDeposit(q, FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), 1n+j), EW3.ITW_l134217728_PendingDeposit(q, A, 1n+j), itw_l134217728_PendingDeposit(q, A, 1n+j))
 
@@ -393,7 +394,7 @@ def xm_l134217728_PendingPartialWithdrawal(+W: List<&2, FuluPendingPartialWithdr
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l134217728_PendingPartialWithdrawal(t, p)
 
-def rv_l134217728_PendingPartialWithdrawal(+r: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> {EW4.RVW_PendingPartialWithdrawal(r) == RN_L.v_PendingPartialWithdrawal(r) : S.Value}:
+def rv_l134217728_PendingPartialWithdrawal(+r: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> {EW4.RVW_PendingPartialWithdrawal(r) == RN.v_PendingPartialWithdrawal(r) : S.Value}:
   match r:
     case FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal{+r_0, +r_1, +r_2}:
       match r_0:
@@ -409,8 +410,8 @@ def itw_l134217728_PendingPartialWithdrawal(c: Nat, +A: FD.array__Tree<FuluPendi
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, ST.xat_l134217728_PendingPartialWithdrawal(FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), j), EW4.EL_l134217728_PendingPartialWithdrawal(A, j), xm_l134217728_PendingPartialWithdrawal(FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), j)) :
-        {S.Items{RN_L.v_PendingPartialWithdrawal(_), ST.xi_l134217728_PendingPartialWithdrawal(q, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), 1n+j)} == EW4.ITW_l134217728_PendingPartialWithdrawal(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), EW4.RVW_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), Equal.sym(S.Value, EW4.RVW_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), RN_L.v_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), rv_l134217728_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)))) :
+        {S.Items{RN.v_PendingPartialWithdrawal(_), ST.xi_l134217728_PendingPartialWithdrawal(q, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), 1n+j)} == EW4.ITW_l134217728_PendingPartialWithdrawal(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), EW4.RVW_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), Equal.sym(S.Value, EW4.RVW_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), RN.v_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), rv_l134217728_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)))) :
         {S.Items{_, ST.xi_l134217728_PendingPartialWithdrawal(q, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), 1n+j)} == EW4.ITW_l134217728_PendingPartialWithdrawal(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW4.RVW_PendingPartialWithdrawal(EW4.EL_l134217728_PendingPartialWithdrawal(A, j)), z}, ST.xi_l134217728_PendingPartialWithdrawal(q, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, A), 1n+j), EW4.ITW_l134217728_PendingPartialWithdrawal(q, A, 1n+j), itw_l134217728_PendingPartialWithdrawal(q, A, 1n+j))
 
@@ -478,7 +479,7 @@ def xm_l262144_PendingConsolidation(+W: List<&2, FuluPendingConsolidation_d.Pend
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l262144_PendingConsolidation(t, p)
 
-def rv_l262144_PendingConsolidation(+r: FuluPendingConsolidation_d.PendingConsolidation) -> {EW5.RVW_PendingConsolidation(r) == RN_L.v_PendingConsolidation(r) : S.Value}:
+def rv_l262144_PendingConsolidation(+r: FuluPendingConsolidation_d.PendingConsolidation) -> {EW5.RVW_PendingConsolidation(r) == RN.v_PendingConsolidation(r) : S.Value}:
   match r:
     case FuluPendingConsolidation_d.PendingConsolidation{+r_0, +r_1}:
       match r_0:
@@ -492,8 +493,8 @@ def itw_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<FuluPendingConso
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluPendingConsolidation_d.PendingConsolidation, ST.xat_l262144_PendingConsolidation(FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), j), EW5.EL_l262144_PendingConsolidation(A, j), xm_l262144_PendingConsolidation(FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), j)) :
-        {S.Items{RN_L.v_PendingConsolidation(_), ST.xi_l262144_PendingConsolidation(q, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 1n+j)} == EW5.ITW_l262144_PendingConsolidation(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), EW5.RVW_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), Equal.sym(S.Value, EW5.RVW_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), RN_L.v_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), rv_l262144_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)))) :
+        {S.Items{RN.v_PendingConsolidation(_), ST.xi_l262144_PendingConsolidation(q, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 1n+j)} == EW5.ITW_l262144_PendingConsolidation(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), EW5.RVW_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), Equal.sym(S.Value, EW5.RVW_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), RN.v_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), rv_l262144_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)))) :
         {S.Items{_, ST.xi_l262144_PendingConsolidation(q, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 1n+j)} == EW5.ITW_l262144_PendingConsolidation(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{EW5.RVW_PendingConsolidation(EW5.EL_l262144_PendingConsolidation(A, j)), z}, ST.xi_l262144_PendingConsolidation(q, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 1n+j), EW5.ITW_l262144_PendingConsolidation(q, A, 1n+j), itw_l262144_PendingConsolidation(q, A, 1n+j))
 
