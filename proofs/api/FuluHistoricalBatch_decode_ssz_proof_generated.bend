@@ -26,6 +26,9 @@ import ../obj/arr_copy.bend as P1_AC
 import ../obj/arr_emit.bend as P1_AE
 import ../obj/arr_spec.bend as P1_AS
 import ../obj/arr_vec.bend as P1_AV
+import ../../proofs/compact/arith.bend as P1_A
+import ../../spec/nat_bytes.bend as P1_NB
+import ../obj/vfits.bend as P1_VFT
 import ../obj/spec_arr_HistoricalBatch.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../spec/decoding_relation.bend as P2_Decoding

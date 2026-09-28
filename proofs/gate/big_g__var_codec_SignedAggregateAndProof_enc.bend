@@ -42,6 +42,8 @@ import ../obj/var_bits_enc_bw.bend as BW
 import ../compact/reads.bend as RD
 import ../../proofs/primitive_invariants.bend as V
 import ../obj/big_var_bitc_enc_Attestation.bend as E
+import ../../spec/schema.bend as SC
+import ../obj/vseq.bend as VSQ
 import ../obj/big_var_codec_AggregateAndProof_enc.bend as C
 import ../obj/big_var_codec_SignedAggregateAndProof_enc.bend as PRV
 
