@@ -5800,7 +5800,29 @@
     "laws": [
      "FuluSyncCommittee_e2e_root"
     ],
-    "premise": "+rep: rep_SyncCommittee(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
+   }
+  ],
+  "FuluSyncCommittee_e2e_generated.bend": [
+   {
+    "name": "FuluSyncCommittee",
+    "generated_name": "SyncCommittee",
+    "laws": [
+     "FuluSyncCommittee_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
+   }
+  ],
+  "FuluSyncCommittee_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncCommittee",
+    "generated_name": "SyncCommittee",
+    "laws": [
+     "FuluSyncCommittee_e2e_decode_view",
+     "FuluSyncCommittee_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
    }
   ]
  },
@@ -5820,11 +5842,6 @@
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluSyncCommittee": {
-   "generated_name": "SyncCommittee",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
@@ -6290,6 +6307,12 @@
    "generated_name": "SignedContributionAndProof",
    "i": "FuluSignedContributionAndProof_e2e_generated.bend",
    "ii_iii": "FuluSignedContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
+  },
+  "FuluSyncCommittee": {
+   "generated_name": "SyncCommittee",
+   "i": "FuluSyncCommittee_e2e_generated.bend",
+   "ii_iii": "FuluSyncCommittee_e2e_dec_generated.bend",
    "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   }
  },

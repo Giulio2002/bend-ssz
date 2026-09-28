@@ -191,3 +191,30 @@ def lm(+d: Nat, +q: Nat, +h: {Nat.is_eq(FD.spec_common__pow2(d), AV.m8(q)) == Tr
     -> {FD.spec_common__length(U32, FD.array__slots(U32, l)) == AV.m8(q) : Nat}:
   Equal.trans(Nat, FD.spec_common__length(U32, FD.array__slots(U32, l)), FD.spec_common__pow2(d), AV.m8(q), FD.array__slots_length(U32, d, l, pl), FD.nat__eq_from_is_eq(FD.spec_common__pow2(d), AV.m8(q), h))
 
+
+# the left spine of a perfect tree of depth d: its left-most leaf, then each level's right subtree
+def lsp(+d: Nat, +t: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
+  match d:
+    case 0n: FD.TLeaf{E3.leaf(t)}
+    case 1n+ +p: FD.TNode{lsp(p, E3.lo(t)), E3.hi(t)}
+
+def lspe(+d: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {t == lsp(d, t) : FD.array__Tree<U32>}:
+  match d t:
+    case 0n FD.TLeaf{+x}: {==}
+    case 0n FD.TNode{l, r}: Empty.absurd({FD.TNode{l, r} == lsp(0n, FD.TNode{l, r}) : FD.array__Tree<U32>}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{x}: Empty.absurd({FD.TLeaf{x} == lsp(1n+p, FD.TLeaf{x}) : FD.array__Tree<U32>}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{+l, +r}:
+      Equal.cong(FD.array__Tree<U32>, FD.array__Tree<U32>, z => FD.TNode{z, r}, l, lsp(p, l), lspe(p, l, FD.logic__and_left(FD.array__perfect(U32, p, l), FD.array__perfect(U32, p, r), pf)))
+
+# the left spine of a perfect tree down to a literal depth-4 subtree
+def lsp4(+d: Nat, +t: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
+  match d:
+    case 0n: E3.tf(4n, t)
+    case 1n+ +p: FD.TNode{lsp4(p, E3.lo(t)), E3.hi(t)}
+
+def lsp4e(+d: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 4n+d, t) == True{} : Bool}) -> {t == lsp4(d, t) : FD.array__Tree<U32>}:
+  match d t:
+    case 0n +t0: E3.eta(4n, t0, pf)
+    case 1n+ +p FD.TLeaf{x}: Empty.absurd({FD.TLeaf{x} == lsp4(1n+p, FD.TLeaf{x}) : FD.array__Tree<U32>}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{+l, +r}:
+      Equal.cong(FD.array__Tree<U32>, FD.array__Tree<U32>, z => FD.TNode{z, r}, l, lsp4(p, l), lsp4e(p, l, FD.logic__and_left(FD.array__perfect(U32, 4n+p, l), FD.array__perfect(U32, 4n+p, r), pf)))
