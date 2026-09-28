@@ -26,6 +26,10 @@ import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_W
 import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
 import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
+import ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d
+import ../types/Fulu_list_Withdrawal_16_def_generated.bend as Fulu_list_Withdrawal_16_d
+import ../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
 import ../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
@@ -142,6 +146,32 @@ def wa_l2_ConsolidationRequest(-w: Fulu_list_ConsolidationRequest_2_d.l2_Consoli
   (+N, f2) = f1
   (+eo, f3) = f2
   mka_l2_ConsolidationRequest(w, t, N, eo)
+
+# a list of RT.MB<RT.WMr>: its element tree and length
+def WA_l1048576_bl1073741824(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> Data: DK.Ex(FD.array__Tree<RT.MB<RT.WMr>>, t => DK.Ex(U32, N => {w == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq}))
+
+def mka_l1048576_bl1073741824(-w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, +t: FD.array__Tree<RT.MB<RT.WMr>>, +N: U32, +e: {w == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq}) -> WA_l1048576_bl1073741824(w): (t, (N, e))
+
+def wa_l1048576_bl1073741824(-w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, +s: S.Schema, +r: RT.rep_l1048576_bl1073741824(w, s)) -> WA_l1048576_bl1073741824(w):
+  (+f, +n) = r
+  (+t, f0) = f
+  (+dw, f1) = f0
+  (+N, f2) = f1
+  (+eo, f3) = f2
+  mka_l1048576_bl1073741824(w, t, N, eo)
+
+# a list of FuluWithdrawal_d.Withdrawal: its element tree and length
+def WA_l16_Withdrawal(w: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq) -> Data: DK.Ex(FD.array__Tree<FuluWithdrawal_d.Withdrawal>, t => DK.Ex(U32, N => {w == Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t), N} : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq}))
+
+def mka_l16_Withdrawal(-w: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +t: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +e: {w == Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t), N} : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq}) -> WA_l16_Withdrawal(w): (t, (N, e))
+
+def wa_l16_Withdrawal(-w: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +r: RT.rep_l16_Withdrawal(w, s)) -> WA_l16_Withdrawal(w):
+  (+f, +n) = r
+  (+t, f0) = f
+  (+dw, f1) = f0
+  (+N, f2) = f1
+  (+eo, f3) = f2
+  mka_l16_Withdrawal(w, t, N, eo)
 
 # ExecutionPayloadHeader: its witnesses (every nesting level) and the object over them
 def WIT_ExecutionPayloadHeader(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader) -> Data:
@@ -579,4 +609,46 @@ def nw_LightClientUpdate(-o: FuluLightClientUpdate_d.LightClientUpdate, +s: S.Sc
   (+r8, +r9) = q86
   (+v150, +ev151) = r9
   nw2_LightClientUpdate(o, a1, a12, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a72, a87, a95, a96, a97, a98, a99, a100, a101, a102, a103, a104, a105, a106, a107, a108, a109, v150, eo3, eo14, eb18, eo50, ww_WO_rep_bv(RT.pj_ExecutionPayloadHeader_4(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientUpdate_0(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s))))))))))), r51), ww_LO_rep_bl(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientUpdate_0(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s))))))))))))))))), r52), ww_PV_rep_pv(RT.pj_LightClientHeader_2(RT.pj_LightClientUpdate_0(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s)))))), r16), eo74, ww_E48_rep_ev(RT.pj_SyncCommittee_0(RT.pj_LightClientUpdate_1(o)), SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))), r75), ww_PV_rep_pv(RT.pj_LightClientUpdate_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), r6), eo89, eb93, eo125, ww_WO_rep_bv(RT.pj_ExecutionPayloadHeader_4(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientUpdate_3(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), r126), ww_LO_rep_bl(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientUpdate_3(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))), r127), ww_PV_rep_pv(RT.pj_LightClientHeader_2(RT.pj_LightClientUpdate_3(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), r91), ww_PV_rep_pv(RT.pj_LightClientUpdate_4(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), r8), ev151)
+
+# ExecutionPayload: its witnesses (every nesting level) and the object over them
+def WIT_ExecutionPayload(o: FuluExecutionPayload_d.ExecutionPayload) -> Data:
+  DK.Ex(FuluBytes32_d.Bytes32, a1 => DK.Ex(FuluBytes20_d.Bytes20, a2 => DK.Ex(FuluBytes32_d.Bytes32, a3 => DK.Ex(FuluBytes32_d.Bytes32, a4 => DK.Ex(FuluBytes32_d.Bytes32, a5 => DK.Ex(O.U64, a6 => DK.Ex(O.U64, a7 => DK.Ex(O.U64, a8 => DK.Ex(O.U64, a9 => DK.Ex(uint256_d.Uint256, a10 => DK.Ex(FuluBytes32_d.Bytes32, a11 => DK.Ex(O.U64, a12 => DK.Ex(O.U64, a13 => DK.Ex(FD.array__Tree<U32>, t34 => DK.Ex(U32, N35 => DK.Ex(FD.array__Tree<U32>, t39 => DK.Ex(U32, N40 => DK.Ex(FD.array__Tree<RT.MB<RT.WMr>>, t43 => DK.Ex(U32, N44 => DK.Ex(FD.array__Tree<FuluWithdrawal_d.Withdrawal>, t47 => DK.Ex(U32, N48 => {o == FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t47), N48}, a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}} : FuluExecutionPayload_d.ExecutionPayload})))))))))))))))))))))
+
+def mk_ExecutionPayload(-o: FuluExecutionPayload_d.ExecutionPayload, +a1: FuluBytes32_d.Bytes32, +a2: FuluBytes20_d.Bytes20, +a3: FuluBytes32_d.Bytes32, +a4: FuluBytes32_d.Bytes32, +a5: FuluBytes32_d.Bytes32, +a6: O.U64, +a7: O.U64, +a8: O.U64, +a9: O.U64, +a10: uint256_d.Uint256, +a11: FuluBytes32_d.Bytes32, +a12: O.U64, +a13: O.U64, +t34: FD.array__Tree<U32>, +N35: U32, +t39: FD.array__Tree<U32>, +N40: U32, +t43: FD.array__Tree<RT.MB<RT.WMr>>, +N44: U32, +t47: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N48: U32, +e: {o == FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t47), N48}, a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}} : FuluExecutionPayload_d.ExecutionPayload}) -> WIT_ExecutionPayload(o):
+  (a1, (a2, (a3, (a4, (a5, (a6, (a7, (a8, (a9, (a10, (a11, (a12, (a13, (t34, (N35, (t39, (N40, (t43, (N44, (t47, (N48, e)))))))))))))))))))))
+
+def nw2_ExecutionPayload(-o: FuluExecutionPayload_d.ExecutionPayload, +a1: FuluBytes32_d.Bytes32, +a2: FuluBytes20_d.Bytes20, +a3: FuluBytes32_d.Bytes32, +a4: FuluBytes32_d.Bytes32, +a5: FuluBytes32_d.Bytes32, +a6: O.U64, +a7: O.U64, +a8: O.U64, +a9: O.U64, +a10: uint256_d.Uint256, +a11: FuluBytes32_d.Bytes32, +a12: O.U64, +a13: O.U64, +eo27: {o == FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, RT.pj_ExecutionPayload_4(o), a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, RT.pj_ExecutionPayload_10(o), a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}} : FuluExecutionPayload_d.ExecutionPayload}, +w36: WW(RT.pj_ExecutionPayload_4(o)), +w41: WW(RT.pj_ExecutionPayload_10(o)), +w45: WA_l1048576_bl1073741824(RT.pj_ExecutionPayload_13(o)), +w49: WA_l16_Withdrawal(RT.pj_ExecutionPayload_14(o))) -> WIT_ExecutionPayload(o):
+  (+t34, w36a) = w36
+  (+N35, +e37) = w36a
+  (+t39, w41a) = w41
+  (+N40, +e42) = w41a
+  (+t43, w45a) = w45
+  (+N44, +e46) = w45a
+  (+t47, w49a) = w49
+  (+N48, +e50) = w49a
+  +c51 = Equal.trans(FuluExecutionPayload_d.ExecutionPayload, o, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, RT.pj_ExecutionPayload_4(o), a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, RT.pj_ExecutionPayload_10(o), a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, RT.pj_ExecutionPayload_10(o), a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, eo27, Equal.cong(O.Words, FuluExecutionPayload_d.ExecutionPayload, z => FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, z, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, RT.pj_ExecutionPayload_10(o), a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, RT.pj_ExecutionPayload_4(o), O.Words{FD.array__thaw(U32, t34), N35}, e37))
+  +c52 = Equal.trans(FuluExecutionPayload_d.ExecutionPayload, o, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, RT.pj_ExecutionPayload_10(o), a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, c51, Equal.cong(O.Words, FuluExecutionPayload_d.ExecutionPayload, z => FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, z, a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, RT.pj_ExecutionPayload_10(o), O.Words{FD.array__thaw(U32, t39), N40}, e42))
+  +c53 = Equal.trans(FuluExecutionPayload_d.ExecutionPayload, o, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, c52, Equal.cong(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, FuluExecutionPayload_d.ExecutionPayload, z => FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, z, RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, RT.pj_ExecutionPayload_13(o), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, e46))
+  +c54 = Equal.trans(FuluExecutionPayload_d.ExecutionPayload, o, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, RT.pj_ExecutionPayload_14(o), a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t47), N48}, a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, c53, Equal.cong(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, FuluExecutionPayload_d.ExecutionPayload, z => FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{a1, a2, a3, a4, O.Words{FD.array__thaw(U32, t34), N35}, a5, a6, a7}, FuluExecutionPayload_d.ExecutionPayload_g1{a8, a9, O.Words{FD.array__thaw(U32, t39), N40}, a10, a11, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t43), N44}, z, a12}, FuluExecutionPayload_d.ExecutionPayload_g2{a13}}, RT.pj_ExecutionPayload_14(o), Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{FD.array__thaw(FuluWithdrawal_d.Withdrawal, t47), N48}, e50))
+  mk_ExecutionPayload(o, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, t34, N35, t39, N40, t43, N44, t47, N48, c54)
+
+def nw_ExecutionPayload(-o: FuluExecutionPayload_d.ExecutionPayload, +s: S.Schema, +rep: RT.rep_ExecutionPayload(o, s)) -> WIT_ExecutionPayload(o):
+  (+a1, q14) = rep
+  (+a2, q15) = q14
+  (+a3, q16) = q15
+  (+a4, q17) = q16
+  (+a5, q18) = q17
+  (+a6, q19) = q18
+  (+a7, q20) = q19
+  (+a8, q21) = q20
+  (+a9, q22) = q21
+  (+a10, q23) = q22
+  (+a11, q24) = q23
+  (+a12, q25) = q24
+  (+a13, q26) = q25
+  (+eo27, q32) = q26
+  (+r28, q33) = q32
+  (+r29, q38) = q33
+  (+r30, +r31) = q38
+  nw2_ExecutionPayload(o, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, eo27, ww_WO_rep_bv(RT.pj_ExecutionPayload_4(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), r28), ww_LO_rep_bl(RT.pj_ExecutionPayload_10(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), r29), wa_l1048576_bl1073741824(RT.pj_ExecutionPayload_13(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), r30), wa_l16_Withdrawal(RT.pj_ExecutionPayload_14(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))), r31))
 

@@ -3291,6 +3291,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
    }
   ],
+  "FuluExecutionPayload_e2e_root_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_root"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) (the root law's representation invariant)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_root_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -3409,6 +3419,16 @@
      "VarTestStruct_e2e_root"
     ],
     "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) (the root law's representation invariant)"
+   }
+  ],
+  "progbitlist_e2e_root_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtF7582E0E9A(o, Spec.GtF7582E0E9A()) (the root law's representation invariant)"
    }
   ],
   "proglist_bool_e2e_root_generated.bend": [
@@ -3571,6 +3591,16 @@
     "premise": "rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) and the hs premises: each storage field's invariant at depth below 31 (the sync committee's pubkeys: e2e_e48w.sdsc; BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32)"
    }
   ],
+  "FuluLightClientFinalityUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientFinalityUpdate",
+    "generated_name": "LightClientFinalityUpdate",
+    "laws": [
+     "FuluLightClientFinalityUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mw.SHS_L of the two headers (their execution payload headers' logs bloom at depth below 31 and extra data below 28, their branches below 31); hB: BL.sdpv of the finality branch at depth below 31"
+   }
+  ],
   "FuluLightClientHeader_e2e_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3589,6 +3619,16 @@
      "FuluLightClientOptimisticUpdate_e2e_encode"
     ],
     "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluLightClientUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientUpdate",
+    "generated_name": "LightClientUpdate",
+    "laws": [
+     "FuluLightClientUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee's pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -3631,6 +3671,16 @@
     "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage below its encode law's depth bound 28, read from the law; the root law gives dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "progbitlist_e2e_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_encode"
+    ],
+    "premise": "rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)"
+   }
+  ],
   "proglist_bool_e2e_generated.bend": [
    {
     "name": "proglist_bool",
@@ -3638,7 +3688,7 @@
     "laws": [
      "proglist_bool_e2e_encode"
     ],
-    "premise": "rep: PG.rep_plb(o, Spec.Gt83D8B3D008()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_plb(o, Spec.Gt83D8B3D008()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint128_e2e_generated.bend": [
@@ -3648,7 +3698,7 @@
     "laws": [
      "proglist_uint128_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl16(o, Spec.Gt1C2FA69562()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl16(o, Spec.Gt1C2FA69562()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint16_e2e_generated.bend": [
@@ -3658,7 +3708,7 @@
     "laws": [
      "proglist_uint16_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint256_e2e_generated.bend": [
@@ -3668,7 +3718,7 @@
     "laws": [
      "proglist_uint256_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl32(o, Spec.GtA8457965E2()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl32(o, Spec.GtA8457965E2()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint32_e2e_generated.bend": [
@@ -3678,7 +3728,7 @@
     "laws": [
      "proglist_uint32_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl4(o, Spec.Gt3A9420DD8E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl4(o, Spec.Gt3A9420DD8E()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint64_e2e_generated.bend": [
@@ -3688,7 +3738,7 @@
     "laws": [
      "proglist_uint64_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl8(o, Spec.GtE83F21B20A()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl8(o, Spec.GtE83F21B20A()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint8_e2e_generated.bend": [
@@ -3698,7 +3748,7 @@
     "laws": [
      "proglist_uint8_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl1(o, Spec.GtDE4B86A990()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl1(o, Spec.GtDE4B86A990()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "bitlist_33_e2e_generated.bend": [
@@ -5953,23 +6003,12 @@
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluExecutionPayload_e2e_root_generated.bend"
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluLightClientFinalityUpdate": {
-   "generated_name": "LightClientFinalityUpdate",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend",
-   "root": "FuluLightClientFinalityUpdate_e2e_root_generated.bend"
-  },
-  "FuluLightClientUpdate": {
-   "generated_name": "LightClientUpdate",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluLightClientUpdate_e2e_dec_generated.bend",
-   "root": "FuluLightClientUpdate_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
@@ -6027,7 +6066,9 @@
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "progbitlist_e2e_root_generated.bend",
+   "encode": "progbitlist_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6460,6 +6501,12 @@
    "ii_iii": "FuluLightClientBootstrap_e2e_dec_generated.bend",
    "iv": "FuluLightClientBootstrap_e2e_root_generated.bend"
   },
+  "FuluLightClientFinalityUpdate": {
+   "generated_name": "LightClientFinalityUpdate",
+   "i": "FuluLightClientFinalityUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientFinalityUpdate_e2e_root_generated.bend"
+  },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",
    "i": "FuluLightClientHeader_e2e_generated.bend",
@@ -6471,6 +6518,12 @@
    "i": "FuluLightClientOptimisticUpdate_e2e_generated.bend",
    "ii_iii": "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend",
    "iv": "FuluLightClientOptimisticUpdate_e2e_root_generated.bend"
+  },
+  "FuluLightClientUpdate": {
+   "generated_name": "LightClientUpdate",
+   "i": "FuluLightClientUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientUpdate_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
@@ -6817,7 +6870,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 2120,
    "covered": true,
-   "bridged": "FuluLightClientFinalityUpdate_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",
@@ -6844,7 +6897,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 26936,
    "covered": true,
-   "bridged": "FuluLightClientUpdate_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
