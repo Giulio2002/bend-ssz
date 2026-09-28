@@ -3691,6 +3691,16 @@
     "premise": "rep: RT.rep_GtDE4B86A990(o, Spec.GtDE4B86A990()) (the root law's representation invariant)"
    }
   ],
+  "BitsStruct_e2e_generated.bend": [
+   {
+    "name": "BitsStruct",
+    "generated_name": "Gc85FA758A04",
+    "laws": [
+     "BitsStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()) and hs0, hs3: e2e_bsenc.SDB of the two bit lists at depth below 28 (their words' tree, room for word K / 32, and the bits above K in it zero: the encode records' premises rep_bits does not give)"
+   }
+  ],
   "CompatibleUnionA_e2e_generated.bend": [
    {
     "name": "CompatibleUnionA",
@@ -6406,12 +6416,6 @@
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "BitsStruct": {
-   "generated_name": "Gc85FA758A04",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "BitsStruct_e2e_dec_generated.bend",
-   "root": "BitsStruct_e2e_root_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6820,6 +6824,12 @@
   }
  },
  "variable_size": {
+  "BitsStruct": {
+   "generated_name": "Gc85FA758A04",
+   "i": "BitsStruct_e2e_generated.bend",
+   "ii_iii": "BitsStruct_e2e_dec_generated.bend",
+   "iv": "BitsStruct_e2e_root_generated.bend"
+  },
   "CompatibleUnionA": {
    "generated_name": "GuA2212AE21F",
    "i": "CompatibleUnionA_e2e_generated.bend",
@@ -7147,7 +7157,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 13,
    "covered": true,
-   "bridged": "BitsStruct_e2e_dec_generated.bend"
+   "bridged": null
   },
   "CompatibleUnionABCA": {
    "generated_name": "Gu6DDF182530",

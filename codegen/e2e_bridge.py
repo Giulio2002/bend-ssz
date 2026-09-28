@@ -2949,6 +2949,9 @@ def outputs():
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         VDEC_VIEWS.setdefault('Gc85FA758A04', BVG.bs_view())
         VROOT_SHAPES.setdefault('Gc85FA758A04', BVG.vroot_bs_text)
+        EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
+        VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
+        VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3176,6 +3179,7 @@ def outputs():
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
+        out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
     if (OBJ / 'big_var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
     if (OBJ / 'big_var_win_SignedAggregateAndProof.bend').exists():
