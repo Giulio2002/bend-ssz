@@ -13,7 +13,8 @@ import ../../spec/primitives.bend as SP
 import ../compact/found.bend as F
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
-import ./words_obj.bend as WO
+import ./words_root_light.bend as WR_L
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
@@ -219,7 +220,7 @@ def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits,
       %Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(WS.e32(q), r), enq) :
         {Bm.mix_length_bytes(Lim.at_depth(Bm.chunk_limit(cap), depth, Pack.scan(WS.btake(_, FX.limbs(F.array__slots(U32, t))), 31n, [], [])), Len.encoding(32n, List.length(&2, Bool, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, t)))))) == Some{D.bytes(O.mix_len(hl, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), K))} : Maybe<&2, +List<U32>>}
       %Equal.sym(+List<+List<U32>>, Pack.scan(WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t))), 31n, [], []), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)),
-          WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, WR.cap_at(q, dw, t, pf, room), slack)) :
+          WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, WR_L.cap_at(q, dw, t, pf, room), slack)) :
         {Bm.mix_length_bytes(Lim.at_depth(Bm.chunk_limit(cap), depth, _), Len.encoding(32n, List.length(&2, Bool, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, t)))))) == Some{D.bytes(O.mix_len(hl, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), K))} : Maybe<&2, +List<U32>>}
       %Equal.sym(Nat, List.length(&2, Bool, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, t)))), U32.to_nat(K), hln) :
         {Bm.mix_length_bytes(Lim.at_depth(Bm.chunk_limit(cap), depth, MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n))), Len.encoding(32n, _)) == Some{D.bytes(O.mix_len(hl, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n), K))} : Maybe<&2, +List<U32>>}

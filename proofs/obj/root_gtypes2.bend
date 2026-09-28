@@ -72,7 +72,7 @@ import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./root_support.bend as RS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_obj.bend as LO
 import ./pv_obj.bend as PV
 import ./bitlist_obj.bend as BO
@@ -80,7 +80,7 @@ import ./cells.bend as CE
 import ./obj_support.bend as OS
 import ./root_gnames.bend as RN
 import ./ulist_obj.bend as UL
-import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB
 import ./prog_list.bend as PG
 import ./blist_obj.bend as BLI
 import ./elems48.bend as E48

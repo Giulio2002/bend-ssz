@@ -32,7 +32,7 @@ import ./bitlist_obj.bend as BO
 import ./obj_support.bend as OS
 import ./root_gnames.bend as RN
 import ./ulist_obj.bend as UL
-import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB
 import ./prog_list.bend as PG
 import ./blist_obj.bend as BLI
 import ./xlist_support.bend as XS

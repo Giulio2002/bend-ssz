@@ -14,7 +14,7 @@ import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./elems_obj.bend as EL
 import ./schema_shapes.bend as SH

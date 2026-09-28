@@ -7,6 +7,7 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l8192_DepositRequest.bend as W
 import ../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
 
@@ -117,8 +118,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluDepositReques
           Equal.sym(Maybe<&2, FuluDepositRequest_d.DepositRequest>, FD.spec_common__nth(FuluDepositRequest_d.DepositRequest, FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT.xat_l8192_DepositRequest(FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_l8192_DepositRequest(FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluDepositRequest_d.DepositRequest, RT.xat_l8192_DepositRequest(FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 192n, x)), ex) :
-        {S.Items{RN_L.v_DepositRequest(_), RT.xi_l8192_DepositRequest(k, FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 192n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_DepositRequest(W.RX(t, VRL.pos(i, 192n, x))), z}, RT.xi_l8192_DepositRequest(k, FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN.v_DepositRequest(_), RT.xi_l8192_DepositRequest(k, FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 192n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_DepositRequest(W.RX(t, VRL.pos(i, 192n, x))), z}, RT.xi_l8192_DepositRequest(k, FD.array__slots(FuluDepositRequest_d.DepositRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 192n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:

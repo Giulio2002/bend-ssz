@@ -124,6 +124,7 @@ import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./root_support.bend as RS
 import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO_L
 import ./list_obj.bend as LO
 import ./pv_obj.bend as PV
 import ./bitlist_obj.bend as BO
@@ -132,7 +133,9 @@ import ./obj_support.bend as OS
 import ./root_gnames.bend as RN
 import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
+import ./packed_obj_light.bend as PK_L
 import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB_L
 import ./prog_list.bend as PG
 import ./blist_obj.bend as BLI
 import ./elems48.bend as E48
@@ -148,11 +151,11 @@ import ../../spec/byte_list.bend as BL
 # Root laws of the generic forms (Type-kind shapes), as proofs/obj/root_types.bend.
 
 # ---- digest witnesses of byte storage fields (values from the invariant) ----
-def wdc_wdig(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(WO.wdig(hl, o, d)):
+def wdc_wdig(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(WO_L.wdig(hl, o, d)):
   (+t, +c1) = c
   (+N, +ce) = c1
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(WO.wdig(hl, _, d))
-  (WO.wdig(hl, O.Words{F.array__thaw(U32, t), N}, d), {==})
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(WO_L.wdig(hl, _, d))
+  (WO_L.wdig(hl, O.Words{F.array__thaw(U32, t), N}, d), {==})
 def wdc_ldig(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(LO.ldig(hl, o, d)):
   (+t, +c1) = c
   (+N, +ce) = c1
@@ -163,10 +166,10 @@ def wdc_udig(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(UL.udig(hl, 
   (+N, +ce) = c1
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(UL.udig(hl, _, d))
   (UL.udig(hl, O.Words{F.array__thaw(U32, t), N}, d), {==})
-def wd_bv(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: WO.rep_bv(o, s)) -> OS.DW(WO.wdig(hl, o, d)):
+def wd_bv(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: WO_L.rep_bv(o, s)) -> OS.DW(WO_L.wdig(hl, o, d)):
   (+w, +z) = r
   wdc_wdig(hl, o, d, CF.cf1(o, w))
-def wd_pv(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: PV.rep_pv(o, s)) -> OS.DW(WO.wdig(hl, o, d)):
+def wd_pv(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: PV.rep_pv(o, s)) -> OS.DW(WO_L.wdig(hl, o, d)):
   (+w, +z) = r
   wdc_wdig(hl, o, d, CF.cfv(o, w))
 def wd_bl(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: LO.rep_bl(o, s)) -> OS.DW(LO.ldig(hl, o, d)):
@@ -257,7 +260,7 @@ def pj_Gc465214E502_1(o: VarTestStruct_d.Gc465214E502) -> O.Words:
     case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: x1
 def v_Gc465214E502(o: VarTestStruct_d.Gc465214E502) -> S.Value:
   match o:
-    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: S.Sequence{S.Items{RN.v_u16(x0), S.Items{PB.vview2(x1), S.Items{RN.v_u8(x2), S.EmptyItems{}}}}}
+    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: S.Sequence{S.Items{RN.v_u16(x0), S.Items{PB_L.vview2(x1), S.Items{RN.v_u8(x2), S.EmptyItems{}}}}}
 def d_Gc465214E502(+hl: Nat, o: VarTestStruct_d.Gc465214E502) -> D.Digest:
   match o:
     case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), BLI.bdig(hl, x1, 6n, 1n), RN.d_u8(hl, x2)], 0n)
@@ -341,7 +344,7 @@ def rs_Gc465214E502(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: VarTestStr
     RR.roots(v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), _}, [D.bytes(d_Gc465214E502(hl, VarTestStruct_d.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))])
   %Equal.sym(D.Digest, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), dd1, de1) :
     RR.roots(v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}}, [D.bytes(MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), _, RN.d_u8(hl, x2)], 0n))])
-  (MD.bytes_list([RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)]), (([D.bytes(RN.d_u16(hl, x0))], (MD.bytes_list([dd1, RN.d_u8(hl, x2)]), (OS.transport(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, [D.bytes(RN.d_u16(hl, x0))], qe0, RN.rs_u16(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([RN.d_u8(hl, x2)]), (OS.dtrans(PB.vview2(pj_Gc465214E502_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dd1, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, 6, 0, rp1, r5, {==}, {==})), (([D.bytes(RN.d_u8(hl, x2))], (MD.bytes_list([]), (OS.transport(RN.v_u8(x2), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x2))], qv0, RN.rs_u8(hl, ehl, x2, q4)), ({==}, {==})))), {==})))), {==})))),
+  (MD.bytes_list([RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)]), (([D.bytes(RN.d_u16(hl, x0))], (MD.bytes_list([dd1, RN.d_u8(hl, x2)]), (OS.transport(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, [D.bytes(RN.d_u16(hl, x0))], qe0, RN.rs_u16(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([RN.d_u8(hl, x2)]), (OS.dtrans(PB_L.vview2(pj_Gc465214E502_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dd1, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, 6, 0, rp1, r5, {==}, {==})), (([D.bytes(RN.d_u8(hl, x2))], (MD.bytes_list([]), (OS.transport(RN.v_u8(x2), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x2))], qv0, RN.rs_u8(hl, ehl, x2, q4)), ({==}, {==})))), {==})))), {==})))),
     RS.aggregate_digests(3n, 2n, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)], {==}, {==}, {==}, ehl)))
 
 # ---- vectors of containers: the sequence relation without a length ----
@@ -1085,7 +1088,7 @@ def pj_Gc56D855869F_6(o: ComplexTestStruct_d.Gc56D855869F) -> vec_VarTestStruct_
     case ComplexTestStruct_d.Gc56D855869F{+x0, x1, +x2, x3, x4, x5, x6}: x6
 def v_Gc56D855869F(o: ComplexTestStruct_d.Gc56D855869F) -> S.Value:
   match o:
-    case ComplexTestStruct_d.Gc56D855869F{+x0, x1, +x2, x3, x4, x5, x6}: S.Sequence{S.Items{RN.v_u16(x0), S.Items{PB.vview2(x1), S.Items{RN.v_u8(x2), S.Items{S.BytesValue{WO.wview(x3)}, S.Items{v_Gc465214E502(x4), S.Items{xv_v4_GcDC3E457711(x5), S.Items{xv_v2_Gc465214E502(x6), S.EmptyItems{}}}}}}}}}
+    case ComplexTestStruct_d.Gc56D855869F{+x0, x1, +x2, x3, x4, x5, x6}: S.Sequence{S.Items{RN.v_u16(x0), S.Items{PB_L.vview2(x1), S.Items{RN.v_u8(x2), S.Items{S.BytesValue{WO_L.wview(x3)}, S.Items{v_Gc465214E502(x4), S.Items{xv_v4_GcDC3E457711(x5), S.Items{xv_v2_Gc465214E502(x6), S.EmptyItems{}}}}}}}}}
 def d_Gc56D855869F(+hl: Nat, o: ComplexTestStruct_d.Gc56D855869F) -> D.Digest:
   match o:
     case ComplexTestStruct_d.Gc56D855869F{+x0, x1, +x2, x3, x4, x5, x6}: MD.rtree(3n, True{}, hl, [RN.d_u16(hl, x0), BLI.bdig(hl, x1, 3n, 1n), RN.d_u8(hl, x2), LO.ldig(hl, x3, 3n), d_Gc465214E502(hl, x4), xd_v4_GcDC3E457711(hl, x5), xd_v2_Gc465214E502(hl, x6)], 0n)
@@ -1264,7 +1267,7 @@ def rs_Gc56D855869F(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: ComplexTes
     RR.roots(v_Gc56D855869F(ComplexTestStruct_d.Gc56D855869F{x0, pj_Gc56D855869F_1(o), x2, pj_Gc56D855869F_3(o), pj_Gc56D855869F_4(o), pj_Gc56D855869F_5(o), pj_Gc56D855869F_6(o)}), S.Container{SH.Container_names(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}}}}, [D.bytes(MD.rtree(3n, True{}, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2), dd3, dd4, _, xd_v2_Gc465214E502(hl, pj_Gc56D855869F_6(o))], 0n))])
   %Equal.sym(D.Digest, xd_v2_Gc465214E502(hl, pj_Gc56D855869F_6(o)), dd6, de6) :
     RR.roots(v_Gc56D855869F(ComplexTestStruct_d.Gc56D855869F{x0, pj_Gc56D855869F_1(o), x2, pj_Gc56D855869F_3(o), pj_Gc56D855869F_4(o), pj_Gc56D855869F_5(o), pj_Gc56D855869F_6(o)}), S.Container{SH.Container_names(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}}}}, [D.bytes(MD.rtree(3n, True{}, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, _], 0n))])
-  (MD.bytes_list([RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (([D.bytes(RN.d_u16(hl, x0))], (MD.bytes_list([dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (OS.transport(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, [D.bytes(RN.d_u16(hl, x0))], qe0, RN.rs_u16(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (OS.dtrans(PB.vview2(pj_Gc56D855869F_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dd1, BLI.bdig(hl, pj_Gc56D855869F_1(o), 3n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gc56D855869F_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 3n, 3, 0, rp1, k9, {==}, {==})), (([D.bytes(RN.d_u8(hl, x2))], (MD.bytes_list([dd3, dd4, dd5, dd6]), (OS.transport(RN.v_u8(x2), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x2))], qe2, RN.rs_u8(hl, ehl, x2, rp2)), (([D.bytes(dd3)], (MD.bytes_list([dd4, dd5, dd6]), (OS.dtrans(S.BytesValue{WO.wview(pj_Gc56D855869F_3(o))}, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), dd3, LO.ldig(hl, pj_Gc56D855869F_3(o), 3n), de3, LO.bl_rs(hl, ehl, h, pj_Gc56D855869F_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), 3n, 3, 0, rp3, k10, {==}, {==})), (([D.bytes(dd4)], (MD.bytes_list([dd5, dd6]), (OS.dtrans(v_Gc465214E502(pj_Gc56D855869F_4(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dd4, d_Gc465214E502(hl, pj_Gc56D855869F_4(o)), de4, rs_Gc465214E502(hl, ehl, h, pj_Gc56D855869F_4(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), rp4, dv, edv, k11, qe4)), (([D.bytes(dd5)], (MD.bytes_list([dd6]), (OS.dtrans(xv_v4_GcDC3E457711(pj_Gc56D855869F_5(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), dd5, xd_v4_GcDC3E457711(hl, pj_Gc56D855869F_5(o)), de5, rs_v4_GcDC3E457711(hl, ehl, h, pj_Gc56D855869F_5(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), rp5, k12, qe5)), (([D.bytes(dd6)], (MD.bytes_list([]), (OS.dtrans(xv_v2_Gc465214E502(pj_Gc56D855869F_6(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), dd6, xd_v2_Gc465214E502(hl, pj_Gc56D855869F_6(o)), de6, rs_v2_Gc465214E502(hl, ehl, h, pj_Gc56D855869F_6(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), q8, dv, edv, r13, qv3)), ({==}, {==})))), {==})))), {==})))), {==})))), {==})))), {==})))), {==})))),
+  (MD.bytes_list([RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (([D.bytes(RN.d_u16(hl, x0))], (MD.bytes_list([dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (OS.transport(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, [D.bytes(RN.d_u16(hl, x0))], qe0, RN.rs_u16(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([RN.d_u8(hl, x2), dd3, dd4, dd5, dd6]), (OS.dtrans(PB_L.vview2(pj_Gc56D855869F_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dd1, BLI.bdig(hl, pj_Gc56D855869F_1(o), 3n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gc56D855869F_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 3n, 3, 0, rp1, k9, {==}, {==})), (([D.bytes(RN.d_u8(hl, x2))], (MD.bytes_list([dd3, dd4, dd5, dd6]), (OS.transport(RN.v_u8(x2), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x2))], qe2, RN.rs_u8(hl, ehl, x2, rp2)), (([D.bytes(dd3)], (MD.bytes_list([dd4, dd5, dd6]), (OS.dtrans(S.BytesValue{WO_L.wview(pj_Gc56D855869F_3(o))}, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), dd3, LO.ldig(hl, pj_Gc56D855869F_3(o), 3n), de3, LO.bl_rs(hl, ehl, h, pj_Gc56D855869F_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), 3n, 3, 0, rp3, k10, {==}, {==})), (([D.bytes(dd4)], (MD.bytes_list([dd5, dd6]), (OS.dtrans(v_Gc465214E502(pj_Gc56D855869F_4(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dd4, d_Gc465214E502(hl, pj_Gc56D855869F_4(o)), de4, rs_Gc465214E502(hl, ehl, h, pj_Gc56D855869F_4(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), rp4, dv, edv, k11, qe4)), (([D.bytes(dd5)], (MD.bytes_list([dd6]), (OS.dtrans(xv_v4_GcDC3E457711(pj_Gc56D855869F_5(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), dd5, xd_v4_GcDC3E457711(hl, pj_Gc56D855869F_5(o)), de5, rs_v4_GcDC3E457711(hl, ehl, h, pj_Gc56D855869F_5(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), rp5, k12, qe5)), (([D.bytes(dd6)], (MD.bytes_list([]), (OS.dtrans(xv_v2_Gc465214E502(pj_Gc56D855869F_6(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), dd6, xd_v2_Gc465214E502(hl, pj_Gc56D855869F_6(o)), de6, rs_v2_Gc465214E502(hl, ehl, h, pj_Gc56D855869F_6(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), q8, dv, edv, r13, qv3)), ({==}, {==})))), {==})))), {==})))), {==})))), {==})))), {==})))), {==})))),
     RS.aggregate_digests(7n, 3n, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2), dd3, dd4, dd5, dd6], {==}, {==}, {==}, ehl)))
 
 # Gt83D8B3D008: for every packed byte object representing a value of Spec.Gt83D8B3D008(),
@@ -1278,10 +1281,10 @@ law Gt83D8B3D008_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.Gt83D8B3D008() : S.Schema}
   for +rep: PG.rep_plb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, o))))])
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, o))))])
 def Gt83D8B3D008_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 0n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 0n))), PG.pl_st(64n, h, o, 0, 0n, PG.rep_wfb(o, s, rep))) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.plb_rs(64n, {==}, o, s, rep, Gt83D8B3D008_ok(s, es))
 
 # Gt1D9B3E1871: for every packed word object representing a value of Spec.Gt1D9B3E1871(),
@@ -1294,11 +1297,11 @@ law Gt1D9B3E1871_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt1D9B3E1871() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_16_h.Gt1D9B3E1871_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_16_h.Gt1D9B3E1871_hash_tree_root(h, o))))])
 def Gt1D9B3E1871_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt1D9B3E1871_ok(s, es), {==})
 
 # GtAE3EF932C2: for every packed word object representing a value of Spec.GtAE3EF932C2(),
@@ -1311,11 +1314,11 @@ law GtAE3EF932C2_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtAE3EF932C2() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_1_h.GtAE3EF932C2_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_1_h.GtAE3EF932C2_hash_tree_root(h, o))))])
 def GtAE3EF932C2_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, GtAE3EF932C2_ok(s, es), {==})
 
 # Gt3771256492: for every packed word object representing a value of Spec.Gt3771256492(),
@@ -1328,11 +1331,11 @@ law Gt3771256492_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3771256492() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_2_h.Gt3771256492_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_2_h.Gt3771256492_hash_tree_root(h, o))))])
 def Gt3771256492_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt3771256492_ok(s, es), {==})
 
 # Gt9DF37A5216: for every packed word object representing a value of Spec.Gt9DF37A5216(),
@@ -1345,11 +1348,11 @@ law Gt9DF37A5216_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt9DF37A5216() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_31_h.Gt9DF37A5216_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_31_h.Gt9DF37A5216_hash_tree_root(h, o))))])
 def Gt9DF37A5216_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt9DF37A5216_ok(s, es), {==})
 
 # Gt57090094FA: for every packed word object representing a value of Spec.Gt57090094FA(),
@@ -1362,11 +1365,11 @@ law Gt57090094FA_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt57090094FA() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_3_h.Gt57090094FA_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_3_h.Gt57090094FA_hash_tree_root(h, o))))])
 def Gt57090094FA_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt57090094FA_ok(s, es), {==})
 
 # GtC57121EA56: for every packed word object representing a value of Spec.GtC57121EA56(),
@@ -1379,11 +1382,11 @@ law GtC57121EA56_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtC57121EA56() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_4_h.GtC57121EA56_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_4_h.GtC57121EA56_hash_tree_root(h, o))))])
 def GtC57121EA56_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, GtC57121EA56_ok(s, es), {==})
 
 # Gt34AE45611E: for every packed word object representing a value of Spec.Gt34AE45611E(),
@@ -1396,11 +1399,11 @@ law Gt34AE45611E_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt34AE45611E() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_512_h.Gt34AE45611E_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_512_h.Gt34AE45611E_hash_tree_root(h, o))))])
 def Gt34AE45611E_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO_L.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 4n, rep, Gt34AE45611E_ok(s, es), {==})
 
 # GtEB2FD43D9B: for every packed word object representing a value of Spec.GtEB2FD43D9B(),
@@ -1413,11 +1416,11 @@ law GtEB2FD43D9B_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtEB2FD43D9B() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_513_h.GtEB2FD43D9B_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_513_h.GtEB2FD43D9B_hash_tree_root(h, o))))])
 def GtEB2FD43D9B_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO_L.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 5n, rep, GtEB2FD43D9B_ok(s, es), {==})
 
 # Gt7FBB1934E8: for every packed word object representing a value of Spec.Gt7FBB1934E8(),
@@ -1430,11 +1433,11 @@ law Gt7FBB1934E8_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt7FBB1934E8() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_5_h.Gt7FBB1934E8_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_5_h.Gt7FBB1934E8_hash_tree_root(h, o))))])
 def Gt7FBB1934E8_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt7FBB1934E8_ok(s, es), {==})
 
 # Gt526892A4DC: for every packed word object representing a value of Spec.Gt526892A4DC(),
@@ -1447,11 +1450,11 @@ law Gt526892A4DC_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt526892A4DC() : S.Schema}
-  for +rep: PB.rep_vb(o, s)
-  RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_8_h.Gt526892A4DC_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_vb(o, s)
+  RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_8_h.Gt526892A4DC_hash_tree_root(h, o))))])
 def Gt526892A4DC_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
-    RR.roots(PB.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wfb(o, s, rep), {==})) :
+    RR.roots(PB_L.vviewb(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.vb_rs(64n, {==}, o, s, 0n, rep, Gt526892A4DC_ok(s, es), {==})
 
 # Gt1C2FA69562: for every packed byte object representing a value of Spec.Gt1C2FA69562(),
@@ -1465,10 +1468,10 @@ law Gt1C2FA69562_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.Gt1C2FA69562() : S.Schema}
   for +rep: PG.rep_pl16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint128_h.Gt1C2FA69562_hash_tree_root(h, o))))])
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint128_h.Gt1C2FA69562_hash_tree_root(h, o))))])
 def Gt1C2FA69562_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 4n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 4n))), PG.pl_st(64n, h, o, 0, 4n, PG.rep_wf16(o, s, rep))) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.pl16_rs(64n, {==}, o, s, rep, Gt1C2FA69562_ok(s, es))
 
 # Gt3EC8B89B94: for every packed word object representing a value of Spec.Gt3EC8B89B94(),
@@ -1481,11 +1484,11 @@ law Gt3EC8B89B94_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3EC8B89B94() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_16_h.Gt3EC8B89B94_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_16_h.Gt3EC8B89B94_hash_tree_root(h, o))))])
 def Gt3EC8B89B94_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO_L.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 3n, rep, Gt3EC8B89B94_ok(s, es), {==})
 
 # Gt3FD98F54A5: for every packed word object representing a value of Spec.Gt3FD98F54A5(),
@@ -1498,11 +1501,11 @@ law Gt3FD98F54A5_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3FD98F54A5() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_1_h.Gt3FD98F54A5_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_1_h.Gt3FD98F54A5_hash_tree_root(h, o))))])
 def Gt3FD98F54A5_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 0n, rep, Gt3FD98F54A5_ok(s, es), {==})
 
 # Gt7D65FF3A10: for every packed word object representing a value of Spec.Gt7D65FF3A10(),
@@ -1515,11 +1518,11 @@ law Gt7D65FF3A10_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt7D65FF3A10() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_2_h.Gt7D65FF3A10_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_2_h.Gt7D65FF3A10_hash_tree_root(h, o))))])
 def Gt7D65FF3A10_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 0n, rep, Gt7D65FF3A10_ok(s, es), {==})
 
 # Gt6B1336E534: for every packed word object representing a value of Spec.Gt6B1336E534(),
@@ -1532,11 +1535,11 @@ law Gt6B1336E534_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt6B1336E534() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_31_h.Gt6B1336E534_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_31_h.Gt6B1336E534_hash_tree_root(h, o))))])
 def Gt6B1336E534_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO_L.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 4n, rep, Gt6B1336E534_ok(s, es), {==})
 
 # Gt7600AB7870: for every packed word object representing a value of Spec.Gt7600AB7870(),
@@ -1549,11 +1552,11 @@ law Gt7600AB7870_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt7600AB7870() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_3_h.Gt7600AB7870_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_3_h.Gt7600AB7870_hash_tree_root(h, o))))])
 def Gt7600AB7870_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 1n, rep, Gt7600AB7870_ok(s, es), {==})
 
 # GtB0CCEA154C: for every packed word object representing a value of Spec.GtB0CCEA154C(),
@@ -1566,11 +1569,11 @@ law GtB0CCEA154C_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtB0CCEA154C() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_4_h.GtB0CCEA154C_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_4_h.GtB0CCEA154C_hash_tree_root(h, o))))])
 def GtB0CCEA154C_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 1n, rep, GtB0CCEA154C_ok(s, es), {==})
 
 # Gt7274F61A0F: for every packed word object representing a value of Spec.Gt7274F61A0F(),
@@ -1583,11 +1586,11 @@ law Gt7274F61A0F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt7274F61A0F() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_512_h.Gt7274F61A0F_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_512_h.Gt7274F61A0F_hash_tree_root(h, o))))])
 def Gt7274F61A0F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 8, 0), (h, (o, WO.wdig(64n, o, 8n))), WO.bv_st(64n, h, o, 8, 0, 8n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 8, 0), (h, (o, WO_L.wdig(64n, o, 8n))), WO.bv_st(64n, h, o, 8, 0, 8n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 8n, rep, Gt7274F61A0F_ok(s, es), {==})
 
 # Gt9EA902108D: for every packed word object representing a value of Spec.Gt9EA902108D(),
@@ -1600,11 +1603,11 @@ law Gt9EA902108D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt9EA902108D() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_513_h.Gt9EA902108D_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_513_h.Gt9EA902108D_hash_tree_root(h, o))))])
 def Gt9EA902108D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 9, 0), (h, (o, WO.wdig(64n, o, 9n))), WO.bv_st(64n, h, o, 9, 0, 9n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 9, 0), (h, (o, WO_L.wdig(64n, o, 9n))), WO.bv_st(64n, h, o, 9, 0, 9n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 9n, rep, Gt9EA902108D_ok(s, es), {==})
 
 # GtBB42F83A45: for every packed word object representing a value of Spec.GtBB42F83A45(),
@@ -1617,11 +1620,11 @@ law GtBB42F83A45_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtBB42F83A45() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_5_h.GtBB42F83A45_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_5_h.GtBB42F83A45_hash_tree_root(h, o))))])
 def GtBB42F83A45_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 2n, rep, GtBB42F83A45_ok(s, es), {==})
 
 # Gt3E2A057F33: for every packed word object representing a value of Spec.Gt3E2A057F33(),
@@ -1634,11 +1637,11 @@ law Gt3E2A057F33_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3E2A057F33() : S.Schema}
-  for +rep: PK.rep_v16(o, s)
-  RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_8_h.Gt3E2A057F33_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v16(o, s)
+  RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_8_h.Gt3E2A057F33_hash_tree_root(h, o))))])
 def Gt3E2A057F33_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf16(o, s, rep), {==})) :
-    RR.roots(PK.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf16(o, s, rep), {==})) :
+    RR.roots(PK_L.vview16(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v16_rs(64n, {==}, o, s, 2n, rep, Gt3E2A057F33_ok(s, es), {==})
 
 # GtDE4B86A990: for every packed byte object representing a value of Spec.GtDE4B86A990(),
@@ -1652,10 +1655,10 @@ law GtDE4B86A990_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.GtDE4B86A990() : S.Schema}
   for +rep: PG.rep_pl1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint8_h.GtDE4B86A990_hash_tree_root(h, o))))])
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint8_h.GtDE4B86A990_hash_tree_root(h, o))))])
 def GtDE4B86A990_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 0n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 0n))), PG.pl_st(64n, h, o, 0, 0n, PG.rep_wf1(o, s, rep))) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.pl1_rs(64n, {==}, o, s, rep, GtDE4B86A990_ok(s, es))
 
 # Gt28ED72E3EF: for every packed word object representing a value of Spec.Gt28ED72E3EF(),
@@ -1668,11 +1671,11 @@ law Gt28ED72E3EF_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt28ED72E3EF() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_16_h.Gt28ED72E3EF_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_16_h.Gt28ED72E3EF_hash_tree_root(h, o))))])
 def Gt28ED72E3EF_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, Gt28ED72E3EF_ok(s, es), {==})
 
 # GtB85E1BC748: for every packed word object representing a value of Spec.GtB85E1BC748(),
@@ -1685,11 +1688,11 @@ law GtB85E1BC748_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtB85E1BC748() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_1_h.GtB85E1BC748_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_1_h.GtB85E1BC748_hash_tree_root(h, o))))])
 def GtB85E1BC748_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, GtB85E1BC748_ok(s, es), {==})
 
 # Gt3429157FEB: for every packed word object representing a value of Spec.Gt3429157FEB(),
@@ -1702,11 +1705,11 @@ law Gt3429157FEB_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3429157FEB() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_2_h.Gt3429157FEB_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_2_h.Gt3429157FEB_hash_tree_root(h, o))))])
 def Gt3429157FEB_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, Gt3429157FEB_ok(s, es), {==})
 
 # GtC0FC7B166A: for every packed word object representing a value of Spec.GtC0FC7B166A(),
@@ -1719,11 +1722,11 @@ law GtC0FC7B166A_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtC0FC7B166A() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_31_h.GtC0FC7B166A_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_31_h.GtC0FC7B166A_hash_tree_root(h, o))))])
 def GtC0FC7B166A_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, GtC0FC7B166A_ok(s, es), {==})
 
 # GtC19E8053EB: for every packed word object representing a value of Spec.GtC19E8053EB(),
@@ -1736,11 +1739,11 @@ law GtC19E8053EB_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtC19E8053EB() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_3_h.GtC19E8053EB_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_3_h.GtC19E8053EB_hash_tree_root(h, o))))])
 def GtC19E8053EB_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, GtC19E8053EB_ok(s, es), {==})
 
 # Gt75C1995C88: for every packed word object representing a value of Spec.Gt75C1995C88(),
@@ -1753,11 +1756,11 @@ law Gt75C1995C88_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt75C1995C88() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_4_h.Gt75C1995C88_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_4_h.Gt75C1995C88_hash_tree_root(h, o))))])
 def Gt75C1995C88_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, Gt75C1995C88_ok(s, es), {==})
 
 # Gt28605B5D5C: for every packed word object representing a value of Spec.Gt28605B5D5C(),
@@ -1770,11 +1773,11 @@ law Gt28605B5D5C_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt28605B5D5C() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_512_h.Gt28605B5D5C_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_512_h.Gt28605B5D5C_hash_tree_root(h, o))))])
 def Gt28605B5D5C_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO_L.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 4n, rep, Gt28605B5D5C_ok(s, es), {==})
 
 # Gt2CD118DF5F: for every packed word object representing a value of Spec.Gt2CD118DF5F(),
@@ -1787,11 +1790,11 @@ law Gt2CD118DF5F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt2CD118DF5F() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_513_h.Gt2CD118DF5F_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_513_h.Gt2CD118DF5F_hash_tree_root(h, o))))])
 def Gt2CD118DF5F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO_L.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 5n, rep, Gt2CD118DF5F_ok(s, es), {==})
 
 # GtF3865AEE9A: for every packed word object representing a value of Spec.GtF3865AEE9A(),
@@ -1804,11 +1807,11 @@ law GtF3865AEE9A_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtF3865AEE9A() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_5_h.GtF3865AEE9A_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_5_h.GtF3865AEE9A_hash_tree_root(h, o))))])
 def GtF3865AEE9A_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, GtF3865AEE9A_ok(s, es), {==})
 
 # GtA8100D747D: for every packed word object representing a value of Spec.GtA8100D747D(),
@@ -1821,11 +1824,11 @@ law GtA8100D747D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtA8100D747D() : S.Schema}
-  for +rep: PB.rep_v1(o, s)
-  RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_8_h.GtA8100D747D_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v1(o, s)
+  RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_8_h.GtA8100D747D_hash_tree_root(h, o))))])
 def GtA8100D747D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
-    RR.roots(PB.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf1(o, s, rep), {==})) :
+    RR.roots(PB_L.vview1(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v1_rs(64n, {==}, o, s, 0n, rep, GtA8100D747D_ok(s, es), {==})
 
 # GtF23A2FB97E: for every packed byte object representing a value of Spec.GtF23A2FB97E(),
@@ -1839,10 +1842,10 @@ law GtF23A2FB97E_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.GtF23A2FB97E() : S.Schema}
   for +rep: PG.rep_pl2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint16_h.GtF23A2FB97E_hash_tree_root(h, o))))])
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint16_h.GtF23A2FB97E_hash_tree_root(h, o))))])
 def GtF23A2FB97E_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 1n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 1n))), PG.pl_st(64n, h, o, 0, 1n, PG.rep_wf2(o, s, rep))) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.pl2_rs(64n, {==}, o, s, rep, GtF23A2FB97E_ok(s, es))
 
 # GtAEB382AD1F: for every packed word object representing a value of Spec.GtAEB382AD1F(),
@@ -1855,11 +1858,11 @@ law GtAEB382AD1F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtAEB382AD1F() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_16_h.GtAEB382AD1F_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_16_h.GtAEB382AD1F_hash_tree_root(h, o))))])
 def GtAEB382AD1F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, GtAEB382AD1F_ok(s, es), {==})
 
 # GtE6006F6F55: for every packed word object representing a value of Spec.GtE6006F6F55(),
@@ -1872,11 +1875,11 @@ law GtE6006F6F55_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtE6006F6F55() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_1_h.GtE6006F6F55_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_1_h.GtE6006F6F55_hash_tree_root(h, o))))])
 def GtE6006F6F55_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, GtE6006F6F55_ok(s, es), {==})
 
 # Gt04170D6AA7: for every packed word object representing a value of Spec.Gt04170D6AA7(),
@@ -1889,11 +1892,11 @@ law Gt04170D6AA7_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt04170D6AA7() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_2_h.Gt04170D6AA7_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_2_h.Gt04170D6AA7_hash_tree_root(h, o))))])
 def Gt04170D6AA7_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, Gt04170D6AA7_ok(s, es), {==})
 
 # Gt9333E6513D: for every packed word object representing a value of Spec.Gt9333E6513D(),
@@ -1906,11 +1909,11 @@ law Gt9333E6513D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt9333E6513D() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_31_h.Gt9333E6513D_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_31_h.Gt9333E6513D_hash_tree_root(h, o))))])
 def Gt9333E6513D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 1n, rep, Gt9333E6513D_ok(s, es), {==})
 
 # Gt19F04F79B8: for every packed word object representing a value of Spec.Gt19F04F79B8(),
@@ -1923,11 +1926,11 @@ law Gt19F04F79B8_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt19F04F79B8() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_3_h.Gt19F04F79B8_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_3_h.Gt19F04F79B8_hash_tree_root(h, o))))])
 def Gt19F04F79B8_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, Gt19F04F79B8_ok(s, es), {==})
 
 # Gt6463DC73A8: for every packed word object representing a value of Spec.Gt6463DC73A8(),
@@ -1940,11 +1943,11 @@ law Gt6463DC73A8_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt6463DC73A8() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_4_h.Gt6463DC73A8_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_4_h.Gt6463DC73A8_hash_tree_root(h, o))))])
 def Gt6463DC73A8_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, Gt6463DC73A8_ok(s, es), {==})
 
 # Gt2FF8722A75: for every packed word object representing a value of Spec.Gt2FF8722A75(),
@@ -1957,11 +1960,11 @@ law Gt2FF8722A75_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt2FF8722A75() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_512_h.Gt2FF8722A75_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_512_h.Gt2FF8722A75_hash_tree_root(h, o))))])
 def Gt2FF8722A75_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO_L.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 5n, rep, Gt2FF8722A75_ok(s, es), {==})
 
 # Gt5BE68AF2C7: for every packed word object representing a value of Spec.Gt5BE68AF2C7(),
@@ -1974,11 +1977,11 @@ law Gt5BE68AF2C7_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt5BE68AF2C7() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_513_h.Gt5BE68AF2C7_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_513_h.Gt5BE68AF2C7_hash_tree_root(h, o))))])
 def Gt5BE68AF2C7_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 6, 0), (h, (o, WO.wdig(64n, o, 6n))), WO.bv_st(64n, h, o, 6, 0, 6n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 6, 0), (h, (o, WO_L.wdig(64n, o, 6n))), WO.bv_st(64n, h, o, 6, 0, 6n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 6n, rep, Gt5BE68AF2C7_ok(s, es), {==})
 
 # Gt89824BEACE: for every packed word object representing a value of Spec.Gt89824BEACE(),
@@ -1991,11 +1994,11 @@ law Gt89824BEACE_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt89824BEACE() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_5_h.Gt89824BEACE_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_5_h.Gt89824BEACE_hash_tree_root(h, o))))])
 def Gt89824BEACE_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, Gt89824BEACE_ok(s, es), {==})
 
 # Gt39CAD03032: for every packed word object representing a value of Spec.Gt39CAD03032(),
@@ -2008,11 +2011,11 @@ law Gt39CAD03032_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt39CAD03032() : S.Schema}
-  for +rep: PB.rep_v2(o, s)
-  RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_8_h.Gt39CAD03032_hash_tree_root(h, o))))])
+  for +rep: PB_L.rep_v2(o, s)
+  RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_8_h.Gt39CAD03032_hash_tree_root(h, o))))])
 def Gt39CAD03032_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
-    RR.roots(PB.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PB.rep_wf2(o, s, rep), {==})) :
+    RR.roots(PB_L.vview2(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PB.v2_rs(64n, {==}, o, s, 0n, rep, Gt39CAD03032_ok(s, es), {==})
 
 # GtA8457965E2: for every packed byte object representing a value of Spec.GtA8457965E2(),
@@ -2026,10 +2029,10 @@ law GtA8457965E2_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.GtA8457965E2() : S.Schema}
   for +rep: PG.rep_pl32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint256_h.GtA8457965E2_hash_tree_root(h, o))))])
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint256_h.GtA8457965E2_hash_tree_root(h, o))))])
 def GtA8457965E2_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 5n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 5n))), PG.pl_st(64n, h, o, 0, 5n, PG.rep_wf32(o, s, rep))) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.pl32_rs(64n, {==}, o, s, rep, GtA8457965E2_ok(s, es))
 
 # Gt3E6E18CD57: for every packed word object representing a value of Spec.Gt3E6E18CD57(),
@@ -2042,11 +2045,11 @@ law Gt3E6E18CD57_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3E6E18CD57() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, o))))])
 def Gt3E6E18CD57_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 4, 0), (h, (o, WO_L.wdig(64n, o, 4n))), WO.bv_st(64n, h, o, 4, 0, 4n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 4n, rep, Gt3E6E18CD57_ok(s, es), {==})
 
 # GtBBFD66E011: for every packed word object representing a value of Spec.GtBBFD66E011(),
@@ -2059,11 +2062,11 @@ law GtBBFD66E011_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtBBFD66E011() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_1_h.GtBBFD66E011_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_1_h.GtBBFD66E011_hash_tree_root(h, o))))])
 def GtBBFD66E011_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 0n, rep, GtBBFD66E011_ok(s, es), {==})
 
 # GtB91D4D285D: for every packed word object representing a value of Spec.GtB91D4D285D(),
@@ -2076,11 +2079,11 @@ law GtB91D4D285D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtB91D4D285D() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, o))))])
 def GtB91D4D285D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 1n, rep, GtB91D4D285D_ok(s, es), {==})
 
 # Gt6E9B243B7C: for every packed word object representing a value of Spec.Gt6E9B243B7C(),
@@ -2093,11 +2096,11 @@ law Gt6E9B243B7C_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt6E9B243B7C() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, o))))])
 def Gt6E9B243B7C_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 5, 0), (h, (o, WO_L.wdig(64n, o, 5n))), WO.bv_st(64n, h, o, 5, 0, 5n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 5n, rep, Gt6E9B243B7C_ok(s, es), {==})
 
 # Gt2E7060B297: for every packed word object representing a value of Spec.Gt2E7060B297(),
@@ -2110,11 +2113,11 @@ law Gt2E7060B297_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt2E7060B297() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, o))))])
 def Gt2E7060B297_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 2n, rep, Gt2E7060B297_ok(s, es), {==})
 
 # Gt74B2AF1CB3: for every packed word object representing a value of Spec.Gt74B2AF1CB3(),
@@ -2127,11 +2130,11 @@ law Gt74B2AF1CB3_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt74B2AF1CB3() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, o))))])
 def Gt74B2AF1CB3_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 2n, rep, Gt74B2AF1CB3_ok(s, es), {==})
 
 # Gt274A0B8DC2: for every packed word object representing a value of Spec.Gt274A0B8DC2(),
@@ -2144,11 +2147,11 @@ law Gt274A0B8DC2_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt274A0B8DC2() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_512_h.Gt274A0B8DC2_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_512_h.Gt274A0B8DC2_hash_tree_root(h, o))))])
 def Gt274A0B8DC2_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 9, 0), (h, (o, WO.wdig(64n, o, 9n))), WO.bv_st(64n, h, o, 9, 0, 9n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 9, 0), (h, (o, WO_L.wdig(64n, o, 9n))), WO.bv_st(64n, h, o, 9, 0, 9n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 9n, rep, Gt274A0B8DC2_ok(s, es), {==})
 
 # Gt0A3B6B4128: for every packed word object representing a value of Spec.Gt0A3B6B4128(),
@@ -2161,11 +2164,11 @@ law Gt0A3B6B4128_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt0A3B6B4128() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_513_h.Gt0A3B6B4128_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_513_h.Gt0A3B6B4128_hash_tree_root(h, o))))])
 def Gt0A3B6B4128_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 10, 0), (h, (o, WO.wdig(64n, o, 10n))), WO.bv_st(64n, h, o, 10, 0, 10n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 10, 0), (h, (o, WO_L.wdig(64n, o, 10n))), WO.bv_st(64n, h, o, 10, 0, 10n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 10n, rep, Gt0A3B6B4128_ok(s, es), {==})
 
 # Gt0B1B711C4D: for every packed word object representing a value of Spec.Gt0B1B711C4D(),
@@ -2178,11 +2181,11 @@ law Gt0B1B711C4D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt0B1B711C4D() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, o))))])
 def Gt0B1B711C4D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO_L.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 3n, rep, Gt0B1B711C4D_ok(s, es), {==})
 
 # GtFAE59DA275: for every packed word object representing a value of Spec.GtFAE59DA275(),
@@ -2195,11 +2198,11 @@ law GtFAE59DA275_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtFAE59DA275() : S.Schema}
-  for +rep: PK.rep_v32(o, s)
-  RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_8_h.GtFAE59DA275_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v32(o, s)
+  RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_8_h.GtFAE59DA275_hash_tree_root(h, o))))])
 def GtFAE59DA275_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf32(o, s, rep), {==})) :
-    RR.roots(PK.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO_L.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf32(o, s, rep), {==})) :
+    RR.roots(PK_L.vview32(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v32_rs(64n, {==}, o, s, 3n, rep, GtFAE59DA275_ok(s, es), {==})
 
 # Gt3A9420DD8E: for every packed byte object representing a value of Spec.Gt3A9420DD8E(),
@@ -2213,10 +2216,10 @@ law Gt3A9420DD8E_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.Gt3A9420DD8E() : S.Schema}
   for +rep: PG.rep_pl4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint32_h.Gt3A9420DD8E_hash_tree_root(h, o))))])
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint32_h.Gt3A9420DD8E_hash_tree_root(h, o))))])
 def Gt3A9420DD8E_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 2n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, 2n))), PG.pl_st(64n, h, o, 0, 2n, PG.rep_wf4(o, s, rep))) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PG.pl4_rs(64n, {==}, o, s, rep, Gt3A9420DD8E_ok(s, es))
 
 # Gt3CC580499F: for every packed word object representing a value of Spec.Gt3CC580499F(),
@@ -2229,11 +2232,11 @@ law Gt3CC580499F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt3CC580499F() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_16_h.Gt3CC580499F_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_16_h.Gt3CC580499F_hash_tree_root(h, o))))])
 def Gt3CC580499F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 1n, rep, Gt3CC580499F_ok(s, es), {==})
 
 # Gt669C528764: for every packed word object representing a value of Spec.Gt669C528764(),
@@ -2246,11 +2249,11 @@ law Gt669C528764_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt669C528764() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_1_h.Gt669C528764_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_1_h.Gt669C528764_hash_tree_root(h, o))))])
 def Gt669C528764_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, Gt669C528764_ok(s, es), {==})
 
 # GtF45E42B273: for every packed word object representing a value of Spec.GtF45E42B273(),
@@ -2263,11 +2266,11 @@ law GtF45E42B273_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtF45E42B273() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, o))))])
 def GtF45E42B273_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, GtF45E42B273_ok(s, es), {==})
 
 # GtE528AAE3C6: for every packed word object representing a value of Spec.GtE528AAE3C6(),
@@ -2280,11 +2283,11 @@ law GtE528AAE3C6_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtE528AAE3C6() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, o))))])
 def GtE528AAE3C6_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 2n, rep, GtE528AAE3C6_ok(s, es), {==})
 
 # GtD1AEF07F7D: for every packed word object representing a value of Spec.GtD1AEF07F7D(),
@@ -2297,11 +2300,11 @@ law GtD1AEF07F7D_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtD1AEF07F7D() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, o))))])
 def GtD1AEF07F7D_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, GtD1AEF07F7D_ok(s, es), {==})
 
 # Gt240C147AA2: for every packed word object representing a value of Spec.Gt240C147AA2(),
@@ -2314,11 +2317,11 @@ law Gt240C147AA2_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt240C147AA2() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_4_h.Gt240C147AA2_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_4_h.Gt240C147AA2_hash_tree_root(h, o))))])
 def Gt240C147AA2_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, Gt240C147AA2_ok(s, es), {==})
 
 # Gt13AFE546ED: for every packed word object representing a value of Spec.Gt13AFE546ED(),
@@ -2331,11 +2334,11 @@ law Gt13AFE546ED_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt13AFE546ED() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_512_h.Gt13AFE546ED_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_512_h.Gt13AFE546ED_hash_tree_root(h, o))))])
 def Gt13AFE546ED_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 6, 0), (h, (o, WO.wdig(64n, o, 6n))), WO.bv_st(64n, h, o, 6, 0, 6n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 6, 0), (h, (o, WO_L.wdig(64n, o, 6n))), WO.bv_st(64n, h, o, 6, 0, 6n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 6n, rep, Gt13AFE546ED_ok(s, es), {==})
 
 # Gt53D2408A5F: for every packed word object representing a value of Spec.Gt53D2408A5F(),
@@ -2348,11 +2351,11 @@ law Gt53D2408A5F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt53D2408A5F() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_513_h.Gt53D2408A5F_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_513_h.Gt53D2408A5F_hash_tree_root(h, o))))])
 def Gt53D2408A5F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 7, 0), (h, (o, WO.wdig(64n, o, 7n))), WO.bv_st(64n, h, o, 7, 0, 7n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 7, 0), (h, (o, WO_L.wdig(64n, o, 7n))), WO.bv_st(64n, h, o, 7, 0, 7n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 7n, rep, Gt53D2408A5F_ok(s, es), {==})
 
 # Gt1719057EB7: for every packed word object representing a value of Spec.Gt1719057EB7(),
@@ -2365,11 +2368,11 @@ law Gt1719057EB7_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt1719057EB7() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_5_h.Gt1719057EB7_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_5_h.Gt1719057EB7_hash_tree_root(h, o))))])
 def Gt1719057EB7_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, Gt1719057EB7_ok(s, es), {==})
 
 # GtCCF6FFA0A0: for every packed word object representing a value of Spec.GtCCF6FFA0A0(),
@@ -2382,11 +2385,11 @@ law GtCCF6FFA0A0_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtCCF6FFA0A0() : S.Schema}
-  for +rep: PK.rep_v4(o, s)
-  RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v4(o, s)
+  RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, o))))])
 def GtCCF6FFA0A0_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
-    RR.roots(PK.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf4(o, s, rep), {==})) :
+    RR.roots(PK_L.vview4(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v4_rs(64n, {==}, o, s, 0n, rep, GtCCF6FFA0A0_ok(s, es), {==})
 
 # GtE83F21B20A: for every packed byte object representing a value of Spec.GtE83F21B20A(),
@@ -2416,11 +2419,11 @@ law Gt0B4EF17D71_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt0B4EF17D71() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_16_h.Gt0B4EF17D71_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_16_h.Gt0B4EF17D71_hash_tree_root(h, o))))])
 def Gt0B4EF17D71_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 2, 0), (h, (o, WO_L.wdig(64n, o, 2n))), WO.bv_st(64n, h, o, 2, 0, 2n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 2n, rep, Gt0B4EF17D71_ok(s, es), {==})
 
 # GtADC8DCD962: for every packed word object representing a value of Spec.GtADC8DCD962(),
@@ -2433,11 +2436,11 @@ law GtADC8DCD962_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtADC8DCD962() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_1_h.GtADC8DCD962_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_1_h.GtADC8DCD962_hash_tree_root(h, o))))])
 def GtADC8DCD962_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 0n, rep, GtADC8DCD962_ok(s, es), {==})
 
 # GtC923FCB2DA: for every packed word object representing a value of Spec.GtC923FCB2DA(),
@@ -2450,11 +2453,11 @@ law GtC923FCB2DA_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtC923FCB2DA() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, o))))])
 def GtC923FCB2DA_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 0n, rep, GtC923FCB2DA_ok(s, es), {==})
 
 # Gt7D1CD7363A: for every packed word object representing a value of Spec.Gt7D1CD7363A(),
@@ -2467,11 +2470,11 @@ law Gt7D1CD7363A_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt7D1CD7363A() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_31_h.Gt7D1CD7363A_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_31_h.Gt7D1CD7363A_hash_tree_root(h, o))))])
 def Gt7D1CD7363A_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 3, 0), (h, (o, WO_L.wdig(64n, o, 3n))), WO.bv_st(64n, h, o, 3, 0, 3n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 3n, rep, Gt7D1CD7363A_ok(s, es), {==})
 
 # Gt8E507C4540: for every packed word object representing a value of Spec.Gt8E507C4540(),
@@ -2484,11 +2487,11 @@ law Gt8E507C4540_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt8E507C4540() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_3_h.Gt8E507C4540_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_3_h.Gt8E507C4540_hash_tree_root(h, o))))])
 def Gt8E507C4540_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 0n, rep, Gt8E507C4540_ok(s, es), {==})
 
 # Gt46F5D7703F: for every packed word object representing a value of Spec.Gt46F5D7703F(),
@@ -2501,11 +2504,11 @@ law Gt46F5D7703F_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt46F5D7703F() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_4_h.Gt46F5D7703F_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_4_h.Gt46F5D7703F_hash_tree_root(h, o))))])
 def Gt46F5D7703F_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 0, 0), (h, (o, WO_L.wdig(64n, o, 0n))), WO.bv_st(64n, h, o, 0, 0, 0n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 0n, rep, Gt46F5D7703F_ok(s, es), {==})
 
 # Gt843A1262ED: for every packed word object representing a value of Spec.Gt843A1262ED(),
@@ -2518,11 +2521,11 @@ law Gt843A1262ED_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt843A1262ED() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_512_h.Gt843A1262ED_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_512_h.Gt843A1262ED_hash_tree_root(h, o))))])
 def Gt843A1262ED_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 7, 0), (h, (o, WO.wdig(64n, o, 7n))), WO.bv_st(64n, h, o, 7, 0, 7n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 7, 0), (h, (o, WO_L.wdig(64n, o, 7n))), WO.bv_st(64n, h, o, 7, 0, 7n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 7n, rep, Gt843A1262ED_ok(s, es), {==})
 
 # Gt10D6F42D74: for every packed word object representing a value of Spec.Gt10D6F42D74(),
@@ -2535,11 +2538,11 @@ law Gt10D6F42D74_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt10D6F42D74() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_513_h.Gt10D6F42D74_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_513_h.Gt10D6F42D74_hash_tree_root(h, o))))])
 def Gt10D6F42D74_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 8, 0), (h, (o, WO.wdig(64n, o, 8n))), WO.bv_st(64n, h, o, 8, 0, 8n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 8, 0), (h, (o, WO_L.wdig(64n, o, 8n))), WO.bv_st(64n, h, o, 8, 0, 8n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 8n, rep, Gt10D6F42D74_ok(s, es), {==})
 
 # Gt8FB0CF9679: for every packed word object representing a value of Spec.Gt8FB0CF9679(),
@@ -2552,11 +2555,11 @@ law Gt8FB0CF9679_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.Gt8FB0CF9679() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_5_h.Gt8FB0CF9679_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_5_h.Gt8FB0CF9679_hash_tree_root(h, o))))])
 def Gt8FB0CF9679_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 1n, rep, Gt8FB0CF9679_ok(s, es), {==})
 
 # GtE470919895: for every packed word object representing a value of Spec.GtE470919895(),
@@ -2569,11 +2572,11 @@ law GtE470919895_root_correct:
   for -o: O.Words
   for +s: S.Schema
   for +es: {s == Spec.GtE470919895() : S.Schema}
-  for +rep: PK.rep_v8(o, s)
-  RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, o))))])
+  for +rep: PK_L.rep_v8(o, s)
+  RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, o))))])
 def GtE470919895_root_correct(h, o, s, es, rep):
-  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf8(o, s, rep), {==})) :
-    RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 1, 0), (h, (o, WO_L.wdig(64n, o, 1n))), WO.bv_st(64n, h, o, 1, 0, 1n, PK.rep_wf8(o, s, rep), {==})) :
+    RR.roots(PK_L.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 1n, rep, GtE470919895_ok(s, es), {==})
 
 # Gc465214E502: for every object representing a value of Spec.Gc465214E502(), the runtime

@@ -59,7 +59,7 @@ import ../../spec/fulu_schemas.bend as Spec
 import ../obj/schema_shapes.bend as SH
 import ../obj/dk.bend as DK
 import ../obj/mtree_defs.bend as MD
-import ../obj/words_obj.bend as WO
+import ../obj/words_obj_light.bend as WO_L
 import ../obj/obj_support.bend as OS
 import ../obj/root_names_light.bend as RN_L
 import ../obj/xlist_support.bend as XS
@@ -83,13 +83,13 @@ def Attestation__root__Attestation_root_correct(-h: B.Buf, -o: FuluAttestation_d
 def AttesterSlashing__root__AttesterSlashing_root_correct(-h: B.Buf, -o: FuluAttesterSlashing_d.AttesterSlashing, +s: S.Schema, +es: {s == Spec.AttesterSlashing() : S.Schema}, +rep: PRV.rep_AttesterSlashing(o, s)) -> RR.roots(PRV.v_AttesterSlashing(o), s, [D.bytes(Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, D.Digest, Pair.snd(B.Buf, FuluAttesterSlashing_d.AttesterSlashing & D.Digest, FuluAttesterSlashing_h.AttesterSlashing_hash_tree_root(h, o))))]):
   PRV.AttesterSlashing_root_correct(h, o, s, es, rep)
 
-def Blob__root__Blob_root_correct(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {s == Spec.Blob() : S.Schema}, +rep: WO.rep_bv(o, s)) -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluBlob_h.Blob_hash_tree_root(h, o))))]):
+def Blob__root__Blob_root_correct(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {s == Spec.Blob() : S.Schema}, +rep: WO_L.rep_bv(o, s)) -> RR.roots(S.BytesValue{WO_L.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluBlob_h.Blob_hash_tree_root(h, o))))]):
   PRV.Blob_root_correct(h, o, s, es, rep)
 
 def BlobSidecar__root__BlobSidecar_root_correct(-h: B.Buf, -o: FuluBlobSidecar_d.BlobSidecar, +s: S.Schema, +es: {s == Spec.BlobSidecar() : S.Schema}, +rep: PRV.rep_BlobSidecar(o, s)) -> RR.roots(PRV.v_BlobSidecar(o), s, [D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, o))))]):
   PRV.BlobSidecar_root_correct(h, o, s, es, rep)
 
-def Cell__root__Cell_root_correct(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {s == Spec.Cell() : S.Schema}, +rep: WO.rep_bv(o, s)) -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCell_h.Cell_hash_tree_root(h, o))))]):
+def Cell__root__Cell_root_correct(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {s == Spec.Cell() : S.Schema}, +rep: WO_L.rep_bv(o, s)) -> RR.roots(S.BytesValue{WO_L.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCell_h.Cell_hash_tree_root(h, o))))]):
   PRV.Cell_root_correct(h, o, s, es, rep)
 
 def ContributionAndProof__root__ContributionAndProof_root_correct(-h: B.Buf, -o: FuluContributionAndProof_d.ContributionAndProof, +s: S.Schema, +es: {s == Spec.ContributionAndProof() : S.Schema}, +rep: PRV.rep_ContributionAndProof(o, s)) -> RR.roots(PRV.v_ContributionAndProof(o), s, [D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(h, o))))]):

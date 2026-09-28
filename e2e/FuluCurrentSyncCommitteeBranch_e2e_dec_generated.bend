@@ -13,7 +13,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as E
 import ../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/words_root_light.bend as WR
 import ../proofs/obj/spec_input_CurrentSyncCommitteeBranch.bend as M0
 import ../proofs/obj/spec_codec_CurrentSyncCommitteeBranch.bend as M1
 import ../proofs/obj/fixrej_f3.bend as M2

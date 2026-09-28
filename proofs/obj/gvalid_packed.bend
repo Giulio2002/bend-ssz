@@ -12,15 +12,17 @@ import ./dk.bend as DK
 import ./schema_shapes.bend as SH
 import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./list_obj.bend as LO
 import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
+import ./packed_obj_light.bend as PK_L
 import ./packed_bytes.bend as PB
+import ./packed_bytes_light.bend as PB_L
 import ./valid_lib.bend as VL
 import ./valid_obj.bend as VO
 import ./mtree_defs.bend as MD
-import ./words_root.bend as WR
+import ./words_root_light.bend as WR
 import ./prog_list.bend as PG
 import ./blist_obj.bend as BLI
 
@@ -49,7 +51,7 @@ def cnt_len(items):
 law vit4:
   for +k: Nat
   for +W: List<&2, U32>
-  {VD.root_valid(PK.it4(k, W), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
+  {VD.root_valid(PK_L.it4(k, W), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
 def vit4(k, W):
   match k:
     case 0n: {==}
@@ -58,12 +60,12 @@ def vit4(k, W):
         case Nil{}: {==}
         case Con{+a0, +rest}:
           %Equal.sym(Bool, SP.uint_domain(P.U32Width{}, P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}), True{}, VL.u32dom(a0)) :
-            {Bool.and(_, VD.root_valid(PK.it4(c, rest), S.Repeat{S.Unsigned{P.U32Width{}}})) == True{} : Bool}
+            {Bool.and(_, VD.root_valid(PK_L.it4(c, rest), S.Repeat{S.Unsigned{P.U32Width{}}})) == True{} : Bool}
           vit4(c, rest)
 law lit4:
   for +k: Nat
   for +W: List<&2, U32>
-  {Nat.is_le(VD.items_length(PK.it4(k, W)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PK_L.it4(k, W)), k) == True{} : Bool}
 def lit4(k, W):
   match k:
     case 0n: {==}
@@ -76,7 +78,7 @@ def lit4(k, W):
 law vit8:
   for +k: Nat
   for +W: List<&2, U32>
-  {VD.root_valid(PK.it8(k, W), S.Repeat{S.Unsigned{P.U64{}}}) == True{} : Bool}
+  {VD.root_valid(PK_L.it8(k, W), S.Repeat{S.Unsigned{P.U64{}}}) == True{} : Bool}
 def vit8(k, W):
   match k:
     case 0n: {==}
@@ -88,12 +90,12 @@ def vit8(k, W):
             case Nil{}: {==}
             case Con{+a1, +rest}:
               %Equal.sym(Bool, SP.uint_domain(P.U64{}, P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}), True{}, VL.u64dom(a0, a1)) :
-                {Bool.and(_, VD.root_valid(PK.it8(c, rest), S.Repeat{S.Unsigned{P.U64{}}})) == True{} : Bool}
+                {Bool.and(_, VD.root_valid(PK_L.it8(c, rest), S.Repeat{S.Unsigned{P.U64{}}})) == True{} : Bool}
               vit8(c, rest)
 law lit8:
   for +k: Nat
   for +W: List<&2, U32>
-  {Nat.is_le(VD.items_length(PK.it8(k, W)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PK_L.it8(k, W)), k) == True{} : Bool}
 def lit8(k, W):
   match k:
     case 0n: {==}
@@ -109,7 +111,7 @@ def lit8(k, W):
 law vit16:
   for +k: Nat
   for +W: List<&2, U32>
-  {VD.root_valid(PK.it16(k, W), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
+  {VD.root_valid(PK_L.it16(k, W), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
 def vit16(k, W):
   match k:
     case 0n: {==}
@@ -127,12 +129,12 @@ def vit16(k, W):
                     case Nil{}: {==}
                     case Con{+a3, +rest}:
                       %Equal.sym(Bool, SP.uint_domain(P.U128{}, P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}), True{}, VL.u128dom(a0, a1, a2, a3)) :
-                        {Bool.and(_, VD.root_valid(PK.it16(c, rest), S.Repeat{S.Unsigned{P.U128{}}})) == True{} : Bool}
+                        {Bool.and(_, VD.root_valid(PK_L.it16(c, rest), S.Repeat{S.Unsigned{P.U128{}}})) == True{} : Bool}
                       vit16(c, rest)
 law lit16:
   for +k: Nat
   for +W: List<&2, U32>
-  {Nat.is_le(VD.items_length(PK.it16(k, W)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PK_L.it16(k, W)), k) == True{} : Bool}
 def lit16(k, W):
   match k:
     case 0n: {==}
@@ -154,7 +156,7 @@ def lit16(k, W):
 law vit32:
   for +k: Nat
   for +W: List<&2, U32>
-  {VD.root_valid(PK.it32(k, W), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
+  {VD.root_valid(PK_L.it32(k, W), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
 def vit32(k, W):
   match k:
     case 0n: {==}
@@ -184,12 +186,12 @@ def vit32(k, W):
                                     case Nil{}: {==}
                                     case Con{+a7, +rest}:
                                       %Equal.sym(Bool, SP.uint_domain(P.U256{}, P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}), True{}, VL.u256dom(a0, a1, a2, a3, a4, a5, a6, a7)) :
-                                        {Bool.and(_, VD.root_valid(PK.it32(c, rest), S.Repeat{S.Unsigned{P.U256{}}})) == True{} : Bool}
+                                        {Bool.and(_, VD.root_valid(PK_L.it32(c, rest), S.Repeat{S.Unsigned{P.U256{}}})) == True{} : Bool}
                                       vit32(c, rest)
 law lit32:
   for +k: Nat
   for +W: List<&2, U32>
-  {Nat.is_le(VD.items_length(PK.it32(k, W)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PK_L.it32(k, W)), k) == True{} : Bool}
 def lit32(k, W):
   match k:
     case 0n: {==}
@@ -224,7 +226,7 @@ law vit1:
   for +k: Nat
   for +xs: +List<U32>
   for +hd: {SP.bytes_domain(xs) == True{} : Bool}
-  {VD.root_valid(PB.it1(k, xs), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
+  {VD.root_valid(PB_L.it1(k, xs), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
 def vit1(k, xs, hd):
   match k:
     case 0n: {==}
@@ -235,12 +237,12 @@ def vit1(k, xs, hd):
           +e0 = WS.and_left(U32.is_lt(x0, 256), SP.bytes_domain(rest), hd)
           +hr = WS.and_right(U32.is_lt(x0, 256), SP.bytes_domain(rest), hd)
           %Equal.sym(Bool, SP.uint_domain(P.U8{}, P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}), True{}, VL.u8dom(x0, e0)) :
-            {Bool.and(_, VD.root_valid(PB.it1(c, rest), S.Repeat{S.Unsigned{P.U8{}}})) == True{} : Bool}
+            {Bool.and(_, VD.root_valid(PB_L.it1(c, rest), S.Repeat{S.Unsigned{P.U8{}}})) == True{} : Bool}
           vit1(c, rest, hr)
 law lit1:
   for +k: Nat
   for +xs: +List<U32>
-  {Nat.is_le(VD.items_length(PB.it1(k, xs)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PB_L.it1(k, xs)), k) == True{} : Bool}
 def lit1(k, xs):
   match k:
     case 0n: {==}
@@ -253,7 +255,7 @@ def lit1(k, xs):
 law vitb:
   for +k: Nat
   for +xs: +List<U32>
-  {VD.root_valid(PB.itb(k, xs), S.Repeat{S.Boolean{}}) == True{} : Bool}
+  {VD.root_valid(PB_L.itb(k, xs), S.Repeat{S.Boolean{}}) == True{} : Bool}
 def vitb(k, xs):
   match k:
     case 0n: {==}
@@ -265,7 +267,7 @@ def vitb(k, xs):
 law litb:
   for +k: Nat
   for +xs: +List<U32>
-  {Nat.is_le(VD.items_length(PB.itb(k, xs)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PB_L.itb(k, xs)), k) == True{} : Bool}
 def litb(k, xs):
   match k:
     case 0n: {==}
@@ -279,7 +281,7 @@ law vit2:
   for +k: Nat
   for +xs: +List<U32>
   for +hd: {SP.bytes_domain(xs) == True{} : Bool}
-  {VD.root_valid(PB.it2(k, xs), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
+  {VD.root_valid(PB_L.it2(k, xs), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
 def vit2(k, xs, hd):
   match k:
     case 0n: {==}
@@ -294,13 +296,13 @@ def vit2(k, xs, hd):
               +k1 = WS.and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.bytes_domain(rest)), hd)
               +e1 = WS.and_left(U32.is_lt(x1, 256), SP.bytes_domain(rest), k1)
               +hr = WS.and_right(U32.is_lt(x1, 256), SP.bytes_domain(rest), k1)
-              %Equal.sym(Bool, SP.uint_domain(P.U16{}, P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}), True{}, VL.od_true(SP.uint_domain(P.U16{}, P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}), SP.prefix(2n, SP.full_digits(P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0})), [x0, x1], PB.two(x0, x1, e0, e1))) :
-                {Bool.and(_, VD.root_valid(PB.it2(c, rest), S.Repeat{S.Unsigned{P.U16{}}})) == True{} : Bool}
+              %Equal.sym(Bool, SP.uint_domain(P.U16{}, P.UInt{PB_L.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}), True{}, VL.od_true(SP.uint_domain(P.U16{}, P.UInt{PB_L.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}), SP.prefix(2n, SP.full_digits(P.UInt{PB_L.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0})), [x0, x1], PB.two(x0, x1, e0, e1))) :
+                {Bool.and(_, VD.root_valid(PB_L.it2(c, rest), S.Repeat{S.Unsigned{P.U16{}}})) == True{} : Bool}
               vit2(c, rest, hr)
 law lit2:
   for +k: Nat
   for +xs: +List<U32>
-  {Nat.is_le(VD.items_length(PB.it2(k, xs)), k) == True{} : Bool}
+  {Nat.is_le(VD.items_length(PB_L.it2(k, xs)), k) == True{} : Bool}
 def lit2(k, xs):
   match k:
     case 0n: {==}
@@ -334,19 +336,19 @@ def pos2(+k: Nat, +h: {Nat.is_lt(0n, Nat.double(k)) == True{} : Bool}) -> {Nat.i
   match k:
     case 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, MD.false_true(h))
     case 1n+ +p: {==}
-def pos4(+k: Nat, +h: {Nat.is_lt(0n, PK.e4(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
+def pos4(+k: Nat, +h: {Nat.is_lt(0n, PK_L.e4(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
   match k:
     case 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, MD.false_true(h))
     case 1n+ +p: {==}
-def pos8(+k: Nat, +h: {Nat.is_lt(0n, PK.e8(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
+def pos8(+k: Nat, +h: {Nat.is_lt(0n, PK_L.e8(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
   match k:
     case 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, MD.false_true(h))
     case 1n+ +p: {==}
-def pos16(+k: Nat, +h: {Nat.is_lt(0n, PK.e16(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
+def pos16(+k: Nat, +h: {Nat.is_lt(0n, PK_L.e16(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
   match k:
     case 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, MD.false_true(h))
     case 1n+ +p: {==}
-def pos32(+k: Nat, +h: {Nat.is_lt(0n, PK.e32(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
+def pos32(+k: Nat, +h: {Nat.is_lt(0n, PK_L.e32(k)) == True{} : Bool}) -> {Nat.is_lt(0n, k) == True{} : Bool}:
   match k:
     case 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, MD.false_true(h))
     case 1n+ +p: {==}
@@ -354,142 +356,142 @@ def pos32(+k: Nat, +h: {Nat.is_lt(0n, PK.e32(k)) == True{} : Bool}) -> {Nat.is_l
 law leq4:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m4(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {VD.items_length(PK.it4(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m4(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {VD.items_length(PK_L.it4(k, W)) == k : Nat}
 def leq4(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({VD.items_length(PK.it4(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({VD.items_length(PK_L.it4(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +rest}:
-          %Equal.sym(Nat, VD.items_length(PK.it4(c, rest)), c, leq4(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, VD.items_length(PK_L.it4(c, rest)), c, leq4(c, rest, hl)) : {1n+_ == 1n+c : Nat}
           {==}
 law leq8:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m8(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {VD.items_length(PK.it8(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m8(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {VD.items_length(PK_L.it8(k, W)) == k : Nat}
 def leq8(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({VD.items_length(PK.it8(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({VD.items_length(PK_L.it8(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({VD.items_length(PK.it8(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
+            case Nil{}: Empty.absurd({VD.items_length(PK_L.it8(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
             case Con{+a1, +rest}:
-              %Equal.sym(Nat, VD.items_length(PK.it8(c, rest)), c, leq8(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+              %Equal.sym(Nat, VD.items_length(PK_L.it8(c, rest)), c, leq8(c, rest, hl)) : {1n+_ == 1n+c : Nat}
               {==}
 law leq16:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m16(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {VD.items_length(PK.it16(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m16(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {VD.items_length(PK_L.it16(k, W)) == k : Nat}
 def leq16(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({VD.items_length(PK.it16(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({VD.items_length(PK_L.it16(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({VD.items_length(PK.it16(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
+            case Nil{}: Empty.absurd({VD.items_length(PK_L.it16(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
             case Con{+a1, +t1}:
               match t1:
-                case Nil{}: Empty.absurd({VD.items_length(PK.it16(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
+                case Nil{}: Empty.absurd({VD.items_length(PK_L.it16(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
                 case Con{+a2, +t2}:
                   match t2:
-                    case Nil{}: Empty.absurd({VD.items_length(PK.it16(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                    case Nil{}: Empty.absurd({VD.items_length(PK_L.it16(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
                     case Con{+a3, +rest}:
-                      %Equal.sym(Nat, VD.items_length(PK.it16(c, rest)), c, leq16(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+                      %Equal.sym(Nat, VD.items_length(PK_L.it16(c, rest)), c, leq16(c, rest, hl)) : {1n+_ == 1n+c : Nat}
                       {==}
 law leq32:
   for +k: Nat
   for +W: List<&2, U32>
-  for +hl: {Nat.is_le(PK.m32(k), F.spec_common__length(U32, W)) == True{} : Bool}
-  {VD.items_length(PK.it32(k, W)) == k : Nat}
+  for +hl: {Nat.is_le(PK_L.m32(k), F.spec_common__length(U32, W)) == True{} : Bool}
+  {VD.items_length(PK_L.it32(k, W)) == k : Nat}
 def leq32(k, W, hl):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match W:
-        case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
+        case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hl))
         case Con{+a0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
+            case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Nil{}})) == 1n+c : Nat}, MD.false_true(hl))
             case Con{+a1, +t1}:
               match t1:
-                case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
+                case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Nil{}}})) == 1n+c : Nat}, MD.false_true(hl))
                 case Con{+a2, +t2}:
                   match t2:
-                    case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                    case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Nil{}}}})) == 1n+c : Nat}, MD.false_true(hl))
                     case Con{+a3, +t3}:
                       match t3:
-                        case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Nil{}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                        case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Nil{}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                         case Con{+a4, +t4}:
                           match t4:
-                            case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Nil{}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                            case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Nil{}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                             case Con{+a5, +t5}:
                               match t5:
-                                case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Nil{}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                                case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Nil{}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                                 case Con{+a6, +t6}:
                                   match t6:
-                                    case Nil{}: Empty.absurd({VD.items_length(PK.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Nil{}}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
+                                    case Nil{}: Empty.absurd({VD.items_length(PK_L.it32(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Nil{}}}}}}}})) == 1n+c : Nat}, MD.false_true(hl))
                                     case Con{+a7, +rest}:
-                                      %Equal.sym(Nat, VD.items_length(PK.it32(c, rest)), c, leq32(c, rest, hl)) : {1n+_ == 1n+c : Nat}
+                                      %Equal.sym(Nat, VD.items_length(PK_L.it32(c, rest)), c, leq32(c, rest, hl)) : {1n+_ == 1n+c : Nat}
                                       {==}
 law leq1:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(k, xs) == True{} : Bool}
-  {VD.items_length(PB.it1(k, xs)) == k : Nat}
+  {VD.items_length(PB_L.it1(k, xs)) == k : Nat}
 def leq1(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({VD.items_length(PB.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({VD.items_length(PB_L.it1(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+x0, +rest}:
-          %Equal.sym(Nat, VD.items_length(PB.it1(c, rest)), c, leq1(c, rest, WS.and_right(U32.is_lt(x0, 256), SP.byte_scope(c, rest), hs))) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, VD.items_length(PB_L.it1(c, rest)), c, leq1(c, rest, WS.and_right(U32.is_lt(x0, 256), SP.byte_scope(c, rest), hs))) : {1n+_ == 1n+c : Nat}
           {==}
 law leqb:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(k, xs) == True{} : Bool}
-  {VD.items_length(PB.itb(k, xs)) == k : Nat}
+  {VD.items_length(PB_L.itb(k, xs)) == k : Nat}
 def leqb(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({VD.items_length(PB.itb(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({VD.items_length(PB_L.itb(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+x0, +rest}:
-          %Equal.sym(Nat, VD.items_length(PB.itb(c, rest)), c, leqb(c, rest, WS.and_right(U32.is_lt(x0, 256), SP.byte_scope(c, rest), hs))) : {1n+_ == 1n+c : Nat}
+          %Equal.sym(Nat, VD.items_length(PB_L.itb(c, rest)), c, leqb(c, rest, WS.and_right(U32.is_lt(x0, 256), SP.byte_scope(c, rest), hs))) : {1n+_ == 1n+c : Nat}
           {==}
 law leq2:
   for +k: Nat
   for +xs: +List<U32>
   for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
-  {VD.items_length(PB.it2(k, xs)) == k : Nat}
+  {VD.items_length(PB_L.it2(k, xs)) == k : Nat}
 def leq2(k, xs, hs):
   match k:
     case 0n: {==}
     case 1n+ +c:
       match xs:
-        case Nil{}: Empty.absurd({VD.items_length(PB.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
+        case Nil{}: Empty.absurd({VD.items_length(PB_L.it2(1n+c, Nil{})) == 1n+c : Nat}, MD.false_true(hs))
         case Con{+x0, +t0}:
           match t0:
-            case Nil{}: Empty.absurd({VD.items_length(PB.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(WS.and_right(U32.is_lt(x0, 256), False{}, hs)))
+            case Nil{}: Empty.absurd({VD.items_length(PB_L.it2(1n+c, Con{x0, Nil{}})) == 1n+c : Nat}, MD.false_true(WS.and_right(U32.is_lt(x0, 256), False{}, hs)))
             case Con{+x1, +rest}:
               +k1 = WS.and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
-              %Equal.sym(Nat, VD.items_length(PB.it2(c, rest)), c, leq2(c, rest, WS.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
+              %Equal.sym(Nat, VD.items_length(PB_L.it2(c, rest)), c, leq2(c, rest, WS.and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))) : {1n+_ == 1n+c : Nat}
               {==}
 
 # A packed vector of P.U8{} (PB rep_v1 / ok_v1).
-def vv1(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_v1(o, s), +ok: {PB.ok_v1(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PB.vview1(o), s) == True{} : Bool}:
+def vv1(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB_L.rep_v1(o, s), +ok: {PB.ok_v1(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PB_L.vview1(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -515,21 +517,21 @@ def vv1(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_v1(o, s), +ok: {PB.
   +le = leq1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)
   +eL = WS.nat_eq(U32.to_nat(N), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PB.vview1(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PB.vview1(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U8{}, PB.is_U8_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PB.vview1(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PB.vview1(o), S.Vector{S.Unsigned{P.U8{}}, _}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PB_L.vview1(o), S.Vector{S.Unsigned{P.U8{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PB.vview1(_), S.Vector{S.Unsigned{P.U8{}}, U32.to_nat(N)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(_), S.Vector{S.Unsigned{P.U8{}}, U32.to_nat(N)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Unsigned{P.U8{}}, U32.to_nat(N)}) == True{} : Bool}
-  vfin(U32.to_nat(N), PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Unsigned{P.U8{}}, kp, le, vit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)))
+    {VD.root_valid(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Unsigned{P.U8{}}, U32.to_nat(N)}) == True{} : Bool}
+  vfin(U32.to_nat(N), PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Unsigned{P.U8{}}, kp, le, vit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)))
 
 # A packed vector of booleans (PB rep_vb / ok_vb).
-def vvb(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_vb(o, s), +ok: {PB.ok_vb(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PB.vviewb(o), s) == True{} : Bool}:
+def vvb(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB_L.rep_vb(o, s), +ok: {PB.ok_vb(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PB_L.vviewb(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -554,19 +556,19 @@ def vvb(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_vb(o, s), +ok: {PB.
   +le = leqb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)
   +eL = WS.nat_eq(U32.to_nat(N), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PB.vviewb(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vviewb(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Boolean{}, SH.Boolean_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PB.vviewb(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PB.vviewb(o), S.Vector{S.Boolean{}, _}) == True{} : Bool}
+    {VD.root_valid(PB_L.vviewb(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PB_L.vviewb(o), S.Vector{S.Boolean{}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PB.vviewb(_), S.Vector{S.Boolean{}, U32.to_nat(N)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vviewb(_), S.Vector{S.Boolean{}, U32.to_nat(N)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Boolean{}, U32.to_nat(N)}) == True{} : Bool}
-  vfin(U32.to_nat(N), PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Boolean{}, kp, le, vitb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))))
+    {VD.root_valid(S.Sequence{PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Boolean{}, U32.to_nat(N)}) == True{} : Bool}
+  vfin(U32.to_nat(N), PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Boolean{}, kp, le, vitb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))))
 
 # A packed vector of P.U16{} (PB rep_v2 / ok_v2).
-def vv2(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_v2(o, s), +ok: {PB.ok_v2(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PB.vview2(o), s) == True{} : Bool}:
+def vv2(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB_L.rep_v2(o, s), +ok: {PB.ok_v2(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PB_L.vview2(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -595,21 +597,21 @@ def vv2(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PB.rep_v2(o, s), +ok: {PB.
   +le = leq2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc2)
   +eL = WS.nat_eq(U32.to_nat(U32.shrn(N, 1n)), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PB.vview2(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PB.vview2(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U16{}, PB.is_U16_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PB.vview2(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PB.vview2(o), S.Vector{S.Unsigned{P.U16{}}, _}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PB_L.vview2(o), S.Vector{S.Unsigned{P.U16{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PB.vview2(_), S.Vector{S.Unsigned{P.U16{}}, U32.to_nat(U32.shrn(N, 1n))}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(_), S.Vector{S.Unsigned{P.U16{}}, U32.to_nat(U32.shrn(N, 1n))}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Unsigned{P.U16{}}, U32.to_nat(U32.shrn(N, 1n))}) == True{} : Bool}
-  vfin(U32.to_nat(U32.shrn(N, 1n)), PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Unsigned{P.U16{}}, kp, le, vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)))
+    {VD.root_valid(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.Vector{S.Unsigned{P.U16{}}, U32.to_nat(U32.shrn(N, 1n))}) == True{} : Bool}
+  vfin(U32.to_nat(U32.shrn(N, 1n)), PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Unsigned{P.U16{}}, kp, le, vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), sc)))
 
 # A packed vector of P.U32Width{} (PK rep_v4 / ok_v4).
-def vv4(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v4(o, s), +ok: {PK.ok_v4(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PK.vview4(o), s) == True{} : Bool}:
+def vv4(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK_L.rep_v4(o, s), +ok: {PK.ok_v4(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PK_L.vview4(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -632,26 +634,26 @@ def vv4(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v4(o, s), +ok: {PK.
   +r3 = DK.and_r(PK.is_U32Width(SH.Unsigned_width(SH.Vector_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.Vector_length(s), 4n), 31n), 32n), depth), r2)
   +hvN = PK.eqn_n4(o, t, N, SH.Vector_length(s), eo, hv)
   +eNN = PK.eq_n4(o, t, N, eo, eN)
-  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
-  +kp = pos4(U32.to_nat(U32.shrn(N, 2n)), lt0_rw(PK.e4(U32.to_nat(U32.shrn(N, 2n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK.e4(U32.to_nat(U32.shrn(N, 2n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e4(U32.to_nat(U32.shrn(N, 2n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+  +kp = pos4(U32.to_nat(U32.shrn(N, 2n)), lt0_rw(PK_L.e4(U32.to_nat(U32.shrn(N, 2n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK_L.e4(U32.to_nat(U32.shrn(N, 2n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
   +le = leq4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t), PK.words_fit4(U32.to_nat(U32.shrn(N, 2n)), q, r, dw, t, ec, h32, pf, room))
   +eL = WS.nat_eq(U32.to_nat(U32.shrn(N, 2n)), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PK.vview4(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PK.vview4(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U32Width{}, PK.is_U32Width_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PK.vview4(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PK.vview4(o), S.Vector{S.Unsigned{P.U32Width{}}, _}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PK_L.vview4(o), S.Vector{S.Unsigned{P.U32Width{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PK.vview4(_), S.Vector{S.Unsigned{P.U32Width{}}, U32.to_nat(U32.shrn(N, 2n))}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(_), S.Vector{S.Unsigned{P.U32Width{}}, U32.to_nat(U32.shrn(N, 2n))}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U32Width{}}, U32.to_nat(U32.shrn(N, 2n))}) == True{} : Bool}
-  vfin(U32.to_nat(U32.shrn(N, 2n)), PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t)), S.Unsigned{P.U32Width{}}, kp, le, vit4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t)))
+    {VD.root_valid(S.Sequence{PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U32Width{}}, U32.to_nat(U32.shrn(N, 2n))}) == True{} : Bool}
+  vfin(U32.to_nat(U32.shrn(N, 2n)), PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t)), S.Unsigned{P.U32Width{}}, kp, le, vit4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t)))
 
 # A packed vector of P.U64{} (PK rep_v8 / ok_v8).
-def vv8(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PK.vview8(o), s) == True{} : Bool}:
+def vv8(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK_L.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PK_L.vview8(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -674,26 +676,26 @@ def vv8(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v8(o, s), +ok: {PK.
   +r3 = DK.and_r(PK.is_U64(SH.Unsigned_width(SH.Vector_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.Vector_length(s), 8n), 31n), 32n), depth), r2)
   +hvN = PK.eqn_n8(o, t, N, SH.Vector_length(s), eo, hv)
   +eNN = PK.eq_n8(o, t, N, eo, eN)
-  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e8(U32.to_nat(U32.shrn(N, 3n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
-  +kp = pos8(U32.to_nat(U32.shrn(N, 3n)), lt0_rw(PK.e8(U32.to_nat(U32.shrn(N, 3n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK.e8(U32.to_nat(U32.shrn(N, 3n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e8(U32.to_nat(U32.shrn(N, 3n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+  +kp = pos8(U32.to_nat(U32.shrn(N, 3n)), lt0_rw(PK_L.e8(U32.to_nat(U32.shrn(N, 3n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK_L.e8(U32.to_nat(U32.shrn(N, 3n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
   +le = leq8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, t), PK.words_fit8(U32.to_nat(U32.shrn(N, 3n)), q, r, dw, t, ec, h32, pf, room))
   +eL = WS.nat_eq(U32.to_nat(U32.shrn(N, 3n)), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PK.vview8(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview8(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PK.vview8(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview8(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U64{}, PK.is_U64_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PK.vview8(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PK.vview8(o), S.Vector{S.Unsigned{P.U64{}}, _}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview8(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PK_L.vview8(o), S.Vector{S.Unsigned{P.U64{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PK.vview8(_), S.Vector{S.Unsigned{P.U64{}}, U32.to_nat(U32.shrn(N, 3n))}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview8(_), S.Vector{S.Unsigned{P.U64{}}, U32.to_nat(U32.shrn(N, 3n))}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PK.it8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U64{}}, U32.to_nat(U32.shrn(N, 3n))}) == True{} : Bool}
-  vfin(U32.to_nat(U32.shrn(N, 3n)), PK.it8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, t)), S.Unsigned{P.U64{}}, kp, le, vit8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, t)))
+    {VD.root_valid(S.Sequence{PK_L.it8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U64{}}, U32.to_nat(U32.shrn(N, 3n))}) == True{} : Bool}
+  vfin(U32.to_nat(U32.shrn(N, 3n)), PK_L.it8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, t)), S.Unsigned{P.U64{}}, kp, le, vit8(U32.to_nat(U32.shrn(N, 3n)), F.array__slots(U32, t)))
 
 # A packed vector of P.U128{} (PK rep_v16 / ok_v16).
-def vv16(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v16(o, s), +ok: {PK.ok_v16(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PK.vview16(o), s) == True{} : Bool}:
+def vv16(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK_L.rep_v16(o, s), +ok: {PK.ok_v16(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PK_L.vview16(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -716,26 +718,26 @@ def vv16(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v16(o, s), +ok: {P
   +r3 = DK.and_r(PK.is_U128(SH.Unsigned_width(SH.Vector_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.Vector_length(s), 16n), 31n), 32n), depth), r2)
   +hvN = PK.eqn_n16(o, t, N, SH.Vector_length(s), eo, hv)
   +eNN = PK.eq_n16(o, t, N, eo, eN)
-  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
-  +kp = pos16(U32.to_nat(U32.shrn(N, 4n)), lt0_rw(PK.e16(U32.to_nat(U32.shrn(N, 4n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK.e16(U32.to_nat(U32.shrn(N, 4n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+  +kp = pos16(U32.to_nat(U32.shrn(N, 4n)), lt0_rw(PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK_L.e16(U32.to_nat(U32.shrn(N, 4n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
   +le = leq16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t), PK.words_fit16(U32.to_nat(U32.shrn(N, 4n)), q, r, dw, t, ec, h32, pf, room))
   +eL = WS.nat_eq(U32.to_nat(U32.shrn(N, 4n)), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PK.vview16(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PK.vview16(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U128{}, PK.is_U128_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PK.vview16(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PK.vview16(o), S.Vector{S.Unsigned{P.U128{}}, _}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PK_L.vview16(o), S.Vector{S.Unsigned{P.U128{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PK.vview16(_), S.Vector{S.Unsigned{P.U128{}}, U32.to_nat(U32.shrn(N, 4n))}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(_), S.Vector{S.Unsigned{P.U128{}}, U32.to_nat(U32.shrn(N, 4n))}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U128{}}, U32.to_nat(U32.shrn(N, 4n))}) == True{} : Bool}
-  vfin(U32.to_nat(U32.shrn(N, 4n)), PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t)), S.Unsigned{P.U128{}}, kp, le, vit16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t)))
+    {VD.root_valid(S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U128{}}, U32.to_nat(U32.shrn(N, 4n))}) == True{} : Bool}
+  vfin(U32.to_nat(U32.shrn(N, 4n)), PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t)), S.Unsigned{P.U128{}}, kp, le, vit16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t)))
 
 # A packed vector of P.U256{} (PK rep_v32 / ok_v32).
-def vv32(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v32(o, s), +ok: {PK.ok_v32(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PK.vview32(o), s) == True{} : Bool}:
+def vv32(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK_L.rep_v32(o, s), +ok: {PK.ok_v32(s, depth) == True{} : Bool})
+    -> {VD.root_valid(PK_L.vview32(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -758,24 +760,24 @@ def vv32(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: PK.rep_v32(o, s), +ok: {P
   +r3 = DK.and_r(PK.is_U256(SH.Unsigned_width(SH.Vector_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.Vector_length(s), 32n), 31n), 32n), depth), r2)
   +hvN = PK.eqn_n32(o, t, N, SH.Vector_length(s), eo, hv)
   +eNN = PK.eq_n32(o, t, N, eo, eN)
-  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
-  +kp = pos32(U32.to_nat(U32.shrn(N, 5n)), lt0_rw(PK.e32(U32.to_nat(U32.shrn(N, 5n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK.e32(U32.to_nat(U32.shrn(N, 5n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(q), r), U32.to_nat(N), PK_L.e32(U32.to_nat(U32.shrn(N, 5n))), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), enq), eNN)
+  +kp = pos32(U32.to_nat(U32.shrn(N, 5n)), lt0_rw(PK_L.e32(U32.to_nat(U32.shrn(N, 5n))), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), PK_L.e32(U32.to_nat(U32.shrn(N, 5n))), eNN), lt0_rw(U32.to_nat(N), Nat.add(WS.e32(q), r), enq, WR.pos_add(WS.e32(q), r, h1))))
   +le = leq32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t), PK.words_fit32(U32.to_nat(U32.shrn(N, 5n)), q, r, dw, t, ec, h32, pf, room))
   +eL = WS.nat_eq(U32.to_nat(U32.shrn(N, 5n)), SH.Vector_length(s), hvN)
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
-    {VD.root_valid(PK.vview32(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Unsigned{SH.Unsigned_width(SH.Vector_element(s))}, SH.Unsigned_shape(SH.Vector_element(s), k1)) :
-    {VD.root_valid(PK.vview32(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U256{}, PK.is_U256_shape(SH.Unsigned_width(SH.Vector_element(s)), k2)) :
-    {VD.root_valid(PK.vview32(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
-  %eL : {VD.root_valid(PK.vview32(o), S.Vector{S.Unsigned{P.U256{}}, _}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}) == True{} : Bool}
+  %eL : {VD.root_valid(PK_L.vview32(o), S.Vector{S.Unsigned{P.U256{}}, _}) == True{} : Bool}
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    {VD.root_valid(PK.vview32(_), S.Vector{S.Unsigned{P.U256{}}, U32.to_nat(U32.shrn(N, 5n))}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(_), S.Vector{S.Unsigned{P.U256{}}, U32.to_nat(U32.shrn(N, 5n))}) == True{} : Bool}
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {VD.root_valid(S.Sequence{PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U256{}}, U32.to_nat(U32.shrn(N, 5n))}) == True{} : Bool}
-  vfin(U32.to_nat(U32.shrn(N, 5n)), PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t)), S.Unsigned{P.U256{}}, kp, le, vit32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t)))
+    {VD.root_valid(S.Sequence{PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _))}, S.Vector{S.Unsigned{P.U256{}}, U32.to_nat(U32.shrn(N, 5n))}) == True{} : Bool}
+  vfin(U32.to_nat(U32.shrn(N, 5n)), PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t)), S.Unsigned{P.U256{}}, kp, le, vit32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t)))
 
-def wv1(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview1(o), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}:
+def wv1(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB_L.vview1(o), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -784,11 +786,11 @@ def wv1(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview1(o), S.Progressi
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
-        {VD.root_valid(PB.it1(U32.to_nat(N), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it1(U32.to_nat(N), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
       vit1(U32.to_nat(N), WS.btake(0n, FX.limbs(F.array__slots(U32, t))), {==})
     case Inr{w0}:
       (+t, w1) = w0
@@ -803,27 +805,27 @@ def wv1(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview1(o), S.Progressi
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview1(_), S.ProgressiveList{S.Unsigned{P.U8{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U8{}}}) == True{} : Bool}
       vit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))
 
 def vpl1(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl1(o, s), +ok: {PG.ok_pl1(s) == True{} : Bool})
-    -> {VD.root_valid(PB.vview1(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PB_L.vview1(o), s) == True{} : Bool}:
   +wf = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   +r2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U8(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PB.vview1(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), k1)) :
-    {VD.root_valid(PB.vview1(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.ProgressiveList{_}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U8{}, PB.is_U8_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), r2)) :
-    {VD.root_valid(PB.vview1(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv1(o, wf)
 
-def wvb(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vviewb(o), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}:
+def wvb(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB_L.vviewb(o), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -832,11 +834,11 @@ def wvb(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vviewb(o), S.Progressi
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vviewb(_), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vviewb(_), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
+        {VD.root_valid(PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
-        {VD.root_valid(PB.itb(U32.to_nat(N), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
+        {VD.root_valid(PB_L.itb(U32.to_nat(N), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
       vitb(U32.to_nat(N), WS.btake(0n, FX.limbs(F.array__slots(U32, t))))
     case Inr{w0}:
       (+t, w1) = w0
@@ -851,23 +853,23 @@ def wvb(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vviewb(o), S.Progressi
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vviewb(_), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vviewb(_), S.ProgressiveList{S.Boolean{}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
+        {VD.root_valid(PB_L.itb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Boolean{}}) == True{} : Bool}
       vitb(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))
 
 def vplb(-o: O.Words, +s: S.Schema, +rep: PG.rep_plb(o, s), +ok: {PG.ok_plb(s) == True{} : Bool})
-    -> {VD.root_valid(PB.vviewb(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PB_L.vviewb(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), SH.is_Boolean(SH.ProgressiveList_element(s)), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), SH.is_Boolean(SH.ProgressiveList_element(s)), ok)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PB.vviewb(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vviewb(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Boolean{}, SH.Boolean_shape(SH.ProgressiveList_element(s), r1)) :
-    {VD.root_valid(PB.vviewb(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PB_L.vviewb(o), S.ProgressiveList{_}) == True{} : Bool}
   wvb(o, wf)
 
-def wv2(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview2(o), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}:
+def wv2(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB_L.vview2(o), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -876,11 +878,11 @@ def wv2(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview2(o), S.Progressi
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
       %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :
-        {VD.root_valid(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
       vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(0n, FX.limbs(F.array__slots(U32, t))), {==})
     case Inr{w0}:
       (+t, w1) = w0
@@ -895,27 +897,27 @@ def wv2(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PB.vview2(o), S.Progressi
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview2(_), S.ProgressiveList{S.Unsigned{P.U16{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
+        {VD.root_valid(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _)))), S.Repeat{S.Unsigned{P.U16{}}}) == True{} : Bool}
       vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))
 
 def vpl2(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl2(o, s), +ok: {PG.ok_pl2(s) == True{} : Bool})
-    -> {VD.root_valid(PB.vview2(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PB_L.vview2(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   +r2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PB.is_U16(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PB.vview2(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), k1)) :
-    {VD.root_valid(PB.vview2(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.ProgressiveList{_}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U16{}, PB.is_U16_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), r2)) :
-    {VD.root_valid(PB.vview2(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv2(o, wf)
 
-def wv4(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview4(o), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}:
+def wv4(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK_L.vview4(o), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -924,9 +926,9 @@ def wv4(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview4(o), S.Progressi
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
       vit4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))
     case Inr{w0}:
       (+t, w1) = w0
@@ -941,27 +943,27 @@ def wv4(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview4(o), S.Progressi
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview4(_), S.ProgressiveList{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U32Width{}}}) == True{} : Bool}
       vit4(U32.to_nat(U32.shrn(N, 2n)), F.array__slots(U32, t))
 
 def vpl4(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl4(o, s), +ok: {PG.ok_pl4(s) == True{} : Bool})
-    -> {VD.root_valid(PK.vview4(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PK_L.vview4(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   +r2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U32Width(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PK.vview4(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), k1)) :
-    {VD.root_valid(PK.vview4(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), S.ProgressiveList{_}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U32Width{}, PK.is_U32Width_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), r2)) :
-    {VD.root_valid(PK.vview4(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview4(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv4(o, wf)
 
-def wv16(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview16(o), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}:
+def wv16(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK_L.vview16(o), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -970,9 +972,9 @@ def wv16(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview16(o), S.Progres
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
       vit16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))
     case Inr{w0}:
       (+t, w1) = w0
@@ -987,27 +989,27 @@ def wv16(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview16(o), S.Progres
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview16(_), S.ProgressiveList{S.Unsigned{P.U128{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U128{}}}) == True{} : Bool}
       vit16(U32.to_nat(U32.shrn(N, 4n)), F.array__slots(U32, t))
 
 def vpl16(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl16(o, s), +ok: {PG.ok_pl16(s) == True{} : Bool})
-    -> {VD.root_valid(PK.vview16(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PK_L.vview16(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   +r2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U128(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PK.vview16(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), k1)) :
-    {VD.root_valid(PK.vview16(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), S.ProgressiveList{_}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U128{}, PK.is_U128_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), r2)) :
-    {VD.root_valid(PK.vview16(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview16(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv16(o, wf)
 
-def wv32(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview32(o), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}:
+def wv32(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK_L.vview32(o), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -1016,9 +1018,9 @@ def wv32(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview32(o), S.Progres
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
       vit32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))
     case Inr{w0}:
       (+t, w1) = w0
@@ -1033,24 +1035,24 @@ def wv32(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(PK.vview32(o), S.Progres
       (+h1, w10) = w9
       (+h32, w11) = w10
       (+room, +slack) = w11
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PK_L.vview32(_), S.ProgressiveList{S.Unsigned{P.U256{}}}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(PK.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
+        {VD.root_valid(PK_L.it32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, _)), S.Repeat{S.Unsigned{P.U256{}}}) == True{} : Bool}
       vit32(U32.to_nat(U32.shrn(N, 5n)), F.array__slots(U32, t))
 
 def vpl32(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl32(o, s), +ok: {PG.ok_pl32(s) == True{} : Bool})
-    -> {VD.root_valid(PK.vview32(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PK_L.vview32(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +r1 = DK.and_r(SH.is_ProgressiveList(s), Bool.and(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s)))), ok)
   +k1 = DK.and_l(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   +r2 = DK.and_r(SH.is_Unsigned(SH.ProgressiveList_element(s)), PK.is_U256(SH.Unsigned_width(SH.ProgressiveList_element(s))), r1)
   %Equal.sym(S.Schema, s, S.ProgressiveList{SH.ProgressiveList_element(s)}, SH.ProgressiveList_shape(s, k0)) :
-    {VD.root_valid(PK.vview32(o), _) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Unsigned{SH.Unsigned_width(SH.ProgressiveList_element(s))}, SH.Unsigned_shape(SH.ProgressiveList_element(s), k1)) :
-    {VD.root_valid(PK.vview32(o), S.ProgressiveList{_}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), S.ProgressiveList{_}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ProgressiveList_element(s)), P.U256{}, PK.is_U256_shape(SH.Unsigned_width(SH.ProgressiveList_element(s)), r2)) :
-    {VD.root_valid(PK.vview32(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
+    {VD.root_valid(PK_L.vview32(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv32(o, wf)
 
 def wv8(-o: O.Words, +wf: LO.wfl(o)) -> {VD.root_valid(UL.uview(o), S.ProgressiveList{S.Unsigned{P.U64{}}}) == True{} : Bool}:
@@ -1099,7 +1101,7 @@ def vpl8(-o: O.Words, +s: S.Schema, +rep: PG.rep_pl8(o, s), +ok: {PG.ok_pl8(s) =
     {VD.root_valid(UL.uview(o), S.ProgressiveList{S.Unsigned{_}}) == True{} : Bool}
   wv8(o, wf)
 
-def wl1(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(U32.to_nat(WO.len(o)), L) == True{} : Bool}) -> {VD.root_valid(PB.vview1(o), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}:
+def wl1(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(U32.to_nat(WO.len(o)), L) == True{} : Bool}) -> {VD.root_valid(PB_L.vview1(o), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -1108,8 +1110,8 @@ def wl1(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(U32.to_nat(WO.len(
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
-      %Equal.sym(U32, N, 0, F.u32__injective(N, 0, en0)) : {VD.root_valid(PB.vview1(O.Words{F.array__thaw(U32, t), _}), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
+      %Equal.sym(U32, N, 0, F.u32__injective(N, 0, en0)) : {VD.root_valid(PB_L.vview1(O.Words{F.array__thaw(U32, t), _}), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
       %Equal.sym(Bool, Nat.is_le(0n, L), True{}, VO.zero_le(L)) : {Bool.and(_, True{}) == True{} : Bool}
       {==}
     case Inr{w0}:
@@ -1126,16 +1128,16 @@ def wl1(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(U32.to_nat(WO.len(
       (+h32, w11) = w10
       (+room, +slack) = w11
       +hvN = LO.le_len(o, t, N, L, eo, hv)
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview1(_), S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
-      %Equal.sym(Bool, VD.root_valid(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U8{}}}), True{}, vit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))) :
-        {Bool.and(Nat.is_le(VD.items_length(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), _) == True{} : Bool}
-      %Equal.sym(Bool, Nat.is_le(VD.items_length(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), True{}, F.nat__le_trans(VD.items_length(PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), U32.to_nat(N), L, lit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), hvN)) :
+        {VD.root_valid(S.Sequence{PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U8{}}, L}) == True{} : Bool}
+      %Equal.sym(Bool, VD.root_valid(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U8{}}}), True{}, vit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))) :
+        {Bool.and(Nat.is_le(VD.items_length(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), _) == True{} : Bool}
+      %Equal.sym(Bool, Nat.is_le(VD.items_length(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), True{}, F.nat__le_trans(VD.items_length(PB_L.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), U32.to_nat(N), L, lit1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), hvN)) :
         {Bool.and(_, True{}) == True{} : Bool}
       {==}
 def vl1(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: BLI.rep_l1(o, s), +ok: {BLI.ok_l1(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PB.vview1(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PB_L.vview1(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   +k0 = DK.and_l(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth))), ok)
   +r1 = DK.and_r(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth))), ok)
@@ -1144,18 +1146,18 @@ def vl1(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: BLI.rep_l1(o, s), +ok: {BL
   +k2 = DK.and_l(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth), r2)
   +r3 = DK.and_r(PB.is_U8(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 1n), 31n), 32n), depth), r2)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
-    {VD.root_valid(PB.vview1(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Unsigned{SH.Unsigned_width(SH.ListOf_element(s))}, SH.Unsigned_shape(SH.ListOf_element(s), k1)) :
-    {VD.root_valid(PB.vview1(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ListOf_element(s)), P.U8{}, PB.is_U8_shape(SH.Unsigned_width(SH.ListOf_element(s)), k2)) :
-    {VD.root_valid(PB.vview1(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview1(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}) == True{} : Bool}
   wl1(o, SH.ListOf_limit(s), wf, r0)
 
 def hl2(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},
-    +hv: {Nat.is_le(PB.cnt2(o), L) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.shrn(N, 1n)), L) == True{} : Bool}:
+    +hv: {Nat.is_le(PB_L.cnt2(o), L) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.shrn(N, 1n)), L) == True{} : Bool}:
   %Equal.cong(O.Words, U32, WO.len, o, O.Words{F.array__thaw(U32, t), N}, eo) : {Nat.is_le(U32.to_nat(U32.shrn(_, 1n)), L) == True{} : Bool}
   hv
-def wl2(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(PB.cnt2(o), L) == True{} : Bool}) -> {VD.root_valid(PB.vview2(o), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}:
+def wl2(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(PB_L.cnt2(o), L) == True{} : Bool}) -> {VD.root_valid(PB_L.vview2(o), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}:
   match wf:
     case Inl{w0}:
       (+t, w1) = w0
@@ -1164,8 +1166,8 @@ def wl2(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(PB.cnt2(o), L) == 
       (+eo, w4) = w3
       (+pf, w5) = w4
       (+hd, +en0) = w5
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
-      %Equal.sym(U32, N, 0, F.u32__injective(N, 0, en0)) : {VD.root_valid(PB.vview2(O.Words{F.array__thaw(U32, t), _}), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
+      %Equal.sym(U32, N, 0, F.u32__injective(N, 0, en0)) : {VD.root_valid(PB_L.vview2(O.Words{F.array__thaw(U32, t), _}), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
       %Equal.sym(Bool, Nat.is_le(0n, L), True{}, VO.zero_le(L)) : {Bool.and(_, True{}) == True{} : Bool}
       {==}
     case Inr{w0}:
@@ -1182,16 +1184,16 @@ def wl2(-o: O.Words, +L: Nat, +wf: LO.wfl(o), +hv: {Nat.is_le(PB.cnt2(o), L) == 
       (+h32, w11) = w10
       (+room, +slack) = w11
       +hvN = hl2(o, t, N, L, eo, hv)
-      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {VD.root_valid(PB_L.vview2(_), S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-        {VD.root_valid(S.Sequence{PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
-      %Equal.sym(Bool, VD.root_valid(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U16{}}}), True{}, vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))) :
-        {Bool.and(Nat.is_le(VD.items_length(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), _) == True{} : Bool}
-      %Equal.sym(Bool, Nat.is_le(VD.items_length(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), True{}, F.nat__le_trans(VD.items_length(PB.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), U32.to_nat(U32.shrn(N, 1n)), L, lit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), hvN)) :
+        {VD.root_valid(S.Sequence{PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))}, S.ListOf{S.Unsigned{P.U16{}}, L}) == True{} : Bool}
+      %Equal.sym(Bool, VD.root_valid(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), S.Repeat{S.Unsigned{P.U16{}}}), True{}, vit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), VO.sc_dom(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))), PB.vscope(N, q, r, dw, t, enq, h32, pf, room)))) :
+        {Bool.and(Nat.is_le(VD.items_length(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), _) == True{} : Bool}
+      %Equal.sym(Bool, Nat.is_le(VD.items_length(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), L), True{}, F.nat__le_trans(VD.items_length(PB_L.it2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t))))), U32.to_nat(U32.shrn(N, 1n)), L, lit2(U32.to_nat(U32.shrn(N, 1n)), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, t)))), hvN)) :
         {Bool.and(_, True{}) == True{} : Bool}
       {==}
 def vl2(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: BLI.rep_l2(o, s), +ok: {BLI.ok_l2(s, depth) == True{} : Bool})
-    -> {VD.root_valid(PB.vview2(o), s) == True{} : Bool}:
+    -> {VD.root_valid(PB_L.vview2(o), s) == True{} : Bool}:
   (+wf, +r0) = rep
   (+eN, +hv) = r0
   +k0 = DK.and_l(SH.is_ListOf(s), Bool.and(SH.is_Unsigned(SH.ListOf_element(s)), Bool.and(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth))), ok)
@@ -1201,11 +1203,11 @@ def vl2(-o: O.Words, +s: S.Schema, +depth: Nat, +rep: BLI.rep_l2(o, s), +ok: {BL
   +k2 = DK.and_l(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth), r2)
   +r3 = DK.and_r(PB.is_U16(SH.Unsigned_width(SH.ListOf_element(s))), Lim.minimal(Nat.div(Nat.add(Nat.mul(SH.ListOf_limit(s), 2n), 31n), 32n), depth), r2)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
-    {VD.root_valid(PB.vview2(o), _) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Unsigned{SH.Unsigned_width(SH.ListOf_element(s))}, SH.Unsigned_shape(SH.ListOf_element(s), k1)) :
-    {VD.root_valid(PB.vview2(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(P.Width, SH.Unsigned_width(SH.ListOf_element(s)), P.U16{}, PB.is_U16_shape(SH.Unsigned_width(SH.ListOf_element(s)), k2)) :
-    {VD.root_valid(PB.vview2(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}) == True{} : Bool}
+    {VD.root_valid(PB_L.vview2(o), S.ListOf{S.Unsigned{_}, SH.ListOf_limit(s)}) == True{} : Bool}
   wl2(o, SH.ListOf_limit(s), wf, hv)
 
 def hlh(-o: O.Words, +t: F.array__Tree<U32>, +N: U32, +L: Nat, +eo: {o == O.Words{F.array__thaw(U32, t), N} : O.Words},

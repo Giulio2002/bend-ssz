@@ -11,11 +11,11 @@ import ../proofs/obj/vua.bend as UA
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/words_root_light.bend as WR
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbrt.bend as VBR

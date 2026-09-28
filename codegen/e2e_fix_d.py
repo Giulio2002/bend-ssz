@@ -21,6 +21,7 @@ def build(EB, amap, cache, vidx):
 
 
 import re  # noqa: E402
+from light_split import unlight as _unlight   # parse modules as before their light split (codegen/light_split.py)
 import names as NM  # noqa: E402
 
 
@@ -68,7 +69,7 @@ def fam_a_alt(EB, X, R, m, cache, vidx):
         if r is not None and r['vx']:
             r['R'] = R
             r['ee_alias'] = EB.file_aliases(r['ee']['file'])
-            r['generic'] = EB.RR.runtime_of((EB.OBJ / r['ee']['file']).read_text()) == 'generic'
+            r['generic'] = EB.RR.runtime_of(_unlight((EB.OBJ / r['ee']['file']).read_text())) == 'generic'
             d, why = EB.decode_a(r, m, cache)
             if d is None:
                 return None
@@ -88,7 +89,7 @@ _MOD = {}
 def module_info(EB, f):
     """a proving module (proofs/obj/<f>): {alias: repo path} and its top-level def names"""
     if f not in _MOD:
-        src = (EB.OBJ / f).read_text()
+        src = _unlight((EB.OBJ / f).read_text())
         al = {}
         for m in re.finditer(r'^import (\S+) as (\w+)$', src, re.M):
             al[m.group(2)] = os.path.normpath(os.path.join('proofs/obj', m.group(1)))
@@ -1432,7 +1433,7 @@ class Rebuild:
         return f'{b}{self.n}'
 
     def src(self, f):
-        return (self.EB.OBJ / f).read_text()
+        return _unlight((self.EB.OBJ / f).read_text())
 
     def repdef(self, name, f):
         """(params, body, file) of a Data-valued def"""
@@ -3485,7 +3486,7 @@ VENC_SHAPES = {}
 
 # ---- FuluBlobSidecar (ii)/(iii): the loader's tree at depth 1 + dd (dd = 15) cut into the decode law's shape ----
 def bsd_text(EB):
-    src = (EB.OBJ / 'spec_arr_BlobSidecar.bend').read_text()
+    src = _unlight((EB.OBJ / 'spec_arr_BlobSidecar.bend').read_text())
     def sig_of(name):
         i = src.index(f'def {name}(')
         j = re.search(r'\n  (?! )', src[i:]).start() + i
@@ -4382,7 +4383,7 @@ def build(EB, amap, cache, vidx):
             continue
         m0 = amap['map'][X]
         sn = X
-        gen = EB.RR.runtime_of((EB.OBJ / ri[0]['rt']['file']).read_text()) == 'generic'
+        gen = EB.RR.runtime_of(_unlight((EB.OBJ / ri[0]['rt']['file']).read_text())) == 'generic'
         rrows.append((readable[X], X, sn, ri[0], gen))
     rrows.sort(key=lambda r: (r[3]['rt']['file'], r[3]['vf'], r[0]))
     bt, cur = [], []
@@ -4410,7 +4411,7 @@ def build(EB, amap, cache, vidx):
             dp['hkind'] = 'bool' if X == 'GtAD72FD256A' else 'lf' if X in VEC_B else 'pad'
         if not dp or not ri:
             continue
-        gen = EB.RR.runtime_of((EB.OBJ / dp['da']['file']).read_text()) == 'generic'
+        gen = EB.RR.runtime_of(_unlight((EB.OBJ / dp['da']['file']).read_text())) == 'generic'
         fn = f'{readable[X]}_e2e_dec_generated.bend'
         files[fn] = dec_file(EB, [(readable[X], X, X, dp, ri[0], gen)])
         cover.setdefault(X, {})['ii_iii'] = fn
@@ -4421,7 +4422,7 @@ def build(EB, amap, cache, vidx):
         ri = root_info(EB, X, amap['map'][X], cache)
         if not ri:
             continue
-        gen = EB.RR.runtime_of((EB.OBJ / ri[0]['rt']['file']).read_text()) == 'generic'
+        gen = EB.RR.runtime_of(_unlight((EB.OBJ / ri[0]['rt']['file']).read_text())) == 'generic'
         fn = f'{readable[X]}_e2e_generated.bend'
         t = enc_file(EB, [(readable[X], X, X, ri[0], gen)], cache, amap)
         if t is None:
@@ -4434,7 +4435,7 @@ def build(EB, amap, cache, vidx):
         ri = root_info(EB, X, amap['map'][X], cache)
         if not ri:
             continue
-        gen = EB.RR.runtime_of((EB.OBJ / ri[0]['rt']['file']).read_text()) == 'generic'
+        gen = EB.RR.runtime_of(_unlight((EB.OBJ / ri[0]['rt']['file']).read_text())) == 'generic'
         t = enc_vec_file(EB, [(readable[X], X, X, ri[0], gen)], cache, amap)
         if t:
             fn = f'{readable[X]}_e2e_generated.bend'

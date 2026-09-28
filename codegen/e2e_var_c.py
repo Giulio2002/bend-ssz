@@ -27,6 +27,7 @@ SUPPORT_OUT = {}
 VENC_PREMISE = {}
 
 import re
+from light_split import unlight as _unlight   # parse modules as before their light split (codegen/light_split.py)
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def _dc_module(R):
     """The codec law module (the decode facade's DC) of the readable name R."""
-    s = (ROOT / 'proofs/api' / f'{R}_decode_ssz_proof_generated.bend').read_text()
+    s = _unlight((ROOT / 'proofs/api' / f'{R}_decode_ssz_proof_generated.bend').read_text())
     imp = dict((a, p) for p, a in re.findall(r'^import \.\./obj/(\S+) as (\w+)$', s, re.M))
     m = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', s)
     return ROOT / 'proofs/obj' / imp[m.group(1)]
@@ -45,7 +46,7 @@ def _dc_module(R):
 # field; the object's view has UL.uview(O.Words{thaw(MM), LL}) there and evaluates to XV's fixed
 # field values. vv rewrites the list field alone (e2e_ulist.uvw), the rest converts.
 def ulist_view(R, X):
-    src = _dc_module(R).read_text()
+    src = _unlight(_dc_module(R).read_text())
     xv = re.search(r'^def XV\(\+t: FD\.array__Tree<U32>, \+k: Nat, \+W: List<&2, U32>\) -> S\.Value: (.*)$', src, re.M).group(1)
     fs = re.search(r'^def CHK\(\+t: FD\.array__Tree<U32>, \+n: U32\) -> Bool: chk3\(U32\.is_le\((\d+), n\)', src, re.M).group(1)
     hole = 'S.Sequence{VS.uitems(k, W)}'
@@ -86,7 +87,7 @@ def _rep(X, rt='root_types'):
     """The rep_X of proofs/obj/<rt>.bend: the fixed fields' witnesses [(x, type)], the constructor's argument
     texts (the list field as pj_X_i(o)), the list field's index, and after the object's equation, the number
     of conjuncts and the list's conjunct's index."""
-    src = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    src = _unlight((ROOT / f'proofs/obj/{rt}.bend').read_text())
     body = re.search(rf'^def rep_{X}\(o: \w+\.{X}, \+s: S\.Schema\) -> Data:\n  (.*)$', src, re.M).group(1)
     wit = re.findall(r'DK\.Ex\((?:(\w+)\.)?(\w+), (x\d+) =>', body)
     cons = re.search(r'\{o == \w+\.' + X + r'\{(.*?)\} : \w+\.' + X + r'\}', body)
@@ -183,7 +184,7 @@ VROOT_SHAPES['Gc465214E502'] = lambda R, X: vroot_ulist(R, X, 'root_gtypes', 'gv
 def _spec_at(X, path):
     """The schema term at SH-path `path` (e.g. SH.Chain_head(SH.Container_fields(s))) of spec/fulu_schemas.bend's
     X(), with its own sub-schemas left as Spec.<name>() calls: the form a {==} meets without evaluating."""
-    src = (ROOT / 'spec/fulu_schemas.bend').read_text()
+    src = _unlight((ROOT / 'spec/fulu_schemas.bend').read_text())
     defs = dict(re.findall(r'^def (\w+)\(\) -> T\.Schema: (.*)$', src, re.M))
 
     def resolve(t):
@@ -239,7 +240,7 @@ def _render(n):
 def venc_ulist(R, X):
     import lim_pow as LPW
     dcm = _dc_module(R)
-    enc = (dcm.parent / (dcm.stem + '_enc.bend')).read_text()
+    enc = _unlight((dcm.parent / (dcm.stem + '_enc.bend')).read_text())
     ev = re.search(r'^def encode_eval\((.*?)\)\n    -> \{(\w+)\.' + X + r'_encode\((.*?)\) == \(.*?B\.Buf\{FD\.array__thaw\(U32, (TD\d+)\(', enc, re.M | re.S)
     WS = re.findall(r'\+(w\d+): U32', ev.group(1))
     WA = ', '.join(WS)
@@ -352,7 +353,7 @@ def a1({', '.join('+' + x + ': U32' for x in WS)}, +dw: Nat, +t: FD.array__Tree<
       EN.encode_spec({WA}, dw, t, N, c, pf, hdw, ec, hc, hroom)))
 ''')
     # the list field's premises, as the root law's invariant states them
-    rl = (ROOT / 'proofs/obj/root_types.bend').read_text().split(f'def rep_{X}(')[1].split('\n')[1]
+    rl = _unlight((ROOT / 'proofs/obj/root_types.bend').read_text()).split(f'def rep_{X}(')[1].split('\n')[1]
     j0 = rl.index(f'UL.rep_ul(pj_{X}_{li}(o), ') + len(f'UL.rep_ul(pj_{X}_{li}(o), ')
     j, dep = j0, 0
     while not (rl[j] == ')' and dep == 0):
@@ -538,10 +539,10 @@ VENC_SHAPES['IndexedAttestation'] = venc_ulist
 def nest2_view(R, X, child):
     """The view lemma of X{BSome{child at window 2}, BSome{child at window J}} (codegen/var_nest's
     layout): the child's view at a window (vvw, as ulist_view at word offset i), twice."""
-    src = _dc_module(R).read_text()
+    src = _unlight(_dc_module(R).read_text())
     cm = re.search(r'^import \./(\S+) as DC$', src, re.M).group(1)
     wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
-    wsrc = (ROOT / 'proofs/obj' / wm).read_text()
+    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
     xv = re.search(r'^def XVw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+k: Nat, \+W: List<&2, U32>\) -> S\.Value: (.*)$', wsrc, re.M).group(1)
     fs = re.search(r'DC\.chk3\(U32\.is_le\((\d+), len\)', wsrc).group(1)
     hole = 'S.Sequence{VS.uitems(k, W)}'
@@ -714,10 +715,10 @@ VROOT_SHAPES['AttesterSlashing'] = lambda R, X: vroot_nest2(R, X, 'IndexedAttest
 def venc_nest2(R, X, child):
     import lim_pow as LPW
     dcm = _dc_module(R)
-    enc = (dcm.parent / (dcm.stem + '_enc.bend')).read_text()
+    enc = _unlight((dcm.parent / (dcm.stem + '_enc.bend')).read_text())
     cenc_name = re.search(r'^import \./(\S+) as E$', enc, re.M).group(1)
     cencw_name = re.search(r'^import \./(\S+) as IW$', enc, re.M).group(1)
-    cenc = (ROOT / 'proofs/obj' / cenc_name).read_text()
+    cenc = _unlight((ROOT / 'proofs/obj' / cenc_name).read_text())
     ev = re.search(r'^def encode_eval\((.*?)\)\n    -> \{(\w+)\.' + X + r'_encode\((.*?)\) == \(.*?B\.Buf\{FD\.array__thaw\(U32, (AW\d+)\(', enc, re.M | re.S)
     params = ev.group(1)
     WS1 = re.findall(r'\+(\w+\d+): U32', params.split('+dw1:')[0])
@@ -748,7 +749,7 @@ def venc_nest2(R, X, child):
     PB = lambda k: f'RT.pjb_{child}_bx({PJ(k)})'  # noqa: E731
     PL = lambda k: f'RT.pj_{child}_{cli}({PB(k)})'  # noqa: E731
     # the children's schema paths (rep_X), and the list's inside the child (rep_child)
-    rl = (ROOT / 'proofs/obj/root_types.bend').read_text().split(f'def rep_{X}(')[1].split('\n')[1]
+    rl = _unlight((ROOT / 'proofs/obj/root_types.bend').read_text()).split(f'def rep_{X}(')[1].split('\n')[1]
     csch = []
     for k in (1, 2):
         j0 = rl.index(f'rep_{child}_bx(pj_{X}_{k - 1}(o), ') + len(f'rep_{child}_bx(pj_{X}_{k - 1}(o), ')
@@ -757,7 +758,7 @@ def venc_nest2(R, X, child):
             dep += {'(': 1, ')': -1}.get(rl[j], 0)
             j += 1
         csch.append(rl[j0:j])
-    rlc = (ROOT / 'proofs/obj/root_types.bend').read_text().split(f'def rep_{child}(')[1].split('\n')[1]
+    rlc = _unlight((ROOT / 'proofs/obj/root_types.bend').read_text()).split(f'def rep_{child}(')[1].split('\n')[1]
     j0 = rlc.index(f'UL.rep_ul(pj_{child}_{cli}(o), ') + len(f'UL.rep_ul(pj_{child}_{cli}(o), ')
     j, dep = j0, 0
     while not (rlc[j] == ')' and dep == 0):
@@ -1210,9 +1211,9 @@ def lv(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U3
 
 
 def vartest_view(R, X):
-    src = _dc_module(R).read_text()
+    src = _unlight(_dc_module(R).read_text())
     wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
-    wsrc = (ROOT / 'proofs/obj' / wm).read_text()
+    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
     ch = re.search(r'^import \./(\S+) as CH0$', wsrc, re.M).group(1)
     x0, x6 = 'Nat.add(0n, U32.to_nat(0))', 'Nat.add(0n, U32.to_nat(6))'
     CH = f'CH0.OBJw(d, t, W.XJ0(t, 0n), W.FJ0(0, t, 0n), W.LJ0(t, 0n, n))'
@@ -1253,9 +1254,9 @@ UNION_CHILD = {'var_winx_GpF350A3C486.bend': None}
 
 
 def union_view(R, X):
-    src = _dc_module(R).read_text()
+    src = _unlight(_dc_module(R).read_text())
     wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
-    wsrc = (ROOT / 'proofs/obj' / wm).read_text()
+    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
     alias_mod = dict((a, m) for m, a in re.findall(r'^import \./(\S+) as (CH\d+)$', wsrc, re.M))
     ks = sorted(int(k) for k in re.findall(r'^def K(\d+)\(c: Bool', wsrc, re.M))
     sels = {}
@@ -1269,7 +1270,7 @@ def union_view(R, X):
     for k in ks:
         arm[k] = re.search(rf'^def K{k}\(c: Bool.*?\n.*?\n    case True{{}}: (CH\d+)\.CHKw', wsrc, re.M | re.S).group(1)
     rt = 'root_gtypes2'
-    vsrc = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    vsrc = _unlight((ROOT / f'proofs/obj/{rt}.bend').read_text())
     vbody = re.search(rf'^def v_{X}\(o: .*?\n  match o:\n((?:    case .*\n)+)', vsrc, re.M).group(1)
     ctor = dict((int(c), (sel, vw)) for c, sel, vw in re.findall(rf'case \w+\.{X}_c(\d+){{v}}: S\.Selected{{(\d+), ([\w.]+)\(v\)}}', vbody))
     WIN = 'XJ(t, x), FJ(off), LJ(len)'
@@ -1321,7 +1322,7 @@ VDEC_VIEWS['GuA2212AE21F'] = union_view('CompatibleUnionA', 'GuA2212AE21F')
 
 # ---- (iv): CompatibleUnions, from rep (DK.Or2 over the arms' pc_X_k: the arm's value v and o == X_ck{v}) ----
 def vroot_union(R, X, rt='root_gtypes2', gv='gvalid_gtypes2'):
-    vsrc = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    vsrc = _unlight((ROOT / f'proofs/obj/{rt}.bend').read_text())
     rep = re.search(rf'^def rep_{X}\(o: \w+\.{X}\) -> Data: (.*)$', vsrc, re.M).group(1)
     arms = [int(k) for k in re.findall(rf'pc_{X}_(\d+)\(o\)', rep)]
     D = f'T.{X}'
@@ -1375,10 +1376,10 @@ MWP = {}
 
 def venc_mw(R, X):
     dcm = _dc_module(R)
-    api = (ROOT / 'proofs/api' / f'{R}_encode_ssz_proof_generated.bend').read_text()
+    api = _unlight((ROOT / 'proofs/api' / f'{R}_encode_ssz_proof_generated.bend').read_text())
     ci = re.search(r'^import \.\./obj/(\S+) as \w+_CI$', api, re.M).group(1)
     en = re.search(r'^import \.\./obj/(\S+) as \w+_PRV$', api, re.M).group(1)
-    esrc = (ROOT / 'proofs/obj' / en).read_text()
+    esrc = _unlight((ROOT / 'proofs/obj' / en).read_text())
     dep = re.search(r'^def OUTE\(\+m: CI\.MW\) -> FD\.array__Tree<U32>: CI\.PUTX\(m, (.*), VC\.ZT\(', esrc, re.M).group(1)
     room = 'EN.roomf(m, hok)' if re.search(r'^def roomf\(', esrc, re.M) else 'EN.room(m, hok, 28n, {==})'
     tmod = re.search(r'-> \{(\w+)\.' + X + r'_encode\(', esrc).group(1)
@@ -2016,9 +2017,9 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
   +ew = GV2.vv2w(d, t, n, {x3}, {f3}, {l3}, W.eoJ3({WA}), hd, W.hwJ3({WA}), pf, W.itD3(t, 0n, 0, n, h))
 """
     text = head + '\n'.join(steps) + '\n  {==}\n\n'
-    src = _dc_module(R).read_text()
+    src = _unlight(_dc_module(R).read_text())
     wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
-    wsrc = (ROOT / 'proofs/obj' / wm).read_text()
+    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
     ch = dict((a, m) for m, a in re.findall(r'^import \./(\S+) as (CH\d+)$', wsrc, re.M))
     return {'view': f'RT.v_{X}',
             'imports': ['import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/packed_bytes.bend as PBF',
@@ -2055,7 +2056,7 @@ def _okt(src, name='OKT'):
 
 
 def _obj(p):
-    return (ROOT / 'proofs/obj' / p).read_text()
+    return _unlight((ROOT / 'proofs/obj' / p).read_text())
 
 
 ENCR_LISTS = {  # tag: (encode record module, window module, kind)
@@ -4249,7 +4250,7 @@ def vroot_union_n(R, X, rt='root_gtypes2', gv='gvalid_gtypes2'):
     """(iv) of a CompatibleUnion with any arms: rep is an Or2 tree (por_X_i) over the arms' pc_X_k. A Data
     arm (pc: DK.Ex v, o == ck{v}) is its value; a Type arm (pc: o == ck{pju(o)}, the arm's rep) is rebuilt
     from its rep (e2e_gcp.cp_Arm)."""
-    vsrc = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    vsrc = _unlight((ROOT / f'proofs/obj/{rt}.bend').read_text())
     pcs = dict((int(k), b) for k, b in re.findall(rf'^def pc_{X}_(\d+)\(o: .*?\) -> Data: (.*)$', vsrc, re.M))
     arms = sorted(pcs)
     D = f'T.{X}'
@@ -4755,7 +4756,7 @@ for _X in PROGS:
 # ---- (i) of a CompatibleUnion with any arms: the selected arm's record (a uint8 container's value, or a
 # progressive container's record e2e_encq.rq_Arm under its premises SU(o)) as the union's record MWk ----
 def mwp_union_n(R, X, D):
-    vsrc = (ROOT / 'proofs/obj/root_gtypes2.bend').read_text()
+    vsrc = _unlight((ROOT / 'proofs/obj/root_gtypes2.bend').read_text())
     pcs = dict((int(k), b) for k, b in re.findall(rf'^def pc_{X}_(\d+)\(o: .*?\) -> Data: (.*)$', vsrc, re.M))
     ci = _obj(f'big_encx_{X}_iface.bend')
     G = lambda o: f'{{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode({o})))}} == API.serialize(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731

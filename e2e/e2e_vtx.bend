@@ -10,7 +10,7 @@ import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/vua_win.bend as UW
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/big_vvlu.bend as VVU
 import ../proofs/obj/big_vvlb_bl1073741824.bend as YW

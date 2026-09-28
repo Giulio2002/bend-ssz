@@ -3,14 +3,14 @@ import ../src/obj.bend as O
 import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/arr_spec.bend as AS
 import ../proofs/u32_order.bend as UO
 import ./e2e_tree.bend as E3
 import ../types/schema.bend as S
-import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/words_root_light.bend as WR
 import ../proofs/obj/mtree_run.bend as MR
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/pv_obj.bend as PV

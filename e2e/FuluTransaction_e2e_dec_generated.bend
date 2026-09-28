@@ -17,7 +17,7 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ./e2e_blist.bend as BL
 import ../proofs/obj/big_var_codec_Transaction.bend as DC
 

@@ -20,7 +20,7 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vbspec.bend as VZ
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/list_obj.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH

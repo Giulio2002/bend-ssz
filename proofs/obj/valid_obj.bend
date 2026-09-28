@@ -14,8 +14,8 @@ import ./mtree_defs.bend as MD
 import ./schema_shapes.bend as SH
 import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
-import ./words_root.bend as WR
-import ./words_obj.bend as WO
+import ./words_root_light.bend as WR
+import ./words_obj_light.bend as WO
 import ./list_obj.bend as LO
 import ./pv_obj.bend as PV
 import ./ulist_obj.bend as UL

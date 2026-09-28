@@ -11,8 +11,9 @@ import ../../spec/limits.bend as Lim
 import ../../spec/primitives.bend as SP
 import ../compact/found.bend as F
 import ./words_spec.bend as WS
-import ./words_root.bend as WR
+import ./words_root_light.bend as WR
 import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO_L
 import ./cform.bend as CF
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
@@ -47,7 +48,7 @@ def fct(o: O.Words, +n: Nat) -> Data:
 
 # The object represents a Bitvector[n] value.
 def rep_bvb(o: O.Words, +n: Nat) -> Data:
-  DK.P2(WO.wf1(o), fct(o, n))
+  DK.P2(WO_L.wf1(o), fct(o, n))
 
 # The schema is Bitvector[n] with n > 0 and canonical depth `depth`.
 def ok_bvb(+s: S.Schema, +n: Nat, +depth: Nat) -> Bool:
@@ -78,7 +79,7 @@ def le_rw(+a: Nat, +b: Nat, +c: Nat, +e: {a == b : Nat}, +h: {Nat.is_le(a, c) ==
   h
 
 def bvb_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +n: Nat, +rep: rep_bvb(o, n), +edu: {U32.to_nat(dU) == depth : Nat})
-    -> {O.words_root(hl, h, o, dU, seg) == (h, (o, WO.wdig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
+    -> {O.words_root(hl, h, o, dU, seg) == (h, (o, WO_L.wdig(hl, o, depth))) : B.Buf & (O.Words & D.Digest)}:
   (+wf, +fc) = rep
   WO.bv_st(hl, h, o, dU, seg, depth, wf, edu)
 
@@ -99,7 +100,7 @@ def bvb_gate(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: F.array__Tree<U32>, +dw: Nat
   +BITS = BK.btk(n, BK.bitsof(F.array__slots(U32, t)))
   +DIG = D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))
   +ebc = WS.nat_eq(U32.to_nat(N), Bp.byte_count(n), hbc)
-  +ecq = WO.chunks_q(N, q, r, enq, h1, h32)
+  +ecq = WO_L.chunks_q(N, q, r, enq, h1, h32)
   %Equal.sym(Nat, List.length(&2, Bool, BITS), n, hln) :
     {Bm.vector_gate(Bool.and(Nat.is_lt(0n, n), Nat.is_eq(_, n)), n, depth, BITS) == Some{DIG} : Maybe<&2, +List<U32>>}
   %Equal.sym(Bool, Nat.is_eq(n, n), True{}, F.nat__is_eq_refl(n)) :
@@ -124,11 +125,11 @@ def bvb_gate(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: F.array__Tree<U32>, +dw: Nat
     {Some{D.bytes(MD.rtree(depth, _, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} == Some{DIG} : Maybe<&2, +List<U32>>}
   {==}
 
-def bvb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +n: Nat, +depth: Nat, +wf: WO.wf1(o), +fc: fct(o, n),
+def bvb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +n: Nat, +depth: Nat, +wf: WO_L.wf1(o), +fc: fct(o, n),
     +kpos: {Nat.is_lt(0n, n) == True{} : Bool},
     +kcan: {Bm.canonical_depth(n, depth) == True{} : Bool},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(S.BitsValue{wbits(o, n)}, S.BitVector{n}, [D.bytes(WO.wdig(hl, o, depth))]):
+    -> RR.roots(S.BitsValue{wbits(o, n)}, S.BitVector{n}, [D.bytes(WO_L.wdig(hl, o, depth))]):
   (+t, w1) = wf
   (+dw, w2) = w1
   (+N, w3) = w2
@@ -143,10 +144,10 @@ def bvb_body(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +n: Nat, +depth: Na
   (+room, +slack) = w11
   +fc2 = fct_ft(t, N, n, fct_at(o, t, N, n, eo, fc))
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
-    RR.roots(S.BitsValue{wbits(_, n)}, S.BitVector{n}, [D.bytes(WO.wdig(hl, _, depth))])
+    RR.roots(S.BitsValue{wbits(_, n)}, S.BitVector{n}, [D.bytes(WO_L.wdig(hl, _, depth))])
   %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
     RR.roots(S.BitsValue{BK.btk(n, BK.bitsof(F.array__slots(U32, _)))}, S.BitVector{n}, [D.bytes(MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(N)), hl, MR.clist(O.chunks_of(N), F.array__slots(U32, _), 0n), 0n))])
-  %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, enq, h1, h32)) :
+  %Equal.sym(Nat, O.chunks_of(N), 1n+q, WO_L.chunks_q(N, q, r, enq, h1, h32)) :
     RR.roots(S.BitsValue{BK.btk(n, BK.bitsof(F.array__slots(U32, t)))}, S.BitVector{n}, [D.bytes(MD.rtree(depth, Nat.is_lt(0n, _), hl, MR.clist(_, F.array__slots(U32, t), 0n), 0n))])
   (depth, (kcan, bvb_gate(hl, ehl, t, dw, N, q, r, n, depth, pf, enq, h1, h32, room, slack, fc2, kpos, hdep)))
 
@@ -155,7 +156,7 @@ def bvb_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Sche
     +rep: rep_bvb(o, n),
     +ok: {ok_bvb(s, n, depth) == True{} : Bool},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(S.BitsValue{wbits(o, n)}, s, [D.bytes(WO.wdig(hl, o, depth))]):
+    -> RR.roots(S.BitsValue{wbits(o, n)}, s, [D.bytes(WO_L.wdig(hl, o, depth))]):
   (+wf, +fc) = rep
   +ks = DK.and_l(SH.is_BitVector(s), Bool.and(Nat.is_eq(SH.BitVector_length(s), n), Bool.and(Nat.is_lt(0n, n), Bm.canonical_depth(n, depth))), ok)
   +k1 = DK.and_r(SH.is_BitVector(s), Bool.and(Nat.is_eq(SH.BitVector_length(s), n), Bool.and(Nat.is_lt(0n, n), Bm.canonical_depth(n, depth))), ok)
@@ -164,19 +165,19 @@ def bvb_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Sche
   +kpos = DK.and_l(Nat.is_lt(0n, n), Bm.canonical_depth(n, depth), k2)
   +kcan = DK.and_r(Nat.is_lt(0n, n), Bm.canonical_depth(n, depth), k2)
   %Equal.sym(S.Schema, s, S.BitVector{SH.BitVector_length(s)}, SH.BitVector_shape(s, ks)) :
-    RR.roots(S.BitsValue{wbits(o, n)}, _, [D.bytes(WO.wdig(hl, o, depth))])
+    RR.roots(S.BitsValue{wbits(o, n)}, _, [D.bytes(WO_L.wdig(hl, o, depth))])
   %Equal.sym(Nat, SH.BitVector_length(s), n, WS.nat_eq(SH.BitVector_length(s), n, keq)) :
-    RR.roots(S.BitsValue{wbits(o, n)}, S.BitVector{_}, [D.bytes(WO.wdig(hl, o, depth))])
+    RR.roots(S.BitsValue{wbits(o, n)}, S.BitVector{_}, [D.bytes(WO_L.wdig(hl, o, depth))])
   bvb_body(hl, ehl, o, n, depth, wf, fc, kpos, kcan, hdep)
 
 # ---- the digest as a value, from the invariant ----------------------------------------
 
-def bvb_wdc(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(WO.wdig(hl, o, d)):
+def bvb_wdc(+hl: Nat, -o: O.Words, +d: Nat, +c: CF.CF(o)) -> OS.DW(WO_L.wdig(hl, o, d)):
   (+t, +c1) = c
   (+N, +ce) = c1
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(WO.wdig(hl, _, d))
-  (WO.wdig(hl, O.Words{F.array__thaw(U32, t), N}, d), {==})
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(WO_L.wdig(hl, _, d))
+  (WO_L.wdig(hl, O.Words{F.array__thaw(U32, t), N}, d), {==})
 
-def bvb_wd(+hl: Nat, -o: O.Words, +n: Nat, +d: Nat, +r: rep_bvb(o, n)) -> OS.DW(WO.wdig(hl, o, d)):
+def bvb_wd(+hl: Nat, -o: O.Words, +n: Nat, +d: Nat, +r: rep_bvb(o, n)) -> OS.DW(WO_L.wdig(hl, o, d)):
   (+w, +z) = r
   bvb_wdc(hl, o, d, CF.cf1(o, w))

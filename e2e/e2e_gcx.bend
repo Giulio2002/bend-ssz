@@ -7,7 +7,7 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/vbitl.bend as VBL
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/root_gtypes2.bend as RT2

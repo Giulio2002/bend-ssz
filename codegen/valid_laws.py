@@ -32,6 +32,7 @@ leaves from their representation facts).
     python3 codegen/valid_laws.py [--check]
 """
 import sys
+from light_split import unlight as _unlight   # parse modules as before their light split (codegen/light_split.py)
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -180,7 +181,7 @@ def emit_gnames():
         for s in good:
             valid_shape(s, L.append, 'RN')
         gp = {s.p for s in good}
-        law_src = (OBJ / 'root_gnames.bend').read_text()
+        law_src = _unlight((OBJ / 'root_gnames.bend').read_text())
         for n, t in names.items():
             s = g.shape(t)
             if s.p not in gp or RA.partial_bits(s) or f'law {n}_root_correct:' not in law_src:
@@ -293,7 +294,7 @@ WORDS_HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../typ
 
 def emit_words():
     import re
-    src = (OBJ / 'root_words.bend').read_text()
+    src = _unlight((OBJ / 'root_words.bend').read_text())
     L = list(WORDS_HEAD)
     w = L.append
     for m in re.finditer(r'^law (\w+)_root_correct:\n((?:  for .*\n)+)  (RR\.roots\(.*)\ndef \w+\((.*)\):\n  (.*)$', src, re.M):
@@ -910,7 +911,7 @@ def emit_types(only=None):
     gen.run()
     vb = VB(gen, 'RT', 'VN', False)
     laws = []
-    src = (OBJ / 'root_types.bend').read_text()
+    src = _unlight((OBJ / 'root_types.bend').read_text())
     status = {}
     big = {}
     state = {}
@@ -919,7 +920,7 @@ def emit_types(only=None):
             continue
         s = gen.g.shape(t)
         bigf = OBJ / f'big_root_{n}.bend'
-        if n in RBmod().BIG_NAMES or (bigf.exists() and f'law {n}_root_correct:' in bigf.read_text()):
+        if n in RBmod().BIG_NAMES or (bigf.exists() and f'law {n}_root_correct:' in _unlight(bigf.read_text())):
             if gen.state_text is not None and f'def rep_{s.p}(' in gen.state_text:
                 vs = VB(gen, 'XX', 'VN', False)
                 try:
@@ -1064,7 +1065,7 @@ def emit_gtypes():
     RA.PARTIAL_HOOK = RG.partial_bits_shape
     outs, status = {}, {}
     for gen, fn, out in ((gb, 'root_gtypes', 'gvalid_gtypes'), (gb2, 'root_gtypes2', 'gvalid_gtypes2')):
-        src = (OBJ / f'{fn}.bend').read_text()
+        src = _unlight((OBJ / f'{fn}.bend').read_text())
         head = [x for x in src.split('\n') if x.startswith('import ')]
         vb = VB(gen, 'RT', 'GV', True)
         laws = []
@@ -1261,7 +1262,7 @@ def split_and(e):
 def ok_def(mod_file, name, alias):
     """The conjuncts of `def <name>(...) -> Bool: <expr>` of a module, qualified."""
     import re
-    src = (OBJ / mod_file).read_text()
+    src = _unlight((OBJ / mod_file).read_text())
     m = re.search(r'^def ' + name + r'\(.*?\) -> Bool:\s*(.*?)\n(?=\S|\n)', src, re.M | re.S)
     expr = ' '.join(m.group(1).split())
     loc = set(re.findall(r'^def (\w+)\(', src, re.M))
@@ -1641,7 +1642,7 @@ def emit_gnames_packed():
          '  {==}', '']
     status = {}
     for f in ('root_gtypes.bend', 'root_gtypes2.bend'):
-        src = (OBJ / f).read_text()
+        src = _unlight((OBJ / f).read_text())
         for m in re.finditer(r'^law (\w+)_root_correct:\n((?:  for .*\n)+)  (RR\.roots\((.*?), s, \[.*)$', src, re.M):
             n, binders, view = m.group(1), m.group(2), m.group(4)
             bs = [b.strip()[len('for '):] for b in binders.strip('\n').split('\n')]

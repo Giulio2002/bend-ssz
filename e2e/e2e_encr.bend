@@ -9,9 +9,9 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/vua_lay.bend as LY
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB

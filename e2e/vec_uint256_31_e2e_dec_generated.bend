@@ -10,7 +10,7 @@ import ../spec/primitives.bend as SP
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/packed_obj.bend as PK
+import ../proofs/obj/packed_obj_light.bend as PK
 import ./e2e_bytes.bend as E
 import ../types/vec_uint256_31_decode_ssz_generated.bend as vec_uint256_31_r
 import ../proofs/obj/generic_specs.bend as GS

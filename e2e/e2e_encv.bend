@@ -11,7 +11,7 @@ import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vvle.bend as VE2
 import ../proofs/obj/vrej.bend as VR
 import ../proofs/obj/vrl.bend as VRL
-import ../proofs/obj/packed_bytes.bend as PBF
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB

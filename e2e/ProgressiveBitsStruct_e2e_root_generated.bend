@@ -9,7 +9,7 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/root_gtypes2.bend as RT
 import ../proofs/obj/gvalid_gtypes2.bend as GV

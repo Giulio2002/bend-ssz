@@ -24,7 +24,7 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vfixw_spec.bend as FWS
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH

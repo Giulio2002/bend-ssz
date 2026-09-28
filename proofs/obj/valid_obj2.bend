@@ -11,7 +11,7 @@ import ./dk.bend as DK
 import ./mtree_run.bend as MR
 import ./schema_shapes.bend as SH
 import ./words_spec.bend as WS
-import ./words_obj.bend as WO
+import ./words_obj_light.bend as WO
 import ./elems_obj.bend as EL
 import ./elems48.bend as E48
 import ./cells.bend as CE

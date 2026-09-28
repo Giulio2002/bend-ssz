@@ -17,6 +17,7 @@ import ./mtree_spec.bend as MS
 import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
+import ./words_root_light.bend as LV
 
 # Roots of packed byte storage (O.Words) against the specification.
 #
@@ -31,18 +32,6 @@ import ./words_spec.bend as WS
 #
 # n = 32q + r with 1 <= r <= 32: q + 1 chunks, the last holding r bytes.
 
-def view(+t: F.array__Tree<U32>, +n: U32) -> +List<U32>: WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t)))
-
-def cap_at(+q: Nat, +dw: Nat, +t: F.array__Tree<U32>,
-    +pf: {F.array__perfect(U32, dw, t) == True{} : Bool},
-    +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {Nat.is_le(O.e8(Nat.add(1n+q, 0n)), F.spec_common__length(U32, F.array__slots(U32, t))) == True{} : Bool}:
-  %Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)) :
-    {Nat.is_le(O.e8(Nat.add(1n+q, 0n)), _) == True{} : Bool}
-  %Equal.sym(Nat, Nat.add(q, 0n), q, MR.add_zero(q)) :
-    {Nat.is_le(O.e8(1n+_), F.spec_common__pow2(dw)) == True{} : Bool}
-  cap
-
 # The chunks of the view are the chunk digests' bytes.
 def chunks_view(+N: U32, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tree<U32>,
     +en: {U32.to_nat(N) == Nat.add(WS.e32(q), r) : Nat},
@@ -50,10 +39,10 @@ def chunks_view(+N: U32, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tree<U32>,
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool},
     +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>})
-    -> {Br.chunks(view(t, N)) == MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)) : +List<+List<U32>>}:
+    -> {Br.chunks(LV.view(t, N)) == MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)) : +List<+List<U32>>}:
   %Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), en) :
     {Pack.scan(WS.btake(_, FX.limbs(F.array__slots(U32, t))), 31n, [], []) == MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)) : +List<+List<U32>>}
-  WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, cap_at(q, dw, t, pf, cap), slack)
+  WS.chunk_scan(q, r, F.array__slots(U32, t), 0n, [], h1, h32, LV.cap_at(q, dw, t, pf, cap), slack)
 
 def canon_view(+N: U32, +depth: Nat, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tree<U32>,
     +en: {U32.to_nat(N) == Nat.add(WS.e32(q), r) : Nat},
@@ -62,29 +51,14 @@ def canon_view(+N: U32, +depth: Nat, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tr
     +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
     +hmin: {Lim.minimal(1n+q, depth) == True{} : Bool})
-    -> {Br.canonical_depth(view(t, N), depth) == True{} : Bool}:
-  %Equal.sym(+List<+List<U32>>, Br.chunks(view(t, N)), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)), chunks_view(N, q, r, dw, t, en, h1, h32, pf, cap, slack)) :
+    -> {Br.canonical_depth(LV.view(t, N), depth) == True{} : Bool}:
+  %Equal.sym(+List<+List<U32>>, Br.chunks(LV.view(t, N)), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)), chunks_view(N, q, r, dw, t, en, h1, h32, pf, cap, slack)) :
     {Lim.minimal(List.length(&2, +List<U32>, _), depth) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, +List<U32>, MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n))), MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), RS.length_bytes(MR.clist(1n+q, F.array__slots(U32, t), 0n))) :
     {Lim.minimal(_, depth) == True{} : Bool}
   %Equal.sym(Nat, MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), 1n+q, MR.clist_len(1n+q, F.array__slots(U32, t), 0n)) :
     {Lim.minimal(_, depth) == True{} : Bool}
   hmin
-
-law pos_add:
-  for +x: Nat
-  for +r: Nat
-  for +h1: {Nat.is_lt(0n, r) == True{} : Bool}
-  {Nat.is_lt(0n, Nat.add(x, r)) == True{} : Bool}
-def pos_add(x, r, h1):
-  match x:
-    case 0n: h1
-    case 1n+y: {==}
-
-def dom_pos(+n: Nat, +xs: +List<U32>, +pos: {Nat.is_lt(0n, n) == True{} : Bool}) -> {VD.bytevector_domain(n, xs) == SP.byte_scope(n, xs) : Bool}:
-  match n:
-    case 0n: Empty.absurd({VD.bytevector_domain(0n, xs) == SP.byte_scope(0n, xs) : Bool}, MD.false_true(pos))
-    case 1n+p: {==}
 
 def gate_view(+hl: Nat, +N: U32, +depth: Nat, +q: Nat, +r: Nat, +dw: Nat, +t: F.array__Tree<U32>,
     +en: {U32.to_nat(N) == Nat.add(WS.e32(q), r) : Nat},
@@ -93,16 +67,16 @@ def gate_view(+hl: Nat, +N: U32, +depth: Nat, +q: Nat, +r: Nat, +dw: Nat, +t: F.
     +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
-    -> {RR.bytevector_at_depth(U32.to_nat(N), depth, view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}:
+    -> {RR.bytevector_at_depth(U32.to_nat(N), depth, LV.view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}:
   %Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), en) :
-    {Br.gate(VD.bytevector_domain(_, view(t, N)), depth, view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Bool, VD.bytevector_domain(Nat.add(WS.e32(q), r), view(t, N)), SP.byte_scope(Nat.add(WS.e32(q), r), view(t, N)), dom_pos(Nat.add(WS.e32(q), r), view(t, N), pos_add(WS.e32(q), r, h1))) :
-    {Br.gate(_, depth, view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
+    {Br.gate(VD.bytevector_domain(_, LV.view(t, N)), depth, LV.view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, VD.bytevector_domain(Nat.add(WS.e32(q), r), LV.view(t, N)), SP.byte_scope(Nat.add(WS.e32(q), r), LV.view(t, N)), LV.dom_pos(Nat.add(WS.e32(q), r), LV.view(t, N), LV.pos_add(WS.e32(q), r, h1))) :
+    {Br.gate(_, depth, LV.view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
   %Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), en) :
-    {Br.gate(SP.byte_scope(Nat.add(WS.e32(q), r), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), depth, view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Bool, SP.byte_scope(Nat.add(WS.e32(q), r), WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t)))), True{}, WS.chunk_scope(q, r, F.array__slots(U32, t), 0n, h32, cap_at(q, dw, t, pf, cap))) :
-    {Br.gate(_, depth, view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<+List<U32>>, Br.chunks(view(t, N)), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)), chunks_view(N, q, r, dw, t, en, h1, h32, pf, cap, slack)) :
+    {Br.gate(SP.byte_scope(Nat.add(WS.e32(q), r), WS.btake(_, FX.limbs(F.array__slots(U32, t)))), depth, LV.view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, SP.byte_scope(Nat.add(WS.e32(q), r), WS.btake(Nat.add(WS.e32(q), r), FX.limbs(F.array__slots(U32, t)))), True{}, WS.chunk_scope(q, r, F.array__slots(U32, t), 0n, h32, LV.cap_at(q, dw, t, pf, cap))) :
+    {Br.gate(_, depth, LV.view(t, N)) == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<+List<U32>>, Br.chunks(LV.view(t, N)), MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)), chunks_view(N, q, r, dw, t, en, h1, h32, pf, cap, slack)) :
     {Some{Tr.tree(depth, _)} == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
   %MS.rtree_spec(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n, {==}, hdep, ehl) :
     {Some{_} == Some{D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))} : Maybe<&2, +List<U32>>}
@@ -137,7 +111,7 @@ def bv_root(+hl: Nat, +N: U32, +depth: Nat, +q: Nat, +r: Nat, +dw: Nat, +t: F.ar
     +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
     +hmin: {Lim.minimal(1n+q, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
-    -> RR.roots(S.BytesValue{view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))]):
+    -> RR.roots(S.BytesValue{LV.view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))]):
   (depth, (canon_view(N, depth, q, r, dw, t, en, h1, h32, pf, cap, slack, hmin), gate_view(hl, N, depth, q, r, dw, t, en, h1, h32, pf, cap, slack, hdep, ehl)))
 
 # Both together, with the runtime root in the statement and no tree term: this is
@@ -151,10 +125,10 @@ def bv_full(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +N: U32, +depth: Nat, +q: 
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
     +edu: {U32.to_nat(dU) == depth : Nat}, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +hmin: {Lim.minimal(1n+q, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
-    -> RR.roots(S.BytesValue{view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))]):
+    -> RR.roots(S.BytesValue{LV.view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))]):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg), (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))),
       bv_state(hl, h, dU, seg, N, depth, q, r, dw, t, en, h1, h32, pf, cap, slack, edu, hd)) :
-    RR.roots(S.BytesValue{view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(S.BytesValue{LV.view(t, N)}, S.ByteVector{U32.to_nat(N)}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   bv_root(hl, N, depth, q, r, dw, t, en, h1, h32, pf, cap, slack, hmin, hdep, ehl)
 
 def elem_gate(+W: List<&2, U32>, +i: Nat) -> {RR.bytevector_at_depth(32n, 0n, WS.cb(W, i)) == Some{D.bytes(MR.cw(W, i))} : Maybe<&2, +List<U32>>}:
@@ -166,12 +140,6 @@ def elem_gate(+W: List<&2, U32>, +i: Nat) -> {RR.bytevector_at_depth(32n, 0n, WS
 
 # ---- vectors and lists of Bytes32 (packed; each element is one chunk) -------------
 
-# The view of k Bytes32 elements from element i: element j is chunk j's bytes.
-def items(k: Nat, +W: List<&2, U32>, +i: Nat) -> S.Value:
-  match k:
-    case 0n: S.EmptyItems{}
-    case 1n+q: S.Items{S.BytesValue{WS.cb(W, i)}, items(q, W, 1n+i)}
-
 # One element: a 32-byte vector is its own root (depth 0).
 def elem_root(+W: List<&2, U32>, +i: Nat) -> RR.roots(S.BytesValue{WS.cb(W, i)}, S.ByteVector{32n}, [D.bytes(MR.cw(W, i))]):
   (0n, ({==}, elem_gate(W, i)))
@@ -181,7 +149,7 @@ law items_roots:
   for +k: Nat
   for +W: List<&2, U32>
   for +i: Nat
-  RR.roots(items(k, W, i), S.Repeat{S.ByteVector{32n}}, MD.bytes_list(MR.clist(k, W, i)))
+  RR.roots(LV.items(k, W, i), S.Repeat{S.ByteVector{32n}}, MD.bytes_list(MR.clist(k, W, i)))
 def items_roots(k, W, i):
   match k:
     case 0n: {==}
@@ -196,10 +164,10 @@ def pv_full(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +N: U32, +depth: Nat, +q: 
     +cap: {Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat}, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +hmin: {Lim.minimal(1n+q, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +ehl: {hl == 64n : Nat})
-    -> RR.roots(S.Sequence{items(1n+q, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))]):
+    -> RR.roots(S.Sequence{LV.items(1n+q, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg))))]):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg), (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))),
       bv_state(hl, h, dU, seg, N, depth, q, 32n, dw, t, en, {==}, {==}, pf, cap, {==}, edu, hd)) :
-    RR.roots(S.Sequence{items(1n+q, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+    RR.roots(S.Sequence{LV.items(1n+q, F.array__slots(U32, t), 0n)}, S.Vector{S.ByteVector{32n}, 1n+q}, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   (MD.bytes_list(MR.clist(1n+q, F.array__slots(U32, t), 0n)), (items_roots(1n+q, F.array__slots(U32, t), 0n),
     RS.aggregate_digests(1n+q, depth, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), hdep, hmin, Equal.trans(Bool, Nat.is_le(MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), 1n+q), Nat.is_le(1n+q, 1n+q), True{},
       Equal.cong(Nat, Bool, x => Nat.is_le(x, 1n+q), MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), 1n+q, MR.clist_len(1n+q, F.array__slots(U32, t), 0n)), RS.le_refl(1n+q)), ehl)))

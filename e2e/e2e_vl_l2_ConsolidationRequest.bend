@@ -7,6 +7,7 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l2_ConsolidationRequest.bend as W
 import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
 
@@ -117,8 +118,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluConsolidation
           Equal.sym(Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>, FD.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT.xat_l2_ConsolidationRequest(FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_l2_ConsolidationRequest(FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluConsolidationRequest_d.ConsolidationRequest, RT.xat_l2_ConsolidationRequest(FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 116n, x)), ex) :
-        {S.Items{RN_L.v_ConsolidationRequest(_), RT.xi_l2_ConsolidationRequest(k, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 116n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_ConsolidationRequest(W.RX(t, VRL.pos(i, 116n, x))), z}, RT.xi_l2_ConsolidationRequest(k, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN.v_ConsolidationRequest(_), RT.xi_l2_ConsolidationRequest(k, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 116n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_ConsolidationRequest(W.RX(t, VRL.pos(i, 116n, x))), z}, RT.xi_l2_ConsolidationRequest(k, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 116n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:

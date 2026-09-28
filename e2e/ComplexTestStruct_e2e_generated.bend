@@ -35,8 +35,8 @@ import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/pb_min.bend as PBM
-import ../proofs/obj/packed_bytes.bend as PBF
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/packed_bytes_light.bend as PBF
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/nat_order.bend as Order
 import ./e2e_blist.bend as BL
 import ./e2e_cap.bend as C
