@@ -3181,6 +3181,9 @@ def outputs():
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+    if (OBJ / 'big_encx_l8_Attestation.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbatt.bend'] = EBB.text()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
         out[OUT / 'e2e_stv.bend'] = ESG.text()

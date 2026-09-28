@@ -1866,8 +1866,8 @@ def _wpat(k):
 def okt_proof(c):
     """the proof of one conjunct of a big_encx_bitsN record's OKT, by its shape (bb<N>b's binders)"""
     rules = [(r'^FD\.array__perfect\(U32, dw, T\)$', 'pf'), (r'^Nat\.is_lt\(dw, \d+n\)$', 'hdw'),
-             (r'^Nat\.is_lt\(\d+n, \d+n\)$', '{==}'), (r'^Nat\.is_le\(U32\.to_nat\(K\), \d+n\)$', 'hN'),
-             (r'^Nat\.is_le\(Nat\.add\(\d+n, 8n\), O\.pow2n\(\d+n\)\)$', 'hK8'), (r'^Nat\.is_le\(Nat\.add\(31n, ', '{==}'),
+             (r'^Nat\.is_lt\(\d+n, \d+n\)$', '{==}'), (r'^Nat\.is_le\(U32\.to_nat\(K\), (\d+n|U32\.to_nat\(\d+\))\)$', 'hN'),
+             (r'^Nat\.is_le\(Nat\.add\((\d+n|U32\.to_nat\(\d+\)), 8n\), O\.pow2n\(\d+n\)\)$', 'hK8'), (r'^Nat\.is_le\(Nat\.add\(31n, ', '{==}'),
              (r'^Nat\.is_le\(Nat\.add\(U32\.to_nat\(U32\.shrn\(K, 5n\)\), 1n\), VB\.pw\(dw\)\)$', 'hroom'),
              (r'^O\.tail_zero\(', 'htz'), (r'^DL\.HZ\(', 'hz'), (r'^O\.bits_above_zero\(', 'hbz'), (r'^U32\.is_le\(K, \d+\)$', 'hle')]
     for pat, p in rules:
