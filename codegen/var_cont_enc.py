@@ -466,7 +466,7 @@ def fixw_spec_field(g, names, fw, f, fs, sch):
                  prf=f'FWS.scp({sch}, {{==}}, dB_{f}, TB_{f}, {A_}, OKA_pfB_{f}, OKA_hrB_{f}, V_SyncCommittee.SyncCommittee_len(dB_{f}, TB_{f}, {A_}, OKA_pfB_{f}, OKA_hrB_{f}))')
     elif fs.kind == 'box':
         R = fs.p[:-3]
-        nd = SLW.walk(g, names[R], iter(range(1000000)))
+        nd = _xwalk(SLW, g, names[R])
         ren = {x: w for x, w in zip(nd.words, fw.oargs)}
         sub = lambda t: re.sub(r'\bx(\d+)\b', lambda mm: ren[mm.group(0)], t)  # noqa: E731
         fx = lambda t: re.sub(r'(?<![\w.])F\.', 'FX.', t)  # noqa: E731
@@ -1843,6 +1843,18 @@ def child_max(ch):
     return int(mm.group(1)) if mm else None
 
 
+def _xwalk(SLW, g, t):
+    # the walk in its exact forms (F.items_fixed / F.container_fixed, the layout total by VS.agg_total):
+    # the older F.aggregate_fixed / F.cat_fixed steps made the checker evaluate the spec encoders
+    # over the record's words (lvp_BeaconBlockHeader: 26M steps)
+    old = SLW.EXACT, SLW.TOTAL
+    SLW.EXACT, SLW.TOTAL = True, True
+    try:
+        return SLW.walk(g, t, iter(range(1000000)))
+    finally:
+        SLW.EXACT, SLW.TOTAL = old
+
+
 def iface_text(C, generic=False):
     global SRC, SRC_FILE
     import spec_laws as SLW
@@ -1918,7 +1930,7 @@ def iface_text(C, generic=False):
         elif fs.fixed and fs.data:
             lf = leaf_of(fs)
             if lf.p not in lvs:
-                nd = SLW.walk(g, tfs[f], iter(range(1000000)))
+                nd = _xwalk(SLW, g, tfs[f])
                 ren = {x: f'w{j}' for j, x in enumerate(nd.words)}
                 sub = lambda s: re.sub(r'\bx(\d+)\b', lambda mm: ren[mm.group(0)], s)
                 fx = lambda s: re.sub(r'(?<![\w.])F\.', 'FX.', s)
@@ -1938,9 +1950,12 @@ def iface_text(C, generic=False):
 def LV_{lf.p}(o: {lf.ctor}) -> S.Value:
 {bodyn}
 {padn}{fx(nd.val)}
+# its value by its body (LV_{lf.p} of the rebuilt record against the walk's value under Codec.parts evaluated the parts)
+def lvq_{lf.p}({", ".join(f"+{x}: U32" for x in nd.words)}) -> {{{fx(nd.val)} == LV_{lf.p}({fx(nd.obj)}) : S.Value}}: {{==}}
 def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == Some{{[S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}(o)))}}]}} : Maybe<&2, +List<S.Part>>}}:
 {bodyn}
-{padn}CS.pcfix(LV_{lf.p}({fx(nd.obj)}), {fx(nd.sch)}, FX.limbs([{", ".join(nd.words)}]), {B}n, {{==}}, {fx(nd.proof)})
+{padn}%lvq_{lf.p}({", ".join(nd.words)}) : {{Codec.parts(_, {fx(nd.sch)}) == Some{{[S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}({fx(nd.obj)})))}}]}} : Maybe<&2, +List<S.Part>>}}
+{padn}CS.pcfix({fx(nd.val)}, {fx(nd.sch)}, FX.limbs([{", ".join(nd.words)}]), {B}n, {{==}}, {fx(nd.proof)})
 ''')
                 else:
                     w(f'''

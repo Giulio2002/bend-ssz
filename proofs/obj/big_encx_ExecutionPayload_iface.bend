@@ -59,7 +59,7 @@ def lvp_b32(+o: FuluBytes32_d.Bytes32) -> {Codec.parts(LV_b32(o), S.ByteVector{3
   match o:
     case FuluBytes32_d.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %lvq_b32(w0, w1, w2, w3, w4, w5, w6, w7) : {Codec.parts(_, S.ByteVector{32n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(FuluBytes32_d.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7})))}]} : Maybe<&2, +List<S.Part>>}
-      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7], {==}))
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part_n(w0, [w1, w2, w3, w4, w5, w6, w7], 32n, {==}, {==}))
 
 
 # ---- b20: its value, read back from its words, and its parts ----
@@ -72,7 +72,7 @@ def lvp_b20(+o: FuluBytes20_d.Bytes20) -> {Codec.parts(LV_b20(o), S.ByteVector{2
   match o:
     case FuluBytes20_d.Bytes20{+w0, +w1, +w2, +w3, +w4}:
       %lvq_b20(w0, w1, w2, w3, w4) : {Codec.parts(_, S.ByteVector{20n}) == Some{[S.Fixed{VCN.PC(20n, FX.limbs(K.RW_b20(FuluBytes20_d.Bytes20{w0, w1, w2, w3, w4})))}]} : Maybe<&2, +List<S.Part>>}
-      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4])}, S.ByteVector{20n}, FX.limbs([w0, w1, w2, w3, w4]), 20n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4], {==}))
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4])}, S.ByteVector{20n}, FX.limbs([w0, w1, w2, w3, w4]), 20n, {==}, FX.bytes_part_n(w0, [w1, w2, w3, w4], 20n, {==}, {==}))
 
 
 # ---- u64: its value, read back from its words, and its parts ----
