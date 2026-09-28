@@ -2233,3 +2233,23 @@ law encx_spec:
 def encx_spec(m, hok):
   match m:
     case MW{+t, +N}: speck(t, N, 28n, {==}, hok)
+
+def speclB(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL(t, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL(t, N), S.Vector{Spec.Gc465214E502(), 2n}) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +n = U32.to_nat(N)
+  +W = SL(t)
+  +ys = YS(n, W, 0n)
+  +ec = cnt_ys(n, W, 0n)
+  +eN = Equal.cong(U32, Nat, z => U32.to_nat(z), N, 2, F.u32alg__eq_of(N, 2, okl_lim(t, N, h)))
+  +hcount = F.logic__subst(Nat, z => {Nat.is_eq(z, 2n) == True{} : Bool}, 2n, Codec.count(XI(n, W, 0n)), Equal.sym(Nat, Codec.count(XI(n, W, 0n)), 2n, Equal.trans(Nat, Codec.count(XI(n, W, 0n)), n, 2n, count_go(n, W, 0n), eN)), {==})
+  +fit = F.logic__subst(Nat, z => {N.fits(4n, Nat.add(A.quad(z), VE2.LEN(VR.bcat(ys)))) == True{} : Bool}, n, VVL.CNT(ys), Equal.sym(Nat, VVL.CNT(ys), n, ec), VBZ.fitsB(LL(t, N), B, hL, hB))
+  %Equal.sym(Bool, Nat.is_eq(Codec.count(XI(n, W, 0n)), 2n), True{}, hcount) :
+    {Codec.require(Bool.and(Nat.is_lt(0n, 2n), _), Codec.aggregate(Codec.parts(XI(n, W, 0n), S.Repeat{Spec.Gc465214E502()}), None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(XI(n, W, 0n), S.Repeat{Spec.Gc465214E502()}), Some{VVL.VP(ys)}, parts_go(n, W, 0n, okl_e(t, N, h))) :
+    {Codec.require(True{}, Codec.aggregate(_, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(VVL.VP(ys)), Some{VE2.APP(VVL.OFFS(ys, A.quad(VVL.CNT(ys))), VR.bcat(ys))}, VVL.vp_enc(ys, valid_go(n, W, 0n, okl_e(t, N, h)), fit)) :
+    {Codec.require(True{}, Codec.one(_, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Nat, VVL.CNT(ys), n, ec) :
+    {Codec.require(True{}, Codec.one(Some{VE2.APP(VVL.OFFS(ys, A.quad(_)), VR.bcat(ys))}, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  {==}

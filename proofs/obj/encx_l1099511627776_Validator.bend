@@ -720,3 +720,29 @@ def encx_spec_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Valida
   %Equal.sym(+List<U32>, List.append(&2, U32, CHV_l1099511627776_Validator(c, A, 0n), []), CHV_l1099511627776_Validator(c, A, 0n), VS.app_nil(CHV_l1099511627776_Validator(c, A, 0n))) :
     {Codec.one(Some{_}, None{}) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# szx_l1099511627776_Validator with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h32: {Nat.is_lt(LL_l1099511627776_Validator(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  bmulW(N, U32.to_nat(N), 121, 121n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l1099511627776_Validator(A, N), Nat.mul(U32.to_nat(N), 121n), {==}, h32))
+
+def encx_spec_l1099511627776_ValidatorB(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l1099511627776_Validator(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l1099511627776_Validator(A, N), Spec.Schema78()) == Some{[S.Variable{ENCL_l1099511627776_Validator(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +c = U32.to_nat(N)
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l1099511627776_Validator(A, N), List.length(&2, U32, (CHV_l1099511627776_Validator(c, A, 0n))), Equal.sym(Nat, List.length(&2, U32, (CHV_l1099511627776_Validator(c, A, 0n))), LL_l1099511627776_Validator(A, N), len_encl_l1099511627776_Validator(A, N)),
+    VBZ.fitsB(LL_l1099511627776_Validator(A, N), B, hL, hB))
+  %Equal.sym(Nat, Codec.count(ITV_l1099511627776_Validator(c, A, 0n)), c, cntV_l1099511627776_Validator(c, A, 0n)) :
+    {Codec.require(Nat.is_le(_, Nat.mul(U32.to_nat(1073741824), 1024n)), Codec.aggregate(Codec.parts(ITV_l1099511627776_Validator(c, A, 0n), S.Repeat{Spec.Schema58()}), None{})) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, Nat.is_le(c, Nat.mul(U32.to_nat(1073741824), 1024n)), True{}, V40.u32le40(N)) :
+    {Codec.require(_, Codec.aggregate(Codec.parts(ITV_l1099511627776_Validator(c, A, 0n), S.Repeat{Spec.Schema58()}), None{})) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(ITV_l1099511627776_Validator(c, A, 0n), S.Repeat{Spec.Schema58()}), Some{FPV_l1099511627776_Validator(c, A, 0n)}, prtV_l1099511627776_Validator(c, A, 0n)) :
+    {Codec.require(True{}, Codec.aggregate(_, None{})) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
+  +M = Nat.mul(c, 121n)
+  +fit2 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, List.length(&2, U32, CHV_l1099511627776_Validator(c, A, 0n)), Nat.add(M, 0n),
+    Equal.trans(Nat, List.length(&2, U32, CHV_l1099511627776_Validator(c, A, 0n)), M, Nat.add(M, 0n), lenV_l1099511627776_Validator(c, A, 0n), Equal.sym(Nat, Nat.add(M, 0n), M, FD.nat__add_zero(M))), fit)
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(FPV_l1099511627776_Validator(c, A, 0n)), Some{List.append(&2, U32, CHV_l1099511627776_Validator(c, A, 0n), [])},
+      VMV.enc_gen(FPV_l1099511627776_Validator(c, A, 0n), M, CHV_l1099511627776_Validator(c, A, 0n), [], fsV_l1099511627776_Validator(c, A, 0n), fpV_l1099511627776_Validator(c, A, 0n, M), payV_l1099511627776_Validator(c, A, 0n), validV_l1099511627776_Validator(c, A, 0n), fit2)) :
+    {Codec.one(_, None{}) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, CHV_l1099511627776_Validator(c, A, 0n), []), CHV_l1099511627776_Validator(c, A, 0n), VS.app_nil(CHV_l1099511627776_Validator(c, A, 0n))) :
+    {Codec.one(Some{_}, None{}) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
+  {==}

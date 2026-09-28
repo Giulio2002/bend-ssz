@@ -3063,6 +3063,9 @@ def rec_strict(q, t, res):
                 lt = f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == True{{}} : Bool}}, {L_}, Nat.mul({a[2]}, {a[4]}), {{==}}, VRX.yl32({q_}, {r_}, {L_}, hl32))'
             return a[1:7] + [lt]
         t = deep.edit_calls(t, 'bmulW', bm)
+    # the OKW containers' B twins of the lists' spec and size (codegen/okw.py)
+    import okw
+    t = okw.list_btwins(t)
     return t, bad
 
 

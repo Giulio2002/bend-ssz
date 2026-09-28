@@ -218,6 +218,81 @@ def lenE(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.Att
       Equal.trans(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), List.length(&2, U32, VCN.AP(FP, PAY)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), e1, e2), e3),
     LY.lay_end(PSC(m_aggregation_bits, data, signature, committee_bits), 236n))
 
+# ---- OKW: the encoding below 2^31 bytes (the object API's limit: O.padd's poison bit), the children OKW ----
+
+def OKTW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64) -> Bool: Bool.and(EX_bits131072.OK(m_aggregation_bits), Nat.is_lt(ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)))
+
+def okr1W(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {Nat.is_lt(ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)) == True{} : Bool}: and_r(EX_bits131072.OK(m_aggregation_bits), Nat.is_lt(ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)), h)
+
+def ok_hok_aggregation_bitsW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {EX_bits131072.OK(m_aggregation_bits) == True{} : Bool}: and_l(EX_bits131072.OK(m_aggregation_bits), Nat.is_lt(ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)), h)
+
+def ok_bndW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {Nat.is_lt(ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)) == True{} : Bool}: okr1W(m_aggregation_bits, data, signature, committee_bits, h)
+
+def partsCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool})
+    -> {Codec.parts(S.Items{EX_bits131072.VAL(m_aggregation_bits), S.Items{LV_AttestationData(data), S.Items{LV_b96(signature), S.Items{LV_bv64(committee_bits), S.EmptyItems{}}}}}, S.Chain{Spec.Schema38(), S.Chain{Spec.Schema36(), S.Chain{Spec.Schema9(), S.Chain{Spec.Schema39(), S.End{}}}}}) == Some{PSC(m_aggregation_bits, data, signature, committee_bits)} : Maybe<&2, +List<S.Part>>}:
+  VS.cat_var(Codec.parts(EX_bits131072.VAL(m_aggregation_bits), Spec.Schema38()), EX_bits131072.ENC(m_aggregation_bits), Codec.parts(S.Items{LV_AttestationData(data), S.Items{LV_b96(signature), S.Items{LV_bv64(committee_bits), S.EmptyItems{}}}}, S.Chain{Spec.Schema36(), S.Chain{Spec.Schema9(), S.Chain{Spec.Schema39(), S.End{}}}}), [S.Fixed{VCN.PC(128n, FX.limbs(K.RW_AttestationData(data)))}, S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}, S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}],
+    EX_bits131072.encx_spec(m_aggregation_bits, ok_hok_aggregation_bitsW(m_aggregation_bits, data, signature, committee_bits, h)), FX.cat_fixed(Codec.parts(LV_AttestationData(data), Spec.Schema36()), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), Codec.parts(S.Items{LV_b96(signature), S.Items{LV_bv64(committee_bits), S.EmptyItems{}}}, S.Chain{Spec.Schema9(), S.Chain{Spec.Schema39(), S.End{}}}), [S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}, S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}],
+    lvp_AttestationData(data), FX.cat_fixed(Codec.parts(LV_b96(signature), Spec.Schema9()), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), Codec.parts(S.Items{LV_bv64(committee_bits), S.EmptyItems{}}, S.Chain{Spec.Schema39(), S.End{}}), [S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}],
+    lvp_b96(signature), FX.cat_fixed(Codec.parts(LV_bv64(committee_bits), Spec.Schema39()), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits))), Codec.parts(S.EmptyItems{}, S.End{}), [],
+    lvp_bv64(committee_bits), {==}))))
+
+def validCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {Layout.bytes_valid(PSC(m_aggregation_bits, data, signature, committee_bits)) == True{} : Bool}:
+  FD.logic__and_intro(SP.bytes_domain(EX_bits131072.ENC(m_aggregation_bits)), Layout.bytes_valid([S.Fixed{VCN.PC(128n, FX.limbs(K.RW_AttestationData(data)))}, S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}, S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}]), CS.domv(EX_bits131072.VAL(m_aggregation_bits), Spec.Schema38(), EX_bits131072.ENC(m_aggregation_bits), {==}, EX_bits131072.encx_spec(m_aggregation_bits, ok_hok_aggregation_bitsW(m_aggregation_bits, data, signature, committee_bits, h))),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(128n, FX.limbs(K.RW_AttestationData(data)))), Layout.bytes_valid([S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}, S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}]), CS.domf(LV_AttestationData(data), S.Container{["slot", "index", "beacon_block_root", "source", "target"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.End{}}}}}}}, VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), {==}, lvp_AttestationData(data)),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(96n, FX.limbs(K.RW_b96(signature)))), Layout.bytes_valid([S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))}]), CS.domf(LV_b96(signature), S.ByteVector{96n}, VCN.PC(96n, FX.limbs(K.RW_b96(signature))), {==}, lvp_b96(signature)),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))), Layout.bytes_valid([]), CS.domf(LV_bv64(committee_bits), S.BitVector{64n}, VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits))), {==}, lvp_bv64(committee_bits)),
+    {==}))))
+
+def okoCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> LY.OKO(PSC(m_aggregation_bits, data, signature, committee_bits), 236n, OSC(m_aggregation_bits, data, signature, committee_bits)):
+  ({==}, Unit{})
+
+def szCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {U32.to_nat(K.SZC(m_aggregation_bits, data, signature, committee_bits)) == ENDC(m_aggregation_bits, data, signature, committee_bits) : Nat}:
+  FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(m_aggregation_bits, data, signature, committee_bits) : Nat}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)), K.SZC(m_aggregation_bits, data, signature, committee_bits), Equal.sym(U32, K.SZC(m_aggregation_bits, data, signature, committee_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits)), eSZ(m_aggregation_bits, data, signature, committee_bits, Unit{})),
+    CS.pstepB(236, EX_bits131072.SZ(m_aggregation_bits), 236n, LY.LN(EX_bits131072.ENC(m_aggregation_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), ok_bndW(m_aggregation_bits, data, signature, committee_bits, h), {==}, EX_bits131072.szx(m_aggregation_bits, ok_hok_aggregation_bitsW(m_aggregation_bits, data, signature, committee_bits, h)), FD.nat__le_refl(ENDC(m_aggregation_bits, data, signature, committee_bits))))
+
+def cellsCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {K.ENCC(m_aggregation_bits, data, signature, committee_bits) == VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))) : +List<U32>}:
+  %Equal.sym(+List<U32>, K.ENCC(m_aggregation_bits, data, signature, committee_bits), VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits))), VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))]), eENC(m_aggregation_bits, data, signature, committee_bits, Unit{})) :
+    {_ == VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))) : +List<U32>}
+  %Equal.sym(+List<U32>, VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits))), VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))]), VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), VCN.CAT([VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))])), VCN.cat_lap([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))], [VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))])) :
+    {_ == VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))) : +List<U32>}
+  %Equal.sym(+List<U32>, VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits), VCN.pc_id(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits), {==})) :
+    {VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), VCN.CAT([_])) == VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))) : +List<U32>}
+  {==}
+
+def encEW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool})
+    -> {Layout.encoding(PSC(m_aggregation_bits, data, signature, committee_bits)) == Some{K.ENCC(m_aggregation_bits, data, signature, committee_bits)} : Maybe<&2, +List<U32>>}:
+  +FP = LY.HDRW(PSC(m_aggregation_bits, data, signature, committee_bits), OSC(m_aggregation_bits, data, signature, committee_bits))
+  +PAY = Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))
+  +hf = LY.hdr_fp(PSC(m_aggregation_bits, data, signature, committee_bits), 236n, OSC(m_aggregation_bits, data, signature, committee_bits), okoCW(m_aggregation_bits, data, signature, committee_bits, h))
+  +fit = CS.fitcB(236n, PAY, ENDC(m_aggregation_bits, data, signature, committee_bits), ENDC(m_aggregation_bits, data, signature, committee_bits), ok_bndW(m_aggregation_bits, data, signature, committee_bits, h), LY.lay_end(PSC(m_aggregation_bits, data, signature, committee_bits), 236n), FD.nat__le_refl(ENDC(m_aggregation_bits, data, signature, committee_bits)))
+  +e1 = LY.enc_genL(PSC(m_aggregation_bits, data, signature, committee_bits), 236n, FP, PAY, {==}, hf, {==}, validCW(m_aggregation_bits, data, signature, committee_bits, h), fit)
+  FD.logic__subst(+List<U32>, z => {Layout.encoding(PSC(m_aggregation_bits, data, signature, committee_bits)) == Some{z} : Maybe<&2, +List<U32>>}, VCN.AP(FP, PAY), K.ENCC(m_aggregation_bits, data, signature, committee_bits),
+    Equal.sym(+List<U32>, K.ENCC(m_aggregation_bits, data, signature, committee_bits), VCN.AP(FP, PAY), cellsCW(m_aggregation_bits, data, signature, committee_bits, h)), e1)
+
+def specCW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool})
+    -> {Codec.parts(VALC(m_aggregation_bits, data, signature, committee_bits), Spec.Attestation()) == Some{[S.Variable{K.ENCC(m_aggregation_bits, data, signature, committee_bits)}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{EX_bits131072.VAL(m_aggregation_bits), S.Items{LV_AttestationData(data), S.Items{LV_b96(signature), S.Items{LV_bv64(committee_bits), S.EmptyItems{}}}}}, S.Chain{Spec.Schema38(), S.Chain{Spec.Schema36(), S.Chain{Spec.Schema9(), S.Chain{Spec.Schema39(), S.End{}}}}}), Some{PSC(m_aggregation_bits, data, signature, committee_bits)}, partsCW(m_aggregation_bits, data, signature, committee_bits, h)) :
+    {Codec.aggregate(_, None{}) == Some{[S.Variable{K.ENCC(m_aggregation_bits, data, signature, committee_bits)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(PSC(m_aggregation_bits, data, signature, committee_bits)), Some{K.ENCC(m_aggregation_bits, data, signature, committee_bits)}, encEW(m_aggregation_bits, data, signature, committee_bits, h)) :
+    {Codec.one(_, None{}) == Some{[S.Variable{K.ENCC(m_aggregation_bits, data, signature, committee_bits)}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+def lenEW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)) == ENDC(m_aggregation_bits, data, signature, committee_bits) : Nat}:
+  +PAY = Layout.payloads(PSC(m_aggregation_bits, data, signature, committee_bits))
+  +FP = LY.HDRW(PSC(m_aggregation_bits, data, signature, committee_bits), OSC(m_aggregation_bits, data, signature, committee_bits))
+  +e1 = Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), K.ENCC(m_aggregation_bits, data, signature, committee_bits), VCN.AP(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), PAY), cellsCW(m_aggregation_bits, data, signature, committee_bits, h))
+  +e2 = VS.len_app(VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(K.RW_AttestationData(data))), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(8n, FX.limbs(K.RW_bv64(committee_bits)))]), PAY)
+  +e3 = Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, PAY)), List.length(&2, U32, FP), 236n,
+    Equal.trans(Nat, List.length(&2, U32, FP), List.length(&2, U32, Layout.fixed_parts(PSC(m_aggregation_bits, data, signature, committee_bits), 236n)), 236n,
+      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), FP, Layout.fixed_parts(PSC(m_aggregation_bits, data, signature, committee_bits), 236n), Equal.sym(+List<U32>, Layout.fixed_parts(PSC(m_aggregation_bits, data, signature, committee_bits), 236n), FP, LY.hdr_fp(PSC(m_aggregation_bits, data, signature, committee_bits), 236n, OSC(m_aggregation_bits, data, signature, committee_bits), okoCW(m_aggregation_bits, data, signature, committee_bits, h)))),
+      LY.lay_len(PSC(m_aggregation_bits, data, signature, committee_bits), 236n)))
+  Equal.trans(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Nat.add(236n, List.length(&2, U32, PAY)), ENDC(m_aggregation_bits, data, signature, committee_bits),
+    Equal.trans(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), Nat.add(236n, List.length(&2, U32, PAY)),
+      Equal.trans(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), List.length(&2, U32, VCN.AP(FP, PAY)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), e1, e2), e3),
+    LY.lay_end(PSC(m_aggregation_bits, data, signature, committee_bits), 236n))
+
+
+
 # ==== Attestation in the encoder-window interface ====
 
 type MW is Data:
@@ -229,6 +304,9 @@ def TH(m: MW) -> FuluAttestation_d.Attestation:
 def OK(m: MW) -> Bool:
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: OKT(m_aggregation_bits, data, signature, committee_bits)
+def OKW(m: MW) -> Bool:
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: OKTW(m_aggregation_bits, data, signature, committee_bits)
 def ENC(m: MW) -> +List<U32>:
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: K.ENCC(m_aggregation_bits, data, signature, committee_bits)
@@ -270,6 +348,28 @@ def goW(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.Atte
     LLv, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el), by)
   (rt2, by2)
 
+def goO(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits))))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)))), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits))))) : +List<U32>})
+    -> DK.P2(RTX(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), BYX(m_aggregation_bits, data, signature, committee_bits, dd, D, q, r)):
+  +hs31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, ENDC(m_aggregation_bits, data, signature, committee_bits), List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), lenEW(m_aggregation_bits, data, signature, committee_bits, h)), ok_bndW(m_aggregation_bits, data, signature, committee_bits, h))
+  +LLv = K.LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r)
+  +el = lenC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r)
+  +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el, hl)
+  +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el, hz)
+  +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
+  +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
+  +g = K.putxW(m_aggregation_bits, data, signature, committee_bits, ok_hok_aggregation_bitsW(m_aggregation_bits, data, signature, committee_bits, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el, hl32), pf, hz2)
+  +rt = K.putk_bridge(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r, PA(K.RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), K.SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r))), g))
+  +g2 = PB(K.RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), K.SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r))), g)
+  +by = PA(K.BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r), K.SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r)), g2)
+  +rt2 = FD.logic__subst(U32, z => {FuluAttestation_e.Attestation_putk(FD.array__thaw(U32, D), z, K.OBJC(m_aggregation_bits, data, signature, committee_bits)) == (FD.array__thaw(U32, K.PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r)), (K.OBJC(m_aggregation_bits, data, signature, committee_bits), K.SZC(m_aggregation_bits, data, signature, committee_bits))) : Array<U32> & (FuluAttestation_d.Attestation & U32)},
+    XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
+  +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_aggregation_bits, data, signature, committee_bits), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
+    LLv, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), LLv, el), by)
+  (rt2, by2)
+
 def go(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OKT(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits))))), VB.pw(dd)) == True{} : Bool},
@@ -299,6 +399,26 @@ law putxW:
 def putxW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: PA(RTX(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), BYX(m_aggregation_bits, data, signature, committee_bits, dd, D, q, r), goW(m_aggregation_bits, data, signature, committee_bits, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
+
+law putxO:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OKW(m) == True{} : Bool}
+  {FuluAttestation_e.Attestation_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluAttestation_d.Attestation & U32)}
+def putxO(m, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz, hok):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: PA(RTX(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), BYX(m_aggregation_bits, data, signature, committee_bits, dd, D, q, r), goO(m_aggregation_bits, data, signature, committee_bits, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz))
 
 law putx:
   for +m: MW
@@ -339,6 +459,26 @@ def putx_bytesW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: PB(RTX(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), BYX(m_aggregation_bits, data, signature, committee_bits, dd, D, q, r), goW(m_aggregation_bits, data, signature, committee_bits, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
+law putx_bytesO:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OKW(m) == True{} : Bool}
+  {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
+def putx_bytesO(m, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz, hok):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: PB(RTX(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), BYX(m_aggregation_bits, data, signature, committee_bits, dd, D, q, r), goO(m_aggregation_bits, data, signature, committee_bits, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz))
+
 law putx_bytes:
   for +m: MW
   for +dd: Nat
@@ -365,6 +505,14 @@ def szx(m, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: Equal.trans(Nat, U32.to_nat(K.SZC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), szC(m_aggregation_bits, data, signature, committee_bits, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), lenE(m_aggregation_bits, data, signature, committee_bits, hok)))
 
+law szxO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {U32.to_nat(SZ(m)) == List.length(&2, U32, ENC(m)) : Nat}
+def szxO(m, hok):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: Equal.trans(Nat, U32.to_nat(K.SZC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), szCW(m_aggregation_bits, data, signature, committee_bits, hok), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), lenEW(m_aggregation_bits, data, signature, committee_bits, hok)))
+
 # The bytes within 4 2^k (k = 28, kept symbolic).
 law bndx:
   for +m: MW
@@ -384,6 +532,14 @@ def encx_spec(m, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: specC(m_aggregation_bits, data, signature, committee_bits, hok, 28n, {==})
 
+law encx_specO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {Codec.parts(VAL(m), Spec.Attestation()) == Some{[S.Variable{ENC(m)}]} : Maybe<&2, +List<S.Part>>}
+def encx_specO(m, hok):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: specCW(m_aggregation_bits, data, signature, committee_bits, hok)
+
 law domx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
@@ -391,6 +547,14 @@ law domx:
 def domx(m, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: CS.domv(VALC(m_aggregation_bits, data, signature, committee_bits), Spec.Attestation(), K.ENCC(m_aggregation_bits, data, signature, committee_bits), {==}, specC(m_aggregation_bits, data, signature, committee_bits, hok, 28n, {==}))
+
+law domxO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {SP.bytes_domain(ENC(m)) == True{} : Bool}
+def domxO(m, hok):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: CS.domv(VALC(m_aggregation_bits, data, signature, committee_bits), Spec.Attestation(), K.ENCC(m_aggregation_bits, data, signature, committee_bits), {==}, specCW(m_aggregation_bits, data, signature, committee_bits, hok))
 
 law pfx:
   for +m: MW

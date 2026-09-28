@@ -1127,3 +1127,15 @@ def encx_spec_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l
   +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l16_Deposit(t, N), List.length(&2, U32, ENCL_l16_Deposit(t, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l16_Deposit(t, N)), LL_l16_Deposit(t, N), len_encl_l16_Deposit(t, N)),
     VBZ.fitq(dx, LL_l16_Deposit(t, N), hL, hdx))
   lpartE(U32.to_nat(N), SL(t), okl_e(t, N, h), hlim, fit)
+
+# szx_l16_Deposit with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h32: {Nat.is_lt(LL_l16_Deposit(t, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 1240)) == LL_l16_Deposit(t, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 1240, 310n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_Deposit(t, N), A.quad(Nat.mul(U32.to_nat(N), 310n)), {==}, h32))
+
+def encx_spec_l16_DepositB(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l16_Deposit(t, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l16_Deposit(t, N), Spec.Schema100()) == Some{[S.Variable{ENCL_l16_Deposit(t, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16), okl_lim(t, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l16_Deposit(t, N), List.length(&2, U32, ENCL_l16_Deposit(t, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l16_Deposit(t, N)), LL_l16_Deposit(t, N), len_encl_l16_Deposit(t, N)),
+    VBZ.fitsB(LL_l16_Deposit(t, N), B, hL, hB))
+  lpartE(U32.to_nat(N), SL(t), okl_e(t, N, h), hlim, fit)

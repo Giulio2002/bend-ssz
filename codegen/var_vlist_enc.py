@@ -590,7 +590,7 @@ def main():
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29); the list writer's own W: vvle_list.bend.in
-    out = deep.dify_out(out, strict='--loose' not in sys.argv, skip={'q30', 'qk'}, post=deep.chain_posts(deep.hl32_pass(needed_only=True, derive={'hlx': 'hlx32'}), deep.hs31_pass(derive={'hlx': 'hlx31'})))
+    out = deep.dify_out(out, strict='--loose' not in sys.argv, skip={'q30', 'qk'}, post=deep.chain_posts(deep.hl32_pass(needed_only=True, derive={'hlx': 'hlx32'}), deep.hs31_pass(derive={'hlx': 'hlx31'}), lambda q, t, res: (__import__('okw').list_btwins(t), [])))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

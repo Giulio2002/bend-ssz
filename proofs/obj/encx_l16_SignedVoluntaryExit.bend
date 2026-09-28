@@ -566,3 +566,14 @@ def encx_spec_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit
     VBZ.fitq(dx, LL_l16_SignedVoluntaryExit(A, N), hL, hdx))
   lpart_l16_SignedVoluntaryExit(U32.to_nat(N), A, hlim, fit)
 
+# szx_l16_SignedVoluntaryExit with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h32: {Nat.is_lt(LL_l16_SignedVoluntaryExit(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 112)) == LL_l16_SignedVoluntaryExit(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 112, 28n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_SignedVoluntaryExit(A, N), A.quad(Nat.mul(U32.to_nat(N), 28n)), {==}, h32))
+
+def encx_spec_l16_SignedVoluntaryExitB(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l16_SignedVoluntaryExit(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l16_SignedVoluntaryExit(A, N), S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, U32.to_nat(16)}) == Some{[S.Variable{ENCL_l16_SignedVoluntaryExit(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16), okl_lim_l16_SignedVoluntaryExit(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l16_SignedVoluntaryExit(A, N), List.length(&2, U32, ENCL_l16_SignedVoluntaryExit(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l16_SignedVoluntaryExit(A, N)), LL_l16_SignedVoluntaryExit(A, N), len_encl_l16_SignedVoluntaryExit(A, N)),
+    VBZ.fitsB(LL_l16_SignedVoluntaryExit(A, N), B, hL, hB))
+  lpart_l16_SignedVoluntaryExit(U32.to_nat(N), A, hlim, fit)
