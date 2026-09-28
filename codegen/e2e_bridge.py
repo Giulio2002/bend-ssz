@@ -2364,7 +2364,11 @@ def vdec_info(R):
             'bf': imp.get(mbf.group(1)) if mbf else None,
             'obj': imp.get(mob.group(1)) if mob else None,
             'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
-            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
+            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s)),
+            # laws at the object API's limit: n <= NMAX is a premise of their own (hN, an hwN window)
+            'hN': bool(re.search(r'\+hN: \{U32\.is_le\(n, \w+\.NMAX\(\)\) == True', sig)),
+            # the rejection law's premise on the progressive bit lists (hPB: every pbits field <= 2^29 bytes)
+            'pbq': bool(re.search(r'\+hPB: \{\w+\.PBQ\(t, n\) == True', mods['decode_reject'][1]))}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2435,6 +2439,17 @@ def text_vdec(R, X, info):
                 .replace('C.cap_q(n, @K@, {==}, hS)', 'C.capM_q(n, hS)').replace('C.cap_32(n, @K@, {==}, hS)', 'C.capM_32(n, hS)')
                 .replace('C.cap_w(bs, n, @K@, hn, {==}, hS)', 'C.capM_w(bs, n, hn, hS)'))
         assert '@K@' not in body, 'NMAX mode: a K-bound left in the template'
+        if info.get('hN'):
+            # the laws' own premise n <= NMAX is hS
+            n0 = body.count('C.capM_q(n, hS), hchk)')
+            body = body.replace('C.capM_q(n, hS), hchk)', 'C.capM_q(n, hS), hS, hchk)')
+            assert n0 == 4, n0
+        if info.get('pbq'):
+            # the rejection law's premise on the progressive bit lists, a premise of (ii) and (iii) on the input
+            ra = [a for p_, a in alias.items() if p_ == info['rej']][0]
+            body = re.sub(r'(\.decode_reject\(B\.capacity\(n\), TT\(bs, n\), n, .*), hchk\)$', lambda m: m.group(1) + ', hchk, hPB)', body, flags=re.M)
+            import deep
+            body = deep.thread(body, '{U32.is_le(n, VB.NMAX()) == True{} : Bool}', '{' + ra + '.PBQ(TT(bs, n), n) == True{} : Bool}', hw='hS', hw32='hPB')
     body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
             .replace('@K@', f'{K}n').replace('@BD@', f'{info["bound"]}n'))
     imps = VDEC_HEAD + vw['imports'] + [f'import ../proofs/obj/{p} as {a}' for p, a in alias.items()]
@@ -3152,7 +3167,10 @@ def outputs():
         fn = f'{R0}_e2e_dec_generated.bend'
         out[OUT / fn] = text_vdec(R0, X0, info)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
-                             'premise': ('any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)' if vdec_nmax(info) else
+                             'premise': (('any input the object API accepts whose progressive-bitlist fields are <= 2^29 bytes '
+                                          '(hS: n <= VB.NMAX() = 2^32 - 32; hPB: PBQ, every pbits field [O, E) inside the input has E - O <= 2^29)')
+                                         if vdec_nmax(info) and info.get('pbq') else
+                                         'any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)' if vdec_nmax(info) else
                                          f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})')}]
         u['decode'] = fn
     for R0, u in sorted(uncovered.items()):

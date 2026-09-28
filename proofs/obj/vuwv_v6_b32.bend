@@ -74,13 +74,13 @@ def WP48_v6_b32(+TB: FD.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB
 
 # T.v6_b32_putk at a word-aligned position 4 P: its validity check, then its unrolled copy of the
 # storage's first 48 words, the run VF.updv.
-def gwput_v6_b32(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def gwput_v6_b32W(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: FD.array__Tree<U32>,
     +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
     +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool})
     -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(FD.array__thaw(U32, D), pos, O.Words{FD.array__thaw(U32, TB), 192}) == (FD.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}:
-  +hd32 = VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}))
+  +hd32 = VB.lt32(dd, hdd)
   +hB32 = VB.lt32(dB, hdB)
   %Equal.sym(O.Words & Bool, FuluCurrentSyncCommitteeBranch_e.v6_b32_valid(O.Words{FD.array__thaw(U32, TB), 192}), (O.Words{FD.array__thaw(U32, TB), 192}, True{}),
       VBE.words_ok_b(dB, TB, 192, 192, 192, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})) :
@@ -377,6 +377,14 @@ def gwput_v6_b32(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32
     {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(FuluCurrentSyncCommitteeBranch_e.v6_b32_pal(192, (_, FD.array__thaw(U32, TB)))) == (FD.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 
+def gwput_v6_b32(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: FD.array__Tree<U32>,
+    +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
+    +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool})
+    -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(FD.array__thaw(U32, D), pos, O.Words{FD.array__thaw(U32, TB), 192}) == (FD.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}:
+  gwput_v6_b32W(dd, D, pos, P, e, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, dB, TB, pfB, hdB, hrB)
+
 def wl_v6_b32(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool})
     -> {WL_v6_b32(TB) == VS.wtake(48n, UW.SLW(TB)) : List<&2, U32>}:
   Equal.sym(List<&2, U32>, VS.wtake(48n, UW.SLW(TB)), WL_v6_b32(TB),
@@ -407,8 +415,8 @@ def v6_b32x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD
     case 4n+ +t: pf
 
 # T.v6_b32_putk at any byte position X = 4 q + r (its validity check, then its copy).
-def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool},
+def v6_b32_anyW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
@@ -416,7 +424,7 @@ def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB
   match r:
     case 0n:
       %wl_v6_b32(dB, TB, pfB, hrB) : {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}) == (FD.array__thaw(U32, VF.updv(_, dd, D, q)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
-      gwput_v6_b32(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
+      gwput_v6_b32W(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
         FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 48n), Nat.add(48n, q), FD.nat__add_comm(q, 48n), hl), dB, TB, pfB, hdB, hrB)
     case 1n:
       +e3 = UW.ua_3(X, q, 1n, 1, {==}, e, {==})
@@ -424,7 +432,7 @@ def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PX_v6_b32(1n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(U32, U32.and(X, 3), 1, e3) : {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(FuluCurrentSyncCommitteeBranch_e.v6_b32_pw(U32.is_eq(_, 0), FD.array__thaw(U32, D), X, FD.array__thaw(U32, TB), 192)) == (FD.array__thaw(U32, PX_v6_b32(1n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}), (FD.array__thaw(U32, UWD.PWM(1n, dd, D, q, TB, 192)), O.Words{FD.array__thaw(U32, TB), 192}),
-          UWD.putw_loose(dd, D, X, q, 1n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
+          UWD.putw_looseW(dd, D, X, q, 1n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(_) == (FD.array__thaw(U32, PX_v6_b32(1n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       {==}
     case 2n:
@@ -433,7 +441,7 @@ def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PX_v6_b32(2n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(U32, U32.and(X, 3), 2, e3) : {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(FuluCurrentSyncCommitteeBranch_e.v6_b32_pw(U32.is_eq(_, 0), FD.array__thaw(U32, D), X, FD.array__thaw(U32, TB), 192)) == (FD.array__thaw(U32, PX_v6_b32(2n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}), (FD.array__thaw(U32, UWD.PWM(2n, dd, D, q, TB, 192)), O.Words{FD.array__thaw(U32, TB), 192}),
-          UWD.putw_loose(dd, D, X, q, 2n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
+          UWD.putw_looseW(dd, D, X, q, 2n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(_) == (FD.array__thaw(U32, PX_v6_b32(2n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       {==}
     case 3n:
@@ -442,14 +450,22 @@ def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PX_v6_b32(3n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(U32, U32.and(X, 3), 3, e3) : {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(FuluCurrentSyncCommitteeBranch_e.v6_b32_pw(U32.is_eq(_, 0), FD.array__thaw(U32, D), X, FD.array__thaw(U32, TB), 192)) == (FD.array__thaw(U32, PX_v6_b32(3n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}), (FD.array__thaw(U32, UWD.PWM(3n, dd, D, q, TB, 192)), O.Words{FD.array__thaw(U32, TB), 192}),
-          UWD.putw_loose(dd, D, X, q, 3n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
+          UWD.putw_looseW(dd, D, X, q, 3n, dB, TB, 192, 8n, e, {==}, hd, hdB, {==}, {==}, hrB, UWD.le_q(q, 48n, VB.pw(dd), hl), pf, pfB, hz)) :
         {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(_) == (FD.array__thaw(U32, PX_v6_b32(3n, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
       {==}
     case 4n+ +t: Empty.absurd({FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}) == (FD.array__thaw(U32, PX_v6_b32(4n+t, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}, FD.nat__lt_zero_absurd(t, hr))
 
-# Its bytes: the 192 bytes of TB's first 48 words at X, when the bytes there were zero.
-def v6_b32_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+def v6_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool},
+    +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
+    -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 192}) == (FD.array__thaw(U32, PX_v6_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}:
+  v6_b32_anyW(dd, D, X, q, r, dB, TB, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, pfB, hdB, hrB, hz)
+
+# Its bytes: the 192 bytes of TB's first 48 words at X, when the bytes there were zero.
+def v6_b32_any_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
@@ -479,3 +495,11 @@ def v6_b32_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Na
           FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(48n, q), Nat.add(q, 48n), FD.nat__add_comm(48n, q), UWD.le_q(q, 48n, VB.pw(dd), hl))),
         FD.logic__subst(Nat, z => {VS.bt(A.quad(z), VS.bdr(Nat.add(A.quad(q), 3n), UA.BYT(D))) == UW.ZB(A.quad(z)) : +List<U32>}, 48n, List.length(&2, U32, VS.wtake(48n, UW.SLW(TB))), Equal.sym(Nat, List.length(&2, U32, VS.wtake(48n, UW.SLW(TB))), 48n, eL), hz))
     case 4n+ +t: Empty.absurd({UA.BYT(PX_v6_b32(4n+t, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs(VS.wtake(48n, UW.SLW(TB)))) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+
+def v6_b32_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool},
+    +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
+    -> {UA.BYT(PX_v6_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(48n, UW.SLW(TB)))) : +List<U32>}:
+  v6_b32_any_bytesW(dd, D, X, q, r, dB, TB, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, pfB, hdB, hrB, hz)

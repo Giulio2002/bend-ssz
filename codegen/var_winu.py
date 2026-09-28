@@ -331,6 +331,14 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
     return '\n'.join(head) + '\n'.join(w) + '\n'
 
 
+def fixw_deep(text):
+    """The one-uint8 window at any depth d < 31 (hw32, var_win.deep_x): its byte read by the vfx module's rdxD."""
+    assert text.count('FX.rdx(') == 1
+    text = text.replace('FX.rdx(', 'FX.rdxD(')
+    import var_winx_c as WXC
+    return W.deep_x(WXC._body_newline(text, W.XIFACE))
+
+
 def fixw_text(X):
     """A progressive container of one uint8 (X) at a window of any byte offset: its checks
     (len = 1), reader, value and FIXED spec part (one byte), for the unions' arms."""
@@ -483,7 +491,7 @@ def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U3
 
 
 def outputs(no_big=False):
-    out = {ROOT / 'proofs/obj/var_winx_GpF350A3C486.bend': fixw_text('GpF350A3C486')}
+    out = {ROOT / 'proofs/obj/var_winx_GpF350A3C486.bend': fixw_deep(fixw_text('GpF350A3C486'))}
     for U in UNIONS:
         wm = f'var_winx_{U}.bend'
         out[ROOT / 'proofs/obj' / wm] = module_text(U)
