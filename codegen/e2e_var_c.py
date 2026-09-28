@@ -1521,7 +1521,7 @@ def _cp_shape(kd, T, k):
     W = lambda t, n: f'O.Words{{FD.array__thaw(U32, {t}), {n}}}'  # noqa: E731
     if kd == 'u':
         return [(f'x{k}', 'U32')], f'x{k}'
-    if kd == 'l':
+    if kd in ('l', 'w'):
         return [(f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')], W(f't{k}', f'N{k}')
     if kd == 'b':
         return [(f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')], f'O.Bits{{FD.array__thaw(U32, t{k}), N{k}}}'
@@ -1554,7 +1554,8 @@ def vroot_complex(R, X):
     fs = c['fields']
     n = len(fs)
     PJ = lambda k: f'RT.pj_{X}_{k}(o)'  # noqa: E731
-    SK = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.Container_fields(Spec.{X}())' + ')' * k + ')'  # noqa: E731
+    FLD = 'ProgressiveContainer_fields' if c.get('pc') else 'Container_fields'
+    SK = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.{FLD}(Spec.{X}())' + ')' * k + ')'  # noqa: E731
     shp = [_cp_shape(kd, T, k) for k, (kd, T) in enumerate(fs)]
     OL = f'{D}{{{", ".join(lit for _, lit in shp)}}}'
     allv = [v for vs, _ in shp for v in vs]
@@ -1623,6 +1624,18 @@ def cpv(-v: {V}, +s: S.Schema, +rep: RT.rep_Gc465214E502(v, s)) -> {_ex(vsig, f'
   cpv2(v, x0, x2, ev, cpw({P1}, wf))
 """)
     for k, (kd, T) in enumerate(fs):
+        if kd == 'q':
+            rp, el, arr = CPA[T]
+            asig = [('t', f'FD.array__Tree<{el}>'), ('N', 'U32')]
+            AL = f'{T}{{{arr.format(t="t")}, N}}'
+            L.append(f"""# field {k}, a progressive list: its tree and length
+def cpa{k}(-v: {T}, +s: S.Schema, +rep: RT.{rp}(v, s)) -> {_ex(asig, f'{{v == {AL} : {T}}}')}:
+  (+t, +e1) = rep
+  (+dw, +e2) = e1
+  (+N, +e3) = e2
+  (+eq, +e4) = e3
+  (t, (N, eq))
+""")
         if kd == 'a':
             rp, el, arr = CPA[T]
             asig = [('t', f'FD.array__Tree<{el}>'), ('N', 'U32')]
@@ -1690,6 +1703,8 @@ def g1(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {uparams + ', ' if up
         kd = fs[k][0]
         if kd == 'l':
             args.append(f'cpw({PJ(k)}, wf{k})')
+        elif kd == 'w':
+            args.append(f'cpw({PJ(k)}, {pn[k]})')
         elif kd == 'b':
             args.append(f'cpb({PJ(k)}, {pn[k]})')
         elif kd == 'c':
@@ -3107,19 +3122,16 @@ def pobj(+n: U32, {CP}, +hN: {{Nat.is_le(C.nwn(U32.to_nat(n)), FD.spec_common__p
     case U32{{WCon{{False{{}}, WCon{{True{{}}, +r}}}}}}: pc2(r, dz, M, NB, m, h, pf, hdz, hh, eNB, hN, e1)
     case U32{{WCon{{True{{}}, WCon{{True{{}}, +r}}}}}}: pc3(r, dz, M, NB, m, h, pf, hdz, hh, eNB, hN, e1)
 
-# ---- the view ----
-def pbv({WP}, +hchk: {{PBW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{BO.bview(PBW.OBJw(d, t, x, off, len)) == VBL.bl(UW.WX(t, x, U32.to_nat(len))) : +List<Bool>}}:
-  +e1 = PBW.cE(t, x, off, len, hchk)
-  +m = PBW.M1(len)
-  +h1 = PBW.c1(t, x, off, len, hchk)
-  +nz = PBW.cB(t, off, len, h1)
-  +h29 = FD.logic__subst(Bool, z => {{O.bsel(z, False{{}}, O.bsel(True{{}}, U32.is_lt(U32.sub(len, 1), 536870912), Nat.is_le(PBW.BD(t, off, len), U32.to_nat(0)))) == True{{}} : Bool}},
-    U32.is_eq(PBW.V(t, off, len), 0), False{{}}, nz, h1)
+# ---- the view, at any copy of the window's bytes: M a perfect tree of depth DZ(len) whose first len bytes
+# are the window's (ewl), the window's length (hlv) and last byte (lw) ----
+def pbc(+t: {TR}, +x: Nat, +off: U32, +len: U32, +M: {TR}, +pfM: {{FD.array__perfect(U32, VLS.DZ(len), M) == True{{}} : Bool}}, +m: Nat,
+    +e1: {{U32.to_nat(len) == 1n+m : Nat}}, +h29: {{U32.is_lt(U32.sub(len, 1), 536870912) == True{{}} : Bool}},
+    +ewl: {{VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}},
+    +hlv: {{List.length(&2, U32, UW.WX(t, x, 1n+m)) == 1n+m : Nat}}, +lw: {{VBL.lastb(UW.WX(t, x, 1n+m)) == PBW.V(t, off, len) : U32}})
+    -> {{BK.btk(U32.to_nat(PBW.NB(t, off, len)), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), PBW.NB(t, off, len)))))) == VBL.bl(UW.WX(t, x, U32.to_nat(len))) : +List<Bool>}}:
   +V = PBW.V(t, off, len)
   +h = VY.hb(V)
   +dz = VLS.DZ(len)
-  +M = {M}
-  +pfM = ctp(VR.RX(off), d, t, off, len, dz)
   +hdz = FD.nat__le_lt_trans(dz, 29n, 32n, VP.hdzP(len, m, e1, h29), {{==}})
   +eNB = nb(t, off, len, m, e1, h29)
   +hL = VP.le29(len, m, e1, h29)
@@ -3128,23 +3140,34 @@ def pbv({WP}, +hchk: {{PBW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{BO.bv
     Equal.trans(Nat, Nat.add(VC.NW(len), 0n), VC.NW(len), C.nwn(U32.to_nat(len)), FD.nat__add_zero(VC.NW(len)), hNW), VP.hrgP(len, m, e1, h29))
   +A1 = pobj(len, dz, M, PBW.NB(t, off, len), m, h, pfM, hdz, BV.hb7(V), eNB, hN, e1)
   +W1 = UW.WX(t, x, 1n+m)
-  +hw1 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(len), 1n+m, e1, hw)
-  +ewl = Equal.trans(+List<U32>, VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), WO.wview(O.Words{{FD.array__thaw(U32, M), len}}), UW.WX(t, x, U32.to_nat(len)),
-    Equal.sym(+List<U32>, WO.wview(O.Words{{FD.array__thaw(U32, M), len}}), VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), BL.wvb(M, len)), BL.bview(d, t, off, len, x, eo, hd, hw, pf))
   +ew = FD.logic__subst(Nat, z => {{VSP.bt(z, SF.limbs(FD.array__slots(U32, M))) == UW.WX(t, x, z) : +List<U32>}}, U32.to_nat(len), 1n+m, e1, ewl)
   +hlM = VR.lenS(dz, M, pfM)
   +hq4 = FD.nat__le_trans(1n+m, A.quad(C.nwn(U32.to_nat(len))), A.quad(VB.pw(dz)),
     FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(C.nwn(U32.to_nat(len)))) == True{{}} : Bool}}, U32.to_nat(len), 1n+m, e1, C.ng(U32.to_nat(len))), C.q4(C.nwn(U32.to_nat(len)), VB.pw(dz), hN))
   +hl = FD.logic__subst(Nat, z => {{Nat.is_lt(m, z) == True{{}} : Bool}}, A.quad(VB.pw(dz)), List.length(&2, U32, SF.limbs(FD.array__slots(U32, M))), Equal.sym(Nat, List.length(&2, U32, SF.limbs(FD.array__slots(U32, M))), A.quad(VB.pw(dz)), hlM),
     FD.nat__succ_le_lt(m, A.quad(VB.pw(dz)), hq4))
-  +hlv = UW.lenWX(d, t, x, 1n+m, pf, hw1)
-  +eh = Equal.cong(U32, Nat, z => VY.hb(z), VBL.lastb(W1), V, UW.lastWX(d, t, x, m, VR.XN(off, len), pf, hw1, PBW.eX(d, x, off, len, eo, hd, hw, e1)))
+  +eh = Equal.cong(U32, Nat, z => VY.hb(z), VBL.lastb(W1), V, lw)
   +B1 = BV.vbits(M, m, h, W1, BV.hb7(V), ew, hl, hlv, eh)
   %Equal.sym(Nat, U32.to_nat(len), 1n+m, e1) : {{BK.btk(U32.to_nat(PBW.NB(t, off, len)), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), PBW.NB(t, off, len)))))) == VBL.bl(UW.WX(t, x, _)) : +List<Bool>}}
   %Equal.sym(Nat, U32.to_nat(PBW.NB(t, off, len)), Nat.add(VSP.x8(m), h), eNB) : {{BK.btk(_, BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), PBW.NB(t, off, len)))))) == VBL.bl(W1) : +List<Bool>}}
   Equal.trans(+List<Bool>, BK.btk(Nat.add(VSP.x8(m), h), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), PBW.NB(t, off, len)))))), BK.btk(Nat.add(VSP.x8(m), h), BK.bitsof(FD.array__slots(U32, M))), VBL.bl(W1),
     FD.logic__subst(Nat, z => {{BK.btk(z, BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, M), PBW.NB(t, off, len)))))) == BK.btk(z, BK.bitsof(FD.array__slots(U32, M))) : +List<Bool>}}, U32.to_nat(PBW.NB(t, off, len)), Nat.add(VSP.x8(m), h), eNB, A1),
     B1)
+
+# the view of the window's copy (d < 28): the check gives len = 1 + m and len - 1 < 2^29
+def pbv({WP}, +hchk: {{PBW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{BO.bview(PBW.OBJw(d, t, x, off, len)) == VBL.bl(UW.WX(t, x, U32.to_nat(len))) : +List<Bool>}}:
+  +e1 = PBW.cE(t, x, off, len, hchk)
+  +m = PBW.M1(len)
+  +h1 = PBW.c1(t, x, off, len, hchk)
+  +nz = PBW.cB(t, off, len, h1)
+  +h29 = FD.logic__subst(Bool, z => {{O.bsel(z, False{{}}, O.bsel(True{{}}, U32.is_lt(U32.sub(len, 1), 536870912), Nat.is_le(PBW.BD(t, off, len), U32.to_nat(0)))) == True{{}} : Bool}},
+    U32.is_eq(PBW.V(t, off, len), 0), False{{}}, nz, h1)
+  +M = {M}
+  +hw1 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(len), 1n+m, e1, hw)
+  +ewl = Equal.trans(+List<U32>, VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), WO.wview(O.Words{{FD.array__thaw(U32, M), len}}), UW.WX(t, x, U32.to_nat(len)),
+    Equal.sym(+List<U32>, WO.wview(O.Words{{FD.array__thaw(U32, M), len}}), VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), BL.wvb(M, len)), BL.bview(d, t, off, len, x, eo, hd, hw, pf))
+  pbc(t, x, off, len, M, ctp(VR.RX(off), d, t, off, len, VLS.DZ(len)), m, e1, h29, ewl, UW.lenWX(d, t, x, 1n+m, pf, hw1),
+    UW.lastWX(d, t, x, m, VR.XN(off, len), pf, hw1, PBW.eX(d, x, off, len, eo, hd, hw, e1)))
 '''
 
 
@@ -3959,3 +3982,30 @@ for _X in ('GuAD91DEB870', 'Gu6DDF182530'):
     MWP[_X] = mwp_union_n
     VENC_SHAPES[_X] = venc_mw
     VENC_PREMISE[_X] = f'rep: RT.rep_{_X}(o) and hs: SU(o) (a progressive container arm\'s storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)'
+
+
+CPA['proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'] = ('rep_pl_Gc4ED9619F50', 'SmallTestStruct_d.Gc4ED9619F50', 'FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, {t})')
+CPA['proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'] = ('rep_pl_pl_Gc465214E502', 'RT.MB<RT.M_pl_Gc465214E502>', 'RT.am_pl_pl_Gc465214E502({t})')
+CPX['Gc221EC01D83'] = {'mods': ['ProgressiveTestStruct_d:ProgressiveTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+                                'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
+                                'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated'],
+                       'hmod': 'ProgressiveTestStruct_h:ProgressiveTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2',
+                       'fields': [('w', 'O.Words'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq')]}
+VROOT_SHAPES['Gc221EC01D83'] = vroot_complex
+
+CPA['list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'] = ('rep_l10_GpF350A3C486', 'ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486',
+                                                                                  'FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, {t})')
+CPA['proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq'] = ('rep_pl_Gp66304057C3', 'RT.MB<RT.M_Gp66304057C3>', 'RT.am_pl_Gp66304057C3({t})')
+CPX['Gp8A7851175B'] = {'mods': ['ProgressiveComplexTestStruct_d:ProgressiveComplexTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+                                'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
+                                'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated',
+                                'ProgressiveSingleFieldContainerTestStruct_d:ProgressiveSingleFieldContainerTestStruct_def_generated',
+                                'list_ProgressiveSingleFieldContainerTestStruct_10_d:list_ProgressiveSingleFieldContainerTestStruct_10_def_generated',
+                                'proglist_ProgressiveVarTestStruct_d:proglist_ProgressiveVarTestStruct_def_generated'],
+                       'hmod': 'ProgressiveComplexTestStruct_h:ProgressiveComplexTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2', 'pc': True,
+                       'fields': [('u', 'U32'), ('l', 'O.Words'), ('b', 'O.Bits'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'),
+                                  ('a', 'list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'),
+                                  ('q', 'proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq')]}
+VROOT_SHAPES['Gp8A7851175B'] = vroot_complex

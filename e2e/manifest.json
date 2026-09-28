@@ -2777,6 +2777,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluExecutionPayload_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_decode_view",
+     "FuluExecutionPayload_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -3137,6 +3149,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "progbitlist_e2e_dec_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_decode_view",
+     "progbitlist_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+   }
+  ],
   "proglist_bool_e2e_dec_generated.bend": [
    {
     "name": "proglist_bool",
@@ -3391,6 +3415,16 @@
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
    }
   ],
+  "ProgressiveComplexTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) (the root law's representation invariant)"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -3399,6 +3433,16 @@
      "ProgressiveSingleListContainerTestStruct_e2e_root"
     ],
     "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) (the root law's representation invariant)"
+   }
+  ],
+  "ProgressiveTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) (the root law's representation invariant)"
    }
   ],
   "ProgressiveVarTestStruct_e2e_root_generated.bend": [
@@ -6024,6 +6068,7 @@
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluExecutionPayload_e2e_dec_generated.bend",
    "root": "FuluExecutionPayload_e2e_root_generated.bend"
   },
   "FuluBeaconState": {
@@ -6054,7 +6099,8 @@
   },
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "generated_name": "GpF350A3C486",
@@ -6062,7 +6108,8 @@
   },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ProgressiveTestStruct_e2e_root_generated.bend"
   },
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
@@ -6071,12 +6118,6 @@
   "ProgressiveBitsStruct": {
    "generated_name": "Gc60805EC295",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "progbitlist": {
-   "generated_name": "GtF7582E0E9A",
-   "reason": "encode laws not over the same free words / bits",
-   "root": "progbitlist_e2e_root_generated.bend",
-   "encode": "progbitlist_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6677,6 +6718,12 @@
    "ii_iii": "bitlist_9_e2e_dec_generated.bend",
    "iv": "bitlist_1_e2e_root_generated.bend"
   },
+  "progbitlist": {
+   "generated_name": "GtF7582E0E9A",
+   "i": "progbitlist_e2e_generated.bend",
+   "ii_iii": "progbitlist_e2e_dec_generated.bend",
+   "iv": "progbitlist_e2e_root_generated.bend"
+  },
   "proglist_bool": {
    "generated_name": "Gt83D8B3D008",
    "i": "proglist_bool_e2e_generated.bend",
@@ -6854,7 +6901,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 1125899911038192,
    "covered": false,
-   "bridged": null
+   "bridged": "FuluExecutionPayload_e2e_dec_generated.bend"
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
@@ -7174,8 +7221,8 @@
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "depth_bound": 31,
-   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
-   "input_bound_bytes": 4294967264,
+   "input_bound": "2^29",
+   "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
@@ -7325,7 +7372,7 @@
   },
   {
    "name": "progbitlist",
-   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound": "2^29",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },

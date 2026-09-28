@@ -2376,12 +2376,15 @@ CAP_KMAX = 28
 
 
 def vdec_k(info):
+    if info.get('kmode') is not None:
+        return info['kmode']
     return max(1, min(info['bound'] - 1, CAP_KMAX))
 
 
 def vdec_nmax(info):
-    """The decode laws cover every tree depth below 31: the bridge takes the object API's own limit n <= NMAX."""
-    return info['bound'] >= 31
+    """The decode laws cover every tree depth below 31: the bridge takes the object API's own limit n <= NMAX
+    (unless the name's view entry forces the K bound, 'kmode': a reject law with a premise of its own)."""
+    return info['bound'] >= 31 and info.get('kmode') is None
 
 
 def vdec_size(K):
@@ -2417,6 +2420,9 @@ def text_vdec(R, X, info):
         body = body.replace('DC.CHK(TT(bs, n), n)', 'DC.CHK(n)')
     if info['noneshort']:
         body = re.sub(r'\.decode_none\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*, hchk\)\)$', '.decode_none(TT(bs, n), n, hchk))', body, flags=re.M)
+    if vw.get('rej_args'):
+        # a reject law with premises of its own before hchk (the name supplies their proofs)
+        body = re.sub(r'(\.decode_reject\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*), hchk\)$', lambda m: m.group(1) + vw['rej_args'] + ', hchk)', body, flags=re.M)
     if info['rejhd']:
         body = body.replace('.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(',
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
@@ -2512,7 +2518,7 @@ def input_bounds(readable, bridged):
         mb = re.search(r'__decode_accept__decode_accept\(\+d: Nat, \+t: [^\n]*?\+hd: \{Nat\.is_lt\(d, (\d+)n\)', f.read_text())
         if not mb or inv.get(R) not in tys:
             continue
-        info = {'bound': int(mb.group(1))}
+        info = {'bound': int(mb.group(1)), 'kmode': VDEC_VIEWS.get(inv.get(R), {}).get('kmode')}
         K = vdec_k(info)
         bound = 2 ** 32 - 32 if vdec_nmax(info) else 2 ** (K + 2)
         ibs = 'NMAX = 2^32 - 32 (the object API\'s limit)' if vdec_nmax(info) else f'2^{K + 2}'
@@ -3112,6 +3118,7 @@ def outputs():
         info = vdec_info(R0) if X0 in VDEC_VIEWS else None
         if not info:
             continue
+        info['kmode'] = VDEC_VIEWS[X0].get('kmode')
         fn = f'{R0}_e2e_dec_generated.bend'
         out[OUT / fn] = text_vdec(R0, X0, info)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
