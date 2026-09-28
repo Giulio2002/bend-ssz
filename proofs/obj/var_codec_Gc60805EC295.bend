@@ -13,6 +13,7 @@ import ../../spec/layout.bend as Layout
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/nat_bytes.bend as N
+import ./vpb29.bend as VP
 import ./generic_specs.bend as Spec
 import ./spec_fixed.bend as F
 import ./vspec.bend as VS
@@ -46,10 +47,10 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> ProgressiveBitsStruct_d.Gc
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 
 # The validator returns the buffer and CHK(t, n).
-def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
+def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
     -> {ProgressiveBitsStruct_r.Gc60805EC295_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
-  W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
+  W.ok_evalwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
 law decode_accept:
@@ -57,16 +58,17 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {ProgressiveBitsStruct_r.Gc60805EC295_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
-def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, ProgressiveBitsStruct_r.Gc60805EC295_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+def decode_accept(d, t, n, pf, hd, hn, hN, hchk):
+  %Equal.sym(B.Buf & Bool, ProgressiveBitsStruct_r.Gc60805EC295_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn, hN)) :
     {ProgressiveBitsStruct_r.Gc60805EC295_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {ProgressiveBitsStruct_r.Gc60805EC295_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
-  %Equal.sym(B.Buf & ProgressiveBitsStruct_d.Gc60805EC295, ProgressiveBitsStruct_r.Gc60805EC295_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(B.Buf & ProgressiveBitsStruct_d.Gc60805EC295, ProgressiveBitsStruct_r.Gc60805EC295_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)) :
     {ProgressiveBitsStruct_r.Gc60805EC295_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
   {==}
 
@@ -76,12 +78,13 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {ProgressiveBitsStruct_r.Gc60805EC295_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
-def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, ProgressiveBitsStruct_r.Gc60805EC295_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+def decode_none(d, t, n, pf, hd, hn, hN, hchk):
+  %Equal.sym(B.Buf & Bool, ProgressiveBitsStruct_r.Gc60805EC295_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn, hN)) :
     {ProgressiveBitsStruct_r.Gc60805EC295_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
     {ProgressiveBitsStruct_r.Gc60805EC295_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.Gc60805EC295>}
@@ -93,15 +96,16 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.Gc60805EC295(), VW(t, n), VAL(t, n))
-def decode_spec(d, t, n, pf, hd, hn, hchk):
+def decode_spec(d, t, n, pf, hd, hn, hN, hchk):
   # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
   # Codec.bytes was compared with the spec encoding by running the encoder
   %F.efl_bytes(Spec.Gc60805EC295(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Gc60805EC295()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Gc60805EC295()), Some{[S.Variable{VW(t, n)}]}, W.specwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}
 
@@ -124,13 +128,24 @@ def agg_var(+m: Maybe<&2, +List<S.Part>>, +bs: +List<U32>, +e: {Codec.bytes(Code
     case None{}: Empty.absurd({Codec.aggregate(None{}, None{}) == Some{[S.Variable{bs}]} : Maybe<&2, +List<S.Part>>}, FD.logic__none_some(+List<U32>, bs, e))
     case Some{+ps}: agg2(ps, Layout.encoding(ps), {==}, bs, e)
 
-def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool},
-    +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.Gc60805EC295(), v) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
+# The progressive bit lists' representation bound on the buffer: each pbits field [O, E) with E <= n
+# has E - O <= PMAX = 2^29 bytes (the runtime refuses a longer one, which the spec would accept).
+def PBQ(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O2(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O2(t, 0n)), U32.to_nat(W.O1(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))))))
+def pbq1(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O2(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O2(t, 0n)), U32.to_nat(W.O1(t, 0n))), U32.to_nat(VP.PMAX()))) == True{} : Bool}: FD.logic__and_left(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O2(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O2(t, 0n)), U32.to_nat(W.O1(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))))), h)
+def pbr1(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))))) == True{} : Bool}: FD.logic__and_right(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O2(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O2(t, 0n)), U32.to_nat(W.O1(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))))), h)
+def pbq3(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))) == True{} : Bool}: FD.logic__and_left(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX())))), pbr1(t, n, h))
+def pbr2(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX())))) == True{} : Bool}: FD.logic__and_right(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O4(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O4(t, 0n)), U32.to_nat(W.O3(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.and(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX())))), pbr1(t, n, h))
+def pbq5(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))) == True{} : Bool}: FD.logic__and_left(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))), pbr2(t, n, h))
+def pbr3(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))) == True{} : Bool}: FD.logic__and_right(Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(W.O6(t, 0n))), Nat.is_le(Nat.sub(U32.to_nat(W.O6(t, 0n)), U32.to_nat(W.O5(t, 0n))), U32.to_nat(VP.PMAX()))), Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))), pbr2(t, n, h))
+def pbq7(+t: FD.array__Tree<U32>, +n: U32, +h: {PBQ(t, n) == True{} : Bool}) -> {Bool.or(Nat.is_lt(U32.to_nat(n), U32.to_nat(n)), Nat.is_le(Nat.sub(U32.to_nat(n), U32.to_nat(W.O7(t, 0n))), U32.to_nat(VP.PMAX()))) == True{} : Bool}: pbr3(t, n, h)
+
+def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool},
+    +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.Gc60805EC295(), v) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}, +hPB: {PBQ(t, n) == True{} : Bool}) -> Empty:
   match v:
     case S.Sequence{+items}:
       FD.logic__true_false(Equal.trans(Bool, True{}, CHK(t, n), False{},
-        Equal.sym(Bool, CHK(t, n), True{}, W.invw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, S.Sequence{items}, agg_var(Codec.parts(items, S.Chain{S.BitVector{256n}, S.Chain{S.BitList{256n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{257n}, S.Chain{S.BitList{257n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1280n}, S.Chain{S.BitList{1280n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1281n}, S.Chain{S.BitList{1281n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}}}}}}}}}}), VW(t, n), e))), hchk))
+        Equal.sym(Bool, CHK(t, n), True{}, W.invwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, S.Sequence{items}, agg_var(Codec.parts(items, S.Chain{S.BitVector{256n}, S.Chain{S.BitList{256n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{257n}, S.Chain{S.BitList{257n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1280n}, S.Chain{S.BitList{1280n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1281n}, S.Chain{S.BitList{1281n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}}}}}}}}}}), VW(t, n), e), pbq1(t, n, hPB), pbq3(t, n, hPB), pbq5(t, n, hPB), pbq7(t, n, hPB))), hchk))
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
     case S.UnsignedValue{+u0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
     case S.BytesValue{+xs0}: FD.logic__none_some(+List<U32>, VW(t, n), e)
@@ -146,9 +161,11 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
+  for +hPB: {PBQ(t, n) == True{} : Bool}
   Decoding.outside_image(Spec.Gc60805EC295(), VW(t, n))
-def decode_reject(d, t, n, pf, hd, hn, hchk):
-  v => e => rej_v(d, t, n, pf, hd, hn, hchk, v, e)
+def decode_reject(d, t, n, pf, hd, hn, hN, hchk, hPB):
+  v => e => rej_v(d, t, n, pf, hd, hn, hN, hchk, v, e, hPB)

@@ -1750,10 +1750,21 @@ def bs_view():
          f'S.BitsValue{{BO.bview(CB6.OBJw(d, t, {J1}))}}', f'RN.v_bv8(FX8.OBJ(d, t, {P(10)}))']
     R = [f'CB5.VALw(t, BW.XJ0(t, {x}), BW.LJ0(t, {x}))', f'FX2.VAL(t, {P(4)})', f'FX1.VAL(t, {P(5)})',
          f'CB6.VALw(t, BW.XJ1(t, {x}), BW.LJ1(t, {x}, n))', f'FX8.VAL(t, {P(10)})']
-    PR = [f'BSW.b5_bw(d, t, {J0}, BW.eoJ0({A6}), hd31, BW.hwJ0({A6}), VB.hw32of(d, Nat.add(BW.XJ0(t, {x}), U32.to_nat(BW.LJ0(t, {x}))), hd30, BW.hwJ0({A6})), pf, BW.itD0(t, {x}, 0, n, hchk))',
-          f'BVS.bv2(d, t, {P(4)})', f'BVS.bv1(d, t, {P(5)})',
-          f'BSW.b6_bw(d, t, {J1}, BW.eoJ1({A6}), hd31, BW.hwJ1({A6}), VB.hw32of(d, Nat.add(BW.XJ1(t, {x}), U32.to_nat(BW.LJ1(t, {x}, n))), hd30, BW.hwJ1({A6})), pf, BW.itD1(t, {x}, 0, n, hchk))',
-          f'BVS.bv8(d, t, {P(10)})']
+    # the laws at any depth (the top at d < 31): the window's D facts, hw32 = VB.u32_lt(n) at the window 0 .. n
+    from pathlib import Path as _P
+    top = _P(__file__).resolve().parents[1] / 'proofs/obj/var_codec_Gc85FA758A04.bend'
+    deep = top.exists() and 'Nat.is_lt(d, 31n)' in top.read_text()
+    AD = f'd, t, n, {x}, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk'
+    if deep:
+        PR = [f'BSW.b5_bw(d, t, {J0}, BW.eoJ0D({AD}), hd, BW.hwJ0D({AD}), BW.hwJ0_32({AD}), pf, BW.itD0(t, {x}, 0, n, hchk))',
+              f'BVS.bv2(d, t, {P(4)})', f'BVS.bv1(d, t, {P(5)})',
+              f'BSW.b6_bw(d, t, {J1}, BW.eoJ1D({AD}), hd, BW.hwJ1D({AD}), BW.hwJ1_32({AD}), pf, BW.itD1(t, {x}, 0, n, hchk))',
+              f'BVS.bv8(d, t, {P(10)})']
+    else:
+      PR = [f'BSW.b5_bw(d, t, {J0}, BW.eoJ0({A6}), hd31, BW.hwJ0({A6}), VB.hw32of(d, Nat.add(BW.XJ0(t, {x}), U32.to_nat(BW.LJ0(t, {x}))), hd30, BW.hwJ0({A6})), pf, BW.itD0(t, {x}, 0, n, hchk))',
+            f'BVS.bv2(d, t, {P(4)})', f'BVS.bv1(d, t, {P(5)})',
+            f'BSW.b6_bw(d, t, {J1}, BW.eoJ1({A6}), hd31, BW.hwJ1({A6}), VB.hw32of(d, Nat.add(BW.XJ1(t, {x}), U32.to_nat(BW.LJ1(t, {x}, n))), hd30, BW.hwJ1({A6})), pf, BW.itD1(t, {x}, 0, n, hchk))',
+            f'BVS.bv8(d, t, {P(10)})']
     mk = lambda fs: 'S.Sequence{' + ''.join(f'S.Items{{{f}, ' for f in fs) + 'S.EmptyItems{}' + '}' * len(fs) + '}'
     Ms = [mk(R[:k] + L[k:]) for k in range(6)]
     steps = [f'Equal.cong(S.Value, S.Value, z => {mk(R[:k] + ["z"] + L[k + 1:])}, {L[k]}, {R[k]}, {PR[k]})' for k in range(5)]
@@ -1761,13 +1772,13 @@ def bs_view():
     prf = steps[4]
     for k in range(3, -1, -1):
         prf = f'Equal.trans(S.Value, {Ms[k]}, {Ms[k + 1]}, {Ms[5]},\n    {steps[k]},\n    {prf})'
+    HDS = '' if deep else ('  +hd31 = FD.nat__lt_trans(d, @BD@, 31n, hd, {==})\n'
+                           '  +hd30 = FD.nat__lt_trans(d, @BD@, 30n, hd, {==})\n')
     text = f'''# ---- the view of a decoded BitsStruct: its bit lists through the window lemmas (e2e_bsw), its bit vectors (e2e_bvsub) ----
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RG2.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  +hd31 = FD.nat__lt_trans(d, @BD@, 31n, hd, {{==}})
-  +hd30 = FD.nat__lt_trans(d, @BD@, 30n, hd, {{==}})
-  {prf}
+{HDS}  {prf}
 
 '''
     imports = ['import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_gtypes2.bend as RG2', 'import ../proofs/obj/root_gnames.bend as RN',

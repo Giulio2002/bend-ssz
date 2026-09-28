@@ -3399,6 +3399,55 @@ def pbsd_inline_lets(L, names):
     return out
 
 
+PBSD_DEEP = ['pbv256', 'pbv257', 'pbv1280', 'pbv1281', 'v256w', 'v257w', 'v1280w', 'v1281w', 'vw_Gc60805EC295']
+
+
+def pbsd_deep(text):
+    """e2e_pbsd with deep twins (d < 31, the window ending by NMAX: hwN) of ProgressiveBitsStruct's view:
+    its window's D facts, the bit lists through e2e_gpb.pbvD, the 161-byte copy bounded by its length."""
+    import e2e_var_c as EVC
+
+    def cok(nm, a):
+        m = re.match(r'W\.hwJ(\d+)\((.*)\)$', a, re.S)
+        return f'W.hwJ{m.group(1)}N({m.group(2)})' if m else None
+    CT_OLD = ('UCT.ct_bytes(d, t, U32.add(off, 249), 161, 6n, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, 161, hL), pf, '
+              'UW.hsx(d, U32.add(off, 249), Nat.add(x, U32.to_nat(249)), 161, e81, hd, hw1), {==}, hB)')
+    CT_NEW = ('UCT.ct_bytes(d, t, U32.add(off, 249), 161, 6n, 8n, {==}, {==}, pf, '
+              'UW.hsxB(d, U32.add(off, 249), Nat.add(x, U32.to_nat(249)), 161, e81, 8n, {==}, {==}, hw1), {==}, hB)')
+    CTW_OLD = 'BX.ctw(d, t, U32.add(off, 81), 160, 6n, Nat.add(x, U32.to_nat(81)), 40n, e81, hd, hw1, pf, {==}, {==})'
+    CTW_NEW = 'BX.ctwY(d, t, U32.add(off, 81), 160, 6n, Nat.add(x, U32.to_nat(81)), 40n, e81, VC.hyU(160, 8n, {==}, {==}), hw1, pf, {==}, {==})'
+    t = EVC.deep_twins(text, PBSD_DEEP, [(CT_OLD, CT_NEW), (CTW_OLD, CTW_NEW)], callee_ok=cok, mode='hwN')
+    if 'vcopy.bend as VC' not in t:
+        t = t.replace('\nimport ./e2e_bx.bend as BX\n', '\nimport ./e2e_bx.bend as BX\nimport ../proofs/obj/vcopy.bend as VC\n', 1)
+    assert 'vcopy.bend as VC' in t
+    head, tw = t.split('# ---- the same at any tree depth d < 31', 1)
+    WA, WD = 'd, t, n, x, off, len, eo, hd, hw, pf', 'd, t, n, x, off, len, eo, hd, hw, hwN, pf'
+    tw = tw.replace('GPB.pbv(d, t, x, off, len, eo, hd, hw, pf,', 'GPB.pbvD(d, t, x, off, len, eo, hd, hw, hwN, pf,')
+    tw = tw.replace(f'W.eocX({WA},', f'W.eocXD({WD},').replace(f'W.roomFX({WA},', f'W.roomFXD({WD},')
+    tw = re.sub(r'W\.(eoJ\d+|hwJ\d+)\(' + re.escape(WA) + r', h\)', lambda m: f'W.{m.group(1)}D({WD}, h)', tw)
+    tw = re.sub(r'W\.(hwJ\d+)ND\(', r'W.\1N(', tw)
+    tw = re.sub(r'W\.(hwJ\d+)N\(' + re.escape(WA) + r', h\)', lambda m: f'W.{m.group(1)}N({WD}, h)', tw)
+    import deep
+    out, i = [], 0
+    while True:
+        m = re.search(r'GPB\.pbv\(', tw[i:])
+        if not m:
+            out.append(tw[i:])
+            break
+        a = i + m.end()
+        b = deep._close(tw, a)
+        args = deep._split_args(tw[a:b])
+        hwa = args[7].strip()
+        assert hwa.startswith('W.hwJ') and 'D(' in hwa, hwa[:60]
+        args.insert(8, ' ' + re.sub(r'^W\.(hwJ\d+)D\(', r'W.\1N(', hwa))
+        out.append(tw[i:i + m.start()] + 'GPB.pbvD(' + ','.join(args) + ')')
+        i = b + 1
+    tw = ''.join(out)
+    left = [l for l in tw.split('\n') if re.search(r'GPB\.pbv\(|W\.eocX\(|W\.roomFX\(|W\.eoJ\d+\(|VLS\.KK|kk_lt|UW\.hsx\(', l)]
+    assert not left, left[:2]
+    return head + '# ---- the same at any tree depth d < 31' + tw
+
+
 def pbsd_text(bs='./e2e_pbs.bend'):
     X = 'Gc60805EC295'
     A = lambda p: [f'{p}{i}' for i in range(32)]  # noqa: E731
@@ -3613,6 +3662,13 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
   PBD.vw_Gc60805EC295(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)
 
 '''}}
+
+if 'Nat.is_lt(d, 31n)' in (_P(__file__).resolve().parents[1] / 'proofs/obj/var_codec_Gc60805EC295.bend').read_text():
+    # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
+    import e2e_var_c as _EVC
+    VDEC_VIEWS['Gc60805EC295'] = {'view': 'RT.v_Gc60805EC295', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD',
+                                                                          'import ../proofs/obj/vbuf.bend as VB'],
+                                  'text': _EVC.deep_vv_text('Gc60805EC295', 'PBD.vw_Gc60805EC295D', 'e2e_pbsd')}
 VROOT_SHAPES = {}
 VENC_SHAPES = {}
 
@@ -4599,4 +4655,4 @@ def build(EB, amap, cache, vidx):
         files['FuluSyncCommittee_e2e_dec_generated.bend'] = sc_dec_text(EB)
         cover.setdefault('SyncCommittee', {}).update({'i': 'FuluSyncCommittee_e2e_generated.bend', 'ii_iii': 'FuluSyncCommittee_e2e_dec_generated.bend', 'ii': 'view',
                                                       'premise': 'rep (the root law\'s representation invariant); (i) also hc: the pubkeys\' storage at the encoder\'s depth 13, and hN: its length 24576 (rep fixes only the element count)'})
-    return {'support': {'e2e_fixdw48.bend': W48SUPPORT, 'e2e_pbs.bend': pbs_support_text(), 'e2e_pbsd.bend': pbsd_text(), 'e2e_fixdw.bend': WSUPPORT, 'e2e_fixd.bend': SUPPORT + bsm_text() + '\n', 'e2e_fixd16.bend': support16(), 'e2e_fixdb.bend': supportb()}, 'files': files, 'cover': cover}
+    return {'support': {'e2e_fixdw48.bend': W48SUPPORT, 'e2e_pbs.bend': pbs_support_text(), 'e2e_pbsd.bend': pbsd_deep(pbsd_text()), 'e2e_fixdw.bend': WSUPPORT, 'e2e_fixd.bend': SUPPORT + bsm_text() + '\n', 'e2e_fixd16.bend': support16(), 'e2e_fixdb.bend': supportb()}, 'files': files, 'cover': cover}
