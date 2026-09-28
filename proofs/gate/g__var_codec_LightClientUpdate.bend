@@ -29,8 +29,7 @@ import ../obj/vua_win.bend as UW
 import ../obj/vua_fix.bend as VTX
 import ../obj/vrl.bend as VRL
 import ../../spec/decoding_relation.bend as Decoding
-import ../../proofs/fulu_legality.bend as Legal
-import ../../proofs/decode_complete.bend as DCO
+import ../../proofs/decode_unique.bend as DCO
 import ../obj/var_winx_LightClientUpdate.bend as EW
 import ../obj/var_codec_LightClientUpdate.bend as PRV
 

@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtED805B7C93.bend as C
 
 def GtED805B7C93_spec_unique(+x0: U32, +v: S.Value, spec: Decoding.decodes(Spec.GtED805B7C93(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v))
     -> {v == S.BitsValue{C.GtED805B7C93_tb(x0)} : S.Value}:
-  E.image_unique(Spec.GtED805B7C93(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v, S.BitsValue{C.GtED805B7C93_tb(x0)}, VS.public_sound(Spec.GtED805B7C93(), {==}), spec, C.GtED805B7C93_spec_encode(x0))
+  E.valid_unique(Spec.GtED805B7C93(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v, S.BitsValue{C.GtED805B7C93_tb(x0)}, {==}, spec, C.GtED805B7C93_spec_encode(x0))

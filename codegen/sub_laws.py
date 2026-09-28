@@ -983,7 +983,7 @@ def scalar_laws(w, n, kind, P):
 
 UHEAD = ['import Base', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P', 'import ../../src/obj.bend as O',
          'import ../../src/buffer.bend as B', 'import ../../spec/decoding_relation.bend as Decoding',
-         'import ./generic_specs.bend as Spec', 'import ../decode_complete.bend as E',
+         'import ./generic_specs.bend as Spec', 'import ../decode_unique.bend as E',
          'import ../type_validator_soundness.bend as VS', 'import ./spec_fixed.bend as SF',
          'import ../../proofs/compact/found.bend as F', 'import ./sub_pack.bend as SP2', 'import ./spec_bits.bend as FB',
          'import ../../spec/primitives.bend as SP']
@@ -991,18 +991,18 @@ UHEAD = ['import Base', 'import ../../types/schema.bend as S', 'import ../../typ
 
 def unique(w, n, sig, args, BY, V, big):
     spec = f'Spec.{n}()'
-    lg = f'VS.public_sound({spec}, {{==}})'
+    lg = '{==}'  # the validator's acceptance of the schema by evaluation (decode_unique.valid_unique)
     if big:
         # the bytes as a variable (a parameter typed with the long literal byte list
         # overflows stock Bend's stack); the same law at eby := {==}
         w(f'def {n}_spec_unique({sig}, +by: +List<U32>, +eby: {{by == {BY} : +List<U32>}}, +v: S.Value, spec: Decoding.decodes({spec}, by, v))')
         w(f'    -> {{v == {V} : S.Value}}:')
-        w(f'  E.image_unique({spec}, by, v, {V}, {lg}, spec,')
+        w(f'  E.valid_unique({spec}, by, v, {V}, {lg}, spec,')
         w(f'    F.logic__subst(+List<U32>, z => Decoding.decodes({spec}, z, {V}), {BY}, by, Equal.sym(+List<U32>, by, {BY}, eby), C.{n}_spec_encode({args})))')
     else:
         w(f'def {n}_spec_unique({sig}, +v: S.Value, spec: Decoding.decodes({spec}, {BY}, v))')
         w(f'    -> {{v == {V} : S.Value}}:')
-        w(f'  E.image_unique({spec}, {BY}, v, {V}, {lg}, spec, C.{n}_spec_encode({args}))')
+        w(f'  E.valid_unique({spec}, {BY}, v, {V}, {lg}, spec, C.{n}_spec_encode({args}))')
 
 
 def forms():

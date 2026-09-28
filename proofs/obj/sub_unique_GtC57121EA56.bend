@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtC57121EA56.bend as C
 
 def GtC57121EA56_spec_unique(+x0: U32, +hb: {SP2.lf(SF.limbs([x0]), True{}) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.GtC57121EA56(), SF.limbs([x0]), v))
     -> {v == S.Sequence{SP2.vbool(SF.limbs([x0]))} : S.Value}:
-  E.image_unique(Spec.GtC57121EA56(), SF.limbs([x0]), v, S.Sequence{SP2.vbool(SF.limbs([x0]))}, VS.public_sound(Spec.GtC57121EA56(), {==}), spec, C.GtC57121EA56_spec_encode(x0, hb))
+  E.valid_unique(Spec.GtC57121EA56(), SF.limbs([x0]), v, S.Sequence{SP2.vbool(SF.limbs([x0]))}, {==}, spec, C.GtC57121EA56_spec_encode(x0, hb))

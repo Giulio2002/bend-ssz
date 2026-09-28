@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtE6006F6F55.bend as C
 
 def GtE6006F6F55_spec_unique(+x0: U32, +v: S.Value, spec: Decoding.decodes(Spec.GtE6006F6F55(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v))
     -> {v == S.Sequence{SP2.vu16([], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x0), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})} : S.Value}:
-  E.image_unique(Spec.GtE6006F6F55(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v, S.Sequence{SP2.vu16([], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x0), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, VS.public_sound(Spec.GtE6006F6F55(), {==}), spec, C.GtE6006F6F55_spec_encode(x0))
+  E.valid_unique(Spec.GtE6006F6F55(), [B.byte_sel(0, x0), B.byte_sel(1, x0)], v, S.Sequence{SP2.vu16([], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x0), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, {==}, spec, C.GtE6006F6F55_spec_encode(x0))

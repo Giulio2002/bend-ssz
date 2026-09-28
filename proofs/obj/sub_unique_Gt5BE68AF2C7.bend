@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt5BE68AF2C7.bend as C
 
 def Gt5BE68AF2C7_spec_unique(+ws: +List<U32>, +hl: {List.length(&2, U32, ws) == 256n : Nat}, +x256: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gt5BE68AF2C7(), List.append(&2, U32, SF.limbs(ws), [B.byte_sel(0, x256), B.byte_sel(1, x256)]), v))
     -> {v == S.Sequence{SP2.vu16(ws, S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x256), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})} : S.Value}:
-  E.image_unique(Spec.Gt5BE68AF2C7(), List.append(&2, U32, SF.limbs(ws), [B.byte_sel(0, x256), B.byte_sel(1, x256)]), v, S.Sequence{SP2.vu16(ws, S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x256), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, VS.public_sound(Spec.Gt5BE68AF2C7(), {==}), spec, C.Gt5BE68AF2C7_spec_encode(ws, hl, x256))
+  E.valid_unique(Spec.Gt5BE68AF2C7(), List.append(&2, U32, SF.limbs(ws), [B.byte_sel(0, x256), B.byte_sel(1, x256)]), v, S.Sequence{SP2.vu16(ws, S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x256), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, {==}, spec, C.Gt5BE68AF2C7_spec_encode(ws, hl, x256))

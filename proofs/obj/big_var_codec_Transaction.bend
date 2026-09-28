@@ -28,8 +28,7 @@ import ./vua_win.bend as UW
 import ./vua_fix.bend as VTX
 import ./vrl.bend as VRL
 import ../../spec/decoding_relation.bend as Decoding
-import ../../proofs/fulu_legality.bend as Legal
-import ../../proofs/decode_complete.bend as DCO
+import ../../proofs/decode_unique.bend as DCO
 import ../../spec/byte_list.bend as ByteList
 import ./big_vvlb_bl1073741824.bend as EW
 
@@ -100,7 +99,7 @@ law decode_unique:
   for spec: Decoding.decodes(Spec.Transaction(), VW(t, n), v)
   {v == VAL(t, n) : S.Value}
 def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
-  DCO.image_unique(Spec.Transaction(), VW(t, n), v, VAL(t, n), Legal.Transaction_normative_legal(), spec, decode_spec(d, t, n, pf, hd, hn, hchk))
+  DCO.valid_unique(Spec.Transaction(), VW(t, n), v, VAL(t, n), {==}, spec, decode_spec(d, t, n, pf, hd, hn, hchk))
 
 # A value encoding to the buffer's bytes has them as its one variable part (the limit
 # test ByteList.domain(limit, xs) stays a variable b).

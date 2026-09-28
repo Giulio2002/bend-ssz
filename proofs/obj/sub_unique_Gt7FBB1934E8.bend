@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt7FBB1934E8.bend as C
 
 def Gt7FBB1934E8_spec_unique(+x0: U32, +x1: U32, +hb: {SP2.lf(List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), True{}) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.Gt7FBB1934E8(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v))
     -> {v == S.Sequence{SP2.vbool(List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]))} : S.Value}:
-  E.image_unique(Spec.Gt7FBB1934E8(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v, S.Sequence{SP2.vbool(List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]))}, VS.public_sound(Spec.Gt7FBB1934E8(), {==}), spec, C.Gt7FBB1934E8_spec_encode(x0, x1, hb))
+  E.valid_unique(Spec.Gt7FBB1934E8(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v, S.Sequence{SP2.vbool(List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]))}, {==}, spec, C.Gt7FBB1934E8_spec_encode(x0, x1, hb))

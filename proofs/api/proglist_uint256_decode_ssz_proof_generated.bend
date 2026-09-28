@@ -31,7 +31,7 @@ import ../compact/arith.bend as P1_A
 import ../obj/vbuf.bend as P1_VB
 import ../obj/generic_specs.bend as P1_GS
 import ../obj/big_var_plist_GtA8457965E2.bend as P1_DC
-import ../../proofs/decode_complete.bend as P1_DCO
+import ../../proofs/decode_unique.bend as P1_DCO
 import ../obj/big_var_plist_GtA8457965E2_unique.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O

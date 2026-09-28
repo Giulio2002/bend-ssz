@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt6F0D97A69E.bend as C
 
 def Gt6F0D97A69E_spec_unique(+x0: U32, +x1: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(0, x1), U32.not(O.low_mask(1))), 0) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.Gt6F0D97A69E(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v))
     -> {v == S.BitsValue{List.append(&2, Bool, FB.bitsof([x0]), C.Gt6F0D97A69E_tb(x1))} : S.Value}:
-  E.image_unique(Spec.Gt6F0D97A69E(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v, S.BitsValue{List.append(&2, Bool, FB.bitsof([x0]), C.Gt6F0D97A69E_tb(x1))}, VS.public_sound(Spec.Gt6F0D97A69E(), {==}), spec, C.Gt6F0D97A69E_spec_encode(x0, x1, hp))
+  E.valid_unique(Spec.Gt6F0D97A69E(), List.append(&2, U32, SF.limbs([x0]), [B.byte_sel(0, x1)]), v, S.BitsValue{List.append(&2, Bool, FB.bitsof([x0]), C.Gt6F0D97A69E_tb(x1))}, {==}, spec, C.Gt6F0D97A69E_spec_encode(x0, x1, hp))
