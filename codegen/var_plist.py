@@ -93,14 +93,26 @@ def elem_lib(E):
     w(f'def nn{E}(k: Nat, W: List<&2, U32>) -> Nat:')
     L.extend(nest('', f'1n+nn{E}(c, rest)', lambda j: '0n'))
     w('')
+    # the element's part at uS{E}() (a schema def: the part lemma is stated at the literal schema; carried by
+    # subst so no conversion compares the two schemas under Codec.parts)
+    AP = ', '.join('+' + x + ': U32' for x in a)
+    SL = {1: 'P.U32Width{}', 2: 'P.U64{}', 4: 'P.U128{}', 8: 'P.U256{}'}[E]
+    w(f'def eu{E}({AP}) -> {{Codec.parts({UV}, uS{E}()) == Some{{[S.Fixed{{FX.limbs([{", ".join(a)}])}}]}} : Maybe<&2, +List<S.Part>>}}:')
+    w(f'  F.logic__subst(S.Schema, z => {{Codec.parts({UV}, z) == Some{{[S.Fixed{{FX.limbs([{", ".join(a)}])}}]}} : Maybe<&2, +List<S.Part>>}}, S.Unsigned{{{SL}}}, uS{E}(), {{==}}, {PART[E]}({", ".join(a)}))')
+    w('')
     # parts
     w(f'law parts{E}:')
     w('  for +k: Nat')
     w('  for +W: List<&2, U32>')
     w(f'  {{Codec.parts(it{E}(k, W), S.Repeat{{uS{E}()}}) == Some{{FX.fparts(gp{E}(k, W))}} : Maybe<&2, +List<S.Part>>}}')
     w(f'def parts{E}(k, W):')
-    L.extend(nest('+ ', f'FX.cat_fixed(Codec.parts({UV}, uS{E}()), FX.limbs([{", ".join(a)}]), Codec.parts(it{E}(c, rest), S.Repeat{{uS{E}()}}), '
-                  f'FX.fparts(gp{E}(c, rest)), {PART[E]}({", ".join(a)}), parts{E}(c, rest))', lambda j: '{==}'))
+    WP = 'rest'
+    for x in reversed(a):
+        WP = f'Con{{{x}, {WP}}}'
+    GOAL = lambda z: f'{{Codec.parts({z}, S.Repeat{{uS{E}()}}) == Some{{FX.fparts(gp{E}(1n+c, {WP}))}} : Maybe<&2, +List<S.Part>>}}'
+    L.extend(nest('+ ', f'F.logic__subst(S.Value, z => {GOAL("z")}, S.Items{{{UV}, it{E}(c, rest)}}, it{E}(1n+c, {WP}), {{==}}, '
+                  f'rcf({UV}, it{E}(c, rest), uS{E}(), FX.limbs([{", ".join(a)}]), '
+                  f'FX.fparts(gp{E}(c, rest)), eu{E}({", ".join(a)}), parts{E}(c, rest)))', lambda j: '{==}'))
     w('')
     HL = f'{{Nat.is_le(w{E}(k), F.spec_common__length(U32, W)) == True{{}} : Bool}}'
 
@@ -256,8 +268,17 @@ def ru{E}({", ".join("+" + x + ": U32" for x in A8)}, +t: S.Value, +ps: +List<S.
     return L
 
 
+# one element of a repeat, stated as Codec.parts(Items{h, t}, Repeat{s}) over variables: the cat_fixed step
+# met that goal only by evaluating the element's parts (a uint's literal zero limbs: ~375 k steps each,
+# checker_findings item 1/2)
+RCF = ['def rcf(+h: S.Value, +t: S.Value, +s: S.Schema, +xs: +List<U32>, +ps: +List<S.Part>,',
+       '    +ea: {Codec.parts(h, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(t, S.Repeat{s}) == Some{ps} : Maybe<&2, +List<S.Part>>})',
+       '    -> {Codec.parts(S.Items{h, t}, S.Repeat{s}) == Some{S.Fixed{xs} <> ps} : Maybe<&2, +List<S.Part>>}:',
+       '  FX.cat_fixed(Codec.parts(h, s), xs, Codec.parts(t, S.Repeat{s}), ps, ea, eb)', '']
+
+
 def elems_text():
-    L = list(ELEM_HEAD)
+    L = list(ELEM_HEAD) + RCF
     for E in (1, 2, 4, 8):
         L += [f'# ---- elements of {E} word(s) ' + '-' * 60, '']
         L += elem_lib(E)

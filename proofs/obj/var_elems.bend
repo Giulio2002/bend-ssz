@@ -16,6 +16,11 @@ import ./vfix.bend as VF
 # the spec value, its parts, count and bytes, the progressive-list encoding, and
 # the inversion of the repeated parts.
 
+def rcf(+h: S.Value, +t: S.Value, +s: S.Schema, +xs: +List<U32>, +ps: +List<S.Part>,
+    +ea: {Codec.parts(h, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(t, S.Repeat{s}) == Some{ps} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(S.Items{h, t}, S.Repeat{s}) == Some{S.Fixed{xs} <> ps} : Maybe<&2, +List<S.Part>>}:
+  FX.cat_fixed(Codec.parts(h, s), xs, Codec.parts(t, S.Repeat{s}), ps, ea, eb)
+
 # ---- elements of 1 word(s) ------------------------------------------------------------
 
 def uS1() -> S.Schema: S.Unsigned{P.U32Width{}}
@@ -57,6 +62,9 @@ def nn1(k: Nat, W: List<&2, U32>) -> Nat:
         case Con{+a0, rest}:
           1n+nn1(c, rest)
 
+def eu1(+a0: U32) -> {Codec.parts(S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, uS1()) == Some{[S.Fixed{FX.limbs([a0])}]} : Maybe<&2, +List<S.Part>>}:
+  F.logic__subst(S.Schema, z => {Codec.parts(S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, z) == Some{[S.Fixed{FX.limbs([a0])}]} : Maybe<&2, +List<S.Part>>}, S.Unsigned{P.U32Width{}}, uS1(), {==}, FX.uint32_part(a0))
+
 law parts1:
   for +k: Nat
   for +W: List<&2, U32>
@@ -68,7 +76,7 @@ def parts1(k, W):
       match W:
         case Nil{}: {==}
         case Con{+a0, + rest}:
-          FX.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, uS1()), FX.limbs([a0]), Codec.parts(it1(c, rest), S.Repeat{uS1()}), FX.fparts(gp1(c, rest)), FX.uint32_part(a0), parts1(c, rest))
+          F.logic__subst(S.Value, z => {Codec.parts(z, S.Repeat{uS1()}) == Some{FX.fparts(gp1(1n+c, Con{a0, rest}))} : Maybe<&2, +List<S.Part>>}, S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, it1(c, rest)}, it1(1n+c, Con{a0, rest}), {==}, rcf(S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, it1(c, rest), uS1(), FX.limbs([a0]), FX.fparts(gp1(c, rest)), eu1(a0), parts1(c, rest)))
 
 law cnt1:
   for +k: Nat
@@ -294,6 +302,9 @@ def nn2(k: Nat, W: List<&2, U32>) -> Nat:
             case Con{+a1, rest}:
               1n+nn2(c, rest)
 
+def eu2(+a0: U32, +a1: U32) -> {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}}, uS2()) == Some{[S.Fixed{FX.limbs([a0, a1])}]} : Maybe<&2, +List<S.Part>>}:
+  F.logic__subst(S.Schema, z => {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}}, z) == Some{[S.Fixed{FX.limbs([a0, a1])}]} : Maybe<&2, +List<S.Part>>}, S.Unsigned{P.U64{}}, uS2(), {==}, FX.uint64_part(a0, a1))
+
 law parts2:
   for +k: Nat
   for +W: List<&2, U32>
@@ -308,7 +319,7 @@ def parts2(k, W):
           match t0:
             case Nil{}: {==}
             case Con{+a1, + rest}:
-              FX.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}}, uS2()), FX.limbs([a0, a1]), Codec.parts(it2(c, rest), S.Repeat{uS2()}), FX.fparts(gp2(c, rest)), FX.uint64_part(a0, a1), parts2(c, rest))
+              F.logic__subst(S.Value, z => {Codec.parts(z, S.Repeat{uS2()}) == Some{FX.fparts(gp2(1n+c, Con{a0, Con{a1, rest}}))} : Maybe<&2, +List<S.Part>>}, S.Items{S.UnsignedValue{P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}}, it2(c, rest)}, it2(1n+c, Con{a0, Con{a1, rest}}), {==}, rcf(S.UnsignedValue{P.UInt{a0, a1, 0, 0, 0, 0, 0, 0}}, it2(c, rest), uS2(), FX.limbs([a0, a1]), FX.fparts(gp2(c, rest)), eu2(a0, a1), parts2(c, rest)))
 
 law cnt2:
   for +k: Nat
@@ -567,6 +578,9 @@ def nn4(k: Nat, W: List<&2, U32>) -> Nat:
                     case Con{+a3, rest}:
                       1n+nn4(c, rest)
 
+def eu4(+a0: U32, +a1: U32, +a2: U32, +a3: U32) -> {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}}, uS4()) == Some{[S.Fixed{FX.limbs([a0, a1, a2, a3])}]} : Maybe<&2, +List<S.Part>>}:
+  F.logic__subst(S.Schema, z => {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}}, z) == Some{[S.Fixed{FX.limbs([a0, a1, a2, a3])}]} : Maybe<&2, +List<S.Part>>}, S.Unsigned{P.U128{}}, uS4(), {==}, FX.uint128_part(a0, a1, a2, a3))
+
 law parts4:
   for +k: Nat
   for +W: List<&2, U32>
@@ -587,7 +601,7 @@ def parts4(k, W):
                   match t2:
                     case Nil{}: {==}
                     case Con{+a3, + rest}:
-                      FX.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}}, uS4()), FX.limbs([a0, a1, a2, a3]), Codec.parts(it4(c, rest), S.Repeat{uS4()}), FX.fparts(gp4(c, rest)), FX.uint128_part(a0, a1, a2, a3), parts4(c, rest))
+                      F.logic__subst(S.Value, z => {Codec.parts(z, S.Repeat{uS4()}) == Some{FX.fparts(gp4(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, rest}}}}))} : Maybe<&2, +List<S.Part>>}, S.Items{S.UnsignedValue{P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}}, it4(c, rest)}, it4(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, rest}}}}), {==}, rcf(S.UnsignedValue{P.UInt{a0, a1, a2, a3, 0, 0, 0, 0}}, it4(c, rest), uS4(), FX.limbs([a0, a1, a2, a3]), FX.fparts(gp4(c, rest)), eu4(a0, a1, a2, a3), parts4(c, rest)))
 
 law cnt4:
   for +k: Nat
@@ -912,6 +926,9 @@ def nn8(k: Nat, W: List<&2, U32>) -> Nat:
                                     case Con{+a7, rest}:
                                       1n+nn8(c, rest)
 
+def eu8(+a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32) -> {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}}, uS8()) == Some{[S.Fixed{FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7])}]} : Maybe<&2, +List<S.Part>>}:
+  F.logic__subst(S.Schema, z => {Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}}, z) == Some{[S.Fixed{FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7])}]} : Maybe<&2, +List<S.Part>>}, S.Unsigned{P.U256{}}, uS8(), {==}, FX.uint256_part(a0, a1, a2, a3, a4, a5, a6, a7))
+
 law parts8:
   for +k: Nat
   for +W: List<&2, U32>
@@ -944,7 +961,7 @@ def parts8(k, W):
                                   match t6:
                                     case Nil{}: {==}
                                     case Con{+a7, + rest}:
-                                      FX.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}}, uS8()), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7]), Codec.parts(it8(c, rest), S.Repeat{uS8()}), FX.fparts(gp8(c, rest)), FX.uint256_part(a0, a1, a2, a3, a4, a5, a6, a7), parts8(c, rest))
+                                      F.logic__subst(S.Value, z => {Codec.parts(z, S.Repeat{uS8()}) == Some{FX.fparts(gp8(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Con{a7, rest}}}}}}}}))} : Maybe<&2, +List<S.Part>>}, S.Items{S.UnsignedValue{P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}}, it8(c, rest)}, it8(1n+c, Con{a0, Con{a1, Con{a2, Con{a3, Con{a4, Con{a5, Con{a6, Con{a7, rest}}}}}}}}), {==}, rcf(S.UnsignedValue{P.UInt{a0, a1, a2, a3, a4, a5, a6, a7}}, it8(c, rest), uS8(), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7]), FX.fparts(gp8(c, rest)), eu8(a0, a1, a2, a3, a4, a5, a6, a7), parts8(c, rest)))
 
 law cnt8:
   for +k: Nat
