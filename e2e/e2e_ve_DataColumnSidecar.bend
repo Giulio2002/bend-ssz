@@ -17,6 +17,7 @@ import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/big_var_codec_DataColumnSidecar_enc.bend as EN
 import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL
+import ../proofs/obj/words_obj.bend as WO
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
@@ -45,6 +46,119 @@ def k48q(+N: U32, +c: Nat, +ec: {U32.to_nat(N) == A.quad(VM.mulE(12n, c)) : Nat}
   Pair.fst({U32.to_nat(U32.div(N, 48)) == c : Nat}, {U32.to_nat(U32.mod(N, 48)) == 0n : Nat},
     VU.whole_q(N, 48, c, Equal.trans(Nat, U32.to_nat(N), A.quad(VM.mulE(12n, c)), Nat.mul(c, U32.to_nat(48)), ec, Equal.sym(Nat, Nat.mul(c, A.quad(12n)), A.quad(VM.mulE(12n, c)), VM.mulq(c, 12n))), {==},
       VU.div_u32(N, 48, FD.spec_numeric__from_nat(31n, 48n), {==}, {==}, {==})))
+
+# the (i) premises: the storage at depth below k (a decoded-object gap, sdd) and the object API's own validity
+# (its unit conjunct O.unit_ok: a whole number of blocks); sdm from them and rep
+def sdd(w: O.Words, +k: Nat) -> Data:
+  DK.Ex(FD.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({w == O.Words{FD.array__thaw(U32, t), N} : O.Words},
+    DK.P2({FD.array__perfect(U32, dw, t) == True{} : Bool},
+          {Nat.is_lt(dw, k) == True{} : Bool})))))
+
+def TDU(t: FD.array__Tree<U32>) -> Nat:
+  match t:
+    case FD.TLeaf{x}: 0n
+    case FD.TNode{l, r}: 1n+TDU(l)
+
+def tdU(+d: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {TDU(t) == d : Nat}:
+  match d t:
+    case 0n FD.TLeaf{+x}: {==}
+    case 0n FD.TNode{+l, +r}: Empty.absurd({TDU(FD.TNode{l, r}) == 0n : Nat}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{+x}: Empty.absurd({TDU(FD.TLeaf{x}) == 1n+p : Nat}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{+l, +r}: Equal.cong(Nat, Nat, z => 1n+z, TDU(l), p, tdU(p, l, FD.array__pf_left(U32, p, l, r, pf)))
+
+def FZW(w: O.Words) -> FD.array__Tree<U32>:
+  match w:
+    case O.Words{ws, +k}: FD.array__freeze(U32, ws)
+
+def meq(+E: Nat, +c: Nat) -> {VM.mulE(E, c) == Nat.mul(c, E) : Nat}:
+  match c:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => Nat.add(E, z), VM.mulE(E, p), Nat.mul(p, E), meq(E, p))
+
+def unitq_kc(+N: U32, +hv: {U32.is_eq(U32.mod(N, 2048), 0) == True{} : Bool},
+    dv: {Nat.add(Nat.mul(U32.to_nat(U32.div(N, 2048)), U32.to_nat(2048)), U32.to_nat(U32.mod(N, 2048))) == U32.to_nat(N) : Nat} & {Nat.is_lt(U32.to_nat(U32.mod(N, 2048)), U32.to_nat(2048)) == True{} : Bool})
+    -> {U32.to_nat(N) == A.quad(VM.mulE(512n, CE.kc(N))) : Nat}:
+  (+de, +dr) = dv
+  +e0 = FD.u32alg__eq_of(U32.mod(N, 2048), 0, hv)
+  +em = Equal.trans(Nat, U32.to_nat(N), Nat.add(Nat.mul(CE.kc(N), 2048n), U32.to_nat(U32.mod(N, 2048))), Nat.mul(CE.kc(N), 2048n),
+    Equal.sym(Nat, Nat.add(Nat.mul(CE.kc(N), 2048n), U32.to_nat(U32.mod(N, 2048))), U32.to_nat(N), de),
+    FD.logic__subst(U32, z => {Nat.add(Nat.mul(CE.kc(N), 2048n), U32.to_nat(z)) == Nat.mul(CE.kc(N), 2048n) : Nat}, 0, U32.mod(N, 2048), Equal.sym(U32, U32.mod(N, 2048), 0, e0), FD.nat__add_zero(Nat.mul(CE.kc(N), 2048n))))
+  Equal.trans(Nat, U32.to_nat(N), Nat.mul(CE.kc(N), A.quad(512n)), A.quad(VM.mulE(512n, CE.kc(N))), em, VM.mulq(CE.kc(N), 512n))
+
+def fsd_kc(-w: O.Words, +k: Nat, +t1: FD.array__Tree<U32>, +dw1: Nat, +N1: U32, +eo1: {w == O.Words{FD.array__thaw(U32, t1), N1} : O.Words},
+    +pf1: {FD.array__perfect(U32, dw1, t1) == True{} : Bool}, +hk1: {Nat.is_le(Nat.mul(CE.kc(N1), 512n), FD.spec_common__pow2(dw1)) == True{} : Bool},
+    +t: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}, +pf: {FD.array__perfect(U32, dw, t) == True{} : Bool},
+    +hd: {Nat.is_lt(dw, k) == True{} : Bool}, +hv: {O.unit_ok(2048, WO.len(w)) == True{} : Bool}) -> sdm(w, 512n, k):
+  +e12 = Equal.trans(O.Words, O.Words{FD.array__thaw(U32, t1), N1}, w, O.Words{FD.array__thaw(U32, t), N}, Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, t1), N1}, eo1), eo)
+  +et = Equal.trans(FD.array__Tree<U32>, t1, FZW(O.Words{FD.array__thaw(U32, t1), N1}), t, Equal.sym(FD.array__Tree<U32>, FZW(O.Words{FD.array__thaw(U32, t1), N1}), t1, FD.array__freeze_thaw(U32, t1)),
+    Equal.trans(FD.array__Tree<U32>, FZW(O.Words{FD.array__thaw(U32, t1), N1}), FZW(O.Words{FD.array__thaw(U32, t), N}), t,
+      Equal.cong(O.Words, FD.array__Tree<U32>, z => FZW(z), O.Words{FD.array__thaw(U32, t1), N1}, O.Words{FD.array__thaw(U32, t), N}, e12), FD.array__freeze_thaw(U32, t)))
+  +en = Equal.cong(O.Words, U32, z => WO.len(z), O.Words{FD.array__thaw(U32, t1), N1}, O.Words{FD.array__thaw(U32, t), N}, e12)
+  +ed = Equal.trans(Nat, dw1, TDU(t1), dw, Equal.sym(Nat, TDU(t1), dw1, tdU(dw1, t1, pf1)),
+    Equal.trans(Nat, TDU(t1), TDU(t), dw, Equal.cong(FD.array__Tree<U32>, Nat, z => TDU(z), t1, t, et), tdU(dw, t, pf)))
+  +hkA = FD.logic__subst(U32, z => {Nat.is_le(Nat.mul(CE.kc(z), 512n), FD.spec_common__pow2(dw1)) == True{} : Bool}, N1, N, en, hk1)
+  +hk = FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(CE.kc(N), 512n), FD.spec_common__pow2(z)) == True{} : Bool}, dw1, dw, ed, hkA)
+  +hm = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.mul(CE.kc(N), 512n), VM.mulE(512n, CE.kc(N)), Equal.sym(Nat, VM.mulE(512n, CE.kc(N)), Nat.mul(CE.kc(N), 512n), meq(512n, CE.kc(N))), hk)
+  +hvN = FD.logic__subst(O.Words, z => {O.unit_ok(2048, WO.len(z)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, t), N}, eo, hv)
+  (t, (dw, (N, (CE.kc(N), (eo, (pf, (hd, (unitq_kc(N, hvN, VU.div_u32(N, 2048, FD.spec_numeric__from_nat(31n, 2048n), {==}, {==}, {==})), hm))))))))
+
+def mk_sdm_kc(-w: O.Words, +s: S.Schema, +k: Nat, +rep: CE.rep_el(w, s), +hs: sdd(w, k), +hv: {O.unit_ok(2048, WO.len(w)) == True{} : Bool}) -> sdm(w, 512n, k):
+  (+wf, +hl) = rep
+  (+t1, a1) = wf
+  (+dw1, a2) = a1
+  (+N1, a3) = a2
+  (+eo1, a4) = a3
+  (+pf1, a5) = a4
+  (+hd1, +hk1) = a5
+  (+t, b1) = hs
+  (+dw, b2) = b1
+  (+N, b3) = b2
+  (+eo, b4) = b3
+  (+pf, +hd) = b4
+  fsd_kc(w, k, t1, dw1, N1, eo1, pf1, hk1, t, dw, N, eo, pf, hd, hv)
+
+def unitq_k48(+N: U32, +hv: {U32.is_eq(U32.mod(N, 48), 0) == True{} : Bool},
+    dv: {Nat.add(Nat.mul(U32.to_nat(U32.div(N, 48)), U32.to_nat(48)), U32.to_nat(U32.mod(N, 48))) == U32.to_nat(N) : Nat} & {Nat.is_lt(U32.to_nat(U32.mod(N, 48)), U32.to_nat(48)) == True{} : Bool})
+    -> {U32.to_nat(N) == A.quad(VM.mulE(12n, E48.k48(N))) : Nat}:
+  (+de, +dr) = dv
+  +e0 = FD.u32alg__eq_of(U32.mod(N, 48), 0, hv)
+  +em = Equal.trans(Nat, U32.to_nat(N), Nat.add(Nat.mul(E48.k48(N), 48n), U32.to_nat(U32.mod(N, 48))), Nat.mul(E48.k48(N), 48n),
+    Equal.sym(Nat, Nat.add(Nat.mul(E48.k48(N), 48n), U32.to_nat(U32.mod(N, 48))), U32.to_nat(N), de),
+    FD.logic__subst(U32, z => {Nat.add(Nat.mul(E48.k48(N), 48n), U32.to_nat(z)) == Nat.mul(E48.k48(N), 48n) : Nat}, 0, U32.mod(N, 48), Equal.sym(U32, U32.mod(N, 48), 0, e0), FD.nat__add_zero(Nat.mul(E48.k48(N), 48n))))
+  Equal.trans(Nat, U32.to_nat(N), Nat.mul(E48.k48(N), A.quad(12n)), A.quad(VM.mulE(12n, E48.k48(N))), em, VM.mulq(E48.k48(N), 12n))
+
+def fsd_k48(-w: O.Words, +k: Nat, +t1: FD.array__Tree<U32>, +dw1: Nat, +N1: U32, +eo1: {w == O.Words{FD.array__thaw(U32, t1), N1} : O.Words},
+    +pf1: {FD.array__perfect(U32, dw1, t1) == True{} : Bool}, +hk1: {Nat.is_le(Nat.mul(E48.k48(N1), 12n), FD.spec_common__pow2(dw1)) == True{} : Bool},
+    +t: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}, +pf: {FD.array__perfect(U32, dw, t) == True{} : Bool},
+    +hd: {Nat.is_lt(dw, k) == True{} : Bool}, +hv: {O.unit_ok(48, WO.len(w)) == True{} : Bool}) -> sdm(w, 12n, k):
+  +e12 = Equal.trans(O.Words, O.Words{FD.array__thaw(U32, t1), N1}, w, O.Words{FD.array__thaw(U32, t), N}, Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, t1), N1}, eo1), eo)
+  +et = Equal.trans(FD.array__Tree<U32>, t1, FZW(O.Words{FD.array__thaw(U32, t1), N1}), t, Equal.sym(FD.array__Tree<U32>, FZW(O.Words{FD.array__thaw(U32, t1), N1}), t1, FD.array__freeze_thaw(U32, t1)),
+    Equal.trans(FD.array__Tree<U32>, FZW(O.Words{FD.array__thaw(U32, t1), N1}), FZW(O.Words{FD.array__thaw(U32, t), N}), t,
+      Equal.cong(O.Words, FD.array__Tree<U32>, z => FZW(z), O.Words{FD.array__thaw(U32, t1), N1}, O.Words{FD.array__thaw(U32, t), N}, e12), FD.array__freeze_thaw(U32, t)))
+  +en = Equal.cong(O.Words, U32, z => WO.len(z), O.Words{FD.array__thaw(U32, t1), N1}, O.Words{FD.array__thaw(U32, t), N}, e12)
+  +ed = Equal.trans(Nat, dw1, TDU(t1), dw, Equal.sym(Nat, TDU(t1), dw1, tdU(dw1, t1, pf1)),
+    Equal.trans(Nat, TDU(t1), TDU(t), dw, Equal.cong(FD.array__Tree<U32>, Nat, z => TDU(z), t1, t, et), tdU(dw, t, pf)))
+  +hkA = FD.logic__subst(U32, z => {Nat.is_le(Nat.mul(E48.k48(z), 12n), FD.spec_common__pow2(dw1)) == True{} : Bool}, N1, N, en, hk1)
+  +hk = FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(E48.k48(N), 12n), FD.spec_common__pow2(z)) == True{} : Bool}, dw1, dw, ed, hkA)
+  +hm = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.mul(E48.k48(N), 12n), VM.mulE(12n, E48.k48(N)), Equal.sym(Nat, VM.mulE(12n, E48.k48(N)), Nat.mul(E48.k48(N), 12n), meq(12n, E48.k48(N))), hk)
+  +hvN = FD.logic__subst(O.Words, z => {O.unit_ok(48, WO.len(z)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, t), N}, eo, hv)
+  (t, (dw, (N, (E48.k48(N), (eo, (pf, (hd, (unitq_k48(N, hvN, VU.div_u32(N, 48, FD.spec_numeric__from_nat(31n, 48n), {==}, {==}, {==})), hm))))))))
+
+def mk_sdm_k48(-w: O.Words, +s: S.Schema, +k: Nat, +rep: E48.rep_el(w, s), +hs: sdd(w, k), +hv: {O.unit_ok(48, WO.len(w)) == True{} : Bool}) -> sdm(w, 12n, k):
+  (+wf, +hl) = rep
+  (+t1, a1) = wf
+  (+dw1, a2) = a1
+  (+N1, a3) = a2
+  (+eo1, a4) = a3
+  (+pf1, a5) = a4
+  (+hd1, +hk1) = a5
+  (+t, b1) = hs
+  (+dw, b2) = b1
+  (+N, b3) = b2
+  (+eo, b4) = b3
+  (+pf, +hd) = b4
+  fsd_k48(w, k, t1, dw1, N1, eo1, pf1, hk1, t, dw, N, eo, pf, hd, hv)
 
 # the lists' views as the laws' walks
 def celq(+M: FD.array__Tree<U32>, +L: U32, +c: Nat, +ec: {U32.to_nat(L) == A.quad(VM.mulE(512n, c)) : Nat})

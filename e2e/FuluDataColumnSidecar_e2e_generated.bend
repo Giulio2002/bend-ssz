@@ -68,8 +68,8 @@ def g2(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +x0: O.U64, +v: FuluSigned
     case O.U64{+i0, +i1} FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+m, +sg}:
       g3(o, i0, i1, m, sg, N0, N1, N2, c0, c1, T0, T1, T2, TP, c2, dw0, dw1, dw2, dp, pf0, pf1, pf2, pfP, hdw0, hdw1, hdw2, hdp, ec0, ec1, ec2, hc0, hc1, hc2, hr0, hr1, hr2, hrP, eq)
 
-# (i): for every object the root law represents, its block lists of whole blocks at depth below 31 (hs0..hs2) and its proofs vector at depth below 31 (hsP)
-def FuluDataColumnSidecar_e2e_encode(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), +hs0: VEV.sdm(RT.pj_DataColumnSidecar_1(o), 512n, 31n), +hs1: VEV.sdm(RT.pj_DataColumnSidecar_2(o), 12n, 31n), +hs2: VEV.sdm(RT.pj_DataColumnSidecar_3(o), 12n, 31n), +hsP: BL.sdpv(RT.pj_DataColumnSidecar_5(o), 31n)) -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(o)))} == API.serialize(Spec.DataColumnSidecar(), RT.v_DataColumnSidecar(o)) : Maybe<&2, +List<U32>>}:
+# (i) over the block lists as whole blocks at depth below 31 (hs0..hs2) and the proofs vector at depth below 31 (hsP)
+def core_s(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), +hs0: VEV.sdm(RT.pj_DataColumnSidecar_1(o), 512n, 31n), +hs1: VEV.sdm(RT.pj_DataColumnSidecar_2(o), 12n, 31n), +hs2: VEV.sdm(RT.pj_DataColumnSidecar_3(o), 12n, 31n), +hsP: BL.sdpv(RT.pj_DataColumnSidecar_5(o), 31n)) -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(o)))} == API.serialize(Spec.DataColumnSidecar(), RT.v_DataColumnSidecar(o)) : Maybe<&2, +List<U32>>}:
   (+x0, q1) = rep
   (+eo, q2) = q1
   (+r1, q3) = q2
@@ -138,3 +138,16 @@ def FuluDataColumnSidecar_e2e_encode(-o: FuluDataColumnSidecar_d.DataColumnSidec
   +e3 = Equal.trans(FuluDataColumnSidecar_d.DataColumnSidecar, o, FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}, FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, O.BSome{v, O.BNone{}}, RT.pj_DataColumnSidecar_5(o)}, e2, Equal.cong(O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluDataColumnSidecar_d.DataColumnSidecar, z => FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, z, RT.pj_DataColumnSidecar_5(o)}, RT.pj_DataColumnSidecar_4(o), O.BSome{v, O.BNone{}}, ev))
   +e4 = Equal.trans(FuluDataColumnSidecar_d.DataColumnSidecar, o, FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, O.BSome{v, O.BNone{}}, RT.pj_DataColumnSidecar_5(o)}, FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, O.BSome{v, O.BNone{}}, O.Words{FD.array__thaw(U32, TP), 128}}, e3, Equal.cong(O.Words, FuluDataColumnSidecar_d.DataColumnSidecar, z => FuluDataColumnSidecar_d.DataColumnSidecar{x0, O.Words{FD.array__thaw(U32, T0), N0}, O.Words{FD.array__thaw(U32, T1), N1}, O.Words{FD.array__thaw(U32, T2), N2}, O.BSome{v, O.BNone{}}, z}, RT.pj_DataColumnSidecar_5(o), O.Words{FD.array__thaw(U32, TP), 128}, ewP))
   g2(o, x0, v, N0, N1, N2, c0, c1, T0, T1, T2, TP, c2, dw0, dw1, dw2, dp, pf0, pf1, pf2, pfP, hdw0, hdw1, hdw2, hdp, ec0, ec1, ec2, hc0, hc1, hc2, hr0, hr1, hr2, hrP, e4)
+
+# (i): for every object the root law represents, its block lists and proofs vector at depth below 31 (hd0..hd2, hsP: decoded-object
+# gaps) and its block lists whole blocks (hv0..hv2: the object API's own validity, O.unit_ok of each list's element size)
+def FuluDataColumnSidecar_e2e_encode(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), +hd0: VEV.sdd(RT.pj_DataColumnSidecar_1(o), 31n), +hd1: VEV.sdd(RT.pj_DataColumnSidecar_2(o), 31n), +hd2: VEV.sdd(RT.pj_DataColumnSidecar_3(o), 31n),
+    +hv0: {O.unit_ok(2048, WO.len(RT.pj_DataColumnSidecar_1(o))) == True{} : Bool}, +hv1: {O.unit_ok(48, WO.len(RT.pj_DataColumnSidecar_2(o))) == True{} : Bool}, +hv2: {O.unit_ok(48, WO.len(RT.pj_DataColumnSidecar_3(o))) == True{} : Bool},
+    +hsP: BL.sdpv(RT.pj_DataColumnSidecar_5(o), 31n)) -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(o)))} == API.serialize(Spec.DataColumnSidecar(), RT.v_DataColumnSidecar(o)) : Maybe<&2, +List<U32>>}:
+  (+x0, q1) = rep
+  (+eo, q2) = q1
+  (+r1, q3) = q2
+  (+r2, q4) = q3
+  (+r3, q5) = q4
+  core_s(o, rep, VEV.mk_sdm_kc(RT.pj_DataColumnSidecar_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar()))), 31n, r1, hd0, hv0), VEV.mk_sdm_k48(RT.pj_DataColumnSidecar_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar())))), 31n, r2, hd1, hv1),
+    VEV.mk_sdm_k48(RT.pj_DataColumnSidecar_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar()))))), 31n, r3, hd2, hv2), hsP)

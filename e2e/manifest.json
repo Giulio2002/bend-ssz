@@ -3710,7 +3710,7 @@
     "laws": [
      "FuluDataColumnSidecar_e2e_encode"
     ],
-    "premise": "rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), hs0..hs2: each block list holds whole blocks, its words at depth below 31 covering them (e2e_ve_DataColumnSidecar.sdm), hsP: the proofs vector's words at depth below 31 (BL.sdpv); the encode laws take depth below 31, the root law below 32"
+    "premise": "rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()); hv0..hv2: object API validity (each block list a whole number of blocks: O.unit_ok of its element size, the unit conjunct of its runtime _valid); decoded-object gaps: hd0..hd2 each block list's words at depth below 31 (e2e_ve_DataColumnSidecar.sdd), hsP the proofs vector's words at depth below 31 (BL.sdpv); the encode laws take depth below 31, the root law below 32"
    }
   ],
   "FuluDataColumnsByRootIdentifier_e2e_generated.bend": [

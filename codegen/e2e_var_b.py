@@ -2342,6 +2342,51 @@ def ve_dcs_text():
     VU.whole_q(N, {B_}, c, Equal.trans(Nat, U32.to_nat(N), A.quad(VM.mulE({E}n, c)), Nat.mul(c, U32.to_nat({B_})), ec, Equal.sym(Nat, Nat.mul(c, A.quad({E}n)), A.quad(VM.mulE({E}n, c)), VM.mulq(c, {E}n))), {{==}},
       VU.div_u32(N, {B_}, FD.spec_numeric__from_nat(31n, {B_}n), {{==}}, {{==}}, {{==}})))
 ''')
+    mks = []
+    for C_, kf, E, B_, _v in _DCS_BLK[:2]:
+        mks.append(f'''
+def unitq_{kf}(+N: U32, +hv: {{U32.is_eq(U32.mod(N, {B_}), 0) == True{{}} : Bool}},
+    dv: {{Nat.add(Nat.mul(U32.to_nat(U32.div(N, {B_})), U32.to_nat({B_})), U32.to_nat(U32.mod(N, {B_}))) == U32.to_nat(N) : Nat}} & {{Nat.is_lt(U32.to_nat(U32.mod(N, {B_})), U32.to_nat({B_})) == True{{}} : Bool}})
+    -> {{U32.to_nat(N) == A.quad(VM.mulE({E}n, {C_}.{kf}(N))) : Nat}}:
+  (+de, +dr) = dv
+  +e0 = FD.u32alg__eq_of(U32.mod(N, {B_}), 0, hv)
+  +em = Equal.trans(Nat, U32.to_nat(N), Nat.add(Nat.mul({C_}.{kf}(N), {B_}n), U32.to_nat(U32.mod(N, {B_}))), Nat.mul({C_}.{kf}(N), {B_}n),
+    Equal.sym(Nat, Nat.add(Nat.mul({C_}.{kf}(N), {B_}n), U32.to_nat(U32.mod(N, {B_}))), U32.to_nat(N), de),
+    FD.logic__subst(U32, z => {{Nat.add(Nat.mul({C_}.{kf}(N), {B_}n), U32.to_nat(z)) == Nat.mul({C_}.{kf}(N), {B_}n) : Nat}}, 0, U32.mod(N, {B_}), Equal.sym(U32, U32.mod(N, {B_}), 0, e0), FD.nat__add_zero(Nat.mul({C_}.{kf}(N), {B_}n))))
+  Equal.trans(Nat, U32.to_nat(N), Nat.mul({C_}.{kf}(N), A.quad({E}n)), A.quad(VM.mulE({E}n, {C_}.{kf}(N))), em, VM.mulq({C_}.{kf}(N), {E}n))
+
+def fsd_{kf}(-w: O.Words, +k: Nat, +t1: FD.array__Tree<U32>, +dw1: Nat, +N1: U32, +eo1: {{w == O.Words{{FD.array__thaw(U32, t1), N1}} : O.Words}},
+    +pf1: {{FD.array__perfect(U32, dw1, t1) == True{{}} : Bool}}, +hk1: {{Nat.is_le(Nat.mul({C_}.{kf}(N1), {E}n), FD.spec_common__pow2(dw1)) == True{{}} : Bool}},
+    +t: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {{w == O.Words{{FD.array__thaw(U32, t), N}} : O.Words}}, +pf: {{FD.array__perfect(U32, dw, t) == True{{}} : Bool}},
+    +hd: {{Nat.is_lt(dw, k) == True{{}} : Bool}}, +hv: {{O.unit_ok({B_}, WO.len(w)) == True{{}} : Bool}}) -> sdm(w, {E}n, k):
+  +e12 = Equal.trans(O.Words, O.Words{{FD.array__thaw(U32, t1), N1}}, w, O.Words{{FD.array__thaw(U32, t), N}}, Equal.sym(O.Words, w, O.Words{{FD.array__thaw(U32, t1), N1}}, eo1), eo)
+  +et = Equal.trans(FD.array__Tree<U32>, t1, FZW(O.Words{{FD.array__thaw(U32, t1), N1}}), t, Equal.sym(FD.array__Tree<U32>, FZW(O.Words{{FD.array__thaw(U32, t1), N1}}), t1, FD.array__freeze_thaw(U32, t1)),
+    Equal.trans(FD.array__Tree<U32>, FZW(O.Words{{FD.array__thaw(U32, t1), N1}}), FZW(O.Words{{FD.array__thaw(U32, t), N}}), t,
+      Equal.cong(O.Words, FD.array__Tree<U32>, z => FZW(z), O.Words{{FD.array__thaw(U32, t1), N1}}, O.Words{{FD.array__thaw(U32, t), N}}, e12), FD.array__freeze_thaw(U32, t)))
+  +en = Equal.cong(O.Words, U32, z => WO.len(z), O.Words{{FD.array__thaw(U32, t1), N1}}, O.Words{{FD.array__thaw(U32, t), N}}, e12)
+  +ed = Equal.trans(Nat, dw1, TDU(t1), dw, Equal.sym(Nat, TDU(t1), dw1, tdU(dw1, t1, pf1)),
+    Equal.trans(Nat, TDU(t1), TDU(t), dw, Equal.cong(FD.array__Tree<U32>, Nat, z => TDU(z), t1, t, et), tdU(dw, t, pf)))
+  +hkA = FD.logic__subst(U32, z => {{Nat.is_le(Nat.mul({C_}.{kf}(z), {E}n), FD.spec_common__pow2(dw1)) == True{{}} : Bool}}, N1, N, en, hk1)
+  +hk = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.mul({C_}.{kf}(N), {E}n), FD.spec_common__pow2(z)) == True{{}} : Bool}}, dw1, dw, ed, hkA)
+  +hm = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dw)) == True{{}} : Bool}}, Nat.mul({C_}.{kf}(N), {E}n), VM.mulE({E}n, {C_}.{kf}(N)), Equal.sym(Nat, VM.mulE({E}n, {C_}.{kf}(N)), Nat.mul({C_}.{kf}(N), {E}n), meq({E}n, {C_}.{kf}(N))), hk)
+  +hvN = FD.logic__subst(O.Words, z => {{O.unit_ok({B_}, WO.len(z)) == True{{}} : Bool}}, w, O.Words{{FD.array__thaw(U32, t), N}}, eo, hv)
+  (t, (dw, (N, ({C_}.{kf}(N), (eo, (pf, (hd, (unitq_{kf}(N, hvN, VU.div_u32(N, {B_}, FD.spec_numeric__from_nat(31n, {B_}n), {{==}}, {{==}}, {{==}})), hm))))))))
+
+def mk_sdm_{kf}(-w: O.Words, +s: S.Schema, +k: Nat, +rep: {C_}.rep_el(w, s), +hs: sdd(w, k), +hv: {{O.unit_ok({B_}, WO.len(w)) == True{{}} : Bool}}) -> sdm(w, {E}n, k):
+  (+wf, +hl) = rep
+  (+t1, a1) = wf
+  (+dw1, a2) = a1
+  (+N1, a3) = a2
+  (+eo1, a4) = a3
+  (+pf1, a5) = a4
+  (+hd1, +hk1) = a5
+  (+t, b1) = hs
+  (+dw, b2) = b1
+  (+N, b3) = b2
+  (+eo, b4) = b3
+  (+pf, +hd) = b4
+  fsd_{kf}(w, k, t1, dw1, N1, eo1, pf1, hk1, t, dw, N, eo, pf, hd, hv)
+''')
     body = f'''# a list of c blocks of E words (N = 4 E c bytes), its words at depth below k covering them
 def sdm(w: O.Words, +E: Nat, +k: Nat) -> Data:
   DK.Ex(FD.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, N => DK.Ex(Nat, c =>
@@ -2353,6 +2398,35 @@ def sdm(w: O.Words, +E: Nat, +k: Nat) -> Data:
 
 # the block count of a whole number of blocks
 {"".join(blk)}
+# the (i) premises: the storage at depth below k (a decoded-object gap, sdd) and the object API's own validity
+# (its unit conjunct O.unit_ok: a whole number of blocks); sdm from them and rep
+def sdd(w: O.Words, +k: Nat) -> Data:
+  DK.Ex(FD.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({{w == O.Words{{FD.array__thaw(U32, t), N}} : O.Words}},
+    DK.P2({{FD.array__perfect(U32, dw, t) == True{{}} : Bool}},
+          {{Nat.is_lt(dw, k) == True{{}} : Bool}})))))
+
+def TDU(t: FD.array__Tree<U32>) -> Nat:
+  match t:
+    case FD.TLeaf{{x}}: 0n
+    case FD.TNode{{l, r}}: 1n+TDU(l)
+
+def tdU(+d: Nat, +t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}) -> {{TDU(t) == d : Nat}}:
+  match d t:
+    case 0n FD.TLeaf{{+x}}: {{==}}
+    case 0n FD.TNode{{+l, +r}}: Empty.absurd({{TDU(FD.TNode{{l, r}}) == 0n : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{{+x}}: Empty.absurd({{TDU(FD.TLeaf{{x}}) == 1n+p : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{{+l, +r}}: Equal.cong(Nat, Nat, z => 1n+z, TDU(l), p, tdU(p, l, FD.array__pf_left(U32, p, l, r, pf)))
+
+def FZW(w: O.Words) -> FD.array__Tree<U32>:
+  match w:
+    case O.Words{{ws, +k}}: FD.array__freeze(U32, ws)
+
+def meq(+E: Nat, +c: Nat) -> {{VM.mulE(E, c) == Nat.mul(c, E) : Nat}}:
+  match c:
+    case 0n: {{==}}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => Nat.add(E, z), VM.mulE(E, p), Nat.mul(p, E), meq(E, p))
+{"".join(mks)}
 # the lists' views as the laws' walks
 def celq(+M: FD.array__Tree<U32>, +L: U32, +c: Nat, +ec: {{U32.to_nat(L) == A.quad(VM.mulE(512n, c)) : Nat}})
     -> {{CE.eview(O.Words{{FD.array__thaw(U32, M), L}}) == S.Sequence{{VM.bvit(c, 512n, FD.array__slots(U32, M))}} : S.Value}}:
@@ -2396,7 +2470,8 @@ def ve({allp}) -> {{RT.v_DataColumnSidecar({obj}) == EN.XE({alla}) : S.Value}}:
             'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC',
             'import ../proofs/obj/vmul.bend as VM', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/cells.bend as CE',
             'import ../proofs/obj/elems48.bend as E48', 'import ../proofs/obj/pv_obj.bend as PV', 'import ../proofs/obj/root_types.bend as RT',
-            f'import ../proofs/obj/{enc}.bend as EN', 'import ./e2e_chunks.bend as CH', 'import ./e2e_blist.bend as BL']
+            f'import ../proofs/obj/{enc}.bend as EN', 'import ./e2e_chunks.bend as CH', 'import ./e2e_blist.bend as BL',
+            'import ../proofs/obj/words_obj.bend as WO', 'import ../types/schema.bend as S']
     imps += [_rel(l) for l in text.splitlines() if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
     return '\n'.join(dict.fromkeys(imps)) + '''
 
@@ -2466,8 +2541,8 @@ def core({allp}) -> {G(obj)}:
     w = wit(X)
     sch = {pj: _re.sub(r'(?<![\w.])s(?![\w])', f'Spec.{X}()', s_) for pj, fn, s_, fty in w.fields}
     pjs = [f'RT.pj_{X}_{k}(o)' for k in range(1, 6)]
-    T_ = [f'# (i): for every object the root law represents, its block lists of whole blocks at depth below 31 (hs0..hs2) and its proofs vector at depth below 31 (hsP)',
-          f'def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs0: VEV.sdm({pjs[0]}, 512n, 31n), +hs1: VEV.sdm({pjs[1]}, 12n, 31n), +hs2: VEV.sdm({pjs[2]}, 12n, 31n), +hsP: BL.sdpv({pjs[4]}, 31n)) -> {G("o")}:',
+    T_ = [f'# (i) over the block lists as whole blocks at depth below 31 (hs0..hs2) and the proofs vector at depth below 31 (hsP)',
+          f'def core_s(-o: {OT}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs0: VEV.sdm({pjs[0]}, 512n, 31n), +hs1: VEV.sdm({pjs[1]}, 12n, 31n), +hs2: VEV.sdm({pjs[2]}, 12n, 31n), +hsP: BL.sdpv({pjs[4]}, 31n)) -> {G("o")}:',
           '  (+x0, q1) = rep', '  (+eo, q2) = q1', '  (+r1, q3) = q2', '  (+wf1, +nb1) = r1', '  (+r2, q4) = q3', '  (+wf2, +nb2) = r2',
           '  (+r3, q5) = q4', '  (+wf3, +nb3) = r3', '  (+r4, +r5) = q5', '  (+v, +ev) = r4', '  (+wf5, +nb5) = r5']
     for k in range(3):
@@ -2509,6 +2584,14 @@ def core({allp}) -> {G(obj)}:
         T_.append(f'  +e{k} = Equal.trans({OT}, o, {c0}, {c1}, {eq}, Equal.cong({fty}, {OT}, z => {hole}, {pj}, {rep_t}, {en}))')
         c0, eq = c1, f'e{k}'
     T_.append(f'  g2(o, x0, v, {ras}, {eq})')
+    T_ += ['', f'# (i): for every object the root law represents, its block lists and proofs vector at depth below 31 (hd0..hd2, hsP: decoded-object',
+           f'# gaps) and its block lists whole blocks (hv0..hv2: the object API\'s own validity, O.unit_ok of each list\'s element size)',
+           f'def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, Spec.{X}()), +hd0: VEV.sdd({pjs[0]}, 31n), +hd1: VEV.sdd({pjs[1]}, 31n), +hd2: VEV.sdd({pjs[2]}, 31n),',
+           f'    +hv0: {{O.unit_ok(2048, WO.len({pjs[0]})) == True{{}} : Bool}}, +hv1: {{O.unit_ok(48, WO.len({pjs[1]})) == True{{}} : Bool}}, +hv2: {{O.unit_ok(48, WO.len({pjs[2]})) == True{{}} : Bool}},',
+           f'    +hsP: BL.sdpv({pjs[4]}, 31n)) -> {G("o")}:',
+           '  (+x0, q1) = rep', '  (+eo, q2) = q1', '  (+r1, q3) = q2', '  (+r2, q4) = q3', '  (+r3, q5) = q4',
+           f'  core_s(o, rep, VEV.mk_sdm_kc({pjs[0]}, {fsch[0]}, 31n, r1, hd0, hv0), VEV.mk_sdm_k48({pjs[1]}, {fsch[1]}, 31n, r2, hd1, hv1),',
+           f'    VEV.mk_sdm_k48({pjs[2]}, {fsch[2]}, 31n, r3, hd2, hv2), hsP)']
     body = '\n'.join(L + T_) + '\n'
     imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
             'import ../src/obj.bend as O', f'import ../types/{R}_encode_ssz_generated.bend as {R}_e', 'import ../types/schema.bend as S',
@@ -6246,7 +6329,7 @@ VDEC_VIEWS['DataColumnSidecar'] = vdec_dcs('DataColumnSidecar')
 VROOT_SHAPES['DataColumnSidecar'] = vroot_container
 SUPPORT_OUT['e2e_ve_DataColumnSidecar.bend'] = ve_dcs_text()
 VENC_SHAPES['DataColumnSidecar'] = venc_dcs
-VENC_PREMISE['DataColumnSidecar'] = 'rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), hs0..hs2: each block list holds whole blocks, its words at depth below 31 covering them (e2e_ve_DataColumnSidecar.sdm), hsP: the proofs vector\'s words at depth below 31 (BL.sdpv); the encode laws take depth below 31, the root law below 32'
+VENC_PREMISE['DataColumnSidecar'] = 'rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()); hv0..hv2: object API validity (each block list a whole number of blocks: O.unit_ok of its element size, the unit conjunct of its runtime _valid); decoded-object gaps: hd0..hd2 each block list\'s words at depth below 31 (e2e_ve_DataColumnSidecar.sdd), hsP the proofs vector\'s words at depth below 31 (BL.sdpv); the encode laws take depth below 31, the root law below 32'
 VROOT_SHAPES['LightClientBootstrap'] = vroot_container
 SUPPORT_OUT['e2e_e48w.bend'] = e48w_text()
 SUPPORT_OUT['e2e_vw_LightClientBootstrap.bend'] = vw_module('LightClientBootstrap', 'big_var_bytes_LightClientBootstrap_win', [
