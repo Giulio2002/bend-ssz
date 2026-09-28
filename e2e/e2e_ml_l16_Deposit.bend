@@ -13,7 +13,7 @@ import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/vua_lay.bend as LY
-import ../proofs/obj/words_obj.bend as WO
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
