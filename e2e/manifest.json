@@ -3550,7 +3550,7 @@
     "laws": [
      "proglist_bool_e2e_encode"
     ],
-    "premise": "rep: PG.rep_plb(o, Spec.Gt83D8B3D008()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_plb(o, Spec.Gt83D8B3D008()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint128_e2e_generated.bend": [
@@ -3560,7 +3560,7 @@
     "laws": [
      "proglist_uint128_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl16(o, Spec.Gt1C2FA69562()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl16(o, Spec.Gt1C2FA69562()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint16_e2e_generated.bend": [
@@ -3570,7 +3570,7 @@
     "laws": [
      "proglist_uint16_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint256_e2e_generated.bend": [
@@ -3580,7 +3580,7 @@
     "laws": [
      "proglist_uint256_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl32(o, Spec.GtA8457965E2()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl32(o, Spec.GtA8457965E2()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint32_e2e_generated.bend": [
@@ -3590,7 +3590,7 @@
     "laws": [
      "proglist_uint32_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl4(o, Spec.Gt3A9420DD8E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl4(o, Spec.Gt3A9420DD8E()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint64_e2e_generated.bend": [
@@ -3600,7 +3600,7 @@
     "laws": [
      "proglist_uint64_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl8(o, Spec.GtE83F21B20A()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl8(o, Spec.GtE83F21B20A()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_uint8_e2e_generated.bend": [
@@ -3610,7 +3610,7 @@
     "laws": [
      "proglist_uint8_e2e_encode"
     ],
-    "premise": "rep: PG.rep_pl1(o, Spec.GtDE4B86A990()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: PG.rep_pl1(o, Spec.GtDE4B86A990()), hM: WO.len(o) <= VB.NMAX() (the object API's limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "bitlist_33_e2e_generated.bend": [
