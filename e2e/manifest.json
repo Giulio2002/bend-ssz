@@ -3401,6 +3401,16 @@
     "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) (the root law's representation invariant)"
    }
   ],
+  "ProgressiveTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) (the root law's representation invariant)"
+   }
+  ],
   "ProgressiveVarTestStruct_e2e_root_generated.bend": [
    {
     "name": "ProgressiveVarTestStruct",
@@ -6062,7 +6072,8 @@
   },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ProgressiveTestStruct_e2e_root_generated.bend"
   },
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",

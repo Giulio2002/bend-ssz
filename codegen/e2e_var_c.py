@@ -1521,7 +1521,7 @@ def _cp_shape(kd, T, k):
     W = lambda t, n: f'O.Words{{FD.array__thaw(U32, {t}), {n}}}'  # noqa: E731
     if kd == 'u':
         return [(f'x{k}', 'U32')], f'x{k}'
-    if kd == 'l':
+    if kd in ('l', 'w'):
         return [(f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')], W(f't{k}', f'N{k}')
     if kd == 'b':
         return [(f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')], f'O.Bits{{FD.array__thaw(U32, t{k}), N{k}}}'
@@ -1623,6 +1623,18 @@ def cpv(-v: {V}, +s: S.Schema, +rep: RT.rep_Gc465214E502(v, s)) -> {_ex(vsig, f'
   cpv2(v, x0, x2, ev, cpw({P1}, wf))
 """)
     for k, (kd, T) in enumerate(fs):
+        if kd == 'q':
+            rp, el, arr = CPA[T]
+            asig = [('t', f'FD.array__Tree<{el}>'), ('N', 'U32')]
+            AL = f'{T}{{{arr.format(t="t")}, N}}'
+            L.append(f"""# field {k}, a progressive list: its tree and length
+def cpa{k}(-v: {T}, +s: S.Schema, +rep: RT.{rp}(v, s)) -> {_ex(asig, f'{{v == {AL} : {T}}}')}:
+  (+t, +e1) = rep
+  (+dw, +e2) = e1
+  (+N, +e3) = e2
+  (+eq, +e4) = e3
+  (t, (N, eq))
+""")
         if kd == 'a':
             rp, el, arr = CPA[T]
             asig = [('t', f'FD.array__Tree<{el}>'), ('N', 'U32')]
@@ -1690,6 +1702,8 @@ def g1(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {uparams + ', ' if up
         kd = fs[k][0]
         if kd == 'l':
             args.append(f'cpw({PJ(k)}, wf{k})')
+        elif kd == 'w':
+            args.append(f'cpw({PJ(k)}, {pn[k]})')
         elif kd == 'b':
             args.append(f'cpb({PJ(k)}, {pn[k]})')
         elif kd == 'c':
@@ -3967,3 +3981,14 @@ for _X in ('GuAD91DEB870', 'Gu6DDF182530'):
     MWP[_X] = mwp_union_n
     VENC_SHAPES[_X] = venc_mw
     VENC_PREMISE[_X] = f'rep: RT.rep_{_X}(o) and hs: SU(o) (a progressive container arm\'s storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)'
+
+
+CPA['proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'] = ('rep_pl_Gc4ED9619F50', 'SmallTestStruct_d.Gc4ED9619F50', 'FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, {t})')
+CPA['proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'] = ('rep_pl_pl_Gc465214E502', 'RT.MB<RT.M_pl_Gc465214E502>', 'RT.am_pl_pl_Gc465214E502({t})')
+CPX['Gc221EC01D83'] = {'mods': ['ProgressiveTestStruct_d:ProgressiveTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+                                'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
+                                'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated'],
+                       'hmod': 'ProgressiveTestStruct_h:ProgressiveTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2',
+                       'fields': [('w', 'O.Words'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq')]}
+VROOT_SHAPES['Gc221EC01D83'] = vroot_complex
