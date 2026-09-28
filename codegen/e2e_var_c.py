@@ -3627,7 +3627,8 @@ def encp_kd():
     return int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', _okt(_obj('big_encx_pbits.bend'))).group(1))
 
 
-def mwp_prog(R, X, D):
+def prog_q(X, D):
+    """e2e_encq's record builder of X: rq_X(o, rep, hs) -> RQ_X(o) (defs text, imports)."""
     ci = _obj(f'big_encx_{X}_iface.bend')
     okt = _okt(ci)
     names = re.findall(r'\+(\w+): ', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))
@@ -3652,7 +3653,7 @@ def mwp_prog(R, X, D):
         elif f[0] == 'pb':
             sig.append(f'+hs{k}: EP.SDPB({PJ(k)}, {encp_kd()}n)')
     # the object: its fields replaced by their records' objects; the view item by item; OK conjunct by conjunct
-    MW = f'CI.MW{{{", ".join(ren[n] for n in names)}}}'
+    MW = f'CI_{X}.MW{{{", ".join(ren[n] for n in names)}}}'
     cur = [f'x{k}' if f[0] == 'u8' else PJ(k) for k, f in enumerate(fs)]
     eqn = 'eo'
     for k, f in enumerate(fs):
@@ -3692,7 +3693,7 @@ def mwp_prog(R, X, D):
     steps = []
     for p in range(len(fs)):
         it = [lhs[q] if q < p else (eqs[q][0] if q == p else rfull[q]) for q in range(len(fs))]
-        steps.append(f'  %{eqs[p][1]} : {{RT.v_{X}(CI.TH({MW})) == {seq(it)} : S.Value}}')
+        steps.append(f'  %{eqs[p][1]} : {{RT.v_{X}(CI_{X}.TH({MW})) == {seq(it)} : S.Value}}')
     # the total bound: closed field bounds, then the one bit list's (bnd)
     lens = {}
     for k, f in enumerate(fs):
@@ -3726,6 +3727,10 @@ def mwp_prog(R, X, D):
     BLEAF = f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
     BPROOF = (f'FD.nat__le_trans({SUM}, Nat.add({va}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
               f'    EP.bnd({va}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc}))')
+    hc1 = (f'FD.nat__le_trans(Nat.add({va + 1}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
+    BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
+               f'    EP.bnd({va + 1}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc1}))')
+    FARGS = ', '.join(ren[n] for n in names)
     leaf = {BLEAF: 'hb'}
     for k, f in enumerate(fs):
         mod = fmods[names[k]].split('.')[0] if f[0] != 'u8' else None
@@ -3756,17 +3761,20 @@ def mwp_prog(R, X, D):
         vwv.append(f'+v{k}: {{{lhs[k]} == {rfull[k]} : S.Value}}')
     vwargs = ', '.join([('x' if f[0] == 'u8' else 'm') + str(k) for k, f in enumerate(fs)] + [f'h{k}' for k in us] + [f'v{k}' for k, f in enumerate(fs) if f[0] != 'u8'])
     defs = f'''# the object's view is the record's
-def vw({vwp}{vwh}{", ".join(vwv)}) -> {{RT.v_{X}(CI.TH({MW})) == CI.VAL({MW}) : S.Value}}:
+def vw_{X}({vwp}{vwh}{", ".join(vwv)}) -> {{RT.v_{X}(CI_{X}.TH({MW})) == CI_{X}.VAL({MW}) : S.Value}}:
 ''' + '\n'.join(steps) + f'''
   {{==}}
 
 # the object's record from its fields' records
-def c1(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)})
-    -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode(o)))}} == API.serialize(Spec.{X}(), RT.v_{X}(o)) : Maybe<&2, +List<U32>>}}:
+def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)})
+    -> RQ_{X}(o):
 {chr(10).join(unpr + unp)}
   +hb = {BPROOF}
   +hok = {HOK}
-  via(o, {MW}, {eqn}, vw({vwargs}), hok)
+  +hb1 = {BPROOF1}
+  +lb = FD.logic__subst(Nat, z => {{Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}, {SUM}, List.length(&2, U32, K_{X}.ENCC({FARGS})),
+    Equal.sym(Nat, List.length(&2, U32, K_{X}.ENCC({FARGS})), {SUM}, CI_{X}.lenE({FARGS}, hok)), hb1)
+  ({MW}, ({eqn}, (vw_{X}({vwargs}), (hok, lb))))
 '''
     lines, src = [], 'rep'
     for i, k in enumerate(us):
@@ -3777,19 +3785,41 @@ def c1(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)})
     pn = {i: (f'q{i}' if i == n - 1 else f'p{i}') for i in range(n)}
     for i in range(n - 1):
         lines.append(f'  (+p{i}, +q{i + 1}) = q{i}')
+    pks = [k for k, f in enumerate(fs) if f[0] != 'u8']
+    src = 'hs'
+    for i, k in enumerate(pks):
+        lines.append(f'  +hs{k} = {src}' if i == len(pks) - 1 else f'  (+hs{k}, +hr{i}) = {src}')
+        src = f'hr{i}'
     args = []
     for k, f in enumerate(fs):
         if f[0] == 'l':
             args.append(f'ER.lb_{f[1]}({PJ(k)}, {pn[k]}, hs{k})')
         elif f[0] == 'pb':
             args.append(f'EP.pbb({PJ(k)}, {pn[k]}, hs{k})')
-    lines.append(f'  c1(o, {"".join(f"x{k}, " for k in us)}eo, {"".join(pn[k] + ", " for k in us)}' + ', '.join(args) + ')')
-    body = '\n'.join(lines)
-    pimps = ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/len_bridge.bend as LB',
-             'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/packed_bytes.bend as PBF',
-             'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/nat_order.bend as Order', 'import ./e2e_blist.bend as BL',
-             'import ./e2e_encr.bend as ER', 'import ./e2e_encp.bend as EP'] + imps
-    return defs, body, pimps, ', '.join(sig)
+    lines.append(f'  c1_{X}(o, {"".join(f"x{k}, " for k in us)}eo, {"".join(pn[k] + ", " for k in us)}' + ', '.join(args) + ')')
+    prems = []
+    for k, f in enumerate(fs):
+        if f[0] == 'l':
+            prems.append(f'BL.sdk({PJ(k).replace("(o)", "(v)")}, {encr_k(f[1])}n)')
+        elif f[0] == 'pb':
+            prems.append(f'EP.SDPB({PJ(k).replace("(o)", "(v)")}, {encp_kd()}n)')
+    PREM = prems[-1]
+    for q in reversed(prems[:-1]):
+        PREM = f'DK.P2({q}, {PREM})'
+    head = f"""# ---- {X} ----
+def PREM_{X}(v: {D}) -> Data: {PREM}
+
+def RQ_{X}(o: {D}) -> Data:
+  DK.Ex(CI_{X}.MW, m => DK.P2({{o == CI_{X}.TH(m) : {D}}}, DK.P2({{RT.v_{X}(CI_{X}.TH(m)) == CI_{X}.VAL(m) : S.Value}},
+    DK.P2({{CI_{X}.OK(m) == True{{}} : Bool}}, {{Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}))))
+
+"""
+    rq = f"""
+def rq_{X}(-o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: PREM_{X}(o)) -> RQ_{X}(o):
+""" + '\n'.join(lines) + '\n'
+    kmod = re.search(r'^import (\S+) as K$', ci, re.M).group(1)
+    imps += [f'import ../proofs/obj/big_encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
+    return head + defs + rq, imps
 
 
 def prog_premise(X):
@@ -3805,6 +3835,127 @@ def prog_premise(X):
 
 
 for _X in PROGS:
-    MWP[_X] = mwp_prog
     VENC_SHAPES[_X] = venc_mw
-    VENC_PREMISE[_X] = prog_premise(_X)
+
+
+def encq_text():
+    L, imps = [], []
+    for X in PROGS:
+        D = f'T.{X}'
+        t, im = prog_q(X, D)
+        L.append(t)
+        imps += im
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../types/generic_obj.bend as T',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/generic_specs.bend as Spec',
+            'import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/len_bridge.bend as LB',
+            'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/packed_bytes.bend as PBF',
+            'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/nat_order.bend as Order', 'import ./e2e_blist.bend as BL',
+            'import ./e2e_encr.bend as ER', 'import ./e2e_encp.bend as EP']
+    return '\n'.join(dict.fromkeys(head + imps)) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# The progressive containers' encode records from the root law's representation (rq_X): the object is
+# TH(m), its view VAL(m), m valid, 1 + its bytes within the bound (what a union's arm record takes).
+
+''' + '\n'.join(L)
+
+
+SUPPORT_OUT['e2e_encq.bend'] = encq_text()
+
+
+def mwp_prog2(R, X, D):
+    defs = f'''def vq(-o: {D}, +c: EQ.RQ_{X}(o)) -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode(o)))}} == API.serialize(Spec.{X}(), RT.v_{X}(o)) : Maybe<&2, +List<U32>>}}:
+  (+m, +c1) = c
+  (+eo, +c2) = c1
+  (+ev, +c3) = c2
+  (+hok, +lb) = c3
+  via(o, m, eo, ev, hok)
+'''
+    return defs, f'  vq(o, EQ.rq_{X}(o, rep, hs))', ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_encq.bend as EQ'], f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs: EQ.PREM_{X}(o)'
+
+
+def prog_premise2(X):
+    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o), its storage fields\' premises at their encode laws\' bounds (read from the laws): '
+            + prog_premise(X).split(': ', 2)[-1])
+
+
+for _X in PROGS:
+    MWP[_X] = mwp_prog2
+    VENC_PREMISE[_X] = prog_premise2(_X)
+
+
+# ---- (i) of a CompatibleUnion with any arms: the selected arm's record (a uint8 container's value, or a
+# progressive container's record e2e_encq.rq_Arm under its premises SU(o)) as the union's record MWk ----
+def mwp_union_n(R, X, D):
+    vsrc = (ROOT / 'proofs/obj/root_gtypes2.bend').read_text()
+    pcs = dict((int(k), b) for k, b in re.findall(rf'^def pc_{X}_(\d+)\(o: .*?\) -> Data: (.*)$', vsrc, re.M))
+    ci = _obj(f'big_encx_{X}_iface.bend')
+    G = lambda o: f'{{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode({o})))}} == API.serialize(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731
+    vbody = re.search(rf'^def v_{X}\(o: .*?\n  match o:\n((?:    case .*\n)+)', vsrc, re.M).group(1)
+    sels = dict((int(c), sel) for c, sel in re.findall(rf'case \w+\.{X}_c(\d+){{v}}: S\.Selected{{(\d+),', vbody))
+    L, su = [], []
+    for k in sorted(pcs):
+        b = pcs[k]
+        m = re.match(r'DK\.Ex\((\w+)\.(\w+), v =>', b)
+        if m:
+            C = f'T.{m.group(2)}'
+            su.append(f'    case {D}_c{k}{{v}}: {{True{{}} == True{{}} : Bool}}')
+            L.append(f'''def dx{k}(-o: {D}, +x: U32, +eo: {{o == {D}_c{k}{{{C}{{x}}}} : {D}}}, +hv: {{U32.is_lt(x, 256) == True{{}} : Bool}}) -> {G('o')}:
+  +hok = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(x), U32.to_nat(255)), U32.is_le(x, 255),
+    Equal.sym(Bool, U32.is_le(x, 255), Nat.is_le(U32.to_nat(x), U32.to_nat(255)), VU.le_u32(x, 255)), LB.small(x, hv))
+  +ev = Equal.cong(U32, S.Value, z => S.Selected{{{sels[k]}, S.Sequence{{S.Items{{S.UnsignedValue{{P.UInt{{z, 0, 0, 0, 0, 0, 0, 0}}}}, S.EmptyItems{{}}}}}}}}, x, U32.and(x, 255),
+    Equal.sym(U32, U32.and(x, 255), x, VBB.ea(x, hv)))
+  via(o, CI.MW{k}{{x}}, eo, ev, hok)
+def dk{k}(-o: {D}, +v: {C}, +eo: {{o == {D}_c{k}{{v}} : {D}}}, +rp: RN.rp_{m.group(2)}(v)) -> {G('o')}:
+  match v:
+    case {C}{{+x}}: dx{k}(o, x, eo, rp)
+def arm{k}(-o: {D}, +pc: RT.pc_{X}_{k}(o), +hs: SU(o)) -> {G('o')}:
+  (+v, +q) = pc
+  (+eo, +rp) = q
+  dk{k}(o, v, eo, rp)
+''')
+        else:
+            m2 = re.match(rf'DK\.P2\(\{{o == \w+\.{X}_c{k}\{{pju_{X}_{k}\(o\)\}} : \S+\}}, rep_(\w+)\(pju_{X}_{k}\(o\), (.*)\)\)$', b)
+            A = m2.group(1)
+            EA = re.search(rf'^import \./big_encx_{A}_iface\.bend as (\w+)$', ci, re.M).group(1)
+            PJU = f'RT.pju_{X}_{k}(o)'
+            su.append(f'    case {D}_c{k}{{v}}: EQ.PREM_{A}(v)')
+            L.append(f'''def ak{k}(-o: {D}, +eo: {{o == {D}_c{k}{{{PJU}}} : {D}}}, +c: EQ.RQ_{A}({PJU})) -> {G('o')}:
+  (+m, +c1) = c
+  (+e, +c2) = c1
+  (+v, +c3) = c2
+  (+ok, +lb) = c3
+  via(o, CI.MW{k}{{m}}, Equal.trans({D}, o, {D}_c{k}{{{PJU}}}, {D}_c{k}{{{EA}.TH(m)}}, eo, Equal.cong(T.{A}, {D}, z => {D}_c{k}{{z}}, {PJU}, {EA}.TH(m), e)),
+    Equal.cong(S.Value, S.Value, z => S.Selected{{{sels[k]}, z}}, RT.v_{A}({EA}.TH(m)), {EA}.VAL(m), v),
+    FD.logic__and_intro({EA}.OK(m), Nat.is_le(1n+List.length(&2, U32, {EA}.ENC(m)), A.quad(VB.pw(28n))), ok, lb))
+def arm{k}(-o: {D}, +pc: RT.pc_{X}_{k}(o), +hs: SU(o)) -> {G('o')}:
+  (+eo, +ra) = pc
+  ak{k}(o, eo, EQ.rq_{A}({PJU}, ra, FD.logic__subst({D}, z => SU(z), o, {D}_c{k}{{{PJU}}}, eo, hs)))
+''')
+    pors = sorted(int(i) for i in re.findall(rf'^def por_{X}_(\d+)\(', vsrc, re.M))
+    for i in reversed(pors):
+        b = re.search(rf'^def por_{X}_{i}\(o: .*?\) -> Data: DK\.Or2\((\w+)_{X}_(\d+)\(o\), (\w+)_{X}_(\d+)\(o\)\)$', vsrc, re.M)
+        call = lambda kind, j, a: f'arm{j}(o, {a}, hs)' if kind == 'pc' else f'rp{j}(o, {a}, hs)'  # noqa: E731
+        L.append(f'''def rp{i}(-o: {D}, +r: RT.por_{X}_{i}(o), +hs: SU(o)) -> {G('o')}:
+  match r:
+    case Inl{{a}}: {call(b.group(1), b.group(2), 'a')}
+    case Inr{{b}}: {call(b.group(3), b.group(4), 'b')}
+''')
+    defs = f'''# the premise: the selected arm's storage premises (a progressive container arm's EQ.PREM_Arm)
+def SU(o: {D}) -> Data:
+  match o:
+{chr(10).join(su)}
+
+''' + '\n'.join(L)
+    body = '  rp0(o, rep, hs)' if pors else '  arm0(o, rep, hs)'
+    imps = ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vu32.bend as VU',
+            'import ../proofs/obj/len_bridge.bend as LB', 'import ../proofs/obj/vbitb.bend as VBB', 'import ../types/generic_obj.bend as T',
+            'import ./e2e_encq.bend as EQ'] + [f'import ../proofs/obj/{p[2:]} as {al}' for p, al in re.findall(r'^import (\./big_encx_\w+_iface\.bend) as (EA_\w+)$', ci, re.M)]
+    return defs, body, imps, f'+rep: RT.rep_{X}(o), +hs: SU(o)'
+
+
+for _X in ('GuAD91DEB870', 'Gu6DDF182530'):
+    MWP[_X] = mwp_union_n
+    VENC_SHAPES[_X] = venc_mw
+    VENC_PREMISE[_X] = f'rep: RT.rep_{_X}(o) and hs: SU(o) (a progressive container arm\'s storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)'

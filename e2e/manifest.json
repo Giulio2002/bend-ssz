@@ -3511,6 +3511,26 @@
     "premise": "rep: RT.rep_GuA2212AE21F(o) (the root law's representation invariant; no storage premise)"
    }
   ],
+  "CompatibleUnionABCA_e2e_generated.bend": [
+   {
+    "name": "CompatibleUnionABCA",
+    "generated_name": "Gu6DDF182530",
+    "laws": [
+     "CompatibleUnionABCA_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gu6DDF182530(o) and hs: SU(o) (a progressive container arm's storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)"
+   }
+  ],
+  "CompatibleUnionBC_e2e_generated.bend": [
+   {
+    "name": "CompatibleUnionBC",
+    "generated_name": "GuAD91DEB870",
+    "laws": [
+     "CompatibleUnionBC_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_GuAD91DEB870(o) and hs: SU(o) (a progressive container arm's storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)"
+   }
+  ],
   "ComplexTestStruct_e2e_generated.bend": [
    {
     "name": "ComplexTestStruct",
@@ -3648,7 +3668,7 @@
     "laws": [
      "ProgressiveSingleListContainerTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and the storage premises, each at its field's encode law's bounds (read from the law): hs0: EP.SDPB(pj_0(o), 28n) (field 0's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 28n) (field 0's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
@@ -3658,7 +3678,7 @@
     "laws": [
      "ProgressiveVarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and the storage premises, each at its field's encode law's bounds (read from the law): hs1: BL.sdk(pj_1(o), 28n) (field 1's words below depth 28); hs2: EP.SDPB(pj_2(o), 28n) (field 2's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and hs: EQ.PREM_Gp66304057C3(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs1: BL.sdk(pj_1(o), 28n) (field 1's words below depth 28); hs2: EP.SDPB(pj_2(o), 28n) (field 2's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "VarTestStruct_e2e_generated.bend": [
@@ -6052,18 +6072,6 @@
    "generated_name": "Gc60805EC295",
    "reason": "encode laws not over the same free words / bits"
   },
-  "CompatibleUnionBC": {
-   "generated_name": "GuAD91DEB870",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "CompatibleUnionBC_e2e_dec_generated.bend",
-   "root": "CompatibleUnionBC_e2e_root_generated.bend"
-  },
-  "CompatibleUnionABCA": {
-   "generated_name": "Gu6DDF182530",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "CompatibleUnionABCA_e2e_dec_generated.bend",
-   "root": "CompatibleUnionABCA_e2e_root_generated.bend"
-  },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits",
@@ -6453,6 +6461,18 @@
    "ii_iii": "CompatibleUnionA_e2e_dec_generated.bend",
    "iv": "CompatibleUnionA_e2e_root_generated.bend"
   },
+  "CompatibleUnionABCA": {
+   "generated_name": "Gu6DDF182530",
+   "i": "CompatibleUnionABCA_e2e_generated.bend",
+   "ii_iii": "CompatibleUnionABCA_e2e_dec_generated.bend",
+   "iv": "CompatibleUnionABCA_e2e_root_generated.bend"
+  },
+  "CompatibleUnionBC": {
+   "generated_name": "GuAD91DEB870",
+   "i": "CompatibleUnionBC_e2e_generated.bend",
+   "ii_iii": "CompatibleUnionBC_e2e_dec_generated.bend",
+   "iv": "CompatibleUnionBC_e2e_root_generated.bend"
+  },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
    "i": "ComplexTestStruct_e2e_generated.bend",
@@ -6717,7 +6737,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": "CompatibleUnionABCA_e2e_dec_generated.bend"
+   "bridged": null
   },
   "CompatibleUnionA": {
    "generated_name": "GuA2212AE21F",
@@ -6735,7 +6755,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": "CompatibleUnionBC_e2e_dec_generated.bend"
+   "bridged": null
   },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
