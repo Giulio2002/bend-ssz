@@ -6484,7 +6484,15 @@ SUPPORT_OUT['e2e_vbx_LightClientUpdate.bend'] = vbx_module('LightClientUpdate', 
     ['import ./e2e_vbx_LightClientHeader.bend as YV', 'import ./e2e_fx.bend as FXV', 'import ../proofs/obj/root_names.bend as RN'])
 VDEC_VIEWS['LightClientUpdate'] = vdec_bx('LightClientUpdate', 'e2e_vbx_LightClientUpdate')
 SUPPORT_OUT['e2e_pv8.bend'] = pv8_text()
-SUPPORT_OUT['e2e_mw.bend'] = mw_text()
+# the extra data record (R_B / mk_B, used by the execution payload's parts) in a light companion: its
+# importers then skip the LightClient headers' records (big_encx_ExecutionPayloadHeader, ~4 s / 1 GB)
+def _mw_split():
+    import light_split as LS
+    h, l = LS.split(mw_text(), {'R_B', 'mk_B', 'bvw', 'bvwk'}, './e2e_mw_light.bend', 'codegen/e2e_bridge.py (codegen/e2e_var_b.py)')
+    return h, l
+
+
+SUPPORT_OUT['e2e_mw.bend'], SUPPORT_OUT['e2e_mw_light.bend'] = _mw_split()
 VENC_SHAPES['LightClientFinalityUpdate'] = venc_fu
 VENC_PREMISE['LightClientFinalityUpdate'] = 'rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mw.SHS_L of the two headers (their execution payload headers\' logs bloom at depth below 31 and extra data below 28, their branches below 31); hB: BL.sdpv of the finality branch at depth below 31'
 VENC_SHAPES['LightClientUpdate'] = venc_up

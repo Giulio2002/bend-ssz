@@ -26,7 +26,7 @@ import ../types/Fulu_list_Withdrawal_16_def_generated.bend as Fulu_list_Withdraw
 import ../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
 import ./e2e_cap.bend as C
 import ./e2e_blist.bend as BL
-import ./e2e_mw.bend as MW
+import ./e2e_mw_light.bend as MW
 import ./e2e_eptx.bend as TX
 import ./e2e_rl_ExecutionPayload.bend as RLV
 
