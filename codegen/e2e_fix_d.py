@@ -2424,6 +2424,183 @@ def sc_dec_text(EB):
     return ns['OUT']
 
 
+# the generator of FuluBlobSidecar's (i) file (a script run by bs_enc_text)
+BS_ENC_GEN = r"""m=amap['map']['BlobSidecar']
+imp=FX.Imp()
+ee, es = m['encode_eval'][0], m['encode_spec'][0]
+b_ee, b_es = EB.law(cache, ee), EB.law(cache, es)
+q=lambda t,f: imp.qual(EB, t, f)
+stmt=q(b_ee[3], ee['file'])
+mt=re.match(r'\{F\.emitted\(T\.BlobSidecar, T\.BlobSidecar_encode\((.*)\), k\) == \(\1, (.*)\) : T\.BlobSidecar & \+List<U32>\}$', stmt)
+OBJ, BY = mt.group(1), mt.group(2)
+AE=imp.alias('proofs/obj/'+ee['file'])
+eparams=[FX.pmode(p)[1] for p in b_ee[2]]
+sval=q(EB.call_args(b_es[3],'Decoding.decodes')[2], es['file'])
+sbytes=q(EB.call_args(b_es[3],'Decoding.decodes')[1], es['file'])
+sparams=[FX.pmode(p)[1] for p in b_es[2]]
+SL='F.limbs(FD.array__slots(U32, l))'
+SV=FX.subv(sval, {'bw':'FD.array__slots(U32, l)'})
+SB=FX.subv(sbytes, {'bw':'FD.array__slots(U32, l)'})
+assert SB==BY
+MB='Maybe<&2, +List<U32>>'
+OT='T.BlobSidecar'
+RTa=imp.alias('proofs/obj/root_types.bend')
+VO=lambda o: f'{RTa}.v_BlobSidecar({o})'
+G=lambda o, v: f'{{Some{{E.obytes(Pair.snd({OT}, B.Buf, T.BlobSidecar_encode({o})))}} == API.serialize(Spec.BlobSidecar(), {v}) : {MB}}}'
+NW='U32.shrn((131928 + 3 : U32), 2n)'
+eargs=', '.join({'k':NW,'ek':'{==}'}.get(p,p) for p in eparams)
+HBW='FD.nat__eq_from_is_eq(FD.spec_common__length(U32, FD.array__slots(U32, l)), 32768n, FD.logic__subst(Nat, z => {Nat.is_eq(z, 32768n) == True{} : Bool}, FD.spec_common__pow2(15n), FD.spec_common__length(U32, FD.array__slots(U32, l)), Equal.sym(Nat, FD.spec_common__length(U32, FD.array__slots(U32, l)), FD.spec_common__pow2(15n), FD.array__slots_length(U32, 15n, l, pl)), {==}))'
+AS_=imp.alias('proofs/obj/'+es['file'])
+sargs=', '.join({'bw':'FD.array__slots(U32, l)','hbw':HBW,'s':'Spec.BlobSidecar()','es':'{==}'}.get(p,p) for p in sparams)
+a={'put':'BlobSidecar_put','outd':'16','N':'131928','NW':NW}
+core=EB.any_core('R','BlobSidecar','BlobSidecar','@OBJ@','@VIEW@','@ENC@','@DEC@',a)
+core=re.sub(r'O\.Words(?!\{)', OT, core).replace('@OBJ@',OBJ).replace('@VIEW@',SV).replace('WV',BY).replace('@ENC@',f'{AE}.{ee["law"]}({eargs})').replace('@DEC@',f'{AS_}.{es["law"]}({sargs})')
+# view bridge: the blob field
+blobW='O.Words{ANode{FD.array__thaw(U32, l), FD.array__thaw(U32, r)}, 131072}'
+assert blobW in OBJ
+ps_decl=[]
+for p in b_ee[2]:
+    md,n,t=FX.pmode(p)
+    if n in ('k','ek'): continue
+    ps_decl.append(f'{md}{n}: {q(t, ee["file"])}')
+PD=', '.join(ps_decl)
+PA=', '.join(n for n in eparams if n not in ('k','ek'))
+VOB=VO(OBJ)
+# unfolded view with the blob's wview abstracted
+x=re.match(r'T\.BlobSidecar\{(.*)\}$', OBJ)
+fl=FX.split_args(OBJ)[1]
+UV=f'S.Sequence{{S.Items{{{q("RN.v_u64","root_types.bend")}({fl[0]}), S.Items{{S.BytesValue{{@@}}, S.Items{{{q("RN.v_b48","root_types.bend")}({fl[2]}), S.Items{{{q("RN.v_b48","root_types.bend")}({fl[3]}), S.Items{{{RTa}.v_SignedBeaconBlockHeader_bx({fl[4]}), S.Items{{{q("PV.pview","root_types.bend")}({fl[5]}), S.EmptyItems{{}}}}}}}}}}}}}}'
+UV=UV+'}'*(UV.count('{')-UV.count('}'))
+enc_core=f'''def bs_br({PD}) -> {{{VOB} == {SV} : S.Value}}:
+  Equal.trans(S.Value, {UV.replace("@@", "WO.wview("+blobW+")")}, {UV.replace("@@", SL)}, {SV},
+    Equal.cong(+List<U32>, S.Value, z => {UV.replace("@@","z")}, WO.wview({blobW}), {SL}, XW.vb(l, r, 131072, XW.vleng(15n, l, pl, 131072, 131072n, XW.nk(17n, {{==}}, 131072, {{==}}, 131072n, {{==}}), {{==}}))),
+    {{==}})
+
+def bs_w({PD}) -> {G(OBJ, VOB)}:
+  %Equal.sym(S.Value, {VOB}, {SV}, bs_br({PA})) : {G(OBJ, "_")}
+{core}
+'''
+hdr='''import Base
+import ../END_TO_END.bend as E2E
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/obj.bend as O
+import ../types/fulu_obj.bend as T
+import ../types/schema.bend as S
+import ../types/primitive.bend as P
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/codec.bend as Encoding
+import ../proofs/type_validator_soundness.bend as VS
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/spec_fixed.bend as F
+import ../proofs/obj/words_obj.bend as WO
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
+import ./e2e_any.bend as E4
+import ./e2e_fixdw.bend as XW
+import ./e2e_fixd.bend as X
+'''
+FULL0=hdr+"\n".join(imp.lines())+"\n\n"+enc_core
+
+# ---- top (i) ----
+rb=FX.Rebuild(EB, imp, 'root_types.bend')
+Wr,Er=rb.run('rep_BlobSidecar','o','rep','Spec.BlobSidecar()')
+facts=dict(rb.facts)
+cf1=[t for v,t in rb.facts if 'ByteVector_length' in t][0]; v_cf1=[v for v,t in rb.facts if t==cf1][0]
+cf5=[t for v,t in rb.facts if 'chunks_of' in t][0]; v_cf5=[v for v,t in rb.facts if t==cf5][0]
+fa=FX.split_args(Wr)[1]
+x0w, bw_, x2w, x3w, boxw, pw_ = fa
+tb, Nb = re.match(r'O\.Words\{FD\.array__thaw\(U32, (\w+)\), (\w+)\}', bw_).groups()
+tp, Np = re.match(r'O\.Words\{FD\.array__thaw\(U32, (\w+)\), (\w+)\}', pw_).groups()
+vh = re.match(r'O\.BSome\{(\w+), O\.BNone\{\}\}', boxw).group(1)
+en5=[(v,t) for v,t in rb.facts if t.startswith(f'{{U32.to_nat({Np}) == ')][0]
+qv=re.search(r'e32\((\w+)\)', en5[1]).group(1)
+# the field equations: the eo of each storage's wf (the first equality line after its witnesses)
+pj1=f'{RTa}.pj_BlobSidecar_1(o)'; pj5=f'{RTa}.pj_BlobSidecar_5(o)'
+# find eq vars: search rb.lines order: the var bound right after the N/q/r witnesses
+def eqvar(Nv):
+    idx=[i for i,l in enumerate(rb.lines) if l.startswith(f'(+{Nv},')][0]
+    # the next '(+aX, +bY) = ...' whose left is the equation
+    for l in rb.lines[idx+1:]:
+        m_=re.match(r'\(\+(a\d+), \+(b\d+)\) = ', l)
+        if m_: return m_.group(1)
+e1v, e5v = eqvar(Nb), eqvar(Np)
+OW=lambda t,n: f'O.Words{{FD.array__thaw(U32, {t}), {n}}}'
+sc1=re.search(r'ByteVector_length\((.*)\)\) == True', cf1).group(1)
+sc5=re.search(r'Vector_length\((.*)\)\) == True', cf5).group(1)
+Gt=lambda o: f'{{Some{{E.obytes(Pair.snd({OT}, B.Buf, T.BlobSidecar_encode({o})))}} == API.serialize(Spec.BlobSidecar(), {VO(o)}) : {MB}}}'
+BSo=lambda a,b,c,d,e,f: f'{OT}{{{a}, {b}, {c}, {d}, {e}, {f}}}'
+xs=[f'f{i}' for i in range(76)]
+pat=(f'O.U64{{+x0, +x1}} T.Bytes48{{{", ".join("+"+x for x in xs[0:12])}}} T.Bytes48{{{", ".join("+"+x for x in xs[12:24])}}} '
+     f'T.SignedBeaconBlockHeader{{T.BeaconBlockHeader{{O.U64{{+f24, +f25}}, O.U64{{+f26, +f27}}, T.Bytes32{{{", ".join("+"+x for x in xs[28:36])}}}, T.Bytes32{{{", ".join("+"+x for x in xs[36:44])}}}, T.Bytes32{{{", ".join("+"+x for x in xs[44:52])}}}}}, T.Bytes96{{{", ".join("+"+x for x in xs[52:76])}}}}}')
+lv=[re.sub(r'\(t\)', '(tp)', EB.leafterm(i,8)) for i in range(256)]
+def lit(d, ls):
+    if d==0: return f'ALeaf{{{ls[0]}}}'
+    h=len(ls)//2
+    return f'ANode{{{lit(d-1,ls[:h])}, {lit(d-1,ls[h:])}}}'
+PLIT=lit(8, lv)
+BL='ANode{FD.array__thaw(U32, E3.lo(tb)), FD.array__thaw(U32, E3.hi(tb))}'
+bsw_args=['E3.lo(tb)','E3.hi(tb)','XW.spl(15n, tb, pfb)','XW.spr(15n, tb, pfb)','x0','x1']+xs+lv
+# match bs_w's parameter order
+order=[n for n in eparams if n not in ('k','ek')]
+mp={'l':'E3.lo(tb)','r':'E3.hi(tb)','pl':'XW.spl(15n, tb, pfb)','pr':'XW.spr(15n, tb, pfb)','x0':'x0','x1':'x1'}
+for i in range(212): mp[f'f{i}']= xs[i] if i<76 else lv[i-76]
+for j in range(120): mp[f'g{j}']=lv[136+j]
+call=', '.join(mp[n] for n in order)
+T_=lambda b,p: BSo('x0w', b, 'x2w', 'x3w', 'O.BSome{vh, O.BNone{}}', p)
+top=f'''
+def bs_h(+tb: FD.array__Tree<U32>, +tp: FD.array__Tree<U32>, +x0w: O.U64, +x2w: T.Bytes48, +x3w: T.Bytes48, +vh: T.SignedBeaconBlockHeader,
+    +pfb: {{FD.array__perfect(U32, 16n, tb) == True{{}} : Bool}}, +pfp: {{FD.array__perfect(U32, 8n, tp) == True{{}} : Bool}}) -> {Gt(T_(OW("tb","131072"), OW("tp","544")))}:
+  match x0w x2w x3w vh:
+    case {pat}:
+      %Equal.sym(FD.array__Tree<U32>, tb, FD.TNode{{E3.lo(tb), E3.hi(tb)}}, XW.spe(15n, tb, pfb)) : {Gt(BSo("O.U64{x0, x1}", OW("_","131072"), "T.Bytes48{"+", ".join(xs[0:12])+"}", "T.Bytes48{"+", ".join(xs[12:24])+"}", "O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{f24, f25}, O.U64{f26, f27}, T.Bytes32{"+", ".join(xs[28:36])+"}, T.Bytes32{"+", ".join(xs[36:44])+"}, T.Bytes32{"+", ".join(xs[44:52])+"}}, T.Bytes96{"+", ".join(xs[52:76])+"}}, O.BNone{}}", OW("tp","544")))}
+      %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.TNode{{E3.lo(tb), E3.hi(tb)}}), {BL}, {{==}}) : {Gt(BSo("O.U64{x0, x1}", "O.Words{_, 131072}", "T.Bytes48{"+", ".join(xs[0:12])+"}", "T.Bytes48{"+", ".join(xs[12:24])+"}", "O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{f24, f25}, O.U64{f26, f27}, T.Bytes32{"+", ".join(xs[28:36])+"}, T.Bytes32{"+", ".join(xs[36:44])+"}, T.Bytes32{"+", ".join(xs[44:52])+"}}, T.Bytes96{"+", ".join(xs[52:76])+"}}, O.BNone{}}", OW("tp","544")))}
+      %Equal.sym(FD.array__Tree<U32>, tp, E3.tf(8n, tp), E3.eta(8n, tp, pfp)) : {Gt(BSo("O.U64{x0, x1}", "O.Words{"+BL+", 131072}", "T.Bytes48{"+", ".join(xs[0:12])+"}", "T.Bytes48{"+", ".join(xs[12:24])+"}", "O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{f24, f25}, O.U64{f26, f27}, T.Bytes32{"+", ".join(xs[28:36])+"}, T.Bytes32{"+", ".join(xs[36:44])+"}, T.Bytes32{"+", ".join(xs[44:52])+"}}, T.Bytes96{"+", ".join(xs[52:76])+"}}, O.BNone{}}", OW("_","544")))}
+      %Equal.sym(Array<U32>, FD.array__thaw(U32, E3.tf(8n, tp)), {PLIT}, {{==}}) : {Gt(BSo("O.U64{x0, x1}", "O.Words{"+BL+", 131072}", "T.Bytes48{"+", ".join(xs[0:12])+"}", "T.Bytes48{"+", ".join(xs[12:24])+"}", "O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{f24, f25}, O.U64{f26, f27}, T.Bytes32{"+", ".join(xs[28:36])+"}, T.Bytes32{"+", ".join(xs[36:44])+"}, T.Bytes32{"+", ".join(xs[44:52])+"}}, T.Bytes96{"+", ".join(xs[52:76])+"}}, O.BNone{}}", "O.Words{_, 544}"))}
+      bs_w({call})
+
+# (i) under rep (the root law's invariant) with the blob's storage at the encoder's depth 16 (hcb) and the proof's at depth 8 (hcp)
+def FuluBlobSidecar_e2e_encode(-o: {OT}, +rep: {RTa}.rep_BlobSidecar(o, Spec.BlobSidecar()), +hcb: {{E3.at_depth({pj1}, 16n) == True{{}} : Bool}}, +hcp: {{E3.at_depth({pj5}, 8n) == True{{}} : Bool}}) -> {Gt("o")}:
+''' + '\n'.join('  '+l for l in rb.lines) + f'''
+  +eq = {Er}
+  +cfb = FD.logic__subst(O.Words, z => {cf1.replace(pj1, "z")}, {pj1}, {OW(tb,Nb)}, {e1v}, {v_cf1})
+  +cfp = FD.logic__subst(O.Words, z => {cf5.replace(pj5, "z")}, {pj5}, {OW(tp,Np)}, {e5v}, {v_cf5})
+  +hb2 = FD.logic__subst(O.Words, z => {{E3.at_depth(z, 16n) == True{{}} : Bool}}, {pj1}, {OW(tb,Nb)}, {e1v}, hcb)
+  +hp2 = FD.logic__subst(O.Words, z => {{E3.at_depth(z, 8n) == True{{}} : Bool}}, {pj5}, {OW(tp,Np)}, {e5v}, hcp)
+  +pfb = FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 16n, z) == True{{}} : Bool}}, FD.array__freeze(U32, FD.array__thaw(U32, {tb})), {tb}, FD.array__freeze_thaw(U32, {tb}), hb2)
+  +pfp = FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 8n, z) == True{{}} : Bool}}, FD.array__freeze(U32, FD.array__thaw(U32, {tp})), {tp}, FD.array__freeze_thaw(U32, {tp}), hp2)
+  +eNb = XW.ninj({Nb}, 131072, {sc1.join(["SH.ByteVector_length(",")"]) if False else "SH.ByteVector_length("+sc1+")"}, FD.nat__eq_from_is_eq(U32.to_nat(WO.len({OW(tb,Nb)})), SH.ByteVector_length({sc1}), cfb), XW.nk(17n, {{==}}, 131072, {{==}}, SH.ByteVector_length({sc1}), {{==}}))
+  +kq = PV.k_len({OW(tp,Np)}, {tp}, {Np}, {qv}, SH.Vector_length({sc5}), {{==}}, {en5[0]}, cfp)
+  +eq16 = FD.nat__eq_from_is_eq({qv}, 16n, FD.logic__subst(Nat, z => {{Nat.is_eq(z, 17n) == True{{}} : Bool}}, SH.Vector_length({sc5}), 1n+{qv}, kq, {{==}}))
+  +eNp = XW.ninj({Np}, 544, Nat.add(WS.e32(16n), 32n), Equal.trans(Nat, U32.to_nat({Np}), Nat.add(WS.e32({qv}), 32n), Nat.add(WS.e32(16n), 32n), {en5[0]}, Equal.cong(Nat, Nat, z => Nat.add(WS.e32(z), 32n), {qv}, 16n, eq16)),
+    FD.nat__eq_from_is_eq(U32.to_nat(544), Nat.add(WS.e32(16n), 32n), {{==}}))
+  %X.sym_e({OT}, o, {Wr}, eq) : {Gt("_")}
+  %Equal.sym(U32, {Nb}, 131072, eNb) : {Gt(BSo(x0w, OW(tb,"_"), x2w, x3w, boxw, OW(tp,Np)))}
+  %Equal.sym(U32, {Np}, 544, eNp) : {Gt(BSo(x0w, OW(tb,"131072"), x2w, x3w, boxw, OW(tp,"_")))}
+  bs_h({tb}, {tp}, {x0w}, {x2w}, {x3w}, {vh}, pfb, pfp)
+'''
+extra_hdr='import ../proofs/obj/words_spec.bend as WS\nimport ../proofs/obj/pv_obj.bend as PV\nimport ../proofs/obj/schema_shapes.bend as SH\n'
+full=FULL0
+full=full.replace('import ./e2e_support.bend as E\n','import ./e2e_support.bend as E\n'+extra_hdr,1)
+# the rebuild may have added imports: re-emit import lines
+lines=full.split('\n')
+heads=[l for l in lines if l.startswith('import')]
+for l in imp.lines():
+    if l not in heads: heads.append(l)
+body='\n'.join(l for l in lines if not l.startswith('import'))
+OUT='\n'.join(heads)+'\n# GENERATED by codegen/e2e_bridge.py. Do not edit.\n# FuluBlobSidecar: (i) through the any-size encoder chain; sizes and depths symbolic.\n'+body+top
+
+"""
+
+
+def bs_enc_text(EB, amap):
+    """FuluBlobSidecar (i): the any-size encoder chain with the blob's view bridged by e2e_fixdw.vb, the storages
+    cut at depth 16 (blob) and 8 (proof)"""
+    import sys
+    ns = {'EB': EB, 'FX': sys.modules[__name__], 'amap': amap, 'cache': {}, 're': re}
+    exec(BS_ENC_GEN, ns)
+    return ns['OUT']
+
 
 HB_ENC = r"""import Base
 import ../END_TO_END.bend as E2E
@@ -2920,6 +3097,10 @@ def build(EB, amap, cache, vidx):
         files['FuluHistoricalBatch_e2e_dec_generated.bend'] = HB_DEC
         cover.setdefault('HistoricalBatch', {}).update({'i': 'FuluHistoricalBatch_e2e_generated.bend', 'ii_iii': 'FuluHistoricalBatch_e2e_dec_generated.bend', 'ii': 'view',
                                                         'premise': 'rep (the root law\'s representation invariant); (i) also hc0, hc1: each field\'s storage at the encoder\'s depth 17'})
+    if 'BlobSidecar' in todo:
+        files['FuluBlobSidecar_e2e_generated.bend'] = bs_enc_text(EB, amap)
+        cover.setdefault('BlobSidecar', {}).update({'i': 'FuluBlobSidecar_e2e_generated.bend',
+                                                    'premise': 'rep (the root law\'s representation invariant); (i) also hcb, hcp: the blob\'s storage at the encoder\'s depth 16, the proof\'s at depth 8'})
     if 'SyncCommittee' in todo:
         files['FuluSyncCommittee_e2e_generated.bend'] = SC_ENC
         files['FuluSyncCommittee_e2e_dec_generated.bend'] = sc_dec_text(EB)

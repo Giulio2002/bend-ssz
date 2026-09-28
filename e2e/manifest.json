@@ -3904,7 +3904,7 @@
     "laws": [
      "FuluBlobSidecar_e2e_root"
     ],
-    "premise": "+rep: rep_BlobSidecar(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hcb, hcp: the blob's storage at the encoder's depth 16, the proof's at depth 8"
    },
    {
     "name": "FuluCell",
@@ -3953,6 +3953,16 @@
      "FuluProposerSlashing_e2e_root"
     ],
     "premise": "+rep: rep_ProposerSlashing(o, s)"
+   }
+  ],
+  "FuluBlobSidecar_e2e_generated.bend": [
+   {
+    "name": "FuluBlobSidecar",
+    "generated_name": "BlobSidecar",
+    "laws": [
+     "FuluBlobSidecar_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hcb, hcp: the blob's storage at the encoder's depth 16, the proof's at depth 8"
    }
   ],
   "FuluBytes1_e2e_generated.bend": [
@@ -5874,6 +5884,7 @@
   "FuluBlobSidecar": {
    "generated_name": "BlobSidecar",
    "reason": "encode laws not over the same free words / bits",
+   "i": "FuluBlobSidecar_e2e_generated.bend",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "ProgressiveSingleListContainerTestStruct": {
