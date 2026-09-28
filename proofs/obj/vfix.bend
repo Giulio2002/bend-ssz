@@ -405,3 +405,22 @@ def wt_pre(H, K, i, W, h):
       %Equal.sym(List<&2, U32>, VS.wtake(Nat.add(p, K), VB.wdr(1n+i, W)), app(wpre(p, 1n+i, W), VS.wtake(K, VB.wdr(Nat.add(p, 1n+i), W))), wt_pre(p, K, 1n+i, W, h2)) :
         {Con{F.flat__nthc(W, i), _} == Con{F.flat__nthc(W, i), app(wpre(p, 1n+i, W), VS.wtake(K, VB.wdr(Nat.add(p, 1n+i), W)))} : List<&2, U32>}
       {==}
+
+law qlt:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_lt(a, b) == True{} : Bool}
+  {Nat.is_lt(A.quad(a), A.quad(b)) == True{} : Bool}
+def qlt(a, b, h):
+  match a b:
+    case _ 0n: Empty.absurd({Nat.is_lt(A.quad(a), A.quad(0n)) == True{} : Bool}, F.nat__lt_zero_absurd(a, h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 1n+ +q: qlt(p, q, h)
+
+def qpw(+d: Nat) -> {A.quad(VB.pw(d)) == VB.pw(2n+d) : Nat}: {==}
+
+# 4 (k + i) < 2^32 when k + i < 2^d, d < 31 (a word inside an output tree of any depth dd < 31).
+def q32lt(+k: Nat, +i: Nat, +d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +h: {Nat.is_lt(Nat.add(k, i), VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_lt(A.quad(Nat.add(k, i)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +h1 = F.logic__subst(Nat, z => {Nat.is_lt(A.quad(Nat.add(k, i)), z) == True{} : Bool}, A.quad(VB.pw(d)), VB.pw(2n+d), qpw(d), qlt(Nat.add(k, i), VB.pw(d), h))
+  F.nat__lt_le_trans(A.quad(Nat.add(k, i)), VB.pw(2n+d), F.spec_common__pow2(32n), h1, VB.pw2d32(d, hd))
