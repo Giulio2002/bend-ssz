@@ -3222,6 +3222,7 @@ def outputs():
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
+    out[OUT / 'e2e_hv.bend'] = BVG.hv_text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
@@ -3305,14 +3306,15 @@ def outputs():
                       if any(re.search(r'sdbv|SDP?B\b|sd8\b|zero bits above|bits above K|BeaconBlockBody\'s \(i\)', e.get('premise', '')) for e in rows_))
     man['decoded_premises'] = {'hv_SDB': {
         'names': hv_names,
-        'premise': ('the bit list field\'s storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): its words\' tree '
-                    'at depth below 31, room for word K >> 5, and hv, the bits of the last word above the length K zero'),
-        'decoded_objects': 'not derived',
-        'why': ('the decoder builds the field as O.Bits{O.clear_bit(O.mask_last(LL, thaw(copy)), K), K} (e.g. big_var_bitc_Attestation.OBJ); '
-                'no lemma yet relates O.mask_last / O.clear_bit on the thawed copy to O.bits_above_zero of its slots, so (i) on a decoded object '
-                'still takes hs as a premise'),
-        'to_derive': ('mask_last zeroes the bits of the last word past LL (a slot lemma over the frozen array) and clear_bit(K) removes the '
-                      'delimiter, giving bits_above_zero(K & 31, slot(T, K >> 5)) of the frozen result; the tree, depth and room from the copy')}}
+        'premise': ('the bit list field\'s storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): '
+                    'its words\' tree at depth below 31, room for word K >> 5, and hv, the bits of the last word at or above the length K clear'),
+        'lemmas': ('e2e/e2e_hv.bend: the decoder copies the words into a tree M, keeps bytes 0 .. p of the last word (mask_last) and clears the '
+                   'delimiter bit K = 8 (n - 1) + high_bit(last byte) (clear_bit); the result is a tree update of M with no bit at or above K set '
+                   '(hvw0 .. hvw3 on the last word, hcore0 .. hcore3 and hvobj on the tree)'),
+        'decoded_objects': {R0: (f'proved: {R0}_e2e_dec_generated.bend decoded_hv (every accepted input\'s object satisfies the premise)'
+                                 if (OUT / f'{R0}_e2e_dec_generated.bend') in out and 'def decoded_hv(' in out[OUT / f'{R0}_e2e_dec_generated.bend'] else 'not derived yet')
+                            for R0 in hv_names}}}
+
     for f, rows_ in man['files'].items():
         for e in rows_:
             if any(l.endswith('_e2e_decode_accept') for l in e['laws']):
