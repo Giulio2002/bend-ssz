@@ -3300,6 +3300,19 @@ def outputs():
     man['input_bounds'] = ib
     man['input_bound_short'] = ibs
     man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
+    # whether the objects the decoder builds satisfy the (i) laws' bit-list premises (hv / SDB): stated, not yet derived
+    hv_names = sorted(R0 for R0, rows_ in ((f[:-len('_e2e_generated.bend')], r) for f, r in man['files'].items() if f.endswith('_e2e_generated.bend'))
+                      if any(re.search(r'sdbv|SDP?B\b|sd8\b|zero bits above|bits above K|BeaconBlockBody\'s \(i\)', e.get('premise', '')) for e in rows_))
+    man['decoded_premises'] = {'hv_SDB': {
+        'names': hv_names,
+        'premise': ('the bit list field\'s storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): its words\' tree '
+                    'at depth below 31, room for word K >> 5, and hv, the bits of the last word above the length K zero'),
+        'decoded_objects': 'not derived',
+        'why': ('the decoder builds the field as O.Bits{O.clear_bit(O.mask_last(LL, thaw(copy)), K), K} (e.g. big_var_bitc_Attestation.OBJ); '
+                'no lemma yet relates O.mask_last / O.clear_bit on the thawed copy to O.bits_above_zero of its slots, so (i) on a decoded object '
+                'still takes hs as a premise'),
+        'to_derive': ('mask_last zeroes the bits of the last word past LL (a slot lemma over the frozen array) and clear_bit(K) removes the '
+                      'delimiter, giving bits_above_zero(K & 31, slot(T, K >> 5)) of the frozen result; the tree, depth and room from the copy')}}
     for f, rows_ in man['files'].items():
         for e in rows_:
             if any(l.endswith('_e2e_decode_accept') for l in e['laws']):

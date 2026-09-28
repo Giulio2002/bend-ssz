@@ -8094,5 +8094,28 @@
    "generated_name": "NextSyncCommitteeBranch",
    "awaiting": []
   }
+ },
+ "decoded_premises": {
+  "hv_SDB": {
+   "names": [
+    "BitsStruct",
+    "FuluAggregateAndProof",
+    "FuluAttestation",
+    "FuluBeaconBlock",
+    "FuluBeaconBlockBody",
+    "FuluPendingAttestation",
+    "FuluSignedAggregateAndProof",
+    "FuluSignedBeaconBlock",
+    "ProgressiveBitsStruct",
+    "ProgressiveComplexTestStruct",
+    "ProgressiveSingleListContainerTestStruct",
+    "ProgressiveTestStruct",
+    "ProgressiveVarTestStruct"
+   ],
+   "premise": "the bit list field's storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): its words' tree at depth below 31, room for word K >> 5, and hv, the bits of the last word above the length K zero",
+   "decoded_objects": "not derived",
+   "why": "the decoder builds the field as O.Bits{O.clear_bit(O.mask_last(LL, thaw(copy)), K), K} (e.g. big_var_bitc_Attestation.OBJ); no lemma yet relates O.mask_last / O.clear_bit on the thawed copy to O.bits_above_zero of its slots, so (i) on a decoded object still takes hs as a premise",
+   "to_derive": "mask_last zeroes the bits of the last word past LL (a slot lemma over the frozen array) and clear_bit(K) removes the delimiter, giving bits_above_zero(K & 31, slot(T, K >> 5)) of the frozen result; the tree, depth and room from the copy"
+  }
  }
 }
