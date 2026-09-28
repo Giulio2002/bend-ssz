@@ -4660,4 +4660,4 @@ VROOT_SHAPES['GtF7582E0E9A'] = vroot_pbits
 VENC_SHAPES['GtF7582E0E9A'] = venc_pbits
 VENC_PREMISE['GtF7582E0E9A'] = 'rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws\' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)'
 VROOT_SHAPES['ExecutionPayload'] = vroot_container
-SUPPORT_OUT['e2e_vtx.bend'] = vtx_text()
+# SUPPORT_OUT['e2e_vtx.bend'] = vtx_text()   # in progress: O.Boxed<O.Words> is a Type, FD's list laws need Data
