@@ -35,6 +35,9 @@ import ../obj/vme.bend as P0_VME
 import ../obj/vzeros.bend as P0_VZ
 import ../obj/var_fix_types_m.bend as P0_VT
 import ../obj/vfits.bend as P0_VFT
+import ../obj/xmul.bend as P0_XM
+import ../../spec/schema.bend as P0_SC
+import ../obj/vseq.bend as P0_VSQ
 import ../obj/var_codec_DataColumnSidecar.bend as P0_DC
 import ../obj/big_var_codec_DataColumnSidecar_enc.bend as P0_PRV
 

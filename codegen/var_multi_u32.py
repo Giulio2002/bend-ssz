@@ -56,7 +56,8 @@ def lew(+z: Nat, +a: U32, +b: U32, +e: {{U32.to_nat(a) == z : Nat}}, +h: {{U32.i
 
 {pw_chain('pws', 'VB.pw', 24)}
 {pw_chain('pwn', 'O.pow2n', 23)}
-def eM0() -> {{VM.mulE(512n, U32.to_nat(4096)) == {tn(X0)} : Nat}}: FD.nat__eq_from_is_eq(VM.mulE(512n, U32.to_nat(4096)), {tn(X0)}, {{==}})
+# 512 * 4096 == 2^21 by proofs/obj/xmul.bend (2^9 * 2^12, on words): the evaluated form counted two million unary steps
+def eM0() -> {{VM.mulE(512n, U32.to_nat(4096)) == {tn(X0)} : Nat}}: XM.mulw(512n, 4096, {X0}, 9n, 12n, 21n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}})
 def eM1() -> {{VM.mulE(12n, U32.to_nat(4096)) == {tn(X1)} : Nat}}: FD.nat__eq_from_is_eq(VM.mulE(12n, U32.to_nat(4096)), {tn(X1)}, {{==}})
 def lM512(+c: Nat, +h: {{Nat.is_le(c, U32.to_nat(4096)) == {TRUE}}}) -> {{Nat.is_le(VM.mulE(512n, c), {tn(X0)}) == {TRUE}}}:
   %eM0() : {{Nat.is_le(VM.mulE(512n, c), _) == {TRUE}}}

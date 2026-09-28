@@ -21,6 +21,11 @@ TR = 'FD.array__Tree<U32>'
 X_ = X
 
 
+def VBX_names(n):
+    import var_bytes_x as VBX  # the container's field-name list (spec/fulu_schemas.bend)
+    return VBX.spec_names(n)
+
+
 def wl(ws):
     return '[' + ', '.join(ws) + ']'
 
@@ -413,10 +418,10 @@ def spec_text(P, IDX, HDR, PV):
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if i in fixed:
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs({wl(fixed[i]["words"])}), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs({wl(fixed[i]["words"])}), '
+                    f'{rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
         j = i - 1
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), F.limbs({ZN[j]}), Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs({ZN[j]}), {rest}, '
                 f'VM.list_bv({CN[j]}, {EB[j][0]}n, {EB[j][1]}n, FD.array__slots(U32, {TN[j]}), U32.to_nat(4096), {{==}}, {{==}}, {{==}}, hc{j}, hl{j}({ALLA}), ft{j}({ALLA})), {cat(i + 1)})')
     ENC = (f'List.append(&2, U32, List.append(&2, U32, F.limbs({AW}), List.append(&2, U32, F.limbs([356, {S1}, {S2}]), F.flat({POST}))), '
            f'List.append(&2, U32, F.limbs({ZN[0]}), List.append(&2, U32, F.limbs({ZN[1]}), F.limbs({ZN[2]}))))')
@@ -457,8 +462,14 @@ def cfit({ALLP}) -> {{N.fits(4n, Nat.add(U32.to_nat({S2}), List.length(&2, U32, 
   VFT.fits4(24n, A.quad(QN(c0, c1, c2)), FD.nat__le_trans(A.quad(QN(c0, c1, c2)), Nat.add(31n, A.quad(QN(c0, c1, c2))), VB.pw(24n), Order.left_below_sum(31n, A.quad(QN(c0, c1, c2))), qy({NH}, QN(c0, c1, c2), Order.reflexive(QN(c0, c1, c2)))), {{==}})
 
 def encE({ALLP}) -> {{Codec.encoding_for_legal_type(Spec.{X}(), XE({ALLA})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}:
+  # the encoding opened by F.efl_bytes and the container by VSQ.seq_parts (over variables): the
+  # conversions from the encoding to the aggregate of the parts ran the spec encoder (5.7 s)
+  %F.efl_bytes(Spec.{X}(), XE({ALLA})) : {{_ == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(XE({ALLA}), Spec.{X}()), Codec.aggregate(Codec.parts({items(0)}, {chain(0)}), SC.fixed_size({chain(0)})),
+      VSQ.seq_parts(XE({ALLA}), Spec.{X}(), {items(0)}, {VBX_names(X)}, {chain(0)}, {{==}}, {{==}})) :
+    {{Codec.bytes(_) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts({items(0)}, {chain(0)}), Some{{[{", ".join(parts)}]}}, {cat(0)}) :
-    {{Codec.bytes(Codec.aggregate(_, None{{}})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
+    {{Codec.bytes(Codec.aggregate(_, SC.fixed_size({chain(0)}))) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
   %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding([{", ".join(parts)}]), Some{{ENC({ALLA})}},
       VV.enc3({AW}, {ZN[0]}, {ZN[1]}, {ZN[2]}, {POST}, 356, {S1}, {S2}, {{==}}, ce1({ALLA}), ce2({ALLA}), cfit({ALLA}))) :
     {{Codec.bytes(Codec.one(_, None{{}})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
