@@ -1168,3 +1168,59 @@ def att_w({W}, +eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 
     Equal.cong(+List<Bool>, S.Value, z => S.Sequence{{S.Items{{{CV}, {rest.replace("FB.bitsof(" + L0 + ")", "z")}}}}}, E2B.wcat({L0}), FB.bitsof({L0}),
       Equal.sym(+List<Bool>, FB.bitsof({L0}), E2B.wcat({L0}), E2B.bw({L0}))))
 '''
+
+
+WIN_ARGS = '+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32'
+WIN_HYP = ('+eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 31n) == True{{}} : Bool}},\n'
+           '    +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, '
+           '+hw32: {{Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{{}} : Bool}},\n'
+           '    +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hchk: {{{W}.CHKw(t, i, off, len) == True{{}} : Bool}}')
+
+
+def lift_w(obj_dir, lemma, name, W, pmod, C, cname, clemma):
+    """{lemma}: the view of the {name} a word-aligned window reader builds, from its one windowed child's view
+    ({clemma}); every other field views as its value by computation."""
+    s = (Path(obj_dir) / pmod).read_text()
+    val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
+    CV0 = 'CH.VALw(t, JW(i), LLw(len))'
+    assert val.count(CV0) == 1 and not re.search(r'(?<![\w.])(JW|LLw|OWc|CH)\b', val.replace(CV0, ''))
+    ctx = val.replace(CV0, 'z')
+    K = int(re.search(r'chk3\(U32\.is_le\((\d+), len\), U32\.is_eq\(SPOw\(t, i\), \1\)', s).group(1))
+    J, O_, L = f'{W}.JW(i)', f'{W}.OWc(off)', f'{W}.LLw(len)'
+    A = 'd, t, 0, i, off, len, eo, hd, hw, hw32, pf'
+    return f'''
+# The {name} a word-aligned window reader builds (off = 4 i) views as the value the codec reads there.
+def {lemma}({WIN_ARGS}, {WIN_HYP.format(W=W)})
+    -> {{RT.v_{name}({W}.OBJw(t, i, off, len)) == {W}.VALw(t, i, len) : S.Value}}:
+  +a = U32.is_le({K}, len)
+  +b = U32.is_eq({W}.SPOw(t, i), {K})
+  +c = {C}.CHKw(t, {J}, {O_}, {L})
+  +ha = {W}.ch_a(a, b, c, hchk)
+  +hc = {W}.ch_c(a, b, c, hchk)
+  +e1 = {clemma}(d, t, {J}, {O_}, {L}, {W}.eoF({A}, ha), hd, {W}.hwc({A}, ha), {W}.hwc32({A}, ha), pf, hc)
+  Equal.cong(S.Value, S.Value, z => {ctx}, RT.v_{cname}({C}.OBJw(t, {J}, {O_}, {L})), {C}.VALw(t, {J}, {L}), e1)
+'''
+
+
+def aapw_text(obj_dir):
+    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+               'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
+               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT',
+               'import ../proofs/obj/big_var_win_Attestation.bend as WT', 'import ../proofs/obj/big_var_win_AggregateAndProof.bend as WA',
+               'import ../proofs/obj/big_var_win_SignedAggregateAndProof.bend as WS', 'import ./e2e_attw.bend as ATW']
+    return '\n'.join(imports) + '\n' + \
+        lift_w(obj_dir, 'aap_w', 'AggregateAndProof', 'WA', 'big_var_win_AggregateAndProof.bend', 'WT', 'Attestation', 'ATW.att_w') + \
+        lift_w(obj_dir, 'saap_w', 'SignedAggregateAndProof', 'WS', 'big_var_win_SignedAggregateAndProof.bend', 'WA', 'AggregateAndProof', 'aap_w')
+
+
+def top_view(name, lemma):
+    """The decode view of a name whose decoder reads one window at word 0 (DC.OBJ(t, n) = W.OBJw(t, 0n, 0, n))."""
+    text = f'''# ---- the view of a decoded {name}: the window view (e2e_aapw) at word 0 ----
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{name}(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
+  AW.{lemma}(d, t, 0n, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk)
+
+'''
+    imports = ['import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT', 'import ./e2e_aapw.bend as AW']
+    return {'view': f'RT.v_{name}', 'imports': imports, 'text': text}
