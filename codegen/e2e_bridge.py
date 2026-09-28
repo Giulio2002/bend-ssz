@@ -3184,6 +3184,9 @@ def outputs():
     if (OBJ / 'big_encx_l8_Attestation.bend').exists():
         import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbatt.bend'] = EBB.text()
+    if (OBJ / 'big_encx_l1_AttesterSlashing.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
         out[OUT / 'e2e_stv.bend'] = ESG.text()

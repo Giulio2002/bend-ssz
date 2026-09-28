@@ -394,3 +394,266 @@ def mk_8(-po: @SEQ@, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(8) : N
   (+hn, +sd) = b6
   kT(po, s, el, es, hl, t1, N1, eo1, er1, t, dw, N, eo, pf, hd, hn, sd, hz)
 '''.replace('@SEQ@', SEQ).replace('@L@', L).replace('@RMB@', RMB).replace('@EMB@', EMB).replace('@BX@', BX).replace('@NB@', NB)
+
+
+# ================= the attester slashing list (l1): e2e/e2e_bbsl.bend =================
+# The list-level text is the attestation list's (text()) with the names of this list; the element part is its own.
+
+NB1 = 'U32.to_nat(131072)'
+L1 = 'l1_AttesterSlashing'
+SEQ1 = 'Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq'
+RMB1 = 'RT.MB<RT.M_AttesterSlashing>'
+EMB1 = 'W1.MB<ES.MW>'
+BX1 = 'O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>'
+ES8 = '{SH.BitList_limit(SH.Chain_head(SH.Container_fields(sE))) == U32.to_nat(131072) : Nat}'
+ES8L = '{SH.BitList_limit(SH.Chain_head(SH.Container_fields(SH.ListOf_element(s)))) == U32.to_nat(131072) : Nat}'
+
+IMPORTS1 = [
+    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+    'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vdepth.bend as VD',
+    'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_lay.bend as LY',
+    'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vbig.bend as VG', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/venc.bend as VEN',
+    'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/vbytes.bend as VY',
+    'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/list_obj.bend as LO',
+    'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
+    'import ../proofs/obj/big_encx_l131072_u64.bend as EXu', 'import ../proofs/obj/big_var_winx_l131072_u64.bend as WU',
+    'import ../proofs/obj/big_encx_IndexedAttestation_iface.bend as EI', 'import ../proofs/obj/big_encx_AttesterSlashing_iface.bend as ES',
+    'import ../proofs/obj/big_encx_l1_AttesterSlashing.bend as W1',
+    'import ../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d', 'import ../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d',
+    'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d', 'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d',
+    'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d', 'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d',
+    'import ../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d',
+    'import ./e2e_blist.bend as BL', 'import ./e2e_encr.bend as ER', 'import ./e2e_encl.bend as ELN', 'import ./e2e_ulist.bend as ULW', 'import ./e2e_gprog.bend as GP']
+
+
+def _list_generic(t8):
+    """the attestation list's generic list-level text (conversion helpers and the list) renamed for the l1 list."""
+    a = t8.index('def CV(')
+    b = t8.index("# ---- one element: its record's validity and its view, from rep and the premise SDE ----")
+    c = t8.index('# ---- the elements from i on ----')
+    s = t8[a:b] + '\n' + t8[c:]
+    reps = [(EMB, EMB1), (RMB, RMB1), (BX, BX1), (SEQ, SEQ1), ('Fulu_list_Attestation_8_d', 'Fulu_list_AttesterSlashing_1_d'),
+            ('l8_Attestation', L1), ('Attestation_bx', 'AttesterSlashing_bx'), ('W8.', 'W1.'),
+            ('U32.to_nat(8)', 'U32.to_nat(1)'), ('U32.is_le(N, 8)', 'U32.is_le(N, 1)'), ('VU.le_u32(N, 8)', 'VU.le_u32(N, 1)'),
+            (ES8, 'ESA(sE)'), (ES8L, 'ESA(SH.ListOf_element(s))'),
+            ('sd8(', 'sd1('), ('LN8(', 'LN1('), ('SZ8(', 'SZ1('), ('R_8(', 'R_1('), ('mk_8(', 'mk_1('),
+            ('BitList_limit', 'XXX')]
+    for x, y in reps[:-1]:
+        s = s.replace(x, y)
+    assert 'Attestation_8' not in s and 'W8.' not in s and 'BitList_limit' not in s, [l for l in s.split('\n') if 'BitList_limit' in l or 'W8.' in l][:3]
+    return s
+
+
+def text1():
+    t8 = text()
+    lst = _list_generic(t8)
+    ad = ('FuluAttestationData_d.AttestationData{O.U64{+w0, +w1}, O.U64{+w2, +w3}, FuluBytes32_d.Bytes32{' + _wp(8, 'b') +
+          '}, FuluCheckpoint_d.Checkpoint{O.U64{+w4, +w5}, FuluBytes32_d.Bytes32{' + _wp(8, 'c') + '}}, FuluCheckpoint_d.Checkpoint{O.U64{+w6, +w7}, FuluBytes32_d.Bytes32{' + _wp(8, 'e') + '}}}')
+    MU = 'EXu.MW{ER.LDEP(U32, t), t, n}'
+    IA = 'FuluIndexedAttestation_d.IndexedAttestation{O.Words{FD.array__thaw(U32, t), n}, b, c}'
+    MI = f'EI.MW{{{MU}, b, c}}'
+    MIA = 'RT.M_IndexedAttestation{RT.WMr{t, n}, b, c}'
+    OKI = f'{{EI.OKT({MU}, b, c) == True{{}} : Bool}}'
+    VI = f'{{RT.v_IndexedAttestation({IA}) == EI.VALC({MU}, b, c) : S.Value}}'
+    LNI = f'{{Nat.is_le(LY.LN(EI.ENC({MI})), VB.pw(21n)) == True{{}} : Bool}}'
+    ELI = f'DK.P2({OKI}, DK.P2({VI}, {LNI}))'
+    RI = lambda s_: f'RT.rep_IndexedAttestation({IA}, {s_})'
+    return '\n'.join(IMPORTS1) + '\n\n' + f'''# GENERATED by codegen/e2e_bridge.py (codegen/e2e_bbatt_gen.py). Do not edit.
+# BeaconBlockBody (i)'s attester slashing list part (for e2e-b's body scaffold): the l1 encoder record from the root
+# law's representation and the premise sd1 (each IndexedAttestation's attesting indices at depth below 28, BL.sdk)
+# and SZ1 (the list's encoding within 4 * 2^28 bytes). Same interface as e2e_bbatt (l8).
+
+def PA(-X: Data, -Y: Data, +p: DK.P2(X, Y)) -> X:
+  (+a, +b) = p
+  a
+def PB(-X: Data, -Y: Data, +p: DK.P2(X, Y)) -> Y:
+  (+a, +b) = p
+  b
+
+# the element schema's facts the records need: both attesting-indices lists are List[uint64, 131072]
+def ESA(+sE: S.Schema) -> Data:
+  DK.P2({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}},
+        {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}})
+
+# ---- the attesting indices' record (big_encx_l131072_u64) from their words: e2e-c's pu64 (e2e_encl) with the count bound ----
+def x8pw(+c: Nat, +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{Nat.is_le(VS.x8(c), U32.to_nat(1048576)) == True{{}} : Bool}}:
+  +P = VB.pw(17n)
+  +e17 = VG.u32pow(131072, 17n, {{==}}, {{==}})
+  +e20 = VG.u32pow(1048576, 20n, {{==}}, {{==}})
+  +h1 = VS.x8_mono(c, {NB1}, hc)
+  +h2 = FD.logic__subst(Nat, z => {{Nat.is_le(VS.x8(c), VS.x8(z)) == True{{}} : Bool}}, {NB1}, P, e17, h1)
+  +ex = Equal.trans(Nat, VS.x8(P), Nat.mul(P, 8n), VB.pw(20n), Equal.sym(Nat, Nat.mul(P, 8n), VS.x8(P), VC.x8_mul(P)), VBG.mul8(P))
+  +h3 = FD.logic__subst(Nat, z => {{Nat.is_le(VS.x8(c), z) == True{{}} : Bool}}, VS.x8(P), VB.pw(20n), ex, h2)
+  FD.logic__subst(Nat, z => {{Nat.is_le(VS.x8(c), z) == True{{}} : Bool}}, VB.pw(20n), U32.to_nat(1048576), Equal.sym(Nat, U32.to_nat(1048576), VB.pw(20n), e20), h3)
+
+def okU(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 28n), +c: Nat, +ex8: {{U32.to_nat(n) == VS.x8(c) : Nat}}, +emul: {{U32.to_nat(n) == Nat.mul(c, 8n) : Nat}},
+    +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{EXu.OK(EXu.MW{{ER.LDEP(U32, tt), tt, n}}) == True{{}} : Bool}}:
+  (+pf, +s1) = sf
+  (+hdw, +s2) = s1
+  (+hN, +htz) = s2
+  +hn = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(1048576)) == True{{}} : Bool}}, VS.x8(c), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), VS.x8(c), ex8), x8pw(c, hc))
+  +hnU = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(n), U32.to_nat(1048576)), U32.is_le(n, 1048576), Equal.sym(Bool, U32.is_le(n, 1048576), Nat.is_le(U32.to_nat(n), U32.to_nat(1048576)), VU.le_u32(n, 1048576)), hn)
+  FD.logic__and_intro(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))))), pf,
+    FD.logic__and_intro(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n))))), hdw,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))), hN,
+    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n))), htz,
+    FD.logic__and_intro(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)), hnU,
+    FD.logic__and_intro(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n), FD.u32alg__eq_true(U32.and(n, 7), 0, VEN.and7_x8(n, c, ex8)),
+    VU.whole_i(n, 8, 131072, WU.v8(), {{==}}, {{==}}, {{==}}, c, emul, hc)))))))
+
+def lvU(+dw: Nat, +tt: FD.array__Tree<U32>, +n: U32, +c: Nat, +pf: {{FD.array__perfect(U32, dw, tt) == True{{}} : Bool}}, +hN: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(dw))) == True{{}} : Bool}},
+    +ex8: {{U32.to_nat(n) == VS.x8(c) : Nat}}, +emul: {{U32.to_nat(n) == Nat.mul(c, 8n) : Nat}})
+    -> {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == WU.VALw(tt, 0n, n) : S.Value}}:
+  +Sl = FD.array__slots(U32, tt)
+  +cq = ELN.cq8(n, c, emul, VU.whole_q(n, 8, c, emul, {{==}}, VU.div_u32(n, 8, WU.v8(), {{==}}, {{==}}, {{==}})))
+  +ecq = Equal.trans(Nat, U32.to_nat(U32.shrn(n, 3n)), VD.s_rng(3n, U32.to_nat(n)), c, VD.shrk(3n, n),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(n)), VD.s_rng(3n, VS.x8(c)), c, Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(n), VS.x8(c), ex8), ULW.r8(c)))
+  +eq8 = Equal.trans(Nat, U32.to_nat(n), Nat.mul(c, 8n), A.quad(Nat.double(c)), emul, VBG.mul8(c))
+  +h2c = VC.quad_inv(Nat.double(c), VB.pw(dw), FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dw))) == True{{}} : Bool}}, U32.to_nat(n), A.quad(Nat.double(c)), eq8, hN))
+  +er = ELN.rws0(Nat.double(c), 0n, dw, tt, pf, h2c)
+  %Equal.sym(Nat, U32.to_nat(U32.div(n, 8)), c, cq) : {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == S.Sequence{{VS.uitems(_, UR.RWS(Nat.double(_), tt, 0n))}} : S.Value}}
+  %Equal.sym(List<&2, U32>, UR.RWS(Nat.double(c), tt, 0n), VS.wtake(Nat.double(c), Sl), er) : {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == S.Sequence{{VS.uitems(c, _)}} : S.Value}}
+  Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}), S.Sequence{{VS.uitems(c, Sl)}}, S.Sequence{{VS.uitems(c, VS.wtake(Nat.double(c), Sl))}},
+    ULW.uvw(tt, n, c, ecq), Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, VS.uitems(c, Sl), VS.uitems(c, VS.wtake(Nat.double(c), Sl)), GP.ut(c, Sl)))
+
+# ---- an IndexedAttestation: its record's validity, view and encoded size (<= 2^21) ----
+def lvAD(+o: FuluAttestationData_d.AttestationData) -> {{RN_L.v_AttestationData(o) == EI.LV_AttestationData(o) : S.Value}}:
+  match o:
+    case {ad}: {{==}}
+def lv96(+o: FuluBytes96_d.Bytes96) -> {{RN_L.v_b96(o) == EI.LV_b96(o) : S.Value}}:
+  match o:
+    case FuluBytes96_d.Bytes96{{{_wp(24)}}}: {{==}}
+
+def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationData, +c: FuluBytes96_d.Bytes96, +sI: S.Schema,
+    +el: {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == {NB1} : Nat}}, +rp: {RI('sI')}, +hs: BL.sdk(O.Words{{FD.array__thaw(U32, t), n}}, 28n)) -> {ELI}:
+  (+x1, +r1) = rp
+  (+x2, +r2) = r1
+  (+eo, +ru) = r2
+  (+wf, +r3) = ru
+  (+eN, +hl) = r3
+  +k = UL.ucnt(O.Words{{FD.array__thaw(U32, t), n}})
+  +ex8 = Equal.trans(Nat, U32.to_nat(n), O.e8(k), VS.x8(k), eN, Equal.sym(Nat, VS.x8(k), O.e8(k), ULW.x8e(k)))
+  +emul = Equal.trans(Nat, U32.to_nat(n), VS.x8(k), Nat.mul(k, 8n), ex8, Equal.sym(Nat, Nat.mul(k, 8n), VS.x8(k), VC.x8_mul(k)))
+  +hc = FD.logic__subst(Nat, z => {{Nat.is_le(k, z) == True{{}} : Bool}}, SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))), {NB1}, el, hl)
+  +sf = ER.sfk(t, n, 28n, hs)
+  +hok = okU(t, n, sf, k, ex8, emul, hc)
+  +hN = PA({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}, PB({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}), PB({{FD.array__perfect(U32, ER.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)))
+  +pfT = PA({{FD.array__perfect(U32, ER.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)
+  +eLu = EXu.eL(ER.LDEP(U32, t), t, n, hok)
+  +h20 = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(20n)) == True{{}} : Bool}}, U32.to_nat(n), LY.LN(EXu.ENC({MU})), Equal.sym(Nat, LY.LN(EXu.ENC({MU})), U32.to_nat(n), eLu),
+    FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(n), z) == True{{}} : Bool}}, U32.to_nat(1048576), VB.pw(20n), VG.u32pow(1048576, 20n, {{==}}, {{==}}),
+      FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(1048576)) == True{{}} : Bool}}, VS.x8(k), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), VS.x8(k), ex8), x8pw(k, hc))))
+  +h228 = FD.nat__le_trans(228n, VB.pw(8n), VB.pw(20n), {{==}}, VG.pw_mono(8n, 20n, {{==}}))
+  +h21 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), z) == True{{}} : Bool}}, Nat.add(VB.pw(20n), VB.pw(20n)), VB.pw(21n), VG.two_pw(VB.pw(20n)),
+    ER.addle(228n, LY.LN(EXu.ENC({MU})), VB.pw(20n), VB.pw(20n), h228, h20))
+  +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC({MU}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, VG.pw_mono(21n, 30n, {{==}}))
+  +okI = FD.logic__and_intro(EXu.OK({MU}), Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), A.quad(VB.pw(28n))), hok, hsz)
+  +ev = Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), WU.VALw(t, 0n, n), EXu.VAL({MU}), lvU(ER.LDEP(U32, t), t, n, k, pfT, hN, ex8, emul), {{==}})
+  +vq = Equal.trans(S.Value, S.Sequence{{S.Items{{UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{EI.LV_b96(c), S.EmptyItems{{}}}}}}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), EXu.VAL({MU}), ev),
+    Equal.trans(S.Value, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{EI.LV_b96(c), S.EmptyItems{{}}}}}}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{z, S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, RN_L.v_AttestationData(b), EI.LV_AttestationData(b), lvAD(b)),
+      Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{z, S.EmptyItems{{}}}}}}}}}}, RN_L.v_b96(c), EI.LV_b96(c), lv96(c))))
+  +eLE = EI.lenE({MU}, b, c, okI)
+  (okI, (vq, FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(21n)) == True{{}} : Bool}}, Nat.add(228n, LY.LN(EXu.ENC({MU}))), LY.LN(EI.ENC({MI})), Equal.sym(Nat, LY.LN(EI.ENC({MI})), Nat.add(228n, LY.LN(EXu.ENC({MU}))), eLE), h21)))
+
+# ---- the element conversion ----
+def cvI(a: RT.M_IndexedAttestation) -> EI.MW:
+  match a:
+    case RT.M_IndexedAttestation{{+p0, +p1, +p2}}:
+      match p0:
+        case RT.WMr{{+t, +n}}: EI.MW{{EXu.MW{{ER.LDEP(U32, t), t, n}}, p1, p2}}
+
+def cvE(m: {RMB1}) -> {EMB1}:
+  match m:
+    case RT.MNone{{}}: W1.MNone{{}}
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_AttesterSlashing{{+a0, +a1}}: W1.MSome{{ES.MW{{cvI(a0), cvI(a1)}}}}
+
+def thI(+a: RT.M_IndexedAttestation) -> {{EI.TH(cvI(a)) == RT.th_IndexedAttestation(a) : FuluIndexedAttestation_d.IndexedAttestation}}:
+  match a:
+    case RT.M_IndexedAttestation{{+p0, +p1, +p2}}:
+      match p0:
+        case RT.WMr{{+t, +n}}: {{==}}
+
+def thcv(+x: {RMB1}) -> {{W1.th_AttesterSlashing_bx(cvE(x)) == RT.th_AttesterSlashing_bx(x) : {BX1}}}:
+  match x:
+    case RT.MNone{{}}: {{==}}
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_AttesterSlashing{{+a0, +a1}}:
+          %thI(a0) :
+            {{W1.th_AttesterSlashing_bx(cvE(RT.MSome{{RT.M_AttesterSlashing{{a0, a1}}}})) == O.BSome{{FuluAttesterSlashing_d.AttesterSlashing{{O.BSome{{_, O.BNone{{}}}}, O.BSome{{RT.th_IndexedAttestation(a1), O.BNone{{}}}}}}, O.BNone{{}}}} : {BX1}}}
+          %thI(a1) :
+            {{W1.th_AttesterSlashing_bx(cvE(RT.MSome{{RT.M_AttesterSlashing{{a0, a1}}}})) == O.BSome{{FuluAttesterSlashing_d.AttesterSlashing{{O.BSome{{EI.TH(cvI(a0)), O.BNone{{}}}}, O.BSome{{_, O.BNone{{}}}}}}, O.BNone{{}}}} : {BX1}}}
+          {{==}}
+
+# ---- one element ----
+def sdI(a: RT.M_IndexedAttestation) -> Data:
+  match a:
+    case RT.M_IndexedAttestation{{p0, p1, p2}}: BL.sdk(RT.th_w(p0), 28n)
+
+def SDE(m: {RMB1}) -> Data:
+  match m:
+    case RT.MNone{{}}: {{True{{}} == True{{}} : Bool}}
+    case RT.MSome{{v}}:
+      match v:
+        case RT.M_AttesterSlashing{{a0, a1}}: DK.P2(sdI(a0), sdI(a1))
+
+def ELF(+m: {RMB1}) -> Data: DK.P2({{W1.EOK(cvE(m)) == True{{}} : Bool}}, {{RT.v_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(m)) == W1.EV(cvE(m)) : S.Value}})
+
+def isS(b: {BX1}) -> Bool:
+  match b:
+    case O.BSome{{v, rest}}: True{{}}
+    case O.BNone{{}}: False{{}}
+
+# an IndexedAttestation's facts, the mirror record abstract
+def ELA(+a: RT.M_IndexedAttestation) -> Data:
+  DK.P2({{EI.OK(cvI(a)) == True{{}} : Bool}}, DK.P2({{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a)) == EI.VAL(cvI(a)) : S.Value}}, {{Nat.is_le(LY.LN(EI.ENC(cvI(a))), VB.pw(21n)) == True{{}} : Bool}}))
+
+def ela(+a: RT.M_IndexedAttestation, +sI: S.Schema, +el: {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == {NB1} : Nat}},
+    +rp: RT.rep_IndexedAttestation(RT.th_IndexedAttestation(a), sI), +hs: sdI(a)) -> ELA(a):
+  match a:
+    case RT.M_IndexedAttestation{{+p0, +p1, +p2}}:
+      match p0:
+        case RT.WMr{{+t, +n}}: eli(t, n, p1, p2, sI, el, rp, hs)
+
+def ea2(+a0: RT.M_IndexedAttestation, +a1: RT.M_IndexedAttestation, +f0: ELA(a0), +f1: ELA(a1)) -> ELF(RT.MSome{{RT.M_AttesterSlashing{{a0, a1}}}}):
+  (+o0, +g0) = f0
+  (+v0, +l0) = g0
+  (+o1, +g1) = f1
+  (+v1, +l1) = g1
+  +A0 = LY.LN(EI.ENC(cvI(a0)))
+  +A1 = LY.LN(EI.ENC(cvI(a1)))
+  +P = VB.pw(21n)
+  +h8 = FD.nat__le_trans(8n, VB.pw(8n), P, {{==}}, VG.pw_mono(8n, 21n, {{==}}))
+  +hA = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(8n, A0), z) == True{{}} : Bool}}, Nat.add(P, P), VB.pw(22n), VG.two_pw(P), ER.addle(8n, A0, P, P, h8, l0))
+  +hB = ER.addle(Nat.add(8n, A0), A1, VB.pw(22n), P, hA, l1)
+  +hC = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), Nat.add(VB.pw(22n), P), Nat.add(VB.pw(22n), VB.pw(22n)), hB, FD.nat__le_add_left(P, VB.pw(22n), VB.pw(22n), VG.pw_mono(21n, 22n, {{==}})))
+  +hD = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(Nat.add(8n, A0), A1), z) == True{{}} : Bool}}, Nat.add(VB.pw(22n), VB.pw(22n)), VB.pw(23n), VG.two_pw(VB.pw(22n)), hC)
+  +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, VG.pw_mono(23n, 30n, {{==}}))
+  +ok = FD.logic__and_intro(EI.OK(cvI(a0)), Bool.and(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n)))), o0,
+    FD.logic__and_intro(EI.OK(cvI(a1)), Nat.is_le(Nat.add(Nat.add(8n, A0), A1), A.quad(VB.pw(28n))), o1, hsz))
+  +vq = Equal.trans(S.Value, S.Sequence{{S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a0)), S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), S.EmptyItems{{}}}}}}}},
+    S.Sequence{{S.Items{{EI.VAL(cvI(a0)), S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), S.EmptyItems{{}}}}}}}}, S.Sequence{{S.Items{{EI.VAL(cvI(a0)), S.Items{{EI.VAL(cvI(a1)), S.EmptyItems{{}}}}}}}},
+    Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), S.EmptyItems{{}}}}}}}}, RT.v_IndexedAttestation(RT.th_IndexedAttestation(a0)), EI.VAL(cvI(a0)), v0),
+    Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{EI.VAL(cvI(a0)), S.Items{{z, S.EmptyItems{{}}}}}}}}, RT.v_IndexedAttestation(RT.th_IndexedAttestation(a1)), EI.VAL(cvI(a1)), v1))
+  (ok, vq)
+
+def elx(+m: {RMB1}, +sE: S.Schema, +es: ESA(sE), +r0: RT.rep_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(m), sE), +h0: SDE(m)) -> ELF(m):
+  match m:
+    case RT.MNone{{}}:
+      (+eb, +rl) = r0
+      Empty.absurd(ELF(RT.MNone{{}}), FD.logic__false_true(Equal.cong({BX1}, Bool, z => isS(z), O.BNone{{}}, O.BSome{{RT.pjb_AttesterSlashing_bx(O.BNone{{}}), O.BNone{{}}}}, eb)))
+    case RT.MSome{{+v}}:
+      match v:
+        case RT.M_AttesterSlashing{{+a0, +a1}}:
+          (+eb, +ra) = r0
+          (+eo, +rb) = ra
+          (+rA, +rB) = rb
+          (+ebA, +rpA) = rA
+          (+ebB, +rpB) = rB
+          (+hA, +hB) = h0
+          ea2(a0, a1, ela(a0, SH.Chain_head(SH.Container_fields(sE)), PA({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}}, {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}}, es), rpA, hA), ela(a1, SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE))), PB({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}}, {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}}, es), rpB, hB))
+
+''' + lst
