@@ -424,7 +424,7 @@ IMPORTS1 = [
     'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d', 'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d',
     'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d', 'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d',
     'import ../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d',
-    'import ./e2e_blist.bend as BL', 'import ./e2e_encr.bend as ER', 'import ./e2e_encl.bend as ELN', 'import ./e2e_ulist.bend as ULW', 'import ./e2e_gprog.bend as GP']
+    'import ./e2e_ulist.bend as ULW', 'import ./e2e_u64l.bend as U']
 
 
 def _list_generic(t8):
@@ -450,7 +450,7 @@ def text1():
     lst = _list_generic(t8)
     ad = ('FuluAttestationData_d.AttestationData{O.U64{+w0, +w1}, O.U64{+w2, +w3}, FuluBytes32_d.Bytes32{' + _wp(8, 'b') +
           '}, FuluCheckpoint_d.Checkpoint{O.U64{+w4, +w5}, FuluBytes32_d.Bytes32{' + _wp(8, 'c') + '}}, FuluCheckpoint_d.Checkpoint{O.U64{+w6, +w7}, FuluBytes32_d.Bytes32{' + _wp(8, 'e') + '}}}')
-    MU = 'EXu.MW{ER.LDEP(U32, t), t, n}'
+    MU = 'EXu.MW{U.LDEP(U32, t), t, n}'
     IA = 'FuluIndexedAttestation_d.IndexedAttestation{O.Words{FD.array__thaw(U32, t), n}, b, c}'
     MI = f'EI.MW{{{MU}, b, c}}'
     MIA = 'RT.M_IndexedAttestation{RT.WMr{t, n}, b, c}'
@@ -487,16 +487,16 @@ def x8pw(+c: Nat, +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{Nat.is_l
   +h3 = FD.logic__subst(Nat, z => {{Nat.is_le(VS.x8(c), z) == True{{}} : Bool}}, VS.x8(P), VB.pw(20n), ex, h2)
   FD.logic__subst(Nat, z => {{Nat.is_le(VS.x8(c), z) == True{{}} : Bool}}, VB.pw(20n), U32.to_nat(1048576), Equal.sym(Nat, U32.to_nat(1048576), VB.pw(20n), e20), h3)
 
-def okU(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 28n), +c: Nat, +ex8: {{U32.to_nat(n) == VS.x8(c) : Nat}}, +emul: {{U32.to_nat(n) == Nat.mul(c, 8n) : Nat}},
-    +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{EXu.OK(EXu.MW{{ER.LDEP(U32, tt), tt, n}}) == True{{}} : Bool}}:
+def okU(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 28n), +c: Nat, +ex8: {{U32.to_nat(n) == VS.x8(c) : Nat}}, +emul: {{U32.to_nat(n) == Nat.mul(c, 8n) : Nat}},
+    +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{EXu.OK(EXu.MW{{U.LDEP(U32, tt), tt, n}}) == True{{}} : Bool}}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
   +hn = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(1048576)) == True{{}} : Bool}}, VS.x8(c), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), VS.x8(c), ex8), x8pw(c, hc))
   +hnU = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(n), U32.to_nat(1048576)), U32.is_le(n, 1048576), Equal.sym(Bool, U32.is_le(n, 1048576), Nat.is_le(U32.to_nat(n), U32.to_nat(1048576)), VU.le_u32(n, 1048576)), hn)
-  FD.logic__and_intro(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))))), pf,
-    FD.logic__and_intro(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n))))), hdw,
-    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))), hN,
+  FD.logic__and_intro(FD.array__perfect(U32, U.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(U.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))))), pf,
+    FD.logic__and_intro(Nat.is_lt(U.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n))))), hdw,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)))), hN,
     FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n))), htz,
     FD.logic__and_intro(U32.is_le(n, 1048576), Bool.and(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n)), hnU,
     FD.logic__and_intro(U32.is_eq(U32.and(n, 7), 0), WU.CHKw(tt, 0n, 0, n), FD.u32alg__eq_true(U32.and(n, 7), 0, VEN.and7_x8(n, c, ex8)),
@@ -506,16 +506,16 @@ def lvU(+dw: Nat, +tt: FD.array__Tree<U32>, +n: U32, +c: Nat, +pf: {{FD.array__p
     +ex8: {{U32.to_nat(n) == VS.x8(c) : Nat}}, +emul: {{U32.to_nat(n) == Nat.mul(c, 8n) : Nat}})
     -> {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == WU.VALw(tt, 0n, n) : S.Value}}:
   +Sl = FD.array__slots(U32, tt)
-  +cq = ELN.cq8(n, c, emul, VU.whole_q(n, 8, c, emul, {{==}}, VU.div_u32(n, 8, WU.v8(), {{==}}, {{==}}, {{==}})))
+  +cq = U.cq8(n, c, emul, VU.whole_q(n, 8, c, emul, {{==}}, VU.div_u32(n, 8, WU.v8(), {{==}}, {{==}}, {{==}})))
   +ecq = Equal.trans(Nat, U32.to_nat(U32.shrn(n, 3n)), VD.s_rng(3n, U32.to_nat(n)), c, VD.shrk(3n, n),
     Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(n)), VD.s_rng(3n, VS.x8(c)), c, Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(n), VS.x8(c), ex8), ULW.r8(c)))
   +eq8 = Equal.trans(Nat, U32.to_nat(n), Nat.mul(c, 8n), A.quad(Nat.double(c)), emul, VBG.mul8(c))
   +h2c = VC.quad_inv(Nat.double(c), VB.pw(dw), FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dw))) == True{{}} : Bool}}, U32.to_nat(n), A.quad(Nat.double(c)), eq8, hN))
-  +er = ELN.rws0(Nat.double(c), 0n, dw, tt, pf, h2c)
+  +er = U.rws0(Nat.double(c), 0n, dw, tt, pf, h2c)
   %Equal.sym(Nat, U32.to_nat(U32.div(n, 8)), c, cq) : {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == S.Sequence{{VS.uitems(_, UR.RWS(Nat.double(_), tt, 0n))}} : S.Value}}
   %Equal.sym(List<&2, U32>, UR.RWS(Nat.double(c), tt, 0n), VS.wtake(Nat.double(c), Sl), er) : {{UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}) == S.Sequence{{VS.uitems(c, _)}} : S.Value}}
   Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, tt), n}}), S.Sequence{{VS.uitems(c, Sl)}}, S.Sequence{{VS.uitems(c, VS.wtake(Nat.double(c), Sl))}},
-    ULW.uvw(tt, n, c, ecq), Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, VS.uitems(c, Sl), VS.uitems(c, VS.wtake(Nat.double(c), Sl)), GP.ut(c, Sl)))
+    ULW.uvw(tt, n, c, ecq), Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, VS.uitems(c, Sl), VS.uitems(c, VS.wtake(Nat.double(c), Sl)), U.ut(c, Sl)))
 
 # ---- an IndexedAttestation: its record's validity, view and encoded size (<= 2^21) ----
 def lvAD(+o: FuluAttestationData_d.AttestationData) -> {{RN_L.v_AttestationData(o) == EI.LV_AttestationData(o) : S.Value}}:
@@ -526,7 +526,7 @@ def lv96(+o: FuluBytes96_d.Bytes96) -> {{RN_L.v_b96(o) == EI.LV_b96(o) : S.Value
     case FuluBytes96_d.Bytes96{{{_wp(24)}}}: {{==}}
 
 def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationData, +c: FuluBytes96_d.Bytes96, +sI: S.Schema,
-    +el: {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == {NB1} : Nat}}, +rp: {RI('sI')}, +hs: BL.sdk(O.Words{{FD.array__thaw(U32, t), n}}, 28n)) -> {ELI}:
+    +el: {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))) == {NB1} : Nat}}, +rp: {RI('sI')}, +hs: U.sdk(O.Words{{FD.array__thaw(U32, t), n}}, 28n)) -> {ELI}:
   (+x1, +r1) = rp
   (+x2, +r2) = r1
   (+eo, +ru) = r2
@@ -536,20 +536,20 @@ def eli(+t: FD.array__Tree<U32>, +n: U32, +b: FuluAttestationData_d.AttestationD
   +ex8 = Equal.trans(Nat, U32.to_nat(n), O.e8(k), VS.x8(k), eN, Equal.sym(Nat, VS.x8(k), O.e8(k), ULW.x8e(k)))
   +emul = Equal.trans(Nat, U32.to_nat(n), VS.x8(k), Nat.mul(k, 8n), ex8, Equal.sym(Nat, Nat.mul(k, 8n), VS.x8(k), VC.x8_mul(k)))
   +hc = FD.logic__subst(Nat, z => {{Nat.is_le(k, z) == True{{}} : Bool}}, SH.ListOf_limit(SH.Chain_head(SH.Container_fields(sI))), {NB1}, el, hl)
-  +sf = ER.sfk(t, n, 28n, hs)
+  +sf = U.sfk(t, n, 28n, hs)
   +hok = okU(t, n, sf, k, ex8, emul, hc)
-  +hN = PA({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}, PB({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}), PB({{FD.array__perfect(U32, ER.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)))
-  +pfT = PA({{FD.array__perfect(U32, ER.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(ER.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)
-  +eLu = EXu.eL(ER.LDEP(U32, t), t, n, hok)
+  +hN = PA({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}, PB({{Nat.is_lt(U.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}}), PB({{FD.array__perfect(U32, U.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(U.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)))
+  +pfT = PA({{FD.array__perfect(U32, U.LDEP(U32, t), t) == True{{}} : Bool}}, DK.P2({{Nat.is_lt(U.LDEP(U32, t), 28n) == True{{}} : Bool}}, DK.P2({{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(U.LDEP(U32, t)))) == True{{}} : Bool}}, {{O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))) == True{{}} : Bool}})), sf)
+  +eLu = EXu.eL(U.LDEP(U32, t), t, n, hok)
   +h20 = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(20n)) == True{{}} : Bool}}, U32.to_nat(n), LY.LN(EXu.ENC({MU})), Equal.sym(Nat, LY.LN(EXu.ENC({MU})), U32.to_nat(n), eLu),
     FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(n), z) == True{{}} : Bool}}, U32.to_nat(1048576), VB.pw(20n), VG.u32pow(1048576, 20n, {{==}}, {{==}}),
       FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(1048576)) == True{{}} : Bool}}, VS.x8(k), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), VS.x8(k), ex8), x8pw(k, hc))))
   +h228 = FD.nat__le_trans(228n, VB.pw(8n), VB.pw(20n), {{==}}, VG.pw_mono(8n, 20n, {{==}}))
   +h21 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), z) == True{{}} : Bool}}, Nat.add(VB.pw(20n), VB.pw(20n)), VB.pw(21n), VG.two_pw(VB.pw(20n)),
-    ER.addle(228n, LY.LN(EXu.ENC({MU})), VB.pw(20n), VB.pw(20n), h228, h20))
+    U.addle(228n, LY.LN(EXu.ENC({MU})), VB.pw(20n), VB.pw(20n), h228, h20))
   +hsz = FD.nat__le_trans(Nat.add(228n, LY.LN(EXu.ENC({MU}))), VB.pw(21n), A.quad(VB.pw(28n)), h21, VG.pw_mono(21n, 30n, {{==}}))
   +okI = FD.logic__and_intro(EXu.OK({MU}), Nat.is_le(Nat.add(228n, LY.LN(EXu.ENC({MU}))), A.quad(VB.pw(28n))), hok, hsz)
-  +ev = Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), WU.VALw(t, 0n, n), EXu.VAL({MU}), lvU(ER.LDEP(U32, t), t, n, k, pfT, hN, ex8, emul), {{==}})
+  +ev = Equal.trans(S.Value, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), WU.VALw(t, 0n, n), EXu.VAL({MU}), lvU(U.LDEP(U32, t), t, n, k, pfT, hN, ex8, emul), {{==}})
   +vq = Equal.trans(S.Value, S.Sequence{{S.Items{{UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{EI.LV_b96(c), S.EmptyItems{{}}}}}}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, UL.uview(O.Words{{FD.array__thaw(U32, t), n}}), EXu.VAL({MU}), ev),
     Equal.trans(S.Value, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{RN_L.v_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{EI.LV_b96(c), S.EmptyItems{{}}}}}}}}}}, Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{z, S.Items{{RN_L.v_b96(c), S.EmptyItems{{}}}}}}}}}}, RN_L.v_AttestationData(b), EI.LV_AttestationData(b), lvAD(b)),
       Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{EXu.VAL({MU}), S.Items{{EI.LV_AttestationData(b), S.Items{{z, S.EmptyItems{{}}}}}}}}}}, RN_L.v_b96(c), EI.LV_b96(c), lv96(c))))
@@ -561,7 +561,7 @@ def cvI(a: RT.M_IndexedAttestation) -> EI.MW:
   match a:
     case RT.M_IndexedAttestation{{+p0, +p1, +p2}}:
       match p0:
-        case RT.WMr{{+t, +n}}: EI.MW{{EXu.MW{{ER.LDEP(U32, t), t, n}}, p1, p2}}
+        case RT.WMr{{+t, +n}}: EI.MW{{EXu.MW{{U.LDEP(U32, t), t, n}}, p1, p2}}
 
 def cvE(m: {RMB1}) -> {EMB1}:
   match m:
@@ -591,7 +591,7 @@ def thcv(+x: {RMB1}) -> {{W1.th_AttesterSlashing_bx(cvE(x)) == RT.th_AttesterSla
 # ---- one element ----
 def sdI(a: RT.M_IndexedAttestation) -> Data:
   match a:
-    case RT.M_IndexedAttestation{{p0, p1, p2}}: BL.sdk(RT.th_w(p0), 28n)
+    case RT.M_IndexedAttestation{{p0, p1, p2}}: U.sdk(RT.th_w(p0), 28n)
 
 def SDE(m: {RMB1}) -> Data:
   match m:
@@ -627,8 +627,8 @@ def ea2(+a0: RT.M_IndexedAttestation, +a1: RT.M_IndexedAttestation, +f0: ELA(a0)
   +A1 = LY.LN(EI.ENC(cvI(a1)))
   +P = VB.pw(21n)
   +h8 = FD.nat__le_trans(8n, VB.pw(8n), P, {{==}}, VG.pw_mono(8n, 21n, {{==}}))
-  +hA = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(8n, A0), z) == True{{}} : Bool}}, Nat.add(P, P), VB.pw(22n), VG.two_pw(P), ER.addle(8n, A0, P, P, h8, l0))
-  +hB = ER.addle(Nat.add(8n, A0), A1, VB.pw(22n), P, hA, l1)
+  +hA = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(8n, A0), z) == True{{}} : Bool}}, Nat.add(P, P), VB.pw(22n), VG.two_pw(P), U.addle(8n, A0, P, P, h8, l0))
+  +hB = U.addle(Nat.add(8n, A0), A1, VB.pw(22n), P, hA, l1)
   +hC = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), Nat.add(VB.pw(22n), P), Nat.add(VB.pw(22n), VB.pw(22n)), hB, FD.nat__le_add_left(P, VB.pw(22n), VB.pw(22n), VG.pw_mono(21n, 22n, {{==}})))
   +hD = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(Nat.add(8n, A0), A1), z) == True{{}} : Bool}}, Nat.add(VB.pw(22n), VB.pw(22n)), VB.pw(23n), VG.two_pw(VB.pw(22n)), hC)
   +hsz = FD.nat__le_trans(Nat.add(Nat.add(8n, A0), A1), VB.pw(23n), A.quad(VB.pw(28n)), hD, VG.pw_mono(23n, 30n, {{==}}))
@@ -657,3 +657,51 @@ def elx(+m: {RMB1}, +sE: S.Schema, +es: ESA(sE), +r0: RT.rep_AttesterSlashing_bx
           ea2(a0, a1, ela(a0, SH.Chain_head(SH.Container_fields(sE)), PA({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}}, {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}}, es), rpA, hA), ela(a1, SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE))), PB({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}}, {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}}, es), rpB, hB))
 
 ''' + lst
+
+
+import re as _re
+
+
+def _defs(text, names):
+    out = []
+    for nm in names:
+        m = _re.search(r'^(?:law ' + nm + r':\n(?:  .*\n)+)?def ' + nm + r'\(.*?(?=\n(?:def |law |#|import )|\n\n|\Z)', text, _re.M | _re.S)
+        assert m, nm
+        out.append(m.group(0).rstrip('\n'))
+    return '\n\n'.join(out)
+
+
+U64L_IMPORTS = [
+    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+    'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vspec.bend as VS',
+    'import ../proofs/obj/vbytes.bend as VY', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vcopy.bend as VC',
+    'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_rd.bend as UR',
+    'import ../proofs/obj/vua_fix.bend as VTX', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/words_spec.bend as WS',
+    'import ../proofs/obj/ulist_obj.bend as UL', 'import ../spec/primitives.bend as SP', 'import ./e2e_tz.bend as TZ']
+
+
+def u64l_text():
+    import e2e_var_b as EVB
+    import e2e_var_c as EVC
+    bl = EVB.SUPPORT_OUT['e2e_blist.bend']
+    er = EVC.encr_text()
+    el = EVC.encl_text()
+    gp = EVC.gprog_text()
+    parts = [_defs(bl, ['sdk0', 'sdk1', 'sdk']),
+             'def q4(+a: Nat, +b: Nat, +h: {Nat.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(A.quad(a), A.quad(b)) == True{} : Bool}:\n'
+             '  FD.nat__double_le(Nat.double(a), Nat.double(b), FD.nat__double_le(a, b, h))',
+             _defs(er, ['LDEP', 'pdep', 'wT', 'wN', 'weT', 'weN', 'SFT', 'sfx', 'sfk', 'addle']),
+             _defs(el, ['m4q', 'd4q', 'rws0', 'cq8']),
+             _defs(gp, ['ut'])]
+    body = '\n\n'.join(parts)
+    body = body.replace('BL.sdk(', 'sdk(').replace('C.q4(', 'q4(').replace('CQ4.q4(', 'q4(')
+    for al in ('BL', 'ER', 'ELN', 'GP', 'C', 'CQ4', 'PL', 'PW', 'GW', 'EQ', 'EP', 'BXW', 'GPB'):
+        assert not _re.search(r'(?<![\w.])' + al + r'\.', body), al
+    return '\n'.join(U64L_IMPORTS) + """
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_bbatt_gen.py). Do not edit.
+# The word-list lemmas e2e_bbsl needs, copied from e2e_blist (sdk), e2e_encr (LDEP, SFT, sfk, ...), e2e_encl
+# (rws0, cq8) and e2e_gprog (ut) so that e2e_bbsl does not import those modules whole.
+
+""" + body + '\n'
