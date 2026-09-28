@@ -46,15 +46,12 @@ import ../obj/generic_specs.bend as P2_Spec
 import ../../proofs/integer_encoding.bend as P2_IE
 import ../obj/spec_fixed.bend as P2_F
 import ../obj/mtree_defs.bend as P2_MD
-import ../obj/mtree_spec.bend as P2_MS
-import ../obj/root_support.bend as P2_RS
 import ../obj/root_leaf.bend as P2_RL
 import ../obj/bits_leaf.bend as P2_BL
 import ../../spec/bit_packing.bend as P2_Bp
 import ../../spec/bit_root.bend as P2_Bits
 import ../../spec/packing.bend as P2_Pack
 import ../obj/leaf_small.bend as P2_LS
-import ../obj/pcont.bend as P2_PCN
 import ../obj/bitlist_pack.bend as P2_BLP
 import ../obj/words_spec.bend as P2_WS
 import ../obj/gleaf.bend as P2_GL

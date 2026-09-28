@@ -11,9 +11,7 @@ import ../spec/codec.bend as Encoding
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/words_root.bend as WR
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH

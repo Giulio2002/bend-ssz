@@ -15,7 +15,7 @@ import ./words_obj.bend as WO
 import ./elems_obj.bend as EL
 import ./elems48.bend as E48
 import ./cells.bend as CE
-import ./root_names.bend as RN
+import ./root_names_light.bend as RN
 import ./valid_names.bend as VN
 import ./valid_obj.bend as VO
 

@@ -16,7 +16,7 @@ import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/elems48.bend as E48
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/spec_arr_SyncCommittee.bend as M
 import ../proofs/obj/root_types.bend as RT

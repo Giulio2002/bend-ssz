@@ -14,13 +14,12 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/arr_copy.bend as AC
 import ../proofs/obj/arr_spec.bend as AS
 import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/elems48.bend as E48
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/spec_arr_SyncCommittee.bend as M
 import ../proofs/obj/fixrej_SyncCommittee.bend as RJ
 import ../proofs/obj/vrejf.bend as VRF
