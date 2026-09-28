@@ -20,6 +20,7 @@ import ./vdepth.bend as VD
 import ./vbytes.bend as VY
 import ./vlist.bend as VL
 import ./vbsize.bend as VBZ
+import ./vfits.bend as VFT
 import ./vbspec.bend as VZ
 import ./vbrt.bend as VBR
 import ./venc.bend as VE
@@ -43,21 +44,21 @@ def OUT(+N: U32, +T: FD.array__Tree<U32>) -> FD.array__Tree<U32>: VL.OUTP(N, T)
 def XV(+T: FD.array__Tree<U32>, +N: U32) -> S.Value: S.BytesValue{UW.WX(T, 0n, U32.to_nat(N))}
 
 # ceil(N / 4) <= 2^dw, as U32 words against pow2n.
-def nwp(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+def nwp(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(VC.nwu(N)), O.pow2n(dw)) == True{} : Bool}:
-  +h0 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N)), VBR.nwle(dw, N, hdw, hn))
+  +h0 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N)), VBR.nwleU(dw, N, VB.le_nmax(N, VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})), hn))
   FD.logic__subst(Nat, z => {Nat.is_le(VC.NW(N), z) == True{} : Bool}, VB.pw(dw), O.pow2n(dw), VD.s_pow2_eq(dw), h0)
 
 # The output's depth DO(N) <= dw, and its words cover ceil(N / 4).
-def hDO(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+def hDO(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
     -> {Nat.is_lt(VL.DO(N), 31n) == True{} : Bool}:
-  FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn)), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}))
+  FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn, hN)), hdw)
 
-def hdst(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+def hdst(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
     -> {Nat.is_le(Nat.add(VC.NW(N), 0n), VB.pw(VL.DO(N))) == True{} : Bool}:
   %Equal.sym(Nat, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N))) : {Nat.is_le(_, VB.pw(VL.DO(N))) == True{} : Bool}
   %Equal.sym(Nat, VB.pw(VL.DO(N)), O.pow2n(VL.DO(N)), VD.s_pow2_eq(VL.DO(N))) : {Nat.is_le(VC.NW(N), _) == True{} : Bool}
-  VD.wd_cover(VC.nwu(N), dw, FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==}), nwp(dw, N, hdw, hn))
+  VD.wd_cover(VC.nwu(N), dw, FD.nat__le_trans(dw, 31n, 32n, FD.nat__lt_le(dw, 31n, hdw), {==}), nwp(dw, N, hdw, hn, hN))
 
 # The encoder returns the object and the buffer of OUT(N, T), N bytes.
 law encode_eval:
@@ -65,13 +66,13 @@ law encode_eval:
   for +T: FD.array__Tree<U32>
   for +N: U32
   for +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool}
-  for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
+  for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}
   for +hN: {U32.is_le(N, 1073741824) == True{} : Bool}
   {FuluTransaction_e.Transaction_encode(OW(T, N)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
 def encode_eval(dw, T, N, pfT, hdw, hn, hN):
-  +hdw31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
-  +hroom = VBR.nwle(dw, N, hdw, hn)
+  +hdw31 = hdw
+  +hroom = VBR.nwleU(dw, N, VB.le_nmax(N, VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})), hn)
   +D = VL.DO(N)
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {FuluTransaction_e.Transaction_enc_sized(O.wsz_pick(N, _)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
@@ -83,25 +84,25 @@ def encode_eval(dw, T, N, pfT, hdw, hn, hN):
   %Equal.sym(Array<U32>, Array.new(U32, D, 0), FD.array__thaw(U32, VC.ZT(D)), FD.array__new(U32, D, 0)) :
     {FuluTransaction_e.Transaction_enc_put(N, FuluTransaction_e.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, VC.ZT(D)), 0, OW(T, N)), (FD.array__thaw(U32, OUT(N, T)), OW(T, N)),
-      VBE.put_words_any(D, dw, VC.ZT(D), T, 0, 0n, N, VL.KK(dw), FD.array__trep_perfect(U32, D, 0), pfT, hDO(dw, N, hdw, hn), hdw31, {==}, {==},
-        VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn), hroom, hdst(dw, N, hdw, hn), VBE.slot_zt(D, Nat.add(VY.QL(N), 0n)))) :
+      VBE.put_words_anyU(D, dw, VC.ZT(D), T, 0, 0n, N, FD.array__trep_perfect(U32, D, 0), pfT, hDO(dw, N, hdw, hn, hN), hdw31, {==}, {==},
+        VB.le_nmax(N, VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})), hroom, hdst(dw, N, hdw, hn, hN), VBE.slot_zt(D, Nat.add(VY.QL(N), 0n)))) :
     {FuluTransaction_e.Transaction_enc_put(N, O.pwn(_)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   {==}
 
 # The output's first N bytes are the storage's first N bytes.
 def obytes(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
-    +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
     -> {VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, OUT(N, T)))) == UW.WX(T, 0n, U32.to_nat(N)) : +List<U32>}:
   +D = VL.DO(N)
   +s = FD.array__slots(U32, T)
   +Z = FD.array__slots(U32, VC.ZT(D))
   +LM = VB.lm(VC.NW(N), 0n, 0n, Z, s)
-  +hr = hdst(dw, N, hdw, hn)
-  +hq = VZ.quad_nw_ge(N, VL.KK(dw), VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn))
+  +hr = hdst(dw, N, hdw, hn, hN)
+  +hq = VZ.quad_nw_geU(N, VB.le_nmax(N, VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})))
   +hz = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(N), 0n), z) == True{} : Bool}, VB.pw(D), VB.len(Z),
     Equal.sym(Nat, VB.len(Z), VB.pw(D), FD.array__slots_length(U32, D, VC.ZT(D), FD.array__trep_perfect(U32, D, 0))), hr)
   +hs = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(N), 0n), z) == True{} : Bool}, VB.pw(dw), VB.len(s),
-    Equal.sym(Nat, VB.len(s), VB.pw(dw), FD.array__slots_length(U32, dw, T, pfT)), VBR.nwle(dw, N, hdw, hn))
+    Equal.sym(Nat, VB.len(s), VB.pw(dw), FD.array__slots_length(U32, dw, T, pfT)), VBR.nwleU(dw, N, VB.le_nmax(N, VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})), hn))
   %Equal.sym(List<&2, U32>, FD.array__slots(U32, OUT(N, T)), LM, VB.slots_mone(VC.NW(N), 0n, 0n, D, VC.ZT(D), T, FD.array__trep_perfect(U32, D, 0), hr)) :
     {VS.bt(U32.to_nat(N), FX.limbs(_)) == UW.WX(T, 0n, U32.to_nat(N)) : +List<U32>}
   %VY.bt_take(VC.NW(N), U32.to_nat(N), LM, hq) :
@@ -112,7 +113,7 @@ def obytes(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pfT: {FD.array__perfect(
 
 # The spec parts of the value are its bytes, one variable part.
 def xparts(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
-    +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hN: {U32.is_le(N, 1073741824) == True{} : Bool})
     -> {Codec.parts(XV(T, N), Spec.Transaction()) == Some{[S.Variable{UW.WX(T, 0n, U32.to_nat(N))}]} : Maybe<&2, +List<S.Part>>}:
   +X = UW.WX(T, 0n, U32.to_nat(N))
   +el = UW.lenWX(dw, T, 0n, U32.to_nat(N), pfT, hn)
@@ -120,7 +121,7 @@ def xparts(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pfT: {FD.array__perfect(
   VZ.bl_parts(U32.to_nat(1073741824), X, UW.domWX(T, 0n, U32.to_nat(N)),
     FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(1073741824)) == True{} : Bool}, U32.to_nat(N), List.length(&2, U32, X), Equal.sym(Nat, List.length(&2, U32, X), U32.to_nat(N), el), hl),
     FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(N), List.length(&2, U32, X), Equal.sym(Nat, List.length(&2, U32, X), U32.to_nat(N), el),
-      VBZ.fitq(dw, U32.to_nat(N), hn, FD.nat__lt_trans(dw, 28n, 30n, hdw, {==}))))
+      VFT.fits4lt(U32.to_nat(N), VB.u32_lt(N))))
 
 # The bytes of the encoder's buffer are the spec encoding of the object's value.
 law encode_spec:
@@ -128,13 +129,13 @@ law encode_spec:
   for +T: FD.array__Tree<U32>
   for +N: U32
   for +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool}
-  for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
+  for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}
   for +hN: {U32.is_le(N, 1073741824) == True{} : Bool}
   Decoding.decodes(Spec.Transaction(), VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, OUT(N, T)))), XV(T, N))
 def encode_spec(dw, T, N, pfT, hdw, hn, hN):
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(XV(T, N), Spec.Transaction()), Some{[S.Variable{UW.WX(T, 0n, U32.to_nat(N))}]}, xparts(dw, T, N, pfT, hdw, hn, hN)) :
     {Codec.bytes(_) == Some{VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, OUT(N, T))))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<U32>, VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, OUT(N, T)))), UW.WX(T, 0n, U32.to_nat(N)), obytes(dw, T, N, pfT, hdw, hn)) :
+  %Equal.sym(+List<U32>, VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, OUT(N, T)))), UW.WX(T, 0n, U32.to_nat(N)), obytes(dw, T, N, pfT, hdw, hn, hN)) :
     {Some{UW.WX(T, 0n, U32.to_nat(N))} == Some{_} : Maybe<&2, +List<U32>>}
   {==}

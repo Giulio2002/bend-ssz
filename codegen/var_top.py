@@ -231,13 +231,48 @@ def encode_spec(dw, T, N, pfT, hdw, hn, hN):
 """
 
 
+def tx_enc_deep(text, LIM='1073741824'):
+    """Transaction's encoder laws at any tree depth dw < 31: the copy's storage bounds from 31 + N <= UMAX
+    (N <= the list limit <= NMAX: VB.le_nmax), never from the tree's depth."""
+    HN = f'+hN: {{U32.is_le(N, {LIM}) == True{{}} : Bool}}'
+    HY = f'VB.le_nmax(N, VB.u32le_trans(N, {LIM}, VB.NMAX(), hN, {{==}}))'
+    reps = [
+        ('VBR.nwle(dw, N, hdw, hn)', f'VBR.nwleU(dw, N, {HY}, hn)'),
+        ('FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn)), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}))',
+         'FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn, hN)), hdw)'),
+        ('FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==})', 'FD.nat__le_trans(dw, 31n, 32n, FD.nat__lt_le(dw, 31n, hdw), {==})'),
+        ('  +hdw31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})\n', '  +hdw31 = hdw\n'),
+        ('VBE.put_words_any(D, dw, VC.ZT(D), T, 0, 0n, N, VL.KK(dw), FD.array__trep_perfect(U32, D, 0), pfT, hDO(dw, N, hdw, hn), hdw31, {==}, {==},\n'
+         '        VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn), hroom,',
+         'VBE.put_words_anyU(D, dw, VC.ZT(D), T, 0, 0n, N, FD.array__trep_perfect(U32, D, 0), pfT, hDO(dw, N, hdw, hn), hdw31, {==}, {==},\n'
+         f'        {HY}, hroom,'),
+        ('VZ.quad_nw_ge(N, VL.KK(dw), VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn))', f'VZ.quad_nw_geU(N, {HY})'),
+        ('VBZ.fitq(dw, U32.to_nat(N), hn, FD.nat__lt_trans(dw, 28n, 30n, hdw, {==}))', 'VFT.fits4lt(U32.to_nat(N), VB.u32_lt(N))'),
+    ]
+    for a, b in reps:
+        assert a in text, a[:80]
+        text = text.replace(a, b)
+    text = text.replace('Nat.is_lt(dw, 28n)', 'Nat.is_lt(dw, 31n)')
+    # hN reaches the helpers: nwp, hDO, hdst, obytes take it after hn; their calls pass it
+    import re as _re
+    HNd = '+hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})\n    ->'
+    assert text.count(HNd) == 4, text.count(HNd)
+    text = text.replace(HNd, HNd.replace('Bool})', 'Bool}, ' + HN + ')'))
+    text = text.replace('import ./vbsize.bend as VBZ\n', 'import ./vbsize.bend as VBZ\nimport ./vfits.bend as VFT\n', 1)
+    assert 'as VFT' in text
+    for f in ('nwp', 'hDO', 'hdst', 'obytes'):
+        text = _re.sub(r'(?<![\w.])%s\((dw, (?:T, )?N, (?:pfT, )?hdw, hn)\)' % f, r'%s(\1, hN)' % f, text)
+    assert '28n' not in text, [l for l in text.split('\n') if '28n' in l][:3]
+    return text
+
+
 def main():
     nb = '--no-big' in sys.argv
     out = {}
     if not nb:
         out[ROOT / 'proofs/obj/big_var_codec_ExecutionPayload.bend'] = ep_text()
         out[ROOT / 'proofs/obj/big_var_codec_Transaction.bend'] = tx_text()
-        out[ROOT / 'proofs/obj/big_var_codec_Transaction_enc.bend'] = TX_ENC
+        out[ROOT / 'proofs/obj/big_var_codec_Transaction_enc.bend'] = tx_enc_deep(TX_ENC)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

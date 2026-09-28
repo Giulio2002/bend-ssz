@@ -273,3 +273,90 @@ def out_eq_g(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +m: Nat, +pfT: {F.array_
     {FX.limbs(_) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
   %Equal.sym(Nat, VC.NW(N), m, nwo(dw, N, m, hdw, em, hroom)) : {FX.limbs(VS.wtake(_, s)) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
   {==}
+
+# ---- the same at any tree depth dw < 31, for word-aligned lengths N = 4 m (a U32: 4 m < 2^32, so N + 3 does not wrap) ----
+
+law ltq:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_lt(A.quad(a), A.quad(b)) == True{} : Bool}
+  {Nat.is_lt(a, b) == True{} : Bool}
+def ltq(a, b, h):
+  match a b:
+    case _ 0n: Empty.absurd({Nat.is_lt(a, 0n) == True{} : Bool}, F.nat__lt_zero_absurd(A.quad(a), h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 1n+ +q: ltq(p, q, h)
+
+# 4 m < 2^(2+k) gives 3 + 4 m < 2^(2+k).
+def q3lt(+k: Nat, +m: Nat, +h: {Nat.is_lt(A.quad(m), F.spec_common__pow2(2n+k)) == True{} : Bool})
+    -> {Nat.is_lt(3n+A.quad(m), F.spec_common__pow2(2n+k)) == True{} : Bool}:
+  +hm = ltq(m, F.spec_common__pow2(k), h)
+  F.nat__lt_le_trans(3n+A.quad(m), A.quad(1n+m), A.quad(F.spec_common__pow2(k)), F.nat__lt_succ(3n+A.quad(m)),
+    F.nat__double_le(Nat.double(1n+m), Nat.double(F.spec_common__pow2(k)), F.nat__double_le(1n+m, F.spec_common__pow2(k), F.nat__lt_succ_le_succ(m, F.spec_common__pow2(k), hm))))
+
+# A word-aligned U32 length: (N + 3) >> 2 = m.
+def eNWa(+L: U32, +h3: {Nat.is_lt(3n+U32.to_nat(L), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {VC.NW(L) == VD.s_rng(2n, 3n+U32.to_nat(L)) : Nat}:
+  %Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), VB.add_lt32(L, 3, U32.to_nat(L), {==}, h3)) :
+    {VC.NW(L) == _ : Nat}
+  VD.shrk(2n, U32.add(L, 3))
+
+def nwmA(+n: U32, +m: Nat, +em: {U32.to_nat(n) == A.quad(m) : Nat}) -> {VC.NW(n) == m : Nat}:
+  +h32 = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, U32.to_nat(n), A.quad(m), em, VB.u32_lt(n))
+  +h3 = F.logic__subst(Nat, z => {Nat.is_lt(3n+z, F.spec_common__pow2(32n)) == True{} : Bool}, A.quad(m), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), A.quad(m), em), q3lt(30n, m, h32))
+  Equal.trans(Nat, VC.NW(n), VD.s_rng(2n, 3n+U32.to_nat(n)), m, eNWa(n, h3),
+    F.logic__subst(Nat, z => {VD.s_rng(2n, 3n+z) == m : Nat}, A.quad(m), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), A.quad(m), em), rng2_q(m)))
+
+# ... and N fits four bytes.
+def hfitA(+n: U32) -> {N.fits(4n, U32.to_nat(n)) == True{} : Bool}: VFT.fits4lt(U32.to_nat(n), VB.u32_lt(n))
+
+def hsgA(+d: Nat, +n: U32, +m: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+    +em: {U32.to_nat(n) == A.quad(m) : Nat}) -> {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), F.nat__add_zero(VC.NW(n))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(n), m, nwmA(n, m, em)) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  VC.quad_inv(m, VB.pw(d), F.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(n), A.quad(m), em, hn))
+
+def nwoA(+dw: Nat, +N: U32, +m: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat},
+    +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool}) -> {VC.NW(N) == m : Nat}:
+  nwmA(N, m, em)
+
+def roomwA(+dw: Nat, +N: U32, +m: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat},
+    +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool}) -> {Nat.is_le(Nat.add(VC.NW(N), 0n), VB.pw(dw)) == True{} : Bool}:
+  hsgA(dw, N, m, hdw, hNq(dw, N, m, em, hroom), em)
+
+def leWoA(+dw: Nat, +N: U32, +m: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat},
+    +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(VC.nwu(N)), O.pow2n(dw)) == True{} : Bool}:
+  %Equal.sym(Nat, VC.NW(N), m, nwoA(dw, N, m, hdw, em, hroom)) : {Nat.is_le(_, O.pow2n(dw)) == True{} : Bool}
+  F.logic__subst(Nat, z => {Nat.is_le(m, z) == True{} : Bool}, VB.pw(dw), O.pow2n(dw), VD.s_pow2_eq(dw), hroom)
+
+def hDOA(+dw: Nat, +N: U32, +m: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat},
+    +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool}) -> {Nat.is_le(DO(N), dw) == True{} : Bool}:
+  VD.wd_min(VC.nwu(N), dw, leWoA(dw, N, m, hdw, em, hroom))
+
+def hdstoA(+dw: Nat, +N: U32, +m: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat},
+    +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool}) -> {Nat.is_le(Nat.add(VC.NW(N), 0n), VB.pw(DO(N))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(N), 0n), VC.NW(N), F.nat__add_zero(VC.NW(N))) : {Nat.is_le(_, VB.pw(DO(N))) == True{} : Bool}
+  %Equal.sym(Nat, VB.pw(DO(N)), O.pow2n(DO(N)), VD.s_pow2_eq(DO(N))) : {Nat.is_le(VC.NW(N), _) == True{} : Bool}
+  VD.wd_cover(VC.nwu(N), dw, F.nat__le_trans(dw, 31n, 32n, F.nat__lt_le(dw, 31n, hdw), {==}), leWoA(dw, N, m, hdw, em, hroom))
+
+def out_eq_gA(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +m: Nat, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +em: {U32.to_nat(N) == A.quad(m) : Nat}, +hroom: {Nat.is_le(m, VB.pw(dw)) == True{} : Bool})
+    -> {VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, OUTP(N, T)))) == FX.limbs(VS.wtake(m, F.array__slots(U32, T))) : +List<U32>}:
+  +s = F.array__slots(U32, T)
+  +Z = F.array__slots(U32, VC.ZT(DO(N)))
+  +LM = VB.lm(VC.NW(N), 0n, 0n, Z, s)
+  +hd0 = hdstoA(dw, N, m, hdw, em, hroom)
+  +hsl = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(N), 0n), z) == True{} : Bool}, VB.pw(dw), VB.len(s), Equal.sym(Nat, VB.len(s), VB.pw(dw), F.array__slots_length(U32, dw, T, pfT)), roomwA(dw, N, m, hdw, em, hroom))
+  +hz = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(N), 0n), z) == True{} : Bool}, VB.pw(DO(N)), VB.len(Z),
+    Equal.sym(Nat, VB.len(Z), VB.pw(DO(N)), F.array__slots_length(U32, DO(N), VC.ZT(DO(N)), F.array__trep_perfect(U32, DO(N), 0))), hd0)
+  %Equal.sym(Nat, U32.to_nat(N), A.quad(m), em) : {VS.bt(_, FX.limbs(F.array__slots(U32, OUTP(N, T)))) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(A.quad(m), FX.limbs(F.array__slots(U32, OUTP(N, T)))), FX.limbs(VS.wtake(m, F.array__slots(U32, OUTP(N, T)))), VS.bt_limbs(m, F.array__slots(U32, OUTP(N, T)))) :
+    {_ == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, F.array__slots(U32, OUTP(N, T)), LM,
+      VB.slots_mone(VC.NW(N), 0n, 0n, DO(N), VC.ZT(DO(N)), T, F.array__trep_perfect(U32, DO(N), 0), hd0)) :
+    {FX.limbs(VS.wtake(m, _)) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  %nwoA(dw, N, m, hdw, em, hroom) : {FX.limbs(VS.wtake(_, LM)) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(VC.NW(N), VB.wdr(0n, LM)), VS.wtake(VC.NW(N), VB.wdr(0n, s)), VB.lm_win(VC.NW(N), 0n, 0n, Z, s, hz, hsl)) :
+    {FX.limbs(_) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  %Equal.sym(Nat, VC.NW(N), m, nwoA(dw, N, m, hdw, em, hroom)) : {FX.limbs(VS.wtake(_, s)) == FX.limbs(VS.wtake(m, s)) : +List<U32>}
+  {==}
