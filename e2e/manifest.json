@@ -3918,7 +3918,7 @@
     "laws": [
      "ProgressiveComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the encode records' own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; decoded fields reach NMAX; dropped when the encoder window widens (codec-var), then regenerated with the budgets read from the widened law): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (a per-field budget so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise (words dw < 28, bit lists EP.SDPB)"
    }
   ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
@@ -3938,7 +3938,7 @@
     "laws": [
      "ProgressiveTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the encode records' own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; decoded fields reach NMAX; dropped when the encoder window widens (codec-var), then regenerated with the budgets read from the widened law): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (a per-field budget so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise (words dw < 28, bit lists EP.SDPB)"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
