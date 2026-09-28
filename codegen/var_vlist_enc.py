@@ -54,7 +54,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./spec_fixed.bend as FX',
         'import ./vbrt.bend as VBR', 'import ./vua.bend as UA', 'import ./vuw.bend as UW',
         'import ./vvle.bend as VE2', 'import ./vvl.bend as VVL', 'import ./vrej.bend as VR', 'import ../../src/primitives.bend as I', 'import ./vdig.bend as VG',
-        'import ./dk.bend as DK', 'import ./vfix.bend as VF', 'import ./big_vvlu.bend as VVU', 'import ./vbspec.bend as VZ', 'import ../../spec/nat_bytes.bend as N', 'import ./vuwd.bend as WD', 'import ./vbsize.bend as VBZ', 'import ../../spec/codec.bend as Codec',
+        'import ./dk.bend as DK', 'import ./vfix.bend as VF', 'import ./big_vvlu.bend as VVU', 'import ./vbspec.bend as VZ', 'import ../../spec/nat_bytes.bend as N', 'import ./vuwd.bend as WD', 'import ./vbsize.bend as VBZ', 'import ./vfits.bend as VFT', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/layout.bend as Layout', 'import ../../spec/fulu_schemas.bend as Spec', 'import ../../spec/primitives.bend as SP', 'import ../../proofs/nat_bytes.bend as Digits']
 
 TEMPLATE = ROOT / 'codegen/vvle_list.bend.in'
