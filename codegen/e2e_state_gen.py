@@ -276,10 +276,12 @@ def vbx_state():
 
 
 def vdec_state():
-    return {'view': 'ST.v_BeaconState', 'imports': ['import ../proofs/obj/root_state.bend as ST', 'import ./e2e_vbx_BeaconState.bend as VWX'],
+    # the window view takes d < 28 (its field lemmas' own bound): the bridge runs at the K bound n <= 4 * 2^27 (kmode) and
+    # hands vv d < 28 (vvbd) even where the codec laws take d < 31
+    return {'view': 'ST.v_BeaconState', 'kmode': 27, 'vvbd': 28, 'imports': ['import ../proofs/obj/root_state.bend as ST', 'import ./e2e_vbx_BeaconState.bend as VWX'],
             'text': '''# ---- the view of a decoded BeaconState is the codec law's value (the window's view at offset 0) ----
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {ST.v_BeaconState(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
   VWX.vb(d, t, 0n, 0, n, {==}, hd, hn, pf, hchk)
 

@@ -1781,6 +1781,12 @@ def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_na
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   capM_n(n, hN)
+
+# n <= 4 * 2^k for k < 28 is within the object API's limit NMAX (for the codec laws' hN premise in the K mode)
+def capK_N(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 28n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
+    -> {U32.is_le(n, VB.NMAX()) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()),
+    Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), VB.hwNof(k, U32.to_nat(n), hk, h))
 '''
 
 ULIST = r'''import Base
@@ -2363,7 +2369,8 @@ def vdec_info(R):
             'bf': imp.get(mbf.group(1)) if mbf else None,
             'obj': imp.get(mob.group(1)) if mob else None,
             'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
-            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
+            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s)),
+            'lawhN': '+hN: {U32.is_le(n, ' in sig}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2420,6 +2427,10 @@ def text_vdec(R, X, info):
         body = body.replace('DC.CHK(TT(bs, n), n)', 'DC.CHK(n)')
     if info['noneshort']:
         body = re.sub(r'\.decode_none\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*, hchk\)\)$', '.decode_none(TT(bs, n), n, hchk))', body, flags=re.M)
+    if vw.get('vvbd'):
+        # the view lemma takes a smaller depth bound than the codec laws (its window lemmas' own), from the K bound
+        body = body.replace('vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@,',
+                            f'vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, {vw["vvbd"]}n,')
     if vw.get('rej_args'):
         # a reject law with premises of its own before hchk (the name supplies their proofs)
         body = re.sub(r'(\.decode_reject\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*), hchk\)$', lambda m: m.group(1) + vw['rej_args'] + ', hchk)', body, flags=re.M)
@@ -2428,6 +2439,10 @@ def text_vdec(R, X, info):
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
     if info['vald']:
         body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
+    if info.get('lawhN'):
+        # the codec laws take the input within the object API's limit (hN, before hchk)
+        HN = 'hS' if vdec_nmax(info) else 'C.capK_N(n, @K@, {==}, hS)'
+        body = re.sub(r'(\.decode_(?:accept|none|spec|reject)\(B\.capacity\(n\), .*), hchk\)', lambda m: m.group(1) + ', ' + HN + ', hchk)', body)
     if vdec_nmax(info):
         body = (body.replace('hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}', 'hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
                 .replace('FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==})', 'FD.nat__le_lt_trans(B.capacity(n), 30n, @BD@, C.capM_le(n, hS), {==})')
