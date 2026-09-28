@@ -13,6 +13,7 @@ import ../obj/spec_fixed.bend as F
 import ../obj/vspec.bend as VS
 import ../obj/vbuf.bend as VB
 import ../obj/vua.bend as UA
+import ../obj/vua_win.bend as UW
 import ../obj/var_bytesx_LightClientFinalityUpdate.bend as W
 import ../obj/var_bytesx_LightClientFinalityUpdate_inv.bend as XI
 import ../obj/var_bytesx_LightClientFinalityUpdate_dec.bend as PRV

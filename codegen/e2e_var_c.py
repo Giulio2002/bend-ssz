@@ -2667,7 +2667,6 @@ def ln1(+x: {RMB}, +f: EF(x)) -> {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == Tr
     rv = _obj('big_encx_v4_GcDC3E457711.bend')
     OKT4 = _okt(rv)
     K4 = int(re.search(r'Nat\.is_lt\(da, (\d+)n\)', OKT4).group(1))
-    SZ = int(re.search(r'Nat\.mul\(U32\.to_nat\(N\), (\d+)n\)', OKT4).group(1))
     NV4 = int(re.search(r'U32\.is_eq\(N, (\d+)\)', OKT4).group(1))
     FTS = 'FixedTestStruct_d.GcDC3E457711'
     TR4 = f'FD.array__Tree<{FTS}>'
@@ -2677,7 +2676,7 @@ def ln1(+x: {RMB}, +f: EF(x)) -> {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == Tr
     okt4 = re.sub(r'\bda\b', 'dw', OKT4)
     okt4 = re.sub(r'\bA\b(?!\.)', 't', okt4).replace('VOK(', 'RV.VOK(')
     leaf4 = {f'Nat.is_lt(dw, {K4}n)': 'hda', f'FD.array__perfect({FTS}, dw, t)': 'pf', 'Nat.is_le(U32.to_nat(N), VB.pw(dw))': 'hN',
-             f'Nat.is_le(Nat.mul(U32.to_nat(N), {SZ}n), A.quad(VB.pw(dw)))': 'hro', f'U32.is_eq(N, {NV4})': f'ieq_{NV4}(N, eN)',
+             f'U32.is_eq(N, {NV4})': f'ieq_{NV4}(N, eN)',
              'RV.VOK(U32.to_nat(N), t, 0n)': f'vok_go({k}, t, 0n, er)'}
     ieq4 = '' if NV4 == NV else f'''def ieq_{NV4}(+N: U32, +eN: {{U32.to_nat(N) == {NV4}n : Nat}}) -> {{U32.is_eq(N, {NV4}) == True{{}} : Bool}}:
   %Equal.sym(Cmp, U32.cmp(N, {NV4}), Nat.cmp(U32.to_nat(N), U32.to_nat({NV4})), FD.u32__u32_cmp(N, {NV4})) : {{Cmp.is_eq(_) == True{{}} : Bool}}
@@ -2687,11 +2686,10 @@ def ln1(+x: {RMB}, +f: EF(x)) -> {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == Tr
     text += f'''
 # ---- Vector[FixedTestStruct, {NV4}]: its record RV.MW{{dw, t, N}} ----
 {ieq4}
-# the vector's premise: its tree below K, its {SZ} N bytes within 4 2^depth
+# the vector's premise: its record tree below K (the encode law's depth bound)
 def sv4(v: {SEQ4}, +K: Nat) -> Data:
   match v:
-    case {SEQ4}{{arr, +n}}: DK.P2({{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, arr)), K) == True{{}} : Bool}},
-      {{Nat.is_le(Nat.mul(U32.to_nat(n), {SZ}n), A.quad(VB.pw(ER.LDEP({FTS}, FD.array__freeze({FTS}, arr))))) == True{{}} : Bool}})
+    case {SEQ4}{{arr, +n}}: {{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, arr)), K) == True{{}} : Bool}}
 
 def el_xat(+W: List<&2, {FTS}>, +j: Nat) -> {{VRL.mget({FTS}, FD.spec_common__nth({FTS}, W, j), {FTS}_default()) == RT.xat_v4_GcDC3E457711(W, j) : {FTS}}}:
   match W j:
@@ -2745,13 +2743,10 @@ def V4R(v: {SEQ4}) -> Data:
 
 def v4c2(-v: {SEQ4}, +t: {TR4}, +dw: Nat, +N: U32, +eq: {{v == {SEQ4}{{FD.array__thaw({FTS}, t), N}} : {SEQ4}}}, +pf: {{FD.array__perfect({FTS}, dw, t) == True{{}} : Bool}},
     +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v4_GcDC3E457711({k}, {S4('t')}, 0n), +eN: {{U32.to_nat(N) == {NV4}n : Nat}},
-    +hs2: DK.P2({{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), {K4}n) == True{{}} : Bool}},
-      {{Nat.is_le(Nat.mul(U32.to_nat(N), {SZ}n), A.quad(VB.pw(ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t)))))) == True{{}} : Bool}})) -> V4R(v):
-  (+hk0, +hr0) = hs2
+    +hk0: {{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), {K4}n) == True{{}} : Bool}}) -> V4R(v):
   +ea = Equal.trans(Nat, ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), ER.LDEP({FTS}, t), dw,
     Equal.cong({TR4}, Nat, z => ER.LDEP({FTS}, z), FD.array__freeze({FTS}, FD.array__thaw({FTS}, t)), t, FD.array__freeze_thaw({FTS}, t)), ER.pdep({FTS}, dw, t, pf))
   +hda = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {K4}n) == True{{}} : Bool}}, ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), dw, ea, hk0)
-  +hro = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.mul(U32.to_nat(N), {SZ}n), A.quad(VB.pw(z))) == True{{}} : Bool}}, ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), dw, ea, hr0)
   +hok = {_andproof(okt4, leaf4)}
   (RV.MW{{dw, t, N}}, (eq, (v4val(dw, t, N, er), hok)))
 
@@ -2934,12 +2929,11 @@ def cx_premise():
     Kt = int(re.search(r'Nat\.is_lt\(TDM\(t\), (\d+)n\)', _okt(en2, 'OKL')).group(1))
     rv = _okt(_obj('big_encx_v4_GcDC3E457711.bend'))
     K4 = int(re.search(r'Nat\.is_lt\(da, (\d+)n\)', rv).group(1))
-    SZ = int(re.search(r'Nat\.mul\(U32\.to_nat\(N\), (\d+)n\)', rv).group(1))
     return ('rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field\'s encode law\'s bound (read from the law; '
             'dropped when the encode laws take the root law\'s dw < 32): '
             f'hsB: BL.sdk(pj_1(o), {KB}n) (f_B\'s words below depth {KB}), hsD: BL.sdk(pj_3(o), {KD}n) (f_D\'s bytes below depth {KD}), '
             f'hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), {KE}n) (f_E\'s list below depth {KE}), '
-            f'hsF: EV.sv4(pj_5(o), {K4}n) (f_F\'s record tree below depth {K4}, its {SZ} N bytes within 4 2^depth), '
+            f'hsF: EV.sv4(pj_5(o), {K4}n) (f_F\'s record tree below depth {K4}), '
             f'hsG: EV.sv2(pj_6(o), {Kt}n, {KE}n) (f_G\'s mirror tree below depth {Kt}, each element\'s list below depth {KE})')
 
 
