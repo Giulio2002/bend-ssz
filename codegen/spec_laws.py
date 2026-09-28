@@ -1526,6 +1526,8 @@ def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None, vt=Non
     w(f'def {n}_spec_encode({sig})')
     w(f'    -> Decoding.decodes(Spec.{n}(), {L}, {node.val}):')
     w(f'  F.encoding_of_parts(Spec.{n}(), {node.val}, {L}, {n}_spec_parts({args}))')
+    if lh is not None:
+        emit_lhalf_t(w, n, node, size, lh)
     w(f'def {n}_spec_decode({psig})')
     w(f'    -> {{T.{n}_decode({buf}, {size}) == ({buf}, Some{{{node.dec}}}) : B.Buf & Maybe<&1, {R}>}}:')
     if lh is not None:
@@ -1577,6 +1579,121 @@ def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None, vt=Non
     w(f'  %Equal.sym(Bool, U32.is_eq(m, {size}), False{{}}, e) : '
       f'{{T.{n}_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}')
     w('  {==}')
+
+
+def emit_lhalf_t(w, n, node, size, p):
+    """The tree forms of the spec laws of a container whose first field is a 2^p-word byte vector
+    (MatrixEntry), for a bridge that composes them with <n>_ltb over variable trees:
+    <n>_spec_parts_bw / <n>_spec_encode_bw over the first field's words bw (a variable list of
+    2^p words) and the other fields' literal words, and <n>_spec_encode_t over the spine
+    [..[y0 | m0] .. | m_(p-1)] in <n>_ltb's byte form (the take of the buffer tree's slots). The
+    literal laws, instantiated at 2^p leaf terms, exceed the checker's identity budget and make
+    it run the encoder (FuluMatrixEntry e2e w3: 25 s)."""
+    H = 1 << p
+    nw = size // 4
+    TV = 'FD.array__Tree<U32>'
+    PT = 'Maybe<&2, +List<S.Part>>'
+    X, G = node.words[:H], node.words[H:]
+    sch = node.sch
+    _, sargs = top_args(sch)
+    chain = sargs[1]
+    schs = []
+    cur = chain
+    while cur != 'S.End{}':
+        _, ca = top_args(cur)
+        schs.append(ca[0])
+        cur = ca[1]
+    _, vargs = top_args(node.val)
+    vals = []
+    cur = vargs[0]
+    while cur != 'S.EmptyItems{}':
+        _, ia = top_args(cur)
+        vals.append(ia[0])
+        cur = ia[1]
+    assert len(vals) == len(schs) and vals[0] == f'S.BytesValue{{F.limbs({wl(X)})}}', n
+    KB = 4 * H
+    assert schs[0] == f'S.ByteVector{{{KB}n}}', n
+    kw, kp = [], []
+    for v, sc in zip(vals[1:], schs[1:]):
+        ws = re.findall(r'\bx\d+\b', v)
+        kw.append(ws)
+        if sc.startswith('S.ByteVector{'):
+            kp.append(f'F.bytes_part_n({ws[0]}, {wl(ws[1:])}, {top_args(sc)[1][0]}, {{==}}, {{==}})')
+        elif sc == 'S.Unsigned{P.U64{}}':
+            kp.append(f'F.uint64_part({ws[0]}, {ws[1]})')
+        else:
+            raise Skip(f'{n}: tree-form field {sc}')
+    assert [x for ws in kw for x in ws] == G, n
+    gsig = ', '.join(f'+{x}: U32' for x in G)
+    gargs = ', '.join(G)
+    VB = lambda bw: 'S.Sequence{' + ''.join(f'S.Items{{{v}, ' for v in [f'S.BytesValue{{F.limbs({bw})}}'] + vals[1:]) + 'S.EmptyItems{}' + '}' * len(vals) + '}'
+    WSL = lambda bw: '[' + ', '.join([bw] + [wl(ws) for ws in kw]) + ']'
+    REST = '[' + ', '.join(wl(ws) for ws in kw) + ']'
+    FL = lambda bw: f'F.flat({WSL(bw)})'
+    RHS = f'Some{{[S.Fixed{{{FL("bw")}}}]}}'
+    parts = [f'Codec.parts({v}, {sc})' for v, sc in zip(['S.BytesValue{F.limbs(bw)}'] + vals[1:], schs)]
+    fixed = [f'Some{{[S.Fixed{{F.limbs({x})}}]}}' for x in ['bw'] + [wl(ws) for ws in kw]]
+
+    def aggm(ps):
+        out = 'Some{[]}'
+        for p_ in reversed(ps):
+            out = f'Codec.concatenate({p_}, {out})'
+        return f'{{Codec.aggregate({out}, SSC.fixed_size({chain})) == {RHS} : {PT}}}'
+    hbw = f'+hbw: {{FD.spec_common__length(U32, bw) == {H}n : Nat}}'
+    w(f"# ---- {n} over its first field's words bw (a list of {H} words) and the other fields' words ----")
+    w(f'def {n}_spec_parts_bw(+bw: List<&2, U32>, {hbw}, {gsig})')
+    w(f'    -> {{Codec.parts({VB("bw")}, Spec.{n}()) == {RHS} : {PT}}}:')
+    w(f'  %Equal.sym(S.Schema, Spec.{n}(), {sch}, {{==}}) :')
+    w(f'    {{Codec.parts({VB("bw")}, _) == {RHS} : {PT}}}')
+    hw = (f'FD.logic__subst(Nat, z => {{Nat.is_eq(z, {KB}n) == True{{}} : Bool}}, {KB}n, F.wlen(bw), '
+          f'Equal.sym(Nat, F.wlen(bw), {KB}n, AS.wlen_len(bw, {H}n, {KB}n, hbw, {{==}})), {{==}})')
+    prfs = [f'AS.bv_parts({schs[0]}, bw, {KB}n, {{==}}, {{==}}, {hw}, {{==}}, {{==}})'] + kp
+    for i in range(len(parts)):
+        hs = [fixed[j] if j < i else parts[j] for j in range(len(parts))]
+        hs[i] = '_'
+        w(f'  %Equal.sym({PT}, {parts[i]}, {fixed[i]}, {prfs[i]}) :')
+        w('    ' + aggm(hs))
+    ea = (f'Equal.trans(Nat, List.length(&2, U32, F.limbs(bw)), F.wlen(bw), {KB}n, AS.len_limbs(bw), '
+          f'AS.wlen_len(bw, {H}n, {KB}n, hbw, {{==}}))')
+    hN = (f'FD.logic__subst(Nat, z => {{Nat.add(z, Layout.fixed_size(F.fparts({REST}))) == {size}n : Nat}}, {KB}n, '
+          f'List.length(&2, U32, F.limbs(bw)), Equal.sym(Nat, List.length(&2, U32, F.limbs(bw)), {KB}n, {ea}), {{==}})')
+    w(f'  AS.agg({WSL("bw")}, AS.unsome(SSC.fixed_size({chain})), {size}n, {hN}, {{==}})')
+    w(f'def {n}_spec_encode_bw(+bw: List<&2, U32>, {hbw}, {gsig})')
+    w(f'    -> Decoding.decodes(Spec.{n}(), {FL("bw")}, {VB("bw")}):')
+    w(f'  F.encoding_of_parts(Spec.{n}(), {VB("bw")}, {FL("bw")}, {n}_spec_parts_bw(bw, hbw, {gargs}))')
+    # over the spine, in <n>_ltb's byte form
+    ms = [f'm{j}' for j in range(p)]
+    U = spine('y0', ms)
+    pU = spine_pf('y0', ms, [f'pm{j}' for j in range(p)])
+    sp = ('+y0: U32, ' + ', '.join(f'+{m}: {TV}' for m in ms) + ', '
+          + ', '.join(f'+pm{j}: {{FD.array__perfect(U32, {j}n, m{j}) == True{{}} : Bool}}' for j in range(p)))
+    TRo = ttree(G + ['0'] * (H - len(G)))
+    SU, ST = f'FD.array__slots(U32, {U})', f'FD.array__slots(U32, {TRo})'
+    BT = f'F.limbs(FD.spec_common__take(U32, FD.array__slots(U32, FD.TNode{{{U}, {TRo}}}), {nw}n))'
+    K = nw - H
+    LU = f'FD.spec_common__length(U32, {SU})'
+    elU = f'AS.len_tree({p}n, {U}, {H}n, {pU}, {{==}})'
+    elen = (f'FD.logic__subst(Nat, z => {{Nat.add(z, {K}n) == {nw}n : Nat}}, {H}n, {LU}, Equal.sym(Nat, {LU}, {H}n, {elU}), {{==}})')
+    TA = f'FD.spec_common__append(U32, {SU}, {ST})'
+    T16 = f'FD.spec_common__take(U32, {ST}, {K}n)'
+    X1 = f'F.limbs(FD.spec_common__take(U32, {TA}, Nat.add({LU}, {K}n)))'
+    X2 = f'F.limbs(FD.spec_common__append(U32, {SU}, {T16}))'
+    X3 = f'List.append(&2, U32, F.limbs({SU}), F.limbs({T16}))'
+    E1 = (f'FD.logic__subst(Nat, z => {{{BT} == F.limbs(FD.spec_common__take(U32, {TA}, z)) : +List<U32>}}, {nw}n, Nat.add({LU}, {K}n), '
+          f'Equal.sym(Nat, Nat.add({LU}, {K}n), {nw}n, {elen}), {{==}})')
+    E2 = (f'Equal.cong(List<&2, U32>, +List<U32>, z => F.limbs(z), FD.spec_common__take(U32, {TA}, Nat.add({LU}, {K}n)), '
+          f'FD.spec_common__append(U32, {SU}, {T16}), TB.take_app({SU}, {ST}, {K}n))')
+    E3 = f'AS.limbs_app({SU}, {T16})'
+    chainE = (f'Equal.trans(+List<U32>, {BT}, {X1}, {FL(SU)}, {E1}, Equal.trans(+List<U32>, {X1}, {X2}, {FL(SU)}, {E2}, '
+              f'Equal.trans(+List<U32>, {X2}, {X3}, {FL(SU)}, {E3}, {{==}})))')
+    w(f'def {n}_spec_bt({sp}, {gsig}) -> {{{FL(SU)} == {BT} : +List<U32>}}:')
+    w(f'  Equal.sym(+List<U32>, {BT}, {FL(SU)}, {chainE})')
+    w(f'def {n}_spec_encode_t({sp}, {gsig})')
+    w(f'    -> Decoding.decodes(Spec.{n}(), {BT}, {VB(SU)}):')
+    w(f'  %{n}_spec_bt(y0, {", ".join(ms)}, {", ".join(f"pm{j}" for j in range(p))}, {gargs}) :')
+    w(f'    Decoding.decodes(Spec.{n}(), _, {VB(SU)})')
+    w(f'  {n}_spec_encode_bw({SU}, {elU}, {gargs})')
+    w('')
 
 
 def emit_lhalf(w, n, node, size, R, p, pads):
@@ -1946,6 +2063,22 @@ def emit_pow2(w, n, t, node, size, R, P, p):
     w(f'def {n}_spec_encode({sig})')
     w(f'    -> Decoding.decodes(Spec.{n}(), {L}, {node.val}):')
     w(f'  F.encoding_of_parts(Spec.{n}(), {node.val}, {L}, {n}_spec_parts({args}))')
+    if node.val == f'S.BytesValue{{{L}}}':
+        # the tree forms of the spec laws, over the storage's left half l (the bytes' words): a bridge
+        # composes them with <n>_tb and TB.view over variable trees, never spelling out the 2^p words
+        # (a literal law instantiated at 2^p leaf terms exceeds the checker's identity budget, and the
+        # checker then runs the encoder: Cell's e2e w3, 22 s)
+        TV = 'FD.array__Tree<U32>'
+        LS = 'F.limbs(FD.array__slots(U32, l))'
+        pl = f'+pl: {{FD.array__perfect(U32, {p}n, l) == True{{}} : Bool}}'
+        w(f'def {n}_spec_parts_t(+l: {TV}, {pl})')
+        w(f'    -> {{Codec.parts(S.BytesValue{{{LS}}}, Spec.{n}()) == Some{{[S.Fixed{{{LS}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+        w(f'  %Equal.sym(S.Schema, Spec.{n}(), {node.sch}, {{==}}) :')
+        w(f'    {{Codec.parts(S.BytesValue{{{LS}}}, _) == Some{{[S.Fixed{{{LS}}}]}} : Maybe<&2, +List<S.Part>>}}')
+        w(f'  TB.tparts({p}n, l, {size}n, pl, {{==}}, {{==}}, {{==}})')
+        w(f'def {n}_spec_encode_t(+l: {TV}, {pl})')
+        w(f'    -> Decoding.decodes(Spec.{n}(), {LS}, S.BytesValue{{{LS}}}):')
+        w(f'  F.encoding_of_parts(Spec.{n}(), S.BytesValue{{{LS}}}, {LS}, {n}_spec_parts_t(l, pl))')
     buf = f'B.Buf{{{LX}, {size}}}'
     bufp = f'B.Buf{{_, {size}}}'
     w(f'def {n}_spec_decode({sig})')
@@ -2004,7 +2137,9 @@ def family(out, chosen, g, src, tag, head, rhead, uimports, legal=None):
         vt = None if lh is not None or p2 is not None or lt is not None else vtail(t, g, node)
         tv = size // 4 >= VIEW_MIN
         lines = list(head[:-1]) + (POW2_IMPORTS if p2 is not None or lh is not None or tv or lt is not None or vt is not None else []) + \
-            (['import ./arr_enc.bend as AN'] if lt is not None or vt is not None else []) + [''] + [
+            (['import ./arr_enc.bend as AN'] if lt is not None or vt is not None else []) + \
+            (['import ./tree_bytes.bend as TB'] if p2 is not None and t.kind == 'bytes' else []) + \
+            (['import ./tree_bytes.bend as TB', 'import ./arr_spec.bend as AS', 'import ../../spec/schema.bend as SSC', 'import ../../spec/layout.bend as Layout'] if lh is not None else []) + [''] + [
             '# GENERATED by codegen/spec_laws.py. Do not edit.',
             f'# Spec-connected codec laws of {n}: the emitted bytes, their relation to the',
             '# object value in the independent spec/codec.bend, acceptance of every buffer',
