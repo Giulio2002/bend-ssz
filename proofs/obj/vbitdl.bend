@@ -87,7 +87,7 @@ def RK(+K: U32) -> Nat: Nat.add(VS.x8(VBT.JK(K)), VBT.BKk(K))
 
 def words_pack(+dd: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb),
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb),
     +hnd: {Nat.is_le(Nat.add(VC.NW(O.bits_nbytes(K)), 0n), VB.pw(dd)) == True{} : Bool},
     +hns: {Nat.is_le(Nat.add(VC.NW(O.bits_nbytes(K)), 0n), VB.pw(dw)) == True{} : Bool},
     +hqd: {Nat.is_lt(VBT.QK(K), VB.pw(dd)) == True{} : Bool}, +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},

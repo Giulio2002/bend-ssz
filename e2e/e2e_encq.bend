@@ -34,7 +34,7 @@ import ../proofs/obj/big_encx_Gp66304057C3.bend as K_Gp66304057C3
 # TH(m), its view VAL(m), m valid, 1 + its bytes within the bound (what a union's arm record takes).
 
 # ---- Gp4B0CA2906A ----
-def PREM_Gp4B0CA2906A(v: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A) -> Data: EP.SDPB(RT.pj_Gp4B0CA2906A_0(v), 28n)
+def PREM_Gp4B0CA2906A(v: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A) -> Data: EP.SDPB(RT.pj_Gp4B0CA2906A_0(v), 31n)
 
 def RQ_Gp4B0CA2906A(o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A) -> Data:
   DK.Ex(CI_Gp4B0CA2906A.MW, m => DK.P2({o == CI_Gp4B0CA2906A.TH(m) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, DK.P2({RT.v_Gp4B0CA2906A(CI_Gp4B0CA2906A.TH(m)) == CI_Gp4B0CA2906A.VAL(m) : S.Value},
@@ -83,7 +83,7 @@ def rq_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A,
   c1_Gp4B0CA2906A(o, eo, EP.pbb(RT.pj_Gp4B0CA2906A_0(o), q0, hs0))
 
 # ---- Gp66304057C3 ----
-def PREM_Gp66304057C3(v: ProgressiveVarTestStruct_d.Gp66304057C3) -> Data: DK.P2(BL.sdk(RT.pj_Gp66304057C3_1(v), 28n), EP.SDPB(RT.pj_Gp66304057C3_2(v), 28n))
+def PREM_Gp66304057C3(v: ProgressiveVarTestStruct_d.Gp66304057C3) -> Data: DK.P2(BL.sdk(RT.pj_Gp66304057C3_1(v), 28n), EP.SDPB(RT.pj_Gp66304057C3_2(v), 31n))
 
 def RQ_Gp66304057C3(o: ProgressiveVarTestStruct_d.Gp66304057C3) -> Data:
   DK.Ex(CI_Gp66304057C3.MW, m => DK.P2({o == CI_Gp66304057C3.TH(m) : ProgressiveVarTestStruct_d.Gp66304057C3}, DK.P2({RT.v_Gp66304057C3(CI_Gp66304057C3.TH(m)) == CI_Gp66304057C3.VAL(m) : S.Value},
