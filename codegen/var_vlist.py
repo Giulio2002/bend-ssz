@@ -186,37 +186,14 @@ BL_FIT_OLD = 'VBZ.fitq(d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans
 LT32 = 'FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(x, U32.to_nat(len)), {H})'
 
 
-def bl_deep(text, N):
-    """A ByteList[N] window at any depth d < 31. N bounded (31 + N < 2^30): the storage's bounds come from the
-    limit (hB, hyB, hWZ, hdzK, hrgB: var_bits' pattern), the window's end below 2^32 is hw32 (var_win.deep_x).
-    N = 2^30: the window ends by NMAX (hwN), the copy is vua_ct's U chain (var_win.deep_xN's pattern)."""
-    import var_win as VW
-    for a in (BL_RD_OLD, BL_FIT_OLD):
-        assert a in text, a[:60]
-    # hlen keeps its signature (other modules call it): its window hypothesis is not threaded
-    hl_old = '''def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool}:
-  FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)'''
-    assert hl_old in text, 'hlen'
-    text = text.replace(hl_old, hl_old.replace('+hw:', '+hl:').replace(', hw)', ', hl)'))
-    text = text.replace("import ./vua_ct.bend as UCT\n", "import ./vua_ct.bend as UCT\nimport ./vfits.bend as VFT\n", 1)
-    if 31 + N >= 1 << 30:
-        text = text.replace(BL_RD_OLD, """  +hy = VC.hyW(x, len, hwN)
-  +hz = VC.dz30(len, hy)
-  UCT.copy_in_atU(d, t, n, off, len, VLS.DZ(len), pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), 30n, 31n, hz, {==}),
-    """ + BL_EZ + """,
-    UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hy)""")
-        text = text.replace(BL_FIT_OLD, 'VFT.fits4lt(U32.to_nat(len), ' + LT32.replace('{H}', 'VB.le_n_lt32(Nat.add(x, U32.to_nat(len)), VB.NMAX(), hwN)') + ')')
-        return VW.deep_N(text)
+def bounded_text(N):
+    """(KB, K, text): a window of at most N bytes (hb: len <= N) has 31 + len <= 2^KB and a copy of depth <= K:
+    hyB, hWZ, hdzK, hrgB and zeros_at (var_bits' pattern), for UCT.copy_in_at at KB with UW.hsxB."""
     YMAX = 31 + N
     KB = _ceil_log2(YMAX)
     K = _ceil_log2(((YMAX) >> 2) + 8)
     assert KB < 31 and K < 31
-    helpers = f"""
-# ---- the storage's bounds from the limit {N} (whatever the buffer's depth) ----
-def hB(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat(len), {N}n) == True{{}} : Bool}}:
-  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(len, {N}), Nat.is_le(U32.to_nat(len), U32.to_nat({N})), VU.le_u32(len, {N}), hchk)
-
+    return KB, K, f"""
 # 31 + len <= 2^{KB}
 def hyB(+len: U32, +hb: {{Nat.is_le(U32.to_nat(len), {N}n) == True{{}} : Bool}}) -> {{Nat.is_le(VC.YL(len), VB.pw({KB}n)) == True{{}} : Bool}}:
   FD.nat__le_trans(VC.YL(len), Nat.add(31n, {N}n), VB.pw({KB}n), Order.add_left(31n, U32.to_nat(len), {N}n, hb), {{==}})
@@ -240,11 +217,44 @@ def hrgB(+len: U32, +hb: {{Nat.is_le(U32.to_nat(len), {N}n) == True{{}} : Bool}}
 
 {ZD.zeros_at_text(K).rstrip()}
 """
-    text = text.replace(BL_RD_OLD, f"""  +hb = hB(t, x, off, len, hchk)
-  +hz = hdzK(len, hb)
-  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), {KB}n, pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), {K}n, 31n, hz, {{==}}),
-    zeros_at(B.words_depth_u(VC.WZ(len)), VLS.DZ(len), VD.wdu(VC.WZ(len)), hz),
+
+
+def bounded_copy(KB, K, ez='zeros_at(B.words_depth_u(VC.WZ(len)), VLS.DZ(len), VD.wdu(VC.WZ(len)), hz)'):
+    """the copy_in_at call of a bounded window (hb: len <= N in scope, hz = hdzK(len, hb))"""
+    return (f"""  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), {KB}n, pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), {K}n, 31n, hz, {{==}}),
+    {ez},
     UW.hsxB(d, off, x, len, eo, {KB}n, {{==}}, hyB(len, hb), hw), hrgB(len, hb), {{==}}, hyB(len, hb))""")
+
+
+def bl_deep(text, N):
+    """A ByteList[N] window at any depth d < 31. N bounded (31 + N < 2^30): the storage's bounds come from the
+    limit (hB, hyB, hWZ, hdzK, hrgB: var_bits' pattern), the window's end below 2^32 is hw32 (var_win.deep_x).
+    N = 2^30: the window ends by NMAX (hwN), the copy is vua_ct's U chain (var_win.deep_xN's pattern)."""
+    import var_win as VW
+    for a in (BL_RD_OLD, BL_FIT_OLD):
+        assert a in text, a[:60]
+    # hlen keeps its signature (other modules call it): its window hypothesis is not threaded
+    hl_old = '''def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)'''
+    assert hl_old in text, 'hlen'
+    text = text.replace(hl_old, hl_old.replace('+hw:', '+hl:').replace(', hw)', ', hl)'))
+    text = text.replace("import ./vua_ct.bend as UCT\n", "import ./vua_ct.bend as UCT\nimport ./vfits.bend as VFT\n", 1)
+    if 31 + N >= 1 << 30:
+        text = text.replace(BL_RD_OLD, """  +hy = VC.hyW(x, len, hwN)
+  +hz = VC.dz30(len, hy)
+  UCT.copy_in_atU(d, t, n, off, len, VLS.DZ(len), pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), 30n, 31n, hz, {==}),
+    """ + BL_EZ + """,
+    UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hy)""")
+        text = text.replace(BL_FIT_OLD, 'VFT.fits4lt(U32.to_nat(len), ' + LT32.replace('{H}', 'VB.le_n_lt32(Nat.add(x, U32.to_nat(len)), VB.NMAX(), hwN)') + ')')
+        return VW.deep_N(text)
+    KB, K, bounds = bounded_text(N)
+    helpers = f"""
+# ---- the storage's bounds from the limit {N} (whatever the buffer's depth) ----
+def hB(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat(len), {N}n) == True{{}} : Bool}}:
+  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(len, {N}), Nat.is_le(U32.to_nat(len), U32.to_nat({N})), VU.le_u32(len, {N}), hchk)
+""" + bounds
+    text = text.replace(BL_RD_OLD, "  +hb = hB(t, x, off, len, hchk)\n  +hz = hdzK(len, hb)\n" + bounded_copy(KB, K))
     text = text.replace(BL_FIT_OLD, 'VFT.fits4lt(U32.to_nat(len), ' + LT32.replace('{H}', 'hw32') + ')')
     a = text.index('\n# The reader on the window')
     text = text[:a] + '\n' + helpers + text[a:]
