@@ -44,7 +44,6 @@ import ../../proofs/word_split.bend as WSp
 import ../obj/spec_fixed.bend as FX
 import ../obj/words_spec.bend as WS
 import ../obj/mtree_defs.bend as MD
-import ../obj/root_support.bend as RS
 import ../obj/root_leaf.bend as RL
 import ../obj/bits_leaf.bend as BL
 import ../obj/bitlist_pack.bend as BLP

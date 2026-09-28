@@ -1,7 +1,6 @@
 import Base
 import ./e2e_fixd.bend as X
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/words_obj.bend as WO
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B

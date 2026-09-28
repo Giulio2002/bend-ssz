@@ -29,7 +29,6 @@ import ../proofs/word_facts.bend as WF
 import ../types/vec_uint16_8_encode_ssz_generated.bend as vec_uint16_8_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/sub_Gt39CAD03032.bend as M0
-import ../proofs/obj/root_gtypes.bend as M1
 import ../proofs/obj/packed_bytes.bend as M1_PB
 import ../proofs/obj/sub_pack.bend as M0_SP2
 

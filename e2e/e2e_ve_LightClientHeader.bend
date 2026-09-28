@@ -12,7 +12,6 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader_enc.bend as YE
 import ../proofs/obj/var_bytes_LightClientHeader_enc.bend as EN
 import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/nat_order.bend as Order

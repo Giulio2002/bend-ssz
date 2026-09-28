@@ -45,13 +45,12 @@ def vw_Gp4B0CA2906A(+m0: EX_pbits.MB, +v0: {S.BitsValue{BO.bview(EX_pbits.TH(m0)
   %v0 : {RT.v_Gp4B0CA2906A(CI_Gp4B0CA2906A.TH(CI_Gp4B0CA2906A.MW{m0})) == S.Sequence{S.Items{_, S.EmptyItems{}}} : S.Value}
   {==}
 
-# the object's record from its fields' records
-def c1_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +eo: {o == ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)} : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, +cb0: EP.PBR(RT.pj_Gp4B0CA2906A_0(o)))
-    -> RQ_Gp4B0CA2906A(o):
-  (+m0, +cb0a) = cb0
-  (+e0, +cb0b) = cb0a
-  (+v0, +cb0c) = cb0b
-  (+o0, +l0) = cb0c
+
+# the record's facts: its view, valid, 1 + its bytes within the bound
+def CF_Gp4B0CA2906A(+m0: EX_pbits.MB) -> Data:
+  DK.P2({RT.v_Gp4B0CA2906A(CI_Gp4B0CA2906A.TH(CI_Gp4B0CA2906A.MW{m0})) == CI_Gp4B0CA2906A.VAL(CI_Gp4B0CA2906A.MW{m0}) : S.Value}, DK.P2({CI_Gp4B0CA2906A.OK(CI_Gp4B0CA2906A.MW{m0}) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_Gp4B0CA2906A.ENC(CI_Gp4B0CA2906A.MW{m0})), A.quad(VB.pw(28n))) == True{} : Bool}))
+
+def c1f_Gp4B0CA2906A(+m0: EX_pbits.MB, +v0: {S.BitsValue{BO.bview(EX_pbits.TH(m0))} == EX_pbits.VAL(m0) : S.Value}, +o0: {EX_pbits.OK(m0) == True{} : Bool}, +l0: {Nat.is_le(LY.LN(EX_pbits.ENC(m0)), Nat.add(VB.pw(27n), 1n)) == True{} : Bool}) -> CF_Gp4B0CA2906A(m0):
   +hb = FD.nat__le_trans(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), A.quad(VB.pw(28n)), Order.add_right(4n, 4n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
     EP.bnd(4n, LY.LN(EX_pbits.ENC(m0)), VB.pw(27n), l0, FD.nat__le_trans(Nat.add(4n, 1n), VB.pw(9n), VB.pw(27n), {==}, VBG.pw_mono(9n, 27n, {==}))))
   +hok = FD.logic__and_intro(EX_pbits.OK(m0), Nat.is_le(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), A.quad(VB.pw(28n))), o0,
@@ -60,9 +59,23 @@ def c1_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A,
     EP.bnd(5n, LY.LN(EX_pbits.ENC(m0)), VB.pw(27n), l0, FD.nat__le_trans(Nat.add(5n, 1n), VB.pw(9n), VB.pw(27n), {==}, VBG.pw_mono(9n, 27n, {==}))))
   +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, A.quad(VB.pw(28n))) == True{} : Bool}, Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), List.length(&2, U32, K_Gp4B0CA2906A.ENCC(m0)),
     Equal.sym(Nat, List.length(&2, U32, K_Gp4B0CA2906A.ENCC(m0)), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), CI_Gp4B0CA2906A.lenE(m0, hok)), hb1)
-  (CI_Gp4B0CA2906A.MW{m0}, (Equal.trans(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, o, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)}, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m0)},
+  (vw_Gp4B0CA2906A(m0, v0), (hok, lb))
+
+def c1p_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +m0: EX_pbits.MB, +eq: {o == CI_Gp4B0CA2906A.TH(CI_Gp4B0CA2906A.MW{m0}) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, +f: CF_Gp4B0CA2906A(m0)) -> RQ_Gp4B0CA2906A(o):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (CI_Gp4B0CA2906A.MW{m0}, (eq, (fv, (fo, fl))))
+
+# the object's record from its fields' records
+def c1_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +eo: {o == ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)} : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, +cb0: EP.PBR(RT.pj_Gp4B0CA2906A_0(o)))
+    -> RQ_Gp4B0CA2906A(o):
+  (+m0, +cb0a) = cb0
+  (+e0, +cb0b) = cb0a
+  (+v0, +cb0c) = cb0b
+  (+o0, +l0) = cb0c
+  c1p_Gp4B0CA2906A(o, m0, Equal.trans(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, o, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)}, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m0)},
     eo,
-    Equal.cong(O.Bits, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, z => ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{z}, RT.pj_Gp4B0CA2906A_0(o), EX_pbits.TH(m0), e0)), (vw_Gp4B0CA2906A(m0, v0), (hok, lb))))
+    Equal.cong(O.Bits, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, z => ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{z}, RT.pj_Gp4B0CA2906A_0(o), EX_pbits.TH(m0), e0)), c1f_Gp4B0CA2906A(m0, v0, o0, l0))
 
 def rq_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()), +hs: PREM_Gp4B0CA2906A(o)) -> RQ_Gp4B0CA2906A(o):
   (+eo, +q0) = rep
@@ -83,17 +96,12 @@ def vw_Gp66304057C3(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB, +h0: {U32.i
   %v2 : {RT.v_Gp66304057C3(CI_Gp66304057C3.TH(CI_Gp66304057C3.MW{x0, m1, m2})) == S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{PBF.vview2(EX_l123_u16.TH(m1)), S.Items{_, S.EmptyItems{}}}}} : S.Value}
   {==}
 
-# the object's record from its fields' records
-def c1_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)} : ProgressiveVarTestStruct_d.Gp66304057C3}, +h0: {U32.is_lt(x0, 256) == True{} : Bool}, +cb1: ER.LR_l123(RT.pj_Gp66304057C3_1(o)), +cb2: EP.PBR(RT.pj_Gp66304057C3_2(o)))
-    -> RQ_Gp66304057C3(o):
-  (+m1, +cb1a) = cb1
-  (+e1, +cb1b) = cb1a
-  (+v1, +cb1c) = cb1b
-  (+o1, +l1) = cb1c
-  (+m2, +cb2a) = cb2
-  (+e2, +cb2b) = cb2a
-  (+v2, +cb2c) = cb2b
-  (+o2, +l2) = cb2c
+
+# the record's facts: its view, valid, 1 + its bytes within the bound
+def CF_Gp66304057C3(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB) -> Data:
+  DK.P2({RT.v_Gp66304057C3(CI_Gp66304057C3.TH(CI_Gp66304057C3.MW{x0, m1, m2})) == CI_Gp66304057C3.VAL(CI_Gp66304057C3.MW{x0, m1, m2}) : S.Value}, DK.P2({CI_Gp66304057C3.OK(CI_Gp66304057C3.MW{x0, m1, m2}) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_Gp66304057C3.ENC(CI_Gp66304057C3.MW{x0, m1, m2})), A.quad(VB.pw(28n))) == True{} : Bool}))
+
+def c1f_Gp66304057C3(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB, +h0: {U32.is_lt(x0, 256) == True{} : Bool}, +v1: {PBF.vview2(EX_l123_u16.TH(m1)) == EX_l123_u16.VAL(m1) : S.Value}, +v2: {S.BitsValue{BO.bview(EX_pbits.TH(m2))} == EX_pbits.VAL(m2) : S.Value}, +o1: {EX_l123_u16.OK(m1) == True{} : Bool}, +o2: {EX_pbits.OK(m2) == True{} : Bool}, +l1: {Nat.is_le(LY.LN(EX_l123_u16.ENC(m1)), 246n) == True{} : Bool}, +l2: {Nat.is_le(LY.LN(EX_pbits.ENC(m2)), Nat.add(VB.pw(27n), 1n)) == True{} : Bool}) -> CF_Gp66304057C3(x0, m1, m2):
   +h8_0 = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), U32.is_le(x0, 255),
     Equal.sym(Bool, U32.is_le(x0, 255), Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), VU.le_u32(x0, 255)), LB.small(x0, h0))
   +hb = FD.nat__le_trans(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(255n, LY.LN(EX_pbits.ENC(m2))), A.quad(VB.pw(28n)), Order.add_right(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 255n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
@@ -106,11 +114,29 @@ def c1_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +x0: U32, +eo: 
     EP.bnd(256n, LY.LN(EX_pbits.ENC(m2)), VB.pw(27n), l2, FD.nat__le_trans(Nat.add(256n, 1n), VB.pw(9n), VB.pw(27n), {==}, VBG.pw_mono(9n, 27n, {==}))))
   +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, A.quad(VB.pw(28n))) == True{} : Bool}, Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), List.length(&2, U32, K_Gp66304057C3.ENCC(x0, m1, m2)),
     Equal.sym(Nat, List.length(&2, U32, K_Gp66304057C3.ENCC(x0, m1, m2)), Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), CI_Gp66304057C3.lenE(x0, m1, m2, hok)), hb1)
-  (CI_Gp66304057C3.MW{x0, m1, m2}, (Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), EX_pbits.TH(m2)},
+  (vw_Gp66304057C3(x0, m1, m2, h0, v1, v2), (hok, lb))
+
+def c1p_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB, +eq: {o == CI_Gp66304057C3.TH(CI_Gp66304057C3.MW{x0, m1, m2}) : ProgressiveVarTestStruct_d.Gp66304057C3}, +f: CF_Gp66304057C3(x0, m1, m2)) -> RQ_Gp66304057C3(o):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (CI_Gp66304057C3.MW{x0, m1, m2}, (eq, (fv, (fo, fl))))
+
+# the object's record from its fields' records
+def c1_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)} : ProgressiveVarTestStruct_d.Gp66304057C3}, +h0: {U32.is_lt(x0, 256) == True{} : Bool}, +cb1: ER.LR_l123(RT.pj_Gp66304057C3_1(o)), +cb2: EP.PBR(RT.pj_Gp66304057C3_2(o)))
+    -> RQ_Gp66304057C3(o):
+  (+m1, +cb1a) = cb1
+  (+e1, +cb1b) = cb1a
+  (+v1, +cb1c) = cb1b
+  (+o1, +l1) = cb1c
+  (+m2, +cb2a) = cb2
+  (+e2, +cb2b) = cb2a
+  (+v2, +cb2c) = cb2b
+  (+o2, +l2) = cb2c
+  c1p_Gp66304057C3(o, x0, m1, m2, Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), EX_pbits.TH(m2)},
     Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), RT.pj_Gp66304057C3_2(o)},
     eo,
     Equal.cong(O.Words, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, z, RT.pj_Gp66304057C3_2(o)}, RT.pj_Gp66304057C3_1(o), EX_l123_u16.TH(m1), e1)),
-    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), z}, RT.pj_Gp66304057C3_2(o), EX_pbits.TH(m2), e2)), (vw_Gp66304057C3(x0, m1, m2, h0, v1, v2), (hok, lb))))
+    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, EX_l123_u16.TH(m1), z}, RT.pj_Gp66304057C3_2(o), EX_pbits.TH(m2), e2)), c1f_Gp66304057C3(x0, m1, m2, h0, v1, v2, o1, o2, l1, l2))
 
 def rq_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()), +hs: PREM_Gp66304057C3(o)) -> RQ_Gp66304057C3(o):
   (+x0, +r0) = rep

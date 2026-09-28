@@ -18,7 +18,6 @@ import ../../proofs/word_split.bend as P0_WSp
 import ../obj/spec_fixed.bend as P0_FX
 import ../obj/words_spec.bend as P0_WS
 import ../obj/mtree_defs.bend as P0_MD
-import ../obj/root_support.bend as P0_RS
 import ../obj/root_leaf.bend as P0_RL
 import ../obj/bits_leaf.bend as P0_BL
 import ../obj/bitlist_pack.bend as P0_BLP
