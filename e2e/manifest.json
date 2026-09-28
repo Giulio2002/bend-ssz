@@ -3823,6 +3823,16 @@
     "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) and hs1, hs2: U.sd(each child's list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32)"
    }
   ],
+  "FuluBeaconState_e2e_generated.bend": [
+   {
+    "name": "FuluBeaconState",
+    "generated_name": "BeaconState",
+    "laws": [
+     "FuluBeaconState_e2e_encode"
+    ],
+    "premise": "rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record's storage bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) and the sync committees' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 28 (U.sdk), the record lists' trees below their records' bounds (RLS.sda_L), the latest execution payload header's storage (e2e_mw.SHS_E), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZR of the fixed part and the parts' counts)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -6453,12 +6463,6 @@
   ]
  },
  "uncovered": {
-  "FuluBeaconState": {
-   "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluBeaconState_e2e_dec_generated.bend",
-   "root": "FuluBeaconState_e2e_root_generated.bend"
-  },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits",
@@ -6929,6 +6933,12 @@
    "ii_iii": "FuluAttesterSlashing_e2e_dec_generated.bend",
    "iv": "FuluAttesterSlashing_e2e_root_generated.bend"
   },
+  "FuluBeaconState": {
+   "generated_name": "BeaconState",
+   "i": "FuluBeaconState_e2e_generated.bend",
+   "ii_iii": "FuluBeaconState_e2e_dec_generated.bend",
+   "iv": "FuluBeaconState_e2e_root_generated.bend"
+  },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
    "i": "FuluDataColumnSidecar_e2e_generated.bend",
@@ -7304,7 +7314,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 152862724982449,
    "covered": false,
-   "bridged": "FuluBeaconState_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",

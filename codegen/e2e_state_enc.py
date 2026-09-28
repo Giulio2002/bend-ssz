@@ -281,7 +281,7 @@ def evSC(+T: FD.array__Tree<U32>, +dB: Nat, +pf: {FD.array__perfect(U32, dB, T) 
     +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32)
     -> {RT.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee{O.Words{FD.array__thaw(U32, T), 24576}, FuluBytes48_d.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}) == FWS.SCV(T, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{z, S.Items{S.BytesValue{FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11])}, S.EmptyItems{}}}},
-    E48.eview(O.Words{FD.array__thaw(U32, T), 24576}), S.Sequence{AV.ch12(VS.wtake(VC.NW(24576), FD.array__slots(U32, T)))}, EW.pkt(T, dB, pf, hr))
+    E48.eview(O.Words{FD.array__thaw(U32, T), 24576}), S.Sequence{AV.ch12(VSP.wtake(VC.NW(24576), FD.array__slots(U32, T)))}, EW.pkt(T, dB, pf, hr))
 
 def kSC(-po: FuluSyncCommittee_d.SyncCommittee, +x1: FuluBytes48_d.Bytes48, +T: FD.array__Tree<U32>, +dB: Nat,
     +eo: {po == FuluSyncCommittee_d.SyncCommittee{O.Words{FD.array__thaw(U32, T), 24576}, x1} : FuluSyncCommittee_d.SyncCommittee},
@@ -682,3 +682,585 @@ def bsl_text():
             '# balances, the participation lists, inactivity_scores, from the root law\'s representation and the premise U.sdk\n'
             '# (storage at depth below 28, a decoded-object gap); each record\'s bytes are the object\'s length.\n\n'
             + split32_text() + BSL_BODY)
+
+
+# ==== BeaconState's record lists (e2e_rls): each list's root view is its encode record's value (ITW / ITV), and
+# the list as its encode record (R_W_L / mk_W_L) from rep and the premise sda_L (the tree at depth below the record's bound) ====
+RLS = [('l2048_Eth1Data', 'Eth1Data', 2048), ('l1099511627776_Validator', 'Validator', 1099511627776),
+       ('l16777216_HistoricalSummary', 'HistoricalSummary', 16777216), ('l134217728_PendingDeposit', 'PendingDeposit', 134217728),
+       ('l134217728_PendingPartialWithdrawal', 'PendingPartialWithdrawal', 134217728), ('l262144_PendingConsolidation', 'PendingConsolidation', 262144)]
+
+
+def _band(t):
+    import e2e_var_b as EV
+    return EV._band(t)
+
+
+def _andc(c, p):
+    import e2e_var_b as EV
+    return EV._andc(c, p)
+
+
+def rls_text():
+    rs = (OBJ / 'root_state.bend').read_text()
+    imps = ['import Base', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vrl.bend as VRL',
+            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vua_lay.bend as LY',
+            'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_names.bend as RN', 'import ../proofs/obj/root_names_light.bend as RN_L',
+            'import ../proofs/obj/root_state.bend as ST', 'import ../src/obj.bend as O']
+    body = []
+    for i, (L, E, LIM) in enumerate(RLS):
+        text = (OBJ / f'encx_{L}.bend').read_text()
+        al = f'EW{i}'
+        imps.append(f'import ../proofs/obj/encx_{L}.bend as {al}')
+        imps.append(f'import ../types/Fulu{E}_def_generated.bend as Fulu{E}_d')
+        n = L.split('_')[0][1:]
+        imps.append(f'import ../types/Fulu_list_{E}_{n}_def_generated.bend as Fulu_list_{E}_{n}_d')
+        ET = f'Fulu{E}_d.{E}'
+        SEQ = f'Fulu_list_{E}_{n}_d.{L}_Seq'
+        rvn = f'RVW_{E}' if re.search(r'^def RVW_' + E + r'\(', text, re.M) else 'RVV'
+        itn = 'ITW' if re.search(r'^def ITW_' + L + r'\(', text, re.M) else 'ITV'
+        rvb = re.search(r'^def ' + rvn + r'\(\w+: .*?\n((?:  .*\n)+)', text, re.M).group(1).rstrip('\n').split('\n')
+        rvb[-1] = re.match(r'\s*', rvb[-1]).group(0) + '{==}'
+        rvvar = re.search(r'^def ' + rvn + r'\((\w+):', text, re.M).group(1)
+        view = re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', rs, re.M).group(0)).group(1)
+        dflt = re.search(r'VRL\.mget\(' + re.escape(ET) + r', FD\.spec_common__nth\(.*?\), j\), (.*?)\)$', re.search(r'^def EL_' + L + r'\(.*$', text, re.M).group(0)).group(1)
+        okw = _band(re.search(r'^def OKL_' + L + r'\(.*?\) -> Bool:\n((?:  .*\n)+)', text, re.M).group(1))
+        KW = re.fullmatch(r'Nat\.is_lt\(TDM_' + L + r'\(A\), (\d+)n\)', okw[0]).group(1)
+        LNW = re.fullmatch(r'U32\.is_le\(N, (\d+)\)', okw[3]).group(1) if len(okw) == 4 else None
+        assert len(okw) in (3, 4), okw
+        WLL = re.search(r'^def LL_' + L + r'\(.*?\) -> Nat: (.*)$', text, re.M).group(1)
+        WLL = re.sub(r'(?<![\w.])N(?![\w])', 'n', WLL)
+        sub = lambda s_: re.sub(r'(?<![\w.])(TDM_' + L + r')(?![\w])', f'{al}.TDM_{L}', s_).replace(f'{al}.TDM_{L}(A)', '@D@')
+        ow = [re.sub(r'(?<![\w.])A(?![\w])', 'a', sub(c)) for c in okw]
+        nest = lambda cs: cs[-1] if len(cs) == 1 else f'Bool.and({cs[0]}, {nest(cs[1:])})'
+        pfs = ['hd', 'pf', 'hn'] + (['hlN'] if LNW else [])
+        okd = _andc([c.replace('@D@', 'dw') for c in ow], pfs)
+        hl_lets = ''
+        kw_lim = ''
+        mk_lim = ''
+        mk_call = f'kW_{L}(po, a, dw, N, eo, pf, hd, hn)'
+        if LNW:
+            kw_lim = f', +s: S.Schema, +el: {{SH.ListOf_limit(s) == U32.to_nat({LNW}) : Nat}}, +hl: {{Nat.is_le(U32.to_nat(ST.xlen_o_{L}(po)), SH.ListOf_limit(s)) == True{{}} : Bool}}'
+            hl_lets = (f"  +h1 = FD.logic__subst({SEQ}, z => {{Nat.is_le(U32.to_nat(ST.xlen_o_{L}(z)), SH.ListOf_limit(s)) == True{{}} : Bool}}, po, {SEQ}{{FD.array__thaw({ET}, a), N}}, eo, hl)\n"
+                       f"  +h2 = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(N), z) == True{{}} : Bool}}, SH.ListOf_limit(s), U32.to_nat({LNW}), el, h1)\n"
+                       f"  +hlN = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(N), U32.to_nat({LNW})), U32.is_le(N, {LNW}), Equal.sym(Bool, U32.is_le(N, {LNW}), Nat.is_le(U32.to_nat(N), U32.to_nat({LNW})), VU.le_u32(N, {LNW})), h2)\n")
+            mk_lim = f', +el: {{SH.ListOf_limit(s) == U32.to_nat({LNW}) : Nat}}'
+            mk_call = f'kW_{L}(po, s, el, hl, a, dw, N, eo, pf, hd, hn)'
+        rvb_t = '\n'.join(rvb)
+        body.append(f'''# ---- {L} ----
+def xm_{L}(+W: List<&2, {ET}>, +i: Nat) -> {{ST.xat_{L}(W, i) == VRL.mget({ET}, FD.spec_common__nth({ET}, W, i), {dflt}) : {ET}}}:
+  match W i:
+    case Nil{{}} _: {{==}}
+    case Con{{+x, +t}} 0n: {{==}}
+    case Con{{+x, +t}} 1n+ +p: xm_{L}(t, p)
+
+def rv_{L}(+{rvvar}: {ET}) -> {{{al}.{rvn}({rvvar}) == {view}({rvvar}) : S.Value}}:
+{rvb_t}
+
+def itw_{L}(c: Nat, +A: FD.array__Tree<{ET}>, +j: Nat) -> {{ST.xi_{L}(c, FD.array__slots({ET}, A), j) == {al}.{itn}_{L}(c, A, j) : S.Value}}:
+  match c:
+    case 0n: {{==}}
+    case 1n+ +q:
+      %Equal.sym({ET}, ST.xat_{L}(FD.array__slots({ET}, A), j), {al}.EL_{L}(A, j), xm_{L}(FD.array__slots({ET}, A), j)) :
+        {{S.Items{{{view}(_), ST.xi_{L}(q, FD.array__slots({ET}, A), 1n+j)}} == {al}.{itn}_{L}(1n+q, A, j) : S.Value}}
+      %Equal.sym(S.Value, {view}({al}.EL_{L}(A, j)), {al}.{rvn}({al}.EL_{L}(A, j)), Equal.sym(S.Value, {al}.{rvn}({al}.EL_{L}(A, j)), {view}({al}.EL_{L}(A, j)), rv_{L}({al}.EL_{L}(A, j)))) :
+        {{S.Items{{_, ST.xi_{L}(q, FD.array__slots({ET}, A), 1n+j)}} == {al}.{itn}_{L}(1n+q, A, j) : S.Value}}
+      Equal.cong(S.Value, S.Value, z => S.Items{{{al}.{rvn}({al}.EL_{L}(A, j)), z}}, ST.xi_{L}(q, FD.array__slots({ET}, A), 1n+j), {al}.{itn}_{L}(q, A, 1n+j), itw_{L}(q, A, 1n+j))
+
+def xvl_{L}(+A: FD.array__Tree<{ET}>, +n: U32) -> {{ST.xv_{L}({SEQ}{{FD.array__thaw({ET}, A), n}}) == {al}.VALL_{L}(A, n) : S.Value}}:
+  %Equal.sym(FD.array__Tree<{ET}>, FD.array__freeze({ET}, FD.array__thaw({ET}, A)), A, FD.array__freeze_thaw({ET}, A)) :
+    {{S.Sequence{{ST.xi_{L}(U32.to_nat(n), FD.array__slots({ET}, _), 0n)}} == {al}.VALL_{L}(A, n) : S.Value}}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, ST.xi_{L}(U32.to_nat(n), FD.array__slots({ET}, A), 0n), {al}.{itn}_{L}(U32.to_nat(n), A, 0n), itw_{L}(U32.to_nat(n), A, 0n))
+
+# the (i) premise: the list's array at depth below k
+def sda_{L}(w: {SEQ}, +k: Nat) -> Data:
+  DK.Ex(FD.array__Tree<{ET}>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({{w == {SEQ}{{FD.array__thaw({ET}, t), N}} : {SEQ}}},
+    DK.P2({{FD.array__perfect({ET}, dw, t) == True{{}} : Bool}},
+    DK.P2({{Nat.is_lt(dw, k) == True{{}} : Bool}},
+          {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}))))))
+
+def tdW_{L}(+d: Nat, +t: FD.array__Tree<{ET}>, +pf: {{FD.array__perfect({ET}, d, t) == True{{}} : Bool}}) -> {{{al}.TDM_{L}(t) == d : Nat}}:
+  match d t:
+    case 0n FD.TLeaf{{+x}}: {{==}}
+    case 0n FD.TNode{{+l, +r}}: Empty.absurd({{{al}.TDM_{L}(FD.TNode{{l, r}}) == 0n : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{{+x}}: Empty.absurd({{{al}.TDM_{L}(FD.TLeaf{{x}}) == 1n+p : Nat}}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{{+l, +r}}: Equal.cong(Nat, Nat, z => 1n+z, {al}.TDM_{L}(l), p, tdW_{L}(p, l, FD.array__pf_left({ET}, p, l, r, pf)))
+
+# the list's encoded byte count, from the object alone
+def WLL_{L}(w: {SEQ}) -> Nat:
+  match w:
+    case {SEQ}{{arr, +n}}: {WLL}
+
+def R_W_{L}(po: {SEQ}) -> Data:
+  DK.Ex(FD.array__Tree<{ET}>, a => DK.Ex(U32, N =>
+    DK.P2({{po == {al}.THL_{L}(a, N) : {SEQ}}},
+    DK.P2({{ST.xv_{L}({al}.THL_{L}(a, N)) == {al}.VALL_{L}(a, N) : S.Value}},
+    DK.P2({{{al}.OKL_{L}(a, N) == True{{}} : Bool}},
+          {{LY.LN({al}.ENCL_{L}(a, N)) == WLL_{L}(po) : Nat}})))))
+
+def pk_{L}(-po: {SEQ}, +a: FD.array__Tree<{ET}>, +N: U32, +eo: {{po == {al}.THL_{L}(a, N) : {SEQ}}}, +ev: {{ST.xv_{L}({al}.THL_{L}(a, N)) == {al}.VALL_{L}(a, N) : S.Value}},
+    +ok: {{{al}.OKL_{L}(a, N) == True{{}} : Bool}}, +eL: {{LY.LN({al}.ENCL_{L}(a, N)) == WLL_{L}(po) : Nat}}) -> R_W_{L}(po):
+  (a, (N, (eo, (ev, (ok, eL)))))
+
+def kW_{L}(-po: {SEQ}{kw_lim}, +a: FD.array__Tree<{ET}>, +dw: Nat, +N: U32, +eo: {{po == {SEQ}{{FD.array__thaw({ET}, a), N}} : {SEQ}}},
+    +pf: {{FD.array__perfect({ET}, dw, a) == True{{}} : Bool}}, +hd: {{Nat.is_lt(dw, {KW}n) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}) -> R_W_{L}(po):
+{hl_lets}  +okd = {okd}
+  +ok = FD.logic__subst(Nat, z => {{{nest([c.replace('@D@', 'z') for c in ow])} == True{{}} : Bool}}, dw, {al}.TDM_{L}(a), Equal.sym(Nat, {al}.TDM_{L}(a), dw, tdW_{L}(dw, a, pf)), okd)
+  +eL = Equal.trans(Nat, LY.LN({al}.ENCL_{L}(a, N)), {al}.LL_{L}(a, N), WLL_{L}(po), {al}.len_encl_{L}(a, N), Equal.sym(Nat, WLL_{L}(po), WLL_{L}({SEQ}{{FD.array__thaw({ET}, a), N}}), Equal.cong({SEQ}, Nat, z => WLL_{L}(z), po, {SEQ}{{FD.array__thaw({ET}, a), N}}, eo)))
+  pk_{L}(po, a, N, eo, xvl_{L}(a, N), ok, eL)
+
+def mk_W_{L}(-po: {SEQ}, +s: S.Schema{mk_lim}, +rep: ST.rep_{L}(po, s), +hs: sda_{L}(po, {KW}n)) -> R_W_{L}(po):
+  (+w1, +hl) = rep
+  (+a, b1) = hs
+  (+dw, b2) = b1
+  (+N, b3) = b2
+  (+eo, b4) = b3
+  (+pf, b5) = b4
+  (+hd, +hn) = b5
+  {mk_call}
+''')
+    bt = '\n'.join(body)
+    for L, E, LIM in RLS:
+        for l in (OBJ / f'encx_{L}.bend').read_text().splitlines():
+            m = re.match(r'import \.\./\.\./types/(\S+) as (\w+_d)$', l)
+            if m and (m.group(2) + '.') in bt:
+                imps.append(f'import ../types/{m.group(1)} as {m.group(2)}')
+    return ('\n'.join(dict.fromkeys(imps)) + '\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_state_enc.py). Do not edit.\n'
+            "# BeaconState's record lists in its encode record (encx_<L>): each list's root view is its value (xvl), and the list as its\n"
+            "# encode record's (R_W_L / mk_W_L) from rep and the premise sda_L (the list's tree at depth below the record's bound,\n"
+            "# a decoded-object gap), with its byte count WLL_L on the object.\n\n" + '\n'.join(body))
+
+
+# ==== the top module: FuluBeaconState_e2e_generated.bend ====
+def _split(s):
+    import e2e_var_b as EV
+    return EV.split_args(s)
+
+
+def _peel(t, head):
+    t = t.strip()
+    assert t.startswith(head + '{') or t.startswith(head + '('), (head, t[:80])
+    return _split(t[len(head) + 1:-1])
+
+
+def _sum_terms(t):
+    out = []
+    while t.startswith('Nat.add('):
+        a = _split(t[len('Nat.add('):-1])
+        out.insert(0, a[1])
+        t = a[0]
+    return [t] + out
+
+
+def _sumf(ts):
+    s = ts[0]
+    for x in ts[1:]:
+        s = f'Nat.add({s}, {x})'
+    return s
+
+
+VEC = {5: ('pv', 8192, 262144, 13, 16, 18, 19), 6: ('pv', 8192, 262144, 13, 16, 18, 19), 13: ('pv', 65536, 2097152, 16, 19, 21, 22),
+       14: ('v2', 8192, 65536, 13, 14, 16, 17), 37: ('v2', 64, 512, 6, 7, 9, 10)}   # kind, K, L, e, p, r, s
+BYTEL = {7: 'H', 12: 'U', 21: 'U', 15: 'B8', 16: 'B8'}
+RECL = {9: 'l2048_Eth1Data', 11: 'l1099511627776_Validator', 27: 'l16777216_HistoricalSummary', 34: 'l134217728_PendingDeposit',
+        35: 'l134217728_PendingPartialWithdrawal', 36: 'l262144_PendingConsolidation'}
+SCF = (22, 23)
+EH = 24
+BV4 = 17
+EHO = 'FuluExecutionPayloadHeader_d.ExecutionPayloadHeader'
+EHB = f'O.Boxed<{EHO}>'
+EXA = {'H': 'EX_l16777216_b32', 'U': 'EX_l1099511627776_u64', 'B8': 'EX_l1099511627776_u8'}
+BVIEW = {'H': 'BLI.hview', 'U': 'UL.uview', 'B8': 'PB.vview1'}
+
+TOP_EXTRA = r'''
+# ---- the latest execution payload header (boxed): e2e_mw's record, with its encoded length from the object ----
+def lenB(+m: EB.MW, +ok: {EB.OK(m) == True{} : Bool}) -> {U32.to_nat(WO_L.len(EB.TH(m))) == LY.LN(EB.ENC(m)) : Nat}:
+  match m:
+    case EB.MW{+dw, +T, +N}: EB.szx(EB.MW{dw, T, N}, ok)
+
+def lnE(+m: EC_ExecutionPayloadHeader.MW, +ok: {EC_ExecutionPayloadHeader.OK(m) == True{} : Bool})
+    -> {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(EC_ExecutionPayloadHeader.TH(m))))) : Nat}:
+  match m:
+    case EC_ExecutionPayloadHeader.MW{@EPHP@}:
+      Equal.trans(Nat, LY.LN(IK.ENCC(@EPHA@)), EC_ExecutionPayloadHeader.ENDC(@EPHA@), Nat.add(584n, U32.to_nat(WO_L.len(EB.TH(a11)))),
+        EC_ExecutionPayloadHeader.lenE(@EPHA@, ok),
+        Equal.cong(Nat, Nat, z => Nat.add(584n, z), LY.LN(EB.ENC(a11)), U32.to_nat(WO_L.len(EB.TH(a11))),
+          Equal.sym(Nat, U32.to_nat(WO_L.len(EB.TH(a11))), LY.LN(EB.ENC(a11)), lenB(a11, EC_ExecutionPayloadHeader.ok_hok_extra_data(@EPHA@, ok)))))
+
+def LNEH(po: @EHB@) -> Nat: Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(po)))))
+
+def R_EB(po: @EHB@) -> Data:
+  DK.Ex(EC_ExecutionPayloadHeader.MW, m => DK.P2({po == O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}} : @EHB@},
+    DK.P2({RT.v_ExecutionPayloadHeader_bx(O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}}) == EC_ExecutionPayloadHeader.VAL(m) : S.Value},
+    DK.P2({EC_ExecutionPayloadHeader.OK(m) == True{} : Bool}, {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}))))
+
+def pk_EB(-po: @EHB@, +m: EC_ExecutionPayloadHeader.MW, +e: {po == O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}} : @EHB@},
+    +v: {RT.v_ExecutionPayloadHeader_bx(O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}}) == EC_ExecutionPayloadHeader.VAL(m) : S.Value},
+    +ok: {EC_ExecutionPayloadHeader.OK(m) == True{} : Bool}, +l: {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}) -> R_EB(po):
+  (m, (e, (v, (ok, l))))
+
+def kEB(-po: @EHB@, +eb: {po == O.BSome{RT.pjb_ExecutionPayloadHeader_bx(po), O.BNone{}} : @EHB@}, +w: MW.R_E(RT.pjb_ExecutionPayloadHeader_bx(po))) -> R_EB(po):
+  (+m, w1) = w
+  (+e, w2) = w1
+  (+v, +ok) = w2
+  +e2 = Equal.trans(@EHB@, po, O.BSome{RT.pjb_ExecutionPayloadHeader_bx(po), O.BNone{}}, O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}}, eb,
+    Equal.cong(@EHO@, @EHB@, z => O.BSome{z, O.BNone{}}, RT.pjb_ExecutionPayloadHeader_bx(po), EC_ExecutionPayloadHeader.TH(m), e))
+  +l = Equal.trans(Nat, LY.LN(EC_ExecutionPayloadHeader.ENC(m)), Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(EC_ExecutionPayloadHeader.TH(m))))), LNEH(po), lnE(m, ok),
+    Equal.cong(@EHO@, Nat, z => Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(z)))), EC_ExecutionPayloadHeader.TH(m), RT.pjb_ExecutionPayloadHeader_bx(po),
+      Equal.sym(@EHO@, RT.pjb_ExecutionPayloadHeader_bx(po), EC_ExecutionPayloadHeader.TH(m), e)))
+  pk_EB(po, m, e2, v, ok, l)
+
+def mk_EB(-po: @EHB@, +s: S.Schema, +es: {s == Spec.ExecutionPayloadHeader() : S.Schema}, +r: RT.rep_ExecutionPayloadHeader_bx(po, s),
+    +hs: MW.SHS_E(RT.pjb_ExecutionPayloadHeader_bx(po))) -> R_EB(po):
+  (+eb, +ri) = r
+  kEB(po, eb, MW.mk_E(RT.pjb_ExecutionPayloadHeader_bx(po), FD.logic__subst(S.Schema, z => RT.rep_ExecutionPayloadHeader(RT.pjb_ExecutionPayloadHeader_bx(po), z), s, Spec.ExecutionPayloadHeader(), es, ri), hs))
+'''
+
+
+def venc_state(R, X):
+    import e2e_var_b as EV
+    assert X == 'BeaconState'
+    OT = 'FuluBeaconState_d.BeaconState'
+    SC = 'Spec.BeaconState()'
+    it = (OBJ / 'big_encx_BeaconState_iface.bend').read_text()
+    Kt = (OBJ / 'big_encx_BeaconState.bend').read_text()
+    en = (OBJ / 'big_var_codec_BeaconState_enc.bend').read_text()
+    rs = (OBJ / 'root_state.bend').read_text()
+    eph = (OBJ / 'big_encx_ExecutionPayloadHeader_iface.bend').read_text()
+    sch = lambda j: 'SH.Chain_head(' + 'SH.Chain_tail(' * j + f'SH.Container_fields({SC})' + ')' * j + ')'
+    pj = lambda j: f'ST.pj_BeaconState_{j}(o)'
+    # the record's names, the object's positions (over them)
+    KWN = [x.split(':')[0].strip() for x in _split(re.search(r'^type KW is Data:\n  KW\{(.*)\}$', Kt, re.M).group(1))]
+    objc = re.search(r'^def OBJC\(.*?\) -> \S+: (.*)$', Kt, re.M).group(1)
+    POS = [p for g in _peel(objc, OT) for p in _peel(g, g[:g.index('{')])]
+    assert len(POS) == 38
+    POSN = [re.sub(r'(?<![\w.])K?\.?F_(\w+)\(wR\)', r'\1', p) for p in POS]
+    POSN = [re.sub(r'F_(\w+)\(wR\)', r'\1', p) for p in POSN]
+    fnames = {j: [n for n in KWN if re.search(r'(?<![\w.])' + n + r'(?![\w])', POSN[j])] for j in range(38)}
+    for n in KWN:
+        if n.startswith('dB_'):
+            j = [j for j in range(38) if ('TB_' + n[3:]) in fnames[j]][0]
+            fnames[j].insert(fnames[j].index('TB_' + n[3:]), n)
+    assert sum(len(v) for v in fnames.values()) == len(KWN)
+    # the views (root_state's v_BeaconState), qualified
+    vb = re.search(r'^def v_BeaconState\(o: .*\n(?:  .*\n)+', rs, re.M).group(0)
+    vit = re.search(r'S\.Sequence\{(S\.Items\{.*)\}\s*$', vb.strip().split('\n')[-1].strip()).group(1)
+    views = []
+    while vit.startswith('S.Items{'):
+        a = _peel(vit, 'S.Items'); views.append(a[0][:a[0].rindex('(')]); vit = a[1]
+    views = [(w if '.' in w else 'ST.' + w) for w in views]
+    assert len(views) == 38
+    # the values
+    valc = re.search(r'^def VALC\(.*?\) -> S\.Value: (.*)$', it, re.M).group(1)
+    items, v = [], _peel(valc.strip(), 'S.Sequence')[0]
+    while v.startswith('S.Items{'):
+        a = _peel(v, 'S.Items'); items.append(a[0]); v = a[1]
+    items = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', x) for x in items]
+    FIX = {}
+    for j in range(38):
+        m = re.fullmatch(r'LV_(\w+)\((\w+)\)', items[j])
+        if m:
+            FIX[j] = m.group(1)
+    TY = {'u64': 'O.U64', 'b32': 'FuluBytes32_d.Bytes32', 'Fork': 'FuluFork_d.Fork', 'BeaconBlockHeader': 'FuluBeaconBlockHeader_d.BeaconBlockHeader',
+          'Eth1Data': 'FuluEth1Data_d.Eth1Data', 'Checkpoint': 'FuluCheckpoint_d.Checkpoint'}
+    def fty(j):
+        if j in FIX: return TY[FIX[j]]
+        if j == BV4: return 'Fulu_bitvector_4_d.Bitvector4'
+        if j in VEC or j in BYTEL: return 'O.Words'
+        if j in RECL:
+            L = RECL[j]; E = L.split('_', 1)[1]; n = L.split('_')[0][1:]
+            return f'Fulu_list_{E}_{n}_d.{L}_Seq'
+        if j in SCF: return 'FuluSyncCommittee_d.SyncCommittee'
+        if j == EH: return EHB
+        raise AssertionError(j)
+    zs = [f'z{j}' for j in range(38)]
+    grp = [(0, 8), (8, 16), (16, 24), (24, 32), (32, 38)]
+    objt = lambda xs: f'{OT}{{' + ', '.join(f'FuluBeaconState_d.BeaconState_g{g}{{{", ".join(xs[a:b])}}}' for g, (a, b) in enumerate(grp)) + '}'
+    # ---- OBJH / eqo / VALH / vz ----
+    ws = [f'w{j}' for j in range(38)]
+    PT = [j for j in range(38) if j not in FIX and j != BV4]
+    out = []
+    out.append(f'def OBJH({", ".join(f"{z}: {fty(j)}" for j, z in enumerate(zs))}) -> {OT}: {objt(zs)}\n')
+    eqp = ', '.join([f'-{zs[j]}: {fty(j)}' for j in range(38)] + [f'-{ws[j]}: {fty(j)}, +q{j}: {{{zs[j]} == {ws[j]} : {fty(j)}}}' for j in PT])
+    wcur = lambda k: [zs[j] if (j not in PT or PT.index(j) < k) else ('_' if PT.index(j) == k else ws[j]) for j in range(38)]
+    out.append(f'def eqo({eqp}) -> {{OBJH({", ".join(zs)}) == OBJH({", ".join(zs[j] if j not in PT else ws[j] for j in range(38))}) : {OT}}}:')
+    for k, j in enumerate(PT):
+        out.append(f'  %q{j} : {{OBJH({", ".join(zs)}) == OBJH({", ".join(wcur(k))}) : {OT}}}')
+    out.append('  {==}\n')
+    ys = [f'Y{j}' for j in range(38)]
+    valh = 'S.EmptyItems{}'
+    for y in reversed(ys):
+        valh = f'S.Items{{{y}, {valh}}}'
+    out.append(f'def VALH({", ".join(f"+{y}: S.Value" for y in ys)}) -> S.Value: S.Sequence{{{valh}}}\n')
+    LHS = f'ST.v_BeaconState(OBJH({", ".join(zs)}))'
+    out.append(f'def vz({", ".join(f"{z}: {fty(j)}, +{y}: S.Value, +e{j}: {{{views[j]}({z}) == {y} : S.Value}}" for j, (z, y) in enumerate(zip(zs, ys)))}) -> {{{LHS} == VALH({", ".join(ys)}) : S.Value}}:')
+    for k in range(38):
+        cur = [f'{views[j]}(z{j})' if j < k else ('_' if j == k else f'Y{j}') for j in range(38)]
+        out.append(f'  %e{k} : {{{LHS} == VALH({", ".join(cur)}) : S.Value}}')
+    out.append('  {==}\n')
+    # ---- the bound: ENDCs' terms, each a part's byte count ----
+    endcs = re.search(r'^def ENDCs\(\+wR: K\.KW, \+F: Nat\) -> Nat: (.*)$', it, re.M).group(1)
+    terms = _sum_terms(endcs)
+    assert terms[0] == 'F' and len(terms) == 13
+    lnt = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', t) for t in terms[1:]]
+    tj = []
+    for t in lnt:
+        js = [j for j in PT if any(re.search(r'(?<![\w.])' + n + r'(?![\w])', t) for n in fnames[j])]
+        assert len(js) == 1, t
+        tj.append(js[0])
+    def objterm(j, o='o', pw=None):
+        p = pw or f'ST.pj_BeaconState_{j}({o})'
+        if j in BYTEL: return f'U32.to_nat(WO_L.len({p}))'
+        if j in RECL: return f'RLS.WLL_{RECL[j]}({p})'
+        if j == EH: return f'LNEH({p})'
+        raise AssertionError(j)
+    ts = ', '.join(f'+t{i}: Nat' for i in range(12))
+    out.append(f'# the encoding\'s byte count: the fixed part F and the parts\' counts\ndef SZR(+F: Nat, {ts}) -> Nat: {_sumf(["F"] + [f"t{i}" for i in range(12)])}\n')
+    # the encode law's size bound on the object (a decoded-object gap: its bytes within 4 * 2^28), stated as the record's
+    # bound is (SZR over the parts' counts), so no closed count is evaluated
+    SZO = f'Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(objterm(j) for j in tj)}), A.quad(VB.pw(28n)))'
+    KWargs = ', '.join(KWN)
+    KWparams = ', '.join(f'+{n}: {t.strip()}' for n, t in (x.split(':', 1) for x in _split(re.search(r'^type KW is Data:\n  KW\{(.*)\}$', Kt, re.M).group(1))))
+    out.append(f'def endq({KWparams}, +F: Nat) -> {{CI.ENDCs(K.KW{{{KWargs}}}, F) == SZR(F, {", ".join(lnt)}) : Nat}}: {{==}}\n')
+    # ---- OKT(KW{...}) from the facts ----
+    okt = _band(re.search(r'^def OKT\(\+wR: K\.KW\) -> Bool: (.*)$', it, re.M).group(1))
+    assert len(okt) == 36
+    oktn = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', c).replace('ENDCs(wR,', f'CI.ENDCs(K.KW{{{KWargs}}},') for c in okt]
+    fact = []
+    for c in oktn:
+        if c.startswith('Nat.is_le(CI.ENDCs('):
+            fact.append('hB'); continue
+        if 'K.OK_bv4(' in c:
+            fact.append('hv4a'); continue
+        if 'bv4_valid(' in c:
+            fact.append('hv4b'); continue
+        js = [j for j in PT if any(re.search(r'(?<![\w.])' + n + r'(?![\w])', c) for n in fnames[j])]
+        assert len(js) == 1, c
+        j = js[0]
+        if c.startswith('FD.array__perfect('): fact.append(f'pf{j}')
+        elif c.startswith('Nat.is_lt('): fact.append(f'hd{j}')
+        elif c.startswith('Nat.is_le('): fact.append(f'hr{j}')
+        else: fact.append(f'k{j}')
+    okp = ', '.join(f'+{f}: {{{c} == True{{}} : Bool}}' for f, c in zip(fact, oktn))
+    out.append(f'def okw({KWparams}, {okp}) -> {{CI.OKT(K.KW{{{KWargs}}}) == True{{}} : Bool}}:\n  {_andc(oktn, fact)}\n')
+    # ---- kS: the record from the parts ----
+    xs = {j: fnames[j][0] for j in FIX}
+    xs[BV4] = fnames[BV4][0]
+    kp = [f'-o: {OT}'] + [f'+{xs[j]}: {fty(j)}' for j in sorted(xs)]
+    c0 = objt([xs[j] if j in xs else pj(j) for j in range(38)])
+    kp.append(f'+eo: {{o == {c0} : {OT}}}')
+    kp.append(f'+hv4: {{Bool.and(K.OK_bv4({xs[BV4]}), Fulu_bitvector_4_e.bv4_valid({xs[BV4]})) == True{{}} : Bool}}')
+    RT_ = {}
+    for j in PT:
+        if j in VEC: RT_[j] = f'PX.R_{"PV" if VEC[j][0] == "pv" else "V2"}({pj(j)}, {VEC[j][2]})'
+        elif j in BYTEL: RT_[j] = f'PL.R_{BYTEL[j]}({pj(j)})'
+        elif j in RECL: RT_[j] = f'RLS.R_W_{RECL[j]}({pj(j)})'
+        elif j in SCF: RT_[j] = f'R_SC({pj(j)})'
+        else: RT_[j] = f'R_EB({pj(j)})'
+        kp.append(f'+r{j}: {RT_[j]}')
+    kp.append(f'+hZ: {{{SZO} == True{{}} : Bool}}')
+    body = []
+    def destr(src, names):
+        cur = src
+        for i, n in enumerate(names[:-2]):
+            body.append(f'  (+{n}, {src}_{i}) = {cur}'); cur = f'{src}_{i}'
+        body.append(f'  (+{names[-2]}, +{names[-1]}) = {cur}')
+    TH, Y = {}, {}
+    for j in PT:
+        f = fnames[j]
+        if j in VEC:
+            dB, TB = f
+            destr(f'r{j}', [TB, dB, f'e{j}', f'v{j}', f'pf{j}', f'hd{j}', f'hr{j}'])
+            TH[j] = f'O.Words{{FD.array__thaw(U32, {TB}), {VEC[j][2]}}}'
+            Y[j] = f'FWS.{"VV8" if VEC[j][0] == "pv" else "VU2"}(VC.NW({VEC[j][2]}), {TB})'
+        elif j in BYTEL:
+            destr(f'r{j}', [f[0], f'e{j}', f'v{j}', f'k{j}', f'l{j}'])
+            TH[j] = f'{EXA[BYTEL[j]]}.TH({f[0]})'; Y[j] = f'{EXA[BYTEL[j]]}.VAL({f[0]})'
+        elif j in RECL:
+            destr(f'r{j}', [f[0], f[1], f'e{j}', f'v{j}', f'k{j}', f'l{j}'])
+            L = RECL[j]
+            TH[j] = f'EW_{L}.THL_{L}({f[0]}, {f[1]})'; Y[j] = f'EW_{L}.VALL_{L}({f[0]}, {f[1]})'
+        elif j in SCF:
+            dB, TB = f[0], f[1]
+            destr(f'r{j}', [TB, dB] + f[2:] + [f'e{j}', f'v{j}', f'pf{j}', f'hd{j}', f'hr{j}'])
+            TH[j] = f'FuluSyncCommittee_d.SyncCommittee{{O.Words{{FD.array__thaw(U32, {TB}), 24576}}, FuluBytes48_d.Bytes48{{{", ".join(f[2:])}}}}}'
+            Y[j] = f'FWS.SCV({TB}, {", ".join(f[2:])})'
+        else:
+            destr(f'r{j}', [f[0], f'e{j}', f'v{j}', f'k{j}', f'l{j}'])
+            TH[j] = f'O.BSome{{EC_ExecutionPayloadHeader.TH({f[0]}), O.BNone{{}}}}'; Y[j] = f'EC_ExecutionPayloadHeader.VAL({f[0]})'
+    body.append(f'  +hv4a = FD.logic__and_left(K.OK_bv4({xs[BV4]}), Fulu_bitvector_4_e.bv4_valid({xs[BV4]}), hv4)')
+    body.append(f'  +hv4b = FD.logic__and_right(K.OK_bv4({xs[BV4]}), Fulu_bitvector_4_e.bv4_valid({xs[BV4]}), hv4)')
+    # the bound through the parts' counts
+    mix = lambda k, zz: [lnt[i] if i < k else (zz if i == k else objterm(tj[i])) for i in range(12)]
+    prev = 'hZ'
+    for i, j in enumerate(tj):
+        a_ = objterm(j); b_ = lnt[i]
+        body.append(f'  +b{i} = FD.logic__subst(Nat, z => {{Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(mix(i, "z"))}), A.quad(VB.pw(28n))) == True{{}} : Bool}}, {a_}, {b_}, Equal.sym(Nat, {b_}, {a_}, l{j}), {prev})')
+        prev = f'b{i}'
+    SZL = f'SZR(U32.to_nat(2737225), {", ".join(lnt)})'
+    body.append(f'  +hB = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(28n))) == True{{}} : Bool}}, {SZL}, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), '
+                f'Equal.sym(Nat, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), {SZL}, endq({KWargs}, U32.to_nat(2737225))), {prev})')
+    body.append(f'  +hok = okw({KWargs}, {", ".join(fact)})')
+    eqargs = ', '.join([pj(j) if j in PT else xs[j] for j in range(38)] + [f'{TH[j]}, e{j}' for j in PT])
+    body.append(f'  +eq = Equal.trans({OT}, o, OBJH({", ".join(pj(j) if j in PT else xs[j] for j in range(38))}), OBJH({", ".join(TH[j] if j in PT else xs[j] for j in range(38))}), eo, eqo({eqargs}))')
+    vzargs = []
+    for j in range(38):
+        if j in FIX: vzargs.append(f'{xs[j]}, CI.LV_{FIX[j]}({xs[j]}), lv_{FIX[j]}({xs[j]})')
+        elif j == BV4: vzargs.append(f'{xs[j]}, CI.VBo_bv4({xs[j]}), lv_bv4({xs[j]})')
+        elif j in VEC or j in SCF:
+            # the view of the pubkeys / vector words would unroll if compared against the record's field (K.F_TB(KW)):
+            # carry the fact over to it (TB == K.F_TB(KW) by computation)
+            TBn = fnames[j][1]
+            FTB = f'K.F_{TBn}(K.KW{{{KWargs}}})'
+            sub = lambda x_: re.sub(r'(?<![\w.])' + TBn + r'(?![\w])', 'z', x_)
+            sub2 = lambda x_: re.sub(r'(?<![\w.])' + TBn + r'(?![\w])', FTB, x_)
+            body.append(f'  +vt{j} = FD.logic__subst(FD.array__Tree<U32>, z => {{{views[j]}({sub(TH[j])}) == {sub(Y[j])} : S.Value}}, {TBn}, {FTB}, {{==}}, v{j})')
+            vzargs.append(f'{sub2(TH[j])}, {sub2(Y[j])}, vt{j}')
+        else: vzargs.append(f'{TH[j]}, {Y[j]}, v{j}')
+    body.append(f'  via(o, CI.MW{{K.KW{{{KWargs}}}}}, eq, vz({", ".join(vzargs)}), hok)')
+    # split: kS destructures the records; bndz / fin work on the facts alone (small contexts)
+    dlines = [l for l in body if l.startswith('  (')]
+    clines = [l for l in body if not l.startswith('  (')]
+    conj = dict(zip(fact, oktn))
+    FT = {}
+    for j in PT:
+        FT[f'e{j}'] = f'{{{pj(j)} == {TH[j]} : {fty(j)}}}'
+        FT[f'v{j}'] = f'{{{views[j]}({TH[j]}) == {Y[j]} : S.Value}}'
+        for f_ in (f'pf{j}', f'hd{j}', f'hr{j}', f'k{j}'):
+            if f_ in conj:
+                FT[f_] = f'{{{conj[f_]} == True{{}} : Bool}}'
+    for i, j in enumerate(tj):
+        FT[f'l{j}'] = f'{{{lnt[i]} == {objterm(j)} : Nat}}'
+    fnm = [n for j in PT for n in (f'e{j}', f'v{j}', f'pf{j}', f'hd{j}', f'hr{j}', f'k{j}', f'l{j}') if n in FT]
+    ln_ = [f'l{j}' for j in tj]
+    hz_t = f'{{{SZO} == True{{}} : Bool}}'
+    bl = [l for l in clines if l.startswith('  +b') or l.startswith('  +hB')]
+    rest = [l for l in clines if l not in bl]
+    bndz = (f"# the record's byte bound from the object's (hZ) through the parts' counts\n"
+            f"def bndz(-o: {OT}, {KWparams}, {', '.join(f'+{n}: {FT[n]}' for n in ln_)}, +hZ: {hz_t})\n"
+            f"    -> {{Nat.is_le(CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), A.quad(VB.pw(28n))) == True{{}} : Bool}}:\n" + '\n'.join(bl) + '\n  hB\n')
+    finp = [f'-o: {OT}', KWparams, kp[len(xs) + 1], kp[len(xs) + 2]] + [f'+{n}: {FT[n]}' for n in fnm] + [f'+hZ: {hz_t}']
+    fin = (f"def fin({', '.join(finp)}) -> @G@:\n"
+           + '\n'.join([rest[0], rest[1], f'  +hB = bndz(o, {KWargs}, {", ".join(ln_)}, hZ)'] + rest[2:]) + '\n')
+    kS = (bndz + '\n' + fin + f"\n# the record, from the fields and the parts' records\ndef kS({', '.join(kp)}) -> @G@:\n" + '\n'.join(dlines)
+          + f"\n  fin(o, {KWargs}, eo, hv4, {', '.join(fnm)}, hZ)\n")
+    # ---- the law: from rep and the premises ----
+    top_p, mkc = [], {}
+    for j in PT:
+        s_ = sch(j)
+        if j in VEC:
+            k_, K_, L_, e_, p_, r_, sx_ = VEC[j]
+            top_p.append((f'hs{j}', f'BL.sdpv({pj(j)}, 31n)' if k_ == 'pv' else f'BL.sdk1({pj(j)}, 31n)'))
+            mkc[j] = (f'PX.mk_{"PV" if k_ == "pv" else "V2"}({pj(j)}, {s_}, r{j}, hs{j}, {K_}, {L_}, {e_}n, {p_}n, {r_}n, {sx_}n, ' + ', '.join(['{==}'] * 10) + ')')
+        elif j in BYTEL:
+            top_p.append((f'hs{j}', f'U.sdk({pj(j)}, 28n)'))
+            if BYTEL[j] == 'H': mkc[j] = f'PL.mk_H({pj(j)}, {s_}, {{==}}, r{j}, hs{j})'
+            elif BYTEL[j] == 'U': mkc[j] = f'PL.mk_U({pj(j)}, {s_}, r{j}, hs{j})'
+            else: mkc[j] = f'PL.mk_B8({pj(j)}, hs{j})'
+        elif j in RECL:
+            L = RECL[j]
+            KWb = re.fullmatch(r'Nat\.is_lt\(TDM_' + L + r'\(A\), (\d+)n\)', _band(re.search(r'^def OKL_' + L + r'\(.*?\) -> Bool:\n((?:  .*\n)+)', (OBJ / f'encx_{L}.bend').read_text(), re.M).group(1))[0]).group(1)
+            top_p.append((f'hs{j}', f'RLS.sda_{L}({pj(j)}, {KWb}n)'))
+            lim = ', {==}' if L != 'l1099511627776_Validator' else ''
+            mkc[j] = f'RLS.mk_W_{L}({pj(j)}, {s_}{lim}, r{j}, hs{j})'
+        elif j in SCF:
+            top_p.append((f'hs{j}', f'EW.sdsc(RT.pj_SyncCommittee_0({pj(j)}), 31n)'))
+            mkc[j] = f'mk_SC({pj(j)}, {s_}, r{j}, hs{j})'
+        else:
+            top_p.append((f'hs{j}', f'MW.SHS_E(RT.pjb_ExecutionPayloadHeader_bx({pj(j)}))'))
+            mkc[j] = f'mk_EB({pj(j)}, {s_}, {{==}}, r{j}, hs{j})'
+    reps = [j for j in PT] + [BV4]
+    reps.sort()
+    tb = []
+    names = [xs[j] for j in sorted(xs)] + ['eo'] + [f'r{j}' for j in reps]
+    cur = 'rep'
+    for i, n in enumerate(names[:-2]):
+        tb.append(f'  (+{n}, q{i}) = {cur}'); cur = f'q{i}'
+    tb.append(f'  (+{names[-2]}, +{names[-1]}) = {cur}')
+    kargs = ', '.join(['o'] + [xs[j] for j in sorted(xs)] + ['eo', f'ok4({xs[BV4]}, r{BV4})'] + [mkc[j] for j in PT] + ['hZ'])
+    tb.append(f'  kS({kargs})')
+    law = (f"\n# (i): for every object the root law represents (rep) whose storage is as the encode record asks (decoded-object gaps:\n"
+           f"# hs5/hs6/hs13 the Bytes32 vectors and hs14/hs37 the uint64 vectors at depth below 31, hs7/hs12/hs15/hs16/hs21 the byte-storage\n"
+           f"# lists at depth below 28, hs9..hs36 the record lists' trees below the records' bounds, hs22/hs23 the sync committees' pubkeys\n"
+           f"# below 31, hs24 the latest execution payload header's storage (e2e_mw.SHS_E), hZ its bytes within 4 * 2^28)\n"
+           f"def {R}_e2e_encode(-o: {OT}, +rep: ST.rep_BeaconState(o, {SC}), {', '.join(f'+{n}: {t}' for n, t in top_p)}, +hZ: {{{SZO} == True{{}} : Bool}}) -> @G@:\n"
+           + '\n'.join(tb) + '\n')
+    # ---- the encoder's buffer (depth DO(size) < 29) and via ----
+    G, common = EV._encx_common(R, X, OT, 0, 10)
+    i0 = en.index('def putx0('); j0 = en.index('\n  K.putx', i0) if '\n  K.putx' in en[i0:] else en.index('\ndef ', i0 + 5)
+    want = ('es', 'hS', 'eNW', 'nw', 'nwp', 'hd', 'hcov', 'hl0')
+    lets, curn = [], None
+    for l in en[i0:j0].split('\n')[2:]:
+        mm = re.match(r'  \+(\w+) = ', l)
+        if mm:
+            curn = mm.group(1)
+        if curn in want:
+            lets.append(l)
+    SZ_ = 'Z.SZS(wR)'; DO = f'VL.DO({SZ_})'; OUT = 'EN.OUTC(wR)'
+    obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 29, the size within it\n"
+           f"def obC(+wR: K.KW, +h: {{CI.OKT(wR) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 28n : Nat}})\n"
+           f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ_}}}) == VSP.bt(U32.to_nat({SZ_}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
+           + '\n'.join(lets) + '\n' +
+           f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ_}))\n"
+           f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ_}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))), A.quad(WD.NWN(U32.to_nat({SZ_}))), ep,\n"
+           f"    FD.nat__le_add_right(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))))\n"
+           f"  +hn = FD.nat__le_trans(U32.to_nat({SZ_}), A.quad(WD.NWN(U32.to_nat({SZ_}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ_})), FD.spec_common__pow2({DO}), hl0))\n"
+           f"  EM.ob({DO}, {OUT}, {SZ_}, CI.pfx(CI.MW{{wR}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, hn)\n\n"
+           f"def obM(+m: CI.MW, +hok: {{CI.OK(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
+           f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 28n, {{==}})\n")
+    a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')
+    common = common[:a] + obc + '\n' + common[b:]
+    # the header's record arguments
+    ephn = [x.split(':')[0].strip() for x in _split(re.search(r'^type MW is Data:\n  MW\{(.*)\}$', eph, re.M).group(1))]
+    assert ephn[11] == 'm_extra_data'
+    tex = TOP_EXTRA.replace('@EPHP@', ', '.join(f'+a{i}' for i in range(len(ephn)))).replace('@EPHA@', ', '.join(f'a{i}' for i in range(len(ephn))))
+    tex = tex.replace('@EHB@', EHB).replace('@EHO@', EHO)
+    text = (common + '\n' + top_parts() + '\n' + tex + '\n' + "# ---- the record's object and view ----\n" + '\n'.join(out) + '\n' + kS + law).replace('@G@', G('o'))
+    # imports: the iface's own (as seen from e2e/), and the modules above
+    iimps = []
+    for mm in re.finditer(r'^import (\S+) as (\w+)$', it, re.M):
+        p, al = mm.group(1), mm.group(2)
+        p = p.replace('../../', '../') if p.startswith('../../') else ('../proofs/' + p[3:] if p.startswith('../') else '../proofs/obj/' + p[2:])
+        iimps.append((p, al))
+    base = [('../END_TO_END.bend', 'E2E'), ('../src/model.bend', 'API'), ('../src/buffer.bend', 'B'), ('../src/obj.bend', 'O'),
+            (f'../types/{R}_encode_ssz_generated.bend', f'{R}_e'), ('../types/schema.bend', 'S'), ('../types/primitive.bend', 'P'), ('../spec/fulu_schemas.bend', 'Spec'),
+            ('../proofs/type_validator_soundness.bend', 'VS'), ('../proofs/compact/found.bend', 'FD'), ('../proofs/compact/arith.bend', 'A'),
+            ('../proofs/nat_order.bend', 'Order'), ('../proofs/word_split.bend', 'WSp'), ('../proofs/power_division.bend', 'PD'),
+            ('../spec/codec.bend', 'Encoding'), ('../proofs/obj/spec_fixed.bend', 'SF'), ('../proofs/obj/spec_fixed.bend', 'FX'),
+            ('../proofs/obj/vspec.bend', 'VSP'), ('../proofs/obj/vbuf.bend', 'VB'), ('../proofs/obj/vcopy.bend', 'VC'), ('../proofs/obj/vcont.bend', 'VCN'),
+            ('../proofs/obj/vrecx.bend', 'VRX'), ('../proofs/obj/vdepth.bend', 'VD'), ('../proofs/obj/vlist.bend', 'VL'), ('../proofs/obj/vuwd.bend', 'WD'),
+            ('../proofs/obj/vua_lay.bend', 'LY'), ('../proofs/obj/vconts.bend', 'CS'), ('../proofs/obj/arr_vec.bend', 'AV'), ('../proofs/obj/dk.bend', 'DK'),
+            ('../proofs/obj/words_obj_light.bend', 'WO_L'), ('../proofs/obj/words_spec.bend', 'WS'), ('../proofs/obj/schema_shapes.bend', 'SH'),
+            ('../proofs/obj/elems48.bend', 'E48'), ('../proofs/obj/bitlist_pack.bend', 'BLP'), ('../proofs/obj/vfx_bv4.bend', 'VFB4'),
+            ('../proofs/obj/root_names.bend', 'RN'), ('../proofs/obj/root_names_light.bend', 'RN_L'), ('../proofs/obj/root_types.bend', 'RT'),
+            ('../proofs/obj/root_state.bend', 'ST'), ('../proofs/obj/pv_obj.bend', 'PV'), ('../proofs/obj/packed_obj_light.bend', 'PK_L'),
+            ('../proofs/obj/packed_bytes_light.bend', 'PB'), ('../proofs/obj/blist_obj.bend', 'BLI'), ('../proofs/obj/ulist_obj.bend', 'UL'),
+            ('../proofs/obj/big_var_codec_BeaconState_enc.bend', 'EN'), ('../proofs/obj/big_encx_BeaconState_iface.bend', 'CI'),
+            ('../proofs/obj/big_encx_BeaconState_size.bend', 'Z'), ('../proofs/obj/big_encx_ExecutionPayloadHeader.bend', 'IK'),
+            ('../proofs/obj/big_encx_bl32.bend', 'EB')]
+    base += iimps
+    base += [('../types/FuluSyncCommittee_def_generated.bend', 'FuluSyncCommittee_d'), ('../types/FuluBytes48_def_generated.bend', 'FuluBytes48_d'),
+             ('../types/FuluBytes4_def_generated.bend', 'FuluBytes4_d'), ('../types/FuluExecutionPayloadHeader_def_generated.bend', 'FuluExecutionPayloadHeader_d')]
+    for j, L in RECL.items():
+        E = L.split('_', 1)[1]; n = L.split('_')[0][1:]
+        base.append((f'../types/Fulu_list_{E}_{n}_def_generated.bend', f'Fulu_list_{E}_{n}_d'))
+    base += [('./e2e_support.bend', 'E'), ('./e2e_emit.bend', 'EM'), ('./e2e_cap.bend', 'C'), ('./e2e_blist.bend', 'BL'), ('./e2e_u64l.bend', 'U'),
+             ('./e2e_mw.bend', 'MW'), ('./e2e_e48w.bend', 'EW'), ('./e2e_bsx.bend', 'PX'), ('./e2e_bsl.bend', 'PL'), ('./e2e_rls.bend', 'RLS')]
+    seen, imps = set(), ['import Base']
+    for p, al in base:
+        if al in seen:
+            continue
+        seen.add(al); imps.append(f'import {p} as {al}')
+    return EV.st_qualify('\n'.join(imps) + f"\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_state_enc.py). Do not edit.\n"
+            f"# {R} (variable size): the object API's encoder's bytes are END_TO_END's serialize of the object's view, for every\n"
+            f"# object the root law represents (rep) whose storage is as its encode record asks, through the encode record (CI.MW).\n\n" + text)
+
+
+STATE_PREMISE = ('rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record\'s storage bounds as premises, each a decoded-object gap '
+                 '(the root law\'s invariant gives depth below 32 and no size bound): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) '
+                 'and the sync committees\' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 28 (U.sdk), the record '
+                 'lists\' trees below their records\' bounds (RLS.sda_L), the latest execution payload header\'s storage (e2e_mw.SHS_E), '
+                 'hZ the encoding within 4 * 2^28 = 2^30 bytes (SZR of the fixed part and the parts\' counts)')

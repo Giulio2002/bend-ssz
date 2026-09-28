@@ -2988,6 +2988,11 @@ def outputs():
     import e2e_state_gen as ESG
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state())
+    # BeaconState (i): its encode record from the parts' records (e2e_state_enc: e2e_bsx, e2e_bsl, e2e_rls)
+    import e2e_state_enc as ESE
+    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+        VENC_SHAPES.setdefault('BeaconState', ESE.venc_state)
+        VENC_PREMISE.setdefault('BeaconState', ESE.STATE_PREMISE)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3227,6 +3232,7 @@ def outputs():
         import e2e_state_enc as ESE
         out[OUT / 'e2e_bsx.bend'] = ESE.bsx_text()
         out[OUT / 'e2e_bsl.bend'] = ESE.bsl_text()
+        out[OUT / 'e2e_rls.bend'] = ESE.rls_text()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
         out[OUT / 'e2e_stv.bend'] = ESG.text()
