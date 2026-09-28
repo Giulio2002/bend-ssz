@@ -987,7 +987,7 @@ def pbx(+tb: FD.array__Tree<U32>, +k: U32, +hs: EP.SDPB(O.Bits{FD.array__thaw(U3
   %Equal.sym(Nat, ER.LDEP(U32, tb), dw2, ed) : EP.PBF3(_, tb, k)
   %Equal.sym(FD.array__Tree<U32>, tb, T2, eT) : EP.PBF3(dw2, _, k)
   %Equal.sym(U32, k, K2, eK) : EP.PBF3(dw2, T2, _)
-  EP.pbf(T2, dw2, K2, pf, hdw, hK8, hKY, hroom, hbz, wf2)
+  EP.pbf(T2, dw2, K2, pf, FD.nat__lt_trans(dw2, 28n, 31n, hdw, {==}), hK8, hKY, hroom, hbz, wf2)
 
 def efg4(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +f: EQ.CF_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k})))
     -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):

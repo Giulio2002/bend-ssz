@@ -1933,7 +1933,7 @@ def rl_module(X, rlmod, lists):
         fas_sp = ' '.join(f'f{i}' for i in range(nfl))
         fbs = ', '.join(f'+f{i}' for i in range(nfl))
         fpats = ' '.join(f'{c}{{{a}}}' for c, a in cases_[1:1 + nfl])
-        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text(), _re.M).group(0)).group(1)
+        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', __import__('runtime_refs').unwire(_RT.read_text()), _re.M).group(0)).group(1)
         dflt = _re.search(r'VRL\.mget\(' + _re.escape(ET) + r', FD\.spec_common__nth\(.*?\), j\), (.*?)\)$', _re.search(r'^def EL_' + L + r'\(.*$', text, _re.M).group(0)).group(1)
         L_.append(f'''# ---- {L} ----
 

@@ -6,6 +6,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_rlenc_ExecutionRequests.bend as RL
 import ../src/obj.bend as O
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
@@ -30,11 +31,11 @@ def xm_l8192_DepositRequest(+W: List<&2, FuluDepositRequest_d.DepositRequest>, +
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l8192_DepositRequest(t, p)
 
-def rvf_l8192_DepositRequest(+f0: FuluBytes48_d.Bytes48, +f1: FuluBytes32_d.Bytes32, +f2: O.U64, +f3: FuluBytes96_d.Bytes96, +f4: O.U64) -> {RL.RVW_DepositRequest(FuluDepositRequest_d.DepositRequest{f0, f1, f2, f3, f4}) == RN_L.v_DepositRequest(FuluDepositRequest_d.DepositRequest{f0, f1, f2, f3, f4}) : S.Value}:
+def rvf_l8192_DepositRequest(+f0: FuluBytes48_d.Bytes48, +f1: FuluBytes32_d.Bytes32, +f2: O.U64, +f3: FuluBytes96_d.Bytes96, +f4: O.U64) -> {RL.RVW_DepositRequest(FuluDepositRequest_d.DepositRequest{f0, f1, f2, f3, f4}) == RN.v_DepositRequest(FuluDepositRequest_d.DepositRequest{f0, f1, f2, f3, f4}) : S.Value}:
   match f0 f1 f2 f3 f4:
     case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11} FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19} O.U64{+x20, +x21} FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45} O.U64{+x46, +x47}: {==}
 
-def rv_l8192_DepositRequest(+r: FuluDepositRequest_d.DepositRequest) -> {RL.RVW_DepositRequest(r) == RN_L.v_DepositRequest(r) : S.Value}:
+def rv_l8192_DepositRequest(+r: FuluDepositRequest_d.DepositRequest) -> {RL.RVW_DepositRequest(r) == RN.v_DepositRequest(r) : S.Value}:
   match r:
     case FuluDepositRequest_d.DepositRequest{+f0, +f1, +f2, +f3, +f4}: rvf_l8192_DepositRequest(f0, f1, f2, f3, f4)
 
@@ -43,8 +44,8 @@ def itw_l8192_DepositRequest(c: Nat, +A: FD.array__Tree<FuluDepositRequest_d.Dep
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluDepositRequest_d.DepositRequest, RT.xat_l8192_DepositRequest(FD.array__slots(FuluDepositRequest_d.DepositRequest, A), j), RL.EL_l8192_DepositRequest(A, j), xm_l8192_DepositRequest(FD.array__slots(FuluDepositRequest_d.DepositRequest, A), j)) :
-        {S.Items{RN_L.v_DepositRequest(_), RT.xi_l8192_DepositRequest(q, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 1n+j)} == RL.ITW_l8192_DepositRequest(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), RL.RVW_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), Equal.sym(S.Value, RL.RVW_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), RN_L.v_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), rv_l8192_DepositRequest(RL.EL_l8192_DepositRequest(A, j)))) :
+        {S.Items{RN.v_DepositRequest(_), RT.xi_l8192_DepositRequest(q, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 1n+j)} == RL.ITW_l8192_DepositRequest(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), RL.RVW_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), Equal.sym(S.Value, RL.RVW_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), RN.v_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), rv_l8192_DepositRequest(RL.EL_l8192_DepositRequest(A, j)))) :
         {S.Items{_, RT.xi_l8192_DepositRequest(q, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 1n+j)} == RL.ITW_l8192_DepositRequest(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{RL.RVW_DepositRequest(RL.EL_l8192_DepositRequest(A, j)), z}, RT.xi_l8192_DepositRequest(q, FD.array__slots(FuluDepositRequest_d.DepositRequest, A), 1n+j), RL.ITW_l8192_DepositRequest(q, A, 1n+j), itw_l8192_DepositRequest(q, A, 1n+j))
 
@@ -69,11 +70,11 @@ def xm_l16_WithdrawalRequest(+W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequ
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l16_WithdrawalRequest(t, p)
 
-def rvf_l16_WithdrawalRequest(+f0: FuluBytes20_d.Bytes20, +f1: FuluBytes48_d.Bytes48, +f2: O.U64) -> {RL.RVW_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{f0, f1, f2}) == RN_L.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{f0, f1, f2}) : S.Value}:
+def rvf_l16_WithdrawalRequest(+f0: FuluBytes20_d.Bytes20, +f1: FuluBytes48_d.Bytes48, +f2: O.U64) -> {RL.RVW_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{f0, f1, f2}) == RN.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{f0, f1, f2}) : S.Value}:
   match f0 f1 f2:
     case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4} FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16} O.U64{+x17, +x18}: {==}
 
-def rv_l16_WithdrawalRequest(+r: FuluWithdrawalRequest_d.WithdrawalRequest) -> {RL.RVW_WithdrawalRequest(r) == RN_L.v_WithdrawalRequest(r) : S.Value}:
+def rv_l16_WithdrawalRequest(+r: FuluWithdrawalRequest_d.WithdrawalRequest) -> {RL.RVW_WithdrawalRequest(r) == RN.v_WithdrawalRequest(r) : S.Value}:
   match r:
     case FuluWithdrawalRequest_d.WithdrawalRequest{+f0, +f1, +f2}: rvf_l16_WithdrawalRequest(f0, f1, f2)
 
@@ -82,8 +83,8 @@ def itw_l16_WithdrawalRequest(c: Nat, +A: FD.array__Tree<FuluWithdrawalRequest_d
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluWithdrawalRequest_d.WithdrawalRequest, RT.xat_l16_WithdrawalRequest(FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), j), RL.EL_l16_WithdrawalRequest(A, j), xm_l16_WithdrawalRequest(FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), j)) :
-        {S.Items{RN_L.v_WithdrawalRequest(_), RT.xi_l16_WithdrawalRequest(q, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 1n+j)} == RL.ITW_l16_WithdrawalRequest(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), RL.RVW_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), Equal.sym(S.Value, RL.RVW_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), RN_L.v_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), rv_l16_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)))) :
+        {S.Items{RN.v_WithdrawalRequest(_), RT.xi_l16_WithdrawalRequest(q, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 1n+j)} == RL.ITW_l16_WithdrawalRequest(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), RL.RVW_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), Equal.sym(S.Value, RL.RVW_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), RN.v_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), rv_l16_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)))) :
         {S.Items{_, RT.xi_l16_WithdrawalRequest(q, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 1n+j)} == RL.ITW_l16_WithdrawalRequest(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{RL.RVW_WithdrawalRequest(RL.EL_l16_WithdrawalRequest(A, j)), z}, RT.xi_l16_WithdrawalRequest(q, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, A), 1n+j), RL.ITW_l16_WithdrawalRequest(q, A, 1n+j), itw_l16_WithdrawalRequest(q, A, 1n+j))
 
@@ -108,11 +109,11 @@ def xm_l2_ConsolidationRequest(+W: List<&2, FuluConsolidationRequest_d.Consolida
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l2_ConsolidationRequest(t, p)
 
-def rvf_l2_ConsolidationRequest(+f0: FuluBytes20_d.Bytes20, +f1: FuluBytes48_d.Bytes48, +f2: FuluBytes48_d.Bytes48) -> {RL.RVW_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{f0, f1, f2}) == RN_L.v_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{f0, f1, f2}) : S.Value}:
+def rvf_l2_ConsolidationRequest(+f0: FuluBytes20_d.Bytes20, +f1: FuluBytes48_d.Bytes48, +f2: FuluBytes48_d.Bytes48) -> {RL.RVW_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{f0, f1, f2}) == RN.v_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{f0, f1, f2}) : S.Value}:
   match f0 f1 f2:
     case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4} FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16} FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}: {==}
 
-def rv_l2_ConsolidationRequest(+r: FuluConsolidationRequest_d.ConsolidationRequest) -> {RL.RVW_ConsolidationRequest(r) == RN_L.v_ConsolidationRequest(r) : S.Value}:
+def rv_l2_ConsolidationRequest(+r: FuluConsolidationRequest_d.ConsolidationRequest) -> {RL.RVW_ConsolidationRequest(r) == RN.v_ConsolidationRequest(r) : S.Value}:
   match r:
     case FuluConsolidationRequest_d.ConsolidationRequest{+f0, +f1, +f2}: rvf_l2_ConsolidationRequest(f0, f1, f2)
 
@@ -121,8 +122,8 @@ def itw_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<FuluConsolidationRequ
     case 0n: {==}
     case 1n+ +q:
       %Equal.sym(FuluConsolidationRequest_d.ConsolidationRequest, RT.xat_l2_ConsolidationRequest(FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), j), RL.EL_l2_ConsolidationRequest(A, j), xm_l2_ConsolidationRequest(FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), j)) :
-        {S.Items{RN_L.v_ConsolidationRequest(_), RT.xi_l2_ConsolidationRequest(q, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j)} == RL.ITW_l2_ConsolidationRequest(1n+q, A, j) : S.Value}
-      %Equal.sym(S.Value, RN_L.v_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), RL.RVW_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), Equal.sym(S.Value, RL.RVW_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), RN_L.v_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), rv_l2_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)))) :
+        {S.Items{RN.v_ConsolidationRequest(_), RT.xi_l2_ConsolidationRequest(q, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j)} == RL.ITW_l2_ConsolidationRequest(1n+q, A, j) : S.Value}
+      %Equal.sym(S.Value, RN.v_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), RL.RVW_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), Equal.sym(S.Value, RL.RVW_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), RN.v_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), rv_l2_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)))) :
         {S.Items{_, RT.xi_l2_ConsolidationRequest(q, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j)} == RL.ITW_l2_ConsolidationRequest(1n+q, A, j) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{RL.RVW_ConsolidationRequest(RL.EL_l2_ConsolidationRequest(A, j)), z}, RT.xi_l2_ConsolidationRequest(q, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j), RL.ITW_l2_ConsolidationRequest(q, A, 1n+j), itw_l2_ConsolidationRequest(q, A, 1n+j))
 
