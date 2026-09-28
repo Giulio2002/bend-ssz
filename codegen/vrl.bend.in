@@ -181,6 +181,45 @@ def fitk(+j: Nat, +q: Nat, +W: Nat, +Q: Nat, +P: Nat, +h: {Nat.is_le(pos(Nat.add
   fit0(j, W, Q, P, F.nat__le_trans(pos(1n+j, W, Q), pos(Nat.add(2n+q, j), W, Q), P, Order.add_right(Nat.mul(1n+j, W), Nat.mul(Nat.add(2n+q, j), W), Q, mul_mono(1n+j, Nat.add(2n+q, j), W, hj)), h))
 
 # The byte position of record j: 4 (Q + W j).
+law qlt:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_lt(a, b) == True{} : Bool}
+  {Nat.is_lt(A.quad(a), A.quad(b)) == True{} : Bool}
+def qlt(a, b, h):
+  match a b:
+    case _ 0n: Empty.absurd({Nat.is_lt(A.quad(a), A.quad(0n)) == True{} : Bool}, F.nat__lt_zero_absurd(a, h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 1n+ +q: qlt(p, q, h)
+
+# The position of record j at any output depth dd < 31 (records of W >= 1 words: the sums stay below 2^32).
+def posWW(+dd: Nat, +bp: U32, +Q: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat},
+    +ep: {U32.to_nat(bp) == A.quad(Q) : Nat}, +ei: {U32.to_nat(i) == j : Nat}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hW: {Nat.is_le(1n, W) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(W, pos(j, W, Q)), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(bp, U32.mul(i, Ru))) == A.quad(pos(j, W, Q)) : Nat}:
+  +P32 = F.spec_common__pow2(32n)
+  +hlt = F.nat__lt_le_trans(pos(j, W, Q), Nat.add(W, pos(j, W, Q)), VB.pw(dd),
+    F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(W, pos(j, W, Q))) == True{} : Bool}, Nat.add(0n, pos(j, W, Q)), pos(j, W, Q), {==},
+      F.nat__lt_le_trans(Nat.add(0n, pos(j, W, Q)), Nat.add(1n, pos(j, W, Q)), Nat.add(W, pos(j, W, Q)), F.nat__lt_succ(pos(j, W, Q)), Order.add_right(1n, W, pos(j, W, Q), hW))),
+    hb)
+  +hq = F.nat__lt_le_trans(A.quad(pos(j, W, Q)), A.quad(VB.pw(dd)), P32, qlt(pos(j, W, Q), VB.pw(dd), hlt),
+    F.logic__subst(Nat, z => {Nat.is_le(z, P32) == True{} : Bool}, VB.pw(2n+dd), A.quad(VB.pw(dd)), {==}, VB.pw2d32(dd, hdd)))
+  +hm = F.nat__le_lt_trans(A.quad(Nat.mul(j, W)), A.quad(pos(j, W, Q)), P32, VME.quad_mono(Nat.mul(j, W), pos(j, W, Q), F.nat__le_add_right(Nat.mul(j, W), Q)), hq)
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, A.quad(W)), A.quad(Nat.mul(j, W)),
+    Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, U32.to_nat(Ru)), Nat.mul(j, A.quad(W)),
+      Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Ru)), U32.to_nat(i), j, ei), Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Ru), A.quad(W), eR)),
+    mul_quad(j, W))
+  +e2 = Equal.trans(Nat, U32.to_nat(U32.mul(i, Ru)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)),
+    VU.mul_lt32(i, Ru, F.logic__subst(Nat, z => {Nat.is_lt(z, P32) == True{} : Bool}, A.quad(Nat.mul(j, W)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)), em), hm)),
+    em)
+  +hs = F.logic__subst(Nat, z => {Nat.is_lt(z, P32) == True{} : Bool}, A.quad(pos(j, W, Q)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(Q)), VM.quad_add(Nat.mul(j, W), Q), hq)
+  +e3 = VB.add_lt32(bp, U32.mul(i, Ru), A.quad(Q), ep,
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, A.quad(Q)), P32) == True{} : Bool}, A.quad(Nat.mul(j, W)), U32.to_nat(U32.mul(i, Ru)), Equal.sym(Nat, U32.to_nat(U32.mul(i, Ru)), A.quad(Nat.mul(j, W)), e2), hs))
+  Equal.trans(Nat, U32.to_nat(U32.add(bp, U32.mul(i, Ru))), Nat.add(U32.to_nat(U32.mul(i, Ru)), A.quad(Q)), A.quad(pos(j, W, Q)), e3,
+    Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(i, Ru)), A.quad(Q)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(Q)), A.quad(pos(j, W, Q)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, A.quad(Q)), U32.to_nat(U32.mul(i, Ru)), A.quad(Nat.mul(j, W)), e2),
+      Equal.sym(Nat, A.quad(pos(j, W, Q)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(Q)), VM.quad_add(Nat.mul(j, W), Q))))
+
 def posW(+dd: Nat, +bp: U32, +Q: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat},
     +ep: {U32.to_nat(bp) == A.quad(Q) : Nat}, +ei: {U32.to_nat(i) == j : Nat}, +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(W, pos(j, W, Q)), VB.pw(dd)) == True{} : Bool})

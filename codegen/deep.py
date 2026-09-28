@@ -171,10 +171,12 @@ def _blocks(text):
         kind, name = m.group(1), m.group(2)
         b = starts[i + 1]
         if kind == 'law':
-            # its def follows
-            assert text[b:].startswith(f'def {name}('), name
-            b = starts[i + 2]
-            i += 1
+            # its def follows (else a law whose def comes later: a block of its own, never twinned)
+            if text[b:].startswith(f'def {name}('):
+                b = starts[i + 2]
+                i += 1
+            else:
+                kind = 'lawonly'
         # trailing comments / blank lines belong to the next block
         seg = text[a:b]
         k = len(seg.rstrip('\n'))
@@ -373,3 +375,252 @@ def uify_file(text, obj_dir):
         if m.group(1) in ('vbytes', 'vbspec', 'vua_copy', 'vua_sc', 'vua_ct', 'vbx', 'vbenc', 'vuw', 'vputwd', 'vuwd') and p.exists():
             al[m.group(2) + '.'] = chain_names(p.read_text())
     return uify(text, al)[0]
+
+
+# ---- the encoder-window interface at any output depth dd < 31 (was dd < 29) --------------------------
+# dify() gives each definition with an output-depth hypothesis `{Nat.is_lt(dd, 29n) == True{} : Bool}` a twin
+# name+'W' at dd < 31; the old name stays as a wrapper (its hypothesis lifted by nat__lt_trans), so callers
+# keep working until they switch to the W names. Steps from 29 to 31 or 32 in the twins' bodies are rewritten;
+# anything else that needs dd < 29 (e.g. a sum bounded by 2^(2 + dd) < 2^31) is reported for a hand fix.
+
+_DD = re.compile(r'\{Nat\.is_lt\((dd), 29n\) == True\{\} : Bool\}')   # the output tree's depth only
+
+
+def _dd_sig(block, kind):
+    """(names, index of the depth hypothesis, its variable) or None."""
+    if kind == 'def':
+        a = block.index('(') + 1
+        b = _close(block, a)
+        ps = [p.strip() for p in _split_args(block[a:b])]
+        names = [p.split(':')[0].strip().lstrip('+') for p in ps]
+        types = [p.split(':', 1)[1].strip() if ':' in p else '' for p in ps]
+    else:
+        fors = re.findall(r'^  for (.*)$', block, re.M)
+        names = [f.split(':')[0].strip().lstrip('+') for f in fors]
+        types = [f.split(':', 1)[1].strip() for f in fors]
+    for j, t in enumerate(types):
+        m = _DD.fullmatch(t)
+        if m:
+            return names, j, m.group(1)
+    return None
+
+
+def dd_names(text):
+    out = {}
+    for name, kind, a, b in _blocks(text):
+        try:
+            s = _dd_sig(text[a:b], kind)
+        except (ValueError, AssertionError):
+            s = None
+        if s:
+            out[name] = s[1]
+    return out
+
+
+def _hdr(blk):
+    """A def's header through its ':' (the first ':' after the parameters outside any bracket), ending in a newline."""
+    i, d = _close(blk, blk.index('(') + 1) + 1, 0
+    while True:
+        c = blk[i]
+        if c in '({[':
+            d += 1
+        elif c in ')}]':
+            d -= 1
+        elif c == ':' and d == 0:
+            return blk[:i + 1] + '\n'
+        i += 1
+
+
+def dify(text, aliases, fd='FD'):
+    """text with the dd < 29 definitions doubled (name+'W' at dd < 31) and the old names as wrappers.
+    aliases: {prefix ('X.'): set of that module's twinned names}; fd: the alias of proofs/compact/found.bend."""
+    blocks = _blocks(text)
+    mine = {}
+    for name, kind, a, b in blocks:
+        try:
+            s = _dd_sig(text[a:b], kind)
+        except (ValueError, AssertionError):
+            s = None
+        if s:
+            mine[name] = (kind, s)
+    local = set(mine)
+    defined = {n for n, _, _, _ in blocks}
+    clash = [n for n in local if n + 'W' in defined]
+    if clash:
+        raise SystemExit('deep.dify: twin names already defined: ' + repr(clash[:5]))
+    allc = {('' + n) for n in local}
+    for p, ns in aliases.items():
+        allc |= {p + n for n in ns}
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(allc, key=len, reverse=True)) + r')\(') if allc else None
+    out, pos = [], 0
+    bad = []
+    for name, kind, a, b in blocks:
+        if kind == 'lawonly' and '{Nat.is_lt(dd, 29n) == True{} : Bool}' in text[a:b]:
+            bad.append((name, 'a law at dd < 29 whose def does not follow it'))
+        if name not in mine or kind == 'lawonly':
+            continue
+        blk = text[a:b]
+        _, (names, j, v) = mine[name]
+        hn = names[j]
+        tw = blk.replace(f'{{Nat.is_lt({v}, 29n) == True{{}} : Bool}}', f'{{Nat.is_lt({v}, 31n) == True{{}} : Bool}}')
+        if kind == 'def':
+            tw = tw.replace(f'def {name}(', f'def {name}W(', 1)
+        else:
+            tw = tw.replace(f'law {name}:', f'law {name}W:', 1).replace(f'\ndef {name}(', f'\ndef {name}W(', 1)
+        tw = tw.replace(f'{fd}.nat__lt_trans({v}, 29n, 31n, {hn}, {{==}})', hn)
+        for k in ('32n', '33n'):
+            tw = tw.replace(f'{fd}.nat__lt_trans({v}, 29n, {k}, {hn}, {{==}})', f'{fd}.nat__lt_trans({v}, 31n, {k}, {hn}, {{==}})')
+        if pat:
+            tw = pat.sub(lambda m: m.group(1) + 'W(', tw)
+            # the header's own name was renamed twice
+            tw = tw.replace(f'def {name}WW(', f'def {name}W(').replace(f'law {name}WW:', f'law {name}W:')
+        # the byte-offset step X + c (UR.offx at d < 30) becomes UR.offx31 (any d < 31: its sum is below 2^32)
+        tl = tw.split('\n')
+        for i, l in enumerate(tl):
+            s30 = f'{fd}.nat__lt_trans({v}, 29n, 30n, {hn}, {{==}})'
+            if s30 in l and '.offx(' in l and l.count(s30) == l.count('.offx('):
+                tl[i] = l.replace(s30, hn).replace('.offx(', '.offx31(')
+        tw = '\n'.join(tl)
+        for l in tw.split('\n'):
+            if re.search(r'nat__lt_trans\(%s, 29n' % re.escape(v), l) or re.search(r'nat__\w+\(%s, 28n' % re.escape(v), l) \
+                    or re.search(r'2n\+%s, .*\b%s\b' % (re.escape(v), re.escape(hn)), l):
+                bad.append((name, l.strip()))
+        # the wrapper
+        args = [f'{fd}.nat__lt_trans({v}, 29n, 31n, {hn}, {{==}})' if i == j else n for i, n in enumerate(names)]
+        if kind == 'def':
+            hdr = _hdr(blk)
+            wrap = hdr + f'  {name}W(' + ', '.join(args) + ')\n'
+        else:
+            hdr = blk[:blk.index(f'\ndef {name}(') + 1]
+            wrap = hdr + f'def {name}(' + ', '.join(names) + f'):\n  {name}W(' + ', '.join(args) + ')\n'
+        out.append(text[pos:a] + tw.rstrip('\n') + '\n\n' + wrap)
+        pos = b
+    out.append(text[pos:])
+    return ''.join(out), set(local), bad
+
+
+_OFFADD = re.compile(r'VF\.off_add\((\w+), (\w+), P, (\w+), 2n\+dd, e, \{==\}, (\w+), VF\.in_q\(\3, P, dd, VF\.in_le\(0n, \3, (\w+), P, VB\.pw\(dd\), \{==\}, hb\)\)\)')
+
+
+def dify_fix(text, fd='F'):
+    """dify for the fixed-size writer modules (var_fix_types and kin): the field offsets' sums at any depth
+    dd < 31 by VF.off_add_lt (a field's first word lies inside the tree: VF.in_lt, VF.q32lt)."""
+    t, mine, bad = dify(text, {}, fd)
+    t = _OFFADD.sub(lambda m: f'VF.off_add_lt({m.group(1)}, {m.group(2)}, P, {m.group(3)}, e, {{==}}, VF.q32lt({m.group(3)}, P, dd, {m.group(4)}, VF.in_lt({m.group(3)}, {m.group(5)}, P, VB.pw(dd), {{==}}, hb)))', t)
+    left = [b for b in bad if 'VF.off_add(' not in b[1]]
+    if left:
+        raise SystemExit('deep.dify_fix: ' + repr([(a, b[:160]) for a, b in left[:3]]))
+    return t
+
+
+def _args(s, i):
+    """The top-level arguments of the call whose '(' is s[i - 1], and the index after its ')'."""
+    out, d, a = [], 0, i
+    while True:
+        c = s[i]
+        if c in '([{':
+            d += 1
+        elif c in ')]}':
+            if d == 0:
+                out.append(s[a:i].strip())
+                return out, i + 1
+            d -= 1
+        elif c == ',' and d == 0:
+            out.append(s[a:i].strip())
+            a = i + 1
+        i += 1
+
+
+def narrow(text):
+    """{name: [arg index]} of a module's defs with a premise {Nat.is_lt(x, 28n|29n|30n)} (a depth bound below 31)."""
+    out = {}
+    for m in re.finditer(r'^def (\w+)\(', text, re.M):
+        args, _ = _args(text, m.end())
+        ix = [k for k, a in enumerate(args) if re.search(r':\s*\{Nat\.is_lt\(\w+, (?:28|29|30)n\) == True\{\} : Bool\}$', a)]
+        if ix:
+            out[m.group(1)] = ix
+    return out
+
+
+def w_names(text):
+    """The names X of a module that also define XW (its dd < 31 twins)."""
+    defined = set(re.findall(r'^(?:def|law) (\w+)', text, re.M))
+    return {n for n in dd_names(text) if n + 'W' in defined}
+
+
+# The twins whose premises differ from their dd < 29 originals (the old names keep their own proofs):
+# a caller's twin must supply the new premise by hand (see scratchpad encwin_recipe.md).
+CHANGED = {
+    'fposW': 'hk strict: 4 k < L (a field starts inside its record)',
+    'mulqW': '(i, j, Ru, W, eR, ei, hm: 4 (j W) < 2^32), no dd',
+    'rposW': 'hW: 1 <= W after hd',
+    'vposW': 'hl32: 4 q + r + L < 2^32 after hl (or VCN.vposS with a < L)',
+    'padd_ddW': 'h: a + b < 2^31 (a valid encoding is shorter than 2^31 bytes)',
+    'cnextW': 'hb: F0 + SUM ks + k < 2^31',
+    'cnext_rW': 'hb: SUM ks + F0 + k < 2^31',
+    'pposW': 'hm: 1 <= m after hk',
+    'proomW': 'hm: 1 <= m after hk',
+    'posbW': 'hR: 1 <= R after hd',
+    'arm_eW': 'hl32: X0 + (1 + E) < 2^32 in place of hl',
+    'posWW': 'hW: 1 <= W before hb (VRL.posW twin)',
+}
+
+
+def dify_out(out, strict=True, handled=()):
+    """dify every generated module of out ({path: text}, in dependency order): each call into an imported module's
+    twinned name (from out itself or from proofs/obj on disk) goes to its W version. Returns the new out; with strict,
+    leftover dd < 29 steps (the spots that need a strict bound by hand) and calls of a CHANGED twin raise, except the
+    names in handled (the generator supplies their new premise itself: fix the twins' text after this call)."""
+    from pathlib import Path
+    res, reg, allbad = {}, {}, []
+    for q, t in out.items():
+        q = Path(q)
+        if '{Nat.is_lt(dd, 29n) == True{} : Bool}' not in t or w_names(t):
+            res[q] = t  # nothing at dd < 29, or twinned already (dify_fix)
+            reg[q.stem] = w_names(t) if '{Nat.is_lt(dd, 29n) == True{} : Bool}' in t else set()
+            continue
+        fdm = re.search(r'^import \.\./compact/found\.bend as (\w+)', t, re.M)
+        fd = fdm.group(1) if fdm else 'FD'
+        al = {}
+        for m in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
+            stem, a = m.group(1), m.group(2)
+            if stem not in reg:
+                src = q.parent / f'{stem}.bend'
+                reg[stem] = w_names(src.read_text()) if src.exists() else set()
+            if reg[stem]:
+                al[a + '.'] = reg[stem]
+        t2, mine, bad = dify(t, al, fd)
+        nar = {}
+        for m in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
+            src = out.get(q.parent / f'{m.group(1)}.bend') or (res.get(q.parent / f'{m.group(1)}.bend'))
+            if src is None and (q.parent / f'{m.group(1)}.bend').exists():
+                src = (q.parent / f'{m.group(1)}.bend').read_text()
+            for n, ix in narrow(src or '').items():
+                nar[m.group(2) + '.' + n] = ix
+        for n, ix in narrow(t2).items():
+            nar[n] = ix
+        hyp31 = set(re.findall(r'\+(\w+): \{Nat\.is_lt\(dd, 31n\) == True\{\} : Bool\}', t2))
+        if nar and hyp31:
+            cre = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(nar, key=len, reverse=True)) + r')\(')
+            for m in cre.finditer(t2):
+                try:
+                    args, _ = _args(t2, m.end())
+                except IndexError:
+                    continue
+                if any(k < len(args) and args[k] in hyp31 for k in nar[m.group(1)]):
+                    ln = t2[t2.rfind('\n', 0, m.start()) + 1:t2.find('\n', m.start())]
+                    bad.append((m.group(1), 'a dd < 31 premise passed to a narrower bound: ' + ln.strip()[:120]))
+        for n, why in CHANGED.items():
+            if n in handled:
+                continue
+            for m in re.finditer(r'(?<![\w])(\w+\.)?' + n + r'\(', t2):
+                if m.group(1) and m.group(1) in al or not m.group(1) and not re.search(r'^def ' + n + r'\(', t2, re.M):
+                    ln = t2[t2.rfind('\n', 0, m.start()) + 1:t2.find('\n', m.start())]
+                    if not ln.startswith('def '):
+                        bad.append((n, 'changed premise (' + why + '): ' + ln.strip()[:120]))
+        reg[q.stem] = mine
+        res[q] = t2
+        allbad += [(q.name,) + b for b in bad]
+    if strict and allbad:
+        raise SystemExit('deep.dify_out: steps left at dd < 29: ' + repr(allbad[:6]))
+    return res

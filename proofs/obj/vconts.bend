@@ -99,9 +99,12 @@ def bsuc(+x: Nat, +k: Nat, +h: {Nat.is_le(x, VB.pw(k)) == True{} : Bool}) -> {Na
 def b31n(+x: Nat, +h: {Nat.is_le(x, VB.pw(30n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}: bsuc(x, 30n, h)
 
 # The runtime's X is U32.from_nat(4 q + r) when the L bytes there fit the tree.
-def exq(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def exqW(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}) -> {X == U32.from_nat(Nat.add(A.quad(q), r)) : U32}:
   +X0 = Nat.add(A.quad(q), r)
-  +h1 = lel(X0, L, A.quad(VB.pw(dd)), VRX.xend(q, r, L, dd, hl))
-  +h2 = FD.nat__le_trans(X0, A.quad(VB.pw(dd)), VB.pw(30n), h1, q30(dd, hd))
-  FD.u32__injective(X, U32.from_nat(X0), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(U32.from_nat(X0)), e, Equal.sym(Nat, U32.to_nat(U32.from_nat(X0)), X0, FD.u32__to_nat_from_nat(X0, 31n, {==}, b31n(X0, h2)))))
+  +hx = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, U32.to_nat(X), X0, e, VB.u32_lt(X))
+  FD.u32__injective(X, U32.from_nat(X0), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(U32.from_nat(X0)), e, Equal.sym(Nat, U32.to_nat(U32.from_nat(X0)), X0, FD.u32__to_nat_from_nat(X0, 32n, {==}, hx))))
+
+def exq(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}) -> {X == U32.from_nat(Nat.add(A.quad(q), r)) : U32}:
+  exqW(X, q, r, L, dd, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl)

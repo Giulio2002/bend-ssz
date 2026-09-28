@@ -66,6 +66,16 @@ def xstart(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +D: F.array__Tree<U32>, +pf: {F.
     F.nat__le_trans(Nat.add(A.quad(q), r), Nat.add(Nat.add(A.quad(q), r), L), A.quad(VB.pw(dd)), Order.below_sum(Nat.add(A.quad(q), r), L), xend(q, r, L, dd, hl)))
 
 # A field at byte 4 k (4 k <= L) is at byte 4 (k + q) + r.
+def fposW(+X: U32, +q: Nat, +r: Nat, +k: Nat, +c: U32, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hk: {Nat.is_lt(A.quad(k), L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(A.quad(Nat.add(k, q)), r) : Nat}:
+  +X0 = Nat.add(A.quad(q), r)
+  +h1 = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(k), X0), z) == True{} : Bool}, Nat.add(L, X0), Nat.add(X0, L), F.nat__add_comm(L, X0), VB.lt_kk(A.quad(k), L, X0, hk))
+  UW.ua_addS(X, c, q, k, r, e, ec,
+    F.nat__lt_le_trans(Nat.add(A.quad(k), X0), Nat.add(X0, L), F.spec_common__pow2(32n), h1,
+      F.nat__le_trans(Nat.add(X0, L), A.quad(VB.pw(dd)), F.spec_common__pow2(32n), xend(q, r, L, dd, hl), UW.q32(dd, hd))))
+
 def fpos(+X: U32, +q: Nat, +r: Nat, +k: Nat, +c: U32, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hk: {Nat.is_le(A.quad(k), L) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
@@ -220,6 +230,18 @@ def ynext(+j: Nat, +W: Nat, +q: Nat, +r: Nat) -> {YP(1n+j, W, q, r) == Nat.add(Y
     UW.pos_eq(W, q2, r))
 
 # i * RS for record i = j (RS = 4 W bytes) within the tree.
+def mulqW(+i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hm: {Nat.is_lt(A.quad(Nat.mul(j, W)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(i, Ru)) == A.quad(Nat.mul(j, W)) : Nat}:
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, A.quad(W)), A.quad(Nat.mul(j, W)),
+    Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, U32.to_nat(Ru)), Nat.mul(j, A.quad(W)),
+      Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Ru)), U32.to_nat(i), j, ei), Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Ru), A.quad(W), eR)),
+    VRL.mul_quad(j, W))
+  Equal.trans(Nat, U32.to_nat(U32.mul(i, Ru)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)),
+    VU.mul_lt32(i, Ru, F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, A.quad(Nat.mul(j, W)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)),
+      Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)), em), hm)),
+    em)
+
 def mulq(+dd: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
     +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hm: {Nat.is_le(A.quad(Nat.mul(j, W)), VB.pw(2n+dd)) == True{} : Bool})
     -> {U32.to_nat(U32.mul(i, Ru)) == A.quad(Nat.mul(j, W)) : Nat}:
@@ -235,6 +257,21 @@ def mulq(+dd: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == 
     em)
 
 # Record j of a run of LT bytes at X = 4 q + r, the records j + 1 + k <= the run: its position, and its room.
+def rposW(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +Ru: U32, +LT: Nat, +dd: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hW: {Nat.is_le(1n, W) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, U32.mul(i, Ru))) == YP(j, W, q, r) : Nat}:
+  +jW = Nat.mul(j, W)
+  +h0 = F.nat__lt_le_trans(jW, Nat.mul(1n+j, W), Nat.mul(Nat.add(1n+k, j), W),
+    F.nat__lt_le_trans(jW, 1n+jW, Nat.add(W, jW), F.nat__lt_succ(jW), Order.add_right(1n, W, jW, hW)),
+    VRL.mul_mono(1n+j, Nat.add(1n+k, j), W, Order.left_below_sum(k, j)))
+  +h1 = F.nat__lt_le_trans(A.quad(jW), A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT, VF.qlt(jW, Nat.mul(Nat.add(1n+k, j), W), h0), hj)
+  +hm = F.nat__lt_le_trans(A.quad(jW), LT, F.spec_common__pow2(32n), h1,
+    F.nat__le_trans(LT, Nat.add(Nat.add(A.quad(q), r), LT), F.spec_common__pow2(32n), Order.left_below_sum(Nat.add(A.quad(q), r), LT),
+      F.nat__le_trans(Nat.add(Nat.add(A.quad(q), r), LT), A.quad(VB.pw(dd)), F.spec_common__pow2(32n), xend(q, r, LT, dd, hl), UW.q32(dd, hd))))
+  fposW(X, q, r, jW, U32.mul(i, Ru), LT, dd, e, mulqW(i, j, Ru, W, eR, ei, hm), hd, h1, hl)
+
 def rpos(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +Ru: U32, +LT: Nat, +dd: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT) == True{} : Bool},

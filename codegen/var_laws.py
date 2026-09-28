@@ -389,7 +389,8 @@ def main():
                         fts.append(d)
         if n in FAMILY:
             xs.append(Name(g, n, t, src))
-    out = {ROOT / 'proofs/obj/var_fix_types.bend': fix_module(fts, DB)}
+    import deep
+    out = {ROOT / 'proofs/obj/var_fix_types.bend': deep.dify_fix(fix_module(fts, DB))}
     for x in xs:
         if no_big and is_big(x):
             continue
