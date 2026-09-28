@@ -3615,6 +3615,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "FuluExecutionPayload_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; dropped when the encode records take the object API's limit): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 28 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -6065,12 +6075,6 @@
    "reason": "encode laws not over the same free words / bits",
    "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   },
-  "FuluExecutionPayload": {
-   "generated_name": "ExecutionPayload",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluExecutionPayload_e2e_dec_generated.bend",
-   "root": "FuluExecutionPayload_e2e_root_generated.bend"
-  },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
    "reason": "encode laws not over the same free words / bits"
@@ -6538,6 +6542,12 @@
    "ii_iii": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
    "iv": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
   },
+  "FuluExecutionPayload": {
+   "generated_name": "ExecutionPayload",
+   "i": "FuluExecutionPayload_e2e_generated.bend",
+   "ii_iii": "FuluExecutionPayload_e2e_dec_generated.bend",
+   "iv": "FuluExecutionPayload_e2e_root_generated.bend"
+  },
   "FuluExecutionPayloadHeader": {
    "generated_name": "ExecutionPayloadHeader",
    "i": "FuluExecutionPayloadHeader_e2e_generated.bend",
@@ -6901,7 +6911,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 1125899911038192,
    "covered": false,
-   "bridged": "FuluExecutionPayload_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
