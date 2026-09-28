@@ -3720,6 +3720,88 @@ def {R}_e2e_root(h: B.Buf, -o: O.Bits, +rep: PBO.rep_pbits(o, Spec.{X}())) -> {G
 """ + '\n'.join(cases) + '\n'
 
 
+# (i) of progbitlist (var_pbits_X_enc): the laws' bound N is the bit count K itself, kb = 31, KY = KO = 30; they need
+# 32 + K <= 2^30 (hK, the premise: the encoder's word arithmetic), and the words' storage at depth below 31 with room
+# for the chunk words (hs: e2e_bitl.sdbc).
+def venc_pbits(R, X):
+    OB = 'O.Bits{FD.array__thaw(U32, T), K}'
+    ENC = lambda o: f'{R}_e.{X}_encode({o})'
+    G = lambda o: f'{{Some{{E.obytes(Pair.snd(O.Bits, B.Buf, {ENC(o)}))}} == API.serialize(Spec.{X}(), S.BitsValue{{BO.bview({o})}}) : Maybe<&2, +List<U32>>}}'
+    N = 'U32.to_nat(K)'
+    HK = lambda k: f'{{Nat.is_le(Nat.add(31n, Nat.add({k}, 1n)), VB.pw(30n)) == True{{}} : Bool}}'
+    body = f'''# halving never grows a number
+def h2le(n: Nat) -> {{Nat.is_le(VD.s_h2(n), n) == True{{}} : Bool}}:
+  match n:
+    case 0n: {{==}}
+    case 1n+ +p:
+      match p:
+        case 0n: {{==}}
+        case 1n+ +q: FD.nat__le_trans(VD.s_h2(q), q, 1n+q, h2le(q), FD.nat__le_succ(q))
+
+def rngle(l: Nat, +x: Nat) -> {{Nat.is_le(VD.s_rng(l, x), x) == True{{}} : Bool}}:
+  match l:
+    case 0n: FD.nat__le_refl(x)
+    case 1n+ +k: FD.nat__le_trans(VD.s_h2(VD.s_rng(k, x)), VD.s_rng(k, x), x, h2le(VD.s_rng(k, x)), rngle(k, x))
+
+# N + 8 <= 31 + (N + 1)
+def n8(+n: Nat) -> {{Nat.is_le(Nat.add(n, 8n), Nat.add(31n, Nat.add(n, 1n))) == True{{}} : Bool}}:
+  %Equal.sym(Nat, Nat.add(n, 8n), Nat.add(8n, n), FD.nat__add_comm(n, 8n)) : {{Nat.is_le(_, Nat.add(31n, Nat.add(n, 1n))) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add(n, 1n), Nat.add(1n, n), FD.nat__add_comm(n, 1n)) : {{Nat.is_le(Nat.add(8n, n), Nat.add(31n, _)) == True{{}} : Bool}}
+  Order.add_right(8n, 32n, n, {{==}})
+
+# the output path: its depth below 29, its bytes within it
+def ob(+T: FD.array__Tree<U32>, +K: U32, +hq: {{Nat.is_le(U32.to_nat(CO.NK(K)), A.quad(FD.spec_common__pow2(28n))) == True{{}} : Bool}})
+    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}}) == EN.BY(T, K) : +List<U32>}}:
+  EM.ob(CO.DOK(K), EN.OUT(T, K), CO.NK(K), BL.pf_oz(CO.DOK(K), T, K), FD.nat__le_lt_trans(B.capacity(CO.NK(K)), 28n, 29n, C.cap_le(CO.NK(K), 28n, {{==}}, hq), {{==}}), C.cap_q(CO.NK(K), 28n, {{==}}, hq))
+
+def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 31n) == True{{}} : Bool}},
+    +wf: BO.wfb({OB}), +hK: {HK(N)}, +hcap: {{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}}) -> {G(OB)}:
+  +h30 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(31n, Nat.add({N}, 1n)), z) == True{{}} : Bool}}, VB.pw(30n), O.pow2n(30n), VD.s_pow2_eq(30n), hK)
+  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(VB.pw(30n), z) == True{{}} : Bool}}, VB.pw(31n), O.pow2n(31n), VD.s_pow2_eq(31n), VBG.pw_mono(30n, 31n, {{==}}))
+  +hNk = FD.nat__le_trans(Nat.add({N}, 8n), Nat.add(31n, Nat.add({N}, 1n)), O.pow2n(31n), n8({N}), FD.nat__le_trans(Nat.add(31n, Nat.add({N}, 1n)), VB.pw(30n), O.pow2n(31n), hK, h31))
+  +hr = FD.nat__le_trans(VD.s_rng(5n, {N}), {N}, Nat.add(30n, Nat.add({N}, 1n)), rngle(5n, {N}), FD.nat__le_trans({N}, Nat.add({N}, 1n), Nat.add(30n, Nat.add({N}, 1n)), FD.nat__le_add_right({N}, 1n), Order.left_below_sum(30n, Nat.add({N}, 1n))))
+  +hNO = FD.nat__le_trans(Nat.add(VD.s_rng(5n, {N}), 1n), Nat.add(31n, Nat.add({N}, 1n)), O.pow2n(30n), FD.nat__le_trans(Nat.add(VD.s_rng(5n, {N}), 1n), Nat.add(Nat.add(30n, Nat.add({N}, 1n)), 1n), Nat.add(31n, Nat.add({N}, 1n)), Order.add_right(VD.s_rng(5n, {N}), Nat.add(30n, Nat.add({N}, 1n)), 1n, hr), FD.nat__eq_le(Nat.add(Nat.add(30n, Nat.add({N}, 1n)), 1n), Nat.add(31n, Nat.add({N}, 1n)), FD.nat__add_comm(Nat.add(30n, Nat.add({N}, 1n)), 1n))), h30)
+  +hq0 = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, {N}), 1n), Nat.add(31n, Nat.add({N}, 1n)), BL.nkb(K, {N}, 31n, {{==}}, FD.nat__le_refl({N}), hNk),
+    FD.nat__le_trans(Nat.add(VD.s_rng(3n, {N}), 1n), Nat.add({N}, 1n), Nat.add(31n, Nat.add({N}, 1n)), Order.add_right(VD.s_rng(3n, {N}), {N}, 1n, rngle(3n, {N})), Order.left_below_sum(31n, Nat.add({N}, 1n))))
+  +hq = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(31n, Nat.add({N}, 1n)), A.quad(FD.spec_common__pow2(28n)), hq0, hK)
+  %Equal.sym(O.Bits & B.Buf, {ENC(OB)}, ({OB}, B.Buf{{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}}), EN.encode_eval(dw, T, K, {N}, 31n, 30n, 30n, pf, hdw, wf, FD.nat__le_refl({N}), {{==}}, {{==}}, {{==}}, hNk, hK, hNO, hcap)) :
+    {{Some{{E.obytes(Pair.snd(O.Bits, B.Buf, _))}} == API.serialize(Spec.{X}(), S.BitsValue{{BO.bview({OB})}}) : Maybe<&2, +List<U32>>}}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}}), EN.BY(T, K), ob(T, K, hq)) :
+    {{Some{{_}} == API.serialize(Spec.{X}(), S.BitsValue{{BO.bview({OB})}}) : Maybe<&2, +List<U32>>}}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), EN.VAL(T, K)), Some{{EN.BY(T, K)}},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(Spec.{X}(), EN.VAL(T, K)), Some{{EN.BY(T, K)}},
+      E.serialize_legal(Spec.{X}(), EN.VAL(T, K), VS.public_sound(Spec.{X}(), {{==}})), EN.encode_spec(dw, T, K, {N}, 31n, 30n, 30n, pf, hdw, wf, FD.nat__le_refl({N}), {{==}}, {{==}}, {{==}}, hNk, hK, hNO, hcap)))
+
+# (i): for every object the root law represents whose bit count leaves the encoder's room (hK: 32 + K <= 2^30), its
+# words in a perfect tree of depth below 31 with room for its chunk words (hs)
+def {R}_e2e_encode(-o: O.Bits, +rep: PBO.rep_pbits(o, Spec.{X}()), +hK: {HK('U32.to_nat(BO.blen(o))')}, +hs: BL.sdbc(o)) -> {G('o')}:
+  (+T, s1) = hs
+  (+dw, s2) = s1
+  (+K, s3) = s2
+  (+eo, s4) = s3
+  (+pf, s5) = s4
+  (+hdw, +hcap) = s5
+  %Equal.sym(O.Bits, o, {OB}, eo) : {G('_')}
+  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.{X}()), o, {OB}, eo, rep),
+    FD.logic__subst(O.Bits, z => {HK('U32.to_nat(BO.blen(z))')}, o, {OB}, eo, hK), hcap)
+'''
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
+            f'import ../types/{R}_encode_ssz_generated.bend as {R}_e', 'import ../types/schema.bend as S', 'import ../proofs/obj/generic_specs.bend as Spec',
+            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
+            'import ../proofs/nat_order.bend as Order', 'import ../spec/codec.bend as Encoding', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/bitlist_obj.bend as BO',
+            'import ../proofs/obj/pbits_obj.bend as PBO', 'import ../proofs/obj/vbitcore.bend as CO', f'import ../proofs/obj/var_pbits_{X}_enc.bend as EN',
+            'import ./e2e_support.bend as E', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM', 'import ./e2e_bitl.bend as BL']
+    return '\n'.join(imps) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# {R} (variable size, a progressive bit list): the object API's encoder's bytes are END_TO_END's serialize of the
+# object's view (bitlist_obj.bview), for every object the root law represents (rep) whose bit count leaves the
+# encoder's room (hK) and whose words are in a perfect tree of depth below 31 with room for its chunk words (hs).
+
+""" + body
+
+
 # ---- registrations (after every helper is defined) ----
 _OUTPF = {'LightClientBootstrap': (13, 'EN.pfL4({ps}, 13n, VC.ZT(13n), 0n, FD.array__trep_perfect(U32, 13n, 0))')}
 RB_NAMES = ['ExecutionPayloadHeader', 'LightClientHeader']
@@ -4444,3 +4526,5 @@ VENC_PREMISE['LightClientFinalityUpdate'] = 'rep: RT.rep_LightClientFinalityUpda
 VENC_SHAPES['LightClientUpdate'] = venc_up
 VENC_PREMISE['LightClientUpdate'] = 'rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee\'s pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31'
 VROOT_SHAPES['GtF7582E0E9A'] = vroot_pbits
+VENC_SHAPES['GtF7582E0E9A'] = venc_pbits
+VENC_PREMISE['GtF7582E0E9A'] = 'rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws\' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)'

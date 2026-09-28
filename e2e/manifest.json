@@ -3553,6 +3553,16 @@
     "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage below its encode law's depth bound 28, read from the law; the root law gives dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "progbitlist_e2e_generated.bend": [
+   {
+    "name": "progbitlist",
+    "generated_name": "GtF7582E0E9A",
+    "laws": [
+     "progbitlist_e2e_encode"
+    ],
+    "premise": "rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)"
+   }
+  ],
   "proglist_bool_e2e_generated.bend": [
    {
     "name": "proglist_bool",
@@ -5942,7 +5952,8 @@
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits",
-   "root": "progbitlist_e2e_root_generated.bend"
+   "root": "progbitlist_e2e_root_generated.bend",
+   "encode": "progbitlist_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
