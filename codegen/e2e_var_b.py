@@ -5481,7 +5481,7 @@ for _X, (_m, _ls) in RL_LISTS.items():
 VENC_SHAPES['ExecutionRequests'] = venc_rlist
 SUPPORT_OUT['e2e_eptx.bend'] = eptx_text()
 VENC_SHAPES['ExecutionPayload'] = venc_ep
-VENC_PREMISE['ExecutionPayload'] = ('rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record\'s own bounds as premises, each a decoded-object gap (the root law\'s invariant gives depth below 32 and no size bound; dropped when the encode records take the object API\'s limit): hL the logs bloom (BL.sdk1) and hW the withdrawals\' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions\' tree below 31 and each transaction\'s bytes below 28 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)')
+VENC_PREMISE['ExecutionPayload'] = ('rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record\'s own bounds as premises, each a decoded-object gap (the root law\'s invariant gives depth below 32 and no size bound; dropped when the encode records take the object API\'s limit): hL the logs bloom (BL.sdk1) and hW the withdrawals\' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions\' tree below ' + _ep_bounds()['KL'] + ' and each transaction\'s bytes below ' + _ep_bounds()['KE'] + ' (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)')
 VENC_PREMISE['ExecutionRequests'] = 'rep: RT.rep_ExecutionRequests(o, Spec.ExecutionRequests()) and the hs premises: each list\'s array invariant at depth below 31 (RLV.sda_L; the encode laws take depth below 31, the root law below 32; dropped when the encode laws take depth below 32)'
 SUPPORT_OUT['e2e_chunks.bend'] = chunks_text()
 VDEC_VIEWS['DataColumnSidecar'] = vdec_dcs('DataColumnSidecar')

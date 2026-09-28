@@ -3690,7 +3690,7 @@
     "laws": [
      "FuluExecutionPayload_e2e_encode"
     ],
-    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; dropped when the encode records take the object API's limit): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 28 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)"
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; dropped when the encode records take the object API's limit): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 31 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)"
    }
   ],
   "FuluExecutionPayloadHeader_e2e_generated.bend": [
