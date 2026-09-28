@@ -3391,6 +3391,16 @@
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
    }
   ],
+  "ProgressiveComplexTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) (the root law's representation invariant)"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -6064,7 +6074,8 @@
   },
   "ProgressiveComplexTestStruct": {
    "generated_name": "Gp8A7851175B",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "generated_name": "GpF350A3C486",

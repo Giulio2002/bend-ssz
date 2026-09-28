@@ -1554,7 +1554,8 @@ def vroot_complex(R, X):
     fs = c['fields']
     n = len(fs)
     PJ = lambda k: f'RT.pj_{X}_{k}(o)'  # noqa: E731
-    SK = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.Container_fields(Spec.{X}())' + ')' * k + ')'  # noqa: E731
+    FLD = 'ProgressiveContainer_fields' if c.get('pc') else 'Container_fields'
+    SK = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.{FLD}(Spec.{X}())' + ')' * k + ')'  # noqa: E731
     shp = [_cp_shape(kd, T, k) for k, (kd, T) in enumerate(fs)]
     OL = f'{D}{{{", ".join(lit for _, lit in shp)}}}'
     allv = [v for vs, _ in shp for v in vs]
@@ -3992,3 +3993,19 @@ CPX['Gc221EC01D83'] = {'mods': ['ProgressiveTestStruct_d:ProgressiveTestStruct_d
                        'fields': [('w', 'O.Words'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
                                   ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq')]}
 VROOT_SHAPES['Gc221EC01D83'] = vroot_complex
+
+CPA['list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'] = ('rep_l10_GpF350A3C486', 'ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486',
+                                                                                  'FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, {t})')
+CPA['proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq'] = ('rep_pl_Gp66304057C3', 'RT.MB<RT.M_Gp66304057C3>', 'RT.am_pl_Gp66304057C3({t})')
+CPX['Gp8A7851175B'] = {'mods': ['ProgressiveComplexTestStruct_d:ProgressiveComplexTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+                                'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
+                                'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated',
+                                'ProgressiveSingleFieldContainerTestStruct_d:ProgressiveSingleFieldContainerTestStruct_def_generated',
+                                'list_ProgressiveSingleFieldContainerTestStruct_10_d:list_ProgressiveSingleFieldContainerTestStruct_10_def_generated',
+                                'proglist_ProgressiveVarTestStruct_d:proglist_ProgressiveVarTestStruct_def_generated'],
+                       'hmod': 'ProgressiveComplexTestStruct_h:ProgressiveComplexTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2', 'pc': True,
+                       'fields': [('u', 'U32'), ('l', 'O.Words'), ('b', 'O.Bits'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'),
+                                  ('a', 'list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'),
+                                  ('q', 'proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq')]}
+VROOT_SHAPES['Gp8A7851175B'] = vroot_complex
