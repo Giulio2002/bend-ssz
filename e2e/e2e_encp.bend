@@ -99,8 +99,13 @@ def pbv2(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {S.BitsValue{BO.bview(O.
     {S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))} == EXP.VAL(EXP.MB{dw, T, K, U32.to_nat(K), 31n, 30n}) : S.Value}
   {==}
 
-def pbb2(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
-    +hK8: {Nat.is_le(Nat.add(U32.to_nat(K), 8n), O.pow2n(31n)) == True{} : Bool}, +hKY: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n)) == True{} : Bool}, +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> PBR(w):
+# the record EXP.MB{dw, T, K, K, KB, KY}: its view, validity and byte bound
+def PBF3(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> Data:
+  DK.P2({S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})} == EXP.VAL(EXP.MB{dw, T, K, U32.to_nat(K), 31n, 30n}) : S.Value},
+    DK.P2({EXP.OK(EXP.MB{dw, T, K, U32.to_nat(K), 31n, 30n}) == True{} : Bool}, {Nat.is_le(LY.LN(EXP.ENC(EXP.MB{dw, T, K, U32.to_nat(K), 31n, 30n})), Nat.add(VB.pw(27n), 1n)) == True{} : Bool}))
+
+def pbf(+T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
+    +hK8: {Nat.is_le(Nat.add(U32.to_nat(K), 8n), O.pow2n(31n)) == True{} : Bool}, +hKY: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n)) == True{} : Bool}, +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> PBF3(dw, T, K):
   +N = U32.to_nat(K)
   +hN = FD.nat__le_refl(N)
   +tq = CO.eq5(K, 31n, N, {==}, hN, hK8)
@@ -125,7 +130,16 @@ def pbb2(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bi
   +hnk = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n), Nat.add(VB.pw(27n), 1n), BLB.nkb(K, N, 31n, {==}, hN, hK8), Order.add_right(VD.s_rng(3n, N), VB.pw(27n), 1n, hs3))
   +hl = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VB.pw(27n), 1n)) == True{} : Bool}, U32.to_nat(CO.NK(K)), List.length(&2, U32, EXP.ENC(EXP.MB{dw, T, K, N, 31n, 30n})),
     Equal.sym(Nat, List.length(&2, U32, EXP.ENC(EXP.MB{dw, T, K, N, 31n, 30n})), U32.to_nat(CO.NK(K)), EXP.eL(dw, T, K, N, 31n, 30n, hok)), hnk)
-  (EXP.MB{dw, T, K, N, 31n, 30n}, (eo, (pbv2(dw, T, K), (hok, hl))))
+  (pbv2(dw, T, K), (hok, hl))
+
+def pbb3(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +f: PBF3(dw, T, K)) -> PBR(w):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (EXP.MB{dw, T, K, U32.to_nat(K), 31n, 30n}, (eo, (fv, (fo, fl))))
+
+def pbb2(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
+    +hK8: {Nat.is_le(Nat.add(U32.to_nat(K), 8n), O.pow2n(31n)) == True{} : Bool}, +hKY: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n)) == True{} : Bool}, +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> PBR(w):
+  pbb3(w, T, dw, K, eo, pbf(T, dw, K, pf, hdw, hK8, hKY, hroom, hbz, wf))
 
 # a progressive bit list the root law represents (wfb), with its premise: its record
 def pbb(-w: O.Bits, +wf: BO.wfb(w), +hs: SDPB(w, 28n)) -> PBR(w):

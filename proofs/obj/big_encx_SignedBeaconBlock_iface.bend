@@ -54,7 +54,7 @@ def lvp_b96(+o: FuluBytes96_d.Bytes96) -> {Codec.parts(LV_b96(o), S.ByteVector{9
   match o:
     case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}:
       %lvq_b96(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) : {Codec.parts(_, S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(FuluBytes96_d.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23})))}]} : Maybe<&2, +List<S.Part>>}
-      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}, S.ByteVector{96n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 96n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], {==}))
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}, S.ByteVector{96n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 96n, {==}, FX.bytes_part_n(w0, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], 96n, {==}, {==}))
 
 
 # ---- SignedBeaconBlock: its value, parts, layout, and bytes ----

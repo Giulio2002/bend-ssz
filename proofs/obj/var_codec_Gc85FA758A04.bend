@@ -98,6 +98,9 @@ law decode_spec:
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.Gc85FA758A04(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.Gc85FA758A04(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Gc85FA758A04()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}

@@ -2957,6 +2957,30 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "ProgressiveBitsStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveBitsStruct",
+    "generated_name": "Gc60805EC295",
+    "laws": [
+     "ProgressiveBitsStruct_e2e_decode_view",
+     "ProgressiveBitsStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ProgressiveComplexTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_decode_view",
+     "ProgressiveComplexTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -2964,6 +2988,18 @@
     "laws": [
      "ProgressiveSingleListContainerTestStruct_e2e_decode_view",
      "ProgressiveSingleListContainerTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ProgressiveTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_decode_view",
+     "ProgressiveTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -3735,6 +3771,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "FuluExecutionPayload_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; dropped when the encode records take the object API's limit): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 28 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -3845,6 +3891,16 @@
     "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "ProgressiveComplexTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -3853,6 +3909,16 @@
      "ProgressiveSingleListContainerTestStruct_e2e_encode"
     ],
     "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 28n) (field 0's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+   }
+  ],
+  "ProgressiveTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveTestStruct",
+    "generated_name": "Gc221EC01D83",
+    "laws": [
+     "ProgressiveTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
@@ -4285,6 +4351,26 @@
     "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
    }
   ],
+  "FuluBlob_e2e_generated.bend": [
+   {
+    "name": "FuluBlob",
+    "generated_name": "Blob",
+    "laws": [
+     "FuluBlob_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
+   },
+   {
+    "name": "FuluBlob",
+    "generated_name": "Blob",
+    "laws": [
+     "FuluBlob_e2e_decode_view",
+     "FuluBlob_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
+   }
+  ],
   "FuluBlob_e2e_root_generated.bend": [
    {
     "name": "FuluBlob",
@@ -4292,7 +4378,7 @@
     "laws": [
      "FuluBlob_e2e_root"
     ],
-    "premise": "+rep: WO.rep_bv(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
    },
    {
     "name": "FuluBlobSidecar",
@@ -4300,7 +4386,7 @@
     "laws": [
      "FuluBlobSidecar_e2e_root"
     ],
-    "premise": "+rep: rep_BlobSidecar(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hcb, hcp: the blob's storage at the encoder's depth 16, the proof's at depth 8"
    },
    {
     "name": "FuluCell",
@@ -4332,7 +4418,7 @@
     "laws": [
      "FuluHistoricalBatch_e2e_root"
     ],
-    "premise": "+rep: rep_HistoricalBatch(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
    },
    {
     "name": "FuluMatrixEntry",
@@ -4349,6 +4435,28 @@
      "FuluProposerSlashing_e2e_root"
     ],
     "premise": "+rep: rep_ProposerSlashing(o, s)"
+   }
+  ],
+  "FuluBlobSidecar_e2e_generated.bend": [
+   {
+    "name": "FuluBlobSidecar",
+    "generated_name": "BlobSidecar",
+    "laws": [
+     "FuluBlobSidecar_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hcb, hcp: the blob's storage at the encoder's depth 16, the proof's at depth 8"
+   }
+  ],
+  "FuluBlobSidecar_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBlobSidecar",
+    "generated_name": "BlobSidecar",
+    "laws": [
+     "FuluBlobSidecar_e2e_decode_view",
+     "FuluBlobSidecar_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hcb, hcp: the blob's storage at the encoder's depth 16, the proof's at depth 8"
    }
   ],
   "FuluBytes1_e2e_generated.bend": [
@@ -4505,6 +4613,14 @@
     "premise": "+rp: rp_GcDC3E457711(o)"
    },
    {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_root"
+    ],
+    "premise": "+rp: rp_GpF350A3C486(o)"
+   },
+   {
     "name": "uint8",
     "generated_name": "Gt967E8D815F",
     "laws": [
@@ -4526,6 +4642,26 @@
      "uint16_e2e_root"
     ],
     "premise": "+rp: rp_u16(o)"
+   }
+  ],
+  "ProgressiveBitsStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveBitsStruct",
+    "generated_name": "Gc60805EC295",
+    "laws": [
+     "ProgressiveBitsStruct_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 with room and zero bits above its last, SDB / e2e_encp.SDPB; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
+   }
+  ],
+  "ProgressiveBitsStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveBitsStruct",
+    "generated_name": "Gc60805EC295",
+    "laws": [
+     "ProgressiveBitsStruct_e2e_root"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 with room and zero bits above its last, SDB / e2e_encp.SDPB; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
    }
   ],
   "SingleFieldTestStruct_e2e_generated.bend": [
@@ -4570,6 +4706,28 @@
     ],
     "ii": "exact",
     "premise": "+rp: rp_GcDC3E457711(o)"
+   }
+  ],
+  "ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_encode"
+    ],
+    "premise": "+rp: rp_GpF350A3C486(o)"
+   }
+  ],
+  "ProgressiveSingleFieldContainerTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_decode_accept",
+     "ProgressiveSingleFieldContainerTestStruct_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_GpF350A3C486(o)"
    }
   ],
   "bitvector_8_e2e_generated.bend": [
@@ -6071,6 +6229,28 @@
     "premise": "+e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32}"
    }
   ],
+  "FuluHistoricalBatch_e2e_generated.bend": [
+   {
+    "name": "FuluHistoricalBatch",
+    "generated_name": "HistoricalBatch",
+    "laws": [
+     "FuluHistoricalBatch_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
+   }
+  ],
+  "FuluHistoricalBatch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluHistoricalBatch",
+    "generated_name": "HistoricalBatch",
+    "laws": [
+     "FuluHistoricalBatch_e2e_decode_view",
+     "FuluHistoricalBatch_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
+   }
+  ],
   "FuluMatrixEntry_e2e_generated.bend": [
    {
     "name": "FuluMatrixEntry",
@@ -6174,27 +6354,33 @@
     "laws": [
      "FuluSyncCommittee_e2e_root"
     ],
-    "premise": "+rep: rep_SyncCommittee(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
+   }
+  ],
+  "FuluSyncCommittee_e2e_generated.bend": [
+   {
+    "name": "FuluSyncCommittee",
+    "generated_name": "SyncCommittee",
+    "laws": [
+     "FuluSyncCommittee_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
+   }
+  ],
+  "FuluSyncCommittee_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncCommittee",
+    "generated_name": "SyncCommittee",
+    "laws": [
+     "FuluSyncCommittee_e2e_decode_view",
+     "FuluSyncCommittee_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the pubkeys' storage at the encoder's depth 13, and hN: its length 24576 (rep fixes only the element count)"
    }
   ]
  },
  "uncovered": {
-  "FuluHistoricalBatch": {
-   "generated_name": "HistoricalBatch",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
-  "FuluSyncCommittee": {
-   "generated_name": "SyncCommittee",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
-  },
-  "FuluExecutionPayload": {
-   "generated_name": "ExecutionPayload",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluExecutionPayload_e2e_dec_generated.bend",
-   "root": "FuluExecutionPayload_e2e_root_generated.bend"
-  },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
    "reason": "encode laws not over the same free words / bits"
@@ -6211,38 +6397,10 @@
    "generated_name": "SignedBeaconBlock",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluBlob": {
-   "generated_name": "Blob",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
-  "FuluBlobSidecar": {
-   "generated_name": "BlobSidecar",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
-  "ProgressiveComplexTestStruct": {
-   "generated_name": "Gp8A7851175B",
-   "reason": "encode laws not over the same free words / bits",
-   "root": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
-  },
-  "ProgressiveSingleFieldContainerTestStruct": {
-   "generated_name": "GpF350A3C486",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "ProgressiveTestStruct": {
-   "generated_name": "Gc221EC01D83",
-   "reason": "encode laws not over the same free words / bits",
-   "root": "ProgressiveTestStruct_e2e_root_generated.bend"
-  },
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
    "reason": "encode laws not over the same free words / bits",
    "decode": "BitsStruct_e2e_dec_generated.bend"
-  },
-  "ProgressiveBitsStruct": {
-   "generated_name": "Gc60805EC295",
-   "reason": "encode laws not over the same free words / bits"
   }
  },
  "decode_uncovered": {
@@ -6253,6 +6411,18 @@
  },
  "root_awaiting": {},
  "fixed_size": {
+  "FuluBlob": {
+   "generated_name": "Blob",
+   "i": "FuluBlob_e2e_generated.bend",
+   "ii_iii": "FuluBlob_e2e_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
+  "FuluBlobSidecar": {
+   "generated_name": "BlobSidecar",
+   "i": "FuluBlobSidecar_e2e_generated.bend",
+   "ii_iii": "FuluBlobSidecar_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
   "FuluBytes1": {
    "generated_name": "Bytes1",
    "i": "FuluBytes1_e2e_generated.bend",
@@ -6293,6 +6463,12 @@
    "generated_name": "GcDC3E457711",
    "i": "FixedTestStruct_e2e_generated.bend",
    "ii_iii": "FixedTestStruct_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "ProgressiveSingleFieldContainerTestStruct": {
+   "generated_name": "GpF350A3C486",
+   "i": "ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveSingleFieldContainerTestStruct_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
   },
   "bitvector_8": {
@@ -6595,6 +6771,12 @@
    "ii_iii": "bitvector_17_e2e_dec_generated.bend",
    "iv": "bitvector_1_e2e_root_generated.bend"
   },
+  "FuluHistoricalBatch": {
+   "generated_name": "HistoricalBatch",
+   "i": "FuluHistoricalBatch_e2e_generated.bend",
+   "ii_iii": "FuluHistoricalBatch_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",
    "i": "FuluMatrixEntry_e2e_generated.bend",
@@ -6617,6 +6799,12 @@
    "generated_name": "SignedContributionAndProof",
    "i": "FuluSignedContributionAndProof_e2e_generated.bend",
    "ii_iii": "FuluSignedContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
+  },
+  "FuluSyncCommittee": {
+   "generated_name": "SyncCommittee",
+   "i": "FuluSyncCommittee_e2e_generated.bend",
+   "ii_iii": "FuluSyncCommittee_e2e_dec_generated.bend",
    "iv": "FuluSignedContributionAndProof_e2e_root_generated.bend"
   }
  },
@@ -6674,6 +6862,12 @@
    "i": "FuluDataColumnsByRootIdentifier_e2e_generated.bend",
    "ii_iii": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
    "iv": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
+  },
+  "FuluExecutionPayload": {
+   "generated_name": "ExecutionPayload",
+   "i": "FuluExecutionPayload_e2e_generated.bend",
+   "ii_iii": "FuluExecutionPayload_e2e_dec_generated.bend",
+   "iv": "FuluExecutionPayload_e2e_root_generated.bend"
   },
   "FuluExecutionPayloadHeader": {
    "generated_name": "ExecutionPayloadHeader",
@@ -6741,11 +6935,29 @@
    "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
    "iv": "FuluTransaction_e2e_root_generated.bend"
   },
+  "ProgressiveBitsStruct": {
+   "generated_name": "Gc60805EC295",
+   "i": "ProgressiveBitsStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveBitsStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveBitsStruct_e2e_root_generated.bend"
+  },
+  "ProgressiveComplexTestStruct": {
+   "generated_name": "Gp8A7851175B",
+   "i": "ProgressiveComplexTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveComplexTestStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
+  },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
    "i": "ProgressiveSingleListContainerTestStruct_e2e_generated.bend",
    "ii_iii": "ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend",
    "iv": "ProgressiveSingleListContainerTestStruct_e2e_root_generated.bend"
+  },
+  "ProgressiveTestStruct": {
+   "generated_name": "Gc221EC01D83",
+   "i": "ProgressiveTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveTestStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveTestStruct_e2e_root_generated.bend"
   },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
@@ -7050,7 +7262,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 1125899911038192,
    "covered": false,
-   "bridged": "FuluExecutionPayload_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",

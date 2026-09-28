@@ -2733,7 +2733,7 @@ import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entrie
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
 import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
 import e2e_bview_gen as BVG  # noqa: E402  (the bit-list view module and the bit lists' view lemmas)
-for _m in (EVB, EVC):
+for _m in (EVB, EVC, EFD):
     for _k, _v in _m.VDEC_VIEWS.items():
         VDEC_VIEWS.setdefault(_k, _v)
     for _k, _v in _m.VROOT_SHAPES.items():
@@ -3223,8 +3223,9 @@ def outputs():
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
         u = uncovered[R0]
-        if all(k in u for k in ('encode', 'decode', 'root')):
-            man['variable_size'][R0] = {'generated_name': u['generated_name'], 'i': u['encode'], 'ii_iii': u['decode'], 'iv': u['root']}
+        enc_, dec_, root_ = u.get('encode') or u.get('i'), u.get('decode') or u.get('ii_iii'), u.get('root') or u.get('iv')
+        if enc_ and dec_ and root_:
+            man['variable_size'][R0] = {'generated_name': u['generated_name'], 'i': enc_, 'ii_iii': dec_, 'iv': root_}
             del uncovered[R0]
     ib, ibs = input_bounds(readable, {R0: u['decode'] for R0, u in uncovered.items() if 'decode' in u})
     man['input_bounds'] = ib

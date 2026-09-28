@@ -779,7 +779,7 @@ def spec_big_text(P, LS):
         if i == 3:
             return '{==}'
         rest = '[' + ', '.join(PARTS[i + 1:]) + ']'
-        return (f'VS.cat_var(Codec.parts({VAL[i]}, {LSCH[i]}), {Y[i]}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+        return (f'VS.chain_var({VAL[i]}, {items(i + 1)}, {LSCH[i]}, {chain(i + 1)}, {Y[i]}, {rest}, '
                 f'EN.lpart_{p[i]}({C[i]}, A{i}, hl{i}, fitY{i}({NA}, A{i})), {cat(i + 1)})')
     W_ = []
     w = W_.append

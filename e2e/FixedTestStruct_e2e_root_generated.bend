@@ -16,6 +16,8 @@ import ../types/uint8_hashtreeroot_generated.bend as uint8_h
 import ../types/uint16_hashtreeroot_generated.bend as uint16_h
 import ../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
 import ../types/SmallTestStruct_hashtreeroot_generated.bend as SmallTestStruct_h
+import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend as ProgressiveSingleFieldContainerTestStruct_h
 import ../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
 import ../types/FixedTestStruct_hashtreeroot_generated.bend as FixedTestStruct_h
 import ../types/SingleFieldTestStruct_def_generated.bend as SingleFieldTestStruct_d
@@ -32,6 +34,12 @@ import ../proofs/obj/gvalid_gnames.bend as M1
 def FixedTestStruct_e2e_root(h: B.Buf, +o: FixedTestStruct_d.GcDC3E457711, +rp: M0.rp_GcDC3E457711(o)) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.GcDC3E457711_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GcDC3E457711(), M0.v_GcDC3E457711(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.GcDC3E457711(), M0.v_GcDC3E457711(o), VS.public_sound(Spec.GcDC3E457711(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.GcDC3E457711_hash_tree_root(h, o))),
     M1.rv_GcDC3E457711(o, rp), M0.GcDC3E457711_root_correct(h, o, rp))
+
+# ProgressiveSingleFieldContainerTestStruct (GpF350A3C486)
+# (iv) over the root law's binders (o, rp).
+def ProgressiveSingleFieldContainerTestStruct_e2e_root(h: B.Buf, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rp: M0.rp_GpF350A3C486(o)) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.GpF350A3C486(), M0.v_GpF350A3C486(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.GpF350A3C486(), M0.v_GpF350A3C486(o), VS.public_sound(Spec.GpF350A3C486(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_hash_tree_root(h, o))),
+    M1.rv_GpF350A3C486(o, rp), M0.GpF350A3C486_root_correct(h, o, rp))
 
 # SingleFieldTestStruct (Gc74A8F5F17F)
 # (iv) over the root law's binders (o, rp).

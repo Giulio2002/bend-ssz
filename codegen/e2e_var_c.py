@@ -3217,6 +3217,56 @@ def gp_view(X, W, fields):
             f'    -> {{RT2.v_{X}({W}.OBJw(d, t, x, off, len)) == {W}.VALw(t, x, len) : S.Value}}:\n' + '\n'.join(lets + steps) + '\n  {==}\n')
 
 
+GP_PL = r"""# ---- a progressive list of uint8 at a byte window ----
+def pu8(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU8.CHKw(t, x, off, len) == True{} : Bool}) -> {PBF.vview1(PU8.OBJw(d, t, x, off, len)) == PU8.VALw(t, x, len) : S.Value}:
+  +eb = BL.bview(d, t, off, len, x, eo, hd, hw, pf)
+  %Equal.sym(+List<U32>, WO.wview(O.Words{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}), UW.WX(t, x, U32.to_nat(len)), eb) : {S.Sequence{PBF.it1(U32.to_nat(len), _)} == PU8.VALw(t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PBM.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PL.it1eq(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))))
+
+# ---- a progressive list of uint64 at a byte window: its first 2 c words are the window's ----
+# the two uitems (ulist_obj, vspec) agree
+def uu(+k: Nat, +W: List<&2, U32>) -> {UL.uitems(k, W) == VS.uitems(k, W) : S.Value}:
+  match k W:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+a, Nil{}}: {==}
+    case 1n+ +c Con{+a, Con{+b, +rest}}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, UL.uitems(c, rest), VS.uitems(c, rest), uu(c, rest))
+# ... and read only the first 2 k words
+def ut(+k: Nat, +W: List<&2, U32>) -> {VS.uitems(k, W) == VS.uitems(k, VS.wtake(Nat.double(k), W)) : S.Value}:
+  match k W:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+a, Nil{}}: {==}
+    case 1n+ +c Con{+a, Con{+b, +rest}}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, VS.uitems(c, rest), VS.uitems(c, VS.wtake(Nat.double(c), rest)), ut(c, rest))
+def xb2(+c: Nat) -> {VS.x8(c) == EL.b2(c) : Nat}:
+  match c:
+    case 0n: {==}
+    case 1n+ +q: Equal.cong(Nat, Nat, z => 8n+z, VS.x8(q), EL.b2(q), xb2(q))
+
+def pu64(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU64.CHKw(t, x, off, len) == True{} : Bool}) -> {UL.uview(PU64.OBJw(d, t, x, off, len)) == PU64.VALw(t, x, len) : S.Value}:
+  +c = PU64.CQ(len)
+  +M = UCT.CT(d, t, off, len, VLS.DZ(len))
+  +el = PU64.eLc(t, x, off, len, hc)
+  +ec = Equal.trans(Nat, U32.to_nat(U32.shrn(len, 3n)), VD.s_rng(3n, U32.to_nat(len)), c, VD.shrk(3n, len),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(len)), VD.s_rng(3n, EL.b2(c)), c,
+      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(len), EL.b2(c), Equal.trans(Nat, U32.to_nat(len), VS.x8(c), EL.b2(c), el, xb2(c))), PW.rb2(c)))
+  +hL = FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)
+  +eL = Equal.trans(Nat, U32.to_nat(len), VS.x8(c), A.quad(Nat.double(c)), el, Equal.trans(Nat, VS.x8(c), Nat.mul(c, 8n), A.quad(Nat.double(c)), Equal.sym(Nat, Nat.mul(c, 8n), VS.x8(c), VC.x8_mul(c)), VBG.mul8(c)))
+  +ew = BXW.ctw(d, t, off, len, VLS.DZ(len), x, Nat.double(c), eo, hd, hw, pf, VLS.hrg(d, len, hd, hL), eL)
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, M)), M, FD.array__freeze_thaw(U32, M)) :
+    {S.Sequence{UL.uitems(U32.to_nat(U32.shrn(len, 3n)), FD.array__slots(U32, _))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(len, 3n)), c, ec) : {S.Sequence{UL.uitems(_, FD.array__slots(U32, M))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, UL.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, FD.array__slots(U32, M)), uu(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, VS.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, VS.wtake(Nat.double(c), FD.array__slots(U32, M))), ut(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(List<&2, U32>, VS.wtake(Nat.double(c), FD.array__slots(U32, M)), UR.RWS(Nat.double(c), t, x), ew) : {S.Sequence{VS.uitems(c, _)} == PU64.VALw(t, x, len) : S.Value}
+  {==}
+"""
+
+
 def gprog_text():
     J = lambda W, k, ln=False: (f'{W}.XJ{k}(t, x)', f'{W}.FJ{k}(off, t, x)', f'{W}.LJ{k}(t, x' + (', len)' if ln else ')'))  # noqa: E731
     def jargs(W, k, ln=False):
@@ -3228,7 +3278,7 @@ def gprog_text():
     L16 = lambda W, k, CH, tag, ln: (f'PBF.vview2({CH}.OBJw({", ".join(("d", "t") + J(W, k, ln))}))', f'{CH}.VALw(t, {J(W, k, ln)[0]}, {J(W, k, ln)[2]})',  # noqa: E731
                                      f'lv_{tag}({jargs(W, k, ln)})')
     U8 = lambda W, o: (f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat({o}))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat({o})))', None)  # noqa: E731
-    body = [gp_lv('l123', 'L123'),
+    body = [gp_lv('l123', 'L123'), GP_PL,
             '# ProgressiveSingleListContainerTestStruct: one progressive bit list',
             gp_view('Gp4B0CA2906A', 'W4B', [PBJ('W4B', 0, 'W4B_CH0', True)]),
             '# ProgressiveVarTestStruct: a uint8, a List[uint16, 123], a progressive bit list',
@@ -3241,7 +3291,11 @@ def gprog_text():
             'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_l123_u16.bend as L123',
             'import ../proofs/obj/big_var_winx_Gp4B0CA2906A.bend as W4B', 'import ../proofs/obj/big_var_winp_pbits.bend as W4B_CH0',
             'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as W663',
-            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB']
+            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB',
+            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64', 'import ../proofs/obj/ulist_obj.bend as UL',
+            'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbig.bend as VBG',
+            'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/var_elems.bend as EL',
+            'import ./e2e_plw.bend as PW', 'import ./e2e_bx.bend as BXW', 'import ../proofs/nat_order.bend as Order']
     return '\n'.join(head) + '''
 
 # GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
@@ -3257,19 +3311,1666 @@ UNION_CHILD['big_var_winx_Gp4B0CA2906A.bend'] = 'GP.vw_Gp4B0CA2906A'
 UNION_CHILD['big_var_winx_Gp66304057C3.bend'] = 'GP.vw_Gp66304057C3'
 
 
-def prog_view(R, X):
-    """(ii)/(iii) of a progressive container: its window view (e2e_gprog.vw_X) at the whole buffer."""
-    text = f'''# ---- the view of a decoded object is the codec law's value (e2e_gprog.vw_{X} at the window (0, 0, n)) ----
+# ---- e2e_grl: fixed-size record lists read at a byte window (var_rlist_sub windows) ------------------------
+# GRL[tag] = (window module, its alias, element type module alias + name, record size, fields [(kind, byte offset)])
+GRL = {
+    'pl_Gc4ED9619F50': ('big_var_winx_pl_Gc4ED9619F50', 'RL4', 'SmallTestStruct_d', 'Gc4ED9619F50', 4, [('u16', 0), ('u16', 2)]),
+    'l10_GpF350A3C486': ('var_winx_l10_GpF350A3C486', 'RL1', 'ProgressiveSingleFieldContainerTestStruct_d', 'GpF350A3C486', 1, [('u8', 0)]),
+}
+GRL_TYPES = {'SmallTestStruct_d': 'SmallTestStruct_def_generated', 'ProgressiveSingleFieldContainerTestStruct_d': 'ProgressiveSingleFieldContainerTestStruct_def_generated'}
+
+GRL_SHARED = r"""# ---- a uint16 read at byte x with only x + 2 (not x + 4) within the buffer ----
+def q0b(+q: Nat, +r: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), 2n), A.quad(P)) == True{} : Bool}) -> {Nat.is_lt(q, P) == True{} : Bool}:
+  VR.lt_quad(q, P, FD.nat__le_lt_trans(A.quad(q), Nat.add(A.quad(q), r), A.quad(P), FD.nat__le_add_right(A.quad(q), r),
+    FD.nat__lt_le_trans(Nat.add(A.quad(q), r), Nat.add(Nat.add(A.quad(q), r), 2n), A.quad(P), VTX.ltp(Nat.add(A.quad(q), r), 1n), h)))
+
+def q1b(+q: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(Nat.add(A.quad(q), 3n), 2n), A.quad(P)) == True{} : Bool}) -> {Nat.is_lt(1n+q, P) == True{} : Bool}:
+  +e = Equal.trans(Nat, Nat.add(Nat.add(A.quad(q), 3n), 2n), Nat.add(A.quad(q), 5n), 1n+A.quad(1n+q), FD.nat__add_assoc(A.quad(q), 3n, 2n), FD.nat__add_comm(A.quad(q), 5n))
+  VR.lt_quad(1n+q, P, FD.nat__succ_le_lt(A.quad(1n+q), A.quad(P), FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(P)) == True{} : Bool}, Nat.add(Nat.add(A.quad(q), 3n), 2n), 1n+A.quad(1n+q), e, h)))
+
+def byt2(+W: List<&2, U32>, +q: Nat, +r: Nat) -> {VS.bt(2n, VS.bdr(Nat.add(A.quad(q), r), FX.limbs(W))) == VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, W)))) : +List<U32>}:
+  %Equal.sym(+List<U32>, VS.bdr(Nat.add(A.quad(q), r), FX.limbs(W)), VS.bdr(r, VS.bdr(A.quad(q), FX.limbs(W))), VN.bdr_add(A.quad(q), r, FX.limbs(W))) : {VS.bt(2n, _) == VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, W)))) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(A.quad(q), FX.limbs(W)), FX.limbs(VS.wdr0(q, W)), VS.bdr_limbs(q, W)) : {VS.bt(2n, VS.bdr(r, _)) == VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, W)))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wdr0(q, W), VB.wdr(q, W), VN.wdr0_eq(q, W)) : {VS.bt(2n, VS.bdr(r, FX.limbs(_))) == VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, W)))) : +List<U32>}
+  {==}
+
+# the first two bytes of the word read at 4 q + r: word q's, and word q + 1's only at r = 3
+def bytes2(+W: List<&2, U32>, +q: Nat, +r: Nat, +P: Nat, +eL: {VB.len(W) == P : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), 2n), A.quad(P)) == True{} : Bool})
+    -> {VS.bt(2n, FX.limbs([UA.jn(r, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))])) == VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, W)))) : +List<U32>}:
+  match r:
+    case 0n:
+      %Equal.sym(List<&2, U32>, VB.wdr(q, W), Con{FD.flat__nthc(W, q), VB.wdr(1n+q, W)}, VB.wdr_eta(q, W, FD.logic__subst(Nat, z => {Nat.is_lt(q, z) == True{} : Bool}, P, VB.len(W), Equal.sym(Nat, VB.len(W), P, eL), q0b(q, 0n, P, h)))) :
+        {VS.bt(2n, FX.limbs([FD.flat__nthc(W, q)])) == VS.bt(2n, VS.bdr(0n, FX.limbs(_))) : +List<U32>}
+      {==}
+@JCASES@
+    case 3n:
+      +h1 = FD.logic__subst(Nat, z => {Nat.is_lt(1n+q, z) == True{} : Bool}, P, VB.len(W), Equal.sym(Nat, VB.len(W), P, eL), q1b(q, P, h))
+      %Equal.sym(List<&2, U32>, VB.wdr(q, W), Con{FD.flat__nthc(W, q), Con{FD.flat__nthc(W, 1n+q), VB.wdr(2n+q, W)}}, UA.wtwo(q, W, h1)) :
+        {VS.bt(2n, FX.limbs([B.join_sel(3, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))])) == VS.bt(2n, VS.bdr(3n, FX.limbs(_))) : +List<U32>}
+      %Equal.sym(List<&2, U32>, I.limb(B.join_sel(3, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))), [I.at(I.limb(FD.flat__nthc(W, q)), 3n), I.at(I.limb(FD.flat__nthc(W, 1n+q)), 0n), I.at(I.limb(FD.flat__nthc(W, 1n+q)), 1n), I.at(I.limb(FD.flat__nthc(W, 1n+q)), 2n)], UB.join3(FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))) :
+        {VS.bt(2n, List.append(&2, U32, _, [])) == VS.bt(2n, VS.bdr(3n, FX.limbs(Con{FD.flat__nthc(W, q), Con{FD.flat__nthc(W, 1n+q), VB.wdr(2n+q, W)}}))) : +List<U32>}
+      {==}
+    case 4n+s: Empty.absurd({VS.bt(2n, FX.limbs([UA.jn(4n+s, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))])) == VS.bt(2n, VS.bdr(4n+s, FX.limbs(VB.wdr(q, W)))) : +List<U32>}, FD.nat__lt_zero_absurd(s, hr))
+
+# the first two bytes of the word read at k are the buffer's spec bytes [k, k + 2), k + 2 within it
+def rwn2(+d: Nat, +t: FD.array__Tree<U32>, +k: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(k, 2n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {VS.bt(2n, FX.limbs([UR.RWN(t, k)])) == VS.bt(2n, VS.bdr(k, UA.BYT(t))) : +List<U32>}:
+  +q = UR.d4(k)
+  +r = UR.m4(k)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), A.quad(VB.pw(d))) == True{} : Bool}, k, Nat.add(A.quad(q), r), Equal.sym(Nat, Nat.add(A.quad(q), r), k, UR.dm4(k)), h)
+  %UR.dm4(k) : {VS.bt(2n, FX.limbs([UR.RWN(t, k)])) == VS.bt(2n, VS.bdr(_, UA.BYT(t))) : +List<U32>}
+  Equal.trans(+List<U32>, VS.bt(2n, FX.limbs([UR.RWN(t, k)])), VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, UA.SL(t))))), VS.bt(2n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(t))),
+    bytes2(UA.SL(t), q, r, VB.pw(d), FD.array__slots_length(U32, d, t, pf), UR.m4_lt(k), h2),
+    Equal.sym(+List<U32>, VS.bt(2n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(t))), VS.bt(2n, VS.bdr(r, FX.limbs(VB.wdr(q, UA.SL(t))))), byt2(UA.SL(t), q, r)))
+
+def b2x(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {[U32.and(UR.RWN(t, x), 255), U32.and(U32.shrn(UR.RWN(t, x), 8n), 255)] == [FX8.BX(t, x), FX8.BX(t, 1n+x)] : +List<U32>}:
+  +hl = FD.nat__succ_le_lt(1n+x, A.quad(VB.pw(d)), FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 2n), Nat.add(2n, x), FD.nat__add_comm(x, 2n), h))
+  +hB = FD.logic__subst(Nat, z => {Nat.is_lt(1n+x, z) == True{} : Bool}, A.quad(VB.pw(d)), List.length(&2, U32, UA.BYT(t)), Equal.sym(Nat, List.length(&2, U32, UA.BYT(t)), A.quad(VB.pw(d)), FX8.lenB(d, t, pf)), hl)
+  Equal.trans(+List<U32>, VS.bt(2n, FX.limbs([UR.RWN(t, x)])), VS.bt(2n, VS.bdr(x, UA.BYT(t))), [VBL.nthb(UA.BYT(t), x), VBL.nthb(UA.BYT(t), 1n+x)],
+    rwn2(d, t, x, pf, h), FX8.bt2(UA.BYT(t), x, hB))
+
+# a uint16 read at byte x is the spec's uint16 of its two bytes (x + 2 within the buffer)
+def v16w2(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {O.keep(2, UR.RWN(t, x)) == PB.v16of(FX8.BX(t, x), FX8.BX(t, 1n+x)) : U32}:
+  +R = UR.RWN(t, x)
+  +eb = b2x(d, t, x, pf, h)
+  +e0 = Equal.cong(+List<U32>, U32, l => GW.h0(l), [U32.and(R, 255), U32.and(U32.shrn(R, 8n), 255)], [FX8.BX(t, x), FX8.BX(t, 1n+x)], eb)
+  +e1 = Equal.cong(+List<U32>, U32, l => GW.h1(l), [U32.and(R, 255), U32.and(U32.shrn(R, 8n), 255)], [FX8.BX(t, x), FX8.BX(t, 1n+x)], eb)
+  Equal.trans(U32, O.keep(2, R), PB.v16of(U32.and(R, 255), U32.and(U32.shrn(R, 8n), 255)), PB.v16of(FX8.BX(t, x), FX8.BX(t, 1n+x)), GW.kv16(R),
+    Equal.trans(U32, PB.v16of(U32.and(R, 255), U32.and(U32.shrn(R, 8n), 255)), PB.v16of(FX8.BX(t, x), U32.and(U32.shrn(R, 8n), 255)), PB.v16of(FX8.BX(t, x), FX8.BX(t, 1n+x)),
+      Equal.cong(U32, U32, z => PB.v16of(z, U32.and(U32.shrn(R, 8n), 255)), U32.and(R, 255), FX8.BX(t, x), e0),
+      Equal.cong(U32, U32, z => PB.v16of(FX8.BX(t, x), z), U32.and(U32.shrn(R, 8n), 255), FX8.BX(t, 1n+x), e1)))
+
+# ---- positions ----
+# a field [o, o + w) of the record at y lies within y + R
+def fb(+y: Nat, +o: Nat, +w: Nat, +R: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(y, R), P) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(o, w), R) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(Nat.add(o, y), w), P) == True{} : Bool}:
+  +e = Equal.trans(Nat, Nat.add(Nat.add(o, y), w), Nat.add(o, Nat.add(y, w)), Nat.add(y, Nat.add(o, w)), FD.nat__add_assoc(o, y, w), FD.lru_nat_algebra__add_swap(o, y, w))
+  FD.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.add(y, Nat.add(o, w)), Nat.add(Nat.add(o, y), w), Equal.sym(Nat, Nat.add(Nat.add(o, y), w), Nat.add(y, Nat.add(o, w)), e),
+    FD.nat__le_trans(Nat.add(y, Nat.add(o, w)), Nat.add(y, R), P, Order.add_left(y, Nat.add(o, w), R, hc), h))
+
+def jlt(+k: Nat, +j: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(k, j), P) == True{} : Bool}) -> {Nat.is_lt(j, P) == True{} : Bool}:
+  FD.nat__le_lt_trans(j, Nat.add(k, j), P, Order.left_below_sum(k, j), h)
+
+def hsu(+q: Nat, +j: Nat, +P: Nat, +h: {Nat.is_lt(1n+Nat.add(q, j), P) == True{} : Bool}) -> {Nat.is_lt(Nat.add(q, 1n+j), P) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_lt(z, P) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), h)
+
+# record i + 1's end is within record k + 1's (i <= k)
+def rend(+i: Nat, +k: Nat, +R: Nat, +x: Nat, +P: Nat, +hik: {Nat.is_le(i, k) == True{} : Bool}, +h: {Nat.is_le(VRL.pos(1n+k, R, x), P) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VRL.pos(i, R, x), R), P) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, VRL.pos(1n+i, R, x), Nat.add(VRL.pos(i, R, x), R), Equal.sym(Nat, Nat.add(VRL.pos(i, R, x), R), VRL.pos(1n+i, R, x), VRL.pnx(i, R, x)),
+    FD.nat__le_trans(VRL.pos(1n+i, R, x), VRL.pos(1n+k, R, x), P, Order.add_right(Nat.mul(1n+i, R), Nat.mul(1n+k, R), x, VRL.mul_mono(1n+i, 1n+k, R, hik)), h))
+"""
+
+GRL_JCASE = r"""    case @R@n:
+      %Equal.sym(List<&2, U32>, VB.wdr(q, W), Con{FD.flat__nthc(W, q), VB.wdr(1n+q, W)}, VB.wdr_eta(q, W, FD.logic__subst(Nat, z => {Nat.is_lt(q, z) == True{} : Bool}, P, VB.len(W), Equal.sym(Nat, VB.len(W), P, eL), q0b(q, @R@n, P, h)))) :
+        {VS.bt(2n, FX.limbs([B.join_sel(@R@, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))])) == VS.bt(2n, VS.bdr(@R@n, FX.limbs(_))) : +List<U32>}
+      %Equal.sym(List<&2, U32>, I.limb(B.join_sel(@R@, FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))), [@AT@], UB.join@R@(FD.flat__nthc(W, q), FD.flat__nthc(W, 1n+q))) :
+        {VS.bt(2n, List.append(&2, U32, _, [])) == VS.bt(2n, VS.bdr(@R@n, FX.limbs(Con{FD.flat__nthc(W, q), VB.wdr(1n+q, W)}))) : +List<U32>}
+      {==}"""
+
+GRL_PER = r"""# ---- @TAG@: records of @RS@ bytes (@EN@) ----
+# the record at y is the spec's value of its bytes (y + @RS@ within the buffer)
+def ev_@TAG@(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(y, @RS@n), A.quad(VB.pw(d))) == True{} : Bool}) -> {RN.v_@EN@(@W@.RX(t, y)) == @W@.RVAL(t, y) : S.Value}:
+@EVBODY@
+
+# writing record j leaves the others
+def kp1_@TAG@(+dd: Nat, +D: FD.array__Tree<@ET@>, +j: Nat, +v: @ET@, +i: Nat, +hi: {Nat.is_lt(i, j) == True{} : Bool},
+    +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +pf: {FD.array__perfect(@ET@, dd, D) == True{} : Bool})
+    -> {FD.spec_common__nth(@ET@, FD.array__slots(@ET@, FD.array__upd(@ET@, dd, D, j, v)), i) == FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D), i) : Maybe<&2, @ET@>}:
+  %Equal.sym(List<&2, @ET@>, FD.array__slots(@ET@, FD.array__upd(@ET@, dd, D, j, v)), FD.spec_common__update(@ET@, FD.array__slots(@ET@, D), j, v), FD.array__upd_slots(@ET@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@ET@, _, i) == FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D), i) : Maybe<&2, @ET@>}
+  FD.list__nth_update_other(@ET@, FD.array__slots(@ET@, D), j, i, v, FD.flat__ne_gt(j, i, hi))
+
+# ... and holds record j
+def at0_@TAG@(+dd: Nat, +D: FD.array__Tree<@ET@>, +j: Nat, +v: @ET@, +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(@ET@, dd, D) == True{} : Bool})
+    -> {FD.spec_common__nth(@ET@, FD.array__slots(@ET@, FD.array__upd(@ET@, dd, D, j, v)), j) == Some{v} : Maybe<&2, @ET@>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@ET@, FD.array__slots(@ET@, D)),
+    Equal.sym(Nat, FD.spec_common__length(@ET@, FD.array__slots(@ET@, D)), FD.spec_common__pow2(dd), FD.array__slots_length(@ET@, dd, D, pf)), hj)
+  %Equal.sym(List<&2, @ET@>, FD.array__slots(@ET@, FD.array__upd(@ET@, dd, D, j, v)), FD.spec_common__update(@ET@, FD.array__slots(@ET@, D), j, v), FD.array__upd_slots(@ET@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@ET@, _, j) == Some{v} : Maybe<&2, @ET@>}
+  FD.list__nth_update_same(@ET@, FD.array__slots(@ET@, D), j, v, hl)
+
+def pfRT_@TAG@(k: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<@ET@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@ET@, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(@ET@, dd, @W@.RT(k, j, dd, D, t, x)) == True{} : Bool}:
+  match k:
+    case 0n: FD.array__upd_perfect(@ET@, dd, D, j, @W@.RX(t, VRL.pos(j, @RS@n, x)), pf)
+    case 1n+ +q: pfRT_@TAG@(q, 1n+j, dd, FD.array__upd(@ET@, dd, D, j, @W@.RX(t, VRL.pos(j, @RS@n, x))), t, x, FD.array__upd_perfect(@ET@, dd, D, j, @W@.RX(t, VRL.pos(j, @RS@n, x)), pf))
+
+# the records j .. j + k leave the slots below j
+def keep_@TAG@(k: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<@ET@>, +t: FD.array__Tree<U32>, +x: Nat, +i: Nat,
+    +hi: {Nat.is_lt(i, j) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, j), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(@ET@, dd, D) == True{} : Bool})
+    -> {FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(k, j, dd, D, t, x)), i) == FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D), i) : Maybe<&2, @ET@>}:
+  match k:
+    case 0n: kp1_@TAG@(dd, D, j, @W@.RX(t, VRL.pos(j, @RS@n, x)), i, hi, hb, pf)
+    case 1n+ +q:
+      +v = @W@.RX(t, VRL.pos(j, @RS@n, x))
+      +D1 = FD.array__upd(@ET@, dd, D, j, v)
+      Equal.trans(Maybe<&2, @ET@>, FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(q, 1n+j, dd, D1, t, x)), i), FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D1), i), FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D), i),
+        keep_@TAG@(q, 1n+j, dd, D1, t, x, i, FD.nat__lt_trans(i, j, 1n+j, hi, FD.nat__lt_succ(j)), hsu(q, j, FD.spec_common__pow2(dd), hb), FD.array__upd_perfect(@ET@, dd, D, j, v, pf)),
+        kp1_@TAG@(dd, D, j, v, i, hi, jlt(1n+q, j, FD.spec_common__pow2(dd), hb), pf))
+
+# ... and hold record r + j there (r <= k)
+def at_@TAG@(k: Nat, r: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<@ET@>, +t: FD.array__Tree<U32>, +x: Nat,
+    +hr: {Nat.is_le(r, k) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, j), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(@ET@, dd, D) == True{} : Bool})
+    -> {FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(k, j, dd, D, t, x)), Nat.add(r, j)) == Some{@W@.RX(t, VRL.pos(Nat.add(r, j), @RS@n, x))} : Maybe<&2, @ET@>}:
+  match k r:
+    case 0n 0n: at0_@TAG@(dd, D, j, @W@.RX(t, VRL.pos(j, @RS@n, x)), hb, pf)
+    case 0n 1n+ +p: Empty.absurd({FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(0n, j, dd, D, t, x)), Nat.add(1n+p, j)) == Some{@W@.RX(t, VRL.pos(Nat.add(1n+p, j), @RS@n, x))} : Maybe<&2, @ET@>}, FD.logic__false_true(hr))
+    case 1n+ +q 0n:
+      +v = @W@.RX(t, VRL.pos(j, @RS@n, x))
+      +D1 = FD.array__upd(@ET@, dd, D, j, v)
+      Equal.trans(Maybe<&2, @ET@>, FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(q, 1n+j, dd, D1, t, x)), j), FD.spec_common__nth(@ET@, FD.array__slots(@ET@, D1), j), Some{v},
+        keep_@TAG@(q, 1n+j, dd, D1, t, x, j, FD.nat__lt_succ(j), hsu(q, j, FD.spec_common__pow2(dd), hb), FD.array__upd_perfect(@ET@, dd, D, j, v, pf)),
+        at0_@TAG@(dd, D, j, v, jlt(1n+q, j, FD.spec_common__pow2(dd), hb), pf))
+    case 1n+ +q 1n+ +p:
+      +v = @W@.RX(t, VRL.pos(j, @RS@n, x))
+      +D1 = FD.array__upd(@ET@, dd, D, j, v)
+      %FD.nat__add_succ(p, j) : {FD.spec_common__nth(@ET@, FD.array__slots(@ET@, @W@.RT(q, 1n+j, dd, D1, t, x)), _) == Some{@W@.RX(t, VRL.pos(_, @RS@n, x))} : Maybe<&2, @ET@>}
+      at_@TAG@(q, p, 1n+j, dd, D1, t, x, hr, hsu(q, j, FD.spec_common__pow2(dd), hb), FD.array__upd_perfect(@ET@, dd, D, j, v, pf))
+
+# the root's element at i of a list whose i-th is Some{v}
+def xa_@TAG@(+W: List<&2, @ET@>, +i: Nat, +v: @ET@, +hi: {Nat.is_lt(i, FD.spec_common__length(@ET@, W)) == True{} : Bool},
+    +e: {FD.spec_common__nth(@ET@, W, i) == Some{v} : Maybe<&2, @ET@>}) -> {RT2.xat_@TAG@(W, i) == v : @ET@}:
+  Equal.cong(Maybe<&2, @ET@>, @ET@, m => VRL.mget(@ET@, m, @ET@_default()), Some{RT2.xat_@TAG@(W, i)}, Some{v},
+    Equal.trans(Maybe<&2, @ET@>, Some{RT2.xat_@TAG@(W, i)}, FD.spec_common__nth(@ET@, W, i), Some{v},
+      Equal.sym(Maybe<&2, @ET@>, FD.spec_common__nth(@ET@, W, i), Some{RT2.xat_@TAG@(W, i)}, RT2.nth_@TAG@(W, i, hi)), e))
+
+# the root's items from i of the records 0 .. k written into a fresh tree: the spec's records from byte pos(i)
+def xs_@TAG@(q: Nat, +i: Nat, +k: Nat, +dd: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hq: {Nat.is_le(Nat.add(q, i), 1n+k) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, 0n), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +hw: {Nat.is_le(VRL.pos(1n+k, @RS@n, x), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {RT2.xi_@TAG@(q, FD.array__slots(@ET@, @W@.RT(k, 0n, dd, FD.array__trep(@ET@, dd, @ET@_default()), t, x)), i) == @W@.RITEMS(q, t, VRL.pos(i, @RS@n, x)) : S.Value}:
+  match q:
+    case 0n: {==}
+    case 1n+ +p:
+      +TR = FD.array__trep(@ET@, dd, @ET@_default())
+      +SL = FD.array__slots(@ET@, @W@.RT(k, 0n, dd, TR, t, x))
+      +pT = FD.array__trep_perfect(@ET@, dd, @ET@_default())
+      +hik = FD.nat__le_trans(i, Nat.add(p, i), k, Order.left_below_sum(p, i), hq)
+      +ea = FD.logic__subst(Nat, z => {FD.spec_common__nth(@ET@, SL, z) == Some{@W@.RX(t, VRL.pos(z, @RS@n, x))} : Maybe<&2, @ET@>}, Nat.add(i, 0n), i, FD.nat__add_zero(i), at_@TAG@(k, i, 0n, dd, TR, t, x, hik, hb, pT))
+      +hl = FD.logic__subst(Nat, z => {Nat.is_lt(i, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@ET@, SL),
+        Equal.sym(Nat, FD.spec_common__length(@ET@, SL), FD.spec_common__pow2(dd), FD.array__slots_length(@ET@, dd, @W@.RT(k, 0n, dd, TR, t, x), pfRT_@TAG@(k, 0n, dd, TR, t, x, pT))),
+        FD.nat__le_lt_trans(i, k, FD.spec_common__pow2(dd), hik, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, Nat.add(k, 0n), k, FD.nat__add_zero(k), hb)))
+      +ex = xa_@TAG@(SL, i, @W@.RX(t, VRL.pos(i, @RS@n, x)), hl, ea)
+      +ev = ev_@TAG@(d, t, VRL.pos(i, @RS@n, x), pf, rend(i, k, @RS@n, x, A.quad(VB.pw(d)), hik, hw))
+      +hq1 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+Nat.add(p, i), Nat.add(p, 1n+i), Equal.sym(Nat, Nat.add(p, 1n+i), 1n+Nat.add(p, i), FD.nat__add_succ(p, i)), hq)
+      +ih = xs_@TAG@(p, 1n+i, k, dd, d, t, x, pf, hq1, hb, hw)
+      %Equal.sym(Nat, Nat.add(@RS@n, VRL.pos(i, @RS@n, x)), VRL.pos(1n+i, @RS@n, x), VRL.pnx0(i, @RS@n, x)) :
+        {S.Items{RN.v_@EN@(RT2.xat_@TAG@(SL, i)), RT2.xi_@TAG@(p, SL, 1n+i)} == S.Items{@W@.RVAL(t, VRL.pos(i, @RS@n, x)), @W@.RITEMS(p, t, _)} : S.Value}
+      %ih : {S.Items{RN.v_@EN@(RT2.xat_@TAG@(SL, i)), RT2.xi_@TAG@(p, SL, 1n+i)} == S.Items{@W@.RVAL(t, VRL.pos(i, @RS@n, x)), _} : S.Value}
+      %ev : {S.Items{RN.v_@EN@(RT2.xat_@TAG@(SL, i)), RT2.xi_@TAG@(p, SL, 1n+i)} == S.Items{_, RT2.xi_@TAG@(p, SL, 1n+i)} : S.Value}
+      %Equal.sym(@ET@, RT2.xat_@TAG@(SL, i), @W@.RX(t, VRL.pos(i, @RS@n, x)), ex) : {S.Items{RN.v_@EN@(_), RT2.xi_@TAG@(p, SL, 1n+i)} == S.Items{RN.v_@EN@(@W@.RX(t, VRL.pos(i, @RS@n, x))), RT2.xi_@TAG@(p, SL, 1n+i)} : S.Value}
+      {==}
+
+def go_@TAG@(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {@W@.CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
+    -> {RT2.xv_@TAG@(@W@.LOBJ(b, t, x, len)) == @W@.VALw(t, x, len) : S.Value}:
+  match b:
+    case True{}:
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2.xv_@TAG@(@W@.LOBJ(True{}, t, x, len)) == S.Sequence{@W@.RITEMS(@W@.CC(_), t, x)} : S.Value}
+      {==}
+    case False{}:
+      +c = @W@.CC(len)
+      +ec = @W@.ecw(len, hc)
+      +h1 = @W@.cpos(len, c, ec, eb)
+      +k = U32.to_nat(U32.sub(@W@.NN(len), 1))
+      +e1 = Equal.trans(Nat, 1n+k, 1n+Nat.sub(c, 1n), c, Equal.cong(Nat, Nat, z => 1n+z, k, Nat.sub(c, 1n), FD.u32__sub_nat(@W@.NN(len), 1, h1)), FD.nat__sub_add(c, 1n, h1))
+      +P = A.quad(VB.pw(d))
+      +hL = FD.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw)
+      +hLc = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, x), P) == True{} : Bool}, U32.to_nat(len), Nat.mul(c, @RS@n), ec, hL)
+      +hw2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(z, @RS@n, x), P) == True{} : Bool}, c, 1n+k, Equal.sym(Nat, 1n+k, c, e1), hLc)
+      +hcN = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, VB.pw(2n+d), O.pow2n(2n+d), VD.s_pow2_eq(2n+d),
+        FD.nat__le_trans(c, Nat.mul(c, @RS@n), VB.pw(2n+d), VRL.le_mul(c, @RS1@n),
+          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(2n+d)) == True{} : Bool}, U32.to_nat(len), Nat.mul(c, @RS@n), ec,
+            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw))))
+      +hcp = VD.wd_cover(@W@.NN(len), 2n+d, FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {==})), hcN)
+      +hcP = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, O.pow2n(B.words_depth(@W@.NN(len))), VB.pw(B.words_depth(@W@.NN(len))), Equal.sym(Nat, VB.pw(B.words_depth(@W@.NN(len))), O.pow2n(B.words_depth(@W@.NN(len))), VD.s_pow2_eq(B.words_depth(@W@.NN(len)))), hcp)
+      +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(B.words_depth(@W@.NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
+        FD.nat__lt_le_trans(k, c, VB.pw(B.words_depth(@W@.NN(len))), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hcP))
+      +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)), FD.nat__le_refl(1n+k))
+      +RTF = @W@.RT(k, 0n, B.words_depth(@W@.NN(len)), FD.array__trep(@ET@, B.words_depth(@W@.NN(len)), @ET@_default()), t, x)
+      %Equal.sym(FD.array__Tree<@ET@>, FD.array__freeze(@ET@, FD.array__thaw(@ET@, RTF)), RTF, FD.array__freeze_thaw(@ET@, RTF)) :
+        {S.Sequence{RT2.xi_@TAG@(c, FD.array__slots(@ET@, _), 0n)} == S.Sequence{@W@.RITEMS(c, t, x)} : S.Value}
+      %e1 : {S.Sequence{RT2.xi_@TAG@(_, FD.array__slots(@ET@, RTF), 0n)} == S.Sequence{@W@.RITEMS(_, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_@TAG@(1n+k, FD.array__slots(@ET@, RTF), 0n), @W@.RITEMS(1n+k, t, x),
+        xs_@TAG@(1n+k, 0n, k, B.words_depth(@W@.NN(len)), d, t, x, pf, hq, hk, hw2))
+
+# the root view of the list read at the window (x, off, len) is its codec value
+def vl_@TAG@(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {@W@.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2.xv_@TAG@(@W@.OBJw(d, t, x, off, len)) == @W@.VALw(t, x, len) : S.Value}:
+  go_@TAG@(d, t, x, off, len, hd, hw, pf, hc, U32.is_eq(len, 0), {==})
+"""
+
+
+def _grl_ev(tag, W, EN, RS, fields):
+    """ev_tag's body: rewrite each uint16 field to its bytes' value (uint8 fields agree by evaluation)."""
+    def at(o):
+        return 'y' if o == 0 else f'{o}n+y'
+    lhs = {}
+    rhs = {}
+    lets = []
+    for i, (kd, o) in enumerate(fields):
+        if kd == 'u16':
+            lhs[i] = f'RN.v_u16(O.keep(2, UR.RWN(t, {at(o)})))'
+            rhs[i] = f'FXB.VAL(t, {at(o)})'
+            lets.append((i, f'Equal.cong(U32, S.Value, z => S.UnsignedValue{{P.UInt{{z, 0, 0, 0, 0, 0, 0, 0}}}}, O.keep(2, UR.RWN(t, {at(o)})), PB.v16of(FX8.BX(t, {at(o)}), FX8.BX(t, 1n+{at(o)})), '
+                            f'v16w2(d, t, Nat.add({o}n, y), pf, fb(y, {o}n, 2n, {RS}n, A.quad(VB.pw(d)), h, {{==}})))'))
+        else:
+            lhs[i] = rhs[i] = f'FXA.VAL(t, {at(o)})'
+
+    def items(cur, hole):
+        s = 'S.EmptyItems{}'
+        for i in reversed(range(len(fields))):
+            s = f'S.Items{{{"_" if i == hole else (lhs[i] if i < hole else rhs[i])}, {s}}}'
+        return f'S.Sequence{{{s}}}'
+    out = []
+    for i, e in lets:
+        out.append(f'  +e{i} = {e}')
+    for i, _ in lets:
+        out.append(f'  %e{i} : {{RN.v_{EN}({W}.RX(t, y)) == {items(None, i)} : S.Value}}')
+    out.append('  {==}')
+    return '\n'.join(out)
+
+
+def grl_text():
+    at = {1: ['I.at(I.limb(FD.flat__nthc(W, q)), 1n)', 'I.at(I.limb(FD.flat__nthc(W, q)), 2n)', 'I.at(I.limb(FD.flat__nthc(W, q)), 3n)', 'I.at(I.limb(FD.flat__nthc(W, 1n+q)), 0n)'],
+          2: ['I.at(I.limb(FD.flat__nthc(W, q)), 2n)', 'I.at(I.limb(FD.flat__nthc(W, q)), 3n)', 'I.at(I.limb(FD.flat__nthc(W, 1n+q)), 0n)', 'I.at(I.limb(FD.flat__nthc(W, 1n+q)), 1n)']}
+    jc = '\n'.join(GRL_JCASE.replace('@R@', str(r)).replace('@AT@', ', '.join(at[r])) for r in (1, 2))
+    body = [GRL_SHARED.replace('@JCASES@', jc)]
+    imps = []
+    for tag, (mod, W, TM, EN, RS, fields) in GRL.items():
+        imps.append(f'import ../proofs/obj/{mod}.bend as {W}')
+        ET = f'{TM}.{EN}'
+        body.append(GRL_PER.replace('@EVBODY@', _grl_ev(tag, W, EN, RS, fields)).replace('@TAG@', tag).replace('@W@', W).replace('@ET@', ET)
+                    .replace('@EN@', EN).replace('@RS1@', str(RS - 1)).replace('@RS@', str(RS)))
+    for TM, f in GRL_TYPES.items():
+        imps.append(f'import ../types/{f}.bend as {TM}')
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../src/primitives.bend as I',
+            'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+            'import ../proofs/obj/spec_fixed.bend as FX', 'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vnest.bend as VN', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vua.bend as UA',
+            'import ../proofs/obj/vua_bits.bend as UB', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/vua_fix.bend as VTX',
+            'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/pb_min.bend as PB', 'import ../proofs/obj/vfx_u8.bend as FX8',
+            'import ../proofs/obj/vfx_u8.bend as FXA', 'import ../proofs/obj/vfx_u16.bend as FXB', 'import ../proofs/obj/vrl.bend as VRL',
+            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/root_gnames.bend as RN',
+            'import ./e2e_gwin.bend as GW'] + imps
+    return '\n'.join(head) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# Fixed-size record lists read at a byte window (the var_rlist_sub windows): the root view of the list the
+# runtime reads (the records 0 .. k written in turn into a fresh tree, RT) is the window's codec value
+# (vl_X): slot i of RT holds record i (at_X, keep_X), whose root view is the spec's value of its bytes
+# (ev_X; a uint16 field needs only its own two bytes within the buffer, v16w2).
+
+''' + '\n'.join(body)
+
+
+SUPPORT_OUT['e2e_grl.bend'] = grl_text()
+
+
+# ---- e2e_gvl: progressive lists of variable-size elements read at a byte window (var_vlist windows) ------------
+# GVL[L] = (vvl module, alias, element tag E, element type, def module alias of L, L's def file)
+# The element E has tf_E (its object survives RT2.fz_E then RT2.th_E) and vw_E (its root view is its window's
+# value), both over (d, t, x, off, len, eo, hd, hw, pf, hc: YW.CHKw); L gets tf_L and vw_L of the same shape, so
+# a list of lists nests.
+GVL = {
+    'pl_Gc465214E502': ('big_vvl_pl_Gc465214E502', 'TA', 'Gc465214E502', 'VarTestStruct_d.Gc465214E502', 'proglist_VarTestStruct_d'),
+    'pl_pl_Gc465214E502': ('big_vvl_pl_pl_Gc465214E502', 'TB', 'pl_Gc465214E502', 'proglist_VarTestStruct_d.pl_Gc465214E502_Seq', 'proglist_proglist_VarTestStruct_d'),
+    'pl_Gp66304057C3': ('big_vvl_pl_Gp66304057C3', 'TC', 'Gp66304057C3', 'ProgressiveVarTestStruct_d.Gp66304057C3', 'proglist_ProgressiveVarTestStruct_d'),
+}
+GVL_ELEM = {'pl_Gc465214E502'}  # lists that are elements of another list here: they get tf_L
+GVL_TYPES = [('VarTestStruct_d', 'VarTestStruct_def_generated'), ('proglist_VarTestStruct_d', 'proglist_VarTestStruct_def_generated'),
+             ('proglist_proglist_VarTestStruct_d', 'proglist_proglist_VarTestStruct_def_generated'),
+             ('ProgressiveVarTestStruct_d', 'ProgressiveVarTestStruct_def_generated'), ('proglist_ProgressiveVarTestStruct_d', 'proglist_ProgressiveVarTestStruct_def_generated')]
+
+GVL_WP = ('+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n'
+          '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}')
+
+GVL_SHARED = r"""# ---- index facts ----------------------------------------------------------------------------------------
+def e1(+i: U32, +q: Nat, +m: U32, +inv: {Nat.add(U32.to_nat(i), 2n+q) == U32.to_nat(m) : Nat}) -> {U32.to_nat(U32.add(i, 1)) == 1n+U32.to_nat(i) : Nat}:
+  VVU.addk(i, 1, m, FD.logic__subst(Nat, z => {Nat.is_le(1n+U32.to_nat(i), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 2n+q), U32.to_nat(m), inv,
+    FD.logic__subst(Nat, z => {Nat.is_le(1n+U32.to_nat(i), z) == True{} : Bool}, Nat.add(2n+q, U32.to_nat(i)), Nat.add(U32.to_nat(i), 2n+q), FD.nat__add_comm(2n+q, U32.to_nat(i)),
+      A.le_skip(1n+q, U32.to_nat(i)))))
+
+def inv1(+i: U32, +q: Nat, +m: U32, +inv: {Nat.add(U32.to_nat(i), 2n+q) == U32.to_nat(m) : Nat}) -> {Nat.add(U32.to_nat(U32.add(i, 1)), 1n+q) == U32.to_nat(m) : Nat}:
+  Equal.trans(Nat, Nat.add(U32.to_nat(U32.add(i, 1)), 1n+q), Nat.add(1n+U32.to_nat(i), 1n+q), U32.to_nat(m),
+    Equal.cong(Nat, Nat, z => Nat.add(z, 1n+q), U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, q, m, inv)),
+    Equal.trans(Nat, Nat.add(1n+U32.to_nat(i), 1n+q), Nat.add(U32.to_nat(i), 2n+q), U32.to_nat(m), Equal.sym(Nat, Nat.add(U32.to_nat(i), 2n+q), 1n+Nat.add(U32.to_nat(i), 1n+q), FD.nat__add_succ(U32.to_nat(i), 1n+q)), inv))
+
+# i < i + 1 + k == m <= 2^dd
+def hiq(+i: U32, +k: Nat, +m: U32, +dd: Nat, +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(dd)) == True{} : Bool}:
+  FD.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(m), FD.spec_common__pow2(dd),
+    FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 1n+k), U32.to_nat(m), inv,
+      FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(i), k), Nat.add(U32.to_nat(i), 1n+k), Equal.sym(Nat, Nat.add(U32.to_nat(i), 1n+k), 1n+Nat.add(U32.to_nat(i), k), FD.nat__add_succ(U32.to_nat(i), k)),
+        FD.nat__le_lt_trans(U32.to_nat(i), Nat.add(U32.to_nat(i), k), 1n+Nat.add(U32.to_nat(i), k), FD.nat__le_add_right(U32.to_nat(i), k), FD.nat__lt_succ(Nat.add(U32.to_nat(i), k))))), hm)
+
+def isne(+a: Nat, +b: Nat, +h: {Nat.is_lt(a, b) == True{} : Bool}) -> {Nat.is_eq(b, a) == False{} : Bool}:
+  match a b:
+    case 0n 0n: Empty.absurd({Nat.is_eq(0n, 0n) == False{} : Bool}, FD.logic__false_true(h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 0n: Empty.absurd({Nat.is_eq(0n, 1n+p) == False{} : Bool}, FD.logic__false_true(h))
+    case 1n+ +p 1n+ +q: isne(p, q, h)
+
+# s < i + 1 when s < i
+def lts(+i: U32, +q: Nat, +m: U32, +s: Nat, +inv: {Nat.add(U32.to_nat(i), 2n+q) == U32.to_nat(m) : Nat}, +h: {Nat.is_lt(s, U32.to_nat(i)) == True{} : Bool})
+    -> {Nat.is_lt(s, U32.to_nat(U32.add(i, 1))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, q, m, inv)),
+    FD.nat__lt_trans(s, U32.to_nat(i), 1n+U32.to_nat(i), h, FD.nat__lt_succ(U32.to_nat(i))))
+
+# thawing a frozen word array gives it back
+def thfr(a: Array<U32>) -> {FD.array__thaw(U32, FD.array__freeze(U32, a)) == a : Array<U32>}:
+  match a:
+    case ALeaf{+w}: {==}
+    case ANode{xs, ys}:
+      %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, xs)), xs, thfr(xs)) : {ANode{_, FD.array__thaw(U32, FD.array__freeze(U32, ys))} == ANode{xs, ys} : Array<U32>}
+      %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, ys)), ys, thfr(ys)) : {ANode{xs, _} == ANode{xs, ys} : Array<U32>}
+      {==}
+
+# ---- VarTestStruct elements (var_winx_Gc465214E502) ----
+def tf_Gc465214E502(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}:
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))), UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))),
+      FD.array__freeze_thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))) :
+    {VarTestStruct_d.Gc465214E502{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}
+  {==}
+
+def vw_Gc465214E502(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.v_Gc465214E502(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
+  GVT.vtw(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
+
+# ---- ProgressiveVarTestStruct elements (big_var_winx_Gp66304057C3) ----
+def tf_Gp66304057C3(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+  +C0 = UCT.CT(d, t, YW1.FJ0(off, t, x), YW1.LJ0(t, x), VLS.DZ(YW1.LJ0(t, x)))
+  +C1 = UCT.CT(d, t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len), VLS.DZ(YW1.LJ1(t, x, len)))
+  +NB = PBW.NB(t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len))
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, C0)), C0, FD.array__freeze_thaw(U32, C0)) :
+    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), O.clear_bit(FD.array__thaw(U32, C1), NB), thfr(O.clear_bit(FD.array__thaw(U32, C1), NB))) :
+    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+  {==}
+
+def vw_Gp66304057C3(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.v_Gp66304057C3(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
+  GP.vw_Gp66304057C3(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
+"""
+
+GVL_PER = r"""# ======== @L@: a progressive list of @E@ (@TX@) ========
+# the Data mirror of element (s, e)
+def ND_@L@(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> @MB@: RT2.fz_@E@_bx(@TX@.OBJE(d, t, x, off, s, e))
+
+# the value RV writes after element i: element i + 1
+def NV_@L@(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> @MB@:
+  ND_@L@(d, t, x, off, @TX@.WJ(t, x, i), @TX@.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
+
+def FT_@L@(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<@MB@>, +u: @MB@) -> FD.array__Tree<@MB@>:
+  match k:
+    case 0n: FD.array__upd(@MB@, dd, T, U32.to_nat(i), u)
+    case 1n+q: FT_@L@(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, T, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len))
+
+def pfFT_@L@(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<@MB@>, +u: @MB@,
+    +pf: {FD.array__perfect(@MB@, dd, T) == True{} : Bool}) -> {FD.array__perfect(@MB@, dd, FT_@L@(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
+  match k:
+    case 0n: FD.array__upd_perfect(@MB@, dd, T, U32.to_nat(i), u, pf)
+    case 1n+ +q: pfFT_@L@(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, T, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, T, U32.to_nat(i), u, pf))
+
+# the empty array is am of the empty tree
+def fillam_@L@(+c: Nat) -> {@LD@.@L@_fill(c) == RT2.am_@L@(FD.array__trep(@MB@, c, RT2.MNone{})) : Array<@BX@>}:
+  match c:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Array<@BX@>, @LD@.@L@_fill(p), RT2.am_@L@(FD.array__trep(@MB@, p, RT2.MNone{})), fillam_@L@(p)) :
+        {ANode{_, _} == ANode{RT2.am_@L@(FD.array__trep(@MB@, p, RT2.MNone{})), RT2.am_@L@(FD.array__trep(@MB@, p, RT2.MNone{}))} : Array<@BX@>}
+      {==}
+
+# an element whose check passed is th_bx of its mirror, and views as its window's value
+def eqE_@L@(@WP@, +s: U32, +e: U32, +h: {@TX@.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
+    -> {@TX@.OBJE(d, t, x, off, s, e) == RT2.th_@E@_bx(ND_@L@(d, t, x, off, s, e)) : @BX@}:
+  Equal.cong(@ETY@, @BX@, z => O.BSome{z, O.BNone{}}, @YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_@E@(RT2.fz_@E@(@YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(@ETY@, RT2.th_@E@(RT2.fz_@E@(@YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), @YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_@E@(@EA@)))
+
+def elv_@L@(@WP@, +s: U32, +e: U32, +h: {@TX@.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
+    -> {RT2.v_@E@_bx(RT2.th_@E@_bx(ND_@L@(d, t, x, off, s, e))) == @TX@.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(@ETY@, RT2.th_@E@(RT2.fz_@E@(@YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), @YW@.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_@E@(@EA@)) :
+    {RT2.v_@E@(_) == @TX@.VE(t, x, s, e) : S.Value}
+  vw_@E@(@EA@)
+
+def hx_at_@L@(+dd: Nat, +T: FD.array__Tree<@MB@>, +s: Nat, +pf: {FD.array__perfect(@MB@, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, T), s) == Some{RT2.xat_@L@(FD.array__slots(@MB@, T), s)} : Maybe<&2, @MB@>}:
+  RT2.nth_@L@(FD.array__slots(@MB@, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@MB@, FD.array__slots(@MB@, T)),
+    Equal.sym(Nat, FD.spec_common__length(@MB@, FD.array__slots(@MB@, T)), FD.spec_common__pow2(dd), FD.array__slots_length(@MB@, dd, T, pf)), hs))
+
+# ---- the reader's chain of writes is am of FT ----
+def rvF_@L@(k: Nat, +i: U32, +m: U32, @WP@, +dd: Nat, +T: FD.array__Tree<@MB@>, +u: @MB@,
+    +pfT: {FD.array__perfect(@MB@, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {@TX@.EV(k, i, m, t, x, off, len, True{}, @TX@.WJ(t, x, i)) == True{} : Bool})
+    -> {@TX@.RV(k, i, m, d, t, x, off, len, RT2.am_@L@(T), RT2.th_@E@_bx(u)) == RT2.am_@L@(FT_@L@(k, i, m, d, t, x, off, len, dd, T, u)) : Array<@BX@>}:
+  match k:
+    case 0n:
+      +hi = hiq(i, 0n, m, dd, inv, hm)
+      RT2.amset_@L@(dd, T, i, u, RT2.xat_@L@(FD.array__slots(@MB@, T), U32.to_nat(i)), hdd, hi, hx_at_@L@(dd, T, U32.to_nat(i), pfT, hi), pfT)
+    case 1n+ +q:
+      +hi = hiq(i, 1n+q, m, dd, inv, hm)
+      +nb = @TX@.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
+      +hc = @TX@.ev_ok(q, U32.add(i, 1), m, t, x, off, len, @TX@.EE(True{}, t, x, off, len, @TX@.WJ(t, x, i), nb), nb, hE)
+      %Equal.sym(Array<@BX@>, Array.set(@BX@, RT2.am_@L@(T), i, RT2.th_@E@_bx(u)), RT2.am_@L@(FD.array__upd(@MB@, dd, T, U32.to_nat(i), u)),
+          RT2.amset_@L@(dd, T, i, u, RT2.xat_@L@(FD.array__slots(@MB@, T), U32.to_nat(i)), hdd, hi, hx_at_@L@(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {@TX@.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, @TX@.OBJE(d, t, x, off, @TX@.WJ(t, x, i), nb)) == RT2.am_@L@(FT_@L@(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<@BX@>}
+      %Equal.sym(@BX@, @TX@.OBJE(d, t, x, off, @TX@.WJ(t, x, i), nb), RT2.th_@E@_bx(NV_@L@(i, m, d, t, x, off, len)), eqE_@L@(d, t, x, off, len, eo, hd, hw, pf, @TX@.WJ(t, x, i), nb, hc)) :
+        {@TX@.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_@L@(FD.array__upd(@MB@, dd, T, U32.to_nat(i), u)), _) == RT2.am_@L@(FT_@L@(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<@BX@>}
+      rvF_@L@(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(@MB@, dd, T, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+        inv1(i, q, m, inv), @TX@.he_nx(q, i, m, t, x, off, len, inv, hE))
+
+# ---- the elements of FT ----
+def lemU_@L@(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<@MB@>, +v: @MB@, +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool},
+    +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +ne: {Nat.is_eq(j, i) == False{} : Bool})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FD.array__upd(@MB@, dd, D, j, v)), i) == FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D), i) : Maybe<&2, @MB@>}:
+  %Equal.sym(List<&2, @MB@>, FD.array__slots(@MB@, FD.array__upd(@MB@, dd, D, j, v)), FD.spec_common__update(@MB@, FD.array__slots(@MB@, D), j, v), FD.array__upd_slots(@MB@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@MB@, _, i) == FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D), i) : Maybe<&2, @MB@>}
+  FD.list__nth_update_other(@MB@, FD.array__slots(@MB@, D), j, i, v, ne)
+
+def lemS0_@L@(+j: Nat, +dd: Nat, +D: FD.array__Tree<@MB@>, +v: @MB@, +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool},
+    +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FD.array__upd(@MB@, dd, D, j, v)), j) == Some{v} : Maybe<&2, @MB@>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@MB@, FD.array__slots(@MB@, D)),
+    Equal.sym(Nat, FD.spec_common__length(@MB@, FD.array__slots(@MB@, D)), FD.spec_common__pow2(dd), FD.array__slots_length(@MB@, dd, D, pf)), hj)
+  %Equal.sym(List<&2, @MB@>, FD.array__slots(@MB@, FD.array__upd(@MB@, dd, D, j, v)), FD.spec_common__update(@MB@, FD.array__slots(@MB@, D), j, v), FD.array__upd_slots(@MB@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@MB@, _, j) == Some{v} : Maybe<&2, @MB@>}
+  FD.list__nth_update_same(@MB@, FD.array__slots(@MB@, D), j, v, hl)
+
+def lemB_@L@(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<@MB@>, +u: @MB@,
+    +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hs: {Nat.is_lt(s, U32.to_nat(i)) == True{} : Bool})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D), s) : Maybe<&2, @MB@>}:
+  match q:
+    case 0n: lemU_@L@(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
+    case 1n+ +p:
+      +D1 = FD.array__upd(@MB@, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, @MB@>, FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_@L@(i, m, d, t, x, off, len))), s),
+        FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D1), s), FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D), s),
+        lemB_@L@(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
+        lemU_@L@(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
+
+def lemV_@L@(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<@MB@>, +u: @MB@,
+    +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, @MB@>}:
+  match q:
+    case 0n: lemS0_@L@(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
+    case 1n+ +p:
+      +D1 = FD.array__upd(@MB@, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, @MB@>, FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_@L@(i, m, d, t, x, off, len))), U32.to_nat(i)),
+        FD.spec_common__nth(@MB@, FD.array__slots(@MB@, D1), U32.to_nat(i)), Some{u},
+        lemB_@L@(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
+          FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
+            FD.nat__lt_succ(U32.to_nat(i)))),
+        lemS0_@L@(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
+
+def stepN_@L@(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<@MB@>, +u: @MB@,
+    +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +inv: {Nat.add(U32.to_nat(i), 2n+p) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool}, +b: Bool, +eb: {Nat.is_eq(U32.to_nat(i), U32.to_nat(c)) == b : Bool},
+    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, D, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_@L@(c, m, d, t, x, off, len)} : Maybe<&2, @MB@>})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_@L@(c, m, d, t, x, off, len)} : Maybe<&2, @MB@>}:
+  match b:
+    case True{}:
+      +ec = FD.u32__injective(i, c, FD.nat__eq_from_is_eq(U32.to_nat(i), U32.to_nat(c), eb))
+      %ec : {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_@L@(_, m, d, t, x, off, len)} : Maybe<&2, @MB@>}
+      %e1(i, p, m, inv) : {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, D, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len))), _) == Some{NV_@L@(i, m, d, t, x, off, len)} : Maybe<&2, @MB@>}
+      lemV_@L@(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, D, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
+    case False{}:
+      +hlt = FD.nat__lt_or_eq(U32.to_nat(i), U32.to_nat(c), hic, eb)
+      ih(FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(c)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
+        FD.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(c), hlt)))
+
+def lemN_@L@(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<@MB@>, +u: @MB@,
+    +pf: {FD.array__perfect(@MB@, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool},
+    +hcq: {Nat.is_lt(U32.to_nat(c), Nat.add(U32.to_nat(i), q)) == True{} : Bool})
+    -> {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_@L@(c, m, d, t, x, off, len)} : Maybe<&2, @MB@>}:
+  match q:
+    case 0n:
+      +h0 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 0n), U32.to_nat(i), FD.nat__add_zero(U32.to_nat(i)), hcq)
+      +hcc = FD.nat__lt_le_trans(U32.to_nat(c), U32.to_nat(i), U32.to_nat(c), h0, hic)
+      Empty.absurd({FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FT_@L@(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_@L@(c, m, d, t, x, off, len)} : Maybe<&2, @MB@>},
+        FD.logic__false_true(Equal.trans(Bool, False{}, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), True{}, Equal.sym(Bool, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), False{}, FD.nat__lt_irrefl(U32.to_nat(c))), hcc)))
+    case 1n+ +p:
+      +h2 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 1n+p), 1n+Nat.add(U32.to_nat(i), p), FD.nat__add_succ(U32.to_nat(i), p), hcq)
+      +h3 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), Nat.add(z, p)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)), h2)
+      stepN_@L@(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
+        lemN_@L@(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(@MB@, dd, D, U32.to_nat(i), u), NV_@L@(i, m, d, t, x, off, len), FD.array__upd_perfect(@MB@, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
+
+def sv_@L@(m: Maybe<&2, @MB@>, +z: @MB@) -> @MB@:
+  match m:
+    case None{}: z
+    case Some{+y}: y
+
+def xat_of_@L@(+dd: Nat, +T: FD.array__Tree<@MB@>, +s: Nat, +v: @MB@, +pf: {FD.array__perfect(@MB@, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
+    +h: {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, T), s) == Some{v} : Maybe<&2, @MB@>}) -> {RT2.xat_@L@(FD.array__slots(@MB@, T), s) == v : @MB@}:
+  Equal.cong(Maybe<&2, @MB@>, @MB@, w => sv_@L@(w, v), Some{RT2.xat_@L@(FD.array__slots(@MB@, T), s)}, Some{v},
+    Equal.trans(Maybe<&2, @MB@>, Some{RT2.xat_@L@(FD.array__slots(@MB@, T), s)}, FD.spec_common__nth(@MB@, FD.array__slots(@MB@, T), s), Some{v},
+      Equal.sym(Maybe<&2, @MB@>, FD.spec_common__nth(@MB@, FD.array__slots(@MB@, T), s), Some{RT2.xat_@L@(FD.array__slots(@MB@, T), s)}, hx_at_@L@(dd, T, s, pf, hs)), h))
+
+# elements 1 + c, 1 + c + 1, ... (k of them) of the final tree view as the window's items
+def xiW_@L@(k: Nat, +c: U32, +s: Nat, +m: U32, @WP@, +dd: Nat, +K: Nat, +T0: FD.array__Tree<@MB@>, +u0: @MB@,
+    +pf0: {FD.array__perfect(@MB@, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+    +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
+    +hE: {@TX@.EV(k, c, m, t, x, off, len, True{}, @TX@.WJ(t, x, c)) == True{} : Bool})
+    -> {RT2.xi_@L@(k, FD.array__slots(@MB@, FT_@L@(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == @TX@.VI(k, c, m, t, x, len) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+ +p:
+      +FK = FT_@L@(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
+        Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
+      +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
+        Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), p), Nat.add(U32.to_nat(c), 1n+p), K, Equal.sym(Nat, Nat.add(U32.to_nat(c), 1n+p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__add_succ(U32.to_nat(c), p)), eK),
+        FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
+      +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
+      +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(@MB@, FD.array__slots(@MB@, FK), z) == Some{NV_@L@(c, m, d, t, x, off, len)} : Maybe<&2, @MB@>}, 1n+U32.to_nat(c), s, es,
+        lemN_@L@(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_@L@(dd, FK, s, NV_@L@(c, m, d, t, x, off, len), pfFT_@L@(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +nb = @TX@.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
+      +hc = @TX@.ev_ok(p, U32.add(c, 1), m, t, x, off, len, @TX@.EE(True{}, t, x, off, len, @TX@.WJ(t, x, c), nb), nb, hE)
+      +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
+      %Equal.sym(@MB@, RT2.xat_@L@(FD.array__slots(@MB@, FK), s), NV_@L@(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_@E@_bx(RT2.th_@E@_bx(_)), RT2.xi_@L@(p, FD.array__slots(@MB@, FK), 1n+s)} == @TX@.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_@E@_bx(RT2.th_@E@_bx(NV_@L@(c, m, d, t, x, off, len))), @TX@.VE(t, x, @TX@.WJ(t, x, c), nb), elv_@L@(d, t, x, off, len, eo, hd, hw, pf, @TX@.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_@L@(p, FD.array__slots(@MB@, FK), 1n+s)} == @TX@.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{@TX@.VE(t, x, @TX@.WJ(t, x, c), nb), z}, RT2.xi_@L@(p, FD.array__slots(@MB@, FK), 1n+s), @TX@.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_@L@(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, @TX@.inv_nx(p, c, m, invc), @TX@.he_nx(p, c, m, t, x, off, len, invc, hE)))
+
+# ---- a nonempty window ----
+def vtf_@L@(@WP@, +hc0: {@TX@.CF(@TX@.HC(@TX@.W0(t, x), len), t, x, off, len) == True{} : Bool})
+    -> {RT2.xv_@L@(@TX@.RZ(False{}, d, t, x, off, len)) == @TX@.VZE(False{}, t, x, len) : S.Value}:
+@PRE@
+  +x0 = xat_of_@L@(dd, FK, 0n, u0, pfFT_@L@(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_@L@(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(@BX@, @TX@.OBJE(d, t, x, off, f, @TX@.B1(t, x, len)), RT2.th_@E@_bx(u0), eqE_@L@(d, t, x, off, len, eo, hd, hw, pf, f, @TX@.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MB@, RT2.tfz_@L@(@TX@.RV(k0, 0, N, d, t, x, off, len, @LD@.@L@_fill(dd), _))), 0n)} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<@BX@>, @LD@.@L@_fill(dd), RT2.am_@L@(T0), fillam_@L@(dd)) :
+    {S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MB@, RT2.tfz_@L@(@TX@.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_@E@_bx(u0)))), 0n)} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<@BX@>, @TX@.RV(k0, 0, N, d, t, x, off, len, RT2.am_@L@(T0), RT2.th_@E@_bx(u0)), RT2.am_@L@(FK), rvF_@L@(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MB@, RT2.tfz_@L@(_)), 0n)} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<@MB@>, RT2.tfz_@L@(RT2.am_@L@(FK)), FK, RT2.tfzam_@L@(FK)) :
+    {S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MB@, _), 0n)} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_@L@(_, FD.array__slots(@MB@, FK), 0n)} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(@MB@, RT2.xat_@L@(FD.array__slots(@MB@, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_@E@_bx(RT2.th_@E@_bx(_)), RT2.xi_@L@(k0, FD.array__slots(@MB@, FK), 1n)}} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_@E@_bx(RT2.th_@E@_bx(u0)), @TX@.VE(t, x, f, @TX@.B1(t, x, len)), elv_@L@(d, t, x, off, len, eo, hd, hw, pf, f, @TX@.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_@L@(k0, FD.array__slots(@MB@, FK), 1n)}} == @TX@.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{@TX@.VE(t, x, f, @TX@.B1(t, x, len)), z}}, RT2.xi_@L@(k0, FD.array__slots(@MB@, FK), 1n), @TX@.VI(k0, 0, N, t, x, len),
+    xiW_@L@(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+
+def vtc_@L@(@WP@, +b: Bool, +hc: {@TX@.CZ(b, t, x, off, len) == True{} : Bool})
+    -> {RT2.xv_@L@(@TX@.RZ(b, d, t, x, off, len)) == @TX@.VZE(b, t, x, len) : S.Value}:
+  match b:
+    case True{}: {==}
+    case False{}: vtf_@L@(d, t, x, off, len, eo, hd, hw, pf, hc)
+
+# the list a window reads views as the window's value, when the window lies in the buffer and its check passed
+def vw_@L@(@WP@, +hc: {@TX@.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.xv_@L@(@TX@.OBJw(d, t, x, off, len)) == @TX@.VALw(t, x, len) : S.Value}:
+  vtc_@L@(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+
+"""
+
+GVL_TF = r"""# ... and it survives freezing then thawing
+def tff_@L@(@WP@, +hc0: {@TX@.CF(@TX@.HC(@TX@.W0(t, x), len), t, x, off, len) == True{} : Bool})
+    -> {RT2.th_@L@(RT2.fz_@L@(@TX@.RZ(False{}, d, t, x, off, len))) == @TX@.RZ(False{}, d, t, x, off, len) : @LTY@}:
+@PRE@
+  %Equal.sym(@BX@, @TX@.OBJE(d, t, x, off, f, @TX@.B1(t, x, len)), RT2.th_@E@_bx(u0), eqE_@L@(d, t, x, off, len, eo, hd, hw, pf, f, @TX@.B1(t, x, len), hc1)) :
+    {@LD@.@L@_Seq{RT2.am_@L@(RT2.tfz_@L@(@TX@.RV(k0, 0, N, d, t, x, off, len, @LD@.@L@_fill(dd), _))), N} == @LD@.@L@_Seq{@TX@.RV(k0, 0, N, d, t, x, off, len, @LD@.@L@_fill(dd), _), N} : @LTY@}
+  %Equal.sym(Array<@BX@>, @LD@.@L@_fill(dd), RT2.am_@L@(T0), fillam_@L@(dd)) :
+    {@LD@.@L@_Seq{RT2.am_@L@(RT2.tfz_@L@(@TX@.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_@E@_bx(u0)))), N} == @LD@.@L@_Seq{@TX@.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_@E@_bx(u0)), N} : @LTY@}
+  %Equal.sym(Array<@BX@>, @TX@.RV(k0, 0, N, d, t, x, off, len, RT2.am_@L@(T0), RT2.th_@E@_bx(u0)), RT2.am_@L@(FK), rvF_@L@(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {@LD@.@L@_Seq{RT2.am_@L@(RT2.tfz_@L@(_)), N} == @LD@.@L@_Seq{_, N} : @LTY@}
+  %Equal.sym(FD.array__Tree<@MB@>, RT2.tfz_@L@(RT2.am_@L@(FK)), FK, RT2.tfzam_@L@(FK)) :
+    {@LD@.@L@_Seq{RT2.am_@L@(_), N} == @LD@.@L@_Seq{RT2.am_@L@(FK), N} : @LTY@}
+  {==}
+
+def tfc_@L@(@WP@, +b: Bool, +hc: {@TX@.CZ(b, t, x, off, len) == True{} : Bool})
+    -> {RT2.th_@L@(RT2.fz_@L@(@TX@.RZ(b, d, t, x, off, len))) == @TX@.RZ(b, d, t, x, off, len) : @LTY@}:
+  match b:
+    case True{}: {==}
+    case False{}: tff_@L@(d, t, x, off, len, eo, hd, hw, pf, hc)
+
+def tf_@L@(@WP@, +hc: {@TX@.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.th_@L@(RT2.fz_@L@(@TX@.OBJw(d, t, x, off, len))) == @TX@.OBJw(d, t, x, off, len) : @LTY@}:
+  tfc_@L@(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+"""
+
+GVL_PRE = r"""  +f = @TX@.W0(t, x)
+  +N = @TX@.NN(t, x)
+  +ec = @TX@.cf_ok(@TX@.HC(f, len), t, x, off, len, hc0)
+  +hEV = FD.logic__subst(Bool, z => {@TX@.CF(z, t, x, off, len) == True{} : Bool}, @TX@.HC(f, len), True{}, ec, hc0)
+  +hA = FD.logic__and_left(Bool.and(U32.is_eq(U32.and(f, 3), 0), U32.is_le(f, len)), Bool.and(U32.is_le(4, f), True{}), ec)
+  +hB = FD.logic__and_right(Bool.and(U32.is_eq(U32.and(f, 3), 0), U32.is_le(f, len)), Bool.and(U32.is_le(4, f), True{}), ec)
+  +e3 = VVU.eqt(U32.and(f, 3), 0, FD.logic__and_left(U32.is_eq(U32.and(f, 3), 0), U32.is_le(f, len), hA))
+  +h4 = @TX@.ule(4, f, FD.logic__and_left(U32.is_le(4, f), True{}, hB))
+  +hfl = @TX@.ule(f, len, FD.logic__and_right(U32.is_eq(U32.and(f, 3), 0), U32.is_le(f, len), hA))
+  +ew = Equal.trans(Nat, U32.to_nat(f), Nat.add(A.quad(U32.to_nat(N)), U32.to_nat(U32.and(f, 3))), A.quad(U32.to_nat(N)), VC.split4(f),
+    Equal.trans(Nat, Nat.add(A.quad(U32.to_nat(N)), U32.to_nat(U32.and(f, 3))), Nat.add(A.quad(U32.to_nat(N)), 0n), A.quad(U32.to_nat(N)),
+      Equal.cong(Nat, Nat, z => Nat.add(A.quad(U32.to_nat(N)), z), U32.to_nat(U32.and(f, 3)), 0n, e3), FD.nat__add_zero(A.quad(U32.to_nat(N)))))
+  +h1 = @TX@.quad_pos(U32.to_nat(N), FD.logic__subst(Nat, z => {Nat.is_le(4n, z) == True{} : Bool}, U32.to_nat(f), A.quad(U32.to_nat(N)), ew, h4))
+  +es = FD.u32__sub_nat(N, 1, h1)
+  +k0 = U32.to_nat(U32.sub(N, 1))
+  +inv = Equal.trans(Nat, Nat.add(U32.to_nat(0), 1n+k0), 1n+Nat.sub(U32.to_nat(N), 1n), U32.to_nat(N),
+    Equal.cong(Nat, Nat, z => 1n+z, k0, Nat.sub(U32.to_nat(N), 1n), es),
+    FD.nat__sub_add(U32.to_nat(N), 1n, h1))
+  +hc1 = @TX@.ev_ok(k0, 0, N, t, x, off, len, @TX@.EE(True{}, t, x, off, len, f, @TX@.B1(t, x, len)), @TX@.B1(t, x, len), hEV)
+  +hE1 = FD.logic__subst(Bool, z => {@TX@.EV(k0, 0, N, t, x, off, len, z, @TX@.B1(t, x, len)) == True{} : Bool}, @TX@.EE(True{}, t, x, off, len, f, @TX@.B1(t, x, len)), True{}, hc1, hEV)
+  +hE0 = @TX@.he0(t, x, off, len, U32.is_eq(1, N), {==}, hE1)
+  +hNq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(f), A.quad(U32.to_nat(N)), ew,
+    FD.nat__le_trans(U32.to_nat(f), U32.to_nat(len), A.quad(VB.pw(d)), hfl, @TX@.hlen(d, x, len, hw)))
+  +hN4 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, VB.pw(d), O.pow2n(d), VD.s_pow2_eq(d), VC.quad_inv(U32.to_nat(N), VB.pw(d), hNq))
+  +dd = B.words_depth(N)
+  +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 28n, 32n, hd, {==}))
+  +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
+    VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 28n, 32n, hd, {==})), hN4))
+  +T0 = FD.array__trep(@MB@, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(@MB@, dd, RT2.MNone{})
+  +u0 = ND_@L@(d, t, x, off, f, @TX@.B1(t, x, len))
+  +FK = FT_@L@(k0, 0, N, d, t, x, off, len, dd, T0, u0)"""
+
+
+def _gvl_ea(TX):
+    """the element's window arguments (d, t, x, off, len, eo, hd, hw, pf, hc) from EE(True, .., s, e) == True (h)."""
+    hab = f'{TX}.el_ab(t, x, off, len, s, e, h)'
+    hb = f'{TX}.el_b(t, x, off, len, s, e, h)'
+    return (f'd, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), '
+            f'{TX}.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), {hab}, {hb}), eo, hd, hw), hd, '
+            f'{TX}.hwab(d, x, len, s, e, {hab}, {hb}, hw), pf, {TX}.el_c(t, x, off, len, s, e, h)')
+
+
+def gvl_text():
+    body = [GVL_SHARED.replace('@WP@', GVL_WP)]
+    imps = []
+    for L, (mod, TX, E, ETY, LD) in GVL.items():
+        imps.append(f'import ../proofs/obj/{mod}.bend as {TX}')
+        LTY = f'{LD}.{L}_Seq'
+        YW = f'{TX}.YW' if False else None
+        yw = {'Gc465214E502': 'YW0', 'Gp66304057C3': 'YW1', 'pl_Gc465214E502': 'TA'}[E]
+        txt = (GVL_PER + (GVL_TF if L in GVL_ELEM else '')).replace('@PRE@', GVL_PRE).replace('@EA@', _gvl_ea(TX)).replace('@WP@', GVL_WP)
+        txt = (txt.replace('@MB@', f'RT2.MB<RT2.M_{E}>').replace('@BX@', f'O.Boxed<{ETY}>').replace('@ETY@', ETY).replace('@LTY@', LTY)
+               .replace('@YW@', yw).replace('@TX@', TX).replace('@LD@', LD).replace('@L@', L).replace('@E@', E))
+        body.append(txt)
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../types/schema.bend as S',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VLS',
+            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/big_vvlu.bend as VVU',
+            'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/vfx_u16.bend as FX16', 'import ../proofs/obj/vfx_u8.bend as FX8',
+            'import ../proofs/obj/var_winx_Gc465214E502.bend as YW0', 'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as YW1',
+            'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ./e2e_gvt.bend as GVT', 'import ./e2e_gprog.bend as GP'] + imps
+    head += [f'import ../types/{f}.bend as {a}' for a, f in GVL_TYPES]
+    return '\n'.join(head) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# Progressive lists of variable-size elements read at a byte window (the var_vlist windows): the reader's
+# Array.set chain is RT2.am of tree updates FT_L (rvF_L; each element written is th_bx of its mirror, eqE_L);
+# element 0 of FT_L is the first write (lemV_L), element 1 + c the write of element c (lemN_L); an element's view is
+# its window's value (vw_E). vw_L: the list's root view is the window's value; tf_L: the list survives fz then th,
+# so a list of such lists nests (pl_pl_Gc465214E502 over pl_Gc465214E502).
+
+''' + '\n'.join(body)
+
+
+SUPPORT_OUT['e2e_gvl.bend'] = gvl_text()
+
+
+# ---- e2e_gcx: the progressive containers with list fields, read at a byte window ------------------------------
+# GCX[X] = (window module, alias, [(field kind, child alias)]) with kinds: u8 (fixed at 0), l16 (List[uint16, N]),
+# pb (progressive bits), pu8 / pu64 (progressive uint lists), rl (record list, e2e_grl), vl (e2e_gvl list)
+GCX = {
+    'Gc221EC01D83': ('var_winx_Gc221EC01D83', 'WPT', [('pu8', 'PU8'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_Gc4ED9619F50'), ('vl', 'TB', 'pl_pl_Gc465214E502')]),
+    'Gp8A7851175B': ('big_var_winx_Gp8A7851175B', 'WPC', [('u8',), ('l16', 'L123'), ('pb', 'PBW'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_Gc4ED9619F50'),
+                                                          ('vl', 'TB', 'pl_pl_Gc465214E502'), ('rl', 'RL1', 'l10_GpF350A3C486'), ('vl', 'TC', 'pl_Gp66304057C3')]),
+}
+
+
+def gcx_text():
+    body = []
+    imps = []
+    for X, (mod, W, fields) in GCX.items():
+        imps.append(f'import ../proofs/obj/{mod}.bend as {W}')
+        nvar = sum(1 for f in fields if f[0] != 'u8')
+        items = []
+        k = 0
+        for f in fields:
+            kd = f[0]
+            if kd == 'u8':
+                items.append((f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat(0)))', None))
+                continue
+            CH = f[1]
+            ln = (k == nvar - 1)
+            xj, fj, lj = f'{W}.XJ{k}(t, x)', f'{W}.FJ{k}(off, t, x)', f'{W}.LJ{k}(t, x' + (', len)' if ln else ')')
+            win = f'd, t, {xj}, {fj}, {lj}'
+            ja = f'{win}, {W}.eoJ{k}({GP_WA}), hd, {W}.hwJ{k}({GP_WA}), pf, {W}.itD{k}(t, x, off, len, h)'
+            rhs = f'{CH}.VALw(t, {xj}, {lj})'
+            if kd == 'pb':
+                items.append((f'S.BitsValue{{BO.bview({CH}.OBJw({win}))}}', rhs,
+                              f'Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{{z}}, BO.bview({CH}.OBJw({win})), VBL.bl(UW.WX(t, {xj}, U32.to_nat({lj}))), GPB.pbv({ja}))'))
+            elif kd == 'l16':
+                items.append((f'PBF.vview2({CH}.OBJw({win}))', rhs, f'GP.lv_l123({ja})'))
+            elif kd == 'pu8':
+                items.append((f'PBF.vview1({CH}.OBJw({win}))', rhs, f'GP.pu8({ja})'))
+            elif kd == 'pu64':
+                items.append((f'UL.uview({CH}.OBJw({win}))', rhs, f'GP.pu64({ja})'))
+            elif kd == 'rl':
+                items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GRL.vl_{f[2]}({ja})'))
+            elif kd == 'vl':
+                items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}({ja})'))
+            k += 1
+        body.append(gp_view(X, W, items))
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/packed_bytes.bend as PBF',
+            'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/root_gtypes2.bend as RT2',
+            'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vfx_u8.bend as FX8',
+            'import ../proofs/obj/var_winx_l123_u16.bend as L123', 'import ../proofs/obj/big_var_winp_pbits.bend as PBW',
+            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64',
+            'import ../proofs/obj/big_var_winx_pl_Gc4ED9619F50.bend as RL4', 'import ../proofs/obj/var_winx_l10_GpF350A3C486.bend as RL1',
+            'import ../proofs/obj/big_vvl_pl_pl_Gc465214E502.bend as TB', 'import ../proofs/obj/big_vvl_pl_Gp66304057C3.bend as TC',
+            'import ./e2e_gpb.bend as GPB', 'import ./e2e_gprog.bend as GP', 'import ./e2e_grl.bend as GRL', 'import ./e2e_gvl.bend as GVL'] + imps
+    return '\n'.join(head) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# The progressive containers with list fields read at a byte window (x, off, len): the object's root view is its
+# codec value (vw_X), field by field: progressive uint lists (e2e_gprog), record lists (e2e_grl), lists of
+# variable-size elements (e2e_gvl), a List[uint16, N] and progressive bits as in e2e_gprog.
+
+''' + '\n'.join(body)
+
+
+SUPPORT_OUT['e2e_gcx.bend'] = gcx_text()
+
+
+# ---- e2e_encl: encode records from the root law's representation for list fields ------------------------------
+ENCL_A = r"""# ---- the bound every unbounded list field takes: its bytes within 2^27 + 1 (P1) ----
+def P1() -> Nat: Nat.add(VB.pw(27n), 1n)
+
+# ---- pu8: a progressive list of uint8 field (big_encx_pl_u8) ----
+def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 28n)) -> {XU8.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
+  (+pf, +s1) = sf
+  (+hdw, +s2) = s1
+  (+hN, +htz) = s2
+  FD.logic__and_intro(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}))), pf,
+    FD.logic__and_intro(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{})), hdw,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}), hN,
+    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}, htz, {==}))))
+
+def lv_pu8(+tt: FD.array__Tree<U32>, +n: U32) -> {PBF.vview1(O.Words{FD.array__thaw(U32, tt), n}) == PU8.VALw(tt, 0n, n) : S.Value}:
+  +e1 = Equal.cong(+List<U32>, S.Value, z => S.Sequence{PBF.it1(U32.to_nat(n), z)}, WO.wview(O.Words{FD.array__thaw(U32, tt), n}), BL.WX0(tt, n), BL.wv0(tt, n))
+  +e2 = Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it1(U32.to_nat(n), BL.WX0(tt, n)), PBM.it1(U32.to_nat(n), BL.WX0(tt, n)), PL.it1eq(U32.to_nat(n), BL.WX0(tt, n)))
+  Equal.trans(S.Value, PBF.vview1(O.Words{FD.array__thaw(U32, tt), n}), S.Sequence{PBF.it1(U32.to_nat(n), BL.WX0(tt, n))}, PU8.VALw(tt, 0n, n), e1, e2)
+
+def LR_pu8(w: O.Words) -> Data:
+  DK.Ex(XU8.MW, m => DK.P2({w == XU8.TH(m) : O.Words}, DK.P2({PBF.vview1(XU8.TH(m)) == XU8.VAL(m) : S.Value}, DK.P2({XU8.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU8.ENC(m)), P1()) == True{} : Bool}))))
+
+# the premise of a byte-storage list field: its storage at depth below 28, its bytes within P1
+def PW1(w: O.Words) -> Data: DK.P2(BL.sdk(w, 28n), {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool})
+
+def lb2_pu8(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 28n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool}) -> LR_pu8(w):
+  (+tt, +c1) = cw
+  (+n, +ew) = c1
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), P1()) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 28n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
+  +hok = ok_pu8(tt, n, ER.sfk(tt, n, 28n, hs2))
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})),
+    Equal.sym(Nat, List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU8.eL(ER.LDEP(U32, tt), tt, n, hok)), hl2)
+  (XU8.MW{ER.LDEP(U32, tt), tt, n}, (ew, (lv_pu8(tt, n), (hok, ln))))
+
+def lb_pu8(-w: O.Words, +rep: LO.wfl(w), +hp: PW1(w)) -> LR_pu8(w):
+  (+hs, +hl) = hp
+  lb2_pu8(w, ER.cpw(w, rep), hs, hl)
+
+# ---- pu64: a progressive list of uint64 field (big_encx_pl_u64) ----
+def m4q(+j: Nat) -> {UR.m4(A.quad(j)) == 0n : Nat}:
+  match j:
+    case 0n: {==}
+    case 1n+ +p: m4q(p)
+def d4q(+j: Nat) -> {UR.d4(A.quad(j)) == j : Nat}:
+  match j:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, UR.d4(A.quad(p)), p, d4q(p))
+
+# the words read at 4 j, 4 j + 4, ... (m of them) are the tree's words from j
+def rws0(m: Nat, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, dw, t) == True{} : Bool}, +h: {Nat.is_le(Nat.add(j, m), VB.pw(dw)) == True{} : Bool})
+    -> {UR.RWS(m, t, A.quad(j)) == VS.wtake(m, VB.wdr(j, FD.array__slots(U32, t))) : List<&2, U32>}:
+  match m:
+    case 0n: {==}
+    case 1n+ +p:
+      +S = FD.array__slots(U32, t)
+      +hj = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, VB.pw(dw), VB.len(S), Equal.sym(Nat, VB.len(S), VB.pw(dw), FD.array__slots_length(U32, dw, t, pf)),
+        FD.nat__lt_le_trans(j, Nat.add(j, 1n+p), VB.pw(dw), VTX.ltp(j, p), h))
+      +h1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(j, 1n+p), 1n+Nat.add(j, p), FD.nat__add_succ(j, p), h)
+      %Equal.sym(List<&2, U32>, VB.wdr(j, S), Con{FD.flat__nthc(S, j), VB.wdr(1n+j, S)}, VB.wdr_eta(j, S, hj)) :
+        {Con{UR.RWN(t, A.quad(j)), UR.RWS(p, t, A.quad(1n+j))} == VS.wtake(1n+p, _) : List<&2, U32>}
+      %Equal.sym(Nat, UR.m4(A.quad(j)), 0n, m4q(j)) :
+        {Con{UA.jn(_, VB.slot(t, UR.d4(A.quad(j))), VB.slot(t, 1n+UR.d4(A.quad(j)))), UR.RWS(p, t, A.quad(1n+j))} == Con{FD.flat__nthc(S, j), VS.wtake(p, VB.wdr(1n+j, S))} : List<&2, U32>}
+      %Equal.sym(Nat, UR.d4(A.quad(j)), j, d4q(j)) :
+        {Con{UA.jn(0n, VB.slot(t, _), VB.slot(t, 1n+_)), UR.RWS(p, t, A.quad(1n+j))} == Con{FD.flat__nthc(S, j), VS.wtake(p, VB.wdr(1n+j, S))} : List<&2, U32>}
+      Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{FD.flat__nthc(S, j), z}, UR.RWS(p, t, A.quad(1n+j)), VS.wtake(p, VB.wdr(1n+j, S)), rws0(p, 1n+j, dw, t, pf, h1))
+
+def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 28n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat})
+    -> {XU64.OK(XU64.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
+  (+pf, +s1) = sf
+  (+hdw, +s2) = s1
+  (+hN, +htz) = s2
+  FD.logic__and_intro(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n))))), pf,
+    FD.logic__and_intro(Nat.is_lt(ER.LDEP(U32, tt), 28n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n)))), hdw,
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n))), hN,
+    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n)), htz,
+    FD.logic__and_intro(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n), FD.u32alg__eq_true(U32.and(n, 7), 0, VEN.and7_x8(n, c, ex8)),
+    VLS.whole_i1(n, 8, PU64.v8(), {==}, {==}, {==}, c, emul))))))
+
+def cq8(+n: U32, +c: Nat, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, wq: {U32.to_nat(U32.div(n, 8)) == c : Nat} & {U32.to_nat(U32.mod(n, 8)) == 0n : Nat}) -> {U32.to_nat(U32.div(n, 8)) == c : Nat}:
+  (+cq, +cm) = wq
+  cq
+
+def lv_pu64(+dw: Nat, +tt: FD.array__Tree<U32>, +n: U32, +c: Nat, +pf: {FD.array__perfect(U32, dw, tt) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(dw))) == True{} : Bool},
+    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat})
+    -> {UL.uview(O.Words{FD.array__thaw(U32, tt), n}) == PU64.VALw(tt, 0n, n) : S.Value}:
+  +S = FD.array__slots(U32, tt)
+  +cq = cq8(n, c, emul, VU.whole_q(n, 8, c, emul, {==}, VU.div_u32(n, 8, PU64.v8(), {==}, {==}, {==})))
+  +ecq = Equal.trans(Nat, U32.to_nat(U32.shrn(n, 3n)), VD.s_rng(3n, U32.to_nat(n)), c, VD.shrk(3n, n),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(n)), VD.s_rng(3n, VS.x8(c)), c, Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(n), VS.x8(c), ex8), ULW.r8(c)))
+  +eq8 = Equal.trans(Nat, U32.to_nat(n), Nat.mul(c, 8n), A.quad(Nat.double(c)), emul, VBG.mul8(c))
+  +h2c = VC.quad_inv(Nat.double(c), VB.pw(dw), FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dw))) == True{} : Bool}, U32.to_nat(n), A.quad(Nat.double(c)), eq8, hN))
+  +er = rws0(Nat.double(c), 0n, dw, tt, pf, h2c)
+  %Equal.sym(Nat, U32.to_nat(U32.div(n, 8)), c, cq) : {UL.uview(O.Words{FD.array__thaw(U32, tt), n}) == S.Sequence{VS.uitems(_, UR.RWS(Nat.double(_), tt, 0n))} : S.Value}
+  %Equal.sym(List<&2, U32>, UR.RWS(Nat.double(c), tt, 0n), VS.wtake(Nat.double(c), S), er) : {UL.uview(O.Words{FD.array__thaw(U32, tt), n}) == S.Sequence{VS.uitems(c, _)} : S.Value}
+  Equal.trans(S.Value, UL.uview(O.Words{FD.array__thaw(U32, tt), n}), S.Sequence{VS.uitems(c, S)}, S.Sequence{VS.uitems(c, VS.wtake(Nat.double(c), S))},
+    ULW.uvw(tt, n, c, ecq), Equal.cong(S.Value, S.Value, z => S.Sequence{z}, VS.uitems(c, S), VS.uitems(c, VS.wtake(Nat.double(c), S)), GP.ut(c, S)))
+
+def LR_pu64(w: O.Words) -> Data:
+  DK.Ex(XU64.MW, m => DK.P2({w == XU64.TH(m) : O.Words}, DK.P2({UL.uview(XU64.TH(m)) == XU64.VAL(m) : S.Value}, DK.P2({XU64.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU64.ENC(m)), P1()) == True{} : Bool}))))
+
+def lb3_pu64(-w: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {w == O.Words{FD.array__thaw(U32, tt), n} : O.Words}, +sf: ER.SFT(tt, n, 28n), +c: Nat,
+    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl2: {Nat.is_le(U32.to_nat(n), P1()) == True{} : Bool}) -> LR_pu64(w):
+  (+pf, +s1) = sf
+  (+hdw, +s2) = s1
+  (+hN, +htz) = s2
+  +hok = ok_pu64(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})),
+    Equal.sym(Nat, List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU64.eL(ER.LDEP(U32, tt), tt, n, hok)), hl2)
+  (XU64.MW{ER.LDEP(U32, tt), tt, n}, (ew, (lv_pu64(ER.LDEP(U32, tt), tt, n, c, pf, hN, ex8, emul), (hok, ln))))
+
+def lb2_pu64(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 28n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool},
+    +eN: {U32.to_nat(WO.len(w)) == O.e8(UL.ucnt(w)) : Nat}) -> LR_pu64(w):
+  (+tt, +c1) = cw
+  (+n, +ew) = c1
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), P1()) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 28n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
+  +eN2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == O.e8(UL.ucnt(z)) : Nat}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, eN)
+  +c = UL.ucnt(O.Words{FD.array__thaw(U32, tt), n})
+  +ex8 = Equal.trans(Nat, U32.to_nat(n), O.e8(c), VS.x8(c), eN2, Equal.sym(Nat, VS.x8(c), O.e8(c), ULW.x8e(c)))
+  +emul = Equal.trans(Nat, U32.to_nat(n), VS.x8(c), Nat.mul(c, 8n), ex8, Equal.sym(Nat, Nat.mul(c, 8n), VS.x8(c), VC.x8_mul(c)))
+  lb3_pu64(w, tt, n, ew, ER.sfk(tt, n, 28n, hs2), c, ex8, emul, hl2)
+
+def lb_pu64(-w: O.Words, +rp: DK.P2(LO.wfl(w), {U32.to_nat(WO.len(w)) == O.e8(UL.ucnt(w)) : Nat}), +hp: PW1(w)) -> LR_pu64(w):
+  (+wf, +eN) = rp
+  (+hs, +hl) = hp
+  lb2_pu64(w, ER.cpw(w, wf), hs, hl, eN)
+
+# ---- a container's byte bound: closed terms, and k terms of at most P + 1 bytes each (k <= 7) ----
+def KP(k: Nat, +P: Nat) -> Nat:
+  match k:
+    case 0n: 0n
+    case 1n+q: Nat.add(P, KP(q, P))
+
+# (a + b) + (c + d) == (a + d) + (c + b)
+def sw4(+a: Nat, +b: Nat, +c: Nat, +d: Nat) -> {Nat.add(Nat.add(a, b), Nat.add(c, d)) == Nat.add(Nat.add(a, d), Nat.add(c, b)) : Nat}:
+  Equal.trans(Nat, Nat.add(Nat.add(a, b), Nat.add(c, d)), Nat.add(a, Nat.add(b, Nat.add(c, d))), Nat.add(Nat.add(a, d), Nat.add(c, b)), FD.nat__add_assoc(a, b, Nat.add(c, d)),
+    Equal.trans(Nat, Nat.add(a, Nat.add(b, Nat.add(c, d))), Nat.add(a, Nat.add(d, Nat.add(c, b))), Nat.add(Nat.add(a, d), Nat.add(c, b)),
+      Equal.cong(Nat, Nat, z => Nat.add(a, z), Nat.add(b, Nat.add(c, d)), Nat.add(d, Nat.add(c, b)),
+        Equal.trans(Nat, Nat.add(b, Nat.add(c, d)), Nat.add(c, Nat.add(b, d)), Nat.add(d, Nat.add(c, b)), FD.lru_nat_algebra__add_swap(b, c, d),
+          Equal.trans(Nat, Nat.add(c, Nat.add(b, d)), Nat.add(c, Nat.add(d, b)), Nat.add(d, Nat.add(c, b)), Equal.cong(Nat, Nat, z => Nat.add(c, z), Nat.add(b, d), Nat.add(d, b), FD.nat__add_comm(b, d)),
+            FD.lru_nat_algebra__add_swap(c, d, b)))),
+      Equal.sym(Nat, Nat.add(Nat.add(a, d), Nat.add(c, b)), Nat.add(a, Nat.add(d, Nat.add(c, b))), FD.nat__add_assoc(a, d, Nat.add(c, b)))))
+
+# a closed term of at most B bytes
+def acc(+a: Nat, +x: Nat, +c: Nat, +B: Nat, +k: Nat, +P: Nat, +ha: {Nat.is_le(a, Nat.add(c, KP(k, P))) == True{} : Bool}, +hx: {Nat.is_le(x, B) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(a, x), Nat.add(Nat.add(c, B), KP(k, P))) == True{} : Bool}:
+  +e = Equal.trans(Nat, Nat.add(Nat.add(c, KP(k, P)), B), Nat.add(c, Nat.add(KP(k, P), B)), Nat.add(Nat.add(c, B), KP(k, P)), FD.nat__add_assoc(c, KP(k, P), B),
+    Equal.trans(Nat, Nat.add(c, Nat.add(KP(k, P), B)), Nat.add(c, Nat.add(B, KP(k, P))), Nat.add(Nat.add(c, B), KP(k, P)), Equal.cong(Nat, Nat, z => Nat.add(c, z), Nat.add(KP(k, P), B), Nat.add(B, KP(k, P)), FD.nat__add_comm(KP(k, P), B)),
+      Equal.sym(Nat, Nat.add(Nat.add(c, B), KP(k, P)), Nat.add(c, Nat.add(B, KP(k, P))), FD.nat__add_assoc(c, B, KP(k, P)))))
+  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, x), z) == True{} : Bool}, Nat.add(Nat.add(c, KP(k, P)), B), Nat.add(Nat.add(c, B), KP(k, P)), e, ER.addle(a, x, Nat.add(c, KP(k, P)), B, ha, hx))
+
+# a term of at most P + 1 bytes
+def acu(+a: Nat, +x: Nat, +c: Nat, +k: Nat, +P: Nat, +ha: {Nat.is_le(a, Nat.add(c, KP(k, P))) == True{} : Bool}, +hx: {Nat.is_le(x, Nat.add(P, 1n)) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(a, x), Nat.add(Nat.add(c, 1n), KP(1n+k, P))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, x), z) == True{} : Bool}, Nat.add(Nat.add(c, KP(k, P)), Nat.add(P, 1n)), Nat.add(Nat.add(c, 1n), Nat.add(P, KP(k, P))), sw4(c, KP(k, P), P, 1n),
+    ER.addle(a, x, Nat.add(c, KP(k, P)), Nat.add(P, 1n), ha, hx))
+
+def acz(+c: Nat, +P: Nat) -> {Nat.is_le(c, Nat.add(c, KP(0n, P))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, c, Nat.add(c, 0n), Equal.sym(Nat, Nat.add(c, 0n), c, FD.nat__add_zero(c)), FD.nat__le_refl(c))
+
+def kpm(k: Nat, m: Nat, +P: Nat, +h: {Nat.is_le(k, m) == True{} : Bool}) -> {Nat.is_le(KP(k, P), KP(m, P)) == True{} : Bool}:
+  match k m:
+    case 0n _: Order.zero_le(KP(m, P))
+    case 1n+ +p 0n: Empty.absurd({Nat.is_le(KP(1n+p, P), KP(0n, P)) == True{} : Bool}, FD.logic__false_true(h))
+    case 1n+ +p 1n+ +q: Order.add_left(P, KP(p, P), KP(q, P), kpm(p, q, P, h))
+
+def kpa(a: Nat, +b: Nat, +P: Nat) -> {KP(Nat.add(a, b), P) == Nat.add(KP(a, P), KP(b, P)) : Nat}:
+  match a:
+    case 0n: {==}
+    case 1n+ +p:
+      Equal.trans(Nat, Nat.add(P, KP(Nat.add(p, b), P)), Nat.add(P, Nat.add(KP(p, P), KP(b, P))), Nat.add(Nat.add(P, KP(p, P)), KP(b, P)),
+        Equal.cong(Nat, Nat, z => Nat.add(P, z), KP(Nat.add(p, b), P), Nat.add(KP(p, P), KP(b, P)), kpa(p, b, P)),
+        Equal.sym(Nat, Nat.add(Nat.add(P, KP(p, P)), KP(b, P)), Nat.add(P, Nat.add(KP(p, P), KP(b, P))), FD.nat__add_assoc(P, KP(p, P), KP(b, P))))
+
+def dbl(x: Nat) -> {Nat.double(x) == Nat.add(x, x) : Nat}:
+  match x:
+    case 0n: {==}
+    case 1n+ +p:
+      Equal.trans(Nat, 2n+Nat.double(p), 2n+Nat.add(p, p), 1n+Nat.add(p, 1n+p), Equal.cong(Nat, Nat, z => 2n+z, Nat.double(p), Nat.add(p, p), dbl(p)),
+        Equal.cong(Nat, Nat, z => 1n+z, 1n+Nat.add(p, p), Nat.add(p, 1n+p), Equal.sym(Nat, Nat.add(p, 1n+p), 1n+Nat.add(p, p), FD.nat__add_succ(p, p))))
+
+def kpd(+k: Nat, +P: Nat, +y: Nat, +e: {KP(k, P) == y : Nat}) -> {KP(Nat.add(k, k), P) == Nat.double(y) : Nat}:
+  Equal.trans(Nat, KP(Nat.add(k, k), P), Nat.add(KP(k, P), KP(k, P)), Nat.double(y), kpa(k, k, P),
+    Equal.trans(Nat, Nat.add(KP(k, P), KP(k, P)), Nat.add(y, y), Nat.double(y), Equal.cong(Nat, Nat, z => Nat.add(z, z), KP(k, P), y, e), Equal.sym(Nat, Nat.double(y), Nat.add(y, y), dbl(y))))
+
+def kp8(+P: Nat) -> {KP(8n, P) == A.quad(Nat.double(P)) : Nat}:
+  +e1 = Equal.trans(Nat, KP(1n, P), Nat.add(P, 0n), P, {==}, FD.nat__add_zero(P))
+  +e2 = kpd(1n, P, P, e1)
+  +e4 = kpd(2n, P, Nat.double(P), e2)
+  kpd(4n, P, Nat.double(Nat.double(P)), e4)
+
+# the total within 2^30 = 8 P (P = 2^27): c <= P, at most 7 unbounded terms
+def fin(+s: Nat, +c: Nat, +k: Nat, +P: Nat, +h: {Nat.is_le(s, Nat.add(c, KP(k, P))) == True{} : Bool}, +hc: {Nat.is_le(c, P) == True{} : Bool}, +hk: {Nat.is_le(k, 7n) == True{} : Bool})
+    -> {Nat.is_le(s, A.quad(Nat.double(P))) == True{} : Bool}:
+  FD.nat__le_trans(s, Nat.add(c, KP(k, P)), A.quad(Nat.double(P)), h,
+    FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(c, KP(k, P)), z) == True{} : Bool}, KP(8n, P), A.quad(Nat.double(P)), kp8(P),
+      ER.addle(c, KP(k, P), P, KP(7n, P), hc, kpm(k, 7n, P, hk))))
+"""
+
+# record lists: tag -> (EX file, EX alias, element def alias.type name, element tag, element encode alias, RS, field kinds, limit or None, list def alias)
+ENCL_RL = {
+    'pl_Gc4ED9619F50': ('big_encx_pl_Gc4ED9619F50', 'XR4', 'SmallTestStruct_d', 'Gc4ED9619F50', 'SmallTestStruct_e', 4, ['u16', 'u16'], None, 'proglist_SmallTestStruct_d'),
+    'l10_GpF350A3C486': ('big_encx_l10_GpF350A3C486', 'XR1', 'ProgressiveSingleFieldContainerTestStruct_d', 'GpF350A3C486', 'ProgressiveSingleFieldContainerTestStruct_e', 1, ['u8'], 10, 'list_ProgressiveSingleFieldContainerTestStruct_10_d'),
+}
+
+ENCL_RL_SHARED = r"""# ---- record lists: shared ----
+# r bytes per record, r <= 4: x records within 4 x bytes
+def mq(+x: Nat, +r: Nat, +hr: {Nat.is_le(r, 4n) == True{} : Bool}) -> {Nat.is_le(Nat.mul(x, r), A.quad(x)) == True{} : Bool}:
+  match x:
+    case 0n: {==}
+    case 1n+ +p: ER.addle(r, Nat.mul(p, r), 4n, A.quad(p), hr, mq(p, r, hr))
+
+# i < 2^dw when i + 1 + q <= 2^dw
+def ltq(+i: Nat, +q: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(i, 1n+q), P) == True{} : Bool}) -> {Nat.is_lt(i, P) == True{} : Bool}:
+  FD.nat__lt_le_trans(i, Nat.add(i, 1n+q), P, VTX.ltp(i, q), h)
+def nxq(+i: Nat, +q: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(i, 1n+q), P) == True{} : Bool}) -> {Nat.is_le(Nat.add(1n+i, q), P) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.add(i, 1n+q), 1n+Nat.add(i, q), FD.nat__add_succ(i, q), h)
+"""
+
+ENCL_RL_PER = r"""# ---- @T@: a list of @EN@ records (@RS@ bytes each), @X@ ----
+# a record the root law represents is valid, and its view is the codec law's
+def vrp_@T@(+o: @ED@.@EN@, +rp: RN.rp_@EN@(o)) -> {@EE@.@EN@_valid(o) == True{} : Bool}:
+  match o:
+    case @ED@.@EN@{@FV@}:
+@VRPB@
+
+def rvv_@T@(+o: @ED@.@EN@, +rp: RN.rp_@EN@(o)) -> {RN.v_@EN@(o) == @X@.RV_@EN@(o) : S.Value}:
+  match o:
+    case @ED@.@EN@{@FV@}:
+@RVVB@
+
+# record j of the tree is the root's element j
+def elx_@T@(+A: FD.array__Tree<@ET@>, +dw: Nat, +j: Nat, +pf: {FD.array__perfect(@ET@, dw, A) == True{} : Bool}, +hj: {Nat.is_lt(j, FD.spec_common__pow2(dw)) == True{} : Bool})
+    -> {@X@.EL(A, j) == RT2.xat_@T@(FD.array__slots(@ET@, A), j) : @ET@}:
+  Equal.cong(Maybe<&2, @ET@>, @ET@, m => VRL.mget(@ET@, m, @ET@_default()), FD.spec_common__nth(@ET@, FD.array__slots(@ET@, A), j), Some{RT2.xat_@T@(FD.array__slots(@ET@, A), j)},
+    RT2.nth_@T@(FD.array__slots(@ET@, A), j, FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dw), FD.spec_common__length(@ET@, FD.array__slots(@ET@, A)),
+      Equal.sym(Nat, FD.spec_common__length(@ET@, FD.array__slots(@ET@, A)), FD.spec_common__pow2(dw), FD.array__slots_length(@ET@, dw, A, pf)), hj)))
+
+def vok_@T@(k: Nat, +A: FD.array__Tree<@ET@>, +i: Nat, +dw: Nat, +pf: {FD.array__perfect(@ET@, dw, A) == True{} : Bool},
+    +er: RT2.ereps_@T@(k, FD.array__slots(@ET@, A), i), +hb: {Nat.is_le(Nat.add(i, k), FD.spec_common__pow2(dw)) == True{} : Bool}) -> {@X@.VOK(k, A, i) == True{} : Bool}:
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+r0, +er1) = er
+      +ex = elx_@T@(A, dw, i, pf, ltq(i, q, FD.spec_common__pow2(dw), hb))
+      +hv = FD.logic__subst(@ET@, z => {@EE@.@EN@_valid(z) == True{} : Bool}, RT2.xat_@T@(FD.array__slots(@ET@, A), i), @X@.EL(A, i), Equal.sym(@ET@, @X@.EL(A, i), RT2.xat_@T@(FD.array__slots(@ET@, A), i), ex),
+        vrp_@T@(RT2.xat_@T@(FD.array__slots(@ET@, A), i), r0))
+      FD.logic__and_intro(@EE@.@EN@_valid(@X@.EL(A, i)), @X@.VOK(q, A, 1n+i), hv, vok_@T@(q, A, 1n+i, dw, pf, er1, nxq(i, q, FD.spec_common__pow2(dw), hb)))
+
+def its_@T@(k: Nat, +A: FD.array__Tree<@ET@>, +i: Nat, +dw: Nat, +pf: {FD.array__perfect(@ET@, dw, A) == True{} : Bool},
+    +er: RT2.ereps_@T@(k, FD.array__slots(@ET@, A), i), +hb: {Nat.is_le(Nat.add(i, k), FD.spec_common__pow2(dw)) == True{} : Bool})
+    -> {RT2.xi_@T@(k, FD.array__slots(@ET@, A), i) == @X@.ITS(k, A, i) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+r0, +er1) = er
+      +xa = RT2.xat_@T@(FD.array__slots(@ET@, A), i)
+      +ex = elx_@T@(A, dw, i, pf, ltq(i, q, FD.spec_common__pow2(dw), hb))
+      %Equal.sym(@ET@, @X@.EL(A, i), xa, ex) : {S.Items{RN.v_@EN@(xa), RT2.xi_@T@(q, FD.array__slots(@ET@, A), 1n+i)} == S.Items{@X@.RV_@EN@(_), @X@.ITS(q, A, 1n+i)} : S.Value}
+      %rvv_@T@(xa, r0) : {S.Items{RN.v_@EN@(xa), RT2.xi_@T@(q, FD.array__slots(@ET@, A), 1n+i)} == S.Items{_, @X@.ITS(q, A, 1n+i)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_@EN@(xa), z}, RT2.xi_@T@(q, FD.array__slots(@ET@, A), 1n+i), @X@.ITS(q, A, 1n+i), its_@T@(q, A, 1n+i, dw, pf, er1, nxq(i, q, FD.spec_common__pow2(dw), hb)))
+
+def lrbs_@T@(k: Nat, +A: FD.array__Tree<@ET@>, +j: Nat) -> {LY.LN(@X@.RBS(k, A, j)) == Nat.mul(k, @RS@n) : Nat}:
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      Equal.trans(Nat, LY.LN(@X@.RBS(1n+q, A, j)), Nat.add(LY.LN(@X@.RB_@EN@(@X@.EL(A, j))), LY.LN(@X@.RBS(q, A, 1n+j))), Nat.add(@RS@n, Nat.mul(q, @RS@n)),
+        VRX.len_app(@X@.RB_@EN@(@X@.EL(A, j)), @X@.RBS(q, A, 1n+j)),
+        Equal.trans(Nat, Nat.add(LY.LN(@X@.RB_@EN@(@X@.EL(A, j))), LY.LN(@X@.RBS(q, A, 1n+j))), Nat.add(@RS@n, LY.LN(@X@.RBS(q, A, 1n+j))), Nat.add(@RS@n, Nat.mul(q, @RS@n)),
+          Equal.cong(Nat, Nat, z => Nat.add(z, LY.LN(@X@.RBS(q, A, 1n+j))), LY.LN(@X@.RB_@EN@(@X@.EL(A, j))), @RS@n, @X@.lenr_@EN@(@X@.EL(A, j))),
+          Equal.cong(Nat, Nat, z => Nat.add(@RS@n, z), LY.LN(@X@.RBS(q, A, 1n+j)), Nat.mul(q, @RS@n), lrbs_@T@(q, A, 1n+j))))
+
+def LRR_@T@(o: @LD@.@T@_Seq) -> Data:
+  DK.Ex(@X@.MW, m => DK.P2({o == @X@.TH(m) : @LD@.@T@_Seq}, DK.P2({RT2.xv_@T@(@X@.TH(m)) == @X@.VAL(m) : S.Value}, DK.P2({@X@.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(@X@.ENC(m)), @BND@) == True{} : Bool}))))
+
+# the premise: the records' tree at depth below 28@PDOC@
+def PRL_@T@(o: @LD@.@T@_Seq) -> Data:
+  match o:
+    case @LD@.@T@_Seq{arr, +N}: @PRLB@
+
+def rb2_@T@(-o: @LD@.@T@_Seq, +t: FD.array__Tree<@ET@>, +dw: Nat, +N: U32, +eo: {o == @LD@.@T@_Seq{FD.array__thaw(@ET@, t), N} : @LD@.@T@_Seq},
+    +pf: {FD.array__perfect(@ET@, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
+    +er: RT2.ereps_@T@(U32.to_nat(N), FD.array__slots(@ET@, t), 0n), @LIMP@+hp: PRL_@T@(@LD@.@T@_Seq{FD.array__thaw(@ET@, t), N})) -> LRR_@T@(o):
+@HPD@
+  +ed = Equal.trans(Nat, ER.LDEP(@ET@, FD.array__freeze(@ET@, FD.array__thaw(@ET@, t))), ER.LDEP(@ET@, t), dw,
+    Equal.cong(FD.array__Tree<@ET@>, Nat, z => ER.LDEP(@ET@, z), FD.array__freeze(@ET@, FD.array__thaw(@ET@, t)), t, FD.array__freeze_thaw(@ET@, t)), ER.pdep(@ET@, dw, t, pf))
+  +hd28 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 28n) == True{} : Bool}, ER.LDEP(@ET@, FD.array__freeze(@ET@, FD.array__thaw(@ET@, t))), dw, ed, hd0)
+  +hq = FD.nat__le_trans(Nat.mul(U32.to_nat(N), @RS@n), Nat.mul(FD.spec_common__pow2(dw), @RS@n), A.quad(VB.pw(dw)), VRL.mul_mono(U32.to_nat(N), FD.spec_common__pow2(dw), @RS@n, hN), mq(FD.spec_common__pow2(dw), @RS@n, {==}))
+  +hok = @OKP@
+  +ev = Equal.trans(S.Value, RT2.xv_@T@(@X@.TH(@X@.MW{dw, t, N})), S.Sequence{RT2.xi_@T@(U32.to_nat(N), FD.array__slots(@ET@, t), 0n)}, @X@.VAL(@X@.MW{dw, t, N}),
+    Equal.cong(FD.array__Tree<@ET@>, S.Value, z => S.Sequence{RT2.xi_@T@(U32.to_nat(N), FD.array__slots(@ET@, z), 0n)}, FD.array__freeze(@ET@, FD.array__thaw(@ET@, t)), t, FD.array__freeze_thaw(@ET@, t)),
+    Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_@T@(U32.to_nat(N), FD.array__slots(@ET@, t), 0n), @X@.ITS(U32.to_nat(N), t, 0n), its_@T@(U32.to_nat(N), t, 0n, dw, pf, er, hN)))
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, @BND@) == True{} : Bool}, Nat.mul(U32.to_nat(N), @RS@n), LY.LN(@X@.RBS(U32.to_nat(N), t, 0n)), Equal.sym(Nat, LY.LN(@X@.RBS(U32.to_nat(N), t, 0n)), Nat.mul(U32.to_nat(N), @RS@n), lrbs_@T@(U32.to_nat(N), t, 0n)), @LNP@)
+  (@X@.MW{dw, t, N}, (eo, (ev, (hok, ln))))
+
+def rb_@T@(-o: @LD@.@T@_Seq, +s: S.Schema, +rp: RT2.rep_@T@(o, s), @LIMS@+hp: PRL_@T@(o)) -> LRR_@T@(o):
+@RBB@
+"""
+
+
+def _encl_rl(T):
+    fn, X, ED, EN, EE, RS, fk, lim, LD = ENCL_RL[T]
+    ET = f'{ED}.{EN}'
+    fv = ', '.join(f'+x{i}' for i in range(len(fk)))
+    xs = [f'x{i}' for i in range(len(fk))]
+    # rp destructure names h0.. (a single field's rp is the fact itself)
+    if len(fk) == 1:
+        dst = ['      +h0 = rp']
+    else:
+        dst = []
+        cur = 'rp'
+        for i in range(len(fk) - 1):
+            nxt = f'rq{i}'
+            last = (i == len(fk) - 2)
+            dst.append(f'      (+h{i}, +{f"h{i + 1}" if last else nxt}) = {cur}')
+            cur = nxt
+    valid = {'u16': lambda x: f'uint16_e.u16_valid({x})', 'u8': lambda x: f'uint8_e.u8_valid({x})'}
+    vpf = {'u16': lambda x, h: f'GW.u16v({x}, {h})',
+           'u8': lambda x, h: (f'FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat({x}), U32.to_nat(255)), U32.is_le({x}, 255), '
+                               f'Equal.sym(Bool, U32.is_le({x}, 255), Nat.is_le(U32.to_nat({x}), U32.to_nat(255)), VU.le_u32({x}, 255)), LB.small({x}, {h}))')}
+    props = [valid[k](x) for k, x in zip(fk, xs)]
+    prfs = [vpf[k](x, f'h{i}') for i, (k, x) in enumerate(zip(fk, xs))]
+    body = prfs[-1]
+    for i in range(len(fk) - 2, -1, -1):
+        rest = props[-1]
+        for p in reversed(props[i + 1:-1]):
+            rest = f'Bool.and({p}, {rest})'
+        body = f'FD.logic__and_intro({props[i]}, {rest}, {prfs[i]}, {body})'
+    vrpb = '\n'.join(dst + [f'      {body}'])
+    # view: RN.v item = UnsignedValue{UInt{x}}; RV item = VRB.UV16(x) / UV8(x)
+    UI = lambda v: f'S.UnsignedValue{{P.UInt{{{v}, 0, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
+    rv = {'u16': lambda x: f'VRB.UV16({x})', 'u8': lambda x: f'VRB.UV8({x})'}
+    inner = {'u16': lambda x: f'PBM.v16of(U32.and({x}, 255), U32.and(U32.shrn({x}, 8n), 255))', 'u8': lambda x: f'U32.and({x}, 255)'}
+    eqp = {'u16': lambda x, h: f'GW.eq16({x}, {h})', 'u8': lambda x, h: f'VBB.ea({x}, {h})'}
+
+    def seq(items):
+        out = 'S.EmptyItems{}'
+        for it in reversed(items):
+            out = f'S.Items{{{it}, {out}}}'
+        return f'S.Sequence{{{out}}}'
+    steps = []
+    for i, (k, x) in enumerate(zip(fk, xs)):
+        it = [UI(xs[q]) if q < i else (UI('_') if q == i else rv[fk[q]](xs[q])) for q in range(len(fk))]
+        steps.append(f'      %Equal.sym(U32, {inner[k](x)}, {x}, {eqp[k](x, f"h{i}")}) : {{RN.v_{EN}({ET}{{{", ".join(xs)}}}) == {seq(it)} : S.Value}}')
+    rvvb = '\n'.join(dst + steps + ['      {==}'])
+    BND = 'P1()' if lim is None else f'{lim}n'
+    if lim is None:
+        prlb = f'DK.P2({{Nat.is_lt(ER.LDEP({ET}, FD.array__freeze({ET}, arr)), 28n) == True{{}} : Bool}}, {{Nat.is_le(Nat.mul(U32.to_nat(N), {RS}n), P1()) == True{{}} : Bool}})'
+        pdoc = ', its bytes within P1'
+        hpd = '  (+hd0, +hl) = hp'
+        limp = ''
+        lnp = 'hl'
+        lims = ''
+    else:
+        prlb = f'{{Nat.is_lt(ER.LDEP({ET}, FD.array__freeze({ET}, arr)), 28n) == True{{}} : Bool}}'
+        pdoc = ' (its bytes are within the limit)'
+        hpd = '  +hd0 = hp'
+        limp = f'+hlim: {{Nat.is_le(U32.to_nat(N), {lim}n) == True{{}} : Bool}}, '
+        lnp = f'VRL.mul_mono(U32.to_nat(N), {lim}n, {RS}n, hlim)'
+        lims = f'+es: {{SH.ListOf_limit(s) == {lim}n : Nat}}, '
+    # OK conjunctions
+    okl = [(f'Nat.is_lt(dw, 28n)', 'hd28'), (f'FD.array__perfect({ET}, dw, t)', 'pf'), ('Nat.is_le(U32.to_nat(N), VB.pw(dw))', 'hN'),
+           (f'Nat.is_le(Nat.mul(U32.to_nat(N), {RS}n), A.quad(VB.pw(dw)))', 'hq')]
+    if lim is not None:
+        okl.append((f'U32.is_le(N, {lim})', f'''FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(N), U32.to_nat({lim})), U32.is_le(N, {lim}),
+    Equal.sym(Bool, U32.is_le(N, {lim}), Nat.is_le(U32.to_nat(N), U32.to_nat({lim})), VU.le_u32(N, {lim})), hlim)'''))
+    okl.append((f'{X}.VOK(U32.to_nat(N), t, 0n)', 'vok_' + T + '(U32.to_nat(N), t, 0n, dw, pf, er, hN)'))
+    okp = okl[-1][1]
+    for i in range(len(okl) - 2, -1, -1):
+        rest = okl[-1][0]
+        for p, _ in reversed(okl[i + 1:-1]):
+            rest = f'Bool.and({p}, {rest})'
+        okp = f'FD.logic__and_intro({okl[i][0]}, {rest}, {okl[i][1]},\n    {okp})'
+    if lim is None:
+        rbb = f'''  (+t, +r1) = rp
+  (+dw, +r2) = r1
+  (+N, +r3) = r2
+  (+eo, +r4) = r3
+  (+pf, +r5) = r4
+  (+hd32, +r6) = r5
+  (+hN, +er) = r6
+  rb2_{T}(o, t, dw, N, eo, pf, hN, er, FD.logic__subst({LD}.{T}_Seq, z => PRL_{T}(z), o, {LD}.{T}_Seq{{FD.array__thaw({ET}, t), N}}, eo, hp))'''
+    else:
+        rbb = f'''  (+ex, +hl0) = rp
+  rb1_{T}(o, s, ex, hl0, es, hp)'''
+        # an extra layer: the existential then the limit
+    txt = (ENCL_RL_PER.replace('@VRPB@', vrpb).replace('@RVVB@', rvvb).replace('@PRLB@', prlb).replace('@PDOC@', pdoc).replace('@HPD@', hpd)
+           .replace('@LIMP@', limp).replace('@LNP@', lnp).replace('@LIMS@', lims).replace('@OKP@', okp).replace('@RBB@', rbb).replace('@BND@', BND)
+           .replace('@FV@', fv).replace('@ET@', ET).replace('@ED@', ED).replace('@EN@', EN).replace('@EE@', EE).replace('@RS@', str(RS))
+           .replace('@LD@', LD).replace('@X@', X).replace('@T@', T))
+    if lim is not None:
+        txt = txt.replace(f'def rb_{T}(', f'''def rb1_{T}(-o: {LD}.{T}_Seq, +s: S.Schema, +ex: DK.Ex(FD.array__Tree<{ET}>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({{o == {LD}.{T}_Seq{{FD.array__thaw({ET}, t), N}} : {LD}.{T}_Seq}},
+    DK.P2({{FD.array__perfect({ET}, dw, t) == True{{}} : Bool}},
+    DK.P2({{Nat.is_lt(dw, 32n) == True{{}} : Bool}},
+    DK.P2({{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}},
+          RT2.ereps_{T}(U32.to_nat(N), FD.array__slots({ET}, t), 0n)))))))),
+    +hl0: {{Nat.is_le(U32.to_nat(RT2.xlen_o_{T}(o)), SH.ListOf_limit(s)) == True{{}} : Bool}}, {lims}+hp: PRL_{T}(o)) -> LRR_{T}(o):
+  (+t, +r1) = ex
+  (+dw, +r2) = r1
+  (+N, +r3) = r2
+  (+eo, +r4) = r3
+  (+pf, +r5) = r4
+  (+hd32, +r6) = r5
+  (+hN, +er) = r6
+  +hlim = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(RT2.xlen_o_{T}(o)), z) == True{{}} : Bool}}, SH.ListOf_limit(s), {lim}n, es, hl0)
+  +hlim2 = FD.logic__subst({LD}.{T}_Seq, z => {{Nat.is_le(U32.to_nat(RT2.xlen_o_{T}(z)), {lim}n) == True{{}} : Bool}}, o, {LD}.{T}_Seq{{FD.array__thaw({ET}, t), N}}, eo, hlim)
+  rb2_{T}(o, t, dw, N, eo, pf, hN, er, hlim2, FD.logic__subst({LD}.{T}_Seq, z => PRL_{T}(z), o, {LD}.{T}_Seq{{FD.array__thaw({ET}, t), N}}, eo, hp))
+
+def rb_{T}(''', 1)
+    imps = [f'import ../proofs/obj/{fn}.bend as {X}', f'import ../types/{ED[:-2]}_def_generated.bend as {ED}', f'import ../types/{EE[:-2]}_encode_ssz_generated.bend as {EE}',
+            f'import ../types/{LD[:-2]}_def_generated.bend as {LD}']
+    return txt, imps
+
+# lists of variable-size elements: tag -> (EX list file, alias, element tag, element EX alias, element object type, list def alias)
+ENCL_VL = {
+    'pl_Gc465214E502': ('big_encx_pl_Gc465214E502', 'XA', 'Gc465214E502', 'XVT', 'VarTestStruct_d.Gc465214E502', 'proglist_VarTestStruct_d'),
+    'pl_pl_Gc465214E502': ('big_encx_pl_pl_Gc465214E502', 'XB', 'pl_Gc465214E502', 'XA', 'proglist_VarTestStruct_d.pl_Gc465214E502_Seq', 'proglist_proglist_VarTestStruct_d'),
+    'pl_Gp66304057C3': ('big_encx_pl_Gp66304057C3', 'XC', 'Gp66304057C3', 'CIG', 'ProgressiveVarTestStruct_d.Gp66304057C3', 'proglist_ProgressiveVarTestStruct_d'),
+}
+
+ENCL_VL_G = r"""# ---- ProgressiveVarTestStruct elements: the record CIG.MW{a0, Xl123.MW{LDEP(t), t, n}, EXP.MB{LDEP(tb), tb, k, k, 31, 30}} of M{a0, WMr{t, n}, BMr{tb, k}} ----
+def fw_g(w: RT2.WMr) -> Xl123.MW:
+  match w:
+    case RT2.WMr{+t, +n}: Xl123.MW{ER.LDEP(U32, t), t, n}
+def fb_g(b: RT2.BMr) -> EXP.MB:
+  match b:
+    case RT2.BMr{+t, +k}: EXP.MB{ER.LDEP(U32, t), t, k, U32.to_nat(k), 31n, 30n}
+def fE_Gp66304057C3(m: RT2.M_Gp66304057C3) -> CIG.MW:
+  match m:
+    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: CIG.MW{a0, fw_g(a1), fb_g(a2)}
+def thg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(RT2.WMr{t, n}), fb_g(b)}) == RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+  match b:
+    case RT2.BMr{+tb, +k}: {==}
+def thg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(w), fb_g(b)}) == RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+  match w:
+    case RT2.WMr{+t, +n}: thg2(a0, t, n, b)
+def thE_Gp66304057C3(+m: RT2.M_Gp66304057C3) -> {CIG.TH(fE_Gp66304057C3(m)) == RT2.th_Gp66304057C3(m) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+  match m:
+    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: thg1(a0, a1, a2)
+def EPB_g(b: RT2.BMr) -> Data:
+  match b:
+    case RT2.BMr{+t, +k}: EP.SDPB(O.Bits{FD.array__thaw(U32, t), k}, 28n)
+def EP_Gp66304057C3(m: RT2.M_Gp66304057C3) -> Data:
+  match m:
+    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: DK.P2(EPW_vt(a1), EPB_g(a2))
+def SFE_Gp66304057C3(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))) == 123n : Nat}
+def EF_Gp66304057C3(+m: RT2.M_Gp66304057C3) -> Data:
+  DK.P2({CIG.OK(fE_Gp66304057C3(m)) == True{} : Bool}, {CIG.VAL(fE_Gp66304057C3(m)) == RT2.v_Gp66304057C3(RT2.th_Gp66304057C3(m)) : S.Value})
+def g0(o: ProgressiveVarTestStruct_d.Gp66304057C3) -> U32:
+  match o:
+    case ProgressiveVarTestStruct_d.Gp66304057C3{+x0, x1, x2}: x0
+def bta(o: O.Bits) -> FD.array__Tree<U32>:
+  match o:
+    case O.Bits{a, +k}: FD.array__freeze(U32, a)
+def btk(o: O.Bits) -> U32:
+  match o:
+    case O.Bits{a, +k}: k
+
+# the bit list's premise, at the element's own tree and length
+def pbx(+tb: FD.array__Tree<U32>, +k: U32, +hs: EP.SDPB(O.Bits{FD.array__thaw(U32, tb), k}, 28n), +wf: BO.wfb(O.Bits{FD.array__thaw(U32, tb), k})) -> EP.PBF3(ER.LDEP(U32, tb), tb, k):
+  (+T2, +s1) = hs
+  (+dw2, +s2) = s1
+  (+K2, +s3) = s2
+  (+eo, +s4) = s3
+  (+pf, +s5) = s4
+  (+hdw, +s6) = s5
+  (+hK8, +s7) = s6
+  (+hKY, +s8) = s7
+  (+hroom, +hbz) = s8
+  +eT = Equal.trans(FD.array__Tree<U32>, tb, FD.array__freeze(U32, FD.array__thaw(U32, tb)), T2, Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, tb)), tb, FD.array__freeze_thaw(U32, tb)),
+    Equal.trans(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, tb)), FD.array__freeze(U32, FD.array__thaw(U32, T2)), T2,
+      Equal.cong(O.Bits, FD.array__Tree<U32>, z => bta(z), O.Bits{FD.array__thaw(U32, tb), k}, O.Bits{FD.array__thaw(U32, T2), K2}, eo), FD.array__freeze_thaw(U32, T2)))
+  +eK = Equal.cong(O.Bits, U32, z => btk(z), O.Bits{FD.array__thaw(U32, tb), k}, O.Bits{FD.array__thaw(U32, T2), K2}, eo)
+  +ed = Equal.trans(Nat, ER.LDEP(U32, tb), ER.LDEP(U32, T2), dw2, Equal.cong(FD.array__Tree<U32>, Nat, z => ER.LDEP(U32, z), tb, T2, eT), ER.pdep(U32, dw2, T2, pf))
+  +wf2 = FD.logic__subst(O.Bits, z => BO.wfb(z), O.Bits{FD.array__thaw(U32, tb), k}, O.Bits{FD.array__thaw(U32, T2), K2}, eo, wf)
+  %Equal.sym(Nat, ER.LDEP(U32, tb), dw2, ed) : EP.PBF3(_, tb, k)
+  %Equal.sym(FD.array__Tree<U32>, tb, T2, eT) : EP.PBF3(dw2, _, k)
+  %Equal.sym(U32, k, K2, eK) : EP.PBF3(dw2, T2, _)
+  EP.pbf(T2, dw2, K2, pf, hdw, hK8, hKY, hroom, hbz, wf2)
+
+def efg4(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +f: EQ.CF_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k})))
+    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (fo, Equal.sym(S.Value, RT2.v_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), CIG.VAL(fE_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), fv))
+def efg5(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +h0: {U32.is_lt(a0, 256) == True{} : Bool}, +c: Nat,
+    +hx: {U32.to_nat(n) == Nat.double(c) : Nat}, +hl: {Nat.is_le(c, 123n) == True{} : Bool}, +hsw: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), +pb: EP.PBF3(ER.LDEP(U32, tb), tb, k))
+    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+  (+v2, +p1) = pb
+  (+o2, +l2) = p1
+  +o1 = ER.ok_l123(t, n, ER.sfk(t, n, 28n, hsw), c, hx, hl)
+  efg4(a0, t, n, tb, k, EQ.c1f_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k}), h0, ER.lv_l123(t, n, c, hx, hl), v2, o1, o2, ER.ln_l123(t, n, o1, c, hx, hl), l2))
+def efg3(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +s: S.Schema,
+    +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}), s),
+    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EP.SDPB(O.Bits{FD.array__thaw(U32, tb), k}, 28n)), +es: SFE_Gp66304057C3(s))
+    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+  (+x0, +r0) = rp
+  (+ev, +q0) = r0
+  (+h0, +q1) = q0
+  (+rl, +wf) = q1
+  (+wfl, +z1) = rl
+  (+hx, +hl) = z1
+  (+hsw, +hsb) = ep
+  +e0 = Equal.cong(ProgressiveVarTestStruct_d.Gp66304057C3, U32, z => g0(z), ProgressiveVarTestStruct_d.Gp66304057C3{a0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}},
+    ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}}, ev)
+  +h0a = FD.logic__subst(U32, z => {U32.is_lt(z, 256) == True{} : Bool}, x0, a0, Equal.sym(U32, a0, x0, e0), h0)
+  +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), z) == True{} : Bool}, SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), 123n, es, hl)
+  efg5(a0, t, n, tb, k, h0a, PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), hx, hl2, hsw, pbx(tb, k, hsb, wf))
+def efg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}), s),
+    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EPB_g(b)), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}):
+  match b:
+    case RT2.BMr{+tb, +k}: efg3(a0, t, n, tb, k, s, rp, ep, es)
+def efg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}), s),
+    +ep: DK.P2(EPW_vt(w), EPB_g(b)), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}):
+  match w:
+    case RT2.WMr{+t, +n}: efg2(a0, t, n, b, s, rp, ep, es)
+def ef_Gp66304057C3(+m: RT2.M_Gp66304057C3, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(m), s), +ep: EP_Gp66304057C3(m), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(m):
+  match m:
+    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: efg1(a0, a1, a2, s, rp, ep, es)
+"""
+
+ENCL_VL_SHARED = r"""# ---- lists of variable-size elements: shared ----
+# x within P + 1 bytes fits 8 P (P symbolic: a closed P1 would be evaluated)
+def llq(+x: Nat, +P: Nat, +hx: {Nat.is_le(x, Nat.add(P, 1n)) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(0n, 1n), P) == True{} : Bool}) -> {Nat.is_le(x, A.quad(Nat.double(P))) == True{} : Bool}:
+  EP.bnd(0n, x, P, hx, hc)
+
+# ---- VarTestStruct elements: the record XVT.MW{a0, Xl1024.MW{LDEP(t), t, n}, a2} of the mirror M{a0, WMr{t, n}, a2} ----
+def fw_vt(w: RT2.WMr) -> Xl1024.MW:
+  match w:
+    case RT2.WMr{+t, +n}: Xl1024.MW{ER.LDEP(U32, t), t, n}
+def fE_Gc465214E502(m: RT2.M_Gc465214E502) -> XVT.MW:
+  match m:
+    case RT2.M_Gc465214E502{+a0, +a1, +a2}: XVT.MW{a0, fw_vt(a1), a2}
+def thw_vt(+a0: U32, +w: RT2.WMr, +a2: U32) -> {XVT.TH(XVT.MW{a0, fw_vt(w), a2}) == RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}) : VarTestStruct_d.Gc465214E502}:
+  match w:
+    case RT2.WMr{+t, +n}: {==}
+def thE_Gc465214E502(+m: RT2.M_Gc465214E502) -> {XVT.TH(fE_Gc465214E502(m)) == RT2.th_Gc465214E502(m) : VarTestStruct_d.Gc465214E502}:
+  match m:
+    case RT2.M_Gc465214E502{+a0, +a1, +a2}: thw_vt(a0, a1, a2)
+def EPW_vt(w: RT2.WMr) -> Data:
+  match w:
+    case RT2.WMr{+t, +n}: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n)
+def EP_Gc465214E502(m: RT2.M_Gc465214E502) -> Data:
+  match m:
+    case RT2.M_Gc465214E502{+a0, +a1, +a2}: EPW_vt(a1)
+def SFE_Gc465214E502(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))) == 1024n : Nat}
+def EF_Gc465214E502(+m: RT2.M_Gc465214E502) -> Data:
+  DK.P2({XVT.OK(fE_Gc465214E502(m)) == True{} : Bool}, {XVT.VAL(fE_Gc465214E502(m)) == RT2.v_Gc465214E502(RT2.th_Gc465214E502(m)) : S.Value})
+def vt0(o: VarTestStruct_d.Gc465214E502) -> U32:
+  match o:
+    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: x0
+def vt2(o: VarTestStruct_d.Gc465214E502) -> U32:
+  match o:
+    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: x2
+def efv2(+a0: U32, +a2: U32, +t: FD.array__Tree<U32>, +n: U32, +f: ER.VTF(a0, a2, t, n)) -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (fo, Equal.sym(S.Value, RT2.v_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2})), XVT.VAL(fE_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2})), fv))
+def efw_vt(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +a2: U32, +s: S.Schema,
+    +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}), s), +ep: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), +es: SFE_Gc465214E502(s))
+    -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}):
+  (+x0, +r0) = rp
+  (+x2, +r1) = r0
+  (+ev, +q1) = r1
+  (+h0, +q2) = q1
+  (+rl, +h2) = q2
+  (+wf, +z1) = rl
+  (+hx, +hl) = z1
+  +e0 = Equal.cong(VarTestStruct_d.Gc465214E502, U32, z => vt0(z), VarTestStruct_d.Gc465214E502{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
+  +e2 = Equal.cong(VarTestStruct_d.Gc465214E502, U32, z => vt2(z), VarTestStruct_d.Gc465214E502{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
+  +h0a = FD.logic__subst(U32, z => {U32.is_lt(z, 65536) == True{} : Bool}, x0, a0, Equal.sym(U32, a0, x0, e0), h0)
+  +h2a = FD.logic__subst(U32, z => {U32.is_lt(z, 256) == True{} : Bool}, x2, a2, Equal.sym(U32, a2, x2, e2), h2)
+  +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), z) == True{} : Bool}, SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), 1024n, es, hl)
+  efv2(a0, a2, t, n, ER.vtf(a0, a2, t, n, h0a, h2a, PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), hx, hl2, ep))
+def efm_vt(+a0: U32, +w: RT2.WMr, +a2: U32, +s: S.Schema, +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}), s), +ep: EPW_vt(w), +es: SFE_Gc465214E502(s))
+    -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}):
+  match w:
+    case RT2.WMr{+t, +n}: efw_vt(a0, t, n, a2, s, rp, ep, es)
+def ef_Gc465214E502(+m: RT2.M_Gc465214E502, +s: S.Schema, +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(m), s), +ep: EP_Gc465214E502(m), +es: SFE_Gc465214E502(s)) -> EF_Gc465214E502(m):
+  match m:
+    case RT2.M_Gc465214E502{+a0, +a1, +a2}: efm_vt(a0, a1, a2, s, rp, ep, es)
+"""
+
+ENCL_VL_PL = r"""# ---- progressive lists of VarTestStruct as elements: the record XA.MW{TM(t), n} of the mirror M_pl{t, n} ----
+def fE_pl_Gc465214E502(m: RT2.M_pl_Gc465214E502) -> XA.MW:
+  match m:
+    case RT2.M_pl_Gc465214E502{+t, +n}: XA.MW{TM_pl_Gc465214E502(t), n}
+def thE_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502) -> {XA.TH(fE_pl_Gc465214E502(m)) == RT2.th_pl_Gc465214E502(m) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+  match m:
+    case RT2.M_pl_Gc465214E502{+t, +n}:
+      Equal.cong(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_Seq, z => proglist_VarTestStruct_d.pl_Gc465214E502_Seq{z, n}, XA.AR(TM_pl_Gc465214E502(t)), RT2.am_pl_Gc465214E502(t), arTM_pl_Gc465214E502(t))
+def EP_pl_Gc465214E502(m: RT2.M_pl_Gc465214E502) -> Data:
+  match m:
+    case RT2.M_pl_Gc465214E502{+t, +n}: PM_pl_Gc465214E502(t, n)
+def SFE_pl_Gc465214E502(+s: S.Schema) -> Data: SFE_Gc465214E502(SH.ProgressiveList_element(s))
+def EF_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502) -> Data:
+  DK.P2({XA.OK(fE_pl_Gc465214E502(m)) == True{} : Bool}, {XA.VAL(fE_pl_Gc465214E502(m)) == RT2.v_pl_Gc465214E502(RT2.th_pl_Gc465214E502(m)) : S.Value})
+def sqa_A(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> Array<O.Boxed<VarTestStruct_d.Gc465214E502>>:
+  match o:
+    case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: arr
+def sqn_A(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> U32:
+  match o:
+    case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: n
+def efq_A(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +n: U32, +mk: MK_pl_Gc465214E502(t, n)) -> EF_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}):
+  (+eth, +m1) = mk
+  (+ev, +m2) = m1
+  (+ok, +ln) = m2
+  (ok, Equal.trans(S.Value, XA.VAL(XA.MW{TM_pl_Gc465214E502(t), n}), RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{TM_pl_Gc465214E502(t), n})), RT2.xv_pl_Gc465214E502(proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}),
+    Equal.sym(S.Value, RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{TM_pl_Gc465214E502(t), n})), XA.VAL(XA.MW{TM_pl_Gc465214E502(t), n}), ev),
+    Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, S.Value, z => RT2.xv_pl_Gc465214E502(z), XA.TH(XA.MW{TM_pl_Gc465214E502(t), n}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, eth)))
+def efp_A(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +n: U32, +s: S.Schema, +rp: RT2.rep_pl_Gc465214E502(RT2.th_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}), s),
+    +ep: PM_pl_Gc465214E502(t, n), +es: SFE_pl_Gc465214E502(s)) -> EF_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}):
+  (+t2, +r1) = rp
+  (+dw, +r2) = r1
+  (+N2, +r3) = r2
+  (+eo, +r4) = r3
+  (+pf, +r5) = r4
+  (+hd, +r6) = r5
+  (+hN, +er) = r6
+  +ea = Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, z => sqa_A(z), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t2), N2}, eo)
+  +et = Equal.trans(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), t2,
+    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), t, RT2.tfzam_pl_Gc465214E502(t)),
+    Equal.trans(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t2)), t2,
+      Equal.cong(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => RT2.tfz_pl_Gc465214E502(z), RT2.am_pl_Gc465214E502(t), RT2.am_pl_Gc465214E502(t2), ea),
+      RT2.tfzam_pl_Gc465214E502(t2)))
+  +en = Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, U32, z => sqn_A(z), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t2), N2}, eo)
+  +pf1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dw, z) == True{} : Bool}, t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, t2, et), pf)
+  +hN1 = FD.logic__subst(U32, z => {Nat.is_le(U32.to_nat(z), FD.spec_common__pow2(dw)) == True{} : Bool}, N2, n, Equal.sym(U32, n, N2, en), hN)
+  +er1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => RT2.ereps_pl_Gc465214E502(U32.to_nat(N2), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, z), 0n, SH.ProgressiveList_element(s)), t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, t2, et), er)
+  +er2 = FD.logic__subst(U32, z => RT2.ereps_pl_Gc465214E502(U32.to_nat(z), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n, SH.ProgressiveList_element(s)), N2, n, Equal.sym(U32, n, N2, en), er1)
+  efq_A(t, n, mk_pl_Gc465214E502(t, dw, n, SH.ProgressiveList_element(s), pf1, hN1, er2, ep, es))
+def ef_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502, +s: S.Schema, +rp: RT2.rep_pl_Gc465214E502(RT2.th_pl_Gc465214E502(m), s), +ep: EP_pl_Gc465214E502(m), +es: SFE_pl_Gc465214E502(s)) -> EF_pl_Gc465214E502(m):
+  match m:
+    case RT2.M_pl_Gc465214E502{+t, +n}: efp_A(t, n, s, rp, ep, es)
+"""
+
+ENCL_VL_PER = r"""# ======== @L@ (@X@): a progressive list of @E@ ========
+# the encode record's mirror tree of the root's mirror tree
+def fbx_@L@(x: @MBR@) -> @MBX@:
+  match x:
+    case RT2.MNone{}: @X@.MNone{}
+    case RT2.MSome{+m}: @X@.MSome{fE_@E@(m)}
+def TM_@L@(t: FD.array__Tree<@MBR@>) -> FD.array__Tree<@MBX@>:
+  match t:
+    case FD.TLeaf{+x}: FD.TLeaf{fbx_@L@(x)}
+    case FD.TNode{+l, +r}: FD.TNode{TM_@L@(l), TM_@L@(r)}
+def MAPB_@L@(W: List<&2, @MBR@>) -> List<&2, @MBX@>:
+  match W:
+    case Nil{}: Nil{}
+    case Con{+x, +r}: Con{fbx_@L@(x), MAPB_@L@(r)}
+def mapp_@L@(+a: List<&2, @MBR@>, +b: List<&2, @MBR@>) -> {MAPB_@L@(FD.spec_common__append(@MBR@, a, b)) == FD.spec_common__append(@MBX@, MAPB_@L@(a), MAPB_@L@(b)) : List<&2, @MBX@>}:
+  match a:
+    case Nil{}: {==}
+    case Con{+x, +r}: Equal.cong(List<&2, @MBX@>, List<&2, @MBX@>, z => Con{fbx_@L@(x), z}, MAPB_@L@(FD.spec_common__append(@MBR@, r, b)), FD.spec_common__append(@MBX@, MAPB_@L@(r), MAPB_@L@(b)), mapp_@L@(r, b))
+def slTM_@L@(+t: FD.array__Tree<@MBR@>) -> {FD.array__slots(@MBX@, TM_@L@(t)) == MAPB_@L@(FD.array__slots(@MBR@, t)) : List<&2, @MBX@>}:
+  match t:
+    case FD.TLeaf{+x}: {==}
+    case FD.TNode{+l, +r}:
+      %Equal.sym(List<&2, @MBX@>, FD.array__slots(@MBX@, TM_@L@(l)), MAPB_@L@(FD.array__slots(@MBR@, l)), slTM_@L@(l)) :
+        {FD.spec_common__append(@MBX@, _, FD.array__slots(@MBX@, TM_@L@(r))) == MAPB_@L@(FD.spec_common__append(@MBR@, FD.array__slots(@MBR@, l), FD.array__slots(@MBR@, r))) : List<&2, @MBX@>}
+      %Equal.sym(List<&2, @MBX@>, FD.array__slots(@MBX@, TM_@L@(r)), MAPB_@L@(FD.array__slots(@MBR@, r)), slTM_@L@(r)) :
+        {FD.spec_common__append(@MBX@, MAPB_@L@(FD.array__slots(@MBR@, l)), _) == MAPB_@L@(FD.spec_common__append(@MBR@, FD.array__slots(@MBR@, l), FD.array__slots(@MBR@, r))) : List<&2, @MBX@>}
+      Equal.sym(List<&2, @MBX@>, MAPB_@L@(FD.spec_common__append(@MBR@, FD.array__slots(@MBR@, l), FD.array__slots(@MBR@, r))), FD.spec_common__append(@MBX@, MAPB_@L@(FD.array__slots(@MBR@, l)), MAPB_@L@(FD.array__slots(@MBR@, r))),
+        mapp_@L@(FD.array__slots(@MBR@, l), FD.array__slots(@MBR@, r)))
+def xatM_@L@(+W: List<&2, @MBR@>, +i: Nat) -> {@X@.xat_@L@(MAPB_@L@(W), i) == fbx_@L@(RT2.xat_@L@(W, i)) : @MBX@}:
+  match W i:
+    case Nil{} _: {==}
+    case Con{+x, +r} 0n: {==}
+    case Con{+x, +r} 1n+ +j: xatM_@L@(r, j)
+def thx_@L@(+x: @MBR@) -> {@X@.th_@E@_bx(fbx_@L@(x)) == RT2.th_@E@_bx(x) : O.Boxed<@ETY@>}:
+  match x:
+    case RT2.MNone{}: {==}
+    case RT2.MSome{+m}: Equal.cong(@ETY@, O.Boxed<@ETY@>, z => O.BSome{z, O.BNone{}}, @EMA@.TH(fE_@E@(m)), RT2.th_@E@(m), thE_@E@(m))
+def arTM_@L@(+t: FD.array__Tree<@MBR@>) -> {@X@.AR(TM_@L@(t)) == RT2.am_@L@(t) : Array<O.Boxed<@ETY@>>}:
+  match t:
+    case FD.TLeaf{+x}: Equal.cong(O.Boxed<@ETY@>, Array<O.Boxed<@ETY@>>, z => ALeaf{z}, @X@.th_@E@_bx(fbx_@L@(x)), RT2.th_@E@_bx(x), thx_@L@(x))
+    case FD.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<@ETY@>>, @X@.AR(TM_@L@(l)), RT2.am_@L@(l), arTM_@L@(l)) : {ANode{_, @X@.AR(TM_@L@(r))} == ANode{RT2.am_@L@(l), RT2.am_@L@(r)} : Array<O.Boxed<@ETY@>>}
+      %Equal.sym(Array<O.Boxed<@ETY@>>, @X@.AR(TM_@L@(r)), RT2.am_@L@(r), arTM_@L@(r)) : {ANode{RT2.am_@L@(l), _} == ANode{RT2.am_@L@(l), RT2.am_@L@(r)} : Array<O.Boxed<@ETY@>>}
+      {==}
+def pfTM_@L@(+d: Nat, +t: FD.array__Tree<@MBR@>, +pf: {FD.array__perfect(@MBR@, d, t) == True{} : Bool}) -> {FD.array__perfect(@MBX@, d, TM_@L@(t)) == True{} : Bool}:
+  match d t:
+    case 0n FD.TLeaf{+x}: {==}
+    case 0n FD.TNode{+l, +r}: Empty.absurd({FD.array__perfect(@MBX@, 0n, TM_@L@(FD.TNode{l, r})) == True{} : Bool}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{+x}: Empty.absurd({FD.array__perfect(@MBX@, 1n+p, TM_@L@(FD.TLeaf{x})) == True{} : Bool}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{+l, +r}:
+      FD.logic__and_intro(FD.array__perfect(@MBX@, p, TM_@L@(l)), FD.array__perfect(@MBX@, p, TM_@L@(r)), pfTM_@L@(p, l, FD.array__pf_left(@MBR@, p, l, r, pf)), pfTM_@L@(p, r, FD.array__pf_right(@MBR@, p, l, r, pf)))
+def tdTM_@L@(+d: Nat, +t: FD.array__Tree<@MBR@>, +pf: {FD.array__perfect(@MBR@, d, t) == True{} : Bool}) -> {@X@.TDM(TM_@L@(t)) == d : Nat}:
+  match d t:
+    case 0n FD.TLeaf{+x}: {==}
+    case 0n FD.TNode{+l, +r}: Empty.absurd({@X@.TDM(TM_@L@(FD.TNode{l, r})) == 0n : Nat}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TLeaf{+x}: Empty.absurd({@X@.TDM(TM_@L@(FD.TLeaf{x})) == 1n+p : Nat}, FD.logic__false_true(pf))
+    case 1n+ +p FD.TNode{+l, +r}: Equal.cong(Nat, Nat, z => 1n+z, @X@.TDM(TM_@L@(l)), p, tdTM_@L@(p, l, FD.array__pf_left(@MBR@, p, l, r, pf)))
+
+# the premise: the mirror tree at depth below 31, the list's bytes within P1, each element's premise
+def EPB_@L@(x: @MBR@) -> Data:
+  match x:
+    case RT2.MNone{}: {True{} == True{} : Bool}
+    case RT2.MSome{+m}: EP_@E@(m)
+def EPS_@L@(k: Nat, +W: List<&2, @MBR@>, +i: Nat) -> Data:
+  match k:
+    case 0n: {True{} == True{} : Bool}
+    case 1n+q: DK.P2(EPB_@L@(RT2.xat_@L@(W, i)), EPS_@L@(q, W, 1n+i))
+def PM_@L@(+t: FD.array__Tree<@MBR@>, +N: U32) -> Data:
+  DK.P2({Nat.is_lt(ER.LDEP(@MBR@, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(@X@.LL(TM_@L@(t), N), P1()) == True{} : Bool}, EPS_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n)))
+def PRV_@L@(o: @SEQ@) -> Data:
+  match o:
+    case @SEQ@{arr, +N}: PM_@L@(RT2.tfz_@L@(arr), N)
+
+# an element the root law represents, with its premise: valid, and its value the root's view
+def EFX_@L@(+x: @MBR@) -> Data: DK.P2({@X@.EOK(fbx_@L@(x)) == True{} : Bool}, {@X@.EV(fbx_@L@(x)) == RT2.v_@E@_bx(RT2.th_@E@_bx(x)) : S.Value})
+def isS_@L@(b: O.Boxed<@ETY@>) -> Bool:
+  match b:
+    case O.BSome{v, r}: True{}
+    case O.BNone{}: False{}
+def efx_@L@(+x: @MBR@, +sE: S.Schema, +rb: RT2.rep_@E@_bx(RT2.th_@E@_bx(x), sE), +ep: EPB_@L@(x), +es: SFE_@E@(sE)) -> EFX_@L@(x):
+  match x:
+    case RT2.MNone{}:
+      (+eq, +rr) = rb
+      Empty.absurd(EFX_@L@(RT2.MNone{}), FD.logic__false_true(Equal.cong(O.Boxed<@ETY@>, Bool, b => isS_@L@(b), O.BNone{}, O.BSome{RT2.pjb_@E@_bx(O.BNone{}), O.BNone{}}, eq)))
+    case RT2.MSome{+m}:
+      (+eq, +rr) = rb
+      ef_@E@(m, sE, rr, ep, es)
+def EXS_@L@(k: Nat, +W: List<&2, @MBR@>, +i: Nat) -> Data:
+  DK.P2({@X@.EOKS(k, MAPB_@L@(W), i) == True{} : Bool}, {@X@.XI(k, MAPB_@L@(W), i) == RT2.xi_@L@(k, W, i) : S.Value})
+def exs2_@L@(+q: Nat, +W: List<&2, @MBR@>, +i: Nat, +f: EFX_@L@(RT2.xat_@L@(W, i)), +ih: EXS_@L@(q, W, 1n+i)) -> EXS_@L@(1n+q, W, i):
+  (+fo, +fv) = f
+  (+io, +iv) = ih
+  +ex = xatM_@L@(W, i)
+  +xa = RT2.xat_@L@(W, i)
+  +ho = FD.logic__subst(@MBX@, z => {@X@.EOK(z) == True{} : Bool}, fbx_@L@(xa), @X@.xat_@L@(MAPB_@L@(W), i), Equal.sym(@MBX@, @X@.xat_@L@(MAPB_@L@(W), i), fbx_@L@(xa), ex), fo)
+  +hv = Equal.trans(S.Value, @X@.EV(@X@.xat_@L@(MAPB_@L@(W), i)), @X@.EV(fbx_@L@(xa)), RT2.v_@E@_bx(RT2.th_@E@_bx(xa)), Equal.cong(@MBX@, S.Value, z => @X@.EV(z), @X@.xat_@L@(MAPB_@L@(W), i), fbx_@L@(xa), ex), fv)
+  (FD.logic__and_intro(@X@.EOK(@X@.xat_@L@(MAPB_@L@(W), i)), @X@.EOKS(q, MAPB_@L@(W), 1n+i), ho, io),
+    Equal.trans(S.Value, S.Items{@X@.EV(@X@.xat_@L@(MAPB_@L@(W), i)), @X@.XI(q, MAPB_@L@(W), 1n+i)}, S.Items{RT2.v_@E@_bx(RT2.th_@E@_bx(xa)), @X@.XI(q, MAPB_@L@(W), 1n+i)}, S.Items{RT2.v_@E@_bx(RT2.th_@E@_bx(xa)), RT2.xi_@L@(q, W, 1n+i)},
+      Equal.cong(S.Value, S.Value, z => S.Items{z, @X@.XI(q, MAPB_@L@(W), 1n+i)}, @X@.EV(@X@.xat_@L@(MAPB_@L@(W), i)), RT2.v_@E@_bx(RT2.th_@E@_bx(xa)), hv),
+      Equal.cong(S.Value, S.Value, z => S.Items{RT2.v_@E@_bx(RT2.th_@E@_bx(xa)), z}, @X@.XI(q, MAPB_@L@(W), 1n+i), RT2.xi_@L@(q, W, 1n+i), iv)))
+def exs_@L@(k: Nat, +W: List<&2, @MBR@>, +i: Nat, +sE: S.Schema, +er: RT2.ereps_@L@(k, W, i, sE), +ep: EPS_@L@(k, W, i), +es: SFE_@E@(sE)) -> EXS_@L@(k, W, i):
+  match k:
+    case 0n: ({==}, {==})
+    case 1n+ +q:
+      (+r0, +er1) = er
+      (+p0, +ep1) = ep
+      exs2_@L@(q, W, i, efx_@L@(RT2.xat_@L@(W, i), sE, r0, p0, es), exs_@L@(q, W, 1n+i, sE, er1, ep1, es))
+
+# the list's record facts from its mirror's
+def MK_@L@(+t: FD.array__Tree<@MBR@>, +N: U32) -> Data:
+  DK.P2({@X@.TH(@X@.MW{TM_@L@(t), N}) == @SEQ@{RT2.am_@L@(t), N} : @SEQ@},
+  DK.P2({RT2.xv_@L@(@X@.TH(@X@.MW{TM_@L@(t), N})) == @X@.VAL(@X@.MW{TM_@L@(t), N}) : S.Value},
+  DK.P2({@X@.OK(@X@.MW{TM_@L@(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(@X@.ENC(@X@.MW{TM_@L@(t), N})), P1()) == True{} : Bool})))
+def mk2_@L@(+t: FD.array__Tree<@MBR@>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(@MBR@, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
+    +hd31: {Nat.is_lt(ER.LDEP(@MBR@, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(@X@.LL(TM_@L@(t), N), P1()) == True{} : Bool}, +x: EXS_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n)) -> MK_@L@(t, N):
+  (+xo, +xv) = x
+  +T2 = TM_@L@(t)
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(@MBR@, t), dw, ER.pdep(@MBR@, dw, t, pf), hd31)
+  +td = tdTM_@L@(dw, t, pf)
+  +esl = slTM_@L@(t)
+  +hx2 = FD.logic__subst(List<&2, @MBX@>, z => {@X@.EOKS(U32.to_nat(N), z, 0n) == True{} : Bool}, MAPB_@L@(FD.array__slots(@MBR@, t)), FD.array__slots(@MBX@, T2), Equal.sym(List<&2, @MBX@>, FD.array__slots(@MBX@, T2), MAPB_@L@(FD.array__slots(@MBR@, t)), esl), xo)
+  +okl0 = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(@MBX@, dw, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(True{}, @X@.EOKS(U32.to_nat(N), @X@.SL(T2), 0n)))), h31,
+    FD.logic__and_intro(FD.array__perfect(@MBX@, dw, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(True{}, @X@.EOKS(U32.to_nat(N), @X@.SL(T2), 0n))), pfTM_@L@(dw, t, pf),
+    FD.logic__and_intro(Nat.is_le(U32.to_nat(N), VB.pw(dw)), Bool.and(True{}, @X@.EOKS(U32.to_nat(N), @X@.SL(T2), 0n)), hN,
+    FD.logic__and_intro(True{}, @X@.EOKS(U32.to_nat(N), @X@.SL(T2), 0n), {==}, hx2))))
+  +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(@MBX@, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, @X@.EOKS(U32.to_nat(N), @X@.SL(T2), 0n))))) == True{} : Bool},
+    dw, @X@.TDM(T2), Equal.sym(Nat, @X@.TDM(T2), dw, td), okl0)
+  +ok = FD.logic__and_intro(@X@.OKL(T2, N), Nat.is_le(@X@.LL(T2, N), A.quad(VB.pw(28n))), okl, llq(@X@.LL(T2, N), VB.pw(27n), hll, FD.nat__le_trans(Nat.add(0n, 1n), VB.pw(9n), VB.pw(27n), {==}, VBG.pw_mono(9n, 27n, {==}))))
+  +eth = Equal.cong(Array<O.Boxed<@ETY@>>, @SEQ@, z => @SEQ@{z, N}, @X@.AR(T2), RT2.am_@L@(t), arTM_@L@(t))
+  +ev = Equal.trans(S.Value, RT2.xv_@L@(@X@.TH(@X@.MW{T2, N})), RT2.xv_@L@(@SEQ@{RT2.am_@L@(t), N}), @X@.VAL(@X@.MW{T2, N}),
+    Equal.cong(@SEQ@, S.Value, z => RT2.xv_@L@(z), @X@.TH(@X@.MW{T2, N}), @SEQ@{RT2.am_@L@(t), N}, eth),
+    Equal.trans(S.Value, RT2.xv_@L@(@SEQ@{RT2.am_@L@(t), N}), S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n)}, @X@.VAL(@X@.MW{T2, N}),
+      Equal.cong(FD.array__Tree<@MBR@>, S.Value, z => S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MBR@, z), 0n)}, RT2.tfz_@L@(RT2.am_@L@(t)), t, RT2.tfzam_@L@(t)),
+      Equal.trans(S.Value, S.Sequence{RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n)}, S.Sequence{@X@.XI(U32.to_nat(N), MAPB_@L@(FD.array__slots(@MBR@, t)), 0n)}, @X@.VAL(@X@.MW{T2, N}),
+        Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n), @X@.XI(U32.to_nat(N), MAPB_@L@(FD.array__slots(@MBR@, t)), 0n),
+          Equal.sym(S.Value, @X@.XI(U32.to_nat(N), MAPB_@L@(FD.array__slots(@MBR@, t)), 0n), RT2.xi_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n), xv)),
+        Equal.cong(List<&2, @MBX@>, S.Value, z => S.Sequence{@X@.XI(U32.to_nat(N), z, 0n)}, MAPB_@L@(FD.array__slots(@MBR@, t)), FD.array__slots(@MBX@, T2), Equal.sym(List<&2, @MBX@>, FD.array__slots(@MBX@, T2), MAPB_@L@(FD.array__slots(@MBR@, t)), esl)))))
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, @X@.LL(T2, N), LY.LN(@X@.ENC(@X@.MW{T2, N})), Equal.sym(Nat, LY.LN(@X@.ENC(@X@.MW{T2, N})), @X@.LL(T2, N), @X@.len_encl(T2, N)), hll)
+  (eth, (ev, (ok, ln)))
+def mk_@L@(+t: FD.array__Tree<@MBR@>, +dw: Nat, +N: U32, +sE: S.Schema, +pf: {FD.array__perfect(@MBR@, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
+    +er: RT2.ereps_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n, sE), +pm: PM_@L@(t, N), +es: SFE_@E@(sE)) -> MK_@L@(t, N):
+  (+hd31, +pq) = pm
+  (+hll, +eps) = pq
+  mk2_@L@(t, dw, N, pf, hN, hd31, hll, exs_@L@(U32.to_nat(N), FD.array__slots(@MBR@, t), 0n, sE, er, eps, es))
+
+# the field's record from its root-law representation and premise
+def LRV_@L@(o: @SEQ@) -> Data:
+  DK.Ex(@X@.MW, m => DK.P2({o == @X@.TH(m) : @SEQ@}, DK.P2({RT2.xv_@L@(@X@.TH(m)) == @X@.VAL(m) : S.Value}, DK.P2({@X@.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(@X@.ENC(m)), P1()) == True{} : Bool}))))
+def rv3_@L@(-o: @SEQ@, +t: FD.array__Tree<@MBR@>, +N: U32, +eo: {o == @SEQ@{RT2.am_@L@(t), N} : @SEQ@}, +mk: MK_@L@(t, N)) -> LRV_@L@(o):
+  (+eth, +m1) = mk
+  (+ev, +m2) = m1
+  (+ok, +ln) = m2
+  (@X@.MW{TM_@L@(t), N}, (Equal.trans(@SEQ@, o, @SEQ@{RT2.am_@L@(t), N}, @X@.TH(@X@.MW{TM_@L@(t), N}), eo, Equal.sym(@SEQ@, @X@.TH(@X@.MW{TM_@L@(t), N}), @SEQ@{RT2.am_@L@(t), N}, eth)), (ev, (ok, ln))))
+def rv_@L@(-o: @SEQ@, +s: S.Schema, +rp: RT2.rep_@L@(o, s), +hp: PRV_@L@(o), +es: SFE_@E@(SH.ProgressiveList_element(s))) -> LRV_@L@(o):
+  (+t, +r1) = rp
+  (+dw, +r2) = r1
+  (+N, +r3) = r2
+  (+eo, +r4) = r3
+  (+pf, +r5) = r4
+  (+hd32, +r6) = r5
+  (+hN, +er) = r6
+  +hp2 = FD.logic__subst(@SEQ@, z => PRV_@L@(z), o, @SEQ@{RT2.am_@L@(t), N}, eo, hp)
+  +hp3 = FD.logic__subst(FD.array__Tree<@MBR@>, z => PM_@L@(z, N), RT2.tfz_@L@(RT2.am_@L@(t)), t, RT2.tfzam_@L@(t), hp2)
+  rv3_@L@(o, t, N, eo, mk_@L@(t, dw, N, SH.ProgressiveList_element(s), pf, hN, er, hp3, es))
+"""
+
+
+def _encl_vl(L):
+    fn, X, E, EMA, ETY, LD = ENCL_VL[L]
+    return (ENCL_VL_PER.replace('@MBR@', f'RT2.MB<RT2.M_{E}>').replace('@MBX@', f'{X}.MB<{EMA}.MW>').replace('@SEQ@', f'{LD}.{L}_Seq')
+            .replace('@ETY@', ETY).replace('@EMA@', EMA).replace('@X@', X).replace('@E@', E).replace('@L@', L))
+
+
+def encl_text():
+    body = [ENCL_A, ENCL_RL_SHARED]
+    imps = []
+    for T in ENCL_RL:
+        txt, im = _encl_rl(T)
+        body.append(txt)
+        imps += [i for i in im if i not in imps]
+    body += [ENCL_VL_SHARED, _encl_vl('pl_Gc465214E502'), ENCL_VL_PL, _encl_vl('pl_pl_Gc465214E502'), ENCL_VL_G, _encl_vl('pl_Gp66304057C3')]
+    for fn, al in [('big_encx_pl_Gc465214E502', 'XA'), ('big_encx_pl_pl_Gc465214E502', 'XB'), ('big_encx_Gc465214E502_iface', 'XVT'), ('big_encx_l1024_u16', 'Xl1024'),
+                   ('big_encx_pl_Gp66304057C3', 'XC'), ('big_encx_Gp66304057C3_iface', 'CIG'), ('big_encx_l123_u16', 'Xl123'), ('big_encx_pbits', 'EXP'), ('bitlist_obj', 'BO')]:
+        imps.append(f'import ../proofs/obj/{fn}.bend as {al}')
+    imps += ['import ./e2e_encp.bend as EP', 'import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d',
+             'import ../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d',
+             'import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d',
+             'import ./e2e_encq.bend as EQ', 'import ../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d',
+             'import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d']
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/vbytes.bend as VY',
+            'import ../proofs/obj/vua_lay.bend as LY', 'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_rd.bend as UR',
+            'import ../proofs/obj/vua_fix.bend as VTX', 'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vcopy.bend as VC',
+            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/venc.bend as VEN',
+            'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/pb_min.bend as PBM',
+            'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/dk.bend as DK',
+            'import ../proofs/obj/list_obj.bend as LO', 'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vrecx.bend as VRX',
+            'import ../proofs/obj/vrecb.bend as VRB', 'import ../proofs/obj/len_bridge.bend as LB', 'import ../proofs/obj/vbitb.bend as VBB',
+            'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/root_gnames.bend as RN',
+            'import ../types/uint8_encode_ssz_generated.bend as uint8_e', 'import ../types/uint16_encode_ssz_generated.bend as uint16_e',
+            'import ../proofs/obj/big_encx_pl_u8.bend as XU8', 'import ../proofs/obj/big_encx_pl_u64.bend as XU64',
+            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64',
+            'import ./e2e_encr.bend as ER', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_ulist.bend as ULW',
+            'import ./e2e_gprog.bend as GP', 'import ./e2e_gwin.bend as GW'] + imps
+    return '\n'.join(head) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# Encode records from the root law's representation for the progressive containers' list fields: a record
+# X.MW whose object is the field, whose view is the record's value, valid, and whose bytes are bounded (P1 =
+# 2^27 + 1 for an unbounded list: the premise; a limit's bytes for a limited one). Byte storage (pu8, pu64),
+# record lists (rb_T).
+
+''' + '\n'.join(body)
+
+
+SUPPORT_OUT['e2e_encl.bend'] = encl_text()
+
+
+def prog_view(R, X, mod='e2e_gprog'):
+    """(ii)/(iii) of a progressive container: its window view (<mod>.vw_X) at the whole buffer."""
+    text = f'''# ---- the view of a decoded object is the codec law's value ({mod}.vw_{X} at the window (0, 0, n)) ----
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
   GP.vw_{X}(d, t, n, 0n, 0, n, {{==}}, hd, hn, pf, hchk)
 
 '''
-    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_gprog.bend as GP'], 'text': text}
+    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./{mod}.bend as GP'], 'text': text}
 
 
 VDEC_VIEWS['Gp4B0CA2906A'] = prog_view('ProgressiveSingleListContainerTestStruct', 'Gp4B0CA2906A')
 VDEC_VIEWS['Gp66304057C3'] = prog_view('ProgressiveVarTestStruct', 'Gp66304057C3')
+VDEC_VIEWS['Gc221EC01D83'] = prog_view('ProgressiveTestStruct', 'Gc221EC01D83', 'e2e_gcx')
+VDEC_VIEWS['Gp8A7851175B'] = prog_view('ProgressiveComplexTestStruct', 'Gp8A7851175B', 'e2e_gcx')
 VDEC_VIEWS['GuAD91DEB870'] = union_view('CompatibleUnionBC', 'GuAD91DEB870')
 VDEC_VIEWS['Gu6DDF182530'] = union_view('CompatibleUnionABCA', 'Gu6DDF182530')
 
@@ -3605,8 +5306,13 @@ def pbv2(+dw: Nat, +T: {TR}, +K: U32) -> {{S.BitsValue{{BO.bview({OBT})}} == EXP
     {{S.BitsValue{{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))}} == EXP.VAL(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}) : S.Value}}
   {{==}}
 
-def pbb2(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n) == True{{}} : Bool}},
-    +hK8: {prem[2]}, +hKY: {prem[3]}, +hroom: {prem[4]}, +hbz: {prem[5]}, +wf: BO.wfb({OBT})) -> PBR(w):
+# the record EXP.MB{{dw, T, K, K, KB, KY}}: its view, validity and byte bound
+def PBF3(+dw: Nat, +T: {TR}, +K: U32) -> Data:
+  DK.P2({{S.BitsValue{{BO.bview({OBT})}} == EXP.VAL(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}) : S.Value}},
+    DK.P2({{EXP.OK(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EXP.ENC(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}})), Nat.add(VB.pw({P27}n), 1n)) == True{{}} : Bool}}))
+
+def pbf(+T: {TR}, +dw: Nat, +K: U32, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n) == True{{}} : Bool}},
+    +hK8: {prem[2]}, +hKY: {prem[3]}, +hroom: {prem[4]}, +hbz: {prem[5]}, +wf: BO.wfb({OBT})) -> PBF3(dw, T, K):
   +N = U32.to_nat(K)
   +hN = FD.nat__le_refl(N)
   +tq = CO.eq5(K, {KB}n, N, {{==}}, hN, hK8)
@@ -3620,7 +5326,16 @@ def pbb2(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, 
   +hnk = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n), Nat.add(VB.pw({P27}n), 1n), BLB.nkb(K, N, {KB}n, {{==}}, hN, hK8), Order.add_right(VD.s_rng(3n, N), VB.pw({P27}n), 1n, hs3))
   +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(VB.pw({P27}n), 1n)) == True{{}} : Bool}}, U32.to_nat(CO.NK(K)), List.length(&2, U32, EXP.ENC(EXP.MB{{dw, T, K, N, {KB}n, {KY}n}})),
     Equal.sym(Nat, List.length(&2, U32, EXP.ENC(EXP.MB{{dw, T, K, N, {KB}n, {KY}n}})), U32.to_nat(CO.NK(K)), EXP.eL(dw, T, K, N, {KB}n, {KY}n, hok)), hnk)
-  (EXP.MB{{dw, T, K, N, {KB}n, {KY}n}}, (eo, (pbv2(dw, T, K), (hok, hl))))
+  (pbv2(dw, T, K), (hok, hl))
+
+def pbb3(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, +f: PBF3(dw, T, K)) -> PBR(w):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  (EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}, (eo, (fv, (fo, fl))))
+
+def pbb2(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n) == True{{}} : Bool}},
+    +hK8: {prem[2]}, +hKY: {prem[3]}, +hroom: {prem[4]}, +hbz: {prem[5]}, +wf: BO.wfb({OBT})) -> PBR(w):
+  pbb3(w, T, dw, K, eo, pbf(T, dw, K, pf, hdw, hK8, hKY, hroom, hbz, wf))
 
 # a progressive bit list the root law represents (wfb), with its premise: its record
 def pbb(-w: O.Bits, +wf: BO.wfb(w), +hs: SDPB(w, {Kd}n)) -> PBR(w):
@@ -3799,6 +5514,13 @@ def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)}
     Equal.sym(Nat, List.length(&2, U32, K_{X}.ENCC({FARGS})), {SUM}, CI_{X}.lenE({FARGS}, hok)), hb1)
   ({MW}, ({eqn}, (vw_{X}({vwargs}), (hok, lb))))
 '''
+    lbt = {}
+    for k, f in enumerate(fs):
+        if f[0] == 'l':
+            lbt[k] = str(2 * int(re.search(r'hk: \{Nat\.is_le\(c, (\d+)n\)', _obj(ENCR_LISTS[f[1]][1])).group(1))) + 'n'
+        elif f[0] == 'pb':
+            lbt[k] = 'Nat.add(VB.pw(27n), 1n)'
+    defs = _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt)
     lines, src = [], 'rep'
     for i, k in enumerate(us):
         lines.append(f'  (+x{k}, +r{i}) = {src}')
@@ -3861,6 +5583,55 @@ for _X in PROGS:
     VENC_SHAPES[_X] = venc_mw
 
 
+def _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt):
+    """Split c1_X into c1f_X (the record's facts from its fields' explicit records: view, OK, 1 + bytes bound),
+    c1p_X (package) and c1_X (from the fields' record bundles), so another record can take c1f_X's facts."""
+    i = defs.index('\ndef c1_')
+    head, c1 = defs[:i], defs[i:]
+    fi = c1.index(f'\n  ({MW}, (')
+    fin = c1[fi + 1:].rstrip()
+    lines = c1[:fi].split('\n')
+    sig = '\n'.join(lines[1:3])
+    body = [ln for ln in '\n'.join(lines[3:]).split('\n')]
+    unpr = [ln for ln in body if re.match(r'  \(\+[mevo]\d+, \+(cb\d+[a-c]|l\d+)\) = cb\d+[a-c]?$', ln)]
+    rest = [ln for ln in body if ln not in unpr and ln.strip()] + [fin]
+    m = re.match(rf'  \({re.escape(MW)}, \((.*), \(vw_{X}\((.*?)\), \(hok, lb\)\)\)\)$', fin, re.S)
+    eqn, vwargs = m.group(1), m.group(2)
+    us = [k for k, f in enumerate(fs) if f[0] == 'u8']
+    vs = [k for k, f in enumerate(fs) if f[0] != 'u8']
+    xp = ''.join(f'+x{k}: U32, ' for k in us)
+    mp = ''.join(f'+m{k}: {fmods[names[k]]}, ' for k in vs)
+    hp = ''.join(f'+h{k}: {{U32.is_lt(x{k}, 256) == True{{}} : Bool}}, ' for k in us)
+    mod = {k: fmods[names[k]].split('.')[0] for k in vs}
+    vp = ''.join(v + ', ' for v in vwv)
+    op = ''.join(f'+o{k}: {{{mod[k]}.OK(m{k}) == True{{}} : Bool}}, ' for k in vs)
+    lp = ', '.join(f'+l{k}: {{Nat.is_le(LY.LN({mod[k]}.ENC(m{k})), {lbt[k]}) == True{{}} : Bool}}' for k in vs)
+    fa = ', '.join([f'x{k}' for k in us] + [f'm{k}' for k in vs])
+    CF = f'CF_{X}({fa})'
+    cfp = ''.join(f'+x{k}: U32, ' for k in us) + ''.join(f'+m{k}: {fmods[names[k]]}, ' for k in vs)
+    cfdef = f"""# the record's facts: its view, valid, 1 + its bytes within the bound
+def CF_{X}({cfp[:-2]}) -> Data:
+  DK.P2({{RT.v_{X}(CI_{X}.TH({MW})) == CI_{X}.VAL({MW}) : S.Value}}, DK.P2({{CI_{X}.OK({MW}) == True{{}} : Bool}}, {{Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), A.quad(VB.pw(28n))) == True{{}} : Bool}}))
+
+def c1f_{X}({xp}{mp}{hp}{vp}{op}{lp}) -> {CF}:
+""" + '\n'.join(rest[:-1]) + f"""
+  (vw_{X}({vwargs}), (hok, lb))
+
+def c1p_{X}(-o: {D}, {cfp}+eq: {{o == CI_{X}.TH({MW}) : {D}}}, +f: {CF}) -> RQ_{X}(o):
+  (+fv, +f1) = f
+  (+fo, +fl) = f1
+  ({MW}, (eq, (fv, (fo, fl))))
+"""
+    cargs = ', '.join([f'x{k}' for k in us] + [f'm{k}' for k in vs] + [f'h{k}' for k in us] + [f'v{k}' for k in vs] + [f'o{k}' for k in vs] + [f'l{k}' for k in vs])
+    c1n = f"""
+# the object's record from its fields' records
+{sig.strip()}
+""" + '\n'.join(unpr) + f"""
+  c1p_{X}(o, {fa}, {eqn}, c1f_{X}({cargs}))
+"""
+    return head.rstrip('\n').rsplit('\n# the object\'s record from its fields\' records', 1)[0] + '\n\n' + cfdef + c1n
+
+
 def encq_text():
     L, imps = [], []
     for X in PROGS:
@@ -3906,6 +5677,291 @@ def prog_premise2(X):
 for _X in PROGS:
     MWP[_X] = mwp_prog2
     VENC_PREMISE[_X] = prog_premise2(_X)
+
+
+# PROGS2[X]: the list-field containers' fields: ('u8',), ('l', tag), ('pb',), ('pu8',), ('pu64',), ('rl', tag), ('vl', tag)
+PROGS2 = {
+    'Gc221EC01D83': [('pu8',), ('pu64',), ('rl', 'pl_Gc4ED9619F50'), ('vl', 'pl_pl_Gc465214E502')],
+    'Gp8A7851175B': [('u8',), ('l', 'l123'), ('pb',), ('pu64',), ('rl', 'pl_Gc4ED9619F50'), ('vl', 'pl_pl_Gc465214E502'), ('rl', 'l10_GpF350A3C486'), ('vl', 'pl_Gp66304057C3')],
+}
+
+
+def prog_q2(X, D):
+    """e2e_encq2's record builder of X (list fields, the KP bound): rq_X(o, rep, hs) -> RQ_X(o) (defs text, imports)."""
+    ci = _obj(f'big_encx_{X}_iface.bend')
+    okt = _okt(ci)
+    names = re.findall(r'\+(\w+): ', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))
+    fs = PROGS2[X]
+    assert len(names) == len(fs), (X, names)
+    ren = {nm: (f'x{k}' if fs[k][0] == 'u8' else f'm{k}') for k, nm in enumerate(names)}
+    for a, b in ren.items():
+        okt = re.sub(rf'\b{a}\b', b, okt)
+    aliases = sorted(set(re.findall(r'\b(EX_\w+|uint\d+_e|LY)\.', okt + _okt(ci, 'OKT'))) | set(re.findall(r'\b(EX_\w+)\.', re.search(r'^def VALC.*$', ci, re.M).group(0))))
+    imps = []
+    for al in aliases:
+        p = re.search(rf'^import (\S+) as {al}$', ci, re.M).group(1)
+        imps.append(f'import {p.replace("../../types/", "../types/") if p.startswith("../../types/") else "../proofs/obj/" + p[2:]} as {al}')
+    fmods = dict(zip(names, re.findall(r'\+\w+: (EX_\w+\.\w+|U32)', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))))
+    PJ = lambda k: f'RT.pj_{X}_{k}(o)'  # noqa: E731
+    us = [k for k, f in enumerate(fs) if f[0] == 'u8']
+    MW = f'CI_{X}.MW{{{", ".join(ren[n] for n in names)}}}'
+    mod = {k: fmods[names[k]].split('.')[0] for k, f in enumerate(fs) if f[0] != 'u8'}
+    # the object's fields replaced by their records' objects
+    cur = [f'x{k}' if f[0] == 'u8' else PJ(k) for k, f in enumerate(fs)]
+    eqn = 'eo'
+    TYP = {'l': 'O.Words', 'pu8': 'O.Words', 'pu64': 'O.Words', 'pb': 'O.Bits'}
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            continue
+        T = TYP.get(f[0]) or re.search(rf'^def TH\(m: MW\) -> (\S+):', _obj(re.search(rf'^import \./(\S+) as {mod[k]}$', ci, re.M).group(1)), re.M).group(1)
+        if '.' in T and T.split('.')[0].endswith('_d'):
+            al = T.split('.')[0]
+            imps.append(f'import ../types/{al[:-2]}_def_generated.bend as {al}')
+        nxt = list(cur)
+        nxt[k] = f'{mod[k]}.TH(m{k})'
+        mot = list(cur)
+        mot[k] = 'z'
+        eqn = (f'Equal.trans({D}, o, {D}{{{", ".join(cur)}}}, {D}{{{", ".join(nxt)}}},\n    {eqn},\n    '
+               f'Equal.cong({T}, {D}, z => {D}{{{", ".join(mot)}}}, {PJ(k)}, {mod[k]}.TH(m{k}), e{k}))')
+        cur = nxt
+    UI = lambda v: f'S.UnsignedValue{{P.UInt{{{v}, 0, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
+    VIEW = {'l': lambda m: f'PBF.vview2({m})', 'pb': lambda m: f'S.BitsValue{{BO.bview({m})}}', 'pu8': lambda m: f'PBF.vview1({m})', 'pu64': lambda m: f'UL.uview({m})'}
+    lhs, rfull, eqs = [], [], []
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            lhs.append(UI(f'x{k}'))
+            rfull.append(UI(f'U32.and(x{k}, 255)'))
+            eqs.append((UI('_'), f'Equal.sym(U32, U32.and(x{k}, 255), x{k}, VBB.ea(x{k}, h{k}))'))
+            continue
+        th = f'{mod[k]}.TH(m{k})'
+        lhs.append(VIEW[f[0]](th) if f[0] in VIEW else f'RT.xv_{f[1]}({th})')
+        rfull.append(f'{mod[k]}.VAL(m{k})')
+        eqs.append(('_', f'v{k}'))
+
+    def seq(it):
+        out = 'S.EmptyItems{}'
+        for x in reversed(it):
+            out = f'S.Items{{{x}, {out}}}'
+        return f'S.Sequence{{{out}}}'
+    steps = []
+    for p in range(len(fs)):
+        it = [lhs[q] if q < p else (eqs[q][0] if q == p else rfull[q]) for q in range(len(fs))]
+        steps.append(f'  %{eqs[p][1]} : {{RT.v_{X}(CI_{X}.TH({MW})) == {seq(it)} : S.Value}}')
+    # the total bound: a closed start c0, closed field bounds (acc), and unbounded ones of P + 1 (acu), then fin
+    bm = re.search(r'Nat\.is_le\((Nat\.add\(.*\)), A\.quad\(VB\.pw\((\d+)n\)\)\)', okt)
+    SUM, KQ = bm.group(1), int(bm.group(2))
+    SUM = SUM[:[i for i in range(len(SUM)) if SUM[:i + 1].count('(') == SUM[:i + 1].count(')') and SUM[:i + 1].count('(') > 0][0] + 1]
+    assert KQ == 28
+    terms = []
+    e = SUM
+    while e.startswith('Nat.add('):
+        a, b = [z.strip() for z in _split(e[len('Nat.add('):-1])]
+        terms.append(b)
+        e = a
+    c0 = int(e[:-1])
+    terms.reverse()
+    tb = {}
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            continue
+        key = f'LY.LN({mod[k]}.ENC(m{k}))'
+        if f[0] == 'l':
+            tb[key] = (2 * int(re.search(r'hk: \{Nat\.is_le\(c, (\d+)n\)', _obj(ENCR_LISTS[f[1]][1])).group(1)), f'l{k}')
+        elif f[0] == 'rl' and ENCL_RL[f[1]][7] is not None:
+            tb[key] = (ENCL_RL[f[1]][7], f'l{k}')
+        else:
+            tb[key] = (None, f'l{k}')
+    P = 'VB.pw(27n)'
+
+    def chain(start, name):
+        out = []
+        c, cv, kk = f'{start}n', start, 0
+        prev = f'{start}n'
+        out.append(f'  +{name}0 = EL.acz({start}n, {P})')
+        for i, t in enumerate(terms):
+            B, pr = tb[t]
+            if B is None:
+                out.append(f'  +{name}{i + 1} = EL.acu({prev}, {t}, {c}, {kk}n, {P}, {name}{i}, {pr})')
+                c, cv, kk = f'Nat.add({c}, 1n)', cv + 1, kk + 1
+            else:
+                out.append(f'  +{name}{i + 1} = EL.acc({prev}, {t}, {c}, {B}n, {kk}n, {P}, {name}{i}, {pr})')
+                c, cv = f'Nat.add({c}, {B}n)', cv + B
+            prev = f'Nat.add({prev}, {t})'
+        assert kk <= 7 and cv + 1 <= 512, (X, kk, cv)
+        out.append(f'  +{name} = EL.fin({prev}, {c}, {kk}n, {P}, {name}{len(terms)}, FD.nat__le_trans({c}, VB.pw(9n), {P}, {{==}}, VBG.pw_mono(9n, 27n, {{==}})), {{==}})')
+        return out
+    BLEAF = f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
+    leaf = {BLEAF: 'hb'}
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            leaf[f'uint8_e.u8_valid(x{k})'] = f'h8_{k}'
+        else:
+            leaf[f'{mod[k]}.OK(m{k})'] = f'o{k}'
+    HOK = _andproof(okt, leaf)
+    FARGS = ', '.join(ren[n] for n in names)
+    SUM1 = SUM.replace(f'Nat.add({c0}n,', f'Nat.add({c0 + 1}n,', 1)
+    unp, cps, unpr = [], [], []
+    BUND = {'l': lambda f: f'ER.LR_{f[1]}', 'pb': lambda f: 'EP.PBR', 'pu8': lambda f: 'EL.LR_pu8', 'pu64': lambda f: 'EL.LR_pu64',
+            'rl': lambda f: f'EL.LRR_{f[1]}', 'vl': lambda f: f'EL.LRV_{f[1]}'}
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            unp.append(f'''  +h8_{k} = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(x{k}), U32.to_nat(255)), U32.is_le(x{k}, 255),
+    Equal.sym(Bool, U32.is_le(x{k}, 255), Nat.is_le(U32.to_nat(x{k}), U32.to_nat(255)), VU.le_u32(x{k}, 255)), LB.small(x{k}, h{k}))''')
+            continue
+        cps.append(f'+cb{k}: {BUND[f[0]](f)}({PJ(k)})')
+        unpr += [f'  (+m{k}, +cb{k}a) = cb{k}', f'  (+e{k}, +cb{k}b) = cb{k}a', f'  (+v{k}, +cb{k}c) = cb{k}b', f'  (+o{k}, +l{k}) = cb{k}c']
+    hparams = ''.join(f'+h{k}: {{U32.is_lt(x{k}, 256) == True{{}} : Bool}}, ' for k in us)
+    xparams = ''.join(f'+x{k}: U32, ' for k in us)
+    E0 = f'{D}{{{", ".join(f"x{k}" if f[0] == "u8" else PJ(k) for k, f in enumerate(fs))}}}'
+    vwp = ''.join(f'+{"x" if f[0] == "u8" else "m"}{k}: {fmods[names[k]]}, ' for k, f in enumerate(fs))
+    vwh = ''.join(f'+h{k}: {{U32.is_lt(x{k}, 256) == True{{}} : Bool}}, ' for k in us)
+    vwv = [f'+v{k}: {{{lhs[k]} == {rfull[k]} : S.Value}}' for k, f in enumerate(fs) if f[0] != 'u8']
+    vwargs = ', '.join([('x' if f[0] == 'u8' else 'm') + str(k) for k, f in enumerate(fs)] + [f'h{k}' for k in us] + [f'v{k}' for k, f in enumerate(fs) if f[0] != 'u8'])
+    defs = f'''# the object's view is the record's
+def vw_{X}({vwp}{vwh}{", ".join(vwv)}) -> {{RT.v_{X}(CI_{X}.TH({MW})) == CI_{X}.VAL({MW}) : S.Value}}:
+''' + '\n'.join(steps) + f'''
+  {{==}}
+
+# the object's record from its fields' records
+def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)})
+    -> RQ_{X}(o):
+{chr(10).join(unpr + unp)}
+{chr(10).join(chain(c0, 'hb'))}
+  +hok = {HOK}
+{chr(10).join(chain(c0 + 1, 'hc'))}
+  +lb = FD.logic__subst(Nat, z => {{Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}, {SUM}, List.length(&2, U32, K_{X}.ENCC({FARGS})),
+    Equal.sym(Nat, List.length(&2, U32, K_{X}.ENCC({FARGS})), {SUM}, CI_{X}.lenE({FARGS}, hok)), hc)
+  ({MW}, ({eqn}, (vw_{X}({vwargs}), (hok, lb))))
+'''
+    lbt = {}
+    for k, f in enumerate(fs):
+        if f[0] == 'u8':
+            continue
+        B = tb[f'LY.LN({mod[k]}.ENC(m{k}))'][0]
+        lbt[k] = 'Nat.add(VB.pw(27n), 1n)' if f[0] == 'pb' else ('EL.P1()' if B is None else f'{B}n')
+    defs = _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt)
+    # rq: the rep's parts, the premises' parts, the fields' records
+    lines, src = [], 'rep'
+    for i, k in enumerate(us):
+        lines.append(f'  (+x{k}, +r{i}) = {src}')
+        src = f'r{i}'
+    n = len(fs)
+    lines.append(f'  (+eo, +q0) = {src}')
+    pn = {i: (f'q{i}' if i == n - 1 else f'p{i}') for i in range(n)}
+    for i in range(n - 1):
+        lines.append(f'  (+p{i}, +q{i + 1}) = q{i}')
+    pks = [k for k, f in enumerate(fs) if f[0] != 'u8']
+    src = 'hs'
+    HS = {}
+    for i, k in enumerate(pks):
+        if i == len(pks) - 1:
+            HS[k] = src
+        else:
+            lines.append(f'  (+hs{k}, +hr{i}) = {src}')
+            HS[k] = f'hs{k}'
+        src = f'hr{i}'
+    args = []
+    for k, f in enumerate(fs):
+        if f[0] == 'l':
+            args.append(f'ER.lb_{f[1]}({PJ(k)}, {pn[k]}, {HS[k]})')
+        elif f[0] == 'pb':
+            args.append(f'EP.pbb({PJ(k)}, {pn[k]}, {HS[k]})')
+        elif f[0] == 'pu8':
+            args.append(f'EL.lb_pu8({PJ(k)}, {pn[k]}, {HS[k]})')
+        elif f[0] == 'pu64':
+            args.append(f'EL.lb_pu64({PJ(k)}, {pn[k]}, {HS[k]})')
+        elif f[0] == 'rl':
+            sch = FSCH(X, k)
+            lim = '' if ENCL_RL[f[1]][7] is None else '{==}, '
+            args.append(f'EL.rb_{f[1]}({PJ(k)}, {sch}, {pn[k]}, {lim}{HS[k]})')
+        elif f[0] == 'vl':
+            sch = FSCH(X, k)
+            args.append(f'EL.rv_{f[1]}({PJ(k)}, {sch}, {pn[k]}, {HS[k]}, {{==}})')
+    lines.append(f'  c1_{X}(o, {"".join(f"x{k}, " for k in us)}eo, {"".join(pn[k] + ", " for k in us)}' + ', '.join(args) + ')')
+    PRM = {'l': lambda f, pj: f'BL.sdk({pj}, {encr_k(f[1])}n)', 'pb': lambda f, pj: f'EP.SDPB({pj}, {encp_kd()}n)', 'pu8': lambda f, pj: f'EL.PW1({pj})',
+           'pu64': lambda f, pj: f'EL.PW1({pj})', 'rl': lambda f, pj: f'EL.PRL_{f[1]}({pj})', 'vl': lambda f, pj: f'EL.PRV_{f[1]}({pj})'}
+    prems = [PRM[f[0]](f, PJ(k).replace('(o)', '(v)')) for k, f in enumerate(fs) if f[0] != 'u8']
+    PREM = prems[-1]
+    for q in reversed(prems[:-1]):
+        PREM = f'DK.P2({q}, {PREM})'
+    head = f"""# ---- {X} ----
+def PREM_{X}(v: {D}) -> Data: {PREM}
+
+def RQ_{X}(o: {D}) -> Data:
+  DK.Ex(CI_{X}.MW, m => DK.P2({{o == CI_{X}.TH(m) : {D}}}, DK.P2({{RT.v_{X}(CI_{X}.TH(m)) == CI_{X}.VAL(m) : S.Value}},
+    DK.P2({{CI_{X}.OK(m) == True{{}} : Bool}}, {{Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}))))
+
+"""
+    rq = f"""
+def rq_{X}(-o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: PREM_{X}(o)) -> RQ_{X}(o):
+""" + '\n'.join(lines) + '\n'
+    kmod = re.search(r'^import (\S+) as K$', ci, re.M).group(1)
+    imps += [f'import ../proofs/obj/big_encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
+    return head + defs + rq, imps
+
+
+def FSCH(X, k):
+    """The schema the rep of X passes its field k (the rep's own expression, at Spec.X())."""
+    rep_src = _obj('root_gtypes2.bend')
+    line = re.search(rf'^def rep_{X}\(o: .*\n(.*\n)?', rep_src, re.M).group(0)
+    mm = re.search(rf'rep_\w+\(pj_{X}_{k}\(o\), ', line)
+    j = mm.end()
+    depth, e = 0, j
+    while True:
+        ch = line[e]
+        if ch == '(':
+            depth += 1
+        elif ch == ')':
+            if depth == 0:
+                break
+            depth -= 1
+        elif ch == ',' and depth == 0:
+            break
+        e += 1
+    return line[j:e].replace('(s)', f'(Spec.{X}())')
+
+
+def encq2_text():
+    L, imps = [], []
+    for X in PROGS2:
+        D = f'T.{X}'
+        t, im = prog_q2(X, D)
+        L.append(t)
+        imps += im
+    head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../types/generic_obj.bend as T',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/generic_specs.bend as Spec', 'import ../proofs/obj/schema_shapes.bend as SH',
+            'import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/len_bridge.bend as LB',
+            'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/packed_bytes.bend as PBF',
+            'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/nat_order.bend as Order',
+            'import ./e2e_blist.bend as BL', 'import ./e2e_encr.bend as ER', 'import ./e2e_encp.bend as EP', 'import ./e2e_encl.bend as EL']
+    return '\n'.join(dict.fromkeys(head + imps)) + '''
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# The progressive containers with list fields: their encode records from the root law's representation
+# (rq_X), as e2e_encq's, the byte bound through e2e_encl's KP chain (each list field within P1 = 2^27 + 1).
+
+''' + '\n'.join(L)
+
+
+SUPPORT_OUT['e2e_encq2.bend'] = encq2_text()
+
+
+def mwp_prog3(R, X, D):
+    defs, call, imps, sig = mwp_prog2(R, X, D)
+    return defs, call, [i.replace('./e2e_encq.bend as EQ', './e2e_encq2.bend as EQ') for i in imps], sig
+
+
+def prog_premise3(X):
+    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o): each list field\'s storage at its encode law\'s depth bound '
+            '(byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field\'s '
+            'encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law\'s 2^30), and each element\'s storage premise')
+
+
+for _X in PROGS2:
+    MWP[_X] = mwp_prog3
+    VENC_SHAPES[_X] = venc_mw
+    VENC_PREMISE[_X] = prog_premise3(_X)
 
 
 # ---- (i) of a CompatibleUnion with any arms: the selected arm's record (a uint8 container's value, or a

@@ -511,6 +511,9 @@ def partsw({WP_}, {HDD})
     w('\n'.join(f'  for {q}' for q in c['params'] + hyps))
     w(f'  Decoding.decodes(Spec.{x.n}(), {BY0}, XE({EA}))')
     w(f"""def encode_spec({", ".join(c['args'] + hargs)}):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.{x.n}(), XE({EA})) : {{_ == Some{{{BY0}}} : {M}}}
   %Equal.sym({MP}, Codec.parts(XE({EA}), Spec.{x.n}()), Some{{[S.Variable{{{BY0}}}]}},
       partsw({A0}, {", ".join(hargs)}, FD.array__trep_perfect(U32, {DO}n, 0), {HD0}, {{==}})) :
     {{Codec.bytes(_) == Some{{{BY0}}} : {M}}}
