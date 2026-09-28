@@ -3705,6 +3705,16 @@
     "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "ProgressiveComplexTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveComplexTestStruct",
+    "generated_name": "Gp8A7851175B",
+    "laws": [
+     "ProgressiveComplexTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise"
+   }
+  ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
    {
     "name": "ProgressiveSingleListContainerTestStruct",
@@ -6106,12 +6116,6 @@
    "reason": "encode laws not over the same free words / bits",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
-  "ProgressiveComplexTestStruct": {
-   "generated_name": "Gp8A7851175B",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "ProgressiveComplexTestStruct_e2e_dec_generated.bend",
-   "root": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
-  },
   "ProgressiveSingleFieldContainerTestStruct": {
    "generated_name": "GpF350A3C486",
    "reason": "encode laws not over the same free words / bits"
@@ -6603,6 +6607,12 @@
    "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
    "iv": "FuluTransaction_e2e_root_generated.bend"
   },
+  "ProgressiveComplexTestStruct": {
+   "generated_name": "Gp8A7851175B",
+   "i": "ProgressiveComplexTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveComplexTestStruct_e2e_dec_generated.bend",
+   "iv": "ProgressiveComplexTestStruct_e2e_root_generated.bend"
+  },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
    "i": "ProgressiveSingleListContainerTestStruct_e2e_generated.bend",
@@ -7029,7 +7039,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": "ProgressiveComplexTestStruct_e2e_dec_generated.bend"
+   "bridged": null
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
