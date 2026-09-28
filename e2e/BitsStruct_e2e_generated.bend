@@ -148,14 +148,14 @@ def bs4(-o: BitsStruct_d.Gc85FA758A04, +x1: bitvector_2_d.Bitvector2, +x2: bitve
     case bitvector_2_d.Bitvector2{+fB}: bs5(o, fB, x2, x4, eo, c0, c3, rp1, rp2, rp4)
 
 def bs3(-o: BitsStruct_d.Gc85FA758A04, +x1: bitvector_2_d.Bitvector2, +x2: bitvector_1_d.Bitvector1, +x4: bitvector_8_d.Bitvector8, +eo: {o == BitsStruct_d.Gc85FA758A04{RT.pj_Gc85FA758A04_0(o), x1, x2, RT.pj_Gc85FA758A04_3(o), x4} : BitsStruct_d.Gc85FA758A04},
-    +c0: BSE.BR5(RT.pj_Gc85FA758A04_0(o)), +r1: DK.P2(RN.rp_bv2(x1), DK.P2(RN.rp_bv1(x2), DK.P2(BO.rep_bits(RT.pj_Gc85FA758A04_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.Gc85FA758A04())))))), RN.rp_bv8(x4)))), +hs3: BSE.SDB(RT.pj_Gc85FA758A04_3(o), 28n)) -> {Some{E.obytes(Pair.snd(BitsStruct_d.Gc85FA758A04, B.Buf, BitsStruct_e.Gc85FA758A04_encode(o)))} == API.serialize(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
+    +c0: BSE.BR5(RT.pj_Gc85FA758A04_0(o)), +r1: DK.P2(RN.rp_bv2(x1), DK.P2(RN.rp_bv1(x2), DK.P2(BO.rep_bits(RT.pj_Gc85FA758A04_3(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.Gc85FA758A04())))))), RN.rp_bv8(x4)))), +hs3: BSE.SDB(RT.pj_Gc85FA758A04_3(o), 31n)) -> {Some{E.obytes(Pair.snd(BitsStruct_d.Gc85FA758A04, B.Buf, BitsStruct_e.Gc85FA758A04_encode(o)))} == API.serialize(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
   (+rp1, r2) = r1
   (+rp2, r3) = r2
   (+rb3, +rp4) = r3
   bs4(o, x1, x2, x4, eo, c0, BSE.bb6(RT.pj_Gc85FA758A04_3(o), rb3, hs3), rp1, rp2, rp4)
 
 # (i): for every object the root law represents
-def BitsStruct_e2e_encode(-o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +hs0: BSE.SDB(RT.pj_Gc85FA758A04_0(o), 28n), +hs3: BSE.SDB(RT.pj_Gc85FA758A04_3(o), 28n)) -> {Some{E.obytes(Pair.snd(BitsStruct_d.Gc85FA758A04, B.Buf, BitsStruct_e.Gc85FA758A04_encode(o)))} == API.serialize(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
+def BitsStruct_e2e_encode(-o: BitsStruct_d.Gc85FA758A04, +rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()), +hs0: BSE.SDB(RT.pj_Gc85FA758A04_0(o), 31n), +hs3: BSE.SDB(RT.pj_Gc85FA758A04_3(o), 31n)) -> {Some{E.obytes(Pair.snd(BitsStruct_d.Gc85FA758A04, B.Buf, BitsStruct_e.Gc85FA758A04_encode(o)))} == API.serialize(Spec.Gc85FA758A04(), RT.v_Gc85FA758A04(o)) : Maybe<&2, +List<U32>>}:
   (+x1, q1) = rep
   (+x2, q2) = q1
   (+x4, q3) = q2

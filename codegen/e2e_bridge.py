@@ -2785,7 +2785,7 @@ def pf_oz(+dd: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {FD.array__perfect(U32,
 def nkb(+K: U32, +N: Nat, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}:
   +hK = FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(N, 8n), O.pow2n(kb), Order.add_right(U32.to_nat(K), N, 8n, hN), hNk)
-  %Equal.sym(Nat, U32.to_nat(CO.NK(K)), Nat.add(VBT.AK(K), 1n), VBT.E4(K, kb, hkb, hK)) : {Nat.is_le(_, Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(CO.NK(K)), Nat.add(VBT.AK(K), 1n), VBT.E4(K, kb, FD.nat__lt_trans(kb, 32n, 33n, hkb, {==}), hK)) : {Nat.is_le(_, Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(U32.shrn(K, 3n)), VD.s_rng(3n, U32.to_nat(K)), VD.shrk(3n, K)) : {Nat.is_le(Nat.add(_, 1n), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
   Order.add_right(VD.s_rng(3n, U32.to_nat(K)), VD.s_rng(3n, N), 1n, C.rgm(3n, U32.to_nat(K), N, hN))
 '''.replace('import ./e2e_cap.bend as C', 'import ./e2e_cap.bend as C\nimport ../proofs/nat_order.bend as Order')

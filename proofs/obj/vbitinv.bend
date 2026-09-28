@@ -132,7 +132,7 @@ def e32_uniq(Q1, R1, Q2, R2, e, a1, b1, a2, b2):
 
 def hz_pos(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Q: Nat, +R: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},
@@ -190,7 +190,7 @@ def INV(+dw: Nat, +T: F.array__Tree<U32>, +K: U32) -> Data: {DL.HZ(DL.RK(K), VB.
 
 def hz_case(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Q: Nat, +R: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},
@@ -211,7 +211,7 @@ def hz_case(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Q: Na
 # The root laws' invariant gives the encoder's.
 def hz_inv(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Q: Nat, +R: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},

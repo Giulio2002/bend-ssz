@@ -6,6 +6,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
+import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l16_WithdrawalRequest.bend as W
@@ -137,9 +138,9 @@ def vlf(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len
     case 1n+ +k:
       +hN = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(1), z) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__zero_le(k))
       +eQ = FD.u32__sub_nat(W.NN(len), 1, hN)
-      +hc = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(16)) == True{} : Bool}, W.CC(len), 1n+k, ecc, W.hcw(len, hchk))
-      +hNk = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(4n)) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__le_trans(1n+k, U32.to_nat(16), O.pow2n(4n), hc, {==}))
-      +hcov = VD.wd_cover(W.NN(len), 4n, {==}, hNk)
+      +hNk = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(W.NN(len)), z) == True{} : Bool}, FD.spec_common__pow2(32n), O.pow2n(32n), VD.s_pow2_eq(32n),
+        FD.nat__lt_le(U32.to_nat(W.NN(len)), FD.spec_common__pow2(32n), VB.u32_lt(W.NN(len))))
+      +hcov = VD.wd_cover(W.NN(len), 32n, {==}, hNk)
       +hcv = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(B.words_depth(W.NN(len)))) == True{} : Bool}, U32.to_nat(W.NN(len)), 1n+k, ecc, hcov)
       +hb0 = FD.logic__subst(Nat, z => {Nat.is_le(1n+k, z) == True{} : Bool}, O.pow2n(B.words_depth(W.NN(len))), FD.spec_common__pow2(B.words_depth(W.NN(len))), Equal.sym(Nat, FD.spec_common__pow2(B.words_depth(W.NN(len))), O.pow2n(B.words_depth(W.NN(len))), VD.s_pow2_eq(B.words_depth(W.NN(len)))), hcv)
       +hb = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(B.words_depth(W.NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)), FD.nat__succ_le_lt(k, FD.spec_common__pow2(B.words_depth(W.NN(len))), hb0))

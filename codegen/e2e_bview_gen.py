@@ -1,6 +1,13 @@
 """The shared bit-list view module (e2e/e2e_bview.bend) and the generic bit lists' view lemmas, for e2e_bridge."""
 import itertools
 
+
+def _src(p):
+    """a proving module's text as it reads before the light split (runtime_refs.unwire)"""
+    import runtime_refs as RR
+    return RR.unwire(Path(p).read_text())
+
+
 B = lambda b: 'True{}' if b else 'False{}'
 TH = 'FD.array__thaw(U32, T)'
 WS = 'FD.array__slots(U32, T)'
@@ -708,7 +715,7 @@ import re
 from pathlib import Path
 
 def bl_params(obj_dir, X):
-    s = (Path(obj_dir) / f'var_bits_{X}.bend').read_text()
+    s = _src(Path(obj_dir) / f'var_bits_{X}.bend')
     nby = int(re.search(r'def hB\(.*?\n.*?-> \{Nat\.is_le\(U32\.to_nat\(n\), (\d+)n\)', s, re.S).group(1))
     lim = int(re.search(r'\+bd: \{Nat\.is_le\(BD\(t, n\), U32\.to_nat\((\d+)\)\)', s).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VL\.DZ\(n\), (\d+)n\)', s, re.S).group(1))
@@ -776,7 +783,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 def bc_params(obj_dir, mod):
     """A bit list inside a container (var_bitc / big_var_bitc): the window's word start, the bit limit, the byte bound,
     the storage depth bound and the view's REST (the other fields' codec values) from the codec module."""
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     mv = re.search(r'^def VAL\(\+t: FD\.array__Tree<U32>, \+n: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     mi = re.match(r'S\.Sequence\{S\.Items\{S\.BitsValue\{VBL\.bl\(VR\.WB\(t, (\d+)n, U32\.to_nat\(LL\(n\)\)\)\)\}, (.*)\}\}$', mv)
     i0, rest = int(mi.group(1)), mi.group(2)
@@ -1006,7 +1013,7 @@ def hn3y(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 32n) == True{} : Bool}, +hy: {Nat.
 
 
 def gw_params(obj_dir, mod):
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     lim = int(re.search(r'def cC\(.*?\n.*?-> \{Nat\.is_le\(BD\(t, off, len\), U32\.to_nat\((\d+)\)\)', s, re.S).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(len\), (\d+)n\)', s, re.S).group(1))
     ky = int(re.search(r'def hyB\(.*?-> \{Nat\.is_le\(VC\.YL\(len\), VB\.pw\((\d+)n\)\)', s).group(1))
@@ -1065,7 +1072,7 @@ GW_IMPORTS = ['import ../proofs/obj/bitlist_rep.bend as BR', 'import ../proofs/o
 
 
 def gwa_params(obj_dir, mod):
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     lim = int(re.search(r'def cC\(.*?\n.*?-> \{Nat\.is_le\(BD\(t, off, len\), U32\.to_nat\((\d+)\)\)', s, re.S).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(len\), (\d+)n\)', s, re.S).group(1))
     ky = int(re.search(r'def hyB\(.*?-> \{Nat\.is_le\(VC\.YL\(len\), VB\.pw\((\d+)n\)\)', s).group(1))
@@ -1130,7 +1137,7 @@ def {P}_bwa(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo
 def attw_text(obj_dir, pmod='big_var_win_Attestation.bend', cmod='big_var_win_bits131072.bend', name='Attestation'):
     """e2e_attw: the view of the Attestation a word-aligned window reader builds (its bit list via gwa_text,
     its bit vector via e2e_bits.bw, the rest by computation)."""
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     head = 'S.Sequence{S.Items{CH.VALw(t, JW(i), LLw(len)), '
     assert val.startswith(head) and val.endswith('}}')
@@ -1180,7 +1187,7 @@ WIN_HYP = ('+eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 31n
 def lift_w(obj_dir, lemma, name, W, pmod, C, cname, clemma):
     """{lemma}: the view of the {name} a word-aligned window reader builds, from its one windowed child's view
     ({clemma}); every other field views as its value by computation."""
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     CV0 = 'CH.VALw(t, JW(i), LLw(len))'
     assert val.count(CV0) == 1 and not re.search(r'(?<![\w.])(JW|LLw|OWc|CH)\b', val.replace(CV0, ''))
@@ -1335,7 +1342,7 @@ def _split_top(s):
 
 
 def venc_bitc(obj_dir, R, X, pmod):
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     obje = re.search(r'^def OBJE\((.*?)\) -> (\S+): (.*)$', s, re.M)
     params, Dt, body = obje.group(1), obje.group(2), obje.group(3)
     W = [p.split(':')[0].strip()[1:] for p in _split_top(params) if re.match(r'\+w\d+:', p.strip())]
@@ -1486,9 +1493,9 @@ def _def_body(s, name):
 
 def venc_agg(obj_dir, R, X, pmod, cR, cX):
     """(i) for an aggregate whose encode module pmod reads its child cX's words (the child's (i) module: vx)."""
-    s = (Path(obj_dir) / pmod).read_text()
-    sa = (Path(obj_dir) / 'big_var_bitc_enc_Attestation.bend').read_text()
-    sc = (Path(obj_dir) / 'big_var_codec_AggregateAndProof_enc.bend').read_text()
+    s = _src(Path(obj_dir) / pmod)
+    sa = _src(Path(obj_dir) / 'big_var_bitc_enc_Attestation.bend')
+    sc = _src(Path(obj_dir) / 'big_var_codec_AggregateAndProof_enc.bend')
     m = _def_body(s, 'OBJX')
     W = [p.split(':')[0].strip()[1:] for p in _split_top(m.group(1)) if re.match(r'\+[a-z]\d+:', p.strip())]
     WS_ = ', '.join(W)
@@ -1856,6 +1863,19 @@ def _wpat(k):
     return ''.join(f'WCon{{+a{j}, ' for j in range(k)) + 'WNil{}' + '}' * k
 
 
+def okt_proof(c):
+    """the proof of one conjunct of a big_encx_bitsN record's OKT, by its shape (bb<N>b's binders)"""
+    rules = [(r'^FD\.array__perfect\(U32, dw, T\)$', 'pf'), (r'^Nat\.is_lt\(dw, \d+n\)$', 'hdw'),
+             (r'^Nat\.is_lt\(\d+n, \d+n\)$', '{==}'), (r'^Nat\.is_le\(U32\.to_nat\(K\), \d+n\)$', 'hN'),
+             (r'^Nat\.is_le\(Nat\.add\(\d+n, 8n\), O\.pow2n\(\d+n\)\)$', 'hK8'), (r'^Nat\.is_le\(Nat\.add\(31n, ', '{==}'),
+             (r'^Nat\.is_le\(Nat\.add\(U32\.to_nat\(U32\.shrn\(K, 5n\)\), 1n\), VB\.pw\(dw\)\)$', 'hroom'),
+             (r'^O\.tail_zero\(', 'htz'), (r'^DL\.HZ\(', 'hz'), (r'^O\.bits_above_zero\(', 'hbz'), (r'^U32\.is_le\(K, \d+\)$', 'hle')]
+    for pat, p in rules:
+        if re.search(pat, c.strip()):
+            return p
+    raise AssertionError('okt_proof: ' + c)
+
+
 def bsenc_text():
     import e2e_fix_d as EFD
     imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
@@ -1887,8 +1907,7 @@ def bsenc_text():
         EX = f'EX_bits{N}'
         MB = f'{EX}.MB{{dw, T, K, {N}n, {kb}n, {KY}n}}'
         cs = EFD.pbs_okt(f'proofs/obj/big_encx_bits{N}.bend', EFD.PBS_MBP, ['dw', 'T', 'K', f'{N}n', f'{kb}n', f'{KY}n'])
-        assert len(cs) == 12, (N, len(cs))
-        ps = ['pf', 'hdw', '{==}', '{==}', 'hN', 'hK8', '{==}', 'hroom', 'htz', 'hz', 'hbz', 'hle']
+        ps = [okt_proof(c) for c in cs]
         BR = f'BR{N}'
         B += [f'def k8_{N}() -> {{Nat.is_le(Nat.add({N}n, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}: {{==}}', '',
               f'def {BR}(w: O.Bits) -> Data:',
@@ -1898,7 +1917,7 @@ def bsenc_text():
               '  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T)) :',
               f'    {{S.BitsValue{{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))}} == {EX}.VAL({MB}) : S.Value}}',
               '  {==}', '',
-              f'def bb{N}b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {{w == O.Bits{{FD.array__thaw(U32, T), K}} : O.Bits}}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 28n) == True{{}} : Bool}},',
+              f'def bb{N}b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {{w == O.Bits{{FD.array__thaw(U32, T), K}} : O.Bits}}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 31n) == True{{}} : Bool}},',
               f'    +hroom: {{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}}, +hbz: {{O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{{}} : Bool}},',
               f'    +hN: {{Nat.is_le(U32.to_nat(K), {N}n) == True{{}} : Bool}}, +wf: BO.wfb(O.Bits{{FD.array__thaw(U32, T), K}})) -> {BR}(w):',
               f'  +hK8 = k8_{N}()',
@@ -1913,7 +1932,7 @@ def bsenc_text():
               f'  +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(VD.s_rng(3n, {N}n), 1n)) == True{{}} : Bool}}, U32.to_nat(CO.NK(K)), List.length(&2, U32, {EX}.ENC({MB})),',
               f'    Equal.sym(Nat, List.length(&2, U32, {EX}.ENC({MB})), U32.to_nat(CO.NK(K)), {EX}.eL(dw, T, K, {N}n, {kb}n, {KY}n, hok)), hnk)',
               f'  ({MB}, (eo, (bv{N}(dw, T, K), (hok, hl))))', '',
-              f'def bb{N}(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{{{N}n}}), +hs: SDB(w, 28n)) -> {BR}(w):',
+              f'def bb{N}(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{{{N}n}}), +hs: SDB(w, 31n)) -> {BR}(w):',
               '  (+wf, +rq) = rp', '  (+hlim, +hch) = rq',
               '  (+T, +s1) = hs', '  (+dw, +s2) = s1', '  (+K, +s3) = s2', '  (+eo, +s4) = s3', '  (+pf, +s5) = s4', '  (+hdw, +s6) = s5', '  (+hroom, +hbz) = s6',
               f'  +hN = FD.logic__subst(O.Bits, z => {{Nat.is_le(U32.to_nat(BO.blen(z)), {N}n) == True{{}} : Bool}}, w, O.Bits{{FD.array__thaw(U32, T), K}}, eo, hlim)',
@@ -1998,7 +2017,7 @@ def bs4(-o: {D}, +x1: {b2}, +x2: {b1}, +x4: {b8}, +eo: {{o == {E0(P0, "x1", "x2"
     case {b2}{{+fB}}: bs5(o, fB, x2, x4, eo, c0, c3, rp1, rp2, rp4)
 
 def bs3(-o: {D}, +x1: {b2}, +x2: {b1}, +x4: {b8}, +eo: {{o == {E0(P0, "x1", "x2", P3, "x4")} : {D}}},
-    +c0: BSE.BR5({P0}), +r1: {R1}, +hs3: BSE.SDB({P3}, 28n)) -> {GO}:
+    +c0: BSE.BR5({P0}), +r1: {R1}, +hs3: BSE.SDB({P3}, 31n)) -> {GO}:
   (+rp1, r2) = r1
   (+rp2, r3) = r2
   (+rb3, +rp4) = r3
@@ -2019,9 +2038,9 @@ def bs3(-o: {D}, +x1: {b2}, +x2: {b1}, +x4: {b8}, +eo: {{o == {E0(P0, "x1", "x2"
             'import ../types/bitvector_8_def_generated.bend as bitvector_8_d', 'import ../types/bitvector_1_encode_ssz_generated.bend as bitvector_1_e',
             'import ../types/bitvector_2_encode_ssz_generated.bend as bitvector_2_e', 'import ../types/bitvector_8_encode_ssz_generated.bend as bitvector_8_e',
             'import ./e2e_bsenc.bend as BSE']
-    sig = f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs0: BSE.SDB({P0}, 28n), +hs3: BSE.SDB({P3}, 28n)'
+    sig = f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs0: BSE.SDB({P0}, 31n), +hs3: BSE.SDB({P3}, 31n)'
     return defs, body, imps, sig
 
 
-BS_PREMISE = ('rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()) and hs0, hs3: e2e_bsenc.SDB of the two bit lists at depth below 28 '
+BS_PREMISE = ('rep: RT.rep_Gc85FA758A04(o, Spec.Gc85FA758A04()) and hs0, hs3: e2e_bsenc.SDB of the two bit lists at depth below 31 '
               '(their words\' tree, room for word K / 32, and the bits above K in it zero: the encode records\' premises rep_bits does not give)')

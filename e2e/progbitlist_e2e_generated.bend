@@ -63,13 +63,13 @@ def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {FD.array__perfect(U32, 
   +hq0 = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, U32.to_nat(K)), 1n), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), BL.nkb(K, U32.to_nat(K), 31n, {==}, FD.nat__le_refl(U32.to_nat(K)), hNk),
     FD.nat__le_trans(Nat.add(VD.s_rng(3n, U32.to_nat(K)), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), Order.add_right(VD.s_rng(3n, U32.to_nat(K)), U32.to_nat(K), 1n, rngle(3n, U32.to_nat(K))), Order.left_below_sum(31n, Nat.add(U32.to_nat(K), 1n))))
   +hq = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), A.quad(FD.spec_common__pow2(28n)), hq0, hK)
-  %Equal.sym(O.Bits & B.Buf, progbitlist_e.GtF7582E0E9A_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, U32.to_nat(K), 31n, 30n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, {==}, hNk, hK, hNO, hcap)) :
+  %Equal.sym(O.Bits & B.Buf, progbitlist_e.GtF7582E0E9A_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)) :
     {Some{E.obytes(Pair.snd(O.Bits, B.Buf, _))} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.BY(T, K), ob(T, K, hq)) :
     {Some{_} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
   Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Some{EN.BY(T, K)},
     Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Some{EN.BY(T, K)},
-      E.serialize_legal(Spec.GtF7582E0E9A(), EN.VAL(T, K), VS.public_sound(Spec.GtF7582E0E9A(), {==})), EN.encode_spec(dw, T, K, U32.to_nat(K), 31n, 30n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, {==}, hNk, hK, hNO, hcap)))
+      E.serialize_legal(Spec.GtF7582E0E9A(), EN.VAL(T, K), VS.public_sound(Spec.GtF7582E0E9A(), {==})), EN.encode_spec(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)))
 
 # (i): for every object the root law represents whose bit count leaves the encoder's room (hK: 32 + K <= 2^30), its
 # words in a perfect tree of depth below 31 with room for its chunk words (hs)

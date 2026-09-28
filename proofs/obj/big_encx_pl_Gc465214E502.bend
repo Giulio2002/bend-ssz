@@ -37,6 +37,7 @@ import ./vbspec.bend as VZ
 import ../../spec/nat_bytes.bend as N
 import ./vuwd.bend as WD
 import ./vbsize.bend as VBZ
+import ./vfits.bend as VFT
 import ../../spec/codec.bend as Codec
 import ../../spec/layout.bend as Layout
 import ./generic_specs.bend as Spec

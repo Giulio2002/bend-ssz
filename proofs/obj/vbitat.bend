@@ -74,7 +74,7 @@ def OA(+dd: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +H: Na
 
 def words_pack_at(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +H: Nat, +K: U32, +kb: Nat,
     +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb),
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb),
     +hnd: {Nat.is_le(Nat.add(VC.NW(O.bits_nbytes(K)), H), VB.pw(dd)) == True{} : Bool},
     +hns: {Nat.is_le(Nat.add(VC.NW(O.bits_nbytes(K)), 0n), VB.pw(dw)) == True{} : Bool},
     +hqd: {Nat.is_lt(Nat.add(H, VBT.QK(K)), VB.pw(dd)) == True{} : Bool}, +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},

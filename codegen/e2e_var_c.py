@@ -4580,7 +4580,7 @@ def pbx(+tb: FD.array__Tree<U32>, +k: U32, +hs: EP.SDPB(O.Bits{FD.array__thaw(U3
   %Equal.sym(Nat, ER.LDEP(U32, tb), dw2, ed) : EP.PBF3(_, tb, k)
   %Equal.sym(FD.array__Tree<U32>, tb, T2, eT) : EP.PBF3(dw2, _, k)
   %Equal.sym(U32, k, K2, eK) : EP.PBF3(dw2, T2, _)
-  EP.pbf(T2, dw2, K2, pf, hdw, hK8, hKY, hroom, hbz, wf2)
+  EP.pbf(T2, dw2, K2, pf, FD.nat__lt_trans(dw2, 28n, 31n, hdw, {==}), hK8, hKY, hroom, hbz, wf2)
 
 def efg4(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +f: EQ.CF_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k})))
     -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
@@ -5189,14 +5189,18 @@ VROOT_SHAPES['Gu6DDF182530'] = vroot_union_n
 def encp_text():
     okt = _okt(_obj('big_encx_pbits.bend'))
     Kd = int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', okt).group(1))
-    KB = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
-    KY = int(re.search(r'Nat\.is_lt\(KY, (\d+)n\)', okt).group(1)) - 1
+    KB0 = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
+    KB = min(KB0, 31)   # the bridge's width: 31 (its premise 31 + K + 1 <= 2^30 bounds K anyway)
+    # the record no longer bounds KY (vbitenc.y30); the bridge keeps its own 31 + K + 1 <= 2^30 premise for
+    # the container's output bound (PBR), with the record's KY field at 30
+    mKY = re.search(r'Nat\.is_lt\(KY, (\d+)n\)', okt)
+    KY = int(mKY.group(1)) - 1 if mKY else 30
     TR = 'FD.array__Tree<U32>'
     OBT = 'O.Bits{FD.array__thaw(U32, T), K}'
     subst = lambda t: re.sub(r'\bKY\b', f'{KY}n', re.sub(r'\bkb\b', f'{KB}n', re.sub(r'\bB\b', 'U32.to_nat(K)', t)))  # noqa: E731
     o2 = subst(okt)
     conj = {
-        'FD.array__perfect(U32, dw, T)': 'pf', f'Nat.is_lt(dw, {Kd}n)': 'hdw', f'Nat.is_lt({KB}n, {KB + 1}n)': '{==}', f'Nat.is_lt({KY}n, {KY + 1}n)': '{==}',
+        'FD.array__perfect(U32, dw, T)': 'pf', f'Nat.is_lt(dw, {Kd}n)': 'hdw', f'Nat.is_lt({KB}n, {KB0 + 1}n)': '{==}', f'Nat.is_lt({KY}n, {KY + 1}n)': '{==}',
         'Nat.is_le(U32.to_nat(K), U32.to_nat(K))': 'hN', f'Nat.is_le(Nat.add(U32.to_nat(K), 8n), O.pow2n({KB}n))': 'hK8',
         f'Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw({KY}n))': 'hKY', 'Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw))': 'hroom',
         'O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K))))': 'htz', 'DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K)))': 'hz',

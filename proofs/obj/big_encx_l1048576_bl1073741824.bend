@@ -37,6 +37,7 @@ import ./vbspec.bend as VZ
 import ../../spec/nat_bytes.bend as N
 import ./vuwd.bend as WD
 import ./vbsize.bend as VBZ
+import ./vfits.bend as VFT
 import ../../spec/codec.bend as Codec
 import ../../spec/layout.bend as Layout
 import ../../spec/fulu_schemas.bend as Spec
@@ -193,7 +194,7 @@ def TD(t: F.array__Tree<U32>) -> Nat:
 # An element's storage facts: a perfect tree of depth < 28 holding its N bytes, zero past them,
 # N within the element limit.
 def WOK(+t: F.array__Tree<U32>, +n: U32) -> Bool:
-  Bool.and(Nat.is_lt(TD(t), 28n), Bool.and(F.array__perfect(U32, TD(t), t),
+  Bool.and(Nat.is_lt(TD(t), 31n), Bool.and(F.array__perfect(U32, TD(t), t),
     Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))))
 
 def EOK(+m: MB<WMr>) -> Bool:
@@ -240,11 +241,11 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- one element's facts ------------------------------------------------------------------------
 
-def wok_d(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool}) -> {Nat.is_lt(TD(t), 28n) == True{} : Bool}:
-  and_l(Nat.is_lt(TD(t), 28n), Bool.and(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))), h)
+def wok_d(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool}) -> {Nat.is_lt(TD(t), 31n) == True{} : Bool}:
+  and_l(Nat.is_lt(TD(t), 31n), Bool.and(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))), h)
 def wok_1(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
     -> {Bool.and(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))) == True{} : Bool}:
-  and_r(Nat.is_lt(TD(t), 28n), Bool.and(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))), h)
+  and_r(Nat.is_lt(TD(t), 31n), Bool.and(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824)))), h)
 def wok_pf(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool}) -> {F.array__perfect(U32, TD(t), t) == True{} : Bool}:
   and_l(F.array__perfect(U32, TD(t), t), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(TD(t)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(t, VY.QL(n))), U32.is_le(n, 1073741824))), wok_1(t, n, h))
 def wok_2(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
@@ -265,9 +266,10 @@ def wvalid(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
   +d = TD(t)
   +hd = wok_d(t, n, h)
   +hn = wok_n(t, n, h)
-  VBE.words_ok_b(d, t, n, 0, 1073741824, VL.KK(d), wok_pf(t, n, h), F.nat__lt_trans(d, 28n, 31n, hd, {==}), VL.kk_lt(d, hd), VL.hyn(d, n, hn), Order.zero_le(U32.to_nat(n)),
+  +hy = VB.le_nmax(n, VB.u32le_trans(n, 1073741824, VB.NMAX(), wok_lim(t, n, h), {==}))
+  VBE.words_ok_bU(d, t, n, 0, 1073741824, wok_pf(t, n, h), hd, hy, Order.zero_le(U32.to_nat(n)),
     F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, 1073741824), Nat.is_le(U32.to_nat(n), U32.to_nat(1073741824)), VU.le_u32(n, 1073741824), wok_lim(t, n, h)),
-    VBR.nwle(d, n, hd, hn), wok_tz(t, n, h), 1, {==})
+    VBR.nwleU(d, n, hy, hn), wok_tz(t, n, h), 1, {==})
 
 # The runtime's size of one element.
 def wsize(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
@@ -276,7 +278,7 @@ def wsize(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
   +hd = wok_d(t, n, h)
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, wok_pf(t, n, h))) :
     {O.wsz_pick(n, _) == (O.Words{F.array__thaw(U32, t), n}, n) : O.Words & U32}
-  %Equal.sym(Bool, U32.is_le(VC.nwu(n), F.u32__pow2u(d)), True{}, VE.le_room(n, d, F.nat__lt_trans(d, 28n, 31n, hd, {==}), VBR.nwle(d, n, hd, wok_n(t, n, h)))) :
+  %Equal.sym(Bool, U32.is_le(VC.nwu(n), F.u32__pow2u(d)), True{}, VE.le_room(n, d, hd, VBR.nwleU(d, n, VB.le_nmax(n, VB.u32le_trans(n, 1073741824, VB.NMAX(), wok_lim(t, n, h), {==})), wok_n(t, n, h)))) :
     {(O.Words{F.array__thaw(U32, t), n}, O.pick(_, n, 2147483648)) == (O.Words{F.array__thaw(U32, t), n}, n) : O.Words & U32}
   {==}
 
@@ -460,8 +462,8 @@ def bxput(+m: MB<WMr>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: F.array__Tre
           %Equal.sym(O.Words & Bool, FuluTransaction_e.bl1073741824_valid(O.Words{F.array__thaw(U32, tw), nw}), (O.Words{F.array__thaw(U32, tw), nw}, True{}), wvalid(tw, nw, h)) :
             {FuluTransaction_e.bl1073741824_bx_pk_back(FuluTransaction_e.bl1073741824_pk(F.array__thaw(U32, D), X, _)) == (F.array__thaw(U32, WD.PWM(r, dd, D, q, tw, nw)), (O.BSome{O.Words{F.array__thaw(U32, tw), nw}, O.BNone{}}, nw)) : Array<U32> & (O.Boxed<O.Words> & U32)}
           %Equal.sym(Array<U32> & O.Words, O.put_words(F.array__thaw(U32, D), X, O.Words{F.array__thaw(U32, tw), nw}), (F.array__thaw(U32, WD.PWM(r, dd, D, q, tw, nw)), O.Words{F.array__thaw(U32, tw), nw}),
-              WD.putw_any(dd, D, X, q, r, dw, tw, nw, VL.KK(dw), e, hr, hd, F.nat__lt_trans(dw, 28n, 31n, hdw, {==}), VL.kk_lt(dw, hdw), VL.hyn(dw, nw, hn),
-                F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(nw), 0n), VC.NW(nw), F.nat__add_zero(VC.NW(nw)), VBR.nwle(dw, nw, hdw, hn)),
+              WD.putw_anyU(dd, D, X, q, r, dw, tw, nw, e, hr, hd, hdw, VB.le_nmax(nw, VB.u32le_trans(nw, 1073741824, VB.NMAX(), wok_lim(tw, nw, h), {==})),
+                F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(nw), 0n), VC.NW(nw), F.nat__add_zero(VC.NW(nw)), VBR.nwleU(dw, nw, VB.le_nmax(nw, VB.u32le_trans(nw, 1073741824, VB.NMAX(), wok_lim(tw, nw, h), {==})), hn)),
                 hl, pf, wok_pf(tw, nw, h), wok_tz(tw, nw, h), hz)) :
             {FuluTransaction_e.bl1073741824_bx_pk_back(O.pwn(_)) == (F.array__thaw(U32, WD.PWM(r, dd, D, q, tw, nw)), (O.BSome{O.Words{F.array__thaw(U32, tw), nw}, O.BNone{}}, nw)) : Array<U32> & (O.Boxed<O.Words> & U32)}
           {==}
@@ -479,8 +481,8 @@ def bxput_bytes(+m: MB<WMr>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: F.arra
           +dw = TD(tw)
           +hdw = wok_d(tw, nw, h)
           +hn = wok_n(tw, nw, h)
-          WD.putw_any_bytes(dd, D, X, q, r, dw, tw, nw, VL.KK(dw), e, hr, hd, F.nat__lt_trans(dw, 28n, 31n, hdw, {==}), VL.kk_lt(dw, hdw), VL.hyn(dw, nw, hn),
-            F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(nw), 0n), VC.NW(nw), F.nat__add_zero(VC.NW(nw)), VBR.nwle(dw, nw, hdw, hn)),
+          WD.putw_any_bytesU(dd, D, X, q, r, dw, tw, nw, e, hr, hd, hdw, VB.le_nmax(nw, VB.u32le_trans(nw, 1073741824, VB.NMAX(), wok_lim(tw, nw, h), {==})),
+            F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(nw), 0n), VC.NW(nw), F.nat__add_zero(VC.NW(nw)), VBR.nwleU(dw, nw, VB.le_nmax(nw, VB.u32le_trans(nw, 1073741824, VB.NMAX(), wok_lim(tw, nw, h), {==})), hn)),
             hl, pf, wok_pf(tw, nw, h), wok_tz(tw, nw, h), hz)
 
 # ---- arithmetic ---------------------------------------------------------------------------------
@@ -1456,7 +1458,7 @@ def el_parts(+m: MB<WMr>, +h: {EOK(m) == True{} : Bool}) -> {Codec.parts(S.Bytes
           VZ.bl_parts(U32.to_nat(1073741824), y, VZ.bd_btl(U32.to_nat(nw), F.array__slots(U32, tw)),
             F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(1073741824)) == True{} : Bool}, U32.to_nat(nw), VE2.LEN(y), Equal.sym(Nat, VE2.LEN(y), U32.to_nat(nw), ely), hlim),
             F.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(nw), VE2.LEN(y), Equal.sym(Nat, VE2.LEN(y), U32.to_nat(nw), ely),
-              VBZ.fitq(TD(tw), U32.to_nat(nw), wok_n(tw, nw, h), F.nat__lt_trans(TD(tw), 28n, 30n, wok_d(tw, nw, h), {==}))))
+              VFT.fits4lt(U32.to_nat(nw), VB.u32_lt(nw))))
 
 def parts_go(+k: Nat, +W: List<&2, MB<WMr>>, +i: Nat, +hok: {EOKS(k, W, i) == True{} : Bool})
     -> {Codec.parts(XI(k, W, i), S.Repeat{Spec.Schema60()}) == Some{VVL.VP(YS(k, W, i))} : Maybe<&2, +List<S.Part>>}:

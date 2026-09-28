@@ -320,7 +320,7 @@ def pbx_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +T: FD.arra
   UW.orw_perfect(dd, UWD.PWM(r, dd, D, q, T, O.bits_nbytes(K)), Nat.add(q, VD.s_rng(2n, CK(r, K))), SHB(DB(K), MOD4(CK(r, K))), UWD.pwm_perfect(r, dd, D, q, T, O.bits_nbytes(K), pf))
 
 # The room of the bytes put_words writes, from the room of the wire size K / 8 + 1.
-def nbhl(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +q: Nat, +dd: Nat,
+def nbhl(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +q: Nat, +dd: Nat,
     +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, Nat.add(VBT.AK(K), 1n)))), VB.pw(dd)) == True{} : Bool},
     +ezb: {Nat.is_eq(VBT.BKk(K), 0n) == zb : Bool})
     -> {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(O.bits_nbytes(K))))), VB.pw(dd)) == True{} : Bool}:
@@ -341,7 +341,7 @@ def nbhl(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Boo
         Order.add_left(q, UWD.NWN(Nat.add(r, AK)), UWD.NWN(Nat.add(r, Nat.add(AK, 1n))), hm), hl)
       FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, AK, U32.to_nat(O.bits_nbytes(K)), Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), AK, enb), h2)
 
-def nbhz(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +L: +List<U32>,
+def nbhz(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +L: +List<U32>,
     +hz: {VS.bt(Nat.add(Nat.add(VBT.AK(K), 1n), UWD.PADB(r, Nat.add(VBT.AK(K), 1n))), L) == UW.ZB(Nat.add(Nat.add(VBT.AK(K), 1n), UWD.PADB(r, Nat.add(VBT.AK(K), 1n)))) : +List<U32>},
     +ezb: {Nat.is_eq(VBT.BKk(K), 0n) == zb : Bool})
     -> {VS.bt(Nat.add(U32.to_nat(O.bits_nbytes(K)), UWD.PADB(r, U32.to_nat(O.bits_nbytes(K)))), L) == UW.ZB(Nat.add(U32.to_nat(O.bits_nbytes(K)), UWD.PADB(r, U32.to_nat(O.bits_nbytes(K))))) : +List<U32>}:
@@ -365,11 +365,11 @@ def nbhz(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Boo
       FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, UWD.PADB(r, z)), L) == UW.ZB(Nat.add(z, UWD.PADB(r, z))) : +List<U32>}, AK, U32.to_nat(O.bits_nbytes(K)), Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), AK, enb), h2)
 
 # O.put_bits at any byte position X = 4 q + r (room for its K / 8 + 1 bytes' own words).
-def pbx_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+def pbx_any2(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
-    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
     +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
@@ -406,9 +406,7 @@ def pbx_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +e3 = VBT.E3(K, kb, hkb, hK)
   +hnb = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VBT.AK(K), 1n)) == True{} : Bool}, Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), U32.to_nat(O.bits_nbytes(K)),
     Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), e3), Order.add_left(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n)), 1n, cB))
-  +hnbN = FD.nat__le_trans(U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), 1n), Nat.add(N, 1n), hnb,
-    FD.nat__le_trans(Nat.add(VBT.AK(K), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(N, 1n), Order.add_right(VBT.AK(K), U32.to_nat(K), 1n, VBT.lAK(K)), Order.add_right(U32.to_nat(K), N, 1n, hN)))
-  +hy = FD.nat__le_trans(VC.YL(O.bits_nbytes(K)), Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY), Order.add_left(31n, U32.to_nat(O.bits_nbytes(K)), Nat.add(N, 1n), hnbN), hNY)
+  +hy = VBT.y30(K, kb, hkb, hK, hnb)
   +hlw = nbhl(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, q, dd, hl1, {==})
   +hzw = nbhz(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D)), hz1, {==})
   # the delimiter's word QD and byte MOD4(c): X + K / 8 = 4 QD + MOD4(c)
@@ -439,7 +437,7 @@ def pbx_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +eQ = T4q(Y, QD, MOD4(c), eY, m4lt(c))
   +eJ = VBT.T4(Y, QD, MOD4(c), eY, m4lt(c))
   +PW = UWD.PWM(r, dd, D, q, T, NB)
-  +pw1 = UWD.putw_any(dd, D, X, q, r, dw, T, NB, KY, e, hr, hd, hdw, hKY, hy, hsrc, hlw, pf, pfT, htz, hzw)
+  +pw1 = UWD.putw_any(dd, D, X, q, r, dw, T, NB, 30n, e, hr, hd, hdw, {==}, hy, hsrc, hlw, pf, pfT, htz, hzw)
   +esh = Equal.trans(U32, O.shl_bytes(DB(K), U32.and(Y, 3)), SHB(DB(K), U32.to_nat(U32.and(Y, 3))), SHB(DB(K), MOD4(c)), shb_u(DB(K), Y),
     Equal.cong(Nat, U32, z => SHB(DB(K), z), U32.to_nat(U32.and(Y, 3)), MOD4(c), eJ))
   +eor = UW.orw_rt(dd, PW, U32.shrn(Y, 2n), QD, SHB(DB(K), MOD4(c)), eQ, FD.nat__lt_trans(dd, 29n, 32n, hd, {==}), hQD, UWD.pwm_perfect(r, dd, D, q, T, NB, pf))
@@ -451,8 +449,21 @@ def pbx_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
     {(_, O.Bits{FD.array__thaw(U32, T), K}) == (FD.array__thaw(U32, PBX(r, dd, D, q, T, K)), O.Bits{FD.array__thaw(U32, T), K}) : Array<U32> & O.Bits}
   {==}
 
+def pbx_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
+    +hbz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K))))) : +List<U32>})
+    -> {O.put_bits(FD.array__thaw(U32, D), X, O.Bits{FD.array__thaw(U32, T), K}) == (FD.array__thaw(U32, PBX(r, dd, D, q, T, K)), O.Bits{FD.array__thaw(U32, T), K}) : Array<U32> & O.Bits}:
+  pbx_any2(dd, D, X, q, r, dw, T, K, kb, N, e, hr, hd, hdw, hkb, hN, hNk, hWq, hl, pf, pfT, htz, hbz, hz)
+
 # The wire size m = K / 8 + 1 against the bytes put_words writes: the window grows.
-def nbwle(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +ezb: {Nat.is_eq(VBT.BKk(K), 0n) == zb : Bool})
+def nbwle(+zb: Bool, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb), +r: Nat, +ezb: {Nat.is_eq(VBT.BKk(K), 0n) == zb : Bool})
     -> {Nat.is_le(Nat.add(U32.to_nat(O.bits_nbytes(K)), UWD.PADB(r, U32.to_nat(O.bits_nbytes(K)))), Nat.add(Nat.add(VBT.AK(K), 1n), UWD.PADB(r, Nat.add(VBT.AK(K), 1n)))) == True{} : Bool}:
   match zb:
     case False{}:
@@ -477,11 +488,11 @@ def RB(+T: FD.array__Tree<U32>, +K: U32) -> +List<U32>:
   ORB(List.append(&2, U32, VS.bt(U32.to_nat(O.bits_nbytes(K)), FX.limbs(UW.SLW(T))), UW.ZB(JB(K))), VBT.AK(K), DB(K))
 
 # The bit list writer's bytes at X = 4 q + r: RB, then zeros to the end of its last word.
-def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+def pbx_raw2(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
-    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
     +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
@@ -518,9 +529,7 @@ def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +e3 = VBT.E3(K, kb, hkb, hK)
   +hnb = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VBT.AK(K), 1n)) == True{} : Bool}, Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), U32.to_nat(O.bits_nbytes(K)),
     Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), e3), Order.add_left(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n)), 1n, cB))
-  +hnbN = FD.nat__le_trans(U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), 1n), Nat.add(N, 1n), hnb,
-    FD.nat__le_trans(Nat.add(VBT.AK(K), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(N, 1n), Order.add_right(VBT.AK(K), U32.to_nat(K), 1n, VBT.lAK(K)), Order.add_right(U32.to_nat(K), N, 1n, hN)))
-  +hy = FD.nat__le_trans(VC.YL(O.bits_nbytes(K)), Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY), Order.add_left(31n, U32.to_nat(O.bits_nbytes(K)), Nat.add(N, 1n), hnbN), hNY)
+  +hy = VBT.y30(K, kb, hkb, hK, hnb)
   +hlw = nbhl(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, q, dd, hl1, {==})
   +hzw = nbhz(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D)), hz1, {==})
   # the delimiter's word QD and byte MOD4(c): X + K / 8 = 4 QD + MOD4(c)
@@ -561,7 +570,7 @@ def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +Wnb = Nat.add(U32.to_nat(O.bits_nbytes(K)), UWD.PADB(r, U32.to_nat(O.bits_nbytes(K))))
   +Wm = Nat.add(Nat.add(VBT.AK(K), 1n), UWD.PADB(r, Nat.add(VBT.AK(K), 1n)))
   +Y0 = List.append(&2, U32, VS.bt(U32.to_nat(O.bits_nbytes(K)), FX.limbs(UW.SLW(T))), UW.ZB(UWD.PADB(r, U32.to_nat(O.bits_nbytes(K)))))
-  +pb = UWD.putw_any_bytes(dd, D, X, q, r, dw, T, NB, KY, e, hr, hd, hdw, hKY, hy, hsrc, hlw, pf, pfT, htz, hzw)
+  +pb = UWD.putw_any_bytes(dd, D, X, q, r, dw, T, NB, 30n, e, hr, hd, hdw, {==}, hy, hsrc, hlw, pf, pfT, htz, hzw)
   +et = tor(dd, PW, QD, MOD4(c), MF.shl_by(1, U32.and(K, 7)), UWD.pwm_perfect(r, dd, D, q, T, NB, pf), hQD, m4lt(c))
   +eQ4 = Equal.trans(Nat, Nat.add(A.quad(q), c), Nat.add(A.quad(q), Nat.add(A.quad(f), MOD4(c))), Nat.add(A.quad(QD), MOD4(c)),
     Equal.cong(Nat, Nat, z => Nat.add(A.quad(q), z), c, Nat.add(A.quad(f), MOD4(c)), ec4),
@@ -576,7 +585,7 @@ def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +hzW = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(X0, B)) == UW.ZB(z) : +List<U32>}, Wm, Nat.add(Wnb, dl), Equal.sym(Nat, Nat.add(Wnb, dl), Wm, eWd), hz1)
   +hsrcL = FD.logic__subst(Nat, z => {Nat.is_le(NWB, z) == True{} : Bool}, VB.pw(dw), VB.len(SL), Equal.sym(Nat, VB.len(SL), VB.pw(dw), FD.array__slots_length(U32, dw, T, pfT)), hsrc)
   +hNL = FD.nat__le_trans(nbN, A.quad(NWB), List.length(&2, U32, FX.limbs(SL)),
-    FD.logic__subst(Nat, z => {Nat.is_le(nbN, A.quad(z)) == True{} : Bool}, VD.s_rng(2n, 3n+nbN), NWB, Equal.sym(Nat, NWB, VD.s_rng(2n, 3n+nbN), VC.eNW(NB, KY, hKY, hy)), ceilq(nbN)),
+    FD.logic__subst(Nat, z => {Nat.is_le(nbN, A.quad(z)) == True{} : Bool}, VD.s_rng(2n, 3n+nbN), NWB, Equal.sym(Nat, NWB, VD.s_rng(2n, 3n+nbN), VC.eNW(NB, 30n, {==}, hy)), ceilq(nbN)),
     FD.logic__subst(Nat, z => {Nat.is_le(A.quad(NWB), z) == True{} : Bool}, A.quad(VB.len(SL)), List.length(&2, U32, FX.limbs(SL)), Equal.sym(Nat, List.length(&2, U32, FX.limbs(SL)), A.quad(VB.len(SL)), UW.len_limbs_v(SL)),
       UW.quad_le(NWB, VB.len(SL), hsrcL)))
   +eLD = VS.bt_len(nbN, FX.limbs(SL), hNL)
@@ -625,6 +634,19 @@ def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: N
   +eo = orb_spl(B, X0, Y1, AK, DB(K), hX0, hAK1)
   Equal.trans(+List<U32>, UA.BYT(PBX(r, dd, D, q, T, K)), ORB(UA.BYT(PW), Nat.add(A.quad(QD), MOD4(c)), DB(K)), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), et, Equal.trans(+List<U32>, ORB(UA.BYT(PW), Nat.add(A.quad(QD), MOD4(c)), DB(K)), ORB(UA.BYT(PW), Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), Equal.cong(Nat, +List<U32>, z => ORB(UA.BYT(PW), z, DB(K)), Nat.add(A.quad(QD), MOD4(c)), Nat.add(X0, AK), eIdx), Equal.trans(+List<U32>, ORB(UA.BYT(PW), Nat.add(X0, AK), DB(K)), ORB(UW.SPL(B, X0, Y0), Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), Equal.cong(+List<U32>, +List<U32>, z => ORB(z, Nat.add(X0, AK), DB(K)), UA.BYT(PW), UW.SPL(B, X0, Y0), pb), Equal.trans(+List<U32>, ORB(UW.SPL(B, X0, Y0), Nat.add(X0, AK), DB(K)), ORB(UW.SPL(B, X0, List.append(&2, U32, Y0, UW.ZB(dl))), Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), Equal.cong(+List<U32>, +List<U32>, z => ORB(z, Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, Y0), UW.SPL(B, X0, List.append(&2, U32, Y0, UW.ZB(dl))), ee), Equal.trans(+List<U32>, ORB(UW.SPL(B, X0, List.append(&2, U32, Y0, UW.ZB(dl))), Nat.add(X0, AK), DB(K)), ORB(UW.SPL(B, X0, Y1), Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), Equal.cong(+List<U32>, +List<U32>, z => ORB(UW.SPL(B, X0, z), Nat.add(X0, AK), DB(K)), List.append(&2, U32, Y0, UW.ZB(dl)), Y1, Equal.trans(+List<U32>, List.append(&2, U32, Y0, UW.ZB(dl)), List.append(&2, U32, DATA, UW.ZB(Z1)), Y1, eY1, eY2)), Equal.trans(+List<U32>, ORB(UW.SPL(B, X0, Y1), Nat.add(X0, AK), DB(K)), UW.SPL(B, X0, ORB(Y1, AK, DB(K))), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), eo, Equal.trans(+List<U32>, UW.SPL(B, X0, ORB(Y1, AK, DB(K))), UW.SPL(B, X0, List.append(&2, U32, ORB(Y2, AK, DB(K)), UW.ZB(Pm))), UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), Equal.cong(+List<U32>, +List<U32>, z => UW.SPL(B, X0, z), ORB(Y1, AK, DB(K)), List.append(&2, U32, ORB(Y2, AK, DB(K)), UW.ZB(Pm)), orb_app_l(Y2, AK, UW.ZB(Pm), DB(K), hAK2)), Equal.cong(Nat, +List<U32>, z => UW.SPL(B, X0, List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, z)))), m, U32.to_nat(CO.NK(K)), Equal.sym(Nat, U32.to_nat(CO.NK(K)), m, eM)))))))))
 
+def pbx_raw(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
+    +hbz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K))))) : +List<U32>})
+    -> {UA.BYT(PBX(r, dd, D, q, T, K)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))) : +List<U32>}:
+  pbx_raw2(dd, D, X, q, r, dw, T, K, kb, N, e, hr, hd, hdw, hkb, hN, hNk, hWq, hl, pf, pfT, htz, hbz, hz)
+
 # ---- the bit list's bytes are the spec's packing ------------------------------------------------
 
 law h2mono:
@@ -657,11 +679,11 @@ def zt_bytes(+d: Nat) -> {UA.BYT(VC.ZT(d)) == UW.ZB(A.quad(VB.pw(d))) : +List<U3
 
 # O.put_bits' bytes at X = 4 q + r: the spec's packing of the bits and the delimiter,
 # then zeros to the end of the last word written.
-def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+def pbx_any_bytes2(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
-    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
     +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
@@ -698,9 +720,7 @@ def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
   +e3 = VBT.E3(K, kb, hkb, hK)
   +hnb = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VBT.AK(K), 1n)) == True{} : Bool}, Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), U32.to_nat(O.bits_nbytes(K)),
     Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n))), e3), Order.add_left(VBT.AK(K), VD.s_rng(3n, Nat.add(bk, 7n)), 1n, cB))
-  +hnbN = FD.nat__le_trans(U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), 1n), Nat.add(N, 1n), hnb,
-    FD.nat__le_trans(Nat.add(VBT.AK(K), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(N, 1n), Order.add_right(VBT.AK(K), U32.to_nat(K), 1n, VBT.lAK(K)), Order.add_right(U32.to_nat(K), N, 1n, hN)))
-  +hy = FD.nat__le_trans(VC.YL(O.bits_nbytes(K)), Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY), Order.add_left(31n, U32.to_nat(O.bits_nbytes(K)), Nat.add(N, 1n), hnbN), hNY)
+  +hy = VBT.y30(K, kb, hkb, hK, hnb)
   +hlw = nbhl(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, q, dd, hl1, {==})
   +hzw = nbhz(Nat.is_eq(VBT.BKk(K), 0n), K, kb, hkb, hK, r, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D)), hz1, {==})
   # the delimiter's word QD and byte MOD4(c): X + K / 8 = 4 QD + MOD4(c)
@@ -730,7 +750,7 @@ def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
           Equal.cong(Nat, Nat, z => Nat.add(z, MOD4(c)), Nat.add(A.quad(q), A.quad(f)), A.quad(QD), VF.quad_add(q, f))))))
   +eQ = T4q(Y, QD, MOD4(c), eY, m4lt(c))
   +eJ = VBT.T4(Y, QD, MOD4(c), eY, m4lt(c))
-  +raw = pbx_raw(dd, D, X, q, r, dw, T, K, kb, KY, N, e, hr, hd, hdw, hkb, hKY, hN, hNk, hNY, hWq, hl, pf, pfT, htz, hbz, hz)
+  +raw = pbx_raw2(dd, D, X, q, r, dw, T, K, kb, N, e, hr, hd, hdw, hkb, hN, hNk, hWq, hl, pf, pfT, htz, hbz, hz)
   # the aligned instance: the existing writer's output at offset 0 of a zero tree
   +eP = Equal.trans(Nat, U32.to_nat(VBT.PDK(K)), AK, Nat.add(A.quad(VD.s_rng(2n, AK)), MOD4(AK)), VBT.Epd(K, kb, hkb, hK), Equal.sym(Nat, Nat.add(A.quad(VD.s_rng(2n, AK)), MOD4(AK)), AK, dm4(AK)))
   +eQK = T4q(VBT.PDK(K), VD.s_rng(2n, AK), MOD4(AK), eP, m4lt(AK))
@@ -752,14 +772,14 @@ def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
   +hz0 = FD.logic__subst(+List<U32>, z => {VS.bt(W0, z) == UW.ZB(W0) : +List<U32>}, UW.ZB(A.quad(VB.pw(dd))), UA.BYT(VC.ZT(dd)), Equal.sym(+List<U32>, UA.BYT(VC.ZT(dd)), UW.ZB(A.quad(VB.pw(dd))), zt_bytes(dd)),
     UW.zb_win(0n, W0, A.quad(VB.pw(dd)), hW0))
   +pfZ = FD.array__trep_perfect(U32, dd, 0)
-  +raw0 = pbx_raw(dd, VC.ZT(dd), 0, 0n, 0n, dw, T, K, kb, KY, N, {==}, {==}, hd, hdw, hkb, hKY, hN, hNk, hNY, hWq, hl0, pfZ, pfT, htz, hbz, hz0)
-  +cr = CO.enc_core(dd, dw, T, K, kb, KY, N, pfT, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hdw, hkb, hKY, hN, hNk, hNY, hDq, hWq, hbz)
+  +raw0 = pbx_raw2(dd, VC.ZT(dd), 0, 0n, 0n, dw, T, K, kb, N, {==}, {==}, hd, hdw, hkb, hN, hNk, hWq, hl0, pfZ, pfT, htz, hbz, hz0)
+  +cr = CO.enc_core2(dd, dw, T, K, kb, N, pfT, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hdw, hkb, hN, hNk, hDq, hWq, hbz)
   +c2 = CO.cr2(dd, T, K, cr)
   # RB is the first NK bytes of the aligned output
   +hsrcL = FD.logic__subst(Nat, z => {Nat.is_le(NWB, z) == True{} : Bool}, VB.pw(dw), VB.len(UW.SLW(T)), Equal.sym(Nat, VB.len(UW.SLW(T)), VB.pw(dw), FD.array__slots_length(U32, dw, T, pfT)), hsrc)
   +nbN = U32.to_nat(O.bits_nbytes(K))
   +hNL = FD.nat__le_trans(nbN, A.quad(NWB), List.length(&2, U32, FX.limbs(UW.SLW(T))),
-    FD.logic__subst(Nat, z => {Nat.is_le(nbN, A.quad(z)) == True{} : Bool}, VD.s_rng(2n, 3n+nbN), NWB, Equal.sym(Nat, NWB, VD.s_rng(2n, 3n+nbN), VC.eNW(NB, KY, hKY, hy)), ceilq(nbN)),
+    FD.logic__subst(Nat, z => {Nat.is_le(nbN, A.quad(z)) == True{} : Bool}, VD.s_rng(2n, 3n+nbN), NWB, Equal.sym(Nat, NWB, VD.s_rng(2n, 3n+nbN), VC.eNW(NB, 30n, {==}, hy)), ceilq(nbN)),
     FD.logic__subst(Nat, z => {Nat.is_le(A.quad(NWB), z) == True{} : Bool}, A.quad(VB.len(UW.SLW(T))), List.length(&2, U32, FX.limbs(UW.SLW(T))), Equal.sym(Nat, List.length(&2, U32, FX.limbs(UW.SLW(T))), A.quad(VB.len(UW.SLW(T))), UW.len_limbs_v(UW.SLW(T))),
       UW.quad_le(NWB, VB.len(UW.SLW(T)), hsrcL)))
   +DATA = VS.bt(nbN, FX.limbs(UW.SLW(T)))
@@ -790,3 +810,16 @@ def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
           eB))))
   Equal.trans(+List<U32>, UA.BYT(PBX(r, dd, D, q, T, K)), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, RB(T, K), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}])), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))),
     raw, Equal.cong(+List<U32>, +List<U32>, z => UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, z, UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))), RB(T, K), Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}])), Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}])), RB(T, K), eRB)))
+
+def pbx_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool}, +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))) == True{} : Bool},
+    +hbz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K))))) : +List<U32>})
+    -> {UA.BYT(PBX(r, dd, D, q, T, K)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}])), UW.ZB(UWD.PADB(r, U32.to_nat(CO.NK(K)))))) : +List<U32>}:
+  pbx_any_bytes2(dd, D, X, q, r, dw, T, K, kb, N, e, hr, hd, hdw, hkb, hN, hNk, hWq, hl, pf, pfT, htz, hbz, hz)

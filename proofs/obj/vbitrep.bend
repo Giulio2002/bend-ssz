@@ -45,7 +45,7 @@ def add_z(+a: Nat, +r: Nat, +e: {Nat.add(a, r) == 0n : Nat}) -> {r == 0n : Nat}:
 
 # An empty bit list: the delimiter goes to bit 0 of word 0.
 def hz_zero(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool}, +e0: {U32.to_nat(K) == 0n : Nat})
     -> VI.INV(dw, T, K):
   +hK = F.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(N, 8n), O.pow2n(kb), Order.add_right(U32.to_nat(K), N, 8n, hN), hNk)
@@ -56,7 +56,7 @@ def hz_zero(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
 
 def rep_hz(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hqs: {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool},
     +wf: BO.wfb(OB(T, K)))

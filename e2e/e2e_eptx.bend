@@ -133,18 +133,18 @@ def xatlm(+W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> {ET.xat_l1048576_bl1073741824
 
 def ELF(+m: RT.MB<RT.WMr>) -> Data: DK.P2({ET.EOK(cm(m)) == True{} : Bool}, {RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(m)) == S.BytesValue{ET.YE(cm(m))} : S.Value})
 
-def fE(+T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
+def fE(+T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))) == True{} : Bool},
     +hN: {U32.is_le(N, 1073741824) == True{} : Bool}) -> ELF(RT.MSome{RT.WMr{T, N}}):
-  +okd = FD.logic__and_intro(Nat.is_lt(dw, 28n), Bool.and(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)))), hdw, FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))), pf, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)), hn, FD.logic__and_intro(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824), htz, hN))))
-  +ok = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 28n), Bool.and(FD.array__perfect(U32, z, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(z))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))))) == True{} : Bool}, dw, ET.TD(T), Equal.sym(Nat, ET.TD(T), dw, tdU(dw, T, pf)), okd)
+  +okd = FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)))), hdw, FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))), pf, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824)), hn, FD.logic__and_intro(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824), htz, hN))))
+  +ok = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(U32, z, T), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(z))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))), U32.is_le(N, 1073741824))))) == True{} : Bool}, dw, ET.TD(T), Equal.sym(Nat, ET.TD(T), dw, tdU(dw, T, pf)), okd)
   (ok, Equal.cong(+List<U32>, S.Value, z => S.BytesValue{z}, WO.wview(O.Words{FD.array__thaw(U32, T), N}), VS.bt(U32.to_nat(N), FX.limbs(FD.array__slots(U32, T))), BL.wvb(T, N)))
 
 def gE(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
     +eb: {RT.th_bl1073741824_bx(m) == O.BSome{RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.BNone{}} : O.Boxed<O.Words>},
     +hl: {Nat.is_le(U32.to_nat(WO.len(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)))), SH.ByteList_limit(sE)) == True{} : Bool},
     +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)) == O.Words{FD.array__thaw(U32, T), N} : O.Words},
-    +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(N, 3), VB.slot(T, VY.QL(N))) == True{} : Bool}) -> ELF(m):
   +h1 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), SH.ByteList_limit(sE)) == True{} : Bool}, RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), O.Words{FD.array__thaw(U32, T), N}, eo, hl)
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, SH.ByteList_limit(sE), U32.to_nat(1073741824), es, h1)
@@ -159,7 +159,7 @@ def gE(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_n
   fE(T, dw, N, pf, hdw, hn, htz, hN)
 
 def elx(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat}, +r0: RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(m), sE),
-    +hs: BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), 28n)) -> ELF(m):
+    +hs: BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(m)), 31n)) -> ELF(m):
   (+eb, +rl) = r0
   (+wf, +hl) = rl
   match hs:
@@ -194,11 +194,11 @@ def elx(+m: RT.MB<RT.WMr>, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_
 
 # ---- the elements from i on ----
 
-# the (i) premise per element: its bytes' storage at depth below 28
+# the (i) premise per element: its bytes' storage at depth below 31
 def SDKS(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
-    case 1n+q: DK.P2(BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(RT.xat_l1048576_bl1073741824(W, i))), 28n), SDKS(q, W, 1n+i))
+    case 1n+q: DK.P2(BL.sdk(RT.pjb_bl1073741824_bx(RT.th_bl1073741824_bx(RT.xat_l1048576_bl1073741824(W, i))), 31n), SDKS(q, W, 1n+i))
 
 def wOK(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +sE: S.Schema, +es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat},
     +er: RT.ereps_l1048576_bl1073741824(k, W, i, sE), +hs: SDKS(k, W, i)) -> {ET.EOKS(k, LM(W), i) == True{} : Bool}:
@@ -267,7 +267,7 @@ def blw(k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i: Nat, +hok: {ET.EOKS(k, LM(W), i
 # ---- the transactions ----
 
 # the (i) premise (a decoded-object gap: the encode record takes the list's tree at depth below 31 and each
-# transaction's bytes at depth below 28; the root law's invariant gives below 32)
+# transaction's bytes at depth below 31; the root law's invariant gives below 32)
 def sdt(w: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> Data:
   DK.Ex(FD.array__Tree<RT.MB<RT.WMr>>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
     DK.P2({w == Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N} : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq},

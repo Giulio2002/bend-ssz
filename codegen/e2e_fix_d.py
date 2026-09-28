@@ -3081,8 +3081,8 @@ def pbs_support_text():
     for N, (EX, kb, KY) in PBS_BITS.items():
         MB = f'{EX}.MB{{dw, T, K, {N}n, {kb}n, {KY}n}}'
         cs = pbs_okt(f'proofs/obj/big_encx_bits{N}.bend', PBS_MBP, ['dw', 'T', 'K', f'{N}n', f'{kb}n', f'{KY}n'])
-        assert len(cs) == 12, (N, len(cs))
-        ps = ['pf', 'hdw', '{==}', '{==}', 'hN', 'hK8', '{==}', 'hroom', 'htz', 'hz', 'hbz', 'hle']
+        import e2e_bview_gen as _BVG   # the conjuncts' proofs by shape (the records' OKT changed with codec-deep: dw < 31, no KY)
+        ps = [{'hdw': 'FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})'}.get(q, q) if re.search(r'is_lt\(dw, 31n\)', c) else q for c, q in ((c, _BVG.okt_proof(c)) for c in cs)]
         BR = f'BR{N}'
         B += [f'def k8_{N}() -> {{Nat.is_le(Nat.add({N}n, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}: {{==}}', '',
               f'def {BR}(w: O.Bits) -> Data:',
@@ -3245,8 +3245,8 @@ def pbs_main_text(bs='./e2e_pbs.bend'):
     # RQ and c1
     L += [f'def RQ(o: {D}) -> Data:',
           f'  DK.Ex(CI.MW, m => DK.P2({{o == CI.TH(m) : {D}}}, DK.P2({{RT.v_{X}(CI.TH(m)) == CI.VAL(m) : S.Value}}, {{CI.OK(m) == True{{}} : Bool}})))', '']
-    PREMS = {1: f'BS.SDB({{}}, 28n)', 2: 'EP.SDPB({}, 28n)', 4: 'BS.SDB({}, 28n)', 5: 'EP.SDPB({}, 28n)', 6: 'BS.SDW({}, 31n, 160n)', 7: 'BS.SDB({}, 28n)',
-             8: 'EP.SDPB({}, 28n)', 9: 'BS.SDW81({})', 10: 'BS.SDB({}, 28n)', 11: 'EP.SDPB({}, 28n)'}
+    PREMS = {1: f'BS.SDB({{}}, 28n)', 2: 'EP.SDPB({}, 31n)', 4: 'BS.SDB({}, 28n)', 5: 'EP.SDPB({}, 31n)', 6: 'BS.SDW({}, 31n, 160n)', 7: 'BS.SDB({}, 28n)',
+             8: 'EP.SDPB({}, 31n)', 9: 'BS.SDW81({})', 10: 'BS.SDB({}, 28n)', 11: 'EP.SDPB({}, 31n)'}
     PREMS[1] = 'BS.SDB({}, 28n)'
     FI = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11]
     def P2(xs):
@@ -4585,7 +4585,7 @@ def build(EB, amap, cache, vidx):
     files['ProgressiveBitsStruct_e2e_root_generated.bend'] = pbs_root_text()
     files['ProgressiveBitsStruct_e2e_generated.bend'] = pbs_main_text()
     cover.setdefault('Gc60805EC295', {}).update({'iv': 'ProgressiveBitsStruct_e2e_root_generated.bend', 'i': 'ProgressiveBitsStruct_e2e_generated.bend',
-                                                 'premise': 'rep (the root law\'s representation invariant); (i) also PREM (e2e_pbs: each bit list\'s tree below depth 28 with room and zero bits above its last, SDB / e2e_encp.SDPB; each bit vector\'s tree depth and room, SDW, and the 1281-bit vector\'s zero bits above bit 1281)'})
+                                                 'premise': 'rep (the root law\'s representation invariant); (i) also PREM (e2e_pbs: each bit list\'s tree below depth 28 (SDB) or 31 (e2e_encp.SDPB, the progressive ones) with room and zero bits above its last; each bit vector\'s tree depth and room, SDW, and the 1281-bit vector\'s zero bits above bit 1281)'})
     if 'SyncCommittee' in todo:
         files['FuluSyncCommittee_e2e_generated.bend'] = SC_ENC
         files['FuluSyncCommittee_e2e_dec_generated.bend'] = sc_dec_text(EB)
