@@ -3353,6 +3353,26 @@
     "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) (the root law's representation invariant)"
    }
   ],
+  "FuluBeaconBlock_e2e_root_generated.bend": [
+   {
+    "name": "FuluBeaconBlock",
+    "generated_name": "BeaconBlock",
+    "laws": [
+     "FuluBeaconBlock_e2e_root"
+    ],
+    "premise": "rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluBeaconBlockBody_e2e_root_generated.bend": [
+   {
+    "name": "FuluBeaconBlockBody",
+    "generated_name": "BeaconBlockBody",
+    "laws": [
+     "FuluBeaconBlockBody_e2e_root"
+    ],
+    "premise": "rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) (the root law's representation invariant)"
+   }
+  ],
   "FuluBeaconState_e2e_root_generated.bend": [
    {
     "name": "FuluBeaconState",
@@ -3481,6 +3501,16 @@
      "FuluPendingAttestation_e2e_root"
     ],
     "premise": "rep: RT.rep_PendingAttestation(o, Spec.PendingAttestation()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluSignedBeaconBlock_e2e_root_generated.bend": [
+   {
+    "name": "FuluSignedBeaconBlock",
+    "generated_name": "SignedBeaconBlock",
+    "laws": [
+     "FuluSignedBeaconBlock_e2e_root"
+    ],
+    "premise": "rep: RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock()) (the root law's representation invariant)"
    }
   ],
   "FuluTransaction_e2e_root_generated.bend": [
@@ -6164,15 +6194,18 @@
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluBeaconBlockBody_e2e_root_generated.bend"
   },
   "FuluBeaconBlock": {
    "generated_name": "BeaconBlock",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluBeaconBlock_e2e_root_generated.bend"
   },
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluSignedBeaconBlock_e2e_root_generated.bend"
   },
   "FuluBlob": {
    "generated_name": "Blob",
