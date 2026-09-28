@@ -2693,6 +2693,18 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
+  "BitsStruct_e2e_dec_generated.bend": [
+   {
+    "name": "BitsStruct",
+    "generated_name": "Gc85FA758A04",
+    "laws": [
+     "BitsStruct_e2e_decode_view",
+     "BitsStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "CompatibleUnionA_e2e_dec_generated.bend": [
    {
     "name": "CompatibleUnionA",
@@ -6225,7 +6237,8 @@
   },
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "BitsStruct_e2e_dec_generated.bend"
   },
   "ProgressiveBitsStruct": {
    "generated_name": "Gc60805EC295",
@@ -6911,7 +6924,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 13,
    "covered": true,
-   "bridged": null
+   "bridged": "BitsStruct_e2e_dec_generated.bend"
   },
   "CompatibleUnionABCA": {
    "generated_name": "Gu6DDF182530",

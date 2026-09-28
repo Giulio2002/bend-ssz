@@ -2945,6 +2945,9 @@ def outputs():
         if (OBJ / mod0).exists():
             VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0, c=cR0, cx=cX0: BVG.venc_agg(OBJ, R, X, m, c, cx))
             VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
+    # BitsStruct: two windowed bit lists (e2e_bsw) and three sub-word bit vectors (e2e_bvsub)
+    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
+        VDEC_VIEWS.setdefault('Gc85FA758A04', BVG.bs_view())
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3169,6 +3172,9 @@ def outputs():
     out[OUT / 'e2e_bview.bend'] = BVG.text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
+    out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
+        out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
     if (OBJ / 'big_var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
     if (OBJ / 'big_var_win_SignedAggregateAndProof.bend').exists():
