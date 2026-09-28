@@ -3151,6 +3151,7 @@ def outputs():
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
+    out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
     brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]
     for R0, X0, N, big in brows:
