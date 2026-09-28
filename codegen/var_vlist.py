@@ -1575,6 +1575,115 @@ def vl_text(P, LIM, E, ymod, sch, esch, EO='O.Words', sgl=None):
     return text
 
 
+def _def_block(text, name):
+    a = text.index(f'\ndef {name}(') + 1
+    b = text.find('\ndef ', a + 1)
+    c = text.find('\n# ', a + 1)
+    b = min(x for x in (b, c, len(text)) if x != -1)
+    return a, b
+
+
+def _keep_sig(text, name):
+    """An externally usable helper keeps its signature: its window hypothesis is named hl (thread() skips it)."""
+    a, b = _def_block(text, name)
+    blk = re.sub(r'(?<![\w.])hw(?![\w])', 'hl', text[a:b])
+    return text[:a] + blk + text[b:]
+
+
+def vl_deep(text, mode):
+    """A list window of variable-size elements at any depth d < 31. mode 'hw32': its end below 2^32 (hw32, the
+    elements' windows by their D interface with hwab32); mode 'hwN': its end by NMAX (hwN, for elements whose
+    windows take hwN). Offsets: VB.add_lt32 in place of add_le_at's 2^(2 + d) bound; fits: every U32 fits 4 bytes."""
+    import deep
+    import var_win as VW
+    H, HT = ('hw32', '{Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}') if mode == 'hw32' else \
+        ('hwN', '{Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}')
+    text = _keep_sig(text, 'hcx')
+    text = _keep_sig(text, 'hwab')
+    reps = [('  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), hcx(d, x, len, U32.to_nat(c), hc, hw))',
+             f'  VB.add_lt32(off, c, x, eo, hcx32(x, len, U32.to_nat(c), hc, {H}))'),
+            ('+hQ: {Nat.is_le(Q, A.quad(VB.pw(d))) == True{} : Bool})', '+hQ: {Nat.is_le(Q, U32.to_nat(len)) == True{} : Bool})'),
+            ("VFT.fits4(2n+d, Q, hQ, FD.nat__lt_trans(d, 28n, 30n, hd, {==}))", 'VFT.fits4lt(Q, VB.le_n_lt32(Q, len, hQ))'),
+            ('VBZ.fitq(d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))', 'VFT.fits4lt(U32.to_nat(len), VB.u32_lt(len))'),
+            ('  +hQ = FD.nat__le_trans(Q, tl, A.quad(VB.pw(d)), hQl, hlen(d, x, len, hw))\n', ''),
+            (', h4l, hW, hQ)', ', h4l, hW, hQl)')]
+    for a_, b_ in reps:
+        assert a_ in text, a_[:70]
+        text = text.replace(a_, b_)
+    # nxv: hQ is P2 <= len (drop the step to the tree's bound)
+    m = re.search(r'      \+hQ = FD\.nat__le_trans\(P2, U32\.to_nat\(len\), A\.quad\(VB\.pw\(d\)\), (.*), hlen\(d, x, len, hw\)\)\n', text, re.S)
+    assert m, 'nxv hQ'
+    text = text[:m.start()] + f'      +hQ = {m.group(1)}\n' + text[m.end():]
+    # the elements' windows: hwab bounds them by x + len, then hw32 / hwN
+    ab = f"""
+# The element window's end is at most the list window's end.
+def hwabX(+x: Nat, +len: U32, +a: U32, +b: U32, +hab: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{{}} : Bool}},
+    +hb: {{Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{{}} : Bool}})
+    -> {{Nat.is_le(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), Nat.add(x, U32.to_nat(len))) == True{{}} : Bool}}:
+  +e = FD.u32__sub_nat(b, a, hab)
+  %Equal.sym(Nat, U32.to_nat(U32.sub(b, a)), Nat.sub(U32.to_nat(b), U32.to_nat(a)), e) : {{Nat.is_le(Nat.add(Nat.add(U32.to_nat(a), x), _), Nat.add(x, U32.to_nat(len))) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add(Nat.add(U32.to_nat(a), x), Nat.sub(U32.to_nat(b), U32.to_nat(a))), Nat.add(x, Nat.add(U32.to_nat(a), Nat.sub(U32.to_nat(b), U32.to_nat(a)))),
+      Equal.trans(Nat, Nat.add(Nat.add(U32.to_nat(a), x), Nat.sub(U32.to_nat(b), U32.to_nat(a))), Nat.add(U32.to_nat(a), Nat.add(x, Nat.sub(U32.to_nat(b), U32.to_nat(a)))),
+        Nat.add(x, Nat.add(U32.to_nat(a), Nat.sub(U32.to_nat(b), U32.to_nat(a)))),
+        FD.nat__add_assoc(U32.to_nat(a), x, Nat.sub(U32.to_nat(b), U32.to_nat(a))), FD.lru_nat_algebra__add_swap(U32.to_nat(a), x, Nat.sub(U32.to_nat(b), U32.to_nat(a))))) :
+    {{Nat.is_le(_, Nat.add(x, U32.to_nat(len))) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add(U32.to_nat(a), Nat.sub(U32.to_nat(b), U32.to_nat(a))), U32.to_nat(b), FD.nat__sub_add(U32.to_nat(b), U32.to_nat(a), hab)) :
+    {{Nat.is_le(Nat.add(x, _), Nat.add(x, U32.to_nat(len))) == True{{}} : Bool}}
+  Order.add_left(x, U32.to_nat(b), U32.to_nat(len), hb)
+
+# c + x at most the window's end
+def hcxX(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, U32.to_nat(len)) == True{{}} : Bool}}) -> {{Nat.is_le(Nat.add(c, x), Nat.add(x, U32.to_nat(len))) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(c, x), z) == True{{}} : Bool}}, Nat.add(U32.to_nat(len), x), Nat.add(x, U32.to_nat(len)), FD.nat__add_comm(U32.to_nat(len), x), Order.add_right(c, U32.to_nat(len), x, hc))
+"""
+    if mode == 'hw32':
+        ab += f"""
+def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, U32.to_nat(len)) == True{{}} : Bool}}, +hw32: {HT}) -> {{Nat.is_lt(Nat.add(c, x), FD.spec_common__pow2(32n)) == True{{}} : Bool}}:
+  FD.nat__le_lt_trans(Nat.add(c, x), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), hcxX(x, len, c, hc), hw32)
+
+def hwab32(+x: Nat, +len: U32, +a: U32, +b: U32, +hab: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{{}} : Bool}},
+    +hb: {{Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{{}} : Bool}}, +hw32: {HT})
+    -> {{Nat.is_lt(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), FD.spec_common__pow2(32n)) == True{{}} : Bool}}:
+  FD.nat__le_lt_trans(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), hwabX(x, len, a, b, hab, hb), hw32)
+"""
+    else:
+        ab += f"""
+def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, U32.to_nat(len)) == True{{}} : Bool}}, +hwN: {HT}) -> {{Nat.is_lt(Nat.add(c, x), FD.spec_common__pow2(32n)) == True{{}} : Bool}}:
+  VB.le_n_lt32(Nat.add(c, x), VB.NMAX(), FD.nat__le_trans(Nat.add(c, x), Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()), hcxX(x, len, c, hc), hwN))
+
+def hwab32(+x: Nat, +len: U32, +a: U32, +b: U32, +hab: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{{}} : Bool}},
+    +hb: {{Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{{}} : Bool}}, +hwN: {HT})
+    -> {{Nat.is_le(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:
+  FD.nat__le_trans(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()), hwabX(x, len, a, b, hab, hb), hwN)
+"""
+    a, b = _def_block(text, 'eoc')
+    text = text[:a] + ab.lstrip('\n') + '\n' + text[a:]
+    # the elements' windows through their D interface
+    out, i = [], 0
+    pat = re.compile(r'YW\.(ok_evalw|readw|specw|invw)\(')
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        k = [j for j, x in enumerate(args) if x.strip().startswith('hwab(')]
+        assert len(k) == 1, text[a:a + 200]
+        tw = args[k[0]].replace('hwab(d, x, len, ', 'hwab32(x, len, ', 1)
+        assert tw.rstrip().endswith(', hw)'), tw
+        tw = tw.rstrip()[:-len(', hw)')] + f', {H})'
+        args.insert(k[0] + 1, ' ' + tw.strip())
+        out.append(text[i:m.start()] + f'YW.{m.group(1)}D(' + ','.join(args) + ')')
+        i = b + 1
+    text = ''.join(out)
+    # eoc is called from outside (e2e_vtx, e2e_vbx_ExecutionPayload): it keeps its old form as a wrapper too
+    names = VW.XIFACE + ['eoc']
+    if mode == 'hw32':
+        return VW.deep_x(text, names)
+    return VW.deep_N(text.replace('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd'), names)
+
+
 def list_bound(sch):
     '''The count bound of the list schema Spec.<sch>() as fulu_schemas.bend writes it.'''
     m = re.search(r'^def ' + sch + r'\(\) -> T\.Schema: T\.ListOf\{\w+\(\), (.+)\}$', (ROOT / 'spec/fulu_schemas.bend').read_text(), re.M)
@@ -1878,9 +1987,9 @@ def main():
         for p, N in GBYTELISTS:
             out[gbl_fname(p)] = bl_deep(gbl_text(p, N), N)
         for P, LIM, E, ymod, sch, esch in VLISTS:
-            out[vl_fname(P)] = vl_text(P, LIM, E, ymod, sch, esch)
+            out[vl_fname(P)] = vl_deep(vl_text(P, LIM, E, ymod, sch, esch), 'hwN')
         for P, LIM, E, ymod, sch, esch, EO, sgl in VLISTS_C:
-            out[vl_fname(P)] = vl_text(P, LIM, E, ymod, sch, esch, EO, sgl)
+            out[vl_fname(P)] = vl_deep(vl_text(P, LIM, E, ymod, sch, esch, EO, sgl), 'hw32')
         for P, E, EO, ymod, escht, efields in PVLISTS:
             out[vl_fname(P)] = vlp_text(P, E, EO, ymod, escht, efields)
         for P, NV, E, EO, ymod, escht, efields in VVECS:
