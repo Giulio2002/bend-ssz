@@ -3223,6 +3223,10 @@ def outputs():
         import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
         out[OUT / 'e2e_u64l.bend'] = EBB.u64l_text()
+    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+        import e2e_state_enc as ESE
+        out[OUT / 'e2e_bsx.bend'] = ESE.bsx_text()
+        out[OUT / 'e2e_bsl.bend'] = ESE.bsl_text()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
         out[OUT / 'e2e_stv.bend'] = ESG.text()
