@@ -4119,6 +4119,14 @@
     "premise": "+rp: rp_GcDC3E457711(o)"
    },
    {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_root"
+    ],
+    "premise": "+rp: rp_GpF350A3C486(o)"
+   },
+   {
     "name": "uint8",
     "generated_name": "Gt967E8D815F",
     "laws": [
@@ -4184,6 +4192,28 @@
     ],
     "ii": "exact",
     "premise": "+rp: rp_GcDC3E457711(o)"
+   }
+  ],
+  "ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend": [
+   {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_encode"
+    ],
+    "premise": "+rp: rp_GpF350A3C486(o)"
+   }
+  ],
+  "ProgressiveSingleFieldContainerTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ProgressiveSingleFieldContainerTestStruct",
+    "generated_name": "GpF350A3C486",
+    "laws": [
+     "ProgressiveSingleFieldContainerTestStruct_e2e_decode_accept",
+     "ProgressiveSingleFieldContainerTestStruct_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_GpF350A3C486(o)"
    }
   ],
   "bitvector_8_e2e_generated.bend": [
@@ -5899,10 +5929,6 @@
    "generated_name": "Gp66304057C3",
    "reason": "encode laws not over the same free words / bits"
   },
-  "ProgressiveSingleFieldContainerTestStruct": {
-   "generated_name": "GpF350A3C486",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
    "reason": "encode laws not over the same free words / bits"
@@ -5988,6 +6014,12 @@
    "generated_name": "GcDC3E457711",
    "i": "FixedTestStruct_e2e_generated.bend",
    "ii_iii": "FixedTestStruct_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "ProgressiveSingleFieldContainerTestStruct": {
+   "generated_name": "GpF350A3C486",
+   "i": "ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend",
+   "ii_iii": "ProgressiveSingleFieldContainerTestStruct_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
   },
   "bitvector_8": {

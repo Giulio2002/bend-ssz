@@ -603,6 +603,8 @@ UN = {
     'Gt967E8D815F': UINT_UN, 'GtECF9BB18D8': UINT_UN, 'ParticipationFlags': UINT_UN,
     'Gc74A8F5F17F': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.Gc74A8F5F17F{a}\n    case _: T.Gc74A8F5F17F{0}',
                      '  match o:\n    case T.Gc74A8F5F17F{+a}: {==}'),
+    'GpF350A3C486': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.GpF350A3C486{a}\n    case _: T.GpF350A3C486{0}',
+                     '  match o:\n    case T.GpF350A3C486{+a}: {==}'),
     'Gc4ED9619F50': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, r}}}: T.Gc4ED9619F50{a, a1}\n    case _: T.Gc4ED9619F50{0, 0}',
                      '  match o:\n    case T.Gc4ED9619F50{+a, +b}: {==}'),
     'GcDC3E457711': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, S.Items{S.UnsignedValue{P.UInt{a2, b2, c2, d2, e2, f2, g2, h2}}, r}}}}: T.GcDC3E457711{a, O.U64{a1, b1}, a2}\n    case _: T.GcDC3E457711{0, O.U64{0, 0}, 0}',
@@ -610,7 +612,7 @@ UN = {
     'GtAD72FD256A': ('  match v:\n    case S.BooleanValue{b}: b\n    case _: False{}', '  {==}'),
     'Bytes1': ('  match v:\n    case S.BytesValue{Con{a, t}}: T.Bytes1{a}\n    case _: T.Bytes1{0}', '  match o:\n    case T.Bytes1{+a}: {==}'),
 }
-DEC_TRY = ['Gt967E8D815F', 'GtECF9BB18D8', 'ParticipationFlags', 'Gc74A8F5F17F', 'Gc4ED9619F50', 'GcDC3E457711', 'Bytes1']
+DEC_TRY = ['Gt967E8D815F', 'GtECF9BB18D8', 'ParticipationFlags', 'Gc74A8F5F17F', 'GpF350A3C486', 'Gc4ED9619F50', 'GcDC3E457711', 'Bytes1']
 
 
 def dec_file(EB, rows):
@@ -669,11 +671,11 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
         lem, t = ('X.b8(o, rp)', 'B.byte_sel(0, o)') if X == 'Gt967E8D815F' else ('X.m16(o, rp)', 'U32.and(o, 65535)')
         BY = '[B.byte_sel(0, o)]' if X == 'Gt967E8D815F' else '[B.byte_sel(0, o), B.byte_sel(1, o)]'
         L += [head_, f'  %{lem} : {G(sn, en, "o", V("_"))}', chain(sn, en, 'o', K, BY, f'{EEL}(o)', V(t), f'{ESL}(o)'), '']
-    elif X == 'Gc74A8F5F17F':                     # SingleFieldTestStruct: its uint8 field
-        O1 = 'T.Gc74A8F5F17F{y0}'
-        L += [head_, '  match o:', '    case T.Gc74A8F5F17F{+y0}:',
-              f'      %X.b8(y0, rp) : {G(sn, en, O1, V("T.Gc74A8F5F17F{_}"))}',
-              chain(sn, en, O1, K, '[B.byte_sel(0, y0)]', f'{EEL}(y0)', V('T.Gc74A8F5F17F{B.byte_sel(0, y0)}'), f'{ESL}(y0)', '      '), '']
+    elif X in ('Gc74A8F5F17F', 'GpF350A3C486'):   # (Progressive)SingleFieldTestStruct: its uint8 field
+        O1 = f'T.{X}{{y0}}'
+        L += [head_, '  match o:', f'    case T.{X}{{+y0}}:',
+              f'      %X.b8(y0, rp) : {G(sn, en, O1, V(f"T.{X}{{_}}"))}',
+              chain(sn, en, O1, K, '[B.byte_sel(0, y0)]', f'{EEL}(y0)', V(f'T.{X}{{B.byte_sel(0, y0)}}'), f'{ESL}(y0)', '      '), '']
     elif X in ('ParticipationFlags', 'Bytes1'):   # the byte's eight bits
         bits = [f'b{i}' for i in range(8)]
         wpat = ''.join(f'WCon{{+{b}, ' for b in bits) + 'WNil{}' + '}' * 8
@@ -733,7 +735,7 @@ def bsm_text():
     return '\n'.join(L)
 
 
-ENC_LEAF = ['Gt967E8D815F', 'GtECF9BB18D8', 'Gc74A8F5F17F', 'ParticipationFlags', 'Bytes1', 'GtAD72FD256A']
+ENC_LEAF = ['Gt967E8D815F', 'GtECF9BB18D8', 'Gc74A8F5F17F', 'GpF350A3C486', 'ParticipationFlags', 'Bytes1', 'GtAD72FD256A']
 
 SUPPORT = r"""import Base
 import ../src/buffer.bend as B
@@ -2993,7 +2995,7 @@ def FuluBlob_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U
 
 
 # the generated names of this worker's share (the fixed-size names e2e_bridge's families leave uncovered)
-MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Deposit', 'Gc4ED9619F50', 'Gc74A8F5F17F', 'GcDC3E457711',
+MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Deposit', 'Gc4ED9619F50', 'Gc74A8F5F17F', 'GcDC3E457711', 'GpF350A3C486',
           'Gt0366A291C1', 'Gt04170D6AA7', 'Gt05340E1F7E', 'Gt0B0C03B454', 'Gt19F04F79B8', 'Gt1BD4B4358D', 'Gt1D9B3E1871', 'Gt27CDB122DD',
           'Gt28605B5D5C', 'Gt28ED72E3EF', 'Gt2CD118DF5F', 'Gt2FF8722A75', 'Gt3429157FEB', 'Gt34AE45611E', 'Gt3771256492', 'Gt39CAD03032',
           'Gt526892A4DC', 'Gt57090094FA', 'Gt5BE68AF2C7', 'Gt6463DC73A8', 'Gt6F0D97A69E', 'Gt75C1995C88', 'Gt7B8507E2C2', 'Gt7FBB1934E8',
