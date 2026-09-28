@@ -583,3 +583,14 @@ def encx_spec_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.
     VBZ.fitq(dx, LL_l134217728_PendingDeposit(A, N), hL, hdx))
   lpart_l134217728_PendingDeposit(U32.to_nat(N), A, hlim, fit)
 
+# szx_l134217728_PendingDeposit with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h32: {Nat.is_lt(LL_l134217728_PendingDeposit(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 192)) == LL_l134217728_PendingDeposit(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 192, 48n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l134217728_PendingDeposit(A, N), A.quad(Nat.mul(U32.to_nat(N), 48n)), {==}, h32))
+
+def encx_spec_l134217728_PendingDepositB(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l134217728_PendingDeposit(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l134217728_PendingDeposit(A, N), S.ListOf{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "slot"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}, U32.to_nat(134217728)}) == Some{[S.Variable{ENCL_l134217728_PendingDeposit(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 134217728), Nat.is_le(U32.to_nat(N), U32.to_nat(134217728)), VU.le_u32(N, 134217728), okl_lim_l134217728_PendingDeposit(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l134217728_PendingDeposit(A, N), List.length(&2, U32, ENCL_l134217728_PendingDeposit(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l134217728_PendingDeposit(A, N)), LL_l134217728_PendingDeposit(A, N), len_encl_l134217728_PendingDeposit(A, N)),
+    VBZ.fitsB(LL_l134217728_PendingDeposit(A, N), B, hL, hB))
+  lpart_l134217728_PendingDeposit(U32.to_nat(N), A, hlim, fit)

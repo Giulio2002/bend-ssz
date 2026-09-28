@@ -26,6 +26,7 @@ pieces not yet written (reg_zero). Positions: vrecx.fpos/froom for the fixed par
 croom / padfit / cnext for the variable part (the running cursor).
 """
 import re
+import pathlib
 import deep as _deep  # noqa: E402
 import sys
 from pathlib import Path
@@ -4566,9 +4567,24 @@ def cont_strict(q, t, res):
         return a[:3] + ['VCN.croom31(' + ', '.join(ex[:-1] + ['hs31']) + ')']
     for al in sorted(set(re.findall(r'(?<![\w.])(\w+)\.szx\(', t))):
         t = deep.edit_calls(t, al + '.szx', sz, rename=al + '.szxS')
-    return t, bad1 + bad2
+    # OKW: the container encodings below 2^31 bytes (codegen/okw.py): the ifaces' twins, the writers' children on OKW
+    import okw
+    child = set()
+    for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)$', t, re.M):
+        if mi.group(1) in _OKT_MODS:
+            child.add(mi.group(2) + '.')
+    bad3 = []
+    if q.stem in OKW_SKIP:
+        pass   # (its OKW chains would double a 40 s check past the 600 s limit: BeaconState keeps OK's 2^30)
+    elif 'def OKT(' in t:
+        t, bad3 = okw.okw_iface(t, child)
+    elif 'def PUTC(' in t:   # (a container writer; the unions keep their arms on OK)
+        t = okw.okw_writer(t, child)
+    return t, bad1 + bad2 + bad3
 
 
+_OKT_MODS = set()
+OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}
 PROBE_POST = cont_strict
 
 
@@ -4604,6 +4620,8 @@ def main():
         else:
             raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     out = RR.rewire_out(out)
+    global _OKT_MODS
+    _OKT_MODS = {pathlib.Path(q).stem for q, t in out.items() if 'def OKT(' in t} - OKW_SKIP
     out = _deep.dify_out(out, handled={'fposW'}, post=cont_strict)  # the dd < 31 twins
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]

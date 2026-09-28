@@ -550,3 +550,14 @@ def encx_spec_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationReques
     VBZ.fitq(dx, LL_l2_ConsolidationRequest(A, N), hL, hdx))
   lpart_l2_ConsolidationRequest(U32.to_nat(N), A, hlim, fit)
 
+# szx_l2_ConsolidationRequest with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h32: {Nat.is_lt(LL_l2_ConsolidationRequest(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 116)) == LL_l2_ConsolidationRequest(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 116, 29n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l2_ConsolidationRequest(A, N), A.quad(Nat.mul(U32.to_nat(N), 29n)), {==}, h32))
+
+def encx_spec_l2_ConsolidationRequestB(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l2_ConsolidationRequest(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l2_ConsolidationRequest(A, N), S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, U32.to_nat(2)}) == Some{[S.Variable{ENCL_l2_ConsolidationRequest(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 2), Nat.is_le(U32.to_nat(N), U32.to_nat(2)), VU.le_u32(N, 2), okl_lim_l2_ConsolidationRequest(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l2_ConsolidationRequest(A, N), List.length(&2, U32, ENCL_l2_ConsolidationRequest(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l2_ConsolidationRequest(A, N)), LL_l2_ConsolidationRequest(A, N), len_encl_l2_ConsolidationRequest(A, N)),
+    VBZ.fitsB(LL_l2_ConsolidationRequest(A, N), B, hL, hB))
+  lpart_l2_ConsolidationRequest(U32.to_nat(N), A, hlim, fit)
