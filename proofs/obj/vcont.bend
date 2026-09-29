@@ -623,6 +623,14 @@ def lt_ca(+c: Nat, +x: Nat, +a: Nat, +hc: {Nat.is_le(c, VB.pw(a)) == True{} : Bo
 def le_qk(+S: Nat, +k: Nat, +h: {Nat.is_lt(S, VB.pw(Nat.add(2n, k))) == True{} : Bool}) -> {Nat.is_le(S, A.quad(VB.pw(k))) == True{} : Bool}:
   F.logic__subst(Nat, z => {Nat.is_le(S, z) == True{} : Bool}, VB.pw(Nat.add(2n, k)), A.quad(VB.pw(k)), Equal.sym(Nat, A.quad(VB.pw(k)), VB.pw(Nat.add(2n, k)), UW.qpw(k)), F.nat__lt_le(S, VB.pw(Nat.add(2n, k)), h))
 
+# The end of the region at X = 0 (4 * 0 + (0 + L)) below 2^32, for L below 2^a (a <= 32): L itself stays a variable.
+def hl32za(+L: Nat, +a: Nat, +ha: {Nat.is_le(a, 32n) == True{} : Bool}, +h: {Nat.is_lt(L, VB.pw(a)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(0n), Nat.add(0n, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__lt_le_trans(Nat.add(A.quad(0n), Nat.add(0n, L)), VB.pw(a), F.spec_common__pow2(32n), h, F.nat__pow2_mono(a, 32n, ha))
+def hl32z(+L: Nat, +h: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(0n), Nat.add(0n, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  hl32za(L, 31n, {==}, h)
+
 # The word count of a length below 2^31 (L + 3 stays below 2^32: any output depth).
 def nw_nat31(+L: U32, +h: {Nat.is_lt(U32.to_nat(L), VB.pw(31n)) == True{} : Bool}) -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
   +hc = F.nat__le_trans(U32.to_nat(3), VB.pw(2n), VB.pw(31n), {==}, F.nat__pow2_mono(2n, 31n, {==}))

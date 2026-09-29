@@ -1091,6 +1091,11 @@ def okw_sizes(out):
     return {q: okw.okw_relink(c, names) for q, c in comp.items()}
 
 
+def _has_okw(stem):
+    """The interface stem has OKTW (in its base module, or in its companion <stem>_o: BeaconState's)."""
+    return any('def OKTW(' in p.read_text() for p in (ROOT / f'proofs/obj/{stem}.bend', ROOT / f'proofs/obj/{stem}_o.bend') if p.exists())
+
+
 def okw_tops(out):
     """The encoder laws' O twins (encode_evalO / encode_specO on OKW, the output tree below depth 31; codegen/okw.py
     top_o / gtop_o) of the tops with an OKW interface, in the companions big_var_codec_<C>_enc_o."""
@@ -1100,11 +1105,13 @@ def okw_tops(out):
         if not (q.stem.startswith('big_var_codec_') and q.stem.endswith('_enc')):
             continue
         ci = re.search(r'^import \./(\w+)\.bend as CI$', t, re.M)
-        if not ci or 'def OKTW(' not in (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text() or 'law encode_eval:' not in t:
+        if not ci or not _has_okw(ci.group(1)) or 'law encode_eval:' not in t:
             continue
         if 'def putx0(' in t:
             k = re.search(r'^import \./(\w+)\.bend as K$', t, re.M)
             kt = (ROOT / f'proofs/obj/{k.group(1)}.bend').read_text()
+            ko = ROOT / f'proofs/obj/{k.group(1)}_o.bend'   # (BeaconState's writer twins live in its companion)
+            kt += ko.read_text() if ko.exists() else ''
             t2 = okw.top_o(t, 'putxO' if '\ndef putxO(' in kt else 'putxW')
         elif 'def room(' in t and 'Z.sizez(' not in t:   # (the wide generic containers' size module: later)
             t2 = okw.gtop_o(t)
@@ -1127,7 +1134,7 @@ def okw_size(q, t):
     if not q.stem.endswith('_size'):
         return t
     ci = re.search(r'^import \./(\w+)\.bend as CI$', t, re.M)
-    if not ci or 'def OKTW(' not in (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text():
+    if not ci or not _has_okw(ci.group(1)):
         return t
     child, es = set(), set()
     for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)$', t, re.M):
@@ -1138,7 +1145,9 @@ def okw_size(q, t):
             es.add(mi.group(2) + '.')
         elif p.exists() and 'def OKTW(' in p.read_text():
             child.add(mi.group(2) + '.')
-    t, bad = okw.okw_size(t, child, es)
+    imp = (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text()
+    me = re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', imp, re.M)
+    t, bad = okw.okw_size(t, child, es, me.group(1) if me else None)
     if bad:
         raise SystemExit(f'var_cont_top: {q.name}: uses of k okw_size does not handle: {bad[:3]}')
     return t

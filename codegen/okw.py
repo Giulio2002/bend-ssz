@@ -410,7 +410,7 @@ def _topo(seg):
 SLAWS = ('sizex', 'szs', 'sizez', 'validx')
 
 
-def okw_size(t, child_okw, es_aliases):
+def okw_size(t, child_okw, es_aliases, endc_def=None):
     """A size module's O laws (sizexO, szsO, sizezO, validxO on CI.OKW): its chains on CI.OKTW with the bound
     B = ENDC (ENDC <= ENDC, ENDC < 2^31: CI.ok_bndW). child_okw: the children container ifaces with OKW (their
     sizex / validx / szx: the O laws); es_aliases: the children's size modules (sizez / validx: the O laws).
@@ -421,6 +421,8 @@ def okw_size(t, child_okw, es_aliases):
     hdr = deep._hdr(t[t.index('\ndef SZS(') + 1:])
     OAS = ', '.join(p.lstrip('+').split(':')[0].strip() for p in deep._args(hdr, hdr.index('(') + 1)[0])
     B = f'CI.ENDC({OAS})'
+    if endc_def and re.fullmatch(r'ENDCs\(.*, \d+n\)', endc_def.strip()) is None and endc_def.strip().startswith('ENDCs('):
+        B = 'CI.' + endc_def.strip()   # (U32 mode: the bound in ENDCs form, as the chains' types state it)
     BND = f'CI.ok_bndW({OAS}, h)'
     tw = [n for n, kind, a, b in _blocks(t) if kind == 'def' and '{CI.OKT(' in deep._hdr(t[a:b])]
     chain = [n for n in tw if K28 in deep._hdr(t[slice(*_block_text(t, n))])]
@@ -437,6 +439,8 @@ def okw_size(t, child_okw, es_aliases):
         s = children(s)
         s = re.sub(r'(?<![\w.])CI\.(ok_\w+)\(', lambda mm: f'CI.{mm.group(1)}W(', s)
         s = re.sub(r'(?<![\w.])CI\.lenE\(', 'CI.lenEW(', s)
+        s = _rewrite_calls(s, 'CI.szC', lambda g: 'CI.szCW(' + ', '.join(g[:-2]) + ')' if g[-2:] == ['28n', '{==}'] else None)
+        s = re.sub(r'(?<![\w.])szsz\(', 'szszW(', s)
         for n in tw:
             def cf(g, n=n):
                 for i in range(len(g) - 1):
@@ -479,6 +483,10 @@ def okw_size(t, child_okw, es_aliases):
             if re.search(r'(?<![\w.])(k|ek|hk)(?![\w.])', l) and not l.lstrip().startswith('#'):
                 bad.append((n + 'W', l.strip()[:200]))
         new.append('\n' + nb.rstrip('\n') + '\n')
+    ab = _block_text(t, 'szsz')   # (U32 mode: the sizes' equation, a def on OK)
+    if ab:
+        nb = t[ab[0]:ab[1]].replace('def szsz(', 'def szszW(', 1).replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
+        new.append('\n' + rw(nb).rstrip('\n') + '\n')
     for law in SLAWS:
         ab = _block_text(t, law)
         if not ab:
@@ -556,6 +564,11 @@ def _room_o(blk, SZ, S, OAS, LLx, extra_hs31):
     blk = blk.replace('+ek: {k == 28n : Nat}', '+ek: {k == 29n : Nat}')
     L = f'List.length(&2, U32, CI.ENC(m))' if 'CI.ENC(m)' in blk else f'List.length(&2, U32, K.ENCC({OAS}))'
     ENDC = f'CI.ENDC({OAS})' if 'CI.ENDC(' in blk else None
+    if ENDC is None and 'CI.ENDCs(' in blk:   # (U32 mode: the bound in ENDCs form, as the base's hS states it)
+        mh = re.search(r'\+hS = FD\.logic__subst\(Nat, z => \{Nat\.is_le\(z, A\.quad\(VB\.pw\(k\)\)\) == True\{\} : Bool\}, ', blk)
+        if mh:
+            ENDC = deep._args(blk, mh.end())[0][0]
+            ok_bnd = 'CI.ok_bndW(' + OAS + ', h)'
     es_eq = f'Equal.sym(Nat, {S}, {L}, es)' if ENDC is None else f'Equal.sym(Nat, {S}, {ENDC}, es)'
     if ENDC is None:
         h31 = f'CI.bndxO(m, hok)'
@@ -576,10 +589,9 @@ def _room_o(blk, SZ, S, OAS, LLx, extra_hs31):
 
 
 def hl32_of(L):
-    """hl32 (the end of the region below 2^32) at X = 0 from the bytes below 2^31 (h31: L < 2^31), exponent symbolic."""
-    x = f'Nat.add(A.quad(0n), Nat.add(0n, {L}))'
-    return (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{{}} : Bool}}, {L}, {x}, {{==}}, '
-            f'CS.lt32B({L}, {L}, FD.nat__le_refl({L}), h31))')
+    """hl32 (the end of the region below 2^32) at X = 0 from h31 (L < 2^31): a lemma over a variable L (the closed
+    equation L == 4 * 0 + (0 + L) would evaluate the big L)."""
+    return f'VCN.hl32z({L}, h31)'
 
 
 def gtop_o(t):

@@ -71,14 +71,14 @@ def rt0O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +g: DK.P2(HDW(m), DK.P2(
   +hl = CI.PA(OB.HL(m), OB.HZ(m), CI.PB(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g))
   +hz = CI.PB(OB.HL(m), OB.HZ(m), CI.PB(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g))
   +h31 = CIo.bndxO(m, hok)
-  CI.putxO(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), Nat.add(A.quad(0n), Nat.add(0n, List.length(&2, U32, CI.ENC(m)))), {==}, CS.lt32B(List.length(&2, U32, CI.ENC(m)), List.length(&2, U32, CI.ENC(m)), FD.nat__le_refl(List.length(&2, U32, CI.ENC(m))), h31)), hz, hok)
+  CI.putxO(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, VCN.hl32z(List.length(&2, U32, CI.ENC(m)), h31), hz, hok)
 
 def by0O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +g: DK.P2(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)))) -> OB.BY0(m):
   +hd = CI.PA(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g)
   +hl = CI.PA(OB.HL(m), OB.HZ(m), CI.PB(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g))
   +hz = CI.PB(OB.HL(m), OB.HZ(m), CI.PB(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g))
   +h31 = CIo.bndxO(m, hok)
-  CI.putx_bytesO(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), Nat.add(A.quad(0n), Nat.add(0n, List.length(&2, U32, CI.ENC(m)))), {==}, CS.lt32B(List.length(&2, U32, CI.ENC(m)), List.length(&2, U32, CI.ENC(m)), FD.nat__le_refl(List.length(&2, U32, CI.ENC(m))), h31)), hz, hok)
+  CI.putx_bytesO(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, VCN.hl32z(List.length(&2, U32, CI.ENC(m)), h31), hz, hok)
 
 def eval_goO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool})
     -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & B.Buf}:
