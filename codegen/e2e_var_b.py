@@ -1564,9 +1564,11 @@ def vdec_plist(X, bound, kind):
     view = {'b': 'PBF.vviewb', '1': 'PBF.vview1', '2': 'PBF.vview2'}[kind]
     CW = 'O.Words{FD.array__thaw(U32, BL.CW(d, t, 0, n)), n}'
     hd = f'+hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}}'
+    # at any depth (bound 31, n <= NMAX): the window's copy through bviewY, its storage bound from n <= NMAX
     head = f'''def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, {hd},
-    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{{view}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  +eb = BL.bview(d, t, 0, n, 0n, {{==}}, hd, hn, pf)'''
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{{view}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  +hy = VC.hyW(0n, n, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN))
+  +eb = BL.bviewY(d, t, 0, n, 0n, {{==}}, hn, pf, hy)'''
     if kind == '1':
         body = f'''  %Equal.sym(+List<U32>, WO.wview({CW}), BL.WX0(t, n), eb) : {{S.Sequence{{PBF.it1(U32.to_nat(n), _)}} == DC.VAL(t, n) : S.Value}}
   Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, PBF.it1(U32.to_nat(n), BL.WX0(t, n)), PBM.it1(U32.to_nat(n), BL.WX0(t, n)), PL.it1eq(U32.to_nat(n), BL.WX0(t, n)))'''
@@ -1579,7 +1581,7 @@ def vdec_plist(X, bound, kind):
   %Equal.sym(+List<U32>, WO.wview({CW}), BL.WX0(t, n), eb) : {{S.Sequence{{PBF.it2(WN.CQ(n), _)}} == DC.VAL(t, n) : S.Value}}
   Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, PBF.it2(WN.CQ(n), BL.WX0(t, n)), PBM.it2(WN.CQ(n), BL.WX0(t, n)), PL.it2eq(WN.CQ(n), BL.WX0(t, n)))'''
     imps = ['import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/pb_min.bend as PBM',
-            'import ../proofs/obj/vua_win.bend as UW', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL']
+            'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL']
     if kind == '2':
         imps.append('import ../proofs/obj/big_var_winp_u16.bend as WN')
     if kind == 'b':
@@ -4924,12 +4926,12 @@ SUPPORT_OUT['e2e_ve_LightClientOptimisticUpdate.bend'] = ve_module('LightClientO
 VENC_SHAPES['LightClientOptimisticUpdate'] = venc_bytes
 VENC_PREMISE['LightClientOptimisticUpdate'] = VENC_PREMISE['LightClientHeader'].replace('LightClientHeader', 'LightClientOptimisticUpdate')
 SUPPORT_OUT['e2e_plist.bend'] = PLIST
-VDEC_VIEWS['GtDE4B86A990'] = vdec_plist('GtDE4B86A990', 28, '1')
-VDEC_VIEWS['Gt83D8B3D008'] = vdec_plist('Gt83D8B3D008', 28, 'b')
-VDEC_VIEWS['GtF23A2FB97E'] = vdec_plist('GtF23A2FB97E', 28, '2')
+VDEC_VIEWS['GtDE4B86A990'] = vdec_plist('GtDE4B86A990', 31, '1')
+VDEC_VIEWS['Gt83D8B3D008'] = vdec_plist('Gt83D8B3D008', 31, 'b')
+VDEC_VIEWS['GtF23A2FB97E'] = vdec_plist('GtF23A2FB97E', 31, '2')
 SUPPORT_OUT['e2e_plw.bend'] = plw_text()
 for _X in PLW:
-    VDEC_VIEWS[_X] = vdec_plw(_X, 28)
+    VDEC_VIEWS[_X] = vdec_plw(_X, None)
 for _X in PL_ROOT:
     VROOT_SHAPES[_X] = vroot_plist
 for _X in PLA:

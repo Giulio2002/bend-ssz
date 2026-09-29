@@ -597,10 +597,11 @@ def top_text(k):
     txt = txt.replace(old, 'def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> O.Words: W.OBJw(d, t, 0n, 0, n)')
     txt = txt.replace(f'T.{X}_ok(', f'T.{p}_ok(').replace(f'T.{X}_read(', f'T.{p}_read(')
     txt = txt.replace('OBJ(t, n)', 'OBJ(d, t, n)').replace(f'T.{X}_', '@@').replace(f'T.{X}', 'O.Words').replace('@@', f'T.{X}_')
-    return '\n'.join(generic(txt.split('\n')))
+    import var_winb as WB  # the whole-buffer laws at any depth d < 31 over the window's D interface (n <= NMAX)
+    return WB.top_deep('\n'.join(generic(txt.split('\n'))), 'W', 'hwN')
 
 
-def unique_text(k):
+def unique_text_old(k):
     X, p = KINDS[k]
     D = top_fname(X, '_top').name
     return '\n'.join(['import Base', 'import ../../types/schema.bend as S', 'import ../../spec/decoding_relation.bend as Decoding',
@@ -614,6 +615,11 @@ def unique_text(k):
                       f'  for spec: Decoding.decodes(GS.{X}(), DC.VW(t, n), v)', '  {v == DC.VAL(t, n) : S.Value}',
                       'def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):',
                       f'  DCO.valid_unique(GS.{X}(), DC.VW(t, n), v, DC.VAL(t, n), {{==}}, spec, DC.decode_spec(d, t, n, pf, hd, hn, hchk))']) + '\n'
+
+
+def unique_text(k):
+    import var_winb as WB
+    return WB.unique_deep(unique_text_old(k), 'hwN')
 
 
 ENC = r"""
