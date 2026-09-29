@@ -390,11 +390,30 @@ def rt_def(name):
     if 'text' not in _rt_cache:
         _rt_cache['text'] = _unlight(_RT.read_text()) + '\n' + _unlight(_RS.read_text())
     t = _rt_cache['text']
-    m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', t, _re.M)
+    p1 = _re.compile(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', _re.M)
+    p2 = _re.compile(r'^def ' + name + r'\((.*?)\) -> (.*?): (.*)$', _re.M)
+    if name.isidentifier():   # only the lines that start `def <name>(` can match: try just those
+        starts = _rt_cache.setdefault(('starts', name), _line_starts(t, 'def ' + name + '('))
+        m = next((m for m in (p1.match(t, i) for i in starts) if m), None)
+        if m:
+            return m.group(1), m.group(2), ' '.join(m.group(3).split())
+        m = next((m for m in (p2.match(t, i) for i in starts) if m), None)
+        return (m.group(1), m.group(2), m.group(3)) if m else None
+    m = p1.search(t)
     if m:
         return m.group(1), m.group(2), ' '.join(m.group(3).split())
-    m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?): (.*)$', t, _re.M)
+    m = p2.search(t)
     return (m.group(1), m.group(2), m.group(3)) if m else None
+
+
+def _line_starts(t, s):
+    """the offsets of the lines of t that start with s"""
+    out = [0] if t.startswith(s) else []
+    i = t.find('\n' + s)
+    while i >= 0:
+        out.append(i + 1)
+        i = t.find('\n' + s, i + 1)
+    return out
 
 
 # names of root_state (BeaconState's root law, imported as ST): the generators write RT.<name>; for those

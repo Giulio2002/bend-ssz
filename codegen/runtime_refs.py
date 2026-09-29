@@ -44,6 +44,7 @@ a file imports exactly the files it references, in the monolith's order.
 The check (split_check): the split files' definitions, with those qualifiers removed, are exactly the
 monolith's (every definition in one file, text for text), and the import graph is acyclic.
 """
+import functools
 import re
 import sys
 from pathlib import Path
@@ -483,6 +484,7 @@ def use_index(json_text):
     d = json.loads(json_text)
     _IX = ([tuple(k) for k in d['files']], d['symbols'], d['monoliths'])
     _AL = _GEN = None
+    unwire.cache_clear()
 
 
 _AL = None
@@ -502,6 +504,7 @@ def rewire_out(out):
     return [(p, (rewire(t) if str(p).endswith('.bend') else t)) for p, t in out]
 
 
+@functools.lru_cache(maxsize=1024)
 def unwire(text, to='T'):
     """A rewired module's text with its split qualifiers spelled as the monolith's alias again (to.<sym>),
     for generators that parse another generated module by its T.<sym> references. The module reads as
@@ -510,29 +513,25 @@ def unwire(text, to='T'):
     text = LS.unlight(text)
     known = _aliases()
     pat = re.compile(r'(?<![\w.])([A-Za-z_]\w*_[derh])\.([A-Za-z_]\w*)')
-    return '\n'.join(_code_sub(pat, lambda m: f'{to}.{m.group(2)}' if m.group(1) in known else m.group(0), l)
+    return '\n'.join(_code_sub(pat, lambda m: f'{to}.{m.group(2)}' if m.group(1) in known else m.group(0), l) if '.' in l else l
                      for l in text.split('\n'))
+
+
+_TOK = re.compile(r'#.*|"[^"]*(?:"|\Z)', re.S)
 
 
 def _code_sub(pat, q, line):
     """pat.sub(q, ..) on a line's code, not its comment or strings."""
-    out, i, n = [], 0, len(line)
-    while i < n:
-        c = line[i]
-        if c == '#':
-            out.append(line[i:])
-            break
-        if c == '"':
-            j = line.find('"', i + 1)
-            j = n if j < 0 else j + 1
-            out.append(line[i:j])
-            i = j
-            continue
-        j = i
-        while j < n and line[j] not in '#"':
-            j += 1
-        out.append(pat.sub(q, line[i:j]))
-        i = j
+    if '#' not in line and '"' not in line:
+        return pat.sub(q, line)
+    out, i = [], 0
+    for m in _TOK.finditer(line):
+        if m.start() > i:
+            out.append(pat.sub(q, line[i:m.start()]))
+        out.append(m.group(0))
+        i = m.end()
+    if i < len(line):
+        out.append(pat.sub(q, line[i:]))
     return ''.join(out)
 
 
