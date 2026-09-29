@@ -4616,13 +4616,6 @@
     "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
    },
    {
-    "name": "uint32",
-    "generated_name": "uint32",
-    "laws": [
-     "uint32_e2e_root"
-    ]
-   },
-   {
     "name": "uint8",
     "generated_name": "uint8",
     "laws": [
@@ -5485,6 +5478,35 @@
     "premise": "+e: {bitvector_9_last(o) == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(bitvector_9_last(o))), Word.zero(23n))} : U32}"
    }
   ],
+  "boolean_e2e_generated.bend": [
+   {
+    "name": "boolean",
+    "generated_name": "boolean",
+    "laws": [
+     "boolean_e2e_encode"
+    ]
+   }
+  ],
+  "boolean_e2e_dec_generated.bend": [
+   {
+    "name": "boolean",
+    "generated_name": "boolean",
+    "laws": [
+     "boolean_e2e_decode_accept",
+     "boolean_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "boolean_e2e_root_generated.bend": [
+   {
+    "name": "boolean",
+    "generated_name": "boolean",
+    "laws": [
+     "boolean_e2e_root"
+    ]
+   }
+  ],
   "uint16_e2e_generated.bend": [
    {
     "name": "uint16",
@@ -5505,6 +5527,33 @@
     ],
     "ii": "exact",
     "premise": "+rp: rp_u16(o)"
+   }
+  ],
+  "uint32_e2e_generated.bend": [
+   {
+    "name": "uint32",
+    "generated_name": "uint32",
+    "laws": [
+     "uint32_e2e_encode"
+    ]
+   },
+   {
+    "name": "uint32",
+    "generated_name": "uint32",
+    "laws": [
+     "uint32_e2e_root"
+    ]
+   }
+  ],
+  "uint32_e2e_dec_generated.bend": [
+   {
+    "name": "uint32",
+    "generated_name": "uint32",
+    "laws": [
+     "uint32_e2e_decode_accept",
+     "uint32_e2e_decode_reject"
+    ],
+    "ii": "exact"
    }
   ],
   "uint8_e2e_generated.bend": [
@@ -6450,17 +6499,7 @@
    }
   ]
  },
- "uncovered": {
-  "boolean": {
-   "generated_name": "boolean",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "uint32": {
-   "generated_name": "uint32",
-   "reason": "root law not over every object (hypotheses or a representation)",
-   "iv": "FuluBytes1_e2e_root_generated.bend"
-  }
- },
+ "uncovered": {},
  "decode_uncovered": {},
  "root_awaiting": {},
  "fixed_size": {
@@ -6656,11 +6695,23 @@
    "ii_iii": "bitvector_9_e2e_dec_generated.bend",
    "iv": "bitvector_4_e2e_root_generated.bend"
   },
+  "boolean": {
+   "generated_name": "boolean",
+   "i": "boolean_e2e_generated.bend",
+   "ii_iii": "boolean_e2e_dec_generated.bend",
+   "iv": "boolean_e2e_root_generated.bend"
+  },
   "uint16": {
    "generated_name": "uint16",
    "i": "uint16_e2e_generated.bend",
    "ii_iii": "uint16_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "uint32": {
+   "generated_name": "uint32",
+   "i": "uint32_e2e_generated.bend",
+   "ii_iii": "uint32_e2e_dec_generated.bend",
+   "iv": "uint32_e2e_generated.bend"
   },
   "uint8": {
    "generated_name": "uint8",

@@ -982,6 +982,9 @@ def text_a(rows, k):
         VAL = f'{RT}.{r["view"]}'
         o = obj_q
         L.append(f'# {R} ({X})')
+        if r.get('view_lit'):
+            L += view_def(r)
+            VAL = f'{R}_e2e_value'
         encf = f'{ES}.{r["es"]["law"]}'
         if bits_of(r):
             L.append(view_text(r, VAL, ES))
@@ -1006,6 +1009,11 @@ def text_a(rows, k):
         if r['generic']:
             L[n0:] = [gfix(x) for x in L[n0:]]
     return '\n'.join(L) + '\n'
+
+
+def view_def(r):
+    """<R>_e2e_value: a root law's view written out in its statement (not a named view), named here"""
+    return [f'def {r["R"]}_e2e_value(o: {r["otype"]}) -> S.Value: {requal(r["view_lit"], file_aliases(r["rt"]["file"]))}', '']
 
 
 # the aliases this file imports under the proving modules' own names
@@ -1094,6 +1102,9 @@ def text_dec(rows, k):
         VAL = f'{al[r["rt"]["file"]]}.{r["view"]}'
         SE, SEl = al[r['es']['file']], r['es']['law']
         n0 = len(L)
+        if r.get('view_lit'):
+            L += view_def(r)
+            VAL = f'{r["R"]}_e2e_value'
         if bits_of(r):
             L.append(view_text(r, VAL, SE))
             SE, SEl = '', f'{r["R"]}_e2e_enc'

@@ -51,14 +51,22 @@ def fam_a_leaf(EB, X, m, cache, vidx):
         return None, 'root law not over every object'
     otype = rparams[1][len('+o: '):]
     mr = re.match(r'RR\.roots\((\w+)\(o\), Spec\.' + sname + r'\(\), \[D\.bytes\(Pair\.snd\(B\.Buf, D\.Digest, T\.' + ename + r'_hash_tree_root\(h, o\)\)\)\]\)$', b_rt[3])
-    if not mr:
-        return None, 'root law not RR.roots of the view at Spec.X()'
-    view = mr.group(1)
-    vx = vidx.get((rt[0]['file'], view)) or vidx.get((rt[0]['file'], view, sname))
+    lit = None
+    if mr:
+        view = mr.group(1)
+        vx = vidx.get((rt[0]['file'], view)) or vidx.get((rt[0]['file'], view, sname))
+    else:
+        # the root law's view written out (the fork's uint32: S.UnsignedValue{P.UInt{o, 0, ..}}): the bridge
+        # names it (<R>_e2e_value), and its validity lemma is the one root_info pairs with this law
+        ml = re.match(r'RR\.roots\((.*), Spec\.' + sname + r'\(\), \[D\.bytes\(Pair\.snd\(B\.Buf, D\.Digest, T\.' + ename + r'_hash_tree_root\(h, o\)\)\)\]\)$', b_rt[3])
+        if not ml or not re.search(r'(?<![\w.])o(?![\w])', ml.group(1)):
+            return None, 'root law not RR.roots of the view at Spec.X()'
+        view, lit = None, ml.group(1)
+        vx = next(((r['vf'], r['vl']) for r in root_info(EB, X, dict(m, root=[rt[0]]), cache) if r['view'] == lit), None)
     names = [v for v, _ in P]
     pat = re.sub(r'(?<![\w.])(' + '|'.join(map(re.escape, names)) + r')(?![\w{(])', r'+\1', obj)
     return {'X': X, 'ename': ename, 'sname': sname, 'obj': obj, 'pat': pat, 'K': K, 'byts': byts, 'P': P, 'value': rest[2],
-            'otype': otype, 'view': view, 'ee': ee[0], 'es': es[0], 'rt': rt[0], 'vx': vx}, None
+            'otype': otype, 'view': view, 'view_lit': lit, 'ee': ee[0], 'es': es[0], 'rt': rt[0], 'vx': vx}, None
 
 
 def fam_a_alt(EB, X, R, m, cache, vidx):
@@ -194,8 +202,9 @@ def root_info(EB, X, m, cache):
         if not mr:
             continue
         va, sch = EB.call_args('F(' + mr.group(1) + ')', 'F')
+        mv_ = re.match(r"(?:\w+\.)?v_(\w+)\(o\)$", va)   # a named view v_<p>: its lemma rv_<p> (the fork's boolean: rv_bool)
         for vf, bv in valid_lemmas(EB):
-            if bv[1] not in (f'{X}_root_valid', f'rv_{X}'):
+            if bv[1] not in (f'{X}_root_valid', f'rv_{X}') + ((f'rv_{mv_.group(1)}',) if mv_ else ()):
                 continue
             pv = [pmode(p) for p in bv[2]]
             if [n for _, n, _ in pv] != [n for _, n, _ in ps[1:]]:
@@ -315,9 +324,15 @@ def subv(t, mp):
 def dec_parse(EB, X, m, cache):
     """the decode_accept law over a literal buffer (leaves, maybe one Bool hypothesis hb / hp), its spec
     decode law over the same leaves, the rejections (size; the hypothesis false): or None"""
-    da = m.get('decode_accept', [])
-    if not da:
-        return None
+    for da0 in m.get('decode_accept', []):   # the first acceptance law of the literal-buffer form
+        dp = _dec_parse(EB, X, m, cache, da0)
+        if dp:
+            return dp
+    return None
+
+
+def _dec_parse(EB, X, m, cache, da0):
+    da = [da0]
     b = EB.law(cache, da[0])
     mt = re.match(r'\{T\.(\w+)_decode\(B\.Buf\{(.*), (\d+)\}, \3\) == \(B\.Buf\{\2, \3\}, Some\{(.*)\}\) : B\.Buf & Maybe<&1, (.*)\>\}$', b[3])
     if not mt:
@@ -339,7 +354,7 @@ def dec_parse(EB, X, m, cache):
     d = len(leaves).bit_length() - 1
     if 1 << d != len(leaves):
         return None
-    spec = None
+    specs = []
     for e in m.get('decode_spec', []):
         bs_ = EB.law(cache, e)
         sp = [pmode(q) for q in bs_[2]]
@@ -349,11 +364,13 @@ def dec_parse(EB, X, m, cache):
         a = EB.call_args(bs_[3], 'Decoding.decodes')
         names = [n for _, n, _ in sp]
         if all((t == 'U32' and n in leaves) or (hyp and n == hyp[0]) for _, n, t in sp):
-            spec = (e, names, a[1], a[2])
-            break
+            specs.append((e, names, a[1], a[2]))
+            continue
         if names in (['xs', 'hl', 'hd'], ['ws', 'hl'], ['ws', 'hl', 'x256'], ['xs', 'hl', 'hb']):
-            spec = (e, names, a[1], a[2])
-            break
+            specs.append((e, names, a[1], a[2]))
+    # the first; but a law over none of the leaves (the fork's boolean_true_spec_encode: one value)
+    # only when no law is over them
+    spec = next((q for q in specs if q[1] or not leaves), specs[0] if specs else None)
     if spec is None:
         return None
     dn = [e for e in m.get('decode_none', []) if [q.strip() for q in EB.law(cache, e)[2]] == ['buf: B.Buf', '+m: U32', f'e: {{U32.is_eq(m, {K}) == False{{}} : Bool}}']]
@@ -657,6 +674,9 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
     """(i) for the leaf names, per shape"""
     f = ri['rt']['file']
     ee, es = m['encode_eval'][0], m['encode_spec'][0]
+    if X == 'boolean':   # the laws over the value b (sub_boolean.bend), not the fork's per-value ones
+        ee = next(e for e in m['encode_eval'] if [q.strip() for q in EB.law(cache, e)[2]] == ['+b: Bool'])
+        es = next(e for e in m['encode_spec'] if [pmode(q)[1] for q in EB.law(cache, e)[2]] == ['x0', 'hb'])
     AE = imp.alias('proofs/obj/' + ee['file'])
     AS = imp.alias('proofs/obj/' + es['file'])
     V = lambda o: sub_o(imp.qual(EB, ri['view'], f), o)  # noqa: E731

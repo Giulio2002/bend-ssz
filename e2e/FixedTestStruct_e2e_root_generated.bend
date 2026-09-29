@@ -55,5 +55,5 @@ def SmallTestStruct_e2e_root(h: B.Buf, +o: SmallTestStruct_d.SmallTestStruct, +r
 # (iv) over the root law's binders (o, rp).
 def uint16_e2e_root(h: B.Buf, +o: U32, +rp: M0_L.rp_u16(o)) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.uint16_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint16(), M0_L.v_u16(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.uint16(), M0_L.v_u16(o), VS.public_sound(Spec.uint16(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.uint16_hash_tree_root(h, o))),
-    M1.uint16_root_valid(o, rp), M0.uint16_root_correct(h, o, rp))
+    M1.rv_u16(o, rp), M0.uint16_root_correct(h, o, rp))
 

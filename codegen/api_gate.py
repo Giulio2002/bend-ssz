@@ -234,7 +234,8 @@ def scan():
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
-                xs |= set(f.stem.split('_')) & U
+                # (a readable name can hold '_': bitlist_33, proglist_bool; SHAPE then keeps only X's own)
+                xs |= {X for X in U if f'_{X}_' in f'_{f.stem}_'}
             for X in xs & U:
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):

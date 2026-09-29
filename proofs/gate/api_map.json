@@ -294,6 +294,10 @@
     {
      "file": "spec_small.bend",
      "law": "boolean_spec_decode_1"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_decode"
     }
    ],
    "decode_spec": [
@@ -304,6 +308,10 @@
     {
      "file": "spec_small.bend",
      "law": "boolean_false_spec_encode"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_encode"
     }
    ],
    "decode_unique": [
@@ -314,6 +322,10 @@
     {
      "file": "spec_unique_small.bend",
      "law": "boolean_spec_unique_1"
+    },
+    {
+     "file": "sub_unique_boolean.bend",
+     "law": "boolean_spec_unique"
     }
    ],
    "decode_reject": [
@@ -338,6 +350,14 @@
     {
      "file": "spec_small.bend",
      "law": "boolean_spec_reject"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_reject_bool"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_reject"
     }
    ],
    "encode_eval": [
@@ -348,6 +368,10 @@
     {
      "file": "spec_small.bend",
      "law": "boolean_false_spec_bytes"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_bytes"
     }
    ],
    "encode_spec": [
@@ -358,6 +382,10 @@
     {
      "file": "spec_small.bend",
      "law": "boolean_false_spec_encode"
+    },
+    {
+     "file": "sub_boolean.bend",
+     "law": "boolean_spec_encode"
     }
    ],
    "roundtrip": [
@@ -10075,7 +10103,12 @@
      "law": "proglist_bool_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_bool_top.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_bool_top.bend",
@@ -10803,7 +10836,12 @@
      "law": "proglist_uint128_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint128.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint128.bend",
@@ -11581,7 +11619,12 @@
      "law": "proglist_uint8_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint8_top.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint8_top.bend",
@@ -12269,7 +12312,12 @@
      "law": "proglist_uint16_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint16_top.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint16_top.bend",
@@ -12957,7 +13005,12 @@
      "law": "proglist_uint256_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint256.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint256.bend",
@@ -13735,7 +13788,12 @@
      "law": "proglist_uint32_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint32.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint32.bend",
@@ -14513,7 +14571,12 @@
      "law": "proglist_uint64_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_plist_proglist_uint64.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_plist_proglist_uint64.bend",
@@ -15795,7 +15858,12 @@
      "law": "bitlist_15_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_15.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_15.bend",
@@ -15853,7 +15921,12 @@
      "law": "bitlist_16_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_16.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_16.bend",
@@ -15911,7 +15984,12 @@
      "law": "bitlist_17_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_17.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_17.bend",
@@ -15969,7 +16047,12 @@
      "law": "bitlist_1_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_1.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_1.bend",
@@ -16027,7 +16110,12 @@
      "law": "bitlist_2_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_2.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_2.bend",
@@ -16085,7 +16173,12 @@
      "law": "bitlist_31_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_31.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_31.bend",
@@ -16143,7 +16236,12 @@
      "law": "bitlist_32_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_32.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_32.bend",
@@ -16201,7 +16299,12 @@
      "law": "bitlist_33_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_33.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_33.bend",
@@ -16259,7 +16362,12 @@
      "law": "bitlist_3_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_3.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_3.bend",
@@ -16317,7 +16425,12 @@
      "law": "bitlist_4_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_4.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_4.bend",
@@ -16375,7 +16488,12 @@
      "law": "bitlist_511_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_511.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_511.bend",
@@ -16433,7 +16551,12 @@
      "law": "bitlist_512_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_512.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_512.bend",
@@ -16491,7 +16614,12 @@
      "law": "bitlist_513_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_513.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_513.bend",
@@ -16549,7 +16677,12 @@
      "law": "bitlist_5_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_5.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_5.bend",
@@ -16607,7 +16740,12 @@
      "law": "bitlist_6_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_6.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_6.bend",
@@ -16665,7 +16803,12 @@
      "law": "bitlist_7_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_7.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_7.bend",
@@ -16723,7 +16866,12 @@
      "law": "bitlist_8_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_8.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_8.bend",
@@ -16781,7 +16929,12 @@
      "law": "bitlist_9_root_correct"
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_bitlist_9.bend",
+     "law": "ok_eval"
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_bitlist_9.bend",

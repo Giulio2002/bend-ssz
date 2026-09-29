@@ -6,6 +6,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_small.bend",
+    "sub_boolean.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -17,7 +18,9 @@
    "files": [
     "fixchk_boolf.bend",
     "spec_small.bend",
+    "sub_boolean.bend",
     "spec_unique_small.bend",
+    "sub_unique_boolean.bend",
     "codec_0.bend",
     "spec_repr_small.bend"
    ]
@@ -6662,131 +6665,5 @@
    ]
   }
  },
- "uncovered": {
-  "proglist_bool": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint128": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint8": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint16": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint256": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint32": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "proglist_uint64": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_15": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_16": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_17": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_1": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_2": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_31": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_32": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_33": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_3": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_4": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_511": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_512": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_513": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_5": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_6": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_7": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_8": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  },
-  "bitlist_9": {
-   "decode_ssz": [
-    "ok_eval"
-   ]
-  }
- }
+ "uncovered": {}
 }
