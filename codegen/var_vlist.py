@@ -1843,6 +1843,156 @@ def vlp_text(P, E, EO, ymod, escht, efields):
 #  schema term, the element schema's parts argument (its fields chain))
 PV_SHALLOW = {'pl_Gp66304057C3'}
 
+
+
+def pall_deep(text):
+    """A progressive list whose elements hold progressive bit lists (their invwD take the representation
+    premises hP_j): the list's inversion takes one premise PALL(t, x, len), the conjunction over its elements
+    [a, b) of PE: "a <= b <= len implies the element's premises" (its own premises at the element's window,
+    guarded, Nat comparisons: nothing wraps). PV folds PE along the check loop EV's elements. The old
+    interface (d < 28) proves PALL element by element (pall_old: every window of at most 2^29 bytes)."""
+    import deep
+    T = 'True{} : Bool'
+    ym = re.search(r'^import \./(\S+) as YW$', text, re.M).group(1)
+    ysrc = (ROOT / 'proofs/obj' / ym).read_text()
+    yds = deep._defs(ysrc)
+    prems = [p_ for p_ in yds['invwD'][3] if re.match(r'\+hP\d+:', p_)]
+    assert prems, 'no element premise'
+    TX, TL = 'Nat.add(U32.to_nat(a), x)', 'U32.sub(b, a)'
+
+    def at_el(ty):
+        ty = ty[ty.index('{') + 1:ty.rindex(' == True{} : Bool}')]
+        ty = re.sub(r'(?<![\w.])(O\d+|W0|WJ|XJ\d+|FJ\d+|LJ\d+)\(', r'YW.\1(', ty)
+        ty = re.sub(r'(?<![\w.])x(?![\w])', 'XX', ty)
+        ty = re.sub(r'(?<![\w.])len(?![\w])', 'LL', ty)
+        return ty.replace('XX', TX).replace('LL', TL)
+    inner = [at_el(p_.split(':', 1)[1].strip()) for p_ in prems]
+    INNER = inner[-1]
+    for c in reversed(inner[:-1]):
+        INNER = f'Bool.and({c}, {INNER})'
+    TR = 'FD.array__Tree<U32>'
+    NB = 'NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))'
+    defs = f"""
+# ---- the elements' representation premises (their progressive bit lists: proofs/obj/vpb29.bend) ----
+# PEc: an element [a, b) inside the window (a <= b <= len) has its premises at its window (a + x, b - a)
+def PEc(c1: Bool, c2: Bool, +t: {TR}, +x: Nat, +len: U32, +a: U32, +b: U32) -> Bool:
+  match c1:
+    case True{{}}: True{{}}
+    case False{{}}:
+      match c2:
+        case True{{}}: True{{}}
+        case False{{}}: {INNER}
+def PE(+t: {TR}, +x: Nat, +len: U32, +a: U32, +b: U32) -> Bool: PEc(Nat.is_lt(U32.to_nat(b), U32.to_nat(a)), Nat.is_lt(U32.to_nat(len), U32.to_nat(b)), t, x, len, a, b)
+# along the check loop EV's elements
+def PV(k: Nat, +i: U32, +m: U32, +t: {TR}, +x: Nat, +len: U32, +a: U32) -> Bool:
+  match k:
+    case 0n: True{{}}
+    case 1n+q: Bool.and(PE(t, x, len, a, {NB}), PV(q, U32.add(i, 1), m, t, x, len, {NB}))
+def PALL(+t: {TR}, +x: Nat, +len: U32) -> Bool:
+  Bool.and(PE(t, x, len, W0(t, x), B1(t, x, len)), PV(U32.to_nat(U32.sub(NN(t, x), 1)), 0, NN(t, x), t, x, len, B1(t, x, len)))
+
+# inside the window, PE gives the element's premises
+def peIn(+t: {TR}, +x: Nat, +len: U32, +a: U32, +b: U32, +hab: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == {T}}}, +hbl: {{Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == {T}}},
+    +h: {{PE(t, x, len, a, b) == {T}}}) -> {{{INNER} == {T}}}:
+  +h1 = FD.logic__subst(Bool, z => {{PEc(z, Nat.is_lt(U32.to_nat(len), U32.to_nat(b)), t, x, len, a, b) == {T}}}, Nat.is_lt(U32.to_nat(b), U32.to_nat(a)), False{{}},
+    FD.nat__le_not_lt(U32.to_nat(b), U32.to_nat(a), hab), h)
+  FD.logic__subst(Bool, z => {{PEc(False{{}}, z, t, x, len, a, b) == {T}}}, Nat.is_lt(U32.to_nat(len), U32.to_nat(b)), False{{}},
+    FD.nat__le_not_lt(U32.to_nat(len), U32.to_nat(b), hbl), h1)
+
+# ---- the old interface's premise: every element of a window of at most PMAX bytes ----
+def pec_old(+t: {TR}, +x: Nat, +len: U32, +a: U32, +b: U32, +hl: {{U32.is_le(len, VP.PMAX()) == {T}}},
+    +c1: Bool, +e1: {{Nat.is_lt(U32.to_nat(b), U32.to_nat(a)) == c1 : Bool}}, +c2: Bool, +e2: {{Nat.is_lt(U32.to_nat(len), U32.to_nat(b)) == c2 : Bool}})
+    -> {{PEc(c1, c2, t, x, len, a, b) == {T}}}:
+  match c1 c2:
+    case True{{}} _: {{==}}
+    case False{{}} True{{}}: {{==}}
+    case False{{}} False{{}}:
+      +hab = FD.nat__not_lt_le(U32.to_nat(b), U32.to_nat(a), e1)
+      +hbl = FD.nat__not_lt_le(U32.to_nat(len), U32.to_nat(b), e2)
+      +hn = FD.logic__subst(Bool, z => {{z == {T}}}, U32.is_le(len, VP.PMAX()), Nat.is_le(U32.to_nat(len), U32.to_nat(VP.PMAX())), VB.le_u32n(len, VP.PMAX()), hl)
+      +hs = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VP.PMAX())) == {T}}}, Nat.sub(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(U32.sub(b, a)),
+        Equal.sym(Nat, U32.to_nat(U32.sub(b, a)), Nat.sub(U32.to_nat(b), U32.to_nat(a)), FD.u32__sub_nat(b, a, hab)),
+        FD.nat__le_trans(Nat.sub(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(len), U32.to_nat(VP.PMAX()),
+          FD.nat__le_trans(Nat.sub(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(b), U32.to_nat(len), FD.u32half__sub_le(U32.to_nat(b), U32.to_nat(a)), hbl), hn))
+      +hle = FD.logic__subst(Bool, z => {{z == {T}}}, Nat.is_le(U32.to_nat(U32.sub(b, a)), U32.to_nat(VP.PMAX())), U32.is_le(U32.sub(b, a), VP.PMAX()),
+        Equal.sym(Bool, U32.is_le(U32.sub(b, a), VP.PMAX()), Nat.is_le(U32.to_nat(U32.sub(b, a)), U32.to_nat(VP.PMAX())), VB.le_u32n(U32.sub(b, a), VP.PMAX())), hs)
+      @PWS@
+def pe_old(+t: {TR}, +x: Nat, +len: U32, +a: U32, +b: U32, +hl: {{U32.is_le(len, VP.PMAX()) == {T}}}) -> {{PE(t, x, len, a, b) == {T}}}:
+  pec_old(t, x, len, a, b, hl, Nat.is_lt(U32.to_nat(b), U32.to_nat(a)), {{==}}, Nat.is_lt(U32.to_nat(len), U32.to_nat(b)), {{==}})
+def pv_old(k: Nat, +i: U32, +m: U32, +t: {TR}, +x: Nat, +len: U32, +a: U32, +hl: {{U32.is_le(len, VP.PMAX()) == {T}}}) -> {{PV(k, i, m, t, x, len, a) == {T}}}:
+  match k:
+    case 0n: {{==}}
+    case 1n+ +q: FD.logic__and_intro(PE(t, x, len, a, {NB}), PV(q, U32.add(i, 1), m, t, x, len, {NB}), pe_old(t, x, len, a, {NB}, hl), pv_old(q, U32.add(i, 1), m, t, x, len, {NB}, hl))
+def pall_old(+t: {TR}, +x: Nat, +len: U32, +hl: {{U32.is_le(len, VP.PMAX()) == {T}}}) -> {{PALL(t, x, len) == {T}}}:
+  FD.logic__and_intro(PE(t, x, len, W0(t, x), B1(t, x, len)), PV(U32.to_nat(U32.sub(NN(t, x), 1)), 0, NN(t, x), t, x, len, B1(t, x, len)),
+    pe_old(t, x, len, W0(t, x), B1(t, x, len), hl), pv_old(U32.to_nat(U32.sub(NN(t, x), 1)), 0, NN(t, x), t, x, len, B1(t, x, len), hl))
+"""
+    # each element premise: Bool.or(Nat.is_lt(len_e, E), le(E - O, PMAX)) from the element's window of at most PMAX bytes (YW.hPw)
+    pws = []
+    for c in inner:
+        m_ = re.fullmatch(r'Bool\.or\(Nat\.is_lt\(U32\.to_nat\(' + re.escape(TL) + r'\), U32\.to_nat\((.*?)\)\), Nat\.is_le\(Nat\.sub\(U32\.to_nat\(\1\), U32\.to_nat\((.*)\)\), U32\.to_nat\(VP\.PMAX\(\)\)\)\)', c)
+        assert m_, c
+        pws.append(f'YW.hPw({TL}, {m_.group(2)}, {m_.group(1)}, hle, Nat.is_lt(U32.to_nat({TL}), U32.to_nat({m_.group(1)})), {{==}})')
+    pw = pws[-1]
+    for c, q in zip(reversed(inner[:-1]), reversed(pws[:-1])):
+        pw = f'FD.logic__and_intro({c}, {pw.split(",")[0]} , {q}, {pw})'
+    assert len(pws) == 1, 'several element premises: and_intro form not written'
+    defs = defs.replace('@PWS@', pw)
+    a0 = text.index('\ndef elx(')
+    text = text[:a0] + '\n' + defs + text[a0:]
+    # elx: the element's premises from PE (a <= b <= len there)
+    m = re.search(r'YW\.invwD\(', text)
+    b0 = deep._close(text, m.end())
+    text = text[:b0] + ', peIn(t, x, len, a, b, hab, hbl, hPE)' + text[b0:]
+    reps = {'elx': f'+hPE: {{PE(t, x, len, a, b) == {T}}}', 'evl': f'+hPV: {{PV(k, i, m, t, x, len, a) == {T}}}'}
+    for nm in ('inv1', 'invm', 'invl', 'iv_m', 'invwD'):
+        reps[nm] = f'+hPA: {{PALL(t, x, len) == {T}}}'
+    for nm, prm in reps.items():
+        a0 = text.index(f'\ndef {nm}(') + len(f'\ndef {nm}(')
+        b0 = deep._close(text, a0)
+        text = text[:b0] + ', ' + prm + text[b0:]
+    # calls
+    def addarg(text, nm, argf):
+        pat = re.compile(rf'(?<![\w.])(?<!def ){nm}\(')
+        out, i = [], 0
+        while True:
+            mm = pat.search(text, i)
+            if not mm:
+                out.append(text[i:])
+                return ''.join(out)
+            p0 = mm.end()
+            b = deep._close(text, p0)
+            args = deep._split_args(text[p0:b])
+            out.append(text[i:b] + ', ' + argf(args))
+            i = b
+    # evl's step: PE of this element, PV of the rest; inv1: PALL's halves
+    def elx_arg(args):
+        if 'nb' in [x_.strip() for x_ in args]:      # evl's step
+            return (f'FD.logic__and_left(PE(t, x, len, a, {NB}), PV(q, U32.add(i, 1), m, t, x, len, {NB}), hPV)')
+        return (f'FD.logic__and_left(PE(t, x, len, W0(t, x), B1(t, x, len)), PV(U32.to_nat(U32.sub(NN(t, x), 1)), 0, NN(t, x), t, x, len, B1(t, x, len)), hPA)')
+    text = addarg(text, 'elx', elx_arg)
+
+    def evl_arg(args):
+        if 'nb' in [x_.strip() for x_ in args]:
+            return f'FD.logic__and_right(PE(t, x, len, a, {NB}), PV(q, U32.add(i, 1), m, t, x, len, {NB}), hPV)'
+        return (f'FD.logic__and_right(PE(t, x, len, W0(t, x), B1(t, x, len)), PV(U32.to_nat(U32.sub(NN(t, x), 1)), 0, NN(t, x), t, x, len, B1(t, x, len)), hPA)')
+    text = addarg(text, 'evl', evl_arg)
+    for nm in ('inv1', 'invm', 'invl', 'iv_m'):
+        text = addarg(text, nm, lambda args: 'hPA')
+    # the old invw: PALL from d < 28 (len <= 4 2^d <= PMAX)
+    a0 = text.index('\ndef invw(')
+    b0 = text.find('\n\n', a0)
+    b0 = len(text) if b0 < 0 else b0
+    w = text[a0:b0]
+    m = re.search(r'invwD\(', w)
+    b1 = deep._close(w, m.end())
+    w = w[:b1] + ', pall_old(t, x, len, PBP.hPof(d, len, hd, hlen(d, x, len, hw)))' + w[b1:]
+    text = text[:a0] + w + text[b0:]
+    for imp in ('import ./vpb29.bend as VP', 'import ./big_var_winp_pbits.bend as PBP'):
+        if imp not in text:
+            text = text.replace('\nimport ./vbuf.bend as VB\n', f'\nimport ./vbuf.bend as VB\n{imp}\n', 1)
+    return text
+
 VVECS = [
     ('v2_Gc465214E502', 2, 'Gc465214E502', 'T.Gc465214E502', 'var_winx_Gc465214E502', 'Spec.Gc465214E502()',
      'S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}'),
@@ -2007,7 +2157,7 @@ def main():
         for P, E, EO, ymod, escht, efields in PVLISTS:
             t_ = vlp_text(P, E, EO, ymod, escht, efields)
             # (the elements holding pbits need its representation premise per element: not yet deep)
-            out[vl_fname(P)] = t_ if P in PV_SHALLOW else vl_deep(t_, 'hw32', keep=('hlen',))
+            out[vl_fname(P)] = pall_deep(vl_deep(t_, 'hwN', keep=('hlen',))) if P in PV_SHALLOW else vl_deep(t_, 'hw32', keep=('hlen',))
         for P, NV, E, EO, ymod, escht, efields in VVECS:
             out[vl_fname(P)] = vl_deep(vvec_text(P, NV, E, EO, ymod, escht, efields), 'hw32', keep=('hlen',))
     # only files this generator wrote (another generator may name a file *vvl*_*)
