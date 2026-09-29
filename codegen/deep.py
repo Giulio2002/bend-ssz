@@ -7,6 +7,7 @@ buffer of n bytes, n a U32). thread() adds that hypothesis, hw32, next to every 
 the given shape, and passes it on in every call of a local definition that takes it, right after the
 window hypothesis's argument (which must be the caller's own window hypothesis, `hw`).
 """
+import functools
 import re
 
 
@@ -163,8 +164,9 @@ VC_LEAVES = {'ey31': 'ey31u', 'eq_q': 'eq_qu', 'eM': 'eMu', 'eWZ': 'eWZu', 'eNW'
 _DEFLAW = re.compile(r'(def|law) (\w+)')
 
 
+@functools.lru_cache(maxsize=256)
 def _blocks(text):
-    """[(name, kind, start, end)] of the top-level defs and laws (a law's block runs through its def)."""
+    """(name, kind, start, end) tuples of the top-level defs and laws (a law's block runs through its def)."""
     out = []
     starts = [m.start() for m in re.finditer(r'^(?:def|law) ', text, re.M)] + [len(text)]
     i = 0
@@ -189,7 +191,7 @@ def _blocks(text):
         e = a + len('\n'.join(lines).rstrip('\n')) + 1
         out.append((name, kind, a, min(e, b)))
         i += 1
-    return out
+    return tuple(out)
 
 
 def chain_sig(block, kind):

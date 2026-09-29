@@ -2811,14 +2811,20 @@ def eqn_is_eq(text):
         i = k
 
 
+_BS_CACHE = {}
+
+
 def big_sizes(C, generic=False):
     """The fixed fields' sizes of BIGPIECE bytes or more."""
     if generic:
         return []
-    names = schema.load(ROOT / 'codegen/fulu.yaml')
-    g = G.Gen()
-    for n, t in names.items():
-        g.shape(t)
+    if '_bs' not in _BS_CACHE:
+        names = schema.load(ROOT / 'codegen/fulu.yaml')
+        g = G.Gen()
+        for n, t in names.items():
+            g.shape(t)
+        _BS_CACHE['_bs'] = (names, g)
+    names, g = _BS_CACHE['_bs']
     return sorted({fs.fsize for _, fs in g.shape(names[C]).fields if fs.fixed and (fs.fsize or 0) >= BIGPIECE})
 
 
