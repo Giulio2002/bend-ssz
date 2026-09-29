@@ -2913,7 +2913,7 @@ def _balanced(s_, i):
     raise ValueError('unbalanced')
 
 
-def vbx_module(X, win, holes, lets, extra_imports=()):
+def vbx_module(X, win, holes, lets, extra_imports=(), deep=False):
     """holes: dicts obj (text in OBJw), ty, view, vty, pf, and 'xvt' (its value's text in the inlined value; with 'wrap' / 'val': the
     value there is wrap around the view, val the view's value) or 'arg' (k: VALw's k-th XVw argument)."""
     text = _unlight((_OBJ / f'{win}.bend').read_text())
@@ -2957,8 +2957,8 @@ def vbx_module(X, win, holes, lets, extra_imports=()):
         cur = [f'{holes[j]["view"]}({zs[j]})' if j < k else ('_' if j == k else ys[j]) for j in range(len(holes))]
         L.append(f'  %e{k} : {{{LHS} == VALH(t, x, len, {", ".join(cur)}) : S.Value}}')
     L += ['  {==}', '']
-    L.append(f'def vb(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},')
-    L.append(f'    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},')
+    L.append(f'def vb(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, {31 if deep else 28}n) == True{{}} : Bool}},')
+    L.append(f'    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, ' + ('+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, ' if deep else '') + f'+pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},')
     L.append(f'    +hchk: {{W.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.v_{X}(W.OBJw(d, t, x, off, len)) == W.VALw(t, x, len) : S.Value}}:')
     L += [f'  {l}' for l in lets]
     L.append(f'  vz(d, t, x, off, len, {", ".join(f"{q(h[chr(111)+chr(98)+chr(106)])}, {q(v)}, {h[chr(112)+chr(102)]}" for h, v in zip(holes, vals))})')
@@ -6713,7 +6713,9 @@ if 'Nat.is_lt(d, 31n)' in _unlight((_OBJ / 'big_var_codec_ExecutionPayload.bend'
     import e2e_var_c as _EVC
     VDEC_VIEWS['ExecutionPayload'] = {'view': 'RT.v_ExecutionPayload', 'imports': ['import ../proofs/obj/root_types.bend as RT', 'import ./e2e_vbx_ExecutionPayload.bend as VWX',
                                                                                    'import ../proofs/obj/vbuf.bend as VB'],
-                                      'text': _EVC.deep_vv_text('ExecutionPayload', 'VWX.vbD', 'e2e_vbx_ExecutionPayload')}
+                                      'text': None}   # set below (vdec_bx_deep: vbD takes the window (x, off, len) without n)
+
+
 
 
 # ==== container records (e2e/e2e_rec_<X>.bend): R_X / mk_X for a container of fixed fields, the sync aggregate's
@@ -7318,8 +7320,9 @@ SUPPORT_OUT.update(_VLG.modules())      # perf's: proposer slashings (CH0), depo
 SUPPORT_OUT.update(_VLV.SUPPORT_OUT)    # e2e-c's: attester slashings (CH1), attestations (CH2), e2e_wxa
 
 
-def bb_vbx():
-    """e2e_vbx_BeaconBlockBody: the body window (big_var_winx_BeaconBlockBody) reads as the root view of its object (vb)."""
+def bb_vbx(deep=False):
+    """e2e_vbx_BeaconBlockBody (deep: e2e_vbxY_BeaconBlockBody at any depth d < 31, the window within NMAX): the body window
+    (big_var_winx_BeaconBlockBody) reads as the root view of its object (vb)."""
     win = 'big_var_winx_BeaconBlockBody'
     text = _unlight((_OBJ / f'{win}.bend').read_text())
     _, _, obody = _def_any(text, 'OBJw')
@@ -7335,11 +7338,12 @@ def bb_vbx():
     words = lambda t_: ', '.join(_re.findall(r'UR\.RWN\(t, [^)]*\)', t_))
     A = lambda k: f'W.XJ{k}(t, x), W.FJ{k}(off, t, x), W.LJ{k}(t, x' + (', len)' if k == 8 else ')')
     LS = {3: ('ProposerSlashing', 16), 4: ('AttesterSlashing', 1), 5: ('Attestation', 8), 6: ('Deposit', 16), 7: ('SignedVoluntaryExit', 16)}
+    H31 = 'hd' if deep else 'hd31'
     pf = {0: f'BD.l96({words(f[0])})', 1: f'BD.leth({words(f[1])})', 2: f'BD.l32({words(f[2])})',
-          3: f'VM0.vl(d, t, {A(3 - 3)}, cj0)', 4: f'VM1.vl(d, t, {A(1)}, ej1, hd31, wj1, uj1, pf, cj1)', 5: f'VM2.vl(d, t, {A(2)}, ej2, hd31, wj2, uj2, pf, cj2)',
-          6: f'VM3.vl(d, t, {A(3)}, ej3, hd31, wj3, pf, cj3)', 7: f'VM4.vl(d, t, {A(4)}, cj4)',
-          8: f'BD.lsa({words(f[8])})', 9: f'VP5.vb(d, t, {A(5)}, ej5, hd, wj5, pf, cj5)', 10: f'VM6.vl(d, t, {A(6)}, cj6)',
-          11: f'BD.vk(d, t, {A(7)}, ej7, hd, wj7, pf, cj7)', 12: f'VX8.vwx(d, t, {A(8)}, cj8)'}
+          3: f'VM0.vl(d, t, {A(3 - 3)}, cj0)', 4: f'VM1.vl(d, t, {A(1)}, ej1, {H31}, wj1, uj1, pf, cj1)', 5: f'VM2.vl(d, t, {A(2)}, ej2, {H31}, wj2, uj2, pf, cj2)',
+          6: f'VM3.vl(d, t, {A(3)}, ej3, {H31}, wj3, pf, cj3)', 7: f'VM4.vl(d, t, {A(4)}, cj4)',
+          8: f'BD.lsa({words(f[8])})', 9: f'VP5.{"vbD" if deep else "vb"}(d, t, {A(5)}, ej5, hd, wj5, ' + ('nj5, ' if deep else '') + 'pf, cj5)', 10: f'VM6.vl(d, t, {A(6)}, cj6)',
+          11: (f'BD.vkY(d, t, {A(7)}, ej7, hd, wj7, nj7, pf, cj7)' if deep else f'BD.vk(d, t, {A(7)}, ej7, hd, wj7, pf, cj7)'), 12: f'VX8.vwx(d, t, {A(8)}, cj8)'}
     tys = {0: 'FuluBytes96_d.Bytes96', 1: 'FuluEth1Data_d.Eth1Data', 2: 'FuluBytes32_d.Bytes32', 8: 'O.Boxed<FuluSyncAggregate_d.SyncAggregate>',
            9: 'O.Boxed<FuluExecutionPayload_d.ExecutionPayload>', 10: 'Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq',
            11: 'O.Words', 12: 'FuluExecutionRequests_d.ExecutionRequests'}
@@ -7349,23 +7353,30 @@ def bb_vbx():
         tys[j] = f'Fulu_list_{E_}_{N_}_d.l{N_}_{E_}_Seq'
         views[j] = f'RT.xv_l{N_}_{E_}'
     holes = [{'obj': f[j], 'ty': tys[j], 'view': views[j], 'vty': 'S.Value', 'xvt': it[j], 'pf': pf[j]} for j in range(13)]
-    lets = ['+hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})', '+hwN = VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)']
-    for k in range(9):
-        lets += [f'+ej{k} = W.eoJ{k}(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', f'+wj{k} = W.hwJ{k}(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)',
-                 f'+cj{k} = W.it{10 + k}(t, x, off, len, hchk)']
+    if deep:
+        lets = []
+        for k in range(9):
+            lets += [f'+ej{k} = W.eoJ{k}D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)', f'+wj{k} = W.hwJ{k}D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)',
+                     f'+nj{k} = W.hwJ{k}N(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)', f'+cj{k} = W.it{10 + k}(t, x, off, len, hchk)']
+    else:
+        lets = ['+hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})', '+hwN = VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)']
+        for k in range(9):
+            lets += [f'+ej{k} = W.eoJ{k}(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', f'+wj{k} = W.hwJ{k}(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)',
+                     f'+cj{k} = W.it{10 + k}(t, x, off, len, hchk)']
     for k in (1, 2):
-        lets.append(f'+uj{k} = W.hwJ{k}_32(d, t, 0, x, off, len, eo, hd31, hw, hwN, pf, hchk)')
+        lets.append(f'+uj{k} = W.hwJ{k}_32(d, t, 0, x, off, len, eo, {H31}, hw, hwN, pf, hchk)')
     ex = ['import ./e2e_vlm_l16_ProposerSlashing.bend as VM0', 'import ./e2e_vlm_l1_AttesterSlashing.bend as VM1', 'import ./e2e_vlm_l8_Attestation.bend as VM2',
           'import ./e2e_vlm_l16_Deposit.bend as VM3', 'import ./e2e_vl_l16_SignedVoluntaryExit.bend as VM4', 'import ./e2e_vl_l16_SignedBLSToExecutionChange.bend as VM6',
           'import ./e2e_vbx_ExecutionPayload.bend as VP5', 'import ./e2e_vwx_ExecutionRequests.bend as VX8', 'import ./e2e_bbdec.bend as BD',
           'import ../proofs/obj/root_names_light.bend as RN_L', 'import ../proofs/obj/elems48.bend as E48']
-    return vbx_module('BeaconBlockBody', win, holes, lets, ex)
+    return vbx_module('BeaconBlockBody', win, holes, lets, ex, deep=deep)
 
 
 SUPPORT_OUT['e2e_vbx_BeaconBlockBody.bend'] = bb_vbx()
+SUPPORT_OUT['e2e_vbxY_BeaconBlockBody.bend'] = bb_vbx(True)
 
 
-def blk_vbx(X, win, child):
+def blk_vbx(X, win, child, deep=False):
     """e2e_vbx_<X> for BeaconBlock / SignedBeaconBlock: the window's fixed fields (u64 / b32 / b96 words) and its one child (the body /
     the block, at the window's first offset), whose view is the child's e2e_vbx (vb)."""
     text = _unlight((_OBJ / f'{win}.bend').read_text())
@@ -7391,20 +7402,39 @@ def blk_vbx(X, win, child):
             arg = 'W.XJ0(t, x), W.FJ0(off, t, x), W.LJ0(t, x, len)'
             boxed = o_.startswith('O.BSome{')
             h = {'ty': f'O.Boxed<Fulu{cx}_d.{cx}>' if boxed else f'Fulu{cx}_d.{cx}', 'view': f'RT.v_{cx}_bx' if boxed else f'RT.v_{cx}',
-                 'pf': f'VC0.vb(d, t, {arg}, ej0, hd, wj0, pf, cj0)'}
+                 'pf': f'VC0.vb(d, t, {arg}, ej0, hd, wj0, ' + ('nj0, ' if deep else '') + 'pf, cj0)'}
         holes.append(dict(h, obj=o_, vty='S.Value', xvt=x_))
     ci = len(f) - 1 if X == 'BeaconBlock' else 0
-    lets = [f'+ej0 = W.eoJ0(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', f'+wj0 = W.hwJ0(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', '+cj0 = W.it2(t, x, off, len, hchk)']
-    ex = [f'import ./e2e_vbx_{child[0]}.bend as VC0', 'import ./e2e_bbdec.bend as BD', 'import ../proofs/obj/root_names_light.bend as RN_L']
-    return vbx_module(X, win, holes, lets, ex)
+    if deep:
+        lets = ['+ej0 = W.eoJ0D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)', '+wj0 = W.hwJ0D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)',
+                '+nj0 = W.hwJ0N(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk)', '+cj0 = W.it2(t, x, off, len, hchk)']
+    else:
+        lets = [f'+ej0 = W.eoJ0(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', f'+wj0 = W.hwJ0(d, t, 0, x, off, len, eo, hd, hw, pf, hchk)', '+cj0 = W.it2(t, x, off, len, hchk)']
+    ex = [f'import ./e2e_vbx{"Y" if deep else ""}_{child[0]}.bend as VC0', 'import ./e2e_bbdec.bend as BD', 'import ../proofs/obj/root_names_light.bend as RN_L']
+    return vbx_module(X, win, holes, lets, ex, deep=deep)
 
 
 SUPPORT_OUT['e2e_vbx_BeaconBlock.bend'] = blk_vbx('BeaconBlock', 'big_var_winx_BeaconBlock', ('BeaconBlockBody',))
 SUPPORT_OUT['e2e_vbx_SignedBeaconBlock.bend'] = blk_vbx('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock', ('BeaconBlock',))
+SUPPORT_OUT['e2e_vbxY_BeaconBlock.bend'] = blk_vbx('BeaconBlock', 'big_var_winx_BeaconBlock', ('BeaconBlockBody',), True)
+SUPPORT_OUT['e2e_vbxY_SignedBeaconBlock.bend'] = blk_vbx('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock', ('BeaconBlock',), True)
 
-# the block names' views are at tree depth below 28 (their window views' children: the execution payload's and the blob commitments'
-# copies), so the decode bridge takes inputs of at most 2^29 bytes (the K = 27 mode) while the codec laws take buffers below 2^31
+# the block names' views at any tree depth d < 31 with the input within NMAX (e2e_vbxY_<X>: the deep twins of the payload's and the
+# blob commitments' views); the K = 27 mode (inputs of at most 2^29 bytes, the d < 28 views e2e_vbx_<X>) is kept for the depth-28 lemmas
+def vdec_bx_deep(X, mod=None, fn='vb'):
+    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./{mod or "e2e_vbxY_" + X}.bend as VWX', 'import ../proofs/obj/vbuf.bend as VB'],
+            'text': f'''# ---- the view of a decoded object is the codec law's value (the window's view at offset 0, within NMAX) ----
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}},
+    +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  VWX.{fn}(d, t, 0n, 0, n, {{==}}, hd, hn,
+    FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+
+'''}
+
+
 for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
-    _v = vdec_bx(_X, f'e2e_vbx_{_X}')
-    _v['text'] = _v['text'].replace('@BD@', '28n')
-    VDEC_VIEWS[_X] = dict(_v, kmode=27, vvbd=28)
+    VDEC_VIEWS[_X] = vdec_bx_deep(_X)
+if VDEC_VIEWS['ExecutionPayload'].get('text') is None:
+    VDEC_VIEWS['ExecutionPayload'] = vdec_bx_deep('ExecutionPayload', 'e2e_vbx_ExecutionPayload', 'vbD')

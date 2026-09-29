@@ -12,10 +12,10 @@ every law generator reads) runs first; the generators that index the others' out
 api_gate.py (one-import gates), api_facade.py (the per-name facades) and e2e_bridge.py (the
 bridges and e2e/manifest.json). A law generator can read another's output (a facade records
 its imports, a split module its parent's names), so write mode repeats the whole pass until
-a pass leaves every --check clean (at most --passes, default 4).
+a pass leaves every --check clean (at most --passes, default 16).
 
 Parallelism (-j): --check only reads, so every generator's check runs in the pool (heavy ones first; the
-report is in generator order whatever the finishing order). Write mode runs generate.py alone, then the
+report is in generator order whatever the finishing order). Write mode (pass 1 runs everything, later passes only what the last check found stale or failing) runs generate.py alone, then the
 middle generators in the pool, then the LAST ones one at a time; a middle generator that fails in the pool
 (it may have read a file another was writing) is rerun alone before the pass counts, and the fixpoint check
 that ends the run is what guarantees the result, as in the serial run.
@@ -77,23 +77,25 @@ def check(order, have, verbose):
     return stale
 
 
-def write_pass(order, have, k, verbose):
-    """One write pass; a failure in the pool is retried alone, then exits like the serial run."""
+def write_pass(order, have, k, verbose, only=None):
+    """One write pass; the generators that failed (they may read a file a later or concurrent generator
+    writes) are returned, never fatal: a later pass reruns them. {name: last output}."""
+    if only is not None:   # later passes: just the generators the last check found stale or failing
+        order = [g for g in order if g in only]
     mid = [g for g in order if g not in FIRST and g not in LAST]
     if JOBS <= 1:
         groups = [[g] for g in order]
     else:
         groups = [[g] for g in order if g in FIRST] + [mid] + [[g] for g in order if g in LAST]
+    failed = {}
     for grp in groups:
         for g, (bad, out, dt) in zip(grp, run_many(grp, have, [])):
-            if bad and len(grp) > 1 and ('traceback' in out.lower() or 'systemexit' in out.lower()):
-                bad, out, dt2 = run(have[g], [])
-                dt += dt2
             if bad and ('traceback' in out.lower() or 'systemexit' in out.lower()):
-                print(f'FAIL  {g} ({dt:.0f} s): {out[-600:]}', flush=True)
-                sys.exit(2)
-            if verbose:
+                failed[g] = out[-600:]
+                print(f'pass {k} {g} FAILED ({dt:.0f} s): {out.strip().splitlines()[-1][:200] if out.strip() else ""}', flush=True)
+            elif verbose:
                 print(f'pass {k} {g} ({dt:.0f} s)', flush=True)
+    return failed
 
 
 def main():
@@ -115,15 +117,18 @@ def main():
         stale = check(order, have, verbose)
         print(f'{len(order) - len(stale)}/{len(order)} generators up to date')
         sys.exit(1 if stale else 0)
-    passes = int(a[a.index('--passes') + 1]) if '--passes' in a else 4
+    passes = int(a[a.index('--passes') + 1]) if '--passes' in a else 16
+    failed, stale = {}, []
     for k in range(1, passes + 1):
-        write_pass(order, have, k, verbose)
+        failed = write_pass(order, have, k, verbose, None if k == 1 else set(stale) | set(failed))
         stale = check(order, have, False)
-        if not stale:
+        if not stale and not failed:
             print(f'regenerated: every generator up to date after {k} pass(es)')
             return
-        print(f'pass {k}: {len(stale)} generator(s) still stale, repeating', flush=True)
-    raise SystemExit(f'still stale after {passes} passes: {", ".join(stale)}')
+        print(f'pass {k}: {len(failed)} failed, {len(stale)} stale ({", ".join(sorted(set(stale) | set(failed)))[:300]}), repeating', flush=True)
+    for g, out in failed.items():
+        print(f'FAIL  {g}: {out}', flush=True)
+    raise SystemExit(f'still stale or failing after {passes} passes: {", ".join(sorted(set(stale) | set(failed)))}')
 
 
 if __name__ == '__main__':

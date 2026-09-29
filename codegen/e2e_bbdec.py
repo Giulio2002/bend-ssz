@@ -13,6 +13,37 @@ def _pw(p, a, b):
 
 
 def text():
+    t0 = _text0()
+    i = t0.index('# the blob commitments over')
+    vk = t0[i:]
+    return t0 + '\n' + _deep(vk)
+
+
+def _deep(vk):
+    """vk at any tree depth d < 31 (the window within NMAX): the copy bounded by its length (hy), the word count from n <= NMAX."""
+    v = vk.replace('def vk(', 'def vkY(', 1).replace('# the blob commitments over their window: the copy\'s view is the window\'s value', '# the same at any tree depth d < 31, the window within NMAX')
+    HD = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool}'
+    assert v.count(HD) == 1
+    v = v.replace(HD, HD.replace('28n', '31n'))
+    HW = '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf:'
+    assert v.count(HW) == 1
+    v = v.replace(HW, '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf:')
+    for l in ('  +hwN = VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)\n', '  +hd29 = FD.nat__lt_trans(d, 28n, 29n, hd, {==})\n'):
+        assert v.count(l) == 1, l
+        v = v.replace(l, '')
+    hn = ('  +hlN = FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()), Order.left_below_sum(x, U32.to_nat(len)), hwN)\n'
+          '  +hNu = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())), U32.is_le(len, VB.NMAX()), Equal.sym(Bool, U32.is_le(len, VB.NMAX()), Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())), VB.le_u32n(len, VB.NMAX())), hlN)\n')
+    assert v.count('  +hq = K.hlen(d, x, len, hw, hwN)\n') == 1
+    v = v.replace('  +hq = K.hlen(d, x, len, hw, hwN)\n', hn)
+    assert v.count('C.nw(len, d, hd29, hq)') == 1
+    v = v.replace('C.nw(len, d, hd29, hq)', 'C.nwM(len, hNu)')
+    a2 = 'BX.ctw(d, t, off, len, VLS.DZ(len), x, K.MQ(len), eo, hd, hw, pf, hr, eq)'
+    assert v.count(a2) == 1
+    v = v.replace(a2, 'BX.ctwY(d, t, off, len, VLS.DZ(len), x, K.MQ(len), eo, hy, hw, pf, hr, eq)')
+    return v
+
+
+def _text0():
     b96 = _ws('w', 0, 24)
     b32 = _ws('w', 0, 8)
     eth = _ws('w', 0, 18)
