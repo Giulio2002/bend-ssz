@@ -67,6 +67,16 @@ def validxO(m, hok):
   match m:
     case OB.MW{+m_aggregation_bits, +data, +signature, +committee_bits}: rvalidCW(m_aggregation_bits, data, signature, committee_bits, hok)
 
+def okwOfOk(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +h: {OB.OKT(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}) -> {OB.OKTW(m_aggregation_bits, data, signature, committee_bits) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EX_bits131072.OK(m_aggregation_bits), Nat.is_le(Nat.add(236n, LY.LN(EX_bits131072.ENC(m_aggregation_bits))), A.quad(VB.pw(28n))), s0)
+  +s1 = FD.logic__and_right(EX_bits131072.OK(m_aggregation_bits), Nat.is_le(Nat.add(236n, LY.LN(EX_bits131072.ENC(m_aggregation_bits))), A.quad(VB.pw(28n))), s0)
+  FD.logic__and_intro(EX_bits131072.OK(m_aggregation_bits), Nat.is_lt(OB.ENDC(m_aggregation_bits, data, signature, committee_bits), VB.pw(31n)), p0, VCN.lt31q(Nat.add(236n, LY.LN(EX_bits131072.ENC(m_aggregation_bits))), 28n, {==}, s1))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+m_aggregation_bits, +data, +signature, +committee_bits}: okwOfOk(m_aggregation_bits, data, signature, committee_bits, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}

@@ -30,6 +30,7 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vuwv_b32.bend as V_b32
 import ./big_encx_BeaconBlockBody_iface.bend as EC_BeaconBlockBody
+import ./big_encx_BeaconBlockBody_iface_o.bend as EC_BeaconBlockBodyo
 import ./big_encx_BeaconBlockBody_size.bend as ES_BeaconBlockBody
 import ./big_encx_BeaconBlockBody_size_o.bend as ES_BeaconBlockBodyo
 import ./big_encx_BeaconBlock.bend as K
@@ -63,6 +64,16 @@ law validxO:
 def validxO(m, hok):
   match m:
     case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: rvalidCW(slot, proposer_index, parent_root, state_root, m_body, hok)
+
+def okwOfOk(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OB.OKT(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {OB.OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EC_BeaconBlockBody.OK(m_body), Nat.is_le(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), A.quad(VB.pw(28n))), s0)
+  +s1 = FD.logic__and_right(EC_BeaconBlockBody.OK(m_body), Nat.is_le(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), A.quad(VB.pw(28n))), s0)
+  FD.logic__and_intro(EC_BeaconBlockBody.OKW(m_body), Nat.is_lt(OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)), EC_BeaconBlockBodyo.okwOfOkM(m_body, p0), VCN.lt31q(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), 28n, {==}, s1))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: okwOfOk(slot, proposer_index, parent_root, state_root, m_body, hok)
 
 law bndxO:
   for +m: OB.MW

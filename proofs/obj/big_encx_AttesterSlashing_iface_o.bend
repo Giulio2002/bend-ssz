@@ -65,6 +65,18 @@ def validxO(m, hok):
   match m:
     case OB.MW{+m_attestation_1, +m_attestation_2}: rvalidCW(m_attestation_1, m_attestation_2, hok)
 
+def okwOfOk(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +h: {OB.OKT(m_attestation_1, m_attestation_2) == True{} : Bool}) -> {OB.OKTW(m_attestation_1, m_attestation_2) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EC_IndexedAttestation.OK(m_attestation_1), Bool.and(EC_IndexedAttestation.OK(m_attestation_2), Nat.is_le(Nat.add(Nat.add(8n, LY.LN(EC_IndexedAttestation.ENC(m_attestation_1))), LY.LN(EC_IndexedAttestation.ENC(m_attestation_2))), A.quad(VB.pw(28n)))), s0)
+  +s1 = FD.logic__and_right(EC_IndexedAttestation.OK(m_attestation_1), Bool.and(EC_IndexedAttestation.OK(m_attestation_2), Nat.is_le(Nat.add(Nat.add(8n, LY.LN(EC_IndexedAttestation.ENC(m_attestation_1))), LY.LN(EC_IndexedAttestation.ENC(m_attestation_2))), A.quad(VB.pw(28n)))), s0)
+  +p1 = FD.logic__and_left(EC_IndexedAttestation.OK(m_attestation_2), Nat.is_le(Nat.add(Nat.add(8n, LY.LN(EC_IndexedAttestation.ENC(m_attestation_1))), LY.LN(EC_IndexedAttestation.ENC(m_attestation_2))), A.quad(VB.pw(28n))), s1)
+  +s2 = FD.logic__and_right(EC_IndexedAttestation.OK(m_attestation_2), Nat.is_le(Nat.add(Nat.add(8n, LY.LN(EC_IndexedAttestation.ENC(m_attestation_1))), LY.LN(EC_IndexedAttestation.ENC(m_attestation_2))), A.quad(VB.pw(28n))), s1)
+  FD.logic__and_intro(EC_IndexedAttestation.OKW(m_attestation_1), Bool.and(EC_IndexedAttestation.OKW(m_attestation_2), Nat.is_lt(OB.ENDC(m_attestation_1, m_attestation_2), VB.pw(31n))), EC_IndexedAttestationo.okwOfOkM(m_attestation_1, p0), FD.logic__and_intro(EC_IndexedAttestation.OKW(m_attestation_2), Nat.is_lt(OB.ENDC(m_attestation_1, m_attestation_2), VB.pw(31n)), EC_IndexedAttestationo.okwOfOkM(m_attestation_2, p1), VCN.lt31q(Nat.add(Nat.add(8n, LY.LN(EC_IndexedAttestation.ENC(m_attestation_1))), LY.LN(EC_IndexedAttestation.ENC(m_attestation_2))), 28n, {==}, s2)))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+m_attestation_1, +m_attestation_2}: okwOfOk(m_attestation_1, m_attestation_2, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}

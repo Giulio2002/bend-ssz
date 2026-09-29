@@ -682,12 +682,97 @@ def mk_H(-po: O.Words, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(1677
 '''
 
 
+def _and_chain(convs, proofs):
+    """the right-nested Bool.and of convs and its FD.logic__and_intro proof from proofs."""
+    def typ(i):
+        return convs[i] if i == len(convs) - 1 else f'Bool.and({convs[i]}, {typ(i + 1)})'
+
+    def prf(i):
+        if i == len(convs) - 1:
+            return proofs[i]
+        return f'FD.logic__and_intro({convs[i]}, {typ(i + 1)}, {proofs[i]},\n    {prf(i + 1)})'
+    return typ(0), prf(0)
+
+
+def _ok_d(name, EX, sig_extra, convs, proofs):
+    """the D validity (EX_D.OK: the base chain at depth below 31 and the object API's NMAX) of a byte list's record from its storage facts."""
+    L = 'U.LDEP(U32, tt)'
+    t0, p0 = _and_chain([c.replace('@L@', L) for c in convs], proofs)
+    return (f"def {name}(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n){sig_extra}, +hM: {{Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{{}} : Bool}})\n"
+            f"    -> {{{EX}D.OK({EX}.MW{{{L}, tt, n}}) == True{{}} : Bool}}:\n"
+            f"  (+pf, +s1) = sf\n  (+hdw, +s2) = s1\n  (+hN, +htz) = s2\n"
+            f"  FD.logic__and_intro({t0}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), {p0},\n    nmaxD(n, hM))\n")
+
+
+BSL_OK = {
+    'okU': ('okU', 'EXu', ', +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}',
+            ['FD.array__perfect(U32, @L@, tt)', 'Nat.is_lt(@L@, 31n)', 'Nat.is_le(U32.to_nat(n), A.quad(VB.pw(@L@)))', 'O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n)))',
+             'U32.is_eq(U32.and(n, 7), 0)', 'W64.CHKw(tt, 0n, 0, n)'],
+            ['pf', 'hdw', 'hN', 'htz', 'FD.u32alg__eq_true(U32.and(n, 7), 0, VEN.and7_x8(n, c, ex8))', 'VLS.whole_i1(n, 8, W64.v8(), {==}, {==}, {==}, c, emul)']),
+    'ok8': ('ok8', 'EX8', '',
+            ['FD.array__perfect(U32, @L@, tt)', 'Nat.is_lt(@L@, 31n)', 'Nat.is_le(U32.to_nat(n), A.quad(VB.pw(@L@)))', 'O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n)))',
+             'W8.CHKw(tt, 0n, 0, n)'],
+            ['pf', 'hdw', 'hN', 'htz', 'VLS.whole_i1(n, 1, W8.v1(), {==}, {==}, {==}, U32.to_nat(n), PBM.mul1(U32.to_nat(n)))']),
+    'okH': ('okH', 'EXh', ', +c: Nat, +eN: {U32.to_nat(n) == WS.e32(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 32n) : Nat}, +hc: {Nat.is_le(c, U32.to_nat(16777216)) == True{} : Bool}',
+            ['FD.array__perfect(U32, @L@, tt)', 'Nat.is_lt(@L@, 31n)', 'Nat.is_le(U32.to_nat(n), A.quad(VB.pw(@L@)))', 'O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n)))',
+             'Nat.is_le(U32.to_nat(n), U32.to_nat(536870912))', 'U32.is_eq(U32.and(n, 31), 0)', 'WH.CHKw(tt, 0n, 0, n)'],
+            ['pf', 'hdw', 'hN', 'htz', 'hB29(n, c, eN, hc)', 'FD.u32alg__eq_true(U32.and(n, 31), 0, and31_x32(n, c, emul))', 'VU.whole_i(n, 32, 16777216, WH.vR(), {==}, {==}, {==}, c, emul, hc)']),
+}
+HM = '{Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}'
+NMAXD = ('# n below 2^31 is within the object API\'s limit NMAX\n'
+         'def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
+         '  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))\n\n')
+
+
+def _bsl_body_d():
+    """BSL_BODY on the D twins of the lists (their validity at depth below 31 and the object API's NMAX): the storage premise U.sdk at
+    depth below 31, each record's bytes below 2^31 (hM: a part of the encoding, which the top's bound gives)."""
+    b = BSL_BODY
+    for nm, (fn, EX, extra, convs, proofs) in BSL_OK.items():
+        a = b.index(f'def {fn}(')
+        e = b.index('\n\n', a)
+        b = b[:a] + _ok_d(fn, EX, extra, convs, proofs).rstrip('\n') + b[e:]
+    b = b.replace('28n', '31n')
+    for EX in ('EXu', 'EX8', 'EXh'):
+        b = b.replace(f'{{{EX}.OK(m) == True{{}} : Bool}}', f'{{{EX}D.OK(m) == True{{}} : Bool}}').replace(f'{EX}.szx(', f'{EX}D.szx(')
+        b = b.replace(f'+ok: {{{EX}.OK(m) == True{{}} : Bool}}', f'+ok: {{{EX}D.OK(m) == True{{}} : Bool}}')
+    # hM through the constructors
+    def sub(old, new, cnt=1):
+        nonlocal b
+        assert b.count(old) >= 1, old[:80]
+        b = b.replace(old, new, cnt)
+    # u64 list
+    sub("+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}) -> R_U(po):", "+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_U(po):")
+    sub("+hok = okU(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul)", "+hok = okU(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul, hM)")
+    sub("def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}) -> R_U(po):",
+        f"def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {{U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}}, +hM: {HM}) -> R_U(po):")
+    sub("  kU2(po, tt, n, ew, sf, c, ex8, emul)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kU2(po, tt, n, ew, sf, c, ex8, emul, hM2)")
+    sub("+hs: U.sdk(po, 31n)) -> R_U(po):", f"+hs: U.sdk(po, 31n), +hM: {HM}) -> R_U(po):")
+    sub("kU(po, cws(po, 31n, hs), eN)", "kU(po, cws(po, 31n, hs), eN, hM)")
+    # u8 list
+    sub("def kB8(-po: O.Words, +cw: CWS(po, 31n)) -> R_B8(po):", f"def kB8(-po: O.Words, +cw: CWS(po, 31n), +hM: {HM}) -> R_B8(po):")
+    sub("  +hok = ok8(tt, n, sf)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  +hok = ok8(tt, n, sf, hM2)")
+    sub("def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n)) -> R_B8(po):\n  kB8(po, cws(po, 31n, hs))", f"def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n), +hM: {HM}) -> R_B8(po):\n  kB8(po, cws(po, 31n, hs), hM)")
+    # b32 list
+    sub("+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}) -> R_H(po):", "+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_H(po):")
+    sub("+hok = okH(tt, n, (pf, (hdw, (hN, htz))), c, eN, emul, hc)", "+hok = okH(tt, n, (pf, (hdw, (hN, htz))), c, eN, emul, hc, hM)")
+    sub("+hl: {Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{} : Bool}) -> R_H(po):", f"+hl: {{Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{{}} : Bool}}, +hM: {HM}) -> R_H(po):")
+    sub("  kH2(po, tt, n, ew, sf, eN2, hl2)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kH2(po, tt, n, ew, sf, eN2, hl2, hM2)")
+    sub("+hs: U.sdk(po, 31n)) -> R_H(po):", f"+hs: U.sdk(po, 31n), +hM: {HM}) -> R_H(po):")
+    sub("SH.ListOf_limit(s), U32.to_nat(16777216), el, hl))", "SH.ListOf_limit(s), U32.to_nat(16777216), el, hl), hM)")
+    return NMAXD + b
+
+
 def bsl_text():
-    return ('\n'.join(BSL_IMPORTS + ['import ./e2e_tz.bend as TZ']) + '\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_state_enc.py). Do not edit.\n'
+    imps = BSL_IMPORTS + ['import ./e2e_tz.bend as TZ', 'import ./e2e_emit.bend as EMT',
+                          'import ../proofs/obj/big_encx_l16777216_b32_d.bend as EXhD', 'import ../proofs/obj/big_encx_l1099511627776_u64_d.bend as EXuD',
+                          'import ../proofs/obj/big_encx_l1099511627776_u8_d.bend as EX8D']
+    return ('\n'.join(imps) + '\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_state_enc.py). Do not edit.\n'
             '# BeaconState (i)\'s byte-storage lists as their encode records (see codegen/e2e_state_enc.py): historical_roots,\n'
             '# balances, the participation lists, inactivity_scores, from the root law\'s representation and the premise U.sdk\n'
-            '# (storage at depth below 28, a decoded-object gap); each record\'s bytes are the object\'s length.\n\n'
-            + split32_text() + BSL_BODY)
+            '# (storage at depth below 31, a decoded-object gap); the records are on the D twins of the lists (their validity at depth\n'
+            '# below 31 and the object API\'s limit NMAX, from each list\'s bytes below 2^31: hM); each record\'s bytes are the object\'s length.\n\n'
+            + split32_text() + _bsl_body_d())
 
 
 # ==== BeaconState's record lists (e2e_rls): each list's root view is its encode record's value (ITW / ITV), and
@@ -901,11 +986,11 @@ def LNEH(po: @EHB@) -> Nat: Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPay
 def R_EB(po: @EHB@) -> Data:
   DK.Ex(EC_ExecutionPayloadHeader.MW, m => DK.P2({po == O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}} : @EHB@},
     DK.P2({RT.v_ExecutionPayloadHeader_bx(O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}}) == EC_ExecutionPayloadHeader.VAL(m) : S.Value},
-    DK.P2({EC_ExecutionPayloadHeader.OK(m) == True{} : Bool}, {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}))))
+    DK.P2({EC_ExecutionPayloadHeader.OKW(m) == True{} : Bool}, {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}))))
 
 def pk_EB(-po: @EHB@, +m: EC_ExecutionPayloadHeader.MW, +e: {po == O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}} : @EHB@},
     +v: {RT.v_ExecutionPayloadHeader_bx(O.BSome{EC_ExecutionPayloadHeader.TH(m), O.BNone{}}) == EC_ExecutionPayloadHeader.VAL(m) : S.Value},
-    +ok: {EC_ExecutionPayloadHeader.OK(m) == True{} : Bool}, +l: {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}) -> R_EB(po):
+    +ok: {EC_ExecutionPayloadHeader.OKW(m) == True{} : Bool}, +l: {LY.LN(EC_ExecutionPayloadHeader.ENC(m)) == LNEH(po) : Nat}) -> R_EB(po):
   (m, (e, (v, (ok, l))))
 
 def kEB(-po: @EHB@, +eb: {po == O.BSome{RT.pjb_ExecutionPayloadHeader_bx(po), O.BNone{}} : @EHB@}, +w: MW.R_E(RT.pjb_ExecutionPayloadHeader_bx(po))) -> R_EB(po):
@@ -917,7 +1002,7 @@ def kEB(-po: @EHB@, +eb: {po == O.BSome{RT.pjb_ExecutionPayloadHeader_bx(po), O.
   +l = Equal.trans(Nat, LY.LN(EC_ExecutionPayloadHeader.ENC(m)), Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(EC_ExecutionPayloadHeader.TH(m))))), LNEH(po), lnE(m, ok),
     Equal.cong(@EHO@, Nat, z => Nat.add(584n, U32.to_nat(WO_L.len(RT.pj_ExecutionPayloadHeader_10(z)))), EC_ExecutionPayloadHeader.TH(m), RT.pjb_ExecutionPayloadHeader_bx(po),
       Equal.sym(@EHO@, RT.pjb_ExecutionPayloadHeader_bx(po), EC_ExecutionPayloadHeader.TH(m), e)))
-  pk_EB(po, m, e2, v, ok, l)
+  pk_EB(po, m, e2, v, ECo.okwOfOkM(m, ok), l)
 
 def mk_EB(-po: @EHB@, +s: S.Schema, +es: {s == Spec.ExecutionPayloadHeader() : S.Schema}, +r: RT.rep_ExecutionPayloadHeader_bx(po, s),
     +hs: MW.SHS_E(RT.pjb_ExecutionPayloadHeader_bx(po))) -> R_EB(po):
@@ -934,6 +1019,8 @@ def venc_state(R, X):
     it = _rd(OBJ / 'big_encx_BeaconState_iface.bend')
     Kt = _rd(OBJ / 'big_encx_BeaconState.bend')
     en = _rd(OBJ / 'big_var_codec_BeaconState_enc.bend')
+    eno = _rd(OBJ / 'big_var_codec_BeaconState_enc_o.bend')   # (i) on the OKW laws: the encoder's O twins
+    ito = _rd(OBJ / 'big_encx_BeaconState_iface_o.bend')
     rs = _rd(OBJ / 'root_state.bend')
     eph = _rd(OBJ / 'big_encx_ExecutionPayloadHeader_iface.bend')
     sch = lambda j: 'SH.Chain_head(' + 'SH.Chain_tail(' * j + f'SH.Container_fields({SC})' + ')' * j + ')'
@@ -1027,17 +1114,17 @@ def venc_state(R, X):
     out.append(f'# the encoding\'s byte count: the fixed part F and the parts\' counts\ndef SZR(+F: Nat, {ts}) -> Nat: {_sumf(["F"] + [f"t{i}" for i in range(12)])}\n')
     # the encode law's size bound on the object (a decoded-object gap: its bytes within 4 * 2^28), stated as the record's
     # bound is (SZR over the parts' counts), so no closed count is evaluated
-    SZO = f'Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(objterm(j) for j in tj)}), A.quad(VB.pw(28n)))'
+    SZO = f'Nat.is_lt(SZR(U32.to_nat(2737225), {", ".join(objterm(j) for j in tj)}), VB.pw(31n))'
     KWargs = ', '.join(KWN)
     KWparams = ', '.join(f'+{n}: {t.strip()}' for n, t in (x.split(':', 1) for x in _split(re.search(r'^type KW is Data:\n  KW\{(.*)\}$', Kt, re.M).group(1))))
     out.append(f'def endq({KWparams}, +F: Nat) -> {{CI.ENDCs(K.KW{{{KWargs}}}, F) == SZR(F, {", ".join(lnt)}) : Nat}}: {{==}}\n')
     # ---- OKT(KW{...}) from the facts ----
-    okt = _band(re.search(r'^def OKT\(\+wR: K\.KW\) -> Bool: (.*)$', it, re.M).group(1))
+    okt = _band(re.search(r'^def OKTW\(\+wR: K\.KW\) -> Bool: (.*)$', ito, re.M).group(1))
     assert len(okt) == 36
-    oktn = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', c).replace('ENDCs(wR,', f'CI.ENDCs(K.KW{{{KWargs}}},') for c in okt]
+    oktn = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', c).replace('OB.ENDCs(wR,', 'ENDCs(wR,').replace('ENDCs(wR,', f'CI.ENDCs(K.KW{{{KWargs}}},') for c in okt]
     fact = []
     for c in oktn:
-        if c.startswith('Nat.is_le(CI.ENDCs('):
+        if c.startswith('Nat.is_lt(CI.ENDCs('):
             fact.append('hB'); continue
         if 'K.OK_bv4(' in c:
             fact.append('hv4a'); continue
@@ -1051,7 +1138,7 @@ def venc_state(R, X):
         elif c.startswith('Nat.is_le('): fact.append(f'hr{j}')
         else: fact.append(f'k{j}')
     okp = ', '.join(f'+{f}: {{{c} == True{{}} : Bool}}' for f, c in zip(fact, oktn))
-    out.append(f'def okw({KWparams}, {okp}) -> {{CI.OKT(K.KW{{{KWargs}}}) == True{{}} : Bool}}:\n  {_andc(oktn, fact)}\n')
+    out.append(f'def okw({KWparams}, {okp}) -> {{CIo.OKTW(K.KW{{{KWargs}}}) == True{{}} : Bool}}:\n  {_andc(oktn, fact)}\n')
     # ---- kS: the record from the parts ----
     xs = {j: fnames[j][0] for j in FIX}
     xs[BV4] = fnames[BV4][0]
@@ -1104,10 +1191,10 @@ def venc_state(R, X):
     prev = 'hZ'
     for i, j in enumerate(tj):
         a_ = objterm(j); b_ = lnt[i]
-        body.append(f'  +b{i} = FD.logic__subst(Nat, z => {{Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(mix(i, "z"))}), A.quad(VB.pw(28n))) == True{{}} : Bool}}, {a_}, {b_}, Equal.sym(Nat, {b_}, {a_}, l{j}), {prev})')
+        body.append(f'  +b{i} = FD.logic__subst(Nat, z => {{Nat.is_lt(SZR(U32.to_nat(2737225), {", ".join(mix(i, "z"))}), VB.pw(31n)) == True{{}} : Bool}}, {a_}, {b_}, Equal.sym(Nat, {b_}, {a_}, l{j}), {prev})')
         prev = f'b{i}'
     SZL = f'SZR(U32.to_nat(2737225), {", ".join(lnt)})'
-    body.append(f'  +hB = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(28n))) == True{{}} : Bool}}, {SZL}, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), '
+    body.append(f'  +hB = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {SZL}, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), '
                 f'Equal.sym(Nat, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), {SZL}, endq({KWargs}, U32.to_nat(2737225))), {prev})')
     body.append(f'  +hok = okw({KWargs}, {", ".join(fact)})')
     eqargs = ', '.join([pj(j) if j in PT else xs[j] for j in range(38)] + [f'{TH[j]}, e{j}' for j in PT])
@@ -1147,7 +1234,7 @@ def venc_state(R, X):
     rest = [l for l in clines if l not in bl]
     bndz = (f"# the record's byte bound from the object's (hZ) through the parts' counts\n"
             f"def bndz(-o: {OT}, {KWparams}, {', '.join(f'+{n}: {FT[n]}' for n in ln_)}, +hZ: {hz_t})\n"
-            f"    -> {{Nat.is_le(CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), A.quad(VB.pw(28n))) == True{{}} : Bool}}:\n" + '\n'.join(bl) + '\n  hB\n')
+            f"    -> {{Nat.is_lt(CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), VB.pw(31n)) == True{{}} : Bool}}:\n" + '\n'.join(bl) + '\n  hB\n')
     finp = [f'-o: {OT}', KWparams, kp[len(xs) + 1], kp[len(xs) + 2]] + [f'+{n}: {FT[n]}' for n in fnm] + [f'+hZ: {hz_t}']
     fin = (f"def fin({', '.join(finp)}) -> @G@:\n"
            + '\n'.join([rest[0], rest[1], f'  +hB = bndz(o, {KWargs}, {", ".join(ln_)}, hZ)'] + rest[2:]) + '\n')
@@ -1162,10 +1249,11 @@ def venc_state(R, X):
             top_p.append((f'hs{j}', f'BL.sdpv({pj(j)}, 31n)' if k_ == 'pv' else f'BL.sdk1({pj(j)}, 31n)'))
             mkc[j] = (f'PX.mk_{"PV" if k_ == "pv" else "V2"}({pj(j)}, {s_}, r{j}, hs{j}, {K_}, {L_}, {e_}n, {p_}n, {r_}n, {sx_}n, ' + ', '.join(['{==}'] * 10) + ')')
         elif j in BYTEL:
-            top_p.append((f'hs{j}', f'U.sdk({pj(j)}, 28n)'))
-            if BYTEL[j] == 'H': mkc[j] = f'PL.mk_H({pj(j)}, {s_}, {{==}}, r{j}, hs{j})'
-            elif BYTEL[j] == 'U': mkc[j] = f'PL.mk_U({pj(j)}, {s_}, r{j}, hs{j})'
-            else: mkc[j] = f'PL.mk_B8({pj(j)}, hs{j})'
+            top_p.append((f'hs{j}', f'U.sdk({pj(j)}, 31n)'))
+            top_p.append((f'hm{j}', f'{{Nat.is_lt(U32.to_nat(WO_L.len({pj(j)})), VB.pw(31n)) == True{{}} : Bool}}'))
+            if BYTEL[j] == 'H': mkc[j] = f'PL.mk_H({pj(j)}, {s_}, {{==}}, r{j}, hs{j}, hm{j})'
+            elif BYTEL[j] == 'U': mkc[j] = f'PL.mk_U({pj(j)}, {s_}, r{j}, hs{j}, hm{j})'
+            else: mkc[j] = f'PL.mk_B8({pj(j)}, hs{j}, hm{j})'
         elif j in RECL:
             L = RECL[j]
             KWb = re.fullmatch(r'Nat\.is_lt\(TDM_' + L + r'\(A\), (\d+)n\)', _band(re.search(r'^def OKL_' + L + r'\(.*?\) -> Bool:\n((?:  .*\n)+)', _rd(OBJ / f'encx_{L}.bend'), re.M).group(1))[0]).group(1)
@@ -1190,35 +1278,38 @@ def venc_state(R, X):
     tb.append(f'  kS({kargs})')
     law = (f"\n# (i): for every object the root law represents (rep) whose storage is as the encode record asks (decoded-object gaps:\n"
            f"# hs5/hs6/hs13 the Bytes32 vectors and hs14/hs37 the uint64 vectors at depth below 31, hs7/hs12/hs15/hs16/hs21 the byte-storage\n"
-           f"# lists at depth below 28, hs9..hs36 the record lists' trees below the records' bounds, hs22/hs23 the sync committees' pubkeys\n"
-           f"# below 31, hs24 the latest execution payload header's storage (e2e_mw.SHS_E), hZ its bytes within 4 * 2^28)\n"
+           f"# lists at depth below 31 (the D twins of the lists, the OKW laws), hs9..hs36 the record lists' trees below the records' bounds,\n"
+           f"# hs22/hs23 the sync committees' pubkeys below 31, hs24 the latest execution payload header's storage (e2e_mw.SHS_E), hZ its\n"
+           f"# bytes below 2^31, the object API's own limit; hm7/hm12/hm15/hm16/hm21 each byte-storage list's bytes below 2^31, a part of hZ's total)\n"
            f"def {R}_e2e_encode(-o: {OT}, +rep: ST.rep_BeaconState(o, {SC}), {', '.join(f'+{n}: {t}' for n, t in top_p)}, +hZ: {{{SZO} == True{{}} : Bool}}) -> @G@:\n"
            + '\n'.join(tb) + '\n')
-    # ---- the encoder's buffer (depth DO(size) < 29) and via ----
+    # ---- the encoder's buffer (the output tree of depth DO(size) < 31: the OKW laws, big_var_codec_BeaconState_enc_o) and via ----
     G, common = EV._encx_common(R, X, OT, 0, 10)
-    i0 = en.index('def putx0('); j0 = en.index('\n  K.putx', i0) if '\n  K.putx' in en[i0:] else en.index('\ndef ', i0 + 5)
-    want = ('es', 'hS', 'eNW', 'nw', 'nwp', 'hd', 'hcov', 'hl0')
+    i0 = eno.index('def putx0O(')
+    j0 = re.search(r'\n  Ko?\.putx', eno[i0:]).start() + i0
+    want = ('es', 'h31', 'e31', 'hS', 'eNW', 'nw', 'nwp', 'hd', 'hcov', 'hl0')
     lets, curn = [], None
-    for l in en[i0:j0].split('\n')[2:]:
+    for l in eno[i0:j0].split('\n')[2:]:
         mm = re.match(r'  \+(\w+) = ', l)
         if mm:
             curn = mm.group(1)
         if curn in want:
             lets.append(l)
     SZ_ = 'Z.SZS(wR)'; DO = f'VL.DO({SZ_})'; OUT = 'EN.OUTC(wR)'
-    obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 29, the size within it\n"
-           f"def obC(+wR: K.KW, +h: {{CI.OKT(wR) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 28n : Nat}})\n"
+    obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 31, the size (below 2^31) within it\n"
+           f"def obC(+wR: K.KW, +h: {{CIo.OKTW(wR) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 29n : Nat}})\n"
            f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ_}}}) == VSP.bt(U32.to_nat({SZ_}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
            + '\n'.join(lets) + '\n' +
            f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ_}))\n"
            f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ_}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))), A.quad(WD.NWN(U32.to_nat({SZ_}))), ep,\n"
            f"    FD.nat__le_add_right(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))))\n"
            f"  +hn = FD.nat__le_trans(U32.to_nat({SZ_}), A.quad(WD.NWN(U32.to_nat({SZ_}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ_})), FD.spec_common__pow2({DO}), hl0))\n"
-           f"  EM.ob({DO}, {OUT}, {SZ_}, CI.pfx(CI.MW{{wR}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, hn)\n\n"
-           f"def obM(+m: CI.MW, +hok: {{CI.OK(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
-           f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 28n, {{==}})\n")
+           f"  EM.obD({DO}, {OUT}, {SZ_}, CI.pfx(CI.MW{{wR}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, h31, hn)\n\n"
+           f"def obM(+m: CI.MW, +hok: {{CIo.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
+           f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 29n, {{==}})\n")
     a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')
-    common = common[:a] + obc + '\n' + common[b:]
+    rest = common[b:].replace('{CI.OK(m) == True{} : Bool}', '{CIo.OKW(m) == True{} : Bool}').replace('EN.encode_eval(', 'ENo.encode_evalO(').replace('EN.encode_spec(', 'ENo.encode_specO(')
+    common = common[:a] + obc + '\n' + rest
     # the header's record arguments
     ephn = [x.split(':')[0].strip() for x in _split(re.search(r'^type MW is Data:\n  MW\{(.*)\}$', eph, re.M).group(1))]
     assert ephn[11] == 'm_extra_data'
@@ -1246,7 +1337,11 @@ def venc_state(R, X):
             ('../proofs/obj/packed_bytes_light.bend', 'PB'), ('../proofs/obj/blist_obj.bend', 'BLI'), ('../proofs/obj/ulist_obj.bend', 'UL'),
             ('../proofs/obj/big_var_codec_BeaconState_enc.bend', 'EN'), ('../proofs/obj/big_encx_BeaconState_iface.bend', 'CI'),
             ('../proofs/obj/big_encx_BeaconState_size.bend', 'Z'), ('../proofs/obj/big_encx_ExecutionPayloadHeader.bend', 'IK'),
-            ('../proofs/obj/big_encx_bl32.bend', 'EB')]
+            ('../proofs/obj/big_encx_bl32.bend', 'EB'),
+            ('../proofs/obj/big_encx_BeaconState_iface_o.bend', 'CIo'), ('../proofs/obj/big_var_codec_BeaconState_enc_o.bend', 'ENo'),
+            ('../proofs/obj/big_encx_BeaconState_size_o.bend', 'Zo'), ('../proofs/obj/big_encx_ExecutionPayloadHeader_iface_o.bend', 'ECo'),
+            ('../proofs/obj/big_encx_l16777216_b32_d.bend', 'EX_l16777216_b32_D'), ('../proofs/obj/big_encx_l1099511627776_u64_d.bend', 'EX_l1099511627776_u64_D'),
+            ('../proofs/obj/big_encx_l1099511627776_u8_d.bend', 'EX_l1099511627776_u8_D')]
     base += iimps
     base += [('../types/FuluSyncCommittee_def_generated.bend', 'FuluSyncCommittee_d'), ('../types/FuluBytes48_def_generated.bend', 'FuluBytes48_d'),
              ('../types/FuluBytes4_def_generated.bend', 'FuluBytes4_d'), ('../types/FuluExecutionPayloadHeader_def_generated.bend', 'FuluExecutionPayloadHeader_d')]
@@ -1266,7 +1361,8 @@ def venc_state(R, X):
 
 
 STATE_PREMISE = ('rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record\'s storage bounds as premises, each a decoded-object gap '
-                 '(the root law\'s invariant gives depth below 32 and no size bound): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) '
-                 'and the sync committees\' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 28 (U.sdk), the record '
+                 '(the root law\'s invariant gives depth below 32 and no size bound); the record is on the OKW laws and the D twins of the lists (the container '
+                 'encodes below 2^31 bytes, the object API\'s own limit; no depth-28 storage premise): the Bytes32 vectors (BL.sdpv) and uint64 vectors '
+                 '(BL.sdk1) and the sync committees\' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 31 (U.sdk), the record '
                  'lists\' trees below their records\' bounds (RLS.sda_L), the latest execution payload header\'s storage (e2e_mw.SHS_E), '
-                 'hZ the encoding within 4 * 2^28 = 2^30 bytes (SZR of the fixed part and the parts\' counts)')
+                 'hM_j each byte-storage list\'s bytes below 2^31 (its share of the total), hZ the encoding below 2^31 bytes (SZR of the fixed part and the parts\' counts)')

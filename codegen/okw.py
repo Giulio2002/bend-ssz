@@ -174,6 +174,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         # the bytes' bound: ENDC <= 4 2^28 becomes ENDC < 2^31 (ENDC by name)
         return s.replace(f'Nat.is_le({ENDX}, A.quad(VB.pw(28n)))', f'Nat.is_lt({ENDC}, VB.pw(31n))')
     body = bound(list_d_swap(child_ok(m.group(2)), ld))
+    oktw_body = body
     new = [f'\n# ---- OKW: the encoding below 2^31 bytes (the object API\'s limit: O.padd\'s poison bit), the children OKW ----\n'
            f'def OKTW({OPS}) -> Bool: {body}\n']
     # the extractors (okrN, ok_*): one-line defs on +h: {OKT(...)}
@@ -349,6 +350,9 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
             if re.search(r'(?<![\w.])(k|ek)(?![\w.])', l):
                 bad.append((law + 'O', l.strip()[:160]))
         t = t[:b] + '\n' + nb.rstrip('\n') + '\n' + t[b:]
+    # (keep: OKW from OK, for the encode records of the (i) laws: a container valid at 4 2^28 bytes is valid at 2^31)
+    if keep and 'def okwOfOk(' not in t and not ld:
+        t = t.rstrip('\n') + _okw_of_ok(m.group(2), oktw_body, OPS, OAS, child_okw)
     # (keep: the bytes' bound on OKW, the encoder laws' O twins read it: codegen/var_cont_top.py)
     if keep and 'def lenEW(' in t and 'def ok_bndW(' in t and 'law bndxO:' not in t:
         pat = ', '.join('+' + x.strip() for x in OAS.split(','))
@@ -711,3 +715,51 @@ def top_o(t, putxK):
                 raise SystemExit('okw.top_o: putx0: K.putx left')
         new.append(blk)
     return t.rstrip('\n') + '\n\n# ---- on OKW (the bytes below 2^31, the object API\'s limit): the output tree of depth below 31 ----\n' + '\n'.join(new)
+
+
+def _conjs(s):
+    """the conjuncts of Bool.and(a, Bool.and(b, ... z))."""
+    out = []
+    while s.startswith('Bool.and('):
+        a = deep._args(s, len('Bool.and('))[0]
+        out.append(a[0])
+        s = a[1]
+    return out + [s]
+
+
+def _okw_of_ok(okt, oktw, OPS, OAS, child_okw):
+    """okwOfOk / okwOfOkM: the OKW of a record from its OK (the chain's conjuncts, children through their own okwOfOkM, the
+    bytes' bound 4 2^28 as below 2^31 by VCN.lt31q)."""
+    co, cw = _conjs(okt), _conjs(oktw)
+    if len(co) != len(cw):
+        return ''
+    n = len(co)
+    suf = lambda i: co[i] if i == n - 1 else 'Bool.and(' + co[i] + ', ' + suf(i + 1) + ')'   # noqa: E731
+    sufw = lambda i: cw[i] if i == n - 1 else 'Bool.and(' + cw[i] + ', ' + sufw(i + 1) + ')'   # noqa: E731
+    lines = [f'  +s0 = h']
+    for i in range(n - 1):
+        lines.append(f'  +p{i} = FD.logic__and_left({co[i]}, {suf(i + 1)}, s{i})')
+        lines.append(f'  +s{i + 1} = FD.logic__and_right({co[i]}, {suf(i + 1)}, s{i})')
+    lines_end = []
+    prf = {}
+    for i in range(n):
+        pi = f'p{i}' if i < n - 1 else f's{n - 1}'
+        if co[i] == cw[i]:
+            prf[i] = pi
+            continue
+        mo = re.fullmatch(r'Nat\.is_le\((.*), A\.quad\(VB\.pw\(28n\)\)\)', co[i], re.S)
+        if mo:
+            prf[i] = f'VCN.lt31q({mo.group(1)}, 28n, {{==}}, {pi})'
+            continue
+        mc = re.fullmatch(r'(\w+\.)OK\((.*)\)', co[i], re.S)
+        if mc and mc.group(1) in child_okw:
+            prf[i] = f'{mc.group(1)}okwOfOkM({mc.group(2)}, {pi})'
+            continue
+        return ''
+    res = prf[n - 1]
+    for i in range(n - 2, -1, -1):
+        res = f'FD.logic__and_intro({cw[i]}, {sufw(i + 1)}, {prf[i]}, {res})'
+    body = '\n'.join(lines) + '\n  ' + res + '\n'
+    hd = f'def okwOfOk({OPS}, +h: {{OKT({OAS}) == True{{}} : Bool}}) -> {{OKTW({OAS}) == True{{}} : Bool}}:\n'
+    mm = f'def okwOfOkM(+m: MW, +hok: {{OK(m) == True{{}} : Bool}}) -> {{OKW(m) == True{{}} : Bool}}:\n  match m:\n    case MW{{{", ".join("+" + x.strip() for x in OAS.split(","))}}}: okwOfOk({OAS}, hok)\n'
+    return '\n\n# OKW from OK: the record valid at 4 2^28 bytes is valid below 2^31 (the encode records of the (i) laws).\n' + hd + body + '\n' + mm

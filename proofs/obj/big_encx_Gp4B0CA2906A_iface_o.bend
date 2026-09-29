@@ -59,6 +59,16 @@ def validxO(m, hok):
   match m:
     case OB.MW{+m_f_C}: rvalidCW(m_f_C, hok)
 
+def okwOfOk(+m_f_C: EX_pbits.MB, +h: {OB.OKT(m_f_C) == True{} : Bool}) -> {OB.OKTW(m_f_C) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EX_pbits.OK(m_f_C), Nat.is_le(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s0)
+  +s1 = FD.logic__and_right(EX_pbits.OK(m_f_C), Nat.is_le(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s0)
+  FD.logic__and_intro(EX_pbits.OK(m_f_C), Nat.is_lt(OB.ENDC(m_f_C), VB.pw(31n)), p0, VCN.lt31q(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s1))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+m_f_C}: okwOfOk(m_f_C, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}

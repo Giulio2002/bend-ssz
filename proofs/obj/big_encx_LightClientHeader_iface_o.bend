@@ -32,6 +32,7 @@ import ./dk.bend as DK
 import ./encx_recs.bend as ER
 import ./vuwv_v4_b32.bend as V_v4_b32
 import ./big_encx_ExecutionPayloadHeader_iface.bend as EC_ExecutionPayloadHeader
+import ./big_encx_ExecutionPayloadHeader_iface_o.bend as EC_ExecutionPayloadHeadero
 import ./big_encx_ExecutionPayloadHeader_size.bend as ES_ExecutionPayloadHeader
 import ./big_encx_ExecutionPayloadHeader_size_o.bend as ES_ExecutionPayloadHeadero
 import ./vfixw_spec.bend as FWS
@@ -56,6 +57,22 @@ law sizexO:
 def sizexO(m, hok):
   match m:
     case OB.MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: sizeCW(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok)
+
+def okwOfOk(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OB.OKT(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}) -> {OB.OKTW(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EC_ExecutionPayloadHeader.OK(m_execution), Bool.and(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n)))))), s0)
+  +s1 = FD.logic__and_right(EC_ExecutionPayloadHeader.OK(m_execution), Bool.and(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n)))))), s0)
+  +p1 = FD.logic__and_left(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n))))), s1)
+  +s2 = FD.logic__and_right(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n))))), s1)
+  +p2 = FD.logic__and_left(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n)))), s2)
+  +s3 = FD.logic__and_right(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n)))), s2)
+  +p3 = FD.logic__and_left(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n))), s3)
+  +s4 = FD.logic__and_right(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_le(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), A.quad(VB.pw(28n))), s3)
+  FD.logic__and_intro(EC_ExecutionPayloadHeader.OKW(m_execution), Bool.and(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_lt(OB.ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), VB.pw(31n))))), EC_ExecutionPayloadHeadero.okwOfOkM(m_execution, p0), FD.logic__and_intro(FD.array__perfect(U32, dB_execution_branch, TB_execution_branch), Bool.and(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_lt(OB.ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), VB.pw(31n)))), p1, FD.logic__and_intro(Nat.is_lt(dB_execution_branch, 31n), Bool.and(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_lt(OB.ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), VB.pw(31n))), p2, FD.logic__and_intro(Nat.is_le(32n, VB.pw(dB_execution_branch)), Nat.is_lt(OB.ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), VB.pw(31n)), p3, VCN.lt31q(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), 28n, {==}, s4)))))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: okwOfOk(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok)
 
 law bndxO:
   for +m: OB.MW

@@ -65,6 +65,16 @@ def validxO(m, hok):
   match m:
     case OB.MW{+m_attesting_indices, +data, +signature}: rvalidCW(m_attesting_indices, data, signature, hok)
 
+def okwOfOk(+m_attesting_indices: EX_l131072_u64.MW, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +h: {OB.OKT(m_attesting_indices, data, signature) == True{} : Bool}) -> {OB.OKTW(m_attesting_indices, data, signature) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EX_l131072_u64.OK(m_attesting_indices), Nat.is_le(Nat.add(228n, LY.LN(EX_l131072_u64.ENC(m_attesting_indices))), A.quad(VB.pw(28n))), s0)
+  +s1 = FD.logic__and_right(EX_l131072_u64.OK(m_attesting_indices), Nat.is_le(Nat.add(228n, LY.LN(EX_l131072_u64.ENC(m_attesting_indices))), A.quad(VB.pw(28n))), s0)
+  FD.logic__and_intro(EX_l131072_u64.OK(m_attesting_indices), Nat.is_lt(OB.ENDC(m_attesting_indices, data, signature), VB.pw(31n)), p0, VCN.lt31q(Nat.add(228n, LY.LN(EX_l131072_u64.ENC(m_attesting_indices))), 28n, {==}, s1))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+m_attesting_indices, +data, +signature}: okwOfOk(m_attesting_indices, data, signature, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}

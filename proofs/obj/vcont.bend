@@ -631,6 +631,12 @@ def hl32z(+L: Nat, +h: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(A.quad(0n), Nat.add(0n, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
   hl32za(L, 31n, {==}, h)
 
+# x <= 4 2^k with k < 29 is below 2^31.
+def lt31q(+x: Nat, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(x, A.quad(VB.pw(k))) == True{} : Bool})
+    -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, VB.pw(Nat.add(2n, k)), VB.pw(31n), F.logic__subst(Nat, z => {Nat.is_le(x, z) == True{} : Bool}, A.quad(VB.pw(k)), VB.pw(Nat.add(2n, k)), UW.qpw(k), h),
+    F.nat__lt_le_trans(VB.pw(Nat.add(2n, k)), VB.pw(Nat.add(3n, k)), VB.pw(31n), F.nat__pow2_lt_succ(Nat.add(2n, k)), F.nat__pow2_mono(Nat.add(3n, k), 31n, Order.add_left(3n, k, 28n, F.nat__lt_succ_le(k, 28n, hk)))))
+
 # The word count of a length below 2^31 (L + 3 stays below 2^32: any output depth).
 def nw_nat31(+L: U32, +h: {Nat.is_lt(U32.to_nat(L), VB.pw(31n)) == True{} : Bool}) -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
   +hc = F.nat__le_trans(U32.to_nat(3), VB.pw(2n), VB.pw(31n), {==}, F.nat__pow2_mono(2n, 31n, {==}))

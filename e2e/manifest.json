@@ -3886,7 +3886,7 @@
     "laws": [
      "FuluBeaconState_e2e_encode"
     ],
-    "premise": "rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record's storage bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) and the sync committees' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 28 (U.sdk), the record lists' trees below their records' bounds (RLS.sda_L), the latest execution payload header's storage (e2e_mw.SHS_E), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZR of the fixed part and the parts' counts)"
+    "premise": "rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record's storage bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound); the record is on the OKW laws and the D twins of the lists (the container encodes below 2^31 bytes, the object API's own limit; no depth-28 storage premise): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) and the sync committees' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 31 (U.sdk), the record lists' trees below their records' bounds (RLS.sda_L), the latest execution payload header's storage (e2e_mw.SHS_E), hM_j each byte-storage list's bytes below 2^31 (its share of the total), hZ the encoding below 2^31 bytes (SZR of the fixed part and the parts' counts)"
    }
   ],
   "FuluDataColumnSidecar_e2e_generated.bend": [

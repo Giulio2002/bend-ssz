@@ -63,6 +63,16 @@ def validxO(m, hok):
   match m:
     case OB.MW{+m_message, +signature}: rvalidCW(m_message, signature, hok)
 
+def okwOfOk(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OB.OKT(m_message, signature) == True{} : Bool}) -> {OB.OKTW(m_message, signature) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), s0)
+  +s1 = FD.logic__and_right(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), s0)
+  FD.logic__and_intro(EC_BeaconBlock.OKW(m_message), Nat.is_lt(OB.ENDC(m_message, signature), VB.pw(31n)), EC_BeaconBlocko.okwOfOkM(m_message, p0), VCN.lt31q(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), 28n, {==}, s1))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+m_message, +signature}: okwOfOk(m_message, signature, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
