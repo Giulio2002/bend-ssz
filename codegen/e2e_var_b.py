@@ -6578,10 +6578,81 @@ def _mw_split():
 
 
 SUPPORT_OUT['e2e_mw.bend'], SUPPORT_OUT['e2e_mw_light.bend'] = _mw_split()
-VENC_SHAPES['LightClientFinalityUpdate'] = venc_fu
-VENC_PREMISE['LightClientFinalityUpdate'] = 'rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mw.SHS_L of the two headers (their execution payload headers\' logs bloom at depth below 31 and extra data below 28, their branches below 31); hB: BL.sdpv of the finality branch at depth below 31'
-VENC_SHAPES['LightClientUpdate'] = venc_up
-VENC_PREMISE['LightClientUpdate'] = 'rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee\'s pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31'
+# ---- the D form: (i) of the LightClient names on the OKW laws (the extra data's storage below 31: big_encx_bl32_d) ----
+def mwd_text():
+    """e2e_mwd: e2e_mw's records on the OKW laws: the extra data's byte list at dw < 31 (big_encx_bl32_d), ExecutionPayloadHeader / LightClientHeader OKW."""
+    t = mw_text()
+    def rep(a, b, n=None):
+        nonlocal t
+        assert a in t, a[:70]
+        t = t.replace(a, b) if n is None else t.replace(a, b, n)
+    rep('import ../proofs/obj/big_encx_bl32.bend as IB\n', 'import ../proofs/obj/big_encx_bl32.bend as IB\nimport ../proofs/obj/big_encx_bl32_d.bend as IBD\n')
+    rep('Nat.is_lt(dw, 28n)', 'Nat.is_lt(dw, 31n)')
+    rep('BL.sdk(po, 28n)', 'BL.sdk(po, 31n)')
+    rep('BL.sdk(RT.pj_ExecutionPayloadHeader_10(o), 28n)', 'BL.sdk(RT.pj_ExecutionPayloadHeader_10(o), 31n)')
+    a = t.index('def bndB(')
+    b = t.index('# ---- the byte list (big_encx_bl32) ----')
+    t = t[:a] + """def bndB(+m: IB.MW, +ok: {IBD.OK(m) == True{} : Bool}) -> {Nat.is_lt(Nat.add(584n, LY.LN(IB.ENC(m))), VB.pw(31n)) == True{} : Bool}:
+  FD.nat__le_lt_trans(Nat.add(584n, LY.LN(IB.ENC(m))), Nat.add(584n, 32n), VB.pw(31n), Order.add_left(584n, LY.LN(IB.ENC(m)), 32n, IBD.maxx(m, ok)),
+    FD.nat__lt_le_trans(Nat.add(584n, 32n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==})))
+def bndE(+m: IE.MW, +ok: {IE.OKW(m) == True{} : Bool}) -> {Nat.is_lt(Nat.add(244n, LY.LN(IE.ENC(m))), VB.pw(31n)) == True{} : Bool}:
+  FD.nat__le_lt_trans(Nat.add(244n, LY.LN(IE.ENC(m))), Nat.add(244n, 616n), VB.pw(31n), Order.add_left(244n, LY.LN(IE.ENC(m)), 616n, IE.maxxO(m, ok)),
+    FD.nat__lt_le_trans(Nat.add(244n, 616n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==})))
+
+""" + t[b:]
+    rep('IB.OK(', 'IBD.OK(')
+    rep('Nat.is_le(Nat.add(584n, LY.LN(IB.ENC(mB))), A.quad(VB.pw(28n)))', 'Nat.is_lt(Nat.add(584n, LY.LN(IB.ENC(mB))), VB.pw(31n))')
+    rep('Nat.is_le(Nat.add(244n, LY.LN(IE.ENC(mE))), A.quad(VB.pw(28n)))', 'Nat.is_lt(Nat.add(244n, LY.LN(IE.ENC(mE))), VB.pw(31n))')
+    rep('IE.OK(', 'IE.OKW(')
+    rep('IL.OK(', 'IL.OKW(')
+    rep('# (i) through the encode records:', '# The D form (the OKW laws; the extra data at storage depth below 31): (i) through the encode records:')
+    return t
+
+
+SUPPORT_OUT['e2e_mwd.bend'] = mwd_text()
+
+
+def _lcd(t, X, K, P, prem):
+    """(i) of a LightClient name on the OKW laws (encode_evalO, the records of e2e_mwd)."""
+    def rep(a, b):
+        nonlocal t
+        assert a in t, a[:80]
+        t = t.replace(a, b)
+    rep('import ./e2e_mw.bend as MW', 'import ./e2e_mwd.bend as MW')
+    rep(f'import ../proofs/obj/big_var_codec_{X}_enc.bend as EN', f'import ../proofs/obj/big_var_codec_{X}_enc.bend as EN\nimport ../proofs/obj/big_var_codec_{X}_enc_o.bend as ENO\nimport ../proofs/obj/big_encx_{X}_iface_o.bend as CIo')
+    if 'as VBG' not in t:
+        rep('import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vcopy.bend as VC\nimport ../proofs/obj/vbig.bend as VBG')
+    rep('CI.OK(m)', 'CI.OKW(m)')
+    rep('EN.encode_eval(', 'ENO.encode_evalO(')
+    rep('EN.encode_spec(', 'ENO.encode_specO(')
+    rep('CI.szx(m, hok)', 'CI.szxO(m, hok)')
+    rep('CI.maxx(m, hok)', 'CI.maxxO(m, hok)')
+    rep('IL.OK(', 'IL.OKW(')
+    SUM = f'Nat.add(Nat.add({K}n, LY.LN(IL.ENC(mA))), LY.LN(IL.ENC(mF)))'
+    rep(f'Nat.is_le({SUM}, A.quad(VB.pw(28n)))', f'Nat.is_lt({SUM}, VB.pw(31n))')
+    a = t.index('def bnd(')
+    b = t.index("# the view of the record's object")
+    new = f"""def bnd(+mA: IL.MW, +mF: IL.MW, +okA: {{IL.OKW(mA) == True{{}} : Bool}}, +okF: {{IL.OKW(mF) == True{{}} : Bool}})
+    -> {{Nat.is_lt({SUM}, VB.pw(31n)) == True{{}} : Bool}}:
+  +h1 = Order.add_right(Nat.add({K}n, LY.LN(IL.ENC(mA))), Nat.add({K}n, 860n), LY.LN(IL.ENC(mF)), Order.add_left({K}n, LY.LN(IL.ENC(mA)), 860n, IL.maxxO(mA, okA)))
+  +h2 = Order.add_left(Nat.add({K}n, 860n), LY.LN(IL.ENC(mF)), 860n, IL.maxxO(mF, okF))
+  FD.nat__le_lt_trans({SUM}, Nat.add(Nat.add({K}n, 860n), 860n), VB.pw(31n),
+    FD.nat__le_trans({SUM}, Nat.add(Nat.add({K}n, 860n), LY.LN(IL.ENC(mF))), Nat.add(Nat.add({K}n, 860n), 860n), h1, h2),
+    FD.nat__lt_le_trans(Nat.add(Nat.add({K}n, 860n), 860n), VB.pw({P}n), VB.pw(31n), {{==}}, VBG.pw_mono({P}n, 31n, {{==}})))
+
+"""
+    t = t[:a] + new + t[b:]
+    return t
+
+
+_fu0, _up0 = venc_fu, venc_up
+VENC_SHAPES['LightClientFinalityUpdate'] = lambda R, X: _lcd(_fu0(R, X), X, 400, 12, None)
+VENC_PREMISE['LightClientFinalityUpdate'] = ('rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mwd.SHS_L of the two headers (the OKW laws: their execution '
+    'payload headers\' logs bloom at depth below 31 and extra data below 31, their branches below 31; the only remaining storage premise is the dw = 31 gap between the root law\'s depth bound (32) '
+    'and the encode laws\'); hB: BL.sdpv of the finality branch at depth below 31')
+VENC_SHAPES['LightClientUpdate'] = lambda R, X: _lcd(_up0(R, X), X, 25216, 15, None)
+VENC_PREMISE['LightClientUpdate'] = ('rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mwd.SHS_L of the two headers (the OKW laws: extra data below depth 31); h1: e2e_e48w.sdsc of the next '
+    'sync committee\'s pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31; the only remaining storage premise is the dw = 31 gap (root law 32, encode laws 31)')
 VROOT_SHAPES['GtF7582E0E9A'] = vroot_pbits
 VENC_SHAPES['GtF7582E0E9A'] = venc_pbits
 VENC_PREMISE['GtF7582E0E9A'] = 'rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()); hK: 32 + K <= 2^30 for its bit count K (the encode laws\' word arithmetic); hs: e2e_bitl.sdbc(o) (its words in a perfect tree of depth below 31 with room for its chunk words)'

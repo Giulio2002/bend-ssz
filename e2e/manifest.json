@@ -3966,7 +3966,7 @@
     "laws": [
      "FuluLightClientFinalityUpdate_e2e_encode"
     ],
-    "premise": "rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mw.SHS_L of the two headers (their execution payload headers' logs bloom at depth below 31 and extra data below 28, their branches below 31); hB: BL.sdpv of the finality branch at depth below 31"
+    "premise": "rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()); hA, hF: e2e_mwd.SHS_L of the two headers (the OKW laws: their execution payload headers' logs bloom at depth below 31 and extra data below 31, their branches below 31; the only remaining storage premise is the dw = 31 gap between the root law's depth bound (32) and the encode laws'); hB: BL.sdpv of the finality branch at depth below 31"
    }
   ],
   "FuluLightClientHeader_e2e_generated.bend": [
@@ -3996,7 +3996,7 @@
     "laws": [
      "FuluLightClientUpdate_e2e_encode"
     ],
-    "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee's pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31"
+    "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mwd.SHS_L of the two headers (the OKW laws: extra data below depth 31); h1: e2e_e48w.sdsc of the next sync committee's pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31; the only remaining storage premise is the dw = 31 gap (root law 32, encode laws 31)"
    }
   ],
   "FuluPendingAttestation_e2e_generated.bend": [
