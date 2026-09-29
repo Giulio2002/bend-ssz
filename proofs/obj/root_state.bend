@@ -101,18 +101,6 @@ import ./root_state_light.bend as LV
 # Root laws of the shapes only BeaconState uses (see SPLIT_NAMES in the generator);
 # the shapes it shares with other names are root_types's (RT).
 
-law nth_l2048_Eth1Data:
-  for +W: List<&2, FuluEth1Data_d.Eth1Data>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluEth1Data_d.Eth1Data, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluEth1Data_d.Eth1Data, W, i) == Some{LV.xat_l2048_Eth1Data(W, i)} : Maybe<&2, FuluEth1Data_d.Eth1Data>}
-def nth_l2048_Eth1Data(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluEth1Data_d.Eth1Data, Nil{}, i) == Some{LV.xat_l2048_Eth1Data(Nil{}, i)} : Maybe<&2, FuluEth1Data_d.Eth1Data>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l2048_Eth1Data(t, j, hi)
 def xl_l2048_Eth1Data(k: Nat, +W: List<&2, FuluEth1Data_d.Eth1Data>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -194,7 +182,7 @@ def xget_l2048_Eth1Data(+dw: Nat, +t: F.array__Tree<FuluEth1Data_d.Eth1Data>, +s
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluEth1Data_d.Eth1Data, dw, t, s, pf, hs)
   F.array__get(FuluEth1Data_d.Eth1Data, dw, t, U32.from_nat(s), LV.xat_l2048_Eth1Data(F.array__slots(FuluEth1Data_d.Eth1Data, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluEth1Data_d.Eth1Data, F.array__slots(FuluEth1Data_d.Eth1Data, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l2048_Eth1Data(F.array__slots(FuluEth1Data_d.Eth1Data, t), s), e1, nth_l2048_Eth1Data(F.array__slots(FuluEth1Data_d.Eth1Data, t), s, hlen)), pf)
+    XS.at_nth(FuluEth1Data_d.Eth1Data, F.array__slots(FuluEth1Data_d.Eth1Data, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l2048_Eth1Data(F.array__slots(FuluEth1Data_d.Eth1Data, t), s), e1, LV.nth_l2048_Eth1Data(F.array__slots(FuluEth1Data_d.Eth1Data, t), s, hlen)), pf)
 law xmt_l2048_Eth1Data:
   for +d: Nat
   for +b: Bool
@@ -325,18 +313,6 @@ def rs_l2048_Eth1Data(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: Fulu_lis
     (D.bytes(MD.rtree(11n, Nat.is_lt(0n, MD.dlen(xl_l2048_Eth1Data(U32.to_nat(N), F.array__slots(FuluEth1Data_d.Eth1Data, t), 0n, hl))), hl, xl_l2048_Eth1Data(U32.to_nat(N), F.array__slots(FuluEth1Data_d.Eth1Data, t), 0n, hl), 0n)), ((11n, (k1, RS.at_depth_tree(SH.ListOf_limit(s), 11n, hl, xl_l2048_Eth1Data(U32.to_nat(N), F.array__slots(FuluEth1Data_d.Eth1Data, t), 0n, hl), {==}, xhl_l2048_Eth1Data(N, SH.ListOf_limit(s), F.array__slots(FuluEth1Data_d.Eth1Data, t), hl, hvN), ehl))),
      xlm_l2048_Eth1Data(hl, ehl, N, MD.rtree(11n, Nat.is_lt(0n, MD.dlen(xl_l2048_Eth1Data(U32.to_nat(N), F.array__slots(FuluEth1Data_d.Eth1Data, t), 0n, hl))), hl, xl_l2048_Eth1Data(U32.to_nat(N), F.array__slots(FuluEth1Data_d.Eth1Data, t), 0n, hl), 0n), F.array__slots(FuluEth1Data_d.Eth1Data, t))))))
 
-law nth_l1099511627776_Validator:
-  for +W: List<&2, FuluValidator_d.Validator>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluValidator_d.Validator, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluValidator_d.Validator, W, i) == Some{LV.xat_l1099511627776_Validator(W, i)} : Maybe<&2, FuluValidator_d.Validator>}
-def nth_l1099511627776_Validator(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluValidator_d.Validator, Nil{}, i) == Some{LV.xat_l1099511627776_Validator(Nil{}, i)} : Maybe<&2, FuluValidator_d.Validator>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l1099511627776_Validator(t, j, hi)
 def xl_l1099511627776_Validator(k: Nat, +W: List<&2, FuluValidator_d.Validator>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -418,7 +394,7 @@ def xget_l1099511627776_Validator(+dw: Nat, +t: F.array__Tree<FuluValidator_d.Va
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluValidator_d.Validator, dw, t, s, pf, hs)
   F.array__get(FuluValidator_d.Validator, dw, t, U32.from_nat(s), LV.xat_l1099511627776_Validator(F.array__slots(FuluValidator_d.Validator, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluValidator_d.Validator, F.array__slots(FuluValidator_d.Validator, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l1099511627776_Validator(F.array__slots(FuluValidator_d.Validator, t), s), e1, nth_l1099511627776_Validator(F.array__slots(FuluValidator_d.Validator, t), s, hlen)), pf)
+    XS.at_nth(FuluValidator_d.Validator, F.array__slots(FuluValidator_d.Validator, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l1099511627776_Validator(F.array__slots(FuluValidator_d.Validator, t), s), e1, LV.nth_l1099511627776_Validator(F.array__slots(FuluValidator_d.Validator, t), s, hlen)), pf)
 law xmt_l1099511627776_Validator:
   for +d: Nat
   for +b: Bool
@@ -618,18 +594,6 @@ def rs_bv4(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_4_d.Bitvector4,
         RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([_]))}, S.BitVector{4n}, [D.bytes(D.D{B.swap32(_), 0, 0, 0, 0, 0, 0, 0})])
       rsh_bv4(hl, ehl, WSp.take(4n, 32n, PD.bits(w0)))
 
-law nth_l16777216_HistoricalSummary:
-  for +W: List<&2, FuluHistoricalSummary_d.HistoricalSummary>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluHistoricalSummary_d.HistoricalSummary, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluHistoricalSummary_d.HistoricalSummary, W, i) == Some{LV.xat_l16777216_HistoricalSummary(W, i)} : Maybe<&2, FuluHistoricalSummary_d.HistoricalSummary>}
-def nth_l16777216_HistoricalSummary(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluHistoricalSummary_d.HistoricalSummary, Nil{}, i) == Some{LV.xat_l16777216_HistoricalSummary(Nil{}, i)} : Maybe<&2, FuluHistoricalSummary_d.HistoricalSummary>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l16777216_HistoricalSummary(t, j, hi)
 def xl_l16777216_HistoricalSummary(k: Nat, +W: List<&2, FuluHistoricalSummary_d.HistoricalSummary>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -711,7 +675,7 @@ def xget_l16777216_HistoricalSummary(+dw: Nat, +t: F.array__Tree<FuluHistoricalS
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluHistoricalSummary_d.HistoricalSummary, dw, t, s, pf, hs)
   F.array__get(FuluHistoricalSummary_d.HistoricalSummary, dw, t, U32.from_nat(s), LV.xat_l16777216_HistoricalSummary(F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluHistoricalSummary_d.HistoricalSummary, F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l16777216_HistoricalSummary(F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s), e1, nth_l16777216_HistoricalSummary(F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s, hlen)), pf)
+    XS.at_nth(FuluHistoricalSummary_d.HistoricalSummary, F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l16777216_HistoricalSummary(F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s), e1, LV.nth_l16777216_HistoricalSummary(F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), s, hlen)), pf)
 law xmt_l16777216_HistoricalSummary:
   for +d: Nat
   for +b: Bool
@@ -843,18 +807,6 @@ def rs_l16777216_HistoricalSummary(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf,
     (D.bytes(MD.rtree(OS.dv_24(dv), Nat.is_lt(0n, MD.dlen(xl_l16777216_HistoricalSummary(U32.to_nat(N), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), 0n, hl))), hl, xl_l16777216_HistoricalSummary(U32.to_nat(N), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), 0n, hl), 0n)), ((OS.dv_24(dv), (k1, RS.at_depth_tree(SH.ListOf_limit(s), OS.dv_24(dv), hl, xl_l16777216_HistoricalSummary(U32.to_nat(N), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), 0n, hl), OS.dvl(OS.dv_24, dv, edv, {==}), xhl_l16777216_HistoricalSummary(N, SH.ListOf_limit(s), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), hl, hvN), ehl))),
      xlm_l16777216_HistoricalSummary(hl, ehl, N, MD.rtree(OS.dv_24(dv), Nat.is_lt(0n, MD.dlen(xl_l16777216_HistoricalSummary(U32.to_nat(N), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), 0n, hl))), hl, xl_l16777216_HistoricalSummary(U32.to_nat(N), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), 0n, hl), 0n), F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t)))))))
 
-law nth_l134217728_PendingDeposit:
-  for +W: List<&2, FuluPendingDeposit_d.PendingDeposit>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingDeposit_d.PendingDeposit, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluPendingDeposit_d.PendingDeposit, W, i) == Some{LV.xat_l134217728_PendingDeposit(W, i)} : Maybe<&2, FuluPendingDeposit_d.PendingDeposit>}
-def nth_l134217728_PendingDeposit(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingDeposit_d.PendingDeposit, Nil{}, i) == Some{LV.xat_l134217728_PendingDeposit(Nil{}, i)} : Maybe<&2, FuluPendingDeposit_d.PendingDeposit>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l134217728_PendingDeposit(t, j, hi)
 def xl_l134217728_PendingDeposit(k: Nat, +W: List<&2, FuluPendingDeposit_d.PendingDeposit>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -936,7 +888,7 @@ def xget_l134217728_PendingDeposit(+dw: Nat, +t: F.array__Tree<FuluPendingDeposi
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluPendingDeposit_d.PendingDeposit, dw, t, s, pf, hs)
   F.array__get(FuluPendingDeposit_d.PendingDeposit, dw, t, U32.from_nat(s), LV.xat_l134217728_PendingDeposit(F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluPendingDeposit_d.PendingDeposit, F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l134217728_PendingDeposit(F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s), e1, nth_l134217728_PendingDeposit(F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s, hlen)), pf)
+    XS.at_nth(FuluPendingDeposit_d.PendingDeposit, F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l134217728_PendingDeposit(F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s), e1, LV.nth_l134217728_PendingDeposit(F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), s, hlen)), pf)
 law xmt_l134217728_PendingDeposit:
   for +d: Nat
   for +b: Bool
@@ -1068,18 +1020,6 @@ def rs_l134217728_PendingDeposit(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -
     (D.bytes(MD.rtree(OS.dv_27(dv), Nat.is_lt(0n, MD.dlen(xl_l134217728_PendingDeposit(U32.to_nat(N), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), 0n, hl))), hl, xl_l134217728_PendingDeposit(U32.to_nat(N), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), 0n, hl), 0n)), ((OS.dv_27(dv), (k1, RS.at_depth_tree(SH.ListOf_limit(s), OS.dv_27(dv), hl, xl_l134217728_PendingDeposit(U32.to_nat(N), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), 0n, hl), OS.dvl(OS.dv_27, dv, edv, {==}), xhl_l134217728_PendingDeposit(N, SH.ListOf_limit(s), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), hl, hvN), ehl))),
      xlm_l134217728_PendingDeposit(hl, ehl, N, MD.rtree(OS.dv_27(dv), Nat.is_lt(0n, MD.dlen(xl_l134217728_PendingDeposit(U32.to_nat(N), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), 0n, hl))), hl, xl_l134217728_PendingDeposit(U32.to_nat(N), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t), 0n, hl), 0n), F.array__slots(FuluPendingDeposit_d.PendingDeposit, t)))))))
 
-law nth_l134217728_PendingPartialWithdrawal:
-  for +W: List<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W, i) == Some{LV.xat_l134217728_PendingPartialWithdrawal(W, i)} : Maybe<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
-def nth_l134217728_PendingPartialWithdrawal(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, Nil{}, i) == Some{LV.xat_l134217728_PendingPartialWithdrawal(Nil{}, i)} : Maybe<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l134217728_PendingPartialWithdrawal(t, j, hi)
 def xl_l134217728_PendingPartialWithdrawal(k: Nat, +W: List<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -1161,7 +1101,7 @@ def xget_l134217728_PendingPartialWithdrawal(+dw: Nat, +t: F.array__Tree<FuluPen
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, dw, t, s, pf, hs)
   F.array__get(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, dw, t, U32.from_nat(s), LV.xat_l134217728_PendingPartialWithdrawal(F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l134217728_PendingPartialWithdrawal(F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s), e1, nth_l134217728_PendingPartialWithdrawal(F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s, hlen)), pf)
+    XS.at_nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l134217728_PendingPartialWithdrawal(F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s), e1, LV.nth_l134217728_PendingPartialWithdrawal(F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), s, hlen)), pf)
 law xmt_l134217728_PendingPartialWithdrawal:
   for +d: Nat
   for +b: Bool
@@ -1293,18 +1233,6 @@ def rs_l134217728_PendingPartialWithdrawal(+hl: Nat, +ehl: {hl == 64n : Nat}, -h
     (D.bytes(MD.rtree(OS.dv_27(dv), Nat.is_lt(0n, MD.dlen(xl_l134217728_PendingPartialWithdrawal(U32.to_nat(N), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), 0n, hl))), hl, xl_l134217728_PendingPartialWithdrawal(U32.to_nat(N), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), 0n, hl), 0n)), ((OS.dv_27(dv), (k1, RS.at_depth_tree(SH.ListOf_limit(s), OS.dv_27(dv), hl, xl_l134217728_PendingPartialWithdrawal(U32.to_nat(N), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), 0n, hl), OS.dvl(OS.dv_27, dv, edv, {==}), xhl_l134217728_PendingPartialWithdrawal(N, SH.ListOf_limit(s), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), hl, hvN), ehl))),
      xlm_l134217728_PendingPartialWithdrawal(hl, ehl, N, MD.rtree(OS.dv_27(dv), Nat.is_lt(0n, MD.dlen(xl_l134217728_PendingPartialWithdrawal(U32.to_nat(N), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), 0n, hl))), hl, xl_l134217728_PendingPartialWithdrawal(U32.to_nat(N), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t), 0n, hl), 0n), F.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, t)))))))
 
-law nth_l262144_PendingConsolidation:
-  for +W: List<&2, FuluPendingConsolidation_d.PendingConsolidation>
-  for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingConsolidation_d.PendingConsolidation, W)) == True{} : Bool}
-  {F.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, W, i) == Some{LV.xat_l262144_PendingConsolidation(W, i)} : Maybe<&2, FuluPendingConsolidation_d.PendingConsolidation>}
-def nth_l262144_PendingConsolidation(W, i, hi):
-  match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, Nil{}, i) == Some{LV.xat_l262144_PendingConsolidation(Nil{}, i)} : Maybe<&2, FuluPendingConsolidation_d.PendingConsolidation>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
-    case Con{+x, +t}:
-      match i:
-        case 0n: {==}
-        case 1n+ +j: nth_l262144_PendingConsolidation(t, j, hi)
 def xl_l262144_PendingConsolidation(k: Nat, +W: List<&2, FuluPendingConsolidation_d.PendingConsolidation>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
@@ -1386,7 +1314,7 @@ def xget_l262144_PendingConsolidation(+dw: Nat, +t: F.array__Tree<FuluPendingCon
   +e1 = F.u32__to_nat_from_nat(s, dw, F.nat__lt_le(dw, 32n, hd), hs)
   +hlen = XS.lt_len(FuluPendingConsolidation_d.PendingConsolidation, dw, t, s, pf, hs)
   F.array__get(FuluPendingConsolidation_d.PendingConsolidation, dw, t, U32.from_nat(s), LV.xat_l262144_PendingConsolidation(F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s), hd, MR.hi_at(dw, s, hd, hs),
-    XS.at_nth(FuluPendingConsolidation_d.PendingConsolidation, F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l262144_PendingConsolidation(F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s), e1, nth_l262144_PendingConsolidation(F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s, hlen)), pf)
+    XS.at_nth(FuluPendingConsolidation_d.PendingConsolidation, F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s, U32.to_nat(U32.from_nat(s)), LV.xat_l262144_PendingConsolidation(F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s), e1, LV.nth_l262144_PendingConsolidation(F.array__slots(FuluPendingConsolidation_d.PendingConsolidation, t), s, hlen)), pf)
 law xmt_l262144_PendingConsolidation:
   for +d: Nat
   for +b: Bool

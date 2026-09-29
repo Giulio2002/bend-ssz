@@ -805,7 +805,7 @@ def vr_l1048576_bl1073741824(-o: Fulu_list_bytelist_1073741824_1048576_d.l104857
     {VD.root_valid(RT_L.xv_l1048576_bl1073741824(o), _) == True{} : Bool}
   %Equal.sym(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, o, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT_L.am_l1048576_bl1073741824(t), N}, eo) :
     {VD.root_valid(RT_L.xv_l1048576_bl1073741824(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.WMr>>, RT_L.tfz_l1048576_bl1073741824(RT_L.am_l1048576_bl1073741824(t)), t, RT_L.tfzam_l1048576_bl1073741824(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.WMr>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.WMr>, t), 0n), S.Repeat{SH.ListOf_element(s)}), True{}, vtval_l1048576_bl1073741824(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.WMr>, t), 0n, SH.ListOf_element(s), er, dv, edv, kel, eq)) :
     {Bool.and(Nat.is_le(VD.items_length(RT_L.xi_l1048576_bl1073741824(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.WMr>, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
@@ -1253,7 +1253,7 @@ def vr_l16_ProposerSlashing(-o: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlas
     {VD.root_valid(RT_L.xv_l16_ProposerSlashing(o), _) == True{} : Bool}
   %Equal.sym(Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, o, Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{RT_L.am_l16_ProposerSlashing(t), N}, eo) :
     {VD.root_valid(RT_L.xv_l16_ProposerSlashing(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_ProposerSlashing>>, RT_L.tfz_l16_ProposerSlashing(RT_L.am_l16_ProposerSlashing(t)), t, RT.tfzam_l16_ProposerSlashing(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_ProposerSlashing>>, RT_L.tfz_l16_ProposerSlashing(RT_L.am_l16_ProposerSlashing(t)), t, RT_L.tfzam_l16_ProposerSlashing(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_l16_ProposerSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_ProposerSlashing>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT_L.xi_l16_ProposerSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_ProposerSlashing>, t), 0n), S.Repeat{SH.ListOf_element(s)}), True{}, vtval_l16_ProposerSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_ProposerSlashing>, t), 0n, SH.ListOf_element(s), er, dv, edv, kel, eq)) :
     {Bool.and(Nat.is_le(VD.items_length(RT_L.xi_l16_ProposerSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_ProposerSlashing>, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
@@ -1317,7 +1317,7 @@ def vr_l1_AttesterSlashing(-o: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashin
     {VD.root_valid(RT_L.xv_l1_AttesterSlashing(o), _) == True{} : Bool}
   %Equal.sym(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq, o, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{RT_L.am_l1_AttesterSlashing(t), N}, eo) :
     {VD.root_valid(RT_L.xv_l1_AttesterSlashing(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_AttesterSlashing>>, RT_L.tfz_l1_AttesterSlashing(RT_L.am_l1_AttesterSlashing(t)), t, RT.tfzam_l1_AttesterSlashing(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_AttesterSlashing>>, RT_L.tfz_l1_AttesterSlashing(RT_L.am_l1_AttesterSlashing(t)), t, RT_L.tfzam_l1_AttesterSlashing(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_l1_AttesterSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_AttesterSlashing>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT_L.xi_l1_AttesterSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_AttesterSlashing>, t), 0n), S.Repeat{SH.ListOf_element(s)}), True{}, vtval_l1_AttesterSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_AttesterSlashing>, t), 0n, SH.ListOf_element(s), er, dv, edv, kel, eq)) :
     {Bool.and(Nat.is_le(VD.items_length(RT_L.xi_l1_AttesterSlashing(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_AttesterSlashing>, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
@@ -1375,7 +1375,7 @@ def vr_l8_Attestation(-o: Fulu_list_Attestation_8_d.l8_Attestation_Seq, +s: S.Sc
     {VD.root_valid(RT_L.xv_l8_Attestation(o), _) == True{} : Bool}
   %Equal.sym(Fulu_list_Attestation_8_d.l8_Attestation_Seq, o, Fulu_list_Attestation_8_d.l8_Attestation_Seq{RT_L.am_l8_Attestation(t), N}, eo) :
     {VD.root_valid(RT_L.xv_l8_Attestation(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Attestation>>, RT_L.tfz_l8_Attestation(RT_L.am_l8_Attestation(t)), t, RT.tfzam_l8_Attestation(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Attestation>>, RT_L.tfz_l8_Attestation(RT_L.am_l8_Attestation(t)), t, RT_L.tfzam_l8_Attestation(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_l8_Attestation(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Attestation>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT_L.xi_l8_Attestation(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Attestation>, t), 0n), S.Repeat{SH.ListOf_element(s)}), True{}, vtval_l8_Attestation(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Attestation>, t), 0n, SH.ListOf_element(s), er, dv, edv, kel, eq)) :
     {Bool.and(Nat.is_le(VD.items_length(RT_L.xi_l8_Attestation(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Attestation>, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
@@ -1439,7 +1439,7 @@ def vr_l16_Deposit(-o: Fulu_list_Deposit_16_d.l16_Deposit_Seq, +s: S.Schema, +re
     {VD.root_valid(RT_L.xv_l16_Deposit(o), _) == True{} : Bool}
   %Equal.sym(Fulu_list_Deposit_16_d.l16_Deposit_Seq, o, Fulu_list_Deposit_16_d.l16_Deposit_Seq{RT_L.am_l16_Deposit(t), N}, eo) :
     {VD.root_valid(RT_L.xv_l16_Deposit(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Deposit>>, RT_L.tfz_l16_Deposit(RT_L.am_l16_Deposit(t)), t, RT.tfzam_l16_Deposit(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Deposit>>, RT_L.tfz_l16_Deposit(RT_L.am_l16_Deposit(t)), t, RT_L.tfzam_l16_Deposit(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_l16_Deposit(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Deposit>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT_L.xi_l16_Deposit(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Deposit>, t), 0n), S.Repeat{SH.ListOf_element(s)}), True{}, vtval_l16_Deposit(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Deposit>, t), 0n, SH.ListOf_element(s), er, dv, edv, kel, eq)) :
     {Bool.and(Nat.is_le(VD.items_length(RT_L.xi_l16_Deposit(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Deposit>, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
