@@ -4583,11 +4583,12 @@ def cont_strict(q, t, res):
     if q.stem in OKW_SKIP:
         pass   # (its OKW chains would double a 40 s check past the 600 s limit: BeaconState keeps OK's 2^30)
     elif 'def OKT(' in t:
-        tf, _ = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True)
-        t, bad3 = okw.okw_iface(t, child)
+        dch = q.stem in okw.LIST_D_STEMS   # (its list children in D form)
+        tf, _ = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True, dchild=dch)
+        t, bad3 = okw.okw_iface(t, child, dchild=dch)
         _COMP[q] = (t, tf)   # (the size and validity passes on OKW: the companion <iface>_o, main)
     elif 'def PUTC(' in t:   # (a container writer; the unions keep their arms on OK)
-        t = okw.okw_writer(t, child)
+        t = okw.okw_writer(t, child, dchild=q.stem in okw.LIST_D_STEMS)
     return t, bad1 + bad2 + bad3
 
 
