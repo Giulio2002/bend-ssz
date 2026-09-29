@@ -47,10 +47,11 @@ law ok_eval:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   {FuluTransaction_r.bl1073741824_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
-def ok_eval(d, t, n, pf, hd, hn): EW.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
+def ok_eval(d, t, n, pf, hd, hn, hN): EW.ok_evalwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
 law decode_accept:
@@ -58,16 +59,17 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {FuluTransaction_r.Transaction_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
-def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, FuluTransaction_r.bl1073741824_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+def decode_accept(d, t, n, pf, hd, hn, hN, hchk):
+  %Equal.sym(B.Buf & Bool, FuluTransaction_r.bl1073741824_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn, hN)) :
     {FuluTransaction_r.Transaction_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {FuluTransaction_r.Transaction_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
-  %Equal.sym(B.Buf & O.Words, FuluTransaction_r.bl1073741824_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(B.Buf & O.Words, FuluTransaction_r.bl1073741824_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)) :
     {FuluTransaction_r.Transaction_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
@@ -77,15 +79,16 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.Transaction(), VW(t, n), VAL(t, n))
-def decode_spec(d, t, n, pf, hd, hn, hchk):
+def decode_spec(d, t, n, pf, hd, hn, hN, hchk):
   # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
   # Codec.bytes was compared with the spec encoding by running the encoder
   %F.efl_bytes(Spec.Transaction(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Transaction()), Some{[S.Variable{UW.WX(t, 0n, U32.to_nat(n))}]}, EW.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.Transaction()), Some{[S.Variable{UW.WX(t, 0n, U32.to_nat(n))}]}, EW.specwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}
 
@@ -95,14 +98,15 @@ law decode_unique:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   for +v: S.Value
   for spec: Decoding.decodes(Spec.Transaction(), VW(t, n), v)
   {v == VAL(t, n) : S.Value}
-def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
-  DCO.valid_unique(Spec.Transaction(), VW(t, n), v, VAL(t, n), {==}, spec, decode_spec(d, t, n, pf, hd, hn, hchk))
+def decode_unique(d, t, n, pf, hd, hn, hN, hchk, v, spec):
+  DCO.valid_unique(Spec.Transaction(), VW(t, n), v, VAL(t, n), {==}, spec, decode_spec(d, t, n, pf, hd, hn, hN, hchk))
 
 # A value encoding to the buffer's bytes has them as its one variable part (the limit
 # test ByteList.domain(limit, xs) stays a variable b).
@@ -127,11 +131,11 @@ def rjt(+v: S.Value, +ys: +List<U32>, +e: {Codec.encoding_for_legal_type(Spec.Tr
     case S.Selected{+sel0, +sv0}: Empty.absurd({Codec.parts(S.Selected{sel0, sv0}, Spec.Transaction()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}, FD.logic__none_some(+List<U32>, ys, e))
     case S.NullValue{}: Empty.absurd({Codec.parts(S.NullValue{}, Spec.Transaction()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}, FD.logic__none_some(+List<U32>, ys, e))
 
-def rej_f(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool}, +v: S.Value,
+def rej_f(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool}, +v: S.Value,
     +e: {Codec.encoding_for_legal_type(Spec.Transaction(), v) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   FD.logic__true_false(Equal.trans(Bool, True{}, CHK(t, n), False{},
-    Equal.sym(Bool, CHK(t, n), True{}, EW.invw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, v, rjt(v, VW(t, n), e))), hchk))
+    Equal.sym(Bool, CHK(t, n), True{}, EW.invwD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, v, rjt(v, VW(t, n), e))), hchk))
 
 # When the validator refuses, no value is related to the buffer's bytes.
 law decode_reject:
@@ -139,17 +143,18 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   Decoding.outside_image(Spec.Transaction(), VW(t, n))
-def decode_reject(d, t, n, pf, hd, hn, hchk):
-  v => e => rej_f(d, t, n, pf, hd, hn, hchk, v, e)
+def decode_reject(d, t, n, pf, hd, hn, hN, hchk):
+  v => e => rej_f(d, t, n, pf, hd, hn, hN, hchk, v, e)
 
-def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool})
+def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool})
     -> {FuluTransaction_r.Transaction_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(B.Buf & Bool, FuluTransaction_r.bl1073741824_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+  %Equal.sym(B.Buf & Bool, FuluTransaction_r.bl1073741824_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn, hN)) :
     {FuluTransaction_r.Transaction_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
     {FuluTransaction_r.Transaction_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
@@ -161,9 +166,10 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {FuluTransaction_r.Transaction_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
-def decode_none(d, t, n, pf, hd, hn, hchk): none_go(d, t, n, pf, hd, hn, hchk)
+def decode_none(d, t, n, pf, hd, hn, hN, hchk): none_go(d, t, n, pf, hd, hn, hN, hchk)
 

@@ -270,8 +270,10 @@ def main():
     nb = '--no-big' in sys.argv
     out = {}
     if not nb:
-        out[ROOT / 'proofs/obj/big_var_codec_ExecutionPayload.bend'] = ep_text()
-        out[ROOT / 'proofs/obj/big_var_codec_Transaction.bend'] = tx_text()
+        # the whole-buffer laws at any depth d < 31 over the (hwN) windows' D interface, n <= NMAX their premise hN
+        import var_winb as WB
+        out[ROOT / 'proofs/obj/big_var_codec_ExecutionPayload.bend'] = WB.top_deep(ep_text(), 'EW', 'hwN')
+        out[ROOT / 'proofs/obj/big_var_codec_Transaction.bend'] = WB.top_deep(tx_text(), 'EW', 'hwN')
         out[ROOT / 'proofs/obj/big_var_codec_Transaction_enc.bend'] = tx_enc_deep(TX_ENC)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)

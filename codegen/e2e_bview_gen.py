@@ -2221,7 +2221,7 @@ def vhb_text(X):
     import e2e_var_b as EVB
     lv = [l for l in VHB_LEVELS if l[0] == X][0]
     _, fn, callpat, ty = lv
-    vbx = EVB.SUPPORT_OUT[f'e2e_vbx_{X}.bend']
+    vbx = EVB.SUPPORT_OUT.get(f'e2e_vbxY_{X}.bend') or EVB.SUPPORT_OUT[f'e2e_vbx_{X}.bend']   # the deep twin (any depth d < 31, within NMAX) when there is one
     i = vbx.index('\ndef vb(') + 1
     j = vbx.index('\n  vz(d, t, x, off, len', i)
     sig_end = vbx.index('-> {', i)
@@ -2271,13 +2271,13 @@ def vhb_view(view, X):
     i = vv.index('def vv(')
     j = vv.index('\n\n', i)
     dv = vv[i:j]
-    m = re.search(r'\n  VWX\.vb\((.*)\)\s*$', dv)
-    assert m, dv[-200:]
+    k = dv.index('VWX.vb(')
+    vargs = _paren_args(dv, k + len('VWX.vb'))
     sig = dv[:dv.index(' -> {')].replace('def vv(', 'def decoded_hv(')
     text = vv + f"""
 # the decoded object's attestation list satisfies the encode record's premise sd8 (e2e_vhb_{X})
 {sig} -> {ty}:
-  HVX.hv_{X}({m.group(1)})
+  HVX.hv_{X}({vargs})
 
 """
     imps = list(view['imports']) + [f'import ./e2e_vhb_{X}.bend as HVX', 'import ./e2e_bbatt.bend as BBA']
