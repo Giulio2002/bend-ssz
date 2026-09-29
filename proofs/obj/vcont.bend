@@ -611,6 +611,25 @@ def nw_nat(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat
       Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), Nat.add(U32.to_nat(L), 3n), e2),
       Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), Nat.add(U32.to_nat(L), 3n), 3n+U32.to_nat(L), F.nat__add_comm(U32.to_nat(L), 3n))))
 
+# c + x below 2^(a+1) for c <= 2^a and x < 2^a.
+def lt_ca(+c: Nat, +x: Nat, +a: Nat, +hc: {Nat.is_le(c, VB.pw(a)) == True{} : Bool}, +h: {Nat.is_lt(x, VB.pw(a)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(c, x), F.spec_common__pow2(1n+a)) == True{} : Bool}:
+  +P = VB.pw(a)
+  F.nat__lt_le_trans(Nat.add(c, x), Nat.add(c, P), F.spec_common__pow2(1n+a), F.nat__lt_add_left(x, P, c, h),
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(c, P), z) == True{} : Bool}, Nat.add(P, P), Nat.double(P), Equal.sym(Nat, Nat.double(P), Nat.add(P, P), F.lru_nat_algebra__double_self(P)),
+      Order.add_right(c, P, P, hc)))
+
+# S below 2^(2+k) is at most 4 2^k.
+def le_qk(+S: Nat, +k: Nat, +h: {Nat.is_lt(S, VB.pw(Nat.add(2n, k))) == True{} : Bool}) -> {Nat.is_le(S, A.quad(VB.pw(k))) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(S, z) == True{} : Bool}, VB.pw(Nat.add(2n, k)), A.quad(VB.pw(k)), Equal.sym(Nat, A.quad(VB.pw(k)), VB.pw(Nat.add(2n, k)), UW.qpw(k)), F.nat__lt_le(S, VB.pw(Nat.add(2n, k)), h))
+
+# The word count of a length below 2^31 (L + 3 stays below 2^32: any output depth).
+def nw_nat31(+L: U32, +h: {Nat.is_lt(U32.to_nat(L), VB.pw(31n)) == True{} : Bool}) -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
+  +hc = F.nat__le_trans(U32.to_nat(3), VB.pw(2n), VB.pw(31n), {==}, F.nat__pow2_mono(2n, 31n, {==}))
+  +e2 = VB.add_lt32(L, 3, U32.to_nat(L), {==}, lt_ca(U32.to_nat(3), U32.to_nat(L), 31n, hc, h))
+  Equal.trans(Nat, VC.NW(L), VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), WD.NWN(U32.to_nat(L)), VD.shrk(2n, U32.add(L, 3)),
+    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), e2))
+
 # ---- the F0-last forms: a container with fixed pieces of codegen/var_cont_enc.py's BIGPIECE bytes or more
 # writes its fixed size F0 (a literal) last in every sum, Nat.add(SUM(..), F0), so a comparison of two such
 # sums stops at the variable pieces' lengths and never unfolds F0 (Nat.add recurses on its first argument).

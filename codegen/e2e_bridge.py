@@ -3309,6 +3309,12 @@ def outputs():
     for _f, _txt in list(fd['support'].items()) + list(fd['files'].items()):
         out[OUT / _f] = _txt
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
+    for R0, u in list(man['decode_uncovered'].items()):
+        cv = fd['cover'].get(u['generated_name'], {})
+        if 'ii_iii' in cv:
+            del man['decode_uncovered'][R0]
+            man['files'].setdefault(cv['ii_iii'], []).append({'name': R0, 'generated_name': u['generated_name'], 'ii': cv.get('ii', 'view'),
+                                                              'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject']})
     man['fixed_size'] = {}
     for X0, cv in sorted(fd['cover'].items()):
         R0 = inv.get(X0)
