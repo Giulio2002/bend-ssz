@@ -12,7 +12,6 @@ import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/big_vvlu.bend as VVU
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/root_types.bend as RTH
 import ../proofs/obj/big_vvl_l8_Attestation.bend as W
 import ../proofs/obj/big_var_winx_Attestation.bend as YW
 import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
@@ -114,7 +113,7 @@ def elv_l8_Attestation(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +le
 
 def hx_at_l8_Attestation(+dd: Nat, +T: FD.array__Tree<RT.MB<RT.M_Attestation>>, +s: Nat, +pf: {FD.array__perfect(RT.MB<RT.M_Attestation>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
     -> {FD.spec_common__nth(RT.MB<RT.M_Attestation>, FD.array__slots(RT.MB<RT.M_Attestation>, T), s) == Some{RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), s)} : Maybe<&2, RT.MB<RT.M_Attestation>>}:
-  RTH.nth_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT.MB<RT.M_Attestation>, FD.array__slots(RT.MB<RT.M_Attestation>, T)),
+  RT.nth_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT.MB<RT.M_Attestation>, FD.array__slots(RT.MB<RT.M_Attestation>, T)),
     Equal.sym(Nat, FD.spec_common__length(RT.MB<RT.M_Attestation>, FD.array__slots(RT.MB<RT.M_Attestation>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT.MB<RT.M_Attestation>, dd, T, pf)), hs))
 
 # ---- the reader's chain of writes is am of FT ----
@@ -127,13 +126,13 @@ def rvF_l8_Attestation(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RTH.amset_l8_Attestation(dd, T, i, u, RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), U32.to_nat(i)), hdd, hi, hx_at_l8_Attestation(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT.amset_l8_Attestation(dd, T, i, u, RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), U32.to_nat(i)), hdd, hi, hx_at_l8_Attestation(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = W.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = W.ev_ok(q, U32.add(i, 1), m, t, x, off, len, W.EE(True{}, t, x, off, len, W.WJ(t, x, i), nb), nb, hE)
       %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>>, Array.set(O.Boxed<FuluAttestation_d.Attestation>, RT.am_l8_Attestation(T), i, RT.th_Attestation_bx(u)), RT.am_l8_Attestation(FD.array__upd(RT.MB<RT.M_Attestation>, dd, T, U32.to_nat(i), u)),
-          RTH.amset_l8_Attestation(dd, T, i, u, RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), U32.to_nat(i)), hdd, hi, hx_at_l8_Attestation(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+          RT.amset_l8_Attestation(dd, T, i, u, RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, T), U32.to_nat(i)), hdd, hi, hx_at_l8_Attestation(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
         {W.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, W.OBJE(d, t, x, off, W.WJ(t, x, i), nb)) == RT.am_l8_Attestation(FT_l8_Attestation(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<FuluAttestation_d.Attestation>>}
       %Equal.sym(O.Boxed<FuluAttestation_d.Attestation>, W.OBJE(d, t, x, off, W.WJ(t, x, i), nb), RT.th_Attestation_bx(NV_l8_Attestation(i, m, d, t, x, off, len)), eqE_l8_Attestation(d, t, x, off, len, eo, hd, hw, hw32, pf, W.WJ(t, x, i), nb, hc)) :
         {W.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT.am_l8_Attestation(FD.array__upd(RT.MB<RT.M_Attestation>, dd, T, U32.to_nat(i), u)), _) == RT.am_l8_Attestation(FT_l8_Attestation(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<FuluAttestation_d.Attestation>>}
@@ -306,7 +305,7 @@ def vtf_l8_Attestation(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +le
     {S.Sequence{RT.xi_l8_Attestation(U32.to_nat(N), FD.array__slots(RT.MB<RT.M_Attestation>, RT.tfz_l8_Attestation(W.RV(k0, 0, N, d, t, x, off, len, _, RT.th_Attestation_bx(u0)))), 0n)} == W.VZE(False{}, t, x, len) : S.Value}
   %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>>, W.RV(k0, 0, N, d, t, x, off, len, RT.am_l8_Attestation(T0), RT.th_Attestation_bx(u0)), RT.am_l8_Attestation(FK), rvF_l8_Attestation(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
     {S.Sequence{RT.xi_l8_Attestation(U32.to_nat(N), FD.array__slots(RT.MB<RT.M_Attestation>, RT.tfz_l8_Attestation(_)), 0n)} == W.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT.MB<RT.M_Attestation>>, RT.tfz_l8_Attestation(RT.am_l8_Attestation(FK)), FK, RTH.tfzam_l8_Attestation(FK)) :
+  %Equal.sym(FD.array__Tree<RT.MB<RT.M_Attestation>>, RT.tfz_l8_Attestation(RT.am_l8_Attestation(FK)), FK, RT.tfzam_l8_Attestation(FK)) :
     {S.Sequence{RT.xi_l8_Attestation(U32.to_nat(N), FD.array__slots(RT.MB<RT.M_Attestation>, _), 0n)} == W.VZE(False{}, t, x, len) : S.Value}
   %inv : {S.Sequence{RT.xi_l8_Attestation(_, FD.array__slots(RT.MB<RT.M_Attestation>, FK), 0n)} == W.VZE(False{}, t, x, len) : S.Value}
   %Equal.sym(RT.MB<RT.M_Attestation>, RT.xat_l8_Attestation(FD.array__slots(RT.MB<RT.M_Attestation>, FK), 0n), u0, x0) :

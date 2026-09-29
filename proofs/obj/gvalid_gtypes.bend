@@ -182,7 +182,7 @@ def vr_v2_Gc465214E502(-o: vec_VarTestStruct_2_d.v2_Gc465214E502_Seq, +s: S.Sche
   %eN : {VD.root_valid(RT_L.xv_v2_Gc465214E502(o), S.Vector{SH.Vector_element(s), _}) == True{} : Bool}
   %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq, o, vec_VarTestStruct_2_d.v2_Gc465214E502_Seq{RT_L.am_v2_Gc465214E502(t), N}, eo) :
     {VD.root_valid(RT_L.xv_v2_Gc465214E502(_), S.Vector{SH.Vector_element(s), U32.to_nat(N)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gc465214E502>>, RT_L.tfz_v2_Gc465214E502(RT_L.am_v2_Gc465214E502(t)), t, RT.tfzam_v2_Gc465214E502(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gc465214E502>>, RT_L.tfz_v2_Gc465214E502(RT_L.am_v2_Gc465214E502(t)), t, RT_L.tfzam_v2_Gc465214E502(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, _), 0n)}, S.Vector{SH.Vector_element(s), U32.to_nat(N)}) == True{} : Bool}
   VO.vfin(U32.to_nat(N), RT_L.xi_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, t), 0n), SH.Vector_element(s), kp, vtlen_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, t), 0n), vtval_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, t), 0n, SH.Vector_element(s), er, dv, edv, kel, eq))
 

@@ -25,8 +25,10 @@ import ../../types/CompatibleUnionABCA_def_generated.bend as CompatibleUnionABCA
 import ../../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
+import ./amap.bend as AM
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
+import ./mtree_defs.bend as MD
 import ./bitlist_obj_light.bend as BO
 import ./root_gnames_light.bend as RN
 import ./ulist_obj_light.bend as UL
@@ -52,6 +54,11 @@ def th_w(m: WMr) -> O.Words:
 def fz_w(x: O.Words) -> WMr:
   match x:
     case O.Words{ws, +n}: WMr{F.array__freeze(U32, ws), n}
+def fzth_w(+m: WMr) -> {fz_w(th_w(m)) == m : WMr}:
+  match m:
+    case WMr{+t, +n}:
+      %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) : {WMr{_, n} == WMr{t, n} : WMr}
+      {==}
 type BMr is Data:
   BMr{t: F.array__Tree<U32>, k: U32}
 def th_b(m: BMr) -> O.Bits:
@@ -60,6 +67,11 @@ def th_b(m: BMr) -> O.Bits:
 def fz_b(x: O.Bits) -> BMr:
   match x:
     case O.Bits{ws, +k}: BMr{F.array__freeze(U32, ws), k}
+def fzth_b(+m: BMr) -> {fz_b(th_b(m)) == m : BMr}:
+  match m:
+    case BMr{+t, +k}:
+      %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) : {BMr{_, k} == BMr{t, k} : BMr}
+      {==}
 type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
@@ -81,6 +93,18 @@ def xat_pl_Gc4ED9619F50(W: List<&2, SmallTestStruct_d.Gc4ED9619F50>, +i: Nat) ->
       match i:
         case 0n: x
         case 1n+j: xat_pl_Gc4ED9619F50(t, j)
+law nth_pl_Gc4ED9619F50:
+  for +W: List<&2, SmallTestStruct_d.Gc4ED9619F50>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(SmallTestStruct_d.Gc4ED9619F50, W)) == True{} : Bool}
+  {F.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i) == Some{xat_pl_Gc4ED9619F50(W, i)} : Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>}
+def nth_pl_Gc4ED9619F50(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, Nil{}, i) == Some{xat_pl_Gc4ED9619F50(Nil{}, i)} : Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_pl_Gc4ED9619F50(t, j, hi)
 def xi_pl_Gc4ED9619F50(k: Nat, +W: List<&2, SmallTestStruct_d.Gc4ED9619F50>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -130,6 +154,13 @@ def th_Gc465214E502(m: M_Gc465214E502) -> VarTestStruct_d.Gc465214E502:
 def fz_Gc465214E502(x: VarTestStruct_d.Gc465214E502) -> M_Gc465214E502:
   match x:
     case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: M_Gc465214E502{x0, fz_w(x1), x2}
+def fzth_Gc465214E502(+m: M_Gc465214E502) -> {fz_Gc465214E502(th_Gc465214E502(m)) == m : M_Gc465214E502}:
+  match m:
+    case M_Gc465214E502{+a0, +a1, +a2}:
+      %Equal.sym(WMr, fz_w(th_w(a1)), a1, fzth_w(a1)) :
+        {M_Gc465214E502{a0, _, a2} == M_Gc465214E502{a0, a1, a2} : M_Gc465214E502}
+      {==}
+
 def th_Gc465214E502_bx(m: MB<M_Gc465214E502>) -> O.Boxed<VarTestStruct_d.Gc465214E502>:
   match m:
     case MSome{+v}: O.BSome{th_Gc465214E502(v), O.BNone{}}
@@ -138,12 +169,98 @@ def fz_Gc465214E502_bx(x: O.Boxed<VarTestStruct_d.Gc465214E502>) -> MB<M_Gc46521
   match x:
     case O.BSome{v, rest}: MSome{fz_Gc465214E502(v)}
     case O.BNone{}: MNone{}
+def fzth_Gc465214E502_bx(+m: MB<M_Gc465214E502>) -> {fz_Gc465214E502_bx(th_Gc465214E502_bx(m)) == m : MB<M_Gc465214E502>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_Gc465214E502, fz_Gc465214E502(th_Gc465214E502(v)), v, fzth_Gc465214E502(v)) : {MSome{_} == MSome{v} : MB<M_Gc465214E502>}
+      {==}
+    case MNone{}: {==}
+
 # ---- pl_Gc465214E502: progressive list of Gc465214E502_bx (Type-kind elements, through mirrors) ----
 def am_pl_Gc465214E502(t: F.array__Tree<MB<M_Gc465214E502>>) -> Array<O.Boxed<VarTestStruct_d.Gc465214E502>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_Gc465214E502_bx(x)}
     case F.TNode{l, r}: ANode{am_pl_Gc465214E502(l), am_pl_Gc465214E502(r)}
 
+def amsize_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_Gc465214E502>>, +pf: {F.array__perfect(MB<M_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t)) == (am_pl_Gc465214E502(t), F.u32__pow2u(d)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(F.TNode{l, r})) == (am_pl_Gc465214E502(F.TNode{l, r}), 1) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<VarTestStruct_d.Gc465214E502>, ALeaf{th_Gc465214E502_bx(x)}) == (ALeaf{th_Gc465214E502_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32, Array.size(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l)), (am_pl_Gc465214E502(l), F.u32__pow2u(p)), amsize_pl_Gc465214E502(p, l, F.array__pf_left(MB<M_Gc465214E502>, p, l, r, pf))) : {Array.size.node(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), _) == (ANode{am_pl_Gc465214E502(l), am_pl_Gc465214E502(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32}
+      {==}
+
+def amswap_go_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_Gc465214E502>>, +i: U32, +v: MB<M_Gc465214E502>, +x: MB<M_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gc465214E502>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t), F.u32__pow2u(d), i, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_Gc465214E502>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Gc465214E502_bx(v)}, th_Gc465214E502_bx(y)) == (ALeaf{th_Gc465214E502_bx(v)}, th_Gc465214E502_bx(_)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(F.TNode{l, r}), 1, i, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, ALeaf{th_Gc465214E502_bx(y)}, F.u32__pow2u(1n+p), i, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Gc465214E502>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), am_pl_Gc465214E502(r), _, i, th_Gc465214E502_bx(v), U32.is_lt(i, _)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), am_pl_Gc465214E502(r), F.u32__pow2u(p), i, th_Gc465214E502_bx(v), _) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), F.u32__pow2u(p), i, th_Gc465214E502_bx(v))) == (am_pl_Gc465214E502(F.array__tupd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>, Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), F.u32__pow2u(p), i, th_Gc465214E502_bx(v)), (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, p, l, ti, v)), th_Gc465214E502_bx(x)), amswap_go_pl_Gc465214E502(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Gc465214E502>>, F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), ti), F.spec_common__nth(MB<M_Gc465214E502>, F.spec_common__append(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), F.array__slots(MB<M_Gc465214E502>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Gc465214E502>>, F.spec_common__nth(MB<M_Gc465214E502>, F.spec_common__append(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), F.array__slots(MB<M_Gc465214E502>, r)), ti), F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), ti), F.list__nth_append_left(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), F.array__slots(MB<M_Gc465214E502>, r), ti, F.array__len_lt(MB<M_Gc465214E502>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), _) == (am_pl_Gc465214E502(F.TNode{F.array__tupd(MB<M_Gc465214E502>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Gc465214E502>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, r), n) == Some{x} : Maybe<&2, MB<M_Gc465214E502>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_Gc465214E502>>, F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, r), k), F.spec_common__nth(MB<M_Gc465214E502>, F.spec_common__append(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), F.array__slots(MB<M_Gc465214E502>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Gc465214E502>>, F.spec_common__nth(MB<M_Gc465214E502>, F.spec_common__append(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, l), F.array__slots(MB<M_Gc465214E502>, r)), ti), F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, r), k), F.array__right_nth(MB<M_Gc465214E502>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_pl_Gc465214E502(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_Gc465214E502>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, p, r, n, v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), am_pl_Gc465214E502(r), _, i, th_Gc465214E502_bx(v), U32.is_lt(i, _)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), am_pl_Gc465214E502(r), F.u32__pow2u(p), i, th_Gc465214E502_bx(v), _) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_Gc465214E502_bx(v))) == (am_pl_Gc465214E502(F.array__tupd(MB<M_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>, Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_Gc465214E502_bx(v)), (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, p, r, k, v)), th_Gc465214E502_bx(x)), ih2) : {Array.swap.hi(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(l), _) == (am_pl_Gc465214E502(F.TNode{l, F.array__tupd(MB<M_Gc465214E502>, p, r, k, v, F.array__ndec(p, k))}), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_Gc465214E502>>, +i: U32, +v: MB<M_Gc465214E502>, +x: MB<M_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gc465214E502>>}, +pf: {F.array__perfect(MB<M_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t), i, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}:
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & U32, Array.size(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t)), (am_pl_Gc465214E502(t), F.u32__pow2u(d)), amsize_pl_Gc465214E502(d, t, pf)) : {Array.swap.at(O.Boxed<VarTestStruct_d.Gc465214E502>, i, th_Gc465214E502_bx(v), _) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t), F.u32__pow2u(d), _, th_Gc465214E502_bx(v)) == (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)), th_Gc465214E502_bx(x)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>}
+  amswap_go_pl_Gc465214E502(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_Gc465214E502>>, +i: U32, +v: MB<M_Gc465214E502>, +x: MB<M_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gc465214E502>>}, +pf: {F.array__perfect(MB<M_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t), i, th_Gc465214E502_bx(v)) == am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}:
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>> & O.Boxed<VarTestStruct_d.Gc465214E502>, Array.swap(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t), i, th_Gc465214E502_bx(v)), (am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)), th_Gc465214E502_bx(x)), amswap_pl_Gc465214E502(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<VarTestStruct_d.Gc465214E502>, _) == am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
+  {==}
+
+# Swap an element out (replaced by th_Gc465214E502_bx(z)), then set th_Gc465214E502_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_Gc465214E502>>, +i: U32, +z: MB<M_Gc465214E502>, +x: MB<M_Gc465214E502>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gc465214E502>>},
+    +pf: {F.array__perfect(MB<M_Gc465214E502>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), z)), i, th_Gc465214E502_bx(x)) == am_pl_Gc465214E502(t) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}:
+  +t2 = F.array__upd(MB<M_Gc465214E502>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_Gc465214E502>>, ys => {F.spec_common__nth(MB<M_Gc465214E502>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_Gc465214E502>>}, F.spec_common__update(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i), z), F.array__slots(MB<M_Gc465214E502>, t2),
+    Equal.sym(List<&2, MB<M_Gc465214E502>>, F.array__slots(MB<M_Gc465214E502>, t2), F.spec_common__update(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_Gc465214E502>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_Gc465214E502>, F.array__slots(MB<M_Gc465214E502>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, Array.set(O.Boxed<VarTestStruct_d.Gc465214E502>, am_pl_Gc465214E502(t2), i, th_Gc465214E502_bx(x)), am_pl_Gc465214E502(F.array__upd(MB<M_Gc465214E502>, d, t2, U32.to_nat(i), x)),
+      amset_pl_Gc465214E502(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_Gc465214E502>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_pl_Gc465214E502(t) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
+  %Equal.sym(F.array__Tree<MB<M_Gc465214E502>>, F.array__upd(MB<M_Gc465214E502>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_Gc465214E502>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_pl_Gc465214E502(_) == am_pl_Gc465214E502(t) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
+  {==}
 def xat_pl_Gc465214E502(W: List<&2, MB<M_Gc465214E502>>, +i: Nat) -> MB<M_Gc465214E502>:
   match W:
     case Nil{}: MNone{}
@@ -151,6 +268,18 @@ def xat_pl_Gc465214E502(W: List<&2, MB<M_Gc465214E502>>, +i: Nat) -> MB<M_Gc4652
       match i:
         case 0n: x
         case 1n+j: xat_pl_Gc465214E502(t, j)
+law nth_pl_Gc465214E502:
+  for +W: List<&2, MB<M_Gc465214E502>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_Gc465214E502>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_Gc465214E502>, W, i) == Some{xat_pl_Gc465214E502(W, i)} : Maybe<&2, MB<M_Gc465214E502>>}
+def nth_pl_Gc465214E502(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_Gc465214E502>, Nil{}, i) == Some{xat_pl_Gc465214E502(Nil{}, i)} : Maybe<&2, MB<M_Gc465214E502>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_pl_Gc465214E502(t, j, hi)
 def ereps_pl_Gc465214E502(k: Nat, +W: List<&2, MB<M_Gc465214E502>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -163,6 +292,18 @@ def tfz_pl_Gc465214E502(a: Array<O.Boxed<VarTestStruct_d.Gc465214E502>>) -> F.ar
   match a:
     case ALeaf{x}: F.TLeaf{fz_Gc465214E502_bx(x)}
     case ANode{l, r}: F.TNode{tfz_pl_Gc465214E502(l), tfz_pl_Gc465214E502(r)}
+law tfzam_pl_Gc465214E502:
+  for +t: F.array__Tree<MB<M_Gc465214E502>>
+  {tfz_pl_Gc465214E502(am_pl_Gc465214E502(t)) == t : F.array__Tree<MB<M_Gc465214E502>>}
+def tfzam_pl_Gc465214E502(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_Gc465214E502>, fz_Gc465214E502_bx(th_Gc465214E502_bx(x)), x, fzth_Gc465214E502_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_Gc465214E502>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_Gc465214E502>>, tfz_pl_Gc465214E502(am_pl_Gc465214E502(l)), l, tfzam_pl_Gc465214E502(l)) : {F.TNode{_, tfz_pl_Gc465214E502(am_pl_Gc465214E502(r))} == F.TNode{l, r} : F.array__Tree<MB<M_Gc465214E502>>}
+      %Equal.sym(F.array__Tree<MB<M_Gc465214E502>>, tfz_pl_Gc465214E502(am_pl_Gc465214E502(r)), r, tfzam_pl_Gc465214E502(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_Gc465214E502>>}
+      {==}
 def xlen_o_pl_Gc465214E502(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> U32:
   match o:
     case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: n
@@ -197,6 +338,12 @@ def th_pl_Gc465214E502(m: M_pl_Gc465214E502) -> proglist_VarTestStruct_d.pl_Gc46
 def fz_pl_Gc465214E502(x: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> M_pl_Gc465214E502:
   match x:
     case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: M_pl_Gc465214E502{tfz_pl_Gc465214E502(arr), n}
+def fzth_pl_Gc465214E502(+m: M_pl_Gc465214E502) -> {fz_pl_Gc465214E502(th_pl_Gc465214E502(m)) == m : M_pl_Gc465214E502}:
+  match m:
+    case M_pl_Gc465214E502{+t, +n}:
+      %Equal.sym(F.array__Tree<MB<M_Gc465214E502>>, tfz_pl_Gc465214E502(am_pl_Gc465214E502(t)), t, tfzam_pl_Gc465214E502(t)) : {M_pl_Gc465214E502{_, n} == M_pl_Gc465214E502{t, n} : M_pl_Gc465214E502}
+      {==}
+
 def th_pl_Gc465214E502_bx(m: MB<M_pl_Gc465214E502>) -> O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>:
   match m:
     case MSome{+v}: O.BSome{th_pl_Gc465214E502(v), O.BNone{}}
@@ -205,12 +352,98 @@ def fz_pl_Gc465214E502_bx(x: O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Se
   match x:
     case O.BSome{v, rest}: MSome{fz_pl_Gc465214E502(v)}
     case O.BNone{}: MNone{}
+def fzth_pl_Gc465214E502_bx(+m: MB<M_pl_Gc465214E502>) -> {fz_pl_Gc465214E502_bx(th_pl_Gc465214E502_bx(m)) == m : MB<M_pl_Gc465214E502>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_pl_Gc465214E502, fz_pl_Gc465214E502(th_pl_Gc465214E502(v)), v, fzth_pl_Gc465214E502(v)) : {MSome{_} == MSome{v} : MB<M_pl_Gc465214E502>}
+      {==}
+    case MNone{}: {==}
+
 # ---- pl_pl_Gc465214E502: progressive list of pl_Gc465214E502_bx (Type-kind elements, through mirrors) ----
 def am_pl_pl_Gc465214E502(t: F.array__Tree<MB<M_pl_Gc465214E502>>) -> Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_pl_Gc465214E502_bx(x)}
     case F.TNode{l, r}: ANode{am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r)}
 
+def amsize_pl_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_pl_Gc465214E502>>, +pf: {F.array__perfect(MB<M_pl_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t)) == (am_pl_pl_Gc465214E502(t), F.u32__pow2u(d)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(F.TNode{l, r})) == (am_pl_pl_Gc465214E502(F.TNode{l, r}), 1) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, ALeaf{th_pl_Gc465214E502_bx(x)}) == (ALeaf{th_pl_Gc465214E502_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32, Array.size(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l)), (am_pl_pl_Gc465214E502(l), F.u32__pow2u(p)), amsize_pl_pl_Gc465214E502(p, l, F.array__pf_left(MB<M_pl_Gc465214E502>, p, l, r, pf))) : {Array.size.node(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), _) == (ANode{am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32}
+      {==}
+
+def amswap_go_pl_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_pl_Gc465214E502>>, +i: U32, +v: MB<M_pl_Gc465214E502>, +x: MB<M_pl_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_pl_Gc465214E502>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_pl_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t), F.u32__pow2u(d), i, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_pl_Gc465214E502>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_pl_Gc465214E502_bx(v)}, th_pl_Gc465214E502_bx(y)) == (ALeaf{th_pl_Gc465214E502_bx(v)}, th_pl_Gc465214E502_bx(_)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(F.TNode{l, r}), 1, i, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, ALeaf{th_pl_Gc465214E502_bx(y)}, F.u32__pow2u(1n+p), i, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_pl_Gc465214E502>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r), _, i, th_pl_Gc465214E502_bx(v), U32.is_lt(i, _)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r), F.u32__pow2u(p), i, th_pl_Gc465214E502_bx(v), _) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), F.u32__pow2u(p), i, th_pl_Gc465214E502_bx(v))) == (am_pl_pl_Gc465214E502(F.array__tupd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v, _)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), F.u32__pow2u(p), i, th_pl_Gc465214E502_bx(v)), (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, p, l, ti, v)), th_pl_Gc465214E502_bx(x)), amswap_go_pl_pl_Gc465214E502(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_pl_Gc465214E502>>, F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), ti), F.spec_common__nth(MB<M_pl_Gc465214E502>, F.spec_common__append(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), F.array__slots(MB<M_pl_Gc465214E502>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_pl_Gc465214E502>>, F.spec_common__nth(MB<M_pl_Gc465214E502>, F.spec_common__append(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), F.array__slots(MB<M_pl_Gc465214E502>, r)), ti), F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), ti), F.list__nth_append_left(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), F.array__slots(MB<M_pl_Gc465214E502>, r), ti, F.array__len_lt(MB<M_pl_Gc465214E502>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), _) == (am_pl_pl_Gc465214E502(F.TNode{F.array__tupd(MB<M_pl_Gc465214E502>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_pl_Gc465214E502>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, r), n) == Some{x} : Maybe<&2, MB<M_pl_Gc465214E502>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_pl_Gc465214E502>>, F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, r), k), F.spec_common__nth(MB<M_pl_Gc465214E502>, F.spec_common__append(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), F.array__slots(MB<M_pl_Gc465214E502>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_pl_Gc465214E502>>, F.spec_common__nth(MB<M_pl_Gc465214E502>, F.spec_common__append(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, l), F.array__slots(MB<M_pl_Gc465214E502>, r)), ti), F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, r), k), F.array__right_nth(MB<M_pl_Gc465214E502>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_pl_pl_Gc465214E502(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_pl_Gc465214E502>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, p, r, n, v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r), _, i, th_pl_Gc465214E502_bx(v), U32.is_lt(i, _)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), am_pl_pl_Gc465214E502(r), F.u32__pow2u(p), i, th_pl_Gc465214E502_bx(v), _) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_pl_Gc465214E502_bx(v))) == (am_pl_pl_Gc465214E502(F.array__tupd(MB<M_pl_Gc465214E502>, 1n+p, F.TNode{l, r}, ti, v, _)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(r), F.u32__pow2u(p), j, th_pl_Gc465214E502_bx(v)), (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, p, r, k, v)), th_pl_Gc465214E502_bx(x)), ih2) : {Array.swap.hi(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(l), _) == (am_pl_pl_Gc465214E502(F.TNode{l, F.array__tupd(MB<M_pl_Gc465214E502>, p, r, k, v, F.array__ndec(p, k))}), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_pl_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_pl_Gc465214E502>>, +i: U32, +v: MB<M_pl_Gc465214E502>, +x: MB<M_pl_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_pl_Gc465214E502>>}, +pf: {F.array__perfect(MB<M_pl_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t), i, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}:
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & U32, Array.size(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t)), (am_pl_pl_Gc465214E502(t), F.u32__pow2u(d)), amsize_pl_pl_Gc465214E502(d, t, pf)) : {Array.swap.at(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, i, th_pl_Gc465214E502_bx(v), _) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t), F.u32__pow2u(d), _, th_pl_Gc465214E502_bx(v)) == (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}
+  amswap_go_pl_pl_Gc465214E502(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_pl_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_pl_Gc465214E502>>, +i: U32, +v: MB<M_pl_Gc465214E502>, +x: MB<M_pl_Gc465214E502>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_pl_Gc465214E502>>}, +pf: {F.array__perfect(MB<M_pl_Gc465214E502>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t), i, th_pl_Gc465214E502_bx(v)) == am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}:
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, Array.swap(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t), i, th_pl_Gc465214E502_bx(v)), (am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)), th_pl_Gc465214E502_bx(x)), amswap_pl_pl_Gc465214E502(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, _) == am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
+  {==}
+
+# Swap an element out (replaced by th_pl_Gc465214E502_bx(z)), then set th_pl_Gc465214E502_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_pl_pl_Gc465214E502(+d: Nat, +t: F.array__Tree<MB<M_pl_Gc465214E502>>, +i: U32, +z: MB<M_pl_Gc465214E502>, +x: MB<M_pl_Gc465214E502>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_pl_Gc465214E502>>},
+    +pf: {F.array__perfect(MB<M_pl_Gc465214E502>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), z)), i, th_pl_Gc465214E502_bx(x)) == am_pl_pl_Gc465214E502(t) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}:
+  +t2 = F.array__upd(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_pl_Gc465214E502>>, ys => {F.spec_common__nth(MB<M_pl_Gc465214E502>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_pl_Gc465214E502>>}, F.spec_common__update(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i), z), F.array__slots(MB<M_pl_Gc465214E502>, t2),
+    Equal.sym(List<&2, MB<M_pl_Gc465214E502>>, F.array__slots(MB<M_pl_Gc465214E502>, t2), F.spec_common__update(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_pl_Gc465214E502>, F.array__slots(MB<M_pl_Gc465214E502>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, Array.set(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, am_pl_pl_Gc465214E502(t2), i, th_pl_Gc465214E502_bx(x)), am_pl_pl_Gc465214E502(F.array__upd(MB<M_pl_Gc465214E502>, d, t2, U32.to_nat(i), x)),
+      amset_pl_pl_Gc465214E502(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_pl_pl_Gc465214E502(t) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
+  %Equal.sym(F.array__Tree<MB<M_pl_Gc465214E502>>, F.array__upd(MB<M_pl_Gc465214E502>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_pl_Gc465214E502>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_pl_pl_Gc465214E502(_) == am_pl_pl_Gc465214E502(t) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
+  {==}
 def xat_pl_pl_Gc465214E502(W: List<&2, MB<M_pl_Gc465214E502>>, +i: Nat) -> MB<M_pl_Gc465214E502>:
   match W:
     case Nil{}: MNone{}
@@ -218,6 +451,18 @@ def xat_pl_pl_Gc465214E502(W: List<&2, MB<M_pl_Gc465214E502>>, +i: Nat) -> MB<M_
       match i:
         case 0n: x
         case 1n+j: xat_pl_pl_Gc465214E502(t, j)
+law nth_pl_pl_Gc465214E502:
+  for +W: List<&2, MB<M_pl_Gc465214E502>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_pl_Gc465214E502>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_pl_Gc465214E502>, W, i) == Some{xat_pl_pl_Gc465214E502(W, i)} : Maybe<&2, MB<M_pl_Gc465214E502>>}
+def nth_pl_pl_Gc465214E502(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_pl_Gc465214E502>, Nil{}, i) == Some{xat_pl_pl_Gc465214E502(Nil{}, i)} : Maybe<&2, MB<M_pl_Gc465214E502>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_pl_pl_Gc465214E502(t, j, hi)
 def ereps_pl_pl_Gc465214E502(k: Nat, +W: List<&2, MB<M_pl_Gc465214E502>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -230,6 +475,18 @@ def tfz_pl_pl_Gc465214E502(a: Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214
   match a:
     case ALeaf{x}: F.TLeaf{fz_pl_Gc465214E502_bx(x)}
     case ANode{l, r}: F.TNode{tfz_pl_pl_Gc465214E502(l), tfz_pl_pl_Gc465214E502(r)}
+law tfzam_pl_pl_Gc465214E502:
+  for +t: F.array__Tree<MB<M_pl_Gc465214E502>>
+  {tfz_pl_pl_Gc465214E502(am_pl_pl_Gc465214E502(t)) == t : F.array__Tree<MB<M_pl_Gc465214E502>>}
+def tfzam_pl_pl_Gc465214E502(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_pl_Gc465214E502>, fz_pl_Gc465214E502_bx(th_pl_Gc465214E502_bx(x)), x, fzth_pl_Gc465214E502_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_pl_Gc465214E502>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_pl_Gc465214E502>>, tfz_pl_pl_Gc465214E502(am_pl_pl_Gc465214E502(l)), l, tfzam_pl_pl_Gc465214E502(l)) : {F.TNode{_, tfz_pl_pl_Gc465214E502(am_pl_pl_Gc465214E502(r))} == F.TNode{l, r} : F.array__Tree<MB<M_pl_Gc465214E502>>}
+      %Equal.sym(F.array__Tree<MB<M_pl_Gc465214E502>>, tfz_pl_pl_Gc465214E502(am_pl_pl_Gc465214E502(r)), r, tfzam_pl_pl_Gc465214E502(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_pl_Gc465214E502>>}
+      {==}
 def xlen_o_pl_pl_Gc465214E502(o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq) -> U32:
   match o:
     case proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{arr, +n}: n
@@ -252,6 +509,18 @@ def xat_l10_GpF350A3C486(W: List<&2, ProgressiveSingleFieldContainerTestStruct_d
       match i:
         case 0n: x
         case 1n+j: xat_l10_GpF350A3C486(t, j)
+law nth_l10_GpF350A3C486:
+  for +W: List<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W)) == True{} : Bool}
+  {F.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i) == Some{xat_l10_GpF350A3C486(W, i)} : Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}
+def nth_l10_GpF350A3C486(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, Nil{}, i) == Some{xat_l10_GpF350A3C486(Nil{}, i)} : Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l10_GpF350A3C486(t, j, hi)
 def xi_l10_GpF350A3C486(k: Nat, +W: List<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -306,6 +575,15 @@ def th_Gp66304057C3(m: M_Gp66304057C3) -> ProgressiveVarTestStruct_d.Gp66304057C
 def fz_Gp66304057C3(x: ProgressiveVarTestStruct_d.Gp66304057C3) -> M_Gp66304057C3:
   match x:
     case ProgressiveVarTestStruct_d.Gp66304057C3{+x0, x1, x2}: M_Gp66304057C3{x0, fz_w(x1), fz_b(x2)}
+def fzth_Gp66304057C3(+m: M_Gp66304057C3) -> {fz_Gp66304057C3(th_Gp66304057C3(m)) == m : M_Gp66304057C3}:
+  match m:
+    case M_Gp66304057C3{+a0, +a1, +a2}:
+      %Equal.sym(WMr, fz_w(th_w(a1)), a1, fzth_w(a1)) :
+        {M_Gp66304057C3{a0, _, fz_b(th_b(a2))} == M_Gp66304057C3{a0, a1, a2} : M_Gp66304057C3}
+      %Equal.sym(BMr, fz_b(th_b(a2)), a2, fzth_b(a2)) :
+        {M_Gp66304057C3{a0, a1, _} == M_Gp66304057C3{a0, a1, a2} : M_Gp66304057C3}
+      {==}
+
 def th_Gp66304057C3_bx(m: MB<M_Gp66304057C3>) -> O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>:
   match m:
     case MSome{+v}: O.BSome{th_Gp66304057C3(v), O.BNone{}}
@@ -314,12 +592,98 @@ def fz_Gp66304057C3_bx(x: O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>) -> M
   match x:
     case O.BSome{v, rest}: MSome{fz_Gp66304057C3(v)}
     case O.BNone{}: MNone{}
+def fzth_Gp66304057C3_bx(+m: MB<M_Gp66304057C3>) -> {fz_Gp66304057C3_bx(th_Gp66304057C3_bx(m)) == m : MB<M_Gp66304057C3>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_Gp66304057C3, fz_Gp66304057C3(th_Gp66304057C3(v)), v, fzth_Gp66304057C3(v)) : {MSome{_} == MSome{v} : MB<M_Gp66304057C3>}
+      {==}
+    case MNone{}: {==}
+
 # ---- pl_Gp66304057C3: progressive list of Gp66304057C3_bx (Type-kind elements, through mirrors) ----
 def am_pl_Gp66304057C3(t: F.array__Tree<MB<M_Gp66304057C3>>) -> Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_Gp66304057C3_bx(x)}
     case F.TNode{l, r}: ANode{am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r)}
 
+def amsize_pl_Gp66304057C3(+d: Nat, +t: F.array__Tree<MB<M_Gp66304057C3>>, +pf: {F.array__perfect(MB<M_Gp66304057C3>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t)) == (am_pl_Gp66304057C3(t), F.u32__pow2u(d)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(F.TNode{l, r})) == (am_pl_Gp66304057C3(F.TNode{l, r}), 1) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, ALeaf{th_Gp66304057C3_bx(x)}) == (ALeaf{th_Gp66304057C3_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32, Array.size(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l)), (am_pl_Gp66304057C3(l), F.u32__pow2u(p)), amsize_pl_Gp66304057C3(p, l, F.array__pf_left(MB<M_Gp66304057C3>, p, l, r, pf))) : {Array.size.node(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), _) == (ANode{am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32}
+      {==}
+
+def amswap_go_pl_Gp66304057C3(+d: Nat, +t: F.array__Tree<MB<M_Gp66304057C3>>, +i: U32, +v: MB<M_Gp66304057C3>, +x: MB<M_Gp66304057C3>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gp66304057C3>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_Gp66304057C3>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t), F.u32__pow2u(d), i, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_Gp66304057C3>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Gp66304057C3_bx(v)}, th_Gp66304057C3_bx(y)) == (ALeaf{th_Gp66304057C3_bx(v)}, th_Gp66304057C3_bx(_)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(F.TNode{l, r}), 1, i, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, ALeaf{th_Gp66304057C3_bx(y)}, F.u32__pow2u(1n+p), i, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Gp66304057C3>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r), _, i, th_Gp66304057C3_bx(v), U32.is_lt(i, _)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r), F.u32__pow2u(p), i, th_Gp66304057C3_bx(v), _) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), F.u32__pow2u(p), i, th_Gp66304057C3_bx(v))) == (am_pl_Gp66304057C3(F.array__tupd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), F.u32__pow2u(p), i, th_Gp66304057C3_bx(v)), (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, p, l, ti, v)), th_Gp66304057C3_bx(x)), amswap_go_pl_Gp66304057C3(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Gp66304057C3>>, F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), ti), F.spec_common__nth(MB<M_Gp66304057C3>, F.spec_common__append(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), F.array__slots(MB<M_Gp66304057C3>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Gp66304057C3>>, F.spec_common__nth(MB<M_Gp66304057C3>, F.spec_common__append(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), F.array__slots(MB<M_Gp66304057C3>, r)), ti), F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), ti), F.list__nth_append_left(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), F.array__slots(MB<M_Gp66304057C3>, r), ti, F.array__len_lt(MB<M_Gp66304057C3>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), _) == (am_pl_Gp66304057C3(F.TNode{F.array__tupd(MB<M_Gp66304057C3>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Gp66304057C3>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, r), n) == Some{x} : Maybe<&2, MB<M_Gp66304057C3>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_Gp66304057C3>>, F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, r), k), F.spec_common__nth(MB<M_Gp66304057C3>, F.spec_common__append(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), F.array__slots(MB<M_Gp66304057C3>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Gp66304057C3>>, F.spec_common__nth(MB<M_Gp66304057C3>, F.spec_common__append(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, l), F.array__slots(MB<M_Gp66304057C3>, r)), ti), F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, r), k), F.array__right_nth(MB<M_Gp66304057C3>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_pl_Gp66304057C3(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_Gp66304057C3>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), F.u32__pow2u(p), j, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, p, r, n, v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r), _, i, th_Gp66304057C3_bx(v), U32.is_lt(i, _)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), am_pl_Gp66304057C3(r), F.u32__pow2u(p), i, th_Gp66304057C3_bx(v), _) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), F.u32__pow2u(p), j, th_Gp66304057C3_bx(v))) == (am_pl_Gp66304057C3(F.array__tupd(MB<M_Gp66304057C3>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(r), F.u32__pow2u(p), j, th_Gp66304057C3_bx(v)), (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, p, r, k, v)), th_Gp66304057C3_bx(x)), ih2) : {Array.swap.hi(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(l), _) == (am_pl_Gp66304057C3(F.TNode{l, F.array__tupd(MB<M_Gp66304057C3>, p, r, k, v, F.array__ndec(p, k))}), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_pl_Gp66304057C3(+d: Nat, +t: F.array__Tree<MB<M_Gp66304057C3>>, +i: U32, +v: MB<M_Gp66304057C3>, +x: MB<M_Gp66304057C3>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gp66304057C3>>}, +pf: {F.array__perfect(MB<M_Gp66304057C3>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t), i, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}:
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & U32, Array.size(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t)), (am_pl_Gp66304057C3(t), F.u32__pow2u(d)), amsize_pl_Gp66304057C3(d, t, pf)) : {Array.swap.at(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, i, th_Gp66304057C3_bx(v), _) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t), F.u32__pow2u(d), _, th_Gp66304057C3_bx(v)) == (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}
+  amswap_go_pl_Gp66304057C3(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_pl_Gp66304057C3(+d: Nat, +t: F.array__Tree<MB<M_Gp66304057C3>>, +i: U32, +v: MB<M_Gp66304057C3>, +x: MB<M_Gp66304057C3>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gp66304057C3>>}, +pf: {F.array__perfect(MB<M_Gp66304057C3>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t), i, th_Gp66304057C3_bx(v)) == am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}:
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>> & O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, Array.swap(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t), i, th_Gp66304057C3_bx(v)), (am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)), th_Gp66304057C3_bx(x)), amswap_pl_Gp66304057C3(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, _) == am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
+  {==}
+
+# Swap an element out (replaced by th_Gp66304057C3_bx(z)), then set th_Gp66304057C3_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_pl_Gp66304057C3(+d: Nat, +t: F.array__Tree<MB<M_Gp66304057C3>>, +i: U32, +z: MB<M_Gp66304057C3>, +x: MB<M_Gp66304057C3>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Gp66304057C3>>},
+    +pf: {F.array__perfect(MB<M_Gp66304057C3>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), z)), i, th_Gp66304057C3_bx(x)) == am_pl_Gp66304057C3(t) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}:
+  +t2 = F.array__upd(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_Gp66304057C3>>, ys => {F.spec_common__nth(MB<M_Gp66304057C3>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_Gp66304057C3>>}, F.spec_common__update(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i), z), F.array__slots(MB<M_Gp66304057C3>, t2),
+    Equal.sym(List<&2, MB<M_Gp66304057C3>>, F.array__slots(MB<M_Gp66304057C3>, t2), F.spec_common__update(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_Gp66304057C3>, F.array__slots(MB<M_Gp66304057C3>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, Array.set(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, am_pl_Gp66304057C3(t2), i, th_Gp66304057C3_bx(x)), am_pl_Gp66304057C3(F.array__upd(MB<M_Gp66304057C3>, d, t2, U32.to_nat(i), x)),
+      amset_pl_Gp66304057C3(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_pl_Gp66304057C3(t) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
+  %Equal.sym(F.array__Tree<MB<M_Gp66304057C3>>, F.array__upd(MB<M_Gp66304057C3>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_Gp66304057C3>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_pl_Gp66304057C3(_) == am_pl_Gp66304057C3(t) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
+  {==}
 def xat_pl_Gp66304057C3(W: List<&2, MB<M_Gp66304057C3>>, +i: Nat) -> MB<M_Gp66304057C3>:
   match W:
     case Nil{}: MNone{}
@@ -327,6 +691,18 @@ def xat_pl_Gp66304057C3(W: List<&2, MB<M_Gp66304057C3>>, +i: Nat) -> MB<M_Gp6630
       match i:
         case 0n: x
         case 1n+j: xat_pl_Gp66304057C3(t, j)
+law nth_pl_Gp66304057C3:
+  for +W: List<&2, MB<M_Gp66304057C3>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_Gp66304057C3>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_Gp66304057C3>, W, i) == Some{xat_pl_Gp66304057C3(W, i)} : Maybe<&2, MB<M_Gp66304057C3>>}
+def nth_pl_Gp66304057C3(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_Gp66304057C3>, Nil{}, i) == Some{xat_pl_Gp66304057C3(Nil{}, i)} : Maybe<&2, MB<M_Gp66304057C3>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_pl_Gp66304057C3(t, j, hi)
 def ereps_pl_Gp66304057C3(k: Nat, +W: List<&2, MB<M_Gp66304057C3>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -339,6 +715,18 @@ def tfz_pl_Gp66304057C3(a: Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3
   match a:
     case ALeaf{x}: F.TLeaf{fz_Gp66304057C3_bx(x)}
     case ANode{l, r}: F.TNode{tfz_pl_Gp66304057C3(l), tfz_pl_Gp66304057C3(r)}
+law tfzam_pl_Gp66304057C3:
+  for +t: F.array__Tree<MB<M_Gp66304057C3>>
+  {tfz_pl_Gp66304057C3(am_pl_Gp66304057C3(t)) == t : F.array__Tree<MB<M_Gp66304057C3>>}
+def tfzam_pl_Gp66304057C3(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_Gp66304057C3>, fz_Gp66304057C3_bx(th_Gp66304057C3_bx(x)), x, fzth_Gp66304057C3_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_Gp66304057C3>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_Gp66304057C3>>, tfz_pl_Gp66304057C3(am_pl_Gp66304057C3(l)), l, tfzam_pl_Gp66304057C3(l)) : {F.TNode{_, tfz_pl_Gp66304057C3(am_pl_Gp66304057C3(r))} == F.TNode{l, r} : F.array__Tree<MB<M_Gp66304057C3>>}
+      %Equal.sym(F.array__Tree<MB<M_Gp66304057C3>>, tfz_pl_Gp66304057C3(am_pl_Gp66304057C3(r)), r, tfzam_pl_Gp66304057C3(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_Gp66304057C3>>}
+      {==}
 def xlen_o_pl_Gp66304057C3(o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq) -> U32:
   match o:
     case proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{arr, +n}: n

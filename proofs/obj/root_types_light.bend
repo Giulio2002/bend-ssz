@@ -60,8 +60,10 @@ import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDat
 import ../../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
 import ../../types/schema.bend as S
+import ./amap.bend as AM
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
+import ./mtree_defs.bend as MD
 import ./words_obj_light.bend as WO
 import ./list_obj_light.bend as LO
 import ./pv_obj_light.bend as PV
@@ -87,6 +89,11 @@ def th_w(m: WMr) -> O.Words:
 def fz_w(x: O.Words) -> WMr:
   match x:
     case O.Words{ws, +n}: WMr{F.array__freeze(U32, ws), n}
+def fzth_w(+m: WMr) -> {fz_w(th_w(m)) == m : WMr}:
+  match m:
+    case WMr{+t, +n}:
+      %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) : {WMr{_, n} == WMr{t, n} : WMr}
+      {==}
 type BMr is Data:
   BMr{t: F.array__Tree<U32>, k: U32}
 def th_b(m: BMr) -> O.Bits:
@@ -95,6 +102,11 @@ def th_b(m: BMr) -> O.Bits:
 def fz_b(x: O.Bits) -> BMr:
   match x:
     case O.Bits{ws, +k}: BMr{F.array__freeze(U32, ws), k}
+def fzth_b(+m: BMr) -> {fz_b(th_b(m)) == m : BMr}:
+  match m:
+    case BMr{+t, +k}:
+      %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) : {BMr{_, k} == BMr{t, k} : BMr}
+      {==}
 type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
@@ -270,6 +282,18 @@ def xat_l8192_DepositRequest(W: List<&2, FuluDepositRequest_d.DepositRequest>, +
       match i:
         case 0n: x
         case 1n+j: xat_l8192_DepositRequest(t, j)
+law nth_l8192_DepositRequest:
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, W, i) == Some{xat_l8192_DepositRequest(W, i)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}
+def nth_l8192_DepositRequest(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluDepositRequest_d.DepositRequest, Nil{}, i) == Some{xat_l8192_DepositRequest(Nil{}, i)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l8192_DepositRequest(t, j, hi)
 def xi_l8192_DepositRequest(k: Nat, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -295,6 +319,18 @@ def xat_l16_WithdrawalRequest(W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequ
       match i:
         case 0n: x
         case 1n+j: xat_l16_WithdrawalRequest(t, j)
+law nth_l16_WithdrawalRequest:
+  for +W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequest>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluWithdrawalRequest_d.WithdrawalRequest, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, W, i) == Some{xat_l16_WithdrawalRequest(W, i)} : Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>}
+def nth_l16_WithdrawalRequest(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, Nil{}, i) == Some{xat_l16_WithdrawalRequest(Nil{}, i)} : Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_WithdrawalRequest(t, j, hi)
 def xi_l16_WithdrawalRequest(k: Nat, +W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequest>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -320,6 +356,18 @@ def xat_l2_ConsolidationRequest(W: List<&2, FuluConsolidationRequest_d.Consolida
       match i:
         case 0n: x
         case 1n+j: xat_l2_ConsolidationRequest(t, j)
+law nth_l2_ConsolidationRequest:
+  for +W: List<&2, FuluConsolidationRequest_d.ConsolidationRequest>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluConsolidationRequest_d.ConsolidationRequest, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, W, i) == Some{xat_l2_ConsolidationRequest(W, i)} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}
+def nth_l2_ConsolidationRequest(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, Nil{}, i) == Some{xat_l2_ConsolidationRequest(Nil{}, i)} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l2_ConsolidationRequest(t, j, hi)
 def xi_l2_ConsolidationRequest(k: Nat, +W: List<&2, FuluConsolidationRequest_d.ConsolidationRequest>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -404,12 +452,98 @@ def fz_bl1073741824_bx(x: O.Boxed<O.Words>) -> MB<WMr>:
   match x:
     case O.BSome{v, rest}: MSome{fz_w(v)}
     case O.BNone{}: MNone{}
+def fzth_bl1073741824_bx(+m: MB<WMr>) -> {fz_bl1073741824_bx(th_bl1073741824_bx(m)) == m : MB<WMr>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(WMr, fz_w(th_w(v)), v, fzth_w(v)) : {MSome{_} == MSome{v} : MB<WMr>}
+      {==}
+    case MNone{}: {==}
+
 # ---- l1048576_bl1073741824: list of bl1073741824_bx (Type-kind elements, through mirrors) ----
 def am_l1048576_bl1073741824(t: F.array__Tree<MB<WMr>>) -> Array<O.Boxed<O.Words>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_bl1073741824_bx(x)}
     case F.TNode{l, r}: ANode{am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r)}
 
+def amsize_l1048576_bl1073741824(+d: Nat, +t: F.array__Tree<MB<WMr>>, +pf: {F.array__perfect(MB<WMr>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<O.Words>, am_l1048576_bl1073741824(t)) == (am_l1048576_bl1073741824(t), F.u32__pow2u(d)) : Array<O.Boxed<O.Words>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<O.Words>, am_l1048576_bl1073741824(F.TNode{l, r})) == (am_l1048576_bl1073741824(F.TNode{l, r}), 1) : Array<O.Boxed<O.Words>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<O.Words>, ALeaf{th_bl1073741824_bx(x)}) == (ALeaf{th_bl1073741824_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<O.Words>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<O.Words>> & U32, Array.size(O.Boxed<O.Words>, am_l1048576_bl1073741824(l)), (am_l1048576_bl1073741824(l), F.u32__pow2u(p)), amsize_l1048576_bl1073741824(p, l, F.array__pf_left(MB<WMr>, p, l, r, pf))) : {Array.size.node(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), _) == (ANode{am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<O.Words>> & U32}
+      {==}
+
+def amswap_go_l1048576_bl1073741824(+d: Nat, +t: F.array__Tree<MB<WMr>>, +i: U32, +v: MB<WMr>, +x: MB<WMr>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<WMr>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<WMr>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(t), F.u32__pow2u(d), i, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<WMr>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_bl1073741824_bx(v)}, th_bl1073741824_bx(y)) == (ALeaf{th_bl1073741824_bx(v)}, th_bl1073741824_bx(_)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(F.TNode{l, r}), 1, i, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<O.Words>, ALeaf{th_bl1073741824_bx(y)}, F.u32__pow2u(1n+p), i, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<WMr>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r), _, i, th_bl1073741824_bx(v), U32.is_lt(i, _)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r), F.u32__pow2u(p), i, th_bl1073741824_bx(v), _) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), F.u32__pow2u(p), i, th_bl1073741824_bx(v))) == (am_l1048576_bl1073741824(F.array__tupd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v, _)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Array<O.Boxed<O.Words>> & O.Boxed<O.Words>, Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), F.u32__pow2u(p), i, th_bl1073741824_bx(v)), (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, p, l, ti, v)), th_bl1073741824_bx(x)), amswap_go_l1048576_bl1073741824(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<WMr>>, F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, l), ti), F.spec_common__nth(MB<WMr>, F.spec_common__append(MB<WMr>, F.array__slots(MB<WMr>, l), F.array__slots(MB<WMr>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<WMr>>, F.spec_common__nth(MB<WMr>, F.spec_common__append(MB<WMr>, F.array__slots(MB<WMr>, l), F.array__slots(MB<WMr>, r)), ti), F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, l), ti), F.list__nth_append_left(MB<WMr>, F.array__slots(MB<WMr>, l), F.array__slots(MB<WMr>, r), ti, F.array__len_lt(MB<WMr>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), _) == (am_l1048576_bl1073741824(F.TNode{F.array__tupd(MB<WMr>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<WMr>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, r), n) == Some{x} : Maybe<&2, MB<WMr>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<WMr>>, F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, r), k), F.spec_common__nth(MB<WMr>, F.spec_common__append(MB<WMr>, F.array__slots(MB<WMr>, l), F.array__slots(MB<WMr>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<WMr>>, F.spec_common__nth(MB<WMr>, F.spec_common__append(MB<WMr>, F.array__slots(MB<WMr>, l), F.array__slots(MB<WMr>, r)), ti), F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, r), k), F.array__right_nth(MB<WMr>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_l1048576_bl1073741824(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<WMr>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), F.u32__pow2u(p), j, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, p, r, n, v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r), _, i, th_bl1073741824_bx(v), U32.is_lt(i, _)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), am_l1048576_bl1073741824(r), F.u32__pow2u(p), i, th_bl1073741824_bx(v), _) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), F.u32__pow2u(p), j, th_bl1073741824_bx(v))) == (am_l1048576_bl1073741824(F.array__tupd(MB<WMr>, 1n+p, F.TNode{l, r}, ti, v, _)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      %Equal.sym(Array<O.Boxed<O.Words>> & O.Boxed<O.Words>, Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(r), F.u32__pow2u(p), j, th_bl1073741824_bx(v)), (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, p, r, k, v)), th_bl1073741824_bx(x)), ih2) : {Array.swap.hi(O.Boxed<O.Words>, am_l1048576_bl1073741824(l), _) == (am_l1048576_bl1073741824(F.TNode{l, F.array__tupd(MB<WMr>, p, r, k, v, F.array__ndec(p, k))}), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_l1048576_bl1073741824(+d: Nat, +t: F.array__Tree<MB<WMr>>, +i: U32, +v: MB<WMr>, +x: MB<WMr>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<WMr>>}, +pf: {F.array__perfect(MB<WMr>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<O.Words>, am_l1048576_bl1073741824(t), i, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}:
+  %Equal.sym(Array<O.Boxed<O.Words>> & U32, Array.size(O.Boxed<O.Words>, am_l1048576_bl1073741824(t)), (am_l1048576_bl1073741824(t), F.u32__pow2u(d)), amsize_l1048576_bl1073741824(d, t, pf)) : {Array.swap.at(O.Boxed<O.Words>, i, th_bl1073741824_bx(v), _) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<O.Words>, am_l1048576_bl1073741824(t), F.u32__pow2u(d), _, th_bl1073741824_bx(v)) == (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)), th_bl1073741824_bx(x)) : Array<O.Boxed<O.Words>> & O.Boxed<O.Words>}
+  amswap_go_l1048576_bl1073741824(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_l1048576_bl1073741824(+d: Nat, +t: F.array__Tree<MB<WMr>>, +i: U32, +v: MB<WMr>, +x: MB<WMr>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<WMr>>}, +pf: {F.array__perfect(MB<WMr>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<O.Words>, am_l1048576_bl1073741824(t), i, th_bl1073741824_bx(v)) == am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<O.Words>>}:
+  %Equal.sym(Array<O.Boxed<O.Words>> & O.Boxed<O.Words>, Array.swap(O.Boxed<O.Words>, am_l1048576_bl1073741824(t), i, th_bl1073741824_bx(v)), (am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)), th_bl1073741824_bx(x)), amswap_l1048576_bl1073741824(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<O.Words>, _) == am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<O.Words>>}
+  {==}
+
+# Swap an element out (replaced by th_bl1073741824_bx(z)), then set th_bl1073741824_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_l1048576_bl1073741824(+d: Nat, +t: F.array__Tree<MB<WMr>>, +i: U32, +z: MB<WMr>, +x: MB<WMr>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<WMr>>},
+    +pf: {F.array__perfect(MB<WMr>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<O.Words>, am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t, U32.to_nat(i), z)), i, th_bl1073741824_bx(x)) == am_l1048576_bl1073741824(t) : Array<O.Boxed<O.Words>>}:
+  +t2 = F.array__upd(MB<WMr>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<WMr>>, ys => {F.spec_common__nth(MB<WMr>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<WMr>>}, F.spec_common__update(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i), z), F.array__slots(MB<WMr>, t2),
+    Equal.sym(List<&2, MB<WMr>>, F.array__slots(MB<WMr>, t2), F.spec_common__update(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i), z), F.array__upd_slots(MB<WMr>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<WMr>, F.array__slots(MB<WMr>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<O.Words>>, Array.set(O.Boxed<O.Words>, am_l1048576_bl1073741824(t2), i, th_bl1073741824_bx(x)), am_l1048576_bl1073741824(F.array__upd(MB<WMr>, d, t2, U32.to_nat(i), x)),
+      amset_l1048576_bl1073741824(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<WMr>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_l1048576_bl1073741824(t) : Array<O.Boxed<O.Words>>}
+  %Equal.sym(F.array__Tree<MB<WMr>>, F.array__upd(MB<WMr>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<WMr>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_l1048576_bl1073741824(_) == am_l1048576_bl1073741824(t) : Array<O.Boxed<O.Words>>}
+  {==}
 def xat_l1048576_bl1073741824(W: List<&2, MB<WMr>>, +i: Nat) -> MB<WMr>:
   match W:
     case Nil{}: MNone{}
@@ -417,6 +551,18 @@ def xat_l1048576_bl1073741824(W: List<&2, MB<WMr>>, +i: Nat) -> MB<WMr>:
       match i:
         case 0n: x
         case 1n+j: xat_l1048576_bl1073741824(t, j)
+law nth_l1048576_bl1073741824:
+  for +W: List<&2, MB<WMr>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<WMr>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<WMr>, W, i) == Some{xat_l1048576_bl1073741824(W, i)} : Maybe<&2, MB<WMr>>}
+def nth_l1048576_bl1073741824(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<WMr>, Nil{}, i) == Some{xat_l1048576_bl1073741824(Nil{}, i)} : Maybe<&2, MB<WMr>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l1048576_bl1073741824(t, j, hi)
 def ereps_l1048576_bl1073741824(k: Nat, +W: List<&2, MB<WMr>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -429,6 +575,18 @@ def tfz_l1048576_bl1073741824(a: Array<O.Boxed<O.Words>>) -> F.array__Tree<MB<WM
   match a:
     case ALeaf{x}: F.TLeaf{fz_bl1073741824_bx(x)}
     case ANode{l, r}: F.TNode{tfz_l1048576_bl1073741824(l), tfz_l1048576_bl1073741824(r)}
+law tfzam_l1048576_bl1073741824:
+  for +t: F.array__Tree<MB<WMr>>
+  {tfz_l1048576_bl1073741824(am_l1048576_bl1073741824(t)) == t : F.array__Tree<MB<WMr>>}
+def tfzam_l1048576_bl1073741824(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<WMr>, fz_bl1073741824_bx(th_bl1073741824_bx(x)), x, fzth_bl1073741824_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<WMr>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<WMr>>, tfz_l1048576_bl1073741824(am_l1048576_bl1073741824(l)), l, tfzam_l1048576_bl1073741824(l)) : {F.TNode{_, tfz_l1048576_bl1073741824(am_l1048576_bl1073741824(r))} == F.TNode{l, r} : F.array__Tree<MB<WMr>>}
+      %Equal.sym(F.array__Tree<MB<WMr>>, tfz_l1048576_bl1073741824(am_l1048576_bl1073741824(r)), r, tfzam_l1048576_bl1073741824(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<WMr>>}
+      {==}
 def xlen_o_l1048576_bl1073741824(o: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq) -> U32:
   match o:
     case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: n
@@ -451,6 +609,18 @@ def xat_l16_Withdrawal(W: List<&2, FuluWithdrawal_d.Withdrawal>, +i: Nat) -> Ful
       match i:
         case 0n: x
         case 1n+j: xat_l16_Withdrawal(t, j)
+law nth_l16_Withdrawal:
+  for +W: List<&2, FuluWithdrawal_d.Withdrawal>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluWithdrawal_d.Withdrawal, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluWithdrawal_d.Withdrawal, W, i) == Some{xat_l16_Withdrawal(W, i)} : Maybe<&2, FuluWithdrawal_d.Withdrawal>}
+def nth_l16_Withdrawal(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluWithdrawal_d.Withdrawal, Nil{}, i) == Some{xat_l16_Withdrawal(Nil{}, i)} : Maybe<&2, FuluWithdrawal_d.Withdrawal>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_Withdrawal(t, j, hi)
 def xi_l16_Withdrawal(k: Nat, +W: List<&2, FuluWithdrawal_d.Withdrawal>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -645,6 +815,11 @@ def th_ProposerSlashing(m: M_ProposerSlashing) -> FuluProposerSlashing_d.Propose
 def fz_ProposerSlashing(x: FuluProposerSlashing_d.ProposerSlashing) -> M_ProposerSlashing:
   match x:
     case FuluProposerSlashing_d.ProposerSlashing{x0, x1}: M_ProposerSlashing{mfz_SignedBeaconBlockHeader_bx(x0), mfz_SignedBeaconBlockHeader_bx(x1)}
+def fzth_ProposerSlashing(+m: M_ProposerSlashing) -> {fz_ProposerSlashing(th_ProposerSlashing(m)) == m : M_ProposerSlashing}:
+  match m:
+    case M_ProposerSlashing{+a0, +a1}:
+      {==}
+
 def th_ProposerSlashing_bx(m: MB<M_ProposerSlashing>) -> O.Boxed<FuluProposerSlashing_d.ProposerSlashing>:
   match m:
     case MSome{+v}: O.BSome{th_ProposerSlashing(v), O.BNone{}}
@@ -653,12 +828,98 @@ def fz_ProposerSlashing_bx(x: O.Boxed<FuluProposerSlashing_d.ProposerSlashing>) 
   match x:
     case O.BSome{v, rest}: MSome{fz_ProposerSlashing(v)}
     case O.BNone{}: MNone{}
+def fzth_ProposerSlashing_bx(+m: MB<M_ProposerSlashing>) -> {fz_ProposerSlashing_bx(th_ProposerSlashing_bx(m)) == m : MB<M_ProposerSlashing>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_ProposerSlashing, fz_ProposerSlashing(th_ProposerSlashing(v)), v, fzth_ProposerSlashing(v)) : {MSome{_} == MSome{v} : MB<M_ProposerSlashing>}
+      {==}
+    case MNone{}: {==}
+
 # ---- l16_ProposerSlashing: list of ProposerSlashing_bx (Type-kind elements, through mirrors) ----
 def am_l16_ProposerSlashing(t: F.array__Tree<MB<M_ProposerSlashing>>) -> Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_ProposerSlashing_bx(x)}
     case F.TNode{l, r}: ANode{am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r)}
 
+def amsize_l16_ProposerSlashing(+d: Nat, +t: F.array__Tree<MB<M_ProposerSlashing>>, +pf: {F.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t)) == (am_l16_ProposerSlashing(t), F.u32__pow2u(d)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(F.TNode{l, r})) == (am_l16_ProposerSlashing(F.TNode{l, r}), 1) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(x)}) == (ALeaf{th_ProposerSlashing_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l)), (am_l16_ProposerSlashing(l), F.u32__pow2u(p)), amsize_l16_ProposerSlashing(p, l, F.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (ANode{am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}
+      {==}
+
+def amswap_go_l16_ProposerSlashing(+d: Nat, +t: F.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), F.u32__pow2u(d), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_ProposerSlashing>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(y)) == (ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(_)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(F.TNode{l, r}), 1, i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(y)}, F.u32__pow2u(1n+p), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), F.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), F.u32__pow2u(p), i, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(F.array__tupd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), F.u32__pow2u(p), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, p, l, ti, v)), th_ProposerSlashing_bx(x)), amswap_go_l16_ProposerSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_ProposerSlashing>>, F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), ti), F.spec_common__nth(MB<M_ProposerSlashing>, F.spec_common__append(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), F.array__slots(MB<M_ProposerSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_ProposerSlashing>>, F.spec_common__nth(MB<M_ProposerSlashing>, F.spec_common__append(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), F.array__slots(MB<M_ProposerSlashing>, r)), ti), F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), ti), F.list__nth_append_left(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), F.array__slots(MB<M_ProposerSlashing>, r), ti, F.array__len_lt(MB<M_ProposerSlashing>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (am_l16_ProposerSlashing(F.TNode{F.array__tupd(MB<M_ProposerSlashing>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, r), n) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_ProposerSlashing>>, F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, r), k), F.spec_common__nth(MB<M_ProposerSlashing>, F.spec_common__append(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), F.array__slots(MB<M_ProposerSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_ProposerSlashing>>, F.spec_common__nth(MB<M_ProposerSlashing>, F.spec_common__append(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, l), F.array__slots(MB<M_ProposerSlashing>, r)), ti), F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, r), k), F.array__right_nth(MB<M_ProposerSlashing>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_l16_ProposerSlashing(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_ProposerSlashing>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), F.u32__pow2u(p), j, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, p, r, n, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), F.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), F.u32__pow2u(p), j, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(F.array__tupd(MB<M_ProposerSlashing>, 1n+p, F.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), F.u32__pow2u(p), j, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, p, r, k, v)), th_ProposerSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), _) == (am_l16_ProposerSlashing(F.TNode{l, F.array__tupd(MB<M_ProposerSlashing>, p, r, k, v, F.array__ndec(p, k))}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_l16_ProposerSlashing(+d: Nat, +t: F.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {F.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t)), (am_l16_ProposerSlashing(t), F.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), F.u32__pow2u(d), _, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+  amswap_go_l16_ProposerSlashing(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_l16_ProposerSlashing(+d: Nat, +t: F.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {F.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}:
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)), amswap_l16_ProposerSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, _) == am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
+  {==}
+
+# Swap an element out (replaced by th_ProposerSlashing_bx(z)), then set th_ProposerSlashing_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_l16_ProposerSlashing(+d: Nat, +t: F.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +z: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>},
+    +pf: {F.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z)), i, th_ProposerSlashing_bx(x)) == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}:
+  +t2 = F.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_ProposerSlashing>>, ys => {F.spec_common__nth(MB<M_ProposerSlashing>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_ProposerSlashing>>}, F.spec_common__update(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z), F.array__slots(MB<M_ProposerSlashing>, t2),
+    Equal.sym(List<&2, MB<M_ProposerSlashing>>, F.array__slots(MB<M_ProposerSlashing>, t2), F.spec_common__update(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_ProposerSlashing>, F.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t2), i, th_ProposerSlashing_bx(x)), am_l16_ProposerSlashing(F.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x)),
+      amset_l16_ProposerSlashing(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
+  %Equal.sym(F.array__Tree<MB<M_ProposerSlashing>>, F.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_l16_ProposerSlashing(_) == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
+  {==}
 def xat_l16_ProposerSlashing(W: List<&2, MB<M_ProposerSlashing>>, +i: Nat) -> MB<M_ProposerSlashing>:
   match W:
     case Nil{}: MNone{}
@@ -666,6 +927,18 @@ def xat_l16_ProposerSlashing(W: List<&2, MB<M_ProposerSlashing>>, +i: Nat) -> MB
       match i:
         case 0n: x
         case 1n+j: xat_l16_ProposerSlashing(t, j)
+law nth_l16_ProposerSlashing:
+  for +W: List<&2, MB<M_ProposerSlashing>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_ProposerSlashing>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_ProposerSlashing>, W, i) == Some{xat_l16_ProposerSlashing(W, i)} : Maybe<&2, MB<M_ProposerSlashing>>}
+def nth_l16_ProposerSlashing(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_ProposerSlashing>, Nil{}, i) == Some{xat_l16_ProposerSlashing(Nil{}, i)} : Maybe<&2, MB<M_ProposerSlashing>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_ProposerSlashing(t, j, hi)
 def ereps_l16_ProposerSlashing(k: Nat, +W: List<&2, MB<M_ProposerSlashing>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -678,6 +951,18 @@ def tfz_l16_ProposerSlashing(a: Array<O.Boxed<FuluProposerSlashing_d.ProposerSla
   match a:
     case ALeaf{x}: F.TLeaf{fz_ProposerSlashing_bx(x)}
     case ANode{l, r}: F.TNode{tfz_l16_ProposerSlashing(l), tfz_l16_ProposerSlashing(r)}
+law tfzam_l16_ProposerSlashing:
+  for +t: F.array__Tree<MB<M_ProposerSlashing>>
+  {tfz_l16_ProposerSlashing(am_l16_ProposerSlashing(t)) == t : F.array__Tree<MB<M_ProposerSlashing>>}
+def tfzam_l16_ProposerSlashing(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_ProposerSlashing>, fz_ProposerSlashing_bx(th_ProposerSlashing_bx(x)), x, fzth_ProposerSlashing_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_ProposerSlashing>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_ProposerSlashing>>, tfz_l16_ProposerSlashing(am_l16_ProposerSlashing(l)), l, tfzam_l16_ProposerSlashing(l)) : {F.TNode{_, tfz_l16_ProposerSlashing(am_l16_ProposerSlashing(r))} == F.TNode{l, r} : F.array__Tree<MB<M_ProposerSlashing>>}
+      %Equal.sym(F.array__Tree<MB<M_ProposerSlashing>>, tfz_l16_ProposerSlashing(am_l16_ProposerSlashing(r)), r, tfzam_l16_ProposerSlashing(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_ProposerSlashing>>}
+      {==}
 def xlen_o_l16_ProposerSlashing(o: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq) -> U32:
   match o:
     case Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{arr, +n}: n
@@ -712,6 +997,13 @@ def th_IndexedAttestation(m: M_IndexedAttestation) -> FuluIndexedAttestation_d.I
 def fz_IndexedAttestation(x: FuluIndexedAttestation_d.IndexedAttestation) -> M_IndexedAttestation:
   match x:
     case FuluIndexedAttestation_d.IndexedAttestation{x0, +x1, +x2}: M_IndexedAttestation{fz_w(x0), x1, x2}
+def fzth_IndexedAttestation(+m: M_IndexedAttestation) -> {fz_IndexedAttestation(th_IndexedAttestation(m)) == m : M_IndexedAttestation}:
+  match m:
+    case M_IndexedAttestation{+a0, +a1, +a2}:
+      %Equal.sym(WMr, fz_w(th_w(a0)), a0, fzth_w(a0)) :
+        {M_IndexedAttestation{_, a1, a2} == M_IndexedAttestation{a0, a1, a2} : M_IndexedAttestation}
+      {==}
+
 def mfz_IndexedAttestation_bx(x: O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>) -> M_IndexedAttestation:
   match x:
     case O.BSome{v, rest}: fz_IndexedAttestation(v)
@@ -724,6 +1016,13 @@ def fz_IndexedAttestation_bx(x: O.Boxed<FuluIndexedAttestation_d.IndexedAttestat
   match x:
     case O.BSome{v, rest}: MSome{fz_IndexedAttestation(v)}
     case O.BNone{}: MNone{}
+def fzth_IndexedAttestation_bx(+m: MB<M_IndexedAttestation>) -> {fz_IndexedAttestation_bx(th_IndexedAttestation_bx(m)) == m : MB<M_IndexedAttestation>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_IndexedAttestation, fz_IndexedAttestation(th_IndexedAttestation(v)), v, fzth_IndexedAttestation(v)) : {MSome{_} == MSome{v} : MB<M_IndexedAttestation>}
+      {==}
+    case MNone{}: {==}
+
 # ---- Data mirror of AttesterSlashing ----
 type M_AttesterSlashing is Data:
   M_AttesterSlashing{a0: M_IndexedAttestation, a1: M_IndexedAttestation}
@@ -733,6 +1032,15 @@ def th_AttesterSlashing(m: M_AttesterSlashing) -> FuluAttesterSlashing_d.Atteste
 def fz_AttesterSlashing(x: FuluAttesterSlashing_d.AttesterSlashing) -> M_AttesterSlashing:
   match x:
     case FuluAttesterSlashing_d.AttesterSlashing{x0, x1}: M_AttesterSlashing{mfz_IndexedAttestation_bx(x0), mfz_IndexedAttestation_bx(x1)}
+def fzth_AttesterSlashing(+m: M_AttesterSlashing) -> {fz_AttesterSlashing(th_AttesterSlashing(m)) == m : M_AttesterSlashing}:
+  match m:
+    case M_AttesterSlashing{+a0, +a1}:
+      %Equal.sym(M_IndexedAttestation, mfz_IndexedAttestation_bx(O.BSome{th_IndexedAttestation(a0), O.BNone{}}), a0, fzth_IndexedAttestation(a0)) :
+        {M_AttesterSlashing{_, mfz_IndexedAttestation_bx(O.BSome{th_IndexedAttestation(a1), O.BNone{}})} == M_AttesterSlashing{a0, a1} : M_AttesterSlashing}
+      %Equal.sym(M_IndexedAttestation, mfz_IndexedAttestation_bx(O.BSome{th_IndexedAttestation(a1), O.BNone{}}), a1, fzth_IndexedAttestation(a1)) :
+        {M_AttesterSlashing{a0, _} == M_AttesterSlashing{a0, a1} : M_AttesterSlashing}
+      {==}
+
 def th_AttesterSlashing_bx(m: MB<M_AttesterSlashing>) -> O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>:
   match m:
     case MSome{+v}: O.BSome{th_AttesterSlashing(v), O.BNone{}}
@@ -741,12 +1049,98 @@ def fz_AttesterSlashing_bx(x: O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) 
   match x:
     case O.BSome{v, rest}: MSome{fz_AttesterSlashing(v)}
     case O.BNone{}: MNone{}
+def fzth_AttesterSlashing_bx(+m: MB<M_AttesterSlashing>) -> {fz_AttesterSlashing_bx(th_AttesterSlashing_bx(m)) == m : MB<M_AttesterSlashing>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_AttesterSlashing, fz_AttesterSlashing(th_AttesterSlashing(v)), v, fzth_AttesterSlashing(v)) : {MSome{_} == MSome{v} : MB<M_AttesterSlashing>}
+      {==}
+    case MNone{}: {==}
+
 # ---- l1_AttesterSlashing: list of AttesterSlashing_bx (Type-kind elements, through mirrors) ----
 def am_l1_AttesterSlashing(t: F.array__Tree<MB<M_AttesterSlashing>>) -> Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_AttesterSlashing_bx(x)}
     case F.TNode{l, r}: ANode{am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r)}
 
+def amsize_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<M_AttesterSlashing>>, +pf: {F.array__perfect(MB<M_AttesterSlashing>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t)) == (am_l1_AttesterSlashing(t), F.u32__pow2u(d)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r})) == (am_l1_AttesterSlashing(F.TNode{l, r}), 1) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(x)}) == (ALeaf{th_AttesterSlashing_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l)), (am_l1_AttesterSlashing(l), F.u32__pow2u(p)), amsize_l1_AttesterSlashing(p, l, F.array__pf_left(MB<M_AttesterSlashing>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (ANode{am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}
+      {==}
+
+def amswap_go_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<M_AttesterSlashing>>, +i: U32, +v: MB<M_AttesterSlashing>, +x: MB<M_AttesterSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_AttesterSlashing>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_AttesterSlashing>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_AttesterSlashing>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(y)) == (ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(_)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r}), 1, i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(y)}, F.u32__pow2u(1n+p), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_AttesterSlashing>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, p, l, ti, v)), th_AttesterSlashing_bx(x)), amswap_go_l1_AttesterSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_AttesterSlashing>>, F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), ti), F.spec_common__nth(MB<M_AttesterSlashing>, F.spec_common__append(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), F.array__slots(MB<M_AttesterSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_AttesterSlashing>>, F.spec_common__nth(MB<M_AttesterSlashing>, F.spec_common__append(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), F.array__slots(MB<M_AttesterSlashing>, r)), ti), F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), ti), F.list__nth_append_left(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), F.array__slots(MB<M_AttesterSlashing>, r), ti, F.array__len_lt(MB<M_AttesterSlashing>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (am_l1_AttesterSlashing(F.TNode{F.array__tupd(MB<M_AttesterSlashing>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_AttesterSlashing>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, r), n) == Some{x} : Maybe<&2, MB<M_AttesterSlashing>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_AttesterSlashing>>, F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, r), k), F.spec_common__nth(MB<M_AttesterSlashing>, F.spec_common__append(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), F.array__slots(MB<M_AttesterSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_AttesterSlashing>>, F.spec_common__nth(MB<M_AttesterSlashing>, F.spec_common__append(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, l), F.array__slots(MB<M_AttesterSlashing>, r)), ti), F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, r), k), F.array__right_nth(MB<M_AttesterSlashing>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_l1_AttesterSlashing(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_AttesterSlashing>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, p, r, n, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<M_AttesterSlashing>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, p, r, k, v)), th_AttesterSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), _) == (am_l1_AttesterSlashing(F.TNode{l, F.array__tupd(MB<M_AttesterSlashing>, p, r, k, v, F.array__ndec(p, k))}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<M_AttesterSlashing>>, +i: U32, +v: MB<M_AttesterSlashing>, +x: MB<M_AttesterSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_AttesterSlashing>>}, +pf: {F.array__perfect(MB<M_AttesterSlashing>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t)), (am_l1_AttesterSlashing(t), F.u32__pow2u(d)), amsize_l1_AttesterSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), _, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+  amswap_go_l1_AttesterSlashing(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<M_AttesterSlashing>>, +i: U32, +v: MB<M_AttesterSlashing>, +x: MB<M_AttesterSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_AttesterSlashing>>}, +pf: {F.array__perfect(MB<M_AttesterSlashing>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}:
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)), amswap_l1_AttesterSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, _) == am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
+  {==}
+
+# Swap an element out (replaced by th_AttesterSlashing_bx(z)), then set th_AttesterSlashing_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<M_AttesterSlashing>>, +i: U32, +z: MB<M_AttesterSlashing>, +x: MB<M_AttesterSlashing>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_AttesterSlashing>>},
+    +pf: {F.array__perfect(MB<M_AttesterSlashing>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), z)), i, th_AttesterSlashing_bx(x)) == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}:
+  +t2 = F.array__upd(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_AttesterSlashing>>, ys => {F.spec_common__nth(MB<M_AttesterSlashing>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_AttesterSlashing>>}, F.spec_common__update(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i), z), F.array__slots(MB<M_AttesterSlashing>, t2),
+    Equal.sym(List<&2, MB<M_AttesterSlashing>>, F.array__slots(MB<M_AttesterSlashing>, t2), F.spec_common__update(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_AttesterSlashing>, F.array__slots(MB<M_AttesterSlashing>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t2), i, th_AttesterSlashing_bx(x)), am_l1_AttesterSlashing(F.array__upd(MB<M_AttesterSlashing>, d, t2, U32.to_nat(i), x)),
+      amset_l1_AttesterSlashing(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
+  %Equal.sym(F.array__Tree<MB<M_AttesterSlashing>>, F.array__upd(MB<M_AttesterSlashing>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_AttesterSlashing>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_l1_AttesterSlashing(_) == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
+  {==}
 def xat_l1_AttesterSlashing(W: List<&2, MB<M_AttesterSlashing>>, +i: Nat) -> MB<M_AttesterSlashing>:
   match W:
     case Nil{}: MNone{}
@@ -754,6 +1148,18 @@ def xat_l1_AttesterSlashing(W: List<&2, MB<M_AttesterSlashing>>, +i: Nat) -> MB<
       match i:
         case 0n: x
         case 1n+j: xat_l1_AttesterSlashing(t, j)
+law nth_l1_AttesterSlashing:
+  for +W: List<&2, MB<M_AttesterSlashing>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_AttesterSlashing>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_AttesterSlashing>, W, i) == Some{xat_l1_AttesterSlashing(W, i)} : Maybe<&2, MB<M_AttesterSlashing>>}
+def nth_l1_AttesterSlashing(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_AttesterSlashing>, Nil{}, i) == Some{xat_l1_AttesterSlashing(Nil{}, i)} : Maybe<&2, MB<M_AttesterSlashing>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l1_AttesterSlashing(t, j, hi)
 def ereps_l1_AttesterSlashing(k: Nat, +W: List<&2, MB<M_AttesterSlashing>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -766,6 +1172,18 @@ def tfz_l1_AttesterSlashing(a: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlas
   match a:
     case ALeaf{x}: F.TLeaf{fz_AttesterSlashing_bx(x)}
     case ANode{l, r}: F.TNode{tfz_l1_AttesterSlashing(l), tfz_l1_AttesterSlashing(r)}
+law tfzam_l1_AttesterSlashing:
+  for +t: F.array__Tree<MB<M_AttesterSlashing>>
+  {tfz_l1_AttesterSlashing(am_l1_AttesterSlashing(t)) == t : F.array__Tree<MB<M_AttesterSlashing>>}
+def tfzam_l1_AttesterSlashing(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_AttesterSlashing>, fz_AttesterSlashing_bx(th_AttesterSlashing_bx(x)), x, fzth_AttesterSlashing_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_AttesterSlashing>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_AttesterSlashing>>, tfz_l1_AttesterSlashing(am_l1_AttesterSlashing(l)), l, tfzam_l1_AttesterSlashing(l)) : {F.TNode{_, tfz_l1_AttesterSlashing(am_l1_AttesterSlashing(r))} == F.TNode{l, r} : F.array__Tree<MB<M_AttesterSlashing>>}
+      %Equal.sym(F.array__Tree<MB<M_AttesterSlashing>>, tfz_l1_AttesterSlashing(am_l1_AttesterSlashing(r)), r, tfzam_l1_AttesterSlashing(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_AttesterSlashing>>}
+      {==}
 def xlen_o_l1_AttesterSlashing(o: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq) -> U32:
   match o:
     case Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, +n}: n
@@ -789,6 +1207,13 @@ def th_Attestation(m: M_Attestation) -> FuluAttestation_d.Attestation:
 def fz_Attestation(x: FuluAttestation_d.Attestation) -> M_Attestation:
   match x:
     case FuluAttestation_d.Attestation{x0, +x1, +x2, +x3}: M_Attestation{fz_b(x0), x1, x2, x3}
+def fzth_Attestation(+m: M_Attestation) -> {fz_Attestation(th_Attestation(m)) == m : M_Attestation}:
+  match m:
+    case M_Attestation{+a0, +a1, +a2, +a3}:
+      %Equal.sym(BMr, fz_b(th_b(a0)), a0, fzth_b(a0)) :
+        {M_Attestation{_, a1, a2, a3} == M_Attestation{a0, a1, a2, a3} : M_Attestation}
+      {==}
+
 def th_Attestation_bx(m: MB<M_Attestation>) -> O.Boxed<FuluAttestation_d.Attestation>:
   match m:
     case MSome{+v}: O.BSome{th_Attestation(v), O.BNone{}}
@@ -797,12 +1222,98 @@ def fz_Attestation_bx(x: O.Boxed<FuluAttestation_d.Attestation>) -> MB<M_Attesta
   match x:
     case O.BSome{v, rest}: MSome{fz_Attestation(v)}
     case O.BNone{}: MNone{}
+def fzth_Attestation_bx(+m: MB<M_Attestation>) -> {fz_Attestation_bx(th_Attestation_bx(m)) == m : MB<M_Attestation>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_Attestation, fz_Attestation(th_Attestation(v)), v, fzth_Attestation(v)) : {MSome{_} == MSome{v} : MB<M_Attestation>}
+      {==}
+    case MNone{}: {==}
+
 # ---- l8_Attestation: list of Attestation_bx (Type-kind elements, through mirrors) ----
 def am_l8_Attestation(t: F.array__Tree<MB<M_Attestation>>) -> Array<O.Boxed<FuluAttestation_d.Attestation>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_Attestation_bx(x)}
     case F.TNode{l, r}: ANode{am_l8_Attestation(l), am_l8_Attestation(r)}
 
+def amsize_l8_Attestation(+d: Nat, +t: F.array__Tree<MB<M_Attestation>>, +pf: {F.array__perfect(MB<M_Attestation>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t)) == (am_l8_Attestation(t), F.u32__pow2u(d)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(F.TNode{l, r})) == (am_l8_Attestation(F.TNode{l, r}), 1) : Array<O.Boxed<FuluAttestation_d.Attestation>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<FuluAttestation_d.Attestation>, ALeaf{th_Attestation_bx(x)}) == (ALeaf{th_Attestation_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>> & U32, Array.size(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l)), (am_l8_Attestation(l), F.u32__pow2u(p)), amsize_l8_Attestation(p, l, F.array__pf_left(MB<M_Attestation>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), _) == (ANode{am_l8_Attestation(l), am_l8_Attestation(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<FuluAttestation_d.Attestation>> & U32}
+      {==}
+
+def amswap_go_l8_Attestation(+d: Nat, +t: F.array__Tree<MB<M_Attestation>>, +i: U32, +v: MB<M_Attestation>, +x: MB<M_Attestation>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Attestation>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_Attestation>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t), F.u32__pow2u(d), i, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_Attestation>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Attestation_bx(v)}, th_Attestation_bx(y)) == (ALeaf{th_Attestation_bx(v)}, th_Attestation_bx(_)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(F.TNode{l, r}), 1, i, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, ALeaf{th_Attestation_bx(y)}, F.u32__pow2u(1n+p), i, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Attestation>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), am_l8_Attestation(r), _, i, th_Attestation_bx(v), U32.is_lt(i, _)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), am_l8_Attestation(r), F.u32__pow2u(p), i, th_Attestation_bx(v), _) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), F.u32__pow2u(p), i, th_Attestation_bx(v))) == (am_l8_Attestation(F.array__tupd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>, Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), F.u32__pow2u(p), i, th_Attestation_bx(v)), (am_l8_Attestation(F.array__upd(MB<M_Attestation>, p, l, ti, v)), th_Attestation_bx(x)), amswap_go_l8_Attestation(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Attestation>>, F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), ti), F.spec_common__nth(MB<M_Attestation>, F.spec_common__append(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), F.array__slots(MB<M_Attestation>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Attestation>>, F.spec_common__nth(MB<M_Attestation>, F.spec_common__append(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), F.array__slots(MB<M_Attestation>, r)), ti), F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), ti), F.list__nth_append_left(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), F.array__slots(MB<M_Attestation>, r), ti, F.array__len_lt(MB<M_Attestation>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), _) == (am_l8_Attestation(F.TNode{F.array__tupd(MB<M_Attestation>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Attestation>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, r), n) == Some{x} : Maybe<&2, MB<M_Attestation>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_Attestation>>, F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, r), k), F.spec_common__nth(MB<M_Attestation>, F.spec_common__append(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), F.array__slots(MB<M_Attestation>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Attestation>>, F.spec_common__nth(MB<M_Attestation>, F.spec_common__append(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, l), F.array__slots(MB<M_Attestation>, r)), ti), F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, r), k), F.array__right_nth(MB<M_Attestation>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_l8_Attestation(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_Attestation>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), F.u32__pow2u(p), j, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, p, r, n, v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), am_l8_Attestation(r), _, i, th_Attestation_bx(v), U32.is_lt(i, _)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), am_l8_Attestation(r), F.u32__pow2u(p), i, th_Attestation_bx(v), _) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), F.u32__pow2u(p), j, th_Attestation_bx(v))) == (am_l8_Attestation(F.array__tupd(MB<M_Attestation>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>, Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(r), F.u32__pow2u(p), j, th_Attestation_bx(v)), (am_l8_Attestation(F.array__upd(MB<M_Attestation>, p, r, k, v)), th_Attestation_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(l), _) == (am_l8_Attestation(F.TNode{l, F.array__tupd(MB<M_Attestation>, p, r, k, v, F.array__ndec(p, k))}), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_l8_Attestation(+d: Nat, +t: F.array__Tree<MB<M_Attestation>>, +i: U32, +v: MB<M_Attestation>, +x: MB<M_Attestation>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Attestation>>}, +pf: {F.array__perfect(MB<M_Attestation>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t), i, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}:
+  %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>> & U32, Array.size(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t)), (am_l8_Attestation(t), F.u32__pow2u(d)), amsize_l8_Attestation(d, t, pf)) : {Array.swap.at(O.Boxed<FuluAttestation_d.Attestation>, i, th_Attestation_bx(v), _) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t), F.u32__pow2u(d), _, th_Attestation_bx(v)) == (am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)), th_Attestation_bx(x)) : Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>}
+  amswap_go_l8_Attestation(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_l8_Attestation(+d: Nat, +t: F.array__Tree<MB<M_Attestation>>, +i: U32, +v: MB<M_Attestation>, +x: MB<M_Attestation>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Attestation>>}, +pf: {F.array__perfect(MB<M_Attestation>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t), i, th_Attestation_bx(v)) == am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttestation_d.Attestation>>}:
+  %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>, Array.swap(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t), i, th_Attestation_bx(v)), (am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)), th_Attestation_bx(x)), amswap_l8_Attestation(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluAttestation_d.Attestation>, _) == am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttestation_d.Attestation>>}
+  {==}
+
+# Swap an element out (replaced by th_Attestation_bx(z)), then set th_Attestation_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_l8_Attestation(+d: Nat, +t: F.array__Tree<MB<M_Attestation>>, +i: U32, +z: MB<M_Attestation>, +x: MB<M_Attestation>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Attestation>>},
+    +pf: {F.array__perfect(MB<M_Attestation>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), z)), i, th_Attestation_bx(x)) == am_l8_Attestation(t) : Array<O.Boxed<FuluAttestation_d.Attestation>>}:
+  +t2 = F.array__upd(MB<M_Attestation>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_Attestation>>, ys => {F.spec_common__nth(MB<M_Attestation>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_Attestation>>}, F.spec_common__update(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i), z), F.array__slots(MB<M_Attestation>, t2),
+    Equal.sym(List<&2, MB<M_Attestation>>, F.array__slots(MB<M_Attestation>, t2), F.spec_common__update(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_Attestation>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_Attestation>, F.array__slots(MB<M_Attestation>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>>, Array.set(O.Boxed<FuluAttestation_d.Attestation>, am_l8_Attestation(t2), i, th_Attestation_bx(x)), am_l8_Attestation(F.array__upd(MB<M_Attestation>, d, t2, U32.to_nat(i), x)),
+      amset_l8_Attestation(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_Attestation>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_l8_Attestation(t) : Array<O.Boxed<FuluAttestation_d.Attestation>>}
+  %Equal.sym(F.array__Tree<MB<M_Attestation>>, F.array__upd(MB<M_Attestation>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_Attestation>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_l8_Attestation(_) == am_l8_Attestation(t) : Array<O.Boxed<FuluAttestation_d.Attestation>>}
+  {==}
 def xat_l8_Attestation(W: List<&2, MB<M_Attestation>>, +i: Nat) -> MB<M_Attestation>:
   match W:
     case Nil{}: MNone{}
@@ -810,6 +1321,18 @@ def xat_l8_Attestation(W: List<&2, MB<M_Attestation>>, +i: Nat) -> MB<M_Attestat
       match i:
         case 0n: x
         case 1n+j: xat_l8_Attestation(t, j)
+law nth_l8_Attestation:
+  for +W: List<&2, MB<M_Attestation>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_Attestation>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_Attestation>, W, i) == Some{xat_l8_Attestation(W, i)} : Maybe<&2, MB<M_Attestation>>}
+def nth_l8_Attestation(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_Attestation>, Nil{}, i) == Some{xat_l8_Attestation(Nil{}, i)} : Maybe<&2, MB<M_Attestation>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l8_Attestation(t, j, hi)
 def ereps_l8_Attestation(k: Nat, +W: List<&2, MB<M_Attestation>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -822,6 +1345,18 @@ def tfz_l8_Attestation(a: Array<O.Boxed<FuluAttestation_d.Attestation>>) -> F.ar
   match a:
     case ALeaf{x}: F.TLeaf{fz_Attestation_bx(x)}
     case ANode{l, r}: F.TNode{tfz_l8_Attestation(l), tfz_l8_Attestation(r)}
+law tfzam_l8_Attestation:
+  for +t: F.array__Tree<MB<M_Attestation>>
+  {tfz_l8_Attestation(am_l8_Attestation(t)) == t : F.array__Tree<MB<M_Attestation>>}
+def tfzam_l8_Attestation(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_Attestation>, fz_Attestation_bx(th_Attestation_bx(x)), x, fzth_Attestation_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_Attestation>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_Attestation>>, tfz_l8_Attestation(am_l8_Attestation(l)), l, tfzam_l8_Attestation(l)) : {F.TNode{_, tfz_l8_Attestation(am_l8_Attestation(r))} == F.TNode{l, r} : F.array__Tree<MB<M_Attestation>>}
+      %Equal.sym(F.array__Tree<MB<M_Attestation>>, tfz_l8_Attestation(am_l8_Attestation(r)), r, tfzam_l8_Attestation(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_Attestation>>}
+      {==}
 def xlen_o_l8_Attestation(o: Fulu_list_Attestation_8_d.l8_Attestation_Seq) -> U32:
   match o:
     case Fulu_list_Attestation_8_d.l8_Attestation_Seq{arr, +n}: n
@@ -861,6 +1396,13 @@ def th_Deposit(m: M_Deposit) -> FuluDeposit_d.Deposit:
 def fz_Deposit(x: FuluDeposit_d.Deposit) -> M_Deposit:
   match x:
     case FuluDeposit_d.Deposit{x0, x1}: M_Deposit{fz_w(x0), mfz_DepositData_bx(x1)}
+def fzth_Deposit(+m: M_Deposit) -> {fz_Deposit(th_Deposit(m)) == m : M_Deposit}:
+  match m:
+    case M_Deposit{+a0, +a1}:
+      %Equal.sym(WMr, fz_w(th_w(a0)), a0, fzth_w(a0)) :
+        {M_Deposit{_, mfz_DepositData_bx(O.BSome{a1, O.BNone{}})} == M_Deposit{a0, a1} : M_Deposit}
+      {==}
+
 def th_Deposit_bx(m: MB<M_Deposit>) -> O.Boxed<FuluDeposit_d.Deposit>:
   match m:
     case MSome{+v}: O.BSome{th_Deposit(v), O.BNone{}}
@@ -869,12 +1411,98 @@ def fz_Deposit_bx(x: O.Boxed<FuluDeposit_d.Deposit>) -> MB<M_Deposit>:
   match x:
     case O.BSome{v, rest}: MSome{fz_Deposit(v)}
     case O.BNone{}: MNone{}
+def fzth_Deposit_bx(+m: MB<M_Deposit>) -> {fz_Deposit_bx(th_Deposit_bx(m)) == m : MB<M_Deposit>}:
+  match m:
+    case MSome{+v}:
+      %Equal.sym(M_Deposit, fz_Deposit(th_Deposit(v)), v, fzth_Deposit(v)) : {MSome{_} == MSome{v} : MB<M_Deposit>}
+      {==}
+    case MNone{}: {==}
+
 # ---- l16_Deposit: list of Deposit_bx (Type-kind elements, through mirrors) ----
 def am_l16_Deposit(t: F.array__Tree<MB<M_Deposit>>) -> Array<O.Boxed<FuluDeposit_d.Deposit>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_Deposit_bx(x)}
     case F.TNode{l, r}: ANode{am_l16_Deposit(l), am_l16_Deposit(r)}
 
+def amsize_l16_Deposit(+d: Nat, +t: F.array__Tree<MB<M_Deposit>>, +pf: {F.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t)) == (am_l16_Deposit(t), F.u32__pow2u(d)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}:
+  match d t:
+    case 0n F.TLeaf{x}:
+      {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(F.TNode{l, r})) == (am_l16_Deposit(F.TNode{l, r}), 1) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({Array.size(O.Boxed<FuluDeposit_d.Deposit>, ALeaf{th_Deposit_bx(x)}) == (ALeaf{th_Deposit_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r}:
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l)), (am_l16_Deposit(l), F.u32__pow2u(p)), amsize_l16_Deposit(p, l, F.array__pf_left(MB<M_Deposit>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), _) == (ANode{am_l16_Deposit(l), am_l16_Deposit(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}
+      {==}
+
+def amswap_go_l16_Deposit(+d: Nat, +t: F.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), F.u32__pow2u(d), i, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
+  match d t b:
+    case 0n F.TLeaf{+y} _:
+      %F.array__leaf_value(MB<M_Deposit>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(y)) == (ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(_)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      {==}
+    case 0n F.TNode{l, r} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(F.TNode{l, r}), 1, i, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, F.logic__false_true(pf))
+    case 1n+p F.TLeaf{y} _:
+      Empty.absurd({Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, ALeaf{th_Deposit_bx(y)}, F.u32__pow2u(1n+p), i, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{+l, +r} True{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Deposit>, p, l, r, pf)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +ti = U32.to_nat(i)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), F.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), F.u32__pow2u(p), i, th_Deposit_bx(v))) == (am_l16_Deposit(F.array__tupd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), F.u32__pow2u(p), i, th_Deposit_bx(v)), (am_l16_Deposit(F.array__upd(MB<M_Deposit>, p, l, ti, v)), th_Deposit_bx(x)), amswap_go_l16_Deposit(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Deposit>>, F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), ti), F.spec_common__nth(MB<M_Deposit>, F.spec_common__append(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), F.array__slots(MB<M_Deposit>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Deposit>>, F.spec_common__nth(MB<M_Deposit>, F.spec_common__append(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), F.array__slots(MB<M_Deposit>, r)), ti), F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), ti), F.list__nth_append_left(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), F.array__slots(MB<M_Deposit>, r), ti, F.array__len_lt(MB<M_Deposit>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), _) == (am_l16_Deposit(F.TNode{F.array__tupd(MB<M_Deposit>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      {==}
+    case 1n+ +p F.TNode{+l, +r} False{}:
+      +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
+      +pl = F.array__pf_left(MB<M_Deposit>, p, l, r, pf)
+      +ti = U32.to_nat(i)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
+      +j = U32.sub(i, F.u32__pow2u(p))
+      +k = Nat.sub(ti, F.spec_common__pow2(p))
+      +ej = F.array__sub_bridge(i, p, hp, le)
+      +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
+      +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, r), n) == Some{x} : Maybe<&2, MB<M_Deposit>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_Deposit>>, F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, r), k), F.spec_common__nth(MB<M_Deposit>, F.spec_common__append(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), F.array__slots(MB<M_Deposit>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Deposit>>, F.spec_common__nth(MB<M_Deposit>, F.spec_common__append(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, l), F.array__slots(MB<M_Deposit>, r)), ti), F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, r), k), F.array__right_nth(MB<M_Deposit>, p, l, r, ti, pl, le)), hx))
+      +ih = amswap_go_l16_Deposit(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<M_Deposit>, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), F.u32__pow2u(p), j, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, p, r, n, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), F.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), F.u32__pow2u(p), j, th_Deposit_bx(v))) == (am_l16_Deposit(F.array__tupd(MB<M_Deposit>, 1n+p, F.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), F.u32__pow2u(p), j, th_Deposit_bx(v)), (am_l16_Deposit(F.array__upd(MB<M_Deposit>, p, r, k, v)), th_Deposit_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), _) == (am_l16_Deposit(F.TNode{l, F.array__tupd(MB<M_Deposit>, p, r, k, v, F.array__ndec(p, k))}), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      {==}
+
+# Public Base entry points. Premises: the tree is perfect of depth d < 32 and
+# the index is below 2^d; x is the value currently stored at that index.
+def amswap_l16_Deposit(+d: Nat, +t: F.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {F.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t)), (am_l16_Deposit(t), F.u32__pow2u(d)), amsize_l16_Deposit(d, t, pf)) : {Array.swap.at(O.Boxed<FuluDeposit_d.Deposit>, i, th_Deposit_bx(v), _) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), F.u32__pow2u(d), _, th_Deposit_bx(v)) == (am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+  amswap_go_l16_Deposit(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+def amset_l16_Deposit(+d: Nat, +t: F.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {F.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluDeposit_d.Deposit>>}:
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)), (am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)), amswap_l16_Deposit(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluDeposit_d.Deposit>, _) == am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
+  {==}
+
+# Swap an element out (replaced by th_Deposit_bx(z)), then set th_Deposit_bx(x) back: the array is
+# unchanged. This is the leaf step of every tree over such a list.
+def amswap_back_l16_Deposit(+d: Nat, +t: F.array__Tree<MB<M_Deposit>>, +i: U32, +z: MB<M_Deposit>, +x: MB<M_Deposit>,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
+    +hx: {F.spec_common__nth(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>},
+    +pf: {F.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool})
+    -> {Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), z)), i, th_Deposit_bx(x)) == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}:
+  +t2 = F.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), z)
+  +hz = F.logic__subst(List<&2, MB<M_Deposit>>, ys => {F.spec_common__nth(MB<M_Deposit>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_Deposit>>}, F.spec_common__update(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z), F.array__slots(MB<M_Deposit>, t2),
+    Equal.sym(List<&2, MB<M_Deposit>>, F.array__slots(MB<M_Deposit>, t2), F.spec_common__update(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z), F.array__upd_slots(MB<M_Deposit>, d, t, U32.to_nat(i), z, hi, pf)),
+    F.list__nth_update_same(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<M_Deposit>, F.array__slots(MB<M_Deposit>, t), U32.to_nat(i), x, hx)))
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>>, Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t2), i, th_Deposit_bx(x)), am_l16_Deposit(F.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x)),
+      amset_l16_Deposit(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<M_Deposit>, d, t, U32.to_nat(i), z, pf))) :
+    {_ == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
+  %Equal.sym(F.array__Tree<MB<M_Deposit>>, F.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_Deposit>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
+    {am_l16_Deposit(_) == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
+  {==}
 def xat_l16_Deposit(W: List<&2, MB<M_Deposit>>, +i: Nat) -> MB<M_Deposit>:
   match W:
     case Nil{}: MNone{}
@@ -882,6 +1510,18 @@ def xat_l16_Deposit(W: List<&2, MB<M_Deposit>>, +i: Nat) -> MB<M_Deposit>:
       match i:
         case 0n: x
         case 1n+j: xat_l16_Deposit(t, j)
+law nth_l16_Deposit:
+  for +W: List<&2, MB<M_Deposit>>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(MB<M_Deposit>, W)) == True{} : Bool}
+  {F.spec_common__nth(MB<M_Deposit>, W, i) == Some{xat_l16_Deposit(W, i)} : Maybe<&2, MB<M_Deposit>>}
+def nth_l16_Deposit(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(MB<M_Deposit>, Nil{}, i) == Some{xat_l16_Deposit(Nil{}, i)} : Maybe<&2, MB<M_Deposit>>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_Deposit(t, j, hi)
 def ereps_l16_Deposit(k: Nat, +W: List<&2, MB<M_Deposit>>, +i: Nat, +sE: S.Schema) -> Data:
   match k:
     case 0n: {True{} == True{} : Bool}
@@ -894,6 +1534,18 @@ def tfz_l16_Deposit(a: Array<O.Boxed<FuluDeposit_d.Deposit>>) -> F.array__Tree<M
   match a:
     case ALeaf{x}: F.TLeaf{fz_Deposit_bx(x)}
     case ANode{l, r}: F.TNode{tfz_l16_Deposit(l), tfz_l16_Deposit(r)}
+law tfzam_l16_Deposit:
+  for +t: F.array__Tree<MB<M_Deposit>>
+  {tfz_l16_Deposit(am_l16_Deposit(t)) == t : F.array__Tree<MB<M_Deposit>>}
+def tfzam_l16_Deposit(t):
+  match t:
+    case F.TLeaf{+x}:
+      %Equal.sym(MB<M_Deposit>, fz_Deposit_bx(th_Deposit_bx(x)), x, fzth_Deposit_bx(x)) : {F.TLeaf{_} == F.TLeaf{x} : F.array__Tree<MB<M_Deposit>>}
+      {==}
+    case F.TNode{+l, +r}:
+      %Equal.sym(F.array__Tree<MB<M_Deposit>>, tfz_l16_Deposit(am_l16_Deposit(l)), l, tfzam_l16_Deposit(l)) : {F.TNode{_, tfz_l16_Deposit(am_l16_Deposit(r))} == F.TNode{l, r} : F.array__Tree<MB<M_Deposit>>}
+      %Equal.sym(F.array__Tree<MB<M_Deposit>>, tfz_l16_Deposit(am_l16_Deposit(r)), r, tfzam_l16_Deposit(r)) : {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<MB<M_Deposit>>}
+      {==}
 def xlen_o_l16_Deposit(o: Fulu_list_Deposit_16_d.l16_Deposit_Seq) -> U32:
   match o:
     case Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, +n}: n
@@ -916,6 +1568,18 @@ def xat_l16_SignedVoluntaryExit(W: List<&2, FuluSignedVoluntaryExit_d.SignedVolu
       match i:
         case 0n: x
         case 1n+j: xat_l16_SignedVoluntaryExit(t, j)
+law nth_l16_SignedVoluntaryExit:
+  for +W: List<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, W, i) == Some{xat_l16_SignedVoluntaryExit(W, i)} : Maybe<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}
+def nth_l16_SignedVoluntaryExit(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, Nil{}, i) == Some{xat_l16_SignedVoluntaryExit(Nil{}, i)} : Maybe<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_SignedVoluntaryExit(t, j, hi)
 def xi_l16_SignedVoluntaryExit(k: Nat, +W: List<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -952,6 +1616,18 @@ def xat_l16_SignedBLSToExecutionChange(W: List<&2, FuluSignedBLSToExecutionChang
       match i:
         case 0n: x
         case 1n+j: xat_l16_SignedBLSToExecutionChange(t, j)
+law nth_l16_SignedBLSToExecutionChange:
+  for +W: List<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, W, i) == Some{xat_l16_SignedBLSToExecutionChange(W, i)} : Maybe<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}
+def nth_l16_SignedBLSToExecutionChange(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, Nil{}, i) == Some{xat_l16_SignedBLSToExecutionChange(Nil{}, i)} : Maybe<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16_SignedBLSToExecutionChange(t, j, hi)
 def xi_l16_SignedBLSToExecutionChange(k: Nat, +W: List<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}

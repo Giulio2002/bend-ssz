@@ -215,7 +215,7 @@ def vr_pl_Gc465214E502(-o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq, +s: S.S
     {VD.root_valid(RT_L.xv_pl_Gc465214E502(o), _) == True{} : Bool}
   %Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, o, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT_L.am_pl_Gc465214E502(t), N}, eo) :
     {VD.root_valid(RT_L.xv_pl_Gc465214E502(_), S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gc465214E502>>, RT_L.tfz_pl_Gc465214E502(RT_L.am_pl_Gc465214E502(t)), t, RT.tfzam_pl_Gc465214E502(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gc465214E502>>, RT_L.tfz_pl_Gc465214E502(RT_L.am_pl_Gc465214E502(t)), t, RT_L.tfzam_pl_Gc465214E502(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_pl_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, _), 0n)}, S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
   vtval_pl_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gc465214E502>, t), 0n, SH.ProgressiveList_element(s), er, dv, edv, kel, eq)
 
@@ -271,7 +271,7 @@ def vr_pl_pl_Gc465214E502(-o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E5
     {VD.root_valid(RT_L.xv_pl_pl_Gc465214E502(o), _) == True{} : Bool}
   %Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, o, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT_L.am_pl_pl_Gc465214E502(t), N}, eo) :
     {VD.root_valid(RT_L.xv_pl_pl_Gc465214E502(_), S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_pl_Gc465214E502>>, RT_L.tfz_pl_pl_Gc465214E502(RT_L.am_pl_pl_Gc465214E502(t)), t, RT.tfzam_pl_pl_Gc465214E502(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_pl_Gc465214E502>>, RT_L.tfz_pl_pl_Gc465214E502(RT_L.am_pl_pl_Gc465214E502(t)), t, RT_L.tfzam_pl_pl_Gc465214E502(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_pl_pl_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_pl_Gc465214E502>, _), 0n)}, S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
   vtval_pl_pl_Gc465214E502(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_pl_Gc465214E502>, t), 0n, SH.ProgressiveList_element(s), er, dv, edv, kel, eq)
 
@@ -414,7 +414,7 @@ def vr_pl_Gp66304057C3(-o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_S
     {VD.root_valid(RT_L.xv_pl_Gp66304057C3(o), _) == True{} : Bool}
   %Equal.sym(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, o, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT_L.am_pl_Gp66304057C3(t), N}, eo) :
     {VD.root_valid(RT_L.xv_pl_Gp66304057C3(_), S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gp66304057C3>>, RT_L.tfz_pl_Gp66304057C3(RT_L.am_pl_Gp66304057C3(t)), t, RT.tfzam_pl_Gp66304057C3(t)) :
+  %Equal.sym(F.array__Tree<RT_L.MB<RT_L.M_Gp66304057C3>>, RT_L.tfz_pl_Gp66304057C3(RT_L.am_pl_Gp66304057C3(t)), t, RT_L.tfzam_pl_Gp66304057C3(t)) :
     {VD.root_valid(S.Sequence{RT_L.xi_pl_Gp66304057C3(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gp66304057C3>, _), 0n)}, S.ProgressiveList{SH.ProgressiveList_element(s)}) == True{} : Bool}
   vtval_pl_Gp66304057C3(U32.to_nat(N), F.array__slots(RT_L.MB<RT_L.M_Gp66304057C3>, t), 0n, SH.ProgressiveList_element(s), er, dv, edv, kel, eq)
 
