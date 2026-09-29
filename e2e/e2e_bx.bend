@@ -117,6 +117,18 @@ def fbv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat,
   %UR.rws_len(K, t, x) : {VS.bt(A.quad(_), FX.limbs(VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
   btl(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))
 
+# a copied vector of Bytes32: its view reads the window's words (then the chunks evaluate)
+def pvx(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
+    -> {PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) == S.Sequence{WR.items(O.chunks_of(L), VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)} : S.Value}:
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, off, L, dz))), UCT.CT(d, t, off, L, dz), FD.array__freeze_thaw(U32, UCT.CT(d, t, off, L, dz))) :
+    {S.Sequence{WR.items(O.chunks_of(L), FD.array__slots(U32, _), 0n)} == S.Sequence{WR.items(O.chunks_of(L), VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)} : S.Value}
+  %Equal.sym(List<&2, U32>, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)), VF.app(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), tdl(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) :
+    {S.Sequence{WR.items(O.chunks_of(L), _, 0n)} == S.Sequence{WR.items(O.chunks_of(L), VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)} : S.Value}
+  Equal.cong(List<&2, U32>, S.Value, z => S.Sequence{WR.items(O.chunks_of(L), VF.app(z, VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)}, VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x),
+    ctw(d, t, off, L, dz, x, K, eo, hd, hw, pf, hr, eL))
+
 # ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----
 def cwlY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
@@ -171,8 +183,7 @@ def fbvY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat
   %UR.rws_len(K, t, x) : {VS.bt(A.quad(_), FX.limbs(VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
   btl(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))
 
-# a copied vector of Bytes32: its view reads the window's words (then the chunks evaluate)
-def pvx(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def pvxY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
     -> {PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) == S.Sequence{WR.items(O.chunks_of(L), VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)} : S.Value}:
@@ -181,4 +192,4 @@ def pvx(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat,
   %Equal.sym(List<&2, U32>, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)), VF.app(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), tdl(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) :
     {S.Sequence{WR.items(O.chunks_of(L), _, 0n)} == S.Sequence{WR.items(O.chunks_of(L), VF.app(UR.RWS(K, t, x), VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)} : S.Value}
   Equal.cong(List<&2, U32>, S.Value, z => S.Sequence{WR.items(O.chunks_of(L), VF.app(z, VB.wdr(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), 0n)}, VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x),
-    ctw(d, t, off, L, dz, x, K, eo, hd, hw, pf, hr, eL))
+    ctwY(d, t, off, L, dz, x, K, eo, hy, hw, pf, hr, eL))
