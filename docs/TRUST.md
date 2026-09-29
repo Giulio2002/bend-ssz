@@ -13,7 +13,11 @@ Trusted (not proved here):
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of
   END_TO_END.bend, ROOT_DOMAIN.bend, PROOF.bend and HASH_PROOF.bend. These are reviewed, not
-  proved; the generators never write them.
+  proved; the generators never write them. `frozen.lock.json` records the sha256 of every spec
+  file (and the representations and normative sources it rests on) and of the four roots'
+  statement text (proof bodies excluded); `tools/verify_frozen.py` checks it, and that
+  `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
+  runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `0xe4067e0d858024083f36a7abe7281e89` (bend-collections),
   vendored at `vendor/bendhub/` and pinned by tree hash in `toolchain.lock.json` (the checks use
   the vendored copy unless `BEND_LIB` names another, which must hash the same). Its FIPS 180-4

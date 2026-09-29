@@ -44,7 +44,8 @@ default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-2
 (`BEND_LIB`, default the vendored `vendor/bendhub`), and prints `All terms check.` and a final
 `CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
 checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
-Each check runs under the limits it was measured with:
+`check_fast.sh` also runs `tools/verify_frozen.py` first: the spec and the four roots' statements
+must match `frozen.lock.json`. Each check runs under the limits it was measured with:
 
 | Limit | Value |
 |---|---|
