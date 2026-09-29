@@ -22,6 +22,9 @@ import var_winb as WB  # noqa: E402
 
 ROOT = FX.ROOT
 NAME = 'LightClientUpdate'
+# the e2e bridge's view (ii) reads the headers' copies through e2e_vbx_LightClient* view lemmas at d < 28 (e2e_var_b's,
+# not deep yet): the whole-buffer laws stay at d < 28 over the window's old interface until those are deep
+WB.TOP_SHALLOW.add(NAME)
 WIN = f'var_winx_{NAME}.bend'
 TOP = f'var_codec_{NAME}.bend'
 VECS = [('v6_b32', 192, 6, 'Spec.Schema59()', 'ch8', 'Bytes32'),
