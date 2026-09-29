@@ -40,8 +40,9 @@ import ./proofs/bit_list_root.bend as BitListRootLaws
 import ./proofs/byte_list.bend as ByteListLaws
 import ./types/fulu_transaction.bend as FuluTransaction
 
-# Composite APIs are checked for typing/termination here. Their full functional
-# refinement is still outstanding; these imports are not END_TO_END laws.
+# Composite APIs are imported here so they are checked (typing, termination). Their
+# functional laws are END_TO_END.bend's per-name laws (named_serialize, named_deserialize,
+# ... over this same types/fulu_model.bend); these imports are not themselves laws.
 import ./types/fulu_model.bend as FuluCompositeAPIs
 import ./spec/layout.bend as LayoutSpecification
 import ./proofs/lists.bend as TailListLaws

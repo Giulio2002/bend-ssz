@@ -1,3 +1,8 @@
+> **Historical document.** This review describes the repository when it was written and is kept
+> for provenance; its findings and figures are not maintained. Current coverage:
+> docs/RESULTS.md and docs/PREMISES.md (figures generated from the artifacts); trust base:
+> docs/TRUST.md.
+
 # Native memory review — Bend C SSZ versus Go fastssz
 
 Scope: the **native** Bend C backend only. Nothing in this document is a

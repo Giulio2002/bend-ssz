@@ -1,3 +1,8 @@
+> **Historical document.** This review describes the repository as of 19 September 2026 and is kept
+> for provenance; its findings and figures are not maintained. Current coverage:
+> docs/RESULTS.md and docs/PREMISES.md (figures generated from the artifacts); trust base:
+> docs/TRUST.md.
+
 # SSZ publication review — 19 September 2026
 
 ## Verdict

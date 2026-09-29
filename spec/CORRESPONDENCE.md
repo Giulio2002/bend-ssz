@@ -1,6 +1,11 @@
-> Publication status: the iteration-specific open-obligation passages below are historical.
-> The current public laws are in END_TO_END.bend; see ../REVIEW.md for their exact
-> scope, root-domain qualification and external transcription boundary.
+> **Status (2026-09-30).** The transcription notes below were written while the proofs were
+> being built; every "remains open", "unfinished", "outstanding" or "absent" in them is
+> historical and has since been closed by the checked laws of END_TO_END.bend (serialize,
+> deserialize, rejection, uniqueness and hash_tree_root, universally quantified over every legal
+> schema, unions and progressive/compatible types included) and ROOT_DOMAIN.bend (the root
+> domain is structural validity plus uint256 lengths, with no encoding premise, and is strictly
+> broader than the serializable values). What is still open is listed in docs/PREMISES.md, not
+> here. Strictness choices beyond the prose are listed at the end ("Deliberate strictness").
 
 # Normative correspondence and proof boundary
 
@@ -84,10 +89,10 @@ still discharge its length domain. These laws are not restricted to runtime Nat.
 
 The retained selector mixer pads its uint8 selector to 32 bytes, matching pinned
 spectests/reference Merkle helpers. The document's abbreviated “uint8
-serialization” wording is interpreted with that chunk padding. Union option membership is now implemented; universal union composition
-remains unfinished.
+serialization” wording is interpreted with that chunk padding. Union option membership and
+universal union composition are proved (END_TO_END.bend's laws cover every legal union).
 
-## Remaining correspondence and trust obligations
+## Development notes (historical; superseded where they say "remains")
 
 General nested vector/list/container/union and progressive/compatible APIs now
 exist, as do all 109 named APIs. Full independent semantics and universal
@@ -110,7 +115,7 @@ The complete predicate characterizes non-exhausted recursion. Checked laws prove
 all finite inputs complete with the public list-length bound, actual FIPS root
 refinement, exact chunk-domain rejection, and 32 byte-range root elements.
 
-All five required END_TO_END laws remain absent. No placeholders or assumed
+(Historical: the five END_TO_END laws were then absent; they are now checked.) No placeholders or assumed
 codec/Merkle results stand in for them. Neither finite official passes nor checked
 local laws establish full Fulu correctness. Compiler/runtime/transport/hardware
 and collision-resistance boundaries are separate from checker/Base and faithful
@@ -162,7 +167,8 @@ composite child roots, capacity padding, progressive trees, exact active-slot
 placement, length and selector mixing. It imports only independent specifications
 and neutral representations. Cached Merkleization has checked soundness and
 completeness against this relation; retained byte/bit leaf refinements are also
-composed in both directions. General recursive root refinement remains open.
+composed in both directions. General recursive root refinement is proved
+(END_TO_END.hash_tree_root_correct).
 `value_domain` distinguishes independent serialization validity from recursive
 uint256 length-mixer representability. The current public validity API is proved
 equal to the former for accepted schemas; implication to the latter for all
@@ -213,10 +219,27 @@ compatibility, and the public traversal budget remains to be discharged.
   active-bits chunk, `mix_in_length` (uint256 little-endian length) and
   `mix_in_selector`. Composite sequences contribute one recursive root per
   element; basic sequences are packed from the independent encoding.
-- Valid values (`value_domain.root_domain`): a normative encoding exists and
-  every mixed length is a uint256. This is the domain on which the pinned
-  functions are defined (serialization asserts; `to_bytes(32)` for lengths).
+- Valid values (`value_domain.root_domain`): structurally valid values
+  (`root_valid`: every value has its schema's shape, every length within its
+  bound) whose mixed lengths are uint256; no whole-object encoding is required.
+  ROOT_DOMAIN.bend proves this strictly broader than the serializable values
+  (`root_domain_strictly_broader`) and that roots of serializable values are
+  unchanged.
 - Fulu names (`fulu_schemas.bend`): transcribed from `schemas/fulu_mainnet.json`
   only. The implementation's named schemas are these constants (single source).
   The closed index `types/fulu.bend Name` has exactly the 109 frozen names
   (checked at runtime against the JSON; the proof quantifies over it).
+
+## Deliberate strictness
+
+- A Union with more than 128 options is illegal (`type_legality.bend`: at most 127 options after
+  the first). The prose says only that selectors above 127 "should not" be used; no reference type
+  uses more.
+- Duplicate field names in a container or progressive container are illegal
+  (`type_legality.named_fields`: `distinct_names`). The prose has no such rule, but a Python
+  container cannot express duplicates.
+- `mix_in_selector` serializes the selector into a 32-byte chunk (`mixing.bend`), matching the
+  reference implementation and the official vectors; the prose's "uint8 serialization" is read
+  with that chunk padding.
+- Decoding is the image of serialization (`decoding_relation.bend`), which implies every item of
+  the prose's hardening list (offsets, trailing bytes, delimiter and padding bits, selector range).
