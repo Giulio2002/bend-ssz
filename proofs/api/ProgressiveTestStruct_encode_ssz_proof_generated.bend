@@ -26,9 +26,13 @@ import ../obj/vconts.bend as P0_CS
 import ../obj/spec_bits.bend as P0_FB
 import ../obj/dk.bend as P0_DK
 import ../obj/big_encx_pl_u8.bend as P0_EX_pl_u8
+import ../obj/big_encx_pl_u8_d.bend as P0_EX_pl_u8_D
 import ../obj/big_encx_pl_u64.bend as P0_EX_pl_u64
+import ../obj/big_encx_pl_u64_d.bend as P0_EX_pl_u64_D
 import ../obj/big_encx_pl_Gc4ED9619F50.bend as P0_EX_pl_Gc4ED9619F50
+import ../obj/big_encx_pl_Gc4ED9619F50_d.bend as P0_EX_pl_Gc4ED9619F50_D
 import ../obj/big_encx_pl_pl_Gc465214E502.bend as P0_EX_pl_pl_Gc465214E502
+import ../obj/big_encx_pl_pl_Gc465214E502_d.bend as P0_EX_pl_pl_Gc465214E502_D
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL

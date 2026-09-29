@@ -218,8 +218,14 @@ def main():
 # The twin holds the blocks that (transitively) mention a seed name, re-stated with the substitutions SUBS, and
 # calls the base module (B0) for everything else. Their mirror type MW and projections are the base's.
 CLOSURES = {
+    # (the same for the progressive lists of fixed-size records)
+    'pl_Gc4ED9619F50': None,
+    'l10_GpF350A3C486': None,
     # vector of variable-size elements: the elements' OKW laws (its own 4 2^28 bound stays: the fixed 2 elements are bounded)
     'v2_Gc465214E502': dict(seeds={'OKT'}, subs=[], child='EM'),
+    'pl_Gc465214E502': dict(seeds={'OKT'}, subs=[], child='EM', pre='vlist_widen'),
+    'pl_Gp66304057C3': dict(seeds={'OKT'}, subs=[], child='EM', pre='vlist_widen'),
+    'pl_pl_Gc465214E502': dict(seeds={'OKT'}, subs=[], childD=('EM', 'pl_Gc465214E502'), pre='vlist_widen'),
     # record vectors: the tree depth below 31 (the base's 28)
     'v4_GcDC3E457711': dict(seeds={'OKT'}, subs=[
         ('Nat.is_lt(da, 28n)', 'Nat.is_lt(da, 31n)'),
@@ -228,13 +234,95 @@ CLOSURES = {
 }
 
 
+# the progressive lists of fixed-size records: the tree depth below 30 (their byte counts 4 N below 2^31: U32.mul(N, 4))
+_RL_SUBS = [('Nat.is_lt(da, 28n)', 'Nat.is_lt(da, 30n)'),
+            ('FD.nat__lt_trans(2n+da, 30n, 32n, ok_0(da, A, N, hok), {==})', 'ok_0(da, A, N, hok)'),
+            ('FD.nat__lt_trans(da, 28n, 30n, ok_0(da, A, N, hok), {==})', 'ok_0(da, A, N, hok)'),
+            ('FD.nat__lt_trans(da, 28n, 31n, ok_0(da, A, N, h), {==})', 'FD.nat__lt_trans(da, 30n, 31n, ok_0(da, A, N, h), {==})'),
+            ('FD.nat__lt_trans(da, 28n, 32n, ok_0(da, A, N, h), {==})', 'FD.nat__lt_trans(da, 30n, 32n, ok_0(da, A, N, h), {==})')]
+CLOSURES['pl_Gc4ED9619F50'] = CLOSURES['l10_GpF350A3C486'] = dict(seeds={'OKT'}, subs=_RL_SUBS)
+
+
 def _all_blocks(text):
     ms = list(re.finditer(r'^(def|law|type) (\w+)', text, re.M))
     return [(m.group(1), m.group(2), m.start(), ms[i + 1].start() if i + 1 < len(ms) else len(text)) for i, m in enumerate(ms)]
 
 
-def closure_twin(text, p, seeds, subs, child=None):
+# ---- the variable-element lists: the size lemmas at a strict 2^31 bound (their 2^30 cursor bound, kx == 30, widened) ----
+VL_FAM = ('mul4k', 'sza_val', 'szwb_val', 'szl', 'szsb_val', 'szs')
+VL_HELP = '''# the cursor lemmas at a strict bound: x < 2^k with k == 31 (the poison bit's; the base ones take k == 30 and x <= 2^k)
+def bsucD(+x: Nat, +k: Nat, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}: h
+def lsucD(+x: Nat, +k: Nat, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_le(x, VB.pw(k)) == True{} : Bool}:
+  F.nat__lt_le(x, VB.pw(k), h)
+def t31D(+x: Nat, +k: Nat, +ek: {k == 31n : Nat}, +h: {Nat.is_le(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_le(x, VB.pw(31n)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(x, VB.pw(z)) == True{} : Bool}, k, 31n, ek, h)
+def t31sD(+x: Nat, +k: Nat, +ek: {k == 31n : Nat}, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(x, VB.pw(z)) == True{} : Bool}, k, 31n, ek, h)
+'''
+VL_OKB = '''def ok_bk(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 31n : Nat}, +h: {OKT(t, N) == True{} : Bool}) -> {Nat.is_lt(LL(t, N), VB.pw(k)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(LL(t, N), VB.pw(z)) == True{} : Bool}, 31n, k, Equal.sym(Nat, k, 31n, ek), ok_b(t, N, h))
+def ok_bq(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 29n : Nat}, +h: {OKT(t, N) == True{} : Bool}) -> {Nat.is_le(LL(t, N), A.quad(VB.pw(k))) == True{} : Bool}:
+  +e2 = Equal.cong(Nat, Nat, z => 2n+z, k, 29n, ek)
+  F.nat__lt_le(LL(t, N), VB.pw(2n+k), F.logic__subst(Nat, z => {Nat.is_lt(LL(t, N), VB.pw(z)) == True{} : Bool}, 31n, 2n+k, Equal.sym(Nat, 2n+k, 31n, e2), ok_b(t, N, h)))
+def hk30q(+k: Nat, +ek: {k == 29n : Nat}) -> {Nat.is_lt(k, 30n) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(z, 30n) == True{} : Bool}, 29n, k, Equal.sym(Nat, k, 29n, ek), {==})
+def szsk(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 31n : Nat}, +h: {OKT(t, N) == True{} : Bool}) -> {U32.to_nat(SZS(t, N)) == LL(t, N) : Nat}:
+  szsD(t, N, ok_l(t, N, h), k, ek, ok_bk(t, N, k, ek, h))
+def szwk(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 31n : Nat}, +h: {OKT(t, N) == True{} : Bool}) -> {U32.to_nat(SZW(t, N)) == LL(t, N) : Nat}:
+  szlD(t, N, ok_l(t, N, h), k, ek, ok_bk(t, N, k, ek, h))
+def speck(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 29n : Nat}, +h: {OKT(t, N) == True{} : Bool})
+    -> @SPECRET@:
+  specl(t, N, ok_l(t, N, h), k, hk30q(k, ek), ok_bq(t, N, k, ek, h))
+'''
+
+
+def _is_lt_pw(text, ks):
+    """Nat.is_le(.., VB.pw(k)) -> Nat.is_lt(.., VB.pw(k)) for k in ks (paren-aware)."""
+    import okw
+    for k in ks:
+        text = okw._rewrite_calls(text, 'Nat.is_le', lambda g, k=k: 'Nat.is_lt(' + ', '.join(g) + ')' if g[-1] == f'VB.pw({k})' else None)
+        text = okw._rewrite_calls(text, 'F.nat__le_trans', lambda g, k=k: 'F.nat__le_lt_trans(' + ', '.join(g) + ')' if len(g) == 5 and g[2] == f'VB.pw({k})' else None)
+    return text
+
+
+def vlist_widen(text):
+    """The base text with the size lemmas' strict-2^31 twins (D-named) and the bound of OKT at 2^31 - 1."""
+    bl = _all_blocks(text)
+    blk = {n: text[a:b] for k, n, a, b in bl}
+    new = {}
+    first = bl[[n for k, n, a, b in bl].index('mul4k')][2]
+    for n in VL_FAM:
+        b = blk[n]
+        for m in VL_FAM:
+            b = re.sub(r'(?<![\w.])' + m + r'(?=[({ :])', m + 'D', b)   # (the def name and the calls)
+        b = re.sub(r'\{(kx|k) == 30n : Nat\}', lambda m: '{' + m.group(1) + ' == 31n : Nat}', b)
+        b = _is_lt_pw(b, ('kx', 'k'))
+        for h in ('bsuc', 't31s', 't31', 'lsuc'):
+            b = re.sub(r'(?<![\w.])' + h + r'\(', h + 'D(', b)
+        new[n] = b
+    fam = ''.join(new[n].rstrip('\n') + '\n\n' for n in VL_FAM)
+    out = text[:first] + VL_HELP + '\n' + fam + text[first:]
+    B28 = 'Nat.is_le(LL(t, N), A.quad(VB.pw(28n)))'
+    B31 = 'Nat.is_lt(LL(t, N), VB.pw(31n))'
+    for n in ('OKT', 'ok_l', 'ok_b'):
+        a = out.index(f'\ndef {n}(') + 1
+        e = out.find('\ndef ', a + 5)
+        out = out[:a] + out[a:e].replace(B28, B31) + out[e:]
+    sret = re.search(r'^def speck\(.*?\)\n    -> (\{.*\}):\n', text, re.M).group(1)   # (its statement, as it is)
+    a = out.index('\ndef ok_bk(') + 1
+    e = out.index('\n# The returned size of the writer', a) if '\n# The returned size of the writer' in out[a:] else out.index('\ndef eqsz(', a)
+    out = out[:a] + VL_OKB.replace('@SPECRET@', sret) + out[e:]
+    # the call sites: k == 28 -> 31 (the sizes) / 29 (the spec's dx)
+    out = re.sub(r'(szsk|szwk)\(t, N, 28n, \{==\}', r'\1(t, N, 31n, {==}', out)
+    out = re.sub(r'speck\(t, N, 28n, \{==\}', 'speck(t, N, 29n, {==}', out)
+    return out
+
+
+def closure_twin(text, p, seeds, subs, child=None, pre=None, childD=None):
     """child: the alias of the element container's iface (its OKW twins replace its OK laws; imported as <child>o for the companion's)."""
+    orig = {n: text[a:b] for k, n, a, b in _all_blocks(text)}
+    if pre:
+        text = globals()[pre](text)
     bl = _all_blocks(text)
     names = {n for _, n, _, _ in bl}
     body = {}
@@ -242,9 +330,9 @@ def closure_twin(text, p, seeds, subs, child=None):
         body.setdefault(n, []).append(text[a:b])
     code = lambda blk: re.sub(r'(?m)^\s*#.*$', '', blk)   # (a comment's words are no references)
     CH = ()
-    if child:
-        CH = tuple(f'{child}.{n}(' for n in ('OK', 'putxW', 'putx_bytesW', 'szx', 'sizex', 'validx', 'encx_spec', 'domx'))
-    inc = set(seeds) | {n for k, n, a, b in bl if k != 'type' and (any(x in code(text[a:b]) for x, _ in subs) or any(c in code(text[a:b]) for c in CH))}   # (and the blocks a substitution edits)
+    if child or childD:
+        CH = tuple(f'{child or childD[0]}.{n}(' for n in ('OK', 'putxW', 'putx_bytesW', 'szx', 'sizex', 'validx', 'encx_spec', 'domx'))
+    inc = set(seeds) | {n for k, n, a, b in bl if k != 'type' and (any(x in code(text[a:b]) for x, _ in subs) or any(c in code(text[a:b]) for c in CH) or (pre and orig.get(n) != text[a:b]))}   # (and the blocks a substitution edits)
     changed = True
     while changed:
         changed = False
@@ -270,6 +358,11 @@ def closure_twin(text, p, seeds, subs, child=None):
             t = okw._rewrite_calls(t, f'{child}.{law}', lambda g, new=new: f'{child}.{new}(' + ', '.join(g[:11] + g[12:]) + ')' if len(g) == 15 else None)
         for law, new, al in (('szx', 'szxO', child), ('encx_spec', 'encx_specO', child), ('domx', 'domxO', child), ('sizex', 'sizexO', child + 'o'), ('validx', 'validxO', child + 'o')):
             t = re.sub(r'(?<![\w.])' + child + r'\.' + law + r'\(', al + '.' + new + '(', t)
+    if childD:   # (a child list: its D twin's laws replace the base's)
+        al, cp = childD
+        for law in ('OK', 'putxW', 'putx_bytesW', 'szx', 'sizex', 'validx', 'encx_spec', 'domx'):
+            if law in d_names(cp):
+                t = re.sub(r'(?<![\w.])' + al + r'\.' + law + r'\(', al + 'D.' + law + '(', t)
     types = {n for k, n, a, b in bl if k == 'type'}
     outside = (names - inc)
     calls = {n for n in outside if n not in types}
@@ -283,6 +376,8 @@ def closure_twin(text, p, seeds, subs, child=None):
     t = re.sub(r'(?m)^(def|law) B0\.', r'\1 ', t)
     head = re.sub(r'# GENERATED by [^\n]*\n', f'# GENERATED by codegen/encx_d.py (closure twin of big_encx_{p}). Do not edit.\n', head, count=1)
     imps = f'\nimport ./big_encx_{p}.bend as B0'
+    if childD and (childD[0] + 'D.') in t:
+        imps += f'\nimport ./big_encx_{childD[1]}_d.bend as {childD[0]}D'
     if child and (child + 'o.') in t:
         imps += '\nimport ' + re.search(r'^import (\S+) as ' + child + r'$', head, re.M).group(1).replace('.bend', '_o.bend') + f' as {child}o'
     return head.rstrip('\n') + imps + '\n\n' + t
