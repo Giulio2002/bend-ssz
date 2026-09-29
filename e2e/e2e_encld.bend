@@ -85,27 +85,24 @@ import ./e2e_encqd.bend as EQ
 # record lists (rb_T).
 
 # ---- the bound every unbounded list field takes: its bytes within 2^27 + 1 (P1) ----
-def P1() -> Nat: Nat.add(VB.pw(28n), 1n)
 
 # x within 2^k + 1 bytes is below 2^(3 + k) (k symbolic: a closed power is never let-bound)
 def p1ltk(+x: Nat, +k: Nat, +hl: {Nat.is_le(x, Nat.add(VB.pw(k), 1n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(3n+k)) == True{} : Bool}:
   +h1 = FD.logic__subst(Nat, z => {Nat.is_le(x, z) == True{} : Bool}, Nat.add(VB.pw(k), 1n), Nat.add(1n, VB.pw(k)), FD.nat__add_comm(VB.pw(k), 1n), hl)
   +h2 = FD.nat__le_trans(x, Nat.add(1n, VB.pw(k)), Nat.double(VB.pw(k)), h1, FD.nat__double_succ_le(VB.pw(k), FD.nat__pow2_pos(k)))
   FD.nat__le_lt_trans(x, VB.pw(1n+k), VB.pw(3n+k), h2, FD.nat__lt_le_trans(VB.pw(1n+k), VB.pw(2n+k), VB.pw(3n+k), FD.nat__pow2_lt_succ(1n+k), FD.nat__pow2_mono(2n+k, 3n+k, FD.nat__lt_le(2n+k, 3n+k, FD.nat__lt_succ(2n+k)))))
-# x within P1 bytes is below 2^31 (and within the object API's limit)
-def p1lt(+x: Nat, +hl: {Nat.is_le(x, P1()) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}: p1ltk(x, 28n, hl)
 def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))
 
 # ---- pu8: a progressive list of uint8 field (big_encx_pl_u8) ----
-def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +hl: {Nat.is_le(U32.to_nat(n), P1()) == True{} : Bool}) -> {XU8D.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
+def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +hl: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {XU8D.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
   FD.logic__and_intro(Bool.and(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 31n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{})))), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), FD.logic__and_intro(FD.array__perfect(U32, ER.LDEP(U32, tt), tt), Bool.and(Nat.is_lt(ER.LDEP(U32, tt), 31n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}))), pf,
     FD.logic__and_intro(Nat.is_lt(ER.LDEP(U32, tt), 31n), Bool.and(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{})), hdw,
     FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}), hN,
-    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}, htz, {==})))), nmaxD(n, p1lt(U32.to_nat(n), hl)))
+    FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), True{}, htz, {==})))), nmaxD(n, hl))
 
 def lv_pu8(+tt: FD.array__Tree<U32>, +n: U32) -> {PBF.vview1(O.Words{FD.array__thaw(U32, tt), n}) == PU8.VALw(tt, 0n, n) : S.Value}:
   +e1 = Equal.cong(+List<U32>, S.Value, z => S.Sequence{PBF.it1(U32.to_nat(n), z)}, WO.wview(O.Words{FD.array__thaw(U32, tt), n}), BL.WX0(tt, n), BL.wv0(tt, n))
@@ -113,19 +110,18 @@ def lv_pu8(+tt: FD.array__Tree<U32>, +n: U32) -> {PBF.vview1(O.Words{FD.array__t
   Equal.trans(S.Value, PBF.vview1(O.Words{FD.array__thaw(U32, tt), n}), S.Sequence{PBF.it1(U32.to_nat(n), BL.WX0(tt, n))}, PU8.VALw(tt, 0n, n), e1, e2)
 
 def LR_pu8(w: O.Words) -> Data:
-  DK.Ex(XU8.MW, m => DK.P2({w == XU8.TH(m) : O.Words}, DK.P2({PBF.vview1(XU8.TH(m)) == XU8.VAL(m) : S.Value}, DK.P2({XU8D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU8.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XU8.MW, m => DK.P2({w == XU8.TH(m) : O.Words}, DK.P2({PBF.vview1(XU8.TH(m)) == XU8.VAL(m) : S.Value}, DK.P2({XU8D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU8.ENC(m)), U32.to_nat(WO.len(XU8.TH(m)))) == True{} : Bool}))))
 
 # the premise of a byte-storage list field: its storage at depth below 28, its bytes within P1
-def PW1(w: O.Words) -> Data: DK.P2(BL.sdk(w, 31n), {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool})
+def PW1(w: O.Words) -> Data: DK.P2(BL.sdk(w, 31n), {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool})
 
-def lb2_pu8(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool}) -> LR_pu8(w):
+def lb2_pu8(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool}) -> LR_pu8(w):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), P1()) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO.len(z)), VB.pw(31n)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
   +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 31n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
   +hok = ok_pu8(tt, n, ER.sfk(tt, n, 31n, hs2), hl2)
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})),
-    Equal.sym(Nat, List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU8D.eL(ER.LDEP(U32, tt), tt, n, hok)), hl2)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(n)) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), Equal.sym(Nat, List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU8D.eL(ER.LDEP(U32, tt), tt, n, hok)), FD.nat__le_refl(U32.to_nat(n)))
   (XU8.MW{ER.LDEP(U32, tt), tt, n}, (ew, (lv_pu8(tt, n), (hok, ln))))
 
 def lb_pu8(-w: O.Words, +rep: LO.wfl(w), +hp: PW1(w)) -> LR_pu8(w):
@@ -160,7 +156,7 @@ def rws0(m: Nat, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__per
         {Con{UA.jn(0n, VB.slot(t, _), VB.slot(t, 1n+_)), UR.RWS(p, t, A.quad(1n+j))} == Con{FD.flat__nthc(S, j), VS.wtake(p, VB.wdr(1n+j, S))} : List<&2, U32>}
       Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{FD.flat__nthc(S, j), z}, UR.RWS(p, t, A.quad(1n+j)), VS.wtake(p, VB.wdr(1n+j, S)), rws0(p, 1n+j, dw, t, pf, h1))
 
-def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl: {Nat.is_le(U32.to_nat(n), P1()) == True{} : Bool})
+def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool})
     -> {XU64D.OK(XU64.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -170,7 +166,7 @@ def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +c: Nat,
     FD.logic__and_intro(Nat.is_le(U32.to_nat(n), A.quad(VB.pw(ER.LDEP(U32, tt)))), Bool.and(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n))), hN,
     FD.logic__and_intro(O.tail_zero(U32.and(n, 3), VB.slot(tt, VY.QL(n))), Bool.and(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n)), htz,
     FD.logic__and_intro(U32.is_eq(U32.and(n, 7), 0), PU64.CHKw(tt, 0n, 0, n), FD.u32alg__eq_true(U32.and(n, 7), 0, VEN.and7_x8(n, c, ex8)),
-    VLS.whole_i1(n, 8, PU64.v8(), {==}, {==}, {==}, c, emul)))))), nmaxD(n, p1lt(U32.to_nat(n), hl)))
+    VLS.whole_i1(n, 8, PU64.v8(), {==}, {==}, {==}, c, emul)))))), nmaxD(n, hl))
 
 def cq8(+n: U32, +c: Nat, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, wq: {U32.to_nat(U32.div(n, 8)) == c : Nat} & {U32.to_nat(U32.mod(n, 8)) == 0n : Nat}) -> {U32.to_nat(U32.div(n, 8)) == c : Nat}:
   (+cq, +cm) = wq
@@ -192,23 +188,22 @@ def lv_pu64(+dw: Nat, +tt: FD.array__Tree<U32>, +n: U32, +c: Nat, +pf: {FD.array
     ULW.uvw(tt, n, c, ecq), Equal.cong(S.Value, S.Value, z => S.Sequence{z}, VS.uitems(c, S), VS.uitems(c, VS.wtake(Nat.double(c), S)), GP.ut(c, S)))
 
 def LR_pu64(w: O.Words) -> Data:
-  DK.Ex(XU64.MW, m => DK.P2({w == XU64.TH(m) : O.Words}, DK.P2({UL.uview(XU64.TH(m)) == XU64.VAL(m) : S.Value}, DK.P2({XU64D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU64.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XU64.MW, m => DK.P2({w == XU64.TH(m) : O.Words}, DK.P2({UL.uview(XU64.TH(m)) == XU64.VAL(m) : S.Value}, DK.P2({XU64D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU64.ENC(m)), U32.to_nat(WO.len(XU64.TH(m)))) == True{} : Bool}))))
 
 def lb3_pu64(-w: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {w == O.Words{FD.array__thaw(U32, tt), n} : O.Words}, +sf: ER.SFT(tt, n, 31n), +c: Nat,
-    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl2: {Nat.is_le(U32.to_nat(n), P1()) == True{} : Bool}) -> LR_pu64(w):
+    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl2: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> LR_pu64(w):
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
   +hok = ok_pu64(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul, hl2)
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})),
-    Equal.sym(Nat, List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU64D.eL(ER.LDEP(U32, tt), tt, n, hok)), hl2)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(n)) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), Equal.sym(Nat, List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU64D.eL(ER.LDEP(U32, tt), tt, n, hok)), FD.nat__le_refl(U32.to_nat(n)))
   (XU64.MW{ER.LDEP(U32, tt), tt, n}, (ew, (lv_pu64(ER.LDEP(U32, tt), tt, n, c, pf, hN, ex8, emul), (hok, ln))))
 
-def lb2_pu64(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), P1()) == True{} : Bool},
+def lb2_pu64(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool},
     +eN: {U32.to_nat(WO.len(w)) == O.e8(UL.ucnt(w)) : Nat}) -> LR_pu64(w):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), P1()) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO.len(z)), VB.pw(31n)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
   +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 31n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
   +eN2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == O.e8(UL.ucnt(z)) : Nat}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, eN)
   +c = UL.ucnt(O.Words{FD.array__thaw(U32, tt), n})
@@ -394,13 +389,16 @@ def lrbs_pl_Gc4ED9619F50(k: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F
           Equal.cong(Nat, Nat, z => Nat.add(z, LY.LN(XR4.RBS(q, A, 1n+j))), LY.LN(XR4.RB_Gc4ED9619F50(XR4.EL(A, j))), 4n, XR4.lenr_Gc4ED9619F50(XR4.EL(A, j))),
           Equal.cong(Nat, Nat, z => Nat.add(4n, z), LY.LN(XR4.RBS(q, A, 1n+j)), Nat.mul(q, 4n), lrbs_pl_Gc4ED9619F50(q, A, 1n+j))))
 
+def QR_pl_Gc4ED9619F50(o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq) -> Nat:
+  match o:
+    case proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{arr, +N}: Nat.mul(U32.to_nat(N), 4n)
 def LRR_pl_Gc4ED9619F50(o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq) -> Data:
-  DK.Ex(XR4.MW, m => DK.P2({o == XR4.TH(m) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq}, DK.P2({RT2.xv_pl_Gc4ED9619F50(XR4.TH(m)) == XR4.VAL(m) : S.Value}, DK.P2({XR4D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XR4.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XR4.MW, m => DK.P2({o == XR4.TH(m) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq}, DK.P2({RT2.xv_pl_Gc4ED9619F50(XR4.TH(m)) == XR4.VAL(m) : S.Value}, DK.P2({XR4D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XR4.ENC(m)), QR_pl_Gc4ED9619F50(XR4.TH(m))) == True{} : Bool}))))
 
 # the premise: the records' tree at depth below 28, its bytes within P1
 def PRL_pl_Gc4ED9619F50(o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq) -> Data:
   match o:
-    case proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{arr, +N}: DK.P2({Nat.is_lt(ER.LDEP(SmallTestStruct_d.Gc4ED9619F50, FD.array__freeze(SmallTestStruct_d.Gc4ED9619F50, arr)), 30n) == True{} : Bool}, {Nat.is_le(Nat.mul(U32.to_nat(N), 4n), P1()) == True{} : Bool})
+    case proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{arr, +N}: DK.P2({Nat.is_lt(ER.LDEP(SmallTestStruct_d.Gc4ED9619F50, FD.array__freeze(SmallTestStruct_d.Gc4ED9619F50, arr)), 30n) == True{} : Bool}, {Nat.is_lt(Nat.mul(U32.to_nat(N), 4n), VB.pw(31n)) == True{} : Bool})
 
 def rb2_pl_Gc4ED9619F50(-o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, +t: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +dw: Nat, +N: U32, +eo: {o == proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, t), N} : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq},
     +pf: {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
@@ -418,7 +416,7 @@ def rb2_pl_Gc4ED9619F50(-o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, +t: 
   +ev = Equal.trans(S.Value, RT2.xv_pl_Gc4ED9619F50(XR4.TH(XR4.MW{dw, t, N})), S.Sequence{RT2.xi_pl_Gc4ED9619F50(U32.to_nat(N), FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, t), 0n)}, XR4.VAL(XR4.MW{dw, t, N}),
     Equal.cong(FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, S.Value, z => S.Sequence{RT2.xi_pl_Gc4ED9619F50(U32.to_nat(N), FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, z), 0n)}, FD.array__freeze(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, t)), t, FD.array__freeze_thaw(SmallTestStruct_d.Gc4ED9619F50, t)),
     Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_Gc4ED9619F50(U32.to_nat(N), FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, t), 0n), XR4.ITS(U32.to_nat(N), t, 0n), its_pl_Gc4ED9619F50(U32.to_nat(N), t, 0n, dw, pf, er, hN)))
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, Nat.mul(U32.to_nat(N), 4n), LY.LN(XR4.RBS(U32.to_nat(N), t, 0n)), Equal.sym(Nat, LY.LN(XR4.RBS(U32.to_nat(N), t, 0n)), Nat.mul(U32.to_nat(N), 4n), lrbs_pl_Gc4ED9619F50(U32.to_nat(N), t, 0n)), hl)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.mul(U32.to_nat(N), 4n)) == True{} : Bool}, Nat.mul(U32.to_nat(N), 4n), LY.LN(XR4.RBS(U32.to_nat(N), t, 0n)), Equal.sym(Nat, LY.LN(XR4.RBS(U32.to_nat(N), t, 0n)), Nat.mul(U32.to_nat(N), 4n), lrbs_pl_Gc4ED9619F50(U32.to_nat(N), t, 0n)), FD.nat__le_refl(Nat.mul(U32.to_nat(N), 4n)))
   (XR4.MW{dw, t, N}, (eo, (ev, (hok, ln))))
 
 def rb_pl_Gc4ED9619F50(-o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, +s: S.Schema, +rp: RT2.rep_pl_Gc4ED9619F50(o, s), +hp: PRL_pl_Gc4ED9619F50(o)) -> LRR_pl_Gc4ED9619F50(o):
@@ -667,7 +665,7 @@ def EPS_pl_Gc465214E502(k: Nat, +W: List<&2, RT2.MB<RT2.M_Gc465214E502>>, +i: Na
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_Gc465214E502(RT2.xat_pl_Gc465214E502(W, i)), EPS_pl_Gc465214E502(q, W, 1n+i))
 def PM_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gc465214E502>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XA.LL(TM_pl_Gc465214E502(t), N), P1()) == True{} : Bool}, EPS_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gc465214E502>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XA.LL(TM_pl_Gc465214E502(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n)))
 def PRV_pl_Gc465214E502(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> Data:
   match o:
     case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +N}: PM_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(arr), N)
@@ -711,9 +709,9 @@ def exs_pl_Gc465214E502(k: Nat, +W: List<&2, RT2.MB<RT2.M_Gc465214E502>>, +i: Na
 def MK_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +N: U32) -> Data:
   DK.P2({XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}) == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq},
   DK.P2({RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{TM_pl_Gc465214E502(t), N})) == XA.VAL(XA.MW{TM_pl_Gc465214E502(t), N}) : S.Value},
-  DK.P2({XAD.OK(XA.MW{TM_pl_Gc465214E502(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XA.ENC(XA.MW{TM_pl_Gc465214E502(t), N})), P1()) == True{} : Bool})))
+  DK.P2({XAD.OK(XA.MW{TM_pl_Gc465214E502(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XA.ENC(XA.MW{TM_pl_Gc465214E502(t), N})), XA.LL(TM_pl_Gc465214E502(t), N)) == True{} : Bool})))
 def mk2_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gc465214E502>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XA.LL(TM_pl_Gc465214E502(t), N), P1()) == True{} : Bool}, +x: EXS_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n)) -> MK_pl_Gc465214E502(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gc465214E502>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XA.LL(TM_pl_Gc465214E502(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n)) -> MK_pl_Gc465214E502(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_Gc465214E502(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_Gc465214E502>, t), dw, ER.pdep(RT2.MB<RT2.M_Gc465214E502>, dw, t, pf), hd31)
@@ -726,7 +724,7 @@ def mk2_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +dw: Nat
     FD.logic__and_intro(True{}, XAD.EOKS(U32.to_nat(N), XA.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XA.MB<XVT.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XAD.EOKS(U32.to_nat(N), XA.SL(T2), 0n))))) == True{} : Bool},
     dw, XA.TDM(T2), Equal.sym(Nat, XA.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XAD.OKL(T2, N), Nat.is_lt(XA.LL(T2, N), VB.pw(31n)), okl, p1lt(XA.LL(T2, N), hll))
+  +ok = FD.logic__and_intro(XAD.OKL(T2, N), Nat.is_lt(XA.LL(T2, N), VB.pw(31n)), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_Seq, z => proglist_VarTestStruct_d.pl_Gc465214E502_Seq{z, N}, XA.AR(T2), RT2.am_pl_Gc465214E502(t), arTM_pl_Gc465214E502(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{T2, N})), RT2.xv_pl_Gc465214E502(proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}), XA.VAL(XA.MW{T2, N}),
     Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, S.Value, z => RT2.xv_pl_Gc465214E502(z), XA.TH(XA.MW{T2, N}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, eth),
@@ -736,7 +734,7 @@ def mk2_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +dw: Nat
         Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n), XA.XI(U32.to_nat(N), MAPB_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t)), 0n),
           Equal.sym(S.Value, XA.XI(U32.to_nat(N), MAPB_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t)), 0n), RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n), xv)),
         Equal.cong(List<&2, XA.MB<XVT.MW>>, S.Value, z => S.Sequence{XA.XI(U32.to_nat(N), z, 0n)}, MAPB_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t)), FD.array__slots(XA.MB<XVT.MW>, T2), Equal.sym(List<&2, XA.MB<XVT.MW>>, FD.array__slots(XA.MB<XVT.MW>, T2), MAPB_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t)), esl)))))
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, XA.LL(T2, N), LY.LN(XA.ENC(XA.MW{T2, N})), Equal.sym(Nat, LY.LN(XA.ENC(XA.MW{T2, N})), XA.LL(T2, N), XA.len_encl(T2, N)), hll)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, XA.LL(T2, N)) == True{} : Bool}, XA.LL(T2, N), LY.LN(XA.ENC(XA.MW{T2, N})), Equal.sym(Nat, LY.LN(XA.ENC(XA.MW{T2, N})), XA.LL(T2, N), XA.len_encl(T2, N)), FD.nat__le_refl(XA.LL(T2, N)))
   (eth, (ev, (ok, ln)))
 def mk_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +dw: Nat, +N: U32, +sE: S.Schema, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
     +er: RT2.ereps_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n, sE), +pm: PM_pl_Gc465214E502(t, N), +es: SFE_Gc465214E502(sE)) -> MK_pl_Gc465214E502(t, N):
@@ -745,13 +743,21 @@ def mk_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +dw: Nat,
   mk2_pl_Gc465214E502(t, dw, N, pf, hN, hd31, hll, exs_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n, sE, er, eps, es))
 
 # the field's record from its root-law representation and premise
+def QV_pl_Gc465214E502(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> Nat:
+  match o:
+    case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +N}: XA.LL(TM_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(arr)), N)
 def LRV_pl_Gc465214E502(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> Data:
-  DK.Ex(XA.MW, m => DK.P2({o == XA.TH(m) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}, DK.P2({RT2.xv_pl_Gc465214E502(XA.TH(m)) == XA.VAL(m) : S.Value}, DK.P2({XAD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XA.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XA.MW, m => DK.P2({o == XA.TH(m) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}, DK.P2({RT2.xv_pl_Gc465214E502(XA.TH(m)) == XA.VAL(m) : S.Value}, DK.P2({XAD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XA.ENC(m)), QV_pl_Gc465214E502(XA.TH(m))) == True{} : Bool}))))
 def rv3_pl_Gc465214E502(-o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq, +t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +N: U32, +eo: {o == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}, +mk: MK_pl_Gc465214E502(t, N)) -> LRV_pl_Gc465214E502(o):
   (+eth, +m1) = mk
   (+ev, +m2) = m1
   (+ok, +ln) = m2
-  (XA.MW{TM_pl_Gc465214E502(t), N}, (Equal.trans(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, o, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}), eo, Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, eth)), (ev, (ok, ln))))
+  +ln2a = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => {Nat.is_le(LY.LN(XA.ENC(XA.MW{TM_pl_Gc465214E502(t), N})), XA.LL(TM_pl_Gc465214E502(z), N)) == True{} : Bool}, t, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)),
+    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), t, RT2.tfzam_pl_Gc465214E502(t)), ln)
+  +ln2 = FD.logic__subst(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, z => {Nat.is_le(LY.LN(XA.ENC(XA.MW{TM_pl_Gc465214E502(t), N})), QV_pl_Gc465214E502(z)) == True{} : Bool}, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}),
+    Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, eth), ln2a)
+  (XA.MW{TM_pl_Gc465214E502(t), N}, (Equal.trans(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, o, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}), eo, Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, XA.TH(XA.MW{TM_pl_Gc465214E502(t), N}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), N}, eth)), (ev, (ok, ln2))))
+
 def rv_pl_Gc465214E502(-o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq, +s: S.Schema, +rp: RT2.rep_pl_Gc465214E502(o, s), +hp: PRV_pl_Gc465214E502(o), +es: SFE_Gc465214E502(SH.ProgressiveList_element(s))) -> LRV_pl_Gc465214E502(o):
   (+t, +r1) = rp
   (+dw, +r2) = r1
@@ -884,7 +890,7 @@ def EPS_pl_pl_Gc465214E502(k: Nat, +W: List<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, 
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_pl_Gc465214E502(RT2.xat_pl_pl_Gc465214E502(W, i)), EPS_pl_pl_Gc465214E502(q, W, 1n+i))
 def PM_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_Gc465214E502>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XB.LL(TM_pl_pl_Gc465214E502(t), N), P1()) == True{} : Bool}, EPS_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_Gc465214E502>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XB.LL(TM_pl_pl_Gc465214E502(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n)))
 def PRV_pl_pl_Gc465214E502(o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq) -> Data:
   match o:
     case proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{arr, +N}: PM_pl_pl_Gc465214E502(RT2.tfz_pl_pl_Gc465214E502(arr), N)
@@ -928,9 +934,9 @@ def exs_pl_pl_Gc465214E502(k: Nat, +W: List<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, 
 def MK_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +N: U32) -> Data:
   DK.P2({XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}) == proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N} : proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq},
   DK.P2({RT2.xv_pl_pl_Gc465214E502(XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N})) == XB.VAL(XB.MW{TM_pl_pl_Gc465214E502(t), N}) : S.Value},
-  DK.P2({XBD.OK(XB.MW{TM_pl_pl_Gc465214E502(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XB.ENC(XB.MW{TM_pl_pl_Gc465214E502(t), N})), P1()) == True{} : Bool})))
+  DK.P2({XBD.OK(XB.MW{TM_pl_pl_Gc465214E502(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XB.ENC(XB.MW{TM_pl_pl_Gc465214E502(t), N})), XB.LL(TM_pl_pl_Gc465214E502(t), N)) == True{} : Bool})))
 def mk2_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_Gc465214E502>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XB.LL(TM_pl_pl_Gc465214E502(t), N), P1()) == True{} : Bool}, +x: EXS_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n)) -> MK_pl_pl_Gc465214E502(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_Gc465214E502>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XB.LL(TM_pl_pl_Gc465214E502(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n)) -> MK_pl_pl_Gc465214E502(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_pl_Gc465214E502(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_pl_Gc465214E502>, t), dw, ER.pdep(RT2.MB<RT2.M_pl_Gc465214E502>, dw, t, pf), hd31)
@@ -943,7 +949,7 @@ def mk2_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +d
     FD.logic__and_intro(True{}, XBD.EOKS(U32.to_nat(N), XB.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XB.MB<XA.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XBD.EOKS(U32.to_nat(N), XB.SL(T2), 0n))))) == True{} : Bool},
     dw, XB.TDM(T2), Equal.sym(Nat, XB.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XBD.OKL(T2, N), Nat.is_lt(XB.LL(T2, N), VB.pw(31n)), okl, p1lt(XB.LL(T2, N), hll))
+  +ok = FD.logic__and_intro(XBD.OKL(T2, N), Nat.is_lt(XB.LL(T2, N), VB.pw(31n)), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, z => proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{z, N}, XB.AR(T2), RT2.am_pl_pl_Gc465214E502(t), arTM_pl_pl_Gc465214E502(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_pl_Gc465214E502(XB.TH(XB.MW{T2, N})), RT2.xv_pl_pl_Gc465214E502(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}), XB.VAL(XB.MW{T2, N}),
     Equal.cong(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, S.Value, z => RT2.xv_pl_pl_Gc465214E502(z), XB.TH(XB.MW{T2, N}), proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, eth),
@@ -953,7 +959,7 @@ def mk2_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +d
         Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n), XB.XI(U32.to_nat(N), MAPB_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t)), 0n),
           Equal.sym(S.Value, XB.XI(U32.to_nat(N), MAPB_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t)), 0n), RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n), xv)),
         Equal.cong(List<&2, XB.MB<XA.MW>>, S.Value, z => S.Sequence{XB.XI(U32.to_nat(N), z, 0n)}, MAPB_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t)), FD.array__slots(XB.MB<XA.MW>, T2), Equal.sym(List<&2, XB.MB<XA.MW>>, FD.array__slots(XB.MB<XA.MW>, T2), MAPB_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t)), esl)))))
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, XB.LL(T2, N), LY.LN(XB.ENC(XB.MW{T2, N})), Equal.sym(Nat, LY.LN(XB.ENC(XB.MW{T2, N})), XB.LL(T2, N), XB.len_encl(T2, N)), hll)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, XB.LL(T2, N)) == True{} : Bool}, XB.LL(T2, N), LY.LN(XB.ENC(XB.MW{T2, N})), Equal.sym(Nat, LY.LN(XB.ENC(XB.MW{T2, N})), XB.LL(T2, N), XB.len_encl(T2, N)), FD.nat__le_refl(XB.LL(T2, N)))
   (eth, (ev, (ok, ln)))
 def mk_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +dw: Nat, +N: U32, +sE: S.Schema, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
     +er: RT2.ereps_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n, sE), +pm: PM_pl_pl_Gc465214E502(t, N), +es: SFE_pl_Gc465214E502(sE)) -> MK_pl_pl_Gc465214E502(t, N):
@@ -962,13 +968,21 @@ def mk_pl_pl_Gc465214E502(+t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +dw
   mk2_pl_pl_Gc465214E502(t, dw, N, pf, hN, hd31, hll, exs_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, t), 0n, sE, er, eps, es))
 
 # the field's record from its root-law representation and premise
+def QV_pl_pl_Gc465214E502(o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq) -> Nat:
+  match o:
+    case proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{arr, +N}: XB.LL(TM_pl_pl_Gc465214E502(RT2.tfz_pl_pl_Gc465214E502(arr)), N)
 def LRV_pl_pl_Gc465214E502(o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq) -> Data:
-  DK.Ex(XB.MW, m => DK.P2({o == XB.TH(m) : proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq}, DK.P2({RT2.xv_pl_pl_Gc465214E502(XB.TH(m)) == XB.VAL(m) : S.Value}, DK.P2({XBD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XB.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XB.MW, m => DK.P2({o == XB.TH(m) : proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq}, DK.P2({RT2.xv_pl_pl_Gc465214E502(XB.TH(m)) == XB.VAL(m) : S.Value}, DK.P2({XBD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XB.ENC(m)), QV_pl_pl_Gc465214E502(XB.TH(m))) == True{} : Bool}))))
 def rv3_pl_pl_Gc465214E502(-o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, +t: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +N: U32, +eo: {o == proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N} : proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq}, +mk: MK_pl_pl_Gc465214E502(t, N)) -> LRV_pl_pl_Gc465214E502(o):
   (+eth, +m1) = mk
   (+ev, +m2) = m1
   (+ok, +ln) = m2
-  (XB.MW{TM_pl_pl_Gc465214E502(t), N}, (Equal.trans(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, o, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}), eo, Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}), proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, eth)), (ev, (ok, ln))))
+  +ln2a = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, z => {Nat.is_le(LY.LN(XB.ENC(XB.MW{TM_pl_pl_Gc465214E502(t), N})), XB.LL(TM_pl_pl_Gc465214E502(z), N)) == True{} : Bool}, t, RT2.tfz_pl_pl_Gc465214E502(RT2.am_pl_pl_Gc465214E502(t)),
+    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, RT2.tfz_pl_pl_Gc465214E502(RT2.am_pl_pl_Gc465214E502(t)), t, RT2.tfzam_pl_pl_Gc465214E502(t)), ln)
+  +ln2 = FD.logic__subst(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, z => {Nat.is_le(LY.LN(XB.ENC(XB.MW{TM_pl_pl_Gc465214E502(t), N})), QV_pl_pl_Gc465214E502(z)) == True{} : Bool}, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}),
+    Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}), proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, eth), ln2a)
+  (XB.MW{TM_pl_pl_Gc465214E502(t), N}, (Equal.trans(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, o, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}), eo, Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, XB.TH(XB.MW{TM_pl_pl_Gc465214E502(t), N}), proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq{RT2.am_pl_pl_Gc465214E502(t), N}, eth)), (ev, (ok, ln2))))
+
 def rv_pl_pl_Gc465214E502(-o: proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, +s: S.Schema, +rp: RT2.rep_pl_pl_Gc465214E502(o, s), +hp: PRV_pl_pl_Gc465214E502(o), +es: SFE_pl_Gc465214E502(SH.ProgressiveList_element(s))) -> LRV_pl_pl_Gc465214E502(o):
   (+t, +r1) = rp
   (+dw, +r2) = r1
@@ -1148,7 +1162,7 @@ def EPS_pl_Gp66304057C3(k: Nat, +W: List<&2, RT2.MB<RT2.M_Gp66304057C3>>, +i: Na
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_Gp66304057C3(RT2.xat_pl_Gp66304057C3(W, i)), EPS_pl_Gp66304057C3(q, W, 1n+i))
 def PM_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gp66304057C3>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XC.LL(TM_pl_Gp66304057C3(t), N), P1()) == True{} : Bool}, EPS_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gp66304057C3>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XC.LL(TM_pl_Gp66304057C3(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n)))
 def PRV_pl_Gp66304057C3(o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq) -> Data:
   match o:
     case proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{arr, +N}: PM_pl_Gp66304057C3(RT2.tfz_pl_Gp66304057C3(arr), N)
@@ -1192,9 +1206,9 @@ def exs_pl_Gp66304057C3(k: Nat, +W: List<&2, RT2.MB<RT2.M_Gp66304057C3>>, +i: Na
 def MK_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +N: U32) -> Data:
   DK.P2({XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}) == proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N} : proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq},
   DK.P2({RT2.xv_pl_Gp66304057C3(XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N})) == XC.VAL(XC.MW{TM_pl_Gp66304057C3(t), N}) : S.Value},
-  DK.P2({XCD.OK(XC.MW{TM_pl_Gp66304057C3(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XC.ENC(XC.MW{TM_pl_Gp66304057C3(t), N})), P1()) == True{} : Bool})))
+  DK.P2({XCD.OK(XC.MW{TM_pl_Gp66304057C3(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XC.ENC(XC.MW{TM_pl_Gp66304057C3(t), N})), XC.LL(TM_pl_Gp66304057C3(t), N)) == True{} : Bool})))
 def mk2_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gp66304057C3>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XC.LL(TM_pl_Gp66304057C3(t), N), P1()) == True{} : Bool}, +x: EXS_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n)) -> MK_pl_Gp66304057C3(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_Gp66304057C3>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XC.LL(TM_pl_Gp66304057C3(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n)) -> MK_pl_Gp66304057C3(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_Gp66304057C3(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_Gp66304057C3>, t), dw, ER.pdep(RT2.MB<RT2.M_Gp66304057C3>, dw, t, pf), hd31)
@@ -1207,7 +1221,7 @@ def mk2_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +dw: Nat
     FD.logic__and_intro(True{}, XCD.EOKS(U32.to_nat(N), XC.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XC.MB<CIG.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XCD.EOKS(U32.to_nat(N), XC.SL(T2), 0n))))) == True{} : Bool},
     dw, XC.TDM(T2), Equal.sym(Nat, XC.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XCD.OKL(T2, N), Nat.is_lt(XC.LL(T2, N), VB.pw(31n)), okl, p1lt(XC.LL(T2, N), hll))
+  +ok = FD.logic__and_intro(XCD.OKL(T2, N), Nat.is_lt(XC.LL(T2, N), VB.pw(31n)), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, z => proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{z, N}, XC.AR(T2), RT2.am_pl_Gp66304057C3(t), arTM_pl_Gp66304057C3(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_Gp66304057C3(XC.TH(XC.MW{T2, N})), RT2.xv_pl_Gp66304057C3(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}), XC.VAL(XC.MW{T2, N}),
     Equal.cong(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, S.Value, z => RT2.xv_pl_Gp66304057C3(z), XC.TH(XC.MW{T2, N}), proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, eth),
@@ -1217,7 +1231,7 @@ def mk2_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +dw: Nat
         Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n), XC.XI(U32.to_nat(N), MAPB_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t)), 0n),
           Equal.sym(S.Value, XC.XI(U32.to_nat(N), MAPB_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t)), 0n), RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n), xv)),
         Equal.cong(List<&2, XC.MB<CIG.MW>>, S.Value, z => S.Sequence{XC.XI(U32.to_nat(N), z, 0n)}, MAPB_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t)), FD.array__slots(XC.MB<CIG.MW>, T2), Equal.sym(List<&2, XC.MB<CIG.MW>>, FD.array__slots(XC.MB<CIG.MW>, T2), MAPB_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t)), esl)))))
-  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, P1()) == True{} : Bool}, XC.LL(T2, N), LY.LN(XC.ENC(XC.MW{T2, N})), Equal.sym(Nat, LY.LN(XC.ENC(XC.MW{T2, N})), XC.LL(T2, N), XC.len_encl(T2, N)), hll)
+  +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, XC.LL(T2, N)) == True{} : Bool}, XC.LL(T2, N), LY.LN(XC.ENC(XC.MW{T2, N})), Equal.sym(Nat, LY.LN(XC.ENC(XC.MW{T2, N})), XC.LL(T2, N), XC.len_encl(T2, N)), FD.nat__le_refl(XC.LL(T2, N)))
   (eth, (ev, (ok, ln)))
 def mk_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +dw: Nat, +N: U32, +sE: S.Schema, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
     +er: RT2.ereps_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n, sE), +pm: PM_pl_Gp66304057C3(t, N), +es: SFE_Gp66304057C3(sE)) -> MK_pl_Gp66304057C3(t, N):
@@ -1226,13 +1240,21 @@ def mk_pl_Gp66304057C3(+t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +dw: Nat,
   mk2_pl_Gp66304057C3(t, dw, N, pf, hN, hd31, hll, exs_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, t), 0n, sE, er, eps, es))
 
 # the field's record from its root-law representation and premise
+def QV_pl_Gp66304057C3(o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq) -> Nat:
+  match o:
+    case proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{arr, +N}: XC.LL(TM_pl_Gp66304057C3(RT2.tfz_pl_Gp66304057C3(arr)), N)
 def LRV_pl_Gp66304057C3(o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq) -> Data:
-  DK.Ex(XC.MW, m => DK.P2({o == XC.TH(m) : proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq}, DK.P2({RT2.xv_pl_Gp66304057C3(XC.TH(m)) == XC.VAL(m) : S.Value}, DK.P2({XCD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XC.ENC(m)), P1()) == True{} : Bool}))))
+  DK.Ex(XC.MW, m => DK.P2({o == XC.TH(m) : proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq}, DK.P2({RT2.xv_pl_Gp66304057C3(XC.TH(m)) == XC.VAL(m) : S.Value}, DK.P2({XCD.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XC.ENC(m)), QV_pl_Gp66304057C3(XC.TH(m))) == True{} : Bool}))))
 def rv3_pl_Gp66304057C3(-o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, +t: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +N: U32, +eo: {o == proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N} : proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq}, +mk: MK_pl_Gp66304057C3(t, N)) -> LRV_pl_Gp66304057C3(o):
   (+eth, +m1) = mk
   (+ev, +m2) = m1
   (+ok, +ln) = m2
-  (XC.MW{TM_pl_Gp66304057C3(t), N}, (Equal.trans(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, o, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}), eo, Equal.sym(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}), proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, eth)), (ev, (ok, ln))))
+  +ln2a = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, z => {Nat.is_le(LY.LN(XC.ENC(XC.MW{TM_pl_Gp66304057C3(t), N})), XC.LL(TM_pl_Gp66304057C3(z), N)) == True{} : Bool}, t, RT2.tfz_pl_Gp66304057C3(RT2.am_pl_Gp66304057C3(t)),
+    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, RT2.tfz_pl_Gp66304057C3(RT2.am_pl_Gp66304057C3(t)), t, RT2.tfzam_pl_Gp66304057C3(t)), ln)
+  +ln2 = FD.logic__subst(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, z => {Nat.is_le(LY.LN(XC.ENC(XC.MW{TM_pl_Gp66304057C3(t), N})), QV_pl_Gp66304057C3(z)) == True{} : Bool}, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}),
+    Equal.sym(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}), proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, eth), ln2a)
+  (XC.MW{TM_pl_Gp66304057C3(t), N}, (Equal.trans(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, o, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}), eo, Equal.sym(proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, XC.TH(XC.MW{TM_pl_Gp66304057C3(t), N}), proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq{RT2.am_pl_Gp66304057C3(t), N}, eth)), (ev, (ok, ln2))))
+
 def rv_pl_Gp66304057C3(-o: proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq, +s: S.Schema, +rp: RT2.rep_pl_Gp66304057C3(o, s), +hp: PRV_pl_Gp66304057C3(o), +es: SFE_Gp66304057C3(SH.ProgressiveList_element(s))) -> LRV_pl_Gp66304057C3(o):
   (+t, +r1) = rp
   (+dw, +r2) = r1
