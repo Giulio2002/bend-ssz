@@ -815,7 +815,7 @@ class Child:
                 self.szalias = f'ES_{X}'
                 self.mod += f'\nimport ./big_encx_{X}_size.bend as ES_{X}'
         else:
-            raise SystemExit(f'no child window for {fs.kind}/{fs.p}')
+            raise FileNotFoundError(2, 'no child window', f'child {fs.kind}/{fs.p}')
 
     def putx(self, dd, D, X, q, r, e, hr, hd, hl, pf, hz):
         """(runtime fact, bytes fact, perfect fact) terms."""
@@ -4597,32 +4597,39 @@ OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}
 PROBE_POST = cont_strict
 
 
+SKIPPED = []
+
+
+def build_all():
+    """{path: text} of every module. A module that reads a file a sibling generator has not written yet
+    (from-scratch regeneration: var_vlist_enc's list encoders need this generator's interfaces, and the
+    containers using them need the lists) is skipped and named in SKIPPED: write mode leaves it to the
+    next pass, --check reports it stale."""
+    nxt = {}
+    jobs = [(out_file(C), lambda C=C: full_text(C)) for C in CONTS]
+    jobs += [(gfile_c(C), lambda C=C: full_text(C, generic=True)) for C in GCONTS]
+    jobs += [(iface_file(C), lambda C=C, gen=gen: iface_full(C, gen)) for C, gen in ICONTS]
+    jobs += [(ufile(U), lambda U=U: union_text(U)) for U in UCONTS]
+    for f, mk in jobs:
+        try:
+            nxt[f] = mk()
+        except FileNotFoundError as e:
+            SKIPPED.append(f'{pathlib.Path(f).name} (needs {str(e.filename).rsplit('/', 1)[-1] if '/' in str(e.filename) and not str(e.filename).startswith('child ') else e.filename})')
+    return nxt
+
+
 def main():
     out = {}
     if '--no-big' not in sys.argv:
-        for C in CONTS:
-            out[out_file(C)] = full_text(C)
-        for C in GCONTS:
-            out[gfile_c(C)] = full_text(C, generic=True)
-        for C, gen in ICONTS:
-            out[iface_file(C)] = iface_full(C, gen)
-        for U in UCONTS:
-            out[ufile(U)] = union_text(U)
+        out = build_all()
         # to the fixed point, in this run: a module's text may read its children's (GEN)
         global _STD
         for _ in range(8):
             GEN.clear()
             GEN.update(out)
             _STD = None
-            nxt = {}
-            for C in CONTS:
-                nxt[out_file(C)] = full_text(C)
-            for C in GCONTS:
-                nxt[gfile_c(C)] = full_text(C, generic=True)
-            for C, gen in ICONTS:
-                nxt[iface_file(C)] = iface_full(C, gen)
-            for U in UCONTS:
-                nxt[ufile(U)] = union_text(U)
+            SKIPPED.clear()
+            nxt = build_all()
             if nxt == out:
                 break
             out = nxt
@@ -4645,8 +4652,8 @@ def main():
     out.update({q: okw.okw_relink(c, names) for q, c in comp.items()})
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
-        if stale:
-            print('stale generated container encoder windows: ' + ', '.join(stale))
+        if stale or SKIPPED:
+            print('stale generated container encoder windows: ' + ', '.join(stale + ['skipped: ' + s for s in SKIPPED]))
             sys.exit(1)
         print('generated container encoder windows are current')
         return
