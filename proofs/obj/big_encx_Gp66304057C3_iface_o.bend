@@ -30,6 +30,7 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_l123_u16.bend as EX_l123_u16
+import ./big_encx_l123_u16_d.bend as EX_l123_u16_D
 import ./big_encx_pbits.bend as EX_pbits
 import ./vrecb.bend as VRB
 import ./big_encx_Gp66304057C3.bend as K
@@ -41,7 +42,7 @@ import ./big_encx_Gp66304057C3_iface.bend as OB
 def sizeCW(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OB.OKTW(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {ProgressiveVarTestStruct_e.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C)) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)), K.szpz(f_A, m_f_B, m_f_C, OB.ok_hpzW(f_A, m_f_B, m_f_C, h))) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), _) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
-  %Equal.sym(O.Words & U32, list_uint16_123_e.l123_u16_size(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), EX_l123_u16.SZ(m_f_B)), EX_l123_u16.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, m_f_C, h))) :
+  %Equal.sym(O.Words & U32, list_uint16_123_e.l123_u16_size(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), EX_l123_u16.SZ(m_f_B)), EX_l123_u16_D.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, m_f_C, h))) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_sz0(f_A, EX_pbits.TH(m_f_C), 9, _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
   %Equal.sym(O.Bits & U32, progbitlist_e.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, OB.ok_hok_f_CW(f_A, m_f_B, m_f_C, h))) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_sz1(f_A, EX_l123_u16.TH(m_f_B), O.padd(9, EX_l123_u16.SZ(m_f_B)), _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
@@ -50,7 +51,7 @@ def sizeCW(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OB.OKTW(
 def rvalidCW(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OB.OKTW(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {ProgressiveVarTestStruct_e.Gp66304057C3_valid(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}:
   %Equal.sym(Bool, uint8_e.u8_valid(f_A), True{}, OB.ok_hpzW(f_A, m_f_B, m_f_C, h)) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), _, list_uint16_123_e.l123_u16_valid(EX_l123_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
-  %Equal.sym(O.Words & Bool, list_uint16_123_e.l123_u16_valid(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), True{}), EX_l123_u16.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, m_f_C, h))) :
+  %Equal.sym(O.Words & Bool, list_uint16_123_e.l123_u16_valid(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), True{}), EX_l123_u16_D.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, m_f_C, h))) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), True{}, _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
   %Equal.sym(O.Bits & Bool, progbitlist_e.pbits_valid(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), True{}), EX_pbits.validx(m_f_C, OB.ok_hok_f_CW(f_A, m_f_B, m_f_C, h))) :
     {ProgressiveVarTestStruct_e.Gp66304057C3_va1(f_A, EX_l123_u16.TH(m_f_B), Bool.and(True{}, True{}), _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}

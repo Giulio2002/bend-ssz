@@ -570,6 +570,98 @@ def xn_inv_text(x):
     return '\n'.join(L) + '\n'
 
 
+def xn_win_deep(text, FS):
+    """The nested window (a fixed header and one variable child) at any depth d < 31 (hw32: the window's end
+    below 2^32): header offsets by VB.add_lt32, the fields by rdxd_, the copies by UW.hsxB, the fit of the
+    length by every U32 fitting four bytes, the child through its D interface (hwY32). The old interface stays
+    under the old names as wrappers (with eoc / ecY); hwY, roomc, hcx keep their signatures."""
+    import deep
+    import var_win as VW
+    import var_vlist as VVL
+    P32 = 'FD.spec_common__pow2(32n)'
+    T = 'True{} : Bool'
+    EOC = f'  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}), hcx(d, x, len, U32.to_nat(c), hc, hw, ha))'
+    reps = [
+        (EOC, '  VB.add_lt32(off, c, x, eo, hcx32(x, len, U32.to_nat(c), hc, hw32, ha))'),
+        ('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})\n', ''),
+        ('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})\n', ''),
+        ('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd'),
+    ]
+    for a, b in reps:
+        assert a in text, a[:80]
+        text = text.replace(a, b)
+    text = re.sub(r'(VTX|XF)\.rdx_(\w+)\(', r'\1.rdxd_\2(', text)
+    text = text.replace(', hd30, pf, ', ', hd, pf, ').replace('pf, hd31, ', 'pf, hd, ')
+    while True:
+        m = re.search(r'UW\.hsx\(d, (U32\.add\(off, \d+\)), (Nat\.add\(U32\.to_nat\(\d+\), x\)), (\d+), ', text)
+        if not m:
+            break
+        L_ = int(m.group(3))
+        k = (31 + L_ - 1).bit_length()
+        p0 = text.index('(', m.start()) + 1
+        b = deep._close(text, p0)
+        args = deep._split_args(text[p0:b])
+        assert args[5].strip() == 'hd', args[5]
+        args = args[:5] + [f' {k}n', ' {==}', ' {==}'] + args[6:]
+        text = text[:m.start()] + 'UW.hsxB(' + ','.join(args) + ')' + text[b + 1:]
+    # the fit of the header's size plus the child's bytes: below 2^32
+    a = text.index('  VBZ.fit_b(')
+    e = text.index('FD.nat__lt_trans(d, 28n, 30n, hd, {==}))', a) + len('FD.nat__lt_trans(d, 28n, 30n, hd, {==}))')
+    blk = text[a:e]
+    mm = re.search(r'VBZ\.fit_b\(d, (\d+)n, LL\(len\), len, (.*?), hlY\(d, t, x, len, pf, hw, ha\), enFS\(len, ha\),', blk, re.S)
+    assert mm, blk[:200]
+    FSn, YXt = mm.group(1), mm.group(2)
+    L4 = 'U32.to_nat(LL(len))'
+    new = (f'  FD.nat__le_lt_trans(Nat.add({FSn}n, List.length(&2, U32, {YXt})), U32.to_nat(len), {P32},\n'
+           f'    FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({FSn}n, List.length(&2, U32, {YXt})), z) == True{{}} : Bool}}, Nat.add({FSn}n, {L4}), U32.to_nat(len), enFS(len, ha),\n'
+           f'      Order.add_left({FSn}n, List.length(&2, U32, {YXt}), {L4}, hlY(d, t, x, len, pf, hw, ha))), VB.u32_lt(len))')
+    text = text[:a] + f'  VFT.fits4lt(Nat.add({FSn}n, List.length(&2, U32, {YXt})),\n  ' + new.lstrip() + ')' + text[e:]
+    # c + x below 2^32 for a header byte c
+    a = text.index('\ndef eoc(')
+    hcx32 = (f"# c + x below 2^32 for c <= {FS}.\n"
+             f"def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == {T}}}, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
+             f"    -> {{Nat.is_lt(Nat.add(c, x), {P32}) == {T}}}:\n"
+             f"  FD.nat__le_lt_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P32},\n"
+             f"    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),\n"
+             f"    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))\n")
+    text = text[:a + 1] + hcx32 + text[a + 1:]
+    # the child's window below 2^32
+    a = text.index('\ndef ecY(')
+    hwy32 = (f"def hwY32(+x: Nat, +len: U32, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
+             f"    -> {{Nat.is_lt(Nat.add(Nat.add(U32.to_nat({FS}), x), U32.to_nat(LL(len))), {P32}) == {T}}}:\n"
+             f"  +e = Equal.trans(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LL(len)))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))),\n"
+             f"    FD.nat__add_assoc({FS}n, x, U32.to_nat(LL(len))), FD.lru_nat_algebra__add_swap({FS}n, x, U32.to_nat(LL(len))))\n"
+             f"  %Equal.sym(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))), e) : {{Nat.is_lt(_, {P32}) == {T}}}\n"
+             f"  %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)) : {{Nat.is_lt(Nat.add(x, _), {P32}) == {T}}}\n"
+             f"  hw32\n")
+    text = text[:a + 1] + hwy32 + text[a + 1:]
+    # the child's D interface (its hw32 after its hw)
+    pat = re.compile(r'(?<![\w.])YW\.(ok_evalw|readw|specw|invw)\(')
+    out, i = [], 0
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        assert args[8].strip().startswith('hwY('), args[8]
+        args.insert(9, ' hwY32(x, len, hw32, ha)')
+        out.append(text[i:m.start()] + f'YW.{m.group(1)}D(' + ','.join(args) + ')')
+        i = b + 1
+    text = ''.join(out)
+    for nm in ('roomc', 'hcx', 'hwY'):
+        text = VVL._keep_sig(text, nm)
+    if 'as VFT' not in text:
+        text = text.replace('import ./vbuf.bend as VB\n', 'import ./vbuf.bend as VB\nimport ./vfits.bend as VFT\n', 1)
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    left = [l for l in text.split('\n') if re.search(r'is_lt\(d, 28n\)|lt_trans\(d, 28n|UW\.hsx\(|\.rdx_\w+\(|add_le_at\(|VBZ\.fit_b\(', l)]
+    assert not left, left[:3]
+    text = deep.thread(text, VW.HWX, VW.HW32X)
+    return deep.compat(text, VW.XIFACE + ['eoc', 'ecY'], VW.HWX, VW.HW32X, 'Nat.add(x, U32.to_nat(len))')
+
+
 def xn_win_text(x):
     n, FS, H, po, cvar, Y, JX = x.n, x.FS, x.H, x.po, x.cvar, x.Y, x.JX
     Tn = f'T.{n}'
@@ -900,7 +992,7 @@ def main():
         out[fname(x)] = win_deep(win_text(x), x.FS)
     for x in ns:
         out[fname(x, '_inv')] = xn_inv_text(x)
-        out[fname(x)] = xn_win_text(x)
+        out[fname(x)] = xn_win_deep(xn_win_text(x), x.FS)
     for x in x2s:
         out[fname(x, '_inv')] = VX2.inv_text(x)
         out[fname(x)] = VX2.win_text(x)

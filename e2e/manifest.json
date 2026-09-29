@@ -2954,7 +2954,7 @@
      "FuluLightClientUpdate_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluPendingAttestation_e2e_dec_generated.bend": [
@@ -3826,7 +3826,7 @@
     "laws": [
      "ComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 28n) (f_B's words below depth 28), hsD: BL.sdk(pj_3(o), 28n) (f_D's bytes below depth 28), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 28n) (f_E's list below depth 28), hsF: EV.sv4(pj_5(o), 28n) (f_F's record tree below depth 28), hsG: EV.sv2(pj_6(o), 31n, 28n) (f_G's mirror tree below depth 31, each element's list below depth 28)"
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; the D twins and the OKW laws: no container size budget; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 31n) (f_B's words below depth 31), hsD: BL.sdk(pj_3(o), 31n) (f_D's bytes below depth 31), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 31n) (f_E's list below depth 31), hsF: EV.sv4(pj_5(o), 31n) (f_F's record tree below depth 31), hsG: EV.sv2(pj_6(o), 31n, 31n) (f_G's mirror tree below depth 31, each element's list below depth 31)"
    }
   ],
   "FuluAggregateAndProof_e2e_generated.bend": [
@@ -4046,7 +4046,7 @@
     "laws": [
      "ProgressiveComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the encode records' own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; decoded fields reach NMAX; dropped when the encoder window widens (codec-var), then regenerated with the budgets read from the widened law): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (a per-field budget so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise (words dw < 28, bit lists EP.SDPB)"
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
    }
   ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
@@ -4056,7 +4056,7 @@
     "laws": [
      "ProgressiveSingleListContainerTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 31n) (field 0's bit list: its words below depth 31, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws) (the D twins and the OKW laws: no container size budget): hs0: EP.SDPB(pj_0(o), 31n) (field 0's bit list: its words below depth 31, the widths at B = K <= 2^32 - 8, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "ProgressiveTestStruct_e2e_generated.bend": [
@@ -4066,7 +4066,7 @@
     "laws": [
      "ProgressiveTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the encode records' own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; decoded fields reach NMAX; dropped when the encoder window widens (codec-var), then regenerated with the budgets read from the widened law): each list field's storage at its encode law's depth bound (byte storage and record trees dw < 28, the variable-element mirror trees dw < 31), each unbounded list field's encoding within EL.P1 = 2^27 + 1 bytes (a per-field budget so that the fields and the fixed part fit the container law's 2^30), and each element's storage premise (words dw < 28, bit lists EP.SDPB)"
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
@@ -4076,7 +4076,7 @@
     "laws": [
      "ProgressiveVarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and hs: EQ.PREM_Gp66304057C3(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs1: BL.sdk(pj_1(o), 28n) (field 1's words below depth 28); hs2: EP.SDPB(pj_2(o), 31n) (field 2's bit list: its words below depth 31, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and hs: EQ.PREM_Gp66304057C3(o), its storage fields' premises at their encode laws' bounds (read from the laws) (the D twins and the OKW laws: no container size budget): hs1: BL.sdk(pj_1(o), 31n) (field 1's words below depth 31); hs2: EP.SDPB(pj_2(o), 31n) (field 2's bit list: its words below depth 31, the widths at B = K <= 2^32 - 8, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "VarTestStruct_e2e_generated.bend": [
@@ -4086,7 +4086,7 @@
     "laws": [
      "VarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage below its encode law's depth bound 28, read from the law; the root law gives dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 31n) (the list field's storage below its encode law's depth bound 31, read from the law (the D twin of the list, big_encx_l1024_u16_d, on the OKW laws: no container size budget); the root law gives dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "progbitlist_e2e_generated.bend": [
@@ -7482,9 +7482,9 @@
   },
   "FuluLightClientUpdate": {
    "generated_name": "LightClientUpdate",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 26936,
    "covered": true,
    "bridged": null

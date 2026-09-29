@@ -30,6 +30,7 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_l1024_u16.bend as EX_l1024_u16
+import ./big_encx_l1024_u16_d.bend as EX_l1024_u16_D
 import ./vrecb.bend as VRB
 import ./big_encx_Gc465214E502.bend as K
 
@@ -140,13 +141,13 @@ def lenE(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C
 
 # ---- OKW: the encoding below 2^31 bytes (the object API's limit: O.padd's poison bit), the children OKW ----
 
-def OKTW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32) -> Bool: Bool.and(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))))
+def OKTW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32) -> Bool: Bool.and(EX_l1024_u16_D.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))))
 
-def okr1W(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))) == True{} : Bool}: and_r(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))), h)
+def okr1W(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))) == True{} : Bool}: and_r(EX_l1024_u16_D.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))), h)
 
 def okr2W(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n)) == True{} : Bool}: and_r(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n)), okr1W(f_A, m_f_B, f_C, h))
 
-def ok_hok_f_BW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {EX_l1024_u16.OK(m_f_B) == True{} : Bool}: and_l(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))), h)
+def ok_hok_f_BW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {EX_l1024_u16_D.OK(m_f_B) == True{} : Bool}: and_l(EX_l1024_u16_D.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n))), h)
 
 def ok_hpzW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)) == True{} : Bool}: and_l(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_lt(ENDC(f_A, m_f_B, f_C), VB.pw(31n)), okr1W(f_A, m_f_B, f_C, h))
 
@@ -156,12 +157,12 @@ def partsCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B,
     -> {Codec.parts(S.Items{VRB.UV16(f_A), S.Items{EX_l1024_u16.VAL(m_f_B), S.Items{VRB.UV8(f_C), S.EmptyItems{}}}}, S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}) == Some{PSC(f_A, m_f_B, f_C)} : Maybe<&2, +List<S.Part>>}:
   FX.cat_fixed(Codec.parts(VRB.UV16(f_A), S.Unsigned{P.U16{}}), [U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], Codec.parts(S.Items{EX_l1024_u16.VAL(m_f_B), S.Items{VRB.UV8(f_C), S.EmptyItems{}}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}), [S.Variable{EX_l1024_u16.ENC(m_f_B)}, S.Fixed{[U32.and(f_C, 255)]}],
     VRB.prt16(f_A), VS.cat_var(Codec.parts(EX_l1024_u16.VAL(m_f_B), S.ListOf{S.Unsigned{P.U16{}}, 1024n}), EX_l1024_u16.ENC(m_f_B), Codec.parts(S.Items{VRB.UV8(f_C), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}), [S.Fixed{[U32.and(f_C, 255)]}],
-    EX_l1024_u16.encx_spec(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h)), FX.cat_fixed(Codec.parts(VRB.UV8(f_C), S.Unsigned{P.U8{}}), [U32.and(f_C, 255)], Codec.parts(S.EmptyItems{}, S.End{}), [],
+    EX_l1024_u16_D.encx_spec(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h)), FX.cat_fixed(Codec.parts(VRB.UV8(f_C), S.Unsigned{P.U8{}}), [U32.and(f_C, 255)], Codec.parts(S.EmptyItems{}, S.End{}), [],
     VRB.prt8(f_C), {==})))
 
 def validCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {Layout.bytes_valid(PSC(f_A, m_f_B, f_C)) == True{} : Bool}:
   FD.logic__and_intro(SP.bytes_domain([U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)]), Layout.bytes_valid([S.Variable{EX_l1024_u16.ENC(m_f_B)}, S.Fixed{[U32.and(f_C, 255)]}]), CS.domf(VRB.UV16(f_A), S.Unsigned{P.U16{}}, [U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], {==}, VRB.prt16(f_A)),
-    FD.logic__and_intro(SP.bytes_domain(EX_l1024_u16.ENC(m_f_B)), Layout.bytes_valid([S.Fixed{[U32.and(f_C, 255)]}]), CS.domv(EX_l1024_u16.VAL(m_f_B), S.ListOf{S.Unsigned{P.U16{}}, 1024n}, EX_l1024_u16.ENC(m_f_B), {==}, EX_l1024_u16.encx_spec(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h))),
+    FD.logic__and_intro(SP.bytes_domain(EX_l1024_u16.ENC(m_f_B)), Layout.bytes_valid([S.Fixed{[U32.and(f_C, 255)]}]), CS.domv(EX_l1024_u16.VAL(m_f_B), S.ListOf{S.Unsigned{P.U16{}}, 1024n}, EX_l1024_u16.ENC(m_f_B), {==}, EX_l1024_u16_D.encx_spec(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h))),
     FD.logic__and_intro(SP.bytes_domain([U32.and(f_C, 255)]), Layout.bytes_valid([]), CS.domf(VRB.UV8(f_C), S.Unsigned{P.U8{}}, [U32.and(f_C, 255)], {==}, VRB.prt8(f_C)),
     {==})))
 
@@ -170,7 +171,7 @@ def okoCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f
 
 def szCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {U32.to_nat(K.SZC(f_A, m_f_B, f_C)) == ENDC(f_A, m_f_B, f_C) : Nat}:
   FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(f_A, m_f_B, f_C) : Nat}, O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.SZC(f_A, m_f_B, f_C), Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, ok_hpzW(f_A, m_f_B, f_C, h))),
-    CS.pstepB(7, EX_l1024_u16.SZ(m_f_B), 7n, LY.LN(EX_l1024_u16.ENC(m_f_B)), ENDC(f_A, m_f_B, f_C), ok_bndW(f_A, m_f_B, f_C, h), {==}, EX_l1024_u16.szx(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h)), FD.nat__le_refl(ENDC(f_A, m_f_B, f_C))))
+    CS.pstepB(7, EX_l1024_u16.SZ(m_f_B), 7n, LY.LN(EX_l1024_u16.ENC(m_f_B)), ENDC(f_A, m_f_B, f_C), ok_bndW(f_A, m_f_B, f_C, h), {==}, EX_l1024_u16_D.szx(m_f_B, ok_hok_f_BW(f_A, m_f_B, f_C, h)), FD.nat__le_refl(ENDC(f_A, m_f_B, f_C))))
 
 def cellsCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {K.ENCC(f_A, m_f_B, f_C) == VCN.AP(VCN.CAT([[U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], I.limb(7), [U32.and(f_C, 255)]]), Layout.payloads(PSC(f_A, m_f_B, f_C))) : +List<U32>}:
   %Equal.sym(+List<U32>, K.ENCC(f_A, m_f_B, f_C), VCN.CAT([[U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], I.limb(7), [U32.and(f_C, 255)], VCN.PC(List.length(&2, U32, EX_l1024_u16.ENC(m_f_B)), EX_l1024_u16.ENC(m_f_B))]), eENC(f_A, m_f_B, f_C, Unit{})) :
@@ -282,7 +283,7 @@ def goO(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKTW(f_A, m_f_B, f_C
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el, hz)
   +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
   +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
-  +g = K.putxW(f_A, m_f_B, f_C, ok_hok_f_BW(f_A, m_f_B, f_C, h), ok_hpzW(f_A, m_f_B, f_C, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el, hl32), pf, hz2)
+  +g = K.putxWD(f_A, m_f_B, f_C, ok_hok_f_BW(f_A, m_f_B, f_C, h), ok_hpzW(f_A, m_f_B, f_C, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el, hl32), pf, hz2)
   +rt = K.putk_bridge(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r, PA(K.RTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), g2)

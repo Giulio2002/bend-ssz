@@ -37,11 +37,15 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_v4_GcDC3E457711.bend as RV_v4_GcDC3E457711
+import ./big_encx_v4_GcDC3E457711_d.bend as RV_v4_GcDC3E457711_D
 import ./big_encx_l128_u16.bend as EX_l128_u16
+import ./big_encx_l128_u16_d.bend as EX_l128_u16_D
 import ./big_encx_bl256.bend as EX_bl256
+import ./big_encx_bl256_d.bend as EX_bl256_D
 import ./big_encx_Gc465214E502_iface.bend as EX_Gc465214E502
 import ./big_encx_Gc465214E502_iface_o.bend as EX_Gc465214E502o
 import ./big_encx_v2_Gc465214E502.bend as EX_v2_Gc465214E502
+import ./big_encx_v2_Gc465214E502_d.bend as EX_v2_Gc465214E502_D
 import ./vrecb.bend as VRB
 import ./vuw_bits.bend as UWB
 import ./big_encx_Gc56D855869F.bend as K
@@ -55,28 +59,28 @@ def sizeCW(+f_A: U32, +m_f_B: EX_l128_u16.MW, +f_C: U32, +m_f_D: EX_bl256.MW, +m
     {ComplexTestStruct_e.Gc56D855869F_size(K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), _) : ComplexTestStruct_d.Gc56D855869F & U32}
   %Equal.sym(U32, U32.or(O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G)), 0), O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G)), UWB.or0r(O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G)))) :
     {ComplexTestStruct_e.Gc56D855869F_size(K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), _) : ComplexTestStruct_d.Gc56D855869F & U32}
-  %Equal.sym(O.Words & U32, list_uint16_128_e.l128_u16_size(EX_l128_u16.TH(m_f_B)), (EX_l128_u16.TH(m_f_B), EX_l128_u16.SZ(m_f_B)), EX_l128_u16.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(O.Words & U32, list_uint16_128_e.l128_u16_size(EX_l128_u16.TH(m_f_B)), (EX_l128_u16.TH(m_f_B), EX_l128_u16.SZ(m_f_B)), EX_l128_u16_D.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_sz0(f_A, f_C, EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), 71, _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G))) : ComplexTestStruct_d.Gc56D855869F & U32}
-  %Equal.sym(O.Words & U32, bytelist_256_e.bl256_size(EX_bl256.TH(m_f_D)), (EX_bl256.TH(m_f_D), EX_bl256.SZ(m_f_D)), EX_bl256.sizex(m_f_D, OB.ok_hok_f_DW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(O.Words & U32, bytelist_256_e.bl256_size(EX_bl256.TH(m_f_D)), (EX_bl256.TH(m_f_D), EX_bl256.SZ(m_f_D)), EX_bl256_D.sizex(m_f_D, OB.ok_hok_f_DW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_sz1(f_A, f_C, EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), EX_l128_u16.TH(m_f_B), O.padd(71, EX_l128_u16.SZ(m_f_B)), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G))) : ComplexTestStruct_d.Gc56D855869F & U32}
   %Equal.sym(VarTestStruct_d.Gc465214E502 & U32, VarTestStruct_e.Gc465214E502_size(EX_Gc465214E502.TH(m_f_E)), (EX_Gc465214E502.TH(m_f_E), EX_Gc465214E502.SZ(m_f_E)), EX_Gc465214E502o.sizexO(m_f_E, OB.ok_hok_f_EW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_sz2(f_A, f_C, RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), EX_l128_u16.TH(m_f_B), EX_bl256.TH(m_f_D), O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G))) : ComplexTestStruct_d.Gc56D855869F & U32}
-  %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq & U32, vec_VarTestStruct_2_e.v2_Gc465214E502_size(EX_v2_Gc465214E502.TH(m_f_G)), (EX_v2_Gc465214E502.TH(m_f_G), EX_v2_Gc465214E502.SZ(m_f_G)), EX_v2_Gc465214E502.sizex(m_f_G, OB.ok_hok_f_GW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq & U32, vec_VarTestStruct_2_e.v2_Gc465214E502_size(EX_v2_Gc465214E502.TH(m_f_G)), (EX_v2_Gc465214E502.TH(m_f_G), EX_v2_Gc465214E502.SZ(m_f_G)), EX_v2_Gc465214E502_D.sizex(m_f_G, OB.ok_hok_f_GW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_sz3(f_A, f_C, RV_v4_GcDC3E457711.TH(m_f_F), EX_l128_u16.TH(m_f_B), EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), O.padd(O.padd(O.padd(O.padd(71, EX_l128_u16.SZ(m_f_B)), EX_bl256.SZ(m_f_D)), EX_Gc465214E502.SZ(m_f_E)), EX_v2_Gc465214E502.SZ(m_f_G))) : ComplexTestStruct_d.Gc56D855869F & U32}
   {==}
 
 def rvalidCW(+f_A: U32, +m_f_B: EX_l128_u16.MW, +f_C: U32, +m_f_D: EX_bl256.MW, +m_f_E: EX_Gc465214E502.MW, +m_f_F: RV_v4_GcDC3E457711.MW, +m_f_G: EX_v2_Gc465214E502.MW, +h: {OB.OKTW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G) == True{} : Bool}) -> {ComplexTestStruct_e.Gc56D855869F_valid(K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}:
   %Equal.sym(Bool, Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), True{}, OB.ok_hpzW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h)) :
     {ComplexTestStruct_e.Gc56D855869F_va0(f_A, f_C, EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), _, list_uint16_128_e.l128_u16_valid(EX_l128_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
-  %Equal.sym(O.Words & Bool, list_uint16_128_e.l128_u16_valid(EX_l128_u16.TH(m_f_B)), (EX_l128_u16.TH(m_f_B), True{}), EX_l128_u16.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(O.Words & Bool, list_uint16_128_e.l128_u16_valid(EX_l128_u16.TH(m_f_B)), (EX_l128_u16.TH(m_f_B), True{}), EX_l128_u16_D.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_va0(f_A, f_C, EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), True{}, _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
-  %Equal.sym(O.Words & Bool, bytelist_256_e.bl256_valid(EX_bl256.TH(m_f_D)), (EX_bl256.TH(m_f_D), True{}), EX_bl256.validx(m_f_D, OB.ok_hok_f_DW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(O.Words & Bool, bytelist_256_e.bl256_valid(EX_bl256.TH(m_f_D)), (EX_bl256.TH(m_f_D), True{}), EX_bl256_D.validx(m_f_D, OB.ok_hok_f_DW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_va1(f_A, EX_l128_u16.TH(m_f_B), f_C, EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), Bool.and(True{}, True{}), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
   %Equal.sym(VarTestStruct_d.Gc465214E502 & Bool, VarTestStruct_e.Gc465214E502_valid(EX_Gc465214E502.TH(m_f_E)), (EX_Gc465214E502.TH(m_f_E), True{}), EX_Gc465214E502o.validxO(m_f_E, OB.ok_hok_f_EW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_va2(f_A, EX_l128_u16.TH(m_f_B), f_C, EX_bl256.TH(m_f_D), RV_v4_GcDC3E457711.TH(m_f_F), EX_v2_Gc465214E502.TH(m_f_G), Bool.and(Bool.and(True{}, True{}), True{}), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
-  %Equal.sym(vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool, vec_FixedTestStruct_4_e.v4_GcDC3E457711_valid(RV_v4_GcDC3E457711.TH(m_f_F)), (RV_v4_GcDC3E457711.TH(m_f_F), True{}), RV_v4_GcDC3E457711.validx(m_f_F, OB.ok_hok_f_FW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool, vec_FixedTestStruct_4_e.v4_GcDC3E457711_valid(RV_v4_GcDC3E457711.TH(m_f_F)), (RV_v4_GcDC3E457711.TH(m_f_F), True{}), RV_v4_GcDC3E457711_D.validx(m_f_F, OB.ok_hok_f_FW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_va3(f_A, EX_l128_u16.TH(m_f_B), f_C, EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), EX_v2_Gc465214E502.TH(m_f_G), Bool.and(Bool.and(Bool.and(True{}, True{}), True{}), True{}), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
-  %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq & Bool, vec_VarTestStruct_2_e.v2_Gc465214E502_valid(EX_v2_Gc465214E502.TH(m_f_G)), (EX_v2_Gc465214E502.TH(m_f_G), True{}), EX_v2_Gc465214E502.validx(m_f_G, OB.ok_hok_f_GW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
+  %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq & Bool, vec_VarTestStruct_2_e.v2_Gc465214E502_valid(EX_v2_Gc465214E502.TH(m_f_G)), (EX_v2_Gc465214E502.TH(m_f_G), True{}), EX_v2_Gc465214E502_D.validx(m_f_G, OB.ok_hok_f_GW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, h))) :
     {ComplexTestStruct_e.Gc56D855869F_va4(f_A, EX_l128_u16.TH(m_f_B), f_C, EX_bl256.TH(m_f_D), EX_Gc465214E502.TH(m_f_E), RV_v4_GcDC3E457711.TH(m_f_F), Bool.and(Bool.and(Bool.and(Bool.and(True{}, True{}), True{}), True{}), True{}), _) == (K.OBJC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), True{}) : ComplexTestStruct_d.Gc56D855869F & Bool}
   {==}
 

@@ -104,6 +104,40 @@ def list_btwins(t):
     return t.rstrip('\n') + '\n' + ''.join(out) if out else t
 
 
+# ---- the word/byte list children in D form (codegen/encx_d.py: big_encx_<p>_d, their storage at depth < 31) ----------
+# The OKW twins of the containers in LIST_D_STEMS take their list children's validity from the D modules (the base
+# child stops at dw < 28): OK, the size / spec / validity laws and the writers' putxW / putx_bytesW of the D module.
+
+LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface',
+                'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface', 'big_encx_Gc221EC01D83', 'big_encx_Gc221EC01D83_iface',
+                'big_encx_Gp8A7851175B', 'big_encx_Gp8A7851175B_iface'}
+LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
+
+
+def list_d_children(t):
+    """{alias: (dalias, p)} of the list children t imports that have a D module."""
+    import encx_d
+    return {m.group(2): (m.group(2) + '_D', m.group(1)) for m in re.finditer(r'^import \./big_encx_(\w+)\.bend as (\w+)$', t, re.M)
+            if m.group(1) in encx_d.CFG or m.group(1) in encx_d.CLOSURES}
+
+
+def list_d_swap(s, ld):
+    import encx_d
+    for al, (dal, p) in ld.items():
+        ns = [n for n in LD_LAWS if n in encx_d.d_names(p)]
+        s = re.sub(r'(?<![\w.])' + re.escape(al) + r'\.(' + '|'.join(ns) + r')\(', dal + r'.\1(', s)
+    return s
+
+
+def list_d_imports(t, ld):
+    for al, (dal, p) in ld.items():
+        if dal + '.' in t and f' as {dal}\n' not in t:
+            a = f'import ./big_encx_{p}.bend as {al}\n'
+            assert a in t, a
+            t = t.replace(a, a + f'import ./big_encx_{p}_d.bend as {dal}\n', 1)
+    return t
+
+
 # ---- the container ifaces -------------------------------------------------------------------------------------
 
 def _okt_line(t, name):
@@ -111,13 +145,14 @@ def _okt_line(t, name):
     return m
 
 
-def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
+def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
     """The container iface t with its OKW twins. child_okw: the aliases (with the dot) of the children container
     ifaces that have OKW. Returns (text, bad): bad lists the uses of k this pass does not handle."""
     bad = []
     m = _okt_line(t, 'OKT')
     if not m or 'def OKTW(' in t:
         return t, bad
+    ld = list_d_children(t) if dchild else {}
     OPS = m.group(1)
     OAS = ', '.join(p.lstrip('+').split(':')[0].strip() for p in deep._args(OPS + ')', 0)[0])
     ENDC = f'ENDC({OAS})'
@@ -138,7 +173,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
     def bound(s):
         # the bytes' bound: ENDC <= 4 2^28 becomes ENDC < 2^31 (ENDC by name)
         return s.replace(f'Nat.is_le({ENDX}, A.quad(VB.pw(28n)))', f'Nat.is_lt({ENDC}, VB.pw(31n))')
-    body = bound(child_ok(m.group(2)))
+    body = bound(list_d_swap(child_ok(m.group(2)), ld))
     new = [f'\n# ---- OKW: the encoding below 2^31 bytes (the object API\'s limit: O.padd\'s poison bit), the children OKW ----\n'
            f'def OKTW({OPS}) -> Bool: {body}\n']
     # the extractors (okrN, ok_*): one-line defs on +h: {OKT(...)}
@@ -162,7 +197,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
             cons.append(name)
 
     def rw(s, in_chain):
-        s = child_ok(s)
+        s = list_d_swap(child_ok(s), ld)
         s = s.replace('{OKT(', '{OKTW(')
         s = bound(s)
         for n in ext + cons:
@@ -256,9 +291,11 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
             body = nb[len(hdr):]
             for n in ext:
                 body = re.sub(r'(?<![\w.])' + n + r'\(', n + 'W(', body)
-            body = child_ok(body)
+            body = list_d_swap(child_ok(body), ld)
             if child_okw:   # (the writer's children on OKW: its putxO)
                 body = re.sub(r'(?<![\w.])K\.putxW\(', 'K.putxO(', body)
+            elif ld:   # (its list children in D form: the writer's putxWD)
+                body = re.sub(r'(?<![\w.])K\.putxW\(', 'K.putxWD(', body)
             hs = (f'  +hs31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {X}, '
                   f'Equal.sym(Nat, {X}, {ENDC}, lenEW({OAS}, h)), ok_bndW({OAS}, h))\n')
             t = t[:b] + '\n' + (hdr + hs + body).rstrip('\n') + '\n' + t[b:]
@@ -347,14 +384,24 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
         ab = _block_text(t, n)
         if ab:
             t = t[:ab[0]] + t[ab[1]:]
-    return t, bad
+    return list_d_imports(t, ld), bad
 
 
-def okw_writer(t, child_okw):
+def okw_writer(t, child_okw, dchild=False):
     """A container writer's O twins: its W twins that meet a child container (its OK, putxW, putx_bytesW, szx) or an
-    O twin, copied as <name without W>O with the children on OKW (OKW, putxO, putx_bytesO, szxO)."""
+    O twin, copied as <name without W>O with the children on OKW (OKW, putxO, putx_bytesO, szxO). dchild: and, for
+    its list children in D form, putxWD (putxW on the D modules)."""
+    if dchild and not child_okw:
+        ld = list_d_children(t)
+        ab = _block_text(t, 'putxW') if ld else None
+        if ab and 'def putxWD(' not in t:
+            blk = t[ab[0]:ab[1]]
+            nb = list_d_swap(blk.replace('def putxW(', 'def putxWD(', 1), ld)
+            t = list_d_imports(t[:ab[1]] + '\n' + nb.rstrip('\n') + '\n' + t[ab[1]:], ld)
+        return t
     if not child_okw:
         return t
+    ld = list_d_children(t) if dchild else {}
     tb = deep._twin_blocks(t)
     names = [n for n, _, _, _ in tb]
     pat = '|'.join(re.escape(al) + r'(?:OK|putxW|putx_bytesW|szx)\(' for al in child_okw)
@@ -382,8 +429,8 @@ def okw_writer(t, child_okw):
             blk = re.sub(r'(?<![\w.])' + re.escape(al) + r'szx\(', al + 'szxO(', blk)
         for m in aff:
             blk = re.sub(r'(?<![\w.])' + re.escape(m) + r'\(', oname(m) + '(', blk)
-        new.append(blk)
-    return t.rstrip('\n') + '\n' + _topo('\n' + '\n'.join(new))
+        new.append(list_d_swap(blk, ld))
+    return list_d_imports(t.rstrip('\n') + '\n' + _topo('\n' + '\n'.join(new)), ld)
 
 def _topo(seg):
     """The defs of seg in dependency order (a def after the defs it calls), comments kept with their def."""
