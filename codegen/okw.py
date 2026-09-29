@@ -354,7 +354,17 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         pat = ', '.join('+' + x.strip() for x in OAS.split(','))
         ml = re.search(r'^def lenEW\(.*?\) -> \{(.*?) == (?:OB\.)?ENDC', t, re.M)
         L = ml.group(1) if ml else f'List.length(&2, U32, K.ENCC({OAS}))'   # (lenEW's own form of the length)
-        t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
+        if 'def szxEO(' in t:   # (U32 mode: through a helper over a variable list, as szxEO: the big ENCC is never compared)
+            t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\n'
+                                  f'def bndxEO(+m: MW, +hok: {{OKW(m) == True{{}} : Bool}}, +EE: +List<U32>, +eE: {{ENC(m) == EE : +List<U32>}}) -> {{Nat.is_lt(VCN.LN(EE), VB.pw(31n)) == True{{}} : Bool}}:\n'
+                                  f'  match m:\n    case MW{{{pat}}}: FD.logic__subst(+List<U32>, zq => {{Nat.is_lt(VCN.LN(zq), VB.pw(31n)) == True{{}} : Bool}}, K.ENCC({OAS}), EE, '
+                                  f'Equal.sym(+List<U32>, EE, K.ENCC({OAS}), Equal.trans(+List<U32>, EE, ENC(MW{{{OAS}}}), K.ENCC({OAS}), Equal.sym(+List<U32>, ENC(MW{{{OAS}}}), EE, eE), {{==}})), '
+                                  f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {L}, Equal.sym(Nat, {L}, {ENDC}, lenEW({OAS}, hok)), ok_bndW({OAS}, hok)))\n'
+                                  f'\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
+                                  f'  {{Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{{}} : Bool}}\n'
+                                  f'def bndxO(m, hok):\n  bndxEO(m, hok, ENC(m), {{==}})\n')
+        else:
+          t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
                               f'  {{Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{{}} : Bool}}\n'
                               f'def bndxO(m, hok):\n  match m:\n    case MW{{{pat}}}: FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {L}, '
                               f'Equal.sym(Nat, {L}, {ENDC}, lenEW({OAS}, hok)), ok_bndW({OAS}, hok))\n')

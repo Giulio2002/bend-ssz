@@ -467,10 +467,13 @@ law domxO:
 def domxO(m, hok):
   domxEO(m, hok, OB.ENC(m), {==})
 
+def bndxEO(+m: OB.MW, +hok: {OKW(m) == True{} : Bool}, +EE: +List<U32>, +eE: {OB.ENC(m) == EE : +List<U32>}) -> {Nat.is_lt(VCN.LN(EE), VB.pw(31n)) == True{} : Bool}:
+  match m:
+    case OB.MW{+wR}: FD.logic__subst(+List<U32>, zq => {Nat.is_lt(VCN.LN(zq), VB.pw(31n)) == True{} : Bool}, K.ENCC(wR), EE, Equal.sym(+List<U32>, EE, K.ENCC(wR), Equal.trans(+List<U32>, EE, OB.ENC(OB.MW{wR}), K.ENCC(wR), Equal.sym(+List<U32>, OB.ENC(OB.MW{wR}), EE, eE), {==})), FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDCs(wR, U32.to_nat(2737225)), VCN.LN(K.ENCC(wR)), Equal.sym(Nat, VCN.LN(K.ENCC(wR)), OB.ENDCs(wR, U32.to_nat(2737225)), lenEW(wR, hok)), ok_bndW(wR, hok)))
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OKW(m) == True{} : Bool}
   {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
 def bndxO(m, hok):
-  match m:
-    case OB.MW{+wR}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDCs(wR, U32.to_nat(2737225)), VCN.LN(K.ENCC(wR)), Equal.sym(Nat, VCN.LN(K.ENCC(wR)), OB.ENDCs(wR, U32.to_nat(2737225)), lenEW(wR, hok)), ok_bndW(wR, hok))
+  bndxEO(m, hok, OB.ENC(m), {==})
