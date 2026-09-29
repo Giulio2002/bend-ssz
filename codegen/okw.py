@@ -110,8 +110,9 @@ def list_btwins(t):
 
 LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface',
                 'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface', 'big_encx_Gc221EC01D83', 'big_encx_Gc221EC01D83_iface',
-                'big_encx_Gp8A7851175B', 'big_encx_Gp8A7851175B_iface', 'big_encx_BeaconState', 'big_encx_BeaconState_iface'}
-LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
+                'big_encx_Gp8A7851175B', 'big_encx_Gp8A7851175B_iface', 'big_encx_BeaconState', 'big_encx_BeaconState_iface',
+                'big_encx_ExecutionPayloadHeader', 'big_encx_ExecutionPayloadHeader_iface'}
+LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'maxx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
 
 
 def list_d_children(t):
@@ -351,8 +352,8 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
                 bad.append((law + 'O', l.strip()[:160]))
         t = t[:b] + '\n' + nb.rstrip('\n') + '\n' + t[b:]
     # (keep: OKW from OK, for the encode records of the (i) laws: a container valid at 4 2^28 bytes is valid at 2^31)
-    if keep and 'def okwOfOk(' not in t and not ld:
-        t = t.rstrip('\n') + _okw_of_ok(m.group(2), oktw_body, OPS, OAS, child_okw)
+    if keep and 'def okwOfOk(' not in t:
+        t = t.rstrip('\n') + _okw_of_ok(m.group(2), oktw_body, OPS, OAS, child_okw, ld)
     # (keep: the bytes' bound on OKW, the encoder laws' O twins read it: codegen/var_cont_top.py)
     if keep and 'def lenEW(' in t and 'def ok_bndW(' in t and 'law bndxO:' not in t:
         pat = ', '.join('+' + x.strip() for x in OAS.split(','))
@@ -654,15 +655,18 @@ def gtop_o(t):
     size's depth, below 31 at a size below 2^31), appended; okw_companion moves them to <module>_o."""
     new = []
     L = 'List.length(&2, U32, CI.ENC(m))'
-    for n in GTW:
+    # (a fixed depth: roomf and a31 in place of room; the bytes within CI.maxx)
+    gtw = [n for n in ('HD', 'mk3', 'room', 'roomf', 'rt0', 'by0', 'a31', 'eval_go', 'obytes', 'encode_eval', 'encode_spec')
+           if (_block_text(t, n) if n != 'room' else ('def room(' in t and _block_text(t, 'room')))]
+    if not all(n in gtw for n in ('HD', 'mk3', 'rt0', 'by0', 'eval_go', 'obytes', 'encode_eval', 'encode_spec')) or not ({'room', 'roomf'} & set(gtw)):
+        return t
+    for n in gtw:
         ab = _block_text(t, n)
-        if not ab:
-            return t
         blk = t[ab[0]:ab[1]]
-        for a in GTW:
+        for a in gtw:
             blk = re.sub(r'(?<![\w.])' + a + r'(?=[(:])', GTN.get(a, a + 'O'), blk)
         blk = blk.replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
-        blk = re.sub(r'(?<![\w.])CI\.(sizex|szx|encx_spec)\(', r'CI.\1O(', blk)
+        blk = re.sub(r'(?<![\w.])CI\.(sizex|szx|encx_spec|maxx)\(', r'CI.\1O(', blk)
         blk = blk.replace('roomO(m, hok, 28n, {==})', 'roomO(m, hok, 29n, {==})')
         if n in ('rt0', 'by0'):
             # (the writer's putxO: hl32 from the bytes' bound)
@@ -727,7 +731,7 @@ def _conjs(s):
     return out + [s]
 
 
-def _okw_of_ok(okt, oktw, OPS, OAS, child_okw):
+def _okw_of_ok(okt, oktw, OPS, OAS, child_okw, ld=None):
     """okwOfOk / okwOfOkM: the OKW of a record from its OK (the chain's conjuncts, children through their own okwOfOkM, the
     bytes' bound 4 2^28 as below 2^31 by VCN.lt31q)."""
     co, cw = _conjs(okt), _conjs(oktw)
@@ -754,6 +758,10 @@ def _okw_of_ok(okt, oktw, OPS, OAS, child_okw):
         mc = re.fullmatch(r'(\w+\.)OK\((.*)\)', co[i], re.S)
         if mc and mc.group(1) in child_okw:
             prf[i] = f'{mc.group(1)}okwOfOkM({mc.group(2)}, {pi})'
+            continue
+        if (mc and ld and mc.group(1)[:-1] in ld and cw[i] == f'{mc.group(1)[:-1]}_D.OK({mc.group(2)})'
+                and 'okDb' in __import__('encx_d').d_names(ld[mc.group(1)[:-1]][1])):   # (a list child in D form: its base validity gives it)
+            prf[i] = f'{mc.group(1)[:-1]}_D.okDb({mc.group(2)}, {pi})'
             continue
         return ''
     res = prf[n - 1]

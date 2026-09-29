@@ -48,7 +48,7 @@ def iface_params(C):
         P = ', '.join('+' + x.strip() for x in CE_split(kw))
         REC.add(C)
     names = [x.split(':')[0].strip().lstrip('+') for x in CE_split(P)]
-    imps = [ln for ln in txt.split('\n') if ln.startswith('import ')]
+    imps = [ln for ln in txt.split('\n') if ln.startswith('import ') and not re.search(r'_d\.bend as \w+_D$', ln)]   # (the D twins: the companions' own)
     return P, names, imps
 
 
@@ -1113,7 +1113,7 @@ def okw_tops(out):
             ko = ROOT / f'proofs/obj/{k.group(1)}_o.bend'   # (BeaconState's writer twins live in its companion)
             kt += ko.read_text() if ko.exists() else ''
             t2 = okw.top_o(t, 'putxO' if '\ndef putxO(' in kt else 'putxW')
-        elif 'def room(' in t and 'Z.sizez(' not in t:   # (the wide generic containers' size module: later)
+        elif ('def room(' in t or 'def roomf(' in t) and 'Z.sizez(' not in t:   # (the wide generic containers' size module: later)
             t2 = okw.gtop_o(t)
         else:
             continue

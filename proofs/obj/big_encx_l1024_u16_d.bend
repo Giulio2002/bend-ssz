@@ -245,3 +245,22 @@ law validx:
 def validx(m, hok):
   match m:
     case B0.MW{+dw, +T, +N}: valid(dw, T, N, hok)
+
+# The base validity (depth below 28) gives this one (below 31): a limited list has no NMAX conjunct.
+def okDb(+m: B0.MW, +hok: {B0.OK(m) == True{} : Bool}) -> {OK(m) == True{} : Bool}:
+  match m:
+    case B0.MW{+dw, +T, +N}:
+      +s0 = hok
+      +p0 = FD.logic__and_left(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))))), s0)
+      +s1 = FD.logic__and_right(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))))), s0)
+      +p1 = FD.logic__and_left(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))))), s1)
+      +s2 = FD.logic__and_right(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))))), s1)
+      +p2 = FD.logic__and_left(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))), s2)
+      +s3 = FD.logic__and_right(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))), s2)
+      +p3 = FD.logic__and_left(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))), s3)
+      +s4 = FD.logic__and_right(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))), s3)
+      +p4 = FD.logic__and_left(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)), s4)
+      +s5 = FD.logic__and_right(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)), s4)
+      +p5 = FD.logic__and_left(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N), s5)
+      +s6 = FD.logic__and_right(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N), s5)
+      FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))))), p0, FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))))), FD.nat__lt_trans(dw, 28n, 31n, p1, {==}), FD.logic__and_intro(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)))), p2, FD.logic__and_intro(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), Bool.and(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N))), p3, FD.logic__and_intro(Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), Bool.and(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N)), p4, FD.logic__and_intro(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N), p5, s6))))))

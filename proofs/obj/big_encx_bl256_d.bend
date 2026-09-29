@@ -252,3 +252,18 @@ def maxx(m, hok):
       FD.logic__subst(Nat, z => {Nat.is_le(z, 256n) == True{} : Bool}, U32.to_nat(N), List.length(&2, U32, B0.ENC(B0.MW{dw, T, N})),
         Equal.sym(Nat, List.length(&2, U32, B0.ENC(B0.MW{dw, T, N})), U32.to_nat(N), eL(dw, T, N, hok)),
         FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 256), Nat.is_le(U32.to_nat(N), U32.to_nat(256)), VU.le_u32(N, 256), ok_ex(dw, T, N, hok)))
+
+# The base validity (depth below 28) gives this one (below 31): a limited list has no NMAX conjunct.
+def okDb(+m: B0.MW, +hok: {B0.OK(m) == True{} : Bool}) -> {OK(m) == True{} : Bool}:
+  match m:
+    case B0.MW{+dw, +T, +N}:
+      +s0 = hok
+      +p0 = FD.logic__and_left(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)))), s0)
+      +s1 = FD.logic__and_right(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)))), s0)
+      +p1 = FD.logic__and_left(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256))), s1)
+      +s2 = FD.logic__and_right(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256))), s1)
+      +p2 = FD.logic__and_left(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)), s2)
+      +s3 = FD.logic__and_right(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)), s2)
+      +p3 = FD.logic__and_left(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256), s3)
+      +s4 = FD.logic__and_right(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256), s3)
+      FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)))), p0, FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256))), FD.nat__lt_trans(dw, 28n, 31n, p1, {==}), FD.logic__and_intro(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)), p2, FD.logic__and_intro(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256), p3, s4))))

@@ -152,7 +152,39 @@ def d_twin(text, p):
     t = re.sub(r'W\.specw\((.*?ok_hN\(dw, T, N, hok\)), ', lambda m: f'W.specwD({m.group(1)}, {hw32}, ', t)
     for bad in ('VLS.KK', 'VLS.kk_lt', 'VLS.hyn', 'UW.hsx('):
         assert bad not in t, (bad, [l[:160] for l in t.split('\n') if bad in l][:2])
+    if not unb:
+        t = t.rstrip('\n') + '\n' + _ok_db(text, t)
     return t
+
+
+def _ok_db(base, d):
+    """okDb: the base's validity gives the D validity (the same chain at depth below 31; a limited list needs no NMAX conjunct)."""
+    import okw
+    mb = re.search(r'^def OKT\(.*?\) -> Bool:\n?\s*(.*?)\ndef OK\(', base, re.M | re.S)
+    md = re.search(r'^def OKT\(.*?\) -> Bool:\n?\s*(.*?)\ndef OK\(', d, re.M | re.S)
+    co, cw = okw._conjs(' '.join(mb.group(1).split())), okw._conjs(' '.join(md.group(1).split()))
+    assert len(co) == len(cw), (len(co), len(cw))
+    n = len(co)
+    suf = lambda i, c: c[i] if i == n - 1 else 'Bool.and(' + c[i] + ', ' + suf(i + 1, c) + ')'   # noqa: E731
+    lines = ['      +s0 = hok']
+    prf = {}
+    for i in range(n):
+        pi = f'p{i}' if i < n - 1 else f's{n - 1}'
+        if i < n - 1:
+            lines.append(f'      +p{i} = FD.logic__and_left({co[i]}, {suf(i + 1, co)}, s{i})')
+            lines.append(f'      +s{i + 1} = FD.logic__and_right({co[i]}, {suf(i + 1, co)}, s{i})')
+        if co[i] == cw[i]:
+            prf[i] = pi
+        elif co[i] == 'Nat.is_lt(dw, 28n)' and cw[i] == 'Nat.is_lt(dw, 31n)':
+            prf[i] = f'FD.nat__lt_trans(dw, 28n, 31n, {pi}, {{==}})'
+        else:
+            raise AssertionError((co[i], cw[i]))
+    res = prf[n - 1]
+    for i in range(n - 2, -1, -1):
+        res = f'FD.logic__and_intro({cw[i]}, {suf(i + 1, cw)}, {prf[i]}, {res})'
+    return ('\n# The base validity (depth below 28) gives this one (below 31): a limited list has no NMAX conjunct.\n'
+            'def okDb(+m: B0.MW, +hok: {B0.OK(m) == True{} : Bool}) -> {OK(m) == True{} : Bool}:\n  match m:\n    case B0.MW{+dw, +T, +N}:\n'
+            + '\n'.join(lines) + '\n      ' + res + '\n')
 
 
 def _and_args(s):

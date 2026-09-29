@@ -73,6 +73,20 @@ def validxO(m, hok):
   match m:
     case OB.MW{+f_A, +m_f_B, +m_f_C}: rvalidCW(f_A, m_f_B, m_f_C, hok)
 
+def okwOfOk(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OB.OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {OB.OKTW(f_A, m_f_B, m_f_C) == True{} : Bool}:
+  +s0 = h
+  +p0 = FD.logic__and_left(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), s0)
+  +s1 = FD.logic__and_right(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), s0)
+  +p1 = FD.logic__and_left(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), s1)
+  +s2 = FD.logic__and_right(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), s1)
+  +p2 = FD.logic__and_left(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s2)
+  +s3 = FD.logic__and_right(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s2)
+  FD.logic__and_intro(EX_l123_u16_D.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n)))), EX_l123_u16_D.okDb(m_f_B, p0), FD.logic__and_intro(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n))), p1, FD.logic__and_intro(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n)), p2, VCN.lt31q(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s3))))
+
+def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
+  match m:
+    case OB.MW{+f_A, +m_f_B, +m_f_C}: okwOfOk(f_A, m_f_B, m_f_C, hok)
+
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
