@@ -161,6 +161,8 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
 
     ENDX = re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', t, re.M).group(1)
     ms = re.fullmatch(r'ENDCs\((.*), (\d+n)\)', ENDX)
+    if not ms and ENDX.startswith('ENDCs('):
+        ENDC = ENDX   # (U32 mode: the bound in ENDCs form, the form the chains' types state: a mismatch of the two forms costs a full evaluation)
     if ms:   # (U32 mode: ENDC is ENDCs at its fixed size)
         sb = re.search(r'^def ENDCs\(.*?, \+F: Nat\) -> Nat: (.*)$', t, re.M).group(1)
         ENDX = re.sub(r'(?<![\w.])F(?![\w.])', ms.group(2), sb)
@@ -347,7 +349,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
     # (keep: the bytes' bound on OKW, the encoder laws' O twins read it: codegen/var_cont_top.py)
     if keep and 'def lenEW(' in t and 'def ok_bndW(' in t and 'law bndxO:' not in t:
         pat = ', '.join('+' + x.strip() for x in OAS.split(','))
-        ml = re.search(r'^def lenEW\(.*?\) -> \{(.*?) == ENDC\(', t, re.M)
+        ml = re.search(r'^def lenEW\(.*?\) -> \{(.*?) == (?:OB\.)?ENDC', t, re.M)
         L = ml.group(1) if ml else f'List.length(&2, U32, K.ENCC({OAS}))'   # (lenEW's own form of the length)
         t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
                               f'  {{Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{{}} : Bool}}\n'
