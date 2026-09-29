@@ -10,6 +10,7 @@
 | `proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend` | the per-name facades: every law in the object API's terms | `codegen/api_facade.py` |
 | `proofs/gate/` | one-import gates that check each law module in isolation; `MISSING.txt`, `api_map.json` | `codegen/api_gate.py` |
 | `e2e/<Name>_e2e_{,dec_,root_}generated.bend` (fixed-size names keep encode and decode in `<Name>_e2e_generated.bend`), `e2e/manifest.json` | the bridges to END_TO_END's model, and their index | `codegen/e2e_bridge.py` |
+| `e2e/STATEMENTS.txt` | every bridge statement, with the imports and local defs it uses (no proofs) | `codegen/statements.py` |
 | `END_TO_END.bend`, `ROOT_DOMAIN.bend`, `PROOF.bend`, `HASH_PROOF.bend` | the model API's public laws | hand (statements frozen) |
 | `codegen/` | the generators; `codegen/fulu.yaml` and the frozen generic descriptions are their inputs | hand |
 | the figures marked `<!-- fig:KEY -->` in README.md, docs/RESULTS.md, docs/PREMISES.md | coverage counts and name lists, from `proofs/gate/` and `e2e/manifest.json` | `codegen/doc_figures.py` |

@@ -34,6 +34,26 @@ root); without the decode bridges: <!-- fig:no_dec_bridge -->`vec_uint128_512`, 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).
 
+## Confirming what was checked
+
+What a reader relies on is: the specification (`spec/`, mapped to `simple-serialize.md` in
+`spec/CORRESPONDENCE.md`), the laws of END_TO_END.bend (the same text as
+`memory_bench/law-statements.json`) and ROOT_DOMAIN.bend, the bridge statements
+(`e2e/STATEMENTS.txt`) and the premises (`docs/PREMISES.md`). To confirm that exactly these were
+checked, at the commit you rely on:
+
+    python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
+    python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
+    git clone https://github.com/bendlang/bend T/bend-src && git -C T/bend-src checkout 3ddfb0366cc14622202aaa3808e695412241f23f
+    # put Bun 1.4.2 (linux-x64) at T/bun-linux-x64/bun
+    python3 tools/verify_pins.py --toolchain T   # checker, Bun and the vendored SHA-256 package match toolchain.lock.json
+    BEND_TOOLCHAIN=T tools/check_fast.sh    # prints "all files check"
+
+`check_fast.sh` repeats the two verifications itself and refuses to run on any mismatch. A change
+to a frozen statement shows up as a change to `frozen.lock.json` (`git log -p frozen.lock.json`);
+a change to a bridge statement as a change to `e2e/STATEMENTS.txt`. The trust base (checker,
+SHA-256 package, compiler and host) is described in [docs/TRUST.md](docs/TRUST.md).
+
 ## Layout
 
 `src/` runtime, `types/` the generated API per name, `spec/` the frozen specification,
