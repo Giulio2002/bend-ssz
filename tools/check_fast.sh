@@ -13,6 +13,8 @@
 # root files are printed with the definition the checker names. Writes DIR/<n>.log,
 # DIR/summary.tsv (umbrella, exit, ok, seconds, peak MB, roots), DIR/bisect/*.log and
 # DIR/failed.tsv (root file, log, first Location line). Exits nonzero if any umbrella fails.
+# First, tools/verify_pins.py checks the toolchain and the SHA-256 package against
+# toolchain.lock.json (exit 3 on a mismatch).
 # Run from the repository root.
 set -u
 J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
@@ -28,6 +30,9 @@ while [ $# -gt 0 ]; do
 done
 t0=$(date +%s)
 rm -rf "$OUT"; mkdir -p "$OUT/bisect"; : > "$OUT/summary.tsv"; : > "$OUT/failed.tsv"
+T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
+python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
+export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
 # run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints "All terms check"

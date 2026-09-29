@@ -1,0 +1,29 @@
+{
+  "note": "The one toolchain pin for proof checking. tools/verify_pins.py checks it; tools/check.sh and tools/check_fast.sh run that check before any Bend run. The compiled-runtime toolchain for tests and benchmarks (not used by any proof check) is benchmarks/toolchain.json.",
+  "checker": {
+    "repository": "https://github.com/bendlang/bend",
+    "commit": "3ddfb0366cc14622202aaa3808e695412241f23f",
+    "base_release": {"tag": "v2.0.28", "commit": "bc178404f4778704fa5584a73fcdf72bcdf9f32c"},
+    "provenance": "v2.0.28 plus 13 commits: upstream main through #1071, and the branch of bendlang/bend#1075 (conversion checks syntactic identity before normalizing) including its budget fix bdb251f4 'Bound the identity walk by visits'. 3ddfb036 is on that PR's branch (an ancestor of refs/pull/1075/head, which later merged main 2.0.32). The ssz server builds it as is: /srv/ssz-optimization/toolchain-2.0.28/bend-src at this commit with a clean working tree.",
+    "entry": "bend-src/bend2/main.ts",
+    "files": {
+      "bend-src/bend2/main.ts": "f1823574202a513e6e8d0370b77276667257601ffe5b749ec4158ca89fd3e5b4",
+      "bend-src/bend2/bend.ts": "640bdadde87efbd499d4ec895e748b762632f9702b4961c4f1335f2801e4adaf",
+      "bend-src/bend2/comp.ts": "63ded38190b6258e1d25c0ffe18a83974d3f37c76c1ce751854a6ccbc599d9bd",
+      "bend-src/bend2/base.bend": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
+    }
+  },
+  "bun": {
+    "version": "1.4.2",
+    "path": "bun-linux-x64/bun",
+    "sha256": "a83d263767d839e4d2649ca8e35d07159c7afc99afdc96d731ced29e056dda0c"
+  },
+  "sha256_package": {
+    "id": "0xe4067e0d858024083f36a7abe7281e89",
+    "name": "bend-collections (BendHub)",
+    "vendored": "vendor/bendhub/0xe4067e0d858024083f36a7abe7281e89",
+    "files": 69,
+    "tree_sha256": "418327b841037bcd4b7f1cb7a4044be5b923b19827e65bbc6ad94628bf7f6372",
+    "role": "spec/ uses its FIPS 180-4 model (spec/crypto/sha.bend) as the hash of the specification; src/ uses its byte API, proved against that model inside the package."
+  }
+}

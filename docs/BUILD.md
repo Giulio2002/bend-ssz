@@ -38,9 +38,13 @@ their imports.
 `tools/check_costs.tsv` holds per-file check times (file, exit, ok, seconds, peak MB) measured once
 with the pinned checker; `umbrellas.py` uses them only to balance the partition, never for coverage.
 
-`check.sh` runs `bun <bend-src>/bend2/main.ts <file> --check-only` with Bend 2.0.28 + bendlang/bend#1075
-(found through `BEND_TOOLCHAIN`, default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`; `BEND_LIB` for the SHA-256 package cache) and prints `All terms check.` and a final `CHECK_TIME <seconds> <peak KB>` line. Each check runs
-under the limits it was measured with:
+`check.sh` runs `bun <bend-src>/bend2/main.ts <file> --check-only` with the checker pinned in
+`toolchain.lock.json` (Bend 2.0.28 + bendlang/bend#1075 at 3ddfb036; found through `BEND_TOOLCHAIN`,
+default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-256 package
+(`BEND_LIB`, default the vendored `vendor/bendhub`), and prints `All terms check.` and a final
+`CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
+checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
+Each check runs under the limits it was measured with:
 
 | Limit | Value |
 |---|---|

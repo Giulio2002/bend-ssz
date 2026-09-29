@@ -1,5 +1,5 @@
 {
-  "note": "Stock upstream Bend 2.0.28 (2026-09-25), Linux x86_64 release bend-2.0.28-linux-x64.tar.gz from github.com/bendlang/bend; base.bend is byte-identical on every platform. Previous pin: 2.0.25 (Linux binary d9c0dad1..., Base e5639663...). automation/toolchain.json (protected) still pins 2.0.16; see docs/TOOLCHAIN.md.",
+  "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py): stock upstream Bend 2.0.28 (2026-09-25), release bend-2.0.28-linux-x64.tar.gz from github.com/bendlang/bend; base.bend is byte-identical on every platform and to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
   "bend": {
     "path": "/Users/monkeair/.bend/bin/bend",
     "sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf"
