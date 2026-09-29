@@ -311,7 +311,8 @@ def EVP(+d: Nat, +t: {TV}, +x: Nat, +len: U32, +i: Nat, +k: Nat, +ecc: {{W.CC(le
 
 
 def modules():
-    return {f'e2e_vlm_{L}.bend': module(L, X, win, lim) for L, X, win, lim in LISTS}
+    import runtime_refs as RR   # the bridge writes every module rewired (its light companions): a fixpoint of rewire
+    return {f'e2e_vlm_{L}.bend': RR.rewire(module(L, X, win, lim)) for L, X, win, lim in LISTS}
 
 
 def main():
