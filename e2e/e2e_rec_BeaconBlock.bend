@@ -7,7 +7,7 @@ import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_names_light.bend as RN_L
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/big_encx_BeaconBlock_iface.bend as CI
+import ../proofs/obj/encx_BeaconBlock_iface.bend as CI
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
 import ../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
@@ -32,9 +32,9 @@ import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vconts.bend as CS
 import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/vuwv_b32.bend as V_b32
-import ../proofs/obj/big_encx_BeaconBlockBody_iface.bend as EC_BeaconBlockBody
-import ../proofs/obj/big_encx_BeaconBlockBody_size.bend as ES_BeaconBlockBody
-import ../proofs/obj/big_encx_BeaconBlock.bend as K
+import ../proofs/obj/encx_BeaconBlockBody_iface.bend as EC_BeaconBlockBody
+import ../proofs/obj/encx_BeaconBlockBody_size.bend as ES_BeaconBlockBody
+import ../proofs/obj/encx_BeaconBlock.bend as K
 import ./e2e_ml_l16_ProposerSlashing.bend as PS3
 import ./e2e_bbsl.bend as AS4
 import ./e2e_bbatt.bend as AT5

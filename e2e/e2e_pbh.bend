@@ -16,7 +16,7 @@ import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/vbrt.bend as VR
 import ../proofs/obj/vpb29.bend as VP
-import ../proofs/obj/big_var_winp_pbits.bend as PBW
+import ../proofs/obj/var_winp_pbits.bend as PBW
 import ./e2e_cap.bend as C
 import ./e2e_bview.bend as BV
 import ./e2e_gpb.bend as GPB

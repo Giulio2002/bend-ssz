@@ -4,12 +4,9 @@ import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
 import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../types/uint256_def_generated.bend as uint256_d
-import ../../types/boolean_hashtreeroot_generated.bend as boolean_h
 import ../../types/uint8_hashtreeroot_generated.bend as uint8_h
 import ../../types/uint32_hashtreeroot_generated.bend as uint32_h
 import ../../types/uint64_hashtreeroot_generated.bend as uint64_h
-import ../../types/uint256_hashtreeroot_generated.bend as uint256_h
 import ../../types/Fulu_bitvector_512_hashtreeroot_generated.bend as Fulu_bitvector_512_h
 import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
@@ -113,30 +110,30 @@ def rs_u16(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32, +rp: LV.rp_u16(o)) -> RR.
     RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}, [D.bytes(O.u32_chunk(_))])
   GL.u16_w(WSp.take(16n, 32n, PD.bits(o)))
 
-def d_Gc4ED9619F50(+hl: Nat, +o: SmallTestStruct_d.Gc4ED9619F50) -> D.Digest:
+def d_SmallTestStruct(+hl: Nat, +o: SmallTestStruct_d.SmallTestStruct) -> D.Digest:
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: MD.rtree(1n, True{}, hl, [d_u16(hl, x0), d_u16(hl, x1)], 0n)
-def st_Gc4ED9619F50(+hl: Nat, -h: B.Buf, +o: SmallTestStruct_d.Gc4ED9619F50, +seg: U32) -> {SmallTestStruct_h.Gc4ED9619F50_root(hl, h, o, seg) == (h, d_Gc4ED9619F50(hl, o)) : B.Buf & D.Digest}:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}: MD.rtree(1n, True{}, hl, [d_u16(hl, x0), d_u16(hl, x1)], 0n)
+def st_SmallTestStruct(+hl: Nat, -h: B.Buf, +o: SmallTestStruct_d.SmallTestStruct, +seg: U32) -> {SmallTestStruct_h.SmallTestStruct_root(hl, h, o, seg) == (h, d_SmallTestStruct(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}:
       {==}
-def rs_Gc4ED9619F50(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SmallTestStruct_d.Gc4ED9619F50, +rp: LV.rp_Gc4ED9619F50(o)) -> RR.roots(LV.v_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}, [D.bytes(d_Gc4ED9619F50(hl, o))]):
+def rs_SmallTestStruct(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SmallTestStruct_d.SmallTestStruct, +rp: LV.rp_SmallTestStruct(o)) -> RR.roots(LV.v_SmallTestStruct(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}, [D.bytes(d_SmallTestStruct(hl, o))]):
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}:
       (+r0, +k0) = rp
       (MD.bytes_list([d_u16(hl, x0), d_u16(hl, x1)]), (([D.bytes(d_u16(hl, x0))], (MD.bytes_list([d_u16(hl, x1)]), (rs_u16(hl, ehl, x0, r0), (([D.bytes(d_u16(hl, x1))], (MD.bytes_list([]), (rs_u16(hl, ehl, x1, k0), ({==}, {==})))), {==})))),
         RS.aggregate_digests(2n, 1n, hl, [d_u16(hl, x0), d_u16(hl, x1)], {==}, {==}, {==}, ehl)))
 
-def d_GpF350A3C486(+hl: Nat, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> D.Digest:
+def d_ProgressiveSingleFieldContainerTestStruct(+hl: Nat, +o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> D.Digest:
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: O.mix_len(hl, D.node(hl, D.zero(), d_u8(hl, x0)), 1)
-def st_GpF350A3C486(+hl: Nat, -h: B.Buf, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +seg: U32) -> {ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_root(hl, h, o, seg) == (h, d_GpF350A3C486(hl, o)) : B.Buf & D.Digest}:
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}: O.mix_len(hl, D.node(hl, D.zero(), d_u8(hl, x0)), 1)
+def st_ProgressiveSingleFieldContainerTestStruct(+hl: Nat, -h: B.Buf, +o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +seg: U32) -> {ProgressiveSingleFieldContainerTestStruct_h.ProgressiveSingleFieldContainerTestStruct_root(hl, h, o, seg) == (h, d_ProgressiveSingleFieldContainerTestStruct(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}:
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}:
       {==}
-def rs_GpF350A3C486(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rp: LV.rp_GpF350A3C486(o)) -> RR.roots(LV.v_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, [D.bytes(d_GpF350A3C486(hl, o))]):
+def rs_ProgressiveSingleFieldContainerTestStruct(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +rp: LV.rp_ProgressiveSingleFieldContainerTestStruct(o)) -> RR.roots(LV.v_ProgressiveSingleFieldContainerTestStruct(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, [D.bytes(d_ProgressiveSingleFieldContainerTestStruct(hl, o))]):
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}:
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}:
       (MD.bytes_list([d_u8(hl, x0)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([]), (rs_u8(hl, ehl, x0, rp), ({==}, {==})))),
         PCN.pc_1_ar(hl, ehl, d_u8(hl, x0))))
 
@@ -370,29 +367,29 @@ def d_u32(+hl: Nat, o: U32) -> D.Digest: O.u32_chunk(o)
 def st_u32(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {uint32_h.u32_root(hl, h, o, seg) == (h, d_u32(hl, o)) : B.Buf & D.Digest}: {==}
 def rs_u32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32) -> RR.roots(LV.v_u32(o), S.Unsigned{P.U32Width{}}, [D.bytes(d_u32(hl, o))]): LS.u32_root(o)
 
-def d_GcDC3E457711(+hl: Nat, +o: FixedTestStruct_d.GcDC3E457711) -> D.Digest:
+def d_FixedTestStruct(+hl: Nat, +o: FixedTestStruct_d.FixedTestStruct) -> D.Digest:
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: MD.rtree(2n, True{}, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], 0n)
-def st_GcDC3E457711(+hl: Nat, -h: B.Buf, +o: FixedTestStruct_d.GcDC3E457711, +seg: U32) -> {FixedTestStruct_h.GcDC3E457711_root(hl, h, o, seg) == (h, d_GcDC3E457711(hl, o)) : B.Buf & D.Digest}:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}: MD.rtree(2n, True{}, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], 0n)
+def st_FixedTestStruct(+hl: Nat, -h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct, +seg: U32) -> {FixedTestStruct_h.FixedTestStruct_root(hl, h, o, seg) == (h, d_FixedTestStruct(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}:
       {==}
-def rs_GcDC3E457711(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: FixedTestStruct_d.GcDC3E457711, +rp: LV.rp_GcDC3E457711(o)) -> RR.roots(LV.v_GcDC3E457711(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, [D.bytes(d_GcDC3E457711(hl, o))]):
+def rs_FixedTestStruct(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: FixedTestStruct_d.FixedTestStruct, +rp: LV.rp_FixedTestStruct(o)) -> RR.roots(LV.v_FixedTestStruct(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, [D.bytes(d_FixedTestStruct(hl, o))]):
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}:
       (MD.bytes_list([d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([d_u64(hl, x1), d_u32(hl, x2)]), (rs_u8(hl, ehl, x0, rp), (([D.bytes(d_u64(hl, x1))], (MD.bytes_list([d_u32(hl, x2)]), (rs_u64(hl, ehl, x1), (([D.bytes(d_u32(hl, x2))], (MD.bytes_list([]), (rs_u32(hl, ehl, x2), ({==}, {==})))), {==})))), {==})))),
         RS.aggregate_digests(3n, 2n, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], {==}, {==}, {==}, ehl)))
 
-def d_Gc74A8F5F17F(+hl: Nat, +o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> D.Digest:
+def d_SingleFieldTestStruct(+hl: Nat, +o: SingleFieldTestStruct_d.SingleFieldTestStruct) -> D.Digest:
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: MD.rtree(0n, True{}, hl, [d_u8(hl, x0)], 0n)
-def st_Gc74A8F5F17F(+hl: Nat, -h: B.Buf, +o: SingleFieldTestStruct_d.Gc74A8F5F17F, +seg: U32) -> {SingleFieldTestStruct_h.Gc74A8F5F17F_root(hl, h, o, seg) == (h, d_Gc74A8F5F17F(hl, o)) : B.Buf & D.Digest}:
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}: MD.rtree(0n, True{}, hl, [d_u8(hl, x0)], 0n)
+def st_SingleFieldTestStruct(+hl: Nat, -h: B.Buf, +o: SingleFieldTestStruct_d.SingleFieldTestStruct, +seg: U32) -> {SingleFieldTestStruct_h.SingleFieldTestStruct_root(hl, h, o, seg) == (h, d_SingleFieldTestStruct(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}:
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}:
       {==}
-def rs_Gc74A8F5F17F(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SingleFieldTestStruct_d.Gc74A8F5F17F, +rp: LV.rp_Gc74A8F5F17F(o)) -> RR.roots(LV.v_Gc74A8F5F17F(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}, [D.bytes(d_Gc74A8F5F17F(hl, o))]):
+def rs_SingleFieldTestStruct(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SingleFieldTestStruct_d.SingleFieldTestStruct, +rp: LV.rp_SingleFieldTestStruct(o)) -> RR.roots(LV.v_SingleFieldTestStruct(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}, [D.bytes(d_SingleFieldTestStruct(hl, o))]):
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}:
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}:
       (MD.bytes_list([d_u8(hl, x0)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([]), (rs_u8(hl, ehl, x0, rp), ({==}, {==})))),
         RS.aggregate_digests(1n, 0n, hl, [d_u8(hl, x0)], {==}, {==}, {==}, ehl)))
 
@@ -501,10 +498,6 @@ def rs_gate_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_512_d.Bi
 def rs_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_512_d.Bitvector512) -> RR.roots(LV.v_bv512(o), S.BitVector{512n}, [D.bytes(d_bv512(hl, o))]):
   (1n, ({==}, rs_gate_bv512(hl, ehl, o)))
 
-def d_bool(+hl: Nat, o: Bool) -> D.Digest: O.bool_chunk(o)
-def st_bool(+hl: Nat, -h: B.Buf, +o: Bool, +seg: U32) -> {boolean_h.bool_root(hl, h, o, seg) == (h, d_bool(hl, o)) : B.Buf & D.Digest}: {==}
-def rs_bool(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Bool) -> RR.roots(LV.v_bool(o), S.Boolean{}, [D.bytes(d_bool(hl, o))]): RL.bool_root(o)
-
 # ---- u128 (uwide) ----
 def c0_u128(o: uint128_d.Uint128) -> D.Digest:
   match o:
@@ -522,156 +515,88 @@ def rs_u128(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: uint128_d.Uint128) -> RR.root
         {I.uint_root(P.U128{}, P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}) == Some{_} : Maybe<&2, +List<U32>>}
       {==}
 
-# ---- u256 (uwide) ----
-def c0_u256(o: uint256_d.Uint256) -> D.Digest:
-  match o:
-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
-def d_u256(+hl: Nat, +o: uint256_d.Uint256) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_u256(o)], 0n)
-def st_u256(+hl: Nat, -h: B.Buf, +o: uint256_d.Uint256, +seg: U32) -> {uint256_h.u256_root(hl, h, o, seg) == (h, d_u256(hl, o)) : B.Buf & D.Digest}:
-  match o:
-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
-def rs_u256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: uint256_d.Uint256) -> RR.roots(LV.v_u256(o), S.Unsigned{P.U256{}}, [D.bytes(d_u256(hl, o))]):
-  match o:
-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
-      %IE.uint_hash_tree_root_correct(P.U256{}, P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}) :
-        {_ == Some{D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}), List.append(&2, U32, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), SP.zero_bytes(0n)), RL.bytes_8(w0, w1, w2, w3, w4, w5, w6, w7)) :
-        {I.uint_root(P.U256{}, P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}) == Some{_} : Maybe<&2, +List<U32>>}
-      {==}
-
-# GpF350A3C486: the root of every GpF350A3C486 object (with its representation facts) is its specification root.
-law GpF350A3C486_root_correct:
+# ProgressiveSingleFieldContainerTestStruct: the root of every ProgressiveSingleFieldContainerTestStruct object (with its representation facts) is its specification root.
+law ProgressiveSingleFieldContainerTestStruct_root_correct:
   for -h: B.Buf
-  for +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486
-  for +rp: LV.rp_GpF350A3C486(o)
-  RR.roots(LV.v_GpF350A3C486(o), Spec.GpF350A3C486(), [D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_hash_tree_root(h, o)))])
-def GpF350A3C486_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_root(64n, h, o, 0), (h, d_GpF350A3C486(64n, o)), st_GpF350A3C486(64n, h, o, 0)) :
-    RR.roots(LV.v_GpF350A3C486(o), Spec.GpF350A3C486(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_GpF350A3C486(64n, {==}, o, rp)
+  for +o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct
+  for +rp: LV.rp_ProgressiveSingleFieldContainerTestStruct(o)
+  RR.roots(LV.v_ProgressiveSingleFieldContainerTestStruct(o), Spec.ProgressiveSingleFieldContainerTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.ProgressiveSingleFieldContainerTestStruct_hash_tree_root(h, o)))])
+def ProgressiveSingleFieldContainerTestStruct_root_correct(h, o, rp):
+  %Equal.sym(B.Buf & D.Digest, ProgressiveSingleFieldContainerTestStruct_h.ProgressiveSingleFieldContainerTestStruct_root(64n, h, o, 0), (h, d_ProgressiveSingleFieldContainerTestStruct(64n, o)), st_ProgressiveSingleFieldContainerTestStruct(64n, h, o, 0)) :
+    RR.roots(LV.v_ProgressiveSingleFieldContainerTestStruct(o), Spec.ProgressiveSingleFieldContainerTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+  rs_ProgressiveSingleFieldContainerTestStruct(64n, {==}, o, rp)
 
-# GcDC3E457711: the root of every GcDC3E457711 object (with its representation facts) is its specification root.
-law GcDC3E457711_root_correct:
+# FixedTestStruct: the root of every FixedTestStruct object (with its representation facts) is its specification root.
+law FixedTestStruct_root_correct:
   for -h: B.Buf
-  for +o: FixedTestStruct_d.GcDC3E457711
-  for +rp: LV.rp_GcDC3E457711(o)
-  RR.roots(LV.v_GcDC3E457711(o), Spec.GcDC3E457711(), [D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.GcDC3E457711_hash_tree_root(h, o)))])
-def GcDC3E457711_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, FixedTestStruct_h.GcDC3E457711_root(64n, h, o, 0), (h, d_GcDC3E457711(64n, o)), st_GcDC3E457711(64n, h, o, 0)) :
-    RR.roots(LV.v_GcDC3E457711(o), Spec.GcDC3E457711(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_GcDC3E457711(64n, {==}, o, rp)
+  for +o: FixedTestStruct_d.FixedTestStruct
+  for +rp: LV.rp_FixedTestStruct(o)
+  RR.roots(LV.v_FixedTestStruct(o), Spec.FixedTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(h, o)))])
+def FixedTestStruct_root_correct(h, o, rp):
+  %Equal.sym(B.Buf & D.Digest, FixedTestStruct_h.FixedTestStruct_root(64n, h, o, 0), (h, d_FixedTestStruct(64n, o)), st_FixedTestStruct(64n, h, o, 0)) :
+    RR.roots(LV.v_FixedTestStruct(o), Spec.FixedTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+  rs_FixedTestStruct(64n, {==}, o, rp)
 
-# Gc74A8F5F17F: the root of every Gc74A8F5F17F object (with its representation facts) is its specification root.
-law Gc74A8F5F17F_root_correct:
+# SingleFieldTestStruct: the root of every SingleFieldTestStruct object (with its representation facts) is its specification root.
+law SingleFieldTestStruct_root_correct:
   for -h: B.Buf
-  for +o: SingleFieldTestStruct_d.Gc74A8F5F17F
-  for +rp: LV.rp_Gc74A8F5F17F(o)
-  RR.roots(LV.v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F(), [D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.Gc74A8F5F17F_hash_tree_root(h, o)))])
-def Gc74A8F5F17F_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, SingleFieldTestStruct_h.Gc74A8F5F17F_root(64n, h, o, 0), (h, d_Gc74A8F5F17F(64n, o)), st_Gc74A8F5F17F(64n, h, o, 0)) :
-    RR.roots(LV.v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_Gc74A8F5F17F(64n, {==}, o, rp)
+  for +o: SingleFieldTestStruct_d.SingleFieldTestStruct
+  for +rp: LV.rp_SingleFieldTestStruct(o)
+  RR.roots(LV.v_SingleFieldTestStruct(o), Spec.SingleFieldTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.SingleFieldTestStruct_hash_tree_root(h, o)))])
+def SingleFieldTestStruct_root_correct(h, o, rp):
+  %Equal.sym(B.Buf & D.Digest, SingleFieldTestStruct_h.SingleFieldTestStruct_root(64n, h, o, 0), (h, d_SingleFieldTestStruct(64n, o)), st_SingleFieldTestStruct(64n, h, o, 0)) :
+    RR.roots(LV.v_SingleFieldTestStruct(o), Spec.SingleFieldTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+  rs_SingleFieldTestStruct(64n, {==}, o, rp)
 
-# Gc4ED9619F50: the root of every Gc4ED9619F50 object (with its representation facts) is its specification root.
-law Gc4ED9619F50_root_correct:
+# SmallTestStruct: the root of every SmallTestStruct object (with its representation facts) is its specification root.
+law SmallTestStruct_root_correct:
   for -h: B.Buf
-  for +o: SmallTestStruct_d.Gc4ED9619F50
-  for +rp: LV.rp_Gc4ED9619F50(o)
-  RR.roots(LV.v_Gc4ED9619F50(o), Spec.Gc4ED9619F50(), [D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.Gc4ED9619F50_hash_tree_root(h, o)))])
-def Gc4ED9619F50_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, SmallTestStruct_h.Gc4ED9619F50_root(64n, h, o, 0), (h, d_Gc4ED9619F50(64n, o)), st_Gc4ED9619F50(64n, h, o, 0)) :
-    RR.roots(LV.v_Gc4ED9619F50(o), Spec.Gc4ED9619F50(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_Gc4ED9619F50(64n, {==}, o, rp)
+  for +o: SmallTestStruct_d.SmallTestStruct
+  for +rp: LV.rp_SmallTestStruct(o)
+  RR.roots(LV.v_SmallTestStruct(o), Spec.SmallTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(h, o)))])
+def SmallTestStruct_root_correct(h, o, rp):
+  %Equal.sym(B.Buf & D.Digest, SmallTestStruct_h.SmallTestStruct_root(64n, h, o, 0), (h, d_SmallTestStruct(64n, o)), st_SmallTestStruct(64n, h, o, 0)) :
+    RR.roots(LV.v_SmallTestStruct(o), Spec.SmallTestStruct(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+  rs_SmallTestStruct(64n, {==}, o, rp)
 
-# GtBBF12DAB28: the root of every GtBBF12DAB28 object is its specification root.
-law GtBBF12DAB28_root_correct:
+# bitvector_32: the root of every bitvector_32 object is its specification root.
+law bitvector_32_root_correct:
   for -h: B.Buf
   for +o: bitvector_32_d.Bitvector32
-  RR.roots(LV.v_bv32(o), Spec.GtBBF12DAB28(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o)))])
-def GtBBF12DAB28_root_correct(h, o):
+  RR.roots(LV.v_bv32(o), Spec.bitvector_32(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.bitvector_32_hash_tree_root(h, o)))])
+def bitvector_32_root_correct(h, o):
   %Equal.sym(B.Buf & D.Digest, bitvector_32_h.bv32_root(64n, h, o, 0), (h, d_bv32(64n, o)), st_bv32(64n, h, o, 0)) :
-    RR.roots(LV.v_bv32(o), Spec.GtBBF12DAB28(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+    RR.roots(LV.v_bv32(o), Spec.bitvector_32(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_bv32(64n, {==}, o)
 
-# Gt0A390CB480: the root of every Gt0A390CB480 object is its specification root.
-law Gt0A390CB480_root_correct:
+# bitvector_512: the root of every bitvector_512 object is its specification root.
+law bitvector_512_root_correct:
   for -h: B.Buf
   for +o: Fulu_bitvector_512_d.Bitvector512
-  RR.roots(LV.v_bv512(o), Spec.Gt0A390CB480(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_512_h.Gt0A390CB480_hash_tree_root(h, o)))])
-def Gt0A390CB480_root_correct(h, o):
+  RR.roots(LV.v_bv512(o), Spec.bitvector_512(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_512_h.bitvector_512_hash_tree_root(h, o)))])
+def bitvector_512_root_correct(h, o):
   %Equal.sym(B.Buf & D.Digest, Fulu_bitvector_512_h.bv512_root(64n, h, o, 0), (h, d_bv512(64n, o)), st_bv512(64n, h, o, 0)) :
-    RR.roots(LV.v_bv512(o), Spec.Gt0A390CB480(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+    RR.roots(LV.v_bv512(o), Spec.bitvector_512(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_bv512(64n, {==}, o)
 
-# GtAD72FD256A: the root of every GtAD72FD256A object is its specification root.
-law GtAD72FD256A_root_correct:
-  for -h: B.Buf
-  for +o: Bool
-  RR.roots(LV.v_bool(o), Spec.GtAD72FD256A(), [D.bytes(Pair.snd(B.Buf, D.Digest, boolean_h.GtAD72FD256A_hash_tree_root(h, o)))])
-def GtAD72FD256A_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, boolean_h.bool_root(64n, h, o, 0), (h, d_bool(64n, o)), st_bool(64n, h, o, 0)) :
-    RR.roots(LV.v_bool(o), Spec.GtAD72FD256A(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_bool(64n, {==}, o)
-
-# Gt604E28A301: the root of every Gt604E28A301 object is its specification root.
-law Gt604E28A301_root_correct:
+# uint128: the root of every uint128 object is its specification root.
+law uint128_root_correct:
   for -h: B.Buf
   for +o: uint128_d.Uint128
-  RR.roots(LV.v_u128(o), Spec.Gt604E28A301(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o)))])
-def Gt604E28A301_root_correct(h, o):
+  RR.roots(LV.v_u128(o), Spec.uint128(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.uint128_hash_tree_root(h, o)))])
+def uint128_root_correct(h, o):
   %Equal.sym(B.Buf & D.Digest, uint128_h.u128_root(64n, h, o, 0), (h, d_u128(64n, o)), st_u128(64n, h, o, 0)) :
-    RR.roots(LV.v_u128(o), Spec.Gt604E28A301(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+    RR.roots(LV.v_u128(o), Spec.uint128(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u128(64n, {==}, o)
 
-# Gt967E8D815F: the root of every Gt967E8D815F object (with its representation facts) is its specification root.
-law Gt967E8D815F_root_correct:
-  for -h: B.Buf
-  for +o: U32
-  for +rp: LV.rp_u8(o)
-  RR.roots(LV.v_u8(o), Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.Gt967E8D815F_hash_tree_root(h, o)))])
-def Gt967E8D815F_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, uint8_h.u8_root(64n, h, o, 0), (h, d_u8(64n, o)), st_u8(64n, h, o, 0)) :
-    RR.roots(LV.v_u8(o), Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_u8(64n, {==}, o, rp)
-
-# GtECF9BB18D8: the root of every GtECF9BB18D8 object (with its representation facts) is its specification root.
-law GtECF9BB18D8_root_correct:
+# uint16: the root of every uint16 object (with its representation facts) is its specification root.
+law uint16_root_correct:
   for -h: B.Buf
   for +o: U32
   for +rp: LV.rp_u16(o)
-  RR.roots(LV.v_u16(o), Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.GtECF9BB18D8_hash_tree_root(h, o)))])
-def GtECF9BB18D8_root_correct(h, o, rp):
+  RR.roots(LV.v_u16(o), Spec.uint16(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.uint16_hash_tree_root(h, o)))])
+def uint16_root_correct(h, o, rp):
   %Equal.sym(B.Buf & D.Digest, uint16_h.u16_root(64n, h, o, 0), (h, d_u16(64n, o)), st_u16(64n, h, o, 0)) :
-    RR.roots(LV.v_u16(o), Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
+    RR.roots(LV.v_u16(o), Spec.uint16(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u16(64n, {==}, o, rp)
-
-# Gt59DCDB2873: the root of every Gt59DCDB2873 object is its specification root.
-law Gt59DCDB2873_root_correct:
-  for -h: B.Buf
-  for +o: uint256_d.Uint256
-  RR.roots(LV.v_u256(o), Spec.Gt59DCDB2873(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o)))])
-def Gt59DCDB2873_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, uint256_h.u256_root(64n, h, o, 0), (h, d_u256(64n, o)), st_u256(64n, h, o, 0)) :
-    RR.roots(LV.v_u256(o), Spec.Gt59DCDB2873(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_u256(64n, {==}, o)
-
-# Gt7B8507E2C2: the root of every Gt7B8507E2C2 object is its specification root.
-law Gt7B8507E2C2_root_correct:
-  for -h: B.Buf
-  for +o: U32
-  RR.roots(LV.v_u32(o), Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o)))])
-def Gt7B8507E2C2_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, uint32_h.u32_root(64n, h, o, 0), (h, d_u32(64n, o)), st_u32(64n, h, o, 0)) :
-    RR.roots(LV.v_u32(o), Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_u32(64n, {==}, o)
-
-# Gt62B0093BE7: the root of every Gt62B0093BE7 object is its specification root.
-law Gt62B0093BE7_root_correct:
-  for -h: B.Buf
-  for +o: O.U64
-  RR.roots(LV.v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint64_h.Gt62B0093BE7_hash_tree_root(h, o)))])
-def Gt62B0093BE7_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, uint64_h.u64_root(64n, h, o, 0), (h, d_u64(64n, o)), st_u64(64n, h, o, 0)) :
-    RR.roots(LV.v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
-  rs_u64(64n, {==}, o)
 

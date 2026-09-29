@@ -2,7 +2,7 @@
 """Byte-list names at a window at ANY byte offset: the byte-offset window
 interface of proofs/obj/vua_win.bend for the names of codegen/var_bytes.py.
 
-    python3 codegen/var_bytes_x.py [--check] [--no-big]
+    python3 codegen/var_bytes_x.py [--check]
 
 For a name X of var_bytes.py (fixed fields around one byte list), the module
 proofs/obj/var_bytesx_X.bend exports, for a window [off, off + len) of

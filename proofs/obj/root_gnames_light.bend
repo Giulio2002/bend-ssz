@@ -1,7 +1,6 @@
 import Base
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../types/uint256_def_generated.bend as uint256_d
 import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
 import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
@@ -34,20 +33,20 @@ def rp_u8(+o: U32) -> Data: {U32.is_lt(o, 256) == True{} : Bool}
 # ---- u16 (u16) ----
 def v_u16(o: U32) -> S.Value: S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}
 def rp_u16(+o: U32) -> Data: {U32.is_lt(o, 65536) == True{} : Bool}
-# ---- Gc4ED9619F50 (container) ----
-def v_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> S.Value:
+# ---- SmallTestStruct (container) ----
+def v_SmallTestStruct(o: SmallTestStruct_d.SmallTestStruct) -> S.Value:
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: S.Sequence{S.Items{v_u16(x0), S.Items{v_u16(x1), S.EmptyItems{}}}}
-def rp_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> Data:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}: S.Sequence{S.Items{v_u16(x0), S.Items{v_u16(x1), S.EmptyItems{}}}}
+def rp_SmallTestStruct(o: SmallTestStruct_d.SmallTestStruct) -> Data:
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: DK.P2(rp_u16(x0), rp_u16(x1))
-# ---- GpF350A3C486 (container) ----
-def v_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> S.Value:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}: DK.P2(rp_u16(x0), rp_u16(x1))
+# ---- ProgressiveSingleFieldContainerTestStruct (container) ----
+def v_ProgressiveSingleFieldContainerTestStruct(o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> S.Value:
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
-def rp_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> Data:
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
+def rp_ProgressiveSingleFieldContainerTestStruct(o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> Data:
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: rp_u8(x0)
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}: rp_u8(x0)
 def bits_bv2(o: bitvector_2_d.Bitvector2) -> +List<Bool>:
   match o:
     case bitvector_2_d.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
@@ -114,20 +113,20 @@ def rp_bv257(o: bitvector_257_d.Bitvector257) -> Data: {last_bv257(o) == U32{WSp
 def v_u64(o: O.U64) -> S.Value: RL.view_u64(o)
 # ---- u32 (u32) ----
 def v_u32(o: U32) -> S.Value: S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}
-# ---- GcDC3E457711 (container) ----
-def v_GcDC3E457711(o: FixedTestStruct_d.GcDC3E457711) -> S.Value:
+# ---- FixedTestStruct (container) ----
+def v_FixedTestStruct(o: FixedTestStruct_d.FixedTestStruct) -> S.Value:
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: S.Sequence{S.Items{v_u8(x0), S.Items{v_u64(x1), S.Items{v_u32(x2), S.EmptyItems{}}}}}
-def rp_GcDC3E457711(o: FixedTestStruct_d.GcDC3E457711) -> Data:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}: S.Sequence{S.Items{v_u8(x0), S.Items{v_u64(x1), S.Items{v_u32(x2), S.EmptyItems{}}}}}
+def rp_FixedTestStruct(o: FixedTestStruct_d.FixedTestStruct) -> Data:
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: rp_u8(x0)
-# ---- Gc74A8F5F17F (container) ----
-def v_Gc74A8F5F17F(o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> S.Value:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}: rp_u8(x0)
+# ---- SingleFieldTestStruct (container) ----
+def v_SingleFieldTestStruct(o: SingleFieldTestStruct_d.SingleFieldTestStruct) -> S.Value:
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
-def rp_Gc74A8F5F17F(o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> Data:
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
+def rp_SingleFieldTestStruct(o: SingleFieldTestStruct_d.SingleFieldTestStruct) -> Data:
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: rp_u8(x0)
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}: rp_u8(x0)
 def vb_bv32(o: bitvector_32_d.Bitvector32) -> +List<U32>:
   match o:
     case bitvector_32_d.Bitvector32{+w0}: F.limbs([w0])
@@ -190,11 +189,6 @@ def blen_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {List.length(&2, Bool, 
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w15), [])), Nat.add(32n, List.length(&2, Bool, [])), BL.len_app_w(w15, [])) :
         {Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, _))))))))))))))) == 512n : Nat}
       {==}
-# ---- bool (bool) ----
-def v_bool(o: Bool) -> S.Value: S.BooleanValue{o}
 def v_u128(o: uint128_d.Uint128) -> S.Value:
   match o:
     case uint128_d.Uint128{+w0, +w1, +w2, +w3}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}
-def v_u256(o: uint256_d.Uint256) -> S.Value:
-  match o:
-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}

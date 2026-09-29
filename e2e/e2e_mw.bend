@@ -22,9 +22,9 @@ import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_encx_bl32.bend as IB
-import ../proofs/obj/big_encx_ExecutionPayloadHeader_iface.bend as IE
-import ../proofs/obj/big_encx_LightClientHeader_iface.bend as IL
+import ../proofs/obj/encx_bl32.bend as IB
+import ../proofs/obj/encx_ExecutionPayloadHeader_iface.bend as IE
+import ../proofs/obj/encx_LightClientHeader_iface.bend as IL
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/uint256_def_generated.bend as uint256_d

@@ -25,15 +25,15 @@ def v2_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 2, 2, 
 
 def v2_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_bool_pk(out, pos, v2_bool_valid(o))
 
-def Gt3771256492_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_2_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(2, out))
 
-def Gt3771256492_encode(o: O.Words) -> O.Words & B.Buf: Gt3771256492_enc_out(v2_bool_put(O.out_at(0n), 0, o))
+def vec_bool_2_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_2_enc_out(v2_bool_put(O.out_at(0n), 0, o))
 
-def Gt3771256492_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_2_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 2, out))
 
-def Gt3771256492_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3771256492_senc_out(v2_bool_putk(O.out_at(0n), 0, o))
+def vec_bool_2_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_2_senc_out(v2_bool_putk(O.out_at(0n), 0, o))

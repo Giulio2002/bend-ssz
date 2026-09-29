@@ -4,9 +4,9 @@ the list of transactions (List[ByteList[2^30], 2^20], codegen/var_vlist.py's lis
 and (GLISTS, glist_text) the generic progressive lists and vectors of such elements, parametric in
 the element's encoder window (see GLISTS).
 
-    python3 codegen/var_vlist_enc.py [--check] [--no-big]
+    python3 codegen/var_vlist_enc.py [--check]
 
-proofs/obj/big_encx_l1048576_bl1073741824.bend (BIG: the 2^30 element limit is compared
+proofs/obj/encx_l1048576_bl1073741824.bend (BIG: the 2^30 element limit is compared
 as the window modules do). The list object is Seq{am(t), N} for a Data mirror tree t of
 its boxed elements (the mirrors of proofs/obj/root_types.bend, copied here by name from
 that generated file so this module does not import it: WMr, MB, th/fz, am, amswap,
@@ -26,7 +26,7 @@ def _unlit(text):
     t = light_split.unlight(text)
     return t.rstrip('\n') + '\n\n'
 
-OUT = ROOT / 'proofs/obj/big_encx_l1048576_bl1073741824.bend'
+OUT = ROOT / 'proofs/obj/encx_l1048576_bl1073741824.bend'
 RT = ROOT / 'proofs/obj/root_types.bend'
 P = 'l1048576_bl1073741824'
 E = 'bl1073741824'
@@ -61,7 +61,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./spec_fixed.bend as FX',
         'import ./vbrt.bend as VBR', 'import ./vua.bend as UA', 'import ./vuw.bend as UW',
         'import ./vvle.bend as VE2', 'import ./vvl.bend as VVL', 'import ./vrej.bend as VR', 'import ../../src/primitives.bend as I', 'import ./vdig.bend as VG',
-        'import ./dk.bend as DK', 'import ./vfix.bend as VF', 'import ./big_vvlu.bend as VVU', 'import ./vbspec.bend as VZ', 'import ../../spec/nat_bytes.bend as N', 'import ./vuwd.bend as WD', 'import ./vbsize.bend as VBZ', 'import ./vfits.bend as VFT', 'import ../../spec/codec.bend as Codec',
+        'import ./dk.bend as DK', 'import ./vfix.bend as VF', 'import ./vvlu.bend as VVU', 'import ./vbspec.bend as VZ', 'import ../../spec/nat_bytes.bend as N', 'import ./vuwd.bend as WD', 'import ./vbsize.bend as VBZ', 'import ./vfits.bend as VFT', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/layout.bend as Layout', 'import ../../spec/fulu_schemas.bend as Spec', 'import ../../spec/primitives.bend as SP', 'import ../../proofs/nat_bytes.bend as Digits']
 
 TEMPLATE = ROOT / 'codegen/vvle_list.bend.in'
@@ -76,23 +76,23 @@ TEMPLATE = ROOT / 'codegen/vvle_list.bend.in'
 # the array lemmas (am, amswap, ...) are copied from the source file's list of the same element kind
 # (root_gtypes2.bend), renamed. Modes: 'list' (List[E, LIML]), 'prog' (ProgressiveList[E]), 'vec'
 # (Vector[E, n]). Each module ends with the list itself in the same interface (MW{t, N}), so a list
-# can be the element of another (pl_pl_Gc465214E502).
+# can be the element of another (pl_pl_VarTestStruct).
 
 # (list prefix, element runtime prefix, mode, count (limit / vector length / None), element encx module,
 #  element schema, source file, source list prefix, source element prefix)
 GLISTS = [
-    ('pl_Gc465214E502', 'Gc465214E502', 'prog', None, 'big_encx_Gc465214E502_iface.bend', 'Spec.Gc465214E502()',
-     'root_gtypes2.bend', 'pl_Gc465214E502', 'Gc465214E502'),
-    ('pl_Gp66304057C3', 'Gp66304057C3', 'prog', None, 'big_encx_Gp66304057C3_iface.bend', 'Spec.Gp66304057C3()',
-     'root_gtypes2.bend', 'pl_Gp66304057C3', 'Gp66304057C3'),
-    ('v2_Gc465214E502', 'Gc465214E502', 'vec', 2, 'big_encx_Gc465214E502_iface.bend', 'Spec.Gc465214E502()',
-     'root_gtypes2.bend', 'pl_Gc465214E502', 'Gc465214E502'),
-    ('pl_pl_Gc465214E502', 'pl_Gc465214E502', 'prog', None, 'big_encx_pl_Gc465214E502.bend', 'S.ProgressiveList{Spec.Gc465214E502()}',
-     'root_gtypes2.bend', 'pl_pl_Gc465214E502', 'pl_Gc465214E502'),
+    ('pl_VarTestStruct', 'VarTestStruct', 'prog', None, 'encx_VarTestStruct_iface.bend', 'Spec.VarTestStruct()',
+     'root_gtypes2.bend', 'pl_VarTestStruct', 'VarTestStruct'),
+    ('pl_ProgressiveVarTestStruct', 'ProgressiveVarTestStruct', 'prog', None, 'encx_ProgressiveVarTestStruct_iface.bend', 'Spec.ProgressiveVarTestStruct()',
+     'root_gtypes2.bend', 'pl_ProgressiveVarTestStruct', 'ProgressiveVarTestStruct'),
+    ('v2_VarTestStruct', 'VarTestStruct', 'vec', 2, 'encx_VarTestStruct_iface.bend', 'Spec.VarTestStruct()',
+     'root_gtypes2.bend', 'pl_VarTestStruct', 'VarTestStruct'),
+    ('pl_pl_VarTestStruct', 'pl_VarTestStruct', 'prog', None, 'encx_pl_VarTestStruct.bend', 'S.ProgressiveList{Spec.VarTestStruct()}',
+     'root_gtypes2.bend', 'pl_pl_VarTestStruct', 'pl_VarTestStruct'),
     # Fulu (types/fulu_obj.bend): BeaconBlockBody's lists of containers, mirrors from root_types.bend
-    ('l1_AttesterSlashing', 'AttesterSlashing', 'list', 1, 'big_encx_AttesterSlashing_iface.bend', 'Spec.Schema47()',
+    ('l1_AttesterSlashing', 'AttesterSlashing', 'list', 1, 'encx_AttesterSlashing_iface.bend', 'Spec.Schema47()',
      'root_types.bend', 'l1_AttesterSlashing', 'AttesterSlashing', 'Spec.Schema98()', True),
-    ('l8_Attestation', 'Attestation', 'list', 8, 'big_encx_Attestation_iface.bend', 'Spec.Schema40()',
+    ('l8_Attestation', 'Attestation', 'list', 8, 'encx_Attestation_iface.bend', 'Spec.Schema40()',
      'root_types.bend', 'l8_Attestation', 'Attestation', 'Spec.Schema99()', True),
 ]
 
@@ -101,7 +101,7 @@ GHEAD = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.be
 
 
 def gfile(p):
-    return ROOT / f'proofs/obj/big_encx_{p}.bend'
+    return ROOT / f'proofs/obj/encx_{p}.bend'
 
 
 def section(txt, start, end):
@@ -579,21 +579,19 @@ def glist_text(p, E, mode, cnt, emod, esch, src, sp, se, lsch=None, fulu=False):
 
 
 def main():
-    nb = '--no-big' in sys.argv
     out = {}
-    if not nb:
-        bl = blocks(_unlit(RT.read_text()))
-        missing = [c for c in COPY if c not in bl]
-        assert not missing, missing
-        L = HEAD + ['', '# GENERATED by codegen/var_vlist_enc.py. Do not edit.',
-                    '# The list of transactions, writer side (see the generator\'s docstring).', '',
-                    '# ---- mirrors of the boxed elements (copied from proofs/obj/root_types.bend) ----']
-        L += [bl[c] for c in COPY]
-        txt = '\n'.join(L) + '\n' + TEMPLATE.read_text().replace('@P', P).replace('@E', E).replace('@LIML', LIML).replace('@LIM', LIM)
-        out[OUT] = txt
-        for gl in GLISTS:
-            if (ROOT / 'proofs/obj' / gl[4]).exists():
-                out[gfile(gl[0])] = glist_text(*gl)
+    bl = blocks(_unlit(RT.read_text()))
+    missing = [c for c in COPY if c not in bl]
+    assert not missing, missing
+    L = HEAD + ['', '# GENERATED by codegen/var_vlist_enc.py. Do not edit.',
+                '# The list of transactions, writer side (see the generator\'s docstring).', '',
+                '# ---- mirrors of the boxed elements (copied from proofs/obj/root_types.bend) ----']
+    L += [bl[c] for c in COPY]
+    txt = '\n'.join(L) + '\n' + TEMPLATE.read_text().replace('@P', P).replace('@E', E).replace('@LIML', LIML).replace('@LIM', LIM)
+    out[OUT] = txt
+    for gl in GLISTS:
+        if (ROOT / 'proofs/obj' / gl[4]).exists():
+            out[gfile(gl[0])] = glist_text(*gl)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29); the list writer's own W: vvle_list.bend.in
@@ -607,7 +605,7 @@ def main():
         return
     for p, t in out.items():
         p.write_text(t)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out) or 'nothing (--no-big)')
+    print(', '.join(str(p.relative_to(ROOT)) for p in out))
 
 
 if __name__ == '__main__':

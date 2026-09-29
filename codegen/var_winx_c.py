@@ -3,15 +3,14 @@
 each variable field a type with a byte-offset window module: the interface of
 proofs/obj/vua_win.bend (CHKw, ok_evalw, OBJw, readw, VALw, specw, invw).
 
-    python3 codegen/var_winx_c.py [--check] [--no-big]
+    python3 codegen/var_winx_c.py [--check]
 
 Covered: ExecutionPayload (extra_data: ByteList[32], transactions:
 List[ByteList[2^30], 2^20], withdrawals: List[Withdrawal, 16]; children
-big_vvlb_bl32, big_vvl_l1048576_bl1073741824 (codegen/var_vlist.py) and
+vvlb_bl32, vvl_l1048576_bl1073741824 (codegen/var_vlist.py) and
 var_winx_l16_Withdrawal (codegen/var_rlist.py)). Its window module keeps the
 name proofs/obj/var_winx_ExecutionPayload.bend (BeaconBlockBody's generator
-imports it) although it imports big modules: check it with checkq --big. With
---no-big nothing is written or checked.
+imports it) although it imports big modules: check it with checkq --big.
 
 The offsets O_j are the words UR.RWN(t, c_j + x) at the offset fields c_j; child j's
 window is (off + O_j, E_j - O_j) at O_j + x, E_j the next offset (len for the last).
@@ -43,9 +42,9 @@ ROOT = Path(__file__).resolve().parents[1]
 # its one-part fact on a value h (DF.single_result(None{}, parts(h, schema))).
 CONTAINERS = {
     'ExecutionPayload': {
-        'extra_data': dict(p='bl32', mod='big_vvlb_bl32', sch='Spec.Schema70()', rep='O.Words',
+        'extra_data': dict(p='bl32', mod='vvlb_bl32', sch='Spec.Schema70()', rep='O.Words',
                            sgl='VVL.bsingle(32n, h)'),
-        'transactions': dict(p='l1048576_bl1073741824', mod='big_vvl_l1048576_bl1073741824', sch='Spec.Schema73()',
+        'transactions': dict(p='l1048576_bl1073741824', mod='vvl_l1048576_bl1073741824', sch='Spec.Schema73()',
                              rep='T.l1048576_bl1073741824_Seq', sgl='VWC.lsingle(Spec.Schema60(), U32.to_nat(1048576), h)'),
         'withdrawals': dict(p='l16_Withdrawal', mod='var_winx_l16_Withdrawal', sch='Spec.Schema74()',
                             rep='T.l16_Withdrawal_Seq', sgl='VWC.lsingle(Spec.Schema72(), 16n, h)'),
@@ -1058,7 +1057,7 @@ def invw({CW}, +v: S.Value,
 NM = 'U32.to_nat(VB.NMAX())'
 HWN = '{Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 # the children's deep hypothesis: hwN (unbounded windows) or hw32
-CHILD_DEEP = {'big_vvlb_bl32': 'hw32', 'big_vvl_l1048576_bl1073741824': 'hwN', 'var_winx_l16_Withdrawal': 'hw32'}
+CHILD_DEEP = {'vvlb_bl32': 'hw32', 'vvl_l1048576_bl1073741824': 'hwN', 'var_winx_l16_Withdrawal': 'hw32'}
 EOC_OLD = """  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(2n+d, 30n, 31n, hd, {==}),
     FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(c)), Nat.add(U32.to_nat(c), x), FD.nat__add_comm(x, U32.to_nat(c)), xle(d, t, n, x, off, len, eo, hd, hw, pf, c, hc)))"""
 EOC_NEW = """  VB.add_lt32(off, c, x, eo, VB.le_n_lt32(Nat.add(U32.to_nat(c), x), VB.NMAX(),
@@ -1214,15 +1213,13 @@ def xleN(+x: Nat, +len: U32, +c: U32, +hc: {{Nat.is_le(U32.to_nat(c), U32.to_nat
 
 def main():
     SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
-    nb = '--no-big' in sys.argv
     out = {}
-    if not nb:
-        names = schema.load(ROOT / 'codegen/fulu.yaml')
-        g = G.Gen()
-        for nm, t in names.items():
-            g.shape(t)
-        for nm, kids in CONTAINERS.items():
-            out[fname(nm)] = win_deep(win_text(CName(g, nm, names[nm], kids)), kids)
+    names = schema.load(ROOT / 'codegen/fulu.yaml')
+    g = G.Gen()
+    for nm, t in names.items():
+        g.shape(t)
+    for nm, kids in CONTAINERS.items():
+        out[fname(nm)] = win_deep(win_text(CName(g, nm, names[nm], kids)), kids)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
@@ -1234,7 +1231,7 @@ def main():
         return
     for p, text in out.items():
         p.write_text(text)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out) or 'nothing (--no-big)')
+    print(', '.join(str(p.relative_to(ROOT)) for p in out))
 
 
 if __name__ == '__main__':

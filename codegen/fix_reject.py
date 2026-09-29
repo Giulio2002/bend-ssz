@@ -2,7 +2,7 @@
 """ok_eval and decode_reject for the FIXED-SIZE names whose validator checks only the
 length (T.<p>_ok_at is (buf, True{})): every Fulu name and generic form of that kind.
 
-    python3 codegen/fix_reject.py [--check] [--no-big]
+    python3 codegen/fix_reject.py [--check]
 
 For a name X of fixed size N whose decoder is X_built(size, T.<p>_ok(buf, 0, size)):
   <X>_ok_eval(buf, off, len)      : {T.<p>_ok(buf, off, len) == (buf, U32.is_eq(len, N))}

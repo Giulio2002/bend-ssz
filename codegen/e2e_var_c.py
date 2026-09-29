@@ -177,7 +177,7 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}
 
 
 VROOT_SHAPES['IndexedAttestation'] = vroot_ulist
-VROOT_SHAPES['Gc465214E502'] = lambda R, X: vroot_ulist(R, X, 'root_gtypes', 'gvalid_gtypes', '../proofs/obj/generic_specs.bend', 'generic_obj')
+VROOT_SHAPES['VarTestStruct'] = lambda R, X: vroot_ulist(R, X, 'root_gtypes', 'gvalid_gtypes', '../proofs/obj/generic_specs.bend', 'generic_obj')
 
 
 # ---- (i): names with one u64 list field, through the encode laws (var_enc) and the output path ----
@@ -1269,13 +1269,13 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
             'text': text}
 
 
-VDEC_VIEWS['Gc465214E502'] = vartest_view('VarTestStruct', 'Gc465214E502')
+VDEC_VIEWS['VarTestStruct'] = vartest_view('VarTestStruct', 'VarTestStruct')
 
 
 # ---- (ii)/(iii): CompatibleUnions (codegen/var_winu's layout: a selector byte, then the arm's window) ----
 # CHILD_VIEWS[arm window module] = f(obj, val, a) -> proof text of {view(obj) == val} at the arm's window
 # (a = its window args x, off, len, and the helpers' context); None: they convert.
-UNION_CHILD = {'var_winx_GpF350A3C486.bend': None}
+UNION_CHILD = {'var_winx_ProgressiveSingleFieldContainerTestStruct.bend': None}
 
 
 def union_view(R, X):
@@ -1354,7 +1354,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
             'text': text}
 
 
-VDEC_VIEWS['GuA2212AE21F'] = union_view('CompatibleUnionA', 'GuA2212AE21F')
+VDEC_VIEWS['CompatibleUnionA'] = union_view('CompatibleUnionA', 'CompatibleUnionA')
 
 
 # ---- (iv): CompatibleUnions, from rep (DK.Or2 over the arms' pc_X_k: the arm's value v and o == X_ck{v}) ----
@@ -1402,14 +1402,14 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o)) -> {G('o')}:
 """
 
 
-VROOT_SHAPES['GuA2212AE21F'] = vroot_union
+VROOT_SHAPES['CompatibleUnionA'] = vroot_union
 
 
 # ---- (i): the names whose encode laws go through an encx record (codegen/var_cont_top: CI.MW, OK, TH, VAL) ----
 # enc_m: for every record m with OK(m), the encoder's bytes of TH(m) are END_TO_END's serialize of VAL(m);
 # the name's own part (MWP[X]) builds m from rep with o == TH(m), v_X(TH(m)) == VAL(m) and OK(m).
 MWP = {}
-OMODE = {'Gc465214E502', 'Gp4B0CA2906A', 'Gp66304057C3', 'Gc56D855869F', 'Gc221EC01D83', 'Gp8A7851175B'}   # the names whose (i) runs on the OKW laws (D twins of the list children: e2e_encrd)
+OMODE = {'VarTestStruct', 'ProgressiveSingleListContainerTestStruct', 'ProgressiveVarTestStruct', 'ComplexTestStruct', 'ProgressiveTestStruct', 'ProgressiveComplexTestStruct'}   # the names whose (i) runs on the OKW laws (D twins of the list children: e2e_encrd)
 
 
 def venc_mw(R, X):
@@ -1420,7 +1420,7 @@ def venc_mw(R, X):
     esrc = _unlight((ROOT / 'proofs/obj' / en).read_text())
     dep = re.search(r'^def OUTE\(\+m: CI\.MW\) -> FD\.array__Tree<U32>: CI\.PUTX\(m, (.*), VC\.ZT\(', esrc, re.M).group(1)
     room = 'EN.roomf(m, hok)' if re.search(r'^def roomf\(', esrc, re.M) else 'EN.room(m, hok, 28n, {==})'
-    om = X in OMODE   # (i) on the OKW laws: encode_evalO / encode_specO (big_var_codec_<C>_enc_o), the output path at depth < 31 (EM.obD)
+    om = X in OMODE   # (i) on the OKW laws: encode_evalO / encode_specO (var_codec_<C>_enc_o), the output path at depth < 31 (EM.obD)
     OKN, SZX = ('OKW', 'szxO') if om else ('OK', 'szx')
     HDX = 'ENo.HDW' if om else 'EN.HD'
     EVAL, SPEC = ('ENo.encode_evalO', 'ENo.encode_specO') if om else ('EN.encode_eval', 'EN.encode_spec')
@@ -1494,8 +1494,8 @@ def {R}_e2e_encode(-o: {D}, {sig}) -> {GOAL('o', f'RT.v_{X}(o)')}:
 
 
 def mwp_union_a(R, X, D):
-    """CompatibleUnionA: rep is the arm's value v = GpF350A3C486{x} with x < 256; m = MW0{x}."""
-    C = 'ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486'
+    """CompatibleUnionA: rep is the arm's value v = ProgressiveSingleFieldContainerTestStruct{x} with x < 256; m = MW0{x}."""
+    C = 'ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct'
     O1 = f'{D}_c0{{{C}{{x}}}}'
     defs = f'''def u1(-o: {D}, +x: U32, +eo: {{o == {O1} : {D}}}, +hv: {{U32.is_lt(x, 256) == True{{}} : Bool}})
     -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, CompatibleUnionA_e.{X}_encode(o)))}} == API.serialize(Spec.{X}(), RT.v_{X}(o)) : Maybe<&2, +List<U32>>}}:
@@ -1505,7 +1505,7 @@ def mwp_union_a(R, X, D):
     Equal.sym(U32, U32.and(x, 255), x, VBB.ea(x, hv)))
   via(o, CI.MW0{{x}}, eo, ev, hok)
 
-def u0(-o: {D}, +v: {C}, +eo: {{o == {D}_c0{{v}} : {D}}}, +rp: RN.rp_GpF350A3C486(v))
+def u0(-o: {D}, +v: {C}, +eo: {{o == {D}_c0{{v}} : {D}}}, +rp: RN.rp_ProgressiveSingleFieldContainerTestStruct(v))
     -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, CompatibleUnionA_e.{X}_encode(o)))}} == API.serialize(Spec.{X}(), RT.v_{X}(o)) : Maybe<&2, +List<U32>>}}:
   match v:
     case {C}{{+x}}: u1(o, x, eo, rp)
@@ -1519,8 +1519,8 @@ def u0(-o: {D}, +v: {C}, +eo: {{o == {D}_c0{{v}} : {D}}}, +rp: RN.rp_GpF350A3C48
     return defs, body, imps
 
 
-MWP['GuA2212AE21F'] = mwp_union_a
-VENC_SHAPES['GuA2212AE21F'] = venc_mw
+MWP['CompatibleUnionA'] = mwp_union_a
+VENC_SHAPES['CompatibleUnionA'] = venc_mw
 
 
 def mwp_vartest(R, X, D):
@@ -1542,28 +1542,28 @@ def vt1(-o: {D}, +c: {ERM}.VTR(o)) -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_
     return defs, body, imps, sig
 
 
-MWP['Gc465214E502'] = mwp_vartest
+MWP['VarTestStruct'] = mwp_vartest
 
 
 # ---- (iv) for a container whose rep projects several fields (ComplexTestStruct): each projected field is
 # copied to a runtime value from its rep's witness (cpw: byte storage, cpv: a nested VarTestStruct, cpa: a
 # vector's array), the object is rewritten to the literal built from them, and the root law applies there.
 CPX = {
-    'Gc56D855869F': {
+    'ComplexTestStruct': {
         'mods': ['ComplexTestStruct_d:ComplexTestStruct_def_generated', 'VarTestStruct_d:VarTestStruct_def_generated',
                  'vec_FixedTestStruct_4_d:vec_FixedTestStruct_4_def_generated', 'vec_VarTestStruct_2_d:vec_VarTestStruct_2_def_generated',
                  'FixedTestStruct_d:FixedTestStruct_def_generated'],
         'hmod': 'ComplexTestStruct_h:ComplexTestStruct_hashtreeroot_generated',
         # (kind, field type) in field order; rep: x0, x2, eo, then per field its part in order
-        'fields': [('u', 'U32'), ('l', 'O.Words'), ('u', 'U32'), ('l', 'O.Words'), ('c', 'VarTestStruct_d.Gc465214E502'),
-                   ('a', 'vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq'), ('a', 'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq')],
+        'fields': [('u', 'U32'), ('l', 'O.Words'), ('u', 'U32'), ('l', 'O.Words'), ('c', 'VarTestStruct_d.VarTestStruct'),
+                   ('a', 'vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq'), ('a', 'vec_VarTestStruct_2_d.v2_VarTestStruct_Seq')],
     },
 }
 CPA = {  # a vector's rep: its storage t (element type), the object is Seq{ARR(t), N}
-    'vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq': ('rep_v4_GcDC3E457711', 'FixedTestStruct_d.GcDC3E457711', 'FD.array__thaw(FixedTestStruct_d.GcDC3E457711, {t})'),
-    'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq': ('rep_v2_Gc465214E502', 'RT.MB<RT.M_Gc465214E502>', 'RT.am_v2_Gc465214E502({t})'),
+    'vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq': ('rep_v4_FixedTestStruct', 'FixedTestStruct_d.FixedTestStruct', 'FD.array__thaw(FixedTestStruct_d.FixedTestStruct, {t})'),
+    'vec_VarTestStruct_2_d.v2_VarTestStruct_Seq': ('rep_v2_VarTestStruct', 'RT.MB<RT.M_VarTestStruct>', 'RT.am_v2_VarTestStruct({t})'),
 }
-CPV = 'VarTestStruct_d.Gc465214E502'
+CPV = 'VarTestStruct_d.VarTestStruct'
 
 
 def _cp_shape(kd, T, k):
@@ -1655,16 +1655,16 @@ def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> {_ex(wsig, '{w == O.Bits{FD.array__thaw(U
 """)
     if any(kd == 'c' for kd, _ in fs):
         V = CPV
-        P1 = 'RT.pj_Gc465214E502_1(v)'
+        P1 = 'RT.pj_VarTestStruct_1(v)'
         vsig = [('x0', 'U32'), ('x2', 'U32'), ('t', 'FD.array__Tree<U32>'), ('N', 'U32')]
         VL = f'{V}{{x0, {WL}, x2}}'
-        L.append(f"""# a VarTestStruct (rep_Gc465214E502): its words and its list's tree and length
+        L.append(f"""# a VarTestStruct (rep_VarTestStruct): its words and its list's tree and length
 def cpv2(-v: {V}, +x0: U32, +x2: U32, +ev: {{v == {V}{{x0, {P1}, x2}} : {V}}}, +c: {_ex(wsig, f'{{{P1} == {WL} : O.Words}}')}) -> {_ex(vsig, f'{{v == {VL} : {V}}}')}:
   (+t, +c1) = c
   (+N, +ew) = c1
   (x0, (x2, (t, (N, Equal.trans({V}, v, {V}{{x0, {P1}, x2}}, {VL}, ev, Equal.cong(O.Words, {V}, z => {V}{{x0, z, x2}}, {P1}, {WL}, ew))))))
 
-def cpv(-v: {V}, +s: S.Schema, +rep: RT.rep_Gc465214E502(v, s)) -> {_ex(vsig, f'{{v == {VL} : {V}}}')}:
+def cpv(-v: {V}, +s: S.Schema, +rep: RT.rep_VarTestStruct(v, s)) -> {_ex(vsig, f'{{v == {VL} : {V}}}')}:
   (+x0, +r0) = rep
   (+x2, +r1) = r0
   (+ev, +q1) = r1
@@ -1785,8 +1785,8 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}
 """
 
 
-VROOT_SHAPES['Gc56D855869F'] = vroot_complex
-VENC_SHAPES['Gc465214E502'] = venc_mw
+VROOT_SHAPES['ComplexTestStruct'] = vroot_complex
+VENC_SHAPES['VarTestStruct'] = venc_mw
 
 def gwin_more():
     """keep2 == x below 2^16 (k2id), the spec's uint16 of a word's bytes is the word (eq16), below 2^16 is at
@@ -1902,19 +1902,19 @@ def gvt_text():
     U16 = f'S.UnsignedValue{{P.UInt{{O.keep(2, UR.RWN(t, {X0})), 0, 0, 0, 0, 0, 0, 0}}}}'
     V16 = f'FX16.VAL(t, {X0})'
     U8 = f'FX8.VAL(t, {X6})'
-    VT = 'VarTestStruct_d.Gc465214E502'
-    SEQ = 'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq'
+    VT = 'VarTestStruct_d.VarTestStruct'
+    SEQ = 'vec_VarTestStruct_2_d.v2_VarTestStruct_Seq'
     WJ0 = 'V2.WJ(t, x, 0)'
     OB = lambda a, b: f'YW.OBJw(d, t, Nat.add(U32.to_nat({a}), x), U32.add(off, {a}), U32.sub({b}, {a}))'  # noqa: E731
-    TF = lambda o: f'RT.th_Gc465214E502(RT.fz_Gc465214E502({o}))'  # noqa: E731
-    VA, VB_ = f'RT.v_Gc465214E502({TF(OB("8", WJ0))})', f'RT.v_Gc465214E502({TF(OB(WJ0, "len"))})'
-    RV8 = f'{SEQ}{{V2.RV(1n, 0, 2, d, t, x, off, len, vec_VarTestStruct_2_d.v2_Gc465214E502_fill(vec_VarTestStruct_2_d.v2_Gc465214E502_cap(2)), V2.OBJE(d, t, x, off, 8, {WJ0})), 2}}'
+    TF = lambda o: f'RT.th_VarTestStruct(RT.fz_VarTestStruct({o}))'  # noqa: E731
+    VA, VB_ = f'RT.v_VarTestStruct({TF(OB("8", WJ0))})', f'RT.v_VarTestStruct({TF(OB(WJ0, "len"))})'
+    RV8 = f'{SEQ}{{V2.RV(1n, 0, 2, d, t, x, off, len, vec_VarTestStruct_2_d.v2_VarTestStruct_fill(vec_VarTestStruct_2_d.v2_VarTestStruct_cap(2)), V2.OBJE(d, t, x, off, 8, {WJ0})), 2}}'
     EE1 = f'V2.EE(True{{}}, t, x, off, len, 8, {WJ0})'
     EW2 = lambda z: f'V2.EW(V2.GD({z}, {WJ0}, len, len), t, x, off, {WJ0}, len)'  # noqa: E731
     BW = lambda w: f'V2.NX(U32.is_eq(1, U32.shrn({w}, 2n)), t, x, len, 0)'  # noqa: E731
     NW = lambda w: f'U32.shrn({w}, 2n)'  # noqa: E731
     KW = lambda w: f'U32.to_nat(U32.sub({NW(w)}, 1))'  # noqa: E731
-    PW = lambda w: (f'{{RT.xv_v2_Gc465214E502({SEQ}{{V2.RV({KW(w)}, 0, {NW(w)}, d, t, x, off, len, vec_VarTestStruct_2_d.v2_Gc465214E502_fill(vec_VarTestStruct_2_d.v2_Gc465214E502_cap({NW(w)})), '
+    PW = lambda w: (f'{{RT.xv_v2_VarTestStruct({SEQ}{{V2.RV({KW(w)}, 0, {NW(w)}, d, t, x, off, len, vec_VarTestStruct_2_d.v2_VarTestStruct_fill(vec_VarTestStruct_2_d.v2_VarTestStruct_cap({NW(w)})), '
                     f'V2.OBJE(d, t, x, off, {w}, {BW(w)})), {NW(w)}}}) == S.Sequence{{S.Items{{V2.VE(t, x, {w}, {BW(w)}), V2.VI({KW(w)}, 0, {NW(w)}, t, x, len)}}}} : S.Value}}')  # noqa: E731
     EVW = lambda w: f'V2.EV({KW(w)}, 0, {NW(w)}, t, x, off, len, V2.EE(True{{}}, t, x, off, len, {w}, {BW(w)}), {BW(w)})'  # noqa: E731
     W0 = 'V2.W0(t, x)'
@@ -1936,9 +1936,9 @@ import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/root_gtypes.bend as RT
 import ../proofs/obj/vfx_u16.bend as FX16
 import ../proofs/obj/vfx_u8.bend as FX8
-import ../proofs/obj/var_winx_Gc465214E502.bend as YW
+import ../proofs/obj/var_winx_VarTestStruct.bend as YW
 import ../proofs/obj/var_winx_l1024_u16.bend as CH0
-import ../proofs/obj/big_vvl_v2_Gc465214E502.bend as V2
+import ../proofs/obj/vvl_v2_VarTestStruct.bend as V2
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
 import ./e2e_blist.bend as BL
@@ -1956,7 +1956,7 @@ def hx4(+d: Nat, +x: Nat, +len: U32, +K: U32, +hK: {{Nat.is_le(4n, U32.to_nat(K)
   FD.nat__le_trans(Nat.add(x, 4n), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, 4n, U32.to_nat(len), FD.nat__le_trans(4n, U32.to_nat(K), U32.to_nat(len), hK, hk)), hw)
 {gwin_u16list_text()}
 # ---- VarTestStruct at a byte window ----
-def vtw({P_}, +h: {{YW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.v_Gc465214E502(YW.OBJw(d, t, x, off, len)) == YW.VALw(t, x, len) : S.Value}}:
+def vtw({P_}, +h: {{YW.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.v_VarTestStruct(YW.OBJw(d, t, x, off, len)) == YW.VALw(t, x, len) : S.Value}}:
   +h4 = hx4(d, x, len, 7, {{==}}, YW.hFc(t, x, off, len, h), hw)
   +e16 = GW.v16w(d, t, {X0}, pf, h4)
   +el = lv(d, t, YW.XJ0(t, x), YW.FJ0(off, t, x), YW.LJ0(t, x, len), YW.eoJ0({WA}, h), hd, YW.hwJ0({WA}, h), pf, YW.itD0(t, x, off, len, h))
@@ -1974,15 +1974,15 @@ def thfz(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {{{
 
 # element (a, b) whose check passed: its view is its codec value
 def elv({P_}, +a: U32, +b: U32, +h: {{V2.EE(True{{}}, t, x, off, len, a, b) == True{{}} : Bool}})
-    -> {{RT.v_Gc465214E502({TF(OB('a', 'b'))}) == V2.VE(t, x, a, b) : S.Value}}:
+    -> {{RT.v_VarTestStruct({TF(OB('a', 'b'))}) == V2.VE(t, x, a, b) : S.Value}}:
   +hab = V2.el_ab(t, x, off, len, a, b, h)
   +hb = V2.el_b(t, x, off, len, a, b, h)
-  %Equal.sym({VT}, {TF(OB('a', 'b'))}, {OB('a', 'b')}, thfz(d, t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a))) : {{RT.v_Gc465214E502(_) == V2.VE(t, x, a, b) : S.Value}}
+  %Equal.sym({VT}, {TF(OB('a', 'b'))}, {OB('a', 'b')}, thfz(d, t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a))) : {{RT.v_VarTestStruct(_) == V2.VE(t, x, a, b) : S.Value}}
   vtw(d, t, n, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a), V2.eoc(d, x, off, len, a, FD.nat__le_trans(U32.to_nat(a), U32.to_nat(b), U32.to_nat(len), hab, hb), eo, hd, hw),
     hd, V2.hwab(d, x, len, a, b, hab, hb, hw), pf, V2.el_c(t, x, off, len, a, b, h))
 
 # the two elements' views, as the vector's
-def v2e(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {{RT.xv_v2_Gc465214E502({RV8}) == S.Sequence{{S.Items{{{VA}, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}} : S.Value}}:
+def v2e(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {{RT.xv_v2_VarTestStruct({RV8}) == S.Sequence{{S.Items{{{VA}, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}} : S.Value}}:
   {{==}}
 
 # first offset 8: elements (8, WJ0) and (WJ0, len)
@@ -1991,7 +1991,7 @@ def v2d({P_}, +h8: {{V2.EE({EE1}, t, x, off, len, {WJ0}, len) == True{{}} : Bool
   +hb = FD.logic__subst(Bool, z => {{{EW2('z')} == True{{}} : Bool}}, {EE1}, True{{}}, ha, FD.logic__and_right({EE1}, {EW2(EE1)}, h8))
   +ea = elv({WA}, 8, {WJ0}, ha)
   +eb = elv({WA}, {WJ0}, len, hb)
-  Equal.trans(S.Value, RT.xv_v2_Gc465214E502({RV8}), S.Sequence{{S.Items{{{VA}, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}}, S.Sequence{{S.Items{{V2.VE(t, x, 8, {WJ0}), S.Items{{V2.VE(t, x, {WJ0}, len), S.EmptyItems{{}}}}}}}},
+  Equal.trans(S.Value, RT.xv_v2_VarTestStruct({RV8}), S.Sequence{{S.Items{{{VA}, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}}, S.Sequence{{S.Items{{V2.VE(t, x, 8, {WJ0}), S.Items{{V2.VE(t, x, {WJ0}, len), S.EmptyItems{{}}}}}}}},
     v2e(d, t, x, off, len),
     Equal.trans(S.Value, S.Sequence{{S.Items{{{VA}, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}}, S.Sequence{{S.Items{{V2.VE(t, x, 8, {WJ0}), S.Items{{{VB_}, S.EmptyItems{{}}}}}}}}, S.Sequence{{S.Items{{V2.VE(t, x, 8, {WJ0}), S.Items{{V2.VE(t, x, {WJ0}, len), S.EmptyItems{{}}}}}}}},
       Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, S.Items{{{VB_}, S.EmptyItems{{}}}}}}}}, {VA}, V2.VE(t, x, 8, {WJ0}), ea),
@@ -1999,7 +1999,7 @@ def v2d({P_}, +h8: {{V2.EE({EE1}, t, x, off, len, {WJ0}, len) == True{{}} : Bool
 
 # a nonempty window: the check's first offset is 8
 def v2b({P_}, +h: {{V2.CF(V2.HC({W0}, len), t, x, off, len) == True{{}} : Bool}})
-    -> {{RT.xv_v2_Gc465214E502(V2.RZ(False{{}}, d, t, x, off, len)) == V2.VZE(False{{}}, t, x, len) : S.Value}}:
+    -> {{RT.xv_v2_VarTestStruct(V2.RZ(False{{}}, d, t, x, off, len)) == V2.VZE(False{{}}, t, x, len) : S.Value}}:
   +hc = V2.cf_ok(V2.HC({W0}, len), t, x, off, len, h)
   +h1 = FD.logic__subst(Bool, z => {{V2.CF(z, t, x, off, len) == True{{}} : Bool}}, V2.HC({W0}, len), True{{}}, hc, h)
   +e8 = FD.u32alg__eq_of({W0}, 8, FD.logic__and_right(Bool.and(U32.is_eq(U32.and({W0}, 3), 0), U32.is_le({W0}, len)), U32.is_eq({W0}, 8), hc))
@@ -2008,12 +2008,12 @@ def v2b({P_}, +h: {{V2.CF(V2.HC({W0}, len), t, x, off, len) == True{{}} : Bool}}
   v2d({WA}, h8)
 
 def v2z({P_}, +e: Bool, +h: {{V2.CZ(e, t, x, off, len) == True{{}} : Bool}})
-    -> {{RT.xv_v2_Gc465214E502(V2.RZ(e, d, t, x, off, len)) == V2.VZE(e, t, x, len) : S.Value}}:
+    -> {{RT.xv_v2_VarTestStruct(V2.RZ(e, d, t, x, off, len)) == V2.VZE(e, t, x, len) : S.Value}}:
   match e:
-    case True{{}}: Empty.absurd({{RT.xv_v2_Gc465214E502(V2.RZ(True{{}}, d, t, x, off, len)) == V2.VZE(True{{}}, t, x, len) : S.Value}}, FD.logic__false_true(h))
+    case True{{}}: Empty.absurd({{RT.xv_v2_VarTestStruct(V2.RZ(True{{}}, d, t, x, off, len)) == V2.VZE(True{{}}, t, x, len) : S.Value}}, FD.logic__false_true(h))
     case False{{}}: v2b({WA}, h)
 
-def vv2w({P_}, +h: {{V2.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.xv_v2_Gc465214E502(V2.OBJw(d, t, x, off, len)) == V2.VALw(t, x, len) : S.Value}}:
+def vv2w({P_}, +h: {{V2.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.xv_v2_VarTestStruct(V2.OBJw(d, t, x, off, len)) == V2.VALw(t, x, len) : S.Value}}:
   v2z({WA}, U32.is_eq(len, 0), h)
 """
 
@@ -2081,9 +2081,9 @@ def complex_view(R, X):
         'A': (f'O.keep(2, UR.RWN(t, {X0}))', f'PBM.v16of(FX8.BX(t, {X0}), FX8.BX(t, 1n+{X0}))', 'e16'),
         'B': (f'PBF.vview2(CH0.OBJw(d, t, {x0_}, {f0}, {l0}))', f'CH0.VALw(t, {x0_}, {l0})', 'el'),
         'D': (f'WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, {f1}, {l1})), {l1}}})', f'UW.WX(t, {x1}, U32.to_nat({l1}))', 'eb'),
-        'E': (f'RT.v_Gc465214E502(CH2.OBJw(d, t, {x2}, {f2}, {l2}))', f'CH2.VALw(t, {x2}, {l2})', 'ev'),
-        'F': (f'RT.xv_v4_GcDC3E457711(FXV4.OBJ(d, t, {X15}))', f'FXV4.VAL(t, {X15})', 'e4'),
-        'G': (f'RT.xv_v2_Gc465214E502(CH3.OBJw(d, t, {x3}, {f3}, {l3}))', f'CH3.VALw(t, {x3}, {l3})', 'ew'),
+        'E': (f'RT.v_VarTestStruct(CH2.OBJw(d, t, {x2}, {f2}, {l2}))', f'CH2.VALw(t, {x2}, {l2})', 'ev'),
+        'F': (f'RT.xv_v4_FixedTestStruct(FXV4.OBJ(d, t, {X15}))', f'FXV4.VAL(t, {X15})', 'e4'),
+        'G': (f'RT.xv_v2_VarTestStruct(CH3.OBJw(d, t, {x3}, {f3}, {l3}))', f'CH3.VALw(t, {x3}, {l3})', 'ew'),
     }
     order = ['A', 'B', 'D', 'E', 'F', 'G']
 
@@ -2118,7 +2118,7 @@ def complex_view(R, X):
     head = f"""# ---- the view of a decoded object is the codec law's value ----
 {lvt}
 # the vector of four FixedTestStructs: its view is its codec value
-def fv4(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> {{RT.xv_v4_GcDC3E457711(FXV4.OBJ(d, t, x)) == FXV4.VAL(t, x) : S.Value}}:
+def fv4(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> {{RT.xv_v4_FixedTestStruct(FXV4.OBJ(d, t, x)) == FXV4.VAL(t, x) : S.Value}}:
   {{==}}
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
@@ -2140,11 +2140,11 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
                         'import ./e2e_gvt.bend as GV2', f'import ../proofs/obj/{wm} as W', f'import ../proofs/obj/{ch["CH0"]} as CH0',
                         f'import ../proofs/obj/{ch["CH1"]} as CH1', f'import ../proofs/obj/{ch["CH2"]} as CH2', 'import ../proofs/obj/vcopy.bend as VC', f'import ../proofs/obj/{ch["CH3"]} as CH3',
                         'import ../proofs/obj/vfx_u16.bend as FX16', 'import ../proofs/obj/vfx_u8.bend as FX8',
-                        'import ../proofs/obj/vfx_v4_GcDC3E457711.bend as FXV4'],
+                        'import ../proofs/obj/vfx_v4_FixedTestStruct.bend as FXV4'],
             'text': text}
 
 
-VDEC_VIEWS['Gc56D855869F'] = complex_view('ComplexTestStruct', 'Gc56D855869F')
+VDEC_VIEWS['ComplexTestStruct'] = complex_view('ComplexTestStruct', 'ComplexTestStruct')
 
 
 # ==== e2e_encr: encode records from the root law's representation (for (i) of containers) ====
@@ -2172,10 +2172,10 @@ def _obj(p):
 
 
 ENCR_LISTS = {  # tag: (encode record module, window module, kind)
-    'l1024': ('big_encx_l1024_u16.bend', 'var_winx_l1024_u16.bend', 'u16'),
-    'l128': ('big_encx_l128_u16.bend', 'var_winx_l128_u16.bend', 'u16'),
-    'b256': ('big_encx_bl256.bend', 'big_vvlb_bl256.bend', 'bytes'),
-    'l123': ('big_encx_l123_u16.bend', 'var_winx_l123_u16.bend', 'u16'),
+    'l1024': ('encx_l1024_u16.bend', 'var_winx_l1024_u16.bend', 'u16'),
+    'l128': ('encx_l128_u16.bend', 'var_winx_l128_u16.bend', 'u16'),
+    'b256': ('encx_bl256.bend', 'vvlb_bl256.bend', 'bytes'),
+    'l123': ('encx_l123_u16.bend', 'var_winx_l123_u16.bend', 'u16'),
 }
 
 
@@ -2392,14 +2392,14 @@ def lb_{tag}(-w: O.Words, +rep: LO.rep_bl(w, S.ByteList{{{LIM}n}}), +hs: BL.sdk(
   (+wf, +hl) = rep
   lb2_{tag}(w, cpw(w, wf), hl, hs)
 ''')
-    # ---- VarTestStruct (Gc465214E502): its record from its fields ----
-    em = _obj('big_encx_Gc465214E502_iface.bend')
+    # ---- VarTestStruct (VarTestStruct): its record from its fields ----
+    em = _obj('encx_VarTestStruct_iface.bend')
     FIX = int(re.search(r'^def ENDC\(.*?\) -> Nat: Nat\.add\((\d+)n,', em, re.M).group(1))
     KB = int(re.search(r'A\.quad\(VB\.pw\((\d+)n\)\)\)\)\)$', re.search(r'^def OKT\(.*$', em, re.M).group(0)).group(1))
     M2 = int(re.search(r'Nat\.is_le\(U32\.to_nat\(N\), U32\.to_nat\((\d+)\)\)', _okt(_obj(ENCR_LISTS['l1024'][0]))).group(1))
     LIM = M2 // 2
     EB = FIX + M2
-    VT = 'VarTestStruct_d.Gc465214E502'
+    VT = 'VarTestStruct_d.VarTestStruct'
     MB = 'Xl1024.MW{LDEP(U32, tt), tt, n}'
     RM = f'EM.MW{{a0, {MB}, a2}}'
     V16 = 'PBM.v16of(U32.and(a0, 255), U32.and(U32.shrn(a0, 8n), 255))'
@@ -2423,14 +2423,14 @@ def okp_vt(+a0: U32, +a2: U32, +mB: Xl1024.MW, +hB: {{Xl1024.OK(mB) == True{{}} 
     FD.logic__and_intro(Bool.and(uint16_e.u16_valid(a0), uint8_e.u8_valid(a2)), {BND},
       FD.logic__and_intro(uint16_e.u16_valid(a0), uint8_e.u8_valid(a2), GW.u16v(a0, h0), h8), hb))
 
-def val_vt(+a0: U32, +a2: U32, +tt: {TR}, +n: U32, {FP}, +eb: {{{VW} == {VL} : S.Value}}) -> {{RT.v_Gc465214E502(EM.TH({RM})) == EM.VAL({RM}) : S.Value}}:
+def val_vt(+a0: U32, +a2: U32, +tt: {TR}, +n: U32, {FP}, +eb: {{{VW} == {VL} : S.Value}}) -> {{RT.v_VarTestStruct(EM.TH({RM})) == EM.VAL({RM}) : S.Value}}:
   %Equal.sym(U32, {V16}, a0, GW.eq16(a0, h0)) : {MOT('_', VL, 'U32.and(a2, 255)')}
   %Equal.sym(U32, U32.and(a2, 255), a2, VBB.ea(a2, h2)) : {MOT('a0', VL, '_')}
   %eb : {MOT('a0', '_', 'a2')}
   {{==}}
 
 def VTF(+a0: U32, +a2: U32, +tt: {TR}, +n: U32) -> Data:
-  DK.P2({{RT.v_Gc465214E502(EM.TH({RM})) == EM.VAL({RM}) : S.Value}}, DK.P2({{EM.OK({RM}) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EM.ENC({RM})), {EB}n) == True{{}} : Bool}}))
+  DK.P2({{RT.v_VarTestStruct(EM.TH({RM})) == EM.VAL({RM}) : S.Value}}, DK.P2({{EM.OK({RM}) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EM.ENC({RM})), {EB}n) == True{{}} : Bool}}))
 
 # the record's facts from its fields' facts and the list's premise
 def vtf(+a0: U32, +a2: U32, +tt: {TR}, +n: U32, {FP}, {CP}, +hs: BL.sdk({WL('tt', 'n')}, {encr_k('l1024', dm)}n)) -> VTF(a0, a2, tt, n):
@@ -2444,27 +2444,27 @@ def vtf(+a0: U32, +a2: U32, +tt: {TR}, +n: U32, {FP}, {CP}, +hs: BL.sdk({WL('tt'
   (val_vt(a0, a2, tt, n, h0, h2, lv_l1024(tt, n, c, ec, hk)), (hok, ln))
 
 def VTR(v: {VT}) -> Data:
-  DK.Ex(EM.MW, m => DK.P2({{v == EM.TH(m) : {VT}}}, DK.P2({{RT.v_Gc465214E502(EM.TH(m)) == EM.VAL(m) : S.Value}}, DK.P2({{EM.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EM.ENC(m)), {EB}n) == True{{}} : Bool}}))))
+  DK.Ex(EM.MW, m => DK.P2({{v == EM.TH(m) : {VT}}}, DK.P2({{RT.v_VarTestStruct(EM.TH(m)) == EM.VAL(m) : S.Value}}, DK.P2({{EM.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EM.ENC(m)), {EB}n) == True{{}} : Bool}}))))
 
 def vtb3(-v: {VT}, +x0: U32, +x2: U32, +tt: {TR}, +n: U32, +eo: {{v == {VT}{{x0, {WL('tt', 'n')}, x2}} : {VT}}}, +f: VTF(x0, x2, tt, n)) -> VTR(v):
   (+fv, +f1) = f
   (+fo, +fl) = f1
   (EM.MW{{x0, Xl1024.MW{{LDEP(U32, tt), tt, n}}, x2}}, (eo, (fv, (fo, fl))))
 
-def vtb2(-v: {VT}, +x0: U32, +x2: U32, +ev: {{v == {VT}{{x0, RT.pj_Gc465214E502_1(v), x2}} : {VT}}}, +h0: {{U32.is_lt(x0, 65536) == True{{}} : Bool}}, +h2: {{U32.is_lt(x2, 256) == True{{}} : Bool}},
-    +hx: {{U32.to_nat(WO.len(RT.pj_Gc465214E502_1(v))) == Nat.double(PBF.cnt2(RT.pj_Gc465214E502_1(v))) : Nat}}, +hl: {{Nat.is_le(PBF.cnt2(RT.pj_Gc465214E502_1(v)), {LIM}n) == True{{}} : Bool}},
-    +hs: BL.sdk(RT.pj_Gc465214E502_1(v), {encr_k('l1024', dm)}n), +cw: DK.Ex({TR}, t => DK.Ex(U32, n => {{RT.pj_Gc465214E502_1(v) == {WL('t', 'n')} : O.Words}}))) -> VTR(v):
+def vtb2(-v: {VT}, +x0: U32, +x2: U32, +ev: {{v == {VT}{{x0, RT.pj_VarTestStruct_1(v), x2}} : {VT}}}, +h0: {{U32.is_lt(x0, 65536) == True{{}} : Bool}}, +h2: {{U32.is_lt(x2, 256) == True{{}} : Bool}},
+    +hx: {{U32.to_nat(WO.len(RT.pj_VarTestStruct_1(v))) == Nat.double(PBF.cnt2(RT.pj_VarTestStruct_1(v))) : Nat}}, +hl: {{Nat.is_le(PBF.cnt2(RT.pj_VarTestStruct_1(v)), {LIM}n) == True{{}} : Bool}},
+    +hs: BL.sdk(RT.pj_VarTestStruct_1(v), {encr_k('l1024', dm)}n), +cw: DK.Ex({TR}, t => DK.Ex(U32, n => {{RT.pj_VarTestStruct_1(v) == {WL('t', 'n')} : O.Words}}))) -> VTR(v):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hx2 = FD.logic__subst(O.Words, z => {{U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hx)
-  +hl2 = FD.logic__subst(O.Words, z => {{Nat.is_le(PBF.cnt2(z), {LIM}n) == True{{}} : Bool}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hl)
-  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, {encr_k('l1024', dm)}n), RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hs)
-  +eo = Equal.trans({VT}, v, {VT}{{x0, RT.pj_Gc465214E502_1(v), x2}}, {VT}{{x0, {WL('tt', 'n')}, x2}}, ev,
-    Equal.cong(O.Words, {VT}, z => {VT}{{x0, z, x2}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew))
+  +hx2 = FD.logic__subst(O.Words, z => {{U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}}, RT.pj_VarTestStruct_1(v), {WL('tt', 'n')}, ew, hx)
+  +hl2 = FD.logic__subst(O.Words, z => {{Nat.is_le(PBF.cnt2(z), {LIM}n) == True{{}} : Bool}}, RT.pj_VarTestStruct_1(v), {WL('tt', 'n')}, ew, hl)
+  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, {encr_k('l1024', dm)}n), RT.pj_VarTestStruct_1(v), {WL('tt', 'n')}, ew, hs)
+  +eo = Equal.trans({VT}, v, {VT}{{x0, RT.pj_VarTestStruct_1(v), x2}}, {VT}{{x0, {WL('tt', 'n')}, x2}}, ev,
+    Equal.cong(O.Words, {VT}, z => {VT}{{x0, z, x2}}, RT.pj_VarTestStruct_1(v), {WL('tt', 'n')}, ew))
   vtb3(v, x0, x2, tt, n, eo, vtf(x0, x2, tt, n, h0, h2, PBF.cnt2({WL('tt', 'n')}), hx2, hl2, hs2))
 
 # a VarTestStruct the root law represents, with its list's premise: its record
-def vtb(-v: {VT}, +rep: RT.rep_Gc465214E502(v, Spec.Gc465214E502()), +hs: BL.sdk(RT.pj_Gc465214E502_1(v), {encr_k('l1024', dm)}n)) -> VTR(v):
+def vtb(-v: {VT}, +rep: RT.rep_VarTestStruct(v, Spec.VarTestStruct()), +hs: BL.sdk(RT.pj_VarTestStruct_1(v), {encr_k('l1024', dm)}n)) -> VTR(v):
   (+x0, +r0) = rep
   (+x2, +r1) = r0
   (+ev, +q1) = r1
@@ -2472,7 +2472,7 @@ def vtb(-v: {VT}, +rep: RT.rep_Gc465214E502(v, Spec.Gc465214E502()), +hs: BL.sdk
   (+c1, +h2) = q2
   (+wf, +z1) = c1
   (+hx, +hl) = z1
-  vtb2(v, x0, x2, ev, h0, h2, hx, hl, hs, cpw(RT.pj_Gc465214E502_1(v), wf))
+  vtb2(v, x0, x2, ev, h0, h2, hx, hl, hs, cpw(RT.pj_VarTestStruct_1(v), wf))
 ''')
     if dm:
         HB0 = (f"+hb = FD.nat__le_trans(Nat.add({FIX}n, LY.LN(Xl1024.ENC({MB}))), {EB}n, A.quad(VB.pw({KB}n)), FD.nat__le_add_left(LY.LN(Xl1024.ENC({MB})), {M2}n, {FIX}n, hL),\n"
@@ -2490,7 +2490,7 @@ def vtb(-v: {VT}, +rep: RT.rep_Gc465214E502(v, Spec.Gc465214E502()), +hs: BL.sdk
             'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/vu32.bend as VU',
             'import ../proofs/obj/len_bridge.bend as LB', 'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/dk.bend as DK',
             'import ../proofs/obj/list_obj.bend as LO', 'import ../proofs/obj/blist_obj.bend as BLI', 'import ../proofs/obj/generic_specs.bend as Spec',
-            'import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/big_encx_Gc465214E502_iface.bend as EM', 'import ../proofs/obj/big_encx_Gc465214E502.bend as EK',
+            'import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/encx_VarTestStruct_iface.bend as EM', 'import ../proofs/obj/encx_VarTestStruct.bend as EK',
             'import ../types/uint16_encode_ssz_generated.bend as uint16_e', 'import ../types/uint8_encode_ssz_generated.bend as uint8_e',
             'import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d'] + imps + [
             'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_tz.bend as TZ', 'import ./e2e_cap.bend as C', 'import ./e2e_gwin.bend as GW']
@@ -2509,14 +2509,14 @@ SUPPORT_OUT['e2e_encrd.bend'] = encr_text(True)
 
 
 # ==== e2e_encv: encode records of vectors from the root law's representation ====
-# A vector of variable-size elements (v2_Gc465214E502): the root law's mirror tree t of boxed element mirrors
+# A vector of variable-size elements (v2_VarTestStruct): the root law's mirror tree t of boxed element mirrors
 # maps (EMAP, elementwise em1) to the encode law's tree of element records; am_eq, map_pf, tdm_map, slots_map,
 # xat_map carry the object, depth and slots across, and eoks_go / xi_go / bl_go (by induction on the count)
-# its elements' validity, values and byte lengths. A vector of fixed-size records (v4_GcDC3E457711) is its own
+# its elements' validity, values and byte lengths. A vector of fixed-size records (v4_FixedTestStruct) is its own
 # record MW{dw, t, N}.
 
 def vt_eb():
-    em = _obj('big_encx_Gc465214E502_iface.bend')
+    em = _obj('encx_VarTestStruct_iface.bend')
     FIX = int(re.search(r'^def ENDC\(.*?\) -> Nat: Nat\.add\((\d+)n,', em, re.M).group(1))
     M2 = int(re.search(r'Nat\.is_le\(U32\.to_nat\(N\), U32\.to_nat\((\d+)\)\)', _okt(_obj(ENCR_LISTS['l1024'][0]))).group(1))
     return FIX + M2
@@ -2531,16 +2531,16 @@ def _pw_above(x):
 
 def encv_text(dm=False):
     """dm: e2e_encvd, the vector records over the D twins (their elements' lists at depth < 31: the OKW element records of e2e_encrd)."""
-    RMB = 'RT.MB<RT.M_Gc465214E502>'
+    RMB = 'RT.MB<RT.M_VarTestStruct>'
     EMB = 'EN2.MB<EM.MW>'
     TRR = f'FD.array__Tree<{RMB}>'
     LR = f'List<&2, {RMB}>'
     LE = f'List<&2, {EMB}>'
-    VT = 'VarTestStruct_d.Gc465214E502'
+    VT = 'VarTestStruct_d.VarTestStruct'
     ARR = f'Array<O.Boxed<{VT}>>'
-    SEQ = 'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq'
-    SE = 'Spec.Gc465214E502()'
-    en2 = _obj('big_encx_v2_Gc465214E502.bend')   # (its D twin re-states OKL / OKT over EN2D: the texts below are the same)
+    SEQ = 'vec_VarTestStruct_2_d.v2_VarTestStruct_Seq'
+    SE = 'Spec.VarTestStruct()'
+    en2 = _obj('encx_v2_VarTestStruct.bend')   # (its D twin re-states OKL / OKT over EN2D: the texts below are the same)
     OKL = _okt(en2, 'OKL')
     Kt = int(re.search(r'Nat\.is_lt\(TDM\(t\), (\d+)n\)', OKL).group(1))
     NV = int(re.search(r'U32\.is_eq\(N, (\d+)\)', OKL).group(1))
@@ -2559,38 +2559,38 @@ def encv_text(dm=False):
         s = OKL.replace('TDM(t)', '@D@').replace('SL(t)', '@S@')
         s = re.sub(r'\bt\b', 'EMAP(t)', s).replace('F.', 'FD.').replace('MB<EM.MW>', EMB).replace('EOKS(', 'EN2.EOKS(')
         return s.replace('@D@', D).replace('@S@', S_)
-    ES_T = lambda W, i: f'BL.sdk(RT.pj_Gc465214E502_1(RT.pjb_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502({W}, {i})))), K)'  # noqa: E731
-    HS = lambda x: f'BL.sdk(RT.pj_Gc465214E502_1(RT.pjb_Gc465214E502_bx(RT.th_Gc465214E502_bx({x}))), {K}n)'  # noqa: E731
-    RB = lambda x: f'RT.rep_Gc465214E502_bx(RT.th_Gc465214E502_bx({x}), {SE})'  # noqa: E731
+    ES_T = lambda W, i: f'BL.sdk(RT.pj_VarTestStruct_1(RT.pjb_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct({W}, {i})))), K)'  # noqa: E731
+    HS = lambda x: f'BL.sdk(RT.pj_VarTestStruct_1(RT.pjb_VarTestStruct_bx(RT.th_VarTestStruct_bx({x}))), {K}n)'  # noqa: E731
+    RB = lambda x: f'RT.rep_VarTestStruct_bx(RT.th_VarTestStruct_bx({x}), {SE})'  # noqa: E731
     RM = 'EM.MW{a0, Xl1024.MW{ER.LDEP(U32, tt), tt, n}, a2}'
-    MS = f'RT.MSome{{RT.M_Gc465214E502{{a0, RT.WMr{{tt, n}}, a2}}}}'
+    MS = f'RT.MSome{{RT.M_VarTestStruct{{a0, RT.WMr{{tt, n}}, a2}}}}'
     L = []
     L.append(f'''# ---- the element map: a VarTestStruct's mirror M{{a0, WMr{{t, n}}, a2}} to its record ----
 def wrec(w: RT.WMr) -> Xl1024.MW:
   match w:
     case RT.WMr{{+t, +n}}: Xl1024.MW{{ER.LDEP(U32, t), t, n}}
-def em0(m: RT.M_Gc465214E502) -> EM.MW:
+def em0(m: RT.M_VarTestStruct) -> EM.MW:
   match m:
-    case RT.M_Gc465214E502{{+a0, +a1, +a2}}: EM.MW{{a0, wrec(a1), a2}}
+    case RT.M_VarTestStruct{{+a0, +a1, +a2}}: EM.MW{{a0, wrec(a1), a2}}
 def em1(x: {RMB}) -> {EMB}:
   match x:
     case RT.MNone{{}}: EN2.MNone{{}}
     case RT.MSome{{+v}}: EN2.MSome{{em0(v)}}
 
-def thw(+a0: U32, +w: RT.WMr, +a2: U32) -> {{EM.TH(EM.MW{{a0, wrec(w), a2}}) == RT.th_Gc465214E502(RT.M_Gc465214E502{{a0, w, a2}}) : {VT}}}:
+def thw(+a0: U32, +w: RT.WMr, +a2: U32) -> {{EM.TH(EM.MW{{a0, wrec(w), a2}}) == RT.th_VarTestStruct(RT.M_VarTestStruct{{a0, w, a2}}) : {VT}}}:
   match w:
     case RT.WMr{{+t, +n}}: {{==}}
-def thm(+m: RT.M_Gc465214E502) -> {{EM.TH(em0(m)) == RT.th_Gc465214E502(m) : {VT}}}:
+def thm(+m: RT.M_VarTestStruct) -> {{EM.TH(em0(m)) == RT.th_VarTestStruct(m) : {VT}}}:
   match m:
-    case RT.M_Gc465214E502{{+a0, +a1, +a2}}: thw(a0, a1, a2)
-def thb(+x: {RMB}) -> {{EN2.th_Gc465214E502_bx(em1(x)) == RT.th_Gc465214E502_bx(x) : O.Boxed<{VT}>}}:
+    case RT.M_VarTestStruct{{+a0, +a1, +a2}}: thw(a0, a1, a2)
+def thb(+x: {RMB}) -> {{EN2.th_VarTestStruct_bx(em1(x)) == RT.th_VarTestStruct_bx(x) : O.Boxed<{VT}>}}:
   match x:
     case RT.MNone{{}}: {{==}}
-    case RT.MSome{{+v}}: Equal.cong({VT}, O.Boxed<{VT}>, z => O.BSome{{z, O.BNone{{}}}}, EM.TH(em0(v)), RT.th_Gc465214E502(v), thm(v))
+    case RT.MSome{{+v}}: Equal.cong({VT}, O.Boxed<{VT}>, z => O.BSome{{z, O.BNone{{}}}}, EM.TH(em0(v)), RT.th_VarTestStruct(v), thm(v))
 
 # ---- an element's facts: its record is valid, its value the root view, its bytes at most {EB} ----
 def EF(+x: {RMB}) -> Data:
-  DK.P2({{EN2.EOK(em1(x)) == True{{}} : Bool}}, DK.P2({{EN2.EV(em1(x)) == RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(x)) : S.Value}}, {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == True{{}} : Bool}}))
+  DK.P2({{EN2.EOK(em1(x)) == True{{}} : Bool}}, DK.P2({{EN2.EV(em1(x)) == RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(x)) : S.Value}}, {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == True{{}} : Bool}}))
 
 def vf0(v: {VT}) -> U32:
   match v:
@@ -2606,7 +2606,7 @@ def isS(o: O.Boxed<{VT}>) -> Bool:
 def vtt2(+a0: U32, +tt: FD.array__Tree<U32>, +n: U32, +a2: U32, +f: ER.VTF(a0, a2, tt, n)) -> EF({MS}):
   (+fv, +f1) = f
   (+fo, +fl) = f1
-  (fo, (Equal.sym(S.Value, RT.v_Gc465214E502(EM.TH({RM})), EM.VAL({RM}), fv), fl))
+  (fo, (Equal.sym(S.Value, RT.v_VarTestStruct(EM.TH({RM})), EM.VAL({RM}), fv), fl))
 
 def vtt(+a0: U32, +tt: FD.array__Tree<U32>, +n: U32, +a2: U32, +rb: {RB(MS)}, +hs: BL.sdk({WL('tt', 'n')}, {K}n)) -> EF({MS}):
   (+eb, +rv) = rb
@@ -2623,16 +2623,16 @@ def vtt(+a0: U32, +tt: FD.array__Tree<U32>, +n: U32, +a2: U32, +rb: {RB(MS)}, +h
   +h2a = FD.logic__subst(U32, z => {{U32.is_lt(z, 256) == True{{}} : Bool}}, x2, a2, Equal.sym(U32, a2, x2, e2), h2)
   vtt2(a0, tt, n, a2, ER.vtf(a0, a2, tt, n, h0a, h2a, PBF.cnt2({WL('tt', 'n')}), hx, hl, hs))
 
-def vtw(+a0: U32, +w: RT.WMr, +a2: U32, +rb: {RB('RT.MSome{RT.M_Gc465214E502{a0, w, a2}}')}, +hs: {HS('RT.MSome{RT.M_Gc465214E502{a0, w, a2}}')})
-    -> EF(RT.MSome{{RT.M_Gc465214E502{{a0, w, a2}}}}):
+def vtw(+a0: U32, +w: RT.WMr, +a2: U32, +rb: {RB('RT.MSome{RT.M_VarTestStruct{a0, w, a2}}')}, +hs: {HS('RT.MSome{RT.M_VarTestStruct{a0, w, a2}}')})
+    -> EF(RT.MSome{{RT.M_VarTestStruct{{a0, w, a2}}}}):
   match w:
     case RT.WMr{{+tt, +n}}: vtt(a0, tt, n, a2, rb, hs)
-def vtm(+m: RT.M_Gc465214E502, +rb: {RB('RT.MSome{m}')}, +hs: {HS('RT.MSome{m}')}) -> EF(RT.MSome{{m}}):
+def vtm(+m: RT.M_VarTestStruct, +rb: {RB('RT.MSome{m}')}, +hs: {HS('RT.MSome{m}')}) -> EF(RT.MSome{{m}}):
   match m:
-    case RT.M_Gc465214E502{{+a0, +a1, +a2}}: vtw(a0, a1, a2, rb, hs)
+    case RT.M_VarTestStruct{{+a0, +a1, +a2}}: vtw(a0, a1, a2, rb, hs)
 def nb(+rb: {RB('RT.MNone{}')}) -> Empty:
   (+eb, +rv) = rb
-  FD.logic__false_true(Equal.cong(O.Boxed<{VT}>, Bool, z => isS(z), O.BNone{{}}, O.BSome{{RT.pjb_Gc465214E502_bx(O.BNone{{}}), O.BNone{{}}}}, eb))
+  FD.logic__false_true(Equal.cong(O.Boxed<{VT}>, Bool, z => isS(z), O.BNone{{}}, O.BSome{{RT.pjb_VarTestStruct_bx(O.BNone{{}}), O.BNone{{}}}}, eb))
 def vte(+x: {RMB}, +rb: {RB('x')}, +hs: {HS('x')}) -> EF(x):
   match x:
     case RT.MNone{{}}: Empty.absurd(EF(RT.MNone{{}}), nb(rb))
@@ -2648,12 +2648,12 @@ def LMAP(W: {LR}) -> {LE}:
     case Nil{{}}: Nil{{}}
     case Con{{+x, t}}: Con{{em1(x), LMAP(t)}}
 
-def am_eq(+t: {TRR}) -> {{EN2.am_v2_Gc465214E502(EMAP(t)) == RT.am_v2_Gc465214E502(t) : {ARR}}}:
+def am_eq(+t: {TRR}) -> {{EN2.am_v2_VarTestStruct(EMAP(t)) == RT.am_v2_VarTestStruct(t) : {ARR}}}:
   match t:
-    case FD.TLeaf{{+x}}: Equal.cong(O.Boxed<{VT}>, {ARR}, z => ALeaf{{z}}, EN2.th_Gc465214E502_bx(em1(x)), RT.th_Gc465214E502_bx(x), thb(x))
+    case FD.TLeaf{{+x}}: Equal.cong(O.Boxed<{VT}>, {ARR}, z => ALeaf{{z}}, EN2.th_VarTestStruct_bx(em1(x)), RT.th_VarTestStruct_bx(x), thb(x))
     case FD.TNode{{+l, +r}}:
-      %Equal.sym({ARR}, EN2.am_v2_Gc465214E502(EMAP(l)), RT.am_v2_Gc465214E502(l), am_eq(l)) : {{ANode{{_, EN2.am_v2_Gc465214E502(EMAP(r))}} == ANode{{RT.am_v2_Gc465214E502(l), RT.am_v2_Gc465214E502(r)}} : {ARR}}}
-      %Equal.sym({ARR}, EN2.am_v2_Gc465214E502(EMAP(r)), RT.am_v2_Gc465214E502(r), am_eq(r)) : {{ANode{{RT.am_v2_Gc465214E502(l), _}} == ANode{{RT.am_v2_Gc465214E502(l), RT.am_v2_Gc465214E502(r)}} : {ARR}}}
+      %Equal.sym({ARR}, EN2.am_v2_VarTestStruct(EMAP(l)), RT.am_v2_VarTestStruct(l), am_eq(l)) : {{ANode{{_, EN2.am_v2_VarTestStruct(EMAP(r))}} == ANode{{RT.am_v2_VarTestStruct(l), RT.am_v2_VarTestStruct(r)}} : {ARR}}}
+      %Equal.sym({ARR}, EN2.am_v2_VarTestStruct(EMAP(r)), RT.am_v2_VarTestStruct(r), am_eq(r)) : {{ANode{{RT.am_v2_VarTestStruct(l), _}} == ANode{{RT.am_v2_VarTestStruct(l), RT.am_v2_VarTestStruct(r)}} : {ARR}}}
       {{==}}
 
 def map_pf(+d: Nat, +t: {TRR}, +pf: {{FD.array__perfect({RMB}, d, t) == True{{}} : Bool}}) -> {{FD.array__perfect({EMB}, d, EMAP(t)) == True{{}} : Bool}}:
@@ -2682,7 +2682,7 @@ def slots_map(+t: {TRR}) -> {{{SLE('EMAP(t)')} == LMAP({SL('t')}) : {LE}}}:
       %Equal.sym({LE}, {SLE('EMAP(r)')}, LMAP({SL('r')}), slots_map(r)) : {{FD.spec_common__append({EMB}, LMAP({SL('l')}), _) == LMAP(FD.spec_common__append({RMB}, {SL('l')}, {SL('r')})) : {LE}}}
       Equal.sym({LE}, LMAP(FD.spec_common__append({RMB}, {SL('l')}, {SL('r')})), FD.spec_common__append({EMB}, LMAP({SL('l')}), LMAP({SL('r')})), lmap_app({SL('l')}, {SL('r')}))
 
-def xat_map(+W: {LR}, +i: Nat) -> {{EN2.xat_v2_Gc465214E502(LMAP(W), i) == em1(RT.xat_v2_Gc465214E502(W, i)) : {EMB}}}:
+def xat_map(+W: {LR}, +i: Nat) -> {{EN2.xat_v2_VarTestStruct(LMAP(W), i) == em1(RT.xat_v2_VarTestStruct(W, i)) : {EMB}}}:
   match W i:
     case Nil{{}} _: {{==}}
     case Con{{+x, +t}} 0n: {{==}}
@@ -2697,50 +2697,50 @@ def ES(k: Nat, +W: {LR}, +i: Nat, +K: Nat) -> Data:
 # the vector's premise: its mirror tree below Kt, its elements' lists below K
 def sv2(v: {SEQ}, +Kt: Nat, +K: Nat) -> Data:
   match v:
-    case {SEQ}{{arr, +n}}: DK.P2({{Nat.is_lt(ER.LDEP({RMB}, RT.tfz_v2_Gc465214E502(arr)), Kt) == True{{}} : Bool}}, ES(U32.to_nat(n), {SL('RT.tfz_v2_Gc465214E502(arr)')}, 0n, K))
+    case {SEQ}{{arr, +n}}: DK.P2({{Nat.is_lt(ER.LDEP({RMB}, RT.tfz_v2_VarTestStruct(arr)), Kt) == True{{}} : Bool}}, ES(U32.to_nat(n), {SL('RT.tfz_v2_VarTestStruct(arr)')}, 0n, K))
 
 # ---- by induction on the count: validity, values, byte lengths ----
-def eoks_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_Gc465214E502(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{EN2.EOKS(k, LMAP(W), i) == True{{}} : Bool}}:
+def eoks_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_VarTestStruct(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{EN2.EOKS(k, LMAP(W), i) == True{{}} : Bool}}:
   match k:
     case 0n: {{==}}
     case 1n+ +q:
       (+rb, +er2) = er
       (+hs, +es2) = es
-      +fo = eok1(RT.xat_v2_Gc465214E502(W, i), vte(RT.xat_v2_Gc465214E502(W, i), rb, hs))
-      +fo2 = FD.logic__subst({EMB}, z => {{EN2.EOK(z) == True{{}} : Bool}}, em1(RT.xat_v2_Gc465214E502(W, i)), EN2.xat_v2_Gc465214E502(LMAP(W), i),
-        Equal.sym({EMB}, EN2.xat_v2_Gc465214E502(LMAP(W), i), em1(RT.xat_v2_Gc465214E502(W, i)), xat_map(W, i)), fo)
-      FD.logic__and_intro(EN2.EOK(EN2.xat_v2_Gc465214E502(LMAP(W), i)), EN2.EOKS(q, LMAP(W), 1n+i), fo2, eoks_go(q, W, 1n+i, er2, es2))
+      +fo = eok1(RT.xat_v2_VarTestStruct(W, i), vte(RT.xat_v2_VarTestStruct(W, i), rb, hs))
+      +fo2 = FD.logic__subst({EMB}, z => {{EN2.EOK(z) == True{{}} : Bool}}, em1(RT.xat_v2_VarTestStruct(W, i)), EN2.xat_v2_VarTestStruct(LMAP(W), i),
+        Equal.sym({EMB}, EN2.xat_v2_VarTestStruct(LMAP(W), i), em1(RT.xat_v2_VarTestStruct(W, i)), xat_map(W, i)), fo)
+      FD.logic__and_intro(EN2.EOK(EN2.xat_v2_VarTestStruct(LMAP(W), i)), EN2.EOKS(q, LMAP(W), 1n+i), fo2, eoks_go(q, W, 1n+i, er2, es2))
 
 def BB(k: Nat) -> Nat:
   match k:
     case 0n: 0n
     case 1n+q: Nat.add({EB}n, BB(q))
 
-def xi_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_Gc465214E502(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{EN2.XI(k, LMAP(W), i) == RT.xi_v2_Gc465214E502(k, W, i) : S.Value}}:
+def xi_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_VarTestStruct(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{EN2.XI(k, LMAP(W), i) == RT.xi_v2_VarTestStruct(k, W, i) : S.Value}}:
   match k:
     case 0n: {{==}}
     case 1n+ +q:
       (+rb, +er2) = er
       (+hs, +es2) = es
-      +fv = ev1(RT.xat_v2_Gc465214E502(W, i), vte(RT.xat_v2_Gc465214E502(W, i), rb, hs))
-      %Equal.sym({EMB}, EN2.xat_v2_Gc465214E502(LMAP(W), i), em1(RT.xat_v2_Gc465214E502(W, i)), xat_map(W, i)) :
-        {{S.Items{{EN2.EV(_), EN2.XI(q, LMAP(W), 1n+i)}} == S.Items{{RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), RT.xi_v2_Gc465214E502(q, W, 1n+i)}} : S.Value}}
-      %Equal.sym(S.Value, EN2.EV(em1(RT.xat_v2_Gc465214E502(W, i))), RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), fv) :
-        {{S.Items{{_, EN2.XI(q, LMAP(W), 1n+i)}} == S.Items{{RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), RT.xi_v2_Gc465214E502(q, W, 1n+i)}} : S.Value}}
-      %Equal.sym(S.Value, EN2.XI(q, LMAP(W), 1n+i), RT.xi_v2_Gc465214E502(q, W, 1n+i), xi_go(q, W, 1n+i, er2, es2)) :
-        {{S.Items{{RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), _}} == S.Items{{RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), RT.xi_v2_Gc465214E502(q, W, 1n+i)}} : S.Value}}
+      +fv = ev1(RT.xat_v2_VarTestStruct(W, i), vte(RT.xat_v2_VarTestStruct(W, i), rb, hs))
+      %Equal.sym({EMB}, EN2.xat_v2_VarTestStruct(LMAP(W), i), em1(RT.xat_v2_VarTestStruct(W, i)), xat_map(W, i)) :
+        {{S.Items{{EN2.EV(_), EN2.XI(q, LMAP(W), 1n+i)}} == S.Items{{RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct(W, i))), RT.xi_v2_VarTestStruct(q, W, 1n+i)}} : S.Value}}
+      %Equal.sym(S.Value, EN2.EV(em1(RT.xat_v2_VarTestStruct(W, i))), RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct(W, i))), fv) :
+        {{S.Items{{_, EN2.XI(q, LMAP(W), 1n+i)}} == S.Items{{RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct(W, i))), RT.xi_v2_VarTestStruct(q, W, 1n+i)}} : S.Value}}
+      %Equal.sym(S.Value, EN2.XI(q, LMAP(W), 1n+i), RT.xi_v2_VarTestStruct(q, W, 1n+i), xi_go(q, W, 1n+i, er2, es2)) :
+        {{S.Items{{RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct(W, i))), _}} == S.Items{{RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.xat_v2_VarTestStruct(W, i))), RT.xi_v2_VarTestStruct(q, W, 1n+i)}} : S.Value}}
       {{==}}
 
-def bl_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_Gc465214E502(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{Nat.is_le(EN2.BL(k, LMAP(W), i), BB(k)) == True{{}} : Bool}}:
+def bl_go(+k: Nat, +W: {LR}, +i: Nat, +er: RT.ereps_v2_VarTestStruct(k, W, i, {SE}), +es: ES(k, W, i, {K}n)) -> {{Nat.is_le(EN2.BL(k, LMAP(W), i), BB(k)) == True{{}} : Bool}}:
   match k:
     case 0n: {{==}}
     case 1n+ +q:
       (+rb, +er2) = er
       (+hs, +es2) = es
-      +fl = ln1(RT.xat_v2_Gc465214E502(W, i), vte(RT.xat_v2_Gc465214E502(W, i), rb, hs))
-      +fl2 = FD.logic__subst({EMB}, z => {{Nat.is_le(LY.LN(EN2.YE(z)), {EB}n) == True{{}} : Bool}}, em1(RT.xat_v2_Gc465214E502(W, i)), EN2.xat_v2_Gc465214E502(LMAP(W), i),
-        Equal.sym({EMB}, EN2.xat_v2_Gc465214E502(LMAP(W), i), em1(RT.xat_v2_Gc465214E502(W, i)), xat_map(W, i)), fl)
-      +Y = EN2.YE(EN2.xat_v2_Gc465214E502(LMAP(W), i))
+      +fl = ln1(RT.xat_v2_VarTestStruct(W, i), vte(RT.xat_v2_VarTestStruct(W, i), rb, hs))
+      +fl2 = FD.logic__subst({EMB}, z => {{Nat.is_le(LY.LN(EN2.YE(z)), {EB}n) == True{{}} : Bool}}, em1(RT.xat_v2_VarTestStruct(W, i)), EN2.xat_v2_VarTestStruct(LMAP(W), i),
+        Equal.sym({EMB}, EN2.xat_v2_VarTestStruct(LMAP(W), i), em1(RT.xat_v2_VarTestStruct(W, i)), xat_map(W, i)), fl)
+      +Y = EN2.YE(EN2.xat_v2_VarTestStruct(LMAP(W), i))
       %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, Y, VR.bcat(EN2.YS(q, LMAP(W), 1n+i)))), Nat.add(List.length(&2, U32, Y), List.length(&2, U32, VR.bcat(EN2.YS(q, LMAP(W), 1n+i)))),
           VSP.len_app(Y, VR.bcat(EN2.YS(q, LMAP(W), 1n+i)))) : {{Nat.is_le(_, BB(1n+q)) == True{{}} : Bool}}
       ER.addle(List.length(&2, U32, Y), EN2.BL(q, LMAP(W), 1n+i), {EB}n, BB(q), fl2, bl_go(q, W, 1n+i, er2, es2))
@@ -2751,7 +2751,7 @@ def ieq_{NV}(+N: U32, +eN: {{U32.to_nat(N) == {NV}n : Nat}}) -> {{U32.is_eq(N, {
   {{==}}
 
 # ---- the vector's record EN2.MW{{EMAP(t), N}} ----
-def hll(+t: {TRR}, +N: U32, +eN: {{U32.to_nat(N) == {NV}n : Nat}}, +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n))
+def hll(+t: {TRR}, +N: U32, +eN: {{U32.to_nat(N) == {NV}n : Nat}}, +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n))
     -> {{Nat.is_le(EN2.LL(EMAP(t), N), {LB}n) == True{{}} : Bool}}:
   +hb = bl_go({k}, {SL('t')}, 0n, er, es)
   +h1 = FD.nat__le_add_left(EN2.BL({k}, LMAP({SL('t')}), 0n), BB({k}), A.quad({k}), hb)
@@ -2764,56 +2764,56 @@ def llq(+x: Nat, +h: {{Nat.is_le(x, {LB}n) == True{{}} : Bool}}) -> {{Nat.is_le(
 
 def v2okl(+t: {TRR}, +dw: Nat, +N: U32, +etd: {{EN2.TDM(EMAP(t)) == dw : Nat}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
     +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, {Kt}n) == True{{}} : Bool}}, +eN: {{U32.to_nat(N) == {NV}n : Nat}},
-    +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n)) -> {{EN2.OKL(EMAP(t), N) == True{{}} : Bool}}:
+    +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n)) -> {{EN2.OKL(EMAP(t), N) == True{{}} : Bool}}:
   %Equal.sym(Nat, EN2.TDM(EMAP(t)), dw, etd) : {{{okl_txt('_', 'EN2.SL(EMAP(t))')} == True{{}} : Bool}}
   %Equal.sym({LE}, {SLE('EMAP(t)')}, LMAP({SL('t')}), slots_map(t)) : {{{okl_txt('dw', '_')} == True{{}} : Bool}}
   @OKLPROOF@
 
-def v2val(+t: {TRR}, +N: U32, +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n))
-    -> {{RT.xv_v2_Gc465214E502(EN2.TH(EN2.MW{{EMAP(t), N}})) == EN2.VAL(EN2.MW{{EMAP(t), N}}) : S.Value}}:
-  %Equal.sym({ARR}, EN2.am_v2_Gc465214E502(EMAP(t)), RT.am_v2_Gc465214E502(t), am_eq(t)) :
-    {{S.Sequence{{RT.xi_v2_Gc465214E502({k}, {SL('RT.tfz_v2_Gc465214E502(_)')}, 0n)}} == EN2.VALL(EMAP(t), N) : S.Value}}
-  %Equal.sym({TRR}, RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t)), t, RT.tfzam_v2_Gc465214E502(t)) :
-    {{S.Sequence{{RT.xi_v2_Gc465214E502({k}, {SL('_')}, 0n)}} == EN2.VALL(EMAP(t), N) : S.Value}}
+def v2val(+t: {TRR}, +N: U32, +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}), +es: ES({k}, {SL('t')}, 0n, {K}n))
+    -> {{RT.xv_v2_VarTestStruct(EN2.TH(EN2.MW{{EMAP(t), N}})) == EN2.VAL(EN2.MW{{EMAP(t), N}}) : S.Value}}:
+  %Equal.sym({ARR}, EN2.am_v2_VarTestStruct(EMAP(t)), RT.am_v2_VarTestStruct(t), am_eq(t)) :
+    {{S.Sequence{{RT.xi_v2_VarTestStruct({k}, {SL('RT.tfz_v2_VarTestStruct(_)')}, 0n)}} == EN2.VALL(EMAP(t), N) : S.Value}}
+  %Equal.sym({TRR}, RT.tfz_v2_VarTestStruct(RT.am_v2_VarTestStruct(t)), t, RT.tfzam_v2_VarTestStruct(t)) :
+    {{S.Sequence{{RT.xi_v2_VarTestStruct({k}, {SL('_')}, 0n)}} == EN2.VALL(EMAP(t), N) : S.Value}}
   %Equal.sym({LE}, {SLE('EMAP(t)')}, LMAP({SL('t')}), slots_map(t)) :
-    {{S.Sequence{{RT.xi_v2_Gc465214E502({k}, {SL('t')}, 0n)}} == S.Sequence{{EN2.XI({k}, _, 0n)}} : S.Value}}
-  Equal.sym(S.Value, S.Sequence{{EN2.XI({k}, LMAP({SL('t')}), 0n)}}, S.Sequence{{RT.xi_v2_Gc465214E502({k}, {SL('t')}, 0n)}},
-    Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, EN2.XI({k}, LMAP({SL('t')}), 0n), RT.xi_v2_Gc465214E502({k}, {SL('t')}, 0n), xi_go({k}, {SL('t')}, 0n, er, es)))
+    {{S.Sequence{{RT.xi_v2_VarTestStruct({k}, {SL('t')}, 0n)}} == S.Sequence{{EN2.XI({k}, _, 0n)}} : S.Value}}
+  Equal.sym(S.Value, S.Sequence{{EN2.XI({k}, LMAP({SL('t')}), 0n)}}, S.Sequence{{RT.xi_v2_VarTestStruct({k}, {SL('t')}, 0n)}},
+    Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, EN2.XI({k}, LMAP({SL('t')}), 0n), RT.xi_v2_VarTestStruct({k}, {SL('t')}, 0n), xi_go({k}, {SL('t')}, 0n, er, es)))
 
 def V2R(v: {SEQ}) -> Data:
-  DK.Ex(EN2.MW, m => DK.P2({{v == EN2.TH(m) : {SEQ}}}, DK.P2({{RT.xv_v2_Gc465214E502(EN2.TH(m)) == EN2.VAL(m) : S.Value}},
+  DK.Ex(EN2.MW, m => DK.P2({{v == EN2.TH(m) : {SEQ}}}, DK.P2({{RT.xv_v2_VarTestStruct(EN2.TH(m)) == EN2.VAL(m) : S.Value}},
     DK.P2({{EN2.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EN2.ENC(m)), {LB}n) == True{{}} : Bool}}))))
 
-def v2d(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_Gc465214E502(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
-    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}),
+def v2d(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_VarTestStruct(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
+    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}),
     +eN: {{U32.to_nat(N) == {NV}n : Nat}}, +hdw: {{Nat.is_lt(dw, {Kt}n) == True{{}} : Bool}}, +es: ES({k}, {SL('t')}, 0n, {K}n)) -> V2R(v):
   +etd = Equal.trans(Nat, EN2.TDM(EMAP(t)), ER.LDEP({RMB}, t), dw, tdm_map(t), ER.pdep({RMB}, dw, t, pf))
   +hl = hll(t, N, eN, er, es)
   +hok = FD.logic__and_intro(EN2.OKL(EMAP(t), N), Nat.is_le(EN2.LL(EMAP(t), N), A.quad(VB.pw({KQ}n))), v2okl(t, dw, N, etd, pf, hN, hdw, eN, er, es), llq(EN2.LL(EMAP(t), N), hl))
-  +eo = Equal.trans({SEQ}, v, {SEQ}{{RT.am_v2_Gc465214E502(t), N}}, {SEQ}{{EN2.am_v2_Gc465214E502(EMAP(t)), N}}, eq,
-    Equal.cong({ARR}, {SEQ}, z => {SEQ}{{z, N}}, RT.am_v2_Gc465214E502(t), EN2.am_v2_Gc465214E502(EMAP(t)), Equal.sym({ARR}, EN2.am_v2_Gc465214E502(EMAP(t)), RT.am_v2_Gc465214E502(t), am_eq(t))))
+  +eo = Equal.trans({SEQ}, v, {SEQ}{{RT.am_v2_VarTestStruct(t), N}}, {SEQ}{{EN2.am_v2_VarTestStruct(EMAP(t)), N}}, eq,
+    Equal.cong({ARR}, {SEQ}, z => {SEQ}{{z, N}}, RT.am_v2_VarTestStruct(t), EN2.am_v2_VarTestStruct(EMAP(t)), Equal.sym({ARR}, EN2.am_v2_VarTestStruct(EMAP(t)), RT.am_v2_VarTestStruct(t), am_eq(t))))
   +ln = FD.logic__subst(Nat, z => {{Nat.is_le(z, {LB}n) == True{{}} : Bool}}, EN2.LL(EMAP(t), N), VE2.LEN(EN2.ENCL(EMAP(t), N)),
     Equal.sym(Nat, VE2.LEN(EN2.ENCL(EMAP(t), N)), EN2.LL(EMAP(t), N), EN2.len_encl(EMAP(t), N)), hl)
   (EN2.MW{{EMAP(t), N}}, (eo, (v2val(t, N, er, es), (hok, ln))))
 
-def v2c2(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_Gc465214E502(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
-    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}), +eN: {{U32.to_nat(N) == {NV}n : Nat}},
-    +hs2: DK.P2({{Nat.is_lt(ER.LDEP({RMB}, RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t))), {Kt}n) == True{{}} : Bool}}, ES({k}, {SL('RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t))')}, 0n, {K}n))) -> V2R(v):
+def v2c2(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_VarTestStruct(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
+    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}), +eN: {{U32.to_nat(N) == {NV}n : Nat}},
+    +hs2: DK.P2({{Nat.is_lt(ER.LDEP({RMB}, RT.tfz_v2_VarTestStruct(RT.am_v2_VarTestStruct(t))), {Kt}n) == True{{}} : Bool}}, ES({k}, {SL('RT.tfz_v2_VarTestStruct(RT.am_v2_VarTestStruct(t))')}, 0n, {K}n))) -> V2R(v):
   (+hk0, +es0) = hs2
-  +hk = FD.logic__subst({TRR}, z => {{Nat.is_lt(ER.LDEP({RMB}, z), {Kt}n) == True{{}} : Bool}}, RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t)), t, RT.tfzam_v2_Gc465214E502(t), hk0)
-  +es = FD.logic__subst({TRR}, z => ES({k}, {SL('z')}, 0n, {K}n), RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t)), t, RT.tfzam_v2_Gc465214E502(t), es0)
+  +hk = FD.logic__subst({TRR}, z => {{Nat.is_lt(ER.LDEP({RMB}, z), {Kt}n) == True{{}} : Bool}}, RT.tfz_v2_VarTestStruct(RT.am_v2_VarTestStruct(t)), t, RT.tfzam_v2_VarTestStruct(t), hk0)
+  +es = FD.logic__subst({TRR}, z => ES({k}, {SL('z')}, 0n, {K}n), RT.tfz_v2_VarTestStruct(RT.am_v2_VarTestStruct(t)), t, RT.tfzam_v2_VarTestStruct(t), es0)
   +hdw = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {Kt}n) == True{{}} : Bool}}, ER.LDEP({RMB}, t), dw, ER.pdep({RMB}, dw, t, pf), hk)
   v2d(v, t, dw, N, eq, pf, hN, er, eN, hdw, es)
 
-def v2c(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_Gc465214E502(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
-    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_Gc465214E502({k}, {SL('t')}, 0n, {SE}),
-    +hlen: {{Nat.is_eq(U32.to_nat(RT.xlen_o_v2_Gc465214E502(v)), {NV}n) == True{{}} : Bool}}, +hs: sv2(v, {Kt}n, {K}n)) -> V2R(v):
-  +hs2 = FD.logic__subst({SEQ}, z => sv2(z, {Kt}n, {K}n), v, {SEQ}{{RT.am_v2_Gc465214E502(t), N}}, eq, hs)
-  +hl2 = FD.logic__subst({SEQ}, z => {{Nat.is_eq(U32.to_nat(RT.xlen_o_v2_Gc465214E502(z)), {NV}n) == True{{}} : Bool}}, v, {SEQ}{{RT.am_v2_Gc465214E502(t), N}}, eq, hlen)
+def v2c(-v: {SEQ}, +t: {TRR}, +dw: Nat, +N: U32, +eq: {{v == {SEQ}{{RT.am_v2_VarTestStruct(t), N}} : {SEQ}}}, +pf: {{FD.array__perfect({RMB}, dw, t) == True{{}} : Bool}},
+    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v2_VarTestStruct({k}, {SL('t')}, 0n, {SE}),
+    +hlen: {{Nat.is_eq(U32.to_nat(RT.xlen_o_v2_VarTestStruct(v)), {NV}n) == True{{}} : Bool}}, +hs: sv2(v, {Kt}n, {K}n)) -> V2R(v):
+  +hs2 = FD.logic__subst({SEQ}, z => sv2(z, {Kt}n, {K}n), v, {SEQ}{{RT.am_v2_VarTestStruct(t), N}}, eq, hs)
+  +hl2 = FD.logic__subst({SEQ}, z => {{Nat.is_eq(U32.to_nat(RT.xlen_o_v2_VarTestStruct(z)), {NV}n) == True{{}} : Bool}}, v, {SEQ}{{RT.am_v2_VarTestStruct(t), N}}, eq, hlen)
   v2c2(v, t, dw, N, eq, pf, hN, er, FD.nat__eq_from_is_eq(U32.to_nat(N), {NV}n, hl2), hs2)
 
 # a Vector[VarTestStruct, {NV}] the root law represents, with its premise (sv2): its record
-def v2b(-v: {SEQ}, +rep: RT.rep_v2_Gc465214E502(v, {SV2}), +hs: sv2(v, {Kt}n, {K}n)) -> V2R(v):
+def v2b(-v: {SEQ}, +rep: RT.rep_v2_VarTestStruct(v, {SV2}), +hs: sv2(v, {Kt}n, {K}n)) -> V2R(v):
   (+ex, +hlen) = rep
   (+t, +e1) = ex
   (+dw, +e2) = e1
@@ -2831,7 +2831,7 @@ def v2b(-v: {SEQ}, +rep: RT.rep_v2_Gc465214E502(v, {SV2}), +hs: sv2(v, {Kt}n, {K
     pro = f'''def eok1(+x: {RMB}, +f: EF(x)) -> {{EN2.EOK(em1(x)) == True{{}} : Bool}}:
   (+fo, +f1) = f
   fo
-def ev1(+x: {RMB}, +f: EF(x)) -> {{EN2.EV(em1(x)) == RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(x)) : S.Value}}:
+def ev1(+x: {RMB}, +f: EF(x)) -> {{EN2.EV(em1(x)) == RT.v_VarTestStruct_bx(RT.th_VarTestStruct_bx(x)) : S.Value}}:
   (+fo, +f1) = f
   (+fv, +fl) = f1
   fv
@@ -2842,17 +2842,17 @@ def ln1(+x: {RMB}, +f: EF(x)) -> {{Nat.is_le(LY.LN(EN2.YE(em1(x))), {EB}n) == Tr
 
 '''
     text = text.replace('# ---- the tree map ----\n', pro + '# ---- the tree map ----\n')
-    # ---- v4_GcDC3E457711 ----
-    rv = _obj('big_encx_v4_GcDC3E457711.bend')
+    # ---- v4_FixedTestStruct ----
+    rv = _obj('encx_v4_FixedTestStruct.bend')
     if dm:   # (the D twin's OKT: depth below 31; its base names are B0's)
-        rv = rv.replace(_okt(rv), _okt(_obj('big_encx_v4_GcDC3E457711_d.bend').replace('B0.', '')))
+        rv = rv.replace(_okt(rv), _okt(_obj('encx_v4_FixedTestStruct_d.bend').replace('B0.', '')))
     OKT4 = _okt(rv)
     K4 = int(re.search(r'Nat\.is_lt\(da, (\d+)n\)', OKT4).group(1))
     NV4 = int(re.search(r'U32\.is_eq\(N, (\d+)\)', OKT4).group(1))
-    FTS = 'FixedTestStruct_d.GcDC3E457711'
+    FTS = 'FixedTestStruct_d.FixedTestStruct'
     TR4 = f'FD.array__Tree<{FTS}>'
-    SEQ4 = 'vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq'
-    SV4 = f'S.Vector{{Spec.GcDC3E457711(), {NV4}n}}'
+    SEQ4 = 'vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq'
+    SV4 = f'S.Vector{{Spec.FixedTestStruct(), {NV4}n}}'
     S4 = lambda t: f'FD.array__slots({FTS}, {t})'  # noqa: E731
     okt4 = re.sub(r'\bda\b', 'dw', OKT4)
     okt4 = re.sub(r'\bA\b(?!\.)', 't', okt4).replace('VOK(', 'RV.VOK(')
@@ -2872,58 +2872,58 @@ def sv4(v: {SEQ4}, +K: Nat) -> Data:
   match v:
     case {SEQ4}{{arr, +n}}: {{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, arr)), K) == True{{}} : Bool}}
 
-def el_xat(+W: List<&2, {FTS}>, +j: Nat) -> {{VRL.mget({FTS}, FD.spec_common__nth({FTS}, W, j), {FTS}_default()) == RT.xat_v4_GcDC3E457711(W, j) : {FTS}}}:
+def el_xat(+W: List<&2, {FTS}>, +j: Nat) -> {{VRL.mget({FTS}, FD.spec_common__nth({FTS}, W, j), {FTS}_default()) == RT.xat_v4_FixedTestStruct(W, j) : {FTS}}}:
   match W j:
     case Nil{{}} _: {{==}}
     case Con{{+x, +tl}} 0n: {{==}}
     case Con{{+x, +tl}} 1n+ +p: el_xat(tl, p)
 
-def fv(+e: {FTS}, +rp: RN.rp_GcDC3E457711(e)) -> {{FixedTestStruct_e.GcDC3E457711_valid(e) == True{{}} : Bool}}:
+def fv(+e: {FTS}, +rp: RN.rp_FixedTestStruct(e)) -> {{FixedTestStruct_e.FixedTestStruct_valid(e) == True{{}} : Bool}}:
   match e:
     case {FTS}{{+a, +b, +c}}:
       FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(a), U32.to_nat(255)), U32.is_le(a, 255),
         Equal.sym(Bool, U32.is_le(a, 255), Nat.is_le(U32.to_nat(a), U32.to_nat(255)), VU.le_u32(a, 255)), LB.small(a, rp))
 
-def fvv2(+a: U32, +b: O.U64, +c: U32, +rp: {{U32.is_lt(a, 256) == True{{}} : Bool}}) -> {{RV.RV_GcDC3E457711({FTS}{{a, b, c}}) == RN.v_GcDC3E457711({FTS}{{a, b, c}}) : S.Value}}:
+def fvv2(+a: U32, +b: O.U64, +c: U32, +rp: {{U32.is_lt(a, 256) == True{{}} : Bool}}) -> {{RV.RV_FixedTestStruct({FTS}{{a, b, c}}) == RN.v_FixedTestStruct({FTS}{{a, b, c}}) : S.Value}}:
   match b:
     case O.U64{{+lo, +hi}}:
-      %Equal.sym(U32, U32.and(a, 255), a, VBB.ea(a, rp)) : {{S.Sequence{{S.Items{{S.UnsignedValue{{P.UInt{{_, 0, 0, 0, 0, 0, 0, 0}}}}, S.Items{{S.UnsignedValue{{P.UInt{{lo, hi, 0, 0, 0, 0, 0, 0}}}}, S.Items{{S.UnsignedValue{{P.UInt{{c, 0, 0, 0, 0, 0, 0, 0}}}}, S.EmptyItems{{}}}}}}}}}} == RN.v_GcDC3E457711({FTS}{{a, O.U64{{lo, hi}}, c}}) : S.Value}}
+      %Equal.sym(U32, U32.and(a, 255), a, VBB.ea(a, rp)) : {{S.Sequence{{S.Items{{S.UnsignedValue{{P.UInt{{_, 0, 0, 0, 0, 0, 0, 0}}}}, S.Items{{S.UnsignedValue{{P.UInt{{lo, hi, 0, 0, 0, 0, 0, 0}}}}, S.Items{{S.UnsignedValue{{P.UInt{{c, 0, 0, 0, 0, 0, 0, 0}}}}, S.EmptyItems{{}}}}}}}}}} == RN.v_FixedTestStruct({FTS}{{a, O.U64{{lo, hi}}, c}}) : S.Value}}
       {{==}}
-def fvv(+e: {FTS}, +rp: RN.rp_GcDC3E457711(e)) -> {{RV.RV_GcDC3E457711(e) == RN.v_GcDC3E457711(e) : S.Value}}:
+def fvv(+e: {FTS}, +rp: RN.rp_FixedTestStruct(e)) -> {{RV.RV_FixedTestStruct(e) == RN.v_FixedTestStruct(e) : S.Value}}:
   match e:
     case {FTS}{{+a, +b, +c}}: fvv2(a, b, c, rp)
 
-def vok_go(+k: Nat, +t: {TR4}, +j: Nat, +er: RT.ereps_v4_GcDC3E457711(k, {S4('t')}, j)) -> {{RV.VOK(k, t, j) == True{{}} : Bool}}:
+def vok_go(+k: Nat, +t: {TR4}, +j: Nat, +er: RT.ereps_v4_FixedTestStruct(k, {S4('t')}, j)) -> {{RV.VOK(k, t, j) == True{{}} : Bool}}:
   match k:
     case 0n: {{==}}
     case 1n+ +q:
       (+rp, +er2) = er
-      +hv = FD.logic__subst({FTS}, z => {{FixedTestStruct_e.GcDC3E457711_valid(z) == True{{}} : Bool}}, RT.xat_v4_GcDC3E457711({S4('t')}, j), RV.EL(t, j),
-        Equal.sym({FTS}, RV.EL(t, j), RT.xat_v4_GcDC3E457711({S4('t')}, j), el_xat({S4('t')}, j)), fv(RT.xat_v4_GcDC3E457711({S4('t')}, j), rp))
-      FD.logic__and_intro(FixedTestStruct_e.GcDC3E457711_valid(RV.EL(t, j)), RV.VOK(q, t, 1n+j), hv, vok_go(q, t, 1n+j, er2))
+      +hv = FD.logic__subst({FTS}, z => {{FixedTestStruct_e.FixedTestStruct_valid(z) == True{{}} : Bool}}, RT.xat_v4_FixedTestStruct({S4('t')}, j), RV.EL(t, j),
+        Equal.sym({FTS}, RV.EL(t, j), RT.xat_v4_FixedTestStruct({S4('t')}, j), el_xat({S4('t')}, j)), fv(RT.xat_v4_FixedTestStruct({S4('t')}, j), rp))
+      FD.logic__and_intro(FixedTestStruct_e.FixedTestStruct_valid(RV.EL(t, j)), RV.VOK(q, t, 1n+j), hv, vok_go(q, t, 1n+j, er2))
 
-def its_go(+k: Nat, +t: {TR4}, +j: Nat, +er: RT.ereps_v4_GcDC3E457711(k, {S4('t')}, j)) -> {{RV.ITS(k, t, j) == RT.xi_v4_GcDC3E457711(k, {S4('t')}, j) : S.Value}}:
+def its_go(+k: Nat, +t: {TR4}, +j: Nat, +er: RT.ereps_v4_FixedTestStruct(k, {S4('t')}, j)) -> {{RV.ITS(k, t, j) == RT.xi_v4_FixedTestStruct(k, {S4('t')}, j) : S.Value}}:
   match k:
     case 0n: {{==}}
     case 1n+ +q:
       (+rp, +er2) = er
-      +X = RT.xat_v4_GcDC3E457711({S4('t')}, j)
-      %Equal.sym({FTS}, RV.EL(t, j), X, el_xat({S4('t')}, j)) : {{S.Items{{RV.RV_GcDC3E457711(_), RV.ITS(q, t, 1n+j)}} == S.Items{{RN.v_GcDC3E457711(X), RT.xi_v4_GcDC3E457711(q, {S4('t')}, 1n+j)}} : S.Value}}
-      %Equal.sym(S.Value, RV.RV_GcDC3E457711(X), RN.v_GcDC3E457711(X), fvv(X, rp)) : {{S.Items{{_, RV.ITS(q, t, 1n+j)}} == S.Items{{RN.v_GcDC3E457711(X), RT.xi_v4_GcDC3E457711(q, {S4('t')}, 1n+j)}} : S.Value}}
-      %Equal.sym(S.Value, RV.ITS(q, t, 1n+j), RT.xi_v4_GcDC3E457711(q, {S4('t')}, 1n+j), its_go(q, t, 1n+j, er2)) : {{S.Items{{RN.v_GcDC3E457711(X), _}} == S.Items{{RN.v_GcDC3E457711(X), RT.xi_v4_GcDC3E457711(q, {S4('t')}, 1n+j)}} : S.Value}}
+      +X = RT.xat_v4_FixedTestStruct({S4('t')}, j)
+      %Equal.sym({FTS}, RV.EL(t, j), X, el_xat({S4('t')}, j)) : {{S.Items{{RV.RV_FixedTestStruct(_), RV.ITS(q, t, 1n+j)}} == S.Items{{RN.v_FixedTestStruct(X), RT.xi_v4_FixedTestStruct(q, {S4('t')}, 1n+j)}} : S.Value}}
+      %Equal.sym(S.Value, RV.RV_FixedTestStruct(X), RN.v_FixedTestStruct(X), fvv(X, rp)) : {{S.Items{{_, RV.ITS(q, t, 1n+j)}} == S.Items{{RN.v_FixedTestStruct(X), RT.xi_v4_FixedTestStruct(q, {S4('t')}, 1n+j)}} : S.Value}}
+      %Equal.sym(S.Value, RV.ITS(q, t, 1n+j), RT.xi_v4_FixedTestStruct(q, {S4('t')}, 1n+j), its_go(q, t, 1n+j, er2)) : {{S.Items{{RN.v_FixedTestStruct(X), _}} == S.Items{{RN.v_FixedTestStruct(X), RT.xi_v4_FixedTestStruct(q, {S4('t')}, 1n+j)}} : S.Value}}
       {{==}}
 
-def v4val(+dw: Nat, +t: {TR4}, +N: U32, +er: RT.ereps_v4_GcDC3E457711({k}, {S4('t')}, 0n)) -> {{RT.xv_v4_GcDC3E457711(RV.TH(RV.MW{{dw, t, N}})) == RV.VAL(RV.MW{{dw, t, N}}) : S.Value}}:
+def v4val(+dw: Nat, +t: {TR4}, +N: U32, +er: RT.ereps_v4_FixedTestStruct({k}, {S4('t')}, 0n)) -> {{RT.xv_v4_FixedTestStruct(RV.TH(RV.MW{{dw, t, N}})) == RV.VAL(RV.MW{{dw, t, N}}) : S.Value}}:
   %Equal.sym({TR4}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t)), t, FD.array__freeze_thaw({FTS}, t)) :
-    {{S.Sequence{{RT.xi_v4_GcDC3E457711({k}, {S4('_')}, 0n)}} == S.Sequence{{RV.ITS({k}, t, 0n)}} : S.Value}}
-  Equal.sym(S.Value, S.Sequence{{RV.ITS({k}, t, 0n)}}, S.Sequence{{RT.xi_v4_GcDC3E457711({k}, {S4('t')}, 0n)}},
-    Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, RV.ITS({k}, t, 0n), RT.xi_v4_GcDC3E457711({k}, {S4('t')}, 0n), its_go({k}, t, 0n, er)))
+    {{S.Sequence{{RT.xi_v4_FixedTestStruct({k}, {S4('_')}, 0n)}} == S.Sequence{{RV.ITS({k}, t, 0n)}} : S.Value}}
+  Equal.sym(S.Value, S.Sequence{{RV.ITS({k}, t, 0n)}}, S.Sequence{{RT.xi_v4_FixedTestStruct({k}, {S4('t')}, 0n)}},
+    Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, RV.ITS({k}, t, 0n), RT.xi_v4_FixedTestStruct({k}, {S4('t')}, 0n), its_go({k}, t, 0n, er)))
 
 def V4R(v: {SEQ4}) -> Data:
-  DK.Ex(RV.MW, m => DK.P2({{v == RV.TH(m) : {SEQ4}}}, DK.P2({{RT.xv_v4_GcDC3E457711(RV.TH(m)) == RV.VAL(m) : S.Value}}, {{RV.OK(m) == True{{}} : Bool}})))
+  DK.Ex(RV.MW, m => DK.P2({{v == RV.TH(m) : {SEQ4}}}, DK.P2({{RT.xv_v4_FixedTestStruct(RV.TH(m)) == RV.VAL(m) : S.Value}}, {{RV.OK(m) == True{{}} : Bool}})))
 
 def v4c2(-v: {SEQ4}, +t: {TR4}, +dw: Nat, +N: U32, +eq: {{v == {SEQ4}{{FD.array__thaw({FTS}, t), N}} : {SEQ4}}}, +pf: {{FD.array__perfect({FTS}, dw, t) == True{{}} : Bool}},
-    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v4_GcDC3E457711({k}, {S4('t')}, 0n), +eN: {{U32.to_nat(N) == {NV4}n : Nat}},
+    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v4_FixedTestStruct({k}, {S4('t')}, 0n), +eN: {{U32.to_nat(N) == {NV4}n : Nat}},
     +hk0: {{Nat.is_lt(ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), {K4}n) == True{{}} : Bool}}) -> V4R(v):
   +ea = Equal.trans(Nat, ER.LDEP({FTS}, FD.array__freeze({FTS}, FD.array__thaw({FTS}, t))), ER.LDEP({FTS}, t), dw,
     Equal.cong({TR4}, Nat, z => ER.LDEP({FTS}, z), FD.array__freeze({FTS}, FD.array__thaw({FTS}, t)), t, FD.array__freeze_thaw({FTS}, t)), ER.pdep({FTS}, dw, t, pf))
@@ -2932,14 +2932,14 @@ def v4c2(-v: {SEQ4}, +t: {TR4}, +dw: Nat, +N: U32, +eq: {{v == {SEQ4}{{FD.array_
   (RV.MW{{dw, t, N}}, (eq, (v4val(dw, t, N, er), hok)))
 
 def v4c(-v: {SEQ4}, +t: {TR4}, +dw: Nat, +N: U32, +eq: {{v == {SEQ4}{{FD.array__thaw({FTS}, t), N}} : {SEQ4}}}, +pf: {{FD.array__perfect({FTS}, dw, t) == True{{}} : Bool}},
-    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v4_GcDC3E457711({k}, {S4('t')}, 0n),
-    +hlen: {{Nat.is_eq(U32.to_nat(RT.xlen_o_v4_GcDC3E457711(v)), {NV4}n) == True{{}} : Bool}}, +hs: sv4(v, {K4}n)) -> V4R(v):
+    +hN: {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +er: RT.ereps_v4_FixedTestStruct({k}, {S4('t')}, 0n),
+    +hlen: {{Nat.is_eq(U32.to_nat(RT.xlen_o_v4_FixedTestStruct(v)), {NV4}n) == True{{}} : Bool}}, +hs: sv4(v, {K4}n)) -> V4R(v):
   +hs2 = FD.logic__subst({SEQ4}, z => sv4(z, {K4}n), v, {SEQ4}{{FD.array__thaw({FTS}, t), N}}, eq, hs)
-  +hl2 = FD.logic__subst({SEQ4}, z => {{Nat.is_eq(U32.to_nat(RT.xlen_o_v4_GcDC3E457711(z)), {NV4}n) == True{{}} : Bool}}, v, {SEQ4}{{FD.array__thaw({FTS}, t), N}}, eq, hlen)
+  +hl2 = FD.logic__subst({SEQ4}, z => {{Nat.is_eq(U32.to_nat(RT.xlen_o_v4_FixedTestStruct(z)), {NV4}n) == True{{}} : Bool}}, v, {SEQ4}{{FD.array__thaw({FTS}, t), N}}, eq, hlen)
   v4c2(v, t, dw, N, eq, pf, hN, er, FD.nat__eq_from_is_eq(U32.to_nat(N), {NV4}n, hl2), hs2)
 
 # a Vector[FixedTestStruct, {NV4}] the root law represents, with its premise (sv4): its record
-def v4b(-v: {SEQ4}, +rep: RT.rep_v4_GcDC3E457711(v, {SV4}), +hs: sv4(v, {K4}n)) -> V4R(v):
+def v4b(-v: {SEQ4}, +rep: RT.rep_v4_FixedTestStruct(v, {SV4}), +hs: sv4(v, {K4}n)) -> V4R(v):
   (+ex, +hlen) = rep
   (+t, +e1) = ex
   (+dw, +e2) = e1
@@ -2957,8 +2957,8 @@ def v4b(-v: {SEQ4}, +rep: RT.rep_v4_GcDC3E457711(v, {SV4}), +hs: sv4(v, {K4}n)) 
             'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/len_bridge.bend as LB',
             'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/generic_specs.bend as Spec',
             'import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN',
-            'import ../proofs/obj/big_encx_Gc465214E502_iface.bend as EM', 'import ../proofs/obj/big_encx_l1024_u16.bend as Xl1024',
-            'import ../proofs/obj/big_encx_v2_Gc465214E502.bend as EN2', 'import ../proofs/obj/big_encx_v4_GcDC3E457711.bend as RV',
+            'import ../proofs/obj/encx_VarTestStruct_iface.bend as EM', 'import ../proofs/obj/encx_l1024_u16.bend as Xl1024',
+            'import ../proofs/obj/encx_v2_VarTestStruct.bend as EN2', 'import ../proofs/obj/encx_v4_FixedTestStruct.bend as RV',
             'import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d', 'import ../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d',
             'import ../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d', 'import ../types/FixedTestStruct_encode_ssz_generated.bend as FixedTestStruct_e',
             'import ../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d',
@@ -2971,7 +2971,7 @@ def v4b(-v: {SEQ4}, +rep: RT.rep_v4_GcDC3E457711(v, {SV4}), +hs: sv4(v, {K4}n)) 
         txt = re.sub(r'\bRV\.OK\(', 'RVD.OK(', txt)
         return txt
     if dm:
-        head = [h.replace('./e2e_encr.bend as ER', './e2e_encrd.bend as ER') for h in head] + ['import ../proofs/obj/big_encx_v2_Gc465214E502_d.bend as EN2D', 'import ../proofs/obj/big_encx_v4_GcDC3E457711_d.bend as RVD']
+        head = [h.replace('./e2e_encr.bend as ER', './e2e_encrd.bend as ER') for h in head] + ['import ../proofs/obj/encx_v2_VarTestStruct_d.bend as EN2D', 'import ../proofs/obj/encx_v4_FixedTestStruct_d.bend as RVD']
     return '\n'.join(head) + _dm('''
 
 # GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
@@ -2986,7 +2986,7 @@ SUPPORT_OUT['e2e_encvd.bend'] = encv_text(True)
 
 # ---- ComplexTestStruct (i): its record from its fields' records (e2e_encr, e2e_encv) ----
 def mwp_complex(R, X, D):
-    ci = _obj('big_encx_Gc56D855869F_iface.bend')
+    ci = _obj('encx_ComplexTestStruct_iface.bend')
     om = X in OMODE   # (i) on the OKW laws over the D twins (e2e_encrd, e2e_encvd)
     okt = _okt(ci, 'OKTW' if om else 'OKT')
     m = re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1)
@@ -2995,8 +2995,8 @@ def mwp_complex(R, X, D):
     assert names == list(ren), names
     for a, b in ren.items():
         okt = re.sub(rf'\b{a}\b', b, okt)
-    aliases = ['EX_l128_u16', 'EX_bl256', 'EX_Gc465214E502', 'RV_v4_GcDC3E457711', 'EX_v2_Gc465214E502', 'uint16_e', 'uint8_e', 'LY']
-    aliases = aliases + [al + '_D' for al in ('EX_l128_u16', 'EX_bl256', 'RV_v4_GcDC3E457711', 'EX_v2_Gc465214E502') if om]
+    aliases = ['EX_l128_u16', 'EX_bl256', 'EX_VarTestStruct', 'RV_v4_FixedTestStruct', 'EX_v2_VarTestStruct', 'uint16_e', 'uint8_e', 'LY']
+    aliases = aliases + [al + '_D' for al in ('EX_l128_u16', 'EX_bl256', 'RV_v4_FixedTestStruct', 'EX_v2_VarTestStruct') if om]
     imps = []
     for al in aliases:
         p = re.search(rf'^import (\S+) as {al}$', ci, re.M).group(1)
@@ -3004,13 +3004,13 @@ def mwp_complex(R, X, D):
         imps.append(f'import {p} as {al}')
     # the storage premises: each at its encode law's depth bound
     KB, KD, KE = encr_k('l128', om), encr_k('b256', om), encr_k('l1024', om)
-    en2 = _obj('big_encx_v2_Gc465214E502.bend')
+    en2 = _obj('encx_v2_VarTestStruct.bend')
     Kt = int(re.search(r'Nat\.is_lt\(TDM\(t\), (\d+)n\)', _okt(en2, 'OKL')).group(1))
-    rv = _okt(_obj('big_encx_v4_GcDC3E457711_d.bend').replace('B0.', '') if om else _obj('big_encx_v4_GcDC3E457711.bend'))
+    rv = _okt(_obj('encx_v4_FixedTestStruct_d.bend').replace('B0.', '') if om else _obj('encx_v4_FixedTestStruct.bend'))
     K4 = int(re.search(r'Nat\.is_lt\(da, (\d+)n\)', rv).group(1))
     PJ = lambda k: f'RT.pj_{X}_{k}(o)'  # noqa: E731
     sig = (f'+rep: RT.rep_{X}(o, Spec.{X}()), +hsB: BL.sdk({PJ(1)}, {KB}n), +hsD: BL.sdk({PJ(3)}, {KD}n), '
-           f'+hsE: BL.sdk(RT.pj_Gc465214E502_1({PJ(4)}), {KE}n), +hsF: EV.sv4({PJ(5)}, {K4}n), +hsG: EV.sv2({PJ(6)}, {Kt}n, {KE}n)')
+           f'+hsE: BL.sdk(RT.pj_VarTestStruct_1({PJ(4)}), {KE}n), +hsF: EV.sv4({PJ(5)}, {K4}n), +hsG: EV.sv2({PJ(6)}, {Kt}n, {KE}n)')
     # the fields' byte bounds and the total
     M2B = 2 * int(re.search(r'hk: \{Nat\.is_le\(c, (\d+)n\)', _obj(ENCR_LISTS['l128'][1])).group(1))
     LD = int(re.search(r'U32\.is_le\(N, (\d+)\)', _okt(_obj(ENCR_LISTS['b256'][0]))).group(1))
@@ -3018,7 +3018,7 @@ def mwp_complex(R, X, D):
     NV = int(re.search(r'U32\.is_eq\(N, (\d+)\)', _okt(en2, 'OKL')).group(1))
     LB = 4 * NV + NV * EB
     lens = {'LY.LN(EX_l128_u16.ENC(mB))': (M2B, 'lB'), 'LY.LN(EX_bl256.ENC(mD))': (LD, 'lD'),
-            'LY.LN(EX_Gc465214E502.ENC(mE))': (EB, 'lE'), 'LY.LN(EX_v2_Gc465214E502.ENC(mG))': (LB, 'lG')}
+            'LY.LN(EX_VarTestStruct.ENC(mE))': (EB, 'lE'), 'LY.LN(EX_v2_VarTestStruct.ENC(mG))': (LB, 'lG')}
     if om:   # OKTW's bound: ENDC(..) < 2^31 (ENDC's body is the sum)
         eb = re.search(r'Nat\.is_lt\((ENDC\(.*?\)), VB\.pw\(31n\)\)', okt)
         ENDCC = eb.group(1)
@@ -3051,17 +3051,17 @@ def mwp_complex(R, X, D):
     if om:
         BPROOF = (f'FD.nat__le_lt_trans({SUM}, {TS}, VB.pw(31n), {BP},\n    FD.nat__le_lt_trans({TS}, A.quad(VB.pw({P}n)), VB.pw(31n), {{==}}, '
                   f'FD.nat__lt_le_trans(A.quad(VB.pw({P}n)), VB.pw(1n+(2n+{P}n)), VB.pw(31n), FD.nat__pow2_lt_succ(2n+{P}n), VBG.pw_mono(1n+(2n+{P}n), 31n, {{==}}))))')
-    leaf = {'EX_l128_u16.OK(mB)': 'oB', 'EX_bl256.OK(mD)': 'oD', 'EX_Gc465214E502.OK(mE)': 'oE', 'RV_v4_GcDC3E457711.OK(mF)': 'oF',
-            'EX_v2_Gc465214E502.OK(mG)': 'oG', 'uint16_e.u16_valid(x0)': 'GW.u16v(x0, h0)', 'uint8_e.u8_valid(x2)': 'h8', BLEAF: 'hb'}
+    leaf = {'EX_l128_u16.OK(mB)': 'oB', 'EX_bl256.OK(mD)': 'oD', 'EX_VarTestStruct.OK(mE)': 'oE', 'RV_v4_FixedTestStruct.OK(mF)': 'oF',
+            'EX_v2_VarTestStruct.OK(mG)': 'oG', 'uint16_e.u16_valid(x0)': 'GW.u16v(x0, h0)', 'uint8_e.u8_valid(x2)': 'h8', BLEAF: 'hb'}
     if om:
-        leaf = {(k_.replace('.OK(', '_D.OK(') if k_.split('.')[0] in ('EX_l128_u16', 'EX_bl256', 'RV_v4_GcDC3E457711', 'EX_v2_Gc465214E502') else k_.replace('EX_Gc465214E502.OK(', 'EX_Gc465214E502.OKW(')): v_ for k_, v_ in leaf.items()}
+        leaf = {(k_.replace('.OK(', '_D.OK(') if k_.split('.')[0] in ('EX_l128_u16', 'EX_bl256', 'RV_v4_FixedTestStruct', 'EX_v2_VarTestStruct') else k_.replace('EX_VarTestStruct.OK(', 'EX_VarTestStruct.OKW(')): v_ for k_, v_ in leaf.items()}
     HOK = _andproof(okt, leaf)
     if om:
         HOK = HOK.replace(ENDCC, f'CI.{ENDCC}')
     MW = 'CI.MW{x0, mB, x2, mD, mE, mF, mG}'
     # o == CI.TH(m): each projected field replaced by its record's object
-    TH = {1: ('O.Words', 'EX_l128_u16.TH(mB)', 'eB'), 3: ('O.Words', 'EX_bl256.TH(mD)', 'eD'), 4: ('VarTestStruct_d.Gc465214E502', 'EX_Gc465214E502.TH(mE)', 'eE'),
-          5: ('vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq', 'RV_v4_GcDC3E457711.TH(mF)', 'eF'), 6: ('vec_VarTestStruct_2_d.v2_Gc465214E502_Seq', 'EX_v2_Gc465214E502.TH(mG)', 'eG')}
+    TH = {1: ('O.Words', 'EX_l128_u16.TH(mB)', 'eB'), 3: ('O.Words', 'EX_bl256.TH(mD)', 'eD'), 4: ('VarTestStruct_d.VarTestStruct', 'EX_VarTestStruct.TH(mE)', 'eE'),
+          5: ('vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq', 'RV_v4_FixedTestStruct.TH(mF)', 'eF'), 6: ('vec_VarTestStruct_2_d.v2_VarTestStruct_Seq', 'EX_v2_VarTestStruct.TH(mG)', 'eG')}
     cur = ['x0', PJ(1), 'x2', PJ(3), PJ(4), PJ(5), PJ(6)]
     eqn = 'eo'
     for k_, (T, th, e) in TH.items():
@@ -3074,10 +3074,10 @@ def mwp_complex(R, X, D):
         cur = nxt
     # the view: VALC's items from the object's view's, position by position
     UI = lambda v: f'S.UnsignedValue{{P.UInt{{{v}, 0, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
-    lhs = [UI('x0'), 'PBF.vview2(EX_l128_u16.TH(mB))', UI('x2'), 'S.BytesValue{WO.wview(EX_bl256.TH(mD))}', 'RT.v_Gc465214E502(EX_Gc465214E502.TH(mE))',
-           'RT.xv_v4_GcDC3E457711(RV_v4_GcDC3E457711.TH(mF))', 'RT.xv_v2_Gc465214E502(EX_v2_Gc465214E502.TH(mG))']
+    lhs = [UI('x0'), 'PBF.vview2(EX_l128_u16.TH(mB))', UI('x2'), 'S.BytesValue{WO.wview(EX_bl256.TH(mD))}', 'RT.v_VarTestStruct(EX_VarTestStruct.TH(mE))',
+           'RT.xv_v4_FixedTestStruct(RV_v4_FixedTestStruct.TH(mF))', 'RT.xv_v2_VarTestStruct(EX_v2_VarTestStruct.TH(mG))']
     rfull = [UI('PBM.v16of(U32.and(x0, 255), U32.and(U32.shrn(x0, 8n), 255))'), 'EX_l128_u16.VAL(mB)', UI('U32.and(x2, 255)'), 'EX_bl256.VAL(mD)',
-             'EX_Gc465214E502.VAL(mE)', 'RV_v4_GcDC3E457711.VAL(mF)', 'EX_v2_Gc465214E502.VAL(mG)']
+             'EX_VarTestStruct.VAL(mE)', 'RV_v4_FixedTestStruct.VAL(mF)', 'EX_v2_VarTestStruct.VAL(mG)']
     rhs = [UI('_'), '_', UI('_'), '_', '_', '_', '_']
     eqs = ['Equal.sym(U32, PBM.v16of(U32.and(x0, 255), U32.and(U32.shrn(x0, 8n), 255)), x0, GW.eq16(x0, h0))', 'vB',
            'Equal.sym(U32, U32.and(x2, 255), x2, VBB.ea(x2, h2))', 'vD', 'vE', 'vF', 'vG']
@@ -3104,11 +3104,11 @@ def c1(-o: {D}, +x0: U32, +x2: U32, +eo: {{o == {D}{{x0, {PJ(1)}, x2, {PJ(3)}, {
   via(o, {MW}, {eqn}, vw(x0, x2, mB, mD, mE, mF, mG, h0, h2, vB, vD, vE, vF, vG), hok)
 '''
     vw = f'''# the object's view is the record's
-def vw(+x0: U32, +x2: U32, +mB: EX_l128_u16.MW, +mD: EX_bl256.MW, +mE: EX_Gc465214E502.MW, +mF: RV_v4_GcDC3E457711.MW, +mG: EX_v2_Gc465214E502.MW,
+def vw(+x0: U32, +x2: U32, +mB: EX_l128_u16.MW, +mD: EX_bl256.MW, +mE: EX_VarTestStruct.MW, +mF: RV_v4_FixedTestStruct.MW, +mG: EX_v2_VarTestStruct.MW,
     +h0: {{U32.is_lt(x0, 65536) == True{{}} : Bool}}, +h2: {{U32.is_lt(x2, 256) == True{{}} : Bool}},
     +vB: {{PBF.vview2(EX_l128_u16.TH(mB)) == EX_l128_u16.VAL(mB) : S.Value}}, +vD: {{S.BytesValue{{WO.wview(EX_bl256.TH(mD))}} == EX_bl256.VAL(mD) : S.Value}},
-    +vE: {{RT.v_Gc465214E502(EX_Gc465214E502.TH(mE)) == EX_Gc465214E502.VAL(mE) : S.Value}}, +vF: {{RT.xv_v4_GcDC3E457711(RV_v4_GcDC3E457711.TH(mF)) == RV_v4_GcDC3E457711.VAL(mF) : S.Value}},
-    +vG: {{RT.xv_v2_Gc465214E502(EX_v2_Gc465214E502.TH(mG)) == EX_v2_Gc465214E502.VAL(mG) : S.Value}}) -> {{RT.v_{X}(CI.TH({MW})) == CI.VAL({MW}) : S.Value}}:
+    +vE: {{RT.v_VarTestStruct(EX_VarTestStruct.TH(mE)) == EX_VarTestStruct.VAL(mE) : S.Value}}, +vF: {{RT.xv_v4_FixedTestStruct(RV_v4_FixedTestStruct.TH(mF)) == RV_v4_FixedTestStruct.VAL(mF) : S.Value}},
+    +vG: {{RT.xv_v2_VarTestStruct(EX_v2_VarTestStruct.TH(mG)) == EX_v2_VarTestStruct.VAL(mG) : S.Value}}) -> {{RT.v_{X}(CI.TH({MW})) == CI.VAL({MW}) : S.Value}}:
 ''' + '\n'.join(steps) + '\n  {==}\n\n'
     body = f'''  (+x0, +r0) = rep
   (+x2, +r1) = r0
@@ -3129,31 +3129,31 @@ def vw(+x0: U32, +x2: U32, +mB: EX_l128_u16.MW, +mD: EX_bl256.MW, +mE: EX_Gc4652
     return vw + defs, body, pimps, sig
 
 
-MWP['Gc56D855869F'] = mwp_complex
-VENC_SHAPES['Gc56D855869F'] = venc_mw
+MWP['ComplexTestStruct'] = mwp_complex
+VENC_SHAPES['ComplexTestStruct'] = venc_mw
 def cx_premise():
-    om = 'Gc56D855869F' in OMODE
+    om = 'ComplexTestStruct' in OMODE
     KB, KD, KE = encr_k('l128', om), encr_k('b256', om), encr_k('l1024', om)
-    en2 = _obj('big_encx_v2_Gc465214E502.bend')
+    en2 = _obj('encx_v2_VarTestStruct.bend')
     Kt = int(re.search(r'Nat\.is_lt\(TDM\(t\), (\d+)n\)', _okt(en2, 'OKL')).group(1))
-    rv = _okt(_obj('big_encx_v4_GcDC3E457711_d.bend').replace('B0.', '') if om else _obj('big_encx_v4_GcDC3E457711.bend'))
+    rv = _okt(_obj('encx_v4_FixedTestStruct_d.bend').replace('B0.', '') if om else _obj('encx_v4_FixedTestStruct.bend'))
     K4 = int(re.search(r'Nat\.is_lt\(da, (\d+)n\)', rv).group(1))
-    return ('rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field\'s encode law\'s bound (read from the law' + ('; the D twins and the OKW laws: no container size budget' if om else '') + '; '
+    return ('rep: RT.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()) and the storage premises, each at its field\'s encode law\'s bound (read from the law' + ('; the D twins and the OKW laws: no container size budget' if om else '') + '; '
             'dropped when the encode laws take the root law\'s dw < 32): '
             f'hsB: BL.sdk(pj_1(o), {KB}n) (f_B\'s words below depth {KB}), hsD: BL.sdk(pj_3(o), {KD}n) (f_D\'s bytes below depth {KD}), '
-            f'hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), {KE}n) (f_E\'s list below depth {KE}), '
+            f'hsE: BL.sdk(pj_VarTestStruct_1(pj_4(o)), {KE}n) (f_E\'s list below depth {KE}), '
             f'hsF: EV.sv4(pj_5(o), {K4}n) (f_F\'s record tree below depth {K4}), '
             f'hsG: EV.sv2(pj_6(o), {Kt}n, {KE}n) (f_G\'s mirror tree below depth {Kt}, each element\'s list below depth {KE})')
 
 
-VENC_PREMISE['Gc56D855869F'] = cx_premise()
+VENC_PREMISE['ComplexTestStruct'] = cx_premise()
 
 
-VENC_PREMISE['Gc465214E502'] = ('rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), %dn) (the list field\'s storage '
-                                'below its encode law\'s depth bound %d, read from the law (the D twin of the list, big_encx_l1024_u16_d, on the OKW laws: no container size budget); '
+VENC_PREMISE['VarTestStruct'] = ('rep: RT.rep_VarTestStruct(o, Spec.VarTestStruct()) and hs: BL.sdk(RT.pj_VarTestStruct_1(o), %dn) (the list field\'s storage '
+                                'below its encode law\'s depth bound %d, read from the law (the D twin of the list, encx_l1024_u16_d, on the OKW laws: no container size budget); '
                                 'the root law gives dw < 32; dropped when the encode laws take dw < 32)'
-                                % (encr_k('l1024', 'Gc465214E502' in OMODE), encr_k('l1024', 'Gc465214E502' in OMODE)))
-VENC_PREMISE['GuA2212AE21F'] = 'rep: RT.rep_GuA2212AE21F(o) (the root law\'s representation invariant; no storage premise)'
+                                % (encr_k('l1024', 'VarTestStruct' in OMODE), encr_k('l1024', 'VarTestStruct' in OMODE)))
+VENC_PREMISE['CompatibleUnionA'] = 'rep: RT.rep_CompatibleUnionA(o) (the root law\'s representation invariant; no storage premise)'
 
 
 # ==== e2e_gpb: a progressive bit list read at a byte window: its root view is its codec value ====
@@ -3225,7 +3225,7 @@ import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vpb29.bend as VP
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
-import ../proofs/obj/big_var_winp_pbits.bend as PBW
+import ../proofs/obj/var_winp_pbits.bend as PBW
 import ./e2e_cap.bend as C
 import ./e2e_blist.bend as BL
 import ./e2e_bview.bend as BV
@@ -3461,19 +3461,19 @@ def gprog_text():
     U8 = lambda W, o: (f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat({o}))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat({o})))', None)  # noqa: E731
     body = [gp_lv('l123', 'L123'), GP_PL,
             '# ProgressiveSingleListContainerTestStruct: one progressive bit list',
-            gp_view('Gp4B0CA2906A', 'W4B', [PBJ('W4B', 0, 'W4B_CH0', True)]),
+            gp_view('ProgressiveSingleListContainerTestStruct', 'W4B', [PBJ('W4B', 0, 'W4B_CH0', True)]),
             '# ProgressiveVarTestStruct: a uint8, a List[uint16, 123], a progressive bit list',
-            gp_view('Gp66304057C3', 'W663', [U8('W663', 0), L16('W663', 0, 'L123', 'l123', False), PBJ('W663', 1, 'PBW', True)])]
+            gp_view('ProgressiveVarTestStruct', 'W663', [U8('W663', 0), L16('W663', 0, 'L123', 'l123', False), PBJ('W663', 1, 'PBW', True)])]
     head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
             'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/words_obj.bend as WO',
             'import ../proofs/obj/packed_bytes.bend as PBF', 'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/bitlist_obj.bend as BO',
             'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vfx_u8.bend as FX8',
-            'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_l123_u16.bend as L123',
-            'import ../proofs/obj/big_var_winx_Gp4B0CA2906A.bend as W4B', 'import ../proofs/obj/big_var_winp_pbits.bend as W4B_CH0',
-            'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as W663',
+            'import ../proofs/obj/var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_l123_u16.bend as L123',
+            'import ../proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend as W4B', 'import ../proofs/obj/var_winp_pbits.bend as W4B_CH0',
+            'import ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend as W663',
             'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB',
-            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64', 'import ../proofs/obj/ulist_obj.bend as UL',
+            'import ../proofs/obj/var_winp_u8.bend as PU8', 'import ../proofs/obj/var_winp_pl_u64.bend as PU64', 'import ../proofs/obj/ulist_obj.bend as UL',
             'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbig.bend as VBG',
             'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/var_elems.bend as EL',
             'import ./e2e_plw.bend as PW', 'import ./e2e_bx.bend as BXW', 'import ../proofs/nat_order.bend as Order']
@@ -3487,7 +3487,7 @@ def gprog_text():
 ''' + '\n'.join(body)
 
 
-GPROG_DEEP = ['Gp4B0CA2906A', 'Gp66304057C3']
+GPROG_DEEP = ['ProgressiveSingleListContainerTestStruct', 'ProgressiveVarTestStruct']
 
 
 def gp_view_deep(v, X):
@@ -3564,15 +3564,15 @@ def gprog_deep_text():
 
 
 SUPPORT_OUT['e2e_gprog.bend'] = gprog_deep_text()
-UNION_CHILD['big_var_winx_Gp4B0CA2906A.bend'] = 'GP.vw_Gp4B0CA2906A'
-UNION_CHILD['big_var_winx_Gp66304057C3.bend'] = 'GP.vw_Gp66304057C3'
+UNION_CHILD['var_winx_ProgressiveSingleListContainerTestStruct.bend'] = 'GP.vw_ProgressiveSingleListContainerTestStruct'
+UNION_CHILD['var_winx_ProgressiveVarTestStruct.bend'] = 'GP.vw_ProgressiveVarTestStruct'
 
 
 # ---- e2e_grl: fixed-size record lists read at a byte window (var_rlist_sub windows) ------------------------
 # GRL[tag] = (window module, its alias, element type module alias + name, record size, fields [(kind, byte offset)])
 GRL = {
-    'pl_Gc4ED9619F50': ('big_var_winx_pl_Gc4ED9619F50', 'RL4', 'SmallTestStruct_d', 'Gc4ED9619F50', 4, [('u16', 0), ('u16', 2)]),
-    'l10_GpF350A3C486': ('var_winx_l10_GpF350A3C486', 'RL1', 'ProgressiveSingleFieldContainerTestStruct_d', 'GpF350A3C486', 1, [('u8', 0)]),
+    'pl_SmallTestStruct': ('var_winx_pl_SmallTestStruct', 'RL4', 'SmallTestStruct_d', 'SmallTestStruct', 4, [('u16', 0), ('u16', 2)]),
+    'l10_ProgressiveSingleFieldContainerTestStruct': ('var_winx_l10_ProgressiveSingleFieldContainerTestStruct', 'RL1', 'ProgressiveSingleFieldContainerTestStruct_d', 'ProgressiveSingleFieldContainerTestStruct', 1, [('u8', 0)]),
 }
 GRL_TYPES = {'SmallTestStruct_d': 'SmallTestStruct_def_generated', 'ProgressiveSingleFieldContainerTestStruct_d': 'ProgressiveSingleFieldContainerTestStruct_def_generated'}
 
@@ -3876,10 +3876,10 @@ def grl_text():
 
 
 def grl_deep_text():
-    """e2e_grl with a twin of the ProgressiveList[Gc4ED9619F50] view at any tree depth (its storage depth
+    """e2e_grl with a twin of the ProgressiveList[SmallTestStruct] view at any tree depth (its storage depth
     2 + d <= 32 from d < 31; no other bound)."""
     t = grl_text()
-    for p_ in ('pl_Gc4ED9619F50', 'l10_GpF350A3C486'):
+    for p_ in ('pl_SmallTestStruct', 'l10_ProgressiveSingleFieldContainerTestStruct'):
         t = _grl_twin(t, p_)
     return t
 
@@ -3910,11 +3910,11 @@ SUPPORT_OUT['e2e_grl.bend'] = grl_deep_text()
 # value), both over (d, t, x, off, len, eo, hd, hw, pf, hc: YW.CHKw); L gets tf_L and vw_L of the same shape, so
 # a list of lists nests.
 GVL = {
-    'pl_Gc465214E502': ('big_vvl_pl_Gc465214E502', 'TA', 'Gc465214E502', 'VarTestStruct_d.Gc465214E502', 'proglist_VarTestStruct_d'),
-    'pl_pl_Gc465214E502': ('big_vvl_pl_pl_Gc465214E502', 'TB', 'pl_Gc465214E502', 'proglist_VarTestStruct_d.pl_Gc465214E502_Seq', 'proglist_proglist_VarTestStruct_d'),
-    'pl_Gp66304057C3': ('big_vvl_pl_Gp66304057C3', 'TC', 'Gp66304057C3', 'ProgressiveVarTestStruct_d.Gp66304057C3', 'proglist_ProgressiveVarTestStruct_d'),
+    'pl_VarTestStruct': ('vvl_pl_VarTestStruct', 'TA', 'VarTestStruct', 'VarTestStruct_d.VarTestStruct', 'proglist_VarTestStruct_d'),
+    'pl_pl_VarTestStruct': ('vvl_pl_pl_VarTestStruct', 'TB', 'pl_VarTestStruct', 'proglist_VarTestStruct_d.pl_VarTestStruct_Seq', 'proglist_proglist_VarTestStruct_d'),
+    'pl_ProgressiveVarTestStruct': ('vvl_pl_ProgressiveVarTestStruct', 'TC', 'ProgressiveVarTestStruct', 'ProgressiveVarTestStruct_d.ProgressiveVarTestStruct', 'proglist_ProgressiveVarTestStruct_d'),
 }
-GVL_ELEM = {'pl_Gc465214E502'}  # lists that are elements of another list here: they get tf_L
+GVL_ELEM = {'pl_VarTestStruct'}  # lists that are elements of another list here: they get tf_L
 GVL_TYPES = [('VarTestStruct_d', 'VarTestStruct_def_generated'), ('proglist_VarTestStruct_d', 'proglist_VarTestStruct_def_generated'),
              ('proglist_proglist_VarTestStruct_d', 'proglist_proglist_VarTestStruct_def_generated'),
              ('ProgressiveVarTestStruct_d', 'ProgressiveVarTestStruct_def_generated'), ('proglist_ProgressiveVarTestStruct_d', 'proglist_ProgressiveVarTestStruct_def_generated')]
@@ -3963,33 +3963,33 @@ def thfr(a: Array<U32>) -> {FD.array__thaw(U32, FD.array__freeze(U32, a)) == a :
       %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, ys)), ys, thfr(ys)) : {ANode{xs, _} == ANode{xs, ys} : Array<U32>}
       {==}
 
-# ---- VarTestStruct elements (var_winx_Gc465214E502) ----
-def tf_Gc465214E502(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}:
+# ---- VarTestStruct elements (var_winx_VarTestStruct) ----
+def tf_VarTestStruct(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}:
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))), UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))),
       FD.array__freeze_thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))) :
-    {VarTestStruct_d.Gc465214E502{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}
+    {VarTestStruct_d.VarTestStruct{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}
   {==}
 
-def vw_Gc465214E502(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gc465214E502(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
+def vw_VarTestStruct(@WP@, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.v_VarTestStruct(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
   GVT.vtw(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
 
-# ---- ProgressiveVarTestStruct elements (big_var_winx_Gp66304057C3) ----
-def tf_Gp66304057C3(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+# ---- ProgressiveVarTestStruct elements (var_winx_ProgressiveVarTestStruct) ----
+def tf_ProgressiveVarTestStruct(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   +C0 = UCT.CT(d, t, YW1.FJ0(off, t, x), YW1.LJ0(t, x), VLS.DZ(YW1.LJ0(t, x)))
   +C1 = UCT.CT(d, t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len), VLS.DZ(YW1.LJ1(t, x, len)))
   +NB = PBW.NB(t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len))
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, C0)), C0, FD.array__freeze_thaw(U32, C0)) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), O.clear_bit(FD.array__thaw(U32, C1), NB), thfr(O.clear_bit(FD.array__thaw(U32, C1), NB))) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   {==}
 
-def vw_Gp66304057C3(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
-  GP.vw_Gp66304057C3(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
+def vw_ProgressiveVarTestStruct(@WP@, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.v_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
+  GP.vw_ProgressiveVarTestStruct(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
 """
 
 GVL_PER = r"""# ======== @L@: a progressive list of @E@ (@TX@) ========
@@ -4287,7 +4287,7 @@ def gvl_text():
         imps.append(f'import ../proofs/obj/{mod}.bend as {TX}')
         LTY = f'{LD}.{L}_Seq'
         YW = f'{TX}.YW' if False else None
-        yw = {'Gc465214E502': 'YW0', 'Gp66304057C3': 'YW1', 'pl_Gc465214E502': 'TA'}[E]
+        yw = {'VarTestStruct': 'YW0', 'ProgressiveVarTestStruct': 'YW1', 'pl_VarTestStruct': 'TA'}[E]
         txt = (GVL_PER + (GVL_TF if L in GVL_ELEM else '')).replace('@PRE@', GVL_PRE).replace('@EA@', _gvl_ea(TX)).replace('@WP@', GVL_WP)
         txt = (txt.replace('@MB@', f'RT2.MB<RT2.M_{E}>').replace('@BX@', f'O.Boxed<{ETY}>').replace('@ETY@', ETY).replace('@LTY@', LTY)
                .replace('@YW@', yw).replace('@TX@', TX).replace('@LD@', LD).replace('@L@', L).replace('@E@', E))
@@ -4295,10 +4295,10 @@ def gvl_text():
     head = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../types/schema.bend as S',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
             'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VLS',
-            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/big_vvlu.bend as VVU',
+            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vvlu.bend as VVU',
             'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/vfx_u16.bend as FX16', 'import ../proofs/obj/vfx_u8.bend as FX8',
-            'import ../proofs/obj/var_winx_Gc465214E502.bend as YW0', 'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as YW1',
-            'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ./e2e_gvt.bend as GVT', 'import ./e2e_gprog.bend as GP'] + imps
+            'import ../proofs/obj/var_winx_VarTestStruct.bend as YW0', 'import ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend as YW1',
+            'import ../proofs/obj/var_winp_pbits.bend as PBW', 'import ./e2e_gvt.bend as GVT', 'import ./e2e_gprog.bend as GP'] + imps
     head += [f'import ../types/{f}.bend as {a}' for a, f in GVL_TYPES]
     return '\n'.join(head) + '''
 
@@ -4307,7 +4307,7 @@ def gvl_text():
 # Array.set chain is RT2.am of tree updates FT_L (rvF_L; each element written is th_bx of its mirror, eqE_L);
 # element 0 of FT_L is the first write (lemV_L), element 1 + c the write of element c (lemN_L); an element's view is
 # its window's value (vw_E). vw_L: the list's root view is the window's value; tf_L: the list survives fz then th,
-# so a list of such lists nests (pl_pl_Gc465214E502 over pl_Gc465214E502).
+# so a list of such lists nests (pl_pl_VarTestStruct over pl_VarTestStruct).
 
 ''' + '\n'.join(body)
 
@@ -4318,14 +4318,14 @@ def _hwab32(nm, a):
     return f'{m.group(1)}.hwab32(x, len, {m.group(2)}, hw32)' if m else None
 
 
-GVL_DEEP = ['tf_Gc465214E502', 'vw_Gc465214E502',
-            'eqE_pl_Gc465214E502', 'elv_pl_Gc465214E502', 'rvF_pl_Gc465214E502', 'xiW_pl_Gc465214E502', 'vtf_pl_Gc465214E502',
-            'vtc_pl_Gc465214E502', 'vw_pl_Gc465214E502', 'tff_pl_Gc465214E502', 'tfc_pl_Gc465214E502', 'tf_pl_Gc465214E502',
-            'eqE_pl_pl_Gc465214E502', 'elv_pl_pl_Gc465214E502', 'rvF_pl_pl_Gc465214E502', 'xiW_pl_pl_Gc465214E502', 'vtf_pl_pl_Gc465214E502',
-            'vtc_pl_pl_Gc465214E502', 'vw_pl_pl_Gc465214E502']
+GVL_DEEP = ['tf_VarTestStruct', 'vw_VarTestStruct',
+            'eqE_pl_VarTestStruct', 'elv_pl_VarTestStruct', 'rvF_pl_VarTestStruct', 'xiW_pl_VarTestStruct', 'vtf_pl_VarTestStruct',
+            'vtc_pl_VarTestStruct', 'vw_pl_VarTestStruct', 'tff_pl_VarTestStruct', 'tfc_pl_VarTestStruct', 'tf_pl_VarTestStruct',
+            'eqE_pl_pl_VarTestStruct', 'elv_pl_pl_VarTestStruct', 'rvF_pl_pl_VarTestStruct', 'xiW_pl_pl_VarTestStruct', 'vtf_pl_pl_VarTestStruct',
+            'vtc_pl_pl_VarTestStruct', 'vw_pl_pl_VarTestStruct']
 
-GVLN_DEEP = ['tf_Gp66304057C3', 'vw_Gp66304057C3', 'eqE_pl_Gp66304057C3', 'elv_pl_Gp66304057C3', 'rvF_pl_Gp66304057C3', 'xiW_pl_Gp66304057C3',
-             'vtf_pl_Gp66304057C3', 'vtc_pl_Gp66304057C3', 'vw_pl_Gp66304057C3']
+GVLN_DEEP = ['tf_ProgressiveVarTestStruct', 'vw_ProgressiveVarTestStruct', 'eqE_pl_ProgressiveVarTestStruct', 'elv_pl_ProgressiveVarTestStruct', 'rvF_pl_ProgressiveVarTestStruct', 'xiW_pl_ProgressiveVarTestStruct',
+             'vtf_pl_ProgressiveVarTestStruct', 'vtc_pl_ProgressiveVarTestStruct', 'vw_pl_ProgressiveVarTestStruct']
 
 
 def gvl_deep_text():
@@ -4343,7 +4343,7 @@ def gvl_deep_text():
         assert tw.count(f'eo, hd, hw, hw32), hd, {al}.hwab(') == n0, (al, n0)
     t = head + '# ---- the same at any tree depth d < 31' + tw
     # the ProgressiveList[ProgressiveVarTestStruct] chain: its elements' windows end by NMAX (hwN)
-    reps = [('GP.vw_Gp66304057C3(d, t, 0, x, off, len, eo, hd, hw, pf, hc)', 'GP.vw_Gp66304057C3D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hc)'),
+    reps = [('GP.vw_ProgressiveVarTestStruct(d, t, 0, x, off, len, eo, hd, hw, pf, hc)', 'GP.vw_ProgressiveVarTestStructD(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hc)'),
             ('FD.nat__lt_trans(d, 28n, 32n, hd, {==})', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})')]
     def cokN(nm, a):
         m = re.match(r'(\w+)\.hwab\(d, x, len, (.*), hw\)$', a, re.S)
@@ -4363,14 +4363,14 @@ SUPPORT_OUT['e2e_gvl.bend'] = gvl_deep_text()
 # GCX[X] = (window module, alias, [(field kind, child alias)]) with kinds: u8 (fixed at 0), l16 (List[uint16, N]),
 # pb (progressive bits), pu8 / pu64 (progressive uint lists), rl (record list, e2e_grl), vl (e2e_gvl list)
 GCX = {
-    'Gc221EC01D83': ('var_winx_Gc221EC01D83', 'WPT', [('pu8', 'PU8'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_Gc4ED9619F50'), ('vl', 'TB', 'pl_pl_Gc465214E502')]),
-    'Gp8A7851175B': ('big_var_winx_Gp8A7851175B', 'WPC', [('u8',), ('l16', 'L123'), ('pb', 'PBW'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_Gc4ED9619F50'),
-                                                          ('vl', 'TB', 'pl_pl_Gc465214E502'), ('rl', 'RL1', 'l10_GpF350A3C486'), ('vl', 'TC', 'pl_Gp66304057C3')]),
+    'ProgressiveTestStruct': ('var_winx_ProgressiveTestStruct', 'WPT', [('pu8', 'PU8'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_SmallTestStruct'), ('vl', 'TB', 'pl_pl_VarTestStruct')]),
+    'ProgressiveComplexTestStruct': ('var_winx_ProgressiveComplexTestStruct', 'WPC', [('u8',), ('l16', 'L123'), ('pb', 'PBW'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_SmallTestStruct'),
+                                                          ('vl', 'TB', 'pl_pl_VarTestStruct'), ('rl', 'RL1', 'l10_ProgressiveSingleFieldContainerTestStruct'), ('vl', 'TC', 'pl_ProgressiveVarTestStruct')]),
 }
 
 
 # the progressive containers whose views have deep twins (e2e_gcx.vw_XD; their laws at any depth)
-GCX_DEEP = {'Gc221EC01D83', 'Gp8A7851175B'}
+GCX_DEEP = {'ProgressiveTestStruct', 'ProgressiveComplexTestStruct'}
 
 
 def gcx_deep_view(X, W, fields):
@@ -4403,7 +4403,7 @@ def gcx_deep_view(X, W, fields):
         elif kd == 'rl':
             items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GRL.vl_{f[2]}D({win}, {eo}, hd, {hw_}, pf, {it})'))
         elif kd == 'vl':
-            tw_ = f'{W}.hwJ{k}N({WD})' if f[2] in ('pl_Gp66304057C3',) else f'{W}.hwJ{k}_32({WD})'
+            tw_ = f'{W}.hwJ{k}N({WD})' if f[2] in ('pl_ProgressiveVarTestStruct',) else f'{W}.hwJ{k}_32({WD})'
             items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}D({win}, {eo}, hd, {hw_}, {tw_}, pf, {it})'))
         else:
             raise SystemExit(f'gcx_deep_view: {kd}')
@@ -4454,10 +4454,10 @@ def gcx_text():
             'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/packed_bytes.bend as PBF',
             'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/root_gtypes2.bend as RT2',
             'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vfx_u8.bend as FX8',
-            'import ../proofs/obj/var_winx_l123_u16.bend as L123', 'import ../proofs/obj/big_var_winp_pbits.bend as PBW',
-            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64',
-            'import ../proofs/obj/big_var_winx_pl_Gc4ED9619F50.bend as RL4', 'import ../proofs/obj/var_winx_l10_GpF350A3C486.bend as RL1',
-            'import ../proofs/obj/big_vvl_pl_pl_Gc465214E502.bend as TB', 'import ../proofs/obj/big_vvl_pl_Gp66304057C3.bend as TC',
+            'import ../proofs/obj/var_winx_l123_u16.bend as L123', 'import ../proofs/obj/var_winp_pbits.bend as PBW',
+            'import ../proofs/obj/var_winp_u8.bend as PU8', 'import ../proofs/obj/var_winp_pl_u64.bend as PU64',
+            'import ../proofs/obj/var_winx_pl_SmallTestStruct.bend as RL4', 'import ../proofs/obj/var_winx_l10_ProgressiveSingleFieldContainerTestStruct.bend as RL1',
+            'import ../proofs/obj/vvl_pl_pl_VarTestStruct.bend as TB', 'import ../proofs/obj/vvl_pl_ProgressiveVarTestStruct.bend as TC',
             'import ./e2e_gpb.bend as GPB', 'import ./e2e_gprog.bend as GP', 'import ./e2e_grl.bend as GRL', 'import ./e2e_gvl.bend as GVL'] + imps
     return '\n'.join(head) + '''
 
@@ -4476,7 +4476,7 @@ SUPPORT_OUT['e2e_gcx.bend'] = gcx_text()
 ENCL_A = r"""# ---- the bound every unbounded list field takes: its bytes within 2^27 + 1 (P1) ----
 def P1() -> Nat: Nat.add(VB.pw(27n), 1n)
 
-# ---- pu8: a progressive list of uint8 field (big_encx_pl_u8) ----
+# ---- pu8: a progressive list of uint8 field (encx_pl_u8) ----
 def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 28n)) -> {XU8.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -4511,7 +4511,7 @@ def lb_pu8(-w: O.Words, +rep: LO.wfl(w), +hp: PW1(w)) -> LR_pu8(w):
   (+hs, +hl) = hp
   lb2_pu8(w, ER.cpw(w, rep), hs, hl)
 
-# ---- pu64: a progressive list of uint64 field (big_encx_pl_u64) ----
+# ---- pu64: a progressive list of uint64 field (encx_pl_u64) ----
 def m4q(+j: Nat) -> {UR.m4(A.quad(j)) == 0n : Nat}:
   match j:
     case 0n: {==}
@@ -4674,8 +4674,8 @@ def fin(+s: Nat, +c: Nat, +k: Nat, +P: Nat, +h: {Nat.is_le(s, Nat.add(c, KP(k, P
 
 # record lists: tag -> (EX file, EX alias, element def alias.type name, element tag, element encode alias, RS, field kinds, limit or None, list def alias)
 ENCL_RL = {
-    'pl_Gc4ED9619F50': ('big_encx_pl_Gc4ED9619F50', 'XR4', 'SmallTestStruct_d', 'Gc4ED9619F50', 'SmallTestStruct_e', 4, ['u16', 'u16'], None, 'proglist_SmallTestStruct_d'),
-    'l10_GpF350A3C486': ('big_encx_l10_GpF350A3C486', 'XR1', 'ProgressiveSingleFieldContainerTestStruct_d', 'GpF350A3C486', 'ProgressiveSingleFieldContainerTestStruct_e', 1, ['u8'], 10, 'list_ProgressiveSingleFieldContainerTestStruct_10_d'),
+    'pl_SmallTestStruct': ('encx_pl_SmallTestStruct', 'XR4', 'SmallTestStruct_d', 'SmallTestStruct', 'SmallTestStruct_e', 4, ['u16', 'u16'], None, 'proglist_SmallTestStruct_d'),
+    'l10_ProgressiveSingleFieldContainerTestStruct': ('encx_l10_ProgressiveSingleFieldContainerTestStruct', 'XR1', 'ProgressiveSingleFieldContainerTestStruct_d', 'ProgressiveSingleFieldContainerTestStruct', 'ProgressiveSingleFieldContainerTestStruct_e', 1, ['u8'], 10, 'list_ProgressiveSingleFieldContainerTestStruct_10_d'),
 }
 
 ENCL_RL_SHARED = r"""# ---- record lists: shared ----
@@ -4889,9 +4889,9 @@ def rb_{T}(''', 1)
 
 # lists of variable-size elements: tag -> (EX list file, alias, element tag, element EX alias, element object type, list def alias)
 ENCL_VL = {
-    'pl_Gc465214E502': ('big_encx_pl_Gc465214E502', 'XA', 'Gc465214E502', 'XVT', 'VarTestStruct_d.Gc465214E502', 'proglist_VarTestStruct_d'),
-    'pl_pl_Gc465214E502': ('big_encx_pl_pl_Gc465214E502', 'XB', 'pl_Gc465214E502', 'XA', 'proglist_VarTestStruct_d.pl_Gc465214E502_Seq', 'proglist_proglist_VarTestStruct_d'),
-    'pl_Gp66304057C3': ('big_encx_pl_Gp66304057C3', 'XC', 'Gp66304057C3', 'CIG', 'ProgressiveVarTestStruct_d.Gp66304057C3', 'proglist_ProgressiveVarTestStruct_d'),
+    'pl_VarTestStruct': ('encx_pl_VarTestStruct', 'XA', 'VarTestStruct', 'XVT', 'VarTestStruct_d.VarTestStruct', 'proglist_VarTestStruct_d'),
+    'pl_pl_VarTestStruct': ('encx_pl_pl_VarTestStruct', 'XB', 'pl_VarTestStruct', 'XA', 'proglist_VarTestStruct_d.pl_VarTestStruct_Seq', 'proglist_proglist_VarTestStruct_d'),
+    'pl_ProgressiveVarTestStruct': ('encx_pl_ProgressiveVarTestStruct', 'XC', 'ProgressiveVarTestStruct', 'CIG', 'ProgressiveVarTestStruct_d.ProgressiveVarTestStruct', 'proglist_ProgressiveVarTestStruct_d'),
 }
 
 ENCL_VL_G = r"""# ---- ProgressiveVarTestStruct elements: the record CIG.MW{a0, Xl123.MW{LDEP(t), t, n}, EXP.MB{LDEP(tb), tb, k, k, 31, 30}} of M{a0, WMr{t, n}, BMr{tb, k}} ----
@@ -4901,30 +4901,30 @@ def fw_g(w: RT2.WMr) -> Xl123.MW:
 def fb_g(b: RT2.BMr) -> EXP.MB:
   match b:
     case RT2.BMr{+t, +k}: EXP.MB{ER.LDEP(U32, t), t, k, U32.to_nat(k), 31n, 30n}
-def fE_Gp66304057C3(m: RT2.M_Gp66304057C3) -> CIG.MW:
+def fE_ProgressiveVarTestStruct(m: RT2.M_ProgressiveVarTestStruct) -> CIG.MW:
   match m:
-    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: CIG.MW{a0, fw_g(a1), fb_g(a2)}
-def thg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(RT2.WMr{t, n}), fb_g(b)}) == RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+    case RT2.M_ProgressiveVarTestStruct{+a0, +a1, +a2}: CIG.MW{a0, fw_g(a1), fb_g(a2)}
+def thg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(RT2.WMr{t, n}), fb_g(b)}) == RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, b}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   match b:
     case RT2.BMr{+tb, +k}: {==}
-def thg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(w), fb_g(b)}) == RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+def thg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr) -> {CIG.TH(CIG.MW{a0, fw_g(w), fb_g(b)}) == RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, w, b}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   match w:
     case RT2.WMr{+t, +n}: thg2(a0, t, n, b)
-def thE_Gp66304057C3(+m: RT2.M_Gp66304057C3) -> {CIG.TH(fE_Gp66304057C3(m)) == RT2.th_Gp66304057C3(m) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+def thE_ProgressiveVarTestStruct(+m: RT2.M_ProgressiveVarTestStruct) -> {CIG.TH(fE_ProgressiveVarTestStruct(m)) == RT2.th_ProgressiveVarTestStruct(m) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   match m:
-    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: thg1(a0, a1, a2)
+    case RT2.M_ProgressiveVarTestStruct{+a0, +a1, +a2}: thg1(a0, a1, a2)
 def EPB_g(b: RT2.BMr) -> Data:
   match b:
     case RT2.BMr{+t, +k}: EP.SDPB(O.Bits{FD.array__thaw(U32, t), k}, 28n)
-def EP_Gp66304057C3(m: RT2.M_Gp66304057C3) -> Data:
+def EP_ProgressiveVarTestStruct(m: RT2.M_ProgressiveVarTestStruct) -> Data:
   match m:
-    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: DK.P2(EPW_vt(a1), EPB_g(a2))
-def SFE_Gp66304057C3(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))) == 123n : Nat}
-def EF_Gp66304057C3(+m: RT2.M_Gp66304057C3) -> Data:
-  DK.P2({CIG.OK(fE_Gp66304057C3(m)) == True{} : Bool}, {CIG.VAL(fE_Gp66304057C3(m)) == RT2.v_Gp66304057C3(RT2.th_Gp66304057C3(m)) : S.Value})
-def g0(o: ProgressiveVarTestStruct_d.Gp66304057C3) -> U32:
+    case RT2.M_ProgressiveVarTestStruct{+a0, +a1, +a2}: DK.P2(EPW_vt(a1), EPB_g(a2))
+def SFE_ProgressiveVarTestStruct(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))) == 123n : Nat}
+def EF_ProgressiveVarTestStruct(+m: RT2.M_ProgressiveVarTestStruct) -> Data:
+  DK.P2({CIG.OK(fE_ProgressiveVarTestStruct(m)) == True{} : Bool}, {CIG.VAL(fE_ProgressiveVarTestStruct(m)) == RT2.v_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(m)) : S.Value})
+def g0(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> U32:
   match o:
-    case ProgressiveVarTestStruct_d.Gp66304057C3{+x0, x1, x2}: x0
+    case ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{+x0, x1, x2}: x0
 def bta(o: O.Bits) -> FD.array__Tree<U32>:
   match o:
     case O.Bits{a, +k}: FD.array__freeze(U32, a)
@@ -4954,22 +4954,22 @@ def pbx(+tb: FD.array__Tree<U32>, +k: U32, +hs: EP.SDPB(O.Bits{FD.array__thaw(U3
   %Equal.sym(U32, k, K2, eK) : EP.PBF3(dw2, T2, _)
   EP.pbf(T2, dw2, K2, pf, FD.nat__lt_trans(dw2, 28n, 31n, hdw, {==}), hK8, hKY, hroom, hbz, wf2)
 
-def efg4(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +f: EQ.CF_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k})))
-    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+def efg4(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +f: EQ.CF_ProgressiveVarTestStruct(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k})))
+    -> EF_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
   (+fv, +f1) = f
   (+fo, +fl) = f1
-  (fo, Equal.sym(S.Value, RT2.v_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), CIG.VAL(fE_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), fv))
+  (fo, Equal.sym(S.Value, RT2.v_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), CIG.VAL(fE_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}})), fv))
 def efg5(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +h0: {U32.is_lt(a0, 256) == True{} : Bool}, +c: Nat,
     +hx: {U32.to_nat(n) == Nat.double(c) : Nat}, +hl: {Nat.is_le(c, 123n) == True{} : Bool}, +hsw: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), +pb: EP.PBF3(ER.LDEP(U32, tb), tb, k))
-    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+    -> EF_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
   (+v2, +p1) = pb
   (+o2, +l2) = p1
   +o1 = ER.ok_l123(t, n, ER.sfk(t, n, 28n, hsw), c, hx, hl)
-  efg4(a0, t, n, tb, k, EQ.c1f_Gp66304057C3(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k}), h0, ER.lv_l123(t, n, c, hx, hl), v2, o1, o2, ER.ln_l123(t, n, o1, c, hx, hl), l2))
+  efg4(a0, t, n, tb, k, EQ.c1f_ProgressiveVarTestStruct(a0, fw_g(RT2.WMr{t, n}), fb_g(RT2.BMr{tb, k}), h0, ER.lv_l123(t, n, c, hx, hl), v2, o1, o2, ER.ln_l123(t, n, o1, c, hx, hl), l2))
 def efg3(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +k: U32, +s: S.Schema,
-    +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}), s),
-    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EP.SDPB(O.Bits{FD.array__thaw(U32, tb), k}, 28n)), +es: SFE_Gp66304057C3(s))
-    -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
+    +rp: RT2.rep_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}), s),
+    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EP.SDPB(O.Bits{FD.array__thaw(U32, tb), k}, 28n)), +es: SFE_ProgressiveVarTestStruct(s))
+    -> EF_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, RT2.BMr{tb, k}}):
   (+x0, +r0) = rp
   (+ev, +q0) = r0
   (+h0, +q1) = q0
@@ -4977,22 +4977,22 @@ def efg3(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +tb: FD.array__Tree<U32>, +
   (+wfl, +z1) = rl
   (+hx, +hl) = z1
   (+hsw, +hsb) = ep
-  +e0 = Equal.cong(ProgressiveVarTestStruct_d.Gp66304057C3, U32, z => g0(z), ProgressiveVarTestStruct_d.Gp66304057C3{a0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}},
-    ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}}, ev)
+  +e0 = Equal.cong(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, U32, z => g0(z), ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{a0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}},
+    ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t), n}, O.Bits{FD.array__thaw(U32, tb), k}}, ev)
   +h0a = FD.logic__subst(U32, z => {U32.is_lt(z, 256) == True{} : Bool}, x0, a0, Equal.sym(U32, a0, x0, e0), h0)
   +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), z) == True{} : Bool}, SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), 123n, es, hl)
   efg5(a0, t, n, tb, k, h0a, PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), hx, hl2, hsw, pbx(tb, k, hsb, wf))
-def efg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}), s),
-    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EPB_g(b)), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, RT2.WMr{t, n}, b}):
+def efg2(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, b}), s),
+    +ep: DK.P2(BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), EPB_g(b)), +es: SFE_ProgressiveVarTestStruct(s)) -> EF_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, RT2.WMr{t, n}, b}):
   match b:
     case RT2.BMr{+tb, +k}: efg3(a0, t, n, tb, k, s, rp, ep, es)
-def efg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}), s),
-    +ep: DK.P2(EPW_vt(w), EPB_g(b)), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(RT2.M_Gp66304057C3{a0, w, b}):
+def efg1(+a0: U32, +w: RT2.WMr, +b: RT2.BMr, +s: S.Schema, +rp: RT2.rep_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, w, b}), s),
+    +ep: DK.P2(EPW_vt(w), EPB_g(b)), +es: SFE_ProgressiveVarTestStruct(s)) -> EF_ProgressiveVarTestStruct(RT2.M_ProgressiveVarTestStruct{a0, w, b}):
   match w:
     case RT2.WMr{+t, +n}: efg2(a0, t, n, b, s, rp, ep, es)
-def ef_Gp66304057C3(+m: RT2.M_Gp66304057C3, +s: S.Schema, +rp: RT2.rep_Gp66304057C3(RT2.th_Gp66304057C3(m), s), +ep: EP_Gp66304057C3(m), +es: SFE_Gp66304057C3(s)) -> EF_Gp66304057C3(m):
+def ef_ProgressiveVarTestStruct(+m: RT2.M_ProgressiveVarTestStruct, +s: S.Schema, +rp: RT2.rep_ProgressiveVarTestStruct(RT2.th_ProgressiveVarTestStruct(m), s), +ep: EP_ProgressiveVarTestStruct(m), +es: SFE_ProgressiveVarTestStruct(s)) -> EF_ProgressiveVarTestStruct(m):
   match m:
-    case RT2.M_Gp66304057C3{+a0, +a1, +a2}: efg1(a0, a1, a2, s, rp, ep, es)
+    case RT2.M_ProgressiveVarTestStruct{+a0, +a1, +a2}: efg1(a0, a1, a2, s, rp, ep, es)
 """
 
 ENCL_VL_SHARED = r"""# ---- lists of variable-size elements: shared ----
@@ -5004,37 +5004,37 @@ def llq(+x: Nat, +P: Nat, +hx: {Nat.is_le(x, Nat.add(P, 1n)) == True{} : Bool}, 
 def fw_vt(w: RT2.WMr) -> Xl1024.MW:
   match w:
     case RT2.WMr{+t, +n}: Xl1024.MW{ER.LDEP(U32, t), t, n}
-def fE_Gc465214E502(m: RT2.M_Gc465214E502) -> XVT.MW:
+def fE_VarTestStruct(m: RT2.M_VarTestStruct) -> XVT.MW:
   match m:
-    case RT2.M_Gc465214E502{+a0, +a1, +a2}: XVT.MW{a0, fw_vt(a1), a2}
-def thw_vt(+a0: U32, +w: RT2.WMr, +a2: U32) -> {XVT.TH(XVT.MW{a0, fw_vt(w), a2}) == RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}) : VarTestStruct_d.Gc465214E502}:
+    case RT2.M_VarTestStruct{+a0, +a1, +a2}: XVT.MW{a0, fw_vt(a1), a2}
+def thw_vt(+a0: U32, +w: RT2.WMr, +a2: U32) -> {XVT.TH(XVT.MW{a0, fw_vt(w), a2}) == RT2.th_VarTestStruct(RT2.M_VarTestStruct{a0, w, a2}) : VarTestStruct_d.VarTestStruct}:
   match w:
     case RT2.WMr{+t, +n}: {==}
-def thE_Gc465214E502(+m: RT2.M_Gc465214E502) -> {XVT.TH(fE_Gc465214E502(m)) == RT2.th_Gc465214E502(m) : VarTestStruct_d.Gc465214E502}:
+def thE_VarTestStruct(+m: RT2.M_VarTestStruct) -> {XVT.TH(fE_VarTestStruct(m)) == RT2.th_VarTestStruct(m) : VarTestStruct_d.VarTestStruct}:
   match m:
-    case RT2.M_Gc465214E502{+a0, +a1, +a2}: thw_vt(a0, a1, a2)
+    case RT2.M_VarTestStruct{+a0, +a1, +a2}: thw_vt(a0, a1, a2)
 def EPW_vt(w: RT2.WMr) -> Data:
   match w:
     case RT2.WMr{+t, +n}: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n)
-def EP_Gc465214E502(m: RT2.M_Gc465214E502) -> Data:
+def EP_VarTestStruct(m: RT2.M_VarTestStruct) -> Data:
   match m:
-    case RT2.M_Gc465214E502{+a0, +a1, +a2}: EPW_vt(a1)
-def SFE_Gc465214E502(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))) == 1024n : Nat}
-def EF_Gc465214E502(+m: RT2.M_Gc465214E502) -> Data:
-  DK.P2({XVT.OK(fE_Gc465214E502(m)) == True{} : Bool}, {XVT.VAL(fE_Gc465214E502(m)) == RT2.v_Gc465214E502(RT2.th_Gc465214E502(m)) : S.Value})
-def vt0(o: VarTestStruct_d.Gc465214E502) -> U32:
+    case RT2.M_VarTestStruct{+a0, +a1, +a2}: EPW_vt(a1)
+def SFE_VarTestStruct(+s: S.Schema) -> Data: {SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))) == 1024n : Nat}
+def EF_VarTestStruct(+m: RT2.M_VarTestStruct) -> Data:
+  DK.P2({XVT.OK(fE_VarTestStruct(m)) == True{} : Bool}, {XVT.VAL(fE_VarTestStruct(m)) == RT2.v_VarTestStruct(RT2.th_VarTestStruct(m)) : S.Value})
+def vt0(o: VarTestStruct_d.VarTestStruct) -> U32:
   match o:
-    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: x0
-def vt2(o: VarTestStruct_d.Gc465214E502) -> U32:
+    case VarTestStruct_d.VarTestStruct{+x0, x1, +x2}: x0
+def vt2(o: VarTestStruct_d.VarTestStruct) -> U32:
   match o:
-    case VarTestStruct_d.Gc465214E502{+x0, x1, +x2}: x2
-def efv2(+a0: U32, +a2: U32, +t: FD.array__Tree<U32>, +n: U32, +f: ER.VTF(a0, a2, t, n)) -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}):
+    case VarTestStruct_d.VarTestStruct{+x0, x1, +x2}: x2
+def efv2(+a0: U32, +a2: U32, +t: FD.array__Tree<U32>, +n: U32, +f: ER.VTF(a0, a2, t, n)) -> EF_VarTestStruct(RT2.M_VarTestStruct{a0, RT2.WMr{t, n}, a2}):
   (+fv, +f1) = f
   (+fo, +fl) = f1
-  (fo, Equal.sym(S.Value, RT2.v_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2})), XVT.VAL(fE_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2})), fv))
+  (fo, Equal.sym(S.Value, RT2.v_VarTestStruct(RT2.th_VarTestStruct(RT2.M_VarTestStruct{a0, RT2.WMr{t, n}, a2})), XVT.VAL(fE_VarTestStruct(RT2.M_VarTestStruct{a0, RT2.WMr{t, n}, a2})), fv))
 def efw_vt(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +a2: U32, +s: S.Schema,
-    +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}), s), +ep: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), +es: SFE_Gc465214E502(s))
-    -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, RT2.WMr{t, n}, a2}):
+    +rp: RT2.rep_VarTestStruct(RT2.th_VarTestStruct(RT2.M_VarTestStruct{a0, RT2.WMr{t, n}, a2}), s), +ep: BL.sdk(O.Words{FD.array__thaw(U32, t), n}, 28n), +es: SFE_VarTestStruct(s))
+    -> EF_VarTestStruct(RT2.M_VarTestStruct{a0, RT2.WMr{t, n}, a2}):
   (+x0, +r0) = rp
   (+x2, +r1) = r0
   (+ev, +q1) = r1
@@ -5042,50 +5042,50 @@ def efw_vt(+a0: U32, +t: FD.array__Tree<U32>, +n: U32, +a2: U32, +s: S.Schema,
   (+rl, +h2) = q2
   (+wf, +z1) = rl
   (+hx, +hl) = z1
-  +e0 = Equal.cong(VarTestStruct_d.Gc465214E502, U32, z => vt0(z), VarTestStruct_d.Gc465214E502{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
-  +e2 = Equal.cong(VarTestStruct_d.Gc465214E502, U32, z => vt2(z), VarTestStruct_d.Gc465214E502{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
+  +e0 = Equal.cong(VarTestStruct_d.VarTestStruct, U32, z => vt0(z), VarTestStruct_d.VarTestStruct{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.VarTestStruct{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
+  +e2 = Equal.cong(VarTestStruct_d.VarTestStruct, U32, z => vt2(z), VarTestStruct_d.VarTestStruct{a0, O.Words{FD.array__thaw(U32, t), n}, a2}, VarTestStruct_d.VarTestStruct{x0, O.Words{FD.array__thaw(U32, t), n}, x2}, ev)
   +h0a = FD.logic__subst(U32, z => {U32.is_lt(z, 65536) == True{} : Bool}, x0, a0, Equal.sym(U32, a0, x0, e0), h0)
   +h2a = FD.logic__subst(U32, z => {U32.is_lt(z, 256) == True{} : Bool}, x2, a2, Equal.sym(U32, a2, x2, e2), h2)
   +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), z) == True{} : Bool}, SH.ListOf_limit(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), 1024n, es, hl)
   efv2(a0, a2, t, n, ER.vtf(a0, a2, t, n, h0a, h2a, PBF.cnt2(O.Words{FD.array__thaw(U32, t), n}), hx, hl2, ep))
-def efm_vt(+a0: U32, +w: RT2.WMr, +a2: U32, +s: S.Schema, +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}), s), +ep: EPW_vt(w), +es: SFE_Gc465214E502(s))
-    -> EF_Gc465214E502(RT2.M_Gc465214E502{a0, w, a2}):
+def efm_vt(+a0: U32, +w: RT2.WMr, +a2: U32, +s: S.Schema, +rp: RT2.rep_VarTestStruct(RT2.th_VarTestStruct(RT2.M_VarTestStruct{a0, w, a2}), s), +ep: EPW_vt(w), +es: SFE_VarTestStruct(s))
+    -> EF_VarTestStruct(RT2.M_VarTestStruct{a0, w, a2}):
   match w:
     case RT2.WMr{+t, +n}: efw_vt(a0, t, n, a2, s, rp, ep, es)
-def ef_Gc465214E502(+m: RT2.M_Gc465214E502, +s: S.Schema, +rp: RT2.rep_Gc465214E502(RT2.th_Gc465214E502(m), s), +ep: EP_Gc465214E502(m), +es: SFE_Gc465214E502(s)) -> EF_Gc465214E502(m):
+def ef_VarTestStruct(+m: RT2.M_VarTestStruct, +s: S.Schema, +rp: RT2.rep_VarTestStruct(RT2.th_VarTestStruct(m), s), +ep: EP_VarTestStruct(m), +es: SFE_VarTestStruct(s)) -> EF_VarTestStruct(m):
   match m:
-    case RT2.M_Gc465214E502{+a0, +a1, +a2}: efm_vt(a0, a1, a2, s, rp, ep, es)
+    case RT2.M_VarTestStruct{+a0, +a1, +a2}: efm_vt(a0, a1, a2, s, rp, ep, es)
 """
 
 ENCL_VL_PL = r"""# ---- progressive lists of VarTestStruct as elements: the record XA.MW{TM(t), n} of the mirror M_pl{t, n} ----
-def fE_pl_Gc465214E502(m: RT2.M_pl_Gc465214E502) -> XA.MW:
+def fE_pl_VarTestStruct(m: RT2.M_pl_VarTestStruct) -> XA.MW:
   match m:
-    case RT2.M_pl_Gc465214E502{+t, +n}: XA.MW{TM_pl_Gc465214E502(t), n}
-def thE_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502) -> {XA.TH(fE_pl_Gc465214E502(m)) == RT2.th_pl_Gc465214E502(m) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+    case RT2.M_pl_VarTestStruct{+t, +n}: XA.MW{TM_pl_VarTestStruct(t), n}
+def thE_pl_VarTestStruct(+m: RT2.M_pl_VarTestStruct) -> {XA.TH(fE_pl_VarTestStruct(m)) == RT2.th_pl_VarTestStruct(m) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
   match m:
-    case RT2.M_pl_Gc465214E502{+t, +n}:
-      Equal.cong(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_Seq, z => proglist_VarTestStruct_d.pl_Gc465214E502_Seq{z, n}, XA.AR(TM_pl_Gc465214E502(t)), RT2.am_pl_Gc465214E502(t), arTM_pl_Gc465214E502(t))
-def EP_pl_Gc465214E502(m: RT2.M_pl_Gc465214E502) -> Data:
+    case RT2.M_pl_VarTestStruct{+t, +n}:
+      Equal.cong(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_Seq, z => proglist_VarTestStruct_d.pl_VarTestStruct_Seq{z, n}, XA.AR(TM_pl_VarTestStruct(t)), RT2.am_pl_VarTestStruct(t), arTM_pl_VarTestStruct(t))
+def EP_pl_VarTestStruct(m: RT2.M_pl_VarTestStruct) -> Data:
   match m:
-    case RT2.M_pl_Gc465214E502{+t, +n}: PM_pl_Gc465214E502(t, n)
-def SFE_pl_Gc465214E502(+s: S.Schema) -> Data: SFE_Gc465214E502(SH.ProgressiveList_element(s))
-def EF_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502) -> Data:
-  DK.P2({XA.OK(fE_pl_Gc465214E502(m)) == True{} : Bool}, {XA.VAL(fE_pl_Gc465214E502(m)) == RT2.v_pl_Gc465214E502(RT2.th_pl_Gc465214E502(m)) : S.Value})
-def sqa_A(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> Array<O.Boxed<VarTestStruct_d.Gc465214E502>>:
+    case RT2.M_pl_VarTestStruct{+t, +n}: PM_pl_VarTestStruct(t, n)
+def SFE_pl_VarTestStruct(+s: S.Schema) -> Data: SFE_VarTestStruct(SH.ProgressiveList_element(s))
+def EF_pl_VarTestStruct(+m: RT2.M_pl_VarTestStruct) -> Data:
+  DK.P2({XA.OK(fE_pl_VarTestStruct(m)) == True{} : Bool}, {XA.VAL(fE_pl_VarTestStruct(m)) == RT2.v_pl_VarTestStruct(RT2.th_pl_VarTestStruct(m)) : S.Value})
+def sqa_A(o: proglist_VarTestStruct_d.pl_VarTestStruct_Seq) -> Array<O.Boxed<VarTestStruct_d.VarTestStruct>>:
   match o:
-    case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: arr
-def sqn_A(o: proglist_VarTestStruct_d.pl_Gc465214E502_Seq) -> U32:
+    case proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, +n}: arr
+def sqn_A(o: proglist_VarTestStruct_d.pl_VarTestStruct_Seq) -> U32:
   match o:
-    case proglist_VarTestStruct_d.pl_Gc465214E502_Seq{arr, +n}: n
-def efq_A(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +n: U32, +mk: MK_pl_Gc465214E502(t, n)) -> EF_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}):
+    case proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, +n}: n
+def efq_A(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +n: U32, +mk: MK_pl_VarTestStruct(t, n)) -> EF_pl_VarTestStruct(RT2.M_pl_VarTestStruct{t, n}):
   (+eth, +m1) = mk
   (+ev, +m2) = m1
   (+ok, +ln) = m2
-  (ok, Equal.trans(S.Value, XA.VAL(XA.MW{TM_pl_Gc465214E502(t), n}), RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{TM_pl_Gc465214E502(t), n})), RT2.xv_pl_Gc465214E502(proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}),
-    Equal.sym(S.Value, RT2.xv_pl_Gc465214E502(XA.TH(XA.MW{TM_pl_Gc465214E502(t), n})), XA.VAL(XA.MW{TM_pl_Gc465214E502(t), n}), ev),
-    Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, S.Value, z => RT2.xv_pl_Gc465214E502(z), XA.TH(XA.MW{TM_pl_Gc465214E502(t), n}), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, eth)))
-def efp_A(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +n: U32, +s: S.Schema, +rp: RT2.rep_pl_Gc465214E502(RT2.th_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}), s),
-    +ep: PM_pl_Gc465214E502(t, n), +es: SFE_pl_Gc465214E502(s)) -> EF_pl_Gc465214E502(RT2.M_pl_Gc465214E502{t, n}):
+  (ok, Equal.trans(S.Value, XA.VAL(XA.MW{TM_pl_VarTestStruct(t), n}), RT2.xv_pl_VarTestStruct(XA.TH(XA.MW{TM_pl_VarTestStruct(t), n})), RT2.xv_pl_VarTestStruct(proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), n}),
+    Equal.sym(S.Value, RT2.xv_pl_VarTestStruct(XA.TH(XA.MW{TM_pl_VarTestStruct(t), n})), XA.VAL(XA.MW{TM_pl_VarTestStruct(t), n}), ev),
+    Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, S.Value, z => RT2.xv_pl_VarTestStruct(z), XA.TH(XA.MW{TM_pl_VarTestStruct(t), n}), proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), n}, eth)))
+def efp_A(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +n: U32, +s: S.Schema, +rp: RT2.rep_pl_VarTestStruct(RT2.th_pl_VarTestStruct(RT2.M_pl_VarTestStruct{t, n}), s),
+    +ep: PM_pl_VarTestStruct(t, n), +es: SFE_pl_VarTestStruct(s)) -> EF_pl_VarTestStruct(RT2.M_pl_VarTestStruct{t, n}):
   (+t2, +r1) = rp
   (+dw, +r2) = r1
   (+N2, +r3) = r2
@@ -5093,21 +5093,21 @@ def efp_A(+t: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +n: U32, +s: S.Schema,
   (+pf, +r5) = r4
   (+hd, +r6) = r5
   (+hN, +er) = r6
-  +ea = Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, z => sqa_A(z), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t2), N2}, eo)
-  +et = Equal.trans(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), t2,
-    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), t, RT2.tfzam_pl_Gc465214E502(t)),
-    Equal.trans(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t)), RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(t2)), t2,
-      Equal.cong(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => RT2.tfz_pl_Gc465214E502(z), RT2.am_pl_Gc465214E502(t), RT2.am_pl_Gc465214E502(t2), ea),
-      RT2.tfzam_pl_Gc465214E502(t2)))
-  +en = Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, U32, z => sqn_A(z), proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t), n}, proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(t2), N2}, eo)
-  +pf1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dw, z) == True{} : Bool}, t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, t2, et), pf)
+  +ea = Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, z => sqa_A(z), proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), n}, proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t2), N2}, eo)
+  +et = Equal.trans(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, t, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(t)), t2,
+    Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(t)), t, RT2.tfzam_pl_VarTestStruct(t)),
+    Equal.trans(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(t)), RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(t2)), t2,
+      Equal.cong(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, z => RT2.tfz_pl_VarTestStruct(z), RT2.am_pl_VarTestStruct(t), RT2.am_pl_VarTestStruct(t2), ea),
+      RT2.tfzam_pl_VarTestStruct(t2)))
+  +en = Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, U32, z => sqn_A(z), proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), n}, proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t2), N2}, eo)
+  +pf1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, z => {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dw, z) == True{} : Bool}, t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, t, t2, et), pf)
   +hN1 = FD.logic__subst(U32, z => {Nat.is_le(U32.to_nat(z), FD.spec_common__pow2(dw)) == True{} : Bool}, N2, n, Equal.sym(U32, n, N2, en), hN)
-  +er1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, z => RT2.ereps_pl_Gc465214E502(U32.to_nat(N2), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, z), 0n, SH.ProgressiveList_element(s)), t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, t, t2, et), er)
-  +er2 = FD.logic__subst(U32, z => RT2.ereps_pl_Gc465214E502(U32.to_nat(z), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, t), 0n, SH.ProgressiveList_element(s)), N2, n, Equal.sym(U32, n, N2, en), er1)
-  efq_A(t, n, mk_pl_Gc465214E502(t, dw, n, SH.ProgressiveList_element(s), pf1, hN1, er2, ep, es))
-def ef_pl_Gc465214E502(+m: RT2.M_pl_Gc465214E502, +s: S.Schema, +rp: RT2.rep_pl_Gc465214E502(RT2.th_pl_Gc465214E502(m), s), +ep: EP_pl_Gc465214E502(m), +es: SFE_pl_Gc465214E502(s)) -> EF_pl_Gc465214E502(m):
+  +er1 = FD.logic__subst(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, z => RT2.ereps_pl_VarTestStruct(U32.to_nat(N2), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, z), 0n, SH.ProgressiveList_element(s)), t2, t, Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, t, t2, et), er)
+  +er2 = FD.logic__subst(U32, z => RT2.ereps_pl_VarTestStruct(U32.to_nat(z), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, t), 0n, SH.ProgressiveList_element(s)), N2, n, Equal.sym(U32, n, N2, en), er1)
+  efq_A(t, n, mk_pl_VarTestStruct(t, dw, n, SH.ProgressiveList_element(s), pf1, hN1, er2, ep, es))
+def ef_pl_VarTestStruct(+m: RT2.M_pl_VarTestStruct, +s: S.Schema, +rp: RT2.rep_pl_VarTestStruct(RT2.th_pl_VarTestStruct(m), s), +ep: EP_pl_VarTestStruct(m), +es: SFE_pl_VarTestStruct(s)) -> EF_pl_VarTestStruct(m):
   match m:
-    case RT2.M_pl_Gc465214E502{+t, +n}: efp_A(t, n, s, rp, ep, es)
+    case RT2.M_pl_VarTestStruct{+t, +n}: efp_A(t, n, s, rp, ep, es)
 """
 
 ENCL_VL_PER = r"""# ======== @L@ (@X@): a progressive list of @E@ ========
@@ -5290,9 +5290,9 @@ def encl_text():
         txt, im = _encl_rl(T)
         body.append(txt)
         imps += [i for i in im if i not in imps]
-    body += [ENCL_VL_SHARED, _encl_vl('pl_Gc465214E502'), ENCL_VL_PL, _encl_vl('pl_pl_Gc465214E502'), ENCL_VL_G, _encl_vl('pl_Gp66304057C3')]
-    for fn, al in [('big_encx_pl_Gc465214E502', 'XA'), ('big_encx_pl_pl_Gc465214E502', 'XB'), ('big_encx_Gc465214E502_iface', 'XVT'), ('big_encx_l1024_u16', 'Xl1024'),
-                   ('big_encx_pl_Gp66304057C3', 'XC'), ('big_encx_Gp66304057C3_iface', 'CIG'), ('big_encx_l123_u16', 'Xl123'), ('big_encx_pbits', 'EXP'), ('bitlist_obj', 'BO')]:
+    body += [ENCL_VL_SHARED, _encl_vl('pl_VarTestStruct'), ENCL_VL_PL, _encl_vl('pl_pl_VarTestStruct'), ENCL_VL_G, _encl_vl('pl_ProgressiveVarTestStruct')]
+    for fn, al in [('encx_pl_VarTestStruct', 'XA'), ('encx_pl_pl_VarTestStruct', 'XB'), ('encx_VarTestStruct_iface', 'XVT'), ('encx_l1024_u16', 'Xl1024'),
+                   ('encx_pl_ProgressiveVarTestStruct', 'XC'), ('encx_ProgressiveVarTestStruct_iface', 'CIG'), ('encx_l123_u16', 'Xl123'), ('encx_pbits', 'EXP'), ('bitlist_obj', 'BO')]:
         imps.append(f'import ../proofs/obj/{fn}.bend as {al}')
     imps += ['import ./e2e_encp.bend as EP', 'import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d',
              'import ../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d',
@@ -5311,8 +5311,8 @@ def encl_text():
             'import ../proofs/obj/vrecb.bend as VRB', 'import ../proofs/obj/len_bridge.bend as LB', 'import ../proofs/obj/vbitb.bend as VBB',
             'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_gtypes2.bend as RT2', 'import ../proofs/obj/root_gnames.bend as RN',
             'import ../types/uint8_encode_ssz_generated.bend as uint8_e', 'import ../types/uint16_encode_ssz_generated.bend as uint16_e',
-            'import ../proofs/obj/big_encx_pl_u8.bend as XU8', 'import ../proofs/obj/big_encx_pl_u64.bend as XU64',
-            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64',
+            'import ../proofs/obj/encx_pl_u8.bend as XU8', 'import ../proofs/obj/encx_pl_u64.bend as XU64',
+            'import ../proofs/obj/var_winp_u8.bend as PU8', 'import ../proofs/obj/var_winp_pl_u64.bend as PU64',
             'import ./e2e_encr.bend as ER', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_ulist.bend as ULW',
             'import ./e2e_gprog.bend as GP', 'import ./e2e_gwin.bend as GW'] + imps
     return '\n'.join(head) + '''
@@ -5356,29 +5356,29 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
     return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./{mod}.bend as GP'], 'text': text}
 
 
-VDEC_VIEWS['Gp4B0CA2906A'] = prog_view('ProgressiveSingleListContainerTestStruct', 'Gp4B0CA2906A')
-VDEC_VIEWS['Gp66304057C3'] = prog_view('ProgressiveVarTestStruct', 'Gp66304057C3')
-VDEC_VIEWS['Gc221EC01D83'] = prog_view('ProgressiveTestStruct', 'Gc221EC01D83', 'e2e_gcx')
-VDEC_VIEWS['Gp8A7851175B'] = prog_view('ProgressiveComplexTestStruct', 'Gp8A7851175B', 'e2e_gcx')
-VDEC_VIEWS['GuAD91DEB870'] = union_view('CompatibleUnionBC', 'GuAD91DEB870')
-VDEC_VIEWS['Gu6DDF182530'] = union_view('CompatibleUnionABCA', 'Gu6DDF182530')
+VDEC_VIEWS['ProgressiveSingleListContainerTestStruct'] = prog_view('ProgressiveSingleListContainerTestStruct', 'ProgressiveSingleListContainerTestStruct')
+VDEC_VIEWS['ProgressiveVarTestStruct'] = prog_view('ProgressiveVarTestStruct', 'ProgressiveVarTestStruct')
+VDEC_VIEWS['ProgressiveTestStruct'] = prog_view('ProgressiveTestStruct', 'ProgressiveTestStruct', 'e2e_gcx')
+VDEC_VIEWS['ProgressiveComplexTestStruct'] = prog_view('ProgressiveComplexTestStruct', 'ProgressiveComplexTestStruct', 'e2e_gcx')
+VDEC_VIEWS['CompatibleUnionBC'] = union_view('CompatibleUnionBC', 'CompatibleUnionBC')
+VDEC_VIEWS['CompatibleUnionABCA'] = union_view('CompatibleUnionABCA', 'CompatibleUnionABCA')
 
 
-CPX['Gp4B0CA2906A'] = {'mods': ['ProgressiveSingleListContainerTestStruct_d:ProgressiveSingleListContainerTestStruct_def_generated'],
+CPX['ProgressiveSingleListContainerTestStruct'] = {'mods': ['ProgressiveSingleListContainerTestStruct_d:ProgressiveSingleListContainerTestStruct_def_generated'],
                        'hmod': 'ProgressiveSingleListContainerTestStruct_h:ProgressiveSingleListContainerTestStruct_hashtreeroot_generated',
                        'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2', 'fields': [('b', 'O.Bits')]}
-CPX['Gp66304057C3'] = {'mods': ['ProgressiveVarTestStruct_d:ProgressiveVarTestStruct_def_generated'],
+CPX['ProgressiveVarTestStruct'] = {'mods': ['ProgressiveVarTestStruct_d:ProgressiveVarTestStruct_def_generated'],
                        'hmod': 'ProgressiveVarTestStruct_h:ProgressiveVarTestStruct_hashtreeroot_generated',
                        'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2', 'fields': [('u', 'U32'), ('l', 'O.Words'), ('b', 'O.Bits')]}
-VROOT_SHAPES['Gp4B0CA2906A'] = vroot_complex
-VROOT_SHAPES['Gp66304057C3'] = vroot_complex
+VROOT_SHAPES['ProgressiveSingleListContainerTestStruct'] = vroot_complex
+VROOT_SHAPES['ProgressiveVarTestStruct'] = vroot_complex
 
 
 # ==== e2e_gcp: a root-law object rebuilt from its rep's witnesses (for the root law's runtime argument) ====
 # cp_X(o, s, rep): the Data witnesses of each projected field (u: the U32, l: words' tree and length,
 # b: bits' tree and count) and o == the literal they build (CPT_X). Used by (iv) of unions whose arms are
 # Type-kinded containers.
-GCP_NAMES = ['Gp4B0CA2906A', 'Gp66304057C3']
+GCP_NAMES = ['ProgressiveSingleListContainerTestStruct', 'ProgressiveVarTestStruct']
 
 
 def cp_lit(X):
@@ -5565,8 +5565,8 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o)) -> {G('o')}:
 """
 
 
-VROOT_SHAPES['GuAD91DEB870'] = vroot_union_n
-VROOT_SHAPES['Gu6DDF182530'] = vroot_union_n
+VROOT_SHAPES['CompatibleUnionBC'] = vroot_union_n
+VROOT_SHAPES['CompatibleUnionABCA'] = vroot_union_n
 
 
 # ==== e2e_encp: a progressive bit list's encode record from the root law's representation ====
@@ -5576,7 +5576,7 @@ VROOT_SHAPES['Gu6DDF182530'] = vroot_union_n
 # K zero in word K >> 5; wfb gives the rest (HZ: vbitrep.rep_hz; the zero bytes past the last: e2e_tz.tz).
 def encp_text(dm=False):
     """dm: e2e_encpd, the record at bit counts K <= 2^32 - 8 (kb = 32; no 31 + K + 1 <= 2^30 premise), its bytes within 2^29 + 1 (the OKW laws)."""
-    okt = _okt(_obj('big_encx_pbits.bend'))
+    okt = _okt(_obj('encx_pbits.bend'))
     Kd = int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', okt).group(1))
     KB0 = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
     KB = KB0 if dm else min(KB0, 31)   # the bridge's width: 31 (its premise 31 + K + 1 <= 2^30 bounds K anyway); dm: the law's 32
@@ -5665,7 +5665,7 @@ import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/big_encx_pbits.bend as EXP
+import ../proofs/obj/encx_pbits.bend as EXP
 import ./e2e_tz.bend as TZ
 import ./e2e_bitl.bend as BLB
 import ./e2e_cap.bend as C
@@ -5790,16 +5790,16 @@ SUPPORT_OUT['e2e_encpd.bend'] = encp_text(True)
 # ---- (i) of the progressive containers: the record from its fields' records (e2e_encr lists, e2e_encp bit lists) ----
 # PROGS[X] = the fields in order: ('u8',) a uint8 (rep's U32 witness), ('l', tag) a List[uint16, N] (ER.lb_tag),
 # ('pb',) a progressive bit list (EP.pbb). Each record's premise is its encode law's (BL.sdk / EP.SDPB).
-PROGS = {'Gp4B0CA2906A': [('pb',)], 'Gp66304057C3': [('u8',), ('l', 'l123'), ('pb',)]}
+PROGS = {'ProgressiveSingleListContainerTestStruct': [('pb',)], 'ProgressiveVarTestStruct': [('u8',), ('l', 'l123'), ('pb',)]}
 
 
 def encp_kd():
-    return int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', _okt(_obj('big_encx_pbits.bend'))).group(1))
+    return int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', _okt(_obj('encx_pbits.bend'))).group(1))
 
 
 def prog_q(X, D, dm=False):
     """e2e_encq's record builder of X: rq_X(o, rep, hs) -> RQ_X(o) (defs text, imports)."""
-    ci = _obj(f'big_encx_{X}_iface.bend')
+    ci = _obj(f'encx_{X}_iface.bend')
     okt = _okt(ci, 'OKTW' if dm else 'OKT')
     OKN, LENE = ('OKW', 'lenEW') if dm else ('OK', 'lenE')
     names = re.findall(r'\+(\w+): ', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))
@@ -6015,7 +6015,7 @@ def RQ_{X}(o: {D}) -> Data:
 def rq_{X}(-o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: PREM_{X}(o)) -> RQ_{X}(o):
 """ + '\n'.join(lines) + '\n'
     kmod = re.search(r'^import (\S+) as K$', ci, re.M).group(1)
-    imps += [f'import ../proofs/obj/big_encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
+    imps += [f'import ../proofs/obj/encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
     return head + defs + rq, imps
 
 
@@ -6143,14 +6143,14 @@ for _X in PROGS:
 
 # PROGS2[X]: the list-field containers' fields: ('u8',), ('l', tag), ('pb',), ('pu8',), ('pu64',), ('rl', tag), ('vl', tag)
 PROGS2 = {
-    'Gc221EC01D83': [('pu8',), ('pu64',), ('rl', 'pl_Gc4ED9619F50'), ('vl', 'pl_pl_Gc465214E502')],
-    'Gp8A7851175B': [('u8',), ('l', 'l123'), ('pb',), ('pu64',), ('rl', 'pl_Gc4ED9619F50'), ('vl', 'pl_pl_Gc465214E502'), ('rl', 'l10_GpF350A3C486'), ('vl', 'pl_Gp66304057C3')],
+    'ProgressiveTestStruct': [('pu8',), ('pu64',), ('rl', 'pl_SmallTestStruct'), ('vl', 'pl_pl_VarTestStruct')],
+    'ProgressiveComplexTestStruct': [('u8',), ('l', 'l123'), ('pb',), ('pu64',), ('rl', 'pl_SmallTestStruct'), ('vl', 'pl_pl_VarTestStruct'), ('rl', 'l10_ProgressiveSingleFieldContainerTestStruct'), ('vl', 'pl_ProgressiveVarTestStruct')],
 }
 
 
 def prog_q2(X, D, dm=False):
     """e2e_encq2's record builder of X (list fields, the KP bound): rq_X(o, rep, hs) -> RQ_X(o) (defs text, imports)."""
-    ci = _obj(f'big_encx_{X}_iface.bend')
+    ci = _obj(f'encx_{X}_iface.bend')
     okt = _okt(ci, 'OKTW' if dm else 'OKT')
     OKN, LENE = ('OKW', 'lenEW') if dm else ('OK', 'lenE')
     names = re.findall(r'\+(\w+): ', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))
@@ -6441,7 +6441,7 @@ def RQ_{X}(o: {D}) -> Data:
 def rq_{X}(-o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: PREM_{X}(o)) -> RQ_{X}(o):
 """ + '\n'.join(lines) + '\n'
     kmod = re.search(r'^import (\S+) as K$', ci, re.M).group(1)
-    imps += [f'import ../proofs/obj/big_encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
+    imps += [f'import ../proofs/obj/encx_{X}_iface.bend as CI_{X}', f'import ../proofs/obj/{kmod[2:]} as K_{X}']
     return head + defs + rq, imps
 
 
@@ -6540,7 +6540,7 @@ for _X in PROGS2:
 def mwp_union_n(R, X, D):
     vsrc = _unlight((ROOT / 'proofs/obj/root_gtypes2.bend').read_text())
     pcs = dict((int(k), b) for k, b in re.findall(rf'^def pc_{X}_(\d+)\(o: .*?\) -> Data: (.*)$', vsrc, re.M))
-    ci = _obj(f'big_encx_{X}_iface.bend')
+    ci = _obj(f'encx_{X}_iface.bend')
     G = lambda o: f'{{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode({o})))}} == API.serialize(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731
     vbody = re.search(rf'^def v_{X}\(o: .*?\n  match o:\n((?:    case .*\n)+)', vsrc, re.M).group(1)
     sels = dict((int(c), sel) for c, sel in re.findall(rf'case \w+\.{X}_c(\d+){{v}}: S\.Selected{{(\d+),', vbody))
@@ -6568,7 +6568,7 @@ def arm{k}(-o: {D}, +pc: RT.pc_{X}_{k}(o), +hs: SU(o)) -> {G('o')}:
         else:
             m2 = re.match(rf'DK\.P2\(\{{o == \w+\.{X}_c{k}\{{pju_{X}_{k}\(o\)\}} : \S+\}}, rep_(\w+)\(pju_{X}_{k}\(o\), (.*)\)\)$', b)
             A = m2.group(1)
-            EA = re.search(rf'^import \./big_encx_{A}_iface\.bend as (\w+)$', ci, re.M).group(1)
+            EA = re.search(rf'^import \./encx_{A}_iface\.bend as (\w+)$', ci, re.M).group(1)
             PJU = f'RT.pju_{X}_{k}(o)'
             su.append(f'    case {D}_c{k}{{v}}: EQ.PREM_{A}(v)')
             L.append(f'''def ak{k}(-o: {D}, +eo: {{o == {D}_c{k}{{{PJU}}} : {D}}}, +c: EQ.RQ_{A}({PJU})) -> {G('o')}:
@@ -6601,41 +6601,41 @@ def SU(o: {D}) -> Data:
     body = '  rp0(o, rep, hs)' if pors else '  arm0(o, rep, hs)'
     imps = ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/vu32.bend as VU',
             'import ../proofs/obj/len_bridge.bend as LB', 'import ../proofs/obj/vbitb.bend as VBB', 'import ../types/generic_obj.bend as T',
-            'import ./e2e_encq.bend as EQ'] + [f'import ../proofs/obj/{p[2:]} as {al}' for p, al in re.findall(r'^import (\./big_encx_\w+_iface\.bend) as (EA_\w+)$', ci, re.M)]
+            'import ./e2e_encq.bend as EQ'] + [f'import ../proofs/obj/{p[2:]} as {al}' for p, al in re.findall(r'^import (\./encx_\w+_iface\.bend) as (EA_\w+)$', ci, re.M)]
     return defs, body, imps, f'+rep: RT.rep_{X}(o), +hs: SU(o)'
 
 
-for _X in ('GuAD91DEB870', 'Gu6DDF182530'):
+for _X in ('CompatibleUnionBC', 'CompatibleUnionABCA'):
     MWP[_X] = mwp_union_n
     VENC_SHAPES[_X] = venc_mw
     VENC_PREMISE[_X] = f'rep: RT.rep_{_X}(o) and hs: SU(o) (a progressive container arm\'s storage premises, e2e_encq.PREM_Arm; none for a uint8 arm)'
 
 
-CPA['proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'] = ('rep_pl_Gc4ED9619F50', 'SmallTestStruct_d.Gc4ED9619F50', 'FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, {t})')
-CPA['proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'] = ('rep_pl_pl_Gc465214E502', 'RT.MB<RT.M_pl_Gc465214E502>', 'RT.am_pl_pl_Gc465214E502({t})')
-CPX['Gc221EC01D83'] = {'mods': ['ProgressiveTestStruct_d:ProgressiveTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+CPA['proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq'] = ('rep_pl_SmallTestStruct', 'SmallTestStruct_d.SmallTestStruct', 'FD.array__thaw(SmallTestStruct_d.SmallTestStruct, {t})')
+CPA['proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq'] = ('rep_pl_pl_VarTestStruct', 'RT.MB<RT.M_pl_VarTestStruct>', 'RT.am_pl_pl_VarTestStruct({t})')
+CPX['ProgressiveTestStruct'] = {'mods': ['ProgressiveTestStruct_d:ProgressiveTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
                                 'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
                                 'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated'],
                        'hmod': 'ProgressiveTestStruct_h:ProgressiveTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2',
-                       'fields': [('w', 'O.Words'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
-                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq')]}
-VROOT_SHAPES['Gc221EC01D83'] = vroot_complex
+                       'fields': [('w', 'O.Words'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq')]}
+VROOT_SHAPES['ProgressiveTestStruct'] = vroot_complex
 
-CPA['list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'] = ('rep_l10_GpF350A3C486', 'ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486',
-                                                                                  'FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, {t})')
-CPA['proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq'] = ('rep_pl_Gp66304057C3', 'RT.MB<RT.M_Gp66304057C3>', 'RT.am_pl_Gp66304057C3({t})')
-CPX['Gp8A7851175B'] = {'mods': ['ProgressiveComplexTestStruct_d:ProgressiveComplexTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
+CPA['list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq'] = ('rep_l10_ProgressiveSingleFieldContainerTestStruct', 'ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct',
+                                                                                  'FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, {t})')
+CPA['proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq'] = ('rep_pl_ProgressiveVarTestStruct', 'RT.MB<RT.M_ProgressiveVarTestStruct>', 'RT.am_pl_ProgressiveVarTestStruct({t})')
+CPX['ProgressiveComplexTestStruct'] = {'mods': ['ProgressiveComplexTestStruct_d:ProgressiveComplexTestStruct_def_generated', 'SmallTestStruct_d:SmallTestStruct_def_generated',
                                 'proglist_SmallTestStruct_d:proglist_SmallTestStruct_def_generated',
                                 'proglist_proglist_VarTestStruct_d:proglist_proglist_VarTestStruct_def_generated',
                                 'ProgressiveSingleFieldContainerTestStruct_d:ProgressiveSingleFieldContainerTestStruct_def_generated',
                                 'list_ProgressiveSingleFieldContainerTestStruct_10_d:list_ProgressiveSingleFieldContainerTestStruct_10_def_generated',
                                 'proglist_ProgressiveVarTestStruct_d:proglist_ProgressiveVarTestStruct_def_generated'],
                        'hmod': 'ProgressiveComplexTestStruct_h:ProgressiveComplexTestStruct_hashtreeroot_generated', 'rt': 'root_gtypes2', 'gv': 'gvalid_gtypes2', 'pc': True,
-                       'fields': [('u', 'U32'), ('l', 'O.Words'), ('b', 'O.Bits'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq'),
-                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'),
-                                  ('a', 'list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq'),
-                                  ('q', 'proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq')]}
-VROOT_SHAPES['Gp8A7851175B'] = vroot_complex
+                       'fields': [('u', 'U32'), ('l', 'O.Words'), ('b', 'O.Bits'), ('l', 'O.Words'), ('q', 'proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq'),
+                                  ('q', 'proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq'),
+                                  ('a', 'list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq'),
+                                  ('q', 'proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq')]}
+VROOT_SHAPES['ProgressiveComplexTestStruct'] = vroot_complex
 
 
 # ==== e2e_encld: e2e_encl over the D twins (the lists' storage at depth < 31, the bytes below 2^31: the OKW laws) ====
@@ -6660,8 +6660,8 @@ def _args_at(t, i):
 
 
 # the size measure of each family's object (its encoding's bytes, as the encode record's length lemma gives them)
-_TF_SEQ = {'A': ('pl_Gc465214E502', 'proglist_VarTestStruct_d.pl_Gc465214E502_Seq'), 'B': ('pl_pl_Gc465214E502', 'proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq'),
-           'C': ('pl_Gp66304057C3', 'proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_Seq')}
+_TF_SEQ = {'A': ('pl_VarTestStruct', 'proglist_VarTestStruct_d.pl_VarTestStruct_Seq'), 'B': ('pl_pl_VarTestStruct', 'proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq'),
+           'C': ('pl_ProgressiveVarTestStruct', 'proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq')}
 
 
 def _total_form(t):
@@ -6669,7 +6669,7 @@ def _total_form(t):
     a word list's length, 4 N of a record list, LL of a variable-element list), its record bound `LN(ENC m) <= x` (the measure itself), so
     that one object-level premise (the sum of the measures and the fixed part below 2^31) bounds the container."""
     # (1) the record bounds: LN(ENC m) <= x
-    QX = {'XU8.ENC(m)': 'U32.to_nat(WO.len(XU8.TH(m)))', 'XU64.ENC(m)': 'U32.to_nat(WO.len(XU64.TH(m)))', 'XR4.ENC(m)': 'QR_pl_Gc4ED9619F50(XR4.TH(m))'}
+    QX = {'XU8.ENC(m)': 'U32.to_nat(WO.len(XU8.TH(m)))', 'XU64.ENC(m)': 'U32.to_nat(WO.len(XU64.TH(m)))', 'XR4.ENC(m)': 'QR_pl_SmallTestStruct(XR4.TH(m))'}
     for fam, (tag, seq) in _TF_SEQ.items():
         QX[f'X{fam}.ENC(m)'] = f'QV_{tag}(X{fam}.TH(m))'
         QX[f'X{fam}.ENC(X{fam}.MW{{TM_{tag}(t), N}})'] = f'X{fam}.LL(TM_{tag}(t), N)'
@@ -6700,7 +6700,7 @@ def _total_form(t):
     def ins(t, before, text):
         k = t.index(before)
         return t[:k] + text + '\n' + t[k:]
-    t = ins(t, 'def LRR_pl_Gc4ED9619F50(', 'def QR_pl_Gc4ED9619F50(o: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq) -> Nat:\n  match o:\n    case proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{arr, +N}: Nat.mul(U32.to_nat(N), 4n)')
+    t = ins(t, 'def LRR_pl_SmallTestStruct(', 'def QR_pl_SmallTestStruct(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Nat:\n  match o:\n    case proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, +N}: Nat.mul(U32.to_nat(N), 4n)')
     for fam, (tag, seq) in _TF_SEQ.items():
         t = ins(t, f'def LRV_{tag}(', f'def QV_{tag}(o: {seq}) -> Nat:\n  match o:\n    case {seq}{{arr, +N}}: X{fam}.LL(TM_{tag}(RT2.tfz_{tag}(arr)), N)')
     # (5) rv3: the bound at the mirror tree LL(TM(t)) is the object's measure QV(TH(m)) = LL(TM(tfz(am(t))))
@@ -6729,10 +6729,10 @@ def encld_text():
     t = encl_text()
     # (a) modules: the storage lists' laws, the records over the D twins
     t = t.replace('./e2e_encr.bend as ER', './e2e_encrd.bend as ER').replace('./e2e_encp.bend as EP', './e2e_encpd.bend as EP').replace('./e2e_encq.bend as EQ', './e2e_encqd.bend as EQ')
-    LM = (('XU8', 'pl_u8'), ('XU64', 'pl_u64'), ('XR4', 'pl_Gc4ED9619F50'), ('XR1', 'l10_GpF350A3C486'), ('XA', 'pl_Gc465214E502'), ('XB', 'pl_pl_Gc465214E502'), ('XC', 'pl_Gp66304057C3'),
+    LM = (('XU8', 'pl_u8'), ('XU64', 'pl_u64'), ('XR4', 'pl_SmallTestStruct'), ('XR1', 'l10_ProgressiveSingleFieldContainerTestStruct'), ('XA', 'pl_VarTestStruct'), ('XB', 'pl_pl_VarTestStruct'), ('XC', 'pl_ProgressiveVarTestStruct'),
           ('Xl1024', 'l1024_u16'), ('Xl123', 'l123_u16'))
     for al, p in LM:
-        t = t.replace(f'import ../proofs/obj/big_encx_{p}.bend as {al}\n', f'import ../proofs/obj/big_encx_{p}.bend as {al}\nimport ../proofs/obj/big_encx_{p}_d.bend as {al}D\n')
+        t = t.replace(f'import ../proofs/obj/encx_{p}.bend as {al}\n', f'import ../proofs/obj/encx_{p}.bend as {al}\nimport ../proofs/obj/encx_{p}_d.bend as {al}D\n')
     import encx_d
     for al, p in LM:
         for n in sorted(encx_d.d_names(p)):
@@ -6744,7 +6744,7 @@ def encld_text():
     t = re.sub(r'(BL\.sdk\([^()]*(?:\([^()]*\))*[^()]*), 28n\)', r'\1, 31n)', t)
     t = re.sub(r'(EP\.SDPB\(O\.Bits\{[^}]*\}), 28n\)', r'\1, 31n)', t)
     t = t.replace('ER.SFT(tt, n, 28n)', 'ER.SFT(tt, n, 31n)').replace('ER.sfk(tt, n, 28n,', 'ER.sfk(tt, n, 31n,').replace('ER.sfk(t, n, 28n,', 'ER.sfk(t, n, 31n,').replace('z => BL.sdk(z, 28n)', 'z => BL.sdk(z, 31n)')
-    t = '\n'.join((l.replace('28n', '30n') if ('Gc4ED9619F50' in l or 'GpF350A3C486' in l) and '28n' in l else l) for l in t.split('\n'))
+    t = '\n'.join((l.replace('28n', '30n') if ('SmallTestStruct' in l or 'ProgressiveSingleFieldContainerTestStruct' in l) and '28n' in l else l) for l in t.split('\n'))
     t = t.replace('Nat.is_lt(ER.LDEP(U32, tt), 28n)', 'Nat.is_lt(ER.LDEP(U32, tt), 31n)')
     # (c) the byte budget of an unbounded field: 2^28 + 1
     t = t.replace('def P1() -> Nat: Nat.add(VB.pw(27n), 1n)', """def P1() -> Nat: Nat.add(VB.pw(28n), 1n)

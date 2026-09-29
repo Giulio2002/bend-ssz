@@ -31,15 +31,15 @@ def bv511_put(out: Array<U32>, +pos: U32, o: bitvector_511_d.Bitvector511) -> Ar
   match o:
     case bitvector_511_d.Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bv511_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
 
-def Gt05340E1F7E_encode(+o: bitvector_511_d.Bitvector511) -> B.Buf: O.out_done(64, bv511_put(O.out_at(4n), 0, o))
+def bitvector_511_encode(+o: bitvector_511_d.Bitvector511) -> B.Buf: O.out_done(64, bv511_put(O.out_at(4n), 0, o))
 
 def bv511_valid(o: bitvector_511_d.Bitvector511) -> Bool:
   match o:
     case bitvector_511_d.Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: U32.is_lt(w15, 2147483648)
 
-def Gt05340E1F7E_ser_pick(ok: Bool, +o: bitvector_511_d.Bitvector511) -> O.Encoded:
+def bitvector_511_ser_pick(ok: Bool, +o: bitvector_511_d.Bitvector511) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt05340E1F7E_encode(o))
+    case True{}: O.encoded(bitvector_511_encode(o))
     case False{}: O.refused()
 
-def Gt05340E1F7E_serialize(+o: bitvector_511_d.Bitvector511) -> O.Encoded: Gt05340E1F7E_ser_pick(bv511_valid(o), o)
+def bitvector_511_serialize(+o: bitvector_511_d.Bitvector511) -> O.Encoded: bitvector_511_ser_pick(bv511_valid(o), o)

@@ -2,7 +2,7 @@
 """Readers of BeaconState's FIXED fields at any byte position x (the field's bytes are the
 window slice UW.WX(t, x, S)), for the byte-offset BeaconState module.
 
-    python3 codegen/var_fixx.py [--check] [--no-big]
+    python3 codegen/var_fixx.py [--check]
 
 One module per field type p, proofs/obj/{big_,}vfx_<p>.bend, exporting (S = the field's
 byte size, SCH = its spec schema):
@@ -448,7 +448,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
 
 
 
-def outputs(no_big=False):
+def outputs():
     import var_fixx_bv4 as BV4
     out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod(),
            ROOT / 'proofs/obj/vfx_bv4.bend': BV4.bv4_mod(HEAD, sig, TR, TRUE)}
@@ -484,9 +484,7 @@ def outputs(no_big=False):
         out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt
     for p, S, k, sch, ch, el in VECS:
         big = S > BIG
-        if big and no_big:
-            continue
-        out[ROOT / f'proofs/obj/{"big_" if big else ""}vfx_{p}.bend'] = vec_text(p, S, k, sch, ch, el)
+        out[ROOT / f'proofs/obj/{"" if big else ""}vfx_{p}.bend'] = vec_text(p, S, k, sch, ch, el)
     return out
 
 
@@ -568,7 +566,7 @@ def fx_deep(text):
 
 
 def main():
-    out = outputs('--no-big' in sys.argv)
+    out = outputs()
     out = {p_: fx_deep(t_) for p_, t_ in out.items()}
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

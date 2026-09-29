@@ -24,7 +24,7 @@ import ../obj/vfix.bend as P0_VF
 import ../obj/vlist.bend as P0_VL
 import ../obj/vmul.bend as P0_VM
 import ../obj/vmv.bend as P0_VV
-import ../obj/big_vvlz.bend as P0_VZG
+import ../obj/vvlz.bend as P0_VZG
 import ../obj/var_codec_DataColumnSidecar.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

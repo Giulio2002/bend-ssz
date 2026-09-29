@@ -23,9 +23,9 @@ import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/big_encx_bits131072.bend as EXb
-import ../proofs/obj/big_encx_Attestation_iface.bend as EM
-import ../proofs/obj/big_encx_l8_Attestation.bend as W8
+import ../proofs/obj/encx_bits131072.bend as EXb
+import ../proofs/obj/encx_Attestation_iface.bend as EM
+import ../proofs/obj/encx_l8_Attestation.bend as W8
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d

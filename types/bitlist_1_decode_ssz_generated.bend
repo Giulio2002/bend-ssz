@@ -11,17 +11,17 @@ def bits1_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits1_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 1, False{})
 
-def Gt94B70684B5_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_1_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt94B70684B5_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt94B70684B5_some(bits1_read(buf, 0, size))
+    case True{}: bitlist_1_some(bits1_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt94B70684B5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt94B70684B5_built(size, bits1_ok(buf, 0, size))
+def bitlist_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_1_built(size, bits1_ok(buf, 0, size))
 
-def Gt94B70684B5_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits1_read(buf, 0, size)
+def bitlist_1_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits1_read(buf, 0, size)

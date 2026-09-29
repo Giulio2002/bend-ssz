@@ -11,17 +11,17 @@ def bits4_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits4_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 4, False{})
 
-def Gt484D1ADAFE_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_4_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt484D1ADAFE_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_4_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt484D1ADAFE_some(bits4_read(buf, 0, size))
+    case True{}: bitlist_4_some(bits4_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt484D1ADAFE_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt484D1ADAFE_built(size, bits4_ok(buf, 0, size))
+def bitlist_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_4_built(size, bits4_ok(buf, 0, size))
 
-def Gt484D1ADAFE_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits4_read(buf, 0, size)
+def bitlist_4_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits4_read(buf, 0, size)

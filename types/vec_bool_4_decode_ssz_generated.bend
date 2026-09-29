@@ -33,17 +33,17 @@ def v4_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v4_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v4_bool_ok_len(U32.is_eq(len, 4), buf, off)
 
-def GtC57121EA56_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_4_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtC57121EA56_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_4_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtC57121EA56_some(v4_bool_read(buf, 0, size))
+    case True{}: vec_bool_4_some(v4_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtC57121EA56_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtC57121EA56_built(size, v4_bool_ok(buf, 0, size))
+def vec_bool_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_bool_4_built(size, v4_bool_ok(buf, 0, size))
 
-def GtC57121EA56_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_bool_read(buf, 0, size)
+def vec_bool_4_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_bool_read(buf, 0, size)

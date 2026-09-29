@@ -328,7 +328,7 @@ def outputs(ROOT, gen=None):
     covered = []
     for f in files('spec_gcodec_*.bend', True):
         covered += re.findall(r'^# ---- (\w+) \(\d+ bytes\) ----$', text(f), re.M)
-    covered += [p.stem[len('spec_garr_'):] for p in files('spec_garr_Gt*.bend')]
+    covered += [p.stem[len('spec_garr_'):] for p in files('spec_garr_vec_*.bend')]
     picked = []
     for n in covered:
         t = gnames.get(n)

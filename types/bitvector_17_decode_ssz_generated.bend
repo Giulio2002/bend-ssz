@@ -23,17 +23,17 @@ def bv17_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv17_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv17_ok_len(U32.is_eq(len, 3), buf, off)
 
-def GtFF7C03E8A0_some(pair: B.Buf & bitvector_17_d.Bitvector17) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+def bitvector_17_some(pair: B.Buf & bitvector_17_d.Bitvector17) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtFF7C03E8A0_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+def bitvector_17_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtFF7C03E8A0_some(bv17_read(buf, 0, size))
+    case True{}: bitvector_17_some(bv17_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtFF7C03E8A0_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
-  GtFF7C03E8A0_built(size, bv17_ok(buf, 0, size))
+def bitvector_17_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+  bitvector_17_built(size, bv17_ok(buf, 0, size))
 
-def GtFF7C03E8A0_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_17_d.Bitvector17: bv17_read(buf, 0, size)
+def bitvector_17_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_17_d.Bitvector17: bv17_read(buf, 0, size)

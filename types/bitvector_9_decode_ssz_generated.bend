@@ -23,17 +23,17 @@ def bv9_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv9_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv9_ok_len(U32.is_eq(len, 2), buf, off)
 
-def Gt1BD4B4358D_some(pair: B.Buf & bitvector_9_d.Bitvector9) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+def bitvector_9_some(pair: B.Buf & bitvector_9_d.Bitvector9) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt1BD4B4358D_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+def bitvector_9_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt1BD4B4358D_some(bv9_read(buf, 0, size))
+    case True{}: bitvector_9_some(bv9_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt1BD4B4358D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
-  Gt1BD4B4358D_built(size, bv9_ok(buf, 0, size))
+def bitvector_9_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+  bitvector_9_built(size, bv9_ok(buf, 0, size))
 
-def Gt1BD4B4358D_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_9_d.Bitvector9: bv9_read(buf, 0, size)
+def bitvector_9_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_9_d.Bitvector9: bv9_read(buf, 0, size)

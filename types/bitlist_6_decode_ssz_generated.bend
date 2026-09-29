@@ -11,17 +11,17 @@ def bits6_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits6_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 6, False{})
 
-def Gt98B8C9F262_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_6_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt98B8C9F262_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_6_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt98B8C9F262_some(bits6_read(buf, 0, size))
+    case True{}: bitlist_6_some(bits6_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt98B8C9F262_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt98B8C9F262_built(size, bits6_ok(buf, 0, size))
+def bitlist_6_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_6_built(size, bits6_ok(buf, 0, size))
 
-def Gt98B8C9F262_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits6_read(buf, 0, size)
+def bitlist_6_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits6_read(buf, 0, size)

@@ -12,4 +12,4 @@ def bv31_root(+hl: Nat, h: B.Buf, o: bitvector_31_d.Bitvector31, +seg: U32) -> B
   match o:
     case bitvector_31_d.Bitvector31{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
-def GtEDFB713194_hash_tree_root(h: B.Buf, +o: bitvector_31_d.Bitvector31) -> B.Buf & D.Digest: bv31_root(64n, h, o, 0)
+def bitvector_31_hash_tree_root(h: B.Buf, +o: bitvector_31_d.Bitvector31) -> B.Buf & D.Digest: bv31_root(64n, h, o, 0)

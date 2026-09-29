@@ -4,7 +4,7 @@ the selector byte at x, then the selected arm's window at x + 1 (length len - 1)
 interface of proofs/obj/vua_win.bend (CHKw, ok_evalw, OBJw, readw, VALw, specw, invw), and the
 union's whole-buffer decoder laws.
 
-    python3 codegen/var_winu.py [--check] [--no-big]
+    python3 codegen/var_winu.py [--check]
 
 Each arm is a window module (its own vua_win interface, the arm's parts one variable part).
 The runtime reads the selector byte and compares it with each selector in turn (U32.is_eq(s, c)),
@@ -36,10 +36,10 @@ WBL = 'UW.WX(t, x, U32.to_nat(len))'
 TGT = f'Some{{[S.Variable{{{WBL}}}]}}'
 GOAL = f'{{CHKw({TXOA}) == {TRUE}}}'
 # union: arm window modules (by arm runtime type)
-ARMS = {'Gp4B0CA2906A': 'big_var_winx_Gp4B0CA2906A.bend', 'Gp66304057C3': 'big_var_winx_Gp66304057C3.bend', 'GpF350A3C486': 'var_winx_GpF350A3C486.bend'}
+ARMS = {'ProgressiveSingleListContainerTestStruct': 'var_winx_ProgressiveSingleListContainerTestStruct.bend', 'ProgressiveVarTestStruct': 'var_winx_ProgressiveVarTestStruct.bend', 'ProgressiveSingleFieldContainerTestStruct': 'var_winx_ProgressiveSingleFieldContainerTestStruct.bend'}
 # arms whose one spec part is fixed (their windows' specw / invw state S.Fixed)
-FIXARMS = {'GpF350A3C486': 1}
-UNIONS = ['GuAD91DEB870', 'GuA2212AE21F', 'Gu6DDF182530']
+FIXARMS = {'ProgressiveSingleFieldContainerTestStruct': 1}
+UNIONS = ['CompatibleUnionBC', 'CompatibleUnionA', 'CompatibleUnionABCA']
 
 
 def union_schema(name):
@@ -61,10 +61,14 @@ def arm_types(name):
     return re.findall(r'  ' + name + r'_c(\d+)\{v: (\w+)\}', m.group(1))
 
 
+_OWN = {}    # {path: text} of the arm windows outputs() writes (fixw_*), for child_mode
+
+
 def child_mode(mod):
     """'hwN' / 'hw32' for an arm window module with the deep interface (readwD), None otherwise."""
     q = ROOT / 'proofs/obj' / mod
-    t = q.read_text() if q.exists() else ''
+    # an arm this generator writes itself is read from this run's text: a from-empty regeneration has no file yet
+    t = _OWN[q] if q in _OWN else (q.read_text() if q.exists() else '')
     m = re.search(r'^def readwD\((.*?)\) -> \{', t, re.M | re.S)
     if not m:
         return None
@@ -677,8 +681,9 @@ def union_top_deep(text, U):
     return text[:m.start(1)] + m.group(1) + ', hPB' + text[m.end(1):m.start(2)] + m.group(2) + ', hPB' + text[m.end(2):]
 
 
-def outputs(no_big=False):
-    out = {ROOT / 'proofs/obj/var_winx_GpF350A3C486.bend': fixw_deep(fixw_text('GpF350A3C486'))}
+def outputs():
+    out = {ROOT / 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend': fixw_deep(fixw_text('ProgressiveSingleFieldContainerTestStruct'))}
+    _OWN.update(out)
     for U in UNIONS:
         wm = f'var_winx_{U}.bend'
         out[ROOT / 'proofs/obj' / wm] = module_text(U)
@@ -690,7 +695,7 @@ def outputs(no_big=False):
 
 
 def main():
-    out = outputs('--no-big' in sys.argv)
+    out = outputs()
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]

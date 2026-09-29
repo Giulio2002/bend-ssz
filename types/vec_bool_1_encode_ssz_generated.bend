@@ -25,15 +25,15 @@ def v1_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 1, 1, 
 
 def v1_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_bool_pk(out, pos, v1_bool_valid(o))
 
-def GtAE3EF932C2_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_1_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(1, out))
 
-def GtAE3EF932C2_encode(o: O.Words) -> O.Words & B.Buf: GtAE3EF932C2_enc_out(v1_bool_put(O.out_at(0n), 0, o))
+def vec_bool_1_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_1_enc_out(v1_bool_put(O.out_at(0n), 0, o))
 
-def GtAE3EF932C2_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_1_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 1, out))
 
-def GtAE3EF932C2_serialize(o: O.Words) -> O.Words & O.Encoded: GtAE3EF932C2_senc_out(v1_bool_putk(O.out_at(0n), 0, o))
+def vec_bool_1_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_1_senc_out(v1_bool_putk(O.out_at(0n), 0, o))

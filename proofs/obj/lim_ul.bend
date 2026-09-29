@@ -8,13 +8,13 @@ import ../../src/obj.bend as O
 import ./obj_support.bend as OS
 import ./ulist_obj.bend as UL
 import ./ulist_obj_light.bend as UL_L
-import ./big_lim_sym.bend as LSY
+import ./lim_sym.bend as LSY
 
 # The closed schema fact of IndexedAttestation's attesting_indices (List[uint64,
 # 2^17], Schema45, depth 15) without evaluating its 2^17 limit in unary: the limit
-# word is TR.capacity(17) (big_lim_sym pw_nat), and a list of limit 2^(2 + d)
+# word is TR.capacity(17) (lim_sym pw_nat), and a list of limit 2^(2 + d)
 # uint64 is minimal at depth d for a symbolic d. Used by root_types (and every
-# big_root_* through it) in place of {==} on the whole ok_<Name> check.
+# root_* through it) in place of {==} on the whole ok_<Name> check.
 
 # List[uint64, 2^(2 + d)]: 2^(5 + d) bytes, 2^d chunks, minimal at depth d.
 law ul_okp:

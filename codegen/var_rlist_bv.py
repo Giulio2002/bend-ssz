@@ -37,12 +37,12 @@ def bvx_text(HEAD, zeros_at_text, inv_text, p, B, N, sch_el, LSCH, big=False, de
                       f'# The byte-offset window module of {p} (List[ByteVector[{B}], {N}], packed): see the',
                       '# module docstring of codegen/var_rlist_bv.py and the interface in proofs/obj/vua_win.bend.', '']
     if big or deep:
-        # the copy's depth from the window (DZ <= 29), the zero array symbolically (big_vvlz)
+        # the copy's depth from the window (DZ <= 29), the zero array symbolically (vvlz)
         STORE, ZER, KZ = '', '', 29
         HZ = 'VLS.hdz29(d, len, hd, hlen(d, x, len, hw))'
         EZ = ('FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(len))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(len))), VLS.DZ(len), '
               'VD.wdu(VC.WZ(len)), VZG.zg(B.words_depth_u(VC.WZ(len))))')
-        L.insert(L.index('import ./vua_ct.bend as UCT') + 1, 'import ./big_vvlz.bend as VZG')
+        L.insert(L.index('import ./vua_ct.bend as UCT') + 1, 'import ./vvlz.bend as VZG')
         if deep:
             HZ = 'VC.dz30(len, hy)'
     else:

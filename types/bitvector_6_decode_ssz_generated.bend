@@ -23,17 +23,17 @@ def bv6_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv6_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv6_ok_len(U32.is_eq(len, 1), buf, off)
 
-def GtAD3CF815B7_some(pair: B.Buf & bitvector_6_d.Bitvector6) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+def bitvector_6_some(pair: B.Buf & bitvector_6_d.Bitvector6) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtAD3CF815B7_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+def bitvector_6_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtAD3CF815B7_some(bv6_read(buf, 0, size))
+    case True{}: bitvector_6_some(bv6_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtAD3CF815B7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
-  GtAD3CF815B7_built(size, bv6_ok(buf, 0, size))
+def bitvector_6_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+  bitvector_6_built(size, bv6_ok(buf, 0, size))
 
-def GtAD3CF815B7_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_6_d.Bitvector6: bv6_read(buf, 0, size)
+def bitvector_6_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_6_d.Bitvector6: bv6_read(buf, 0, size)

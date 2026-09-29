@@ -601,19 +601,19 @@ def rec_un(con, pats, res, dflt):
 
 # exact (ii): the unview of the name's view (a left inverse), and its lemma body
 UN = {
-    'Gt967E8D815F': UINT_UN, 'GtECF9BB18D8': UINT_UN, 'ParticipationFlags': UINT_UN,
-    'Gc74A8F5F17F': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.Gc74A8F5F17F{a}\n    case _: T.Gc74A8F5F17F{0}',
-                     '  match o:\n    case T.Gc74A8F5F17F{+a}: {==}'),
-    'GpF350A3C486': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.GpF350A3C486{a}\n    case _: T.GpF350A3C486{0}',
-                     '  match o:\n    case T.GpF350A3C486{+a}: {==}'),
-    'Gc4ED9619F50': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, r}}}: T.Gc4ED9619F50{a, a1}\n    case _: T.Gc4ED9619F50{0, 0}',
-                     '  match o:\n    case T.Gc4ED9619F50{+a, +b}: {==}'),
-    'GcDC3E457711': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, S.Items{S.UnsignedValue{P.UInt{a2, b2, c2, d2, e2, f2, g2, h2}}, r}}}}: T.GcDC3E457711{a, O.U64{a1, b1}, a2}\n    case _: T.GcDC3E457711{0, O.U64{0, 0}, 0}',
-                     '  match o:\n    case T.GcDC3E457711{+a, O.U64{+b, +c}, +d}: {==}'),
-    'GtAD72FD256A': ('  match v:\n    case S.BooleanValue{b}: b\n    case _: False{}', '  {==}'),
+    'uint8': UINT_UN, 'uint16': UINT_UN, 'ParticipationFlags': UINT_UN,
+    'SingleFieldTestStruct': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.SingleFieldTestStruct{a}\n    case _: T.SingleFieldTestStruct{0}',
+                     '  match o:\n    case T.SingleFieldTestStruct{+a}: {==}'),
+    'ProgressiveSingleFieldContainerTestStruct': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, r}}: T.ProgressiveSingleFieldContainerTestStruct{a}\n    case _: T.ProgressiveSingleFieldContainerTestStruct{0}',
+                     '  match o:\n    case T.ProgressiveSingleFieldContainerTestStruct{+a}: {==}'),
+    'SmallTestStruct': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, r}}}: T.SmallTestStruct{a, a1}\n    case _: T.SmallTestStruct{0, 0}',
+                     '  match o:\n    case T.SmallTestStruct{+a, +b}: {==}'),
+    'FixedTestStruct': ('  match v:\n    case S.Sequence{S.Items{S.UnsignedValue{P.UInt{a, b, c, d, e, f, g, h}}, S.Items{S.UnsignedValue{P.UInt{a1, b1, c1, d1, e1, f1, g1, h1}}, S.Items{S.UnsignedValue{P.UInt{a2, b2, c2, d2, e2, f2, g2, h2}}, r}}}}: T.FixedTestStruct{a, O.U64{a1, b1}, a2}\n    case _: T.FixedTestStruct{0, O.U64{0, 0}, 0}',
+                     '  match o:\n    case T.FixedTestStruct{+a, O.U64{+b, +c}, +d}: {==}'),
+    'boolean': ('  match v:\n    case S.BooleanValue{b}: b\n    case _: False{}', '  {==}'),
     'Bytes1': ('  match v:\n    case S.BytesValue{Con{a, t}}: T.Bytes1{a}\n    case _: T.Bytes1{0}', '  match o:\n    case T.Bytes1{+a}: {==}'),
 }
-DEC_TRY = ['Gt967E8D815F', 'GtECF9BB18D8', 'ParticipationFlags', 'Gc74A8F5F17F', 'GpF350A3C486', 'Gc4ED9619F50', 'GcDC3E457711', 'Bytes1']
+DEC_TRY = ['uint8', 'uint16', 'ParticipationFlags', 'SingleFieldTestStruct', 'ProgressiveSingleFieldContainerTestStruct', 'SmallTestStruct', 'FixedTestStruct', 'Bytes1']
 
 
 def dec_file(EB, rows):
@@ -664,18 +664,19 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
     ot = imp.qual(EB, [t for _, n, t in ri['ps'] if n == 'o'][0], f)
     bs = ''.join(f', {md}{n}: {t}' for md, n, t in prem)
     en = X
+    pn = prem[0][1] if prem else 'rp'    # the root law's premise binder: rp for a generic form's law, e for the fork's
     K = EB.law(cache, ee)[3].split(', 0, ')[1].split(')')[0]
     EEL, ESL = f'{AE}.{ee["law"]}', f'{AS}.{es["law"]}'
     L = [f'# {R} ({X})', f'# (i) for every object the root law takes ({", ".join(n for _, n, _ in prem) or "no premise"}).']
     head_ = f'def {R}_e2e_encode(+o: {ot}{bs}) -> {G(sn, en, "o", V("o"))}:'
-    if X in ('Gt967E8D815F', 'GtECF9BB18D8'):   # uint8 / uint16: the premise's word is its low byte / half
-        lem, t = ('X.b8(o, rp)', 'B.byte_sel(0, o)') if X == 'Gt967E8D815F' else ('X.m16(o, rp)', 'U32.and(o, 65535)')
-        BY = '[B.byte_sel(0, o)]' if X == 'Gt967E8D815F' else '[B.byte_sel(0, o), B.byte_sel(1, o)]'
+    if X in ('uint8', 'uint16'):   # uint8 / uint16: the premise's word is its low byte / half
+        lem, t = (f'X.b8(o, {pn})', 'B.byte_sel(0, o)') if X == 'uint8' else (f'X.m16(o, {pn})', 'U32.and(o, 65535)')
+        BY = '[B.byte_sel(0, o)]' if X == 'uint8' else '[B.byte_sel(0, o), B.byte_sel(1, o)]'
         L += [head_, f'  %{lem} : {G(sn, en, "o", V("_"))}', chain(sn, en, 'o', K, BY, f'{EEL}(o)', V(t), f'{ESL}(o)'), '']
-    elif X in ('Gc74A8F5F17F', 'GpF350A3C486'):   # (Progressive)SingleFieldTestStruct: its uint8 field
+    elif X in ('SingleFieldTestStruct', 'ProgressiveSingleFieldContainerTestStruct'):   # (Progressive)SingleFieldTestStruct: its uint8 field
         O1 = f'T.{X}{{y0}}'
         L += [head_, '  match o:', f'    case T.{X}{{+y0}}:',
-              f'      %X.b8(y0, rp) : {G(sn, en, O1, V(f"T.{X}{{_}}"))}',
+              f'      %X.b8(y0, {pn}) : {G(sn, en, O1, V(f"T.{X}{{_}}"))}',
               chain(sn, en, O1, K, '[B.byte_sel(0, y0)]', f'{EEL}(y0)', V(f'T.{X}{{B.byte_sel(0, y0)}}'), f'{ESL}(y0)', '      '), '']
     elif X in ('ParticipationFlags', 'Bytes1'):   # the byte's eight bits
         bits = [f'b{i}' for i in range(8)]
@@ -693,7 +694,7 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
             L += [head_, '  match o:', '    case T.Bytes1{+w0}:',
                   f'      %Equal.sym(U32, w0, PD.embed8(WSp.take(8n, 32n, PD.bits(w0))), ID.byte_shape(w0, e)) : {G(sn, en, "T.Bytes1{_}", V("T.Bytes1{_}"))}',
                   f'      {R}_w(WSp.take(8n, 32n, PD.bits(w0)))', '']
-    elif X == 'GtAD72FD256A':                     # boolean: the byte 1 or 0
+    elif X == 'boolean':                     # boolean: the byte 1 or 0
         L += [head_, '  match o:']
         for b, x in (('True{}', '1'), ('False{}', '0')):
             L += [f'    case {b}:', chain(sn, en, b, K, f'SP.boolean_encoding({b})', f'{EEL}({b})', V(b), f'{ESL}({x}, {{==}})', '      ')]
@@ -705,7 +706,7 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
 
 def enc_file(EB, rows, cache, amap):
     imp = Imp()
-    body = [(enc_bv if X in BVS else enc_boxs if X in ('MatrixEntry', 'Deposit') else enc_box if X in BOXC else enc_packed if X in ('Gc4ED9619F50', 'GcDC3E457711') else enc_leaf)(EB, imp, R, X, sn, amap['map'][X], cache, ri) for R, X, sn, ri, _g in rows]
+    body = [(enc_bv if X in BVS else enc_boxs if X in ('MatrixEntry', 'Deposit') else enc_box if X in BOXC else enc_packed if X in ('SmallTestStruct', 'FixedTestStruct') else enc_leaf)(EB, imp, R, X, sn, amap['map'][X], cache, ri) for R, X, sn, ri, _g in rows]
     if any(x is None for x in body):
         return None
     L = EHEAD + head(rows[0][4]) + imp.lines() + ['', '# GENERATED by codegen/e2e_bridge.py. Do not edit.',
@@ -736,7 +737,7 @@ def bsm_text():
     return '\n'.join(L)
 
 
-ENC_LEAF = ['Gt967E8D815F', 'GtECF9BB18D8', 'Gc74A8F5F17F', 'GpF350A3C486', 'ParticipationFlags', 'Bytes1', 'GtAD72FD256A']
+ENC_LEAF = ['uint8', 'uint16', 'SingleFieldTestStruct', 'ProgressiveSingleFieldContainerTestStruct', 'ParticipationFlags', 'Bytes1', 'boolean']
 
 SUPPORT = r"""import Base
 import ../src/buffer.bend as B
@@ -1024,12 +1025,12 @@ def enc_vec_file(EB, rows, cache, amap):
     return '\n'.join(L) + '\n'
 
 
-VEC_B = ['GtAE3EF932C2', 'Gt3771256492', 'Gt57090094FA', 'GtC57121EA56', 'Gt7FBB1934E8', 'Gt526892A4DC', 'Gt1D9B3E1871', 'Gt9DF37A5216',
-         'Gt34AE45611E', 'GtEB2FD43D9B']
-VEC_U16 = ['GtE6006F6F55', 'Gt04170D6AA7', 'Gt19F04F79B8', 'Gt6463DC73A8', 'Gt89824BEACE', 'Gt39CAD03032', 'GtAEB382AD1F', 'Gt9333E6513D',
-           'Gt2FF8722A75', 'Gt5BE68AF2C7']
-VEC_U8 = ['GtB85E1BC748', 'Gt3429157FEB', 'GtC19E8053EB', 'Gt75C1995C88', 'GtF3865AEE9A', 'GtA8100D747D', 'Gt28ED72E3EF', 'GtC0FC7B166A',
-          'Gt28605B5D5C', 'Gt2CD118DF5F']
+VEC_B = ['vec_bool_1', 'vec_bool_2', 'vec_bool_3', 'vec_bool_4', 'vec_bool_5', 'vec_bool_8', 'vec_bool_16', 'vec_bool_31',
+         'vec_bool_512', 'vec_bool_513']
+VEC_U16 = ['vec_uint16_1', 'vec_uint16_2', 'vec_uint16_3', 'vec_uint16_4', 'vec_uint16_5', 'vec_uint16_8', 'vec_uint16_16', 'vec_uint16_31',
+           'vec_uint16_512', 'vec_uint16_513']
+VEC_U8 = ['vec_uint8_1', 'vec_uint8_2', 'vec_uint8_3', 'vec_uint8_4', 'vec_uint8_5', 'vec_uint8_8', 'vec_uint8_16', 'vec_uint8_31',
+          'vec_uint8_512', 'vec_uint8_513']
 
 
 # ---- uint16 vectors: the view reads two bytes per element (packed_bytes.it2 of v16of), the spec value
@@ -1312,8 +1313,8 @@ def enc_bv(EB, imp, R, X, sn, m, cache, ri):
 
 
 BOXC = ['ProposerSlashing', 'ContributionAndProof', 'SignedContributionAndProof', 'MatrixEntry', 'BlobSidecar', 'Deposit', 'HistoricalBatch', 'SyncCommittee']
-BVS = ['GtFCF8066C33', 'Gt9368483BAB', 'Gt9579E0A2FD', 'GtB1E9093D65', 'Gt27CDB122DD', 'GtAD3CF815B7', 'GtAA8D1478A7', 'Gt0366A291C1',
-       'Gt1BD4B4358D', 'GtEDF530C7B9', 'GtED805B7C93', 'GtFF7C03E8A0', 'GtEDFB713194', 'Gt6F0D97A69E', 'Gt05340E1F7E', 'Gt0B0C03B454']
+BVS = ['bitvector_1', 'bitvector_2', 'bitvector_3', 'bitvector_4', 'bitvector_5', 'bitvector_6', 'bitvector_7', 'bitvector_8',
+       'bitvector_9', 'bitvector_15', 'bitvector_16', 'bitvector_17', 'bitvector_31', 'bitvector_33', 'bitvector_511', 'bitvector_513']
 
 
 # ---- (i) for the packed small containers (SmallTestStruct, FixedTestStruct): the object's fields are
@@ -1367,7 +1368,7 @@ def enc_packed(EB, imp, R, X, sn, m, cache, ri):
     b_es = EB.law(cache, es)
     SVt = imp.qual(EB, EB.call_args(b_es[3], 'Decoding.decodes')[2], es['file'])
     L = [f'# {R} ({X})']
-    if X == 'Gc4ED9619F50':
+    if X == 'SmallTestStruct':
         a, c = [f'a{i}' for i in range(16)], [f'c{i}' for i in range(16)]
         Xb = a + c
         Y0, Y1, XW = _w(a + [F_] * 16), _w(c + [F_] * 16), _w(Xb)
@@ -1375,8 +1376,8 @@ def enc_packed(EB, imp, R, X, sn, m, cache, ri):
         P2 = lambda t: f'U32{{WSp.join(16n, 16n, {t}, Word.zero(16n))}}'  # noqa: E731
         wa = ''.join(f'WCon{{{x}, ' for x in a) + 'WNil{}' + '}' * 16
         wc = ''.join(f'WCon{{{x}, ' for x in c) + 'WNil{}' + '}' * 16
-        OBJ = f'T.Gc4ED9619F50{{{P2(wa)}, {P2(wc)}}}'
-        OBJt = f'T.Gc4ED9619F50{{{P2("t0")}, {P2("t1")}}}'
+        OBJ = f'T.SmallTestStruct{{{P2(wa)}, {P2(wc)}}}'
+        OBJt = f'T.SmallTestStruct{{{P2("t0")}, {P2("t1")}}}'
         e1 = (f'BT.word32_eq({", ".join([f"Bool.and({x}, True{{}})" for x in a] + [f"Bool.and({x}, False{{}})" for x in c])}, '
               f'{", ".join(a + [F_] * 16)}, {", ".join([f"BT.and_true({x})" for x in a] + [f"BT.and_false({x})" for x in c])})')
         CA = _w(c + a)
@@ -1401,13 +1402,13 @@ def enc_packed(EB, imp, R, X, sn, m, cache, ri):
               chain2(sn, X, OBJ, K, BYE, f'{AE}.{ee["law"]}({P2(wa)}, {P2(wc)})', BYS, f'{R}_by({args})', SV, f'{AS}.{es["law"]}({XW})', '      '), '']
         H = lambda y: f'U32{{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits({y})), Word.zero(16n))}}'  # noqa: E731
         L += [f'# (i) for every object the root law takes (rp: both fields below 65536).',
-              f'def {R}_e2e_encode(+o: T.Gc4ED9619F50, +rp: {rpq}) -> {G_("o", V("o"))}:',
-              '  match o:', '    case T.Gc4ED9619F50{+y0, +y1}:', '      (+r0, +r1) = rp',
-              f'      %Equal.sym(U32, y0, {H("y0")}, VL.half_shape(y0, r0)) : {G_("T.Gc4ED9619F50{_, y1}", V("T.Gc4ED9619F50{_, y1}"))}',
-              f'      %Equal.sym(U32, y1, {H("y1")}, VL.half_shape(y1, r1)) : {G_("T.Gc4ED9619F50{" + H("y0") + ", _}", V("T.Gc4ED9619F50{" + H("y0") + ", _}"))}',
+              f'def {R}_e2e_encode(+o: T.SmallTestStruct, +rp: {rpq}) -> {G_("o", V("o"))}:',
+              '  match o:', '    case T.SmallTestStruct{+y0, +y1}:', '      (+r0, +r1) = rp',
+              f'      %Equal.sym(U32, y0, {H("y0")}, VL.half_shape(y0, r0)) : {G_("T.SmallTestStruct{_, y1}", V("T.SmallTestStruct{_, y1}"))}',
+              f'      %Equal.sym(U32, y1, {H("y1")}, VL.half_shape(y1, r1)) : {G_("T.SmallTestStruct{" + H("y0") + ", _}", V("T.SmallTestStruct{" + H("y0") + ", _}"))}',
               f'      {R}_w(WSp.take(16n, 32n, PD.bits(y0)), WSp.take(16n, 32n, PD.bits(y1)))', '']
         return '\n'.join(L)
-    if X == 'GcDC3E457711':
+    if X == 'FixedTestStruct':
         b = [f'b{i}' for i in range(8)]
         pp, qq, rr = [f'p{i}' for i in range(32)], [f'q{i}' for i in range(32)], [f'r{i}' for i in range(32)]
         stream = b + pp + qq + rr + [F_] * 24
@@ -1417,8 +1418,8 @@ def enc_packed(EB, imp, R, X, sn, m, cache, ri):
         wb = ''.join(f'WCon{{{x}, ' for x in b) + 'WNil{}' + '}' * 8
         EMB = f'PD.embed8({wb})'
         P, Q, Rw = _w(pp), _w(qq), _w(rr)
-        OBJ = f'T.GcDC3E457711{{{EMB}, O.U64{{{P}, {Q}}}, {Rw}}}'
-        OBJt = f'T.GcDC3E457711{{PD.embed8(t), O.U64{{y1, y2}}, y3}}'
+        OBJ = f'T.FixedTestStruct{{{EMB}, O.U64{{{P}, {Q}}}, {Rw}}}'
+        OBJt = f'T.FixedTestStruct{{PD.embed8(t), O.U64{{y1, y2}}, y3}}'
         steps = [(f'B.byte_sel(0, {XW[0]})', _w(b + [F_] * 24), f'BT.sel0({", ".join(xw[0])})'),
                  (f'B.join_sel(1, {XW[0]}, {XW[1]})', P, f'BT.join1({", ".join(xw[0] + xw[1])})'),
                  (f'B.join_sel(1, {XW[1]}, {XW[2]})', Q, f'BT.join1({", ".join(xw[1] + xw[2])})'),
@@ -1444,9 +1445,9 @@ def enc_packed(EB, imp, R, X, sn, m, cache, ri):
               chain2(sn, X, OBJ, K, BYE, f'{AE}.{ee["law"]}({EMB}, {P}, {Q}, {Rw})', BYS, f'{R}_by({args})', SV, f'{AS}.{es["law"]}({", ".join(XW)})', '      '), '']
         E8 = 'PD.embed8(WSp.take(8n, 32n, PD.bits(y0)))'
         L += [f'# (i) for every object the root law takes (rp: its uint8 field below 256).',
-              f'def {R}_e2e_encode(+o: T.GcDC3E457711, +rp: {rpq}) -> {G_("o", V("o"))}:',
-              '  match o:', '    case T.GcDC3E457711{+y0, O.U64{+y1, +y2}, +y3}:',
-              f'      %Equal.sym(U32, y0, {E8}, ID.byte_shape(y0, rp)) : {G_("T.GcDC3E457711{_, O.U64{y1, y2}, y3}", V("T.GcDC3E457711{_, O.U64{y1, y2}, y3}"))}',
+              f'def {R}_e2e_encode(+o: T.FixedTestStruct, +rp: {rpq}) -> {G_("o", V("o"))}:',
+              '  match o:', '    case T.FixedTestStruct{+y0, O.U64{+y1, +y2}, +y3}:',
+              f'      %Equal.sym(U32, y0, {E8}, ID.byte_shape(y0, rp)) : {G_("T.FixedTestStruct{_, O.U64{y1, y2}, y3}", V("T.FixedTestStruct{_, O.U64{y1, y2}, y3}"))}',
               f'      {R}_w(WSp.take(8n, 32n, PD.bits(y0)), y1, y2, y3)', '']
         return '\n'.join(L)
     return None
@@ -2930,9 +2931,9 @@ def bs_enc_text(EB, amap):
     return ns['OUT']
 
 
-# ProgressiveBitsStruct (Gc60805EC295) (iv): the object rebuilt from rep's witnesses
+# ProgressiveBitsStruct (ProgressiveBitsStruct) (iv): the object rebuilt from rep's witnesses
 def pbs_root_text():
-    D = 'PB_d.Gc60805EC295'
+    D = 'PB_d.ProgressiveBitsStruct'
     KIND = ['v', 'b', 'p', 'v', 'b', 'p', 'w', 'b', 'p', 'w', 'b', 'p']   # v: plain value, b: bit list (rep_bits), p: progressive (wfb), w: bit vector words (rep_bvb)
     VT = {0: 'bitvector_256_d.Bitvector256', 3: 'bitvector_257_d.Bitvector257'}
     def lit(i):
@@ -2943,20 +2944,20 @@ def pbs_root_text():
             return f'O.Words{{FD.array__thaw(U32, t{i}), N{i}}}'
         return f'O.Bits{{FD.array__thaw(U32, t{i}), N{i}}}'
     def obj(fs):
-        return f'{D}{{PB_d.Gc60805EC295_g0{{{", ".join(fs[:8])}}}, PB_d.Gc60805EC295_g1{{{", ".join(fs[8:])}}}}}'
-    pj = lambda i: f'RT.pj_Gc60805EC295_{i}(o)'
+        return f'{D}{{PB_d.ProgressiveBitsStruct_g0{{{", ".join(fs[:8])}}}, PB_d.ProgressiveBitsStruct_g1{{{", ".join(fs[8:])}}}}}'
+    pj = lambda i: f'RT.pj_ProgressiveBitsStruct_{i}(o)'
     LIT = obj([lit(i) for i in range(12)])
     ST = [i for i in range(12) if KIND[i] != 'v']
-    G = lambda o: (f'{{Some{{D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, PB_h.Gc60805EC295_hash_tree_root(h, {o}))))}} == '
-                   f'API.hash_tree_root(Spec.Gc60805EC295(), RT.v_Gc60805EC295({o})) : Maybe<&2, +List<U32>>}}')
-    REP = lambda o: f'RT.rep_Gc60805EC295({o}, Spec.Gc60805EC295())'
+    G = lambda o: (f'{{Some{{D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, PB_h.ProgressiveBitsStruct_hash_tree_root(h, {o}))))}} == '
+                   f'API.hash_tree_root(Spec.ProgressiveBitsStruct(), RT.v_ProgressiveBitsStruct({o})) : Maybe<&2, +List<U32>>}}')
+    REP = lambda o: f'RT.rep_ProgressiveBitsStruct({o}, Spec.ProgressiveBitsStruct())'
     lp = ', '.join((f'+x{i}: {VT[i]}' if KIND[i] == 'v' else f'+t{i}: FD.array__Tree<U32>, +N{i}: U32') for i in range(12))
     la = ', '.join((f'x{i}' if KIND[i] == 'v' else f't{i}, N{i}') for i in range(12))
     TY = lambda i: 'O.Words' if KIND[i] == 'w' else 'O.Bits'
     CT = lambda i: f'DK.Ex(FD.array__Tree<U32>, t{i} => DK.Ex(U32, N{i} => {{{pj(i)} == {lit(i)} : {TY(i)}}}))'
     L = ['', '# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_fix_d.py). Do not edit.',
          '# ProgressiveBitsStruct (variable size): the object API\'s root is END_TO_END\'s hash_tree_root, for every object the root law',
-         '# represents (rep_Gc60805EC295). The object is rebuilt from rep\'s witnesses (its storages\' trees and lengths).', '',
+         '# represents (rep_ProgressiveBitsStruct). The object is rebuilt from rep\'s witnesses (its storages\' trees and lengths).', '',
          '# bit storage (bitlist_obj.wfb): its tree and bit count',
          'def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, N => {w == O.Bits{FD.array__thaw(U32, t), N} : O.Bits})):',
          '  match wf:', '    case Inl{s}:', '      (+t, s1) = s', '      (+dw, s2) = s1', '      (+N, s3) = s2', '      (+ew, s4) = s3', '      (t, (N, ew))',
@@ -2966,8 +2967,8 @@ def pbs_root_text():
          '  (+t, s1) = wf', '  (+dw, s2) = s1', '  (+N, s3) = s2', '  (+q, s4) = s3', '  (+r, s5) = s4', '  (+ew, s6) = s5', '  (t, (N, ew))', '',
          '# the literal object',
          f'def rt1(h: B.Buf, {lp}, +rep: {REP(LIT)}) -> {G(LIT)}:',
-         f'  E.root_legal(Spec.Gc60805EC295(), RT.v_Gc60805EC295({LIT}), VS.public_sound(Spec.Gc60805EC295(), {{==}}), D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, PB_h.Gc60805EC295_hash_tree_root(h, {LIT})))),',
-         f'    GV.Gc60805EC295_root_valid({LIT}, Spec.Gc60805EC295(), {{==}}, rep), RT.Gc60805EC295_root_correct(h, {LIT}, Spec.Gc60805EC295(), {{==}}, rep))', '',
+         f'  E.root_legal(Spec.ProgressiveBitsStruct(), RT.v_ProgressiveBitsStruct({LIT}), VS.public_sound(Spec.ProgressiveBitsStruct(), {{==}}), D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, PB_h.ProgressiveBitsStruct_hash_tree_root(h, {LIT})))),',
+         f'    GV.ProgressiveBitsStruct_root_valid({LIT}, Spec.ProgressiveBitsStruct(), {{==}}, rep), RT.ProgressiveBitsStruct_root_correct(h, {LIT}, Spec.ProgressiveBitsStruct(), {{==}}, rep))', '',
          '# the object as the literal',
          f'def rt2(h: B.Buf, -o: {D}, +rep: {REP("o")}, {lp}, +eo: {{o == {LIT} : {D}}}) -> {G("o")}:',
          f'  %Equal.sym({D}, o, {LIT}, eo) : {G("_")}',
@@ -3032,7 +3033,7 @@ import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as PB_h
     return H + '\n'.join(L) + '\n'
 
 
-# ---- ProgressiveBitsStruct (Gc60805EC295) (i): its encode record from rep and PREM (support e2e_pbs.bend) ----
+# ---- ProgressiveBitsStruct (ProgressiveBitsStruct) (i): its encode record from rep and PREM (support e2e_pbs.bend) ----
 from pathlib import Path as _P
 PBS_ROOT = _P(__file__).resolve().parents[1]
 
@@ -3063,11 +3064,11 @@ def pbsw_text():
          'import ../proofs/obj/vbv257s.bend as V2S',
          'import ../proofs/obj/vbv128s.bend as V2S8',
          'import ../proofs/obj/vfx_bv1281.bend as G81',
-         'import ../proofs/obj/big_encx_Gc60805EC295_iface.bend as CI',
+         'import ../proofs/obj/encx_ProgressiveBitsStruct_iface.bend as CI',
          '',
          '# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_fix_d.py). Do not edit.',
          '# ProgressiveBitsStruct\'s bit vectors: the root law\'s views (root_gnames, wbits_obj) are the encode record\'s',
-         '# (big_encx_Gc60805EC295_iface: LV_bv256, V257, V1280, V1281); the words\' bits at 32 k (+ 1) bits (m32).',
+         '# (encx_ProgressiveBitsStruct_iface: LV_bv256, V257, V1280, V1281); the words\' bits at 32 k (+ 1) bits (m32).',
          '',
          'def andT(+a: Bool) -> {Bool.and(a, True{}) == a : Bool}:', '  match a:', '    case True{}: {==}', '    case False{}: {==}', '',
          'def m32(k: Nat) -> Nat:', '  match k:', '    case 0n: 0n', '    case 1n+p: Nat.add(32n, m32(p))', '',
@@ -3193,10 +3194,10 @@ def pbs_support_text():
              'import ../proofs/obj/bitlist_obj.bend as BO',
              'import ../proofs/obj/dk.bend as DK',
              'import ../proofs/obj/vbv1281d.bend as V81',
-             'import ../proofs/obj/big_encx_bits256.bend as EX_bits256',
-             'import ../proofs/obj/big_encx_bits257.bend as EX_bits257',
-             'import ../proofs/obj/big_encx_bits1280.bend as EX_bits1280',
-             'import ../proofs/obj/big_encx_bits1281.bend as EX_bits1281',
+             'import ../proofs/obj/encx_bits256.bend as EX_bits256',
+             'import ../proofs/obj/encx_bits257.bend as EX_bits257',
+             'import ../proofs/obj/encx_bits1280.bend as EX_bits1280',
+             'import ../proofs/obj/encx_bits1281.bend as EX_bits1281',
              './e2e_tree.bend as E3', './e2e_tz.bend as TZ', './e2e_bitl.bend as BLB', './e2e_encp.bend as EP', './e2e_fixdw.bend as XW']
     extra = [e if e.startswith('import') else 'import ' + e for e in extra]
     B = []
@@ -3279,7 +3280,7 @@ def pbs_support_text():
           '    {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool})))))))', '']
     for N, (EX, kb, KY) in PBS_BITS.items():
         MB = f'{EX}.MB{{dw, T, K, {N}n, {kb}n, {KY}n}}'
-        cs = pbs_okt(f'proofs/obj/big_encx_bits{N}.bend', PBS_MBP, ['dw', 'T', 'K', f'{N}n', f'{kb}n', f'{KY}n'])
+        cs = pbs_okt(f'proofs/obj/encx_bits{N}.bend', PBS_MBP, ['dw', 'T', 'K', f'{N}n', f'{kb}n', f'{KY}n'])
         import e2e_bview_gen as _BVG   # the conjuncts' proofs by shape (the records' OKT changed with codec-deep: dw < 31, no KY)
         ps = [{'hdw': 'FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})'}.get(q, q) if re.search(r'is_lt\(dw, 31n\)', c) else q for c, q in ((c, _BVG.okt_proof(c)) for c in cs)]
         BR = f'BR{N}'
@@ -3364,17 +3365,17 @@ def pbs_support_text():
                    '  (d, (t, (ew2, (ev, (pf, (hd, (hr0, (htz, hbz))))))))', '']
         B += L2
     hdr = ['# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_fix_d.py). Do not edit.',
-           '# ProgressiveBitsStruct\'s fields as its encode record\'s (big_encx_Gc60805EC295_iface): the bit vectors\' views,',
+           '# ProgressiveBitsStruct\'s fields as its encode record\'s (encx_ProgressiveBitsStruct_iface): the bit vectors\' views,',
            '# the bit lists\' records from the root law\'s rep (with premise SDB), the bit vector words\' trees (premise SDW),',
            '# the size bound with 2^27 symbolic.']
-    body = [l for l in body if not l.startswith('# GENERATED') and not l.startswith("# ProgressiveBitsStruct's bit vectors") and not l.startswith('# (big_encx_Gc60805EC295_iface: LV_bv256')]
+    body = [l for l in body if not l.startswith('# GENERATED') and not l.startswith("# ProgressiveBitsStruct's bit vectors") and not l.startswith('# (encx_ProgressiveBitsStruct_iface: LV_bv256')]
     return '\n'.join(heads + extra) + '\n\n' + '\n'.join(hdr) + '\n' + '\n'.join(body) + '\n' + '\n'.join(B) + '\n'
 
 
 
 def pbs_main_text(bs='./e2e_pbs.bend'):
-    D = 'PB_d.Gc60805EC295'
-    X = 'Gc60805EC295'
+    D = 'PB_d.ProgressiveBitsStruct'
+    X = 'ProgressiveBitsStruct'
     pj = lambda i: f'RT.pj_{X}_{i}(o)'
     MWF = ['x0', 'm1', 'm2', 'x3', 'm4', 'm5', 'dB6', 'TB6', 'm7', 'm8', 'dB9', 'TB9', 'm10', 'm11']
     MWT = ['bitvector_256_d.Bitvector256', 'EX_bits256.MB', 'EX_pbits.MB', 'bitvector_257_d.Bitvector257', 'EX_bits257.MB', 'EX_pbits.MB', 'Nat', 'FD.array__Tree<U32>',
@@ -3466,7 +3467,7 @@ def pbs_main_text(bs='./e2e_pbs.bend'):
                   '  (+hr9, +c9g) = c9f', '  (+htz9, +hbz9) = c9g']
         else:
             L += [f'  (+m{i}, +c{i}a) = c{i}', f'  (+e{i}, +c{i}b) = c{i}a', f'  (+v{i}, +c{i}c) = c{i}b', f'  (+o{i}, +l{i}) = c{i}c']
-    cs = pbs_okt('proofs/obj/big_encx_Gc60805EC295_iface.bend',
+    cs = pbs_okt('proofs/obj/encx_ProgressiveBitsStruct_iface.bend',
              ['f_A', 'm_f_B', 'm_f_C', 'f_D', 'm_f_E', 'm_f_F', 'dB_f_G', 'TB_f_G', 'm_f_H', 'm_f_I', 'dB_f_J', 'TB_f_J', 'm_f_K', 'm_f_L'], MWF)
     assert len(cs) == 19, len(cs)
     cs = [c.replace('V_bv1281.', 'V81.') for c in cs]
@@ -3545,13 +3546,13 @@ import ../proofs/obj/wbits_obj.bend as WBV
 import ../proofs/obj/root_gnames.bend as RN
 import ../proofs/obj/vbv257s.bend as V2S
 import ../proofs/obj/vbv128s.bend as V2S8
-import ../proofs/obj/big_encx_bits256.bend as EX_bits256
-import ../proofs/obj/big_encx_bits257.bend as EX_bits257
-import ../proofs/obj/big_encx_bits1280.bend as EX_bits1280
-import ../proofs/obj/big_encx_bits1281.bend as EX_bits1281
-import ../proofs/obj/big_encx_pbits.bend as EX_pbits
-import ../proofs/obj/big_encx_Gc60805EC295_iface.bend as CI
-import ../proofs/obj/big_var_codec_Gc60805EC295_enc.bend as EN
+import ../proofs/obj/encx_bits256.bend as EX_bits256
+import ../proofs/obj/encx_bits257.bend as EX_bits257
+import ../proofs/obj/encx_bits1280.bend as EX_bits1280
+import ../proofs/obj/encx_bits1281.bend as EX_bits1281
+import ../proofs/obj/encx_pbits.bend as EX_pbits
+import ../proofs/obj/encx_ProgressiveBitsStruct_iface.bend as CI
+import ../proofs/obj/var_codec_ProgressiveBitsStruct_enc.bend as EN
 import ../types/bitvector_256_def_generated.bend as bitvector_256_d
 import ../types/bitvector_257_def_generated.bend as bitvector_257_d
 import ../types/bitvector_257_encode_ssz_generated.bend as bitvector_257_e
@@ -3570,7 +3571,7 @@ import {bs} as BS
     return H + '\n' + '\n'.join(L) + '\n'
 
 
-# ---- ProgressiveBitsStruct (Gc60805EC295) (ii)/(iii): its window view (support e2e_pbsd.bend), through e2e_bridge's VDEC_VIEWS ----
+# ---- ProgressiveBitsStruct (ProgressiveBitsStruct) (ii)/(iii): its window view (support e2e_pbsd.bend), through e2e_bridge's VDEC_VIEWS ----
 def pbsd_inline_lets(L, names):
     import re as _re
     out, env = [], {}
@@ -3590,7 +3591,7 @@ def pbsd_inline_lets(L, names):
     return out
 
 
-PBSD_DEEP = ['pbv256', 'pbv257', 'pbv1280', 'pbv1281', 'v256w', 'v257w', 'v1280w', 'v1281w', 'vw_Gc60805EC295']
+PBSD_DEEP = ['pbv256', 'pbv257', 'pbv1280', 'pbv1281', 'v256w', 'v257w', 'v1280w', 'v1281w', 'vw_ProgressiveBitsStruct']
 
 
 def pbsd_deep(text):
@@ -3640,7 +3641,7 @@ def pbsd_deep(text):
 
 
 def pbsd_text(bs='./e2e_pbs.bend'):
-    X = 'Gc60805EC295'
+    X = 'ProgressiveBitsStruct'
     A = lambda p: [f'{p}{i}' for i in range(32)]  # noqa: E731
     def wpat(p):
         s = 'WNil{}'
@@ -3830,7 +3831,7 @@ def pbsd_text(bs='./e2e_pbs.bend'):
          'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/wbits_obj.bend as WBV', 'import ../proofs/obj/root_gnames.bend as RN',
          'import ../proofs/obj/root_gtypes2.bend as RT',
          'import ../proofs/obj/vfx_bv256.bend as F56', 'import ../proofs/obj/vfx_bv257.bend as F57', 'import ../proofs/obj/vfx_bv1280.bend as F80', 'import ../proofs/obj/vfx_bv1281.bend as F81',
-         'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_g_bits256.bend as CB256', 'import ../proofs/obj/var_winx_g_bits257.bend as CB257',
+         'import ../proofs/obj/var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_g_bits256.bend as CB256', 'import ../proofs/obj/var_winx_g_bits257.bend as CB257',
          'import ../proofs/obj/var_winx_g_bits1280.bend as CB1280', 'import ../proofs/obj/var_winx_g_bits1281.bend as CB1281',
          f'import ../proofs/obj/var_winx_{X}.bend as W',
          './e2e_gpb.bend as GPB', './e2e_bview.bend as BV', './e2e_bx.bend as BX', f'{bs} as BS']
@@ -3839,27 +3840,27 @@ def pbsd_text(bs='./e2e_pbs.bend'):
     return '\n'.join(H) + '''
 
 # GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_fix_d.py). Do not edit.
-# ProgressiveBitsStruct read at a byte window: its root view is its codec value (vw_Gc60805EC295), field by field:
+# ProgressiveBitsStruct read at a byte window: its root view is its codec value (vw_ProgressiveBitsStruct), field by field:
 # the bit lists by e2e_gpb.pbv (their checks imply the progressive one's), the bit vectors at their offsets by
 # their words' and bytes' bits (e2e_bview.wbb, bl1; e2e_bx.ctw; vfx_bv257/1281.wx).
 
 ''' + '\n'.join(L) + '\n'
 
 
-VDEC_VIEWS = {'Gc60805EC295': {'view': 'RT.v_Gc60805EC295', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD'],
-                               'text': '''# ---- the view of a decoded object is the codec law's value (e2e_pbsd.vw_Gc60805EC295 at the window (0, 0, n)) ----
+VDEC_VIEWS = {'ProgressiveBitsStruct': {'view': 'RT.v_ProgressiveBitsStruct', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD'],
+                               'text': '''# ---- the view of a decoded object is the codec law's value (e2e_pbsd.vw_ProgressiveBitsStruct at the window (0, 0, n)) ----
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_Gc60805EC295(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
-  PBD.vw_Gc60805EC295(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_ProgressiveBitsStruct(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
+  PBD.vw_ProgressiveBitsStruct(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)
 
 '''}}
 
-if 'Nat.is_lt(d, 31n)' in (_P(__file__).resolve().parents[1] / 'proofs/obj/var_codec_Gc60805EC295.bend').read_text():
+if 'Nat.is_lt(d, 31n)' in (_P(__file__).resolve().parents[1] / 'proofs/obj/var_codec_ProgressiveBitsStruct.bend').read_text():
     # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
     import e2e_var_c as _EVC
-    VDEC_VIEWS['Gc60805EC295'] = {'view': 'RT.v_Gc60805EC295', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD',
+    VDEC_VIEWS['ProgressiveBitsStruct'] = {'view': 'RT.v_ProgressiveBitsStruct', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD',
                                                                           'import ../proofs/obj/vbuf.bend as VB'],
-                                  'text': _EVC.deep_vv_text('Gc60805EC295', 'PBD.vw_Gc60805EC295D', 'e2e_pbsd')}
+                                  'text': _EVC.deep_vv_text('ProgressiveBitsStruct', 'PBD.vw_ProgressiveBitsStructD', 'e2e_pbsd')}
 VROOT_SHAPES = {}
 VENC_SHAPES = {}
 
@@ -4728,14 +4729,14 @@ def FuluBlob_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U
 
 
 # the generated names of this worker's share (the fixed-size names e2e_bridge's families leave uncovered)
-MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Deposit', 'Gc4ED9619F50', 'Gc74A8F5F17F', 'GcDC3E457711', 'GpF350A3C486',
-          'Gt0366A291C1', 'Gt04170D6AA7', 'Gt05340E1F7E', 'Gt0B0C03B454', 'Gt19F04F79B8', 'Gt1BD4B4358D', 'Gt1D9B3E1871', 'Gt27CDB122DD',
-          'Gt28605B5D5C', 'Gt28ED72E3EF', 'Gt2CD118DF5F', 'Gt2FF8722A75', 'Gt3429157FEB', 'Gt34AE45611E', 'Gt3771256492', 'Gt39CAD03032',
-          'Gt526892A4DC', 'Gt57090094FA', 'Gt5BE68AF2C7', 'Gt6463DC73A8', 'Gt6F0D97A69E', 'Gt75C1995C88', 'Gt7B8507E2C2', 'Gt7FBB1934E8',
-          'Gt89824BEACE', 'Gt9333E6513D', 'Gt9368483BAB', 'Gt9579E0A2FD', 'Gt967E8D815F', 'Gt9DF37A5216', 'GtA8100D747D', 'GtAA8D1478A7',
-          'GtAD3CF815B7', 'GtAD72FD256A', 'GtAE3EF932C2', 'GtAEB382AD1F', 'GtB1E9093D65', 'GtB85E1BC748', 'GtC0FC7B166A', 'GtC19E8053EB',
-          'GtC57121EA56', 'GtE6006F6F55', 'GtEB2FD43D9B', 'GtECF9BB18D8', 'GtED805B7C93', 'GtEDF530C7B9', 'GtEDFB713194', 'GtF3865AEE9A',
-          'GtFCF8066C33', 'GtFF7C03E8A0', 'HistoricalBatch', 'MatrixEntry', 'ParticipationFlags', 'ProposerSlashing',
+MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Deposit', 'SmallTestStruct', 'SingleFieldTestStruct', 'FixedTestStruct', 'ProgressiveSingleFieldContainerTestStruct',
+          'bitvector_8', 'vec_uint16_2', 'bitvector_511', 'bitvector_513', 'vec_uint16_3', 'bitvector_9', 'vec_bool_16', 'bitvector_5',
+          'vec_uint8_512', 'vec_uint8_16', 'vec_uint8_513', 'vec_uint16_512', 'vec_uint8_2', 'vec_bool_512', 'vec_bool_2', 'vec_uint16_8',
+          'vec_bool_8', 'vec_bool_3', 'vec_uint16_513', 'vec_uint16_4', 'bitvector_33', 'vec_uint8_4', 'uint32', 'vec_bool_5',
+          'vec_uint16_5', 'vec_uint16_31', 'bitvector_2', 'bitvector_3', 'uint8', 'vec_bool_31', 'vec_uint8_8', 'bitvector_7',
+          'bitvector_6', 'boolean', 'vec_bool_1', 'vec_uint16_16', 'bitvector_4', 'vec_uint8_1', 'vec_uint8_31', 'vec_uint8_3',
+          'vec_bool_4', 'vec_uint16_1', 'vec_bool_513', 'uint16', 'bitvector_16', 'bitvector_15', 'bitvector_31', 'vec_uint8_5',
+          'bitvector_1', 'bitvector_17', 'HistoricalBatch', 'MatrixEntry', 'ParticipationFlags', 'ProposerSlashing',
           'SignedContributionAndProof', 'SyncCommittee', 'Validator']
 RBATCH = 8
 RBATCH_HEAVY = {"root_gtypes.bend": 3}
@@ -4746,7 +4747,7 @@ def build(EB, amap, cache, vidx):
     files, cover = {}, {}
     todo = set(MINE_X)
     for X in amap['fulu'] + amap['generic']:
-        r = fam_a_alt(EB, X, readable[X], amap['map'][X], cache, vidx) if X in ('Gt7B8507E2C2',) else None
+        r = fam_a_alt(EB, X, readable[X], amap['map'][X], cache, vidx) if X in ('uint32',) else None
         if r:
             fi, fd = f'{r["R"]}_e2e_generated.bend', f'{r["R"]}_e2e_dec_generated.bend'
             files[fi] = EB.text_a([r], 0)
@@ -4782,14 +4783,14 @@ def build(EB, amap, cache, vidx):
             prem = [f'{md}{n}: {t}' for md, n, t in ri['ps'][1:] if n not in ('o', 's', 'es')]
             cover.setdefault(X, {})['iv'] = fn
             cover[X].setdefault('premise', '; '.join(prem))
-    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['GtAD72FD256A', 'Validator'] + BVS + BOXC + ['Cell']:
+    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['boolean', 'Validator'] + BVS + BOXC + ['Cell']:
         if X not in todo:
             continue
         m0 = amap['map'][X]
         dp = dec_parse(EB, X, m0, cache)
         ri = root_info(EB, X, m0, cache)
         if dp:
-            dp['hkind'] = 'bool' if X == 'GtAD72FD256A' else 'lf' if X in VEC_B else 'pad'
+            dp['hkind'] = 'bool' if X == 'boolean' else 'lf' if X in VEC_B else 'pad'
         if not dp or not ri:
             continue
         gen = EB.RR.runtime_of(_unlight((EB.OBJ / dp['da']['file']).read_text())) == 'generic'
@@ -4797,7 +4798,7 @@ def build(EB, amap, cache, vidx):
         files[fn] = dec_file(EB, [(readable[X], X, X, dp, ri[0], gen)])
         cover.setdefault(X, {})['ii_iii'] = fn
         cover[X]['ii'] = 'exact' if X in UN else 'view'
-    for X in ENC_LEAF + BVS + ['Gc4ED9619F50', 'GcDC3E457711'] + BOXC:
+    for X in ENC_LEAF + BVS + ['SmallTestStruct', 'FixedTestStruct'] + BOXC:
         if X not in todo:
             continue
         ri = root_info(EB, X, amap['map'][X], cache)
@@ -4839,7 +4840,7 @@ def build(EB, amap, cache, vidx):
                                                     'premise': 'rep (the root law\'s representation invariant); (i) also hcb, hcp: the blob\'s storage at the encoder\'s depth 16, the proof\'s at depth 8'})
     files['ProgressiveBitsStruct_e2e_root_generated.bend'] = pbs_root_text()
     files['ProgressiveBitsStruct_e2e_generated.bend'] = pbs_main_text()
-    cover.setdefault('Gc60805EC295', {}).update({'iv': 'ProgressiveBitsStruct_e2e_root_generated.bend', 'i': 'ProgressiveBitsStruct_e2e_generated.bend',
+    cover.setdefault('ProgressiveBitsStruct', {}).update({'iv': 'ProgressiveBitsStruct_e2e_root_generated.bend', 'i': 'ProgressiveBitsStruct_e2e_generated.bend',
                                                  'premise': 'rep (the root law\'s representation invariant); (i) also PREM (e2e_pbs: each bit list\'s tree below depth 28 (SDB) or 31 (e2e_encp.SDPB, the progressive ones) with room and zero bits above its last; each bit vector\'s tree depth and room, SDW, and the 1281-bit vector\'s zero bits above bit 1281)'})
     if 'SyncCommittee' in todo:
         files['FuluSyncCommittee_e2e_generated.bend'] = SC_ENC

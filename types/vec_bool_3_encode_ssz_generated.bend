@@ -25,15 +25,15 @@ def v3_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 3, 3, 
 
 def v3_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_bool_pk(out, pos, v3_bool_valid(o))
 
-def Gt57090094FA_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_3_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(3, out))
 
-def Gt57090094FA_encode(o: O.Words) -> O.Words & B.Buf: Gt57090094FA_enc_out(v3_bool_put(O.out_at(0n), 0, o))
+def vec_bool_3_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_3_enc_out(v3_bool_put(O.out_at(0n), 0, o))
 
-def Gt57090094FA_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_3_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 3, out))
 
-def Gt57090094FA_serialize(o: O.Words) -> O.Words & O.Encoded: Gt57090094FA_senc_out(v3_bool_putk(O.out_at(0n), 0, o))
+def vec_bool_3_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_3_senc_out(v3_bool_putk(O.out_at(0n), 0, o))

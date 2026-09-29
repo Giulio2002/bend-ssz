@@ -3,7 +3,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_var_winx_SignedBeaconBlock.bend as W
+import ../proofs/obj/var_winx_SignedBeaconBlock.bend as W
 import ./e2e_bbatt.bend as BBA
 import ./e2e_vhb_BeaconBlock.bend as HVC
 

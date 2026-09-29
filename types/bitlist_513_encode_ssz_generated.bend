@@ -23,35 +23,35 @@ def bits513_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 513, False{})
 
 def bits513_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits513_pk(out, pos, bits513_valid(o))
 
-def Gt44F1B6940F_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_513_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt44F1B6940F_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_513_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt44F1B6940F_enc_out(n, out, o, m)
+  bitlist_513_enc_out(n, out, o, m)
 
-def Gt44F1B6940F_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
+def bitlist_513_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  Gt44F1B6940F_enc_put(n, bits513_putn(O.out_new(n), 0, o))
+  bitlist_513_enc_put(n, bits513_putn(O.out_new(n), 0, o))
 
-def Gt44F1B6940F_encode(o: O.Bits) -> O.Bits & B.Buf: Gt44F1B6940F_enc_sized(bits513_size(o))
+def bitlist_513_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_513_enc_sized(bits513_size(o))
 
-def Gt44F1B6940F_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_513_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt44F1B6940F_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_513_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt44F1B6940F_senc_out(n, out, o, m)
+  bitlist_513_senc_out(n, out, o, m)
 
-def Gt44F1B6940F_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+def bitlist_513_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt44F1B6940F_senc_put(n, bits513_putk(O.out_new(n), 0, o))
+    case False{}: bitlist_513_senc_put(n, bits513_putk(O.out_new(n), 0, o))
 
-def Gt44F1B6940F_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+def bitlist_513_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
   (o, +n) = pair
-  Gt44F1B6940F_senc_go(O.is_poisoned(n), n, o)
+  bitlist_513_senc_go(O.is_poisoned(n), n, o)
 
-def Gt44F1B6940F_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt44F1B6940F_senc_sized(bits513_size(o))
+def bitlist_513_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_513_senc_sized(bits513_size(o))

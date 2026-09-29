@@ -11,17 +11,17 @@ def bits512_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(
 
 def bits512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 512, False{})
 
-def Gt38F5890C13_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_512_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt38F5890C13_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_512_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt38F5890C13_some(bits512_read(buf, 0, size))
+    case True{}: bitlist_512_some(bits512_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt38F5890C13_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt38F5890C13_built(size, bits512_ok(buf, 0, size))
+def bitlist_512_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_512_built(size, bits512_ok(buf, 0, size))
 
-def Gt38F5890C13_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits512_read(buf, 0, size)
+def bitlist_512_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits512_read(buf, 0, size)

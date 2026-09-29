@@ -23,35 +23,35 @@ def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 16)
 
 def pl_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u128_pk(out, pos, pl_u128_valid(o))
 
-def Gt1C2FA69562_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
+def proglist_uint128_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt1C2FA69562_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
+def proglist_uint128_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt1C2FA69562_enc_out(n, out, o, m)
+  proglist_uint128_enc_out(n, out, o, m)
 
-def Gt1C2FA69562_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
+def proglist_uint128_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  Gt1C2FA69562_enc_put(n, pl_u128_putn(O.out_new(n), 0, o))
+  proglist_uint128_enc_put(n, pl_u128_putn(O.out_new(n), 0, o))
 
-def Gt1C2FA69562_encode(o: O.Words) -> O.Words & B.Buf: Gt1C2FA69562_enc_sized(pl_u128_size(o))
+def proglist_uint128_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint128_enc_sized(pl_u128_size(o))
 
-def Gt1C2FA69562_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+def proglist_uint128_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt1C2FA69562_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def proglist_uint128_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt1C2FA69562_senc_out(n, out, o, m)
+  proglist_uint128_senc_out(n, out, o, m)
 
-def Gt1C2FA69562_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+def proglist_uint128_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt1C2FA69562_senc_put(n, pl_u128_putk(O.out_new(n), 0, o))
+    case False{}: proglist_uint128_senc_put(n, pl_u128_putk(O.out_new(n), 0, o))
 
-def Gt1C2FA69562_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+def proglist_uint128_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
   (o, +n) = pair
-  Gt1C2FA69562_senc_go(O.is_poisoned(n), n, o)
+  proglist_uint128_senc_go(O.is_poisoned(n), n, o)
 
-def Gt1C2FA69562_serialize(o: O.Words) -> O.Words & O.Encoded: Gt1C2FA69562_senc_sized(pl_u128_size(o))
+def proglist_uint128_serialize(o: O.Words) -> O.Words & O.Encoded: proglist_uint128_senc_sized(pl_u128_size(o))

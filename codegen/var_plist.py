@@ -2,7 +2,7 @@
 """Generate the codec laws of the bare progressive lists of whole-word unsigned
 elements (the generic forms ProgressiveList[uint32/64/128/256]).
 
-    python3 codegen/var_plist.py [--check] [--no-big]
+    python3 codegen/var_plist.py [--check]
 
 Writes
 
@@ -10,10 +10,10 @@ Writes
         elements of E words each (E = 1, 2, 4, 8): its value it<E>(k, W), its
         parts, count, bytes, the progressive-list encoding plenc<E>, and the
         inversion rep_facts<E> of the repeated parts;
-    proofs/obj/big_var_plist_<X>.bend          ok_eval, decode_accept, decode_spec
-    proofs/obj/big_var_plist_<X>_unique.bend   decode_unique
-    proofs/obj/big_var_plist_<X>_rej.bend      decode_reject, decode_none
-    proofs/obj/big_var_plist_<X>_enc.bend      encode_eval, encode_spec
+    proofs/obj/var_plist_<X>.bend          ok_eval, decode_accept, decode_spec
+    proofs/obj/var_plist_<X>_unique.bend   decode_unique
+    proofs/obj/var_plist_<X>_rej.bend      decode_reject, decode_none
+    proofs/obj/var_plist_<X>_enc.bend      encode_eval, encode_spec
 
 for every buffer B.Buf{thaw(t), n} on a perfect word tree t of depth d < 28
 with n <= 4 2^d, and every object O.Words{thaw(T), N} whose storage T is a
@@ -21,7 +21,7 @@ perfect tree of depth dw < 28 holding its c elements. The per-name files are
 BIG (checked with `checkq --big`): a progressive list has no length limit, so
 the decoder's list storage depth ranges up to 29 and its zeros_at case split
 compares Array.new trees of up to 2^29 leaves, which stock Bend 2.0.28
-normalizes. With --no-big only var_elems.bend is written. The element-agnostic
+normalizes. The element-agnostic
 facts are the hand-written, stock-checked proofs/obj/vlist.bend.
 """
 import re
@@ -31,8 +31,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 # name -> (runtime prefix, words per element)
-NAMES = {'Gt3A9420DD8E': ('pl_u32', 1), 'GtE83F21B20A': ('pl_u64', 2),
-         'Gt1C2FA69562': ('pl_u128', 4), 'GtA8457965E2': ('pl_u256', 8)}
+NAMES = {'proglist_uint32': ('pl_u32', 1), 'proglist_uint64': ('pl_u64', 2),
+         'proglist_uint128': ('pl_u128', 4), 'proglist_uint256': ('pl_u256', 8)}
 WIDTH = {1: 'P.U32Width{}', 2: 'P.U64{}', 4: 'P.U128{}', 8: 'P.U256{}'}
 PART = {1: 'FX.uint32_part', 2: 'FX.uint64_part', 4: 'FX.uint128_part', 8: 'FX.uint256_part'}
 
@@ -294,10 +294,10 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/ob
         'import ../../spec/decoding_relation.bend as Decoding', 'import ../../spec/nat_bytes.bend as N',
         'import ./generic_specs.bend as GS', 'import ./spec_fixed.bend as FX', 'import ./vspec.bend as VS', 'import ./vbuf.bend as VB',
         'import ./vu32.bend as VU', 'import ./vcopy.bend as VC', 'import ./vdepth.bend as VD', 'import ./vlist.bend as VL',
-        'import ./vfits.bend as VFT', 'import ./var_elems.bend as EL', 'import ./big_var_plist_zeros.bend as Z']
+        'import ./vfits.bend as VFT', 'import ./var_elems.bend as EL', 'import ./var_plist_zeros.bend as Z']
 
 BIG_NOTE = ['# BIG (checkq --big): a progressive list has no length limit, so the list storage',
-            '# is B.zeros(u) at every depth u; big_var_plist_zeros.bend identifies it with',
+            '# is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with',
             '# Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to',
             '# 2^26 leaves: stock Bend 2.0.28 normalizes them; with bendlang/bend#1075 they are identical terms.']
 
@@ -320,7 +320,7 @@ def zeros_text():
 
 
 def fname(X, part=''):
-    return ROOT / f'proofs/obj/big_var_plist_{X}{part}.bend'
+    return ROOT / f'proofs/obj/var_plist_{X}{part}.bend'
 
 
 HNN = '{U32.is_le(n, VB.NMAX()) == True{} : Bool}'
@@ -628,15 +628,14 @@ def encode_spec(dw, T, N, c, pfT, hdw, ec, hroom):
     return '\n'.join(L) + '\n'
 
 
-def outputs(no_big):
+def outputs():
     out = {ROOT / 'proofs/obj/var_elems.bend': elems_text()}
-    if not no_big:
-        out[ROOT / 'proofs/obj/big_var_plist_zeros.bend'] = zeros_text()
-        for X in NAMES:
-            out[fname(X)] = dec_text(X)
-            out[fname(X, '_unique')] = uniq_text(X)
-            out[fname(X, '_rej')] = rej_text(X)
-            out[fname(X, '_enc')] = enc_text(X)
+    out[ROOT / 'proofs/obj/var_plist_zeros.bend'] = zeros_text()
+    for X in NAMES:
+        out[fname(X)] = dec_text(X)
+        out[fname(X, '_unique')] = uniq_text(X)
+        out[fname(X, '_rej')] = rej_text(X)
+        out[fname(X, '_enc')] = enc_text(X)
     return out
 
 
@@ -647,11 +646,10 @@ def _foreign(q, me):
     return m is not None and m.group(1) != me
 
 def main():
-    no_big = '--no-big' in sys.argv
-    out = outputs(no_big)
-    mine = [q for q in sorted((ROOT / 'proofs/obj').glob('big_var_plist_*.bend')) + sorted((ROOT / 'proofs/obj').glob('var_plist_*.bend'))
+    out = outputs()
+    mine = [q for q in sorted((ROOT / 'proofs/obj').glob('var_plist_*.bend')) + sorted((ROOT / 'proofs/obj').glob('var_plist_*.bend'))
             if not _foreign(q, 'codegen/var_plist.py')]
-    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_'))]
+    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

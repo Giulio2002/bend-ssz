@@ -2,7 +2,7 @@
 """ok_eval and decode_reject for the bit vectors whose validator checks the padding bits
 of the last byte (O.ok_pad): BitVector[n] with n = 8 K + r, 0 < r < 8, N = K + 1 bytes.
 
-    python3 codegen/fix_reject_pad.py [--check] [--no-big]
+    python3 codegen/fix_reject_pad.py [--check]
 
 With PADK(bs, K, r) = bits r..7 of byte K of bs clear:
   <X>_ok_eval(d, t, n, off, x, e, hd, pf, hb, len)

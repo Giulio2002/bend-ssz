@@ -555,16 +555,15 @@ def encode_spec({E.AH}):
     return L
 
 
-def outputs(g, names, no_big):
+def outputs(g, names):
     out = {}
     for n in VBN.ORDER:
         if n == 'LightClientBootstrap':
             # its 24820-byte header: codegen/var_bytes_benc.py (a big_ file)
-            if not no_big:
-                import var_bytes_benc as VBBE
-                x = VBN.NName(g, n, names[n])
-                L, _ = VBBE.enc_text(x, child_enc(VBN.NEST[n], g, names), 13)
-                out[VBY.fname(x, '_enc')] = '\n'.join(L) + '\n'
+            import var_bytes_benc as VBBE
+            x = VBN.NName(g, n, names[n])
+            L, _ = VBBE.enc_text(x, child_enc(VBN.NEST[n], g, names), 13)
+            out[VBY.fname(x, '_enc')] = '\n'.join(L) + '\n'
             continue
         if n in VBN.NO_ENC:
             continue

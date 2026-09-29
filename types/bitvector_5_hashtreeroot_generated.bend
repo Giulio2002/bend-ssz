@@ -12,4 +12,4 @@ def bv5_root(+hl: Nat, h: B.Buf, o: bitvector_5_d.Bitvector5, +seg: U32) -> B.Bu
   match o:
     case bitvector_5_d.Bitvector5{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
-def Gt27CDB122DD_hash_tree_root(h: B.Buf, +o: bitvector_5_d.Bitvector5) -> B.Buf & D.Digest: bv5_root(64n, h, o, 0)
+def bitvector_5_hash_tree_root(h: B.Buf, +o: bitvector_5_d.Bitvector5) -> B.Buf & D.Digest: bv5_root(64n, h, o, 0)

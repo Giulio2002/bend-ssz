@@ -31,15 +31,15 @@ def bv9_put(out: Array<U32>, +pos: U32, o: bitvector_9_d.Bitvector9) -> Array<U3
   match o:
     case bitvector_9_d.Bitvector9{+w0}: bv9_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def Gt1BD4B4358D_encode(+o: bitvector_9_d.Bitvector9) -> B.Buf: O.out_done(2, bv9_put(O.out_at(0n), 0, o))
+def bitvector_9_encode(+o: bitvector_9_d.Bitvector9) -> B.Buf: O.out_done(2, bv9_put(O.out_at(0n), 0, o))
 
 def bv9_valid(o: bitvector_9_d.Bitvector9) -> Bool:
   match o:
     case bitvector_9_d.Bitvector9{+w0}: U32.is_lt(w0, 512)
 
-def Gt1BD4B4358D_ser_pick(ok: Bool, +o: bitvector_9_d.Bitvector9) -> O.Encoded:
+def bitvector_9_ser_pick(ok: Bool, +o: bitvector_9_d.Bitvector9) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt1BD4B4358D_encode(o))
+    case True{}: O.encoded(bitvector_9_encode(o))
     case False{}: O.refused()
 
-def Gt1BD4B4358D_serialize(+o: bitvector_9_d.Bitvector9) -> O.Encoded: Gt1BD4B4358D_ser_pick(bv9_valid(o), o)
+def bitvector_9_serialize(+o: bitvector_9_d.Bitvector9) -> O.Encoded: bitvector_9_ser_pick(bv9_valid(o), o)

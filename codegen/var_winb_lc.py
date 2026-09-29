@@ -6,7 +6,7 @@ their byte-offset windows (proofs/obj/var_bytesx_LightClientHeader.bend), the
 fixed fields by the fixed-field modules of codegen/var_fixx.py (the
 SyncCommittee's 6144 pubkey words stay one symbolic run, vfx_SyncCommittee).
 
-    python3 codegen/var_winb_lc.py [--check] [--no-big]
+    python3 codegen/var_winb_lc.py [--check]
 
 Writes the fixed-field modules var_fixx.py has no BeaconState use for
 (vfx_v6_b32, vfx_v7_b32, vfx_SyncAggregate), then
@@ -43,7 +43,7 @@ def layout():
     return L
 
 
-def outputs(no_big=False):
+def outputs():
     import schema
     import generate as G
     out = {}
@@ -67,7 +67,7 @@ def outputs(no_big=False):
 
 
 def main():
-    out = outputs('--no-big' in sys.argv)
+    out = outputs()
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

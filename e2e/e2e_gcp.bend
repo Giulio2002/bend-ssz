@@ -47,38 +47,38 @@ def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32
       (+ew, s6) = s5
       (t, (N, ew))
 
-# ---- Gp4B0CA2906A ----
-def CPT_Gp4B0CA2906A(o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A) -> Data: DK.Ex(FD.array__Tree<U32>, t0 => DK.Ex(U32, N0 => {o == ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{O.Bits{FD.array__thaw(U32, t0), N0}} : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}))
+# ---- ProgressiveSingleListContainerTestStruct ----
+def CPT_ProgressiveSingleListContainerTestStruct(o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct) -> Data: DK.Ex(FD.array__Tree<U32>, t0 => DK.Ex(U32, N0 => {o == ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{O.Bits{FD.array__thaw(U32, t0), N0}} : ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct}))
 
-def cc_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +eo: {o == ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)} : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, +c0: DK.Ex(FD.array__Tree<U32>, t0 => DK.Ex(U32, N0 => {RT.pj_Gp4B0CA2906A_0(o) == O.Bits{FD.array__thaw(U32, t0), N0} : O.Bits}))) -> CPT_Gp4B0CA2906A(o):
+def cc_ProgressiveSingleListContainerTestStruct(-o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +eo: {o == ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{RT.pj_ProgressiveSingleListContainerTestStruct_0(o)} : ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct}, +c0: DK.Ex(FD.array__Tree<U32>, t0 => DK.Ex(U32, N0 => {RT.pj_ProgressiveSingleListContainerTestStruct_0(o) == O.Bits{FD.array__thaw(U32, t0), N0} : O.Bits}))) -> CPT_ProgressiveSingleListContainerTestStruct(o):
   (+t0, +c0_0) = c0
   (+N0, +e0) = c0_0
-  (t0, (N0, Equal.trans(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, o, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{RT.pj_Gp4B0CA2906A_0(o)}, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{O.Bits{FD.array__thaw(U32, t0), N0}},
+  (t0, (N0, Equal.trans(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, o, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{RT.pj_ProgressiveSingleListContainerTestStruct_0(o)}, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{O.Bits{FD.array__thaw(U32, t0), N0}},
     eo,
-    Equal.cong(O.Bits, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, z => ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{z}, RT.pj_Gp4B0CA2906A_0(o), O.Bits{FD.array__thaw(U32, t0), N0}, e0))))
+    Equal.cong(O.Bits, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, z => ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{z}, RT.pj_ProgressiveSingleListContainerTestStruct_0(o), O.Bits{FD.array__thaw(U32, t0), N0}, e0))))
 
-def cp_Gp4B0CA2906A(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +s: S.Schema, +rep: RT.rep_Gp4B0CA2906A(o, s)) -> CPT_Gp4B0CA2906A(o):
+def cp_ProgressiveSingleListContainerTestStruct(-o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +s: S.Schema, +rep: RT.rep_ProgressiveSingleListContainerTestStruct(o, s)) -> CPT_ProgressiveSingleListContainerTestStruct(o):
   (+eo, +q0) = rep
-  cc_Gp4B0CA2906A(o, eo, cpb(RT.pj_Gp4B0CA2906A_0(o), q0))
+  cc_ProgressiveSingleListContainerTestStruct(o, eo, cpb(RT.pj_ProgressiveSingleListContainerTestStruct_0(o), q0))
 
-# ---- Gp66304057C3 ----
-def CPT_Gp66304057C3(o: ProgressiveVarTestStruct_d.Gp66304057C3) -> Data: DK.Ex(U32, x0 => DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}} : ProgressiveVarTestStruct_d.Gp66304057C3})))))
+# ---- ProgressiveVarTestStruct ----
+def CPT_ProgressiveVarTestStruct(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> Data: DK.Ex(U32, x0 => DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {o == ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}} : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct})))))
 
-def cc_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)} : ProgressiveVarTestStruct_d.Gp66304057C3}, +c1: DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => {RT.pj_Gp66304057C3_1(o) == O.Words{FD.array__thaw(U32, t1), N1} : O.Words})), +c2: DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {RT.pj_Gp66304057C3_2(o) == O.Bits{FD.array__thaw(U32, t2), N2} : O.Bits}))) -> CPT_Gp66304057C3(o):
+def cc_ProgressiveVarTestStruct(-o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, RT.pj_ProgressiveVarTestStruct_1(o), RT.pj_ProgressiveVarTestStruct_2(o)} : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}, +c1: DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => {RT.pj_ProgressiveVarTestStruct_1(o) == O.Words{FD.array__thaw(U32, t1), N1} : O.Words})), +c2: DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {RT.pj_ProgressiveVarTestStruct_2(o) == O.Bits{FD.array__thaw(U32, t2), N2} : O.Bits}))) -> CPT_ProgressiveVarTestStruct(o):
   (+t1, +c1_0) = c1
   (+N1, +e1) = c1_0
   (+t2, +c2_0) = c2
   (+N2, +e2) = c2_0
-  (x0, (t1, (N1, (t2, (N2, Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}},
-    Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_Gp66304057C3_2(o)},
+  (x0, (t1, (N1, (t2, (N2, Equal.trans(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, o, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_ProgressiveVarTestStruct_2(o)}, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}},
+    Equal.trans(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, o, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, RT.pj_ProgressiveVarTestStruct_1(o), RT.pj_ProgressiveVarTestStruct_2(o)}, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_ProgressiveVarTestStruct_2(o)},
     eo,
-    Equal.cong(O.Words, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, z, RT.pj_Gp66304057C3_2(o)}, RT.pj_Gp66304057C3_1(o), O.Words{FD.array__thaw(U32, t1), N1}, e1)),
-    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, z}, RT.pj_Gp66304057C3_2(o), O.Bits{FD.array__thaw(U32, t2), N2}, e2)))))))
+    Equal.cong(O.Words, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, z => ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, z, RT.pj_ProgressiveVarTestStruct_2(o)}, RT.pj_ProgressiveVarTestStruct_1(o), O.Words{FD.array__thaw(U32, t1), N1}, e1)),
+    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, z => ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, O.Words{FD.array__thaw(U32, t1), N1}, z}, RT.pj_ProgressiveVarTestStruct_2(o), O.Bits{FD.array__thaw(U32, t2), N2}, e2)))))))
 
-def cp_Gp66304057C3(-o: ProgressiveVarTestStruct_d.Gp66304057C3, +s: S.Schema, +rep: RT.rep_Gp66304057C3(o, s)) -> CPT_Gp66304057C3(o):
+def cp_ProgressiveVarTestStruct(-o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +s: S.Schema, +rep: RT.rep_ProgressiveVarTestStruct(o, s)) -> CPT_ProgressiveVarTestStruct(o):
   (+x0, +r0) = rep
   (+eo, +q0) = r0
   (+p0, +q1) = q0
   (+p1, +q2) = q1
   (+wf1, +z1) = p1
-  cc_Gp66304057C3(o, x0, eo, cpw(RT.pj_Gp66304057C3_1(o), wf1), cpb(RT.pj_Gp66304057C3_2(o), q2))
+  cc_ProgressiveVarTestStruct(o, x0, eo, cpw(RT.pj_ProgressiveVarTestStruct_1(o), wf1), cpb(RT.pj_ProgressiveVarTestStruct_2(o), q2))

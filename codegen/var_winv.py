@@ -2,7 +2,7 @@
 """Byte-offset window of List[Validator, 2^40] (BeaconState.validators): the
 interface of proofs/obj/vua_win.bend.
 
-    python3 codegen/var_winv.py [--check] [--no-big]
+    python3 codegen/var_winv.py [--check]
 
 A Validator record is 121 bytes (not whole words), so record j of the window
 sits at byte x + 121 j at any phase: its words are the four-byte joins
@@ -10,7 +10,7 @@ UR.RWN(t, y + c), its boolean the byte LB(t, y + 88) of the spec's bytes. The
 runtime validates each record's boolean (its byte is at most 1) in a loop; the
 reader fills the record array in a loop. Both loops are proved by induction on
 the records left; every depth bound comes from the buffer (x + len <= 4 2^d),
-never from the 2^40 limit (big_vu40 compares that one symbolically).
+never from the 2^40 limit (vu40 compares that one symbolically).
 """
 import re
 import sys
@@ -21,7 +21,7 @@ import var_win as W  # noqa: E402
 import var_bytes as VBY  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = 'big_var_winx_l1099511627776_Validator.bend'
+OUT = 'var_winx_l1099511627776_Validator.bend'
 P = 'l1099511627776_Validator'
 RS = 121
 TRUE = 'True{} : Bool'
@@ -1084,7 +1084,7 @@ def ib({CW}, +its: S.Value, +b: Bool, +e: {{Codec.require(b, Codec.aggregate(Cod
 
 
 HEAD_EXTRA = ['import ./vua_rd.bend as UR', 'import ./vua_fix.bend as VTX', 'import ./vua.bend as UA', 'import ../compact/reads.bend as RD',
-              'import ./vrl.bend as VRL', 'import ./vmv.bend as VMV', 'import ./vua_lay.bend as LY', 'import ./vmr.bend as VMR', 'import ./big_vu40.bend as V40',
+              'import ./vrl.bend as VRL', 'import ./vmv.bend as VMV', 'import ./vua_lay.bend as LY', 'import ./vmr.bend as VMR', 'import ./vu40.bend as V40',
               'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF']
 
 
@@ -1171,7 +1171,7 @@ def v_deep(text):
 
 def main():
     out = {ROOT / 'proofs/obj' / OUT: module_text()}
-    if '--no-big' in sys.argv:
+    if False:
         out = {}
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)

@@ -238,7 +238,7 @@ def pvl_{p}(+dd: Nat, +D: {TR}, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {{U32.
 
 
 def big_text(HEAD, LS):
-    """big_var_codec_ExecutionRequests_enc.bend: encode_eval (and, appended by spec_text,
+    """var_codec_ExecutionRequests_enc.bend: encode_eval (and, appended by spec_text,
     encode_spec). LS: per list dict(p, R, RS, W, LIM)."""
     X = 'ExecutionRequests'
     L = list(HEAD) + ['import ./vfix.bend as VF', 'import ./venc.bend as VE', 'import ./vme.bend as VME', 'import ./vmul.bend as VM',

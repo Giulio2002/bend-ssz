@@ -103,8 +103,6 @@ not resolve), which broke the former spec_unique_* files.
 
 Not covered here, and not claimed: sub-word leaves inside vectors and generic
 containers, bit vectors of partial words, variable-size shapes, roots.
-
-`--no-big` is accepted: this generator writes no big_* file in any case.
 """
 import re
 import sys
@@ -1403,7 +1401,7 @@ def ltail(t, g, node):
 def vtail(t, g, node):
     """(p, E) when t is a packed vector stored as words (O.Words) of W = 2^p + E words
     (0 < E < 2^p, W a multiple of 8) whose buffer and storage both have depth p + 1 and whose
-    writer is the word copy (Gt6E9B243B7C: 248 = 128 + 120 words)."""
+    writer is the word copy (vec_uint256_31: 248 = 128 + 120 words)."""
     sh = g.shape(t)
     if t.kind != 'vector' or sh.kind not in ('packed', 'packed_elems') or t.fixed_size() % 32:
         return None

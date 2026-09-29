@@ -25,15 +25,15 @@ def v31_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 31, 3
 
 def v31_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_bool_pk(out, pos, v31_bool_valid(o))
 
-def Gt9DF37A5216_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_31_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(31, out))
 
-def Gt9DF37A5216_encode(o: O.Words) -> O.Words & B.Buf: Gt9DF37A5216_enc_out(v31_bool_put(O.out_at(3n), 0, o))
+def vec_bool_31_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_31_enc_out(v31_bool_put(O.out_at(3n), 0, o))
 
-def Gt9DF37A5216_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_31_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 31, out))
 
-def Gt9DF37A5216_serialize(o: O.Words) -> O.Words & O.Encoded: Gt9DF37A5216_senc_out(v31_bool_putk(O.out_at(3n), 0, o))
+def vec_bool_31_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_31_senc_out(v31_bool_putk(O.out_at(3n), 0, o))

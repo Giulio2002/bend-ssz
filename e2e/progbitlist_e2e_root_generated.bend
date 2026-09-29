@@ -19,16 +19,16 @@ import ./e2e_support.bend as E
 # progbitlist (variable size, a progressive bit list): the object API's root is END_TO_END's hash_tree_root, for every
 # object the root law represents (PBO.rep_pbits: its words in a perfect tree of depth below 32).
 
-def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PBO.rep_pbits(O.Bits{FD.array__thaw(U32, t), N}, Spec.GtF7582E0E9A())) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.GtF7582E0E9A_hash_tree_root(h, O.Bits{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, t), N})}) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, t), N})}, VS.public_sound(Spec.GtF7582E0E9A(), {==}), D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.GtF7582E0E9A_hash_tree_root(h, O.Bits{FD.array__thaw(U32, t), N})))),
-    GV.GtF7582E0E9A_root_valid(O.Bits{FD.array__thaw(U32, t), N}, Spec.GtF7582E0E9A(), {==}, rep), RG.GtF7582E0E9A_root_correct(h, O.Bits{FD.array__thaw(U32, t), N}, Spec.GtF7582E0E9A(), {==}, rep))
+def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PBO.rep_pbits(O.Bits{FD.array__thaw(U32, t), N}, Spec.progbitlist())) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, O.Bits{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(Spec.progbitlist(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, t), N})}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.progbitlist(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, t), N})}, VS.public_sound(Spec.progbitlist(), {==}), D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, O.Bits{FD.array__thaw(U32, t), N})))),
+    GV.progbitlist_root_valid(O.Bits{FD.array__thaw(U32, t), N}, Spec.progbitlist(), {==}, rep), RG.progbitlist_root_correct(h, O.Bits{FD.array__thaw(U32, t), N}, Spec.progbitlist(), {==}, rep))
 
-def rt2(h: B.Buf, -o: O.Bits, +rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()), +t: FD.array__Tree<U32>, +N: U32, +eo: {o == O.Bits{FD.array__thaw(U32, t), N} : O.Bits}) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.GtF7582E0E9A_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.GtF7582E0E9A_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(_)}) : Maybe<&2, +List<U32>>}
-  rt1(h, t, N, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.GtF7582E0E9A()), o, O.Bits{FD.array__thaw(U32, t), N}, eo, rep))
+def rt2(h: B.Buf, -o: O.Bits, +rep: PBO.rep_pbits(o, Spec.progbitlist()), +t: FD.array__Tree<U32>, +N: U32, +eo: {o == O.Bits{FD.array__thaw(U32, t), N} : O.Bits}) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.progbitlist(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.progbitlist(), S.BitsValue{BO.bview(_)}) : Maybe<&2, +List<U32>>}
+  rt1(h, t, N, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.progbitlist()), o, O.Bits{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv)
-def progbitlist_e2e_root(h: B.Buf, -o: O.Bits, +rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A())) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.GtF7582E0E9A_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
+def progbitlist_e2e_root(h: B.Buf, -o: O.Bits, +rep: PBO.rep_pbits(o, Spec.progbitlist())) -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.progbitlist(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
   match rep:
     case Inl{w}:
       (+t, w0) = w

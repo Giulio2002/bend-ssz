@@ -23,10 +23,10 @@ import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_encx_bl32.bend as IB
-import ../proofs/obj/big_encx_bl32_d.bend as IBD
-import ../proofs/obj/big_encx_ExecutionPayloadHeader_iface.bend as IE
-import ../proofs/obj/big_encx_LightClientHeader_iface.bend as IL
+import ../proofs/obj/encx_bl32.bend as IB
+import ../proofs/obj/encx_bl32_d.bend as IBD
+import ../proofs/obj/encx_ExecutionPayloadHeader_iface.bend as IE
+import ../proofs/obj/encx_LightClientHeader_iface.bend as IL
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/uint256_def_generated.bend as uint256_d
@@ -83,7 +83,7 @@ def bndE(+m: IE.MW, +ok: {IE.OKW(m) == True{} : Bool}) -> {Nat.is_lt(Nat.add(244
   FD.nat__le_lt_trans(Nat.add(244n, LY.LN(IE.ENC(m))), Nat.add(244n, 616n), VB.pw(31n), Order.add_left(244n, LY.LN(IE.ENC(m)), 616n, IE.maxxO(m, ok)),
     FD.nat__lt_le_trans(Nat.add(244n, 616n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==})))
 
-# ---- the byte list (big_encx_bl32) ----
+# ---- the byte list (encx_bl32) ----
 def R_B(po: O.Words) -> Data:
   DK.Ex(IB.MW, m => DK.P2({po == IB.TH(m) : O.Words}, DK.P2({bvw(IB.TH(m)) == IB.VAL(m) : S.Value}, {IBD.OK(m) == True{} : Bool})))
 

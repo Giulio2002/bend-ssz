@@ -18,17 +18,17 @@ def v1_u64_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v1_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v1_u64_ok_len(U32.is_eq(len, 8), buf, off)
 
-def GtADC8DCD962_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint64_1_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtADC8DCD962_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint64_1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtADC8DCD962_some(v1_u64_read(buf, 0, size))
+    case True{}: vec_uint64_1_some(v1_u64_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtADC8DCD962_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtADC8DCD962_built(size, v1_u64_ok(buf, 0, size))
+def vec_uint64_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint64_1_built(size, v1_u64_ok(buf, 0, size))
 
-def GtADC8DCD962_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u64_read(buf, 0, size)
+def vec_uint64_1_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u64_read(buf, 0, size)

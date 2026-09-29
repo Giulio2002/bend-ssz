@@ -35,9 +35,9 @@ import ../proofs/obj/bitlist_pack.bend as BLP
 import ../proofs/obj/root_state_light.bend as ST
 import ../proofs/obj/vfx_bv4.bend as F4
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-import ../proofs/obj/big_var_winx_l1099511627776_u8.bend as W8
-import ../proofs/obj/big_var_winx_l1099511627776_u64.bend as W64
-import ../proofs/obj/big_var_winx_l16777216_b32.bend as WH
+import ../proofs/obj/var_winx_l1099511627776_u8.bend as W8
+import ../proofs/obj/var_winx_l1099511627776_u64.bend as W64
+import ../proofs/obj/var_winx_l16777216_b32.bend as WH
 import ./e2e_bvsub.bend as BVS
 import ./e2e_bvw.bend as BVW
 import ./e2e_pv8.bend as EP8

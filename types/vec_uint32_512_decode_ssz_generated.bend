@@ -18,17 +18,17 @@ def v512_u32_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v512_u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v512_u32_ok_len(U32.is_eq(len, 2048), buf, off)
 
-def Gt13AFE546ED_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_512_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt13AFE546ED_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_512_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt13AFE546ED_some(v512_u32_read(buf, 0, size))
+    case True{}: vec_uint32_512_some(v512_u32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt13AFE546ED_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt13AFE546ED_built(size, v512_u32_ok(buf, 0, size))
+def vec_uint32_512_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint32_512_built(size, v512_u32_ok(buf, 0, size))
 
-def Gt13AFE546ED_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u32_read(buf, 0, size)
+def vec_uint32_512_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u32_read(buf, 0, size)

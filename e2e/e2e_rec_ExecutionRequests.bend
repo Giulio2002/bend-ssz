@@ -6,7 +6,7 @@ import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/root_names_light.bend as RN_L
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/big_encx_ExecutionRequests_iface.bend as CI
+import ../proofs/obj/encx_ExecutionRequests_iface.bend as CI
 import ../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
 import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
 import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
@@ -34,7 +34,7 @@ import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/encx_l8192_DepositRequest.bend as EW_l8192_DepositRequest
 import ../proofs/obj/encx_l16_WithdrawalRequest.bend as EW_l16_WithdrawalRequest
 import ../proofs/obj/encx_l2_ConsolidationRequest.bend as EW_l2_ConsolidationRequest
-import ../proofs/obj/big_encx_ExecutionRequests.bend as K
+import ../proofs/obj/encx_ExecutionRequests.bend as K
 import ./e2e_dl_l8192_DepositRequest.bend as DQ0
 import ./e2e_rl_l8192_DepositRequest.bend as RQ0
 import ./e2e_dl_l16_WithdrawalRequest.bend as DQ1

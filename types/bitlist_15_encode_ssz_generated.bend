@@ -23,22 +23,22 @@ def bits15_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 15, False{})
 
 def bits15_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits15_pk(out, pos, bits15_valid(o))
 
-def GtDB1482527D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_15_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtDB1482527D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_15_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtDB1482527D_enc_out(out, o, m)
+  bitlist_15_enc_out(out, o, m)
 
-def GtDB1482527D_encode(o: O.Bits) -> O.Bits & B.Buf: GtDB1482527D_enc_put(bits15_putn(O.out_at(0n), 0, o))
+def bitlist_15_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_15_enc_put(bits15_putn(O.out_at(0n), 0, o))
 
-def GtDB1482527D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_15_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def GtDB1482527D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_15_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtDB1482527D_senc_out(out, o, m)
+  bitlist_15_senc_out(out, o, m)
 
-def GtDB1482527D_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtDB1482527D_senc_put(bits15_putk(O.out_at(0n), 0, o))
+def bitlist_15_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_15_senc_put(bits15_putk(O.out_at(0n), 0, o))

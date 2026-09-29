@@ -17,7 +17,7 @@ import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../proofs/obj/vbitcore.bend as CO
-import ../proofs/obj/var_pbits_GtF7582E0E9A_enc.bend as EN
+import ../proofs/obj/var_pbits_progbitlist_enc.bend as EN
 import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_emit.bend as EM
@@ -54,7 +54,7 @@ def ob(+T: FD.array__Tree<U32>, +K: U32, +hq: {Nat.is_le(U32.to_nat(CO.NK(K)), A
   EM.ob(CO.DOK(K), EN.OUT(T, K), CO.NK(K), BL.pf_oz(CO.DOK(K), T, K), FD.nat__le_lt_trans(B.capacity(CO.NK(K)), 28n, 29n, C.cap_le(CO.NK(K), 28n, {==}, hq), {==}), C.cap_q(CO.NK(K), 28n, {==}, hq))
 
 def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K}), +hK: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n)) == True{} : Bool}, +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.GtF7582E0E9A_encode(O.Bits{FD.array__thaw(U32, T), K})))} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}:
+    +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K}), +hK: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n)) == True{} : Bool}, +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(O.Bits{FD.array__thaw(U32, T), K})))} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}:
   +h30 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), z) == True{} : Bool}, VB.pw(30n), O.pow2n(30n), VD.s_pow2_eq(30n), hK)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_le(VB.pw(30n), z) == True{} : Bool}, VB.pw(31n), O.pow2n(31n), VD.s_pow2_eq(31n), VBG.pw_mono(30n, 31n, {==}))
   +hNk = FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), O.pow2n(31n), n8(U32.to_nat(K)), FD.nat__le_trans(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw(30n), O.pow2n(31n), hK, h31))
@@ -63,23 +63,23 @@ def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {FD.array__perfect(U32, 
   +hq0 = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, U32.to_nat(K)), 1n), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), BL.nkb(K, U32.to_nat(K), 31n, {==}, FD.nat__le_refl(U32.to_nat(K)), hNk),
     FD.nat__le_trans(Nat.add(VD.s_rng(3n, U32.to_nat(K)), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), Order.add_right(VD.s_rng(3n, U32.to_nat(K)), U32.to_nat(K), 1n, rngle(3n, U32.to_nat(K))), Order.left_below_sum(31n, Nat.add(U32.to_nat(K), 1n))))
   +hq = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), A.quad(FD.spec_common__pow2(28n)), hq0, hK)
-  %Equal.sym(O.Bits & B.Buf, progbitlist_e.GtF7582E0E9A_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)) :
-    {Some{E.obytes(Pair.snd(O.Bits, B.Buf, _))} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
+  %Equal.sym(O.Bits & B.Buf, progbitlist_e.progbitlist_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)) :
+    {Some{E.obytes(Pair.snd(O.Bits, B.Buf, _))} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.BY(T, K), ob(T, K, hq)) :
-    {Some{_} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Some{EN.BY(T, K)},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(Spec.GtF7582E0E9A(), EN.VAL(T, K)), Some{EN.BY(T, K)},
-      E.serialize_legal(Spec.GtF7582E0E9A(), EN.VAL(T, K), VS.public_sound(Spec.GtF7582E0E9A(), {==})), EN.encode_spec(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)))
+    {Some{_} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.progbitlist(), EN.VAL(T, K)), Some{EN.BY(T, K)},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.progbitlist(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(Spec.progbitlist(), EN.VAL(T, K)), Some{EN.BY(T, K)},
+      E.serialize_legal(Spec.progbitlist(), EN.VAL(T, K), VS.public_sound(Spec.progbitlist(), {==})), EN.encode_spec(dw, T, K, U32.to_nat(K), 31n, 30n, pf, hdw, wf, FD.nat__le_refl(U32.to_nat(K)), {==}, {==}, hNk, hNO, hcap)))
 
 # (i): for every object the root law represents whose bit count leaves the encoder's room (hK: 32 + K <= 2^30), its
 # words in a perfect tree of depth below 31 with room for its chunk words (hs)
-def progbitlist_e2e_encode(-o: O.Bits, +rep: PBO.rep_pbits(o, Spec.GtF7582E0E9A()), +hK: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(BO.blen(o)), 1n)), VB.pw(30n)) == True{} : Bool}, +hs: BL.sdbc(o)) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.GtF7582E0E9A_encode(o)))} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
+def progbitlist_e2e_encode(-o: O.Bits, +rep: PBO.rep_pbits(o, Spec.progbitlist()), +hK: {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(BO.blen(o)), 1n)), VB.pw(30n)) == True{} : Bool}, +hs: BL.sdbc(o)) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(o)))} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(o)}) : Maybe<&2, +List<U32>>}:
   (+T, s1) = hs
   (+dw, s2) = s1
   (+K, s3) = s2
   (+eo, s4) = s3
   (+pf, s5) = s4
   (+hdw, +hcap) = s5
-  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, T), K}, eo) : {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.GtF7582E0E9A_encode(_)))} == API.serialize(Spec.GtF7582E0E9A(), S.BitsValue{BO.bview(_)}) : Maybe<&2, +List<U32>>}
-  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.GtF7582E0E9A()), o, O.Bits{FD.array__thaw(U32, T), K}, eo, rep),
+  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, T), K}, eo) : {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(_)))} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(_)}) : Maybe<&2, +List<U32>>}
+  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.progbitlist()), o, O.Bits{FD.array__thaw(U32, T), K}, eo, rep),
     FD.logic__subst(O.Bits, z => {Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(BO.blen(z)), 1n)), VB.pw(30n)) == True{} : Bool}, o, O.Bits{FD.array__thaw(U32, T), K}, eo, hK), hcap)

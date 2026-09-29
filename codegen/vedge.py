@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Reads of short fields near the end of the buffer (proofs/obj/vedge.bend).
 
-    python3 codegen/vedge.py [--check] [--no-big]
+    python3 codegen/vedge.py [--check]
 
 The runtime reads a field of k < 4 bytes at byte X with B.read32(buf, X) and keeps its
 low k bytes. At an unaligned X the read joins word q = X >> 2 with word q + 1; near the

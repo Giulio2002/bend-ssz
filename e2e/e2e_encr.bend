@@ -21,18 +21,18 @@ import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/root_gtypes_light.bend as RT
-import ../proofs/obj/big_encx_Gc465214E502_iface.bend as EM
-import ../proofs/obj/big_encx_Gc465214E502.bend as EK
+import ../proofs/obj/encx_VarTestStruct_iface.bend as EM
+import ../proofs/obj/encx_VarTestStruct.bend as EK
 import ../types/uint8_encode_ssz_generated.bend as uint8_e
 import ../types/uint16_encode_ssz_generated.bend as uint16_e
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
-import ../proofs/obj/big_encx_l1024_u16.bend as Xl1024
+import ../proofs/obj/encx_l1024_u16.bend as Xl1024
 import ../proofs/obj/var_winx_l1024_u16.bend as Wl1024
-import ../proofs/obj/big_encx_l128_u16.bend as Xl128
+import ../proofs/obj/encx_l128_u16.bend as Xl128
 import ../proofs/obj/var_winx_l128_u16.bend as Wl128
-import ../proofs/obj/big_encx_bl256.bend as Xb256
-import ../proofs/obj/big_vvlb_bl256.bend as Wb256
-import ../proofs/obj/big_encx_l123_u16.bend as Xl123
+import ../proofs/obj/encx_bl256.bend as Xb256
+import ../proofs/obj/vvlb_bl256.bend as Wb256
+import ../proofs/obj/encx_l123_u16.bend as Xl123
 import ../proofs/obj/var_winx_l123_u16.bend as Wl123
 import ./e2e_blist.bend as BL
 import ./e2e_plist.bend as PL
@@ -332,14 +332,14 @@ def okp_vt(+a0: U32, +a2: U32, +mB: Xl1024.MW, +hB: {Xl1024.OK(mB) == True{} : B
     FD.logic__and_intro(Bool.and(uint16_e.u16_valid(a0), uint8_e.u8_valid(a2)), Nat.is_le(Nat.add(7n, LY.LN(Xl1024.ENC(mB))), A.quad(VB.pw(28n))),
       FD.logic__and_intro(uint16_e.u16_valid(a0), uint8_e.u8_valid(a2), GW.u16v(a0, h0), h8), hb))
 
-def val_vt(+a0: U32, +a2: U32, +tt: FD.array__Tree<U32>, +n: U32, +h0: {U32.is_lt(a0, 65536) == True{} : Bool}, +h2: {U32.is_lt(a2, 256) == True{} : Bool}, +eb: {PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}) == Wl1024.VALw(tt, 0n, n) : S.Value}) -> {RT.v_Gc465214E502(EM.TH(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})) == EM.VAL(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) : S.Value}:
+def val_vt(+a0: U32, +a2: U32, +tt: FD.array__Tree<U32>, +n: U32, +h0: {U32.is_lt(a0, 65536) == True{} : Bool}, +h2: {U32.is_lt(a2, 256) == True{} : Bool}, +eb: {PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}) == Wl1024.VALw(tt, 0n, n) : S.Value}) -> {RT.v_VarTestStruct(EM.TH(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})) == EM.VAL(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) : S.Value}:
   %Equal.sym(U32, PBM.v16of(U32.and(a0, 255), U32.and(U32.shrn(a0, 8n), 255)), a0, GW.eq16(a0, h0)) : {S.Sequence{S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}), S.Items{S.UnsignedValue{P.UInt{a2, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} == S.Sequence{S.Items{S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, S.Items{Wl1024.VALw(tt, 0n, n), S.Items{S.UnsignedValue{P.UInt{U32.and(a2, 255), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} : S.Value}
   %Equal.sym(U32, U32.and(a2, 255), a2, VBB.ea(a2, h2)) : {S.Sequence{S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}), S.Items{S.UnsignedValue{P.UInt{a2, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} == S.Sequence{S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{Wl1024.VALw(tt, 0n, n), S.Items{S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} : S.Value}
   %eb : {S.Sequence{S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{PBF.vview2(O.Words{FD.array__thaw(U32, tt), n}), S.Items{S.UnsignedValue{P.UInt{a2, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} == S.Sequence{S.Items{S.UnsignedValue{P.UInt{a0, 0, 0, 0, 0, 0, 0, 0}}, S.Items{_, S.Items{S.UnsignedValue{P.UInt{a2, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} : S.Value}
   {==}
 
 def VTF(+a0: U32, +a2: U32, +tt: FD.array__Tree<U32>, +n: U32) -> Data:
-  DK.P2({RT.v_Gc465214E502(EM.TH(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})) == EM.VAL(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) : S.Value}, DK.P2({EM.OK(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) == True{} : Bool}, {Nat.is_le(LY.LN(EM.ENC(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})), 2055n) == True{} : Bool}))
+  DK.P2({RT.v_VarTestStruct(EM.TH(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})) == EM.VAL(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) : S.Value}, DK.P2({EM.OK(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2}) == True{} : Bool}, {Nat.is_le(LY.LN(EM.ENC(EM.MW{a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2})), 2055n) == True{} : Bool}))
 
 # the record's facts from its fields' facts and the list's premise
 def vtf(+a0: U32, +a2: U32, +tt: FD.array__Tree<U32>, +n: U32, +h0: {U32.is_lt(a0, 65536) == True{} : Bool}, +h2: {U32.is_lt(a2, 256) == True{} : Bool}, +c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 1024n) == True{} : Bool}, +hs: BL.sdk(O.Words{FD.array__thaw(U32, tt), n}, 28n)) -> VTF(a0, a2, tt, n):
@@ -352,28 +352,28 @@ def vtf(+a0: U32, +a2: U32, +tt: FD.array__Tree<U32>, +n: U32, +h0: {U32.is_lt(a
     Equal.sym(Nat, List.length(&2, U32, EK.ENCC(a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2)), Nat.add(7n, LY.LN(Xl1024.ENC(Xl1024.MW{LDEP(U32, tt), tt, n}))), EM.lenE(a0, Xl1024.MW{LDEP(U32, tt), tt, n}, a2, hok)), FD.nat__le_add_left(LY.LN(Xl1024.ENC(Xl1024.MW{LDEP(U32, tt), tt, n})), 2048n, 7n, hL))
   (val_vt(a0, a2, tt, n, h0, h2, lv_l1024(tt, n, c, ec, hk)), (hok, ln))
 
-def VTR(v: VarTestStruct_d.Gc465214E502) -> Data:
-  DK.Ex(EM.MW, m => DK.P2({v == EM.TH(m) : VarTestStruct_d.Gc465214E502}, DK.P2({RT.v_Gc465214E502(EM.TH(m)) == EM.VAL(m) : S.Value}, DK.P2({EM.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(EM.ENC(m)), 2055n) == True{} : Bool}))))
+def VTR(v: VarTestStruct_d.VarTestStruct) -> Data:
+  DK.Ex(EM.MW, m => DK.P2({v == EM.TH(m) : VarTestStruct_d.VarTestStruct}, DK.P2({RT.v_VarTestStruct(EM.TH(m)) == EM.VAL(m) : S.Value}, DK.P2({EM.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(EM.ENC(m)), 2055n) == True{} : Bool}))))
 
-def vtb3(-v: VarTestStruct_d.Gc465214E502, +x0: U32, +x2: U32, +tt: FD.array__Tree<U32>, +n: U32, +eo: {v == VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, tt), n}, x2} : VarTestStruct_d.Gc465214E502}, +f: VTF(x0, x2, tt, n)) -> VTR(v):
+def vtb3(-v: VarTestStruct_d.VarTestStruct, +x0: U32, +x2: U32, +tt: FD.array__Tree<U32>, +n: U32, +eo: {v == VarTestStruct_d.VarTestStruct{x0, O.Words{FD.array__thaw(U32, tt), n}, x2} : VarTestStruct_d.VarTestStruct}, +f: VTF(x0, x2, tt, n)) -> VTR(v):
   (+fv, +f1) = f
   (+fo, +fl) = f1
   (EM.MW{x0, Xl1024.MW{LDEP(U32, tt), tt, n}, x2}, (eo, (fv, (fo, fl))))
 
-def vtb2(-v: VarTestStruct_d.Gc465214E502, +x0: U32, +x2: U32, +ev: {v == VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(v), x2} : VarTestStruct_d.Gc465214E502}, +h0: {U32.is_lt(x0, 65536) == True{} : Bool}, +h2: {U32.is_lt(x2, 256) == True{} : Bool},
-    +hx: {U32.to_nat(WO.len(RT.pj_Gc465214E502_1(v))) == Nat.double(PBF.cnt2(RT.pj_Gc465214E502_1(v))) : Nat}, +hl: {Nat.is_le(PBF.cnt2(RT.pj_Gc465214E502_1(v)), 1024n) == True{} : Bool},
-    +hs: BL.sdk(RT.pj_Gc465214E502_1(v), 28n), +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {RT.pj_Gc465214E502_1(v) == O.Words{FD.array__thaw(U32, t), n} : O.Words}))) -> VTR(v):
+def vtb2(-v: VarTestStruct_d.VarTestStruct, +x0: U32, +x2: U32, +ev: {v == VarTestStruct_d.VarTestStruct{x0, RT.pj_VarTestStruct_1(v), x2} : VarTestStruct_d.VarTestStruct}, +h0: {U32.is_lt(x0, 65536) == True{} : Bool}, +h2: {U32.is_lt(x2, 256) == True{} : Bool},
+    +hx: {U32.to_nat(WO.len(RT.pj_VarTestStruct_1(v))) == Nat.double(PBF.cnt2(RT.pj_VarTestStruct_1(v))) : Nat}, +hl: {Nat.is_le(PBF.cnt2(RT.pj_VarTestStruct_1(v)), 1024n) == True{} : Bool},
+    +hs: BL.sdk(RT.pj_VarTestStruct_1(v), 28n), +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {RT.pj_VarTestStruct_1(v) == O.Words{FD.array__thaw(U32, t), n} : O.Words}))) -> VTR(v):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hx2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}, RT.pj_Gc465214E502_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hx)
-  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(PBF.cnt2(z), 1024n) == True{} : Bool}, RT.pj_Gc465214E502_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
-  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 28n), RT.pj_Gc465214E502_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
-  +eo = Equal.trans(VarTestStruct_d.Gc465214E502, v, VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(v), x2}, VarTestStruct_d.Gc465214E502{x0, O.Words{FD.array__thaw(U32, tt), n}, x2}, ev,
-    Equal.cong(O.Words, VarTestStruct_d.Gc465214E502, z => VarTestStruct_d.Gc465214E502{x0, z, x2}, RT.pj_Gc465214E502_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew))
+  +hx2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}, RT.pj_VarTestStruct_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hx)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(PBF.cnt2(z), 1024n) == True{} : Bool}, RT.pj_VarTestStruct_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 28n), RT.pj_VarTestStruct_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
+  +eo = Equal.trans(VarTestStruct_d.VarTestStruct, v, VarTestStruct_d.VarTestStruct{x0, RT.pj_VarTestStruct_1(v), x2}, VarTestStruct_d.VarTestStruct{x0, O.Words{FD.array__thaw(U32, tt), n}, x2}, ev,
+    Equal.cong(O.Words, VarTestStruct_d.VarTestStruct, z => VarTestStruct_d.VarTestStruct{x0, z, x2}, RT.pj_VarTestStruct_1(v), O.Words{FD.array__thaw(U32, tt), n}, ew))
   vtb3(v, x0, x2, tt, n, eo, vtf(x0, x2, tt, n, h0, h2, PBF.cnt2(O.Words{FD.array__thaw(U32, tt), n}), hx2, hl2, hs2))
 
 # a VarTestStruct the root law represents, with its list's premise: its record
-def vtb(-v: VarTestStruct_d.Gc465214E502, +rep: RT.rep_Gc465214E502(v, Spec.Gc465214E502()), +hs: BL.sdk(RT.pj_Gc465214E502_1(v), 28n)) -> VTR(v):
+def vtb(-v: VarTestStruct_d.VarTestStruct, +rep: RT.rep_VarTestStruct(v, Spec.VarTestStruct()), +hs: BL.sdk(RT.pj_VarTestStruct_1(v), 28n)) -> VTR(v):
   (+x0, +r0) = rep
   (+x2, +r1) = r0
   (+ev, +q1) = r1
@@ -381,4 +381,4 @@ def vtb(-v: VarTestStruct_d.Gc465214E502, +rep: RT.rep_Gc465214E502(v, Spec.Gc46
   (+c1, +h2) = q2
   (+wf, +z1) = c1
   (+hx, +hl) = z1
-  vtb2(v, x0, x2, ev, h0, h2, hx, hl, hs, cpw(RT.pj_Gc465214E502_1(v), wf))
+  vtb2(v, x0, x2, ev, h0, h2, hx, hl, hs, cpw(RT.pj_VarTestStruct_1(v), wf))

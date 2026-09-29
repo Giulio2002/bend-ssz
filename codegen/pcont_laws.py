@@ -14,7 +14,7 @@ hash length hl (with hl == 64n):
          slots are rewritten to the zero subtrees `pr` builds (zs*: closed
          facts, one concrete hash each);
   K_mk   Progressive.merkleize(slots) == Some{D.bytes(T)}, by `pmerk` (pr_spec
-         over a SYMBOLIC digest list, instantiated: the specification's tree
+         over a LIMIT_LEMMAS digest list, instantiated: the specification's tree
          over the concrete slots is never unfolded, which is what made a direct
          bytes-level proof of the 22-slot pattern take hours);
   K_ar   RR.active_root(active, chunks, [D.bytes(O.mix_len(hl, T, mask))]):

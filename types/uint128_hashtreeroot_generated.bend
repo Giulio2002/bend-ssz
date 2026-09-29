@@ -12,4 +12,4 @@ def u128_root(+hl: Nat, h: B.Buf, o: uint128_d.Uint128, +seg: U32) -> B.Buf & D.
   match o:
     case uint128_d.Uint128{+w0, +w1, +w2, +w3}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
 
-def Gt604E28A301_hash_tree_root(h: B.Buf, +o: uint128_d.Uint128) -> B.Buf & D.Digest: u128_root(64n, h, o, 0)
+def uint128_hash_tree_root(h: B.Buf, +o: uint128_d.Uint128) -> B.Buf & D.Digest: u128_root(64n, h, o, 0)

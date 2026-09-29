@@ -11,17 +11,17 @@ def pl_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(
 
 def pl_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 8) * 8 : U32)), True{}))
 
-def GtE83F21B20A_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint64_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtE83F21B20A_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint64_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtE83F21B20A_some(pl_u64_read(buf, 0, size))
+    case True{}: proglist_uint64_some(pl_u64_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtE83F21B20A_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtE83F21B20A_built(size, pl_u64_ok(buf, 0, size))
+def proglist_uint64_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  proglist_uint64_built(size, pl_u64_ok(buf, 0, size))
 
-def GtE83F21B20A_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u64_read(buf, 0, size)
+def proglist_uint64_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u64_read(buf, 0, size)

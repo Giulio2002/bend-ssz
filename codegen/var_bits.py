@@ -2,7 +2,7 @@
 """The bit-list codec laws (runtime O.ok_bitlist / O.bits_in against
 spec/bitfields.bend list_encoding).
 
-    python3 codegen/var_bits.py [--check] [--no-big]
+    python3 codegen/var_bits.py [--check]
 
 Generic forms BitList[N] (the 18 of the official ssz_generic suite):
 proofs/obj/var_bits_<X>{,_unique,_rej}.bend, stock: ok_eval, decode_accept,

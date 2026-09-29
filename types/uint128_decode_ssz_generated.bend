@@ -35,17 +35,17 @@ def u128_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u128_ok_len(U32.is_eq(len, 16), buf, off)
 
-def Gt604E28A301_some(pair: B.Buf & uint128_d.Uint128) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+def uint128_some(pair: B.Buf & uint128_d.Uint128) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt604E28A301_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+def uint128_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt604E28A301_some(u128_read(buf, 0, size))
+    case True{}: uint128_some(u128_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt604E28A301_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
-  Gt604E28A301_built(size, u128_ok(buf, 0, size))
+def uint128_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+  uint128_built(size, u128_ok(buf, 0, size))
 
-def Gt604E28A301_build(buf: B.Buf, +size: U32) -> B.Buf & uint128_d.Uint128: u128_read(buf, 0, size)
+def uint128_build(buf: B.Buf, +size: U32) -> B.Buf & uint128_d.Uint128: u128_read(buf, 0, size)

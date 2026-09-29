@@ -11,17 +11,17 @@ def pl_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(b
 
 def pl_u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}))
 
-def GtDE4B86A990_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint8_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtDE4B86A990_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint8_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtDE4B86A990_some(pl_u8_read(buf, 0, size))
+    case True{}: proglist_uint8_some(pl_u8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtDE4B86A990_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtDE4B86A990_built(size, pl_u8_ok(buf, 0, size))
+def proglist_uint8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  proglist_uint8_built(size, pl_u8_ok(buf, 0, size))
 
-def GtDE4B86A990_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u8_read(buf, 0, size)
+def proglist_uint8_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u8_read(buf, 0, size)

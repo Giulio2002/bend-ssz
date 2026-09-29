@@ -1,558 +1,538 @@
 {
  "generated": {
-  "Gc221EC01D83": {
-   "group": 10,
-   "index": 81
-  },
-  "Gc465214E502": {
-   "group": 10,
-   "index": 86
-  },
-  "Gc4ED9619F50": {
-   "group": 11,
-   "index": 88
-  },
-  "Gc56D855869F": {
-   "group": 10,
-   "index": 87
-  },
-  "Gc60805EC295": {
-   "group": 10,
-   "index": 83
-  },
-  "Gc74A8F5F17F": {
-   "group": 10,
-   "index": 85
-  },
-  "Gc85FA758A04": {
+  "BitsStruct": {
    "group": 10,
    "index": 82
   },
-  "GcDC3E457711": {
-   "group": 10,
-   "index": 84
-  },
-  "Gp4B0CA2906A": {
-   "group": 0,
-   "index": 0
-  },
-  "Gp66304057C3": {
-   "group": 0,
-   "index": 2
-  },
-  "Gp8A7851175B": {
-   "group": 0,
-   "index": 1
-  },
-  "GpF350A3C486": {
-   "group": 0,
-   "index": 3
-  },
-  "Gt0366A291C1": {
-   "group": 15,
-   "index": 123
-  },
-  "Gt039DD44FD8": {
-   "group": 12,
-   "index": 96
-  },
-  "Gt04170D6AA7": {
-   "group": 5,
-   "index": 40
-  },
-  "Gt05340E1F7E": {
-   "group": 14,
-   "index": 117
-  },
-  "Gt0A390CB480": {
-   "group": 14,
-   "index": 118
-  },
-  "Gt0A3B6B4128": {
-   "group": 7,
-   "index": 56
-  },
-  "Gt0B0C03B454": {
-   "group": 14,
-   "index": 119
-  },
-  "Gt0B1B711C4D": {
-   "group": 7,
-   "index": 57
-  },
-  "Gt0B4EF17D71": {
-   "group": 8,
-   "index": 71
-  },
-  "Gt10D6F42D74": {
-   "group": 9,
-   "index": 78
-  },
-  "Gt13AFE546ED": {
-   "group": 8,
-   "index": 66
-  },
-  "Gt1719057EB7": {
-   "group": 8,
-   "index": 68
-  },
-  "Gt19F04F79B8": {
-   "group": 5,
-   "index": 42
-  },
-  "Gt1BD4B4358D": {
-   "group": 15,
-   "index": 124
-  },
-  "Gt1C2FA69562": {
-   "group": 1,
-   "index": 15
-  },
-  "Gt1D9B3E1871": {
-   "group": 0,
-   "index": 5
-  },
-  "Gt21E1483EE1": {
-   "group": 12,
-   "index": 99
-  },
-  "Gt240C147AA2": {
-   "group": 8,
-   "index": 65
-  },
-  "Gt274A0B8DC2": {
-   "group": 6,
-   "index": 55
-  },
-  "Gt27CDB122DD": {
-   "group": 15,
-   "index": 120
-  },
-  "Gt28605B5D5C": {
-   "group": 4,
-   "index": 33
-  },
-  "Gt28ED72E3EF": {
-   "group": 3,
-   "index": 27
-  },
-  "Gt2CD118DF5F": {
-   "group": 4,
-   "index": 34
-  },
-  "Gt2E7060B297": {
-   "group": 6,
-   "index": 53
-  },
-  "Gt2F34855D3D": {
-   "group": 11,
-   "index": 95
-  },
-  "Gt2FF8722A75": {
-   "group": 5,
-   "index": 44
-  },
-  "Gt3429157FEB": {
-   "group": 3,
-   "index": 29
-  },
-  "Gt34AE45611E": {
-   "group": 1,
-   "index": 11
-  },
-  "Gt3771256492": {
-   "group": 0,
-   "index": 7
-  },
-  "Gt38F5890C13": {
-   "group": 12,
-   "index": 100
-  },
-  "Gt39CAD03032": {
-   "group": 5,
-   "index": 47
-  },
-  "Gt3A9420DD8E": {
-   "group": 7,
-   "index": 59
-  },
-  "Gt3CC580499F": {
-   "group": 7,
-   "index": 60
-  },
-  "Gt3E2A057F33": {
-   "group": 3,
-   "index": 25
-  },
-  "Gt3E6E18CD57": {
-   "group": 6,
-   "index": 49
-  },
-  "Gt3EC8B89B94": {
-   "group": 2,
-   "index": 16
-  },
-  "Gt3FD98F54A5": {
-   "group": 2,
-   "index": 17
-  },
-  "Gt44F1B6940F": {
-   "group": 12,
-   "index": 101
-  },
-  "Gt46F5D7703F": {
-   "group": 9,
-   "index": 76
-  },
-  "Gt484D1ADAFE": {
-   "group": 12,
-   "index": 98
-  },
-  "Gt4B1BA0C81D": {
-   "group": 11,
-   "index": 94
-  },
-  "Gt526892A4DC": {
-   "group": 1,
-   "index": 14
-  },
-  "Gt53D2408A5F": {
-   "group": 8,
-   "index": 67
-  },
-  "Gt57090094FA": {
-   "group": 1,
-   "index": 9
-  },
-  "Gt59DCDB2873": {
-   "group": 16,
-   "index": 133
-  },
-  "Gt5BE68AF2C7": {
-   "group": 5,
-   "index": 45
-  },
-  "Gt604E28A301": {
-   "group": 16,
-   "index": 130
-  },
-  "Gt62B0093BE7": {
-   "group": 16,
-   "index": 135
-  },
-  "Gt6463DC73A8": {
-   "group": 5,
-   "index": 43
-  },
-  "Gt669C528764": {
-   "group": 7,
-   "index": 61
-  },
-  "Gt6B1336E534": {
-   "group": 2,
-   "index": 19
-  },
-  "Gt6E9B243B7C": {
-   "group": 6,
-   "index": 52
-  },
-  "Gt6F0D97A69E": {
-   "group": 14,
-   "index": 114
-  },
-  "Gt7274F61A0F": {
-   "group": 2,
-   "index": 22
-  },
-  "Gt74B2AF1CB3": {
-   "group": 6,
-   "index": 54
-  },
-  "Gt75C1995C88": {
-   "group": 4,
-   "index": 32
-  },
-  "Gt7600AB7870": {
-   "group": 2,
-   "index": 20
-  },
-  "Gt7B8507E2C2": {
-   "group": 16,
-   "index": 134
-  },
-  "Gt7C1C13B292": {
-   "group": 11,
-   "index": 90
-  },
-  "Gt7D1CD7363A": {
-   "group": 9,
-   "index": 74
-  },
-  "Gt7D65FF3A10": {
-   "group": 2,
-   "index": 18
-  },
-  "Gt7FBB1934E8": {
-   "group": 1,
-   "index": 13
-  },
-  "Gt83D8B3D008": {
-   "group": 0,
-   "index": 4
-  },
-  "Gt843A1262ED": {
-   "group": 9,
-   "index": 77
-  },
-  "Gt89824BEACE": {
-   "group": 5,
-   "index": 46
-  },
-  "Gt8E507C4540": {
-   "group": 9,
-   "index": 75
-  },
-  "Gt8FB0CF9679": {
-   "group": 9,
-   "index": 79
-  },
-  "Gt9333E6513D": {
-   "group": 5,
-   "index": 41
-  },
-  "Gt9368483BAB": {
-   "group": 13,
-   "index": 111
-  },
-  "Gt94B70684B5": {
-   "group": 11,
-   "index": 92
-  },
-  "Gt9579E0A2FD": {
-   "group": 14,
-   "index": 115
-  },
-  "Gt967E8D815F": {
-   "group": 16,
-   "index": 131
-  },
-  "Gt98B8C9F262": {
-   "group": 12,
-   "index": 103
-  },
-  "Gt9D356BAF82": {
-   "group": 13,
-   "index": 106
-  },
-  "Gt9DF37A5216": {
-   "group": 1,
-   "index": 8
-  },
-  "Gt9EA902108D": {
-   "group": 2,
-   "index": 23
-  },
-  "GtA8100D747D": {
-   "group": 4,
-   "index": 36
-  },
-  "GtA8457965E2": {
-   "group": 6,
-   "index": 48
-  },
-  "GtAA8D1478A7": {
-   "group": 15,
-   "index": 122
-  },
-  "GtAA99FAAC9D": {
-   "group": 11,
-   "index": 91
-  },
-  "GtAD3CF815B7": {
-   "group": 15,
-   "index": 121
-  },
-  "GtAD72FD256A": {
-   "group": 15,
-   "index": 125
-  },
-  "GtADC8DCD962": {
-   "group": 9,
-   "index": 72
-  },
-  "GtAE3EF932C2": {
-   "group": 0,
-   "index": 6
-  },
-  "GtAEB382AD1F": {
-   "group": 4,
-   "index": 38
-  },
-  "GtB0CCEA154C": {
-   "group": 2,
-   "index": 21
-  },
-  "GtB1E9093D65": {
-   "group": 14,
-   "index": 116
-  },
-  "GtB85E1BC748": {
-   "group": 3,
-   "index": 28
-  },
-  "GtB91D4D285D": {
-   "group": 6,
-   "index": 51
-  },
-  "GtBB42F83A45": {
-   "group": 3,
-   "index": 24
-  },
-  "GtBBF12DAB28": {
-   "group": 14,
-   "index": 113
-  },
-  "GtBBFD66E011": {
-   "group": 6,
-   "index": 50
-  },
-  "GtC063F5D9E0": {
-   "group": 13,
-   "index": 104
-  },
-  "GtC0FC7B166A": {
-   "group": 3,
-   "index": 30
-  },
-  "GtC19E8053EB": {
-   "group": 3,
-   "index": 31
-  },
-  "GtC57121EA56": {
-   "group": 1,
-   "index": 10
-  },
-  "GtC847E618FA": {
-   "group": 12,
-   "index": 97
-  },
-  "GtC923FCB2DA": {
-   "group": 9,
-   "index": 73
-  },
-  "GtCCF6FFA0A0": {
-   "group": 8,
-   "index": 69
-  },
-  "GtCF587DD386": {
-   "group": 11,
-   "index": 93
-  },
-  "GtD1AEF07F7D": {
-   "group": 8,
-   "index": 64
-  },
-  "GtD291A17219": {
-   "group": 13,
-   "index": 105
-  },
-  "GtDB1482527D": {
-   "group": 11,
-   "index": 89
-  },
-  "GtDE4B86A990": {
-   "group": 3,
-   "index": 26
-  },
-  "GtE470919895": {
-   "group": 10,
-   "index": 80
-  },
-  "GtE528AAE3C6": {
-   "group": 7,
-   "index": 63
-  },
-  "GtE6006F6F55": {
-   "group": 4,
-   "index": 39
-  },
-  "GtE83F21B20A": {
-   "group": 8,
-   "index": 70
-  },
-  "GtEB2FD43D9B": {
-   "group": 1,
-   "index": 12
-  },
-  "GtECF9BB18D8": {
-   "group": 16,
-   "index": 132
-  },
-  "GtED805B7C93": {
-   "group": 13,
-   "index": 108
-  },
-  "GtEDF530C7B9": {
-   "group": 13,
-   "index": 107
-  },
-  "GtEDFB713194": {
-   "group": 14,
-   "index": 112
-  },
-  "GtF23A2FB97E": {
-   "group": 4,
-   "index": 37
-  },
-  "GtF3865AEE9A": {
-   "group": 4,
-   "index": 35
-  },
-  "GtF45E42B273": {
-   "group": 7,
-   "index": 62
-  },
-  "GtF7582E0E9A": {
-   "group": 16,
-   "index": 129
-  },
-  "GtF91FD5FC73": {
-   "group": 12,
-   "index": 102
-  },
-  "GtFAE59DA275": {
-   "group": 7,
-   "index": 58
-  },
-  "GtFCF8066C33": {
-   "group": 13,
-   "index": 110
-  },
-  "GtFF7C03E8A0": {
-   "group": 13,
-   "index": 109
-  },
-  "Gu6DDF182530": {
+  "CompatibleUnionA": {
    "group": 15,
    "index": 127
   },
-  "GuA2212AE21F": {
+  "CompatibleUnionABCA": {
+   "group": 15,
+   "index": 126
+  },
+  "CompatibleUnionBC": {
+   "group": 15,
+   "index": 125
+  },
+  "ComplexTestStruct": {
+   "group": 10,
+   "index": 87
+  },
+  "FixedTestStruct": {
+   "group": 10,
+   "index": 84
+  },
+  "ProgressiveBitsStruct": {
+   "group": 10,
+   "index": 83
+  },
+  "ProgressiveComplexTestStruct": {
+   "group": 0,
+   "index": 1
+  },
+  "ProgressiveSingleFieldContainerTestStruct": {
+   "group": 0,
+   "index": 3
+  },
+  "ProgressiveSingleListContainerTestStruct": {
+   "group": 0,
+   "index": 0
+  },
+  "ProgressiveTestStruct": {
+   "group": 10,
+   "index": 81
+  },
+  "ProgressiveVarTestStruct": {
+   "group": 0,
+   "index": 2
+  },
+  "SingleFieldTestStruct": {
+   "group": 10,
+   "index": 85
+  },
+  "SmallTestStruct": {
+   "group": 11,
+   "index": 88
+  },
+  "VarTestStruct": {
+   "group": 10,
+   "index": 86
+  },
+  "bitlist_1": {
+   "group": 11,
+   "index": 92
+  },
+  "bitlist_15": {
+   "group": 11,
+   "index": 89
+  },
+  "bitlist_16": {
+   "group": 11,
+   "index": 90
+  },
+  "bitlist_17": {
+   "group": 11,
+   "index": 91
+  },
+  "bitlist_2": {
+   "group": 11,
+   "index": 93
+  },
+  "bitlist_3": {
+   "group": 12,
+   "index": 97
+  },
+  "bitlist_31": {
+   "group": 11,
+   "index": 94
+  },
+  "bitlist_32": {
+   "group": 11,
+   "index": 95
+  },
+  "bitlist_33": {
+   "group": 12,
+   "index": 96
+  },
+  "bitlist_4": {
+   "group": 12,
+   "index": 98
+  },
+  "bitlist_5": {
+   "group": 12,
+   "index": 102
+  },
+  "bitlist_511": {
+   "group": 12,
+   "index": 99
+  },
+  "bitlist_512": {
+   "group": 12,
+   "index": 100
+  },
+  "bitlist_513": {
+   "group": 12,
+   "index": 101
+  },
+  "bitlist_6": {
+   "group": 12,
+   "index": 103
+  },
+  "bitlist_7": {
+   "group": 13,
+   "index": 104
+  },
+  "bitlist_8": {
+   "group": 13,
+   "index": 105
+  },
+  "bitlist_9": {
+   "group": 13,
+   "index": 106
+  },
+  "bitvector_1": {
+   "group": 13,
+   "index": 110
+  },
+  "bitvector_15": {
+   "group": 13,
+   "index": 107
+  },
+  "bitvector_16": {
+   "group": 13,
+   "index": 108
+  },
+  "bitvector_17": {
+   "group": 13,
+   "index": 109
+  },
+  "bitvector_2": {
+   "group": 13,
+   "index": 111
+  },
+  "bitvector_3": {
+   "group": 14,
+   "index": 115
+  },
+  "bitvector_31": {
+   "group": 14,
+   "index": 112
+  },
+  "bitvector_32": {
+   "group": 14,
+   "index": 113
+  },
+  "bitvector_33": {
+   "group": 14,
+   "index": 114
+  },
+  "bitvector_4": {
+   "group": 14,
+   "index": 116
+  },
+  "bitvector_5": {
+   "group": 15,
+   "index": 120
+  },
+  "bitvector_511": {
+   "group": 14,
+   "index": 117
+  },
+  "bitvector_512": {
+   "group": 14,
+   "index": 118
+  },
+  "bitvector_513": {
+   "group": 14,
+   "index": 119
+  },
+  "bitvector_6": {
+   "group": 15,
+   "index": 121
+  },
+  "bitvector_7": {
+   "group": 15,
+   "index": 122
+  },
+  "bitvector_8": {
+   "group": 15,
+   "index": 123
+  },
+  "bitvector_9": {
+   "group": 15,
+   "index": 124
+  },
+  "progbitlist": {
    "group": 16,
    "index": 128
   },
-  "GuAD91DEB870": {
-   "group": 15,
-   "index": 126
+  "proglist_bool": {
+   "group": 0,
+   "index": 4
+  },
+  "proglist_uint128": {
+   "group": 1,
+   "index": 15
+  },
+  "proglist_uint16": {
+   "group": 4,
+   "index": 37
+  },
+  "proglist_uint256": {
+   "group": 6,
+   "index": 48
+  },
+  "proglist_uint32": {
+   "group": 7,
+   "index": 59
+  },
+  "proglist_uint64": {
+   "group": 8,
+   "index": 70
+  },
+  "proglist_uint8": {
+   "group": 3,
+   "index": 26
+  },
+  "uint128": {
+   "group": 16,
+   "index": 129
+  },
+  "uint16": {
+   "group": 16,
+   "index": 130
+  },
+  "vec_bool_1": {
+   "group": 0,
+   "index": 6
+  },
+  "vec_bool_16": {
+   "group": 0,
+   "index": 5
+  },
+  "vec_bool_2": {
+   "group": 0,
+   "index": 7
+  },
+  "vec_bool_3": {
+   "group": 1,
+   "index": 9
+  },
+  "vec_bool_31": {
+   "group": 1,
+   "index": 8
+  },
+  "vec_bool_4": {
+   "group": 1,
+   "index": 10
+  },
+  "vec_bool_5": {
+   "group": 1,
+   "index": 13
+  },
+  "vec_bool_512": {
+   "group": 1,
+   "index": 11
+  },
+  "vec_bool_513": {
+   "group": 1,
+   "index": 12
+  },
+  "vec_bool_8": {
+   "group": 1,
+   "index": 14
+  },
+  "vec_uint128_1": {
+   "group": 2,
+   "index": 17
+  },
+  "vec_uint128_16": {
+   "group": 2,
+   "index": 16
+  },
+  "vec_uint128_2": {
+   "group": 2,
+   "index": 18
+  },
+  "vec_uint128_3": {
+   "group": 2,
+   "index": 20
+  },
+  "vec_uint128_31": {
+   "group": 2,
+   "index": 19
+  },
+  "vec_uint128_4": {
+   "group": 2,
+   "index": 21
+  },
+  "vec_uint128_5": {
+   "group": 3,
+   "index": 24
+  },
+  "vec_uint128_512": {
+   "group": 2,
+   "index": 22
+  },
+  "vec_uint128_513": {
+   "group": 2,
+   "index": 23
+  },
+  "vec_uint128_8": {
+   "group": 3,
+   "index": 25
+  },
+  "vec_uint16_1": {
+   "group": 4,
+   "index": 39
+  },
+  "vec_uint16_16": {
+   "group": 4,
+   "index": 38
+  },
+  "vec_uint16_2": {
+   "group": 5,
+   "index": 40
+  },
+  "vec_uint16_3": {
+   "group": 5,
+   "index": 42
+  },
+  "vec_uint16_31": {
+   "group": 5,
+   "index": 41
+  },
+  "vec_uint16_4": {
+   "group": 5,
+   "index": 43
+  },
+  "vec_uint16_5": {
+   "group": 5,
+   "index": 46
+  },
+  "vec_uint16_512": {
+   "group": 5,
+   "index": 44
+  },
+  "vec_uint16_513": {
+   "group": 5,
+   "index": 45
+  },
+  "vec_uint16_8": {
+   "group": 5,
+   "index": 47
+  },
+  "vec_uint256_1": {
+   "group": 6,
+   "index": 50
+  },
+  "vec_uint256_16": {
+   "group": 6,
+   "index": 49
+  },
+  "vec_uint256_2": {
+   "group": 6,
+   "index": 51
+  },
+  "vec_uint256_3": {
+   "group": 6,
+   "index": 53
+  },
+  "vec_uint256_31": {
+   "group": 6,
+   "index": 52
+  },
+  "vec_uint256_4": {
+   "group": 6,
+   "index": 54
+  },
+  "vec_uint256_5": {
+   "group": 7,
+   "index": 57
+  },
+  "vec_uint256_512": {
+   "group": 6,
+   "index": 55
+  },
+  "vec_uint256_513": {
+   "group": 7,
+   "index": 56
+  },
+  "vec_uint256_8": {
+   "group": 7,
+   "index": 58
+  },
+  "vec_uint32_1": {
+   "group": 7,
+   "index": 61
+  },
+  "vec_uint32_16": {
+   "group": 7,
+   "index": 60
+  },
+  "vec_uint32_2": {
+   "group": 7,
+   "index": 62
+  },
+  "vec_uint32_3": {
+   "group": 8,
+   "index": 64
+  },
+  "vec_uint32_31": {
+   "group": 7,
+   "index": 63
+  },
+  "vec_uint32_4": {
+   "group": 8,
+   "index": 65
+  },
+  "vec_uint32_5": {
+   "group": 8,
+   "index": 68
+  },
+  "vec_uint32_512": {
+   "group": 8,
+   "index": 66
+  },
+  "vec_uint32_513": {
+   "group": 8,
+   "index": 67
+  },
+  "vec_uint32_8": {
+   "group": 8,
+   "index": 69
+  },
+  "vec_uint64_1": {
+   "group": 9,
+   "index": 72
+  },
+  "vec_uint64_16": {
+   "group": 8,
+   "index": 71
+  },
+  "vec_uint64_2": {
+   "group": 9,
+   "index": 73
+  },
+  "vec_uint64_3": {
+   "group": 9,
+   "index": 75
+  },
+  "vec_uint64_31": {
+   "group": 9,
+   "index": 74
+  },
+  "vec_uint64_4": {
+   "group": 9,
+   "index": 76
+  },
+  "vec_uint64_5": {
+   "group": 9,
+   "index": 79
+  },
+  "vec_uint64_512": {
+   "group": 9,
+   "index": 77
+  },
+  "vec_uint64_513": {
+   "group": 9,
+   "index": 78
+  },
+  "vec_uint64_8": {
+   "group": 10,
+   "index": 80
+  },
+  "vec_uint8_1": {
+   "group": 3,
+   "index": 28
+  },
+  "vec_uint8_16": {
+   "group": 3,
+   "index": 27
+  },
+  "vec_uint8_2": {
+   "group": 3,
+   "index": 29
+  },
+  "vec_uint8_3": {
+   "group": 3,
+   "index": 31
+  },
+  "vec_uint8_31": {
+   "group": 3,
+   "index": 30
+  },
+  "vec_uint8_4": {
+   "group": 4,
+   "index": 32
+  },
+  "vec_uint8_5": {
+   "group": 4,
+   "index": 35
+  },
+  "vec_uint8_512": {
+   "group": 4,
+   "index": 33
+  },
+  "vec_uint8_513": {
+   "group": 4,
+   "index": 34
+  },
+  "vec_uint8_8": {
+   "group": 4,
+   "index": 36
   }
  },
  "unsupported": {
-  "Gt0800299A8E": "schema: a zero-length vector is not an SSZ type",
-  "Gt17827D233C": "schema: a zero-length vector is not an SSZ type",
-  "Gt450D58028A": "schema: a zero-length bit vector is not an SSZ type",
-  "Gt4FB8405ADE": "schema: a zero-length vector is not an SSZ type",
-  "Gt5CF33A21E6": "schema: a zero-length vector is not an SSZ type",
-  "Gt9F50AB7A20": "schema: a zero-length vector is not an SSZ type",
-  "GtA5CE788F25": "schema: a zero-length vector is not an SSZ type",
-  "GtB8ACE05E5F": "schema: a zero-length vector is not an SSZ type"
+  "bitvector_0": "schema: a zero-length bit vector is not an SSZ type",
+  "vec_bool_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint128_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint16_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint256_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint32_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint64_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint8_0": "schema: a zero-length vector is not an SSZ type"
  }
 }

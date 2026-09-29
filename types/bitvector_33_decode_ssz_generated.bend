@@ -27,17 +27,17 @@ def bv33_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv33_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv33_ok_len(U32.is_eq(len, 5), buf, off)
 
-def Gt6F0D97A69E_some(pair: B.Buf & bitvector_33_d.Bitvector33) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
+def bitvector_33_some(pair: B.Buf & bitvector_33_d.Bitvector33) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt6F0D97A69E_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
+def bitvector_33_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt6F0D97A69E_some(bv33_read(buf, 0, size))
+    case True{}: bitvector_33_some(bv33_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt6F0D97A69E_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
-  Gt6F0D97A69E_built(size, bv33_ok(buf, 0, size))
+def bitvector_33_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
+  bitvector_33_built(size, bv33_ok(buf, 0, size))
 
-def Gt6F0D97A69E_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_33_d.Bitvector33: bv33_read(buf, 0, size)
+def bitvector_33_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_33_d.Bitvector33: bv33_read(buf, 0, size)

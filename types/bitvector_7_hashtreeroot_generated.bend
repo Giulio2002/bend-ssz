@@ -12,4 +12,4 @@ def bv7_root(+hl: Nat, h: B.Buf, o: bitvector_7_d.Bitvector7, +seg: U32) -> B.Bu
   match o:
     case bitvector_7_d.Bitvector7{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
-def GtAA8D1478A7_hash_tree_root(h: B.Buf, +o: bitvector_7_d.Bitvector7) -> B.Buf & D.Digest: bv7_root(64n, h, o, 0)
+def bitvector_7_hash_tree_root(h: B.Buf, +o: bitvector_7_d.Bitvector7) -> B.Buf & D.Digest: bv7_root(64n, h, o, 0)

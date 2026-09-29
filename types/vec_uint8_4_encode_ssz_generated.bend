@@ -40,15 +40,15 @@ def v4_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 1)
 
 def v4_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u8_pk(out, pos, v4_u8_valid(o))
 
-def Gt75C1995C88_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_uint8_4_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(4, out))
 
-def Gt75C1995C88_encode(o: O.Words) -> O.Words & B.Buf: Gt75C1995C88_enc_out(v4_u8_put(O.out_at(0n), 0, o))
+def vec_uint8_4_encode(o: O.Words) -> O.Words & B.Buf: vec_uint8_4_enc_out(v4_u8_put(O.out_at(0n), 0, o))
 
-def Gt75C1995C88_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_uint8_4_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 4, out))
 
-def Gt75C1995C88_serialize(o: O.Words) -> O.Words & O.Encoded: Gt75C1995C88_senc_out(v4_u8_putk(O.out_at(0n), 0, o))
+def vec_uint8_4_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_4_senc_out(v4_u8_putk(O.out_at(0n), 0, o))

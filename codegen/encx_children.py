@@ -5,7 +5,7 @@
     python3 codegen/encx_children.py [--check]
 
 CHILDREN[p]: a child in the encoder-window interface of codegen/var_plist_sub.py's ENCX
-(proofs/obj/big_encx_<p>.bend): its module, the mirror type and constructor fields, the object
+(proofs/obj/encx_<p>.bend): its module, the mirror type and constructor fields, the object
 type TH returns, the runtime prefix T.<p>_putk, and the laws' names. Every such child writes its
 bytes and the zeros to the end of its last word (putx_bytes: SPL(.., AP(ENC(m), ZB(PADB(r, m))))),
 so pad is True. The table is read from the modules themselves, so it follows them.
@@ -31,11 +31,11 @@ OBJ = ROOT / 'proofs/obj'
 # the children of the generic containers and unions (and the Fulu ones in the same interface)
 PREFIXES = ['pl_u8', 'pl_u16', 'pl_bool', 'pl_u64', 'l1024_u16', 'l128_u16', 'l123_u16', 'bl256', 'bl32',
             'bits5', 'bits6', 'bits256', 'bits257', 'bits1280', 'bits1281', 'bits131072', 'pbits',
-            'pl_Gc4ED9619F50', 'l10_GpF350A3C486',
+            'pl_SmallTestStruct', 'l10_ProgressiveSingleFieldContainerTestStruct',
             # lists of variable-size elements (codegen/var_vlist_enc.py GLISTS)
-            'pl_Gc465214E502', 'pl_pl_Gc465214E502', 'pl_Gp66304057C3', 'v2_Gc465214E502', 'l1_AttesterSlashing', 'l8_Attestation',
-            # containers (codegen/var_cont_enc.py's interface modules, big_encx_<C>_iface)
-            'Gc465214E502', 'Gp66304057C3', 'IndexedAttestation', 'AttesterSlashing', 'Attestation', 'ExecutionRequests',
+            'pl_VarTestStruct', 'pl_pl_VarTestStruct', 'pl_ProgressiveVarTestStruct', 'v2_VarTestStruct', 'l1_AttesterSlashing', 'l8_Attestation',
+            # containers (codegen/var_cont_enc.py's interface modules, encx_<C>_iface)
+            'VarTestStruct', 'ProgressiveVarTestStruct', 'IndexedAttestation', 'AttesterSlashing', 'Attestation', 'ExecutionRequests',
             # Fulu (codegen/var_rec_enc.py's FLISTS)
             'l4096_b48', 'l131072_u64',
             # BeaconState's packed lists (codegen/var_rec_enc.py FLISTS)
@@ -45,8 +45,8 @@ DEFS = ['TH', 'OK', 'ENC', 'VAL', 'SZ', 'PUTX', 'PADB']
 
 
 def child_file(p):
-    f = OBJ / f'big_encx_{p}_iface.bend'
-    return f if f.exists() else OBJ / f'big_encx_{p}.bend'
+    f = OBJ / f'encx_{p}_iface.bend'
+    return f if f.exists() else OBJ / f'encx_{p}.bend'
 
 
 def read_child(p, text=None, fname=None):
@@ -137,7 +137,7 @@ def main():
     bad, missing = check()
     if '--check' in sys.argv:
         if bad or missing:
-            print('encoder children: ' + '; '.join(bad + [f'missing big_encx_{p}' for p in missing]))
+            print('encoder children: ' + '; '.join(bad + [f'missing encx_{p}' for p in missing]))
             sys.exit(1)
         print(f'encoder children are consistent ({len(CHILDREN)} children, {len(LEAVES)} piece leaves, {len(WLEAVES)} word leaves, {len(TLEAVES)} packed-words leaves, union step)')
         return

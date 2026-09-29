@@ -23,35 +23,35 @@ def bits33_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 33, False{})
 
 def bits33_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits33_pk(out, pos, bits33_valid(o))
 
-def Gt039DD44FD8_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_33_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt039DD44FD8_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_33_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt039DD44FD8_enc_out(n, out, o, m)
+  bitlist_33_enc_out(n, out, o, m)
 
-def Gt039DD44FD8_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
+def bitlist_33_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  Gt039DD44FD8_enc_put(n, bits33_putn(O.out_new(n), 0, o))
+  bitlist_33_enc_put(n, bits33_putn(O.out_new(n), 0, o))
 
-def Gt039DD44FD8_encode(o: O.Bits) -> O.Bits & B.Buf: Gt039DD44FD8_enc_sized(bits33_size(o))
+def bitlist_33_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_33_enc_sized(bits33_size(o))
 
-def Gt039DD44FD8_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_33_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt039DD44FD8_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_33_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt039DD44FD8_senc_out(n, out, o, m)
+  bitlist_33_senc_out(n, out, o, m)
 
-def Gt039DD44FD8_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+def bitlist_33_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt039DD44FD8_senc_put(n, bits33_putk(O.out_new(n), 0, o))
+    case False{}: bitlist_33_senc_put(n, bits33_putk(O.out_new(n), 0, o))
 
-def Gt039DD44FD8_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+def bitlist_33_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
   (o, +n) = pair
-  Gt039DD44FD8_senc_go(O.is_poisoned(n), n, o)
+  bitlist_33_senc_go(O.is_poisoned(n), n, o)
 
-def Gt039DD44FD8_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt039DD44FD8_senc_sized(bits33_size(o))
+def bitlist_33_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_33_senc_sized(bits33_size(o))

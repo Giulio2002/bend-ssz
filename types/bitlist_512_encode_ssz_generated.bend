@@ -23,35 +23,35 @@ def bits512_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 512, False{})
 
 def bits512_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits512_pk(out, pos, bits512_valid(o))
 
-def Gt38F5890C13_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_512_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt38F5890C13_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_512_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt38F5890C13_enc_out(n, out, o, m)
+  bitlist_512_enc_out(n, out, o, m)
 
-def Gt38F5890C13_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
+def bitlist_512_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  Gt38F5890C13_enc_put(n, bits512_putn(O.out_new(n), 0, o))
+  bitlist_512_enc_put(n, bits512_putn(O.out_new(n), 0, o))
 
-def Gt38F5890C13_encode(o: O.Bits) -> O.Bits & B.Buf: Gt38F5890C13_enc_sized(bits512_size(o))
+def bitlist_512_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_512_enc_sized(bits512_size(o))
 
-def Gt38F5890C13_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_512_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt38F5890C13_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_512_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt38F5890C13_senc_out(n, out, o, m)
+  bitlist_512_senc_out(n, out, o, m)
 
-def Gt38F5890C13_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+def bitlist_512_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt38F5890C13_senc_put(n, bits512_putk(O.out_new(n), 0, o))
+    case False{}: bitlist_512_senc_put(n, bits512_putk(O.out_new(n), 0, o))
 
-def Gt38F5890C13_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+def bitlist_512_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
   (o, +n) = pair
-  Gt38F5890C13_senc_go(O.is_poisoned(n), n, o)
+  bitlist_512_senc_go(O.is_poisoned(n), n, o)
 
-def Gt38F5890C13_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt38F5890C13_senc_sized(bits512_size(o))
+def bitlist_512_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_512_senc_sized(bits512_size(o))

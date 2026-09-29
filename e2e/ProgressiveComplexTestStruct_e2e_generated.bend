@@ -18,10 +18,10 @@ import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vcont.bend as VCN
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/big_encx_Gp8A7851175B_iface.bend as CI
-import ../proofs/obj/big_var_codec_Gp8A7851175B_enc.bend as EN
-import ../proofs/obj/big_var_codec_Gp8A7851175B_enc_o.bend as ENo
-import ../proofs/obj/big_encx_Gp8A7851175B_iface_o.bend as CIo
+import ../proofs/obj/encx_ProgressiveComplexTestStruct_iface.bend as CI
+import ../proofs/obj/var_codec_ProgressiveComplexTestStruct_enc.bend as EN
+import ../proofs/obj/var_codec_ProgressiveComplexTestStruct_enc_o.bend as ENo
+import ../proofs/obj/encx_ProgressiveComplexTestStruct_iface_o.bend as CIo
 import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
 import ../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as ProgressiveComplexTestStruct_e
 import ./e2e_support.bend as E
@@ -48,22 +48,22 @@ def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arr
   EM.obD(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, h31, hn)
 
 # (i) on a record
-def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(CI.TH(m))))} == API.serialize(Spec.Gp8A7851175B(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
-    {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, _))} == API.serialize(Spec.Gp8A7851175B(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.Gp8A7851175B(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Gp8A7851175B(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Gp8A7851175B(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.Gp8A7851175B(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-      E.serialize_legal(Spec.Gp8A7851175B(), CI.VAL(m), VS.public_sound(Spec.Gp8A7851175B(), {==})), ENo.encode_specO(m, hok)))
+def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
+    {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, _))} == API.serialize(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.ProgressiveComplexTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+      E.serialize_legal(Spec.ProgressiveComplexTestStruct(), CI.VAL(m), VS.public_sound(Spec.ProgressiveComplexTestStruct(), {==})), ENo.encode_specO(m, hok)))
 
 # an object, as a record: o == TH(m), its view VAL(m), OK(m)
-def via(-o: ProgressiveComplexTestStruct_d.Gp8A7851175B, +m: CI.MW, +eo: {o == CI.TH(m) : ProgressiveComplexTestStruct_d.Gp8A7851175B}, +ev: {RT.v_Gp8A7851175B(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
-    -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(o)))} == API.serialize(Spec.Gp8A7851175B(), RT.v_Gp8A7851175B(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(ProgressiveComplexTestStruct_d.Gp8A7851175B, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(_)))} == API.serialize(Spec.Gp8A7851175B(), RT.v_Gp8A7851175B(_)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(S.Value, RT.v_Gp8A7851175B(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(CI.TH(m))))} == API.serialize(Spec.Gp8A7851175B(), _) : Maybe<&2, +List<U32>>}
+def via(-o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +m: CI.MW, +eo: {o == CI.TH(m) : ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct}, +ev: {RT.v_ProgressiveComplexTestStruct(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(_)))} == API.serialize(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(_)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(S.Value, RT.v_ProgressiveComplexTestStruct(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.ProgressiveComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   enc_m(m, hok)
 
-def vq(-o: ProgressiveComplexTestStruct_d.Gp8A7851175B, +c: EQ.RQ_Gp8A7851175B(o)) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(o)))} == API.serialize(Spec.Gp8A7851175B(), RT.v_Gp8A7851175B(o)) : Maybe<&2, +List<U32>>}:
+def vq(-o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +c: EQ.RQ_ProgressiveComplexTestStruct(o)) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
   (+m, +c1) = c
   (+eo, +c2) = c1
   (+ev, +c3) = c2
@@ -71,5 +71,5 @@ def vq(-o: ProgressiveComplexTestStruct_d.Gp8A7851175B, +c: EQ.RQ_Gp8A7851175B(o
   via(o, m, eo, ev, hok)
 
 # (i): for every object the root law represents
-def ProgressiveComplexTestStruct_e2e_encode(-o: ProgressiveComplexTestStruct_d.Gp8A7851175B, +rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()), +hs: EQ.PREM_Gp8A7851175B(o)) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.Gp8A7851175B, B.Buf, ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(o)))} == API.serialize(Spec.Gp8A7851175B(), RT.v_Gp8A7851175B(o)) : Maybe<&2, +List<U32>>}:
-  vq(o, EQ.rq_Gp8A7851175B(o, rep, hs))
+def ProgressiveComplexTestStruct_e2e_encode(-o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +rep: RT.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +hs: EQ.PREM_ProgressiveComplexTestStruct(o)) -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
+  vq(o, EQ.rq_ProgressiveComplexTestStruct(o, rep, hs))

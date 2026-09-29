@@ -22,9 +22,9 @@ import ../proofs/obj/vbitrep.bend as VR
 import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_var_codec_AggregateAndProof_enc.bend as PRV
-import ../proofs/obj/big_var_bitc_enc_Attestation.bend as EA
-import ../proofs/obj/big_var_codec_AggregateAndProof_enc.bend as CC
+import ../proofs/obj/var_codec_AggregateAndProof_enc.bend as PRV
+import ../proofs/obj/var_bitc_enc_Attestation.bend as EA
+import ../proofs/obj/var_codec_AggregateAndProof_enc.bend as CC
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d

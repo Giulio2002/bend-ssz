@@ -6,139 +6,134 @@ import ../../types/primitive.bend as P
 # The specification schema of every supported generic SSZ form (the frozen
 # ssz_generic descriptions of tools/test_schemas.py, via codegen/generic.py).
 
-def Gp4B0CA2906A() -> S.Schema: S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}
-def Gp8A7851175B() -> S.Schema: S.ProgressiveContainer{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G", "f_H"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.ProgressiveList{S.Unsigned{P.U64{}}}, S.Chain{S.ProgressiveList{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}, S.Chain{S.ProgressiveList{S.ProgressiveList{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}}}, S.Chain{S.ListOf{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, 10n}, S.Chain{S.ProgressiveList{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}}, S.End{}}}}}}}}}, [True{}, False{}, True{}, False{}, True{}, False{}, False{}, False{}, True{}, False{}, False{}, False{}, True{}, True{}, False{}, False{}, False{}, False{}, False{}, False{}, True{}, True{}]}
-def Gp66304057C3() -> S.Schema: S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}
-def GpF350A3C486() -> S.Schema: S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}
-def Gt83D8B3D008() -> S.Schema: S.ProgressiveList{S.Boolean{}}
-def Gt1D9B3E1871() -> S.Schema: S.Vector{S.Boolean{}, 16n}
-def GtAE3EF932C2() -> S.Schema: S.Vector{S.Boolean{}, 1n}
-def Gt3771256492() -> S.Schema: S.Vector{S.Boolean{}, 2n}
-def Gt9DF37A5216() -> S.Schema: S.Vector{S.Boolean{}, 31n}
-def Gt57090094FA() -> S.Schema: S.Vector{S.Boolean{}, 3n}
-def GtC57121EA56() -> S.Schema: S.Vector{S.Boolean{}, 4n}
-def Gt34AE45611E() -> S.Schema: S.Vector{S.Boolean{}, 512n}
-def GtEB2FD43D9B() -> S.Schema: S.Vector{S.Boolean{}, 513n}
-def Gt7FBB1934E8() -> S.Schema: S.Vector{S.Boolean{}, 5n}
-def Gt526892A4DC() -> S.Schema: S.Vector{S.Boolean{}, 8n}
-def Gt1C2FA69562() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U128{}}}
-def Gt3EC8B89B94() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 16n}
-def Gt3FD98F54A5() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 1n}
-def Gt7D65FF3A10() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 2n}
-def Gt6B1336E534() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 31n}
-def Gt7600AB7870() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 3n}
-def GtB0CCEA154C() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 4n}
-def Gt7274F61A0F() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 512n}
-def Gt9EA902108D() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 513n}
-def GtBB42F83A45() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 5n}
-def Gt3E2A057F33() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 8n}
-def GtDE4B86A990() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U8{}}}
-def Gt28ED72E3EF() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 16n}
-def GtB85E1BC748() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 1n}
-def Gt3429157FEB() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 2n}
-def GtC0FC7B166A() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 31n}
-def GtC19E8053EB() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 3n}
-def Gt75C1995C88() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 4n}
-def Gt28605B5D5C() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 512n}
-def Gt2CD118DF5F() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 513n}
-def GtF3865AEE9A() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 5n}
-def GtA8100D747D() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 8n}
-def GtF23A2FB97E() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U16{}}}
-def GtAEB382AD1F() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 16n}
-def GtE6006F6F55() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 1n}
-def Gt04170D6AA7() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 2n}
-def Gt9333E6513D() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 31n}
-def Gt19F04F79B8() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 3n}
-def Gt6463DC73A8() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 4n}
-def Gt2FF8722A75() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 512n}
-def Gt5BE68AF2C7() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 513n}
-def Gt89824BEACE() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 5n}
-def Gt39CAD03032() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 8n}
-def GtA8457965E2() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U256{}}}
-def Gt3E6E18CD57() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 16n}
-def GtBBFD66E011() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 1n}
-def GtB91D4D285D() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 2n}
-def Gt6E9B243B7C() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 31n}
-def Gt2E7060B297() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 3n}
-def Gt74B2AF1CB3() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 4n}
-def Gt274A0B8DC2() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 512n}
-def Gt0A3B6B4128() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 513n}
-def Gt0B1B711C4D() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 5n}
-def GtFAE59DA275() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 8n}
-def Gt3A9420DD8E() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U32Width{}}}
-def Gt3CC580499F() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 16n}
-def Gt669C528764() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 1n}
-def GtF45E42B273() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 2n}
-def GtE528AAE3C6() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 31n}
-def GtD1AEF07F7D() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 3n}
-def Gt240C147AA2() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 4n}
-def Gt13AFE546ED() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 512n}
-def Gt53D2408A5F() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 513n}
-def Gt1719057EB7() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 5n}
-def GtCCF6FFA0A0() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 8n}
-def GtE83F21B20A() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U64{}}}
-def Gt0B4EF17D71() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 16n}
-def GtADC8DCD962() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 1n}
-def GtC923FCB2DA() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 2n}
-def Gt7D1CD7363A() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 31n}
-def Gt8E507C4540() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 3n}
-def Gt46F5D7703F() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 4n}
-def Gt843A1262ED() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 512n}
-def Gt10D6F42D74() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 513n}
-def Gt8FB0CF9679() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 5n}
-def GtE470919895() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 8n}
-def Gc221EC01D83() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D"], S.Chain{S.ProgressiveList{S.Unsigned{P.U8{}}}, S.Chain{S.ProgressiveList{S.Unsigned{P.U64{}}}, S.Chain{S.ProgressiveList{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}, S.Chain{S.ProgressiveList{S.ProgressiveList{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}}}, S.End{}}}}}}
-def Gc85FA758A04() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E"], S.Chain{S.BitList{5n}, S.Chain{S.BitVector{2n}, S.Chain{S.BitVector{1n}, S.Chain{S.BitList{6n}, S.Chain{S.BitVector{8n}, S.End{}}}}}}}
-def Gc60805EC295() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G", "f_H", "f_I", "f_J", "f_K", "f_L"], S.Chain{S.BitVector{256n}, S.Chain{S.BitList{256n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{257n}, S.Chain{S.BitList{257n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1280n}, S.Chain{S.BitList{1280n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1281n}, S.Chain{S.BitList{1281n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}}}}}}}}}}}
-def GcDC3E457711() -> S.Schema: S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}
-def Gc74A8F5F17F() -> S.Schema: S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}
-def Gc465214E502() -> S.Schema: S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}
-def Gc56D855869F() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 128n}, S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ByteList{256n}, S.Chain{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}, S.Chain{S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, 4n}, S.Chain{S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}, 2n}, S.End{}}}}}}}}}
-def Gc4ED9619F50() -> S.Schema: S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}
-def GtDB1482527D() -> S.Schema: S.BitList{15n}
-def Gt7C1C13B292() -> S.Schema: S.BitList{16n}
-def GtAA99FAAC9D() -> S.Schema: S.BitList{17n}
-def Gt94B70684B5() -> S.Schema: S.BitList{1n}
-def GtCF587DD386() -> S.Schema: S.BitList{2n}
-def Gt4B1BA0C81D() -> S.Schema: S.BitList{31n}
-def Gt2F34855D3D() -> S.Schema: S.BitList{32n}
-def Gt039DD44FD8() -> S.Schema: S.BitList{33n}
-def GtC847E618FA() -> S.Schema: S.BitList{3n}
-def Gt484D1ADAFE() -> S.Schema: S.BitList{4n}
-def Gt21E1483EE1() -> S.Schema: S.BitList{511n}
-def Gt38F5890C13() -> S.Schema: S.BitList{512n}
-def Gt44F1B6940F() -> S.Schema: S.BitList{513n}
-def GtF91FD5FC73() -> S.Schema: S.BitList{5n}
-def Gt98B8C9F262() -> S.Schema: S.BitList{6n}
-def GtC063F5D9E0() -> S.Schema: S.BitList{7n}
-def GtD291A17219() -> S.Schema: S.BitList{8n}
-def Gt9D356BAF82() -> S.Schema: S.BitList{9n}
-def GtEDF530C7B9() -> S.Schema: S.BitVector{15n}
-def GtED805B7C93() -> S.Schema: S.BitVector{16n}
-def GtFF7C03E8A0() -> S.Schema: S.BitVector{17n}
-def GtFCF8066C33() -> S.Schema: S.BitVector{1n}
-def Gt9368483BAB() -> S.Schema: S.BitVector{2n}
-def GtEDFB713194() -> S.Schema: S.BitVector{31n}
-def GtBBF12DAB28() -> S.Schema: S.BitVector{32n}
-def Gt6F0D97A69E() -> S.Schema: S.BitVector{33n}
-def Gt9579E0A2FD() -> S.Schema: S.BitVector{3n}
-def GtB1E9093D65() -> S.Schema: S.BitVector{4n}
-def Gt05340E1F7E() -> S.Schema: S.BitVector{511n}
-def Gt0A390CB480() -> S.Schema: S.BitVector{512n}
-def Gt0B0C03B454() -> S.Schema: S.BitVector{513n}
-def Gt27CDB122DD() -> S.Schema: S.BitVector{5n}
-def GtAD3CF815B7() -> S.Schema: S.BitVector{6n}
-def GtAA8D1478A7() -> S.Schema: S.BitVector{7n}
-def Gt0366A291C1() -> S.Schema: S.BitVector{8n}
-def Gt1BD4B4358D() -> S.Schema: S.BitVector{9n}
-def GtAD72FD256A() -> S.Schema: S.Boolean{}
-def GuAD91DEB870() -> S.Schema: S.CompatibleUnion{[2, 3], S.Chain{S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, S.End{}}}}
-def Gu6DDF182530() -> S.Schema: S.CompatibleUnion{[1, 2, 3, 4], S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.Chain{S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.End{}}}}}}
-def GuA2212AE21F() -> S.Schema: S.CompatibleUnion{[1], S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.End{}}}
-def GtF7582E0E9A() -> S.Schema: S.ProgressiveBits{}
-def Gt604E28A301() -> S.Schema: S.Unsigned{P.U128{}}
-def Gt967E8D815F() -> S.Schema: S.Unsigned{P.U8{}}
-def GtECF9BB18D8() -> S.Schema: S.Unsigned{P.U16{}}
-def Gt59DCDB2873() -> S.Schema: S.Unsigned{P.U256{}}
-def Gt7B8507E2C2() -> S.Schema: S.Unsigned{P.U32Width{}}
-def Gt62B0093BE7() -> S.Schema: S.Unsigned{P.U64{}}
+def ProgressiveSingleListContainerTestStruct() -> S.Schema: S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}
+def ProgressiveComplexTestStruct() -> S.Schema: S.ProgressiveContainer{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G", "f_H"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.ProgressiveList{S.Unsigned{P.U64{}}}, S.Chain{S.ProgressiveList{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}, S.Chain{S.ProgressiveList{S.ProgressiveList{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}}}, S.Chain{S.ListOf{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, 10n}, S.Chain{S.ProgressiveList{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}}, S.End{}}}}}}}}}, [True{}, False{}, True{}, False{}, True{}, False{}, False{}, False{}, True{}, False{}, False{}, False{}, True{}, True{}, False{}, False{}, False{}, False{}, False{}, False{}, True{}, True{}]}
+def ProgressiveVarTestStruct() -> S.Schema: S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}
+def ProgressiveSingleFieldContainerTestStruct() -> S.Schema: S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}
+def proglist_bool() -> S.Schema: S.ProgressiveList{S.Boolean{}}
+def vec_bool_16() -> S.Schema: S.Vector{S.Boolean{}, 16n}
+def vec_bool_1() -> S.Schema: S.Vector{S.Boolean{}, 1n}
+def vec_bool_2() -> S.Schema: S.Vector{S.Boolean{}, 2n}
+def vec_bool_31() -> S.Schema: S.Vector{S.Boolean{}, 31n}
+def vec_bool_3() -> S.Schema: S.Vector{S.Boolean{}, 3n}
+def vec_bool_4() -> S.Schema: S.Vector{S.Boolean{}, 4n}
+def vec_bool_512() -> S.Schema: S.Vector{S.Boolean{}, 512n}
+def vec_bool_513() -> S.Schema: S.Vector{S.Boolean{}, 513n}
+def vec_bool_5() -> S.Schema: S.Vector{S.Boolean{}, 5n}
+def vec_bool_8() -> S.Schema: S.Vector{S.Boolean{}, 8n}
+def proglist_uint128() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U128{}}}
+def vec_uint128_16() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 16n}
+def vec_uint128_1() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 1n}
+def vec_uint128_2() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 2n}
+def vec_uint128_31() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 31n}
+def vec_uint128_3() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 3n}
+def vec_uint128_4() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 4n}
+def vec_uint128_512() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 512n}
+def vec_uint128_513() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 513n}
+def vec_uint128_5() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 5n}
+def vec_uint128_8() -> S.Schema: S.Vector{S.Unsigned{P.U128{}}, 8n}
+def proglist_uint8() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U8{}}}
+def vec_uint8_16() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 16n}
+def vec_uint8_1() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 1n}
+def vec_uint8_2() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 2n}
+def vec_uint8_31() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 31n}
+def vec_uint8_3() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 3n}
+def vec_uint8_4() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 4n}
+def vec_uint8_512() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 512n}
+def vec_uint8_513() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 513n}
+def vec_uint8_5() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 5n}
+def vec_uint8_8() -> S.Schema: S.Vector{S.Unsigned{P.U8{}}, 8n}
+def proglist_uint16() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U16{}}}
+def vec_uint16_16() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 16n}
+def vec_uint16_1() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 1n}
+def vec_uint16_2() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 2n}
+def vec_uint16_31() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 31n}
+def vec_uint16_3() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 3n}
+def vec_uint16_4() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 4n}
+def vec_uint16_512() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 512n}
+def vec_uint16_513() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 513n}
+def vec_uint16_5() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 5n}
+def vec_uint16_8() -> S.Schema: S.Vector{S.Unsigned{P.U16{}}, 8n}
+def proglist_uint256() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U256{}}}
+def vec_uint256_16() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 16n}
+def vec_uint256_1() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 1n}
+def vec_uint256_2() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 2n}
+def vec_uint256_31() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 31n}
+def vec_uint256_3() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 3n}
+def vec_uint256_4() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 4n}
+def vec_uint256_512() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 512n}
+def vec_uint256_513() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 513n}
+def vec_uint256_5() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 5n}
+def vec_uint256_8() -> S.Schema: S.Vector{S.Unsigned{P.U256{}}, 8n}
+def proglist_uint32() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U32Width{}}}
+def vec_uint32_16() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 16n}
+def vec_uint32_1() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 1n}
+def vec_uint32_2() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 2n}
+def vec_uint32_31() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 31n}
+def vec_uint32_3() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 3n}
+def vec_uint32_4() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 4n}
+def vec_uint32_512() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 512n}
+def vec_uint32_513() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 513n}
+def vec_uint32_5() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 5n}
+def vec_uint32_8() -> S.Schema: S.Vector{S.Unsigned{P.U32Width{}}, 8n}
+def proglist_uint64() -> S.Schema: S.ProgressiveList{S.Unsigned{P.U64{}}}
+def vec_uint64_16() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 16n}
+def vec_uint64_1() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 1n}
+def vec_uint64_2() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 2n}
+def vec_uint64_31() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 31n}
+def vec_uint64_3() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 3n}
+def vec_uint64_4() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 4n}
+def vec_uint64_512() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 512n}
+def vec_uint64_513() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 513n}
+def vec_uint64_5() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 5n}
+def vec_uint64_8() -> S.Schema: S.Vector{S.Unsigned{P.U64{}}, 8n}
+def ProgressiveTestStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D"], S.Chain{S.ProgressiveList{S.Unsigned{P.U8{}}}, S.Chain{S.ProgressiveList{S.Unsigned{P.U64{}}}, S.Chain{S.ProgressiveList{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}, S.Chain{S.ProgressiveList{S.ProgressiveList{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}}}, S.End{}}}}}}
+def BitsStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E"], S.Chain{S.BitList{5n}, S.Chain{S.BitVector{2n}, S.Chain{S.BitVector{1n}, S.Chain{S.BitList{6n}, S.Chain{S.BitVector{8n}, S.End{}}}}}}}
+def ProgressiveBitsStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G", "f_H", "f_I", "f_J", "f_K", "f_L"], S.Chain{S.BitVector{256n}, S.Chain{S.BitList{256n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{257n}, S.Chain{S.BitList{257n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1280n}, S.Chain{S.BitList{1280n}, S.Chain{S.ProgressiveBits{}, S.Chain{S.BitVector{1281n}, S.Chain{S.BitList{1281n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}}}}}}}}}}}
+def FixedTestStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}
+def SingleFieldTestStruct() -> S.Schema: S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}
+def VarTestStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}
+def ComplexTestStruct() -> S.Schema: S.Container{["f_A", "f_B", "f_C", "f_D", "f_E", "f_F", "f_G"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 128n}, S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ByteList{256n}, S.Chain{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}, S.Chain{S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, 4n}, S.Chain{S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 1024n}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}}}}, 2n}, S.End{}}}}}}}}}
+def SmallTestStruct() -> S.Schema: S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}
+def bitlist_15() -> S.Schema: S.BitList{15n}
+def bitlist_16() -> S.Schema: S.BitList{16n}
+def bitlist_17() -> S.Schema: S.BitList{17n}
+def bitlist_1() -> S.Schema: S.BitList{1n}
+def bitlist_2() -> S.Schema: S.BitList{2n}
+def bitlist_31() -> S.Schema: S.BitList{31n}
+def bitlist_32() -> S.Schema: S.BitList{32n}
+def bitlist_33() -> S.Schema: S.BitList{33n}
+def bitlist_3() -> S.Schema: S.BitList{3n}
+def bitlist_4() -> S.Schema: S.BitList{4n}
+def bitlist_511() -> S.Schema: S.BitList{511n}
+def bitlist_512() -> S.Schema: S.BitList{512n}
+def bitlist_513() -> S.Schema: S.BitList{513n}
+def bitlist_5() -> S.Schema: S.BitList{5n}
+def bitlist_6() -> S.Schema: S.BitList{6n}
+def bitlist_7() -> S.Schema: S.BitList{7n}
+def bitlist_8() -> S.Schema: S.BitList{8n}
+def bitlist_9() -> S.Schema: S.BitList{9n}
+def bitvector_15() -> S.Schema: S.BitVector{15n}
+def bitvector_16() -> S.Schema: S.BitVector{16n}
+def bitvector_17() -> S.Schema: S.BitVector{17n}
+def bitvector_1() -> S.Schema: S.BitVector{1n}
+def bitvector_2() -> S.Schema: S.BitVector{2n}
+def bitvector_31() -> S.Schema: S.BitVector{31n}
+def bitvector_32() -> S.Schema: S.BitVector{32n}
+def bitvector_33() -> S.Schema: S.BitVector{33n}
+def bitvector_3() -> S.Schema: S.BitVector{3n}
+def bitvector_4() -> S.Schema: S.BitVector{4n}
+def bitvector_511() -> S.Schema: S.BitVector{511n}
+def bitvector_512() -> S.Schema: S.BitVector{512n}
+def bitvector_513() -> S.Schema: S.BitVector{513n}
+def bitvector_5() -> S.Schema: S.BitVector{5n}
+def bitvector_6() -> S.Schema: S.BitVector{6n}
+def bitvector_7() -> S.Schema: S.BitVector{7n}
+def bitvector_8() -> S.Schema: S.BitVector{8n}
+def bitvector_9() -> S.Schema: S.BitVector{9n}
+def CompatibleUnionBC() -> S.Schema: S.CompatibleUnion{[2, 3], S.Chain{S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, S.End{}}}}
+def CompatibleUnionABCA() -> S.Schema: S.CompatibleUnion{[1, 2, 3, 4], S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.Chain{S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.End{}}}}}}
+def CompatibleUnionA() -> S.Schema: S.CompatibleUnion{[1], S.Chain{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, S.End{}}}
+def progbitlist() -> S.Schema: S.ProgressiveBits{}
+def uint128() -> S.Schema: S.Unsigned{P.U128{}}
+def uint16() -> S.Schema: S.Unsigned{P.U16{}}

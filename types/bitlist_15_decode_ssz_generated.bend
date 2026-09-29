@@ -11,17 +11,17 @@ def bits15_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(b
 
 def bits15_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 15, False{})
 
-def GtDB1482527D_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_15_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtDB1482527D_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_15_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtDB1482527D_some(bits15_read(buf, 0, size))
+    case True{}: bitlist_15_some(bits15_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtDB1482527D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  GtDB1482527D_built(size, bits15_ok(buf, 0, size))
+def bitlist_15_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_15_built(size, bits15_ok(buf, 0, size))
 
-def GtDB1482527D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits15_read(buf, 0, size)
+def bitlist_15_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits15_read(buf, 0, size)

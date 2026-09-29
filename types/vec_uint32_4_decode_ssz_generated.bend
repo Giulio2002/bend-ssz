@@ -18,17 +18,17 @@ def v4_u32_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v4_u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v4_u32_ok_len(U32.is_eq(len, 16), buf, off)
 
-def Gt240C147AA2_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_4_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt240C147AA2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_4_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt240C147AA2_some(v4_u32_read(buf, 0, size))
+    case True{}: vec_uint32_4_some(v4_u32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt240C147AA2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt240C147AA2_built(size, v4_u32_ok(buf, 0, size))
+def vec_uint32_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint32_4_built(size, v4_u32_ok(buf, 0, size))
 
-def Gt240C147AA2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u32_read(buf, 0, size)
+def vec_uint32_4_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u32_read(buf, 0, size)

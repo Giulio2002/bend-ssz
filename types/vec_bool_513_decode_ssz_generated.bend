@@ -33,17 +33,17 @@ def v513_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v513_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v513_bool_ok_len(U32.is_eq(len, 513), buf, off)
 
-def GtEB2FD43D9B_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_513_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtEB2FD43D9B_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_513_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtEB2FD43D9B_some(v513_bool_read(buf, 0, size))
+    case True{}: vec_bool_513_some(v513_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtEB2FD43D9B_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtEB2FD43D9B_built(size, v513_bool_ok(buf, 0, size))
+def vec_bool_513_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_bool_513_built(size, v513_bool_ok(buf, 0, size))
 
-def GtEB2FD43D9B_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_bool_read(buf, 0, size)
+def vec_bool_513_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_bool_read(buf, 0, size)

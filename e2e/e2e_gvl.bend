@@ -10,18 +10,18 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vua_ct.bend as UCT
-import ../proofs/obj/big_vvlu.bend as VVU
+import ../proofs/obj/vvlu.bend as VVU
 import ../proofs/obj/root_gtypes2_light.bend as RT2
 import ../proofs/obj/vfx_u16.bend as FX16
 import ../proofs/obj/vfx_u8.bend as FX8
-import ../proofs/obj/var_winx_Gc465214E502.bend as YW0
-import ../proofs/obj/big_var_winx_Gp66304057C3.bend as YW1
-import ../proofs/obj/big_var_winp_pbits.bend as PBW
+import ../proofs/obj/var_winx_VarTestStruct.bend as YW0
+import ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend as YW1
+import ../proofs/obj/var_winp_pbits.bend as PBW
 import ./e2e_gvt.bend as GVT
 import ./e2e_gprog.bend as GP
-import ../proofs/obj/big_vvl_pl_Gc465214E502.bend as TA
-import ../proofs/obj/big_vvl_pl_pl_Gc465214E502.bend as TB
-import ../proofs/obj/big_vvl_pl_Gp66304057C3.bend as TC
+import ../proofs/obj/vvl_pl_VarTestStruct.bend as TA
+import ../proofs/obj/vvl_pl_pl_VarTestStruct.bend as TB
+import ../proofs/obj/vvl_pl_ProgressiveVarTestStruct.bend as TC
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d
 import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
@@ -33,7 +33,7 @@ import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist
 # Array.set chain is RT2.am of tree updates FT_L (rvF_L; each element written is th_bx of its mirror, eqE_L);
 # element 0 of FT_L is the first write (lemV_L), element 1 + c the write of element c (lemN_L); an element's view is
 # its window's value (vw_E). vw_L: the list's root view is the window's value; tf_L: the list survives fz then th,
-# so a list of such lists nests (pl_pl_Gc465214E502 over pl_Gc465214E502).
+# so a list of such lists nests (pl_pl_VarTestStruct over pl_VarTestStruct).
 
 # ---- index facts ----------------------------------------------------------------------------------------
 def e1(+i: U32, +q: Nat, +m: U32, +inv: {Nat.add(U32.to_nat(i), 2n+q) == U32.to_nat(m) : Nat}) -> {U32.to_nat(U32.add(i, 1)) == 1n+U32.to_nat(i) : Nat}:
@@ -76,207 +76,207 @@ def thfr(a: Array<U32>) -> {FD.array__thaw(U32, FD.array__freeze(U32, a)) == a :
       %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, ys)), ys, thfr(ys)) : {ANode{xs, _} == ANode{xs, ys} : Array<U32>}
       {==}
 
-# ---- VarTestStruct elements (var_winx_Gc465214E502) ----
-def tf_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+# ---- VarTestStruct elements (var_winx_VarTestStruct) ----
+def tf_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}:
+    -> {RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}:
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))), UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))),
       FD.array__freeze_thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))) :
-    {VarTestStruct_d.Gc465214E502{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}
+    {VarTestStruct_d.VarTestStruct{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}
   {==}
 
-def vw_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gc465214E502(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_VarTestStruct(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
   GVT.vtw(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
 
-# ---- ProgressiveVarTestStruct elements (big_var_winx_Gp66304057C3) ----
-def tf_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+# ---- ProgressiveVarTestStruct elements (var_winx_ProgressiveVarTestStruct) ----
+def tf_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+    -> {RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   +C0 = UCT.CT(d, t, YW1.FJ0(off, t, x), YW1.LJ0(t, x), VLS.DZ(YW1.LJ0(t, x)))
   +C1 = UCT.CT(d, t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len), VLS.DZ(YW1.LJ1(t, x, len)))
   +NB = PBW.NB(t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len))
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, C0)), C0, FD.array__freeze_thaw(U32, C0)) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), O.clear_bit(FD.array__thaw(U32, C1), NB), thfr(O.clear_bit(FD.array__thaw(U32, C1), NB))) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   {==}
 
-def vw_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
-  GP.vw_Gp66304057C3(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
+    -> {RT2.v_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
+  GP.vw_ProgressiveVarTestStruct(d, t, 0, x, off, len, eo, hd, hw, pf, hc)
 
-# ======== pl_Gc465214E502: a progressive list of Gc465214E502 (TA) ========
+# ======== pl_VarTestStruct: a progressive list of VarTestStruct (TA) ========
 # the Data mirror of element (s, e)
-def ND_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_Gc465214E502>: RT2.fz_Gc465214E502_bx(TA.OBJE(d, t, x, off, s, e))
+def ND_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_VarTestStruct>: RT2.fz_VarTestStruct_bx(TA.OBJE(d, t, x, off, s, e))
 
 # the value RV writes after element i: element i + 1
-def NV_pl_Gc465214E502(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_Gc465214E502>:
-  ND_pl_Gc465214E502(d, t, x, off, TA.WJ(t, x, i), TA.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
+def NV_pl_VarTestStruct(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_VarTestStruct>:
+  ND_pl_VarTestStruct(d, t, x, off, TA.WJ(t, x, i), TA.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
 
-def FT_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>) -> FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>:
+def FT_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>) -> FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>:
   match k:
-    case 0n: FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u)
-    case 1n+q: FT_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len))
+    case 0n: FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u)
+    case 1n+q: FT_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len))
 
-def pfFT_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, FT_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
+def pfFT_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, FT_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
   match k:
-    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u, pf)
-    case 1n+ +q: pfFT_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u, pf))
+    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u, pf)
+    case 1n+ +q: pfFT_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u, pf))
 
 # the empty array is am of the empty tree
-def fillam_pl_Gc465214E502(+c: Nat) -> {proglist_VarTestStruct_d.pl_Gc465214E502_fill(c) == RT2.am_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, c, RT2.MNone{})) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}:
+def fillam_pl_VarTestStruct(+c: Nat) -> {proglist_VarTestStruct_d.pl_VarTestStruct_fill(c) == RT2.am_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, c, RT2.MNone{})) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}:
   match c:
     case 0n: {==}
     case 1n+ +p:
-      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_fill(p), RT2.am_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, p, RT2.MNone{})), fillam_pl_Gc465214E502(p)) :
-        {ANode{_, _} == ANode{RT2.am_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, p, RT2.MNone{})), RT2.am_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, p, RT2.MNone{}))} : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_fill(p), RT2.am_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, p, RT2.MNone{})), fillam_pl_VarTestStruct(p)) :
+        {ANode{_, _} == ANode{RT2.am_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, p, RT2.MNone{})), RT2.am_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, p, RT2.MNone{}))} : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}
       {==}
 
 # an element whose check passed is th_bx of its mirror, and views as its window's value
-def eqE_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def eqE_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TA.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TA.OBJE(d, t, x, off, s, e) == RT2.th_Gc465214E502_bx(ND_pl_Gc465214E502(d, t, x, off, s, e)) : O.Boxed<VarTestStruct_d.Gc465214E502>}:
-  Equal.cong(VarTestStruct_d.Gc465214E502, O.Boxed<VarTestStruct_d.Gc465214E502>, z => O.BSome{z, O.BNone{}}, YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(VarTestStruct_d.Gc465214E502, RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))))
+    -> {TA.OBJE(d, t, x, off, s, e) == RT2.th_VarTestStruct_bx(ND_pl_VarTestStruct(d, t, x, off, s, e)) : O.Boxed<VarTestStruct_d.VarTestStruct>}:
+  Equal.cong(VarTestStruct_d.VarTestStruct, O.Boxed<VarTestStruct_d.VarTestStruct>, z => O.BSome{z, O.BNone{}}, YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(VarTestStruct_d.VarTestStruct, RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def elv_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TA.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(ND_pl_Gc465214E502(d, t, x, off, s, e))) == TA.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(VarTestStruct_d.Gc465214E502, RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_Gc465214E502(_) == TA.VE(t, x, s, e) : S.Value}
-  vw_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(ND_pl_VarTestStruct(d, t, x, off, s, e))) == TA.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(VarTestStruct_d.VarTestStruct, RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_VarTestStruct(_) == TA.VE(t, x, s, e) : S.Value}
+  vw_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), pf, TA.el_c(t, x, off, len, s, e, h))
 
-def hx_at_pl_Gc465214E502(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s) == Some{RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
-  RT2.nth_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_Gc465214E502>, dd, T, pf)), hs))
+def hx_at_pl_VarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s) == Some{RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
+  RT2.nth_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_VarTestStruct>, dd, T, pf)), hs))
 
 # ---- the reader's chain of writes is am of FT ----
-def rvF_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TA.EV(k, i, m, t, x, off, len, True{}, TA.WJ(t, x, i)) == True{} : Bool})
-    -> {TA.RV(k, i, m, d, t, x, off, len, RT2.am_pl_Gc465214E502(T), RT2.th_Gc465214E502_bx(u)) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}:
+    -> {TA.RV(k, i, m, d, t, x, off, len, RT2.am_pl_VarTestStruct(T), RT2.th_VarTestStruct_bx(u)) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TA.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TA.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TA.EE(True{}, t, x, off, len, TA.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, Array.set(O.Boxed<VarTestStruct_d.Gc465214E502>, RT2.am_pl_Gc465214E502(T), i, RT2.th_Gc465214E502_bx(u)), RT2.am_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb)) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
-      %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb), RT2.th_Gc465214E502_bx(NV_pl_Gc465214E502(i, m, d, t, x, off, len)), eqE_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, TA.WJ(t, x, i), nb, hc)) :
-        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
-      rvF_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, RT2.am_pl_VarTestStruct(T), i, RT2.th_VarTestStruct_bx(u)), RT2.am_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb)) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}
+      %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb), RT2.th_VarTestStruct_bx(NV_pl_VarTestStruct(i, m, d, t, x, off, len)), eqE_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TA.WJ(t, x, i), nb, hc)) :
+        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}
+      rvF_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TA.he_nx(q, i, m, t, x, off, len, inv, hE))
 
 # ---- the elements of FT ----
-def lemU_pl_Gc465214E502(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +v: RT2.MB<RT2.M_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool},
+def lemU_pl_VarTestStruct(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +v: RT2.MB<RT2.M_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +ne: {Nat.is_eq(j, i) == False{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), i) : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
-  %Equal.sym(List<&2, RT2.MB<RT2.M_Gc465214E502>>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), i) : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}
-  FD.list__nth_update_other(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), j, i, v, ne)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
+  %Equal.sym(List<&2, RT2.MB<RT2.M_VarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}
+  FD.list__nth_update_other(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), j, i, v, ne)
 
-def lemS0_pl_Gc465214E502(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +v: RT2.MB<RT2.M_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool},
+def lemS0_pl_VarTestStruct(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +v: RT2.MB<RT2.M_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
-  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_Gc465214E502>, dd, D, pf)), hj)
-  %Equal.sym(List<&2, RT2.MB<RT2.M_Gc465214E502>>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_Gc465214E502>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}
-  FD.list__nth_update_same(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), j, v, hl)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_VarTestStruct>, dd, D, pf)), hj)
+  %Equal.sym(List<&2, RT2.MB<RT2.M_VarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_VarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}
+  FD.list__nth_update_same(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), j, v, hl)
 
-def lemB_pl_Gc465214E502(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemB_pl_VarTestStruct(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hs: {Nat.is_lt(s, U32.to_nat(i)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), s) : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), s) : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
   match q:
-    case 0n: lemU_pl_Gc465214E502(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
+    case 0n: lemU_pl_VarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_Gc465214E502(i, m, d, t, x, off, len))), s),
-        FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D), s),
-        lemB_pl_Gc465214E502(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
-        lemU_pl_Gc465214E502(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
+      +D1 = FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_VarTestStruct(i, m, d, t, x, off, len))), s),
+        FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D), s),
+        lemB_pl_VarTestStruct(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
+        lemU_pl_VarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
 
-def lemV_pl_Gc465214E502(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemV_pl_VarTestStruct(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
   match q:
-    case 0n: lemS0_pl_Gc465214E502(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
+    case 0n: lemS0_pl_VarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_Gc465214E502(i, m, d, t, x, off, len))), U32.to_nat(i)),
-        FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, D1), U32.to_nat(i)), Some{u},
-        lemB_pl_Gc465214E502(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
+      +D1 = FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_VarTestStruct(i, m, d, t, x, off, len))), U32.to_nat(i)),
+        FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, D1), U32.to_nat(i)), Some{u},
+        lemB_pl_VarTestStruct(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
           FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
             FD.nat__lt_succ(U32.to_nat(i)))),
-        lemS0_pl_Gc465214E502(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
+        lemS0_pl_VarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
 
-def stepN_pl_Gc465214E502(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def stepN_pl_VarTestStruct(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 2n+p) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool}, +b: Bool, +eb: {Nat.is_eq(U32.to_nat(i), U32.to_nat(c)) == b : Bool},
-    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
+    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
   match b:
     case True{}:
       +ec = FD.u32__injective(i, c, FD.nat__eq_from_is_eq(U32.to_nat(i), U32.to_nat(c), eb))
-      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_Gc465214E502(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}
-      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len))), _) == Some{NV_pl_Gc465214E502(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}
-      lemV_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
+      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_VarTestStruct(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}
+      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len))), _) == Some{NV_pl_VarTestStruct(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}
+      lemV_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
     case False{}:
       +hlt = FD.nat__lt_or_eq(U32.to_nat(i), U32.to_nat(c), hic, eb)
       ih(FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(c)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
         FD.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(c), hlt)))
 
-def lemN_pl_Gc465214E502(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemN_pl_VarTestStruct(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool},
     +hcq: {Nat.is_lt(U32.to_nat(c), Nat.add(U32.to_nat(i), q)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}:
   match q:
     case 0n:
       +h0 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 0n), U32.to_nat(i), FD.nat__add_zero(U32.to_nat(i)), hcq)
       +hcc = FD.nat__lt_le_trans(U32.to_nat(c), U32.to_nat(i), U32.to_nat(c), h0, hic)
-      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>},
+      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>},
         FD.logic__false_true(Equal.trans(Bool, False{}, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), True{}, Equal.sym(Bool, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), False{}, FD.nat__lt_irrefl(U32.to_nat(c))), hcc)))
     case 1n+ +p:
       +h2 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 1n+p), 1n+Nat.add(U32.to_nat(i), p), FD.nat__add_succ(U32.to_nat(i), p), hcq)
       +h3 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), Nat.add(z, p)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)), h2)
-      stepN_pl_Gc465214E502(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
-        lemN_pl_Gc465214E502(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
+      stepN_pl_VarTestStruct(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
+        lemN_pl_VarTestStruct(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
 
-def sv_pl_Gc465214E502(m: Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, +z: RT2.MB<RT2.M_Gc465214E502>) -> RT2.MB<RT2.M_Gc465214E502>:
+def sv_pl_VarTestStruct(m: Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, +z: RT2.MB<RT2.M_VarTestStruct>) -> RT2.MB<RT2.M_VarTestStruct>:
   match m:
     case None{}: z
     case Some{+y}: y
 
-def xat_of_pl_Gc465214E502(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +s: Nat, +v: RT2.MB<RT2.M_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
-    +h: {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}) -> {RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s) == v : RT2.MB<RT2.M_Gc465214E502>}:
-  Equal.cong(Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, RT2.MB<RT2.M_Gc465214E502>, w => sv_pl_Gc465214E502(w, v), Some{RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s)}, Some{v},
-    Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, Some{RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s), Some{v},
-      Equal.sym(Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s), Some{RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), s)}, hx_at_pl_Gc465214E502(dd, T, s, pf, hs)), h))
+def xat_of_pl_VarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +s: Nat, +v: RT2.MB<RT2.M_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
+    +h: {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}) -> {RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s) == v : RT2.MB<RT2.M_VarTestStruct>}:
+  Equal.cong(Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, RT2.MB<RT2.M_VarTestStruct>, w => sv_pl_VarTestStruct(w, v), Some{RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s)}, Some{v},
+    Equal.trans(Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, Some{RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s), Some{v},
+      Equal.sym(Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s), Some{RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), s)}, hx_at_pl_VarTestStruct(dd, T, s, pf, hs)), h))
 
 # elements 1 + c, 1 + c + 1, ... (k of them) of the final tree view as the window's items
-def xiW_pl_Gc465214E502(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u0: RT2.MB<RT2.M_Gc465214E502>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_VarTestStruct(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u0: RT2.MB<RT2.M_VarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TA.EV(k, c, m, t, x, off, len, True{}, TA.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_Gc465214E502(k, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TA.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_VarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TA.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -284,23 +284,23 @@ def xiW_pl_Gc465214E502(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), z) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_Gc465214E502(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_Gc465214E502(dd, FK, s, NV_pl_Gc465214E502(c, m, d, t, x, off, len), pfFT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), z) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_VarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_VarTestStruct(dd, FK, s, NV_pl_VarTestStruct(c, m, d, t, x, off, len), pfFT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TA.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TA.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TA.EE(True{}, t, x, off, len, TA.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_Gc465214E502>, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), s), NV_pl_Gc465214E502(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(_)), RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(NV_pl_Gc465214E502(c, m, d, t, x, off, len))), TA.VE(t, x, TA.WJ(t, x, c), nb), elv_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, TA.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TA.VE(t, x, TA.WJ(t, x, c), nb), z}, RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s), TA.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_Gc465214E502(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TA.inv_nx(p, c, m, invc), TA.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_VarTestStruct>, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), s), NV_pl_VarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(_)), RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(NV_pl_VarTestStruct(c, m, d, t, x, off, len))), TA.VE(t, x, TA.WJ(t, x, c), nb), elv_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TA.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TA.VE(t, x, TA.WJ(t, x, c), nb), z}, RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s), TA.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_VarTestStruct(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TA.inv_nx(p, c, m, invc), TA.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
 # ---- a nonempty window ----
-def vtf_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtf_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TA.CF(TA.HC(TA.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.RZ(False{}, d, t, x, off, len)) == TA.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_VarTestStruct(TA.RZ(False{}, d, t, x, off, len)) == TA.VZE(False{}, t, x, len) : S.Value}:
   +f = TA.W0(t, x)
   +N = TA.NN(t, x)
   +ec = TA.cf_ok(TA.HC(f, len), t, x, off, len, hc0)
@@ -329,45 +329,45 @@ def vtf_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +l
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 28n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 28n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gc465214E502(d, t, x, off, f, TA.B1(t, x, len))
-  +FK = FT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_Gc465214E502(dd, FK, 0n, u0, pfFT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_Gc465214E502_bx(u0), eqE_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), RT2.am_pl_Gc465214E502(T0), fillam_pl_Gc465214E502(dd)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gc465214E502(T0), RT2.th_Gc465214E502_bx(u0)), RT2.am_pl_Gc465214E502(FK), rvF_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(_)), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_Gc465214E502(FK)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, _), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_Gc465214E502(_, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_Gc465214E502>, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(_)), RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(u0)), TA.VE(t, x, f, TA.B1(t, x, len)), elv_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TA.VE(t, x, f, TA.B1(t, x, len)), z}}, RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n), TA.VI(k0, 0, N, t, x, len),
-    xiW_pl_Gc465214E502(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_VarTestStruct(d, t, x, off, f, TA.B1(t, x, len))
+  +FK = FT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_VarTestStruct(dd, FK, 0n, u0, pfFT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_VarTestStruct_bx(u0), eqE_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), RT2.am_pl_VarTestStruct(T0), fillam_pl_VarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_VarTestStruct(T0), RT2.th_VarTestStruct_bx(u0)), RT2.am_pl_VarTestStruct(FK), rvF_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(_)), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_VarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, _), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_VarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_VarTestStruct>, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(_)), RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(u0)), TA.VE(t, x, f, TA.B1(t, x, len)), elv_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TA.VE(t, x, f, TA.B1(t, x, len)), z}}, RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n), TA.VI(k0, 0, N, t, x, len),
+    xiW_pl_VarTestStruct(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtc_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TA.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.RZ(b, d, t, x, off, len)) == TA.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_VarTestStruct(TA.RZ(b, d, t, x, off, len)) == TA.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, hc)
+    case False{}: vtf_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, hc)
 
 # the list a window reads views as the window's value, when the window lies in the buffer and its check passed
-def vw_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TA.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.OBJw(d, t, x, off, len)) == TA.VALw(t, x, len) : S.Value}:
-  vtc_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_VarTestStruct(TA.OBJw(d, t, x, off, len)) == TA.VALw(t, x, len) : S.Value}:
+  vtc_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
 
 # ... and it survives freezing then thawing
-def tff_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def tff_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TA.CF(TA.HC(TA.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.RZ(False{}, d, t, x, off, len))) == TA.RZ(False{}, d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.RZ(False{}, d, t, x, off, len))) == TA.RZ(False{}, d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
   +f = TA.W0(t, x)
   +N = TA.NN(t, x)
   +ec = TA.cf_ok(TA.HC(f, len), t, x, off, len, hc0)
@@ -396,201 +396,201 @@ def tff_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +l
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 28n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 28n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gc465214E502(d, t, x, off, f, TA.B1(t, x, len))
-  +FK = FT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_Gc465214E502_bx(u0), eqE_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _))), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), RT2.am_pl_Gc465214E502(T0), fillam_pl_Gc465214E502(dd)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)))), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gc465214E502(T0), RT2.th_Gc465214E502_bx(u0)), RT2.am_pl_Gc465214E502(FK), rvF_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(_)), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{_, N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_Gc465214E502(FK)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(_), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(FK), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
+  +T0 = FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_VarTestStruct(d, t, x, off, f, TA.B1(t, x, len))
+  +FK = FT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_VarTestStruct_bx(u0), eqE_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TA.B1(t, x, len), hc1)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _))), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), RT2.am_pl_VarTestStruct(T0), fillam_pl_VarTestStruct(dd)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)))), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_VarTestStruct(T0), RT2.th_VarTestStruct_bx(u0)), RT2.am_pl_VarTestStruct(FK), rvF_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(_)), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{_, N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_VarTestStruct(FK)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(_), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(FK), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
   {==}
 
-def tfc_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def tfc_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TA.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.RZ(b, d, t, x, off, len))) == TA.RZ(b, d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.RZ(b, d, t, x, off, len))) == TA.RZ(b, d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
   match b:
     case True{}: {==}
-    case False{}: tff_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, hc)
+    case False{}: tff_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, hc)
 
-def tf_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def tf_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TA.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, x, off, len))) == TA.OBJw(d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
-  tfc_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, x, off, len))) == TA.OBJw(d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
+  tfc_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
 
-# ======== pl_pl_Gc465214E502: a progressive list of pl_Gc465214E502 (TB) ========
+# ======== pl_pl_VarTestStruct: a progressive list of pl_VarTestStruct (TB) ========
 # the Data mirror of element (s, e)
-def ND_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_pl_Gc465214E502>: RT2.fz_pl_Gc465214E502_bx(TB.OBJE(d, t, x, off, s, e))
+def ND_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_pl_VarTestStruct>: RT2.fz_pl_VarTestStruct_bx(TB.OBJE(d, t, x, off, s, e))
 
 # the value RV writes after element i: element i + 1
-def NV_pl_pl_Gc465214E502(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_pl_Gc465214E502>:
-  ND_pl_pl_Gc465214E502(d, t, x, off, TB.WJ(t, x, i), TB.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
+def NV_pl_pl_VarTestStruct(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_pl_VarTestStruct>:
+  ND_pl_pl_VarTestStruct(d, t, x, off, TB.WJ(t, x, i), TB.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
 
-def FT_pl_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>) -> FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>:
+def FT_pl_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>) -> FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>:
   match k:
-    case 0n: FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u)
-    case 1n+q: FT_pl_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len))
+    case 0n: FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u)
+    case 1n+q: FT_pl_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len))
 
-def pfFT_pl_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, FT_pl_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
+def pfFT_pl_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, FT_pl_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
   match k:
-    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u, pf)
-    case 1n+ +q: pfFT_pl_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u, pf))
+    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u, pf)
+    case 1n+ +q: pfFT_pl_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u, pf))
 
 # the empty array is am of the empty tree
-def fillam_pl_pl_Gc465214E502(+c: Nat) -> {proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(c) == RT2.am_pl_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, c, RT2.MNone{})) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}:
+def fillam_pl_pl_VarTestStruct(+c: Nat) -> {proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(c) == RT2.am_pl_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, c, RT2.MNone{})) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}:
   match c:
     case 0n: {==}
     case 1n+ +p:
-      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(p), RT2.am_pl_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, p, RT2.MNone{})), fillam_pl_pl_Gc465214E502(p)) :
-        {ANode{_, _} == ANode{RT2.am_pl_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, p, RT2.MNone{})), RT2.am_pl_pl_Gc465214E502(FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, p, RT2.MNone{}))} : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(p), RT2.am_pl_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, p, RT2.MNone{})), fillam_pl_pl_VarTestStruct(p)) :
+        {ANode{_, _} == ANode{RT2.am_pl_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, p, RT2.MNone{})), RT2.am_pl_pl_VarTestStruct(FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, p, RT2.MNone{}))} : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}
       {==}
 
 # an element whose check passed is th_bx of its mirror, and views as its window's value
-def eqE_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def eqE_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TB.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TB.OBJE(d, t, x, off, s, e) == RT2.th_pl_Gc465214E502_bx(ND_pl_pl_Gc465214E502(d, t, x, off, s, e)) : O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}:
-  Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, z => O.BSome{z, O.BNone{}}, TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))))
+    -> {TB.OBJE(d, t, x, off, s, e) == RT2.th_pl_VarTestStruct_bx(ND_pl_pl_VarTestStruct(d, t, x, off, s, e)) : O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>}:
+  Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, z => O.BSome{z, O.BNone{}}, TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def elv_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TB.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(ND_pl_pl_Gc465214E502(d, t, x, off, s, e))) == TB.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_pl_Gc465214E502(_) == TB.VE(t, x, s, e) : S.Value}
-  vw_pl_Gc465214E502(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(ND_pl_pl_VarTestStruct(d, t, x, off, s, e))) == TB.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_pl_VarTestStruct(_) == TB.VE(t, x, s, e) : S.Value}
+  vw_pl_VarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), pf, TB.el_c(t, x, off, len, s, e, h))
 
-def hx_at_pl_pl_Gc465214E502(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s) == Some{RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
-  RT2.nth_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, pf)), hs))
+def hx_at_pl_pl_VarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s) == Some{RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
+  RT2.nth_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, pf)), hs))
 
 # ---- the reader's chain of writes is am of FT ----
-def rvF_pl_pl_Gc465214E502(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_pl_VarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TB.EV(k, i, m, t, x, off, len, True{}, TB.WJ(t, x, i)) == True{} : Bool})
-    -> {TB.RV(k, i, m, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(T), RT2.th_pl_Gc465214E502_bx(u)) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}:
+    -> {TB.RV(k, i, m, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(T), RT2.th_pl_VarTestStruct_bx(u)) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TB.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TB.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TB.EE(True{}, t, x, off, len, TB.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, Array.set(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, RT2.am_pl_pl_Gc465214E502(T), i, RT2.th_pl_Gc465214E502_bx(u)), RT2.am_pl_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb)) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
-      %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb), RT2.th_pl_Gc465214E502_bx(NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len)), eqE_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, TB.WJ(t, x, i), nb, hc)) :
-        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
-      rvF_pl_pl_Gc465214E502(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, Array.set(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, RT2.am_pl_pl_VarTestStruct(T), i, RT2.th_pl_VarTestStruct_bx(u)), RT2.am_pl_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb)) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}
+      %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb), RT2.th_pl_VarTestStruct_bx(NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len)), eqE_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TB.WJ(t, x, i), nb, hc)) :
+        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}
+      rvF_pl_pl_VarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TB.he_nx(q, i, m, t, x, off, len, inv, hE))
 
 # ---- the elements of FT ----
-def lemU_pl_pl_Gc465214E502(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +v: RT2.MB<RT2.M_pl_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool},
+def lemU_pl_pl_VarTestStruct(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +v: RT2.MB<RT2.M_pl_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +ne: {Nat.is_eq(j, i) == False{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), i) : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
-  %Equal.sym(List<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), i) : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}
-  FD.list__nth_update_other(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), j, i, v, ne)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
+  %Equal.sym(List<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}
+  FD.list__nth_update_other(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), j, i, v, ne)
 
-def lemS0_pl_pl_Gc465214E502(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +v: RT2.MB<RT2.M_pl_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool},
+def lemS0_pl_pl_VarTestStruct(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +v: RT2.MB<RT2.M_pl_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
-  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, pf)), hj)
-  %Equal.sym(List<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}
-  FD.list__nth_update_same(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), j, v, hl)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, pf)), hj)
+  %Equal.sym(List<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}
+  FD.list__nth_update_same(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), j, v, hl)
 
-def lemB_pl_pl_Gc465214E502(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemB_pl_pl_VarTestStruct(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hs: {Nat.is_lt(s, U32.to_nat(i)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), s) : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), s) : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
   match q:
-    case 0n: lemU_pl_pl_Gc465214E502(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
+    case 0n: lemU_pl_pl_VarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len))), s),
-        FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D), s),
-        lemB_pl_pl_Gc465214E502(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
-        lemU_pl_pl_Gc465214E502(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
+      +D1 = FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len))), s),
+        FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D), s),
+        lemB_pl_pl_VarTestStruct(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
+        lemU_pl_pl_VarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
 
-def lemV_pl_pl_Gc465214E502(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemV_pl_pl_VarTestStruct(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
   match q:
-    case 0n: lemS0_pl_pl_Gc465214E502(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
+    case 0n: lemS0_pl_pl_VarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len))), U32.to_nat(i)),
-        FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, D1), U32.to_nat(i)), Some{u},
-        lemB_pl_pl_Gc465214E502(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
+      +D1 = FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len))), U32.to_nat(i)),
+        FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, D1), U32.to_nat(i)), Some{u},
+        lemB_pl_pl_VarTestStruct(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
           FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
             FD.nat__lt_succ(U32.to_nat(i)))),
-        lemS0_pl_pl_Gc465214E502(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
+        lemS0_pl_pl_VarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
 
-def stepN_pl_pl_Gc465214E502(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def stepN_pl_pl_VarTestStruct(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 2n+p) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool}, +b: Bool, +eb: {Nat.is_eq(U32.to_nat(i), U32.to_nat(c)) == b : Bool},
-    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
+    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
   match b:
     case True{}:
       +ec = FD.u32__injective(i, c, FD.nat__eq_from_is_eq(U32.to_nat(i), U32.to_nat(c), eb))
-      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_pl_Gc465214E502(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}
-      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len))), _) == Some{NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}
-      lemV_pl_pl_Gc465214E502(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
+      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_pl_VarTestStruct(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}
+      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len))), _) == Some{NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}
+      lemV_pl_pl_VarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
     case False{}:
       +hlt = FD.nat__lt_or_eq(U32.to_nat(i), U32.to_nat(c), hic, eb)
       ih(FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(c)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
         FD.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(c), hlt)))
 
-def lemN_pl_pl_Gc465214E502(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemN_pl_pl_VarTestStruct(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool},
     +hcq: {Nat.is_lt(U32.to_nat(c), Nat.add(U32.to_nat(i), q)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}:
   match q:
     case 0n:
       +h0 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 0n), U32.to_nat(i), FD.nat__add_zero(U32.to_nat(i)), hcq)
       +hcc = FD.nat__lt_le_trans(U32.to_nat(c), U32.to_nat(i), U32.to_nat(c), h0, hic)
-      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>},
+      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>},
         FD.logic__false_true(Equal.trans(Bool, False{}, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), True{}, Equal.sym(Bool, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), False{}, FD.nat__lt_irrefl(U32.to_nat(c))), hcc)))
     case 1n+ +p:
       +h2 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 1n+p), 1n+Nat.add(U32.to_nat(i), p), FD.nat__add_succ(U32.to_nat(i), p), hcq)
       +h3 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), Nat.add(z, p)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)), h2)
-      stepN_pl_pl_Gc465214E502(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
-        lemN_pl_pl_Gc465214E502(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
+      stepN_pl_pl_VarTestStruct(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
+        lemN_pl_pl_VarTestStruct(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
 
-def sv_pl_pl_Gc465214E502(m: Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, +z: RT2.MB<RT2.M_pl_Gc465214E502>) -> RT2.MB<RT2.M_pl_Gc465214E502>:
+def sv_pl_pl_VarTestStruct(m: Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, +z: RT2.MB<RT2.M_pl_VarTestStruct>) -> RT2.MB<RT2.M_pl_VarTestStruct>:
   match m:
     case None{}: z
     case Some{+y}: y
 
-def xat_of_pl_pl_Gc465214E502(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +s: Nat, +v: RT2.MB<RT2.M_pl_Gc465214E502>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
-    +h: {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}) -> {RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s) == v : RT2.MB<RT2.M_pl_Gc465214E502>}:
-  Equal.cong(Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, RT2.MB<RT2.M_pl_Gc465214E502>, w => sv_pl_pl_Gc465214E502(w, v), Some{RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s)}, Some{v},
-    Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, Some{RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s), Some{v},
-      Equal.sym(Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s), Some{RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), s)}, hx_at_pl_pl_Gc465214E502(dd, T, s, pf, hs)), h))
+def xat_of_pl_pl_VarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +s: Nat, +v: RT2.MB<RT2.M_pl_VarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
+    +h: {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}) -> {RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s) == v : RT2.MB<RT2.M_pl_VarTestStruct>}:
+  Equal.cong(Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, RT2.MB<RT2.M_pl_VarTestStruct>, w => sv_pl_pl_VarTestStruct(w, v), Some{RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s)}, Some{v},
+    Equal.trans(Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, Some{RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s), Some{v},
+      Equal.sym(Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s), Some{RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), s)}, hx_at_pl_pl_VarTestStruct(dd, T, s, pf, hs)), h))
 
 # elements 1 + c, 1 + c + 1, ... (k of them) of the final tree view as the window's items
-def xiW_pl_pl_Gc465214E502(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u0: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_pl_VarTestStruct(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u0: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TB.EV(k, c, m, t, x, off, len, True{}, TB.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_pl_Gc465214E502(k, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TB.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_pl_VarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TB.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -598,23 +598,23 @@ def xiW_pl_pl_Gc465214E502(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.ar
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), z) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_pl_Gc465214E502(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_pl_Gc465214E502(dd, FK, s, NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len), pfFT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), z) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_pl_VarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_pl_VarTestStruct(dd, FK, s, NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len), pfFT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TB.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TB.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TB.EE(True{}, t, x, off, len, TB.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), s), NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(_)), RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len))), TB.VE(t, x, TB.WJ(t, x, c), nb), elv_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, TB.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TB.VE(t, x, TB.WJ(t, x, c), nb), z}, RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s), TB.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_pl_Gc465214E502(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TB.inv_nx(p, c, m, invc), TB.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), s), NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(_)), RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len))), TB.VE(t, x, TB.WJ(t, x, c), nb), elv_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TB.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TB.VE(t, x, TB.WJ(t, x, c), nb), z}, RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s), TB.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_pl_VarTestStruct(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TB.inv_nx(p, c, m, invc), TB.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
 # ---- a nonempty window ----
-def vtf_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtf_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TB.CF(TB.HC(TB.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.RZ(False{}, d, t, x, off, len)) == TB.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.RZ(False{}, d, t, x, off, len)) == TB.VZE(False{}, t, x, len) : S.Value}:
   +f = TB.W0(t, x)
   +N = TB.NN(t, x)
   +ec = TB.cf_ok(TB.HC(f, len), t, x, off, len, hc0)
@@ -643,211 +643,211 @@ def vtf_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32,
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 28n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 28n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_pl_Gc465214E502(d, t, x, off, f, TB.B1(t, x, len))
-  +FK = FT_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_pl_Gc465214E502(dd, FK, 0n, u0, pfFT_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, TB.OBJE(d, t, x, off, f, TB.B1(t, x, len)), RT2.th_pl_Gc465214E502_bx(u0), eqE_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, f, TB.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(TB.RV(k0, 0, N, d, t, x, off, len, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(dd), _))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(dd), RT2.am_pl_pl_Gc465214E502(T0), fillam_pl_pl_Gc465214E502(dd)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(TB.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_pl_Gc465214E502_bx(u0)))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, TB.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(T0), RT2.th_pl_Gc465214E502_bx(u0)), RT2.am_pl_pl_Gc465214E502(FK), rvF_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(_)), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, RT2.tfz_pl_pl_Gc465214E502(RT2.am_pl_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_pl_Gc465214E502(FK)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, _), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_pl_Gc465214E502(_, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(_)), RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(u0)), TB.VE(t, x, f, TB.B1(t, x, len)), elv_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, f, TB.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TB.VE(t, x, f, TB.B1(t, x, len)), z}}, RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n), TB.VI(k0, 0, N, t, x, len),
-    xiW_pl_pl_Gc465214E502(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_pl_VarTestStruct(d, t, x, off, f, TB.B1(t, x, len))
+  +FK = FT_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_pl_VarTestStruct(dd, FK, 0n, u0, pfFT_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, TB.OBJE(d, t, x, off, f, TB.B1(t, x, len)), RT2.th_pl_VarTestStruct_bx(u0), eqE_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TB.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(TB.RV(k0, 0, N, d, t, x, off, len, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(dd), _))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(dd), RT2.am_pl_pl_VarTestStruct(T0), fillam_pl_pl_VarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(TB.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_pl_VarTestStruct_bx(u0)))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, TB.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(T0), RT2.th_pl_VarTestStruct_bx(u0)), RT2.am_pl_pl_VarTestStruct(FK), rvF_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(_)), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, RT2.tfz_pl_pl_VarTestStruct(RT2.am_pl_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_pl_VarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, _), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_pl_VarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(_)), RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(u0)), TB.VE(t, x, f, TB.B1(t, x, len)), elv_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TB.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TB.VE(t, x, f, TB.B1(t, x, len)), z}}, RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n), TB.VI(k0, 0, N, t, x, len),
+    xiW_pl_pl_VarTestStruct(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtc_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TB.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.RZ(b, d, t, x, off, len)) == TB.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.RZ(b, d, t, x, off, len)) == TB.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, hc)
+    case False{}: vtf_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, hc)
 
 # the list a window reads views as the window's value, when the window lies in the buffer and its check passed
-def vw_pl_pl_Gc465214E502(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_pl_pl_VarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TB.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.OBJw(d, t, x, off, len)) == TB.VALw(t, x, len) : S.Value}:
-  vtc_pl_pl_Gc465214E502(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.OBJw(d, t, x, off, len)) == TB.VALw(t, x, len) : S.Value}:
+  vtc_pl_pl_VarTestStruct(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
 
 
-# ======== pl_Gp66304057C3: a progressive list of Gp66304057C3 (TC) ========
+# ======== pl_ProgressiveVarTestStruct: a progressive list of ProgressiveVarTestStruct (TC) ========
 # the Data mirror of element (s, e)
-def ND_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_Gp66304057C3>: RT2.fz_Gp66304057C3_bx(TC.OBJE(d, t, x, off, s, e))
+def ND_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT2.MB<RT2.M_ProgressiveVarTestStruct>: RT2.fz_ProgressiveVarTestStruct_bx(TC.OBJE(d, t, x, off, s, e))
 
 # the value RV writes after element i: element i + 1
-def NV_pl_Gp66304057C3(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_Gp66304057C3>:
-  ND_pl_Gp66304057C3(d, t, x, off, TC.WJ(t, x, i), TC.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
+def NV_pl_ProgressiveVarTestStruct(+i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> RT2.MB<RT2.M_ProgressiveVarTestStruct>:
+  ND_pl_ProgressiveVarTestStruct(d, t, x, off, TC.WJ(t, x, i), TC.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1)))
 
-def FT_pl_Gp66304057C3(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>) -> FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>:
+def FT_pl_ProgressiveVarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>) -> FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>:
   match k:
-    case 0n: FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u)
-    case 1n+q: FT_pl_Gp66304057C3(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len))
+    case 0n: FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u)
+    case 1n+q: FT_pl_ProgressiveVarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len))
 
-def pfFT_pl_Gp66304057C3(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, FT_pl_Gp66304057C3(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
+def pfFT_pl_ProgressiveVarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T) == True{} : Bool}) -> {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, FT_pl_ProgressiveVarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) == True{} : Bool}:
   match k:
-    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u, pf)
-    case 1n+ +q: pfFT_pl_Gp66304057C3(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u, pf))
+    case 0n: FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u, pf)
+    case 1n+ +q: pfFT_pl_ProgressiveVarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u, pf))
 
 # the empty array is am of the empty tree
-def fillam_pl_Gp66304057C3(+c: Nat) -> {proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(c) == RT2.am_pl_Gp66304057C3(FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, c, RT2.MNone{})) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}:
+def fillam_pl_ProgressiveVarTestStruct(+c: Nat) -> {proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(c) == RT2.am_pl_ProgressiveVarTestStruct(FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, c, RT2.MNone{})) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}:
   match c:
     case 0n: {==}
     case 1n+ +p:
-      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(p), RT2.am_pl_Gp66304057C3(FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, p, RT2.MNone{})), fillam_pl_Gp66304057C3(p)) :
-        {ANode{_, _} == ANode{RT2.am_pl_Gp66304057C3(FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, p, RT2.MNone{})), RT2.am_pl_Gp66304057C3(FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, p, RT2.MNone{}))} : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(p), RT2.am_pl_ProgressiveVarTestStruct(FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, p, RT2.MNone{})), fillam_pl_ProgressiveVarTestStruct(p)) :
+        {ANode{_, _} == ANode{RT2.am_pl_ProgressiveVarTestStruct(FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, p, RT2.MNone{})), RT2.am_pl_ProgressiveVarTestStruct(FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, p, RT2.MNone{}))} : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}
       {==}
 
 # an element whose check passed is th_bx of its mirror, and views as its window's value
-def eqE_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def eqE_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TC.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TC.OBJE(d, t, x, off, s, e) == RT2.th_Gp66304057C3_bx(ND_pl_Gp66304057C3(d, t, x, off, s, e)) : O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}:
-  Equal.cong(ProgressiveVarTestStruct_d.Gp66304057C3, O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, z => O.BSome{z, O.BNone{}}, YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gp66304057C3(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))))
+    -> {TC.OBJE(d, t, x, off, s, e) == RT2.th_ProgressiveVarTestStruct_bx(ND_pl_ProgressiveVarTestStruct(d, t, x, off, s, e)) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  Equal.cong(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, z => O.BSome{z, O.BNone{}}, YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_ProgressiveVarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def elv_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TC.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(ND_pl_Gp66304057C3(d, t, x, off, s, e))) == TC.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gp66304057C3(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_Gp66304057C3(_) == TC.VE(t, x, s, e) : S.Value}
-  vw_Gp66304057C3(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(ND_pl_ProgressiveVarTestStruct(d, t, x, off, s, e))) == TC.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_ProgressiveVarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_ProgressiveVarTestStruct(_) == TC.VE(t, x, s, e) : S.Value}
+  vw_ProgressiveVarTestStruct(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eoc(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), pf, TC.el_c(t, x, off, len, s, e, h))
 
-def hx_at_pl_Gp66304057C3(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s) == Some{RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
-  RT2.nth_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_Gp66304057C3>, dd, T, pf)), hs))
+def hx_at_pl_ProgressiveVarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +s: Nat, +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s) == Some{RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
+  RT2.nth_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s, FD.logic__subst(Nat, z => {Nat.is_lt(s, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, pf)), hs))
 
 # ---- the reader's chain of writes is am of FT ----
-def rvF_pl_Gp66304057C3(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_ProgressiveVarTestStruct(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TC.EV(k, i, m, t, x, off, len, True{}, TC.WJ(t, x, i)) == True{} : Bool})
-    -> {TC.RV(k, i, m, d, t, x, off, len, RT2.am_pl_Gp66304057C3(T), RT2.th_Gp66304057C3_bx(u)) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}:
+    -> {TC.RV(k, i, m, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(T), RT2.th_ProgressiveVarTestStruct_bx(u)) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_Gp66304057C3(dd, T, i, u, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gp66304057C3(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_ProgressiveVarTestStruct(dd, T, i, u, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_ProgressiveVarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TC.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TC.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TC.EE(True{}, t, x, off, len, TC.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, Array.set(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, RT2.am_pl_Gp66304057C3(T), i, RT2.th_Gp66304057C3_bx(u)), RT2.am_pl_Gp66304057C3(FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_Gp66304057C3(dd, T, i, u, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gp66304057C3(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb)) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
-      %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb), RT2.th_Gp66304057C3_bx(NV_pl_Gp66304057C3(i, m, d, t, x, off, len)), eqE_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, TC.WJ(t, x, i), nb, hc)) :
-        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_Gp66304057C3(FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
-      rvF_pl_Gp66304057C3(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, Array.set(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, RT2.am_pl_ProgressiveVarTestStruct(T), i, RT2.th_ProgressiveVarTestStruct_bx(u)), RT2.am_pl_ProgressiveVarTestStruct(FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_ProgressiveVarTestStruct(dd, T, i, u, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_ProgressiveVarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb)) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}
+      %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb), RT2.th_ProgressiveVarTestStruct_bx(NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len)), eqE_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TC.WJ(t, x, i), nb, hc)) :
+        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}
+      rvF_pl_ProgressiveVarTestStruct(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, pf, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TC.he_nx(q, i, m, t, x, off, len, inv, hE))
 
 # ---- the elements of FT ----
-def lemU_pl_Gp66304057C3(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +v: RT2.MB<RT2.M_Gp66304057C3>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool},
+def lemU_pl_ProgressiveVarTestStruct(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +v: RT2.MB<RT2.M_ProgressiveVarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +ne: {Nat.is_eq(j, i) == False{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), i) : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
-  %Equal.sym(List<&2, RT2.MB<RT2.M_Gp66304057C3>>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), i) : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}
-  FD.list__nth_update_other(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), j, i, v, ne)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v)), i) == FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
+  %Equal.sym(List<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, _, i) == FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), i) : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}
+  FD.list__nth_update_other(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), j, i, v, ne)
 
-def lemS0_pl_Gp66304057C3(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +v: RT2.MB<RT2.M_Gp66304057C3>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool},
+def lemS0_pl_ProgressiveVarTestStruct(+j: Nat, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +v: RT2.MB<RT2.M_ProgressiveVarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool},
     +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
-  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D)),
-    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_Gp66304057C3>, dd, D, pf)), hj)
-  %Equal.sym(List<&2, RT2.MB<RT2.M_Gp66304057C3>>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_Gp66304057C3>, dd, D, j, v, hj, pf)) :
-    {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}
-  FD.list__nth_update_same(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), j, v, hl)
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v)), j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D)),
+    Equal.sym(Nat, FD.spec_common__length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D)), FD.spec_common__pow2(dd), FD.array__slots_length(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, pf)), hj)
+  %Equal.sym(List<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v)), FD.spec_common__update(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), j, v), FD.array__upd_slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, _, j) == Some{v} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}
+  FD.list__nth_update_same(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), j, v, hl)
 
-def lemB_pl_Gp66304057C3(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemB_pl_ProgressiveVarTestStruct(q: Nat, +i: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hs: {Nat.is_lt(s, U32.to_nat(i)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), s) : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), s) == FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), s) : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
   match q:
-    case 0n: lemU_pl_Gp66304057C3(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
+    case 0n: lemU_pl_ProgressiveVarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm), isne(s, U32.to_nat(i), hs))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_Gp66304057C3(i, m, d, t, x, off, len))), s),
-        FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D), s),
-        lemB_pl_Gp66304057C3(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
-        lemU_pl_Gp66304057C3(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
+      +D1 = FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len))), s),
+        FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D1), s), FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D), s),
+        lemB_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), s, m, d, t, x, off, len, dd, D1, NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), lts(i, p, m, s, inv, hs)),
+        lemU_pl_ProgressiveVarTestStruct(U32.to_nat(i), s, dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm), isne(s, U32.to_nat(i), hs)))
 
-def lemV_pl_Gp66304057C3(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemV_pl_ProgressiveVarTestStruct(q: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), U32.to_nat(i)) == Some{u} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
   match q:
-    case 0n: lemS0_pl_Gp66304057C3(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
+    case 0n: lemS0_pl_ProgressiveVarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 0n, m, dd, inv, hm))
     case 1n+ +p:
-      +D1 = FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u)
-      Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_Gp66304057C3(i, m, d, t, x, off, len))), U32.to_nat(i)),
-        FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, D1), U32.to_nat(i)), Some{u},
-        lemB_pl_Gp66304057C3(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
+      +D1 = FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u)
+      Equal.trans(Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, D1, NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len))), U32.to_nat(i)),
+        FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, D1), U32.to_nat(i)), Some{u},
+        lemB_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), U32.to_nat(i), m, d, t, x, off, len, dd, D1, NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv),
           FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
             FD.nat__lt_succ(U32.to_nat(i)))),
-        lemS0_pl_Gp66304057C3(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
+        lemS0_pl_ProgressiveVarTestStruct(U32.to_nat(i), dd, D, u, pf, hiq(i, 1n+p, m, dd, inv, hm)))
 
-def stepN_pl_Gp66304057C3(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def stepN_pl_ProgressiveVarTestStruct(+p: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 2n+p) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool}, +b: Bool, +eb: {Nat.is_eq(U32.to_nat(i), U32.to_nat(c)) == b : Bool},
-    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
+    ih: @+h: {Nat.is_le(U32.to_nat(U32.add(i, 1)), U32.to_nat(c)) == True{} : Bool} -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len))), 1n+U32.to_nat(c)) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>})
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
   match b:
     case True{}:
       +ec = FD.u32__injective(i, c, FD.nat__eq_from_is_eq(U32.to_nat(i), U32.to_nat(c), eb))
-      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_Gp66304057C3(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}
-      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len))), _) == Some{NV_pl_Gp66304057C3(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}
-      lemV_pl_Gp66304057C3(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
+      %ec : {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(1n+p, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(_)) == Some{NV_pl_ProgressiveVarTestStruct(_, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}
+      %e1(i, p, m, inv) : {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len))), _) == Some{NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}
+      lemV_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv))
     case False{}:
       +hlt = FD.nat__lt_or_eq(U32.to_nat(i), U32.to_nat(c), hic, eb)
       ih(FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(c)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)),
         FD.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(c), hlt)))
 
-def lemN_pl_Gp66304057C3(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def lemN_pl_ProgressiveVarTestStruct(q: Nat, +i: U32, +c: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +D: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+q) == U32.to_nat(m) : Nat}, +hic: {Nat.is_le(U32.to_nat(i), U32.to_nat(c)) == True{} : Bool},
     +hcq: {Nat.is_lt(U32.to_nat(c), Nat.add(U32.to_nat(i), q)) == True{} : Bool})
-    -> {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}:
+    -> {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(q, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}:
   match q:
     case 0n:
       +h0 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 0n), U32.to_nat(i), FD.nat__add_zero(U32.to_nat(i)), hcq)
       +hcc = FD.nat__lt_le_trans(U32.to_nat(c), U32.to_nat(i), U32.to_nat(c), h0, hic)
-      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>},
+      Empty.absurd({FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(0n, i, m, d, t, x, off, len, dd, D, u)), 1n+U32.to_nat(c)) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>},
         FD.logic__false_true(Equal.trans(Bool, False{}, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), True{}, Equal.sym(Bool, Nat.is_lt(U32.to_nat(c), U32.to_nat(c)), False{}, FD.nat__lt_irrefl(U32.to_nat(c))), hcc)))
     case 1n+ +p:
       +h2 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 1n+p), 1n+Nat.add(U32.to_nat(i), p), FD.nat__add_succ(U32.to_nat(i), p), hcq)
       +h3 = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), Nat.add(z, p)) == True{} : Bool}, 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1(i, p, m, inv)), h2)
-      stepN_pl_Gp66304057C3(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
-        lemN_pl_Gp66304057C3(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
+      stepN_pl_ProgressiveVarTestStruct(p, i, c, m, d, t, x, off, len, dd, D, u, pf, hm, inv, hic, Nat.is_eq(U32.to_nat(i), U32.to_nat(c)), {==}, h =>
+        lemN_pl_ProgressiveVarTestStruct(p, U32.add(i, 1), c, m, d, t, x, off, len, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, D, U32.to_nat(i), u, pf), hm, inv1(i, p, m, inv), h, h3))
 
-def sv_pl_Gp66304057C3(m: Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, +z: RT2.MB<RT2.M_Gp66304057C3>) -> RT2.MB<RT2.M_Gp66304057C3>:
+def sv_pl_ProgressiveVarTestStruct(m: Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +z: RT2.MB<RT2.M_ProgressiveVarTestStruct>) -> RT2.MB<RT2.M_ProgressiveVarTestStruct>:
   match m:
     case None{}: z
     case Some{+y}: y
 
-def xat_of_pl_Gp66304057C3(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +s: Nat, +v: RT2.MB<RT2.M_Gp66304057C3>, +pf: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
-    +h: {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}) -> {RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s) == v : RT2.MB<RT2.M_Gp66304057C3>}:
-  Equal.cong(Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, RT2.MB<RT2.M_Gp66304057C3>, w => sv_pl_Gp66304057C3(w, v), Some{RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s)}, Some{v},
-    Equal.trans(Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, Some{RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s), Some{v},
-      Equal.sym(Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>, FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s), Some{RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), s)}, hx_at_pl_Gp66304057C3(dd, T, s, pf, hs)), h))
+def xat_of_pl_ProgressiveVarTestStruct(+dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +s: Nat, +v: RT2.MB<RT2.M_ProgressiveVarTestStruct>, +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T) == True{} : Bool}, +hs: {Nat.is_lt(s, FD.spec_common__pow2(dd)) == True{} : Bool},
+    +h: {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s) == Some{v} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}) -> {RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s) == v : RT2.MB<RT2.M_ProgressiveVarTestStruct>}:
+  Equal.cong(Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, RT2.MB<RT2.M_ProgressiveVarTestStruct>, w => sv_pl_ProgressiveVarTestStruct(w, v), Some{RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s)}, Some{v},
+    Equal.trans(Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, Some{RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s)}, FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s), Some{v},
+      Equal.sym(Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>, FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s), Some{RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), s)}, hx_at_pl_ProgressiveVarTestStruct(dd, T, s, pf, hs)), h))
 
 # elements 1 + c, 1 + c + 1, ... (k of them) of the final tree view as the window's items
-def xiW_pl_Gp66304057C3(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u0: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_ProgressiveVarTestStruct(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u0: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TC.EV(k, c, m, t, x, off, len, True{}, TC.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_Gp66304057C3(k, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TC.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_ProgressiveVarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TC.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -855,23 +855,23 @@ def xiW_pl_Gp66304057C3(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), z) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_Gp66304057C3(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_Gp66304057C3(dd, FK, s, NV_pl_Gp66304057C3(c, m, d, t, x, off, len), pfFT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), z) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_ProgressiveVarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_ProgressiveVarTestStruct(dd, FK, s, NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len), pfFT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TC.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TC.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TC.EE(True{}, t, x, off, len, TC.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_Gp66304057C3>, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), s), NV_pl_Gp66304057C3(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(_)), RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(NV_pl_Gp66304057C3(c, m, d, t, x, off, len))), TC.VE(t, x, TC.WJ(t, x, c), nb), elv_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, TC.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TC.VE(t, x, TC.WJ(t, x, c), nb), z}, RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s), TC.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_Gp66304057C3(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TC.inv_nx(p, c, m, invc), TC.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), s), NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(_)), RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len))), TC.VE(t, x, TC.WJ(t, x, c), nb), elv_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, TC.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TC.VE(t, x, TC.WJ(t, x, c), nb), z}, RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s), TC.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_ProgressiveVarTestStruct(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, pf, dd, K, T0, u0, pf0, hm, invK, es1, TC.inv_nx(p, c, m, invc), TC.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
 # ---- a nonempty window ----
-def vtf_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtf_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TC.CF(TC.HC(TC.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.RZ(False{}, d, t, x, off, len)) == TC.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.RZ(False{}, d, t, x, off, len)) == TC.VZE(False{}, t, x, len) : S.Value}:
   +f = TC.W0(t, x)
   +N = TC.NN(t, x)
   +ec = TC.cf_ok(TC.HC(f, len), t, x, off, len, hc0)
@@ -900,99 +900,99 @@ def vtf_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +l
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 28n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 28n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gp66304057C3(d, t, x, off, f, TC.B1(t, x, len))
-  +FK = FT_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_Gp66304057C3(dd, FK, 0n, u0, pfFT_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, TC.OBJE(d, t, x, off, f, TC.B1(t, x, len)), RT2.th_Gp66304057C3_bx(u0), eqE_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, f, TC.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(TC.RV(k0, 0, N, d, t, x, off, len, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(dd), _))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(dd), RT2.am_pl_Gp66304057C3(T0), fillam_pl_Gp66304057C3(dd)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(TC.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gp66304057C3_bx(u0)))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, TC.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gp66304057C3(T0), RT2.th_Gp66304057C3_bx(u0)), RT2.am_pl_Gp66304057C3(FK), rvF_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(_)), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, RT2.tfz_pl_Gp66304057C3(RT2.am_pl_Gp66304057C3(FK)), FK, RT2.tfzam_pl_Gp66304057C3(FK)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, _), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_Gp66304057C3(_, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_Gp66304057C3>, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(_)), RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(u0)), TC.VE(t, x, f, TC.B1(t, x, len)), elv_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, f, TC.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TC.VE(t, x, f, TC.B1(t, x, len)), z}}, RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n), TC.VI(k0, 0, N, t, x, len),
-    xiW_pl_Gp66304057C3(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_ProgressiveVarTestStruct(d, t, x, off, f, TC.B1(t, x, len))
+  +FK = FT_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_ProgressiveVarTestStruct(dd, FK, 0n, u0, pfFT_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, TC.OBJE(d, t, x, off, f, TC.B1(t, x, len)), RT2.th_ProgressiveVarTestStruct_bx(u0), eqE_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TC.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(TC.RV(k0, 0, N, d, t, x, off, len, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(dd), _))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(dd), RT2.am_pl_ProgressiveVarTestStruct(T0), fillam_pl_ProgressiveVarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(TC.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_ProgressiveVarTestStruct_bx(u0)))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, TC.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(T0), RT2.th_ProgressiveVarTestStruct_bx(u0)), RT2.am_pl_ProgressiveVarTestStruct(FK), rvF_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, eo, hd, hw, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(_)), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, RT2.tfz_pl_ProgressiveVarTestStruct(RT2.am_pl_ProgressiveVarTestStruct(FK)), FK, RT2.tfzam_pl_ProgressiveVarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, _), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(_)), RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(u0)), TC.VE(t, x, f, TC.B1(t, x, len)), elv_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, f, TC.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TC.VE(t, x, f, TC.B1(t, x, len)), z}}, RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n), TC.VI(k0, 0, N, t, x, len),
+    xiW_pl_ProgressiveVarTestStruct(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vtc_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TC.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.RZ(b, d, t, x, off, len)) == TC.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.RZ(b, d, t, x, off, len)) == TC.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, hc)
+    case False{}: vtf_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, hc)
 
 # the list a window reads views as the window's value, when the window lies in the buffer and its check passed
-def vw_pl_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_pl_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TC.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.OBJw(d, t, x, off, len)) == TC.VALw(t, x, len) : S.Value}:
-  vtc_pl_Gp66304057C3(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.OBJw(d, t, x, off, len)) == TC.VALw(t, x, len) : S.Value}:
+  vtc_pl_ProgressiveVarTestStruct(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hc)
 
 # ---- the same at any tree depth d < 31 (hw32: the window's end below 2^32) ----
-def tf_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def tf_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}:
+    -> {RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, x, off, len))) == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}:
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))), UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))),
       FD.array__freeze_thaw(U32, UCT.CT(d, t, YW0.FJ0(off, t, x), YW0.LJ0(t, x, len), VLS.DZ(YW0.LJ0(t, x, len))))) :
-    {VarTestStruct_d.Gc465214E502{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.Gc465214E502}
+    {VarTestStruct_d.VarTestStruct{FX16.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW0.LJ0(t, x, len)}, FX8.OBJ(d, t, Nat.add(x, U32.to_nat(6)))} == YW0.OBJw(d, t, x, off, len) : VarTestStruct_d.VarTestStruct}
   {==}
 
-def vw_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW0.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gc465214E502(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_VarTestStruct(YW0.OBJw(d, t, x, off, len)) == YW0.VALw(t, x, len) : S.Value}:
   GVT.vtwD(d, t, 0, x, off, len, eo, hd, hw, hw32, pf, hc)
 
-def eqE_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def eqE_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TA.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TA.OBJE(d, t, x, off, s, e) == RT2.th_Gc465214E502_bx(ND_pl_Gc465214E502(d, t, x, off, s, e)) : O.Boxed<VarTestStruct_d.Gc465214E502>}:
-  Equal.cong(VarTestStruct_d.Gc465214E502, O.Boxed<VarTestStruct_d.Gc465214E502>, z => O.BSome{z, O.BNone{}}, YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(VarTestStruct_d.Gc465214E502, RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))))
+    -> {TA.OBJE(d, t, x, off, s, e) == RT2.th_VarTestStruct_bx(ND_pl_VarTestStruct(d, t, x, off, s, e)) : O.Boxed<VarTestStruct_d.VarTestStruct>}:
+  Equal.cong(VarTestStruct_d.VarTestStruct, O.Boxed<VarTestStruct_d.VarTestStruct>, z => O.BSome{z, O.BNone{}}, YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(VarTestStruct_d.VarTestStruct, RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def elv_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TA.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(ND_pl_Gc465214E502(d, t, x, off, s, e))) == TA.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(VarTestStruct_d.Gc465214E502, RT2.th_Gc465214E502(RT2.fz_Gc465214E502(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_Gc465214E502(_) == TA.VE(t, x, s, e) : S.Value}
-  vw_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(ND_pl_VarTestStruct(d, t, x, off, s, e))) == TA.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(VarTestStruct_d.VarTestStruct, RT2.th_VarTestStruct(RT2.fz_VarTestStruct(YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW0.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_VarTestStruct(_) == TA.VE(t, x, s, e) : S.Value}
+  vw_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TA.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TA.hwab(d, x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw), TA.hwab32(x, len, s, e, TA.el_ab(t, x, off, len, s, e, h), TA.el_b(t, x, off, len, s, e, h), hw32), pf, TA.el_c(t, x, off, len, s, e, h))
 
-def rvF_pl_Gc465214E502D(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u: RT2.MB<RT2.M_Gc465214E502>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_VarTestStructD(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u: RT2.MB<RT2.M_VarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TA.EV(k, i, m, t, x, off, len, True{}, TA.WJ(t, x, i)) == True{} : Bool})
-    -> {TA.RV(k, i, m, d, t, x, off, len, RT2.am_pl_Gc465214E502(T), RT2.th_Gc465214E502_bx(u)) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}:
+    -> {TA.RV(k, i, m, d, t, x, off, len, RT2.am_pl_VarTestStruct(T), RT2.th_VarTestStruct_bx(u)) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TA.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TA.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TA.EE(True{}, t, x, off, len, TA.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, Array.set(O.Boxed<VarTestStruct_d.Gc465214E502>, RT2.am_pl_Gc465214E502(T), i, RT2.th_Gc465214E502_bx(u)), RT2.am_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb)) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
-      %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb), RT2.th_Gc465214E502_bx(NV_pl_Gc465214E502(i, m, d, t, x, off, len)), eqE_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, TA.WJ(t, x, i), nb, hc)) :
-        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_Gc465214E502(FT_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.Gc465214E502>>}
-      rvF_pl_Gc465214E502D(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, FD.array__upd(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, RT2.am_pl_VarTestStruct(T), i, RT2.th_VarTestStruct_bx(u)), RT2.am_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb)) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}
+      %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, TA.WJ(t, x, i), nb), RT2.th_VarTestStruct_bx(NV_pl_VarTestStruct(i, m, d, t, x, off, len)), eqE_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, TA.WJ(t, x, i), nb, hc)) :
+        {TA.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_VarTestStruct(FT_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<VarTestStruct_d.VarTestStruct>>}
+      rvF_pl_VarTestStructD(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, FD.array__upd(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TA.he_nx(q, i, m, t, x, off, len, inv, hE))
 
-def xiW_pl_Gc465214E502D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, +u0: RT2.MB<RT2.M_Gc465214E502>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_Gc465214E502>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_VarTestStructD(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +u0: RT2.MB<RT2.M_VarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TA.EV(k, c, m, t, x, off, len, True{}, TA.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_Gc465214E502(k, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TA.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_VarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TA.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -1000,22 +1000,22 @@ def xiW_pl_Gc465214E502D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.arra
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), z) == Some{NV_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gc465214E502>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_Gc465214E502(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_Gc465214E502(dd, FK, s, NV_pl_Gc465214E502(c, m, d, t, x, off, len), pfFT_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), z) == Some{NV_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_VarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_VarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_VarTestStruct(dd, FK, s, NV_pl_VarTestStruct(c, m, d, t, x, off, len), pfFT_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TA.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TA.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TA.EE(True{}, t, x, off, len, TA.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_Gc465214E502>, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), s), NV_pl_Gc465214E502(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(_)), RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(NV_pl_Gc465214E502(c, m, d, t, x, off, len))), TA.VE(t, x, TA.WJ(t, x, c), nb), elv_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, TA.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TA.VE(t, x, TA.WJ(t, x, c), nb), z}, RT2.xi_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n+s), TA.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_Gc465214E502D(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, K, T0, u0, pf0, hm, invK, es1, TA.inv_nx(p, c, m, invc), TA.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_VarTestStruct>, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), s), NV_pl_VarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(_)), RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(NV_pl_VarTestStruct(c, m, d, t, x, off, len))), TA.VE(t, x, TA.WJ(t, x, c), nb), elv_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, TA.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s)} == TA.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TA.VE(t, x, TA.WJ(t, x, c), nb), z}, RT2.xi_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n+s), TA.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_VarTestStructD(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, K, T0, u0, pf0, hm, invK, es1, TA.inv_nx(p, c, m, invc), TA.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
-def vtf_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtf_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TA.CF(TA.HC(TA.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.RZ(False{}, d, t, x, off, len)) == TA.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_VarTestStruct(TA.RZ(False{}, d, t, x, off, len)) == TA.VZE(False{}, t, x, len) : S.Value}:
   +f = TA.W0(t, x)
   +N = TA.NN(t, x)
   +ec = TA.cf_ok(TA.HC(f, len), t, x, off, len, hc0)
@@ -1044,43 +1044,43 @@ def vtf_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gc465214E502(d, t, x, off, f, TA.B1(t, x, len))
-  +FK = FT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_Gc465214E502(dd, FK, 0n, u0, pfFT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_Gc465214E502_bx(u0), eqE_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), RT2.am_pl_Gc465214E502(T0), fillam_pl_Gc465214E502(dd)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gc465214E502(T0), RT2.th_Gc465214E502_bx(u0)), RT2.am_pl_Gc465214E502(FK), rvF_pl_Gc465214E502D(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, RT2.tfz_pl_Gc465214E502(_)), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_Gc465214E502(FK)) :
-    {S.Sequence{RT2.xi_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, _), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_Gc465214E502(_, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_Gc465214E502>, RT2.xat_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(_)), RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_Gc465214E502_bx(RT2.th_Gc465214E502_bx(u0)), TA.VE(t, x, f, TA.B1(t, x, len)), elv_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TA.VE(t, x, f, TA.B1(t, x, len)), z}}, RT2.xi_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_Gc465214E502>, FK), 1n), TA.VI(k0, 0, N, t, x, len),
-    xiW_pl_Gc465214E502D(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_VarTestStruct(d, t, x, off, f, TA.B1(t, x, len))
+  +FK = FT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_VarTestStruct(dd, FK, 0n, u0, pfFT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_VarTestStruct_bx(u0), eqE_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), RT2.am_pl_VarTestStruct(T0), fillam_pl_VarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)))), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_VarTestStruct(T0), RT2.th_VarTestStruct_bx(u0)), RT2.am_pl_VarTestStruct(FK), rvF_pl_VarTestStructD(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, RT2.tfz_pl_VarTestStruct(_)), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_VarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, _), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_VarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 0n)} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_VarTestStruct>, RT2.xat_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(_)), RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_VarTestStruct_bx(RT2.th_VarTestStruct_bx(u0)), TA.VE(t, x, f, TA.B1(t, x, len)), elv_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n)}} == TA.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TA.VE(t, x, f, TA.B1(t, x, len)), z}}, RT2.xi_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, FK), 1n), TA.VI(k0, 0, N, t, x, len),
+    xiW_pl_VarTestStructD(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtc_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TA.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.RZ(b, d, t, x, off, len)) == TA.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_VarTestStruct(TA.RZ(b, d, t, x, off, len)) == TA.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
+    case False{}: vtf_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
 
-def vw_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TA.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gc465214E502(TA.OBJw(d, t, x, off, len)) == TA.VALw(t, x, len) : S.Value}:
-  vtc_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_VarTestStruct(TA.OBJw(d, t, x, off, len)) == TA.VALw(t, x, len) : S.Value}:
+  vtc_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
 
-def tff_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def tff_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TA.CF(TA.HC(TA.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.RZ(False{}, d, t, x, off, len))) == TA.RZ(False{}, d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.RZ(False{}, d, t, x, off, len))) == TA.RZ(False{}, d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
   +f = TA.W0(t, x)
   +N = TA.NN(t, x)
   +ec = TA.cf_ok(TA.HC(f, len), t, x, off, len, hc0)
@@ -1109,76 +1109,76 @@ def tff_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gc465214E502(d, t, x, off, f, TA.B1(t, x, len))
-  +FK = FT_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_Gc465214E502_bx(u0), eqE_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _))), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), _), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, proglist_VarTestStruct_d.pl_Gc465214E502_fill(dd), RT2.am_pl_Gc465214E502(T0), fillam_pl_Gc465214E502(dd)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)))), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gc465214E502_bx(u0)), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(Array<O.Boxed<VarTestStruct_d.Gc465214E502>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gc465214E502(T0), RT2.th_Gc465214E502_bx(u0)), RT2.am_pl_Gc465214E502(FK), rvF_pl_Gc465214E502D(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(RT2.tfz_pl_Gc465214E502(_)), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{_, N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gc465214E502>>, RT2.tfz_pl_Gc465214E502(RT2.am_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_Gc465214E502(FK)) :
-    {proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(_), N} == proglist_VarTestStruct_d.pl_Gc465214E502_Seq{RT2.am_pl_Gc465214E502(FK), N} : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}
+  +T0 = FD.array__trep(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_VarTestStruct(d, t, x, off, f, TA.B1(t, x, len))
+  +FK = FT_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  %Equal.sym(O.Boxed<VarTestStruct_d.VarTestStruct>, TA.OBJE(d, t, x, off, f, TA.B1(t, x, len)), RT2.th_VarTestStruct_bx(u0), eqE_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TA.B1(t, x, len), hc1)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _))), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{TA.RV(k0, 0, N, d, t, x, off, len, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), _), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_fill(dd), RT2.am_pl_VarTestStruct(T0), fillam_pl_VarTestStruct(dd)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)))), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{TA.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_VarTestStruct_bx(u0)), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, TA.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_VarTestStruct(T0), RT2.th_VarTestStruct_bx(u0)), RT2.am_pl_VarTestStruct(FK), rvF_pl_VarTestStructD(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(_)), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{_, N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, RT2.tfz_pl_VarTestStruct(RT2.am_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_VarTestStruct(FK)) :
+    {proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(_), N} == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(FK), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}
   {==}
 
-def tfc_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def tfc_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TA.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.RZ(b, d, t, x, off, len))) == TA.RZ(b, d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.RZ(b, d, t, x, off, len))) == TA.RZ(b, d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
   match b:
     case True{}: {==}
-    case False{}: tff_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
+    case False{}: tff_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
 
-def tf_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def tf_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TA.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, x, off, len))) == TA.OBJw(d, t, x, off, len) : proglist_VarTestStruct_d.pl_Gc465214E502_Seq}:
-  tfc_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, x, off, len))) == TA.OBJw(d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
+  tfc_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
 
-def eqE_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def eqE_pl_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TB.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TB.OBJE(d, t, x, off, s, e) == RT2.th_pl_Gc465214E502_bx(ND_pl_pl_Gc465214E502(d, t, x, off, s, e)) : O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>}:
-  Equal.cong(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, z => O.BSome{z, O.BNone{}}, TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))))
+    -> {TB.OBJE(d, t, x, off, s, e) == RT2.th_pl_VarTestStruct_bx(ND_pl_pl_VarTestStruct(d, t, x, off, s, e)) : O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>}:
+  Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, z => O.BSome{z, O.BNone{}}, TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def elv_pl_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TB.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(ND_pl_pl_Gc465214E502(d, t, x, off, s, e))) == TB.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(proglist_VarTestStruct_d.pl_Gc465214E502_Seq, RT2.th_pl_Gc465214E502(RT2.fz_pl_Gc465214E502(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_pl_Gc465214E502(_) == TB.VE(t, x, s, e) : S.Value}
-  vw_pl_Gc465214E502D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(ND_pl_pl_VarTestStruct(d, t, x, off, s, e))) == TB.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, RT2.th_pl_VarTestStruct(RT2.fz_pl_VarTestStruct(TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), TA.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_pl_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_pl_VarTestStruct(_) == TB.VE(t, x, s, e) : S.Value}
+  vw_pl_VarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TB.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hw32), hd, TB.hwab(d, x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw), TB.hwab32(x, len, s, e, TB.el_ab(t, x, off, len, s, e, h), TB.el_b(t, x, off, len, s, e, h), hw32), pf, TB.el_c(t, x, off, len, s, e, h))
 
-def rvF_pl_pl_Gc465214E502D(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_pl_VarTestStructD(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TB.EV(k, i, m, t, x, off, len, True{}, TB.WJ(t, x, i)) == True{} : Bool})
-    -> {TB.RV(k, i, m, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(T), RT2.th_pl_Gc465214E502_bx(u)) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}:
+    -> {TB.RV(k, i, m, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(T), RT2.th_pl_VarTestStruct_bx(u)) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TB.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TB.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TB.EE(True{}, t, x, off, len, TB.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, Array.set(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, RT2.am_pl_pl_Gc465214E502(T), i, RT2.th_pl_Gc465214E502_bx(u)), RT2.am_pl_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_pl_Gc465214E502(dd, T, i, u, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_Gc465214E502(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb)) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
-      %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb), RT2.th_pl_Gc465214E502_bx(NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len)), eqE_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, TB.WJ(t, x, i), nb, hc)) :
-        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_pl_Gc465214E502(FT_pl_pl_Gc465214E502(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>}
-      rvF_pl_pl_Gc465214E502D(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, FD.array__upd(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u), NV_pl_pl_Gc465214E502(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, Array.set(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, RT2.am_pl_pl_VarTestStruct(T), i, RT2.th_pl_VarTestStruct_bx(u)), RT2.am_pl_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_pl_VarTestStruct(dd, T, i, u, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_pl_VarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb)) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}
+      %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, TB.OBJE(d, t, x, off, TB.WJ(t, x, i), nb), RT2.th_pl_VarTestStruct_bx(NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len)), eqE_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, TB.WJ(t, x, i), nb, hc)) :
+        {TB.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_pl_VarTestStruct(FT_pl_pl_VarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>}
+      rvF_pl_pl_VarTestStructD(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, FD.array__upd(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_pl_VarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TB.he_nx(q, i, m, t, x, off, len, inv, hE))
 
-def xiW_pl_pl_Gc465214E502D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, +u0: RT2.MB<RT2.M_pl_Gc465214E502>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_pl_VarTestStructD(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +u0: RT2.MB<RT2.M_pl_VarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TB.EV(k, c, m, t, x, off, len, True{}, TB.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_pl_Gc465214E502(k, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TB.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_pl_VarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TB.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -1186,22 +1186,22 @@ def xiW_pl_pl_Gc465214E502D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.a
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_pl_Gc465214E502>, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), z) == Some{NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_Gc465214E502>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_pl_Gc465214E502(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_pl_Gc465214E502(dd, FK, s, NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len), pfFT_pl_pl_Gc465214E502(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_pl_VarTestStruct>, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), z) == Some{NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_pl_VarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_pl_VarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_pl_VarTestStruct(dd, FK, s, NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len), pfFT_pl_pl_VarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TB.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TB.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TB.EE(True{}, t, x, off, len, TB.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), s), NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(_)), RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(NV_pl_pl_Gc465214E502(c, m, d, t, x, off, len))), TB.VE(t, x, TB.WJ(t, x, c), nb), elv_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, TB.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TB.VE(t, x, TB.WJ(t, x, c), nb), z}, RT2.xi_pl_pl_Gc465214E502(p, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n+s), TB.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_pl_Gc465214E502D(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, K, T0, u0, pf0, hm, invK, es1, TB.inv_nx(p, c, m, invc), TB.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), s), NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(_)), RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(NV_pl_pl_VarTestStruct(c, m, d, t, x, off, len))), TB.VE(t, x, TB.WJ(t, x, c), nb), elv_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, TB.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s)} == TB.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TB.VE(t, x, TB.WJ(t, x, c), nb), z}, RT2.xi_pl_pl_VarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n+s), TB.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_pl_VarTestStructD(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, K, T0, u0, pf0, hm, invK, es1, TB.inv_nx(p, c, m, invc), TB.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
-def vtf_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtf_pl_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TB.CF(TB.HC(TB.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.RZ(False{}, d, t, x, off, len)) == TB.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.RZ(False{}, d, t, x, off, len)) == TB.VZE(False{}, t, x, len) : S.Value}:
   +f = TB.W0(t, x)
   +N = TB.NN(t, x)
   +ec = TB.cf_ok(TB.HC(f, len), t, x, off, len, hc0)
@@ -1230,102 +1230,102 @@ def vtf_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_pl_Gc465214E502>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_pl_Gc465214E502>, dd, RT2.MNone{})
-  +u0 = ND_pl_pl_Gc465214E502(d, t, x, off, f, TB.B1(t, x, len))
-  +FK = FT_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_pl_Gc465214E502(dd, FK, 0n, u0, pfFT_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_pl_Gc465214E502(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>, TB.OBJE(d, t, x, off, f, TB.B1(t, x, len)), RT2.th_pl_Gc465214E502_bx(u0), eqE_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TB.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(TB.RV(k0, 0, N, d, t, x, off, len, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(dd), _))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_fill(dd), RT2.am_pl_pl_Gc465214E502(T0), fillam_pl_pl_Gc465214E502(dd)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(TB.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_pl_Gc465214E502_bx(u0)))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_Gc465214E502_Seq>>, TB.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_pl_Gc465214E502(T0), RT2.th_pl_Gc465214E502_bx(u0)), RT2.am_pl_pl_Gc465214E502(FK), rvF_pl_pl_Gc465214E502D(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.tfz_pl_pl_Gc465214E502(_)), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_pl_Gc465214E502>>, RT2.tfz_pl_pl_Gc465214E502(RT2.am_pl_pl_Gc465214E502(FK)), FK, RT2.tfzam_pl_pl_Gc465214E502(FK)) :
-    {S.Sequence{RT2.xi_pl_pl_Gc465214E502(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, _), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_pl_Gc465214E502(_, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_pl_Gc465214E502>, RT2.xat_pl_pl_Gc465214E502(FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(_)), RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_pl_Gc465214E502_bx(RT2.th_pl_Gc465214E502_bx(u0)), TB.VE(t, x, f, TB.B1(t, x, len)), elv_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TB.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TB.VE(t, x, f, TB.B1(t, x, len)), z}}, RT2.xi_pl_pl_Gc465214E502(k0, FD.array__slots(RT2.MB<RT2.M_pl_Gc465214E502>, FK), 1n), TB.VI(k0, 0, N, t, x, len),
-    xiW_pl_pl_Gc465214E502D(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_pl_VarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_pl_VarTestStruct(d, t, x, off, f, TB.B1(t, x, len))
+  +FK = FT_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_pl_VarTestStruct(dd, FK, 0n, u0, pfFT_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_pl_VarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, TB.OBJE(d, t, x, off, f, TB.B1(t, x, len)), RT2.th_pl_VarTestStruct_bx(u0), eqE_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TB.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(TB.RV(k0, 0, N, d, t, x, off, len, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(dd), _))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(dd), RT2.am_pl_pl_VarTestStruct(T0), fillam_pl_pl_VarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(TB.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_pl_VarTestStruct_bx(u0)))), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, TB.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_pl_VarTestStruct(T0), RT2.th_pl_VarTestStruct_bx(u0)), RT2.am_pl_pl_VarTestStruct(FK), rvF_pl_pl_VarTestStructD(k0, 0, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.tfz_pl_pl_VarTestStruct(_)), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, RT2.tfz_pl_pl_VarTestStruct(RT2.am_pl_pl_VarTestStruct(FK)), FK, RT2.tfzam_pl_pl_VarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, _), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_pl_VarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 0n)} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_pl_VarTestStruct>, RT2.xat_pl_pl_VarTestStruct(FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(_)), RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_pl_VarTestStruct_bx(RT2.th_pl_VarTestStruct_bx(u0)), TB.VE(t, x, f, TB.B1(t, x, len)), elv_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, f, TB.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n)}} == TB.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TB.VE(t, x, f, TB.B1(t, x, len)), z}}, RT2.xi_pl_pl_VarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, FK), 1n), TB.VI(k0, 0, N, t, x, len),
+    xiW_pl_pl_VarTestStructD(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hw32, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtc_pl_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TB.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.RZ(b, d, t, x, off, len)) == TB.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.RZ(b, d, t, x, off, len)) == TB.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
+    case False{}: vtf_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, hc)
 
-def vw_pl_pl_Gc465214E502D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_pl_pl_VarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TB.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_pl_Gc465214E502(TB.OBJw(d, t, x, off, len)) == TB.VALw(t, x, len) : S.Value}:
-  vtc_pl_pl_Gc465214E502D(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_pl_VarTestStruct(TB.OBJw(d, t, x, off, len)) == TB.VALw(t, x, len) : S.Value}:
+  vtc_pl_pl_VarTestStructD(d, t, x, off, len, eo, hd, hw, hw32, pf, U32.is_eq(len, 0), hc)
 
 # ---- the same at any tree depth d < 31 (hw32: the window's end below 2^32) ----
-def tf_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def tf_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}:
+    -> {RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len))) == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   +C0 = UCT.CT(d, t, YW1.FJ0(off, t, x), YW1.LJ0(t, x), VLS.DZ(YW1.LJ0(t, x)))
   +C1 = UCT.CT(d, t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len), VLS.DZ(YW1.LJ1(t, x, len)))
   +NB = PBW.NB(t, YW1.FJ1(off, t, x), YW1.LJ1(t, x, len))
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, C0)), C0, FD.array__freeze_thaw(U32, C0)) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, _), YW1.LJ0(t, x)}, O.Bits{FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   %Equal.sym(Array<U32>, FD.array__thaw(U32, FD.array__freeze(U32, O.clear_bit(FD.array__thaw(U32, C1), NB))), O.clear_bit(FD.array__thaw(U32, C1), NB), thfr(O.clear_bit(FD.array__thaw(U32, C1), NB))) :
-    {ProgressiveVarTestStruct_d.Gp66304057C3{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.Gp66304057C3}
+    {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))), O.Words{FD.array__thaw(U32, C0), YW1.LJ0(t, x)}, O.Bits{_, NB}} == YW1.OBJw(d, t, x, off, len) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}
   {==}
 
-def vw_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {YW1.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
-  GP.vw_Gp66304057C3D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hc)
+    -> {RT2.v_ProgressiveVarTestStruct(YW1.OBJw(d, t, x, off, len)) == YW1.VALw(t, x, len) : S.Value}:
+  GP.vw_ProgressiveVarTestStructD(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hc)
 
-def eqE_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def eqE_pl_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TC.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {TC.OBJE(d, t, x, off, s, e) == RT2.th_Gp66304057C3_bx(ND_pl_Gp66304057C3(d, t, x, off, s, e)) : O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>}:
-  Equal.cong(ProgressiveVarTestStruct_d.Gp66304057C3, O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, z => O.BSome{z, O.BNone{}}, YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
-    Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gp66304057C3D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))))
+    -> {TC.OBJE(d, t, x, off, s, e) == RT2.th_ProgressiveVarTestStruct_bx(ND_pl_ProgressiveVarTestStruct(d, t, x, off, s, e)) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  Equal.cong(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, z => O.BSome{z, O.BNone{}}, YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))),
+    Equal.sym(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_ProgressiveVarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))))
 
-def elv_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def elv_pl_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32, +h: {TC.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(ND_pl_Gp66304057C3(d, t, x, off, s, e))) == TC.VE(t, x, s, e) : S.Value}:
-  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, RT2.th_Gp66304057C3(RT2.fz_Gp66304057C3(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_Gp66304057C3D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))) :
-    {RT2.v_Gp66304057C3(_) == TC.VE(t, x, s, e) : S.Value}
-  vw_Gp66304057C3D(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))
+    -> {RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(ND_pl_ProgressiveVarTestStruct(d, t, x, off, s, e))) == TC.VE(t, x, s, e) : S.Value}:
+  %Equal.sym(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, RT2.th_ProgressiveVarTestStruct(RT2.fz_ProgressiveVarTestStruct(YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)))), YW1.OBJw(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s)), tf_ProgressiveVarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))) :
+    {RT2.v_ProgressiveVarTestStruct(_) == TC.VE(t, x, s, e) : S.Value}
+  vw_ProgressiveVarTestStructD(d, t, Nat.add(U32.to_nat(s), x), U32.add(off, s), U32.sub(e, s), TC.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h)), eo, hd, hw, hwN), hd, TC.hwab(d, x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hw), TC.hwab32(x, len, s, e, TC.el_ab(t, x, off, len, s, e, h), TC.el_b(t, x, off, len, s, e, h), hwN), pf, TC.el_c(t, x, off, len, s, e, h))
 
-def rvF_pl_Gp66304057C3D(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u: RT2.MB<RT2.M_Gp66304057C3>,
-    +pfT: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def rvF_pl_ProgressiveVarTestStructD(k: Nat, +i: U32, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +T: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pfT: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +inv: {Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}, +hE: {TC.EV(k, i, m, t, x, off, len, True{}, TC.WJ(t, x, i)) == True{} : Bool})
-    -> {TC.RV(k, i, m, d, t, x, off, len, RT2.am_pl_Gp66304057C3(T), RT2.th_Gp66304057C3_bx(u)) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}:
+    -> {TC.RV(k, i, m, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(T), RT2.th_ProgressiveVarTestStruct_bx(u)) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(k, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}:
   match k:
     case 0n:
       +hi = hiq(i, 0n, m, dd, inv, hm)
-      RT2.amset_pl_Gp66304057C3(dd, T, i, u, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gp66304057C3(dd, T, U32.to_nat(i), pfT, hi), pfT)
+      RT2.amset_pl_ProgressiveVarTestStruct(dd, T, i, u, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_ProgressiveVarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)
     case 1n+ +q:
       +hi = hiq(i, 1n+q, m, dd, inv, hm)
       +nb = TC.NX(U32.is_eq(U32.add(i, 2), m), t, x, len, U32.add(i, 1))
       +hc = TC.ev_ok(q, U32.add(i, 1), m, t, x, off, len, TC.EE(True{}, t, x, off, len, TC.WJ(t, x, i), nb), nb, hE)
-      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, Array.set(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, RT2.am_pl_Gp66304057C3(T), i, RT2.th_Gp66304057C3_bx(u)), RT2.am_pl_Gp66304057C3(FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u)),
-          RT2.amset_pl_Gp66304057C3(dd, T, i, u, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_Gp66304057C3(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
-        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb)) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
-      %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb), RT2.th_Gp66304057C3_bx(NV_pl_Gp66304057C3(i, m, d, t, x, off, len)), eqE_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, TC.WJ(t, x, i), nb, hc)) :
-        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_Gp66304057C3(FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_Gp66304057C3(FT_pl_Gp66304057C3(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>}
-      rvF_pl_Gp66304057C3D(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, FD.array__upd(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u), NV_pl_Gp66304057C3(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
+      %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, Array.set(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, RT2.am_pl_ProgressiveVarTestStruct(T), i, RT2.th_ProgressiveVarTestStruct_bx(u)), RT2.am_pl_ProgressiveVarTestStruct(FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u)),
+          RT2.amset_pl_ProgressiveVarTestStruct(dd, T, i, u, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, T), U32.to_nat(i)), hdd, hi, hx_at_pl_ProgressiveVarTestStruct(dd, T, U32.to_nat(i), pfT, hi), pfT)) :
+        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, _, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb)) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}
+      %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, TC.OBJE(d, t, x, off, TC.WJ(t, x, i), nb), RT2.th_ProgressiveVarTestStruct_bx(NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len)), eqE_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, TC.WJ(t, x, i), nb, hc)) :
+        {TC.RV(q, U32.add(i, 1), m, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u)), _) == RT2.am_pl_ProgressiveVarTestStruct(FT_pl_ProgressiveVarTestStruct(1n+q, i, m, d, t, x, off, len, dd, T, u)) : Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>}
+      rvF_pl_ProgressiveVarTestStructD(q, U32.add(i, 1), m, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, FD.array__upd(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u), NV_pl_ProgressiveVarTestStruct(i, m, d, t, x, off, len), FD.array__upd_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T, U32.to_nat(i), u, pfT), hdd, hm,
         inv1(i, q, m, inv), TC.he_nx(q, i, m, t, x, off, len, inv, hE))
 
-def xiW_pl_Gp66304057C3D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, +u0: RT2.MB<RT2.M_Gp66304057C3>,
-    +pf0: {FD.array__perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
+def xiW_pl_ProgressiveVarTestStructD(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +u0: RT2.MB<RT2.M_ProgressiveVarTestStruct>,
+    +pf0: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
     +invK: {Nat.add(U32.to_nat(0), 1n+K) == U32.to_nat(m) : Nat}, +es: {1n+U32.to_nat(c) == s : Nat}, +invc: {Nat.add(U32.to_nat(c), 1n+k) == U32.to_nat(m) : Nat},
     +hE: {TC.EV(k, c, m, t, x, off, len, True{}, TC.WJ(t, x, c)) == True{} : Bool})
-    -> {RT2.xi_pl_Gp66304057C3(k, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TC.VI(k, c, m, t, x, len) : S.Value}:
+    -> {RT2.xi_pl_ProgressiveVarTestStruct(k, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)), s) == TC.VI(k, c, m, t, x, len) : S.Value}:
   match k:
     case 0n: {==}
     case 1n+ +p:
-      +FK = FT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0)
+      +FK = FT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0)
       +eK = FD.nat__succ_inj(Nat.add(U32.to_nat(c), 1n+p), K, Equal.trans(Nat, 1n+Nat.add(U32.to_nat(c), 1n+p), Nat.add(U32.to_nat(c), 2n+p), 1n+K,
         Equal.sym(Nat, Nat.add(U32.to_nat(c), 2n+p), 1n+Nat.add(U32.to_nat(c), 1n+p), FD.nat__add_succ(U32.to_nat(c), 1n+p)), Equal.trans(Nat, Nat.add(U32.to_nat(c), 2n+p), U32.to_nat(m), 1n+K, invc, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK))))
       +hcK = FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(c), z) == True{} : Bool}, 1n+Nat.add(U32.to_nat(c), p), K,
@@ -1333,22 +1333,22 @@ def xiW_pl_Gp66304057C3D(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.arra
         FD.nat__le_lt_trans(U32.to_nat(c), Nat.add(U32.to_nat(c), p), 1n+Nat.add(U32.to_nat(c), p), FD.nat__le_add_right(U32.to_nat(c), p), FD.nat__lt_succ(Nat.add(U32.to_nat(c), p))))
       +hK = FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(dd)) == True{} : Bool}, U32.to_nat(m), 1n+K, Equal.sym(Nat, 1n+K, U32.to_nat(m), invK), hm)
       +hs = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(dd)) == True{} : Bool}, 1n+U32.to_nat(c), s, es, FD.nat__lt_le_trans(1n+U32.to_nat(c), 1n+K, FD.spec_common__pow2(dd), hcK, hK))
-      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_Gp66304057C3>, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), z) == Some{NV_pl_Gp66304057C3(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_Gp66304057C3>>}, 1n+U32.to_nat(c), s, es,
-        lemN_pl_Gp66304057C3(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
-      +ex = xat_of_pl_Gp66304057C3(dd, FK, s, NV_pl_Gp66304057C3(c, m, d, t, x, off, len), pfFT_pl_Gp66304057C3(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
+      +en = FD.logic__subst(Nat, z => {FD.spec_common__nth(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), z) == Some{NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len)} : Maybe<&2, RT2.MB<RT2.M_ProgressiveVarTestStruct>>}, 1n+U32.to_nat(c), s, es,
+        lemN_pl_ProgressiveVarTestStruct(K, 0, c, m, d, t, x, off, len, dd, T0, u0, pf0, hm, invK, Order.zero_le(U32.to_nat(c)), hcK))
+      +ex = xat_of_pl_ProgressiveVarTestStruct(dd, FK, s, NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len), pfFT_pl_ProgressiveVarTestStruct(K, 0, m, d, t, x, off, len, dd, T0, u0, pf0), hs, en)
       +nb = TC.NX(U32.is_eq(U32.add(c, 2), m), t, x, len, U32.add(c, 1))
       +hc = TC.ev_ok(p, U32.add(c, 1), m, t, x, off, len, TC.EE(True{}, t, x, off, len, TC.WJ(t, x, c), nb), nb, hE)
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
-      %Equal.sym(RT2.MB<RT2.M_Gp66304057C3>, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), s), NV_pl_Gp66304057C3(c, m, d, t, x, off, len), ex) :
-        {S.Items{RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(_)), RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(NV_pl_Gp66304057C3(c, m, d, t, x, off, len))), TC.VE(t, x, TC.WJ(t, x, c), nb), elv_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, TC.WJ(t, x, c), nb, hc)) :
-        {S.Items{_, RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{TC.VE(t, x, TC.WJ(t, x, c), nb), z}, RT2.xi_pl_Gp66304057C3(p, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n+s), TC.VI(p, U32.add(c, 1), m, t, x, len),
-        xiW_pl_Gp66304057C3D(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, K, T0, u0, pf0, hm, invK, es1, TC.inv_nx(p, c, m, invc), TC.he_nx(p, c, m, t, x, off, len, invc, hE)))
+      %Equal.sym(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), s), NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len), ex) :
+        {S.Items{RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(_)), RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
+      %Equal.sym(S.Value, RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(NV_pl_ProgressiveVarTestStruct(c, m, d, t, x, off, len))), TC.VE(t, x, TC.WJ(t, x, c), nb), elv_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, TC.WJ(t, x, c), nb, hc)) :
+        {S.Items{_, RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s)} == TC.VI(1n+p, c, m, t, x, len) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{TC.VE(t, x, TC.WJ(t, x, c), nb), z}, RT2.xi_pl_ProgressiveVarTestStruct(p, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n+s), TC.VI(p, U32.add(c, 1), m, t, x, len),
+        xiW_pl_ProgressiveVarTestStructD(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, K, T0, u0, pf0, hm, invK, es1, TC.inv_nx(p, c, m, invc), TC.he_nx(p, c, m, t, x, off, len, invc, hE)))
 
-def vtf_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtf_pl_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc0: {TC.CF(TC.HC(TC.W0(t, x), len), t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.RZ(False{}, d, t, x, off, len)) == TC.VZE(False{}, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.RZ(False{}, d, t, x, off, len)) == TC.VZE(False{}, t, x, len) : S.Value}:
   +f = TC.W0(t, x)
   +N = TC.NN(t, x)
   +ec = TC.cf_ok(TC.HC(f, len), t, x, off, len, hc0)
@@ -1377,36 +1377,36 @@ def vtf_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +
   +hdd = FD.nat__le_lt_trans(dd, d, 32n, VD.wd_min(N, d, hN4), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))
   +hm = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(dd), FD.spec_common__pow2(dd), Equal.sym(Nat, FD.spec_common__pow2(dd), O.pow2n(dd), VD.s_pow2_eq(dd)),
     VD.wd_cover(N, d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {==})), hN4))
-  +T0 = FD.array__trep(RT2.MB<RT2.M_Gp66304057C3>, dd, RT2.MNone{})
-  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_Gp66304057C3>, dd, RT2.MNone{})
-  +u0 = ND_pl_Gp66304057C3(d, t, x, off, f, TC.B1(t, x, len))
-  +FK = FT_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0)
-  +x0 = xat_of_pl_Gp66304057C3(dd, FK, 0n, u0, pfFT_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
-    lemV_pl_Gp66304057C3(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
-  %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>, TC.OBJE(d, t, x, off, f, TC.B1(t, x, len)), RT2.th_Gp66304057C3_bx(u0), eqE_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TC.B1(t, x, len), hc1)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(TC.RV(k0, 0, N, d, t, x, off, len, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(dd), _))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, proglist_ProgressiveVarTestStruct_d.pl_Gp66304057C3_fill(dd), RT2.am_pl_Gp66304057C3(T0), fillam_pl_Gp66304057C3(dd)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(TC.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_Gp66304057C3_bx(u0)))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.Gp66304057C3>>, TC.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_Gp66304057C3(T0), RT2.th_Gp66304057C3_bx(u0)), RT2.am_pl_Gp66304057C3(FK), rvF_pl_Gp66304057C3D(k0, 0, N, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, RT2.tfz_pl_Gp66304057C3(_)), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_Gp66304057C3>>, RT2.tfz_pl_Gp66304057C3(RT2.am_pl_Gp66304057C3(FK)), FK, RT2.tfzam_pl_Gp66304057C3(FK)) :
-    {S.Sequence{RT2.xi_pl_Gp66304057C3(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, _), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %inv : {S.Sequence{RT2.xi_pl_Gp66304057C3(_, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(RT2.MB<RT2.M_Gp66304057C3>, RT2.xat_pl_Gp66304057C3(FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 0n), u0, x0) :
-    {S.Sequence{S.Items{RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(_)), RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT2.v_Gp66304057C3_bx(RT2.th_Gp66304057C3_bx(u0)), TC.VE(t, x, f, TC.B1(t, x, len)), elv_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TC.B1(t, x, len), hc1)) :
-    {S.Sequence{S.Items{_, RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TC.VE(t, x, f, TC.B1(t, x, len)), z}}, RT2.xi_pl_Gp66304057C3(k0, FD.array__slots(RT2.MB<RT2.M_Gp66304057C3>, FK), 1n), TC.VI(k0, 0, N, t, x, len),
-    xiW_pl_Gp66304057C3D(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
+  +T0 = FD.array__trep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, RT2.MNone{})
+  +pf0 = FD.array__trep_perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dd, RT2.MNone{})
+  +u0 = ND_pl_ProgressiveVarTestStruct(d, t, x, off, f, TC.B1(t, x, len))
+  +FK = FT_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0)
+  +x0 = xat_of_pl_ProgressiveVarTestStruct(dd, FK, 0n, u0, pfFT_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0), FD.nat__lt_le_trans(0n, U32.to_nat(N), FD.spec_common__pow2(dd), FD.nat__succ_le_lt(0n, U32.to_nat(N), h1), hm),
+    lemV_pl_ProgressiveVarTestStruct(k0, 0, N, d, t, x, off, len, dd, T0, u0, pf0, hm, inv))
+  %Equal.sym(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, TC.OBJE(d, t, x, off, f, TC.B1(t, x, len)), RT2.th_ProgressiveVarTestStruct_bx(u0), eqE_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TC.B1(t, x, len), hc1)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(TC.RV(k0, 0, N, d, t, x, off, len, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(dd), _))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(dd), RT2.am_pl_ProgressiveVarTestStruct(T0), fillam_pl_ProgressiveVarTestStruct(dd)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(TC.RV(k0, 0, N, d, t, x, off, len, _, RT2.th_ProgressiveVarTestStruct_bx(u0)))), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, TC.RV(k0, 0, N, d, t, x, off, len, RT2.am_pl_ProgressiveVarTestStruct(T0), RT2.th_ProgressiveVarTestStruct_bx(u0)), RT2.am_pl_ProgressiveVarTestStruct(FK), rvF_pl_ProgressiveVarTestStructD(k0, 0, N, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, T0, u0, pf0, hdd, hm, inv, hE0)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.tfz_pl_ProgressiveVarTestStruct(_)), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, RT2.tfz_pl_ProgressiveVarTestStruct(RT2.am_pl_ProgressiveVarTestStruct(FK)), FK, RT2.tfzam_pl_ProgressiveVarTestStruct(FK)) :
+    {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, _), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %inv : {S.Sequence{RT2.xi_pl_ProgressiveVarTestStruct(_, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 0n)} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(RT2.MB<RT2.M_ProgressiveVarTestStruct>, RT2.xat_pl_ProgressiveVarTestStruct(FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 0n), u0, x0) :
+    {S.Sequence{S.Items{RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(_)), RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
+  %Equal.sym(S.Value, RT2.v_ProgressiveVarTestStruct_bx(RT2.th_ProgressiveVarTestStruct_bx(u0)), TC.VE(t, x, f, TC.B1(t, x, len)), elv_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TC.B1(t, x, len), hc1)) :
+    {S.Sequence{S.Items{_, RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n)}} == TC.VZE(False{}, t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TC.VE(t, x, f, TC.B1(t, x, len)), z}}, RT2.xi_pl_ProgressiveVarTestStruct(k0, FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, FK), 1n), TC.VI(k0, 0, N, t, x, len),
+    xiW_pl_ProgressiveVarTestStructD(k0, 0, 1n, N, d, t, x, off, len, eo, hd, hw, hwN, pf, dd, k0, T0, u0, pf0, hm, inv, {==}, inv, hE0))
 
-def vtc_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtc_pl_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +hc: {TC.CZ(b, t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.RZ(b, d, t, x, off, len)) == TC.VZE(b, t, x, len) : S.Value}:
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.RZ(b, d, t, x, off, len)) == TC.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtf_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, hc)
+    case False{}: vtf_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, hc)
 
-def vw_pl_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_pl_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {TC.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.xv_pl_Gp66304057C3(TC.OBJw(d, t, x, off, len)) == TC.VALw(t, x, len) : S.Value}:
-  vtc_pl_Gp66304057C3D(d, t, x, off, len, eo, hd, hw, hwN, pf, U32.is_eq(len, 0), hc)
+    -> {RT2.xv_pl_ProgressiveVarTestStruct(TC.OBJw(d, t, x, off, len)) == TC.VALw(t, x, len) : S.Value}:
+  vtc_pl_ProgressiveVarTestStructD(d, t, x, off, len, eo, hd, hw, hwN, pf, U32.is_eq(len, 0), hc)

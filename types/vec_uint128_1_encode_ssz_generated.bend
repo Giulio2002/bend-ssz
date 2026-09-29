@@ -52,15 +52,15 @@ def v1_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 
 
 def v1_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u128_pk(out, pos, v1_u128_valid(o))
 
-def Gt3FD98F54A5_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_uint128_1_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(16, out))
 
-def Gt3FD98F54A5_encode(o: O.Words) -> O.Words & B.Buf: Gt3FD98F54A5_enc_out(v1_u128_put(O.out_at(2n), 0, o))
+def vec_uint128_1_encode(o: O.Words) -> O.Words & B.Buf: vec_uint128_1_enc_out(v1_u128_put(O.out_at(2n), 0, o))
 
-def Gt3FD98F54A5_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_uint128_1_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 16, out))
 
-def Gt3FD98F54A5_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3FD98F54A5_senc_out(v1_u128_putk(O.out_at(2n), 0, o))
+def vec_uint128_1_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint128_1_senc_out(v1_u128_putk(O.out_at(2n), 0, o))

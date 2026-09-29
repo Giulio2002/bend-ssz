@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Encoder windows of variable-size CONTAINERS at any byte position X = 4 q + r.
 
-    python3 codegen/var_cont_enc.py [--check] [--no-big]
+    python3 codegen/var_cont_enc.py [--check]
 
-For each container C of CONTS, proofs/obj/big_encx_<C>.bend (generated):
+For each container C of CONTS, proofs/obj/encx_<C>.bend (generated):
 
   the object OBJ, built from its fields' objects (Data leaves) and its children's mirrors
-  (the encoder windows' own: big_encx_bl32's MW, the transactions list's (t, N), a record
+  (the encoder windows' own: encx_bl32's MW, the transactions list's (t, N), a record
   list's (A, N), a fixed byte vector's tree);
   M<k>                    the output tree after the k-th write of the runtime's put chain
                           (codegen/generate.py's emit_fieldset / emit_wide order: per group,
@@ -46,7 +46,7 @@ GROUP = G.GROUP
 
 
 def out_file(C):
-    return ROOT / f'proofs/obj/big_encx_{C}.bend'
+    return ROOT / f'proofs/obj/encx_{C}.bend'
 
 
 # ---- leaves -----------------------------------------------------------------------------------------
@@ -150,10 +150,10 @@ class FixW:
             self.alias = a
             self.room_extra = 4
         elif fs.p in rvec_names():
-            # a vector of records (var_rec_enc.RVECS): big_encx_<p>'s FixW-form laws fwrt / fwby / lenv / pfx / validx
+            # a vector of records (var_rec_enc.RVECS): encx_<p>'s FixW-form laws fwrt / fwby / lenv / pfx / validx
             a = f'RV_{fs.p}'
             m = f'm_{f}'
-            self.mod = f'import ./big_encx_{fs.p}.bend as {a}'
+            self.mod = f'import ./encx_{fs.p}.bend as {a}'
             self.params = [f'+{m}: {a}.MW']
             self.oargs = [m]
             self.hyps = [f'+hok_{f}: {{{a}.OK({m}) == {TRUE}}}']
@@ -712,7 +712,7 @@ class Child:
         self.f, self.fs, self.p = f, fs, fs.p
         if fs.kind == 'bytelist' and fs.p == 'bl32':
             m = f'm_{f}'
-            self.mod = 'import ./big_encx_bl32.bend as EB'
+            self.mod = 'import ./encx_bl32.bend as EB'
             self.params = [f'+{m}: EB.MW']
             self.hyps = [f'+hok_{f}: {{EB.OK({m}) == {TRUE}}}']
             self.oargs = [m]
@@ -727,7 +727,7 @@ class Child:
             self.hY = '{==}'
         elif fs.kind == 'seq' and fs.p == 'l1048576_bl1073741824':
             t, N = f't_{f}', f'N_{f}'
-            self.mod = 'import ./big_encx_l1048576_bl1073741824.bend as ET'
+            self.mod = 'import ./encx_l1048576_bl1073741824.bend as ET'
             self.params = [f'+{t}: FD.array__Tree<ET.MB<ET.WMr>>', f'+{N}: U32']
             self.hyps = [f'+h_{f}: {{ET.OKL({t}, {N}) == {TRUE}}}']
             self.oargs = [t, N]
@@ -787,11 +787,11 @@ class Child:
             self.alias = a
             self.std = True
         elif fs.kind in ('container', 'box') and not fs.fixed and _has_iface(fs.p[:-3] if fs.kind == 'box' else fs.rep):
-            # a variable-size container child (or one in a box) through its interface module big_encx_<C>_iface (codegen/var_cont_enc.py)
+            # a variable-size container child (or one in a box) through its interface module encx_<C>_iface (codegen/var_cont_enc.py)
             X = fs.p[:-3] if fs.kind == 'box' else fs.rep
             a = f'EC_{X}'
             m = f'm_{f}'
-            self.mod = f'import ./big_encx_{X}_iface.bend as {a}'
+            self.mod = f'import ./encx_{X}_iface.bend as {a}'
             self.params = [f'+{m}: {a}.MW']
             self.hyps = [f'+hok_{f}: {{{a}.OK({m}) == {TRUE}}}']
             self.oargs = [m]
@@ -807,13 +807,13 @@ class Child:
             self.alias = a
             self.std = True
             self.box = X if fs.kind == 'box' else None
-            # a wide container's interface states no sizex / validx: its size module big_encx_<X>_size does (sizez, validx)
-            fi = ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend'
+            # a wide container's interface states no sizex / validx: its size module encx_<X>_size does (sizez, validx)
+            fi = ROOT / 'proofs/obj' / f'encx_{X}_iface.bend'
             self.szalias = None
             ft_ = obj_text(fi)
             if ft_ is not None and '\nlaw sizex:' not in ft_:
                 self.szalias = f'ES_{X}'
-                self.mod += f'\nimport ./big_encx_{X}_size.bend as ES_{X}'
+                self.mod += f'\nimport ./encx_{X}_size.bend as ES_{X}'
         else:
             raise FileNotFoundError(2, 'no child window', f'child {fs.kind}/{fs.p}')
 
@@ -884,7 +884,7 @@ def STD_CHILDREN():
             if p == 'bl32':
                 continue
             # this run's interface module first (GEN), else the disk's
-            fi = EC.OBJ / f'big_encx_{p}_iface.bend'
+            fi = EC.OBJ / f'encx_{p}_iface.bend'
             if fi in GEN:
                 _STD[p] = EC.read_child(p, GEN[fi], fi.name)
             elif p in EC.CHILDREN:
@@ -1778,7 +1778,7 @@ def putx({OPS}, {HPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
 
 
 # ==== the container in the encoder-window interface, with its spec side (a separate module) ============
-# proofs/obj/big_encx_<C>_iface.bend imports the container's writer module (as K) and states the
+# proofs/obj/encx_<C>_iface.bend imports the container's writer module (as K) and states the
 # container in codegen/var_plist_sub.py's ENCX interface: the mirror MW of the writer's parameters, OK
 # (the writer's hypotheses as Bools, and the bytes within 2^30), TH, ENC, VAL, SZ, PUTX (at
 # XQ(q, r) = U32.from_nat(4 q + r)), PADB, and the laws putx, putx_bytes, szx, encx_spec, domx, and
@@ -2577,7 +2577,7 @@ IHEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/prim
 
 
 def iface_file(C):
-    return ROOT / f'proofs/obj/big_encx_{C}_iface.bend'
+    return ROOT / f'proofs/obj/encx_{C}_iface.bend'
 
 
 def iface_full(C, generic=False):
@@ -2630,22 +2630,22 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 
 # The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
-GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'Gc60805EC295']
+GCONTS = ['ProgressiveSingleListContainerTestStruct', 'VarTestStruct', 'ProgressiveVarTestStruct', 'ProgressiveComplexTestStruct', 'ProgressiveTestStruct', 'BitsStruct', 'ComplexTestStruct', 'ProgressiveBitsStruct']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
 def _has_iface(X):
     # a container child has an encoder window when its iface is generated here (ICONTS) or already on disk
-    return X in dict(ICONTS) or (ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend').exists()
+    return X in dict(ICONTS) or (ROOT / 'proofs/obj' / f'encx_{X}_iface.bend').exists()
 
 
-ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
-          ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
-          ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True),
-          ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('Gc56D855869F', True),
-          ('LightClientFinalityUpdate', False), ('LightClientUpdate', False), ('Gc60805EC295', True), ('BeaconState', False)]
+ICONTS = [('ProgressiveSingleListContainerTestStruct', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('VarTestStruct', True), ('ProgressiveVarTestStruct', True),
+          ('ProgressiveComplexTestStruct', True), ('ProgressiveTestStruct', True), ('ExecutionRequests', False), ('Attestation', False),
+          ('IndexedAttestation', False), ('AttesterSlashing', False), ('BitsStruct', True),
+          ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('ComplexTestStruct', True),
+          ('LightClientFinalityUpdate', False), ('LightClientUpdate', False), ('ProgressiveBitsStruct', True), ('BeaconState', False)]
 
 
 def gfile_c(C):
-    return ROOT / f'proofs/obj/big_encx_{C}.bend'
+    return ROOT / f'proofs/obj/encx_{C}.bend'
 
 
 RECF = {}           # container -> (OP, OA), for recordize
@@ -4180,10 +4180,10 @@ def pfC({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +pf: {{FD.array__
 # ==== unions in the encoder-window interface (UCONTS) ===========================================
 # A generic union U: the runtime writes the selector byte s with O.w8 at X, then the arm's put at X + 1
 # (proofs/obj/vunion.bend: sel_rt / sel_by / arm_e / aroom / arm_hz / ubytes / tag_v / tag_f). Its arms:
-# a container through its interface big_encx_<A>_iface (EA_<A>), or a Data record of one uint8 (vrecb's
-# W8P at the byte after the selector). big_encx_<U>_iface.bend states the interface's laws on its mirror MW.
+# a container through its interface encx_<A>_iface (EA_<A>), or a Data record of one uint8 (vrecb's
+# W8P at the byte after the selector). encx_<U>_iface.bend states the interface's laws on its mirror MW.
 
-UCONTS = ['GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530']
+UCONTS = ['CompatibleUnionA', 'CompatibleUnionBC', 'CompatibleUnionABCA']
 
 UHEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primitives.bend as I', 'import ../../types/generic_obj.bend as T',
          'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P', 'import ../../spec/codec.bend as Codec',
@@ -4195,7 +4195,7 @@ UHEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/prim
 
 
 def ufile(U):
-    return ROOT / f'proofs/obj/big_encx_{U}_iface.bend'
+    return ROOT / f'proofs/obj/encx_{U}_iface.bend'
 
 
 def union_arms(U):
@@ -4229,8 +4229,8 @@ def union_text(U):
     w = L.append
     mods = []
     for a in arms:
-        if a['kind'] == 'if' and f'import ./big_encx_{a["A"]}_iface.bend as EA_{a["A"]}' not in mods:
-            mods.append(f'import ./big_encx_{a["A"]}_iface.bend as EA_{a["A"]}')
+        if a['kind'] == 'if' and f'import ./encx_{a["A"]}_iface.bend as EA_{a["A"]}' not in mods:
+            mods.append(f'import ./encx_{a["A"]}_iface.bend as EA_{a["A"]}')
     w('')
     w('# GENERATED by codegen/var_cont_enc.py. Do not edit.')
     w(f'# {U} in the encoder-window interface: its selector byte, then its arm at X + 1 (see the generator: union_text).')
@@ -4243,7 +4243,7 @@ def union_text(U):
         w('''
 # ---- the one-byte record arm: its value and parts (one fixed byte) ----
 def RV8(+x: U32) -> S.Value: S.Sequence{S.Items{VRB.UV8(x), S.EmptyItems{}}}
-def rprf(+x: U32) -> {Codec.parts(RV8(x), Spec.GpF350A3C486()) == Some{[S.Fixed{[U32.and(x, 255)]}]} : Maybe<&2, +List<S.Part>>}:
+def rprf(+x: U32) -> {Codec.parts(RV8(x), Spec.ProgressiveSingleFieldContainerTestStruct()) == Some{[S.Fixed{[U32.and(x, 255)]}]} : Maybe<&2, +List<S.Part>>}:
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{VRB.UV8(x), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}), Some{[S.Fixed{[U32.and(x, 255)]}]},
     FX.cat_fixed(Codec.parts(VRB.UV8(x), S.Unsigned{P.U8{}}), [U32.and(x, 255)], Codec.parts(S.EmptyItems{}, S.End{}), [], VRB.prt8(x), {==})) :
     {Codec.aggregate(_, Some{1n}) == Some{[S.Fixed{[U32.and(x, 255)]}]} : Maybe<&2, +List<S.Part>>}
@@ -4600,7 +4600,7 @@ def cont_strict(q, t, res):
 
 _OKT_MODS = set()
 _COMP = {}
-OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}   # (their OKW twins live in the companions only)
+OKW_SKIP = {'encx_BeaconState_iface', 'encx_BeaconState'}   # (their OKW twins live in the companions only)
 PROBE_POST = cont_strict
 
 
@@ -4627,7 +4627,7 @@ def build_all():
 
 def main():
     out = {}
-    if '--no-big' not in sys.argv:
+    if True:
         out = build_all()
         # to the fixed point, in this run: a module's text may read its children's (GEN)
         global _STD
@@ -4655,7 +4655,7 @@ def main():
             if c:
                 comp[q.with_name(q.stem + '_o.bend')] = c
     names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
-    names.update({f'big_encx_{C}_size': {x + 'O' for x in okw.SLAWS} for C in ('ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'Gc60805EC295')})
+    names.update({f'encx_{C}_size': {x + 'O' for x in okw.SLAWS} for C in ('ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'ProgressiveBitsStruct')})
     out.update({q: okw.okw_relink(c, names) for q, c in comp.items()})
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]

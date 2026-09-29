@@ -35,7 +35,7 @@ import ./encx_recs.bend as ERC
 import ./dk.bend as DK
 import ./vcont.bend as VCN
 import ./vcopy.bend as VC
-import ./big_vu40.bend as V40
+import ./vu40.bend as V40
 import ./encx_Validator.bend as EV
 import ./spec_rec_Validator.bend as SRV
 import ./vmv.bend as VMV

@@ -2,7 +2,7 @@
 """The codec laws of containers of word-aligned fixed fields around ONE bit
 list (Attestation, PendingAttestation).
 
-    python3 codegen/var_bitc.py [--check] [--no-big]
+    python3 codegen/var_bitc.py [--check]
 
 For each name X it writes proofs/obj/<big_>var_bitc_X{,_unique}.bend:
 
@@ -77,7 +77,7 @@ def is_big(x):
 
 
 def fname(x, part=''):
-    return ROOT / f'proofs/obj/{"big_" if is_big(x) else ""}var_bitc_{x.n}{part}.bend'
+    return ROOT / f'proofs/obj/{"" if is_big(x) else ""}var_bitc_{x.n}{part}.bend'
 
 
 HEAD = list(VL.DEC_HEAD) + ['import ./spec_bits.bend as FB', 'import ./vfits.bend as VFT', 'import ./vlist.bend as VLS', 'import ./vbitl.bend as VBL',
@@ -837,17 +837,14 @@ def main():
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    no_big = '--no-big' in sys.argv
     out = {}
     for n in NAMES:
         x = BName(g, n, names[n])
-        if no_big and is_big(x):
-            continue
         out[fname(x)] = dec_text(g, x) + spec_text(g, x)
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_text(g, x)
-    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_bitc_*.bend') if q.name.startswith(('var_bitc_', 'big_var_bitc_')) and not q.name.startswith(('var_bitc_enc_', 'big_var_bitc_enc_')) and not _foreign(q, 'codegen/var_bitc.py')]
-    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_')))
+    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_bitc_*.bend') if q.name.startswith(('var_bitc_', 'var_bitc_')) and not q.name.startswith(('var_bitc_enc_', 'var_bitc_enc_')) and not _foreign(q, 'codegen/var_bitc.py')]
+    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

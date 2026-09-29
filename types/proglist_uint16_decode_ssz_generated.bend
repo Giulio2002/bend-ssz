@@ -11,17 +11,17 @@ def pl_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(
 
 def pl_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}))
 
-def GtF23A2FB97E_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint16_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtF23A2FB97E_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtF23A2FB97E_some(pl_u16_read(buf, 0, size))
+    case True{}: proglist_uint16_some(pl_u16_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtF23A2FB97E_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtF23A2FB97E_built(size, pl_u16_ok(buf, 0, size))
+def proglist_uint16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  proglist_uint16_built(size, pl_u16_ok(buf, 0, size))
 
-def GtF23A2FB97E_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u16_read(buf, 0, size)
+def proglist_uint16_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u16_read(buf, 0, size)

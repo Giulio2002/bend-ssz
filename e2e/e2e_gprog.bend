@@ -14,16 +14,16 @@ import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/root_gtypes2_light.bend as RT2
 import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vfx_u8.bend as FX8
-import ../proofs/obj/big_var_winp_pbits.bend as PBW
+import ../proofs/obj/var_winp_pbits.bend as PBW
 import ../proofs/obj/var_winx_l123_u16.bend as L123
-import ../proofs/obj/big_var_winx_Gp4B0CA2906A.bend as W4B
-import ../proofs/obj/big_var_winp_pbits.bend as W4B_CH0
-import ../proofs/obj/big_var_winx_Gp66304057C3.bend as W663
+import ../proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend as W4B
+import ../proofs/obj/var_winp_pbits.bend as W4B_CH0
+import ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend as W663
 import ./e2e_blist.bend as BL
 import ./e2e_plist.bend as PL
 import ./e2e_gpb.bend as GPB
-import ../proofs/obj/big_var_winp_u8.bend as PU8
-import ../proofs/obj/big_var_winp_pl_u64.bend as PU64
+import ../proofs/obj/var_winp_u8.bend as PU8
+import ../proofs/obj/var_winp_pl_u64.bend as PU64
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/vspec.bend as VS
 import ../proofs/obj/vdepth.bend as VD
@@ -135,36 +135,36 @@ def pu64D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: 
   {==}
 
 # ProgressiveSingleListContainerTestStruct: one progressive bit list
-def vw_Gp4B0CA2906A(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_ProgressiveSingleListContainerTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W4B.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp4B0CA2906A(W4B.OBJw(d, t, x, off, len)) == W4B.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_ProgressiveSingleListContainerTestStruct(W4B.OBJw(d, t, x, off, len)) == W4B.VALw(t, x, len) : S.Value}:
   +e0 = Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{z}, BO.bview(W4B_CH0.OBJw(d, t, W4B.XJ0(t, x), W4B.FJ0(off, t, x), W4B.LJ0(t, x, len))), VBL.bl(UW.WX(t, W4B.XJ0(t, x), U32.to_nat(W4B.LJ0(t, x, len)))), GPB.pbv(d, t, W4B.XJ0(t, x), W4B.FJ0(off, t, x), W4B.LJ0(t, x, len), W4B.eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, h), hd, W4B.hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, h), pf, W4B.itD0(t, x, off, len, h)))
-  %e0 : {RT2.v_Gp4B0CA2906A(W4B.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{_, S.EmptyItems{}}} : S.Value}
+  %e0 : {RT2.v_ProgressiveSingleListContainerTestStruct(W4B.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{_, S.EmptyItems{}}} : S.Value}
   {==}
 
-def vw_Gp4B0CA2906AD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_ProgressiveSingleListContainerTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W4B.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp4B0CA2906A(W4B.OBJw(d, t, x, off, len)) == W4B.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_ProgressiveSingleListContainerTestStruct(W4B.OBJw(d, t, x, off, len)) == W4B.VALw(t, x, len) : S.Value}:
   +e0 = Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{z}, BO.bview(W4B_CH0.OBJw(d, t, W4B.XJ0(t, x), W4B.FJ0(off, t, x), W4B.LJ0(t, x, len))), VBL.bl(UW.WX(t, W4B.XJ0(t, x), U32.to_nat(W4B.LJ0(t, x, len)))), GPB.pbvD(d, t, W4B.XJ0(t, x), W4B.FJ0(off, t, x), W4B.LJ0(t, x, len), W4B.eoJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, W4B.hwJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), W4B.hwJ0N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, W4B.itD0(t, x, off, len, h)))
-  %e0 : {RT2.v_Gp4B0CA2906A(W4B.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{_, S.EmptyItems{}}} : S.Value}
+  %e0 : {RT2.v_ProgressiveSingleListContainerTestStruct(W4B.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{_, S.EmptyItems{}}} : S.Value}
   {==}
 
 # ProgressiveVarTestStruct: a uint8, a List[uint16, 123], a progressive bit list
-def vw_Gp66304057C3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def vw_ProgressiveVarTestStruct(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W663.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == W663.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == W663.VALw(t, x, len) : S.Value}:
   +e1 = lv_l123(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x), W663.eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, h), hd, W663.hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, h), pf, W663.itD0(t, x, off, len, h))
   +e2 = Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{z}, BO.bview(PBW.OBJw(d, t, W663.XJ1(t, x), W663.FJ1(off, t, x), W663.LJ1(t, x, len))), VBL.bl(UW.WX(t, W663.XJ1(t, x), U32.to_nat(W663.LJ1(t, x, len)))), GPB.pbv(d, t, W663.XJ1(t, x), W663.FJ1(off, t, x), W663.LJ1(t, x, len), W663.eoJ1(d, t, n, x, off, len, eo, hd, hw, pf, h), hd, W663.hwJ1(d, t, n, x, off, len, eo, hd, hw, pf, h), pf, W663.itD1(t, x, off, len, h)))
-  %e1 : {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{_, S.Items{PBW.VALw(t, W663.XJ1(t, x), W663.LJ1(t, x, len)), S.EmptyItems{}}}}} : S.Value}
-  %e2 : {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{PBF.vview2(L123.OBJw(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x))), S.Items{_, S.EmptyItems{}}}}} : S.Value}
+  %e1 : {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{_, S.Items{PBW.VALw(t, W663.XJ1(t, x), W663.LJ1(t, x, len)), S.EmptyItems{}}}}} : S.Value}
+  %e2 : {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{PBF.vview2(L123.OBJw(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x))), S.Items{_, S.EmptyItems{}}}}} : S.Value}
   {==}
 
 
-def vw_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vw_ProgressiveVarTestStructD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W663.CHKw(t, x, off, len) == True{} : Bool})
-    -> {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == W663.VALw(t, x, len) : S.Value}:
+    -> {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == W663.VALw(t, x, len) : S.Value}:
   +e1 = lv_l123D(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x), W663.eoJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), W663.hwJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, W663.itD0(t, x, off, len, h))
   +e2 = Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{z}, BO.bview(PBW.OBJw(d, t, W663.XJ1(t, x), W663.FJ1(off, t, x), W663.LJ1(t, x, len))), VBL.bl(UW.WX(t, W663.XJ1(t, x), U32.to_nat(W663.LJ1(t, x, len)))), GPB.pbvD(d, t, W663.XJ1(t, x), W663.FJ1(off, t, x), W663.LJ1(t, x, len), W663.eoJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, W663.hwJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), W663.hwJ1N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, W663.itD1(t, x, off, len, h)))
-  %e1 : {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{_, S.Items{PBW.VALw(t, W663.XJ1(t, x), W663.LJ1(t, x, len)), S.EmptyItems{}}}}} : S.Value}
-  %e2 : {RT2.v_Gp66304057C3(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{PBF.vview2(L123.OBJw(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x))), S.Items{_, S.EmptyItems{}}}}} : S.Value}
+  %e1 : {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{_, S.Items{PBW.VALw(t, W663.XJ1(t, x), W663.LJ1(t, x, len)), S.EmptyItems{}}}}} : S.Value}
+  %e2 : {RT2.v_ProgressiveVarTestStruct(W663.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))), S.Items{PBF.vview2(L123.OBJw(d, t, W663.XJ0(t, x), W663.FJ0(off, t, x), W663.LJ0(t, x))), S.Items{_, S.EmptyItems{}}}}} : S.Value}
   {==}

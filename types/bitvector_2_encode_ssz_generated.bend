@@ -35,11 +35,11 @@ def bv2_valid(o: bitvector_2_d.Bitvector2) -> Bool:
   match o:
     case bitvector_2_d.Bitvector2{+w0}: U32.is_lt(w0, 4)
 
-def Gt9368483BAB_encode(+o: bitvector_2_d.Bitvector2) -> B.Buf: O.out_done(1, bv2_put(O.out_at(0n), 0, o))
+def bitvector_2_encode(+o: bitvector_2_d.Bitvector2) -> B.Buf: O.out_done(1, bv2_put(O.out_at(0n), 0, o))
 
-def Gt9368483BAB_ser_pick(ok: Bool, +o: bitvector_2_d.Bitvector2) -> O.Encoded:
+def bitvector_2_ser_pick(ok: Bool, +o: bitvector_2_d.Bitvector2) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt9368483BAB_encode(o))
+    case True{}: O.encoded(bitvector_2_encode(o))
     case False{}: O.refused()
 
-def Gt9368483BAB_serialize(+o: bitvector_2_d.Bitvector2) -> O.Encoded: Gt9368483BAB_ser_pick(bv2_valid(o), o)
+def bitvector_2_serialize(+o: bitvector_2_d.Bitvector2) -> O.Encoded: bitvector_2_ser_pick(bv2_valid(o), o)

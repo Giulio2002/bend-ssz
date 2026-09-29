@@ -23,17 +23,17 @@ def bv8_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv8_ok_len(U32.is_eq(len, 1), buf, off)
 
-def Gt0366A291C1_some(pair: B.Buf & bitvector_8_d.Bitvector8) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
+def bitvector_8_some(pair: B.Buf & bitvector_8_d.Bitvector8) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt0366A291C1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
+def bitvector_8_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt0366A291C1_some(bv8_read(buf, 0, size))
+    case True{}: bitvector_8_some(bv8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt0366A291C1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
-  Gt0366A291C1_built(size, bv8_ok(buf, 0, size))
+def bitvector_8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
+  bitvector_8_built(size, bv8_ok(buf, 0, size))
 
-def Gt0366A291C1_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_8_d.Bitvector8: bv8_read(buf, 0, size)
+def bitvector_8_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_8_d.Bitvector8: bv8_read(buf, 0, size)

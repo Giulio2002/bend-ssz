@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def pl_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 2n, O.words_root_prog(hl, h, o, seg))
 
-def Gt3A9420DD8E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u32_root(64n, h, o, 0)
+def proglist_uint32_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u32_root(64n, h, o, 0)

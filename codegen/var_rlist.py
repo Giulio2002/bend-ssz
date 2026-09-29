@@ -2,7 +2,7 @@
 """Byte-offset window modules (the interface of proofs/obj/vua_win.bend) of LISTS OF
 FIXED-SIZE RECORDS, e.g. ExecutionRequests' deposits.
 
-    python3 codegen/var_rlist.py [--check] [--no-big]
+    python3 codegen/var_rlist.py [--check]
 
 Writes proofs/obj/vrl.bend (from codegen/vrl.bend.in: Array.set on a perfect tree of
 any element type, positions of consecutive records) and, for each list type below,
@@ -219,7 +219,7 @@ def deep_er_top(text):
 
 
 def winx_name(p, LIM):
-    return f'{"big_" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
+    return f'{"" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
 
 # lists of boxed records (codegen/var_rlist_box.py)
 BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
@@ -690,15 +690,15 @@ def outputs():
         LSE.append(dict(p=I['p'], R=I['R'], RS=I['RS'], W=I['W'], LIM=I['LIM'], sch=nd.sch))
     BL, BP = EN.big_text(HEAD + ['import ./vlist.bend as VL', 'import ./venc2.bend as V2', 'import ../../spec/decoding_relation.bend as Decoding'], LSE)
     BL += EN.spec_big_text(BP, LSE)
-    out[ROOT / 'proofs/obj/big_var_codec_ExecutionRequests_enc.bend'] = '\n'.join(ER.inline(b) for b in BL) + '\n'
+    out[ROOT / 'proofs/obj/var_codec_ExecutionRequests_enc.bend'] = '\n'.join(ER.inline(b) for b in BL) + '\n'
     return out
 
 
 def main():
     VLW.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
     out = outputs()
-    if '--no-big' in sys.argv:
-        out = {p: t for p, t in out.items() if not p.name.startswith('big_')}
+    if False:
+        out = {p: t for p, t in out.items() if not p.name.startswith('')}
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)

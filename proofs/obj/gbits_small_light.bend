@@ -19,87 +19,87 @@ import ./bitlist_pack.bend as BLP
 # The definitions of gbits_small.bend that state no root law (its light companion, codegen/light_split.py): importers that only
 # state against them skip the root laws' imports.
 
-def GtEDF530C7B9_last(o: bitvector_15_d.Bitvector15) -> U32:
+def bitvector_15_last(o: bitvector_15_d.Bitvector15) -> U32:
   match o:
     case bitvector_15_d.Bitvector15{+w0}: w0
-def GtEDF530C7B9_bits(o: bitvector_15_d.Bitvector15) -> +List<Bool>:
+def bitvector_15_bits(o: bitvector_15_d.Bitvector15) -> +List<Bool>:
   match o:
     case bitvector_15_d.Bitvector15{+w0}: BLP.btk(15n, BLP.bitsof([w0]))
-def GtED805B7C93_last(o: bitvector_16_d.Bitvector16) -> U32:
+def bitvector_16_last(o: bitvector_16_d.Bitvector16) -> U32:
   match o:
     case bitvector_16_d.Bitvector16{+w0}: w0
-def GtED805B7C93_bits(o: bitvector_16_d.Bitvector16) -> +List<Bool>:
+def bitvector_16_bits(o: bitvector_16_d.Bitvector16) -> +List<Bool>:
   match o:
     case bitvector_16_d.Bitvector16{+w0}: BLP.btk(16n, BLP.bitsof([w0]))
-def GtFF7C03E8A0_last(o: bitvector_17_d.Bitvector17) -> U32:
+def bitvector_17_last(o: bitvector_17_d.Bitvector17) -> U32:
   match o:
     case bitvector_17_d.Bitvector17{+w0}: w0
-def GtFF7C03E8A0_bits(o: bitvector_17_d.Bitvector17) -> +List<Bool>:
+def bitvector_17_bits(o: bitvector_17_d.Bitvector17) -> +List<Bool>:
   match o:
     case bitvector_17_d.Bitvector17{+w0}: BLP.btk(17n, BLP.bitsof([w0]))
-def GtFCF8066C33_last(o: bitvector_1_d.Bitvector1) -> U32:
+def bitvector_1_last(o: bitvector_1_d.Bitvector1) -> U32:
   match o:
     case bitvector_1_d.Bitvector1{+w0}: w0
-def GtFCF8066C33_bits(o: bitvector_1_d.Bitvector1) -> +List<Bool>:
+def bitvector_1_bits(o: bitvector_1_d.Bitvector1) -> +List<Bool>:
   match o:
     case bitvector_1_d.Bitvector1{+w0}: BLP.btk(1n, BLP.bitsof([w0]))
-def Gt9368483BAB_last(o: bitvector_2_d.Bitvector2) -> U32:
+def bitvector_2_last(o: bitvector_2_d.Bitvector2) -> U32:
   match o:
     case bitvector_2_d.Bitvector2{+w0}: w0
-def Gt9368483BAB_bits(o: bitvector_2_d.Bitvector2) -> +List<Bool>:
+def bitvector_2_bits(o: bitvector_2_d.Bitvector2) -> +List<Bool>:
   match o:
     case bitvector_2_d.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
-def GtEDFB713194_last(o: bitvector_31_d.Bitvector31) -> U32:
+def bitvector_31_last(o: bitvector_31_d.Bitvector31) -> U32:
   match o:
     case bitvector_31_d.Bitvector31{+w0}: w0
-def GtEDFB713194_bits(o: bitvector_31_d.Bitvector31) -> +List<Bool>:
+def bitvector_31_bits(o: bitvector_31_d.Bitvector31) -> +List<Bool>:
   match o:
     case bitvector_31_d.Bitvector31{+w0}: BLP.btk(31n, BLP.bitsof([w0]))
-def Gt6F0D97A69E_last(o: bitvector_33_d.Bitvector33) -> U32:
+def bitvector_33_last(o: bitvector_33_d.Bitvector33) -> U32:
   match o:
     case bitvector_33_d.Bitvector33{+w0, +w1}: w1
-def Gt6F0D97A69E_bits(o: bitvector_33_d.Bitvector33) -> +List<Bool>:
+def bitvector_33_bits(o: bitvector_33_d.Bitvector33) -> +List<Bool>:
   match o:
     case bitvector_33_d.Bitvector33{+w0, +w1}: BLP.btk(33n, BLP.bitsof([w0, w1]))
-def Gt9579E0A2FD_last(o: bitvector_3_d.Bitvector3) -> U32:
+def bitvector_3_last(o: bitvector_3_d.Bitvector3) -> U32:
   match o:
     case bitvector_3_d.Bitvector3{+w0}: w0
-def Gt9579E0A2FD_bits(o: bitvector_3_d.Bitvector3) -> +List<Bool>:
+def bitvector_3_bits(o: bitvector_3_d.Bitvector3) -> +List<Bool>:
   match o:
     case bitvector_3_d.Bitvector3{+w0}: BLP.btk(3n, BLP.bitsof([w0]))
-def GtB1E9093D65_last(o: Fulu_bitvector_4_d.Bitvector4) -> U32:
+def bitvector_4_last(o: Fulu_bitvector_4_d.Bitvector4) -> U32:
   match o:
     case Fulu_bitvector_4_d.Bitvector4{+w0}: w0
-def GtB1E9093D65_bits(o: Fulu_bitvector_4_d.Bitvector4) -> +List<Bool>:
+def bitvector_4_bits(o: Fulu_bitvector_4_d.Bitvector4) -> +List<Bool>:
   match o:
     case Fulu_bitvector_4_d.Bitvector4{+w0}: BLP.btk(4n, BLP.bitsof([w0]))
-def Gt27CDB122DD_last(o: bitvector_5_d.Bitvector5) -> U32:
+def bitvector_5_last(o: bitvector_5_d.Bitvector5) -> U32:
   match o:
     case bitvector_5_d.Bitvector5{+w0}: w0
-def Gt27CDB122DD_bits(o: bitvector_5_d.Bitvector5) -> +List<Bool>:
+def bitvector_5_bits(o: bitvector_5_d.Bitvector5) -> +List<Bool>:
   match o:
     case bitvector_5_d.Bitvector5{+w0}: BLP.btk(5n, BLP.bitsof([w0]))
-def GtAD3CF815B7_last(o: bitvector_6_d.Bitvector6) -> U32:
+def bitvector_6_last(o: bitvector_6_d.Bitvector6) -> U32:
   match o:
     case bitvector_6_d.Bitvector6{+w0}: w0
-def GtAD3CF815B7_bits(o: bitvector_6_d.Bitvector6) -> +List<Bool>:
+def bitvector_6_bits(o: bitvector_6_d.Bitvector6) -> +List<Bool>:
   match o:
     case bitvector_6_d.Bitvector6{+w0}: BLP.btk(6n, BLP.bitsof([w0]))
-def GtAA8D1478A7_last(o: bitvector_7_d.Bitvector7) -> U32:
+def bitvector_7_last(o: bitvector_7_d.Bitvector7) -> U32:
   match o:
     case bitvector_7_d.Bitvector7{+w0}: w0
-def GtAA8D1478A7_bits(o: bitvector_7_d.Bitvector7) -> +List<Bool>:
+def bitvector_7_bits(o: bitvector_7_d.Bitvector7) -> +List<Bool>:
   match o:
     case bitvector_7_d.Bitvector7{+w0}: BLP.btk(7n, BLP.bitsof([w0]))
-def Gt0366A291C1_last(o: bitvector_8_d.Bitvector8) -> U32:
+def bitvector_8_last(o: bitvector_8_d.Bitvector8) -> U32:
   match o:
     case bitvector_8_d.Bitvector8{+w0}: w0
-def Gt0366A291C1_bits(o: bitvector_8_d.Bitvector8) -> +List<Bool>:
+def bitvector_8_bits(o: bitvector_8_d.Bitvector8) -> +List<Bool>:
   match o:
     case bitvector_8_d.Bitvector8{+w0}: BLP.btk(8n, BLP.bitsof([w0]))
-def Gt1BD4B4358D_last(o: bitvector_9_d.Bitvector9) -> U32:
+def bitvector_9_last(o: bitvector_9_d.Bitvector9) -> U32:
   match o:
     case bitvector_9_d.Bitvector9{+w0}: w0
-def Gt1BD4B4358D_bits(o: bitvector_9_d.Bitvector9) -> +List<Bool>:
+def bitvector_9_bits(o: bitvector_9_d.Bitvector9) -> +List<Bool>:
   match o:
     case bitvector_9_d.Bitvector9{+w0}: BLP.btk(9n, BLP.bitsof([w0]))

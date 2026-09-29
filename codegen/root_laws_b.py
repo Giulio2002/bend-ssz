@@ -39,7 +39,7 @@ OUT = ROOT / 'proofs/obj/root_types.bend'
 # Names whose closed schema fact takes the checker long to evaluate (the
 # Transaction limit 2^30 bytes: `Lim.minimal(div(2^30 + 31, 32), 25)` is 2^30
 # unary steps of Nat.div): kept in their own module, so root_types stays quick.
-BIG_NAMES = ('Transaction', 'ExecutionPayload', 'BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock')
+LARGE_NAMES = ('Transaction', 'ExecutionPayload', 'BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock')
 
 HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/buffer.bend as B', 'import ../../src/digest.bend as D',
         'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T',
@@ -53,21 +53,21 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
 
-BIGHEAD = HEAD + ['import ./root_types.bend as RT', 'import ./big_lim_bl.bend as LBL']
-# BIG proofs (proofs/obj/big_root_<Name>.bend, proofs/obj/big_lim_sym.bend,
-# proofs/obj/big_lim_bl.bend): their closed schema facts hold a 2^30-byte limit,
+BIGHEAD = HEAD + ['import ./root_types.bend as RT', 'import ./lim_bl.bend as LBL']
+# BIG proofs (proofs/obj/root_<Name>.bend, proofs/obj/lim_sym.bend,
+# proofs/obj/lim_bl.bend): their closed schema facts hold a 2^30-byte limit,
 # proved symbolically and instantiated in the exact form of the goal. They
 # check only with a checker that compares syntactically identical terms
 # before normalizing them (bendlang/bend#1075); stock 2.0.28 evaluates the
-# limit in unary. `--no-big` generates no big_* file.
+# limit in unary.
 # Byte-list shapes whose closed fact is proved symbolically: shape -> (depth,
 # lemma `(+s, +es: {s == Spec.<Name>()}) -> {LO.ok_bl(s, OS.dv_<depth>(OS.DV0())) == True}`).
-SYMBOLIC_BL = {'bl1073741824': (25, 'LBL.tx_ok_at')}
+LIMIT_LEMMAS_BL = {'bl1073741824': (25, 'LBL.tx_ok_at')}
 # Field shapes of BeaconState whose closed schema fact (a limit of 2^24, 2^27 or
 # 2^40) is proved symbolically: shape -> lemma
 # `(+s, +es: {s == Spec.<Schema>()}) -> {<the field's ok conjunct at s, OS.DV0()> == True{}}`
-# (proofs/obj/big_lim_st.bend).
-SYMBOLIC = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.val_ok_at',
+# (proofs/obj/lim_st.bend).
+LIMIT_LEMMAS = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.val_ok_at',
             'l1099511627776_u64': 'LST.bal_ok_at', 'l1099511627776_u8': 'LST.part_ok_at',
             'l16777216_HistoricalSummary': 'LST.hs_ok_at', 'l134217728_PendingDeposit': 'LST.pd_ok_at',
             'l134217728_PendingPartialWithdrawal': 'LST.ppw_ok_at',
@@ -78,7 +78,7 @@ SYMBOLIC = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.va
             'bits131072': 'LLF.bits_ok_at', 'b131072': 'LLF.bv_ok_at'}
 # Names whose laws are generated after all others, into their own files: their
 # new shapes into proofs/obj/root_state.bend (importing root_types as RT, so
-# root_types does not grow), their name law into a big_root_<Name>.bend.
+# root_types does not grow), their name law into a root_<Name>.bend.
 SPLIT_NAMES = ('BeaconState',)
 STATE_OUT = ROOT / 'proofs/obj/root_state.bend'
 STATE_HEAD = ['import ./root_types.bend as RT', 'import ./blist_obj.bend as BLI', 'import ./packed_bytes.bend as PB',
@@ -1231,7 +1231,7 @@ class Gen:
         if big:
             # the depth as the variable record's entry (see OS.DV)
             w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {DD}))')
-            self.okinfo[p] = ('and', [self.vsub(fs, c) for c in ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})']], {}, {1: (p, 's')} if p in SYMBOLIC else {})
+            self.okinfo[p] = ('and', [self.vsub(fs, c) for c in ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})']], {}, {1: (p, 's')} if p in LIMIT_LEMMAS else {})
         else:
             w(f'def ok_{p}(+s: S.Schema) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {D_}n))')
         Wo = f'{Seq}{{F.array__thaw({RX}, t), N}}'
@@ -1454,8 +1454,8 @@ class Gen:
     def tcommon(self, p, BE, th, MX, BR, AMt, w):
         """The mirror-array, element, digest-list, view and tree laws shared by
         the lists of Type-kind elements (bounded `tl`, progressive `ptl`)."""
-        # the Base Array laws over the mirror image (codegen/amap_template.bend)
-        tpl = (ROOT / 'codegen/amap_template.bend').read_text()
+        # the Base Array laws over the mirror image (codegen/amap_template.bend.in)
+        tpl = (ROOT / 'codegen/amap_template.bend.in').read_text()
         tpl = tpl.replace('@P', p).replace('@TH', th)
         tpl = re.sub(r'\bA\b', MX, tpl)
         tpl = re.sub(r'\bB\b', BR, tpl)
@@ -2414,7 +2414,7 @@ class Gen:
                 ok_at[i] = len(conj)
                 if oks[i].startswith('ok_'):
                     subs[len(conj)] = (F[i][1].p, sx[i])
-                elif F[i][1].p in SYMBOLIC:
+                elif F[i][1].p in LIMIT_LEMMAS:
                     leafsym[len(conj)] = (F[i][1].p, sx[i])
                 conj.append(oks[i])
         if prog:
@@ -2732,7 +2732,7 @@ class Gen:
         if info is None:
             return False
         if info[0] == 'bl':
-            b = SYMBOLIC_BL.get(p.removesuffix('_bx'))
+            b = LIMIT_LEMMAS_BL.get(p.removesuffix('_bx'))
             return b is not None and b[0] == info[1]
         if info[0] == 'alias':
             return self.has_symbolic(info[1])
@@ -2780,7 +2780,7 @@ class Gen:
             return '{==}'
         info = self.okinfo[p]
         if info[0] == 'bl':
-            lemma = SYMBOLIC_BL[p.removesuffix('_bx')][1]
+            lemma = LIMIT_LEMMAS_BL[p.removesuffix('_bx')][1]
             return f'okI_{p}({S}, OS.DV0(), {lemma}({S}, {{==}}))'
         if info[0] == 'alias':
             return f'okI_{p}({S}, OS.DV0(), {self.okproof(info[1], S, Q)})'
@@ -2794,8 +2794,8 @@ class Gen:
             if j in subs and self.has_symbolic(subs[j][0]):
                 pf.append(self.okproof(subs[j][0], close(subs[j][1]), Q))
             elif j in leafsym:
-                # a closed limit fact proved symbolically (proofs/obj/big_lim_st.bend)
-                pf.append(f'{SYMBOLIC[leafsym[j][0]]}({close(leafsym[j][1])}, {{==}})')
+                # a closed limit fact proved symbolically (proofs/obj/lim_st.bend)
+                pf.append(f'{LIMIT_LEMMAS[leafsym[j][0]]}({close(leafsym[j][1])}, {{==}})')
             else:
                 pf.append('{==}')
         return f'okI_{p}({S}, OS.DV0(), ' + ', '.join(pf) + ')'
@@ -2866,7 +2866,7 @@ class Gen:
         w(f'# the runtime root is a specification root of its {what}.')
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{{OK}(s, {d}n) == True{{}} : Bool}}:')
         w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{{OK}(_, {d}n) == True{{}} : Bool}}')
-        w(f'  {SYMBOLIC[s.p]}(Spec.{name}(), {{==}})' if s.p in SYMBOLIC else '  {==}')
+        w(f'  {LIMIT_LEMMAS[s.p]}(Spec.{name}(), {{==}})' if s.p in LIMIT_LEMMAS else '  {==}')
         w(f'law {name}_root_correct:')
         w('  for -h: B.Buf')
         w(f'  for -o: {OT}')
@@ -2968,13 +2968,13 @@ class Gen:
         w = L.append
         w(f'# {name}: for every byte storage object representing a value of Spec.{name}(),')
         closed = '{==}'
-        if s.p in SYMBOLIC_BL:
-            sd, lemma = SYMBOLIC_BL[s.p]
+        if s.p in LIMIT_LEMMAS_BL:
+            sd, lemma = LIMIT_LEMMAS_BL[s.p]
             if (M, k, d) != ('LO', 'bl', sd):
                 raise Skip(f'{name}: symbolic limit table does not match (M={M}, k={k}, d={d})')
             closed = f'{lemma}(Spec.{name}(), {{==}})'
             w('# the runtime root is a specification root of its bytes. The closed limit fact')
-            w(f'# is proved symbolically ({lemma}, proofs/obj/big_lim_bl.bend).')
+            w(f'# is proved symbolically ({lemma}, proofs/obj/lim_bl.bend).')
         else:
             w('# the runtime root is a specification root of its bytes. The closed limit fact')
             w('# is evaluated once, at DV0() (a large closed number, so this takes long).')
@@ -3024,7 +3024,7 @@ class Gen:
                 continue
             if n in ('Blob', 'Transaction') or s.kind in ('bitlist', 'fixwords', 'bytelist'):
                 try:
-                    (big.setdefault(n, []) if n in BIG_NAMES else laws).extend(self.words_law(n, s))
+                    (big.setdefault(n, []) if n in LARGE_NAMES else laws).extend(self.words_law(n, s))
                     status[n] = 'proved (phase B, byte storage)'
                 except Skip as e:
                     status[n] = f'phase B: {e}'
@@ -3036,7 +3036,7 @@ class Gen:
                 if n in NAME_SKIP:
                     status[n] = f'phase B: {NAME_SKIP[n]}'
                     continue
-                if n in BIG_NAMES:
+                if n in LARGE_NAMES:
                     big.setdefault(n, []).extend(self.name_law(n, s, 'RT.'))
                 else:
                     laws.extend(self.name_law(n, s))
@@ -3067,17 +3067,17 @@ class Gen:
                                                              '# the shapes it shares with other names are root_types\'s (RT).', '', body]) + '\n'
             st = defnames(self.state_text)
             for n, ls in state_laws.items():
-                big[n] = ['import ./root_state.bend as ST', 'import ./blist_obj.bend as BLI', 'import ./big_lim_st.bend as LST', '',
+                big[n] = ['import ./root_state.bend as ST', 'import ./blist_obj.bend as BLI', 'import ./lim_st.bend as LST', '',
                           '# GENERATED by codegen/root_laws_b.py. Do not edit.',
-                          '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC in the generator).', '',
+                          '# BIG: checks only with bendlang/bend#1075 (see LIMIT_LEMMAS in the generator).', '',
                           qualify(qualify('\n'.join(ls), st, 'ST.'), rt, 'RT.')]
-        # One file per name (proofs/obj/big_root_<Name>.bend): each closed schema
+        # One file per name (proofs/obj/root_<Name>.bend): each closed schema
         # fact is evaluated in its own checker process, so the unary evaluations
         # of the 2^30-byte Transaction limit do not accumulate in one process.
-        bigtext = {ROOT / f'proofs/obj/big_root_{n}.bend':
+        bigtext = {ROOT / f'proofs/obj/root_{n}.bend':
                    ('\n'.join(BIGHEAD + ls) if n in state_laws else
                     '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
-                                         '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC_BL in the generator).', ''] + ls)) + '\n'
+                                         '# BIG: checks only with bendlang/bend#1075 (see LIMIT_LEMMAS_BL in the generator).', ''] + ls)) + '\n'
                    for n, ls in big.items()}
         return text, bigtext, status
 
@@ -3089,7 +3089,7 @@ def main():
         for n, st in status.items():
             print(f'{n}: {st}')
         return 0
-    if '--no-big' in sys.argv:
+    if False:
         bigtext = {}
     extra = [(STATE_OUT, gen.state_text)] if gen.state_text is not None else []
     import root_laws_generic as RLG  # the object views, mirrors and invariants: light companions (codegen/light_split.py)

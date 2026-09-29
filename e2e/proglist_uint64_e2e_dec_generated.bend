@@ -22,8 +22,8 @@ import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vlist.bend as VL
 import ./e2e_plw.bend as PW
-import ../proofs/obj/big_var_plist_GtE83F21B20A.bend as DC
-import ../proofs/obj/big_var_plist_GtE83F21B20A_rej.bend as DN
+import ../proofs/obj/var_plist_proglist_uint64.bend as DC
+import ../proofs/obj/var_plist_proglist_uint64_rej.bend as DN
 import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/vbuf.bend as VB
 
@@ -59,29 +59,29 @@ def pfe(+bs: +List<U32>, +n: U32) -> {FD.array__perfect(U32, B.capacity(n), TT(b
 
 # ---- the two sides on an accepted and a rejected buffer ----
 
-def d_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, O.Words>}:
-  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(_, n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, O.Words>}
-  Equal.cong(B.Buf & Maybe<&1, O.Words>, Maybe<&1, O.Words>, q => Pair.snd(B.Buf, Maybe<&1, O.Words>, q), proglist_uint64_r.GtE83F21B20A_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), Some{DC.OBJ(TT(bs, n), n)}),
+def d_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, O.Words>}:
+  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(_, n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, O.Words>}
+  Equal.cong(B.Buf & Maybe<&1, O.Words>, Maybe<&1, O.Words>, q => Pair.snd(B.Buf, Maybe<&1, O.Words>, q), proglist_uint64_r.proglist_uint64_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), Some{DC.OBJ(TT(bs, n), n)}),
     DC.decode_accept(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, C.capM_le(n, hS), {==}), C.capM_q(n, hS), hS, hchk))
 
-def d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}:
-  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(_, n)) == None{} : Maybe<&1, O.Words>}
-  Equal.cong(B.Buf & Maybe<&1, O.Words>, Maybe<&1, O.Words>, q => Pair.snd(B.Buf, Maybe<&1, O.Words>, q), proglist_uint64_r.GtE83F21B20A_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), None{}),
+def d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}:
+  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(_, n)) == None{} : Maybe<&1, O.Words>}
+  Equal.cong(B.Buf & Maybe<&1, O.Words>, Maybe<&1, O.Words>, q => Pair.snd(B.Buf, Maybe<&1, O.Words>, q), proglist_uint64_r.proglist_uint64_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), None{}),
     DN.decode_none(TT(bs, n), n, hchk))
 
-def s_dec(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> Decoding.decodes(GS.GtE83F21B20A(), bs, DC.VAL(TT(bs, n), n)):
-  %vwe(bs, n, hn, hd, hS) : Decoding.decodes(GS.GtE83F21B20A(), _, DC.VAL(TT(bs, n), n))
+def s_dec(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> Decoding.decodes(GS.proglist_uint64(), bs, DC.VAL(TT(bs, n), n)):
+  %vwe(bs, n, hn, hd, hS) : Decoding.decodes(GS.proglist_uint64(), _, DC.VAL(TT(bs, n), n))
   DC.decode_spec(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, C.capM_le(n, hS), {==}), C.capM_q(n, hS), hS, hchk)
 
-def s_out(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> Decoding.outside_image(GS.GtE83F21B20A(), bs):
-  %vwe(bs, n, hn, hd, hS) : Decoding.outside_image(GS.GtE83F21B20A(), _)
+def s_out(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> Decoding.outside_image(GS.proglist_uint64(), bs):
+  %vwe(bs, n, hn, hd, hS) : Decoding.outside_image(GS.proglist_uint64(), _)
   DN.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.capM_q(n, hS), hchk)
 
-def a_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> {API.deserialize(GS.GtE83F21B20A(), bs) == Some{DC.VAL(TT(bs, n), n)} : Maybe<&2, S.Value>}:
-  E2E.spec_accepted(GS.GtE83F21B20A(), bs, DC.VAL(TT(bs, n), n), (TVS.public_sound(GS.GtE83F21B20A(), {==}), s_dec(bs, n, hn, hd, hS, hchk)))
+def a_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == True{} : Bool}) -> {API.deserialize(GS.proglist_uint64(), bs) == Some{DC.VAL(TT(bs, n), n)} : Maybe<&2, S.Value>}:
+  E2E.spec_accepted(GS.proglist_uint64(), bs, DC.VAL(TT(bs, n), n), (TVS.public_sound(GS.proglist_uint64(), {==}), s_dec(bs, n, hn, hd, hS, hchk)))
 
-def a_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> {API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>}:
-  E.outside_none(GS.GtE83F21B20A(), bs, s_out(bs, n, hn, hd, hS, hchk))
+def a_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> {API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>}:
+  E.outside_none(GS.proglist_uint64(), bs, s_out(bs, n, hn, hd, hS, hchk))
 
 # ---- (ii) on views, (iii) ----
 
@@ -90,32 +90,32 @@ def mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
     case None{}: None{}
     case Some{o}: Some{UL.uview(o)}
 
-def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.GtE83F21B20A(), bs) : Maybe<&2, S.Value>}:
+def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.proglist_uint64(), bs) : Maybe<&2, S.Value>}:
   match c:
     case False{}:
-      %Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, d_none(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(GS.GtE83F21B20A(), bs) : Maybe<&2, S.Value>}
-      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.GtE83F21B20A(), bs), None{}, a_none(bs, n, hn, hd, hS, ec)) : {mv(None{}) == _ : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, d_none(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(GS.proglist_uint64(), bs) : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.proglist_uint64(), bs), None{}, a_none(bs, n, hn, hd, hS, ec)) : {mv(None{}) == _ : Maybe<&2, S.Value>}
       {==}
     case True{}:
-      %Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(GS.GtE83F21B20A(), bs) : Maybe<&2, S.Value>}
-      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.GtE83F21B20A(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(GS.proglist_uint64(), bs) : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.proglist_uint64(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
       Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, UL.uview(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, C.capM_le(n, hS), {==}), C.capM_q(n, hS), ec))
 
-def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}) -> {API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>}:
+def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}) -> {API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>}:
   match c:
     case False{}: a_none(bs, n, hn, hd, hS, ec)
-    case True{}: Empty.absurd({API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(O.Words, DC.OBJ(TT(bs, n), n), Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), d_acc(bs, n, hn, hd, hS, ec))))
+    case True{}: Empty.absurd({API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(O.Words, DC.OBJ(TT(bs, n), n), Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), d_acc(bs, n, hn, hd, hS, ec))))
 
-def d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}, +an: {API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}:
+def d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(n) == c : Bool}, +an: {API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}:
   match c:
     case False{}: d_none(bs, n, hn, hd, hS, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}, FD.logic__none_some(S.Value, DC.VAL(TT(bs, n), n), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(GS.GtE83F21B20A(), bs), Some{DC.VAL(TT(bs, n), n)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.GtE83F21B20A(), bs), None{}, an), a_acc(bs, n, hn, hd, hS, ec))))
+    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}, FD.logic__none_some(S.Value, DC.VAL(TT(bs, n), n), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(GS.proglist_uint64(), bs), Some{DC.VAL(TT(bs, n), n)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(GS.proglist_uint64(), bs), None{}, an), a_acc(bs, n, hn, hd, hS, ec))))
 
 # (ii), on views: the view of the object the decoder returns is END_TO_END's deserialize.
-def proglist_uint64_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.GtE83F21B20A(), bs) : Maybe<&2, S.Value>}:
+def proglist_uint64_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.proglist_uint64(), bs) : Maybe<&2, S.Value>}:
   d_v(bs, n, hn, hd, hS, DC.CHK(n), {==})
 
 # (iii) the object decoder fails exactly when END_TO_END's deserialize does.
 def proglist_uint64_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
-    -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.GtE83F21B20A(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.GtE83F21B20A_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+    -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.proglist_uint64(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
   (dn => d_ra(bs, n, hn, hd, hS, DC.CHK(n), {==}, dn), an => d_rb(bs, n, hn, hd, hS, DC.CHK(n), {==}, an))

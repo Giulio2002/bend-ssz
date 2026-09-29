@@ -35,11 +35,11 @@ def bv8_valid(o: bitvector_8_d.Bitvector8) -> Bool:
   match o:
     case bitvector_8_d.Bitvector8{+w0}: U32.is_lt(w0, 256)
 
-def Gt0366A291C1_encode(+o: bitvector_8_d.Bitvector8) -> B.Buf: O.out_done(1, bv8_put(O.out_at(0n), 0, o))
+def bitvector_8_encode(+o: bitvector_8_d.Bitvector8) -> B.Buf: O.out_done(1, bv8_put(O.out_at(0n), 0, o))
 
-def Gt0366A291C1_ser_pick(ok: Bool, +o: bitvector_8_d.Bitvector8) -> O.Encoded:
+def bitvector_8_ser_pick(ok: Bool, +o: bitvector_8_d.Bitvector8) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt0366A291C1_encode(o))
+    case True{}: O.encoded(bitvector_8_encode(o))
     case False{}: O.refused()
 
-def Gt0366A291C1_serialize(+o: bitvector_8_d.Bitvector8) -> O.Encoded: Gt0366A291C1_ser_pick(bv8_valid(o), o)
+def bitvector_8_serialize(+o: bitvector_8_d.Bitvector8) -> O.Encoded: bitvector_8_ser_pick(bv8_valid(o), o)

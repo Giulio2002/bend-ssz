@@ -14,7 +14,7 @@ import ./e2e_bx.bend as BX
 import ./e2e_vbxD_LightClientHeader.bend as YV
 import ./e2e_fx.bend as FXV
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH
+import ../proofs/obj/vvl_l1048576_bl1073741824.bend as TXH
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
 import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d

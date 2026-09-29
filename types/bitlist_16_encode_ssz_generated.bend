@@ -23,22 +23,22 @@ def bits16_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 16, False{})
 
 def bits16_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits16_pk(out, pos, bits16_valid(o))
 
-def Gt7C1C13B292_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_16_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt7C1C13B292_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_16_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt7C1C13B292_enc_out(out, o, m)
+  bitlist_16_enc_out(out, o, m)
 
-def Gt7C1C13B292_encode(o: O.Bits) -> O.Bits & B.Buf: Gt7C1C13B292_enc_put(bits16_putn(O.out_at(0n), 0, o))
+def bitlist_16_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_16_enc_put(bits16_putn(O.out_at(0n), 0, o))
 
-def Gt7C1C13B292_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_16_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def Gt7C1C13B292_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_16_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt7C1C13B292_senc_out(out, o, m)
+  bitlist_16_senc_out(out, o, m)
 
-def Gt7C1C13B292_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt7C1C13B292_senc_put(bits16_putk(O.out_at(0n), 0, o))
+def bitlist_16_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_16_senc_put(bits16_putk(O.out_at(0n), 0, o))

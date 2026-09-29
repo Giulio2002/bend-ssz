@@ -3,7 +3,7 @@
 interface of proofs/obj/vua_win.bend): BeaconBlockBody, whose four fixed and
 nine variable fields are read by their own window modules.
 
-    python3 codegen/var_winb.py [--check] [--no-big]
+    python3 codegen/var_winb.py [--check]
 
 The container at a window at byte offset x (x = to_nat off), length len:
 
@@ -41,8 +41,8 @@ CHECKED = {'bv4', 'bv1', 'bv2', 'bv257', 'bv1281'}
 READROOM = {'bv4': 4}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
-    'l1_AttesterSlashing': 'big_vvl_l1_AttesterSlashing.bend',
-    'l8_Attestation': 'big_vvl_l8_Attestation.bend',
+    'l1_AttesterSlashing': 'vvl_l1_AttesterSlashing.bend',
+    'l8_Attestation': 'vvl_l8_Attestation.bend',
     'l16_Deposit': 'var_winx_l16_Deposit.bend',
     'l16_SignedVoluntaryExit': 'var_winx_l16_SignedVoluntaryExit.bend',
     'ExecutionPayload': 'var_winx_ExecutionPayload.bend',
@@ -53,42 +53,42 @@ CHILD_MOD = {
     'l16_WithdrawalRequest': 'var_winx_l16_WithdrawalRequest.bend',
     'l2_ConsolidationRequest': 'var_winx_l2_ConsolidationRequest.bend',
     'l128_u64': 'var_winx_l128_u64.bend',
-    'BeaconBlockBody': 'big_var_winx_BeaconBlockBody.bend',
-    'BeaconBlock': 'big_var_winx_BeaconBlock.bend',
+    'BeaconBlockBody': 'var_winx_BeaconBlockBody.bend',
+    'BeaconBlock': 'var_winx_BeaconBlock.bend',
     # BeaconState's lists
-    'l16777216_b32': 'big_var_winx_l16777216_b32.bend',
+    'l16777216_b32': 'var_winx_l16777216_b32.bend',
     'l2048_Eth1Data': 'var_winx_l2048_Eth1Data.bend',
-    'l1099511627776_Validator': 'big_var_winx_l1099511627776_Validator.bend',
-    'l1099511627776_u64': 'big_var_winx_l1099511627776_u64.bend',
-    'l1099511627776_u8': 'big_var_winx_l1099511627776_u8.bend',
+    'l1099511627776_Validator': 'var_winx_l1099511627776_Validator.bend',
+    'l1099511627776_u64': 'var_winx_l1099511627776_u64.bend',
+    'l1099511627776_u8': 'var_winx_l1099511627776_u8.bend',
     'ExecutionPayloadHeader': 'var_bytesx_ExecutionPayloadHeader.bend',
-    'l16777216_HistoricalSummary': 'big_var_winx_l16777216_HistoricalSummary.bend',
-    'l134217728_PendingDeposit': 'big_var_winx_l134217728_PendingDeposit.bend',
-    'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
-    'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
+    'l16777216_HistoricalSummary': 'var_winx_l16777216_HistoricalSummary.bend',
+    'l134217728_PendingDeposit': 'var_winx_l134217728_PendingDeposit.bend',
+    'l134217728_PendingPartialWithdrawal': 'var_winx_l134217728_PendingPartialWithdrawal.bend',
+    'l262144_PendingConsolidation': 'var_winx_l262144_PendingConsolidation.bend',
 }
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
-                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8', 'bv256', 'bv257', 'bv1280', 'bv1281', 'v4_GcDC3E457711']}
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8', 'bv256', 'bv257', 'bv1280', 'bv1281', 'v4_FixedTestStruct']}
 # the generic containers (types/generic_obj.bend, generic_specs.bend): (name, their variable fields' child windows)
-GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'}),
-           ('Gc85FA758A04', {'bits5': 'var_winx_g_bits5.bend', 'bits6': 'var_winx_g_bits6.bend'}),
-           ('Gc60805EC295', {'bits256': 'var_winx_g_bits256.bend', 'bits257': 'var_winx_g_bits257.bend', 'bits1280': 'var_winx_g_bits1280.bend',
-                             'bits1281': 'var_winx_g_bits1281.bend', 'pbits': 'big_var_winp_pbits.bend'}),
-           ('Gc221EC01D83', {'pl_u8': 'big_var_winp_u8.bend', 'pl_u64': 'big_var_winp_pl_u64.bend', 'pl_Gc4ED9619F50': 'big_var_winx_pl_Gc4ED9619F50.bend',
-                             'pl_pl_Gc465214E502': 'big_vvl_pl_pl_Gc465214E502.bend'}),
-           ('Gc56D855869F', {'l128_u16': 'var_winx_l128_u16.bend', 'bl256': 'big_vvlb_bl256.bend', 'Gc465214E502': 'var_winx_Gc465214E502.bend',
-                             'v2_Gc465214E502': 'big_vvl_v2_Gc465214E502.bend'})]
-# the generic progressive containers whose children include unbounded lists: written as big_var_winx_<X>,
-# big_var_codec_<X>(_unique), skipped with --no-big
-GENERIC_BIG = [('Gp4B0CA2906A', {'pbits': 'big_var_winp_pbits.bend'}),
-               ('Gp66304057C3', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'big_var_winp_pbits.bend'}),
-               ('Gp8A7851175B', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'big_var_winp_pbits.bend', 'pl_u64': 'big_var_winp_pl_u64.bend',
-                                 'pl_Gc4ED9619F50': 'big_var_winx_pl_Gc4ED9619F50.bend', 'pl_pl_Gc465214E502': 'big_vvl_pl_pl_Gc465214E502.bend',
-                                 'l10_GpF350A3C486': 'var_winx_l10_GpF350A3C486.bend', 'pl_Gp66304057C3': 'big_vvl_pl_Gp66304057C3.bend'})]
+GENERIC = [('VarTestStruct', {'l1024_u16': 'var_winx_l1024_u16.bend'}),
+           ('BitsStruct', {'bits5': 'var_winx_g_bits5.bend', 'bits6': 'var_winx_g_bits6.bend'}),
+           ('ProgressiveBitsStruct', {'bits256': 'var_winx_g_bits256.bend', 'bits257': 'var_winx_g_bits257.bend', 'bits1280': 'var_winx_g_bits1280.bend',
+                             'bits1281': 'var_winx_g_bits1281.bend', 'pbits': 'var_winp_pbits.bend'}),
+           ('ProgressiveTestStruct', {'pl_u8': 'var_winp_u8.bend', 'pl_u64': 'var_winp_pl_u64.bend', 'pl_SmallTestStruct': 'var_winx_pl_SmallTestStruct.bend',
+                             'pl_pl_VarTestStruct': 'vvl_pl_pl_VarTestStruct.bend'}),
+           ('ComplexTestStruct', {'l128_u16': 'var_winx_l128_u16.bend', 'bl256': 'vvlb_bl256.bend', 'VarTestStruct': 'var_winx_VarTestStruct.bend',
+                             'v2_VarTestStruct': 'vvl_v2_VarTestStruct.bend'})]
+# the generic progressive containers whose children include unbounded lists: written as var_winx_<X>,
+# var_codec_<X>(_unique)
+GENERIC_BIG = [('ProgressiveSingleListContainerTestStruct', {'pbits': 'var_winp_pbits.bend'}),
+               ('ProgressiveVarTestStruct', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'var_winp_pbits.bend'}),
+               ('ProgressiveComplexTestStruct', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'var_winp_pbits.bend', 'pl_u64': 'var_winp_pl_u64.bend',
+                                 'pl_SmallTestStruct': 'var_winx_pl_SmallTestStruct.bend', 'pl_pl_VarTestStruct': 'vvl_pl_pl_VarTestStruct.bend',
+                                 'l10_ProgressiveSingleFieldContainerTestStruct': 'var_winx_l10_ProgressiveSingleFieldContainerTestStruct.bend', 'pl_ProgressiveVarTestStruct': 'vvl_pl_ProgressiveVarTestStruct.bend'})]
 # (container, output file) of the tracked modules
-MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
-           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
+MODULES = [('BeaconBlockBody', 'var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'var_winx_BeaconBlock.bend', False),
+           ('SignedBeaconBlock', 'var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'var_winx_BeaconState.bend', True)]
 
 CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
       '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -1709,7 +1709,7 @@ def winb_deep(text, mode, kids, pb=(), pmods=None):
     return text
 
 
-PBITS_MOD = 'big_var_winp_pbits.bend'
+PBITS_MOD = 'var_winp_pbits.bend'
 PB_LEMMAS = """
 # ---- the progressive bit lists' representation bound (proofs/obj/vpb29.bend): each pbits child's window
 # [O, E) takes the premise "E <= len implies E - O <= PMAX" (Nat.sub: nothing wraps) ----
@@ -2057,11 +2057,8 @@ def layout(name, sym=False, fixmod=None, generic=False):
 
 def main():
     VL.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
-    no_big = '--no-big' in sys.argv
     out = {}
     for name, fn, sym in MODULES:
-        if no_big and fn.startswith('big_'):
-            continue
         L = layout(name, sym, FIXMOD)
         # a container is generated once all its children's (and fixed fields') modules exist
         mods = [f['mod'] for f in L.vars] + sorted(set(L.fmods().values()))
@@ -2070,8 +2067,8 @@ def main():
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
         out[ROOT / 'proofs/obj' / fn] = _OUT[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_of(L, fn, 'EW')
-    for name, kids, big in [(n, k, '') for n, k in GENERIC] + ([] if no_big else [(n, k, 'big_') for n, k in GENERIC_BIG]):
+        out[ROOT / 'proofs/obj' / f'var_codec_{name}.bend'] = top_of(L, fn, 'EW')
+    for name, kids, big in [(n, k, '') for n, k in GENERIC] + [(n, k, '') for n, k in GENERIC_BIG]:
         CHILD_MOD.update(kids)
         L = layout(name, True, FIXMOD, generic=True)
         fn = f'{big}var_winx_{name}.bend'

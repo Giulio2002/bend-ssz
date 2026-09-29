@@ -14,9 +14,9 @@ import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_encx_ExecutionPayload_iface.bend as CI
-import ../proofs/obj/big_encx_bl32.bend as EB
-import ../proofs/obj/big_encx_l1048576_bl1073741824.bend as ET
+import ../proofs/obj/encx_ExecutionPayload_iface.bend as CI
+import ../proofs/obj/encx_bl32.bend as EB
+import ../proofs/obj/encx_l1048576_bl1073741824.bend as ET
 import ../proofs/obj/encx_l16_Withdrawal.bend as EW_l16_Withdrawal
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d

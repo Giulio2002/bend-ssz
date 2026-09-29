@@ -930,7 +930,7 @@ def as_rej_text(g, xc, parent='AttesterSlashing'):
     kids, _ = VL.spec_schemas(parent)
     S46 = f'Spec.{kids[0]}()'
     assert kids[0] == kids[1]
-    pre = 'big_' if VL.is_big(xc) else ''
+    pre = '' if VL.is_big(xc) else ''
     L = list(VL.DEC_HEAD) + [f'import ./{VL.fname(xc).name} as DC', f'import ./{VL.fname(xc, "_win").name} as W',
                              f'import ./{VL.fname(xc, "_rej").name} as R', f'import ./{pre}var_codec_{parent}.bend as M',
                              'import ./vdig.bend as VG', 'import ./vfits.bend as VFT', 'import ./vnest.bend as VN',

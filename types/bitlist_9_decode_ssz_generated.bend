@@ -11,17 +11,17 @@ def bits9_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits9_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 9, False{})
 
-def Gt9D356BAF82_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_9_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt9D356BAF82_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_9_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt9D356BAF82_some(bits9_read(buf, 0, size))
+    case True{}: bitlist_9_some(bits9_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt9D356BAF82_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt9D356BAF82_built(size, bits9_ok(buf, 0, size))
+def bitlist_9_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_9_built(size, bits9_ok(buf, 0, size))
 
-def Gt9D356BAF82_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits9_read(buf, 0, size)
+def bitlist_9_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits9_read(buf, 0, size)

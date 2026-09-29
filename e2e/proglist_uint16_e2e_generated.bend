@@ -21,8 +21,8 @@ import ../proofs/obj/prog_list_light.bend as PG
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM
 import ../proofs/obj/vua_win.bend as UW
-import ../proofs/obj/big_var_plist_GtF23A2FB97E_enc.bend as EN
-import ../proofs/obj/big_var_winp_u16.bend as W
+import ../proofs/obj/var_plist_proglist_uint16_enc.bend as EN
+import ../proofs/obj/var_winp_u16.bend as W
 import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_emit.bend as EM
@@ -46,7 +46,7 @@ def hnoN(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hM: {U
 
 # (i) over storage T of depth dw < 31 holding N bytes, within the object API's limit
 def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hM: {U32.is_le(N, VB.NMAX()) == True{} : Bool}, +c: Nat, +ec: {U32.to_nat(N) == Nat.double(c) : Nat})
-    -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.GtF23A2FB97E_encode(O.Words{FD.array__thaw(U32, T), N})))} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}:
+    -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(O.Words{FD.array__thaw(U32, T), N})))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}:
   +eq = PL.c2(N, W.CQ(N), W.eLc(T, 0n, 0, N, W.chk2(T, 0n, 0, N, c, ec)))
   +e0 = Equal.cong(Nat, S.Value, z => S.Sequence{PBF.it2(z, WO.wview(O.Words{FD.array__thaw(U32, T), N}))}, U32.to_nat(U32.shrn(N, 1n)), W.CQ(N), eq)
   +e1 = Equal.cong(+List<U32>, S.Value, z => S.Sequence{PBF.it2(W.CQ(N), z)}, WO.wview(O.Words{FD.array__thaw(U32, T), N}), BL.WX0(T, N), BL.wv0(T, N))
@@ -54,24 +54,24 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pf: {FD.array__perfect(U32
   +ev = Equal.trans(S.Value, PBF.vview2(O.Words{FD.array__thaw(U32, T), N}), S.Sequence{PBF.it2(W.CQ(N), WO.wview(O.Words{FD.array__thaw(U32, T), N}))}, W.VALw(T, 0n, N), e0,
     Equal.trans(S.Value, S.Sequence{PBF.it2(W.CQ(N), WO.wview(O.Words{FD.array__thaw(U32, T), N}))}, S.Sequence{PBF.it2(W.CQ(N), BL.WX0(T, N))}, W.VALw(T, 0n, N), e1, e2))
   +h31 = hdw
-  %Equal.sym(O.Words & B.Buf, proglist_uint16_e.GtF23A2FB97E_encode(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, pf, h31, hN, hM)) :
-    {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}
+  %Equal.sym(O.Words & B.Buf, proglist_uint16_e.proglist_uint16_encode(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, pf, h31, hN, hM)) :
+    {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T)))),
       EM.obN(VL.DO(N), VL.OUTP(N, T), N, BL.pfo(N, T), FD.nat__le_lt_trans(VL.DO(N), dw, 31n, EN.hDO(dw, N, hdw, hN, hM), hdw), hM, hnoN(dw, N, hdw, hM, EN.leWo(dw, N, hdw, hN, hM)))) :
-    {Some{_} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}
-  %Equal.sym(S.Value, PBF.vview2(O.Words{FD.array__thaw(U32, T), N}), W.VALw(T, 0n, N), ev) : {Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))} == API.serialize(Spec.GtF23A2FB97E(), _) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF23A2FB97E(), W.VALw(T, 0n, N)), Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.GtF23A2FB97E(), W.VALw(T, 0n, N)), Encoding.encoding_for_legal_type(Spec.GtF23A2FB97E(), W.VALw(T, 0n, N)), Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))},
-      E.serialize_legal(Spec.GtF23A2FB97E(), W.VALw(T, 0n, N), VS.public_sound(Spec.GtF23A2FB97E(), {==})), EN.encode_spec(dw, T, N, pf, h31, hN, hM, c, ec)))
+    {Some{_} == API.serialize(Spec.proglist_uint16(), PBF.vview2(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}
+  %Equal.sym(S.Value, PBF.vview2(O.Words{FD.array__thaw(U32, T), N}), W.VALw(T, 0n, N), ev) : {Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))} == API.serialize(Spec.proglist_uint16(), _) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.proglist_uint16(), W.VALw(T, 0n, N)), Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.proglist_uint16(), W.VALw(T, 0n, N)), Encoding.encoding_for_legal_type(Spec.proglist_uint16(), W.VALw(T, 0n, N)), Some{VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T))))},
+      E.serialize_legal(Spec.proglist_uint16(), W.VALw(T, 0n, N), VS.public_sound(Spec.proglist_uint16(), {==})), EN.encode_spec(dw, T, N, pf, h31, hN, hM, c, ec)))
 
 def e2(-o: O.Words, +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {o == O.Words{FD.array__thaw(U32, T), N} : O.Words}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool},
-    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hM: {U32.is_le(WO.len(o), VB.NMAX()) == True{} : Bool}, +hx: {U32.to_nat(WO.len(o)) == Nat.double(PBF.cnt2(o)) : Nat}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.GtF23A2FB97E_encode(o)))} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(o)) : Maybe<&2, +List<U32>>}:
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}, +hM: {U32.is_le(WO.len(o), VB.NMAX()) == True{} : Bool}, +hx: {U32.to_nat(WO.len(o)) == Nat.double(PBF.cnt2(o)) : Nat}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(o)))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(o)) : Maybe<&2, +List<U32>>}:
   +ec = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}, o, O.Words{FD.array__thaw(U32, T), N}, eo, hx)
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, T), N}, eo) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.GtF23A2FB97E_encode(_)))} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(_)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, T), N}, eo) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(_)))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(_)) : Maybe<&2, +List<U32>>}
   core(dw, T, N, pf, hdw, hN, FD.logic__subst(O.Words, z => {U32.is_le(WO.len(z), VB.NMAX()) == True{} : Bool}, o, O.Words{FD.array__thaw(U32, T), N}, eo, hM), PBF.cnt2(O.Words{FD.array__thaw(U32, T), N}), ec)
 
 # (i): for every object the root law represents within the object API's limit (hM), its storage at depth below 31 (hs)
-def proglist_uint16_e2e_encode(-o: O.Words, +rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()), +hM: {U32.is_le(WO.len(o), VB.NMAX()) == True{} : Bool}, +hs: BL.sdk(o, 31n)) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.GtF23A2FB97E_encode(o)))} == API.serialize(Spec.GtF23A2FB97E(), PBF.vview2(o)) : Maybe<&2, +List<U32>>}:
+def proglist_uint16_e2e_encode(-o: O.Words, +rep: PG.rep_pl2(o, Spec.proglist_uint16()), +hM: {U32.is_le(WO.len(o), VB.NMAX()) == True{} : Bool}, +hs: BL.sdk(o, 31n)) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(o)))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(o)) : Maybe<&2, +List<U32>>}:
   (+wf, +hx) = rep
   match hs:
     case Inl{s}:

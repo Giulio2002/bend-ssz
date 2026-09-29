@@ -23,22 +23,22 @@ def bits17_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 17, False{})
 
 def bits17_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits17_pk(out, pos, bits17_valid(o))
 
-def GtAA99FAAC9D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_17_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtAA99FAAC9D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_17_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtAA99FAAC9D_enc_out(out, o, m)
+  bitlist_17_enc_out(out, o, m)
 
-def GtAA99FAAC9D_encode(o: O.Bits) -> O.Bits & B.Buf: GtAA99FAAC9D_enc_put(bits17_putn(O.out_at(0n), 0, o))
+def bitlist_17_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_17_enc_put(bits17_putn(O.out_at(0n), 0, o))
 
-def GtAA99FAAC9D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_17_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def GtAA99FAAC9D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_17_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtAA99FAAC9D_senc_out(out, o, m)
+  bitlist_17_senc_out(out, o, m)
 
-def GtAA99FAAC9D_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtAA99FAAC9D_senc_put(bits17_putk(O.out_at(0n), 0, o))
+def bitlist_17_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_17_senc_put(bits17_putk(O.out_at(0n), 0, o))

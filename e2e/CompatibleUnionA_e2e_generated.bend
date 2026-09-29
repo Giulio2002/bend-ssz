@@ -18,8 +18,8 @@ import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vcont.bend as VCN
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/big_encx_GuA2212AE21F_iface.bend as CI
-import ../proofs/obj/big_var_codec_GuA2212AE21F_enc.bend as EN
+import ../proofs/obj/encx_CompatibleUnionA_iface.bend as CI
+import ../proofs/obj/var_codec_CompatibleUnionA_enc.bend as EN
 import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
 import ../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
 import ../types/CompatibleUnionA_encode_ssz_generated.bend as CompatibleUnionA_e
@@ -49,36 +49,36 @@ def obM(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arra
   EM.ob(0n, EN.OUTE(m), CI.SZ(m), CI.pfx(m, 0n, VC.ZT(0n), 0n, 0n, FD.array__trep_perfect(U32, 0n, 0)), hd, hn)
 
 # (i) on a record
-def enc_m(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(CI.TH(m))))} == API.serialize(Spec.GuA2212AE21F(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(CompatibleUnionA_d.GuA2212AE21F & B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), EN.encode_eval(m, hok)) :
-    {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, _))} == API.serialize(Spec.GuA2212AE21F(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.GuA2212AE21F(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.GuA2212AE21F(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.GuA2212AE21F(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.GuA2212AE21F(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-      E.serialize_legal(Spec.GuA2212AE21F(), CI.VAL(m), VS.public_sound(Spec.GuA2212AE21F(), {==})), EN.encode_spec(m, hok)))
+def enc_m(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(CI.TH(m))))} == API.serialize(Spec.CompatibleUnionA(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(CompatibleUnionA_d.CompatibleUnionA & B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), EN.encode_eval(m, hok)) :
+    {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, _))} == API.serialize(Spec.CompatibleUnionA(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.CompatibleUnionA(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.CompatibleUnionA(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.CompatibleUnionA(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.CompatibleUnionA(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+      E.serialize_legal(Spec.CompatibleUnionA(), CI.VAL(m), VS.public_sound(Spec.CompatibleUnionA(), {==})), EN.encode_spec(m, hok)))
 
 # an object, as a record: o == TH(m), its view VAL(m), OK(m)
-def via(-o: CompatibleUnionA_d.GuA2212AE21F, +m: CI.MW, +eo: {o == CI.TH(m) : CompatibleUnionA_d.GuA2212AE21F}, +ev: {RT.v_GuA2212AE21F(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OK(m) == True{} : Bool})
-    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(o)))} == API.serialize(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(CompatibleUnionA_d.GuA2212AE21F, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(_)))} == API.serialize(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(_)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(S.Value, RT.v_GuA2212AE21F(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(CI.TH(m))))} == API.serialize(Spec.GuA2212AE21F(), _) : Maybe<&2, +List<U32>>}
+def via(-o: CompatibleUnionA_d.CompatibleUnionA, +m: CI.MW, +eo: {o == CI.TH(m) : CompatibleUnionA_d.CompatibleUnionA}, +ev: {RT.v_CompatibleUnionA(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OK(m) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(o)))} == API.serialize(Spec.CompatibleUnionA(), RT.v_CompatibleUnionA(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(CompatibleUnionA_d.CompatibleUnionA, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(_)))} == API.serialize(Spec.CompatibleUnionA(), RT.v_CompatibleUnionA(_)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(S.Value, RT.v_CompatibleUnionA(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(CI.TH(m))))} == API.serialize(Spec.CompatibleUnionA(), _) : Maybe<&2, +List<U32>>}
   enc_m(m, hok)
 
-def u1(-o: CompatibleUnionA_d.GuA2212AE21F, +x: U32, +eo: {o == CompatibleUnionA_d.GuA2212AE21F_c0{ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{x}} : CompatibleUnionA_d.GuA2212AE21F}, +hv: {U32.is_lt(x, 256) == True{} : Bool})
-    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(o)))} == API.serialize(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
+def u1(-o: CompatibleUnionA_d.CompatibleUnionA, +x: U32, +eo: {o == CompatibleUnionA_d.CompatibleUnionA_c0{ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{x}} : CompatibleUnionA_d.CompatibleUnionA}, +hv: {U32.is_lt(x, 256) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(o)))} == API.serialize(Spec.CompatibleUnionA(), RT.v_CompatibleUnionA(o)) : Maybe<&2, +List<U32>>}:
   +hok = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(x), U32.to_nat(255)), U32.is_le(x, 255),
     Equal.sym(Bool, U32.is_le(x, 255), Nat.is_le(U32.to_nat(x), U32.to_nat(255)), VU.le_u32(x, 255)), LB.small(x, hv))
   +ev = Equal.cong(U32, S.Value, z => S.Selected{1, S.Sequence{S.Items{S.UnsignedValue{P.UInt{z, 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, x, U32.and(x, 255),
     Equal.sym(U32, U32.and(x, 255), x, VBB.ea(x, hv)))
   via(o, CI.MW0{x}, eo, ev, hok)
 
-def u0(-o: CompatibleUnionA_d.GuA2212AE21F, +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +eo: {o == CompatibleUnionA_d.GuA2212AE21F_c0{v} : CompatibleUnionA_d.GuA2212AE21F}, +rp: RN.rp_GpF350A3C486(v))
-    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(o)))} == API.serialize(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
+def u0(-o: CompatibleUnionA_d.CompatibleUnionA, +v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +eo: {o == CompatibleUnionA_d.CompatibleUnionA_c0{v} : CompatibleUnionA_d.CompatibleUnionA}, +rp: RN.rp_ProgressiveSingleFieldContainerTestStruct(v))
+    -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(o)))} == API.serialize(Spec.CompatibleUnionA(), RT.v_CompatibleUnionA(o)) : Maybe<&2, +List<U32>>}:
   match v:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x}: u1(o, x, eo, rp)
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x}: u1(o, x, eo, rp)
 
 # (i): for every object the root law represents
-def CompatibleUnionA_e2e_encode(-o: CompatibleUnionA_d.GuA2212AE21F, +rep: RT.rep_GuA2212AE21F(o)) -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.GuA2212AE21F, B.Buf, CompatibleUnionA_e.GuA2212AE21F_encode(o)))} == API.serialize(Spec.GuA2212AE21F(), RT.v_GuA2212AE21F(o)) : Maybe<&2, +List<U32>>}:
+def CompatibleUnionA_e2e_encode(-o: CompatibleUnionA_d.CompatibleUnionA, +rep: RT.rep_CompatibleUnionA(o)) -> {Some{E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(o)))} == API.serialize(Spec.CompatibleUnionA(), RT.v_CompatibleUnionA(o)) : Maybe<&2, +List<U32>>}:
   (+v, +q) = rep
   (+eo, +rp) = q
   u0(o, v, eo, rp)

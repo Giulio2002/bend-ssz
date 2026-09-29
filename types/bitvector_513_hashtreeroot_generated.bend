@@ -12,4 +12,4 @@ def bv513_root(+hl: Nat, h: B.Buf, o: bitvector_513_d.Bitvector513, +seg: U32) -
   match o:
     case bitvector_513_d.Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: (h, D.node(hl, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), D.node(hl, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.zero())))
 
-def Gt0B0C03B454_hash_tree_root(h: B.Buf, +o: bitvector_513_d.Bitvector513) -> B.Buf & D.Digest: bv513_root(64n, h, o, 0)
+def bitvector_513_hash_tree_root(h: B.Buf, +o: bitvector_513_d.Bitvector513) -> B.Buf & D.Digest: bv513_root(64n, h, o, 0)

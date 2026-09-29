@@ -4,7 +4,7 @@ import ../compact/found.bend as F
 # Mirror-tree facts shared by the generated laws of lists of Type-kind elements
 # (codegen/root_laws_b.py tlist_laws emits, per list, the Base Array size /
 # swap / set laws over the image of a Data mirror tree, from the template
-# codegen/amap_template.bend, found.bend's array__swap_go adapted).
+# codegen/amap_template.bend.in, found.bend's array__swap_go adapted).
 
 # An update of the mirror undone by the update with the old value.
 def tupd_restore(-A: Data, +d: Nat, +t: F.array__Tree<A>, +j: Nat, +z: A, +x: A,

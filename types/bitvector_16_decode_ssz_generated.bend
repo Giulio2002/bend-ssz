@@ -23,17 +23,17 @@ def bv16_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv16_ok_len(U32.is_eq(len, 2), buf, off)
 
-def GtED805B7C93_some(pair: B.Buf & bitvector_16_d.Bitvector16) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
+def bitvector_16_some(pair: B.Buf & bitvector_16_d.Bitvector16) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtED805B7C93_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
+def bitvector_16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtED805B7C93_some(bv16_read(buf, 0, size))
+    case True{}: bitvector_16_some(bv16_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtED805B7C93_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
-  GtED805B7C93_built(size, bv16_ok(buf, 0, size))
+def bitvector_16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
+  bitvector_16_built(size, bv16_ok(buf, 0, size))
 
-def GtED805B7C93_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_16_d.Bitvector16: bv16_read(buf, 0, size)
+def bitvector_16_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_16_d.Bitvector16: bv16_read(buf, 0, size)

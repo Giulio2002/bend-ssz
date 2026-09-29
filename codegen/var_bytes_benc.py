@@ -1,5 +1,5 @@
 """LightClientBootstrap's encoder laws (big: its 24820-byte header), for
-codegen/var_bytes_nenc.py: proofs/obj/big_var_bytes_LightClientBootstrap_enc.bend.
+codegen/var_bytes_nenc.py: proofs/obj/var_bytes_LightClientBootstrap_enc.bend.
 
 Bootstrap = [header: LightClientHeader (variable), current_sync_committee:
 SyncCommittee (6144 packed words of pubkeys then a Bytes48), the branch (48 words)].

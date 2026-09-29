@@ -25,14 +25,14 @@
   "uints valid pass": 48
  },
  "unsupported_schemas": {
-  "Gt0800299A8E": "schema: a zero-length vector is not an SSZ type",
-  "Gt17827D233C": "schema: a zero-length vector is not an SSZ type",
-  "Gt450D58028A": "schema: a zero-length bit vector is not an SSZ type",
-  "Gt4FB8405ADE": "schema: a zero-length vector is not an SSZ type",
-  "Gt5CF33A21E6": "schema: a zero-length vector is not an SSZ type",
-  "Gt9F50AB7A20": "schema: a zero-length vector is not an SSZ type",
-  "GtA5CE788F25": "schema: a zero-length vector is not an SSZ type",
-  "GtB8ACE05E5F": "schema: a zero-length vector is not an SSZ type"
+  "vec_uint64_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint8_0": "schema: a zero-length vector is not an SSZ type",
+  "bitvector_0": "schema: a zero-length bit vector is not an SSZ type",
+  "vec_uint128_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint16_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint256_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_bool_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint32_0": "schema: a zero-length vector is not an SSZ type"
  },
  "failures": []
 }

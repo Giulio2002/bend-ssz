@@ -23,22 +23,22 @@ def bits31_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 31, False{})
 
 def bits31_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits31_pk(out, pos, bits31_valid(o))
 
-def Gt4B1BA0C81D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_31_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt4B1BA0C81D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_31_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt4B1BA0C81D_enc_out(out, o, m)
+  bitlist_31_enc_out(out, o, m)
 
-def Gt4B1BA0C81D_encode(o: O.Bits) -> O.Bits & B.Buf: Gt4B1BA0C81D_enc_put(bits31_putn(O.out_at(0n), 0, o))
+def bitlist_31_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_31_enc_put(bits31_putn(O.out_at(0n), 0, o))
 
-def Gt4B1BA0C81D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_31_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def Gt4B1BA0C81D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_31_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt4B1BA0C81D_senc_out(out, o, m)
+  bitlist_31_senc_out(out, o, m)
 
-def Gt4B1BA0C81D_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt4B1BA0C81D_senc_put(bits31_putk(O.out_at(0n), 0, o))
+def bitlist_31_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_31_senc_put(bits31_putk(O.out_at(0n), 0, o))

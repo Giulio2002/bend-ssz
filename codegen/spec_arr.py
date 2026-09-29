@@ -403,14 +403,14 @@ def outputs(root):
                             ('BlobSidecar', blob_sidecar())]:
         out[root / f'proofs/obj/spec_arr_{name}.bend'] = text
         names.append((name, u))
-    for name, (text, u) in [('Gt13AFE546ED', uvec('Gt13AFE546ED', 9, 1, 'v512_u32')),
-                            ('Gt843A1262ED', uvec('Gt843A1262ED', 10, 2, 'v512_u64')),
-                            ('Gt7274F61A0F', uvec('Gt7274F61A0F', 11, 4, 'v512_u128')),
-                            ('Gt274A0B8DC2', uvec('Gt274A0B8DC2', 12, 8, 'v512_u256')),
-                            ('Gt53D2408A5F', uvec_tail('Gt53D2408A5F', 1, 'v513_u32')),
-                            ('Gt10D6F42D74', uvec_tail('Gt10D6F42D74', 2, 'v513_u64')),
-                            ('Gt9EA902108D', uvec_tail('Gt9EA902108D', 4, 'v513_u128')),
-                            ('Gt0A3B6B4128', uvec_tail('Gt0A3B6B4128', 8, 'v513_u256'))]:
+    for name, (text, u) in [('vec_uint32_512', uvec('vec_uint32_512', 9, 1, 'v512_u32')),
+                            ('vec_uint64_512', uvec('vec_uint64_512', 10, 2, 'v512_u64')),
+                            ('vec_uint128_512', uvec('vec_uint128_512', 11, 4, 'v512_u128')),
+                            ('vec_uint256_512', uvec('vec_uint256_512', 12, 8, 'v512_u256')),
+                            ('vec_uint32_513', uvec_tail('vec_uint32_513', 1, 'v513_u32')),
+                            ('vec_uint64_513', uvec_tail('vec_uint64_513', 2, 'v513_u64')),
+                            ('vec_uint128_513', uvec_tail('vec_uint128_513', 4, 'v513_u128')),
+                            ('vec_uint256_513', uvec_tail('vec_uint256_513', 8, 'v513_u256'))]:
         out[root / f'proofs/obj/spec_garr_{name}.bend'] = text
         gl = [x if x.startswith('import') else 'import ' + x for x in UHEAD]
         gl = [x.replace('../../spec/fulu_schemas.bend as Spec', './generic_specs.bend as Spec')

@@ -269,11 +269,18 @@ def render(runtimes):
                 order.append(key)
             keyed[key].append((head, fk, defs, fork))
     pos = {k: i for i, k in enumerate(order)}
+    # a definition one runtime does not have but another does: the shared basic types (uint256's record) live in the
+    # first runtime's files only, the others' references resolve there
+    allfk = {}
+    for head, fk, files, fork in runtimes:
+        for x, k_ in fk.items():
+            allfk.setdefault(x, k_)
     out, deps = {}, {}
     for key in order:
         f, o = key
         used, body, heads, monos = [], [], [], []
-        for head, fk, defs, fork in keyed[key]:
+        for head, fk0, defs, fork in keyed[key]:
+            fk = {**allfk, **fk0}
             for l in head:
                 if l not in heads:
                     heads.append(l)

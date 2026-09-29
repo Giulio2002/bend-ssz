@@ -160,15 +160,15 @@ def v31_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 124, 124, False{}
 
 def v31_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u32_pk(out, pos, v31_u32_valid(o))
 
-def GtE528AAE3C6_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_uint32_31_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(124, out))
 
-def GtE528AAE3C6_encode(o: O.Words) -> O.Words & B.Buf: GtE528AAE3C6_enc_out(v31_u32_put(O.out_at(5n), 0, o))
+def vec_uint32_31_encode(o: O.Words) -> O.Words & B.Buf: vec_uint32_31_enc_out(v31_u32_put(O.out_at(5n), 0, o))
 
-def GtE528AAE3C6_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_uint32_31_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 124, out))
 
-def GtE528AAE3C6_serialize(o: O.Words) -> O.Words & O.Encoded: GtE528AAE3C6_senc_out(v31_u32_putk(O.out_at(5n), 0, o))
+def vec_uint32_31_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint32_31_senc_out(v31_u32_putk(O.out_at(5n), 0, o))

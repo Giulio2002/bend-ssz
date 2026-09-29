@@ -12,4 +12,4 @@ def bv15_root(+hl: Nat, h: B.Buf, o: bitvector_15_d.Bitvector15, +seg: U32) -> B
   match o:
     case bitvector_15_d.Bitvector15{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
-def GtEDF530C7B9_hash_tree_root(h: B.Buf, +o: bitvector_15_d.Bitvector15) -> B.Buf & D.Digest: bv15_root(64n, h, o, 0)
+def bitvector_15_hash_tree_root(h: B.Buf, +o: bitvector_15_d.Bitvector15) -> B.Buf & D.Digest: bv15_root(64n, h, o, 0)

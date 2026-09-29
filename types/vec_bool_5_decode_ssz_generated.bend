@@ -33,17 +33,17 @@ def v5_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v5_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_bool_ok_len(U32.is_eq(len, 5), buf, off)
 
-def Gt7FBB1934E8_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_5_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt7FBB1934E8_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_5_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt7FBB1934E8_some(v5_bool_read(buf, 0, size))
+    case True{}: vec_bool_5_some(v5_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt7FBB1934E8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt7FBB1934E8_built(size, v5_bool_ok(buf, 0, size))
+def vec_bool_5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_bool_5_built(size, v5_bool_ok(buf, 0, size))
 
-def Gt7FBB1934E8_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_bool_read(buf, 0, size)
+def vec_bool_5_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_bool_read(buf, 0, size)

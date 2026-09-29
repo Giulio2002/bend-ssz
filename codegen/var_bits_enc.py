@@ -2,7 +2,7 @@
 """Encoder laws of the bit lists (O.put_bits: the words, then the delimiter
 bit at position k) against spec/bitfields.bend list_encoding.
 
-    python3 codegen/var_bits_enc.py [--check] [--no-big]
+    python3 codegen/var_bits_enc.py [--check]
 
 proofs/obj/var_bits_enc_bw.bend (generated, stock): for each bit position
 r < 32, OR-ing bit r into a word whose bits r..31 are zero (hzw r)
@@ -441,7 +441,7 @@ def cont_names():
 
 def cont_fname(x):
     import var_bitc as VBI
-    return ROOT / f'proofs/obj/{"big_" if VBI.is_big(x) else ""}var_bitc_enc_{x.n}.bend'
+    return ROOT / f'proofs/obj/{"" if VBI.is_big(x) else ""}var_bitc_enc_{x.n}.bend'
 
 
 def cont_module(g, x, src):
@@ -932,7 +932,6 @@ def encE({ALLP})
 
 
 def main():
-    no_big = '--no-big' in sys.argv
     out = {BW: bw_module(), PAD: pad_module()}
     src = RR.mono_text('generic')
     for X, N, p in names():
@@ -941,11 +940,9 @@ def main():
     g, xs = cont_names()
     import var_bitc as VBI
     for x in xs:
-        if no_big and VBI.is_big(x):
-            continue
         out[cont_fname(x)] = cont_module(g, x, fsrc)
-    mine = [q for q in (ROOT / 'proofs/obj').glob('*.bend') if q.name.startswith(('var_bits_enc_', 'var_bitc_enc_', 'big_var_bitc_enc_'))]
-    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_')))
+    mine = [q for q in (ROOT / 'proofs/obj').glob('*.bend') if q.name.startswith(('var_bits_enc_', 'var_bitc_enc_', 'var_bitc_enc_'))]
+    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out)
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t] + orphans

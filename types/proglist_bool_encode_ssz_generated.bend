@@ -23,35 +23,35 @@ def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, 
 
 def pl_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_bool_pk(out, pos, pl_bool_valid(o))
 
-def Gt83D8B3D008_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
+def proglist_bool_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt83D8B3D008_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
+def proglist_bool_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt83D8B3D008_enc_out(n, out, o, m)
+  proglist_bool_enc_out(n, out, o, m)
 
-def Gt83D8B3D008_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
+def proglist_bool_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  Gt83D8B3D008_enc_put(n, pl_bool_putn(O.out_new(n), 0, o))
+  proglist_bool_enc_put(n, pl_bool_putn(O.out_new(n), 0, o))
 
-def Gt83D8B3D008_encode(o: O.Words) -> O.Words & B.Buf: Gt83D8B3D008_enc_sized(pl_bool_size(o))
+def proglist_bool_encode(o: O.Words) -> O.Words & B.Buf: proglist_bool_enc_sized(pl_bool_size(o))
 
-def Gt83D8B3D008_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+def proglist_bool_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt83D8B3D008_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def proglist_bool_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt83D8B3D008_senc_out(n, out, o, m)
+  proglist_bool_senc_out(n, out, o, m)
 
-def Gt83D8B3D008_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+def proglist_bool_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt83D8B3D008_senc_put(n, pl_bool_putk(O.out_new(n), 0, o))
+    case False{}: proglist_bool_senc_put(n, pl_bool_putk(O.out_new(n), 0, o))
 
-def Gt83D8B3D008_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+def proglist_bool_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
   (o, +n) = pair
-  Gt83D8B3D008_senc_go(O.is_poisoned(n), n, o)
+  proglist_bool_senc_go(O.is_poisoned(n), n, o)
 
-def Gt83D8B3D008_serialize(o: O.Words) -> O.Words & O.Encoded: Gt83D8B3D008_senc_sized(pl_bool_size(o))
+def proglist_bool_serialize(o: O.Words) -> O.Words & O.Encoded: proglist_bool_senc_sized(pl_bool_size(o))

@@ -15,7 +15,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/big_encx_bl32.bend as IB
+import ../proofs/obj/encx_bl32.bend as IB
 import ./e2e_cap.bend as C
 import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL
@@ -34,7 +34,7 @@ def bvwk(+T: FD.array__Tree<U32>) -> {bvw(O.Words{FD.array__thaw(U32, T), 256}) 
     {S.BytesValue{WS.btake(U32.to_nat(256), FX.limbs(FD.array__slots(U32, _)))} == S.BytesValue{CS.WT(64n, T)} : S.Value}
   Equal.cong(+List<U32>, S.Value, z => S.BytesValue{z}, WS.btake(A.quad(64n), FX.limbs(FD.array__slots(U32, T))), FX.limbs(VS.wtake(64n, FD.array__slots(U32, T))), CH.bq(64n, FD.array__slots(U32, T)))
 
-# ---- the byte list (big_encx_bl32) ----
+# ---- the byte list (encx_bl32) ----
 def R_B(po: O.Words) -> Data:
   DK.Ex(IB.MW, m => DK.P2({po == IB.TH(m) : O.Words}, DK.P2({bvw(IB.TH(m)) == IB.VAL(m) : S.Value}, {IB.OK(m) == True{} : Bool})))
 

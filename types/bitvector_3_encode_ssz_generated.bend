@@ -31,15 +31,15 @@ def bv3_put(out: Array<U32>, +pos: U32, o: bitvector_3_d.Bitvector3) -> Array<U3
   match o:
     case bitvector_3_d.Bitvector3{+w0}: bv3_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def Gt9579E0A2FD_encode(+o: bitvector_3_d.Bitvector3) -> B.Buf: O.out_done(1, bv3_put(O.out_at(0n), 0, o))
+def bitvector_3_encode(+o: bitvector_3_d.Bitvector3) -> B.Buf: O.out_done(1, bv3_put(O.out_at(0n), 0, o))
 
 def bv3_valid(o: bitvector_3_d.Bitvector3) -> Bool:
   match o:
     case bitvector_3_d.Bitvector3{+w0}: U32.is_lt(w0, 8)
 
-def Gt9579E0A2FD_ser_pick(ok: Bool, +o: bitvector_3_d.Bitvector3) -> O.Encoded:
+def bitvector_3_ser_pick(ok: Bool, +o: bitvector_3_d.Bitvector3) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt9579E0A2FD_encode(o))
+    case True{}: O.encoded(bitvector_3_encode(o))
     case False{}: O.refused()
 
-def Gt9579E0A2FD_serialize(+o: bitvector_3_d.Bitvector3) -> O.Encoded: Gt9579E0A2FD_ser_pick(bv3_valid(o), o)
+def bitvector_3_serialize(+o: bitvector_3_d.Bitvector3) -> O.Encoded: bitvector_3_ser_pick(bv3_valid(o), o)

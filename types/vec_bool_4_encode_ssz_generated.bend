@@ -40,15 +40,15 @@ def v4_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 4, 4, 
 
 def v4_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_bool_pk(out, pos, v4_bool_valid(o))
 
-def GtC57121EA56_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_4_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(4, out))
 
-def GtC57121EA56_encode(o: O.Words) -> O.Words & B.Buf: GtC57121EA56_enc_out(v4_bool_put(O.out_at(0n), 0, o))
+def vec_bool_4_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_4_enc_out(v4_bool_put(O.out_at(0n), 0, o))
 
-def GtC57121EA56_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_4_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 4, out))
 
-def GtC57121EA56_serialize(o: O.Words) -> O.Words & O.Encoded: GtC57121EA56_senc_out(v4_bool_putk(O.out_at(0n), 0, o))
+def vec_bool_4_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_4_senc_out(v4_bool_putk(O.out_at(0n), 0, o))

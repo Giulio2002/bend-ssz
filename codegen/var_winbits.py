@@ -3,7 +3,7 @@
 offset: codegen/var_win.py's bit-list window (the interface of proofs/obj/vua_win.bend) with
 the generic runtime and the literal schema S.BitList{Nn} (generic_specs inlines it).
 
-    python3 codegen/var_winbits.py [--check] [--no-big]
+    python3 codegen/var_winbits.py [--check]
 """
 import sys
 from pathlib import Path
@@ -27,12 +27,12 @@ def win_text(N):
     return '\n'.join(out)
 
 
-def outputs(no_big=False):
+def outputs():
     return {ROOT / f'proofs/obj/var_winx_g_bits{N}.bend': win_text(N) for N in LISTS}
 
 
 def main():
-    out = outputs('--no-big' in sys.argv)
+    out = outputs()
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

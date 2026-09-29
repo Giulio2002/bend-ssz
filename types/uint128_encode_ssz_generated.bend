@@ -31,13 +31,13 @@ def u128_put(out: Array<U32>, +pos: U32, o: uint128_d.Uint128) -> Array<U32>:
   match o:
     case uint128_d.Uint128{+w0, +w1, +w2, +w3}: u128_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3)
 
-def Gt604E28A301_encode(+o: uint128_d.Uint128) -> B.Buf: O.out_done(16, u128_put(O.out_at(2n), 0, o))
+def uint128_encode(+o: uint128_d.Uint128) -> B.Buf: O.out_done(16, u128_put(O.out_at(2n), 0, o))
 
 def u128_valid(+o: uint128_d.Uint128) -> Bool: True{}
 
-def Gt604E28A301_ser_pick(ok: Bool, +o: uint128_d.Uint128) -> O.Encoded:
+def uint128_ser_pick(ok: Bool, +o: uint128_d.Uint128) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt604E28A301_encode(o))
+    case True{}: O.encoded(uint128_encode(o))
     case False{}: O.refused()
 
-def Gt604E28A301_serialize(+o: uint128_d.Uint128) -> O.Encoded: Gt604E28A301_ser_pick(u128_valid(o), o)
+def uint128_serialize(+o: uint128_d.Uint128) -> O.Encoded: uint128_ser_pick(u128_valid(o), o)

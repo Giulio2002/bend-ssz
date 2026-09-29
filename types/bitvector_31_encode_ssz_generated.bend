@@ -31,15 +31,15 @@ def bv31_put(out: Array<U32>, +pos: U32, o: bitvector_31_d.Bitvector31) -> Array
   match o:
     case bitvector_31_d.Bitvector31{+w0}: bv31_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def GtEDFB713194_encode(+o: bitvector_31_d.Bitvector31) -> B.Buf: O.out_done(4, bv31_put(O.out_at(0n), 0, o))
+def bitvector_31_encode(+o: bitvector_31_d.Bitvector31) -> B.Buf: O.out_done(4, bv31_put(O.out_at(0n), 0, o))
 
 def bv31_valid(o: bitvector_31_d.Bitvector31) -> Bool:
   match o:
     case bitvector_31_d.Bitvector31{+w0}: U32.is_lt(w0, 2147483648)
 
-def GtEDFB713194_ser_pick(ok: Bool, +o: bitvector_31_d.Bitvector31) -> O.Encoded:
+def bitvector_31_ser_pick(ok: Bool, +o: bitvector_31_d.Bitvector31) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtEDFB713194_encode(o))
+    case True{}: O.encoded(bitvector_31_encode(o))
     case False{}: O.refused()
 
-def GtEDFB713194_serialize(+o: bitvector_31_d.Bitvector31) -> O.Encoded: GtEDFB713194_ser_pick(bv31_valid(o), o)
+def bitvector_31_serialize(+o: bitvector_31_d.Bitvector31) -> O.Encoded: bitvector_31_ser_pick(bv31_valid(o), o)

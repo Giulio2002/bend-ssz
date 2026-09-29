@@ -37,7 +37,7 @@ import ./vua_win.bend as UW
 import ./vua_ct.bend as UCT
 import ../../spec/root_relation.bend as RR
 import ./vua_rd.bend as UR
-import ./big_vvlz.bend as VZG
+import ./vvlz.bend as VZG
 import ./vu8.bend as U8
 import ./vmv.bend as VMV
 import ./pb_min.bend as PB

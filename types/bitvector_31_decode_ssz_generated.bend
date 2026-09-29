@@ -23,17 +23,17 @@ def bv31_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv31_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv31_ok_len(U32.is_eq(len, 4), buf, off)
 
-def GtEDFB713194_some(pair: B.Buf & bitvector_31_d.Bitvector31) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
+def bitvector_31_some(pair: B.Buf & bitvector_31_d.Bitvector31) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtEDFB713194_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
+def bitvector_31_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtEDFB713194_some(bv31_read(buf, 0, size))
+    case True{}: bitvector_31_some(bv31_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtEDFB713194_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
-  GtEDFB713194_built(size, bv31_ok(buf, 0, size))
+def bitvector_31_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>:
+  bitvector_31_built(size, bv31_ok(buf, 0, size))
 
-def GtEDFB713194_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_31_d.Bitvector31: bv31_read(buf, 0, size)
+def bitvector_31_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_31_d.Bitvector31: bv31_read(buf, 0, size)

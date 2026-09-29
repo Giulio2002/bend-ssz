@@ -11,17 +11,17 @@ def bits17_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(b
 
 def bits17_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 17, False{})
 
-def GtAA99FAAC9D_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_17_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtAA99FAAC9D_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_17_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtAA99FAAC9D_some(bits17_read(buf, 0, size))
+    case True{}: bitlist_17_some(bits17_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtAA99FAAC9D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  GtAA99FAAC9D_built(size, bits17_ok(buf, 0, size))
+def bitlist_17_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_17_built(size, bits17_ok(buf, 0, size))
 
-def GtAA99FAAC9D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits17_read(buf, 0, size)
+def bitlist_17_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits17_read(buf, 0, size)

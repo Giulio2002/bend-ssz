@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def v8_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
-def Gt39CAD03032_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u16_root(64n, h, o, 0)
+def vec_uint16_8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u16_root(64n, h, o, 0)

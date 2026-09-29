@@ -23,17 +23,17 @@ def bv2_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv2_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv2_ok_len(U32.is_eq(len, 1), buf, off)
 
-def Gt9368483BAB_some(pair: B.Buf & bitvector_2_d.Bitvector2) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+def bitvector_2_some(pair: B.Buf & bitvector_2_d.Bitvector2) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt9368483BAB_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+def bitvector_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt9368483BAB_some(bv2_read(buf, 0, size))
+    case True{}: bitvector_2_some(bv2_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt9368483BAB_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
-  Gt9368483BAB_built(size, bv2_ok(buf, 0, size))
+def bitvector_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+  bitvector_2_built(size, bv2_ok(buf, 0, size))
 
-def Gt9368483BAB_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_2_d.Bitvector2: bv2_read(buf, 0, size)
+def bitvector_2_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_2_d.Bitvector2: bv2_read(buf, 0, size)

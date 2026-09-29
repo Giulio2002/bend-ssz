@@ -13,7 +13,7 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/vbitrep.bend as VR
 import ../proofs/obj/bitlist_rep.bend as BOr
-import ../proofs/obj/var_bits_enc_Gt039DD44FD8.bend as EN
+import ../proofs/obj/var_bits_enc_bitlist_33.bend as EN
 import ../types/bitlist_33_encode_ssz_generated.bend as bitlist_33_e
 import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
@@ -30,22 +30,22 @@ def ob(+T: FD.array__Tree<U32>, +K: U32, +hN: {Nat.is_le(U32.to_nat(K), 33n) == 
   EM.ob(CO.DOK(K), EN.OUT(T, K), CO.NK(K), BL.pf_oz(CO.DOK(K), T, K), FD.nat__le_lt_trans(B.capacity(CO.NK(K)), 1n, 29n, C.cap_le(CO.NK(K), 1n, {==}, hq), {==}), C.cap_q(CO.NK(K), 1n, {==}, hq))
 
 def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +rep: BOr.rep_bits(O.Bits{FD.array__thaw(U32, T), K}, GS.Gt039DD44FD8()), +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), FD.spec_common__pow2(dw)) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.Gt039DD44FD8_encode(O.Bits{FD.array__thaw(U32, T), K})))} == API.serialize(GS.Gt039DD44FD8(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(O.Bits & B.Buf, bitlist_33_e.Gt039DD44FD8_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, pf, hdw, rep, hcap)) :
-    {Some{E.obytes(Pair.snd(O.Bits, B.Buf, _))} == API.serialize(GS.Gt039DD44FD8(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
+    +rep: BOr.rep_bits(O.Bits{FD.array__thaw(U32, T), K}, GS.bitlist_33()), +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), FD.spec_common__pow2(dw)) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.bitlist_33_encode(O.Bits{FD.array__thaw(U32, T), K})))} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(O.Bits & B.Buf, bitlist_33_e.bitlist_33_encode(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.encode_eval(dw, T, K, pf, hdw, rep, hcap)) :
+    {Some{E.obytes(Pair.snd(O.Bits, B.Buf, _))} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}), EN.BY(T, K), ob(T, K, VR.rep_N(T, K, 33n, rep))) :
-    {Some{_} == API.serialize(GS.Gt039DD44FD8(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt039DD44FD8(), EN.VAL(T, K)), Some{EN.BY(T, K)},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt039DD44FD8(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(GS.Gt039DD44FD8(), EN.VAL(T, K)), Some{EN.BY(T, K)},
-      E.serialize_legal(GS.Gt039DD44FD8(), EN.VAL(T, K), VS.public_sound(GS.Gt039DD44FD8(), {==})), EN.encode_spec(dw, T, K, pf, hdw, rep, hcap)))
+    {Some{_} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(O.Bits{FD.array__thaw(U32, T), K})}) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.bitlist_33(), EN.VAL(T, K)), Some{EN.BY(T, K)},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.bitlist_33(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(GS.bitlist_33(), EN.VAL(T, K)), Some{EN.BY(T, K)},
+      E.serialize_legal(GS.bitlist_33(), EN.VAL(T, K), VS.public_sound(GS.bitlist_33(), {==})), EN.encode_spec(dw, T, K, pf, hdw, rep, hcap)))
 
 # (i)
-def bitlist_33_e2e_encode(-o: O.Bits, +rep: BOr.rep_bits(o, GS.Gt039DD44FD8()), +hs: BL.sdbc(o)) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.Gt039DD44FD8_encode(o)))} == API.serialize(GS.Gt039DD44FD8(), S.BitsValue{BOr.bview(o)}) : Maybe<&2, +List<U32>>}:
+def bitlist_33_e2e_encode(-o: O.Bits, +rep: BOr.rep_bits(o, GS.bitlist_33()), +hs: BL.sdbc(o)) -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.bitlist_33_encode(o)))} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(o)}) : Maybe<&2, +List<U32>>}:
   (+T, s1) = hs
   (+dw, s2) = s1
   (+K, s3) = s2
   (+eo, s4) = s3
   (+pf, s5) = s4
   (+hdw, +hcap) = s5
-  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, T), K}, eo) : {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.Gt039DD44FD8_encode(_)))} == API.serialize(GS.Gt039DD44FD8(), S.BitsValue{BOr.bview(_)}) : Maybe<&2, +List<U32>>}
-  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => BOr.rep_bits(z, GS.Gt039DD44FD8()), o, O.Bits{FD.array__thaw(U32, T), K}, eo, rep), hcap)
+  %Equal.sym(O.Bits, o, O.Bits{FD.array__thaw(U32, T), K}, eo) : {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.bitlist_33_encode(_)))} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(_)}) : Maybe<&2, +List<U32>>}
+  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => BOr.rep_bits(z, GS.bitlist_33()), o, O.Bits{FD.array__thaw(U32, T), K}, eo, rep), hcap)

@@ -358,7 +358,7 @@ def generic_small(names, small_mod):
 
 
 # (container, field, schema) of the generic fixed fields read word by word
-GENERIC_SMALL = [('Gc60805EC295', 'f_A', 'S.BitVector{256n}')]
+GENERIC_SMALL = [('ProgressiveBitsStruct', 'f_A', 'S.BitVector{256n}')]
 
 
 def bvw1_mod(HEAD, sig, TR, TRUE, N=257):
@@ -655,7 +655,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
 LEAVES = {'u8': ('vfx_u8', 1, 'S.Unsigned{P.U8{}}', 'U32'), 'u16': ('vfx_u16', 2, 'S.Unsigned{P.U16{}}', 'U32'),
           'u32': ('vfx_u32', 4, 'S.Unsigned{P.U32Width{}}', 'U32'), 'u64': ('vfx_u64', 8, 'S.Unsigned{P.U64{}}', 'O.U64')}
 # (vector runtime prefix, element record name, count)
-RECVECS = [('v4_GcDC3E457711', 'GcDC3E457711', 4)]
+RECVECS = [('v4_FixedTestStruct', 'FixedTestStruct', 4)]
 
 
 def recvec_mod(names, g, P_, R, K, HEAD, sig, TR, TRUE):

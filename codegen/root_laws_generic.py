@@ -384,10 +384,10 @@ def emit_phase_b(names):
     RA.PARTIAL_OK = set()
     gb = GenB(names)
     RA.PARTIAL_OK = saved_partial
-    saved = RB.HEAD, RB.BIG_NAMES
+    saved = RB.HEAD, RB.LARGE_NAMES
     try:
         RB.HEAD = swap_head(RB.HEAD)
-        RB.BIG_NAMES = ()
+        RB.LARGE_NAMES = ()
         # the generic forms' small leaves (uint8/uint16 fields) have
         # specification schemas only with root_laws' extra leaves
         RA.EXTRA_LEAVES = True
@@ -413,7 +413,7 @@ def emit_phase_b(names):
         RA.EXTRA_LEAVES = False
         text2 = text2 + '\n'.join(gb2.out[seen:] + ulaws) + '\n'
     finally:
-        RB.HEAD, RB.BIG_NAMES = saved
+        RB.HEAD, RB.LARGE_NAMES = saved
         RA.EXTRA_LEAVES = False
     text = text.replace('# Root laws of the Type-kind containers (see the generator).',
                         '# Root laws of the generic forms (Type-kind shapes), as proofs/obj/root_types.bend.')

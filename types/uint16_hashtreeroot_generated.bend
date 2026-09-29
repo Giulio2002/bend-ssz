@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def u16_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
 
-def GtECF9BB18D8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)
+def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)

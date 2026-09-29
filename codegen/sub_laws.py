@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Spec codec laws for the fixed-size generic forms with sub-word leaves.
 
-    python3 codegen/sub_laws.py [--check] [--no-big]
+    python3 codegen/sub_laws.py [--check]
 
 Writes proofs/obj/sub_pack.bend (the byte-level packing lemmas, proved once for
 every length) and the per-form law files proofs/obj/sub_*.bend.
@@ -15,8 +15,6 @@ cases over byte values: the only facts about a single byte are that a byte of
 a word is below 256 (its high bits are clear) and what the spec encoding of a
 byte-sized value is, both proved over the 32 bits of a word with linear case
 splits.
-
-`--no-big` is accepted: this generator writes no big_* file.
 """
 import sys
 from pathlib import Path

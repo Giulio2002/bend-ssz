@@ -6,7 +6,7 @@ import ../../spec/fulu_schemas.bend as Spec
 import ../../types/schema.bend as S
 import ./bitlist_obj_light.bend as BO
 import ./words_obj_light.bend as WO
-import ./big_lim_sym.bend as LSY
+import ./lim_sym.bend as LSY
 import ./lim_ul.bend as LUL
 
 # The closed schema facts of the 2^17 leaves under root_types' names without

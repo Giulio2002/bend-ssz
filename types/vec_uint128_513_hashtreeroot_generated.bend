@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def v513_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 9, seg)
 
-def Gt9EA902108D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u128_root(64n, h, o, 0)
+def vec_uint128_513_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u128_root(64n, h, o, 0)

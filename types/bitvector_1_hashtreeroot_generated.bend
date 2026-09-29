@@ -12,4 +12,4 @@ def bv1_root(+hl: Nat, h: B.Buf, o: bitvector_1_d.Bitvector1, +seg: U32) -> B.Bu
   match o:
     case bitvector_1_d.Bitvector1{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
-def GtFCF8066C33_hash_tree_root(h: B.Buf, +o: bitvector_1_d.Bitvector1) -> B.Buf & D.Digest: bv1_root(64n, h, o, 0)
+def bitvector_1_hash_tree_root(h: B.Buf, +o: bitvector_1_d.Bitvector1) -> B.Buf & D.Digest: bv1_root(64n, h, o, 0)

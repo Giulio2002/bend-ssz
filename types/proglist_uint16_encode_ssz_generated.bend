@@ -23,35 +23,35 @@ def pl_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 2)
 
 def pl_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u16_pk(out, pos, pl_u16_valid(o))
 
-def GtF23A2FB97E_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
+def proglist_uint16_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
   (o, O.out_done(n, out))
 
-def GtF23A2FB97E_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
+def proglist_uint16_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtF23A2FB97E_enc_out(n, out, o, m)
+  proglist_uint16_enc_out(n, out, o, m)
 
-def GtF23A2FB97E_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
+def proglist_uint16_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  GtF23A2FB97E_enc_put(n, pl_u16_putn(O.out_new(n), 0, o))
+  proglist_uint16_enc_put(n, pl_u16_putn(O.out_new(n), 0, o))
 
-def GtF23A2FB97E_encode(o: O.Words) -> O.Words & B.Buf: GtF23A2FB97E_enc_sized(pl_u16_size(o))
+def proglist_uint16_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint16_enc_sized(pl_u16_size(o))
 
-def GtF23A2FB97E_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+def proglist_uint16_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def GtF23A2FB97E_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def proglist_uint16_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtF23A2FB97E_senc_out(n, out, o, m)
+  proglist_uint16_senc_out(n, out, o, m)
 
-def GtF23A2FB97E_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+def proglist_uint16_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: GtF23A2FB97E_senc_put(n, pl_u16_putk(O.out_new(n), 0, o))
+    case False{}: proglist_uint16_senc_put(n, pl_u16_putk(O.out_new(n), 0, o))
 
-def GtF23A2FB97E_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+def proglist_uint16_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
   (o, +n) = pair
-  GtF23A2FB97E_senc_go(O.is_poisoned(n), n, o)
+  proglist_uint16_senc_go(O.is_poisoned(n), n, o)
 
-def GtF23A2FB97E_serialize(o: O.Words) -> O.Words & O.Encoded: GtF23A2FB97E_senc_sized(pl_u16_size(o))
+def proglist_uint16_serialize(o: O.Words) -> O.Words & O.Encoded: proglist_uint16_senc_sized(pl_u16_size(o))

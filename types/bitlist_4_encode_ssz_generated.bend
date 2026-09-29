@@ -23,22 +23,22 @@ def bits4_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 4, False{})
 
 def bits4_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits4_pk(out, pos, bits4_valid(o))
 
-def Gt484D1ADAFE_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_4_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt484D1ADAFE_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_4_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt484D1ADAFE_enc_out(out, o, m)
+  bitlist_4_enc_out(out, o, m)
 
-def Gt484D1ADAFE_encode(o: O.Bits) -> O.Bits & B.Buf: Gt484D1ADAFE_enc_put(bits4_putn(O.out_at(0n), 0, o))
+def bitlist_4_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_4_enc_put(bits4_putn(O.out_at(0n), 0, o))
 
-def Gt484D1ADAFE_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_4_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def Gt484D1ADAFE_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_4_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt484D1ADAFE_senc_out(out, o, m)
+  bitlist_4_senc_out(out, o, m)
 
-def Gt484D1ADAFE_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt484D1ADAFE_senc_put(bits4_putk(O.out_at(0n), 0, o))
+def bitlist_4_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_4_senc_put(bits4_putk(O.out_at(0n), 0, o))

@@ -18,10 +18,10 @@ import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vcont.bend as VCN
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/big_encx_Gc465214E502_iface.bend as CI
-import ../proofs/obj/big_var_codec_Gc465214E502_enc.bend as EN
-import ../proofs/obj/big_var_codec_Gc465214E502_enc_o.bend as ENo
-import ../proofs/obj/big_encx_Gc465214E502_iface_o.bend as CIo
+import ../proofs/obj/encx_VarTestStruct_iface.bend as CI
+import ../proofs/obj/var_codec_VarTestStruct_enc.bend as EN
+import ../proofs/obj/var_codec_VarTestStruct_enc_o.bend as ENo
+import ../proofs/obj/encx_VarTestStruct_iface_o.bend as CIo
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
 import ./e2e_support.bend as E
@@ -49,23 +49,23 @@ def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arr
   EM.obD(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, h31, hn)
 
 # (i) on a record
-def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(CI.TH(m))))} == API.serialize(Spec.Gc465214E502(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(VarTestStruct_d.Gc465214E502 & B.Buf, VarTestStruct_e.Gc465214E502_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
-    {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, _))} == API.serialize(Spec.Gc465214E502(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.Gc465214E502(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Gc465214E502(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Gc465214E502(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.Gc465214E502(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-      E.serialize_legal(Spec.Gc465214E502(), CI.VAL(m), VS.public_sound(Spec.Gc465214E502(), {==})), ENo.encode_specO(m, hok)))
+def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.VarTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(VarTestStruct_d.VarTestStruct & B.Buf, VarTestStruct_e.VarTestStruct_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
+    {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, _))} == API.serialize(Spec.VarTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.VarTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.VarTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.VarTestStruct(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.VarTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+      E.serialize_legal(Spec.VarTestStruct(), CI.VAL(m), VS.public_sound(Spec.VarTestStruct(), {==})), ENo.encode_specO(m, hok)))
 
 # an object, as a record: o == TH(m), its view VAL(m), OK(m)
-def via(-o: VarTestStruct_d.Gc465214E502, +m: CI.MW, +eo: {o == CI.TH(m) : VarTestStruct_d.Gc465214E502}, +ev: {RT.v_Gc465214E502(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
-    -> {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(o)))} == API.serialize(Spec.Gc465214E502(), RT.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(VarTestStruct_d.Gc465214E502, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(_)))} == API.serialize(Spec.Gc465214E502(), RT.v_Gc465214E502(_)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(S.Value, RT.v_Gc465214E502(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(CI.TH(m))))} == API.serialize(Spec.Gc465214E502(), _) : Maybe<&2, +List<U32>>}
+def via(-o: VarTestStruct_d.VarTestStruct, +m: CI.MW, +eo: {o == CI.TH(m) : VarTestStruct_d.VarTestStruct}, +ev: {RT.v_VarTestStruct(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(o)))} == API.serialize(Spec.VarTestStruct(), RT.v_VarTestStruct(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(VarTestStruct_d.VarTestStruct, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(_)))} == API.serialize(Spec.VarTestStruct(), RT.v_VarTestStruct(_)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(S.Value, RT.v_VarTestStruct(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.VarTestStruct(), _) : Maybe<&2, +List<U32>>}
   enc_m(m, hok)
 
 # the record's facts: the object is TH(m), its view VAL(m), m valid
-def vt1(-o: VarTestStruct_d.Gc465214E502, +c: ERD.VTR(o)) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(o)))} == API.serialize(Spec.Gc465214E502(), RT.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
+def vt1(-o: VarTestStruct_d.VarTestStruct, +c: ERD.VTR(o)) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(o)))} == API.serialize(Spec.VarTestStruct(), RT.v_VarTestStruct(o)) : Maybe<&2, +List<U32>>}:
   (+m, +c1) = c
   (+eo, +c2) = c1
   (+ev, +c3) = c2
@@ -73,5 +73,5 @@ def vt1(-o: VarTestStruct_d.Gc465214E502, +c: ERD.VTR(o)) -> {Some{E.obytes(Pair
   via(o, m, eo, ev, hok)
 
 # (i): for every object the root law represents
-def VarTestStruct_e2e_encode(-o: VarTestStruct_d.Gc465214E502, +rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()), +hs: BL.sdk(RT.pj_Gc465214E502_1(o), 31n)) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.Gc465214E502, B.Buf, VarTestStruct_e.Gc465214E502_encode(o)))} == API.serialize(Spec.Gc465214E502(), RT.v_Gc465214E502(o)) : Maybe<&2, +List<U32>>}:
+def VarTestStruct_e2e_encode(-o: VarTestStruct_d.VarTestStruct, +rep: RT.rep_VarTestStruct(o, Spec.VarTestStruct()), +hs: BL.sdk(RT.pj_VarTestStruct_1(o), 31n)) -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(o)))} == API.serialize(Spec.VarTestStruct(), RT.v_VarTestStruct(o)) : Maybe<&2, +List<U32>>}:
   vt1(o, ERD.vtb(o, rep, hs))

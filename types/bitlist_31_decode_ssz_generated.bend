@@ -11,17 +11,17 @@ def bits31_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(b
 
 def bits31_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 31, False{})
 
-def Gt4B1BA0C81D_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_31_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt4B1BA0C81D_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_31_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt4B1BA0C81D_some(bits31_read(buf, 0, size))
+    case True{}: bitlist_31_some(bits31_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt4B1BA0C81D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt4B1BA0C81D_built(size, bits31_ok(buf, 0, size))
+def bitlist_31_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_31_built(size, bits31_ok(buf, 0, size))
 
-def Gt4B1BA0C81D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits31_read(buf, 0, size)
+def bitlist_31_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits31_read(buf, 0, size)

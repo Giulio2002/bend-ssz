@@ -21,11 +21,11 @@ import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/big_encx_l131072_u64.bend as EXu
-import ../proofs/obj/big_var_winx_l131072_u64.bend as WU
-import ../proofs/obj/big_encx_IndexedAttestation_iface.bend as EI
-import ../proofs/obj/big_encx_AttesterSlashing_iface.bend as ES
-import ../proofs/obj/big_encx_l1_AttesterSlashing.bend as W1
+import ../proofs/obj/encx_l131072_u64.bend as EXu
+import ../proofs/obj/var_winx_l131072_u64.bend as WU
+import ../proofs/obj/encx_IndexedAttestation_iface.bend as EI
+import ../proofs/obj/encx_AttesterSlashing_iface.bend as ES
+import ../proofs/obj/encx_l1_AttesterSlashing.bend as W1
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
@@ -53,7 +53,7 @@ def ESA(+sE: S.Schema) -> Data:
   DK.P2({SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == U32.to_nat(131072) : Nat},
         {SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == U32.to_nat(131072) : Nat})
 
-# ---- the attesting indices' record (big_encx_l131072_u64) from their words: e2e-c's pu64 (e2e_encl) with the count bound ----
+# ---- the attesting indices' record (encx_l131072_u64) from their words: e2e-c's pu64 (e2e_encl) with the count bound ----
 def x8pw(+c: Nat, +hc: {Nat.is_le(c, U32.to_nat(131072)) == True{} : Bool}) -> {Nat.is_le(VS.x8(c), U32.to_nat(1048576)) == True{} : Bool}:
   +P = VB.pw(17n)
   +e17 = VG.u32pow(131072, 17n, {==}, {==})

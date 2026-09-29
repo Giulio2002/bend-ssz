@@ -7,9 +7,9 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_var_win_Attestation.bend as WT
-import ../proofs/obj/big_var_win_AggregateAndProof.bend as WA
-import ../proofs/obj/big_var_win_SignedAggregateAndProof.bend as WS
+import ../proofs/obj/var_win_Attestation.bend as WT
+import ../proofs/obj/var_win_AggregateAndProof.bend as WA
+import ../proofs/obj/var_win_SignedAggregateAndProof.bend as WS
 import ./e2e_attw.bend as ATW
 import ./e2e_bitv.bend as BTV
 

@@ -3,7 +3,7 @@
 container with a byte-offset window module): the interface of
 proofs/obj/vua_win.bend.
 
-    python3 codegen/var_winl.py [--check] [--no-big]
+    python3 codegen/var_winl.py [--check]
 
 The runtime reads the first offset O0; with O0 = 4 m it walks the m element
 windows [O_i, O_(i+1)) (the last one ends at len). The laws are proved per
@@ -21,8 +21,8 @@ import var_win as W  # noqa: E402
 ROOT = VL.ROOT
 
 # (list runtime prefix, count limit N, child runtime prefix, child window module)
-LISTS = [('l1_AttesterSlashing', 1, 'AttesterSlashing', 'big_var_winx_AttesterSlashing.bend'),
-         ('l8_Attestation', 8, 'Attestation', 'big_var_winx_Attestation.bend')]
+LISTS = [('l1_AttesterSlashing', 1, 'AttesterSlashing', 'var_winx_AttesterSlashing.bend'),
+         ('l8_Attestation', 8, 'Attestation', 'var_winx_Attestation.bend')]
 
 CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
       '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -1189,7 +1189,6 @@ def module_text(LP, N, C, chmod, ESCH, LSCH, LIMN):
 
 def main():
     import re
-    no_big = '--no-big' in sys.argv
     defs = W.spec_defs()
     kids, _ = VL.spec_schemas('BeaconBlockBody')
     lsch = {}
@@ -1199,10 +1198,8 @@ def main():
             lsch[mm.group(1)] = (f'Spec.{mm.group(1)}()', f'Spec.{k}()', mm.group(2))
     out = {}
     for LP, N, C, chmod in LISTS:
-        if no_big:
-            continue
         ESCH, LSCH, LIMN = lsch[ELEM[C]]
-        out[ROOT / f'proofs/obj/big_var_winx_{LP}.bend'] = module_text(LP, N, C, chmod, ESCH, LSCH, LIMN)
+        out[ROOT / f'proofs/obj/var_winx_{LP}.bend'] = module_text(LP, N, C, chmod, ESCH, LSCH, LIMN)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

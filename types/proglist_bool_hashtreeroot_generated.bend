@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def pl_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root_prog(hl, h, o, seg))
 
-def Gt83D8B3D008_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_bool_root(64n, h, o, 0)
+def proglist_bool_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_bool_root(64n, h, o, 0)

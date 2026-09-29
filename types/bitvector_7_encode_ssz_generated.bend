@@ -31,15 +31,15 @@ def bv7_put(out: Array<U32>, +pos: U32, o: bitvector_7_d.Bitvector7) -> Array<U3
   match o:
     case bitvector_7_d.Bitvector7{+w0}: bv7_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def GtAA8D1478A7_encode(+o: bitvector_7_d.Bitvector7) -> B.Buf: O.out_done(1, bv7_put(O.out_at(0n), 0, o))
+def bitvector_7_encode(+o: bitvector_7_d.Bitvector7) -> B.Buf: O.out_done(1, bv7_put(O.out_at(0n), 0, o))
 
 def bv7_valid(o: bitvector_7_d.Bitvector7) -> Bool:
   match o:
     case bitvector_7_d.Bitvector7{+w0}: U32.is_lt(w0, 128)
 
-def GtAA8D1478A7_ser_pick(ok: Bool, +o: bitvector_7_d.Bitvector7) -> O.Encoded:
+def bitvector_7_ser_pick(ok: Bool, +o: bitvector_7_d.Bitvector7) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtAA8D1478A7_encode(o))
+    case True{}: O.encoded(bitvector_7_encode(o))
     case False{}: O.refused()
 
-def GtAA8D1478A7_serialize(+o: bitvector_7_d.Bitvector7) -> O.Encoded: GtAA8D1478A7_ser_pick(bv7_valid(o), o)
+def bitvector_7_serialize(+o: bitvector_7_d.Bitvector7) -> O.Encoded: bitvector_7_ser_pick(bv7_valid(o), o)

@@ -23,17 +23,17 @@ def bv15_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv15_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv15_ok_len(U32.is_eq(len, 2), buf, off)
 
-def GtEDF530C7B9_some(pair: B.Buf & bitvector_15_d.Bitvector15) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
+def bitvector_15_some(pair: B.Buf & bitvector_15_d.Bitvector15) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtEDF530C7B9_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
+def bitvector_15_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtEDF530C7B9_some(bv15_read(buf, 0, size))
+    case True{}: bitvector_15_some(bv15_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtEDF530C7B9_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
-  GtEDF530C7B9_built(size, bv15_ok(buf, 0, size))
+def bitvector_15_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>:
+  bitvector_15_built(size, bv15_ok(buf, 0, size))
 
-def GtEDF530C7B9_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_15_d.Bitvector15: bv15_read(buf, 0, size)
+def bitvector_15_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_15_d.Bitvector15: bv15_read(buf, 0, size)

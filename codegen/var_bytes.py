@@ -2,7 +2,7 @@
 """Spec-connected codec laws of variable-size names whose variable part is a
 BYTE LIST (any length, not only whole words).
 
-    python3 codegen/var_bytes.py [--check] [--no-big]
+    python3 codegen/var_bytes.py [--check]
 
 Covered family: containers (plain or grouped: more than 8 fields) whose fixed
 fields are word-aligned Data leaves and records (uint64, uint256, byte vectors
@@ -185,7 +185,7 @@ class Name:
 
 
 def fname(x, part=''):
-    big = 'big_' if getattr(x, 'big', False) else ''
+    big = '' if getattr(x, 'big', False) else ''
     return ROOT / f'proofs/obj/{big}var_bytes_{x.n}{part}.bend'
 
 
@@ -1179,11 +1179,10 @@ def main():
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_text(x)
         out[fname(x, '_enc')] = VBE.enc_module_text(x)
-    out.update(VBN.outputs(g, names, '--no-big' in sys.argv))
-    out.update(VBNE.outputs(g, names, '--no-big' in sys.argv))
+    out.update(VBN.outputs(g, names))
+    out.update(VBNE.outputs(g, names))
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
-    nb = '--no-big' in sys.argv
-    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (nb and q.name.startswith('big_'))]
+    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
     out = deep.dify_out(out, post=enc_strict)

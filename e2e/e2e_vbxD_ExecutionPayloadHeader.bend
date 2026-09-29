@@ -11,7 +11,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as W
 import ./e2e_bx.bend as BX
-import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH
+import ../proofs/obj/vvl_l1048576_bl1073741824.bend as TXH
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/uint256_def_generated.bend as uint256_d

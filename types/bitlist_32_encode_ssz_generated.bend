@@ -23,35 +23,35 @@ def bits32_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 32, False{})
 
 def bits32_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits32_pk(out, pos, bits32_valid(o))
 
-def Gt2F34855D3D_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_32_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt2F34855D3D_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_32_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt2F34855D3D_enc_out(n, out, o, m)
+  bitlist_32_enc_out(n, out, o, m)
 
-def Gt2F34855D3D_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
+def bitlist_32_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  Gt2F34855D3D_enc_put(n, bits32_putn(O.out_new(n), 0, o))
+  bitlist_32_enc_put(n, bits32_putn(O.out_new(n), 0, o))
 
-def Gt2F34855D3D_encode(o: O.Bits) -> O.Bits & B.Buf: Gt2F34855D3D_enc_sized(bits32_size(o))
+def bitlist_32_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_32_enc_sized(bits32_size(o))
 
-def Gt2F34855D3D_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_32_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt2F34855D3D_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_32_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt2F34855D3D_senc_out(n, out, o, m)
+  bitlist_32_senc_out(n, out, o, m)
 
-def Gt2F34855D3D_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+def bitlist_32_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt2F34855D3D_senc_put(n, bits32_putk(O.out_new(n), 0, o))
+    case False{}: bitlist_32_senc_put(n, bits32_putk(O.out_new(n), 0, o))
 
-def Gt2F34855D3D_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+def bitlist_32_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
   (o, +n) = pair
-  Gt2F34855D3D_senc_go(O.is_poisoned(n), n, o)
+  bitlist_32_senc_go(O.is_poisoned(n), n, o)
 
-def Gt2F34855D3D_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt2F34855D3D_senc_sized(bits32_size(o))
+def bitlist_32_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_32_senc_sized(bits32_size(o))

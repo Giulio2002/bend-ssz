@@ -31,22 +31,22 @@ def bits6_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.B
 def bits6_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
   bits6_pvb(cur, bits6_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gt98B8C9F262_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_6_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt98B8C9F262_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_6_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt98B8C9F262_enc_out(out, o, m)
+  bitlist_6_enc_out(out, o, m)
 
-def Gt98B8C9F262_encode(o: O.Bits) -> O.Bits & B.Buf: Gt98B8C9F262_enc_put(bits6_putn(O.out_at(0n), 0, o))
+def bitlist_6_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_6_enc_put(bits6_putn(O.out_at(0n), 0, o))
 
-def Gt98B8C9F262_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_6_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def Gt98B8C9F262_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_6_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt98B8C9F262_senc_out(out, o, m)
+  bitlist_6_senc_out(out, o, m)
 
-def Gt98B8C9F262_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt98B8C9F262_senc_put(bits6_putk(O.out_at(0n), 0, o))
+def bitlist_6_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_6_senc_put(bits6_putk(O.out_at(0n), 0, o))

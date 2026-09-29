@@ -18,17 +18,17 @@ def v1_u256_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v1_u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v1_u256_ok_len(U32.is_eq(len, 32), buf, off)
 
-def GtBBFD66E011_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint256_1_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtBBFD66E011_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint256_1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtBBFD66E011_some(v1_u256_read(buf, 0, size))
+    case True{}: vec_uint256_1_some(v1_u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtBBFD66E011_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtBBFD66E011_built(size, v1_u256_ok(buf, 0, size))
+def vec_uint256_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint256_1_built(size, v1_u256_ok(buf, 0, size))
 
-def GtBBFD66E011_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u256_read(buf, 0, size)
+def vec_uint256_1_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u256_read(buf, 0, size)

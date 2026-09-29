@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def pbits_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root_prog(hl, h, o, seg)
 
-def GtF7582E0E9A_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): pbits_root(64n, h, o, 0)
+def progbitlist_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): pbits_root(64n, h, o, 0)

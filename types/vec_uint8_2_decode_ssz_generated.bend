@@ -18,17 +18,17 @@ def v2_u8_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v2_u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v2_u8_ok_len(U32.is_eq(len, 2), buf, off)
 
-def Gt3429157FEB_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint8_2_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt3429157FEB_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint8_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt3429157FEB_some(v2_u8_read(buf, 0, size))
+    case True{}: vec_uint8_2_some(v2_u8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt3429157FEB_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt3429157FEB_built(size, v2_u8_ok(buf, 0, size))
+def vec_uint8_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint8_2_built(size, v2_u8_ok(buf, 0, size))
 
-def Gt3429157FEB_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u8_read(buf, 0, size)
+def vec_uint8_2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u8_read(buf, 0, size)

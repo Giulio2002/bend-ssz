@@ -18,17 +18,17 @@ def v16_u8_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v16_u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v16_u8_ok_len(U32.is_eq(len, 16), buf, off)
 
-def Gt28ED72E3EF_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint8_16_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt28ED72E3EF_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint8_16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt28ED72E3EF_some(v16_u8_read(buf, 0, size))
+    case True{}: vec_uint8_16_some(v16_u8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt28ED72E3EF_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt28ED72E3EF_built(size, v16_u8_ok(buf, 0, size))
+def vec_uint8_16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint8_16_built(size, v16_u8_ok(buf, 0, size))
 
-def Gt28ED72E3EF_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u8_read(buf, 0, size)
+def vec_uint8_16_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u8_read(buf, 0, size)

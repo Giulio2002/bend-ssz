@@ -18,17 +18,17 @@ def u16_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u16_ok_len(U32.is_eq(len, 2), buf, off)
 
-def GtECF9BB18D8_some(pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+def uint16_some(pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtECF9BB18D8_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, U32>:
+def uint16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, U32>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtECF9BB18D8_some(u16_read(buf, 0, size))
+    case True{}: uint16_some(u16_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtECF9BB18D8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
-  GtECF9BB18D8_built(size, u16_ok(buf, 0, size))
+def uint16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  uint16_built(size, u16_ok(buf, 0, size))
 
-def GtECF9BB18D8_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u16_read(buf, 0, size)
+def uint16_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u16_read(buf, 0, size)

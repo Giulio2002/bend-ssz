@@ -23,22 +23,22 @@ def bits3_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 3, False{})
 
 def bits3_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits3_pk(out, pos, bits3_valid(o))
 
-def GtC847E618FA_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_3_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtC847E618FA_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_3_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtC847E618FA_enc_out(out, o, m)
+  bitlist_3_enc_out(out, o, m)
 
-def GtC847E618FA_encode(o: O.Bits) -> O.Bits & B.Buf: GtC847E618FA_enc_put(bits3_putn(O.out_at(0n), 0, o))
+def bitlist_3_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_3_enc_put(bits3_putn(O.out_at(0n), 0, o))
 
-def GtC847E618FA_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_3_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def GtC847E618FA_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_3_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtC847E618FA_senc_out(out, o, m)
+  bitlist_3_senc_out(out, o, m)
 
-def GtC847E618FA_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtC847E618FA_senc_put(bits3_putk(O.out_at(0n), 0, o))
+def bitlist_3_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_3_senc_put(bits3_putk(O.out_at(0n), 0, o))

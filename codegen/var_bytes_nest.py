@@ -943,12 +943,10 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
 """
 
 
-def outputs(g, names, no_big):
+def outputs(g, names):
     out = {}
     for n in ORDER:
         x = NName(g, n, names[n])
-        if x.big and no_big:
-            continue
         out[VBY.fname(x, '_win')] = win_text(x)
         out[VBY.fname(x)] = VBY.top_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')
         out[VBY.fname(x, '_unique')] = VBY.unique_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')

@@ -33,17 +33,17 @@ def v1_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v1_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v1_bool_ok_len(U32.is_eq(len, 1), buf, off)
 
-def GtAE3EF932C2_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_1_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtAE3EF932C2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtAE3EF932C2_some(v1_bool_read(buf, 0, size))
+    case True{}: vec_bool_1_some(v1_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtAE3EF932C2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtAE3EF932C2_built(size, v1_bool_ok(buf, 0, size))
+def vec_bool_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_bool_1_built(size, v1_bool_ok(buf, 0, size))
 
-def GtAE3EF932C2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_bool_read(buf, 0, size)
+def vec_bool_1_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_bool_read(buf, 0, size)

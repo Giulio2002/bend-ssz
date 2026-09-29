@@ -11,17 +11,17 @@ def bits32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(b
 
 def bits32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 32, False{})
 
-def Gt2F34855D3D_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_32_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt2F34855D3D_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_32_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt2F34855D3D_some(bits32_read(buf, 0, size))
+    case True{}: bitlist_32_some(bits32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt2F34855D3D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  Gt2F34855D3D_built(size, bits32_ok(buf, 0, size))
+def bitlist_32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_32_built(size, bits32_ok(buf, 0, size))
 
-def Gt2F34855D3D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits32_read(buf, 0, size)
+def bitlist_32_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits32_read(buf, 0, size)

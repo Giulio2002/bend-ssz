@@ -11,17 +11,17 @@ def bits2_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits2_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 2, False{})
 
-def GtCF587DD386_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_2_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtCF587DD386_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtCF587DD386_some(bits2_read(buf, 0, size))
+    case True{}: bitlist_2_some(bits2_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtCF587DD386_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  GtCF587DD386_built(size, bits2_ok(buf, 0, size))
+def bitlist_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_2_built(size, bits2_ok(buf, 0, size))
 
-def GtCF587DD386_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits2_read(buf, 0, size)
+def bitlist_2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits2_read(buf, 0, size)

@@ -2,15 +2,6 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../types/uint256_def_generated.bend as uint256_d
-import ../../types/boolean_decode_ssz_generated.bend as boolean_r
-import ../../types/boolean_encode_ssz_generated.bend as boolean_e
-import ../../types/uint32_decode_ssz_generated.bend as uint32_r
-import ../../types/uint32_encode_ssz_generated.bend as uint32_e
-import ../../types/uint64_decode_ssz_generated.bend as uint64_r
-import ../../types/uint64_encode_ssz_generated.bend as uint64_e
-import ../../types/uint256_decode_ssz_generated.bend as uint256_r
-import ../../types/uint256_encode_ssz_generated.bend as uint256_e
 import ../../types/bitvector_32_def_generated.bend as bitvector_32_d
 import ../../types/uint128_def_generated.bend as uint128_d
 import ../../types/bitvector_32_decode_ssz_generated.bend as bitvector_32_r
@@ -25,113 +16,45 @@ import ../../types/bitvector_512_encode_ssz_generated.bend as bitvector_512_e
 # Only the schemas whose encoding is whole words at word-aligned positions
 # qualify; the rest are variable size or sub-word and are not claimed.
 
-# ---- GtBBF12DAB28 (4 bytes) ----
-def GtBBF12DAB28_encoded_size(+x0: U32)
-    -> {B.size(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0})) == (bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), 4) : B.Buf & U32}:
+# ---- bitvector_32 (4 bytes) ----
+def bitvector_32_encoded_size(+x0: U32)
+    -> {B.size(bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0})) == (bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), 4) : B.Buf & U32}:
   {==}
-def GtBBF12DAB28_roundtrip(+x0: U32)
-    -> {bitvector_32_r.GtBBF12DAB28_decode(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), 4) == (bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), Some{bitvector_32_d.Bitvector32{x0}}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
+def bitvector_32_roundtrip(+x0: U32)
+    -> {bitvector_32_r.bitvector_32_decode(bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), 4) == (bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), Some{bitvector_32_d.Bitvector32{x0}}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
   {==}
-def GtBBF12DAB28_reject_short(+x0: U32)
-    -> {bitvector_32_r.GtBBF12DAB28_decode(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), 3) == (bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), None{}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
+def bitvector_32_reject_short(+x0: U32)
+    -> {bitvector_32_r.bitvector_32_decode(bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), 3) == (bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), None{}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
   {==}
-def GtBBF12DAB28_reject_long(+x0: U32)
-    -> {bitvector_32_r.GtBBF12DAB28_decode(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), 5) == (bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), None{}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
-  {==}
-
-# ---- Gt0A390CB480 (64 bytes) ----
-def Gt0A390CB480_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
-    -> {B.size(bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15})) == (bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 64) : B.Buf & U32}:
-  {==}
-def Gt0A390CB480_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
-    -> {bitvector_512_r.Gt0A390CB480_decode(bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 64) == (bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), Some{Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
-  {==}
-def Gt0A390CB480_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
-    -> {bitvector_512_r.Gt0A390CB480_decode(bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 63) == (bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
-  {==}
-def Gt0A390CB480_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
-    -> {bitvector_512_r.Gt0A390CB480_decode(bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 65) == (bitvector_512_e.Gt0A390CB480_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
+def bitvector_32_reject_long(+x0: U32)
+    -> {bitvector_32_r.bitvector_32_decode(bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), 5) == (bitvector_32_e.bitvector_32_encode(bitvector_32_d.Bitvector32{x0}), None{}) : B.Buf & Maybe<&1, bitvector_32_d.Bitvector32>}:
   {==}
 
-# ---- GtAD72FD256A (1 bytes) ----
-def GtAD72FD256A_t_encoded_size()
-    -> {B.size(boolean_e.GtAD72FD256A_encode(True{})) == (boolean_e.GtAD72FD256A_encode(True{}), 1) : B.Buf & U32}:
+# ---- bitvector_512 (64 bytes) ----
+def bitvector_512_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
+    -> {B.size(bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15})) == (bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 64) : B.Buf & U32}:
   {==}
-def GtAD72FD256A_t_roundtrip()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(True{}), 1) == (boolean_e.GtAD72FD256A_encode(True{}), Some{True{}}) : B.Buf & Maybe<&1, Bool>}:
+def bitvector_512_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
+    -> {bitvector_512_r.bitvector_512_decode(bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 64) == (bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), Some{Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
   {==}
-def GtAD72FD256A_t_reject_short()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(True{}), 0) == (boolean_e.GtAD72FD256A_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
+def bitvector_512_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
+    -> {bitvector_512_r.bitvector_512_decode(bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 63) == (bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
   {==}
-def GtAD72FD256A_t_reject_long()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(True{}), 2) == (boolean_e.GtAD72FD256A_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
-  {==}
-def GtAD72FD256A_f_encoded_size()
-    -> {B.size(boolean_e.GtAD72FD256A_encode(False{})) == (boolean_e.GtAD72FD256A_encode(False{}), 1) : B.Buf & U32}:
-  {==}
-def GtAD72FD256A_f_roundtrip()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(False{}), 1) == (boolean_e.GtAD72FD256A_encode(False{}), Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
-  {==}
-def GtAD72FD256A_f_reject_short()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(False{}), 0) == (boolean_e.GtAD72FD256A_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
-  {==}
-def GtAD72FD256A_f_reject_long()
-    -> {boolean_r.GtAD72FD256A_decode(boolean_e.GtAD72FD256A_encode(False{}), 2) == (boolean_e.GtAD72FD256A_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
+def bitvector_512_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32)
+    -> {bitvector_512_r.bitvector_512_decode(bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), 65) == (bitvector_512_e.bitvector_512_encode(Fulu_bitvector_512_d.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
   {==}
 
-# ---- Gt604E28A301 (16 bytes) ----
-def Gt604E28A301_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
-    -> {B.size(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3})) == (uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), 16) : B.Buf & U32}:
+# ---- uint128 (16 bytes) ----
+def uint128_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {B.size(uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3})) == (uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), 16) : B.Buf & U32}:
   {==}
-def Gt604E28A301_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
-    -> {uint128_r.Gt604E28A301_decode(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), 16) == (uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), Some{uint128_d.Uint128{x0, x1, x2, x3}}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+def uint128_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {uint128_r.uint128_decode(uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), 16) == (uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), Some{uint128_d.Uint128{x0, x1, x2, x3}}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
   {==}
-def Gt604E28A301_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
-    -> {uint128_r.Gt604E28A301_decode(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), 15) == (uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+def uint128_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {uint128_r.uint128_decode(uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), 15) == (uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
   {==}
-def Gt604E28A301_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
-    -> {uint128_r.Gt604E28A301_decode(uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), 17) == (uint128_e.Gt604E28A301_encode(uint128_d.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
-  {==}
-
-# ---- Gt59DCDB2873 (32 bytes) ----
-def Gt59DCDB2873_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {B.size(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})) == (uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) : B.Buf & U32}:
-  {==}
-def Gt59DCDB2873_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {uint256_r.Gt59DCDB2873_decode(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) == (uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), Some{uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
-  {==}
-def Gt59DCDB2873_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {uint256_r.Gt59DCDB2873_decode(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 31) == (uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
-  {==}
-def Gt59DCDB2873_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {uint256_r.Gt59DCDB2873_decode(uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 33) == (uint256_e.Gt59DCDB2873_encode(uint256_d.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
-  {==}
-
-# ---- Gt7B8507E2C2 (4 bytes) ----
-def Gt7B8507E2C2_encoded_size(+x0: U32)
-    -> {B.size(uint32_e.Gt7B8507E2C2_encode(x0)) == (uint32_e.Gt7B8507E2C2_encode(x0), 4) : B.Buf & U32}:
-  {==}
-def Gt7B8507E2C2_roundtrip(+x0: U32)
-    -> {uint32_r.Gt7B8507E2C2_decode(uint32_e.Gt7B8507E2C2_encode(x0), 4) == (uint32_e.Gt7B8507E2C2_encode(x0), Some{x0}) : B.Buf & Maybe<&1, U32>}:
-  {==}
-def Gt7B8507E2C2_reject_short(+x0: U32)
-    -> {uint32_r.Gt7B8507E2C2_decode(uint32_e.Gt7B8507E2C2_encode(x0), 3) == (uint32_e.Gt7B8507E2C2_encode(x0), None{}) : B.Buf & Maybe<&1, U32>}:
-  {==}
-def Gt7B8507E2C2_reject_long(+x0: U32)
-    -> {uint32_r.Gt7B8507E2C2_decode(uint32_e.Gt7B8507E2C2_encode(x0), 5) == (uint32_e.Gt7B8507E2C2_encode(x0), None{}) : B.Buf & Maybe<&1, U32>}:
-  {==}
-
-# ---- Gt62B0093BE7 (8 bytes) ----
-def Gt62B0093BE7_encoded_size(+x0: U32, +x1: U32)
-    -> {B.size(uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1})) == (uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
-  {==}
-def Gt62B0093BE7_roundtrip(+x0: U32, +x1: U32)
-    -> {uint64_r.Gt62B0093BE7_decode(uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), 8) == (uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def Gt62B0093BE7_reject_short(+x0: U32, +x1: U32)
-    -> {uint64_r.Gt62B0093BE7_decode(uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), 7) == (uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def Gt62B0093BE7_reject_long(+x0: U32, +x1: U32)
-    -> {uint64_r.Gt62B0093BE7_decode(uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), 9) == (uint64_e.Gt62B0093BE7_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+def uint128_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {uint128_r.uint128_decode(uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), 17) == (uint128_e.uint128_encode(uint128_d.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
   {==}
 

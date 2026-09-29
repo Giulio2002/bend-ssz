@@ -31,15 +31,15 @@ def bv17_put(out: Array<U32>, +pos: U32, o: bitvector_17_d.Bitvector17) -> Array
   match o:
     case bitvector_17_d.Bitvector17{+w0}: bv17_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def GtFF7C03E8A0_encode(+o: bitvector_17_d.Bitvector17) -> B.Buf: O.out_done(3, bv17_put(O.out_at(0n), 0, o))
+def bitvector_17_encode(+o: bitvector_17_d.Bitvector17) -> B.Buf: O.out_done(3, bv17_put(O.out_at(0n), 0, o))
 
 def bv17_valid(o: bitvector_17_d.Bitvector17) -> Bool:
   match o:
     case bitvector_17_d.Bitvector17{+w0}: U32.is_lt(w0, 131072)
 
-def GtFF7C03E8A0_ser_pick(ok: Bool, +o: bitvector_17_d.Bitvector17) -> O.Encoded:
+def bitvector_17_ser_pick(ok: Bool, +o: bitvector_17_d.Bitvector17) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtFF7C03E8A0_encode(o))
+    case True{}: O.encoded(bitvector_17_encode(o))
     case False{}: O.refused()
 
-def GtFF7C03E8A0_serialize(+o: bitvector_17_d.Bitvector17) -> O.Encoded: GtFF7C03E8A0_ser_pick(bv17_valid(o), o)
+def bitvector_17_serialize(+o: bitvector_17_d.Bitvector17) -> O.Encoded: bitvector_17_ser_pick(bv17_valid(o), o)

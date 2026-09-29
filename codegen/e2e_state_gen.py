@@ -25,8 +25,8 @@ HEAD = [
     'import ../proofs/obj/var_elems.bend as EL', 'import ../proofs/obj/bitlist_pack.bend as BLP',
     'import ../proofs/obj/root_state.bend as ST',
     'import ../proofs/obj/vfx_bv4.bend as F4', 'import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d',
-    'import ../proofs/obj/big_var_winx_l1099511627776_u8.bend as W8', 'import ../proofs/obj/big_var_winx_l1099511627776_u64.bend as W64',
-    'import ../proofs/obj/big_var_winx_l16777216_b32.bend as WH',
+    'import ../proofs/obj/var_winx_l1099511627776_u8.bend as W8', 'import ../proofs/obj/var_winx_l1099511627776_u64.bend as W64',
+    'import ../proofs/obj/var_winx_l16777216_b32.bend as WH',
     'import ./e2e_bvsub.bend as BVS', 'import ./e2e_bvw.bend as BVW', 'import ./e2e_pv8.bend as EP8', 'import ./e2e_bx.bend as BXW',
     'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_plw.bend as PW']
 
@@ -202,7 +202,7 @@ def text():
 ''' + BASE + lists_text()
 
 
-# ---- BeaconState (ii)/(iii): its window (big_var_winx_BeaconState) through e2e-b's vbx_module, with the fields as holes ----
+# ---- BeaconState (ii)/(iii): its window (var_winx_BeaconState) through e2e-b's vbx_module, with the fields as holes ----
 FSZ = 2737225   # the fixed part's bytes (hF)
 
 
@@ -271,7 +271,7 @@ def vbx_state():
     for j, V in ((1, 'l2048_Eth1Data'), (2, 'l1099511627776_Validator'), (8, 'l16777216_HistoricalSummary'), (9, 'l134217728_PendingDeposit'),
                  (10, 'l134217728_PendingPartialWithdrawal'), (11, 'l262144_PendingConsolidation')):
         imps.append(f'import ./e2e_vl_{V}.bend as VL{j}')
-    txt = EVB.vbx_module('BeaconState', 'big_var_winx_BeaconState', state_holes(), ['+hF = W.hFc(t, x, off, len, hchk)'], imps)
+    txt = EVB.vbx_module('BeaconState', 'var_winx_BeaconState', state_holes(), ['+hF = W.hFc(t, x, off, len, hchk)'], imps)
     return EVB.st_qualify(txt)
 
 
@@ -424,7 +424,7 @@ def vbx_state_deep():
     for j, V in ((1, 'l2048_Eth1Data'), (2, 'l1099511627776_Validator'), (8, 'l16777216_HistoricalSummary'), (9, 'l134217728_PendingDeposit'),
                  (10, 'l134217728_PendingPartialWithdrawal'), (11, 'l262144_PendingConsolidation')):
         imps.append(f'import ./e2e_vl_{V}.bend as VL{j}')
-    txt = EVB.vbx_module('BeaconState', 'big_var_winx_BeaconState', state_holes_deep(), ['+hF = W.hFc(t, x, off, len, hchk)'], imps)
+    txt = EVB.vbx_module('BeaconState', 'var_winx_BeaconState', state_holes_deep(), ['+hF = W.hFc(t, x, off, len, hchk)'], imps)
     a = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},'
     assert txt.count(a) == 1
     txt = txt.replace(a, '+hd: {Nat.is_lt(d, 31n) == True{} : Bool},\n    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, '

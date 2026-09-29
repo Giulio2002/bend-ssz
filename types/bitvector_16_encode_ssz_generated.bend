@@ -31,15 +31,15 @@ def bv16_put(out: Array<U32>, +pos: U32, o: bitvector_16_d.Bitvector16) -> Array
   match o:
     case bitvector_16_d.Bitvector16{+w0}: bv16_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def GtED805B7C93_encode(+o: bitvector_16_d.Bitvector16) -> B.Buf: O.out_done(2, bv16_put(O.out_at(0n), 0, o))
+def bitvector_16_encode(+o: bitvector_16_d.Bitvector16) -> B.Buf: O.out_done(2, bv16_put(O.out_at(0n), 0, o))
 
 def bv16_valid(o: bitvector_16_d.Bitvector16) -> Bool:
   match o:
     case bitvector_16_d.Bitvector16{+w0}: U32.is_lt(w0, 65536)
 
-def GtED805B7C93_ser_pick(ok: Bool, +o: bitvector_16_d.Bitvector16) -> O.Encoded:
+def bitvector_16_ser_pick(ok: Bool, +o: bitvector_16_d.Bitvector16) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtED805B7C93_encode(o))
+    case True{}: O.encoded(bitvector_16_encode(o))
     case False{}: O.refused()
 
-def GtED805B7C93_serialize(+o: bitvector_16_d.Bitvector16) -> O.Encoded: GtED805B7C93_ser_pick(bv16_valid(o), o)
+def bitvector_16_serialize(+o: bitvector_16_d.Bitvector16) -> O.Encoded: bitvector_16_ser_pick(bv16_valid(o), o)

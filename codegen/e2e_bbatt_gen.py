@@ -5,7 +5,7 @@ Interface agreed with e2e-b (see its e2e_eptx: R_T / mk_T):
   LN8(w) -> Nat             the list's encoded byte count, from the object alone
   R_8(po) -> Data           Ex m. po == EX.TH(m), xv(EX.TH(m)) == EX.VAL(m), EX.OK(m), LN(EX.ENC(m)) == LN8(po)
   mk_8(-po, +s, +el, +es, +rep, +hs, +hz) -> R_8(po)
-The encoder records (big_encx_l8_Attestation: a tree of optional element records EM.MW) are built from
+The encoder records (encx_l8_Attestation: a tree of optional element records EM.MW) are built from
 root_types' mirror tree (rep_l8_Attestation's t) element by element (cvE / CV), after e2e-b's e2e_ml_*.
 """
 import e2e_bview_gen as BVG
@@ -28,8 +28,8 @@ IMPORTS = [
     'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/schema_shapes.bend as SH',
     'import ../proofs/obj/spec_bits.bend as FB',
     'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
-    'import ../proofs/obj/big_encx_bits131072.bend as EXb', 'import ../proofs/obj/big_encx_Attestation_iface.bend as EM',
-    'import ../proofs/obj/big_encx_l8_Attestation.bend as W8',
+    'import ../proofs/obj/encx_bits131072.bend as EXb', 'import ../proofs/obj/encx_Attestation_iface.bend as EM',
+    'import ../proofs/obj/encx_l8_Attestation.bend as W8',
     'import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d', 'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d',
     'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d', 'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d',
     'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d', 'import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d',
@@ -436,9 +436,9 @@ IMPORTS1 = [
     'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/vbytes.bend as VY',
     'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/list_obj.bend as LO',
     'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
-    'import ../proofs/obj/big_encx_l131072_u64.bend as EXu', 'import ../proofs/obj/big_var_winx_l131072_u64.bend as WU',
-    'import ../proofs/obj/big_encx_IndexedAttestation_iface.bend as EI', 'import ../proofs/obj/big_encx_AttesterSlashing_iface.bend as ES',
-    'import ../proofs/obj/big_encx_l1_AttesterSlashing.bend as W1',
+    'import ../proofs/obj/encx_l131072_u64.bend as EXu', 'import ../proofs/obj/var_winx_l131072_u64.bend as WU',
+    'import ../proofs/obj/encx_IndexedAttestation_iface.bend as EI', 'import ../proofs/obj/encx_AttesterSlashing_iface.bend as ES',
+    'import ../proofs/obj/encx_l1_AttesterSlashing.bend as W1',
     'import ../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d', 'import ../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d',
     'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d', 'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d',
     'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d', 'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d',
@@ -495,7 +495,7 @@ def ESA(+sE: S.Schema) -> Data:
   DK.P2({{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Container_fields(sE))))) == {NB1} : Nat}},
         {{SH.ListOf_limit(SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(sE)))))) == {NB1} : Nat}})
 
-# ---- the attesting indices' record (big_encx_l131072_u64) from their words: e2e-c's pu64 (e2e_encl) with the count bound ----
+# ---- the attesting indices' record (encx_l131072_u64) from their words: e2e-c's pu64 (e2e_encl) with the count bound ----
 def x8pw(+c: Nat, +hc: {{Nat.is_le(c, {NB1}) == True{{}} : Bool}}) -> {{Nat.is_le(VS.x8(c), U32.to_nat(1048576)) == True{{}} : Bool}}:
   +P = VB.pw(17n)
   +e17 = VG.u32pow(131072, 17n, {{==}}, {{==}})

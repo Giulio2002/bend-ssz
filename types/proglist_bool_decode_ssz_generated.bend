@@ -31,17 +31,17 @@ def pl_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool:
 
 def pl_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: pl_bool_ok_len(Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}), buf, off, len)
 
-def Gt83D8B3D008_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_bool_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt83D8B3D008_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_bool_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt83D8B3D008_some(pl_bool_read(buf, 0, size))
+    case True{}: proglist_bool_some(pl_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt83D8B3D008_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt83D8B3D008_built(size, pl_bool_ok(buf, 0, size))
+def proglist_bool_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  proglist_bool_built(size, pl_bool_ok(buf, 0, size))
 
-def Gt83D8B3D008_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_bool_read(buf, 0, size)
+def proglist_bool_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_bool_read(buf, 0, size)

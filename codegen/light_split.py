@@ -364,7 +364,7 @@ def hand_written():
 
 
 def main():
-    args = [a for a in sys.argv[1:] if a != '--no-big']
+    args = sys.argv[1:]
     mode = args[0] if args else ''
     if mode not in ('--fix', '--check'):
         sys.exit(__doc__)

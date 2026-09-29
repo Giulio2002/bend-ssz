@@ -25,15 +25,15 @@ def v5_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 5, 5, 
 
 def v5_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_bool_pk(out, pos, v5_bool_valid(o))
 
-def Gt7FBB1934E8_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_bool_5_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(5, out))
 
-def Gt7FBB1934E8_encode(o: O.Words) -> O.Words & B.Buf: Gt7FBB1934E8_enc_out(v5_bool_put(O.out_at(1n), 0, o))
+def vec_bool_5_encode(o: O.Words) -> O.Words & B.Buf: vec_bool_5_enc_out(v5_bool_put(O.out_at(1n), 0, o))
 
-def Gt7FBB1934E8_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_bool_5_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 5, out))
 
-def Gt7FBB1934E8_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7FBB1934E8_senc_out(v5_bool_putk(O.out_at(1n), 0, o))
+def vec_bool_5_serialize(o: O.Words) -> O.Words & O.Encoded: vec_bool_5_senc_out(v5_bool_putk(O.out_at(1n), 0, o))

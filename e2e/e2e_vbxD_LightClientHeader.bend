@@ -13,7 +13,7 @@ import ../proofs/obj/var_bytesx_LightClientHeader.bend as W
 import ./e2e_bx.bend as BX
 import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as YW
 import ./e2e_vbxD_ExecutionPayloadHeader.bend as YV
-import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH
+import ../proofs/obj/vvl_l1048576_bl1073741824.bend as TXH
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d

@@ -2,7 +2,7 @@
 """ok_eval and decode_reject for the fixed-size names whose validator also checks bytes:
 booleans (O.ok_bool) and vectors of booleans (every byte at most 1).
 
-    python3 codegen/fix_reject_chk.py [--check] [--no-big]
+    python3 codegen/fix_reject_chk.py [--check]
 
 For such a name X of N bytes (validator T.<p>_ok), with ALLB(bs) = every byte of bs at most 1:
   <X>_ok_eval(d, t, n, off, x, e, hd, pf, hb, len)

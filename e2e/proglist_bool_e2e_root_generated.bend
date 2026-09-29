@@ -19,16 +19,16 @@ import ./e2e_support.bend as E
 # proglist_bool (variable size, a progressive list): the object API's root is END_TO_END's hash_tree_root, for every
 # object the root law represents (PG.rep_plb: its words in a perfect tree of depth below 32).
 
-def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PG.rep_plb(O.Words{FD.array__thaw(U32, t), N}, Spec.Gt83D8B3D008())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(Spec.Gt83D8B3D008(), PB.vviewb(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gt83D8B3D008(), PB.vviewb(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(Spec.Gt83D8B3D008(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    GV.Gt83D8B3D008_root_valid(O.Words{FD.array__thaw(U32, t), N}, Spec.Gt83D8B3D008(), {==}, rep), RG.Gt83D8B3D008_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, Spec.Gt83D8B3D008(), {==}, rep))
+def rt1(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PG.rep_plb(O.Words{FD.array__thaw(U32, t), N}, Spec.proglist_bool())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(Spec.proglist_bool(), PB.vviewb(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.proglist_bool(), PB.vviewb(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(Spec.proglist_bool(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    GV.proglist_bool_root_valid(O.Words{FD.array__thaw(U32, t), N}, Spec.proglist_bool(), {==}, rep), RG.proglist_bool_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, Spec.proglist_bool(), {==}, rep))
 
-def rt2(h: B.Buf, -o: O.Words, +rep: PG.rep_plb(o, Spec.Gt83D8B3D008()), +t: FD.array__Tree<U32>, +N: U32, +eo: {o == O.Words{FD.array__thaw(U32, t), N} : O.Words}) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gt83D8B3D008(), PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gt83D8B3D008(), PB.vviewb(_)) : Maybe<&2, +List<U32>>}
-  rt1(h, t, N, FD.logic__subst(O.Words, z => PG.rep_plb(z, Spec.Gt83D8B3D008()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+def rt2(h: B.Buf, -o: O.Words, +rep: PG.rep_plb(o, Spec.proglist_bool()), +t: FD.array__Tree<U32>, +N: U32, +eo: {o == O.Words{FD.array__thaw(U32, t), N} : O.Words}) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.proglist_bool(), PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.proglist_bool(), PB.vviewb(_)) : Maybe<&2, +List<U32>>}
+  rt1(h, t, N, FD.logic__subst(O.Words, z => PG.rep_plb(z, Spec.proglist_bool()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv)
-def proglist_bool_e2e_root(h: B.Buf, -o: O.Words, +rep: PG.rep_plb(o, Spec.Gt83D8B3D008())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.Gt83D8B3D008_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gt83D8B3D008(), PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def proglist_bool_e2e_root(h: B.Buf, -o: O.Words, +rep: PG.rep_plb(o, Spec.proglist_bool())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.proglist_bool(), PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
   (+wf, +hl) = rep
   match wf:
     case Inl{w}:

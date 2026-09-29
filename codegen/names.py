@@ -40,7 +40,7 @@ def official():
     out = {}
     for k, s in TS.TYPES.items():
         if isinstance(s, dict) and s.get('kind') in PREFIX:
-            n = GN._name(PREFIX[s['kind']], s)
+            n = GN._key(PREFIX[s['kind']], s)
             if n in out and out[n] != k:
                 raise SystemExit(f'two official classes with one schema: {out[n]}, {k}')
             out[n] = k
@@ -51,7 +51,7 @@ def raw_name(s, off):
     """A structural name of a frozen schema description (a class by its official name)."""
     k = s['kind']
     if k in PREFIX:
-        n = GN._name(PREFIX[k], s)
+        n = GN._key(PREFIX[k], s)
         if n not in off:
             raise SystemExit(f'a class schema with no official name: {n}')
         return off[n]
@@ -82,7 +82,7 @@ def walk_raw(s, acc):
     """Every class description inside s (and s), by its generated name."""
     k = s['kind']
     if k in PREFIX:
-        acc[GN._name(PREFIX[k], s)] = s
+        acc[GN._key(PREFIX[k], s)] = s
         for sub in (s['options'] if k == 'compatible_union' else [t for _, t in s['fields']]):
             walk_raw(sub, acc)
     elif 'element' in s:
@@ -90,15 +90,17 @@ def walk_raw(s, acc):
 
 
 def generic_names():
-    """[(generated name, readable name, status)] for every generic form: each distinct schema of the
-    suite (generic.inventory_all's rows) and each class nested in one."""
+    """[(hashed key, readable name, status)] for every generic form: each distinct schema of the suite and
+    each class nested in one."""
     off = official()
-    rows, seen = [], {}
-    inv = GN.inventory_all()
-    raws = GN.distinct()
-    assert len(inv) == len(raws)
-    nested = {}
-    for (n, t, err), raw in zip(inv, raws):
+    rows, seen, nested = [], {}, {}
+    for raw in GN.distinct():
+        n = GN._key(PREFIX.get(raw['kind'], 'Gt'), raw)
+        try:
+            GN.convert(raw)
+            err = None
+        except GN.SchemaError as exc:
+            err = str(exc)
         r = 'boolean' if raw['kind'] == 'bool' else raw_name(raw, off)
         rows.append((n, r, 'refused: ' + err if err else ('class' if raw['kind'] in PREFIX else 'form')))
         seen[n] = True
@@ -126,11 +128,31 @@ def fulu_readable():
     return {n: (n if is_basic(n, t) else pre + n) for n, t in fd.items()}
 
 
+def fork_basic():
+    """The basic types the fork itself has."""
+    return {r for r in fulu_readable().values() if r in BASIC}
+
+
+def key_table():
+    """{hashed key: readable name} of every generic form and class (no generic.inventory_all: generic._name reads this)."""
+    off = official()
+    out, nested = {}, {}
+    for raw in GN.distinct():
+        n = GN._key(PREFIX.get(raw['kind'], 'Gt'), raw)
+        out[n] = 'boolean' if raw['kind'] == 'bool' else raw_name(raw, off)
+        walk_raw(raw, nested)
+    for n, s in nested.items():
+        out.setdefault(n, raw_name(s, off))
+    return out
+
+
 def mapping():
     """{generated or Fulu name: readable name} over the whole API."""
     out = dict(fulu_readable())
     for n, r, _ in generic_names():
         out[n] = r
+    for r in list(out.values()):
+        out.setdefault(r, r)    # a readable name maps to itself (the tree is renamed)
     return out
 
 

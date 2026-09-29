@@ -23,35 +23,35 @@ def pl_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)
 
 def pl_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u32_pk(out, pos, pl_u32_valid(o))
 
-def Gt3A9420DD8E_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
+def proglist_uint32_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
   (o, O.out_done(n, out))
 
-def Gt3A9420DD8E_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
+def proglist_uint32_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt3A9420DD8E_enc_out(n, out, o, m)
+  proglist_uint32_enc_out(n, out, o, m)
 
-def Gt3A9420DD8E_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
+def proglist_uint32_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  Gt3A9420DD8E_enc_put(n, pl_u32_putn(O.out_new(n), 0, o))
+  proglist_uint32_enc_put(n, pl_u32_putn(O.out_new(n), 0, o))
 
-def Gt3A9420DD8E_encode(o: O.Words) -> O.Words & B.Buf: Gt3A9420DD8E_enc_sized(pl_u32_size(o))
+def proglist_uint32_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint32_enc_sized(pl_u32_size(o))
 
-def Gt3A9420DD8E_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+def proglist_uint32_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def Gt3A9420DD8E_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def proglist_uint32_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  Gt3A9420DD8E_senc_out(n, out, o, m)
+  proglist_uint32_senc_out(n, out, o, m)
 
-def Gt3A9420DD8E_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+def proglist_uint32_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: Gt3A9420DD8E_senc_put(n, pl_u32_putk(O.out_new(n), 0, o))
+    case False{}: proglist_uint32_senc_put(n, pl_u32_putk(O.out_new(n), 0, o))
 
-def Gt3A9420DD8E_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+def proglist_uint32_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
   (o, +n) = pair
-  Gt3A9420DD8E_senc_go(O.is_poisoned(n), n, o)
+  proglist_uint32_senc_go(O.is_poisoned(n), n, o)
 
-def Gt3A9420DD8E_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3A9420DD8E_senc_sized(pl_u32_size(o))
+def proglist_uint32_serialize(o: O.Words) -> O.Words & O.Encoded: proglist_uint32_senc_sized(pl_u32_size(o))

@@ -31,15 +31,15 @@ def bv5_put(out: Array<U32>, +pos: U32, o: bitvector_5_d.Bitvector5) -> Array<U3
   match o:
     case bitvector_5_d.Bitvector5{+w0}: bv5_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def Gt27CDB122DD_encode(+o: bitvector_5_d.Bitvector5) -> B.Buf: O.out_done(1, bv5_put(O.out_at(0n), 0, o))
+def bitvector_5_encode(+o: bitvector_5_d.Bitvector5) -> B.Buf: O.out_done(1, bv5_put(O.out_at(0n), 0, o))
 
 def bv5_valid(o: bitvector_5_d.Bitvector5) -> Bool:
   match o:
     case bitvector_5_d.Bitvector5{+w0}: U32.is_lt(w0, 32)
 
-def Gt27CDB122DD_ser_pick(ok: Bool, +o: bitvector_5_d.Bitvector5) -> O.Encoded:
+def bitvector_5_ser_pick(ok: Bool, +o: bitvector_5_d.Bitvector5) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt27CDB122DD_encode(o))
+    case True{}: O.encoded(bitvector_5_encode(o))
     case False{}: O.refused()
 
-def Gt27CDB122DD_serialize(+o: bitvector_5_d.Bitvector5) -> O.Encoded: Gt27CDB122DD_ser_pick(bv5_valid(o), o)
+def bitvector_5_serialize(+o: bitvector_5_d.Bitvector5) -> O.Encoded: bitvector_5_ser_pick(bv5_valid(o), o)

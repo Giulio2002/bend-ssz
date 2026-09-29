@@ -11,6 +11,8 @@ import ../types/primitive.bend as P
 import ../proofs/type_validator_soundness.bend as VS
 import ./e2e_support.bend as E
 import ../types/FuluBytes1_def_generated.bend as FuluBytes1_d
+import ../types/uint8_hashtreeroot_generated.bend as uint8_h
+import ../types/uint32_hashtreeroot_generated.bend as uint32_h
 import ../types/FuluBytes1_hashtreeroot_generated.bend as FuluBytes1_h
 import ../types/FuluParticipationFlags_hashtreeroot_generated.bend as FuluParticipationFlags_h
 import ../spec/fulu_schemas.bend as Spec
@@ -31,4 +33,16 @@ def FuluBytes1_e2e_root(h: B.Buf, +o: FuluBytes1_d.Bytes1, +e: {U32.is_lt(M0.b1_
 def FuluParticipationFlags_e2e_root(h: B.Buf, +o: U32, +e: {U32.is_lt(o, 256) == True{} : Bool}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluParticipationFlags_h.ParticipationFlags_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ParticipationFlags(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.ParticipationFlags(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, VS.public_sound(Spec.ParticipationFlags(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluParticipationFlags_h.ParticipationFlags_hash_tree_root(h, o))),
     M1.ParticipationFlags_root_valid(o, e), M0.ParticipationFlags_root_correct(h, o, e))
+
+# uint32 (uint32)
+# (iv) over the root law's binders (o).
+def uint32_e2e_root(h: B.Buf, +o: U32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.uint32_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint32(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.uint32(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, VS.public_sound(Spec.uint32(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.uint32_hash_tree_root(h, o))),
+    M1.uint32_root_valid(o), M0.uint32_root_correct(h, o))
+
+# uint8 (uint8)
+# (iv) over the root law's binders (o, e).
+def uint8_e2e_root(h: B.Buf, +o: U32, +e: {U32.is_lt(o, 256) == True{} : Bool}) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.uint8_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint8(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.uint8(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, VS.public_sound(Spec.uint8(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.uint8_hash_tree_root(h, o))),
+    M1.uint8_root_valid(o, e), M0.uint8_root_correct(h, o, e))
 

@@ -11,17 +11,17 @@ def bits7_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(bu
 
 def bits7_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 7, False{})
 
-def GtC063F5D9E0_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_7_some(pair: B.Buf & O.Bits) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtC063F5D9E0_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_7_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtC063F5D9E0_some(bits7_read(buf, 0, size))
+    case True{}: bitlist_7_some(bits7_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtC063F5D9E0_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
-  GtC063F5D9E0_built(size, bits7_ok(buf, 0, size))
+def bitlist_7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  bitlist_7_built(size, bits7_ok(buf, 0, size))
 
-def GtC063F5D9E0_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits7_read(buf, 0, size)
+def bitlist_7_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits7_read(buf, 0, size)

@@ -33,17 +33,17 @@ def v3_bool_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v3_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v3_bool_ok_len(U32.is_eq(len, 3), buf, off)
 
-def Gt57090094FA_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_3_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt57090094FA_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_3_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt57090094FA_some(v3_bool_read(buf, 0, size))
+    case True{}: vec_bool_3_some(v3_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt57090094FA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt57090094FA_built(size, v3_bool_ok(buf, 0, size))
+def vec_bool_3_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_bool_3_built(size, v3_bool_ok(buf, 0, size))
 
-def Gt57090094FA_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_bool_read(buf, 0, size)
+def vec_bool_3_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_bool_read(buf, 0, size)

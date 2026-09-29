@@ -11,17 +11,17 @@ def pl_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in
 
 def pl_u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 32) * 32 : U32)), True{}))
 
-def GtA8457965E2_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint256_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtA8457965E2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint256_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtA8457965E2_some(pl_u256_read(buf, 0, size))
+    case True{}: proglist_uint256_some(pl_u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtA8457965E2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtA8457965E2_built(size, pl_u256_ok(buf, 0, size))
+def proglist_uint256_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  proglist_uint256_built(size, pl_u256_ok(buf, 0, size))
 
-def GtA8457965E2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u256_read(buf, 0, size)
+def proglist_uint256_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u256_read(buf, 0, size)

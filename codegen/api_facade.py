@@ -2,7 +2,7 @@
 """The object API's facade proofs, per readable name and operation (not yet the gate: nothing reads
 these files; codegen/api_gate.py stays the gate until the restructure flips).
 
-    python3 codegen/api_facade.py [--check] [--no-big]
+    python3 codegen/api_facade.py [--check]
 
 For every name X of the API (the 109 Fulu names and the generic forms, under codegen/names.py's
 readable names) and each operation, one module
@@ -104,7 +104,7 @@ def module(X, R, op, rows, parsed):
     return '\n'.join(L) + '\n', files
 
 
-def outputs(no_big=False):
+def outputs():
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
     readable = NM.mapping()
@@ -124,39 +124,33 @@ def outputs(no_big=False):
                 manifest['uncovered'].setdefault(R, {})[op] = miss
             if not rows:
                 continue
-            big = any(f.startswith('big_') for _, f, _ in rows)
-            if big and no_big:
-                continue
             for _, f, _ in rows:
                 if f not in parsed:
                     parsed[f] = AG.blocks((OBJ / f).read_text())
             text, files = module(X, R, op, rows, parsed)
             out[OUT / fname(R, op)] = text
-            manifest['modules'][fname(R, op)] = {'name': R, 'generated_name': X, 'op': op, 'files': files, 'big': big}
-    if not no_big:
-        out[OUT / 'manifest.json'] = json.dumps(manifest, indent=1) + '\n'
+            manifest['modules'][fname(R, op)] = {'name': R, 'generated_name': X, 'op': op, 'files': files}
+    out[OUT / 'manifest.json'] = json.dumps(manifest, indent=1) + '\n'
     return out
 
 
 def main():
-    no_big = '--no-big' in sys.argv
-    out = outputs(no_big)
+    out = outputs()
     mine = list(OUT.glob('*_proof_generated.bend')) if OUT.exists() else []
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
-        orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]
+        orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
         if stale or orphans:
             print('stale api facade: ' + ', '.join((stale + orphans)[:20]) + (' ...' if len(stale + orphans) > 20 else ''))
             sys.exit(1)
         print('api facade is current')
         return
     OUT.mkdir(exist_ok=True)
-    if not no_big:
-        for q in mine:
-            if q not in out:
-                q.unlink()
+    for q in mine:
+        if q not in out:
+            q.unlink()
     for p, t in out.items():
         p.write_text(t)
     print(f'{len(out)} files')

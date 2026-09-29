@@ -87,17 +87,17 @@ def bv513_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv513_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv513_ok_len(U32.is_eq(len, 65), buf, off)
 
-def Gt0B0C03B454_some(pair: B.Buf & bitvector_513_d.Bitvector513) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
+def bitvector_513_some(pair: B.Buf & bitvector_513_d.Bitvector513) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt0B0C03B454_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
+def bitvector_513_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt0B0C03B454_some(bv513_read(buf, 0, size))
+    case True{}: bitvector_513_some(bv513_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt0B0C03B454_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
-  Gt0B0C03B454_built(size, bv513_ok(buf, 0, size))
+def bitvector_513_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>:
+  bitvector_513_built(size, bv513_ok(buf, 0, size))
 
-def Gt0B0C03B454_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_513_d.Bitvector513: bv513_read(buf, 0, size)
+def bitvector_513_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_513_d.Bitvector513: bv513_read(buf, 0, size)

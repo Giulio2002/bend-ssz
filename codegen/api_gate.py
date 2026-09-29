@@ -3,7 +3,7 @@
 each law of the object API, the proof file and law that prove it, and whether that file is
 stock or big (checkq --big).
 
-    python3 codegen/api_gate.py [--check] [--no-big]
+    python3 codegen/api_gate.py [--check]
 
 Derived from the proof files (proofs/obj/*.bend), not by hand: every top-level law / def is
 parsed, its conclusion (and, for the spec relation, its hypotheses) is searched for the
@@ -273,7 +273,7 @@ def gate_module(xlaws, fname, parsed_file, src):
     return '\n'.join(L) + '\n'
 
 
-def outputs(no_big=False):
+def outputs():
     fulu, gen, ent, parsed = scan()
     amap = {}
     missing = []
@@ -281,7 +281,7 @@ def outputs(no_big=False):
         row = {}
         for kind in KINDS:
             prv = ent.get((X, kind), [])
-            row[kind] = [{'file': f, 'law': n, 'big': f.startswith('big_')} for f, n in prv]
+            row[kind] = [{'file': f, 'law': n} for f, n in prv]
             if not prv and kind in CORE:
                 missing.append((X, kind))
         amap[X] = row
@@ -301,24 +301,18 @@ def outputs(no_big=False):
     for f, xs in sorted(byfile.items()):
         xlaws = [(X, sorted(set(laws), key=lambda kn: (KINDS.index(kn[0]), kn[1]))) for X, laws in sorted(xs.items())]
         stem = f[:-5]
-        big = f.startswith('big_')
-        if big:
-            stem = stem[4:]
-        if big and no_big:
-            continue
-        name = f'{"big_" if big else ""}g__{stem}.bend'
+        name = f'g__{stem}.bend'
         out[OUT / name] = gate_module(xlaws, f, parsed[f], (OBJ / f).read_text())
     return out
 
 
 def main():
-    no_big = '--no-big' in sys.argv
-    out = outputs(no_big)
+    out = outputs()
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         mine = [q for q in OUT.glob('*g_*.bend')] if OUT.exists() else []
-        orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_'))]
+        orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
         if stale or orphans:
             print('stale api gate: ' + ', '.join((stale + orphans)[:20]) + (' ...' if len(stale + orphans) > 20 else ''))
             sys.exit(1)
@@ -326,7 +320,7 @@ def main():
         return
     OUT.mkdir(exist_ok=True)
     for q in OUT.glob('*g_*.bend'):
-        if q not in out and not (no_big and q.name.startswith('big_')):
+        if q not in out:
             q.unlink()
     for p, t in out.items():
         p.write_text(t)

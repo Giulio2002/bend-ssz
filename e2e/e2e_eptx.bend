@@ -16,7 +16,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_encx_l1048576_bl1073741824.bend as ET
+import ../proofs/obj/encx_l1048576_bl1073741824.bend as ET
 import ../proofs/obj/encx_l16_Withdrawal.bend as EWL
 import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
 import ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d

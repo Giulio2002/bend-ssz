@@ -23,17 +23,17 @@ def bv1_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv1_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1_ok_len(U32.is_eq(len, 1), buf, off)
 
-def GtFCF8066C33_some(pair: B.Buf & bitvector_1_d.Bitvector1) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
+def bitvector_1_some(pair: B.Buf & bitvector_1_d.Bitvector1) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtFCF8066C33_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
+def bitvector_1_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtFCF8066C33_some(bv1_read(buf, 0, size))
+    case True{}: bitvector_1_some(bv1_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtFCF8066C33_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
-  GtFCF8066C33_built(size, bv1_ok(buf, 0, size))
+def bitvector_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
+  bitvector_1_built(size, bv1_ok(buf, 0, size))
 
-def GtFCF8066C33_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_1_d.Bitvector1: bv1_read(buf, 0, size)
+def bitvector_1_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_1_d.Bitvector1: bv1_read(buf, 0, size)

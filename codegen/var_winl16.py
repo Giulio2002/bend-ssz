@@ -3,7 +3,7 @@
 byte offset: the interface of proofs/obj/vua_win.bend (CHKw, ok_evalw, OBJw, readw, VALw,
 specw, invw), for each N in LISTS.
 
-    python3 codegen/var_winl16.py [--check] [--no-big]
+    python3 codegen/var_winl16.py [--check]
 
 The runtime copies the window's words (O.copy_in) and checks whole elements, at most N;
 the value is the 2-byte items of the window's bytes (pb_min.it2). The item and parts
@@ -330,7 +330,7 @@ def absurd_v(goal):
     return '\n'.join(L)
 
 
-IMPORTS = ['import ../../spec/root_relation.bend as RR', 'import ./vua_rd.bend as UR', 'import ./big_vvlz.bend as VZG', 'import ./vu8.bend as U8',
+IMPORTS = ['import ../../spec/root_relation.bend as RR', 'import ./vua_rd.bend as UR', 'import ./vvlz.bend as VZG', 'import ./vu8.bend as U8',
            'import ./vmv.bend as VMV', 'import ./pb_min.bend as PB']
 
 
@@ -378,12 +378,12 @@ def hB(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {{CHKw(t, 
     return VW.deep_x(text)
 
 
-def outputs(no_big=False):
+def outputs():
     return {ROOT / f'proofs/obj/var_winx_l{N}_u16.bend': win_text(N) for N in LISTS}
 
 
 def main():
-    out = outputs('--no-big' in sys.argv)
+    out = outputs()
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

@@ -31,35 +31,35 @@ def pbits_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.B
 def pbits_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
   pbits_pvb(cur, pbits_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def GtF7582E0E9A_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def progbitlist_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done(n, out))
 
-def GtF7582E0E9A_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def progbitlist_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtF7582E0E9A_enc_out(n, out, o, m)
+  progbitlist_enc_out(n, out, o, m)
 
-def GtF7582E0E9A_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
+def progbitlist_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  GtF7582E0E9A_enc_put(n, pbits_putn(O.out_new(n), 0, o))
+  progbitlist_enc_put(n, pbits_putn(O.out_new(n), 0, o))
 
-def GtF7582E0E9A_encode(o: O.Bits) -> O.Bits & B.Buf: GtF7582E0E9A_enc_sized(pbits_size(o))
+def progbitlist_encode(o: O.Bits) -> O.Bits & B.Buf: progbitlist_enc_sized(pbits_size(o))
 
-def GtF7582E0E9A_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def progbitlist_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def GtF7582E0E9A_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def progbitlist_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtF7582E0E9A_senc_out(n, out, o, m)
+  progbitlist_senc_out(n, out, o, m)
 
-def GtF7582E0E9A_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+def progbitlist_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: GtF7582E0E9A_senc_put(n, pbits_putk(O.out_new(n), 0, o))
+    case False{}: progbitlist_senc_put(n, pbits_putk(O.out_new(n), 0, o))
 
-def GtF7582E0E9A_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+def progbitlist_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
   (o, +n) = pair
-  GtF7582E0E9A_senc_go(O.is_poisoned(n), n, o)
+  progbitlist_senc_go(O.is_poisoned(n), n, o)
 
-def GtF7582E0E9A_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtF7582E0E9A_senc_sized(pbits_size(o))
+def progbitlist_serialize(o: O.Bits) -> O.Bits & O.Encoded: progbitlist_senc_sized(pbits_size(o))

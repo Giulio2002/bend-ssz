@@ -18,10 +18,10 @@ import ../proofs/obj/vuwd.bend as WD
 import ../proofs/obj/vcont.bend as VCN
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/big_encx_Gp4B0CA2906A_iface.bend as CI
-import ../proofs/obj/big_var_codec_Gp4B0CA2906A_enc.bend as EN
-import ../proofs/obj/big_var_codec_Gp4B0CA2906A_enc_o.bend as ENo
-import ../proofs/obj/big_encx_Gp4B0CA2906A_iface_o.bend as CIo
+import ../proofs/obj/encx_ProgressiveSingleListContainerTestStruct_iface.bend as CI
+import ../proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct_enc.bend as EN
+import ../proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct_enc_o.bend as ENo
+import ../proofs/obj/encx_ProgressiveSingleListContainerTestStruct_iface_o.bend as CIo
 import ../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
 import ../types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_e
 import ./e2e_support.bend as E
@@ -48,22 +48,22 @@ def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arr
   EM.obD(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, h31, hn)
 
 # (i) on a record
-def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(CI.TH(m))))} == API.serialize(Spec.Gp4B0CA2906A(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
-    {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, _))} == API.serialize(Spec.Gp4B0CA2906A(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.Gp4B0CA2906A(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
-  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Gp4B0CA2906A(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Gp4B0CA2906A(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.Gp4B0CA2906A(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-      E.serialize_legal(Spec.Gp4B0CA2906A(), CI.VAL(m), VS.public_sound(Spec.Gp4B0CA2906A(), {==})), ENo.encode_specO(m, hok)))
+def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENo.encode_evalO(m, hok)) :
+    {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, _))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
+      E.serialize_legal(Spec.ProgressiveSingleListContainerTestStruct(), CI.VAL(m), VS.public_sound(Spec.ProgressiveSingleListContainerTestStruct(), {==})), ENo.encode_specO(m, hok)))
 
 # an object, as a record: o == TH(m), its view VAL(m), OK(m)
-def via(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +m: CI.MW, +eo: {o == CI.TH(m) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}, +ev: {RT.v_Gp4B0CA2906A(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
-    -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(o)))} == API.serialize(Spec.Gp4B0CA2906A(), RT.v_Gp4B0CA2906A(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(_)))} == API.serialize(Spec.Gp4B0CA2906A(), RT.v_Gp4B0CA2906A(_)) : Maybe<&2, +List<U32>>}
-  %Equal.sym(S.Value, RT.v_Gp4B0CA2906A(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(CI.TH(m))))} == API.serialize(Spec.Gp4B0CA2906A(), _) : Maybe<&2, +List<U32>>}
+def via(-o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +m: CI.MW, +eo: {o == CI.TH(m) : ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct}, +ev: {RT.v_ProgressiveSingleListContainerTestStruct(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(_)))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(_)) : Maybe<&2, +List<U32>>}
+  %Equal.sym(S.Value, RT.v_ProgressiveSingleListContainerTestStruct(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(CI.TH(m))))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), _) : Maybe<&2, +List<U32>>}
   enc_m(m, hok)
 
-def vq(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +c: EQ.RQ_Gp4B0CA2906A(o)) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(o)))} == API.serialize(Spec.Gp4B0CA2906A(), RT.v_Gp4B0CA2906A(o)) : Maybe<&2, +List<U32>>}:
+def vq(-o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +c: EQ.RQ_ProgressiveSingleListContainerTestStruct(o)) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(o)) : Maybe<&2, +List<U32>>}:
   (+m, +c1) = c
   (+eo, +c2) = c1
   (+ev, +c3) = c2
@@ -71,5 +71,5 @@ def vq(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +c: EQ.RQ_Gp
   via(o, m, eo, ev, hok)
 
 # (i): for every object the root law represents
-def ProgressiveSingleListContainerTestStruct_e2e_encode(-o: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, +rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()), +hs: EQ.PREM_Gp4B0CA2906A(o)) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A, B.Buf, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_encode(o)))} == API.serialize(Spec.Gp4B0CA2906A(), RT.v_Gp4B0CA2906A(o)) : Maybe<&2, +List<U32>>}:
-  vq(o, EQ.rq_Gp4B0CA2906A(o, rep, hs))
+def ProgressiveSingleListContainerTestStruct_e2e_encode(-o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +rep: RT.rep_ProgressiveSingleListContainerTestStruct(o, Spec.ProgressiveSingleListContainerTestStruct()), +hs: EQ.PREM_ProgressiveSingleListContainerTestStruct(o)) -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(o)))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(o)) : Maybe<&2, +List<U32>>}:
+  vq(o, EQ.rq_ProgressiveSingleListContainerTestStruct(o, rep, hs))

@@ -132,15 +132,15 @@ def v3_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 96, 96, False{}, 
 
 def v3_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u256_pk(out, pos, v3_u256_valid(o))
 
-def Gt2E7060B297_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_uint256_3_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(96, out))
 
-def Gt2E7060B297_encode(o: O.Words) -> O.Words & B.Buf: Gt2E7060B297_enc_out(v3_u256_put(O.out_at(5n), 0, o))
+def vec_uint256_3_encode(o: O.Words) -> O.Words & B.Buf: vec_uint256_3_enc_out(v3_u256_put(O.out_at(5n), 0, o))
 
-def Gt2E7060B297_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_uint256_3_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 96, out))
 
-def Gt2E7060B297_serialize(o: O.Words) -> O.Words & O.Encoded: Gt2E7060B297_senc_out(v3_u256_putk(O.out_at(5n), 0, o))
+def vec_uint256_3_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint256_3_senc_out(v3_u256_putk(O.out_at(5n), 0, o))

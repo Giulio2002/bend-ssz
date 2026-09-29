@@ -12,9 +12,9 @@ import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_vvlu.bend as VVU
-import ../proofs/obj/big_vvlb_bl1073741824.bend as YW
-import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TX
+import ../proofs/obj/vvlu.bend as VVU
+import ../proofs/obj/vvlb_bl1073741824.bend as YW
+import ../proofs/obj/vvl_l1048576_bl1073741824.bend as TX
 import ../src/buffer.bend as B
 import ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d
 import ./e2e_bx.bend as BX

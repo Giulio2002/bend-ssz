@@ -18,17 +18,17 @@ def v16_u16_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v16_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v16_u16_ok_len(U32.is_eq(len, 32), buf, off)
 
-def GtAEB382AD1F_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint16_16_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def GtAEB382AD1F_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint16_16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtAEB382AD1F_some(v16_u16_read(buf, 0, size))
+    case True{}: vec_uint16_16_some(v16_u16_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtAEB382AD1F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  GtAEB382AD1F_built(size, v16_u16_ok(buf, 0, size))
+def vec_uint16_16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint16_16_built(size, v16_u16_ok(buf, 0, size))
 
-def GtAEB382AD1F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u16_read(buf, 0, size)
+def vec_uint16_16_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u16_read(buf, 0, size)

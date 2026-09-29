@@ -35,11 +35,11 @@ def bv1_valid(o: bitvector_1_d.Bitvector1) -> Bool:
   match o:
     case bitvector_1_d.Bitvector1{+w0}: U32.is_lt(w0, 2)
 
-def GtFCF8066C33_encode(+o: bitvector_1_d.Bitvector1) -> B.Buf: O.out_done(1, bv1_put(O.out_at(0n), 0, o))
+def bitvector_1_encode(+o: bitvector_1_d.Bitvector1) -> B.Buf: O.out_done(1, bv1_put(O.out_at(0n), 0, o))
 
-def GtFCF8066C33_ser_pick(ok: Bool, +o: bitvector_1_d.Bitvector1) -> O.Encoded:
+def bitvector_1_ser_pick(ok: Bool, +o: bitvector_1_d.Bitvector1) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtFCF8066C33_encode(o))
+    case True{}: O.encoded(bitvector_1_encode(o))
     case False{}: O.refused()
 
-def GtFCF8066C33_serialize(+o: bitvector_1_d.Bitvector1) -> O.Encoded: GtFCF8066C33_ser_pick(bv1_valid(o), o)
+def bitvector_1_serialize(+o: bitvector_1_d.Bitvector1) -> O.Encoded: bitvector_1_ser_pick(bv1_valid(o), o)

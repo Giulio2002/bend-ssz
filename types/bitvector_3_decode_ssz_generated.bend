@@ -23,17 +23,17 @@ def bv3_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv3_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv3_ok_len(U32.is_eq(len, 1), buf, off)
 
-def Gt9579E0A2FD_some(pair: B.Buf & bitvector_3_d.Bitvector3) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
+def bitvector_3_some(pair: B.Buf & bitvector_3_d.Bitvector3) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt9579E0A2FD_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
+def bitvector_3_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt9579E0A2FD_some(bv3_read(buf, 0, size))
+    case True{}: bitvector_3_some(bv3_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt9579E0A2FD_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
-  Gt9579E0A2FD_built(size, bv3_ok(buf, 0, size))
+def bitvector_3_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>:
+  bitvector_3_built(size, bv3_ok(buf, 0, size))
 
-def Gt9579E0A2FD_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_3_d.Bitvector3: bv3_read(buf, 0, size)
+def bitvector_3_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_3_d.Bitvector3: bv3_read(buf, 0, size)

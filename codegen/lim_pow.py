@@ -4,7 +4,7 @@ A variable-size name's list of uint64 has the byte limit 8 M, M = 2^p the elemen
 (`U32.to_nat(M)` in the laws). Its generators close facts such as
 `Nat.is_le(Nat.add(31n, Nat.add(228n, VS.x8(U32.to_nat(131072)))), VB.pw(21n))`. Closing them
 by `{==}` makes the checker evaluate the closed Nats in unary: about 2.4 M steps per fact at
-M = 131072 (scratchpad profile of big_var_codec_AttesterSlashing_enc). Here such a closed
+M = 131072 (scratchpad profile of var_codec_AttesterSlashing_enc). Here such a closed
 term is built together with a proof of {term == Nat.add(c, VB.pw(s))} for small literals c, s
 (proofs/obj/vbig.bend: x8pw, dblpw, eadd, esum), and bounded by ble/blt and their wrappers;
 every hypothesis left to `{==}` is about small literals.

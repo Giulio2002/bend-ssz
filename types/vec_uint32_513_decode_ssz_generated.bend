@@ -18,17 +18,17 @@ def v513_u32_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v513_u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v513_u32_ok_len(U32.is_eq(len, 2052), buf, off)
 
-def Gt53D2408A5F_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_513_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt53D2408A5F_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint32_513_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt53D2408A5F_some(v513_u32_read(buf, 0, size))
+    case True{}: vec_uint32_513_some(v513_u32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt53D2408A5F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt53D2408A5F_built(size, v513_u32_ok(buf, 0, size))
+def vec_uint32_513_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint32_513_built(size, v513_u32_ok(buf, 0, size))
 
-def Gt53D2408A5F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u32_read(buf, 0, size)
+def vec_uint32_513_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u32_read(buf, 0, size)

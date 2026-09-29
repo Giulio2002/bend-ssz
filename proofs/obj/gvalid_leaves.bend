@@ -15,9 +15,7 @@ import ./leaf_small.bend as LS
 def uint8_root_valid(+o: U32, +e: {U32.is_lt(o, 256) == True{} : Bool}) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint8()) == True{} : Bool}: VL.u8dom(o, e)
 def ParticipationFlags_root_valid(+o: U32, +e: {U32.is_lt(o, 256) == True{} : Bool}) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.ParticipationFlags()) == True{} : Bool}: VL.u8dom(o, e)
 def uint32_root_valid(+o: U32) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint32()) == True{} : Bool}: VL.u32dom(o)
-def Gt967E8D815F_root_valid(+o: U32, +e: {U32.is_lt(o, 256) == True{} : Bool}) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, GSpec.Gt967E8D815F()) == True{} : Bool}: VL.u8dom(o, e)
-def GtECF9BB18D8_root_valid(+o: U32, +e: {U32.is_lt(o, 65536) == True{} : Bool}) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, GSpec.GtECF9BB18D8()) == True{} : Bool}: VL.u16dom(o, e)
-def Gt7B8507E2C2_root_valid(+o: U32) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, GSpec.Gt7B8507E2C2()) == True{} : Bool}: VL.u32dom(o)
+def uint16_root_valid(+o: U32, +e: {U32.is_lt(o, 65536) == True{} : Bool}) -> {VD.root_valid(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, GSpec.uint16()) == True{} : Bool}: VL.u16dom(o, e)
 def Bytes1_root_valid(+o: FuluBytes1_d.Bytes1, +e: {U32.is_lt(LS.b1_byte(o), 256) == True{} : Bool}) -> {VD.root_valid(S.BytesValue{[LS.b1_byte(o)]}, Spec.Bytes1()) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_lt(LS.b1_byte(o), 256), True{}, e) : {Bool.and(_, True{}) == True{} : Bool}
   {==}

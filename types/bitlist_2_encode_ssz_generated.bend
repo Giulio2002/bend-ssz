@@ -23,22 +23,22 @@ def bits2_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 2, False{})
 
 def bits2_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits2_pk(out, pos, bits2_valid(o))
 
-def GtCF587DD386_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_2_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtCF587DD386_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_2_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtCF587DD386_enc_out(out, o, m)
+  bitlist_2_enc_out(out, o, m)
 
-def GtCF587DD386_encode(o: O.Bits) -> O.Bits & B.Buf: GtCF587DD386_enc_put(bits2_putn(O.out_at(0n), 0, o))
+def bitlist_2_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_2_enc_put(bits2_putn(O.out_at(0n), 0, o))
 
-def GtCF587DD386_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_2_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def GtCF587DD386_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_2_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtCF587DD386_senc_out(out, o, m)
+  bitlist_2_senc_out(out, o, m)
 
-def GtCF587DD386_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtCF587DD386_senc_put(bits2_putk(O.out_at(0n), 0, o))
+def bitlist_2_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_2_senc_put(bits2_putk(O.out_at(0n), 0, o))

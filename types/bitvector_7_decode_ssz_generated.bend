@@ -23,17 +23,17 @@ def bv7_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv7_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv7_ok_len(U32.is_eq(len, 1), buf, off)
 
-def GtAA8D1478A7_some(pair: B.Buf & bitvector_7_d.Bitvector7) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
+def bitvector_7_some(pair: B.Buf & bitvector_7_d.Bitvector7) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def GtAA8D1478A7_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
+def bitvector_7_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
   (buf, ok) = pair
   match ok:
-    case True{}: GtAA8D1478A7_some(bv7_read(buf, 0, size))
+    case True{}: bitvector_7_some(bv7_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def GtAA8D1478A7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
-  GtAA8D1478A7_built(size, bv7_ok(buf, 0, size))
+def bitvector_7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>:
+  bitvector_7_built(size, bv7_ok(buf, 0, size))
 
-def GtAA8D1478A7_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_7_d.Bitvector7: bv7_read(buf, 0, size)
+def bitvector_7_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_7_d.Bitvector7: bv7_read(buf, 0, size)

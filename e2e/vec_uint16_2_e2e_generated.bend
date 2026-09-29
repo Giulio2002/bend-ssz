@@ -28,7 +28,7 @@ import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
 import ../types/vec_uint16_2_encode_ssz_generated.bend as vec_uint16_2_e
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/sub_Gt04170D6AA7.bend as M0
+import ../proofs/obj/sub_vec_uint16_2.bend as M0
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 import ../proofs/obj/sub_pack.bend as M0_SP2
 
@@ -36,45 +36,45 @@ import ../proofs/obj/sub_pack.bend as M0_SP2
 # vec_uint16_2 and the next names: the object API's encoder bytes are END_TO_END's serialize, for a packed vector
 # under its representation invariant with the storage at the decoder's depth.
 
-# vec_uint16_2 (Gt04170D6AA7)
+# vec_uint16_2 (vec_uint16_2)
 def vec_uint16_2_br(+t: FD.array__Tree<U32>) -> {M1_PB.vview2(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}) == S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})} : S.Value}:
   Equal.trans(S.Value, M1_PB.vview2(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], M1_PB.it2(0n, []))}, S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})},
     Equal.cong(S.Value, S.Value, v => S.Sequence{v}, M1_PB.it2(Nat.add(Nat.double(List.length(&2, U32, [E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])), 0n), List.append(&2, U32, F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))]), [])), M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], M1_PB.it2(0n, [])), X16.l2([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], 0n, [])),
     {==})
 
-def vec_uint16_2_w3(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 4n, t) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, t), 4})))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), 4})) : Maybe<&2, +List<U32>>}:
+def vec_uint16_2_w3(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 4n, t) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, t), 4})))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), 4})) : Maybe<&2, +List<U32>>}:
   %Equal.sym(FD.array__Tree<U32>, t, E3.tf(4n, t), E3.eta(4n, t, pf)) :
-    {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, _), 4})))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(O.Words{FD.array__thaw(U32, _), 4})) : Maybe<&2, +List<U32>>}
+    {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, _), 4})))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(O.Words{FD.array__thaw(U32, _), 4})) : Maybe<&2, +List<U32>>}
   %Equal.sym(S.Value, M1_PB.vview2(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}, vec_uint16_2_br(t)) :
-    {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4})))} == API.serialize(Spec.Gt04170D6AA7(), _) : Maybe<&2, +List<U32>>}
-  Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4})))}, Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])}, API.serialize(Spec.Gt04170D6AA7(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}),
-    Equal.cong(O.Words & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(O.Words, +List<U32>, p)}, F.emitted(O.Words, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}), 1), (O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}, F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])), M0.Gt04170D6AA7_spec_bytes(E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t))))), E3.leaf(E3.hi(E3.lo(E3.lo(E3.lo(t))))), E3.leaf(E3.lo(E3.hi(E3.lo(E3.lo(t))))), E3.leaf(E3.hi(E3.hi(E3.lo(E3.lo(t))))), E3.leaf(E3.lo(E3.lo(E3.hi(E3.lo(t))))), E3.leaf(E3.hi(E3.lo(E3.hi(E3.lo(t))))), E3.leaf(E3.lo(E3.hi(E3.hi(E3.lo(t))))), E3.leaf(E3.hi(E3.hi(E3.hi(E3.lo(t))))), E3.leaf(E3.lo(E3.lo(E3.lo(E3.hi(t))))), E3.leaf(E3.hi(E3.lo(E3.lo(E3.hi(t))))), E3.leaf(E3.lo(E3.hi(E3.lo(E3.hi(t))))), E3.leaf(E3.hi(E3.hi(E3.lo(E3.hi(t))))), E3.leaf(E3.lo(E3.lo(E3.hi(E3.hi(t))))), E3.leaf(E3.hi(E3.lo(E3.hi(E3.hi(t))))), E3.leaf(E3.lo(E3.hi(E3.hi(E3.hi(t))))), E3.leaf(E3.hi(E3.hi(E3.hi(E3.hi(t))))))),
-    Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Gt04170D6AA7(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])},
-      Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Gt04170D6AA7(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Encoding.encoding_for_legal_type(Spec.Gt04170D6AA7(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])},
-        E.serialize_legal(Spec.Gt04170D6AA7(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}, VS.public_sound(Spec.Gt04170D6AA7(), {==})), M0.Gt04170D6AA7_spec_encode(E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))))))
+    {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4})))} == API.serialize(Spec.vec_uint16_2(), _) : Maybe<&2, +List<U32>>}
+  Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4})))}, Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])}, API.serialize(Spec.vec_uint16_2(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}),
+    Equal.cong(O.Words & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(O.Words, +List<U32>, p)}, F.emitted(O.Words, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}), 1), (O.Words{FD.array__thaw(U32, E3.tf(4n, t)), 4}, F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])), M0.vec_uint16_2_spec_bytes(E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t))))), E3.leaf(E3.hi(E3.lo(E3.lo(E3.lo(t))))), E3.leaf(E3.lo(E3.hi(E3.lo(E3.lo(t))))), E3.leaf(E3.hi(E3.hi(E3.lo(E3.lo(t))))), E3.leaf(E3.lo(E3.lo(E3.hi(E3.lo(t))))), E3.leaf(E3.hi(E3.lo(E3.hi(E3.lo(t))))), E3.leaf(E3.lo(E3.hi(E3.hi(E3.lo(t))))), E3.leaf(E3.hi(E3.hi(E3.hi(E3.lo(t))))), E3.leaf(E3.lo(E3.lo(E3.lo(E3.hi(t))))), E3.leaf(E3.hi(E3.lo(E3.lo(E3.hi(t))))), E3.leaf(E3.lo(E3.hi(E3.lo(E3.hi(t))))), E3.leaf(E3.hi(E3.hi(E3.lo(E3.hi(t))))), E3.leaf(E3.lo(E3.lo(E3.hi(E3.hi(t))))), E3.leaf(E3.hi(E3.lo(E3.hi(E3.hi(t))))), E3.leaf(E3.lo(E3.hi(E3.hi(E3.hi(t))))), E3.leaf(E3.hi(E3.hi(E3.hi(E3.hi(t))))))),
+    Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.vec_uint16_2(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])},
+      Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.vec_uint16_2(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Encoding.encoding_for_legal_type(Spec.vec_uint16_2(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}), Some{F.limbs([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))])},
+        E.serialize_legal(Spec.vec_uint16_2(), S.Sequence{M0_SP2.vu16([E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))], S.EmptyItems{})}, VS.public_sound(Spec.vec_uint16_2(), {==})), M0.vec_uint16_2_spec_encode(E3.leaf(E3.lo(E3.lo(E3.lo(E3.lo(t)))))))))
 
-def vec_uint16_2_w2(+t: FD.array__Tree<U32>, +N: U32, +lf: {U32.to_nat(WO.len(O.Words{FD.array__thaw(U32, t), N})) == Nat.double(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N})) : Nat}, +cf: {Nat.is_eq(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.Gt04170D6AA7())) == True{} : Bool}, +hc: {E3.at_depth(O.Words{FD.array__thaw(U32, t), N}, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, t), N})))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+def vec_uint16_2_w2(+t: FD.array__Tree<U32>, +N: U32, +lf: {U32.to_nat(WO.len(O.Words{FD.array__thaw(U32, t), N})) == Nat.double(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N})) : Nat}, +cf: {Nat.is_eq(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.vec_uint16_2())) == True{} : Bool}, +hc: {E3.at_depth(O.Words{FD.array__thaw(U32, t), N}, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, t), N})))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
   +ln = Equal.trans(Nat, U32.to_nat(N), Nat.double(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N})), U32.to_nat(4), lf,
-    Equal.trans(Nat, Nat.double(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N})), Nat.double(SH.Vector_length(Spec.Gt04170D6AA7())), U32.to_nat(4),
-      Equal.cong(Nat, Nat, z => Nat.double(z), M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.Gt04170D6AA7()), FD.nat__eq_from_is_eq(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.Gt04170D6AA7()), cf)), {==}))
+    Equal.trans(Nat, Nat.double(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N})), Nat.double(SH.Vector_length(Spec.vec_uint16_2())), U32.to_nat(4),
+      Equal.cong(Nat, Nat, z => Nat.double(z), M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.vec_uint16_2()), FD.nat__eq_from_is_eq(M1_PB.cnt2(O.Words{FD.array__thaw(U32, t), N}), SH.Vector_length(Spec.vec_uint16_2()), cf)), {==}))
   +eN = FD.u32__injective(N, 4, ln)
   +pf = FD.logic__subst(FD.array__Tree<U32>, z => {FD.array__perfect(U32, 4n, z) == True{} : Bool}, FD.array__freeze(U32, FD.array__thaw(U32, t)), t, FD.array__freeze_thaw(U32, t), hc)
-  %Equal.sym(U32, N, 4, eN) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(O.Words{FD.array__thaw(U32, t), _})))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), _})) : Maybe<&2, +List<U32>>}
+  %Equal.sym(U32, N, 4, eN) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(O.Words{FD.array__thaw(U32, t), _})))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(O.Words{FD.array__thaw(U32, t), _})) : Maybe<&2, +List<U32>>}
   vec_uint16_2_w3(t, pf)
 
-def vec_uint16_2_w1(-o: O.Words, +w: WO.wf1(o), +lf: {U32.to_nat(WO.len(o)) == Nat.double(M1_PB.cnt2(o)) : Nat}, +cf: {Nat.is_eq(M1_PB.cnt2(o), SH.Vector_length(Spec.Gt04170D6AA7())) == True{} : Bool}, +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(o)))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_2_w1(-o: O.Words, +w: WO.wf1(o), +lf: {U32.to_nat(WO.len(o)) == Nat.double(M1_PB.cnt2(o)) : Nat}, +cf: {Nat.is_eq(M1_PB.cnt2(o), SH.Vector_length(Spec.vec_uint16_2())) == True{} : Bool}, +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(o)))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(_)))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(_)) : Maybe<&2, +List<U32>>}
-  vec_uint16_2_w2(t, N, FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(M1_PB.cnt2(z)) : Nat}, o, O.Words{FD.array__thaw(U32, t), N}, eo, lf), FD.logic__subst(O.Words, z => {Nat.is_eq(M1_PB.cnt2(z), SH.Vector_length(Spec.Gt04170D6AA7())) == True{} : Bool}, o, O.Words{FD.array__thaw(U32, t), N}, eo, cf),
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(_)))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(_)) : Maybe<&2, +List<U32>>}
+  vec_uint16_2_w2(t, N, FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == Nat.double(M1_PB.cnt2(z)) : Nat}, o, O.Words{FD.array__thaw(U32, t), N}, eo, lf), FD.logic__subst(O.Words, z => {Nat.is_eq(M1_PB.cnt2(z), SH.Vector_length(Spec.vec_uint16_2())) == True{} : Bool}, o, O.Words{FD.array__thaw(U32, t), N}, eo, cf),
     FD.logic__subst(O.Words, z => {E3.at_depth(z, 4n) == True{} : Bool}, o, O.Words{FD.array__thaw(U32, t), N}, eo, hc))
 
 # (i) under rep (the root law's invariant) with the storage at depth 4 (the decoder's).
-def vec_uint16_2_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.Gt04170D6AA7()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.Gt04170D6AA7_encode(o)))} == API.serialize(Spec.Gt04170D6AA7(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_2_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_2()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_2_e.vec_uint16_2_encode(o)))} == API.serialize(Spec.vec_uint16_2(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
   (+lf, +cf) = rest
   vec_uint16_2_w1(o, w, lf, cf, hc)

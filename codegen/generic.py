@@ -42,8 +42,21 @@ def canon(s):
     return json.dumps(s, sort_keys=True, separators=(',', ':'))
 
 
-def _name(prefix, s):
+def _key(prefix, s):
+    """The old hashed name of a schema (names.py maps it to the readable name)."""
     return prefix + hashlib.sha256(canon(s).encode()).hexdigest()[:10].upper()
+
+
+_KT = None
+
+
+def _name(prefix, s):
+    """The readable name of a schema (codegen/names.py: structural names, the official class names)."""
+    global _KT
+    if _KT is None:
+        import names as NM
+        _KT = NM.key_table()
+    return _KT[_key(prefix, s)]
 
 
 def convert(s, where='schema'):
@@ -142,6 +155,10 @@ def inventory_all():
             n = _name('Gt', raw)
             if t is not None:
                 t = Ty(t.kind, t.size, t.elem, t.fields, n, t.active, t.selectors)
+        if t is not None and t.kind in ('bool', 'uint'):
+            import names as NM
+            if n in NM.fork_basic():
+                continue    # the fork's own basic types (boolean, uint8/32/64/256): one type, one set of files
         if n in seen:
             raise SchemaError(f'generated name collision: {n}')
         seen.add(n)
@@ -163,6 +180,8 @@ def inventory():
         except SchemaError:
             continue
         n = t.name if t.kind in ('container', 'pcontainer', 'cunion') else _name('Gt', raw)
+        if n not in out:
+            continue
         byname[n] = (out[n], raw)
     return byname
 

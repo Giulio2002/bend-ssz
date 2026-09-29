@@ -31,22 +31,22 @@ def bits5_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.B
 def bits5_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
   bits5_pvb(cur, bits5_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def GtF91FD5FC73_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+def bitlist_5_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
   (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtF91FD5FC73_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def bitlist_5_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtF91FD5FC73_enc_out(out, o, m)
+  bitlist_5_enc_out(out, o, m)
 
-def GtF91FD5FC73_encode(o: O.Bits) -> O.Bits & B.Buf: GtF91FD5FC73_enc_put(bits5_putn(O.out_at(0n), 0, o))
+def bitlist_5_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_5_enc_put(bits5_putn(O.out_at(0n), 0, o))
 
-def GtF91FD5FC73_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+def bitlist_5_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), m, out))
 
-def GtF91FD5FC73_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+def bitlist_5_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtF91FD5FC73_senc_out(out, o, m)
+  bitlist_5_senc_out(out, o, m)
 
-def GtF91FD5FC73_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtF91FD5FC73_senc_put(bits5_putk(O.out_at(0n), 0, o))
+def bitlist_5_serialize(o: O.Bits) -> O.Bits & O.Encoded: bitlist_5_senc_put(bits5_putk(O.out_at(0n), 0, o))

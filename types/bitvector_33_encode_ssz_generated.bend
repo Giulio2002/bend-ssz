@@ -31,15 +31,15 @@ def bv33_put(out: Array<U32>, +pos: U32, o: bitvector_33_d.Bitvector33) -> Array
   match o:
     case bitvector_33_d.Bitvector33{+w0, +w1}: bv33_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1)
 
-def Gt6F0D97A69E_encode(+o: bitvector_33_d.Bitvector33) -> B.Buf: O.out_done(5, bv33_put(O.out_at(1n), 0, o))
+def bitvector_33_encode(+o: bitvector_33_d.Bitvector33) -> B.Buf: O.out_done(5, bv33_put(O.out_at(1n), 0, o))
 
 def bv33_valid(o: bitvector_33_d.Bitvector33) -> Bool:
   match o:
     case bitvector_33_d.Bitvector33{+w0, +w1}: U32.is_lt(w1, 2)
 
-def Gt6F0D97A69E_ser_pick(ok: Bool, +o: bitvector_33_d.Bitvector33) -> O.Encoded:
+def bitvector_33_ser_pick(ok: Bool, +o: bitvector_33_d.Bitvector33) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(Gt6F0D97A69E_encode(o))
+    case True{}: O.encoded(bitvector_33_encode(o))
     case False{}: O.refused()
 
-def Gt6F0D97A69E_serialize(+o: bitvector_33_d.Bitvector33) -> O.Encoded: Gt6F0D97A69E_ser_pick(bv33_valid(o), o)
+def bitvector_33_serialize(+o: bitvector_33_d.Bitvector33) -> O.Encoded: bitvector_33_ser_pick(bv33_valid(o), o)

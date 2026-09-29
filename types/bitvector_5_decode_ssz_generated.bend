@@ -23,17 +23,17 @@ def bv5_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def bv5_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv5_ok_len(U32.is_eq(len, 1), buf, off)
 
-def Gt27CDB122DD_some(pair: B.Buf & bitvector_5_d.Bitvector5) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
+def bitvector_5_some(pair: B.Buf & bitvector_5_d.Bitvector5) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
   (buf, +v) = pair
   (buf, Some{v})
 
-def Gt27CDB122DD_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
+def bitvector_5_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt27CDB122DD_some(bv5_read(buf, 0, size))
+    case True{}: bitvector_5_some(bv5_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt27CDB122DD_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
-  Gt27CDB122DD_built(size, bv5_ok(buf, 0, size))
+def bitvector_5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
+  bitvector_5_built(size, bv5_ok(buf, 0, size))
 
-def Gt27CDB122DD_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_5_d.Bitvector5: bv5_read(buf, 0, size)
+def bitvector_5_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_5_d.Bitvector5: bv5_read(buf, 0, size)

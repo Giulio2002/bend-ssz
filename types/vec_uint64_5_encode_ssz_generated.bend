@@ -76,15 +76,15 @@ def v5_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 40, 40, False{}, 8
 
 def v5_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u64_pk(out, pos, v5_u64_valid(o))
 
-def Gt8FB0CF9679_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def vec_uint64_5_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
   (o, O.out_done(40, out))
 
-def Gt8FB0CF9679_encode(o: O.Words) -> O.Words & B.Buf: Gt8FB0CF9679_enc_out(v5_u64_put(O.out_at(4n), 0, o))
+def vec_uint64_5_encode(o: O.Words) -> O.Words & B.Buf: vec_uint64_5_enc_out(v5_u64_put(O.out_at(4n), 0, o))
 
-def Gt8FB0CF9679_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def vec_uint64_5_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, fl) = r
   (o, O.ser_done(O.is_poisoned(fl), 40, out))
 
-def Gt8FB0CF9679_serialize(o: O.Words) -> O.Words & O.Encoded: Gt8FB0CF9679_senc_out(v5_u64_putk(O.out_at(4n), 0, o))
+def vec_uint64_5_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint64_5_senc_out(v5_u64_putk(O.out_at(4n), 0, o))

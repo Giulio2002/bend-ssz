@@ -104,21 +104,21 @@ def list_btwins(t):
     return t.rstrip('\n') + '\n' + ''.join(out) if out else t
 
 
-# ---- the word/byte list children in D form (codegen/encx_d.py: big_encx_<p>_d, their storage at depth < 31) ----------
+# ---- the word/byte list children in D form (codegen/encx_d.py: encx_<p>_d, their storage at depth < 31) ----------
 # The OKW twins of the containers in LIST_D_STEMS take their list children's validity from the D modules (the base
 # child stops at dw < 28): OK, the size / spec / validity laws and the writers' putxW / putx_bytesW of the D module.
 
-LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface',
-                'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface', 'big_encx_Gc221EC01D83', 'big_encx_Gc221EC01D83_iface',
-                'big_encx_Gp8A7851175B', 'big_encx_Gp8A7851175B_iface', 'big_encx_BeaconState', 'big_encx_BeaconState_iface',
-                'big_encx_ExecutionPayloadHeader', 'big_encx_ExecutionPayloadHeader_iface'}
+LIST_D_STEMS = {'encx_VarTestStruct', 'encx_VarTestStruct_iface', 'encx_ProgressiveVarTestStruct', 'encx_ProgressiveVarTestStruct_iface',
+                'encx_ComplexTestStruct', 'encx_ComplexTestStruct_iface', 'encx_ProgressiveTestStruct', 'encx_ProgressiveTestStruct_iface',
+                'encx_ProgressiveComplexTestStruct', 'encx_ProgressiveComplexTestStruct_iface', 'encx_BeaconState', 'encx_BeaconState_iface',
+                'encx_ExecutionPayloadHeader', 'encx_ExecutionPayloadHeader_iface'}
 LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'maxx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
 
 
 def list_d_children(t):
     """{alias: (dalias, p)} of the list children t imports that have a D module."""
     import encx_d
-    return {m.group(2): (m.group(2) + '_D', m.group(1)) for m in re.finditer(r'^import \./big_encx_(\w+)\.bend as (\w+)$', t, re.M)
+    return {m.group(2): (m.group(2) + '_D', m.group(1)) for m in re.finditer(r'^import \./encx_(\w+)\.bend as (\w+)$', t, re.M)
             if m.group(1) in encx_d.CFG or m.group(1) in encx_d.CLOSURES}
 
 
@@ -133,9 +133,9 @@ def list_d_swap(s, ld):
 def list_d_imports(t, ld):
     for al, (dal, p) in ld.items():
         if dal + '.' in t and f' as {dal}\n' not in t:
-            a = f'import ./big_encx_{p}.bend as {al}\n'
+            a = f'import ./encx_{p}.bend as {al}\n'
             assert a in t, a
-            t = t.replace(a, a + f'import ./big_encx_{p}_d.bend as {dal}\n', 1)
+            t = t.replace(a, a + f'import ./encx_{p}_d.bend as {dal}\n', 1)
     return t
 
 
@@ -458,7 +458,7 @@ def _topo(seg):
     return head + ''.join('\n' + bd[n].strip('\n') + '\n' for n in order)
 
 
-# ==== the size modules (codegen/var_cont_top.py: big_encx_<C>_size, the runtime's size and validity passes) ====
+# ==== the size modules (codegen/var_cont_top.py: encx_<C>_size, the runtime's size and validity passes) ====
 SLAWS = ('sizex', 'szs', 'sizez', 'validx')
 
 

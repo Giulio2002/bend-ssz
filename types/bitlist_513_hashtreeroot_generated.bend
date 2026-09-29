@@ -9,4 +9,4 @@ import ../src/obj.bend as O
 
 def bits513_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 2, seg)
 
-def Gt44F1B6940F_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits513_root(64n, h, o, 0)
+def bitlist_513_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits513_root(64n, h, o, 0)

@@ -5,7 +5,7 @@
 
 proofs/obj/arr_copy.bend: the word-copy loop of src/obj.bend (`acopy`,
 eight words per block, `ac_blk`/`ac_c0..7`) on a perfect Base array tree,
-for SYMBOLIC counts and offsets: the loop is the model `cpt` of single-word
+for LIMIT_LEMMAS counts and offsets: the loop is the model `cpt` of single-word
 updates (found.bend `array__upd`), proved by induction over the blocks.
 Nothing is evaluated at a closed size: counts, offsets and depths are
 variables, bounds are hypotheses; a name instantiates them.

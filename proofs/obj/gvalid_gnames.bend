@@ -1,7 +1,6 @@
 import Base
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../types/uint256_def_generated.bend as uint256_d
 import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
 import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
@@ -30,9 +29,9 @@ def rv_u8(+o: U32, +rp: RN_L.rp_u8(o)) -> {VD.root_valid(RN_L.v_u8(o), S.Unsigne
 
 def rv_u16(+o: U32, +rp: RN_L.rp_u16(o)) -> {VD.root_valid(RN_L.v_u16(o), S.Unsigned{P.U16{}}) == True{} : Bool}: VL.u16dom(o, rp)
 
-def rv_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +rp: RN_L.rp_Gc4ED9619F50(o)) -> {VD.root_valid(RN_L.v_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}) == True{} : Bool}:
+def rv_SmallTestStruct(+o: SmallTestStruct_d.SmallTestStruct, +rp: RN_L.rp_SmallTestStruct(o)) -> {VD.root_valid(RN_L.v_SmallTestStruct(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}) == True{} : Bool}:
   match o:
-    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}:
+    case SmallTestStruct_d.SmallTestStruct{+x0, +x1}:
       (+r0, +k0) = rp
       %Equal.sym(Bool, VD.root_valid(RN_L.v_u16(x0), S.Unsigned{P.U16{}}), True{}, rv_u16(x0, r0)) :
         {Bool.and(_, VD.root_valid(S.Items{RN_L.v_u16(x1), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}})) == True{} : Bool}
@@ -40,9 +39,9 @@ def rv_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +rp: RN_L.rp_Gc4ED9619F5
         {Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{}))) == True{} : Bool}
       {==}
 
-def rv_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rp: RN_L.rp_GpF350A3C486(o)) -> {VD.root_valid(RN_L.v_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}) == True{} : Bool}:
+def rv_ProgressiveSingleFieldContainerTestStruct(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +rp: RN_L.rp_ProgressiveSingleFieldContainerTestStruct(o)) -> {VD.root_valid(RN_L.v_ProgressiveSingleFieldContainerTestStruct(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}) == True{} : Bool}:
   match o:
-    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}:
+    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+x0}:
       %Equal.sym(Bool, VD.root_valid(RN_L.v_u8(x0), S.Unsigned{P.U8{}}), True{}, rv_u8(x0, rp)) :
         {Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})) == True{} : Bool}
       {==}
@@ -102,9 +101,9 @@ def rv_u64(+o: O.U64) -> {VD.root_valid(RN_L.v_u64(o), S.Unsigned{P.U64{}}) == T
 
 def rv_u32(+o: U32) -> {VD.root_valid(RN_L.v_u32(o), S.Unsigned{P.U32Width{}}) == True{} : Bool}: VL.u32dom(o)
 
-def rv_GcDC3E457711(+o: FixedTestStruct_d.GcDC3E457711, +rp: RN_L.rp_GcDC3E457711(o)) -> {VD.root_valid(RN_L.v_GcDC3E457711(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}) == True{} : Bool}:
+def rv_FixedTestStruct(+o: FixedTestStruct_d.FixedTestStruct, +rp: RN_L.rp_FixedTestStruct(o)) -> {VD.root_valid(RN_L.v_FixedTestStruct(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}) == True{} : Bool}:
   match o:
-    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}:
+    case FixedTestStruct_d.FixedTestStruct{+x0, +x1, +x2}:
       %Equal.sym(Bool, VD.root_valid(RN_L.v_u8(x0), S.Unsigned{P.U8{}}), True{}, rv_u8(x0, rp)) :
         {Bool.and(_, VD.root_valid(S.Items{RN_L.v_u64(x1), S.Items{RN_L.v_u32(x2), S.EmptyItems{}}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}})) == True{} : Bool}
       %Equal.sym(Bool, VD.root_valid(RN_L.v_u64(x1), S.Unsigned{P.U64{}}), True{}, rv_u64(x1)) :
@@ -113,9 +112,9 @@ def rv_GcDC3E457711(+o: FixedTestStruct_d.GcDC3E457711, +rp: RN_L.rp_GcDC3E45771
         {Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))) == True{} : Bool}
       {==}
 
-def rv_Gc74A8F5F17F(+o: SingleFieldTestStruct_d.Gc74A8F5F17F, +rp: RN_L.rp_Gc74A8F5F17F(o)) -> {VD.root_valid(RN_L.v_Gc74A8F5F17F(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}) == True{} : Bool}:
+def rv_SingleFieldTestStruct(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +rp: RN_L.rp_SingleFieldTestStruct(o)) -> {VD.root_valid(RN_L.v_SingleFieldTestStruct(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}) == True{} : Bool}:
   match o:
-    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}:
+    case SingleFieldTestStruct_d.SingleFieldTestStruct{+x0}:
       %Equal.sym(Bool, VD.root_valid(RN_L.v_u8(x0), S.Unsigned{P.U8{}}), True{}, rv_u8(x0, rp)) :
         {Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})) == True{} : Bool}
       {==}
@@ -130,26 +129,15 @@ def rv_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {VD.root_valid(RN_L.v_bv5
     {Bool.and(Nat.is_lt(0n, 512n), Nat.is_eq(_, 512n)) == True{} : Bool}
   {==}
 
-def rv_bool(+o: Bool) -> {VD.root_valid(RN_L.v_bool(o), S.Boolean{}) == True{} : Bool}: {==}
-
 def rv_u128(+o: uint128_d.Uint128) -> {VD.root_valid(RN_L.v_u128(o), S.Unsigned{P.U128{}}) == True{} : Bool}:
   match o:
     case uint128_d.Uint128{+w0, +w1, +w2, +w3}: {==}
 
-def rv_u256(+o: uint256_d.Uint256) -> {VD.root_valid(RN_L.v_u256(o), S.Unsigned{P.U256{}}) == True{} : Bool}:
-  match o:
-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
-
-def GpF350A3C486_root_valid(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rp: RN_L.rp_GpF350A3C486(o)) -> {VD.root_valid(RN_L.v_GpF350A3C486(o), Spec.GpF350A3C486()) == True{} : Bool}: rv_GpF350A3C486(o, rp)
-def GcDC3E457711_root_valid(+o: FixedTestStruct_d.GcDC3E457711, +rp: RN_L.rp_GcDC3E457711(o)) -> {VD.root_valid(RN_L.v_GcDC3E457711(o), Spec.GcDC3E457711()) == True{} : Bool}: rv_GcDC3E457711(o, rp)
-def Gc74A8F5F17F_root_valid(+o: SingleFieldTestStruct_d.Gc74A8F5F17F, +rp: RN_L.rp_Gc74A8F5F17F(o)) -> {VD.root_valid(RN_L.v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F()) == True{} : Bool}: rv_Gc74A8F5F17F(o, rp)
-def Gc4ED9619F50_root_valid(+o: SmallTestStruct_d.Gc4ED9619F50, +rp: RN_L.rp_Gc4ED9619F50(o)) -> {VD.root_valid(RN_L.v_Gc4ED9619F50(o), Spec.Gc4ED9619F50()) == True{} : Bool}: rv_Gc4ED9619F50(o, rp)
-def GtBBF12DAB28_root_valid(+o: bitvector_32_d.Bitvector32) -> {VD.root_valid(RN_L.v_bv32(o), Spec.GtBBF12DAB28()) == True{} : Bool}: rv_bv32(o)
-def Gt0A390CB480_root_valid(+o: Fulu_bitvector_512_d.Bitvector512) -> {VD.root_valid(RN_L.v_bv512(o), Spec.Gt0A390CB480()) == True{} : Bool}: rv_bv512(o)
-def GtAD72FD256A_root_valid(+o: Bool) -> {VD.root_valid(RN_L.v_bool(o), Spec.GtAD72FD256A()) == True{} : Bool}: rv_bool(o)
-def Gt604E28A301_root_valid(+o: uint128_d.Uint128) -> {VD.root_valid(RN_L.v_u128(o), Spec.Gt604E28A301()) == True{} : Bool}: rv_u128(o)
-def Gt967E8D815F_root_valid(+o: U32, +rp: RN_L.rp_u8(o)) -> {VD.root_valid(RN_L.v_u8(o), Spec.Gt967E8D815F()) == True{} : Bool}: rv_u8(o, rp)
-def GtECF9BB18D8_root_valid(+o: U32, +rp: RN_L.rp_u16(o)) -> {VD.root_valid(RN_L.v_u16(o), Spec.GtECF9BB18D8()) == True{} : Bool}: rv_u16(o, rp)
-def Gt59DCDB2873_root_valid(+o: uint256_d.Uint256) -> {VD.root_valid(RN_L.v_u256(o), Spec.Gt59DCDB2873()) == True{} : Bool}: rv_u256(o)
-def Gt7B8507E2C2_root_valid(+o: U32) -> {VD.root_valid(RN_L.v_u32(o), Spec.Gt7B8507E2C2()) == True{} : Bool}: rv_u32(o)
-def Gt62B0093BE7_root_valid(+o: O.U64) -> {VD.root_valid(RN_L.v_u64(o), Spec.Gt62B0093BE7()) == True{} : Bool}: rv_u64(o)
+def ProgressiveSingleFieldContainerTestStruct_root_valid(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +rp: RN_L.rp_ProgressiveSingleFieldContainerTestStruct(o)) -> {VD.root_valid(RN_L.v_ProgressiveSingleFieldContainerTestStruct(o), Spec.ProgressiveSingleFieldContainerTestStruct()) == True{} : Bool}: rv_ProgressiveSingleFieldContainerTestStruct(o, rp)
+def FixedTestStruct_root_valid(+o: FixedTestStruct_d.FixedTestStruct, +rp: RN_L.rp_FixedTestStruct(o)) -> {VD.root_valid(RN_L.v_FixedTestStruct(o), Spec.FixedTestStruct()) == True{} : Bool}: rv_FixedTestStruct(o, rp)
+def SingleFieldTestStruct_root_valid(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +rp: RN_L.rp_SingleFieldTestStruct(o)) -> {VD.root_valid(RN_L.v_SingleFieldTestStruct(o), Spec.SingleFieldTestStruct()) == True{} : Bool}: rv_SingleFieldTestStruct(o, rp)
+def SmallTestStruct_root_valid(+o: SmallTestStruct_d.SmallTestStruct, +rp: RN_L.rp_SmallTestStruct(o)) -> {VD.root_valid(RN_L.v_SmallTestStruct(o), Spec.SmallTestStruct()) == True{} : Bool}: rv_SmallTestStruct(o, rp)
+def bitvector_32_root_valid(+o: bitvector_32_d.Bitvector32) -> {VD.root_valid(RN_L.v_bv32(o), Spec.bitvector_32()) == True{} : Bool}: rv_bv32(o)
+def bitvector_512_root_valid(+o: Fulu_bitvector_512_d.Bitvector512) -> {VD.root_valid(RN_L.v_bv512(o), Spec.bitvector_512()) == True{} : Bool}: rv_bv512(o)
+def uint128_root_valid(+o: uint128_d.Uint128) -> {VD.root_valid(RN_L.v_u128(o), Spec.uint128()) == True{} : Bool}: rv_u128(o)
+def uint16_root_valid(+o: U32, +rp: RN_L.rp_u16(o)) -> {VD.root_valid(RN_L.v_u16(o), Spec.uint16()) == True{} : Bool}: rv_u16(o, rp)

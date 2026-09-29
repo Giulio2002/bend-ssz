@@ -31,35 +31,35 @@ def pl_u8_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.
 def pl_u8_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
   pl_u8_pvb(cur, pl_u8_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def GtDE4B86A990_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
+def proglist_uint8_enc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & B.Buf:
   (o, O.out_done(n, out))
 
-def GtDE4B86A990_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
+def proglist_uint8_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtDE4B86A990_enc_out(n, out, o, m)
+  proglist_uint8_enc_out(n, out, o, m)
 
-def GtDE4B86A990_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
+def proglist_uint8_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  GtDE4B86A990_enc_put(n, pl_u8_putn(O.out_new(n), 0, o))
+  proglist_uint8_enc_put(n, pl_u8_putn(O.out_new(n), 0, o))
 
-def GtDE4B86A990_encode(o: O.Words) -> O.Words & B.Buf: GtDE4B86A990_enc_sized(pl_u8_size(o))
+def proglist_uint8_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint8_enc_sized(pl_u8_size(o))
 
-def GtDE4B86A990_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+def proglist_uint8_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))
 
-def GtDE4B86A990_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+def proglist_uint8_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
   (out, r) = pair
   (o, m) = r
-  GtDE4B86A990_senc_out(n, out, o, m)
+  proglist_uint8_senc_out(n, out, o, m)
 
-def GtDE4B86A990_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+def proglist_uint8_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
   match bad:
     case True{}: (o, O.refused())
-    case False{}: GtDE4B86A990_senc_put(n, pl_u8_putk(O.out_new(n), 0, o))
+    case False{}: proglist_uint8_senc_put(n, pl_u8_putk(O.out_new(n), 0, o))
 
-def GtDE4B86A990_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+def proglist_uint8_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
   (o, +n) = pair
-  GtDE4B86A990_senc_go(O.is_poisoned(n), n, o)
+  proglist_uint8_senc_go(O.is_poisoned(n), n, o)
 
-def GtDE4B86A990_serialize(o: O.Words) -> O.Words & O.Encoded: GtDE4B86A990_senc_sized(pl_u8_size(o))
+def proglist_uint8_serialize(o: O.Words) -> O.Words & O.Encoded: proglist_uint8_senc_sized(pl_u8_size(o))

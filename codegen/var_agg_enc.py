@@ -3,7 +3,7 @@
 fields around one variable child, the child an Attestation (a bit list among fixed
 fields) at a word-aligned position.
 
-    python3 codegen/var_agg_enc.py [--check] [--no-big]
+    python3 codegen/var_agg_enc.py [--check]
 
 Every module below states the same WRITER INTERFACE of its name X at a symbolic
 word-aligned position pos = 4 P of an existing output tree D of depth dd < 29:
@@ -13,7 +13,7 @@ word-aligned position pos = 4 P of an existing output tree D of depth dd < 29:
   putw(...)                       T.X_putn(thaw D, pos, OBJ) == (thaw W, (OBJ, SFS(K)))
   hdrw(...)                       WIN(HX, P, slots W) == HDR (the flat header words)
   payw(...)                       the bit list's bytes after the header are Y(ws, T, K)
-                                  (proofs/obj/big_var_bitc_enc_Attestation.bend's bytes)
+                                  (proofs/obj/var_bitc_enc_Attestation.bend's bytes)
   ow_hi(..., m, p, hm)            a window below P is D's
   partsE(ws, dw, T, K, ...)       Codec.parts(VAL, Spec.X()) == Some{[Variable{limbs(HDR) ++ Y}]}
 
@@ -22,11 +22,11 @@ HX + q + 1 words at P (q = K / 32) and its two words under the bit list's delimi
 and last byte zero; the bit list O.Bits{thaw T, K} a value within BitList[2^17]
 (BO.rep_bits) passing the runtime's checks (capacity, bits past K zero).
 
-  proofs/obj/big_var_bitc_encw_Attestation.bend      Attestation (HX = 59), over the
+  proofs/obj/var_bitc_encw_Attestation.bend      Attestation (HX = 59), over the
       pos-0 encoder's library (codegen/var_bits_enc.py): vbitcont.enc_at writes the
       bit list at P + 59, the fixed fields are VF.updv runs;
-  proofs/obj/big_var_codec_AggregateAndProof_enc.bend        (HX = 27 + 59)
-  proofs/obj/big_var_codec_SignedAggregateAndProof_enc.bend  (HX = 25 + 86)
+  proofs/obj/var_codec_AggregateAndProof_enc.bend        (HX = 27 + 59)
+  proofs/obj/var_codec_SignedAggregateAndProof_enc.bend  (HX = 25 + 86)
       the parent's offset word and fixed fields around the child's writer at
       P + H, then encode_eval / encode_spec: the interface at P = 0 of a zero tree.
 
@@ -59,7 +59,7 @@ HEAD = list(VL.DEC_HEAD) + [
     'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp', 'import ./bitlist_pack.bend as BK',
     'import ./bitlist_rep.bend as BO', 'import ./vbitenc.bend as VBT', 'import ./vbitdl.bend as DL', 'import ./vbitcore.bend as CO',
     'import ./vbitcont.bend as CT', 'import ./vbitrep.bend as VR', 'import ./var_bits_enc_bw.bend as BW', 'import ../compact/reads.bend as RD',
-    'import ../../proofs/primitive_invariants.bend as V', 'import ./big_var_bitc_enc_Attestation.bend as E'] + list(VL.SPEC_IMPORTS)
+    'import ../../proofs/primitive_invariants.bend as V', 'import ./var_bitc_enc_Attestation.bend as E'] + list(VL.SPEC_IMPORTS)
 
 
 def wsig(ws):
@@ -958,28 +958,26 @@ def top_text(n, Tn, ws, WA, HX, FSX, SRC, SRCa, OBJa, HDRL, RHS, RHSp, Y, TP, HN
 
 AAP_DOC = ['The encoder of AggregateAndProof (aggregator_index, the offset of the boxed Attestation, selection_proof,',
            'then the Attestation): its writer at P (the interface of codegen/var_agg_enc.py) over the',
-           "Attestation's (big_var_bitc_encw_Attestation.bend) at P + 27, and encode_eval / encode_spec: for every",
+           "Attestation's (var_bitc_encw_Attestation.bend) at P + 27, and encode_eval / encode_spec: for every",
            "object whose bit list represents a value within BitList[2^17] and passes the runtime's checks, the",
            'encoder returns the object and B.Buf{thaw(OUT), 344 + K / 8 + 1}, whose bytes are the spec encoding',
            "of the object's value."]
 SAAP_DOC = ['The encoder of SignedAggregateAndProof (the offset of the message, signature, then the message, an',
-            'AggregateAndProof written by big_var_codec_AggregateAndProof_enc.bend at P + 25): encode_eval and',
+            'AggregateAndProof written by var_codec_AggregateAndProof_enc.bend at P + 25): encode_eval and',
             'encode_spec, as for AggregateAndProof (B.Buf{thaw(OUT), 444 + K / 8 + 1}).']
 
 
 def main():
-    nb = '--no-big' in sys.argv
     out = {}
-    if not nb:
-        out[OBJ / 'big_var_bitc_encw_Attestation.bend'] = leaf_text()
-        _g, _x, _f, IA = leaf()
-        IA.T = 'T.Attestation'
-        cA = Child(IA, 'big_var_bitc_encw_Attestation.bend', 'AW', 236, 'E.eS', 'E.size_eval', True)
-        t1, IP = parent_text('AggregateAndProof', 'a', cA, AAP_DOC)
-        out[OBJ / 'big_var_codec_AggregateAndProof_enc.bend'] = t1
-        cP = Child(IP, 'big_var_codec_AggregateAndProof_enc.bend', 'C', 344, 'C.eSX', 'C.size_eval', False)
-        t2, _ = parent_text('SignedAggregateAndProof', 's', cP, SAAP_DOC)
-        out[OBJ / 'big_var_codec_SignedAggregateAndProof_enc.bend'] = t2
+    out[OBJ / 'var_bitc_encw_Attestation.bend'] = leaf_text()
+    _g, _x, _f, IA = leaf()
+    IA.T = 'T.Attestation'
+    cA = Child(IA, 'var_bitc_encw_Attestation.bend', 'AW', 236, 'E.eS', 'E.size_eval', True)
+    t1, IP = parent_text('AggregateAndProof', 'a', cA, AAP_DOC)
+    out[OBJ / 'var_codec_AggregateAndProof_enc.bend'] = t1
+    cP = Child(IP, 'var_codec_AggregateAndProof_enc.bend', 'C', 344, 'C.eSX', 'C.size_eval', False)
+    t2, _ = parent_text('SignedAggregateAndProof', 's', cP, SAAP_DOC)
+    out[OBJ / 'var_codec_SignedAggregateAndProof_enc.bend'] = t2
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
@@ -993,7 +991,7 @@ def main():
         return
     for p, t in out.items():
         p.write_text(t)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out) or 'nothing (--no-big)')
+    print(', '.join(str(p.relative_to(ROOT)) for p in out))
 
 
 if __name__ == '__main__':

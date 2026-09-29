@@ -28,195 +28,195 @@ import ./vrejf.bend as VRF
 # Fixed-size names whose validator checks only the length: ok_eval and decode_reject
 # (see codegen/fix_reject.py).
 
-# ---- Gt2CD118DF5F (513 bytes; validator T.v513_u8_ok) ----
-def Gt2CD118DF5F_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_513_r.v513_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint8_513 (513 bytes; validator T.v513_u8_ok) ----
+def vec_uint8_513_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_513_r.v513_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt2CD118DF5F_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_513_r.v513_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 513)) : B.Buf & Bool}:
-  Gt2CD118DF5F_okb(buf, off, U32.is_eq(len, 513))
-def Gt2CD118DF5F_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 513n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt2CD118DF5F(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt2CD118DF5F()), 513n, bs, Codec.parts(v, GS.Gt2CD118DF5F()), DS.facts(v, GS.Gt2CD118DF5F(), {==}), {==}, e, hn)
-def Gt2CD118DF5F_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 513n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt2CD118DF5F(), bs):
-  v => e => Gt2CD118DF5F_rj(bs, hn, v, e)
+def vec_uint8_513_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_513_r.v513_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 513)) : B.Buf & Bool}:
+  vec_uint8_513_okb(buf, off, U32.is_eq(len, 513))
+def vec_uint8_513_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 513n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint8_513(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint8_513()), 513n, bs, Codec.parts(v, GS.vec_uint8_513()), DS.facts(v, GS.vec_uint8_513(), {==}), {==}, e, hn)
+def vec_uint8_513_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 513n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint8_513(), bs):
+  v => e => vec_uint8_513_rj(bs, hn, v, e)
 
-# ---- GtF3865AEE9A (5 bytes; validator T.v5_u8_ok) ----
-def GtF3865AEE9A_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_5_r.v5_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint8_5 (5 bytes; validator T.v5_u8_ok) ----
+def vec_uint8_5_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_5_r.v5_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtF3865AEE9A_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_5_r.v5_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 5)) : B.Buf & Bool}:
-  GtF3865AEE9A_okb(buf, off, U32.is_eq(len, 5))
-def GtF3865AEE9A_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 5n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtF3865AEE9A(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtF3865AEE9A()), 5n, bs, Codec.parts(v, GS.GtF3865AEE9A()), DS.facts(v, GS.GtF3865AEE9A(), {==}), {==}, e, hn)
-def GtF3865AEE9A_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 5n) == False{} : Bool}) -> Decoding.outside_image(GS.GtF3865AEE9A(), bs):
-  v => e => GtF3865AEE9A_rj(bs, hn, v, e)
+def vec_uint8_5_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_5_r.v5_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 5)) : B.Buf & Bool}:
+  vec_uint8_5_okb(buf, off, U32.is_eq(len, 5))
+def vec_uint8_5_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 5n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint8_5(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint8_5()), 5n, bs, Codec.parts(v, GS.vec_uint8_5()), DS.facts(v, GS.vec_uint8_5(), {==}), {==}, e, hn)
+def vec_uint8_5_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 5n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint8_5(), bs):
+  v => e => vec_uint8_5_rj(bs, hn, v, e)
 
-# ---- GtA8100D747D (8 bytes; validator T.v8_u8_ok) ----
-def GtA8100D747D_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_8_r.v8_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint8_8 (8 bytes; validator T.v8_u8_ok) ----
+def vec_uint8_8_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint8_8_r.v8_u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtA8100D747D_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_8_r.v8_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
-  GtA8100D747D_okb(buf, off, U32.is_eq(len, 8))
-def GtA8100D747D_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtA8100D747D(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtA8100D747D()), 8n, bs, Codec.parts(v, GS.GtA8100D747D()), DS.facts(v, GS.GtA8100D747D(), {==}), {==}, e, hn)
-def GtA8100D747D_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> Decoding.outside_image(GS.GtA8100D747D(), bs):
-  v => e => GtA8100D747D_rj(bs, hn, v, e)
+def vec_uint8_8_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint8_8_r.v8_u8_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+  vec_uint8_8_okb(buf, off, U32.is_eq(len, 8))
+def vec_uint8_8_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint8_8(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint8_8()), 8n, bs, Codec.parts(v, GS.vec_uint8_8()), DS.facts(v, GS.vec_uint8_8(), {==}), {==}, e, hn)
+def vec_uint8_8_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint8_8(), bs):
+  v => e => vec_uint8_8_rj(bs, hn, v, e)
 
-# ---- GtAEB382AD1F (32 bytes; validator T.v16_u16_ok) ----
-def GtAEB382AD1F_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_16_r.v16_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_16 (32 bytes; validator T.v16_u16_ok) ----
+def vec_uint16_16_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_16_r.v16_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtAEB382AD1F_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_16_r.v16_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
-  GtAEB382AD1F_okb(buf, off, U32.is_eq(len, 32))
-def GtAEB382AD1F_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtAEB382AD1F(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtAEB382AD1F()), 32n, bs, Codec.parts(v, GS.GtAEB382AD1F()), DS.facts(v, GS.GtAEB382AD1F(), {==}), {==}, e, hn)
-def GtAEB382AD1F_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> Decoding.outside_image(GS.GtAEB382AD1F(), bs):
-  v => e => GtAEB382AD1F_rj(bs, hn, v, e)
+def vec_uint16_16_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_16_r.v16_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
+  vec_uint16_16_okb(buf, off, U32.is_eq(len, 32))
+def vec_uint16_16_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_16(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_16()), 32n, bs, Codec.parts(v, GS.vec_uint16_16()), DS.facts(v, GS.vec_uint16_16(), {==}), {==}, e, hn)
+def vec_uint16_16_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_16(), bs):
+  v => e => vec_uint16_16_rj(bs, hn, v, e)
 
-# ---- GtE6006F6F55 (2 bytes; validator T.v1_u16_ok) ----
-def GtE6006F6F55_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_1_r.v1_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_1 (2 bytes; validator T.v1_u16_ok) ----
+def vec_uint16_1_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_1_r.v1_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtE6006F6F55_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_1_r.v1_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 2)) : B.Buf & Bool}:
-  GtE6006F6F55_okb(buf, off, U32.is_eq(len, 2))
-def GtE6006F6F55_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtE6006F6F55(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtE6006F6F55()), 2n, bs, Codec.parts(v, GS.GtE6006F6F55()), DS.facts(v, GS.GtE6006F6F55(), {==}), {==}, e, hn)
-def GtE6006F6F55_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2n) == False{} : Bool}) -> Decoding.outside_image(GS.GtE6006F6F55(), bs):
-  v => e => GtE6006F6F55_rj(bs, hn, v, e)
+def vec_uint16_1_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_1_r.v1_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 2)) : B.Buf & Bool}:
+  vec_uint16_1_okb(buf, off, U32.is_eq(len, 2))
+def vec_uint16_1_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_1(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_1()), 2n, bs, Codec.parts(v, GS.vec_uint16_1()), DS.facts(v, GS.vec_uint16_1(), {==}), {==}, e, hn)
+def vec_uint16_1_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_1(), bs):
+  v => e => vec_uint16_1_rj(bs, hn, v, e)
 
-# ---- Gt04170D6AA7 (4 bytes; validator T.v2_u16_ok) ----
-def Gt04170D6AA7_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_2_r.v2_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_2 (4 bytes; validator T.v2_u16_ok) ----
+def vec_uint16_2_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_2_r.v2_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt04170D6AA7_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_2_r.v2_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 4)) : B.Buf & Bool}:
-  Gt04170D6AA7_okb(buf, off, U32.is_eq(len, 4))
-def Gt04170D6AA7_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt04170D6AA7(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt04170D6AA7()), 4n, bs, Codec.parts(v, GS.Gt04170D6AA7()), DS.facts(v, GS.Gt04170D6AA7(), {==}), {==}, e, hn)
-def Gt04170D6AA7_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt04170D6AA7(), bs):
-  v => e => Gt04170D6AA7_rj(bs, hn, v, e)
+def vec_uint16_2_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_2_r.v2_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 4)) : B.Buf & Bool}:
+  vec_uint16_2_okb(buf, off, U32.is_eq(len, 4))
+def vec_uint16_2_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_2(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_2()), 4n, bs, Codec.parts(v, GS.vec_uint16_2()), DS.facts(v, GS.vec_uint16_2(), {==}), {==}, e, hn)
+def vec_uint16_2_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_2(), bs):
+  v => e => vec_uint16_2_rj(bs, hn, v, e)
 
-# ---- Gt9333E6513D (62 bytes; validator T.v31_u16_ok) ----
-def Gt9333E6513D_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_31_r.v31_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_31 (62 bytes; validator T.v31_u16_ok) ----
+def vec_uint16_31_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_31_r.v31_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt9333E6513D_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_31_r.v31_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 62)) : B.Buf & Bool}:
-  Gt9333E6513D_okb(buf, off, U32.is_eq(len, 62))
-def Gt9333E6513D_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 62n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt9333E6513D(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt9333E6513D()), 62n, bs, Codec.parts(v, GS.Gt9333E6513D()), DS.facts(v, GS.Gt9333E6513D(), {==}), {==}, e, hn)
-def Gt9333E6513D_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 62n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt9333E6513D(), bs):
-  v => e => Gt9333E6513D_rj(bs, hn, v, e)
+def vec_uint16_31_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_31_r.v31_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 62)) : B.Buf & Bool}:
+  vec_uint16_31_okb(buf, off, U32.is_eq(len, 62))
+def vec_uint16_31_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 62n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_31(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_31()), 62n, bs, Codec.parts(v, GS.vec_uint16_31()), DS.facts(v, GS.vec_uint16_31(), {==}), {==}, e, hn)
+def vec_uint16_31_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 62n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_31(), bs):
+  v => e => vec_uint16_31_rj(bs, hn, v, e)
 
-# ---- Gt19F04F79B8 (6 bytes; validator T.v3_u16_ok) ----
-def Gt19F04F79B8_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_3_r.v3_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_3 (6 bytes; validator T.v3_u16_ok) ----
+def vec_uint16_3_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_3_r.v3_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt19F04F79B8_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_3_r.v3_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 6)) : B.Buf & Bool}:
-  Gt19F04F79B8_okb(buf, off, U32.is_eq(len, 6))
-def Gt19F04F79B8_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 6n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt19F04F79B8(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt19F04F79B8()), 6n, bs, Codec.parts(v, GS.Gt19F04F79B8()), DS.facts(v, GS.Gt19F04F79B8(), {==}), {==}, e, hn)
-def Gt19F04F79B8_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 6n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt19F04F79B8(), bs):
-  v => e => Gt19F04F79B8_rj(bs, hn, v, e)
+def vec_uint16_3_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_3_r.v3_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 6)) : B.Buf & Bool}:
+  vec_uint16_3_okb(buf, off, U32.is_eq(len, 6))
+def vec_uint16_3_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 6n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_3(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_3()), 6n, bs, Codec.parts(v, GS.vec_uint16_3()), DS.facts(v, GS.vec_uint16_3(), {==}), {==}, e, hn)
+def vec_uint16_3_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 6n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_3(), bs):
+  v => e => vec_uint16_3_rj(bs, hn, v, e)
 
-# ---- Gt6463DC73A8 (8 bytes; validator T.v4_u16_ok) ----
-def Gt6463DC73A8_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_4_r.v4_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_4 (8 bytes; validator T.v4_u16_ok) ----
+def vec_uint16_4_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_4_r.v4_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt6463DC73A8_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_4_r.v4_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
-  Gt6463DC73A8_okb(buf, off, U32.is_eq(len, 8))
-def Gt6463DC73A8_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt6463DC73A8(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt6463DC73A8()), 8n, bs, Codec.parts(v, GS.Gt6463DC73A8()), DS.facts(v, GS.Gt6463DC73A8(), {==}), {==}, e, hn)
-def Gt6463DC73A8_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt6463DC73A8(), bs):
-  v => e => Gt6463DC73A8_rj(bs, hn, v, e)
+def vec_uint16_4_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_4_r.v4_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+  vec_uint16_4_okb(buf, off, U32.is_eq(len, 8))
+def vec_uint16_4_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_4(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_4()), 8n, bs, Codec.parts(v, GS.vec_uint16_4()), DS.facts(v, GS.vec_uint16_4(), {==}), {==}, e, hn)
+def vec_uint16_4_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_4(), bs):
+  v => e => vec_uint16_4_rj(bs, hn, v, e)
 
-# ---- Gt2FF8722A75 (1024 bytes; validator T.v512_u16_ok) ----
-def Gt2FF8722A75_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_512_r.v512_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_512 (1024 bytes; validator T.v512_u16_ok) ----
+def vec_uint16_512_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_512_r.v512_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt2FF8722A75_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_512_r.v512_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 1024)) : B.Buf & Bool}:
-  Gt2FF8722A75_okb(buf, off, U32.is_eq(len, 1024))
-def Gt2FF8722A75_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1024n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt2FF8722A75(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt2FF8722A75()), 1024n, bs, Codec.parts(v, GS.Gt2FF8722A75()), DS.facts(v, GS.Gt2FF8722A75(), {==}), {==}, e, hn)
-def Gt2FF8722A75_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1024n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt2FF8722A75(), bs):
-  v => e => Gt2FF8722A75_rj(bs, hn, v, e)
+def vec_uint16_512_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_512_r.v512_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 1024)) : B.Buf & Bool}:
+  vec_uint16_512_okb(buf, off, U32.is_eq(len, 1024))
+def vec_uint16_512_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1024n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_512(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_512()), 1024n, bs, Codec.parts(v, GS.vec_uint16_512()), DS.facts(v, GS.vec_uint16_512(), {==}), {==}, e, hn)
+def vec_uint16_512_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1024n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_512(), bs):
+  v => e => vec_uint16_512_rj(bs, hn, v, e)
 
-# ---- Gt5BE68AF2C7 (1026 bytes; validator T.v513_u16_ok) ----
-def Gt5BE68AF2C7_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_513_r.v513_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_513 (1026 bytes; validator T.v513_u16_ok) ----
+def vec_uint16_513_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_513_r.v513_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt5BE68AF2C7_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_513_r.v513_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 1026)) : B.Buf & Bool}:
-  Gt5BE68AF2C7_okb(buf, off, U32.is_eq(len, 1026))
-def Gt5BE68AF2C7_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1026n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt5BE68AF2C7(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt5BE68AF2C7()), 1026n, bs, Codec.parts(v, GS.Gt5BE68AF2C7()), DS.facts(v, GS.Gt5BE68AF2C7(), {==}), {==}, e, hn)
-def Gt5BE68AF2C7_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1026n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt5BE68AF2C7(), bs):
-  v => e => Gt5BE68AF2C7_rj(bs, hn, v, e)
+def vec_uint16_513_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_513_r.v513_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 1026)) : B.Buf & Bool}:
+  vec_uint16_513_okb(buf, off, U32.is_eq(len, 1026))
+def vec_uint16_513_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1026n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_513(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_513()), 1026n, bs, Codec.parts(v, GS.vec_uint16_513()), DS.facts(v, GS.vec_uint16_513(), {==}), {==}, e, hn)
+def vec_uint16_513_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1026n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_513(), bs):
+  v => e => vec_uint16_513_rj(bs, hn, v, e)
 
-# ---- Gt89824BEACE (10 bytes; validator T.v5_u16_ok) ----
-def Gt89824BEACE_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_5_r.v5_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_5 (10 bytes; validator T.v5_u16_ok) ----
+def vec_uint16_5_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_5_r.v5_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt89824BEACE_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_5_r.v5_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 10)) : B.Buf & Bool}:
-  Gt89824BEACE_okb(buf, off, U32.is_eq(len, 10))
-def Gt89824BEACE_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 10n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt89824BEACE(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt89824BEACE()), 10n, bs, Codec.parts(v, GS.Gt89824BEACE()), DS.facts(v, GS.Gt89824BEACE(), {==}), {==}, e, hn)
-def Gt89824BEACE_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 10n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt89824BEACE(), bs):
-  v => e => Gt89824BEACE_rj(bs, hn, v, e)
+def vec_uint16_5_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_5_r.v5_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 10)) : B.Buf & Bool}:
+  vec_uint16_5_okb(buf, off, U32.is_eq(len, 10))
+def vec_uint16_5_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 10n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_5(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_5()), 10n, bs, Codec.parts(v, GS.vec_uint16_5()), DS.facts(v, GS.vec_uint16_5(), {==}), {==}, e, hn)
+def vec_uint16_5_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 10n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_5(), bs):
+  v => e => vec_uint16_5_rj(bs, hn, v, e)
 
-# ---- Gt39CAD03032 (16 bytes; validator T.v8_u16_ok) ----
-def Gt39CAD03032_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_8_r.v8_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint16_8 (16 bytes; validator T.v8_u16_ok) ----
+def vec_uint16_8_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint16_8_r.v8_u16_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt39CAD03032_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_8_r.v8_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
-  Gt39CAD03032_okb(buf, off, U32.is_eq(len, 16))
-def Gt39CAD03032_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt39CAD03032(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt39CAD03032()), 16n, bs, Codec.parts(v, GS.Gt39CAD03032()), DS.facts(v, GS.Gt39CAD03032(), {==}), {==}, e, hn)
-def Gt39CAD03032_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt39CAD03032(), bs):
-  v => e => Gt39CAD03032_rj(bs, hn, v, e)
+def vec_uint16_8_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint16_8_r.v8_u16_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
+  vec_uint16_8_okb(buf, off, U32.is_eq(len, 16))
+def vec_uint16_8_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint16_8(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint16_8()), 16n, bs, Codec.parts(v, GS.vec_uint16_8()), DS.facts(v, GS.vec_uint16_8(), {==}), {==}, e, hn)
+def vec_uint16_8_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint16_8(), bs):
+  v => e => vec_uint16_8_rj(bs, hn, v, e)
 
-# ---- Gt3E6E18CD57 (512 bytes; validator T.v16_u256_ok) ----
-def Gt3E6E18CD57_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_16_r.v16_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint256_16 (512 bytes; validator T.v16_u256_ok) ----
+def vec_uint256_16_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_16_r.v16_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt3E6E18CD57_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_16_r.v16_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 512)) : B.Buf & Bool}:
-  Gt3E6E18CD57_okb(buf, off, U32.is_eq(len, 512))
-def Gt3E6E18CD57_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 512n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt3E6E18CD57(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.Gt3E6E18CD57()), 512n, bs, Codec.parts(v, GS.Gt3E6E18CD57()), DS.facts(v, GS.Gt3E6E18CD57(), {==}), {==}, e, hn)
-def Gt3E6E18CD57_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 512n) == False{} : Bool}) -> Decoding.outside_image(GS.Gt3E6E18CD57(), bs):
-  v => e => Gt3E6E18CD57_rj(bs, hn, v, e)
+def vec_uint256_16_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_16_r.v16_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 512)) : B.Buf & Bool}:
+  vec_uint256_16_okb(buf, off, U32.is_eq(len, 512))
+def vec_uint256_16_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 512n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint256_16(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint256_16()), 512n, bs, Codec.parts(v, GS.vec_uint256_16()), DS.facts(v, GS.vec_uint256_16(), {==}), {==}, e, hn)
+def vec_uint256_16_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 512n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint256_16(), bs):
+  v => e => vec_uint256_16_rj(bs, hn, v, e)
 
-# ---- GtBBFD66E011 (32 bytes; validator T.v1_u256_ok) ----
-def GtBBFD66E011_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_1_r.v1_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint256_1 (32 bytes; validator T.v1_u256_ok) ----
+def vec_uint256_1_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_1_r.v1_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtBBFD66E011_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_1_r.v1_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
-  GtBBFD66E011_okb(buf, off, U32.is_eq(len, 32))
-def GtBBFD66E011_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtBBFD66E011(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtBBFD66E011()), 32n, bs, Codec.parts(v, GS.GtBBFD66E011()), DS.facts(v, GS.GtBBFD66E011(), {==}), {==}, e, hn)
-def GtBBFD66E011_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> Decoding.outside_image(GS.GtBBFD66E011(), bs):
-  v => e => GtBBFD66E011_rj(bs, hn, v, e)
+def vec_uint256_1_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_1_r.v1_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
+  vec_uint256_1_okb(buf, off, U32.is_eq(len, 32))
+def vec_uint256_1_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint256_1(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint256_1()), 32n, bs, Codec.parts(v, GS.vec_uint256_1()), DS.facts(v, GS.vec_uint256_1(), {==}), {==}, e, hn)
+def vec_uint256_1_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint256_1(), bs):
+  v => e => vec_uint256_1_rj(bs, hn, v, e)
 
-# ---- GtB91D4D285D (64 bytes; validator T.v2_u256_ok) ----
-def GtB91D4D285D_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_2_r.v2_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+# ---- vec_uint256_2 (64 bytes; validator T.v2_u256_ok) ----
+def vec_uint256_2_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_2_r.v2_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def GtB91D4D285D_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_2_r.v2_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
-  GtB91D4D285D_okb(buf, off, U32.is_eq(len, 64))
-def GtB91D4D285D_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.GtB91D4D285D(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.GtB91D4D285D()), 64n, bs, Codec.parts(v, GS.GtB91D4D285D()), DS.facts(v, GS.GtB91D4D285D(), {==}), {==}, e, hn)
-def GtB91D4D285D_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}) -> Decoding.outside_image(GS.GtB91D4D285D(), bs):
-  v => e => GtB91D4D285D_rj(bs, hn, v, e)
+def vec_uint256_2_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_2_r.v2_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
+  vec_uint256_2_okb(buf, off, U32.is_eq(len, 64))
+def vec_uint256_2_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint256_2(), bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size(GS.vec_uint256_2()), 64n, bs, Codec.parts(v, GS.vec_uint256_2()), DS.facts(v, GS.vec_uint256_2(), {==}), {==}, e, hn)
+def vec_uint256_2_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint256_2(), bs):
+  v => e => vec_uint256_2_rj(bs, hn, v, e)
 

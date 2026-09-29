@@ -7,7 +7,7 @@
                           output's windows (segments, winw) and the windows
                           before it (ow_hi), and the spec parts of the value
                           (partsE);
-    as_enc_text(g, xc) -> big_var_codec_<parent>_enc.bend: encode_eval and
+    as_enc_text(g, xc) -> var_codec_<parent>_enc.bend: encode_eval and
                           encode_spec of the container of two boxed xc.
 
 The output tree of a name at P: the offset word (IW0), the list's words

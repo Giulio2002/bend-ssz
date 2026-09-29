@@ -18,17 +18,17 @@ def v3_u256_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
 
 def v3_u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v3_u256_ok_len(U32.is_eq(len, 96), buf, off)
 
-def Gt2E7060B297_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint256_3_some(pair: B.Buf & O.Words) -> B.Buf & Maybe<&1, O.Words>:
   (buf, v) = pair
   (buf, Some{v})
 
-def Gt2E7060B297_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint256_3_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
   (buf, ok) = pair
   match ok:
-    case True{}: Gt2E7060B297_some(v3_u256_read(buf, 0, size))
+    case True{}: vec_uint256_3_some(v3_u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Gt2E7060B297_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
-  Gt2E7060B297_built(size, v3_u256_ok(buf, 0, size))
+def vec_uint256_3_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  vec_uint256_3_built(size, v3_u256_ok(buf, 0, size))
 
-def Gt2E7060B297_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u256_read(buf, 0, size)
+def vec_uint256_3_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u256_read(buf, 0, size)

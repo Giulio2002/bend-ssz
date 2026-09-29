@@ -2973,7 +2973,7 @@ def {R}_e2e_root(h: B.Buf, -o: O.Bits, +rep: BO.rep_bits(o, GS.{X}())) -> {G('o'
 def bit_lists(amap_map):
     """The generic bit lists with the codec laws' interface: [(R, X, limit, big)] from the encode modules."""
     rows = []
-    for f in sorted(OBJ.glob('var_bits_enc_Gt*.bend')):
+    for f in sorted(OBJ.glob('var_bits_enc_bitlist_*.bend')):
         X = f.stem[len('var_bits_enc_'):]
         s = _unlight(f.read_text())
         ml = re.search(r'rep_N\(T, K, (\d+)n', s)
@@ -2987,47 +2987,47 @@ def outputs():
     for X0, N0, big0 in bit_lists(None):
         if (OBJ / f'var_bits_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.bl_view(X0, *BVG.bl_params(OBJ, X0)))
-    # the bit lists inside containers (var_bitc / big_var_bitc): the same view at the window's word start
-    for X0, mod0 in (('PendingAttestation', 'var_bitc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_Attestation.bend')):
+    # the bit lists inside containers (var_bitc / var_bitc): the same view at the window's word start
+    for X0, mod0 in (('PendingAttestation', 'var_bitc_PendingAttestation.bend'), ('Attestation', 'var_bitc_Attestation.bend')):
         if (OBJ / mod0).exists():
             VDEC_VIEWS.setdefault(X0, BVG.bc_view(X0, *BVG.bc_params(OBJ, mod0)))
     # the aggregates: one windowed Attestation (e2e_attw) lifted through each window (e2e_aapw)
     for X0, lem0 in (('AggregateAndProof', 'aap_w'), ('SignedAggregateAndProof', 'saap_w')):
-        if (OBJ / f'big_var_win_{X0}.bend').exists():
+        if (OBJ / f'var_win_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.top_view(X0, lem0))
     # (i) for the bit list containers: their encode laws' storage premises and hv as the named premise hs (e2e_bitv)
-    for X0, mod0 in (('PendingAttestation', 'var_bitc_enc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_enc_Attestation.bend')):
+    for X0, mod0 in (('PendingAttestation', 'var_bitc_enc_PendingAttestation.bend'), ('Attestation', 'var_bitc_enc_Attestation.bend')):
         if (OBJ / mod0).exists():
             VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0: BVG.venc_bitc(OBJ, R, X, m))
             VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
-    for X0, mod0, cR0, cX0 in (('AggregateAndProof', 'big_var_codec_AggregateAndProof_enc.bend', 'FuluAttestation', 'Attestation'),
-                               ('SignedAggregateAndProof', 'big_var_codec_SignedAggregateAndProof_enc.bend', 'FuluAggregateAndProof', 'AggregateAndProof')):
+    for X0, mod0, cR0, cX0 in (('AggregateAndProof', 'var_codec_AggregateAndProof_enc.bend', 'FuluAttestation', 'Attestation'),
+                               ('SignedAggregateAndProof', 'var_codec_SignedAggregateAndProof_enc.bend', 'FuluAggregateAndProof', 'AggregateAndProof')):
         if (OBJ / mod0).exists():
             VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0, c=cR0, cx=cX0: BVG.venc_agg(OBJ, R, X, m, c, cx))
             VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
     # BitsStruct: two windowed bit lists (e2e_bsw) and three sub-word bit vectors (e2e_bvsub)
-    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
-        VDEC_VIEWS.setdefault('Gc85FA758A04', BVG.bs_view())
-        VROOT_SHAPES.setdefault('Gc85FA758A04', BVG.vroot_bs_text)
-        EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
-        VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
-        VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
+    if (OBJ / 'var_winx_BitsStruct.bend').exists():
+        VDEC_VIEWS.setdefault('BitsStruct', BVG.bs_view())
+        VROOT_SHAPES.setdefault('BitsStruct', BVG.vroot_bs_text)
+        EVC.MWP.setdefault('BitsStruct', BVG.mwp_bs)
+        VENC_SHAPES.setdefault('BitsStruct', EVC.venc_mw)
+        VENC_PREMISE.setdefault('BitsStruct', BVG.BS_PREMISE)
     # progressive containers with a progressive bit list field: hv (e2e_gph, e2e_pbsh)
-    if 'Gc60805EC295' in VDEC_VIEWS and 'PBD.vw_Gc60805EC295D(' in VDEC_VIEWS['Gc60805EC295']['text']:
-        VDEC_VIEWS['Gc60805EC295'] = BVG.pbs_hv_view(VDEC_VIEWS['Gc60805EC295'])
+    if 'ProgressiveBitsStruct' in VDEC_VIEWS and 'PBD.vw_ProgressiveBitsStructD(' in VDEC_VIEWS['ProgressiveBitsStruct']['text']:
+        VDEC_VIEWS['ProgressiveBitsStruct'] = BVG.pbs_hv_view(VDEC_VIEWS['ProgressiveBitsStruct'])
     for X0 in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
         if X0 in VDEC_VIEWS and 'VWX.vb(' in VDEC_VIEWS[X0]['text']:
             VDEC_VIEWS[X0] = BVG.vhb_view(VDEC_VIEWS[X0], X0)
     for X0, _pj in BVG.GPH_NAMES:
-        if X0 in VDEC_VIEWS and (OBJ / f'big_var_winx_{X0}.bend').exists():
+        if X0 in VDEC_VIEWS and (OBJ / f'var_winx_{X0}.bend').exists():
             VDEC_VIEWS[X0] = BVG.gph_view(VDEC_VIEWS[X0], X0, OBJ)
     # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
     import e2e_state_gen as ESG
-    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+    if (OBJ / 'var_winx_BeaconState.bend').exists():
         VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state_deep())
     # BeaconState (i): its encode record from the parts' records (e2e_state_enc: e2e_bsx, e2e_bsl, e2e_rls)
     import e2e_state_enc as ESE
-    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+    if (OBJ / 'encx_BeaconState_iface.bend').exists():
         VENC_SHAPES.setdefault('BeaconState', ESE.venc_state)
         VENC_PREMISE.setdefault('BeaconState', ESE.STATE_PREMISE)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
@@ -3263,23 +3263,23 @@ def outputs():
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
-    if (OBJ / 'big_encx_l8_Attestation.bend').exists():
+    if (OBJ / 'encx_l8_Attestation.bend').exists():
         import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbatt.bend'] = EBB.text()
-    if (OBJ / 'big_encx_l1_AttesterSlashing.bend').exists():
+    if (OBJ / 'encx_l1_AttesterSlashing.bend').exists():
         import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
         out[OUT / 'e2e_u64l.bend'] = EBB.u64l_text()
-    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+    if (OBJ / 'encx_BeaconState_iface.bend').exists():
         import e2e_state_enc as ESE
         out[OUT / 'e2e_bsx.bend'] = ESE.bsx_text()
         out[OUT / 'e2e_bsl.bend'] = ESE.bsl_text()
         out[OUT / 'e2e_rls.bend'] = ESE.rls_text()
-    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+    if (OBJ / 'var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
         out[OUT / 'e2e_stv.bend'] = ESG.text_deep()
         out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state_deep()
-    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
+    if (OBJ / 'var_winx_BitsStruct.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bswh.bend'] = BVG.bswh_text(OBJ)
         out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
@@ -3290,9 +3290,9 @@ def outputs():
         for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
             out[OUT / f'e2e_vhb_{_X}.bend'] = BVG.vhb_text(_X)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
-    if (OBJ / 'big_var_win_Attestation.bend').exists():
+    if (OBJ / 'var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
-    if (OBJ / 'big_var_win_SignedAggregateAndProof.bend').exists():
+    if (OBJ / 'var_win_SignedAggregateAndProof.bend').exists():
         out[OUT / 'e2e_aapw.bend'] = BVG.aapw_text(OBJ)
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
     brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]

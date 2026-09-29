@@ -11,11 +11,11 @@ def u16_put(out: Array<U32>, +pos: U32, +o: U32) -> Array<U32>: O.w16(out, pos, 
 
 def u16_valid(+o: U32) -> Bool: U32.is_le(o, 65535)
 
-def GtECF9BB18D8_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))
+def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))
 
-def GtECF9BB18D8_ser_pick(ok: Bool, +o: U32) -> O.Encoded:
+def uint16_ser_pick(ok: Bool, +o: U32) -> O.Encoded:
   match ok:
-    case True{}: O.encoded(GtECF9BB18D8_encode(o))
+    case True{}: O.encoded(uint16_encode(o))
     case False{}: O.refused()
 
-def GtECF9BB18D8_serialize(+o: U32) -> O.Encoded: GtECF9BB18D8_ser_pick(u16_valid(o), o)
+def uint16_serialize(+o: U32) -> O.Encoded: uint16_ser_pick(u16_valid(o), o)

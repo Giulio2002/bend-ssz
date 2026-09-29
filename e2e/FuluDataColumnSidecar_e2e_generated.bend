@@ -25,7 +25,7 @@ import ../proofs/obj/cells_light.bend as CE
 import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/big_var_codec_DataColumnSidecar_enc.bend as EN
+import ../proofs/obj/var_codec_DataColumnSidecar_enc.bend as EN
 import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_emit.bend as EM
