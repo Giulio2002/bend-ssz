@@ -21,6 +21,10 @@ import ./e2e_cap.bend as C
 import ../proofs/obj/root_gtypes2_light.bend as RT
 import ./e2e_pbsd.bend as PBD
 import ../proofs/obj/vbuf.bend as VB
+import ./e2e_pbsh.bend as PBSH
+import ./e2e_hvk.bend as HVK
+import ../proofs/obj/dk.bend as DK
+import ../proofs/obj/root_gtypes2_light.bend as RTL
 import ../proofs/obj/var_codec_Gc60805EC295.bend as DC
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -34,6 +38,12 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
     +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_Gc60805EC295(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
   PBD.vw_Gc60805EC295D(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+
+# the decoded object's bit lists satisfy hv (the bounded ones the whole storage premise SDB, the progressive ones its hv part; e2e_pbsh)
+def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
+    +hchk: {DC.CHK(t, n) == True{} : Bool}) -> DK.P2(HVK.SDBW(RTL.pj_Gc60805EC295_1(DC.OBJ(d, t, n)), 28n), DK.P2(HVK.SDXE(RTL.pj_Gc60805EC295_2(DC.OBJ(d, t, n))), DK.P2(HVK.SDBW(RTL.pj_Gc60805EC295_4(DC.OBJ(d, t, n)), 28n), DK.P2(HVK.SDXE(RTL.pj_Gc60805EC295_5(DC.OBJ(d, t, n))), DK.P2(HVK.SDBW(RTL.pj_Gc60805EC295_7(DC.OBJ(d, t, n)), 28n), DK.P2(HVK.SDXE(RTL.pj_Gc60805EC295_8(DC.OBJ(d, t, n))), DK.P2(HVK.SDBW(RTL.pj_Gc60805EC295_10(DC.OBJ(d, t, n)), 28n), HVK.SDXE(RTL.pj_Gc60805EC295_11(DC.OBJ(d, t, n)))))))))):
+  PBSH.hv_Gc60805EC295D(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
 
 # ---- the loaded buffer ----
 
