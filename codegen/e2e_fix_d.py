@@ -669,7 +669,10 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
     EEL, ESL = f'{AE}.{ee["law"]}', f'{AS}.{es["law"]}'
     L = [f'# {R} ({X})', f'# (i) for every object the root law takes ({", ".join(n for _, n, _ in prem) or "no premise"}).']
     head_ = f'def {R}_e2e_encode(+o: {ot}{bs}) -> {G(sn, en, "o", V("o"))}:'
-    if X in ('uint8', 'uint16'):   # uint8 / uint16: the premise's word is its low byte / half
+    # the fork's basic uint8 (spec_small) states its encode laws per bit, like ParticipationFlags; a
+    # generic form's (sub_<form>) take the word
+    bitwise = X == 'ParticipationFlags' or (X == 'uint8' and len(EB.law(cache, ee)[2]) == 8)
+    if X in ('uint8', 'uint16') and not bitwise:   # uint8 / uint16: the premise's word is its low byte / half
         lem, t = (f'X.b8(o, {pn})', 'B.byte_sel(0, o)') if X == 'uint8' else (f'X.m16(o, {pn})', 'U32.and(o, 65535)')
         BY = '[B.byte_sel(0, o)]' if X == 'uint8' else '[B.byte_sel(0, o), B.byte_sel(1, o)]'
         L += [head_, f'  %{lem} : {G(sn, en, "o", V("_"))}', chain(sn, en, 'o', K, BY, f'{EEL}(o)', V(t), f'{ESL}(o)'), '']
@@ -678,17 +681,17 @@ def enc_leaf(EB, imp, R, X, sn, m, cache, ri):
         L += [head_, '  match o:', f'    case T.{X}{{+y0}}:',
               f'      %X.b8(y0, {pn}) : {G(sn, en, O1, V(f"T.{X}{{_}}"))}',
               chain(sn, en, O1, K, '[B.byte_sel(0, y0)]', f'{EEL}(y0)', V(f'T.{X}{{B.byte_sel(0, y0)}}'), f'{ESL}(y0)', '      '), '']
-    elif X in ('ParticipationFlags', 'Bytes1'):   # the byte's eight bits
+    elif bitwise or X == 'Bytes1':   # the byte's eight bits
         bits = [f'b{i}' for i in range(8)]
         wpat = ''.join(f'WCon{{+{b}, ' for b in bits) + 'WNil{}' + '}' * 8
-        OW = 'PD.embed8(w)' if X == 'ParticipationFlags' else 'T.Bytes1{PD.embed8(w)}'
+        OW = 'PD.embed8(w)' if bitwise else 'T.Bytes1{PD.embed8(w)}'
         U = 'U32{' + ''.join(f'WCon{{{b}, ' for b in bits) + 'WCon{False{}, ' * 24 + 'WNil{}' + '}' * 32 + '}'
-        OB = U if X == 'ParticipationFlags' else f'T.Bytes1{{{U}}}'
+        OB = U if bitwise else f'T.Bytes1{{{U}}}'
         args = ', '.join(bits)
         L += [f'def {R}_w(+w: Word(8n)) -> {G(sn, en, OW, V(OW))}:', '  match w:', f'    case {wpat}:',
               chain(sn, en, OB, K, f'[{U}]', f'{EEL}({args})', V(OB), f'{ESL}({args})', '      '), '']
-        if X == 'ParticipationFlags':
-            L += [head_, f'  %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, e)) : {G(sn, en, "_", V("_"))}',
+        if bitwise:
+            L += [head_, f'  %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, {pn})) : {G(sn, en, "_", V("_"))}',
                   f'  {R}_w(WSp.take(8n, 32n, PD.bits(o)))', '']
         else:
             L += [head_, '  match o:', '    case T.Bytes1{+w0}:',
