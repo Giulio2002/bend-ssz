@@ -108,7 +108,7 @@ def list_btwins(t):
 # The OKW twins of the containers in LIST_D_STEMS take their list children's validity from the D modules (the base
 # child stops at dw < 28): OK, the size / spec / validity laws and the writers' putxW / putx_bytesW of the D module.
 
-LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface'}
+LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface'}
 LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW')
 
 

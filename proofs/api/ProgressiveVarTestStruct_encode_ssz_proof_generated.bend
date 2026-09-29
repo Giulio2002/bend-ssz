@@ -27,6 +27,7 @@ import ../obj/spec_bits.bend as P0_FB
 import ../obj/dk.bend as P0_DK
 import ../obj/vpiece.bend as P0_VPC
 import ../obj/big_encx_l123_u16.bend as P0_EX_l123_u16
+import ../obj/big_encx_l123_u16_d.bend as P0_EX_l123_u16_D
 import ../obj/big_encx_pbits.bend as P0_EX_pbits
 import ../obj/vrecb.bend as P0_VRB
 import ../../src/buffer.bend as P0_B

@@ -1397,7 +1397,7 @@ VROOT_SHAPES['GuA2212AE21F'] = vroot_union
 # enc_m: for every record m with OK(m), the encoder's bytes of TH(m) are END_TO_END's serialize of VAL(m);
 # the name's own part (MWP[X]) builds m from rep with o == TH(m), v_X(TH(m)) == VAL(m) and OK(m).
 MWP = {}
-OMODE = {'Gc465214E502'}   # the names whose (i) runs on the OKW laws (D twins of the list children: e2e_encrd)
+OMODE = {'Gc465214E502', 'Gp4B0CA2906A', 'Gp66304057C3'}   # the names whose (i) runs on the OKW laws (D twins of the list children: e2e_encrd)
 
 
 def venc_mw(R, X):
@@ -5531,11 +5531,12 @@ VROOT_SHAPES['Gu6DDF182530'] = vroot_union_n
 # in its OKT). Its premise SDPB carries what the root law's wfb does not: the storage depth below the law's
 # bound, the widths' conditions at B = K, the delimiter word's room ((K >> 5) + 1 words) and the bits above
 # K zero in word K >> 5; wfb gives the rest (HZ: vbitrep.rep_hz; the zero bytes past the last: e2e_tz.tz).
-def encp_text():
+def encp_text(dm=False):
+    """dm: e2e_encpd, the record at bit counts K <= 2^32 - 8 (kb = 32; no 31 + K + 1 <= 2^30 premise), its bytes within 2^29 + 1 (the OKW laws)."""
     okt = _okt(_obj('big_encx_pbits.bend'))
     Kd = int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', okt).group(1))
     KB0 = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
-    KB = min(KB0, 31)   # the bridge's width: 31 (its premise 31 + K + 1 <= 2^30 bounds K anyway)
+    KB = KB0 if dm else min(KB0, 31)   # the bridge's width: 31 (its premise 31 + K + 1 <= 2^30 bounds K anyway); dm: the law's 32
     # the record no longer bounds KY (vbitenc.y30); the bridge keeps its own 31 + K + 1 <= 2^30 premise for
     # the container's output bound (PBR), with the record's KY field at 30
     mKY = re.search(r'Nat\.is_lt\(KY, (\d+)n\)', okt)
@@ -5556,10 +5557,49 @@ def encp_text():
             f'{{Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw({KY}n)) == True{{}} : Bool}}',
             '{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}',
             '{O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool}']
+    PKY = prem[3]
+    if dm:
+        prem = prem[:3] + prem[4:]   # (no 31 + K + 1 <= 2^30 premise)
     body = prem[-1]
     for p in reversed(prem[:-1]):
         body = f'DK.P2({p},\n    {body})'
     P27 = KY - 3
+    if dm:
+        P27 = 29   # (bytes <= s_rng(3, 2^32) + 1 = 2^29 + 1)
+    PR_ROOM, PR_BZ = prem[-2], prem[-1]
+    HKYS = '' if dm else f' +hKY: {prem[3]},'      # (a signature's hKY parameter)
+    HKYA = '' if dm else ' hKY,'                    # (a call's hKY argument)
+    HKYD = '  (+hroom, +hbz) = s7\n' if dm else '  (+hKY, +s8) = s7\n  (+hroom, +hbz) = s8\n'
+    if dm:
+        HNLE = ('  +hNle = FD.nat__le_trans(N, Nat.add(N, 8n), VB.pw(32n), FD.nat__le_add_right(N, 8n),\n'
+                '    FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(N, 8n), z) == True{} : Bool}, O.pow2n(32n), VB.pw(32n), VD.s_pow2_eq(32n), hK8))')
+        HS3 = 'VB.pw(32n)'
+    else:
+        HNLE = (f'  +hNle = FD.nat__le_trans(N, Nat.add(N, 1n), VB.pw({KY}n), FD.nat__le_add_right(N, 1n), FD.nat__le_trans(Nat.add(N, 1n), Nat.add(31n, Nat.add(N, 1n)), VB.pw({KY}n), Order.left_below_sum(31n, Nat.add(N, 1n)), hKY))')
+        HS3 = f'VB.pw({KY}n)'
+    BNDL = '''# c + x < 2^(2 + k) for x <= 2^k + 1 and c + 1 <= 2^k (k symbolic: a closed power is never let-bound)
+def bndL(+c: Nat, +x: Nat, +k: Nat, +hx: {Nat.is_le(x, Nat.add(VB.pw(k), 1n)) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(c, 1n), VB.pw(k)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(c, x), VB.pw(2n+k)) == True{} : Bool}:
+  +P = VB.pw(k)
+  +h1 = FD.nat__le_add_left(x, Nat.add(P, 1n), c, hx)
+  +e1 = Equal.trans(Nat, Nat.add(c, Nat.add(P, 1n)), Nat.add(c, Nat.add(1n, P)), Nat.add(Nat.add(c, 1n), P),
+    Equal.cong(Nat, Nat, z => Nat.add(c, z), Nat.add(P, 1n), Nat.add(1n, P), FD.nat__add_comm(P, 1n)), Equal.sym(Nat, Nat.add(Nat.add(c, 1n), P), Nat.add(c, Nat.add(1n, P)), FD.nat__add_assoc(c, 1n, P)))
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(P, P)) == True{} : Bool}, Nat.add(Nat.add(c, 1n), P), Nat.add(c, Nat.add(P, 1n)), Equal.sym(Nat, Nat.add(c, Nat.add(P, 1n)), Nat.add(Nat.add(c, 1n), P), e1),
+    Order.add_right(Nat.add(c, 1n), P, P, hc))
+  +h3 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(c, Nat.add(P, 1n)), z) == True{} : Bool}, Nat.add(P, P), Nat.double(P), Equal.sym(Nat, Nat.double(P), Nat.add(P, P), FD.lru_nat_algebra__double_self(P)), h2)
+  FD.nat__le_lt_trans(Nat.add(c, x), Nat.double(P), VB.pw(2n+k), FD.nat__le_trans(Nat.add(c, x), Nat.add(c, Nat.add(P, 1n)), Nat.double(P), h1, h3), FD.nat__pow2_lt_succ(1n+k))
+
+''' if dm else ''
+    NKB = 'nkb32' if dm else 'BLB.nkb'
+    NKBDEF = '''# the encoded byte count at bit counts up to 2^32 - 8 (e2e_bitl.nkb at kb < 33)
+def nkb32(+K: U32, +N: Nat, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}:
+  +hK = FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(N, 8n), O.pow2n(kb), Order.add_right(U32.to_nat(K), N, 8n, hN), hNk)
+  %Equal.sym(Nat, U32.to_nat(CO.NK(K)), Nat.add(VBT.AK(K), 1n), VBT.E4(K, kb, hkb, hK)) : {Nat.is_le(_, Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(K, 3n)), VD.s_rng(3n, U32.to_nat(K)), VD.shrk(3n, K)) : {Nat.is_le(Nat.add(_, 1n), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
+  Order.add_right(VD.s_rng(3n, U32.to_nat(K)), VD.s_rng(3n, N), 1n, C.rgm(3n, U32.to_nat(K), N, hN))
+
+''' if dm else ''
     return f'''import Base
 import ../src/obj.bend as O
 import ../types/schema.bend as S
@@ -5629,7 +5669,7 @@ def pbtz(+T: {TR}, +K: U32, +wf: BO.wfb({OBT})) -> {{O.tail_zero(U32.and(O.bits_
       +hpad2 = FD.logic__subst({TR}, z => {{WS.bdrop(R, WS.cb(FD.array__slots(U32, z), Nat.add(Q, 0n))) == SP.zero_bytes(Nat.sub(32n, R)) : +List<U32>}}, t, T, Equal.sym({TR}, T, t, eT), hpad)
       TZ.tz(T, O.bits_nbytes(K), Q, R, hnb2, hR0, hR32, hpad2)
 
-# s_rng(3, 2^(3 + j)) = 2^j
+{NKBDEF}# s_rng(3, 2^(3 + j)) = 2^j
 def s3pw(+j: Nat) -> {{VD.s_rng(3n, VB.pw(3n+j)) == VB.pw(j) : Nat}}:
   %Equal.sym(Nat, VD.s_rng(2n, VB.pw(2n+(1n+j))), VB.pw(1n+j), VL.rp(1n+j)) : {{VD.s_h2(_) == VB.pw(j) : Nat}}
   VL.hd2(VB.pw(j))
@@ -5647,7 +5687,7 @@ def bnd(+c: Nat, +x: Nat, +P: Nat, +hx: {{Nat.is_le(x, Nat.add(P, 1n)) == True{{
     FD.nat__le_trans(Nat.add(c, Nat.add(P, 1n)), Nat.double(P), A.quad(Nat.double(P)), h3,
       FD.nat__le_trans(Nat.double(P), Nat.double(Nat.double(P)), A.quad(Nat.double(P)), FD.nat__double_self_le(Nat.double(P)), FD.nat__double_self_le(Nat.double(Nat.double(P))))))
 
-def PBR(w: O.Bits) -> Data:
+{BNDL}def PBR(w: O.Bits) -> Data:
   DK.Ex(EXP.MB, m => DK.P2({{w == EXP.TH(m) : O.Bits}}, DK.P2({{S.BitsValue{{BO.bview(EXP.TH(m))}} == EXP.VAL(m) : S.Value}},
     DK.P2({{EXP.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EXP.ENC(m)), Nat.add(VB.pw({P27}n), 1n)) == True{{}} : Bool}}))))
 
@@ -5662,7 +5702,7 @@ def PBF3(+dw: Nat, +T: {TR}, +K: U32) -> Data:
     DK.P2({{EXP.OK(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}) == True{{}} : Bool}}, {{Nat.is_le(LY.LN(EXP.ENC(EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}})), Nat.add(VB.pw({P27}n), 1n)) == True{{}} : Bool}}))
 
 def pbf(+T: {TR}, +dw: Nat, +K: U32, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n) == True{{}} : Bool}},
-    +hK8: {prem[2]}, +hKY: {prem[3]}, +hroom: {prem[4]}, +hbz: {prem[5]}, +wf: BO.wfb({OBT})) -> PBF3(dw, T, K):
+    +hK8: {prem[2]},{HKYS} +hroom: {PR_ROOM}, +hbz: {PR_BZ}, +wf: BO.wfb({OBT})) -> PBF3(dw, T, K):
   +N = U32.to_nat(K)
   +hN = FD.nat__le_refl(N)
   +tq = CO.eq5(K, {KB}n, N, {{==}}, hN, hK8)
@@ -5671,9 +5711,9 @@ def pbf(+T: {TR}, +dw: Nat, +K: U32, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n
   +hz = VBR.rep_hz(dw, T, K, {KB}n, N, pf, {{==}}, hN, hK8, hqs, wf)
   +htz = pbtz(T, K, wf)
   +hok = {HOK}
-  +hNle = FD.nat__le_trans(N, Nat.add(N, 1n), VB.pw({KY}n), FD.nat__le_add_right(N, 1n), FD.nat__le_trans(Nat.add(N, 1n), Nat.add(31n, Nat.add(N, 1n)), VB.pw({KY}n), Order.left_below_sum(31n, Nat.add(N, 1n)), hKY))
-  +hs3 = FD.logic__subst(Nat, z => {{Nat.is_le(VD.s_rng(3n, N), z) == True{{}} : Bool}}, VD.s_rng(3n, VB.pw(3n+{P27}n)), VB.pw({P27}n), s3pw({P27}n), C.rgm(3n, N, VB.pw({KY}n), hNle))
-  +hnk = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n), Nat.add(VB.pw({P27}n), 1n), BLB.nkb(K, N, {KB}n, {{==}}, hN, hK8), Order.add_right(VD.s_rng(3n, N), VB.pw({P27}n), 1n, hs3))
+{HNLE}
+  +hs3 = FD.logic__subst(Nat, z => {{Nat.is_le(VD.s_rng(3n, N), z) == True{{}} : Bool}}, VD.s_rng(3n, VB.pw(3n+{P27}n)), VB.pw({P27}n), s3pw({P27}n), C.rgm(3n, N, {HS3}, hNle))
+  +hnk = FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n), Nat.add(VB.pw({P27}n), 1n), {NKB}(K, N, {KB}n, {{==}}, hN, hK8), Order.add_right(VD.s_rng(3n, N), VB.pw({P27}n), 1n, hs3))
   +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(VB.pw({P27}n), 1n)) == True{{}} : Bool}}, U32.to_nat(CO.NK(K)), List.length(&2, U32, EXP.ENC(EXP.MB{{dw, T, K, N, {KB}n, {KY}n}})),
     Equal.sym(Nat, List.length(&2, U32, EXP.ENC(EXP.MB{{dw, T, K, N, {KB}n, {KY}n}})), U32.to_nat(CO.NK(K)), EXP.eL(dw, T, K, N, {KB}n, {KY}n, hok)), hnk)
   (pbv2(dw, T, K), (hok, hl))
@@ -5684,8 +5724,8 @@ def pbb3(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, 
   (EXP.MB{{dw, T, K, U32.to_nat(K), {KB}n, {KY}n}}, (eo, (fv, (fo, fl))))
 
 def pbb2(-w: O.Bits, +T: {TR}, +dw: Nat, +K: U32, +eo: {{w == {OBT} : O.Bits}}, +pf: {prem[0]}, +hdw: {{Nat.is_lt(dw, {Kd}n) == True{{}} : Bool}},
-    +hK8: {prem[2]}, +hKY: {prem[3]}, +hroom: {prem[4]}, +hbz: {prem[5]}, +wf: BO.wfb({OBT})) -> PBR(w):
-  pbb3(w, T, dw, K, eo, pbf(T, dw, K, pf, hdw, hK8, hKY, hroom, hbz, wf))
+    +hK8: {prem[2]},{HKYS} +hroom: {PR_ROOM}, +hbz: {PR_BZ}, +wf: BO.wfb({OBT})) -> PBR(w):
+  pbb3(w, T, dw, K, eo, pbf(T, dw, K, pf, hdw, hK8,{HKYA} hroom, hbz, wf))
 
 # a progressive bit list the root law represents (wfb), with its premise: its record
 def pbb(-w: O.Bits, +wf: BO.wfb(w), +hs: SDPB(w, {Kd}n)) -> PBR(w):
@@ -5696,13 +5736,12 @@ def pbb(-w: O.Bits, +wf: BO.wfb(w), +hs: SDPB(w, {Kd}n)) -> PBR(w):
   (+pf, +s5) = s4
   (+hdw, +s6) = s5
   (+hK8, +s7) = s6
-  (+hKY, +s8) = s7
-  (+hroom, +hbz) = s8
-  pbb2(w, T, dw, K, eo, pf, hdw, hK8, hKY, hroom, hbz, FD.logic__subst(O.Bits, z => BO.wfb(z), w, {OBT}, eo, wf))
+{HKYD}  pbb2(w, T, dw, K, eo, pf, hdw, hK8,{HKYA} hroom, hbz, FD.logic__subst(O.Bits, z => BO.wfb(z), w, {OBT}, eo, wf))
 '''
 
 
 SUPPORT_OUT['e2e_encp.bend'] = encp_text()
+SUPPORT_OUT['e2e_encpd.bend'] = encp_text(True)
 
 
 # ---- (i) of the progressive containers: the record from its fields' records (e2e_encr lists, e2e_encp bit lists) ----
@@ -5715,10 +5754,11 @@ def encp_kd():
     return int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', _okt(_obj('big_encx_pbits.bend'))).group(1))
 
 
-def prog_q(X, D):
+def prog_q(X, D, dm=False):
     """e2e_encq's record builder of X: rq_X(o, rep, hs) -> RQ_X(o) (defs text, imports)."""
     ci = _obj(f'big_encx_{X}_iface.bend')
-    okt = _okt(ci)
+    okt = _okt(ci, 'OKTW' if dm else 'OKT')
+    OKN, LENE = ('OKW', 'lenEW') if dm else ('OK', 'lenE')
     names = re.findall(r'\+(\w+): ', re.search(r'^def OKT\((.*?)\) -> Bool', ci, re.M).group(1))
     fs = PROGS[X]
     assert len(names) == len(fs), (X, names)
@@ -5737,7 +5777,7 @@ def prog_q(X, D):
     sig = [f'+rep: RT.rep_{X}(o, Spec.{X}())']
     for k, f in enumerate(fs):
         if f[0] == 'l':
-            sig.append(f'+hs{k}: BL.sdk({PJ(k)}, {encr_k(f[1])}n)')
+            sig.append(f'+hs{k}: BL.sdk({PJ(k)}, {encr_k(f[1], dm)}n)')
         elif f[0] == 'pb':
             sig.append(f'+hs{k}: EP.SDPB({PJ(k)}, {encp_kd()}n)')
     # the object: its fields replaced by their records' objects; the view item by item; OK conjunct by conjunct
@@ -5791,11 +5831,20 @@ def prog_q(X, D):
             lens[f'LY.LN({mod}.ENC(m{k}))'] = (M2, f'l{k}')
         elif f[0] == 'pb':
             lens[f'LY.LN({mod}.ENC(m{k}))'] = (None, f'l{k}')
-    bm = re.search(r'Nat\.is_le\((Nat\.add\(.*\)), A\.quad\(VB\.pw\((\d+)n\)\)\)', okt)
-    SUM, KQ = bm.group(1), int(bm.group(2))
+    if dm:   # OKTW's bound: ENDC(..) < 2^31 (ENDC's body is the sum of the fixed part and the fields' bytes)
+        eb = re.search(r'Nat\.is_lt\((ENDC\(.*?\)), VB\.pw\(31n\)\)', okt)
+        ENDCC = eb.group(1)
+        endb = re.search(r'^def ENDC\((.*?)\) -> Nat: (.*)$', ci, re.M).group(2)
+        for a_, b_ in ren.items():
+            endb = re.sub(rf'\b{a_}\b', b_, endb)
+        bm = re.search(r'(Nat\.add\(.*\))', endb)
+        SUM, KQ = bm.group(1), 29   # (KQ: the bit list's bytes within 2^KQ + 1, 2^29 + 1 for K <= 2^32 - 8; the container bound is 2^31)
+    else:
+        bm = re.search(r'Nat\.is_le\((Nat\.add\(.*\)), A\.quad\(VB\.pw\((\d+)n\)\)\)', okt)
+        SUM, KQ = bm.group(1), int(bm.group(2))
     SUM = SUM[:[i for i in range(len(SUM)) if SUM[:i + 1].count('(') == SUM[:i + 1].count(')') and SUM[:i + 1].count('(') > 0][0] + 1]
     a, b = [x.strip() for x in _split(SUM[len('Nat.add('):-1])]
-    P27 = KQ - 1
+    P27 = KQ if dm else KQ - 1
 
     def closed(e):
         e = e.strip()
@@ -5812,21 +5861,31 @@ def prog_q(X, D):
     assert lens[b][0] is None, (X, 'the bit list is the sum\'s last term')
     va, pa, sa = closed(a)
     hc = (f'FD.nat__le_trans(Nat.add({va}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
-    BLEAF = f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
+    BLEAF = f'Nat.is_lt({ENDCC}, VB.pw(31n))' if dm else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
     BPROOF = (f'FD.nat__le_trans({SUM}, Nat.add({va}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
               f'    EP.bnd({va}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc}))')
+    if dm:
+        BPROOF = (f'FD.nat__le_lt_trans({SUM}, Nat.add({va}n, {b}), VB.pw(31n), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
+                  f'    EP.bndL({va}n, {b}, {P27}n, {lens[b][1]}, {hc}))')
     hc1 = (f'FD.nat__le_trans(Nat.add({va + 1}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
     BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
                f'    EP.bnd({va + 1}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc1}))')
+    if dm:
+        BPROOF1 = (f'FD.nat__le_lt_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), VB.pw(31n), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
+                   f'    EP.bndL({va + 1}n, {b}, {P27}n, {lens[b][1]}, {hc1}))')
     FARGS = ', '.join(ren[n] for n in names)
+    LBP = 'Nat.is_lt(1n+z, VB.pw(31n)) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
+    LBT = f'Nat.is_lt(1n+LY.LN(CI_{X}.ENC(m)), VB.pw(31n))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'
     leaf = {BLEAF: 'hb'}
     for k, f in enumerate(fs):
         mod = fmods[names[k]].split('.')[0] if f[0] != 'u8' else None
         if f[0] == 'u8':
             leaf[f'uint8_e.u8_valid(x{k})'] = f'h8_{k}'
         else:
-            leaf[f'{mod}.OK(m{k})'] = f'o{k}'
+            leaf[f'{mod}_D.OK(m{k})' if f'{mod}_D.OK(m{k})' in okt else f'{mod}.OK(m{k})'] = f'o{k}'
     HOK = _andproof(okt, leaf)
+    if dm:
+        HOK = HOK.replace(ENDCC, f'CI_{X}.{ENDCC}')
     # the fields' records
     unp, cps, unpr = [], [], []
     for k, f in enumerate(fs):
@@ -5860,8 +5919,8 @@ def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)}
   +hb = {BPROOF}
   +hok = {HOK}
   +hb1 = {BPROOF1}
-  +lb = FD.logic__subst(Nat, z => {{Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}, {SUM}, List.length(&2, U32, K_{X}.ENCC({FARGS})),
-    Equal.sym(Nat, List.length(&2, U32, K_{X}.ENCC({FARGS})), {SUM}, CI_{X}.lenE({FARGS}, hok)), hb1)
+  +lb = FD.logic__subst(Nat, z => {{{LBP}}}, {SUM}, List.length(&2, U32, K_{X}.ENCC({FARGS})),
+    Equal.sym(Nat, List.length(&2, U32, K_{X}.ENCC({FARGS})), {SUM}, CI_{X}.{LENE}({FARGS}, hok)), hb1)
   ({MW}, ({eqn}, (vw_{X}({vwargs}), (hok, lb))))
 '''
     lbt = {}
@@ -5869,8 +5928,8 @@ def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)}
         if f[0] == 'l':
             lbt[k] = str(2 * int(re.search(r'hk: \{Nat\.is_le\(c, (\d+)n\)', _obj(ENCR_LISTS[f[1]][1])).group(1))) + 'n'
         elif f[0] == 'pb':
-            lbt[k] = 'Nat.add(VB.pw(27n), 1n)'
-    defs = _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt)
+            lbt[k] = 'Nat.add(VB.pw(29n), 1n)' if dm else 'Nat.add(VB.pw(27n), 1n)'
+    defs = _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt, dm)
     lines, src = [], 'rep'
     for i, k in enumerate(us):
         lines.append(f'  (+x{k}, +r{i}) = {src}')
@@ -5895,7 +5954,7 @@ def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)}
     prems = []
     for k, f in enumerate(fs):
         if f[0] == 'l':
-            prems.append(f'BL.sdk({PJ(k).replace("(o)", "(v)")}, {encr_k(f[1])}n)')
+            prems.append(f'BL.sdk({PJ(k).replace("(o)", "(v)")}, {encr_k(f[1], dm)}n)')
         elif f[0] == 'pb':
             prems.append(f'EP.SDPB({PJ(k).replace("(o)", "(v)")}, {encp_kd()}n)')
     PREM = prems[-1]
@@ -5906,7 +5965,7 @@ def PREM_{X}(v: {D}) -> Data: {PREM}
 
 def RQ_{X}(o: {D}) -> Data:
   DK.Ex(CI_{X}.MW, m => DK.P2({{o == CI_{X}.TH(m) : {D}}}, DK.P2({{RT.v_{X}(CI_{X}.TH(m)) == CI_{X}.VAL(m) : S.Value}},
-    DK.P2({{CI_{X}.OK(m) == True{{}} : Bool}}, {{Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n))) == True{{}} : Bool}}))))
+    DK.P2({{CI_{X}.{OKN}(m) == True{{}} : Bool}}, {{{LBT} == True{{}} : Bool}}))))
 
 """
     rq = f"""
@@ -5917,14 +5976,15 @@ def rq_{X}(-o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: PREM_{X}(o)) -> RQ_{X}
     return head + defs + rq, imps
 
 
-def prog_premise(X):
+def prog_premise(X, dm=False):
     fs = PROGS[X]
     parts = []
     for k, f in enumerate(fs):
         if f[0] == 'l':
-            parts.append(f'hs{k}: BL.sdk(pj_{k}(o), {encr_k(f[1])}n) (field {k}\'s words below depth {encr_k(f[1])})')
+            parts.append(f'hs{k}: BL.sdk(pj_{k}(o), {encr_k(f[1], dm)}n) (field {k}\'s words below depth {encr_k(f[1], dm)})')
         elif f[0] == 'pb':
-            parts.append(f'hs{k}: EP.SDPB(pj_{k}(o), {encp_kd()}n) (field {k}\'s bit list: its words below depth {encp_kd()}, the widths at B = K, '
+            parts.append(f'hs{k}: EP.SDPB(pj_{k}(o), {encp_kd()}n) (field {k}\'s bit list: its words below depth {encp_kd()}, the widths at B = K <= 2^32 - 8, '
+                         '(K >> 5) + 1 words, the bits above K zero)' if dm else f'hs{k}: EP.SDPB(pj_{k}(o), {encp_kd()}n) (field {k}\'s bit list: its words below depth {encp_kd()}, the widths at B = K, '
                          '(K >> 5) + 1 words, the bits above K zero)')
     return (f'rep: RT.rep_{X}(o, Spec.{X}()) and the storage premises, each at its field\'s encode law\'s bounds (read from the law): ' + '; '.join(parts))
 
@@ -5933,7 +5993,7 @@ for _X in PROGS:
     VENC_SHAPES[_X] = venc_mw
 
 
-def _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt):
+def _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt, dm=False):
     """Split c1_X into c1f_X (the record's facts from its fields' explicit records: view, OK, 1 + bytes bound),
     c1p_X (package) and c1_X (from the fields' record bundles), so another record can take c1f_X's facts."""
     i = defs.index('\ndef c1_')
@@ -5954,14 +6014,17 @@ def _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt):
     hp = ''.join(f'+h{k}: {{U32.is_lt(x{k}, 256) == True{{}} : Bool}}, ' for k in us)
     mod = {k: fmods[names[k]].split('.')[0] for k in vs}
     vp = ''.join(v + ', ' for v in vwv)
-    op = ''.join(f'+o{k}: {{{mod[k]}.OK(m{k}) == True{{}} : Bool}}, ' for k in vs)
+    modo = {k: (mod[k] + '_D' if f'{mod[k]}_D.OK(' in defs else mod[k]) for k in vs}   # (the module of a field's OK: its D twin when the container's OKW takes it)
+    op = ''.join(f'+o{k}: {{{modo[k]}.OK(m{k}) == True{{}} : Bool}}, ' for k in vs)
     lp = ', '.join(f'+l{k}: {{Nat.is_le(LY.LN({mod[k]}.ENC(m{k})), {lbt[k]}) == True{{}} : Bool}}' for k in vs)
     fa = ', '.join([f'x{k}' for k in us] + [f'm{k}' for k in vs])
+    OKN = 'OKW' if dm else 'OK'
+    CFB = f'Nat.is_lt(1n+LY.LN(CI_{X}.ENC({MW})), VB.pw(31n))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), A.quad(VB.pw(28n)))'
     CF = f'CF_{X}({fa})'
     cfp = ''.join(f'+x{k}: U32, ' for k in us) + ''.join(f'+m{k}: {fmods[names[k]]}, ' for k in vs)
     cfdef = f"""# the record's facts: its view, valid, 1 + its bytes within the bound
 def CF_{X}({cfp[:-2]}) -> Data:
-  DK.P2({{RT.v_{X}(CI_{X}.TH({MW})) == CI_{X}.VAL({MW}) : S.Value}}, DK.P2({{CI_{X}.OK({MW}) == True{{}} : Bool}}, {{Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), A.quad(VB.pw(28n))) == True{{}} : Bool}}))
+  DK.P2({{RT.v_{X}(CI_{X}.TH({MW})) == CI_{X}.VAL({MW}) : S.Value}}, DK.P2({{CI_{X}.{OKN}({MW}) == True{{}} : Bool}}, {{{CFB} == True{{}} : Bool}}))
 
 def c1f_{X}({xp}{mp}{hp}{vp}{op}{lp}) -> {CF}:
 """ + '\n'.join(rest[:-1]) + f"""
@@ -5982,11 +6045,11 @@ def c1p_{X}(-o: {D}, {cfp}+eq: {{o == CI_{X}.TH({MW}) : {D}}}, +f: {CF}) -> RQ_{
     return head.rstrip('\n').rsplit('\n# the object\'s record from its fields\' records', 1)[0] + '\n\n' + cfdef + c1n
 
 
-def encq_text():
+def encq_text(dm=False):
     L, imps = [], []
     for X in PROGS:
         D = f'T.{X}'
-        t, im = prog_q(X, D)
+        t, im = prog_q(X, D, dm)
         L.append(t)
         imps += im
     head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../types/generic_obj.bend as T',
@@ -5995,7 +6058,7 @@ def encq_text():
             'import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/len_bridge.bend as LB',
             'import ../proofs/obj/vbitb.bend as VBB', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/packed_bytes.bend as PBF',
             'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/nat_order.bend as Order', 'import ./e2e_blist.bend as BL',
-            'import ./e2e_encr.bend as ER', 'import ./e2e_encp.bend as EP']
+            f'import ./e2e_encr{"d" if dm else ""}.bend as ER', f'import ./e2e_encp{"d" if dm else ""}.bend as EP']
     return '\n'.join(dict.fromkeys(head + imps)) + '''
 
 # GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
@@ -6006,9 +6069,11 @@ def encq_text():
 
 
 SUPPORT_OUT['e2e_encq.bend'] = encq_text()
+SUPPORT_OUT['e2e_encqd.bend'] = encq_text(True)
 
 
 def mwp_prog2(R, X, D):
+    om = X in OMODE
     defs = f'''def vq(-o: {D}, +c: EQ.RQ_{X}(o)) -> {{Some{{E.obytes(Pair.snd({D}, B.Buf, {R}_e.{X}_encode(o)))}} == API.serialize(Spec.{X}(), RT.v_{X}(o)) : Maybe<&2, +List<U32>>}}:
   (+m, +c1) = c
   (+eo, +c2) = c1
@@ -6016,12 +6081,13 @@ def mwp_prog2(R, X, D):
   (+hok, +lb) = c3
   via(o, m, eo, ev, hok)
 '''
-    return defs, f'  vq(o, EQ.rq_{X}(o, rep, hs))', ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_encq.bend as EQ'], f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs: EQ.PREM_{X}(o)'
+    return defs, f'  vq(o, EQ.rq_{X}(o, rep, hs))', ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./e2e_encq{"d" if om else ""}.bend as EQ'], f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs: EQ.PREM_{X}(o)'
 
 
 def prog_premise2(X):
-    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o), its storage fields\' premises at their encode laws\' bounds (read from the laws): '
-            + prog_premise(X).split(': ', 2)[-1])
+    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o), its storage fields\' premises at their encode laws\' bounds (read from the laws)'
+            + (' (the D twins and the OKW laws: no container size budget)' if X in OMODE else '') + ': '
+            + prog_premise(X, X in OMODE).split(': ', 2)[-1])
 
 
 for _X in PROGS:
