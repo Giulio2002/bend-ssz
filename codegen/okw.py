@@ -16,7 +16,9 @@ import deep
 
 K28 = '+k: Nat, +ek: {k == 28n : Nat}'
 # the laws on OK(m) that get an O twin on OKW(m) (putx / putx_bytes: by goO; bndx: its bound is k's)
-OLAWS = ('szx', 'encx_spec', 'domx', 'maxx')   # (sizex, validx: their children's _size modules are var_cont_top's)
+OLAWS = ('szx', 'encx_spec', 'domx', 'maxx')
+# the companion's (<iface>_o: okw_companion): the size and validity passes on OKW (their importers alone pay for them)
+OLAWS_C = OLAWS + ('sizex', 'validx')
 
 
 def _blocks(t):
@@ -109,7 +111,7 @@ def _okt_line(t, name):
     return m
 
 
-def okw_iface(t, child_okw):
+def okw_iface(t, child_okw, olaws=OLAWS, keep=False):
     """The container iface t with its OKW twins. child_okw: the aliases (with the dot) of the children container
     ifaces that have OKW. Returns (text, bad): bad lists the uses of k this pass does not handle."""
     bad = []
@@ -176,9 +178,11 @@ def okw_iface(t, child_okw):
                            if g[4] == 'k' and g[5] == 'CS.hk29(k, ek)' else None)
         s = _rewrite_calls(s, 'CS.fitc', lambda g: 'CS.fitcB(' + ', '.join(g[:3] + [ENDC, f'ok_bndW({OAS}, h)'] + g[5:]) + ')'
                            if g[3:5] == ['k', 'ek'] else None)
-        # children: containers' OKW laws; lists' B twins
+        # children: containers' OKW laws (a wide child's size module: its sizez / validx O laws, okw_size); lists' B twins
+        if 'sizex' in olaws:
+            s = re.sub(r'(?<![\w.])(ES_\w+)\.(sizez|sizex|validx|szs)\(', r'\1.\2O(', s)
         for al in child_okw:
-            for law in OLAWS:
+            for law in olaws:
                 s = _rewrite_calls(s, al + law, lambda g, al=al, law=law: f'{al}{law}O(' + ', '.join(g) + ')')
         # the lists' encx_spec (k, CS.hk30(k, ek), bound) and szx (2n+k, CS.ek2(k, ek), bound)
         for mm in set(re.findall(r'(?<![\w.])(\w+\.encx_spec\w*)\(', s)):
@@ -284,7 +288,7 @@ def okw_iface(t, child_okw):
         for eb in ('putxEW', 'putx_bytesEW'):
             nb = _rewrite_calls(nb, eb, lambda g, eb=eb: eb[:-1] + 'O(' + ', '.join(x for x in g if 'hs31' not in x) + ')')
         t = t[:b] + '\n' + nb.rstrip('\n') + '\n' + t[b:]
-    for law in OLAWS:
+    for law in olaws:
         ab = _block_text(t, law)
         if not ab or f'law {law}O:' in t or '{OK(m) == True{} : Bool}' not in t[ab[0]:ab[1]]:
             continue
@@ -309,7 +313,9 @@ def okw_iface(t, child_okw):
     # only the twins the O laws reach
     created = {'OKTW'} | {n + 'W' for n in ext + chain + cons}
     bl = {n: t[a:b] for n, k, a, b in _blocks(t)}
-    reach, st = set(), ['goO', 'putxO', 'putx_bytesO', 'putxEO', 'putx_bytesEO'] + [x + 'EO' for x in OLAWS] + [x + 'O' for x in OLAWS]
+    # (keep: and the extractors and lenEW, the size modules' O laws read them: okw_size)
+    reach, st = set(), (['goO', 'putxO', 'putx_bytesO', 'putxEO', 'putx_bytesEO'] + [x + 'EO' for x in olaws] + [x + 'O' for x in olaws]
+                        + ([n + 'W' for n in ext] + ['lenEW'] if keep else []))
     while st:
         n = st.pop()
         if n in reach or n not in bl:
@@ -377,3 +383,141 @@ def _topo(seg):
         visit(n)
     bd = dict(blocks)
     return head + ''.join('\n' + bd[n].strip('\n') + '\n' for n in order)
+
+
+# ==== the size modules (codegen/var_cont_top.py: big_encx_<C>_size, the runtime's size and validity passes) ====
+SLAWS = ('sizex', 'szs', 'sizez', 'validx')
+
+
+def okw_size(t, child_okw, es_aliases):
+    """A size module's O laws (sizexO, szsO, sizezO, validxO on CI.OKW): its chains on CI.OKTW with the bound
+    B = ENDC (ENDC <= ENDC, ENDC < 2^31: CI.ok_bndW). child_okw: the children container ifaces with OKW (their
+    sizex / validx / szx: the O laws); es_aliases: the children's size modules (sizez / validx: the O laws).
+    Returns (text, bad): bad lists the uses of k this pass does not handle."""
+    bad = []
+    if 'law sizexO:' in t or 'def SZS(' not in t:
+        return t, bad
+    hdr = deep._hdr(t[t.index('\ndef SZS(') + 1:])
+    OAS = ', '.join(p.lstrip('+').split(':')[0].strip() for p in deep._args(hdr, hdr.index('(') + 1)[0])
+    B = f'CI.ENDC({OAS})'
+    BND = f'CI.ok_bndW({OAS}, h)'
+    tw = [n for n, kind, a, b in _blocks(t) if kind == 'def' and '{CI.OKT(' in deep._hdr(t[a:b])]
+    chain = [n for n in tw if K28 in deep._hdr(t[slice(*_block_text(t, n))])]
+
+    def children(s):
+        for al in child_okw:
+            s = re.sub(r'(?<![\w.])' + re.escape(al) + r'(OK|sizex|validx|szx)\(', lambda mm: al + mm.group(1) + ('W(' if mm.group(1) == 'OK' else 'O('), s)
+        for al in es_aliases:
+            s = re.sub(r'(?<![\w.])' + re.escape(al) + r'(sizez|validx|sizex|szs)\(', lambda mm: al + mm.group(1) + 'O(', s)
+        return s
+
+    def rw(s):
+        s = s.replace('{CI.OKT(', '{CI.OKTW(')
+        s = children(s)
+        s = re.sub(r'(?<![\w.])CI\.(ok_\w+)\(', lambda mm: f'CI.{mm.group(1)}W(', s)
+        s = re.sub(r'(?<![\w.])CI\.lenE\(', 'CI.lenEW(', s)
+        for n in tw:
+            def cf(g, n=n):
+                for i in range(len(g) - 1):
+                    if g[i:i + 2] in (['k', 'ek'], ['28n', '{==}']):
+                        return f'{n}W(' + ', '.join(g[:i] + g[i + 2:]) + ')'
+                return f'{n}W(' + ', '.join(g) + ')'
+            s = _rewrite_calls(s, n, cf)
+        s = _rewrite_calls(s, 'CI.okbk', lambda g: f'FD.nat__le_refl({B})' if g[-2:] == ['k', 'ek'] else None)
+        s = re.sub(r'\n  \+hk = FD\.logic__subst\(Nat, z => \{Nat\.is_lt\(z, 29n\) == True\{\} : Bool\}, 28n, k, Equal\.sym\(Nat, k, 28n, ek\), \{==\}\)', '', s)
+        s = s.replace('A.quad(VB.pw(k))', B)
+        # O.padd below 2^31
+        s = _rewrite_calls(s, 'VCN.padd_dd', lambda g: (f'VCN.padd_ddW({g[0]}, {g[1]}, 0n, {{==}}, FD.nat__le_lt_trans(Nat.add(U32.to_nat({g[0]}), U32.to_nat({g[1]})), '
+                                                        f'{B}, VB.pw(31n), {g[4]}, {BND}))') if g[2:4] == ['k', 'hk'] else None)
+        # a record list's bytes (i * RS): below 2^32
+        s = _rewrite_calls(s, 'VRX.mulq', lambda g: (f'VRX.mulqW({", ".join(g[1:7])}, CS.lt32B(A.quad(Nat.mul({g[2]}, {g[4]})), {B}, {g[8]}, {BND}))')
+                           if g[0] == 'k' and g[7] == 'hk' else None)
+        # the lists' sizes: szs / szx at 2 + k (their strict S forms), szx_<p> at k (szxB_<p>)
+        for mm in set(re.findall(r'(?<![\w.])(\w+)\.szs\(', s)):
+            s = _rewrite_calls(s, mm + '.szs', lambda g, mm=mm: (f'{mm}.szsS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_lt_trans({mm}.LL({g[0]}, {g[1]}), {B}, VB.pw(31n), {g[5]}, {BND}))')
+                               if len(g) == 6 and g[3] == 'Nat.add(2n, k)' else None)
+        for mm in set(re.findall(r'(?<![\w.])(\w+)\.szx\(', s)):
+            s = _rewrite_calls(s, mm + '.szx', lambda g, mm=mm: (f'{mm}.szxS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_lt_trans({mm}.LL({g[0]}, {g[1]}), {B}, VB.pw(31n), {g[5]}, {BND}))')
+                               if len(g) == 6 and g[3] in ('2n+k', 'Nat.add(2n, k)') else None)
+        for mm in set(re.findall(r'(?<![\w.])(\w+\.szx_\w+)\(', s)):
+            def szb(g, mm=mm):
+                if len(g) == 7 and g[4] == 'k' and g[5] == 'CS.hk29(k, ek)' and g[6].startswith('VRX.nwn_le('):
+                    nw, _ = deep._args(g[6], len('VRX.nwn_le('))
+                    al, p = mm.split('.szx_')
+                    return f'{al}.szxB_{p}({g[0]}, {g[1]}, CS.lt32B({nw[0]}, {B}, {nw[2]}, {BND}))'
+                return None
+            s = _rewrite_calls(s, mm, szb)
+        return s
+
+    new = []
+    for n in tw:
+        a, b = _block_text(t, n)
+        nb = t[a:b].replace(f'def {n}(', f'def {n}W(', 1).replace(', ' + K28, '')
+        nb = rw(nb)
+        for l in nb.split('\n'):
+            if re.search(r'(?<![\w.])(k|ek|hk)(?![\w.])', l) and not l.lstrip().startswith('#'):
+                bad.append((n + 'W', l.strip()[:200]))
+        new.append('\n' + nb.rstrip('\n') + '\n')
+    for law in SLAWS:
+        ab = _block_text(t, law)
+        if not ab:
+            continue
+        nb = t[ab[0]:ab[1]].replace(f'law {law}:', f'law {law}O:', 1).replace(f'def {law}(', f'def {law}O(', 1)
+        nb = nb.replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
+        for l2 in SLAWS:
+            nb = re.sub(r'(?<![\w.])' + l2 + r'\(', l2 + 'O(', nb)
+        nb = re.sub(r'(?<![\w.])CI\.szx\(', 'CI.szxO(', nb)
+        nb = rw(nb)
+        new.append('\n' + nb.rstrip('\n') + '\n')
+    head = ('\n# ---- OKW: the laws on CI.OKW (the encoding below 2^31 bytes; codegen/okw.py okw_size), the chains with the bound '
+            'ENDC ----\n')
+    return t.rstrip('\n') + '\n' + head + _topo(''.join(new)), bad
+
+
+# ==== companions: the O laws in their own module (<m>_o), so that only their callers check them ====
+CALIAS = 'OB'   # (the companion's alias of its base module)
+
+
+def _names(t):
+    return {n for n, k, a, b in _blocks(t)} | set(re.findall(r'^type (\w+)', t, re.M))
+
+
+def okw_companion(base, full, stem, what):
+    """The companion module of base (proofs/obj/<stem>.bend): the blocks of full that base lacks, the base's
+    names in them qualified (OB.name), with the base's imports and the base itself as OB."""
+    have = _names(base)
+    def own(s, n):
+        ab = _block_text(s, n)
+        return s[ab[0]:ab[1]] if ab else ''
+    bl = [(n, own(full, n)) for n, k, a, b in _blocks(full) if n not in have and k != 'lawonly']
+    # (the blocks of both: the same text, or the companion would read a different one)
+    diff = [n for n, k, a, b in _blocks(full) if n in have and k != 'lawonly' and own(full, n).strip() != own(base, n).strip()]
+    if diff:
+        raise SystemExit(f'okw_companion: {stem}: blocks that differ from the base: {diff[:5]}')
+    if not bl:
+        return None
+    mine = {n for n, _ in bl}
+    pat = re.compile(r'(?<![\w.+])(' + '|'.join(sorted((re.escape(x) for x in have - mine), key=len, reverse=True)) + r')(?![\w])(?!\s*=[^=>])')
+    body = ''.join('\n' + pat.sub(lambda m: CALIAS + '.' + m.group(1), blk).strip('\n') + '\n' for _, blk in bl)
+    imps = [ln for ln in base.split('\n') if ln.startswith('import ')]
+    head = '\n'.join(imps + [f'import ./{stem}.bend as {CALIAS}', '',
+                             f'# GENERATED (codegen/okw.py okw_companion). Do not edit.',
+                             f'# {what}', ''])
+    return head + '\n' + _topo(body).lstrip('\n')
+
+
+def okw_relink(t, comps):
+    """t's calls of a name its import (./<stem>.bend as AL) lacks but that module's companion (comps: stem -> its
+    names) has: through the companion (ALo), imported next to it."""
+    for m in list(re.finditer(r'^import \./(\w+)\.bend as (\w+)$', t, re.M)):
+        stem, al = m.group(1), m.group(2)
+        if stem not in comps:
+            continue
+        names = comps[stem]
+        t2 = re.sub(r'(?<![\w.])' + re.escape(al) + r'\.(\w+)(?=[({])', lambda mm: (al + 'o.' + mm.group(1)) if mm.group(1) in names else mm.group(0), t)
+        if t2 != t:
+            t = t2
+            line = f'import ./{stem}_o.bend as {al}o'
+            if line not in t:
+                t = t.replace(m.group(0), m.group(0) + '\n' + line, 1)
+    return t

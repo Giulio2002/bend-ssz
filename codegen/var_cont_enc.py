@@ -2811,14 +2811,20 @@ def eqn_is_eq(text):
         i = k
 
 
+_BS_CACHE = {}
+
+
 def big_sizes(C, generic=False):
     """The fixed fields' sizes of BIGPIECE bytes or more."""
     if generic:
         return []
-    names = schema.load(ROOT / 'codegen/fulu.yaml')
-    g = G.Gen()
-    for n, t in names.items():
-        g.shape(t)
+    if '_bs' not in _BS_CACHE:
+        names = schema.load(ROOT / 'codegen/fulu.yaml')
+        g = G.Gen()
+        for n, t in names.items():
+            g.shape(t)
+        _BS_CACHE['_bs'] = (names, g)
+    names, g = _BS_CACHE['_bs']
     return sorted({fs.fsize for _, fs in g.shape(names[C]).fields if fs.fixed and (fs.fsize or 0) >= BIGPIECE})
 
 
@@ -4577,13 +4583,16 @@ def cont_strict(q, t, res):
     if q.stem in OKW_SKIP:
         pass   # (its OKW chains would double a 40 s check past the 600 s limit: BeaconState keeps OK's 2^30)
     elif 'def OKT(' in t:
+        tf, _ = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True)
         t, bad3 = okw.okw_iface(t, child)
+        _COMP[q] = (t, tf)   # (the size and validity passes on OKW: the companion <iface>_o, main)
     elif 'def PUTC(' in t:   # (a container writer; the unions keep their arms on OK)
         t = okw.okw_writer(t, child)
     return t, bad1 + bad2 + bad3
 
 
 _OKT_MODS = set()
+_COMP = {}
 OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}
 PROBE_POST = cont_strict
 
@@ -4623,6 +4632,17 @@ def main():
     global _OKT_MODS
     _OKT_MODS = {pathlib.Path(q).stem for q, t in out.items() if 'def OKT(' in t} - OKW_SKIP
     out = _deep.dify_out(out, handled={'fposW'}, post=cont_strict)  # the dd < 31 twins
+    # the ifaces' companions (codegen/okw.py okw_companion): the O laws only their callers check
+    import okw
+    comp = {}
+    for q, (tb, tf) in _COMP.items():
+        if q in out:
+            c = okw.okw_companion(out[q], tf, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem)
+            if c:
+                comp[q.with_name(q.stem + '_o.bend')] = c
+    names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
+    names.update({f'big_encx_{C}_size': {x + 'O' for x in okw.SLAWS} for C in ('ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'Gc60805EC295')})
+    out.update({q: okw.okw_relink(c, names) for q, c in comp.items()})
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

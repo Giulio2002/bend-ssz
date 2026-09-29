@@ -550,7 +550,7 @@ def fx_deep(text):
 
     out, last = [], 0
     for a, b in _fx_blocks(text):
-        nm = re.match(r'def (\w+)\(', text[a:]).group(1)
+        nm = re.compile(r'def (\w+)\(').match(text, a).group(1)
         out.append(text[last:a])
         blk = text[a:b]
         if nm in hd28:

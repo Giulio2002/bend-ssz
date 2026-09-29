@@ -30,6 +30,7 @@ imports would churn files for nothing). Idempotent.
     python3 codegen/light_split.py --fix [<file.bend>...]    apply light() to hand-written modules (default: all of them)
     python3 codegen/light_split.py --check [<file.bend>...]  fail when light() would change one
 """
+import functools
 import os
 import re
 import sys
@@ -50,31 +51,27 @@ _BYNAME = None
 _CLOS = {}
 
 
+_TOK = re.compile(r'#.*|"[^"]*(?:"|\Z)', re.S)
+
+
 def _code_sub(pat, q, line):
     """pat.sub(q, ..) on a line's code, not its comment or strings."""
-    out, i, n = [], 0, len(line)
-    while i < n:
-        c = line[i]
-        if c == '#':
-            out.append(line[i:])
-            break
-        if c == '"':
-            j = line.find('"', i + 1)
-            j = n if j < 0 else j + 1
-            out.append(line[i:j])
-            i = j
-            continue
-        j = i
-        while j < n and line[j] not in '#"':
-            j += 1
-        out.append(pat.sub(q, line[i:j]))
-        i = j
+    if '#' not in line and '"' not in line:
+        return pat.sub(q, line)
+    out, i = [], 0
+    for m in _TOK.finditer(line):
+        if m.start() > i:
+            out.append(pat.sub(q, line[i:m.start()]))
+        out.append(m.group(0))
+        i = m.end()
+    if i < len(line):
+        out.append(pat.sub(q, line[i:]))
     return ''.join(out)
 
 
 def _code(text):
     """text without comments and strings (for reference scans)."""
-    return '\n'.join(_code_sub(re.compile(r'$^'), lambda m: '', l.split('#')[0]) for l in text.split('\n'))
+    return '\n'.join(l.split('#')[0] for l in text.split('\n'))
 
 
 def blocks(text):
@@ -146,6 +143,7 @@ def split(text, seeds, light_rel, gen, alias=None):
     ctors = _ctors([b for b in bl if b[0] in moved]) - names
     _MEM[base] = set(moved) | ctors
     _MEMT[base] = light_text
+    unlight.cache_clear()
     taken = {m.group(3) for m in IMP.finditer(text)}
     if alias is None:
         alias, k = 'LV', 1
@@ -211,6 +209,13 @@ def _files_by_stem():
     return _STEMS
 
 
+@functools.lru_cache(maxsize=None)
+def _imports_of(x):
+    """the resolved .bend import paths of module x (not 0x.. ones)"""
+    return tuple((x.parent / m.group(1)).resolve() for m in re.finditer(r'^import (\S+\.bend)', x.read_text(), re.M)
+                 if not m.group(1).startswith('0x'))
+
+
 def _heavy(path):
     """Whether a module reaches zero_roots.bend through its imports."""
     if path is None:
@@ -228,12 +233,12 @@ def _heavy(path):
         if str(x).endswith(HEAVY_MARK):
             hit = True
             break
-        for m in re.finditer(r'^import (\S+\.bend)', x.read_text(), re.M):
-            if m.group(1).startswith('0x'):
-                continue
-            st.append((x.parent / m.group(1)).resolve())
+        st.extend(_imports_of(x))
     _CLOS[path] = hit
     return hit
+
+
+_QUAL = re.compile(r'(?<![\w.])(\w+)\.([A-Za-z_]\w*)')
 
 
 def light(text):
@@ -248,9 +253,12 @@ def light(text):
     code = _code('\n'.join(body))
     replace, add, subs, drop = {}, {}, [], set()
     taken = {m.group(3) for m in imps}
+    uses = {}
+    for x in _QUAL.finditer(code):
+        uses.setdefault(x.group(1), set()).add(x.group(2))
     for m in imps:
         pre, stem, a = m.group(1), m.group(2), m.group(3)
-        used = {x.group(1) for x in re.finditer(rf'(?<![\w.]){a}\.([A-Za-z_]\w*)', code)}
+        used = uses.get(a, set())
         if not used:
             if not stem.endswith(SUFFIX) and _heavy(_resolve(pre, stem)):
                 drop.add(m.group(0))
@@ -301,6 +309,7 @@ def light(text):
     return '\n'.join(res)
 
 
+@functools.lru_cache(maxsize=1024)
 def unlight(text):
     """The inverse view, for generators that parse a module (runtime_refs.unwire runs it): the module as
     it read before any light split. A heavy module's own companion (imported as LV / LV<n>) is inlined
@@ -339,7 +348,8 @@ def unlight(text):
         out = out + [''] + append
     for a, to in subs:
         pat = re.compile(rf'(?<![\w.]){a}\.([A-Za-z_]\w*)')
-        out = [l if l.startswith('import ') else _code_sub(pat, lambda x: to + x.group(1), l) for l in out]
+        ad = a + '.'
+        out = [l if l.startswith('import ') or ad not in l else _code_sub(pat, lambda x: to + x.group(1), l) for l in out]
     return '\n'.join(out)
 
 

@@ -186,10 +186,23 @@ class Resolver:
         raise SchemaError(f'{where}: unsupported type expression {s!r}')
 
 
-def load(path):
+_DOCS = {}
+
+
+def _doc(path):
+    """the parsed YAML of path (read-only: cached per process, keyed by the file's stat)"""
+    import os
     import yaml  # only the YAML front end needs PyYAML
-    with open(path) as f:
-        doc = yaml.safe_load(f)
+    st = os.stat(path)
+    key = (str(path), st.st_mtime_ns, st.st_size)
+    if key not in _DOCS:
+        with open(path) as f:
+            _DOCS[key] = yaml.safe_load(f)
+    return _DOCS[key]
+
+
+def load(path):
+    doc = _doc(path)
     if not isinstance(doc, dict) or set(doc) - {'prefix'} != {'constants', 'types'}:
         raise SchemaError('the schema has the sections constants and types (and an optional prefix)')
     consts = doc['constants'] or {}
@@ -205,9 +218,7 @@ def load(path):
 
 def load_prefix(path):
     """The schema's hardfork prefix (its `prefix:` entry; '' when absent)."""
-    import yaml
-    with open(path) as f:
-        doc = yaml.safe_load(f)
+    doc = _doc(path)
     pre = doc.get('prefix', '') if isinstance(doc, dict) else ''
     if pre and not re.fullmatch(r'[A-Z][A-Za-z0-9]*', str(pre)):
         raise SchemaError(f'prefix {pre!r}: a capitalised identifier')

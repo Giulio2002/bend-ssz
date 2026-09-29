@@ -8,7 +8,7 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l16_ProposerSlashing.bend as W

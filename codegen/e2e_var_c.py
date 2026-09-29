@@ -2016,6 +2016,7 @@ def deep_twins(text, names, reps=(), callee_ok=None, mode='hw32'):
     else:
         tw = deep.thread(tw, VWN.HWX, VWN.HW32X, callee_ok=callee_ok)
     assert 'Nat.is_lt(d, 28n)' not in tw
+    assert 'lt_trans(d, 28n' not in tw, [l for l in tw.split('\n') if 'lt_trans(d, 28n' in l][:2]
     return text.rstrip('\n') + '\n\n# ---- the same at any tree depth d < 31 (hw32: the window\'s end below 2^32) ----\n' + tw + '\n'
 
 
@@ -3802,7 +3803,13 @@ def grl_deep_text():
     """e2e_grl with a twin of the ProgressiveList[Gc4ED9619F50] view at any tree depth (its storage depth
     2 + d <= 32 from d < 31; no other bound)."""
     t = grl_text()
-    names = ['go_pl_Gc4ED9619F50', 'vl_pl_Gc4ED9619F50']
+    for p_ in ('pl_Gc4ED9619F50', 'l10_GpF350A3C486'):
+        t = _grl_twin(t, p_)
+    return t
+
+
+def _grl_twin(t, p_):
+    names = [f'go_{p_}', f'vl_{p_}']
     blocks = []
     for nm in names:
         a = t.index(f'\ndef {nm}(') + 1
@@ -3812,7 +3819,7 @@ def grl_deep_text():
     tw = re.sub(r'(?<![\w.])(' + '|'.join(names) + r')\(', lambda m: m.group(1) + 'D(', tw)
     tw = tw.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace('FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {==}))', 'FD.nat__lt_succ_le(d, 30n, hd)')
     assert '28n' not in tw, [l for l in tw.split('\n') if '28n' in l][:2]
-    a = t.index('\ndef vl_pl_Gc4ED9619F50(') + 1
+    a = t.index(f'\ndef vl_{p_}(') + 1
     e = t.find('\n\n', a)
     e = len(t) if e < 0 else e
     return t[:e] + '\n\n# ---- the same at any tree depth d < 31 ----\n' + tw + t[e:]
@@ -4241,6 +4248,9 @@ GVL_DEEP = ['tf_Gc465214E502', 'vw_Gc465214E502',
             'eqE_pl_pl_Gc465214E502', 'elv_pl_pl_Gc465214E502', 'rvF_pl_pl_Gc465214E502', 'xiW_pl_pl_Gc465214E502', 'vtf_pl_pl_Gc465214E502',
             'vtc_pl_pl_Gc465214E502', 'vw_pl_pl_Gc465214E502']
 
+GVLN_DEEP = ['tf_Gp66304057C3', 'vw_Gp66304057C3', 'eqE_pl_Gp66304057C3', 'elv_pl_Gp66304057C3', 'rvF_pl_Gp66304057C3', 'xiW_pl_Gp66304057C3',
+             'vtf_pl_Gp66304057C3', 'vtc_pl_Gp66304057C3', 'vw_pl_Gp66304057C3']
+
 
 def gvl_deep_text():
     """e2e_gvl with deep twins of the ProgressiveList[ProgressiveList[VarTestStruct]] chain (its elements' windows
@@ -4255,7 +4265,19 @@ def gvl_deep_text():
         tw = tw.replace(f'{al}.eoc(', f'{al}.eocD(')
         tw = tw.replace(f'), eo, hd, hw), hd, {al}.hwab(', f'), eo, hd, hw, hw32), hd, {al}.hwab(')
         assert tw.count(f'eo, hd, hw, hw32), hd, {al}.hwab(') == n0, (al, n0)
-    return head + '# ---- the same at any tree depth d < 31' + tw
+    t = head + '# ---- the same at any tree depth d < 31' + tw
+    # the ProgressiveList[ProgressiveVarTestStruct] chain: its elements' windows end by NMAX (hwN)
+    reps = [('GP.vw_Gp66304057C3(d, t, 0, x, off, len, eo, hd, hw, pf, hc)', 'GP.vw_Gp66304057C3D(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hc)'),
+            ('FD.nat__lt_trans(d, 28n, 32n, hd, {==})', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})')]
+    def cokN(nm, a):
+        m = re.match(r'(\w+)\.hwab\(d, x, len, (.*), hw\)$', a, re.S)
+        return f'{m.group(1)}.hwab32(x, len, {m.group(2)}, hwN)' if m else None
+    t2 = deep_twins(t, GVLN_DEEP, reps, callee_ok=cokN, mode='hwN')
+    head2, tw2 = t2.rsplit('# ---- the same at any tree depth d < 31', 1)
+    n0 = tw2.count('TC.eoc(')
+    tw2 = tw2.replace('TC.eoc(', 'TC.eocD(').replace('), eo, hd, hw), hd, TC.hwab(', '), eo, hd, hw, hwN), hd, TC.hwab(')
+    assert tw2.count('eo, hd, hw, hwN), hd, TC.hwab(') == n0, n0
+    return head2 + '# ---- the same at any tree depth d < 31' + tw2
 
 
 SUPPORT_OUT['e2e_gvl.bend'] = gvl_deep_text()
@@ -4272,7 +4294,7 @@ GCX = {
 
 
 # the progressive containers whose views have deep twins (e2e_gcx.vw_XD; their laws at any depth)
-GCX_DEEP = {'Gc221EC01D83'}
+GCX_DEEP = {'Gc221EC01D83', 'Gp8A7851175B'}
 
 
 def gcx_deep_view(X, W, fields):
@@ -4292,14 +4314,21 @@ def gcx_deep_view(X, W, fields):
         win = f'd, t, {xj}, {fj}, {lj}'
         eo, hw_, it = f'{W}.eoJ{k}D({WD})', f'{W}.hwJ{k}D({WD})', f'{W}.itD{k}(t, x, off, len, h)'
         rhs = f'{CH}.VALw(t, {xj}, {lj})'
-        if kd == 'pu8':
+        if kd == 'pb':
+            items.append((f'S.BitsValue{{BO.bview({CH}.OBJw({win}))}}', rhs,
+                          f'Equal.cong(+List<Bool>, S.Value, z => S.BitsValue{{z}}, BO.bview({CH}.OBJw({win})), VBL.bl(UW.WX(t, {xj}, U32.to_nat({lj}))), '
+                          f'GPB.pbvD({win}, {eo}, hd, {hw_}, {W}.hwJ{k}N({WD}), pf, {it}))'))
+        elif kd == 'l16':
+            items.append((f'PBF.vview2({CH}.OBJw({win}))', rhs, f'GP.lv_l123D({win}, {eo}, {hw_}, pf, {it})'))
+        elif kd == 'pu8':
             items.append((f'PBF.vview1({CH}.OBJw({win}))', rhs, f'GP.pu8D({win}, {eo}, {hw_}, {W}.hwJ{k}N({WD}), pf, {it})'))
         elif kd == 'pu64':
             items.append((f'UL.uview({CH}.OBJw({win}))', rhs, f'GP.pu64D({win}, {eo}, {hw_}, {W}.hwJ{k}N({WD}), pf, {it})'))
         elif kd == 'rl':
             items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GRL.vl_{f[2]}D({win}, {eo}, hd, {hw_}, pf, {it})'))
         elif kd == 'vl':
-            items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}D({win}, {eo}, hd, {hw_}, {W}.hwJ{k}_32({WD}), pf, {it})'))
+            tw_ = f'{W}.hwJ{k}N({WD})' if f[2] in ('pl_Gp66304057C3',) else f'{W}.hwJ{k}_32({WD})'
+            items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}D({win}, {eo}, hd, {hw_}, {tw_}, pf, {it})'))
         else:
             raise SystemExit(f'gcx_deep_view: {kd}')
         k += 1

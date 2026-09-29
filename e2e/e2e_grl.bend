@@ -23,8 +23,7 @@ import ../proofs/obj/vfx_u8.bend as FXA
 import ../proofs/obj/vfx_u16.bend as FXB
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vdepth.bend as VD
-import ../proofs/obj/root_gtypes2.bend as RT2
-import ../proofs/obj/root_gtypes2_light.bend as RT2_L
+import ../proofs/obj/root_gtypes2_light.bend as RT2
 import ../proofs/obj/root_gnames_light.bend as RN
 import ./e2e_gwin.bend as GW
 import ../proofs/obj/big_var_winx_pl_Gc4ED9619F50.bend as RL4
@@ -206,16 +205,16 @@ def at_pl_Gc4ED9619F50(k: Nat, r: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<Sma
 
 # the root's element at i of a list whose i-th is Some{v}
 def xa_pl_Gc4ED9619F50(+W: List<&2, SmallTestStruct_d.Gc4ED9619F50>, +i: Nat, +v: SmallTestStruct_d.Gc4ED9619F50, +hi: {Nat.is_lt(i, FD.spec_common__length(SmallTestStruct_d.Gc4ED9619F50, W)) == True{} : Bool},
-    +e: {FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i) == Some{v} : Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>}) -> {RT2_L.xat_pl_Gc4ED9619F50(W, i) == v : SmallTestStruct_d.Gc4ED9619F50}:
-  Equal.cong(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_d.Gc4ED9619F50, m => VRL.mget(SmallTestStruct_d.Gc4ED9619F50, m, SmallTestStruct_d.Gc4ED9619F50_default()), Some{RT2_L.xat_pl_Gc4ED9619F50(W, i)}, Some{v},
-    Equal.trans(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, Some{RT2_L.xat_pl_Gc4ED9619F50(W, i)}, FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i), Some{v},
-      Equal.sym(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i), Some{RT2_L.xat_pl_Gc4ED9619F50(W, i)}, RT2.nth_pl_Gc4ED9619F50(W, i, hi)), e))
+    +e: {FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i) == Some{v} : Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>}) -> {RT2.xat_pl_Gc4ED9619F50(W, i) == v : SmallTestStruct_d.Gc4ED9619F50}:
+  Equal.cong(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_d.Gc4ED9619F50, m => VRL.mget(SmallTestStruct_d.Gc4ED9619F50, m, SmallTestStruct_d.Gc4ED9619F50_default()), Some{RT2.xat_pl_Gc4ED9619F50(W, i)}, Some{v},
+    Equal.trans(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, Some{RT2.xat_pl_Gc4ED9619F50(W, i)}, FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i), Some{v},
+      Equal.sym(Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>, FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, W, i), Some{RT2.xat_pl_Gc4ED9619F50(W, i)}, RT2.nth_pl_Gc4ED9619F50(W, i, hi)), e))
 
 # the root's items from i of the records 0 .. k written into a fresh tree: the spec's records from byte pos(i)
 def xs_pl_Gc4ED9619F50(q: Nat, +i: Nat, +k: Nat, +dd: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hq: {Nat.is_le(Nat.add(q, i), 1n+k) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, 0n), FD.spec_common__pow2(dd)) == True{} : Bool},
     +hw: {Nat.is_le(VRL.pos(1n+k, 4n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {RT2_L.xi_pl_Gc4ED9619F50(q, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RL4.RT(k, 0n, dd, FD.array__trep(SmallTestStruct_d.Gc4ED9619F50, dd, SmallTestStruct_d.Gc4ED9619F50_default()), t, x)), i) == RL4.RITEMS(q, t, VRL.pos(i, 4n, x)) : S.Value}:
+    -> {RT2.xi_pl_Gc4ED9619F50(q, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RL4.RT(k, 0n, dd, FD.array__trep(SmallTestStruct_d.Gc4ED9619F50, dd, SmallTestStruct_d.Gc4ED9619F50_default()), t, x)), i) == RL4.RITEMS(q, t, VRL.pos(i, 4n, x)) : S.Value}:
   match q:
     case 0n: {==}
     case 1n+ +p:
@@ -232,19 +231,19 @@ def xs_pl_Gc4ED9619F50(q: Nat, +i: Nat, +k: Nat, +dd: Nat, +d: Nat, +t: FD.array
       +hq1 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+Nat.add(p, i), Nat.add(p, 1n+i), Equal.sym(Nat, Nat.add(p, 1n+i), 1n+Nat.add(p, i), FD.nat__add_succ(p, i)), hq)
       +ih = xs_pl_Gc4ED9619F50(p, 1n+i, k, dd, d, t, x, pf, hq1, hb, hw)
       %Equal.sym(Nat, Nat.add(4n, VRL.pos(i, 4n, x)), VRL.pos(1n+i, 4n, x), VRL.pnx0(i, 4n, x)) :
-        {S.Items{RN.v_Gc4ED9619F50(RT2_L.xat_pl_Gc4ED9619F50(SL, i)), RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RL4.RVAL(t, VRL.pos(i, 4n, x)), RL4.RITEMS(p, t, _)} : S.Value}
-      %ih : {S.Items{RN.v_Gc4ED9619F50(RT2_L.xat_pl_Gc4ED9619F50(SL, i)), RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RL4.RVAL(t, VRL.pos(i, 4n, x)), _} : S.Value}
-      %ev : {S.Items{RN.v_Gc4ED9619F50(RT2_L.xat_pl_Gc4ED9619F50(SL, i)), RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{_, RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} : S.Value}
-      %Equal.sym(SmallTestStruct_d.Gc4ED9619F50, RT2_L.xat_pl_Gc4ED9619F50(SL, i), RL4.RX(t, VRL.pos(i, 4n, x)), ex) : {S.Items{RN.v_Gc4ED9619F50(_), RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RN.v_Gc4ED9619F50(RL4.RX(t, VRL.pos(i, 4n, x))), RT2_L.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} : S.Value}
+        {S.Items{RN.v_Gc4ED9619F50(RT2.xat_pl_Gc4ED9619F50(SL, i)), RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RL4.RVAL(t, VRL.pos(i, 4n, x)), RL4.RITEMS(p, t, _)} : S.Value}
+      %ih : {S.Items{RN.v_Gc4ED9619F50(RT2.xat_pl_Gc4ED9619F50(SL, i)), RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RL4.RVAL(t, VRL.pos(i, 4n, x)), _} : S.Value}
+      %ev : {S.Items{RN.v_Gc4ED9619F50(RT2.xat_pl_Gc4ED9619F50(SL, i)), RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{_, RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} : S.Value}
+      %Equal.sym(SmallTestStruct_d.Gc4ED9619F50, RT2.xat_pl_Gc4ED9619F50(SL, i), RL4.RX(t, VRL.pos(i, 4n, x)), ex) : {S.Items{RN.v_Gc4ED9619F50(_), RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} == S.Items{RN.v_Gc4ED9619F50(RL4.RX(t, VRL.pos(i, 4n, x))), RT2.xi_pl_Gc4ED9619F50(p, SL, 1n+i)} : S.Value}
       {==}
 
 def go_pl_Gc4ED9619F50(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {RT2_L.xv_pl_Gc4ED9619F50(RL4.LOBJ(b, t, x, len)) == RL4.VALw(t, x, len) : S.Value}:
+    -> {RT2.xv_pl_Gc4ED9619F50(RL4.LOBJ(b, t, x, len)) == RL4.VALw(t, x, len) : S.Value}:
   match b:
     case True{}:
-      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2_L.xv_pl_Gc4ED9619F50(RL4.LOBJ(True{}, t, x, len)) == S.Sequence{RL4.RITEMS(RL4.CC(_), t, x)} : S.Value}
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2.xv_pl_Gc4ED9619F50(RL4.LOBJ(True{}, t, x, len)) == S.Sequence{RL4.RITEMS(RL4.CC(_), t, x)} : S.Value}
       {==}
     case False{}:
       +c = RL4.CC(len)
@@ -267,25 +266,25 @@ def go_pl_Gc4ED9619F50(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +le
       +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)), FD.nat__le_refl(1n+k))
       +RTF = RL4.RT(k, 0n, B.words_depth(RL4.NN(len)), FD.array__trep(SmallTestStruct_d.Gc4ED9619F50, B.words_depth(RL4.NN(len)), SmallTestStruct_d.Gc4ED9619F50_default()), t, x)
       %Equal.sym(FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, FD.array__freeze(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, RTF)), RTF, FD.array__freeze_thaw(SmallTestStruct_d.Gc4ED9619F50, RTF)) :
-        {S.Sequence{RT2_L.xi_pl_Gc4ED9619F50(c, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, _), 0n)} == S.Sequence{RL4.RITEMS(c, t, x)} : S.Value}
-      %e1 : {S.Sequence{RT2_L.xi_pl_Gc4ED9619F50(_, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n)} == S.Sequence{RL4.RITEMS(_, t, x)} : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2_L.xi_pl_Gc4ED9619F50(1n+k, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n), RL4.RITEMS(1n+k, t, x),
+        {S.Sequence{RT2.xi_pl_Gc4ED9619F50(c, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, _), 0n)} == S.Sequence{RL4.RITEMS(c, t, x)} : S.Value}
+      %e1 : {S.Sequence{RT2.xi_pl_Gc4ED9619F50(_, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n)} == S.Sequence{RL4.RITEMS(_, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_Gc4ED9619F50(1n+k, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n), RL4.RITEMS(1n+k, t, x),
         xs_pl_Gc4ED9619F50(1n+k, 0n, k, B.words_depth(RL4.NN(len)), d, t, x, pf, hq, hk, hw2))
 
 # the root view of the list read at the window (x, off, len) is its codec value
 def vl_pl_Gc4ED9619F50(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2_L.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, x, off, len)) == RL4.VALw(t, x, len) : S.Value}:
+    +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, x, off, len)) == RL4.VALw(t, x, len) : S.Value}:
   go_pl_Gc4ED9619F50(d, t, x, off, len, hd, hw, pf, hc, U32.is_eq(len, 0), {==})
 
 # ---- the same at any tree depth d < 31 ----
 def go_pl_Gc4ED9619F50D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {RT2_L.xv_pl_Gc4ED9619F50(RL4.LOBJ(b, t, x, len)) == RL4.VALw(t, x, len) : S.Value}:
+    -> {RT2.xv_pl_Gc4ED9619F50(RL4.LOBJ(b, t, x, len)) == RL4.VALw(t, x, len) : S.Value}:
   match b:
     case True{}:
-      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2_L.xv_pl_Gc4ED9619F50(RL4.LOBJ(True{}, t, x, len)) == S.Sequence{RL4.RITEMS(RL4.CC(_), t, x)} : S.Value}
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2.xv_pl_Gc4ED9619F50(RL4.LOBJ(True{}, t, x, len)) == S.Sequence{RL4.RITEMS(RL4.CC(_), t, x)} : S.Value}
       {==}
     case False{}:
       +c = RL4.CC(len)
@@ -308,14 +307,14 @@ def go_pl_Gc4ED9619F50D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +l
       +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)), FD.nat__le_refl(1n+k))
       +RTF = RL4.RT(k, 0n, B.words_depth(RL4.NN(len)), FD.array__trep(SmallTestStruct_d.Gc4ED9619F50, B.words_depth(RL4.NN(len)), SmallTestStruct_d.Gc4ED9619F50_default()), t, x)
       %Equal.sym(FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, FD.array__freeze(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, RTF)), RTF, FD.array__freeze_thaw(SmallTestStruct_d.Gc4ED9619F50, RTF)) :
-        {S.Sequence{RT2_L.xi_pl_Gc4ED9619F50(c, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, _), 0n)} == S.Sequence{RL4.RITEMS(c, t, x)} : S.Value}
-      %e1 : {S.Sequence{RT2_L.xi_pl_Gc4ED9619F50(_, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n)} == S.Sequence{RL4.RITEMS(_, t, x)} : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2_L.xi_pl_Gc4ED9619F50(1n+k, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n), RL4.RITEMS(1n+k, t, x),
+        {S.Sequence{RT2.xi_pl_Gc4ED9619F50(c, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, _), 0n)} == S.Sequence{RL4.RITEMS(c, t, x)} : S.Value}
+      %e1 : {S.Sequence{RT2.xi_pl_Gc4ED9619F50(_, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n)} == S.Sequence{RL4.RITEMS(_, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_pl_Gc4ED9619F50(1n+k, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, RTF), 0n), RL4.RITEMS(1n+k, t, x),
         xs_pl_Gc4ED9619F50(1n+k, 0n, k, B.words_depth(RL4.NN(len)), d, t, x, pf, hq, hk, hw2))
 
 def vl_pl_Gc4ED9619F50D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2_L.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, x, off, len)) == RL4.VALw(t, x, len) : S.Value}:
+    +hc: {RL4.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, x, off, len)) == RL4.VALw(t, x, len) : S.Value}:
   go_pl_Gc4ED9619F50D(d, t, x, off, len, hd, hw, pf, hc, U32.is_eq(len, 0), {==})
 
 # ---- l10_GpF350A3C486: records of 1 bytes (GpF350A3C486) ----
@@ -384,16 +383,16 @@ def at_l10_GpF350A3C486(k: Nat, r: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<Pr
 
 # the root's element at i of a list whose i-th is Some{v}
 def xa_l10_GpF350A3C486(+W: List<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +i: Nat, +v: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +hi: {Nat.is_lt(i, FD.spec_common__length(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W)) == True{} : Bool},
-    +e: {FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i) == Some{v} : Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}) -> {RT2_L.xat_l10_GpF350A3C486(W, i) == v : ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}:
-  Equal.cong(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, m => VRL.mget(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, m, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), Some{RT2_L.xat_l10_GpF350A3C486(W, i)}, Some{v},
-    Equal.trans(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, Some{RT2_L.xat_l10_GpF350A3C486(W, i)}, FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i), Some{v},
-      Equal.sym(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i), Some{RT2_L.xat_l10_GpF350A3C486(W, i)}, RT2.nth_l10_GpF350A3C486(W, i, hi)), e))
+    +e: {FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i) == Some{v} : Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}) -> {RT2.xat_l10_GpF350A3C486(W, i) == v : ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}:
+  Equal.cong(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, m => VRL.mget(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, m, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), Some{RT2.xat_l10_GpF350A3C486(W, i)}, Some{v},
+    Equal.trans(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, Some{RT2.xat_l10_GpF350A3C486(W, i)}, FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i), Some{v},
+      Equal.sym(Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, W, i), Some{RT2.xat_l10_GpF350A3C486(W, i)}, RT2.nth_l10_GpF350A3C486(W, i, hi)), e))
 
 # the root's items from i of the records 0 .. k written into a fresh tree: the spec's records from byte pos(i)
 def xs_l10_GpF350A3C486(q: Nat, +i: Nat, +k: Nat, +dd: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hq: {Nat.is_le(Nat.add(q, i), 1n+k) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, 0n), FD.spec_common__pow2(dd)) == True{} : Bool},
     +hw: {Nat.is_le(VRL.pos(1n+k, 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {RT2_L.xi_l10_GpF350A3C486(q, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RL1.RT(k, 0n, dd, FD.array__trep(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, dd, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), t, x)), i) == RL1.RITEMS(q, t, VRL.pos(i, 1n, x)) : S.Value}:
+    -> {RT2.xi_l10_GpF350A3C486(q, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RL1.RT(k, 0n, dd, FD.array__trep(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, dd, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), t, x)), i) == RL1.RITEMS(q, t, VRL.pos(i, 1n, x)) : S.Value}:
   match q:
     case 0n: {==}
     case 1n+ +p:
@@ -410,19 +409,19 @@ def xs_l10_GpF350A3C486(q: Nat, +i: Nat, +k: Nat, +dd: Nat, +d: Nat, +t: FD.arra
       +hq1 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+Nat.add(p, i), Nat.add(p, 1n+i), Equal.sym(Nat, Nat.add(p, 1n+i), 1n+Nat.add(p, i), FD.nat__add_succ(p, i)), hq)
       +ih = xs_l10_GpF350A3C486(p, 1n+i, k, dd, d, t, x, pf, hq1, hb, hw)
       %Equal.sym(Nat, Nat.add(1n, VRL.pos(i, 1n, x)), VRL.pos(1n+i, 1n, x), VRL.pnx0(i, 1n, x)) :
-        {S.Items{RN.v_GpF350A3C486(RT2_L.xat_l10_GpF350A3C486(SL, i)), RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RL1.RVAL(t, VRL.pos(i, 1n, x)), RL1.RITEMS(p, t, _)} : S.Value}
-      %ih : {S.Items{RN.v_GpF350A3C486(RT2_L.xat_l10_GpF350A3C486(SL, i)), RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RL1.RVAL(t, VRL.pos(i, 1n, x)), _} : S.Value}
-      %ev : {S.Items{RN.v_GpF350A3C486(RT2_L.xat_l10_GpF350A3C486(SL, i)), RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{_, RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} : S.Value}
-      %Equal.sym(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RT2_L.xat_l10_GpF350A3C486(SL, i), RL1.RX(t, VRL.pos(i, 1n, x)), ex) : {S.Items{RN.v_GpF350A3C486(_), RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RN.v_GpF350A3C486(RL1.RX(t, VRL.pos(i, 1n, x))), RT2_L.xi_l10_GpF350A3C486(p, SL, 1n+i)} : S.Value}
+        {S.Items{RN.v_GpF350A3C486(RT2.xat_l10_GpF350A3C486(SL, i)), RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RL1.RVAL(t, VRL.pos(i, 1n, x)), RL1.RITEMS(p, t, _)} : S.Value}
+      %ih : {S.Items{RN.v_GpF350A3C486(RT2.xat_l10_GpF350A3C486(SL, i)), RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RL1.RVAL(t, VRL.pos(i, 1n, x)), _} : S.Value}
+      %ev : {S.Items{RN.v_GpF350A3C486(RT2.xat_l10_GpF350A3C486(SL, i)), RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{_, RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} : S.Value}
+      %Equal.sym(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RT2.xat_l10_GpF350A3C486(SL, i), RL1.RX(t, VRL.pos(i, 1n, x)), ex) : {S.Items{RN.v_GpF350A3C486(_), RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} == S.Items{RN.v_GpF350A3C486(RL1.RX(t, VRL.pos(i, 1n, x))), RT2.xi_l10_GpF350A3C486(p, SL, 1n+i)} : S.Value}
       {==}
 
 def go_l10_GpF350A3C486(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hc: {RL1.CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {RT2_L.xv_l10_GpF350A3C486(RL1.LOBJ(b, t, x, len)) == RL1.VALw(t, x, len) : S.Value}:
+    -> {RT2.xv_l10_GpF350A3C486(RL1.LOBJ(b, t, x, len)) == RL1.VALw(t, x, len) : S.Value}:
   match b:
     case True{}:
-      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2_L.xv_l10_GpF350A3C486(RL1.LOBJ(True{}, t, x, len)) == S.Sequence{RL1.RITEMS(RL1.CC(_), t, x)} : S.Value}
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2.xv_l10_GpF350A3C486(RL1.LOBJ(True{}, t, x, len)) == S.Sequence{RL1.RITEMS(RL1.CC(_), t, x)} : S.Value}
       {==}
     case False{}:
       +c = RL1.CC(len)
@@ -445,13 +444,54 @@ def go_l10_GpF350A3C486(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +l
       +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)), FD.nat__le_refl(1n+k))
       +RTF = RL1.RT(k, 0n, B.words_depth(RL1.NN(len)), FD.array__trep(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, B.words_depth(RL1.NN(len)), ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), t, x)
       %Equal.sym(FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, FD.array__freeze(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF)), RTF, FD.array__freeze_thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF)) :
-        {S.Sequence{RT2_L.xi_l10_GpF350A3C486(c, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, _), 0n)} == S.Sequence{RL1.RITEMS(c, t, x)} : S.Value}
-      %e1 : {S.Sequence{RT2_L.xi_l10_GpF350A3C486(_, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n)} == S.Sequence{RL1.RITEMS(_, t, x)} : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2_L.xi_l10_GpF350A3C486(1n+k, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n), RL1.RITEMS(1n+k, t, x),
+        {S.Sequence{RT2.xi_l10_GpF350A3C486(c, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, _), 0n)} == S.Sequence{RL1.RITEMS(c, t, x)} : S.Value}
+      %e1 : {S.Sequence{RT2.xi_l10_GpF350A3C486(_, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n)} == S.Sequence{RL1.RITEMS(_, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_l10_GpF350A3C486(1n+k, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n), RL1.RITEMS(1n+k, t, x),
         xs_l10_GpF350A3C486(1n+k, 0n, k, B.words_depth(RL1.NN(len)), d, t, x, pf, hq, hk, hw2))
 
 # the root view of the list read at the window (x, off, len) is its codec value
 def vl_l10_GpF350A3C486(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hc: {RL1.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2_L.xv_l10_GpF350A3C486(RL1.OBJw(d, t, x, off, len)) == RL1.VALw(t, x, len) : S.Value}:
+    +hc: {RL1.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2.xv_l10_GpF350A3C486(RL1.OBJw(d, t, x, off, len)) == RL1.VALw(t, x, len) : S.Value}:
   go_l10_GpF350A3C486(d, t, x, off, len, hd, hw, pf, hc, U32.is_eq(len, 0), {==})
+
+
+# ---- the same at any tree depth d < 31 ----
+def go_l10_GpF350A3C486D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {RL1.CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
+    -> {RT2.xv_l10_GpF350A3C486(RL1.LOBJ(b, t, x, len)) == RL1.VALw(t, x, len) : S.Value}:
+  match b:
+    case True{}:
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT2.xv_l10_GpF350A3C486(RL1.LOBJ(True{}, t, x, len)) == S.Sequence{RL1.RITEMS(RL1.CC(_), t, x)} : S.Value}
+      {==}
+    case False{}:
+      +c = RL1.CC(len)
+      +ec = RL1.ecw(len, hc)
+      +h1 = RL1.cpos(len, c, ec, eb)
+      +k = U32.to_nat(U32.sub(RL1.NN(len), 1))
+      +e1 = Equal.trans(Nat, 1n+k, 1n+Nat.sub(c, 1n), c, Equal.cong(Nat, Nat, z => 1n+z, k, Nat.sub(c, 1n), FD.u32__sub_nat(RL1.NN(len), 1, h1)), FD.nat__sub_add(c, 1n, h1))
+      +P = A.quad(VB.pw(d))
+      +hL = FD.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw)
+      +hLc = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, x), P) == True{} : Bool}, U32.to_nat(len), Nat.mul(c, 1n), ec, hL)
+      +hw2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(z, 1n, x), P) == True{} : Bool}, c, 1n+k, Equal.sym(Nat, 1n+k, c, e1), hLc)
+      +hcN = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, VB.pw(2n+d), O.pow2n(2n+d), VD.s_pow2_eq(2n+d),
+        FD.nat__le_trans(c, Nat.mul(c, 1n), VB.pw(2n+d), VRL.le_mul(c, 0n),
+          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(2n+d)) == True{} : Bool}, U32.to_nat(len), Nat.mul(c, 1n), ec,
+            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw))))
+      +hcp = VD.wd_cover(RL1.NN(len), 2n+d, FD.nat__lt_succ_le(d, 30n, hd), hcN)
+      +hcP = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, O.pow2n(B.words_depth(RL1.NN(len))), VB.pw(B.words_depth(RL1.NN(len))), Equal.sym(Nat, VB.pw(B.words_depth(RL1.NN(len))), O.pow2n(B.words_depth(RL1.NN(len))), VD.s_pow2_eq(B.words_depth(RL1.NN(len)))), hcp)
+      +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(B.words_depth(RL1.NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
+        FD.nat__lt_le_trans(k, c, VB.pw(B.words_depth(RL1.NN(len))), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hcP))
+      +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+k) == True{} : Bool}, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)), FD.nat__le_refl(1n+k))
+      +RTF = RL1.RT(k, 0n, B.words_depth(RL1.NN(len)), FD.array__trep(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, B.words_depth(RL1.NN(len)), ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default()), t, x)
+      %Equal.sym(FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, FD.array__freeze(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF)), RTF, FD.array__freeze_thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF)) :
+        {S.Sequence{RT2.xi_l10_GpF350A3C486(c, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, _), 0n)} == S.Sequence{RL1.RITEMS(c, t, x)} : S.Value}
+      %e1 : {S.Sequence{RT2.xi_l10_GpF350A3C486(_, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n)} == S.Sequence{RL1.RITEMS(_, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT2.xi_l10_GpF350A3C486(1n+k, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, RTF), 0n), RL1.RITEMS(1n+k, t, x),
+        xs_l10_GpF350A3C486(1n+k, 0n, k, B.words_depth(RL1.NN(len)), d, t, x, pf, hq, hk, hw2))
+
+def vl_l10_GpF350A3C486D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {RL1.CHKw(t, x, off, len) == True{} : Bool}) -> {RT2.xv_l10_GpF350A3C486(RL1.OBJw(d, t, x, off, len)) == RL1.VALw(t, x, len) : S.Value}:
+  go_l10_GpF350A3C486D(d, t, x, off, len, hd, hw, pf, hc, U32.is_eq(len, 0), {==})
