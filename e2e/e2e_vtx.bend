@@ -325,30 +325,22 @@ def vt(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U3
     -> {RT.xv_l1048576_bl1073741824(TX.OBJw(d, t, x, off, len)) == TX.VALw(t, x, len) : S.Value}:
   vtc(d, t, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), hchk)
 
-# ---- the same at any tree depth d < 31, the window within NMAX ----
-def elw1(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: U32, +e: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
-  TX.hwab32(x, len, s, e, TX.el_ab(t, x, off, len, s, e, h), TX.el_b(t, x, off, len, s, e, h), hwN)
-
-def elw2(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: U32, +e: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool}) -> {Nat.is_le(VC.YL(U32.sub(e, s)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
-  VC.hyW(Nat.add(U32.to_nat(s), x), U32.sub(e, s), elw1(d, t, x, off, len, s, e, hw, hwN, h))
-
-def elw4(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: U32, +e: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
-    -> {WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)))), U32.sub(e, s)}) == UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))) : +List<U32>}:
-  +hab = TX.el_ab(t, x, off, len, s, e, h)
-  +hb = TX.el_b(t, x, off, len, s, e, h)
-  +hW = TX.hwab(d, x, len, s, e, hab, hb, hw)
-  +hy = elw2(d, t, x, off, len, s, e, hw, hwN, h)
-  BX.bvgY(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)), Nat.add(U32.to_nat(s), x),
-      TX.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), hab, hb), eo, hd, hw, hwN), hy, hW, pf, VC.hrgU(U32.sub(e, s), hy))
-
-def elvY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+# ---- the same at any tree depth d < 31 (the window ends by NMAX: hwN) ----
+def elvD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32,
     +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool})
     -> {RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(ND(d, t, x, off, s, e))) == TX.VE(t, x, s, e) : S.Value}:
+  +hab = TX.el_ab(t, x, off, len, s, e, h)
+  +hb = TX.el_b(t, x, off, len, s, e, h)
+  +hW = TX.hwab(d, x, len, s, e, hab, hb, hw)
+  +hWN = TX.hwab32(x, len, s, e, hab, hb, hwN)
   Equal.cong(+List<U32>, S.Value, z => S.BytesValue{z}, WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)))), U32.sub(e, s)}),
-    UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))), elw4(d, t, x, off, len, s, e, eo, hd, hw, hwN, pf, h))
+    UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))),
+    BX.bvgY(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)), Nat.add(U32.to_nat(s), x),
+      TX.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), hab, hb), eo, hd, hw, hwN), VC.hyW(Nat.add(U32.to_nat(s), x), U32.sub(e, s), hWN), hW, pf,
+      VC.hrgU(U32.sub(e, s), VC.hyW(Nat.add(U32.to_nat(s), x), U32.sub(e, s), hWN))))
 
-def xiWY(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT.MB<RT.WMr>>, +u0: RT.MB<RT.WMr>,
+def xiWD(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +dd: Nat, +K: Nat, +T0: FD.array__Tree<RT.MB<RT.WMr>>, +u0: RT.MB<RT.WMr>,
     +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool},
     +pft: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +pf0: {FD.array__perfect(RT.MB<RT.WMr>, dd, T0) == True{} : Bool}, +hm: {Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dd)) == True{} : Bool},
@@ -374,12 +366,12 @@ def xiWY(k: Nat, +c: U32, +s: Nat, +m: U32, +d: Nat, +t: FD.array__Tree<U32>, +x
       +es1 = Equal.cong(Nat, Nat, z => 1n+z, U32.to_nat(U32.add(c, 1)), s, Equal.trans(Nat, U32.to_nat(U32.add(c, 1)), 1n+U32.to_nat(c), s, e1(c, p, m, invc), es))
       %Equal.sym(RT.MB<RT.WMr>, RT.xat_l1048576_bl1073741824(SL(FK), s), NV(c, m, d, t, x, off, len), ex) :
         {S.Items{RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(_)), RT.xi_l1048576_bl1073741824(p, SL(FK), 1n+s)} == TX.VI(1n+p, c, m, t, x, len) : S.Value}
-      %Equal.sym(S.Value, RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(NV(c, m, d, t, x, off, len))), TX.VE(t, x, TX.WJ(t, x, c), nb), elvY(d, t, x, off, len, eo, hd, hw, hwN, pft, TX.WJ(t, x, c), nb, hc)) :
+      %Equal.sym(S.Value, RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(NV(c, m, d, t, x, off, len))), TX.VE(t, x, TX.WJ(t, x, c), nb), elvD(d, t, x, off, len, eo, hd, hw, hwN, pft, TX.WJ(t, x, c), nb, hc)) :
         {S.Items{_, RT.xi_l1048576_bl1073741824(p, SL(FK), 1n+s)} == TX.VI(1n+p, c, m, t, x, len) : S.Value}
       Equal.cong(S.Value, S.Value, z => S.Items{TX.VE(t, x, TX.WJ(t, x, c), nb), z}, RT.xi_l1048576_bl1073741824(p, SL(FK), 1n+s), TX.VI(p, U32.add(c, 1), m, t, x, len),
-        xiWY(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, dd, K, T0, u0, eo, hd, hw, hwN, pft, pf0, hm, invK, es1, TX.inv_nx(p, c, m, invc), TX.he_nx(p, c, m, t, x, off, len, invc, hE)))# the list of a nonempty window
+        xiWD(p, U32.add(c, 1), 1n+s, m, d, t, x, off, len, dd, K, T0, u0, eo, hd, hw, hwN, pft, pf0, hm, invK, es1, TX.inv_nx(p, c, m, invc), TX.he_nx(p, c, m, t, x, off, len, invc, hE)))# the list of a nonempty window
 
-def vtfY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtfD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hc0: {TX.CF(TX.HC(TX.W0(t, x), len), t, x, off, len) == True{} : Bool})
     -> {RT.xv_l1048576_bl1073741824(TX.RZ(False{}, d, t, x, off, len)) == TX.VZE(False{}, t, x, len) : S.Value}:
@@ -427,22 +419,21 @@ def vtfY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {
   %inv : {S.Sequence{RT.xi_l1048576_bl1073741824(_, SL(FK), 0n)} == TX.VZE(False{}, t, x, len) : S.Value}
   %Equal.sym(RT.MB<RT.WMr>, RT.xat_l1048576_bl1073741824(SL(FK), 0n), u0, x0) :
     {S.Sequence{S.Items{RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(_)), RT.xi_l1048576_bl1073741824(k0, SL(FK), 1n)}} == TX.VZE(False{}, t, x, len) : S.Value}
-  %Equal.sym(S.Value, RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(u0)), TX.VE(t, x, f, TX.B1(t, x, len)), elvY(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TX.B1(t, x, len), hc1)) :
+  %Equal.sym(S.Value, RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(u0)), TX.VE(t, x, f, TX.B1(t, x, len)), elvD(d, t, x, off, len, eo, hd, hw, hwN, pf, f, TX.B1(t, x, len), hc1)) :
     {S.Sequence{S.Items{_, RT.xi_l1048576_bl1073741824(k0, SL(FK), 1n)}} == TX.VZE(False{}, t, x, len) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{TX.VE(t, x, f, TX.B1(t, x, len)), z}}, RT.xi_l1048576_bl1073741824(k0, SL(FK), 1n), TX.VI(k0, 0, N, t, x, len),
-    xiWY(k0, 0, 1n, N, d, t, x, off, len, dd, k0, T0, u0, eo, hd, hw, hwN, pf, pf0, hm, inv, {==}, inv, hE0))
+    xiWD(k0, 0, 1n, N, d, t, x, off, len, dd, k0, T0, u0, eo, hd, hw, hwN, pf, pf0, hm, inv, {==}, inv, hE0))
 
-def vtcY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtcD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +b: Bool, +hc: {TX.CZ(b, t, x, off, len) == True{} : Bool})
     -> {RT.xv_l1048576_bl1073741824(TX.RZ(b, d, t, x, off, len)) == TX.VZE(b, t, x, len) : S.Value}:
   match b:
     case True{}: {==}
-    case False{}: vtfY(d, t, x, off, len, eo, hd, hw, hwN, pf, hc)
+    case False{}: vtfD(d, t, x, off, len, eo, hd, hw, hwN, pf, hc)
 
-def vtY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+def vtD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hchk: {TX.CHKw(t, x, off, len) == True{} : Bool})
     -> {RT.xv_l1048576_bl1073741824(TX.OBJw(d, t, x, off, len)) == TX.VALw(t, x, len) : S.Value}:
-  vtcY(d, t, x, off, len, eo, hd, hw, hwN, pf, U32.is_eq(len, 0), hchk)
-
+  vtcD(d, t, x, off, len, eo, hd, hw, hwN, pf, U32.is_eq(len, 0), hchk)

@@ -2858,7 +2858,7 @@
      "FuluExecutionPayload_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluExecutionPayloadHeader_e2e_dec_generated.bend": [
@@ -3002,7 +3002,7 @@
      "FuluTransaction_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "ProgressiveBitsStruct_e2e_dec_generated.bend": [
@@ -7419,9 +7419,9 @@
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899911038192,
    "covered": false,
    "bridged": null
@@ -7518,11 +7518,11 @@
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1073741824,
-   "covered": false,
+   "covered": true,
    "bridged": null
   },
   "ProgressiveBitsStruct": {
@@ -7847,7 +7847,7 @@
   },
   {
    "name": "FuluExecutionPayload",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899911038192 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
@@ -7856,12 +7856,6 @@
    "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071364 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
-  },
-  {
-   "name": "FuluTransaction",
-   "input_bound": "2^29",
-   "max_ssz_size": "1073741824 bytes",
-   "closed_at_depth_29": true
   },
   {
    "name": "ProgressiveBitsStruct",
