@@ -1,1 +1,1 @@
-2026-09-22 17:35:54 PROOF.bend exit=0 peak=4.24GB elapsed=146.9s all_terms_check=True unsafe=False killed=False -> PASS
+2026-09-29 23:47:53Z PROOF.bend commit=1dc386f1 checker=3ddfb036 exit=0 peak=2480MB elapsed=24s all_terms_check=True unsafe=False -> PASS

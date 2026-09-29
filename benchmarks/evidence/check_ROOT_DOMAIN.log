@@ -1,1 +1,1 @@
-2026-09-22 17:15:13 ROOT_DOMAIN.bend exit=0 peak=5.26GB elapsed=76.6s all_terms_check=True unsafe=False killed=False -> PASS
+2026-09-29 23:47:53Z ROOT_DOMAIN.bend commit=1dc386f1 checker=3ddfb036 exit=0 peak=1944MB elapsed=24s all_terms_check=True unsafe=False -> PASS

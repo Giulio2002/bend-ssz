@@ -1,1 +1,1 @@
-2026-09-22 16:10:06 HASH_PROOF.bend exit=0 peak=1.65GB elapsed=8.5s all_terms_check=True unsafe=False killed=False -> PASS
+2026-09-29 23:47:35Z HASH_PROOF.bend commit=1dc386f1 checker=3ddfb036 exit=0 peak=260MB elapsed=6s all_terms_check=True unsafe=False -> PASS

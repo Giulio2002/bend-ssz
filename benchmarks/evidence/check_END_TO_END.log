@@ -1,1 +1,1 @@
-2026-09-22 16:09:11 END_TO_END.bend exit=0 peak=5.67GB elapsed=62.6s all_terms_check=True unsafe=False killed=False -> PASS
+2026-09-29 23:47:52Z END_TO_END.bend commit=1dc386f1 checker=3ddfb036 exit=0 peak=2055MB elapsed=23s all_terms_check=True unsafe=False -> PASS
