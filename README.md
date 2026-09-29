@@ -9,19 +9,27 @@ exactly what an independent transcription of the SSZ specification says.
 
 ## What is proved
 
-For every name `X`, in the object API's own terms (`proofs/api/X_<op>_proof_generated.bend`):
+For every one of the <!-- fig:names -->240<!-- /fig --> names `X`, in the object API's own terms
+(`proofs/api/X_<op>_proof_generated.bend`):
 
-| Operation | Laws |
+| Operation | Laws for every name |
 |---|---|
-| encode | `encode_eval` (the bytes the encoder writes), `encode_spec` (they are the spec's encoding), `encoded_size`, `serialize_valid`, `roundtrip` |
-| decode | `decode_accept` / `decode_spec` (a canonical encoding decodes to its value), `decode_reject` / `decode_none` (every other input is rejected), `decode_unique`, `reject_short` / `reject_long` |
+| encode | `encode_eval` (the bytes the encoder writes), `encode_spec` (they are the spec's encoding) |
+| decode | `decode_accept` / `decode_spec` (a canonical encoding decodes to its value), `decode_reject` / `decode_none` (every other input is rejected), `decode_unique`, `ok_eval` (the validator) |
 | hash_tree_root | `root` (the returned digest satisfies the spec's root relation for the object's value) |
+
+`roundtrip`, `encoded_size`, `serialize_valid`, `reject_short` / `reject_long`, `decode_tree` and
+`decode_input` exist for a subset of the names (the counts are in [docs/RESULTS.md](docs/RESULTS.md)).
+`proofs/gate/MISSING.txt`: <!-- fig:missing -->0<!-- /fig --> of <!-- fig:core_pairs -->2160<!-- /fig --> core
+(name, law) pairs lack a proving law.
 
 These are then bridged to the list-based model of [END_TO_END.bend](END_TO_END.bend): the
 `e2e/` files state, per name, that the object API's result is exactly `serialize`,
 `deserialize` and `hash_tree_root` of END_TO_END's model at the object's value. END_TO_END's
 laws (serialize_correct, deserialize_correct, deserialize_rejection_correct,
 hash_tree_root_correct, ...) relate that model to the specification in `spec/`.
+<!-- fig:bridged_full -->232<!-- /fig --> names have all four bridges (encode, decode accept, decode reject,
+root); without the decode bridges: <!-- fig:no_dec_bridge -->`vec_uint128_512`, `vec_uint128_513`, `vec_uint256_512`, `vec_uint256_513`, `vec_uint32_512`, `vec_uint32_513`, `vec_uint64_512`, `vec_uint64_513`<!-- /fig -->.
 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).

@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+"""Every coverage figure the documentation states, computed from the artifacts.
+
+    python3 codegen/doc_figures.py [--check]
+
+The docs (DOCS below) mark each figure as <!-- fig:KEY -->text<!-- /fig -->; this script
+recomputes every marked text from the generated artifacts and rewrites it (--check: fails,
+naming the file and key, when a doc differs, or a key is unknown). Sources:
+
+  proofs/gate/api_map.json   the object API's laws per name (codegen/api_gate.py)
+  proofs/gate/MISSING.txt    the core (name, law) pairs with no proving law (codegen/api_gate.py)
+  e2e/manifest.json          the bridges, their premises and input bounds (codegen/e2e_bridge.py)
+  proofs/api/                the facades (codegen/api_facade.py)
+
+So a doc cannot claim more coverage than the artifacts show: a regenerated artifact with other
+figures makes this check (part of regen_all --check) fail until the docs are regenerated.
+"""
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md']
+FIG = re.compile(r'<!-- fig:([a-z0-9_]+) -->(.*?)<!-- /fig -->', re.S)
+BRIDGE = {'e2e_encode': 'i', 'e2e_decode_accept': 'ii', 'e2e_decode_view': 'ii',
+          'e2e_decode_reject': 'iii', 'e2e_root': 'iv'}
+POW = {2 ** 32 - 32: 'NMAX = 2^32 - 32', 2 ** 30: '2^30', 2 ** 29: '2^29'}
+
+
+def names_list(ns):
+    return ', '.join(ns) if ns else 'none'
+
+
+def figures():
+    amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
+    man = json.loads((ROOT / 'e2e/manifest.json').read_text())
+    miss = [l for l in (ROOT / 'proofs/gate/MISSING.txt').read_text().splitlines()
+            if l.strip() and not l.startswith('#')]
+    fulu, gen, core, laws, mp = amap['fulu'], amap['generic'], amap['core_laws'], amap['laws'], amap['map']
+    names = fulu + gen
+    f = {}
+    f['names'] = str(len(names))
+    f['fulu'] = str(len(fulu))
+    f['generic'] = str(len(gen))
+    f['core_pairs'] = str(len(names) * len(core))
+    f['missing'] = str(len(miss))
+    f['facade_files'] = str(len(list((ROOT / 'proofs/api').glob('*_proof_generated.bend'))))
+    f['core_laws'] = ', '.join('`%s`' % k for k in core)
+    extra = [k for k in laws if k not in core]
+    rows = ['| Law | Names |', '|---|---|']
+    for k in core:
+        rows.append('| `%s` | %d |' % (k, sum(1 for n in names if mp[n].get(k))))
+    for k in extra:
+        rows.append('| `%s` | %d |' % (k, sum(1 for n in names if mp[n].get(k))))
+    f['law_table'] = '\n' + '\n'.join(rows) + '\n'
+
+    got = {}
+    for es in man['files'].values():
+        for e in es:
+            for l in e['laws']:
+                s = l[len(e['name']) + 1:]
+                if s in BRIDGE:
+                    got.setdefault(e['generated_name'], set()).add(BRIDGE[s])
+    full = [n for n in names if got.get(n, set()) >= {'i', 'ii', 'iii', 'iv'}]
+    f['bridged_full'] = str(len(full))
+    f['bridged_i'] = str(sum(1 for n in names if 'i' in got.get(n, ())))
+    f['bridged_iv'] = str(sum(1 for n in names if 'iv' in got.get(n, ())))
+    f['bridged_dec'] = str(sum(1 for n in names if {'ii', 'iii'} <= got.get(n, set())))
+    nodec = [n for n in names if not {'ii', 'iii'} <= got.get(n, set())]
+    f['no_dec_bridge'] = names_list(['`%s`' % n for n in nodec])
+    f['no_dec_count'] = str(len(nodec))
+    f['unbridged'] = names_list(['`%s`' % n for n in names if not got.get(n)])
+    f['manifest_open'] = ', '.join('`%s` %s' % (k, 'empty' if not man[k] else '%d entries' % len(man[k]))
+                                   for k in ('uncovered', 'decode_uncovered', 'root_awaiting'))
+    ws = man['word_storage']
+    f['word_storage'] = str(len(ws))
+    f['word_storage_awaiting'] = names_list(['`%s`' % k for k, v in sorted(ws.items()) if v['awaiting']])
+
+    ib = man['input_bounds']
+    by = {}
+    for n, v in sorted(ib.items()):
+        by.setdefault(v['input_bound_bytes'], []).append(n)
+    lines = []
+    for b in sorted(by, reverse=True):
+        lines.append('%s: %s' % (POW.get(b, str(b)), names_list(by[b]) if b != 2 ** 32 - 32 else '%d names' % len(by[b])))
+    f['input_bounds'] = '; '.join(lines)
+    short = [e['name'] for e in man['input_bound_short']]
+    f['input_bound_short_count'] = str(len(short))
+    f['input_bound_short'] = names_list(short)
+    hv = man['decoded_premises']['hv_SDB']['names']
+    f['hv_decoded_count'] = str(len(hv))
+    f['hv_decoded'] = names_list(hv)
+    return f
+
+
+def render(text, fig, path):
+    bad = []
+
+    def sub(m):
+        if m.group(1) not in fig:
+            bad.append(m.group(1))
+            return m.group(0)
+        return '<!-- fig:%s -->%s<!-- /fig -->' % (m.group(1), fig[m.group(1)])
+    out = FIG.sub(sub, text)
+    if bad:
+        sys.exit('doc_figures: %s: unknown figure %s' % (path, ', '.join(bad)))
+    return out
+
+
+def main():
+    check = '--check' in sys.argv[1:]
+    fig = figures()
+    stale = []
+    for d in DOCS:
+        p = ROOT / d
+        old = p.read_text()
+        new = render(old, fig, d)
+        if new != old:
+            if check:
+                keys = [a.group(1) for a, b in zip(FIG.finditer(old), FIG.finditer(new)) if a.group(2) != b.group(2)]
+                stale.append('%s (%s)' % (d, ', '.join(keys)))
+            else:
+                p.write_text(new)
+    if stale:
+        print('doc_figures: stale figures in ' + '; '.join(stale) + ' (run python3 codegen/doc_figures.py)')
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

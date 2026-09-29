@@ -10,7 +10,7 @@
 The generators are every codegen/*.py that accepts --check. generate.py (the object API, which
 every law generator reads) runs first; the generators that index the others' outputs run last:
 api_gate.py (one-import gates), api_facade.py (the per-name facades) and e2e_bridge.py (the
-bridges and e2e/manifest.json). A law generator can read another's output (a facade records
+bridges and e2e/manifest.json), then doc_figures.py (the docs' coverage figures). A law generator can read another's output (a facade records
 its imports, a split module its parent's names), so write mode repeats the whole pass until
 a pass leaves every --check clean (at most --passes, default 16).
 
@@ -29,7 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIRST = ['generate']
-LAST = ['api_gate', 'api_facade', 'e2e_bridge']
+LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'doc_figures']
 # the slowest generators (measured), started first so the pool's tail is short
 HEAVY = ['var_cont_enc', 'var_winb', 'e2e_bridge', 'api_gate', 'spec_laws', 'root_laws_b', 'api_facade', 'valid_laws']
 JOBS = 1

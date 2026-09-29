@@ -12,6 +12,7 @@
 | `e2e/<Name>_e2e_{,dec_,root_}generated.bend` (fixed-size names keep encode and decode in `<Name>_e2e_generated.bend`), `e2e/manifest.json` | the bridges to END_TO_END's model, and their index | `codegen/e2e_bridge.py` |
 | `END_TO_END.bend`, `ROOT_DOMAIN.bend`, `PROOF.bend`, `HASH_PROOF.bend` | the model API's public laws | hand (statements frozen) |
 | `codegen/` | the generators; `codegen/fulu.yaml` and the frozen generic descriptions are their inputs | hand |
+| the figures marked `<!-- fig:KEY -->` in README.md, docs/RESULTS.md, docs/PREMISES.md | coverage counts and name lists, from `proofs/gate/` and `e2e/manifest.json` | `codegen/doc_figures.py` |
 | `tools/check.sh`, `tools/check_fast.sh`, `tools/umbrellas.py` | the pinned-checker runners: one file, and the full check through umbrellas; `tools/check_costs.tsv` holds the per-file times the umbrella partition balances on | hand |
 | `vendor/` | pinned consensus-specs and the SHA-256 dependency | vendored |
 

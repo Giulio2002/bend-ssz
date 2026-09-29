@@ -8,11 +8,38 @@
   and are refused. Five of the 136 are the fork's own `boolean` / `uint8` / `uint32` / `uint64` / `uint256`
   (`uint16` and `uint128` exist only in the suite), so there are 131 generic names beside the 109 Fulu ones. Readable
   names come from `codegen/names.py`.
-- 240 names have object-API facades (`proofs/api/`: 720 files), each with an encode, a decode and a
-  hash_tree_root file.
-- 124 names have end-to-end bridges (`e2e/manifest.json`: 66 fixed-size, 58 variable-size); its `uncovered`,
-  `decode_uncovered` and `root_awaiting` lists are empty. `proofs/gate/MISSING.txt`: 0 of 2205 core (name, law) pairs lack a proving law.
-  The remaining premises and limits are in [PREMISES.md](PREMISES.md); 8 word-storage vectors (512/513 elements) await their decode bridge.
+- <!-- fig:names -->240<!-- /fig --> names have object-API facades (`proofs/api/`: <!-- fig:facade_files -->720<!-- /fig --> files), each
+  with an encode, a decode and a hash_tree_root file. `proofs/gate/MISSING.txt`: <!-- fig:missing -->0<!-- /fig --> of
+  <!-- fig:core_pairs -->2160<!-- /fig --> core (name, law) pairs lack a proving law. Laws per name (from
+  `proofs/gate/api_map.json`; the first nine are the core laws, which every name has):
+<!-- fig:law_table -->
+| Law | Names |
+|---|---|
+| `root` | 240 |
+| `ok_eval` | 240 |
+| `decode_accept` | 240 |
+| `decode_spec` | 240 |
+| `decode_unique` | 240 |
+| `decode_reject` | 240 |
+| `decode_none` | 240 |
+| `encode_eval` | 240 |
+| `encode_spec` | 240 |
+| `roundtrip` | 73 |
+| `encoded_size` | 73 |
+| `reject_short` | 73 |
+| `reject_long` | 73 |
+| `decode_tree` | 118 |
+| `decode_input` | 126 |
+| `serialize_valid` | 74 |
+<!-- /fig -->
+- End-to-end bridges (`e2e/manifest.json`): <!-- fig:bridged_i -->240<!-- /fig --> names have the encode bridge (i),
+  <!-- fig:bridged_iv -->240<!-- /fig --> the root bridge (iv), <!-- fig:bridged_dec -->232<!-- /fig --> the decode bridges
+  (ii)/(iii); <!-- fig:bridged_full -->232<!-- /fig --> have all four. Without (ii)/(iii): <!-- fig:no_dec_bridge -->`vec_uint128_512`, `vec_uint128_513`, `vec_uint256_512`, `vec_uint256_513`, `vec_uint32_512`, `vec_uint32_513`, `vec_uint64_512`, `vec_uint64_513`<!-- /fig -->.
+  The manifest's open lists: <!-- fig:manifest_open -->`uncovered` empty, `decode_uncovered` empty, `root_awaiting` empty<!-- /fig -->.
+  The remaining premises and limits are in [PREMISES.md](PREMISES.md).
+
+All figures in this section are generated from the artifacts by `codegen/doc_figures.py`, which
+`codegen/regen_all.py --check` runs.
 
 ## Object-API laws (`proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend`)
 
