@@ -160,6 +160,9 @@ _HY = re.compile(r'\{Nat\.is_le\(((?:VC\.)?YL\((\w+)\)), VB\.pw\(k\)\) == True\{
 VC_LEAVES = {'ey31': 'ey31u', 'eq_q': 'eq_qu', 'eM': 'eMu', 'eWZ': 'eWZu', 'eNW': 'eNWu', 'nw_le_wz': 'nw_le_wzu', 'wz_le': 'wz_leu'}
 
 
+_DEFLAW = re.compile(r'(def|law) (\w+)')
+
+
 def _blocks(text):
     """[(name, kind, start, end)] of the top-level defs and laws (a law's block runs through its def)."""
     out = []
@@ -167,12 +170,12 @@ def _blocks(text):
     i = 0
     while i < len(starts) - 1:
         a = starts[i]
-        m = re.match(r'(def|law) (\w+)', text[a:])
+        m = _DEFLAW.match(text, a)
         kind, name = m.group(1), m.group(2)
         b = starts[i + 1]
         if kind == 'law':
             # its def follows (else a law whose def comes later: a block of its own, never twinned)
-            if text[b:].startswith(f'def {name}('):
+            if text.startswith(f'def {name}(', b):
                 b = starts[i + 2]
                 i += 1
             else:

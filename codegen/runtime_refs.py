@@ -485,6 +485,7 @@ def use_index(json_text):
     _IX = ([tuple(k) for k in d['files']], d['symbols'], d['monoliths'])
     _AL = _GEN = None
     unwire.cache_clear()
+    mono_text.cache_clear()
 
 
 _AL = None
@@ -555,6 +556,7 @@ def runtime_of(text):
 _GEN = None
 
 
+@functools.lru_cache(maxsize=None)
 def mono_text(runtime):
     """A monolith's text as the split files hold it (its imports, then its definitions in order, qualifiers
     removed), for generators that read the runtime's definitions."""

@@ -1762,7 +1762,7 @@ def pb_premise(text, pb):
             args.insert(11, f' hPc(len, {o}, {e}, {h1}, {h2}, hP{j})')
             out.append(text[i:m.start()] + f'CH{j}.invwD(' + ','.join(args) + ')')
             d0 = text.rindex('\ndef ', 0, m.start()) + 1
-            need.setdefault(re.match(r'def (\w+)\(', text[d0:]).group(1), set()).add(j)
+            need.setdefault(re.compile(r'def (\w+)\(').match(text, d0).group(1), set()).add(j)
             i = b + 1
         text = ''.join(out)
     # up the call graph to invw
@@ -1772,7 +1772,7 @@ def pb_premise(text, pb):
         for nm in list(need):
             for m in re.finditer(rf'(?<![\w.])(?<!def ){nm}\(', text):
                 d0 = text.rindex('\ndef ', 0, m.start()) + 1
-                caller = re.match(r'def (\w+)\(', text[d0:]).group(1)
+                caller = re.compile(r'def (\w+)\(').match(text, d0).group(1)
                 if not need.get(caller, set()) >= need[nm]:
                     need.setdefault(caller, set()).update(need[nm])
                     changed = True
