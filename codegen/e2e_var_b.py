@@ -2267,35 +2267,30 @@ def vz(+t: FD.array__Tree<U32>, +n: U32, z0: O.Words, +Y0: S.Value, +e0: {{CE.ev
 ''' + '\n'.join(rw) + f'''
   {{==}}
 
-# the words a Bytes48 list is copied into cover its blocks (m blocks' words, L = 4 m bytes <= 4 * 2^d)
-def lenW(+d: Nat, +t: FD.array__Tree<U32>, +L: U32, +q: Nat, +m: Nat, +hL: {{U32.to_nat(L) == A.quad(m) : Nat}}, +hm: {{Nat.is_le(m, VB.pw(d)) == True{{}} : Bool}},
-    +hd: {{Nat.is_lt(d, 23n) == True{{}} : Bool}}) -> {{Nat.is_le(Nat.add(m, 0n), VB.len(FD.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t)))) == True{{}} : Bool}}:
-  +hq = DC.hLq(d, L, m, hL, hm)
-  +hd28 = FD.nat__lt_trans(d, 23n, 28n, hd, {{==}})
-  +en = Equal.trans(Nat, VC.NW(L), C.nwn(U32.to_nat(L)), m, C.nw(L, d, FD.nat__lt_trans(d, 23n, 29n, hd, {{==}}), hq),
-    Equal.trans(Nat, C.nwn(U32.to_nat(L)), C.nwn(A.quad(m)), m, Equal.cong(Nat, Nat, z => C.nwn(z), U32.to_nat(L), A.quad(m), hL), C.rq(m)))
-  +hw = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, 0n), VB.pw(VL.DZ(L))) == True{{}} : Bool}}, VC.NW(L), m, en, VL.hrg(d, L, hd28, hq))
+# the words a Bytes48 list is copied into cover its blocks (m blocks' words, L = 4 m bytes, 31 + L <= UMAX)
+def lenW(+t: FD.array__Tree<U32>, +L: U32, +q: Nat, +m: Nat, +hL: {{U32.to_nat(L) == A.quad(m) : Nat}},
+    +hy: {{Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{{}} : Bool}}) -> {{Nat.is_le(Nat.add(m, 0n), VB.len(FD.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t)))) == True{{}} : Bool}}:
+  +hw = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, 0n), VB.pw(VL.DZ(L))) == True{{}} : Bool}}, VC.NW(L), m, VL.nwmA(L, m, hL), VC.hrgU(L, hy))
   FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(m, 0n), z) == True{{}} : Bool}}, VB.pw(VL.DZ(L)), VB.len(FD.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t))),
     Equal.sym(Nat, VB.len(FD.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t))), VB.pw(VL.DZ(L)),
       FD.array__slots_length(U32, VL.DZ(L), VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t), VB.mone_perfect(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t, FD.array__trep_perfect(U32, VL.DZ(L), 0)))), hw)
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, 23n) == True{{}} : Bool}},
-    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DA.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DA.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
   +k1 = FD.logic__and_right(DC.CA(n), DC.K1(t, n), hchk)
   +k2 = FD.logic__and_right(DC.CB(t), DC.K2(t, n), k1)
   +k3 = FD.logic__and_right(DC.CC(t, n), DC.K3(t, n), k2)
   +k4 = FD.logic__and_right(DC.CD(t, n), DC.K4(t, n), k3)
   +k5 = FD.logic__and_right(DC.CE(t), DC.K5(t, n), k4)
+  +hb = FD.logic__and_left(DC.CB(t), DC.K2(t, n), k1)
+  +hc = FD.logic__and_left(DC.CC(t, n), DC.K3(t, n), k2)
+  +hdd = FD.logic__and_left(DC.CD(t, n), DC.K4(t, n), k3)
+  +he = FD.logic__and_left(DC.CE(t), DC.K5(t, n), k4)
   +hf = FD.logic__and_left(DC.CF(t), DC.CG(t, n), k5)
   +hg = FD.logic__and_right(DC.CF(t), DC.CG(t, n), k5)
-  +hN = DC.hQN(d, t, n, pf, hd, hn, FD.logic__and_left(DC.CB(t), DC.K2(t, n), k1), FD.logic__and_left(DC.CC(t, n), DC.K3(t, n), k2), FD.logic__and_left(DC.CD(t, n), DC.K4(t, n), k3),
-    FD.logic__and_left(DC.CE(t), DC.K5(t, n), k4), hf, hg)
-  +hQ2 = FD.nat__le_trans(DC.Q2(t), DC.QN(t, n), VB.pw(d), Order.below_sum(DC.Q2(t), DC.M2(t, n)), hN)
-  +h1 = FD.nat__le_trans(DC.M1(t), DC.Q2(t), VB.pw(d), Order.left_below_sum(DC.Q1(t), DC.M1(t)), hQ2)
-  +h2 = FD.nat__le_trans(DC.M2(t, n), DC.QN(t, n), VB.pw(d), Order.left_below_sum(DC.Q2(t), DC.M2(t, n)), hN)
   vz(t, n, {holes[0][0]}, {q(holes[0][3])}, CH.celv({holes[0][1]}, {holes[0][2]}),
-    {holes[1][0]}, {q(holes[1][3])}, CH.e48v({holes[1][1]}, {holes[1][2]}, lenW(d, t, {holes[1][2]}, DC.Q1(t), DC.M1(t), DC.eL1(t, hf), h1, hd)),
-    {holes[2][0]}, {q(holes[2][3])}, CH.e48v({holes[2][1]}, {holes[2][2]}, lenW(d, t, {holes[2][2]}, DC.Q2(t), DC.M2(t, n), DC.eL2(t, n, hg), h2, hd)))
+    {holes[1][0]}, {q(holes[1][3])}, CH.e48v({holes[1][1]}, {holes[1][2]}, lenW(t, {holes[1][2]}, DC.Q1(t), DC.M1(t), DC.eL1(t, hf), DC.hy1(t, n, hb, hc, hdd, he, hf, hg, hN))),
+    {holes[2][0]}, {q(holes[2][3])}, CH.e48v({holes[2][1]}, {holes[2][2]}, lenW(t, {holes[2][2]}, DC.Q2(t), DC.M2(t, n), DC.eL2(t, n, hg), DC.hy2(t, n, hb, hc, hdd, he, hf, hg, hN))))
 
 '''
     imps = ['import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/cells.bend as CE',
