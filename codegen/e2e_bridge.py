@@ -3006,6 +3006,15 @@ def outputs():
         EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
         VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
         VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
+    # progressive containers with a progressive bit list field: hv (e2e_gph, e2e_pbsh)
+    if 'Gc60805EC295' in VDEC_VIEWS and 'PBD.vw_Gc60805EC295D(' in VDEC_VIEWS['Gc60805EC295']['text']:
+        VDEC_VIEWS['Gc60805EC295'] = BVG.pbs_hv_view(VDEC_VIEWS['Gc60805EC295'])
+    for X0 in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
+        if X0 in VDEC_VIEWS and 'VWX.vb(' in VDEC_VIEWS[X0]['text']:
+            VDEC_VIEWS[X0] = BVG.vhb_view(VDEC_VIEWS[X0], X0)
+    for X0, _pj in BVG.GPH_NAMES:
+        if X0 in VDEC_VIEWS and (OBJ / f'big_var_winx_{X0}.bend').exists():
+            VDEC_VIEWS[X0] = BVG.gph_view(VDEC_VIEWS[X0], X0, OBJ)
     # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
     import e2e_state_gen as ESG
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
@@ -3241,6 +3250,10 @@ def outputs():
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
     out[OUT / 'e2e_hv.bend'] = BVG.hv_text()
+    out[OUT / 'e2e_hvk.bend'] = BVG.hvk_text()
+    out[OUT / 'e2e_hvg.bend'] = BVG.hvg_text()
+    out[OUT / 'e2e_hvo.bend'] = BVG.hvo_text()
+    out[OUT / 'e2e_pbh.bend'] = BVG.pbh_text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
@@ -3262,6 +3275,14 @@ def outputs():
         out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state_deep()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
+        out[OUT / 'e2e_bswh.bend'] = BVG.bswh_text(OBJ)
+        out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
+        out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
+        out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)
+        out[OUT / 'e2e_wxah.bend'] = BVG.wxah_text(OBJ)
+        out[OUT / 'e2e_vhl8.bend'] = BVG.vhl8_text()
+        for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
+            out[OUT / f'e2e_vhb_{_X}.bend'] = BVG.vhb_text(_X)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
     if (OBJ / 'big_var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
@@ -3328,6 +3349,18 @@ def outputs():
     # whether the objects the decoder builds satisfy the (i) laws' bit-list premises (hv / SDB): stated, not yet derived
     hv_names = sorted(R0 for R0, rows_ in ((f[:-len('_e2e_generated.bend')], r) for f, r in man['files'].items() if f.endswith('_e2e_generated.bend'))
                       if any(re.search(r'sdbv|SDP?B\b|sd8\b|zero bits above|bits above K|BeaconBlockBody\'s \(i\)', e.get('premise', '')) for e in rows_))
+    # a progressive container whose premise (EQ.PREM_X) has no bit list field has no hv to derive
+    def _no_bitlist(R0):
+        g = out.get(OUT / f'{R0}_e2e_generated.bend', '')
+        mm = re.search(r'EQ\.PREM_(\w+)\(', g)
+        if not mm:
+            return False
+        for k, v in out.items():
+            r_ = re.search(r'^def PREM_' + mm.group(1) + r'\(.*$', v, re.M) if str(k).endswith('.bend') else None
+            if r_:
+                return 'SDPB' not in r_.group(0) and 'SDB(' not in r_.group(0)
+        return False
+    hv_names = [R0 for R0 in hv_names if not _no_bitlist(R0)]
     man['decoded_premises'] = {'hv_SDB': {
         'names': hv_names,
         'premise': ('the bit list field\'s storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): '
@@ -3335,6 +3368,10 @@ def outputs():
         'lemmas': ('e2e/e2e_hv.bend: the decoder copies the words into a tree M, keeps bytes 0 .. p of the last word (mask_last) and clears the '
                    'delimiter bit K = 8 (n - 1) + high_bit(last byte) (clear_bit); the result is a tree update of M with no bit at or above K set '
                    '(hvw0 .. hvw3 on the last word, hcore0 .. hcore3 and hvobj on the tree)'),
+        'notes': ('the bounded bit lists (BitsStruct, ProgressiveBitsStruct) get the whole storage premise SDB (e2e_hvk.SDBW: the runtime word read RD.wd is the tree slot); '
+                  'the progressive bit lists (SDPB: ProgressiveBitsStruct, ProgressiveSingleListContainerTestStruct, ProgressiveVarTestStruct, ProgressiveComplexTestStruct) get their hv part '
+                  '(e2e_hvk.SDXE, e2e_pbh.pbv_hv): the premise\'s size bounds K + 32 <= 2^30 stay premises, a decoded list can exceed them; '
+                  'ProgressiveBitsStruct\'s 1281-bit vector premise SDW81 (HB81) is a separate fixed-size fact, not derived here'),
         'decoded_objects': {R0: (f'proved: {R0}_e2e_dec_generated.bend decoded_hv (every accepted input\'s object satisfies the premise)'
                                  if (OUT / f'{R0}_e2e_dec_generated.bend') in out and 'def decoded_hv(' in out[OUT / f'{R0}_e2e_dec_generated.bend'] else 'not derived yet')
                             for R0 in hv_names}}}

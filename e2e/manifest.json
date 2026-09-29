@@ -2798,7 +2798,7 @@
      "FuluBeaconBlock_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluBeaconBlockBody_e2e_dec_generated.bend": [
@@ -2810,7 +2810,7 @@
      "FuluBeaconBlockBody_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluBeaconState_e2e_dec_generated.bend": [
@@ -2858,7 +2858,7 @@
      "FuluExecutionPayload_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluExecutionPayloadHeader_e2e_dec_generated.bend": [
@@ -2990,7 +2990,7 @@
      "FuluSignedBeaconBlock_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluTransaction_e2e_dec_generated.bend": [
@@ -3002,7 +3002,7 @@
      "FuluTransaction_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "ProgressiveBitsStruct_e2e_dec_generated.bend": [
@@ -7366,8 +7366,8 @@
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071180,
    "covered": false,
    "bridged": null
@@ -7375,8 +7375,8 @@
   "FuluBeaconBlock": {
    "generated_name": "BeaconBlock",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071264,
    "covered": false,
    "bridged": null
@@ -7419,9 +7419,9 @@
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899911038192,
    "covered": false,
    "bridged": null
@@ -7510,19 +7510,19 @@
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071364,
    "covered": false,
    "bridged": null
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1073741824,
-   "covered": false,
+   "covered": true,
    "bridged": null
   },
   "ProgressiveBitsStruct": {
@@ -7829,13 +7829,13 @@
   },
   {
    "name": "FuluBeaconBlockBody",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071180 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071264 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
@@ -7847,21 +7847,15 @@
   },
   {
    "name": "FuluExecutionPayload",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899911038192 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluSignedBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071364 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
-  },
-  {
-   "name": "FuluTransaction",
-   "input_bound": "2^29",
-   "max_ssz_size": "1073741824 bytes",
-   "closed_at_depth_29": true
   },
   {
    "name": "ProgressiveBitsStruct",
@@ -8150,25 +8144,24 @@
     "ProgressiveBitsStruct",
     "ProgressiveComplexTestStruct",
     "ProgressiveSingleListContainerTestStruct",
-    "ProgressiveTestStruct",
     "ProgressiveVarTestStruct"
    ],
    "premise": "the bit list field's storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): its words' tree at depth below 31, room for word K >> 5, and hv, the bits of the last word at or above the length K clear",
    "lemmas": "e2e/e2e_hv.bend: the decoder copies the words into a tree M, keeps bytes 0 .. p of the last word (mask_last) and clears the delimiter bit K = 8 (n - 1) + high_bit(last byte) (clear_bit); the result is a tree update of M with no bit at or above K set (hvw0 .. hvw3 on the last word, hcore0 .. hcore3 and hvobj on the tree)",
+   "notes": "the bounded bit lists (BitsStruct, ProgressiveBitsStruct) get the whole storage premise SDB (e2e_hvk.SDBW: the runtime word read RD.wd is the tree slot); the progressive bit lists (SDPB: ProgressiveBitsStruct, ProgressiveSingleListContainerTestStruct, ProgressiveVarTestStruct, ProgressiveComplexTestStruct) get their hv part (e2e_hvk.SDXE, e2e_pbh.pbv_hv): the premise's size bounds K + 32 <= 2^30 stay premises, a decoded list can exceed them; ProgressiveBitsStruct's 1281-bit vector premise SDW81 (HB81) is a separate fixed-size fact, not derived here",
    "decoded_objects": {
-    "BitsStruct": "not derived yet",
+    "BitsStruct": "proved: BitsStruct_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
     "FuluAggregateAndProof": "proved: FuluAggregateAndProof_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
     "FuluAttestation": "proved: FuluAttestation_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
-    "FuluBeaconBlock": "not derived yet",
-    "FuluBeaconBlockBody": "not derived yet",
+    "FuluBeaconBlock": "proved: FuluBeaconBlock_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "FuluBeaconBlockBody": "proved: FuluBeaconBlockBody_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
     "FuluPendingAttestation": "proved: FuluPendingAttestation_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
     "FuluSignedAggregateAndProof": "proved: FuluSignedAggregateAndProof_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
-    "FuluSignedBeaconBlock": "not derived yet",
-    "ProgressiveBitsStruct": "not derived yet",
-    "ProgressiveComplexTestStruct": "not derived yet",
-    "ProgressiveSingleListContainerTestStruct": "not derived yet",
-    "ProgressiveTestStruct": "not derived yet",
-    "ProgressiveVarTestStruct": "not derived yet"
+    "FuluSignedBeaconBlock": "proved: FuluSignedBeaconBlock_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "ProgressiveBitsStruct": "proved: ProgressiveBitsStruct_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "ProgressiveComplexTestStruct": "proved: ProgressiveComplexTestStruct_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "ProgressiveSingleListContainerTestStruct": "proved: ProgressiveSingleListContainerTestStruct_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "ProgressiveVarTestStruct": "proved: ProgressiveVarTestStruct_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)"
    }
   }
  }

@@ -82,3 +82,32 @@ def vk(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U3
         Equal.sym(S.Value, VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)), AV.ch12(VS.wtake(K.MQ(len), UR.RWS(K.MQ(len), t, x))), v3))))
   Equal.trans(S.Value, E48.eview(K.OBJw(d, t, x, off, len)), S.Sequence{VM.bvit(K.CC(len), 12n, FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))))}, K.VALw(t, x, len), v1,
     Equal.cong(S.Value, S.Value, z => S.Sequence{z}, VM.bvit(K.CC(len), 12n, FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))), VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)), v4))
+
+# the same at any tree depth d < 31, the window within NMAX
+def vkY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hchk: {K.CHKw(t, x, off, len) == True{} : Bool}) -> {E48.eview(K.OBJw(d, t, x, off, len)) == K.VALw(t, x, len) : S.Value}:
+  +eq = K.eqw(len, hchk)
+  +hlN = FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()), Order.left_below_sum(x, U32.to_nat(len)), hwN)
+  +hNu = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())), U32.is_le(len, VB.NMAX()), Equal.sym(Bool, U32.is_le(len, VB.NMAX()), Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())), VB.le_u32n(len, VB.NMAX())), hlN)
+  +hy = VC.hyW(x, len, hwN)
+  +hr = VC.hrgU(len, hy)
+  +en = Equal.trans(Nat, VC.NW(len), C.nwn(U32.to_nat(len)), K.MQ(len), C.nwM(len, hNu),
+    Equal.trans(Nat, C.nwn(U32.to_nat(len)), C.nwn(A.quad(K.MQ(len))), K.MQ(len), Equal.cong(Nat, Nat, z => C.nwn(z), U32.to_nat(len), A.quad(K.MQ(len)), eq), C.rq(K.MQ(len))))
+  +hrM = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 0n), VB.pw(VLS.DZ(len))) == True{} : Bool}, VC.NW(len), K.MQ(len), en, hr)
+  +hM = FD.logic__subst(Nat, z => {Nat.is_le(K.MQ(len), z) == True{} : Bool}, VB.pw(VLS.DZ(len)), VB.len(FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))),
+    Equal.sym(Nat, VB.len(FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))), VB.pw(VLS.DZ(len)),
+      FD.array__slots_length(U32, VLS.DZ(len), UCT.CT(d, t, off, len, VLS.DZ(len)), BVW.ctps(VR.RX(off), d, t, off, len, VLS.DZ(len)))),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(VLS.DZ(len))) == True{} : Bool}, Nat.add(K.MQ(len), 0n), K.MQ(len), FD.nat__add_zero(K.MQ(len)), hrM))
+  +ew = BX.ctwY(d, t, off, len, VLS.DZ(len), x, K.MQ(len), eo, hy, hw, pf, hr, eq)
+  +v1 = CH.e48v(UCT.CT(d, t, off, len, VLS.DZ(len)), len, FD.logic__subst(Nat, z => {Nat.is_le(z, VB.len(FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))))) == True{} : Bool}, K.MQ(len), Nat.add(K.MQ(len), 0n), Equal.sym(Nat, Nat.add(K.MQ(len), 0n), K.MQ(len), FD.nat__add_zero(K.MQ(len))), hM))
+  +v2 = EW48.bch(K.CC(len), FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))), hM)
+  +v3 = EW48.bch(K.CC(len), UR.RWS(K.MQ(len), t, x), FD.logic__subst(Nat, z => {Nat.is_le(K.MQ(len), z) == True{} : Bool}, K.MQ(len), VB.len(UR.RWS(K.MQ(len), t, x)), Equal.sym(Nat, VB.len(UR.RWS(K.MQ(len), t, x)), K.MQ(len), UR.rws_len(K.MQ(len), t, x)), FD.nat__le_refl(K.MQ(len))))
+  +v4 = Equal.trans(S.Value, VM.bvit(K.CC(len), 12n, FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))), AV.ch12(VS.wtake(K.MQ(len), FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))))), VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)), v2,
+    Equal.trans(S.Value, AV.ch12(VS.wtake(K.MQ(len), FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))))), AV.ch12(UR.RWS(K.MQ(len), t, x)), VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)),
+      Equal.cong(List<&2, U32>, S.Value, z => AV.ch12(z), VS.wtake(K.MQ(len), FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))), UR.RWS(K.MQ(len), t, x), ew),
+      Equal.trans(S.Value, AV.ch12(UR.RWS(K.MQ(len), t, x)), AV.ch12(VS.wtake(K.MQ(len), UR.RWS(K.MQ(len), t, x))), VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)),
+        Equal.cong(List<&2, U32>, S.Value, z => AV.ch12(z), UR.RWS(K.MQ(len), t, x), VS.wtake(K.MQ(len), UR.RWS(K.MQ(len), t, x)), Equal.sym(List<&2, U32>, VS.wtake(K.MQ(len), UR.RWS(K.MQ(len), t, x)), UR.RWS(K.MQ(len), t, x), UR.wtake_rws(K.MQ(len), t, x))),
+        Equal.sym(S.Value, VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)), AV.ch12(VS.wtake(K.MQ(len), UR.RWS(K.MQ(len), t, x))), v3))))
+  Equal.trans(S.Value, E48.eview(K.OBJw(d, t, x, off, len)), S.Sequence{VM.bvit(K.CC(len), 12n, FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len))))}, K.VALw(t, x, len), v1,
+    Equal.cong(S.Value, S.Value, z => S.Sequence{z}, VM.bvit(K.CC(len), 12n, FD.array__slots(U32, UCT.CT(d, t, off, len, VLS.DZ(len)))), VM.bvit(K.CC(len), 12n, UR.RWS(K.MQ(len), t, x)), v4))
