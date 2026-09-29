@@ -109,7 +109,8 @@ def list_btwins(t):
 # child stops at dw < 28): OK, the size / spec / validity laws and the writers' putxW / putx_bytesW of the D module.
 
 LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface',
-                'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface'}
+                'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface', 'big_encx_Gc221EC01D83', 'big_encx_Gc221EC01D83_iface',
+                'big_encx_Gp8A7851175B', 'big_encx_Gp8A7851175B_iface'}
 LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
 
 
