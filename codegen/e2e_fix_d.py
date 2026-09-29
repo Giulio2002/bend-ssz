@@ -4736,7 +4736,7 @@ MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Depo
           'GtAD3CF815B7', 'GtAD72FD256A', 'GtAE3EF932C2', 'GtAEB382AD1F', 'GtB1E9093D65', 'GtB85E1BC748', 'GtC0FC7B166A', 'GtC19E8053EB',
           'GtC57121EA56', 'GtE6006F6F55', 'GtEB2FD43D9B', 'GtECF9BB18D8', 'GtED805B7C93', 'GtEDF530C7B9', 'GtEDFB713194', 'GtF3865AEE9A',
           'GtFCF8066C33', 'GtFF7C03E8A0', 'HistoricalBatch', 'MatrixEntry', 'ParticipationFlags', 'ProposerSlashing',
-          'SignedContributionAndProof', 'SyncCommittee']
+          'SignedContributionAndProof', 'SyncCommittee', 'Validator']
 RBATCH = 8
 RBATCH_HEAVY = {"root_gtypes.bend": 3}
 
@@ -4756,7 +4756,7 @@ def build(EB, amap, cache, vidx):
     # (iv) for the rest
     rrows = []
     for X in amap['fulu'] + amap['generic']:
-        if X not in todo:
+        if X not in todo or X == 'Validator':  # Validator's (i)/(iv) are e2e_bridge's family A; only its decode is here
             continue
         ri = [r for r in root_info(EB, X, amap['map'][X], cache)
               if not any(n == 'o' and md == '-' and t != 'O.Words' for md, n, t in r['ps']) or X in BOXC]
@@ -4782,7 +4782,7 @@ def build(EB, amap, cache, vidx):
             prem = [f'{md}{n}: {t}' for md, n, t in ri['ps'][1:] if n not in ('o', 's', 'es')]
             cover.setdefault(X, {})['iv'] = fn
             cover[X].setdefault('premise', '; '.join(prem))
-    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['GtAD72FD256A'] + BVS + BOXC + ['Cell']:
+    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['GtAD72FD256A', 'Validator'] + BVS + BOXC + ['Cell']:
         if X not in todo:
             continue
         m0 = amap['map'][X]
