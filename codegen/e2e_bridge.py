@@ -3009,6 +3009,9 @@ def outputs():
     # progressive containers with a progressive bit list field: hv (e2e_gph, e2e_pbsh)
     if 'Gc60805EC295' in VDEC_VIEWS and 'PBD.vw_Gc60805EC295D(' in VDEC_VIEWS['Gc60805EC295']['text']:
         VDEC_VIEWS['Gc60805EC295'] = BVG.pbs_hv_view(VDEC_VIEWS['Gc60805EC295'])
+    for X0 in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
+        if X0 in VDEC_VIEWS and 'VWX.vb(' in VDEC_VIEWS[X0]['text']:
+            VDEC_VIEWS[X0] = BVG.vhb_view(VDEC_VIEWS[X0], X0)
     for X0, _pj in BVG.GPH_NAMES:
         if X0 in VDEC_VIEWS and (OBJ / f'big_var_winx_{X0}.bend').exists():
             VDEC_VIEWS[X0] = BVG.gph_view(VDEC_VIEWS[X0], X0, OBJ)
@@ -3276,6 +3279,10 @@ def outputs():
         out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
         out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
         out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)
+        out[OUT / 'e2e_wxah.bend'] = BVG.wxah_text(OBJ)
+        out[OUT / 'e2e_vhl8.bend'] = BVG.vhl8_text()
+        for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
+            out[OUT / f'e2e_vhb_{_X}.bend'] = BVG.vhb_text(_X)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
     if (OBJ / 'big_var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
