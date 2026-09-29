@@ -6462,21 +6462,19 @@ def bx_deep(text):
     HL = ('  +hL = FD.nat__le_trans(U32.to_nat(L), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(L)), hw)\n')
     CB = 'UCT.ct_bytes(d, t, off, L, dz, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, L, hL), pf, UW.hsx(d, off, x, L, eo, hd, hw), hr, hB)'
     CBU = 'UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)'
-    names = ['cwl', 'ctw', 'bvg', 'fbv']   # fbv: the copied fixed byte vector (codec-top's BeaconState at any depth)
+    names = ['cwl', 'ctw', 'bvg', 'fbv', 'pvx']   # fbv: the copied fixed byte vector (codec-top's BeaconState at any depth)
     blocks = []
     for nm in names:
         a = text.index(f'\ndef {nm}(') + 1
-        e = text.index('\n\n', a)
-        blocks.append(text[a:e])
+        e = text.find('\n\n', a)
+        blocks.append(text[a:e] if e >= 0 else text[a:].rstrip('\n'))
     tw = '\n\n'.join(blocks)
-    tw = re.sub(r'(?<![\w.])(cwl|ctw|bvg|fbv)\(', lambda m: m.group(1) + 'Y(', tw)
-    assert tw.count(HD) == 4 and tw.count(CB) == 2
+    tw = re.sub(r'(?<![\w.])(cwl|ctw|bvg|fbv|pvx)\(', lambda m: m.group(1) + 'Y(', tw)
+    assert tw.count(HD) == 5 and tw.count(CB) == 2
     tw = tw.replace(HD, HY).replace(CB, CBU).replace(HL, '').replace(', eo, hd, hw, pf, hr, eL)', ', eo, hy, hw, pf, hr, eL)')
     assert '28n' not in tw and not re.search(r'[(, ]hd[,)]', tw), [l for l in tw.split('\n') if 'hd' in l][:2]
     assert 'hd' not in re.sub(r'\bhdz?\w+', '', tw.replace('+hd', '')) or True
-    a = text.index('\ndef fbv(') + 1
-    e = text.index('\n\n', a)
-    return text[:e] + '\n\n# ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----\n' + tw + text[e:]
+    return text.rstrip('\n') + '\n\n# ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----\n' + tw + '\n'
 
 
 SUPPORT_OUT['e2e_bx.bend'] = bx_deep(bx_text())
@@ -6520,7 +6518,25 @@ SUPPORT_OUT['e2e_vbx_LightClientFinalityUpdate.bend'] = vbx_module('LightClientF
     ['import ../proofs/obj/var_bytesx_LightClientHeader.bend as YW', 'import ./e2e_vbx_LightClientHeader.bend as YV',
      'import ../proofs/obj/spec_bits.bend as FB', 'import ../proofs/obj/root_names.bend as RN', 'import ./e2e_bvh.bend as BV'])
 VDEC_VIEWS['LightClientFinalityUpdate'] = vdec_bx('LightClientFinalityUpdate', 'e2e_vbx_LightClientFinalityUpdate')
-SUPPORT_OUT['e2e_fx.bend'] = fx_text()
+def fx_deep(text):
+    """pkcY / fxscY / fxpv48Y / fxpv56Y next to pkc / fxsc / fxpv48 / fxpv56: the copies at any tree depth (BX.ctwY / pvxY, their
+    storage bound hy a closed literal fact), no hd."""
+    names = ['pkc', 'fxsc', 'fxpv48', 'fxpv56']
+    HD = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool},'
+    blocks = []
+    for nm in names:
+        a = text.index(f'\ndef {nm}(') + 1
+        e = text.index('\ndef ', a + 5)
+        blocks.append(text[a:e].rstrip('\n'))
+    tw = '\n\n'.join(blocks)
+    tw = _re.sub(r'(?<![\w.])(pkc|fxsc|fxpv48|fxpv56)\(', lambda m: m.group(1) + 'Y(', tw)
+    tw = _re.sub(r'(BX\.(?:ctw|pvx))\(([^()]*?), eo, hd, hw,', lambda m: m.group(1) + 'Y(' + m.group(2) + ', eo, {==}, hw,', tw)
+    tw = tw.replace(HD, '').replace('eo, hd, hw, pf)', 'eo, hw, pf)')
+    assert not _re.search(r'(?<![\w.])hd(?![\w])', tw), [l for l in tw.split('\n') if ' hd' in l][:3]
+    return text.rstrip('\n') + '\n\n# ---- the same at any tree depth d < 31 (the copies bounded by their length, ctwY / pvxY) ----\n' + tw + '\n'
+
+
+SUPPORT_OUT['e2e_fx.bend'] = fx_deep(fx_text())
 _UEW = lambda o, e, h1, h2: f'W.eoW(d, t, len, x, off, len, eo, hd, hw, pf, {o}, {e}, {h1}, {h2})'
 _UHW = lambda o, e, h1, h2: f'W.hwj(d, t, len, x, off, len, eo, hd, hw, pf, {o}, {e}, {h1}, {h2})'
 _UFX = lambda c, s_: (f'W.eocX(d, t, len, x, off, len, eo, hd, hw, pf, hF, {c}, U32.to_nat({c}), {{==}}, {{==}}), hd, '
@@ -7438,3 +7454,63 @@ for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
     VDEC_VIEWS[_X] = vdec_bx_deep(_X)
 if VDEC_VIEWS['ExecutionPayload'].get('text') is None:
     VDEC_VIEWS['ExecutionPayload'] = vdec_bx_deep('ExecutionPayload', 'e2e_vbx_ExecutionPayload', 'vbD')
+
+
+# ==== the light client views at any tree depth d < 31, the window within NMAX (e2e_vbxD_<X>: vb over d < 31 / hwN) ====
+def lc_vbx_deep():
+    HW32 = '+hw32 = VB.le_n_lt32(Nat.add(x, U32.to_nat(len)), VB.NMAX(), hwN)'
+    _EPHX_ = _unlight((_OBJ / 'var_bytesx_ExecutionPayloadHeader.bend').read_text())
+    eph = vbx_module('ExecutionPayloadHeader', 'var_bytesx_ExecutionPayloadHeader', [
+        {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 256, 7n)), 256}', 'ty': 'O.Words', 'view': 'WO.wview', 'vty': '+List<U32>',
+         'xvt': _re.search(r'F\.limbs\(\[UR\.RWN\(t, 116n\+x\).*?\]\)', _EPHX_).group(0),
+         'pf': 'BX.fbvY(d, t, U32.add(off, 116), 256, 7n, Nat.add(U32.to_nat(116), x), 64n, W.eocD(d, x, off, len, 116, {==}, eo, hd, hw, hw32, ha), {==}, W.roomc(d, x, len, 116n, 256n, {==}, hw, ha), pf, {==}, {==})'},
+        {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 584), LL(len), DZ(len))), LL(len)}', 'ty': 'O.Words', 'view': 'WO.wview', 'vty': '+List<U32>', 'arg': 0,
+         'pf': 'BX.bvgY(d, t, U32.add(off, 584), W.LL(len), W.DZ(len), Nat.add(U32.to_nat(584), x), W.eocD(d, x, off, len, 584, {==}, eo, hd, hw, hw32, ha), VC.hyW(Nat.add(U32.to_nat(584), x), W.LL(len), TXH.hwab32(x, len, 584, len, W.leFS(len, ha), FD.nat__le_refl(U32.to_nat(len)), hwN)), W.hwv(d, x, len, hw, ha), pf, W.hr(len, hx))'}],
+        ['+ha = W.chk_a(U32.is_le(584, len), U32.is_eq(W.SPOw(t, x), 584), W.BLW(U32.sub(len, W.SPOw(t, x))), hchk)',
+         '+hb = W.chk_b(U32.is_le(584, len), U32.is_eq(W.SPOw(t, x), 584), W.BLW(U32.sub(len, W.SPOw(t, x))), hchk)',
+         '+hc = W.chk_c(U32.is_le(584, len), U32.is_eq(W.SPOw(t, x), 584), W.BLW(U32.sub(len, W.SPOw(t, x))), hchk)',
+         '+hx = FD.logic__subst(U32, z => {W.BLW(U32.sub(len, z)) == True{} : Bool}, W.SPOw(t, x), 584, FD.u32alg__eq_of(W.SPOw(t, x), 584, hb), hc)', HW32],
+        ['import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH'], deep=True)
+    _LCHX_ = _unlight((_OBJ / 'var_bytesx_LightClientHeader.bend').read_text())
+    lch = vbx_module('LightClientHeader', 'var_bytesx_LightClientHeader', [
+        {'obj': 'YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len))', 'ty': 'FuluExecutionPayloadHeader_d.ExecutionPayloadHeader', 'view': 'RT.v_ExecutionPayloadHeader',
+         'vty': 'S.Value', 'arg': 0,
+         'pf': 'YV.vb(d, t, 244n+x, U32.add(off, 244), W.LL(len), W.ecYD(d, x, off, len, eo, hd, hw, hw32, ha), hd, W.hwY(d, x, len, hw, ha), TXH.hwab32(x, len, 244, len, W.leFS(len, ha), FD.nat__le_refl(U32.to_nat(len)), hwN), pf, hc)'},
+        {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 128, 6n)), 128}', 'ty': 'O.Words', 'view': 'PV.pview', 'vty': 'S.Value',
+         'xvt': _brace_from(_LCHX_, _LCHX_.index('S.Sequence{S.Items{S.BytesValue{F.limbs([UR.RWN(t, 116n+x)')),
+         'pf': 'BX.pvxY(d, t, U32.add(off, 116), 128, 6n, Nat.add(U32.to_nat(116), x), 32n, W.eocD(d, x, off, len, 116, {==}, eo, hd, hw, hw32, ha), {==}, W.roomc(d, x, len, 116n, 128n, {==}, hw, ha), pf, {==}, {==})'}],
+        ['+ha = W.chk_a(U32.is_le(244, len), U32.is_eq(W.SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), W.LL(len)), hchk)',
+         '+hc = W.chk_c(U32.is_le(244, len), U32.is_eq(W.SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), W.LL(len)), hchk)', HW32],
+        ['import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as YW', 'import ./e2e_vbxD_ExecutionPayloadHeader.bend as YV',
+         'import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH'], deep=True)
+    UEW = lambda o, e, h1, h2: f'W.eoWD(d, t, len, x, off, len, eo, hd, hw, hw32, pf, {o}, {e}, {h1}, {h2})'
+    UHW = lambda o, e, h1, h2: f'W.hwjD(d, t, len, x, off, len, eo, hd, hw, hw32, pf, {o}, {e}, {h1}, {h2})'
+    UFX = lambda c, s_: (f'W.eocXD(d, t, len, x, off, len, eo, hd, hw, hw32, pf, hF, {c}, U32.to_nat({c}), {{==}}, {{==}}), '
+                         f'W.roomFXD(d, t, len, x, off, len, eo, hd, hw, hw32, pf, hF, U32.to_nat({c}), U32.to_nat({s_}), {{==}}), pf')
+    lcu = vbx_module('LightClientUpdate', 'var_winx_LightClientUpdate', [
+        {'obj': 'CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))', 'ty': 'FuluLightClientHeader_d.LightClientHeader', 'view': 'RT.v_LightClientHeader', 'vty': 'S.Value',
+         'xvt': 'CH0.VALw(t, XJ0(t, x), LJ0(t, x))',
+         'pf': f'YV.vb(d, t, W.XJ0(t, x), W.FJ0(off, t, x), W.LJ0(t, x), {UEW("W.O0(t, x)", "W.O1(t, x)", "r1", "r2")}, hd, {UHW("W.O0(t, x)", "W.O1(t, x)", "r1", "r2")}, TXH.hwab32(x, len, W.O0(t, x), W.O1(t, x), r1, r2, hwN), pf, h3)'},
+        {'obj': 'FX_SyncCommittee.OBJ(d, t, Nat.add(x, U32.to_nat(4)))', 'ty': 'FuluSyncCommittee_d.SyncCommittee', 'view': 'RT.v_SyncCommittee', 'vty': 'S.Value',
+         'xvt': 'FX_SyncCommittee.VAL(t, Nat.add(x, U32.to_nat(4)))', 'pf': f'FXV.fxscY(d, t, U32.add(off, 4), Nat.add(x, U32.to_nat(4)), {UFX(4, 24576)})'},
+        {'obj': 'FX_v6_b32.OBJ(d, t, Nat.add(x, U32.to_nat(24628)))', 'ty': 'O.Words', 'view': 'PV.pview', 'vty': 'S.Value',
+         'xvt': 'FX_v6_b32.VAL(t, Nat.add(x, U32.to_nat(24628)))', 'pf': f'FXV.fxpv48Y(d, t, U32.add(off, 24628), Nat.add(x, U32.to_nat(24628)), {UFX(24628, 192)})'},
+        {'obj': 'CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))', 'ty': 'FuluLightClientHeader_d.LightClientHeader', 'view': 'RT.v_LightClientHeader', 'vty': 'S.Value',
+         'xvt': 'CH1.VALw(t, XJ1(t, x), LJ1(t, x, len))',
+         'pf': f'YV.vb(d, t, W.XJ1(t, x), W.FJ1(off, t, x), W.LJ1(t, x, len), {UEW("W.O1(t, x)", "len", "r2", "FD.nat__le_refl(U32.to_nat(len))")}, hd, {UHW("W.O1(t, x)", "len", "r2", "FD.nat__le_refl(U32.to_nat(len))")}, TXH.hwab32(x, len, W.O1(t, x), len, r2, FD.nat__le_refl(U32.to_nat(len)), hwN), pf, h4)'},
+        {'obj': 'FX_v7_b32.OBJ(d, t, Nat.add(x, U32.to_nat(24824)))', 'ty': 'O.Words', 'view': 'PV.pview', 'vty': 'S.Value',
+         'xvt': 'FX_v7_b32.VAL(t, Nat.add(x, U32.to_nat(24824)))', 'pf': f'FXV.fxpv56Y(d, t, U32.add(off, 24824), Nat.add(x, U32.to_nat(24824)), {UFX(24824, 224)})'},
+        {'obj': 'FX_SyncAggregate_bx.OBJ(d, t, Nat.add(x, U32.to_nat(25048)))', 'ty': 'FuluSyncAggregate_d.SyncAggregate', 'view': 'RN.v_SyncAggregate', 'vty': 'S.Value',
+         'xvt': 'FX_SyncAggregate_bx.VAL(t, Nat.add(x, U32.to_nat(25048)))', 'pf': 'FXV.fxsa(d, t, Nat.add(x, U32.to_nat(25048)))'}],
+        ['+hF = W.hFc(t, x, off, len, hchk)', '+r1 = W.r10(t, x, off, len, hchk)', '+r2 = W.r20(t, x, off, len, hchk)',
+         '+h3 = W.it3(t, x, off, len, hchk)', '+h4 = W.it4(t, x, off, len, hchk)', HW32],
+        ['import ./e2e_vbxD_LightClientHeader.bend as YV', 'import ./e2e_fx.bend as FXV', 'import ../proofs/obj/root_names.bend as RN',
+         'import ../proofs/obj/big_vvl_l1048576_bl1073741824.bend as TXH'], deep=True)
+    return {'e2e_vbxD_ExecutionPayloadHeader.bend': eph, 'e2e_vbxD_LightClientHeader.bend': lch, 'e2e_vbxD_LightClientUpdate.bend': lcu}
+
+
+SUPPORT_OUT.update(lc_vbx_deep())
+
+# LightClientUpdate's whole-buffer laws at d < 31 (var_winb_lc no longer in TOP_SHALLOW): the deep view (e2e_vbxD_LightClientUpdate)
+if 'Nat.is_lt(d, 31n)' in _unlight((_OBJ / 'var_codec_LightClientUpdate.bend').read_text()):
+    VDEC_VIEWS['LightClientUpdate'] = vdec_bx_deep('LightClientUpdate', 'e2e_vbxD_LightClientUpdate')

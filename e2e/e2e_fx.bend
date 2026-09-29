@@ -89,3 +89,48 @@ def fxpv56(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {U32.to_na
 # vfx_SyncAggregate at y (its bits: e2e_bvh)
 def fxsa(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> {RN.v_SyncAggregate(FSA.OBJ(d, t, y)) == FSA.VAL(t, y) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{z, S.Items{RN.v_b96(FuluBytes96_d.Bytes96{UR.RWN(t, 64n+y), UR.RWN(t, 68n+y), UR.RWN(t, 72n+y), UR.RWN(t, 76n+y), UR.RWN(t, 80n+y), UR.RWN(t, 84n+y), UR.RWN(t, 88n+y), UR.RWN(t, 92n+y), UR.RWN(t, 96n+y), UR.RWN(t, 100n+y), UR.RWN(t, 104n+y), UR.RWN(t, 108n+y), UR.RWN(t, 112n+y), UR.RWN(t, 116n+y), UR.RWN(t, 120n+y), UR.RWN(t, 124n+y), UR.RWN(t, 128n+y), UR.RWN(t, 132n+y), UR.RWN(t, 136n+y), UR.RWN(t, 140n+y), UR.RWN(t, 144n+y), UR.RWN(t, 148n+y), UR.RWN(t, 152n+y), UR.RWN(t, 156n+y)}), S.EmptyItems{}}}}, RN.v_bv512(Fulu_bitvector_512_d.Bitvector512{UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y)}), S.BitsValue{FB.bitsof([UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y)])}, BV.bvh512(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y)))
+
+# ---- the same at any tree depth d < 31 (the copies bounded by their length, ctwY / pvxY) ----
+def pkcY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {U32.to_nat(off) == y : Nat}, 
+    +hw: {Nat.is_le(Nat.add(y, U32.to_nat(24576)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {E48.eview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 24576, 13n)), 24576}) == S.Sequence{AV.ch12(UR.RWS(6144n, t, y))} : S.Value}:
+  +ew = BX.ctwY(d, t, off, 24576, 13n, y, 6144n, eo, {==}, hw, pf, {==}, FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==}))
+  +hc1 = FD.logic__subst(List<&2, U32>, z => {Nat.is_le(VB.len(z), VB.len(FD.array__slots(U32, UCT.CT(d, t, off, 24576, 13n)))) == True{} : Bool}, VS.wtake(6144n, FD.array__slots(U32, UCT.CT(d, t, off, 24576, 13n))), UR.RWS(6144n, t, y), ew, ltk(6144n, FD.array__slots(U32, UCT.CT(d, t, off, 24576, 13n))))
+  +hc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.len(FD.array__slots(U32, UCT.CT(d, t, off, 24576, 13n)))) == True{} : Bool}, VB.len(UR.RWS(6144n, t, y)), 6144n, UR.rws_len(6144n, t, y), hc1)
+  EW.pkg(UCT.CT(d, t, off, 24576, 13n), UR.RWS(6144n, t, y), hc, ew)
+
+# vfx_SyncCommittee at y
+
+def fxscY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {U32.to_nat(off) == y : Nat}, 
+    +hw: {Nat.is_le(Nat.add(y, U32.to_nat(24576)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {RT.v_SyncCommittee(FSC.OBJ(d, t, y)) == FSC.VAL(t, y) : S.Value}:
+  +e1 = Equal.trans(S.Value, E48.eview(O.Words{FD.array__thaw(U32, VXB.CTN(d, t, y, 24576, 13n)), 24576}), E48.eview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 24576, 13n)), 24576}), S.Sequence{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))},
+    Equal.cong(FD.array__Tree<U32>, S.Value, z => E48.eview(O.Words{FD.array__thaw(U32, z), 24576}), VXB.CTN(d, t, y, 24576, 13n), UCT.CT(d, t, off, 24576, 13n), Equal.sym(FD.array__Tree<U32>, UCT.CT(d, t, off, 24576, 13n), VXB.CTN(d, t, y, 24576, 13n), VXB.ct_n(d, t, off, y, 24576, 13n, eo))),
+    Equal.trans(S.Value, E48.eview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 24576, 13n)), 24576}), S.Sequence{AV.ch12(UR.RWS(6144n, t, y))}, S.Sequence{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))},
+      pkcY(d, t, off, y, eo, hw, pf),
+      Equal.cong(Nat, S.Value, z => S.Sequence{AV.ch12(UR.RWS(z, t, y))}, 6144n, VXG.CNT(y, 6144n), Equal.sym(Nat, VXG.CNT(y, 6144n), 6144n, VXG.cnt_eq(y, 6144n)))))
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{z, S.Items{RN.v_b48(FuluBytes48_d.Bytes48{UR.RWN(t, Nat.add(y, 24576n)), UR.RWN(t, 4n+Nat.add(y, 24576n)), UR.RWN(t, 8n+Nat.add(y, 24576n)), UR.RWN(t, 12n+Nat.add(y, 24576n)), UR.RWN(t, 16n+Nat.add(y, 24576n)), UR.RWN(t, 20n+Nat.add(y, 24576n)), UR.RWN(t, 24n+Nat.add(y, 24576n)), UR.RWN(t, 28n+Nat.add(y, 24576n)), UR.RWN(t, 32n+Nat.add(y, 24576n)), UR.RWN(t, 36n+Nat.add(y, 24576n)), UR.RWN(t, 40n+Nat.add(y, 24576n)), UR.RWN(t, 44n+Nat.add(y, 24576n))}), S.EmptyItems{}}}}, E48.eview(O.Words{FD.array__thaw(U32, VXB.CTN(d, t, y, 24576, 13n)), 24576}), S.Sequence{AV.ch12(UR.RWS(VXG.CNT(y, 6144n), t, y))}, e1)
+
+# vfx_v6_b32: a copied vector of Bytes32 at y
+
+def fxpv48Y(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {U32.to_nat(off) == y : Nat}, 
+    +hw: {Nat.is_le(Nat.add(y, U32.to_nat(192)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {PV.pview(F6.OBJ(d, t, y)) == F6.VAL(t, y) : S.Value}:
+  Equal.trans(S.Value, PV.pview(O.Words{FD.array__thaw(U32, VXB.CTN(d, t, y, 192, 6n)), 192}), PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 192, 6n)), 192}), S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 48n), t, y))},
+    Equal.cong(FD.array__Tree<U32>, S.Value, z => PV.pview(O.Words{FD.array__thaw(U32, z), 192}), VXB.CTN(d, t, y, 192, 6n), UCT.CT(d, t, off, 192, 6n), Equal.sym(FD.array__Tree<U32>, UCT.CT(d, t, off, 192, 6n), VXB.CTN(d, t, y, 192, 6n), VXB.ct_n(d, t, off, y, 192, 6n, eo))),
+    Equal.trans(S.Value, PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 192, 6n)), 192}), S.Sequence{WR.items(O.chunks_of(192), VF.app(UR.RWS(48n, t, y), VB.wdr(48n, FD.array__slots(U32, UCT.CT(d, t, off, 192, 6n)))), 0n)}, S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 48n), t, y))},
+      BX.pvxY(d, t, off, 192, 6n, y, 48n, eo, {==}, hw, pf, {==}, {==}),
+      Equal.trans(S.Value, S.Sequence{WR.items(O.chunks_of(192), VF.app(UR.RWS(48n, t, y), VB.wdr(48n, FD.array__slots(U32, UCT.CT(d, t, off, 192, 6n)))), 0n)}, S.Sequence{AV.ch8(UR.RWS(48n, t, y))}, S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 48n), t, y))},
+        ev48(t, y, VB.wdr(48n, FD.array__slots(U32, UCT.CT(d, t, off, 192, 6n)))),
+        Equal.cong(Nat, S.Value, z => S.Sequence{AV.ch8(UR.RWS(z, t, y))}, 48n, VXG.CNT(y, 48n), Equal.sym(Nat, VXG.CNT(y, 48n), 48n, VXG.cnt_eq(y, 48n))))))
+
+# vfx_v7_b32: a copied vector of Bytes32 at y
+
+def fxpv56Y(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +y: Nat, +eo: {U32.to_nat(off) == y : Nat}, 
+    +hw: {Nat.is_le(Nat.add(y, U32.to_nat(224)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {PV.pview(F7.OBJ(d, t, y)) == F7.VAL(t, y) : S.Value}:
+  Equal.trans(S.Value, PV.pview(O.Words{FD.array__thaw(U32, VXB.CTN(d, t, y, 224, 6n)), 224}), PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 224, 6n)), 224}), S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 56n), t, y))},
+    Equal.cong(FD.array__Tree<U32>, S.Value, z => PV.pview(O.Words{FD.array__thaw(U32, z), 224}), VXB.CTN(d, t, y, 224, 6n), UCT.CT(d, t, off, 224, 6n), Equal.sym(FD.array__Tree<U32>, UCT.CT(d, t, off, 224, 6n), VXB.CTN(d, t, y, 224, 6n), VXB.ct_n(d, t, off, y, 224, 6n, eo))),
+    Equal.trans(S.Value, PV.pview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, 224, 6n)), 224}), S.Sequence{WR.items(O.chunks_of(224), VF.app(UR.RWS(56n, t, y), VB.wdr(56n, FD.array__slots(U32, UCT.CT(d, t, off, 224, 6n)))), 0n)}, S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 56n), t, y))},
+      BX.pvxY(d, t, off, 224, 6n, y, 56n, eo, {==}, hw, pf, {==}, {==}),
+      Equal.trans(S.Value, S.Sequence{WR.items(O.chunks_of(224), VF.app(UR.RWS(56n, t, y), VB.wdr(56n, FD.array__slots(U32, UCT.CT(d, t, off, 224, 6n)))), 0n)}, S.Sequence{AV.ch8(UR.RWS(56n, t, y))}, S.Sequence{AV.ch8(UR.RWS(VXG.CNT(y, 56n), t, y))},
+        ev56(t, y, VB.wdr(56n, FD.array__slots(U32, UCT.CT(d, t, off, 224, 6n)))),
+        Equal.cong(Nat, S.Value, z => S.Sequence{AV.ch8(UR.RWS(z, t, y))}, 56n, VXG.CNT(y, 56n), Equal.sym(Nat, VXG.CNT(y, 56n), 56n, VXG.cnt_eq(y, 56n))))))
+
+# vfx_SyncAggregate at y (its bits: e2e_bvh)

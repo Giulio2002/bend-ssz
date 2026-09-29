@@ -47,10 +47,10 @@ law ok_eval:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   {FuluLightClientUpdate_r.LightClientUpdate_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
-def ok_eval(d, t, n, pf, hd, hn): EW.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
+def ok_eval(d, t, n, pf, hd, hn): EW.ok_evalwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
 law decode_accept:
@@ -58,7 +58,7 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {FuluLightClientUpdate_r.LightClientUpdate_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
@@ -67,7 +67,7 @@ def decode_accept(d, t, n, pf, hd, hn, hchk):
     {FuluLightClientUpdate_r.LightClientUpdate_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {FuluLightClientUpdate_r.LightClientUpdate_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
-  %Equal.sym(B.Buf & FuluLightClientUpdate_d.LightClientUpdate, FuluLightClientUpdate_r.LightClientUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(B.Buf & FuluLightClientUpdate_d.LightClientUpdate, FuluLightClientUpdate_r.LightClientUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {FuluLightClientUpdate_r.LightClientUpdate_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
   {==}
 
@@ -77,7 +77,7 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.LightClientUpdate(), VW(t, n), VAL(t, n))
@@ -85,7 +85,7 @@ def decode_spec(d, t, n, pf, hd, hn, hchk):
   # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
   # Codec.bytes was compared with the spec encoding by running the encoder
   %F.efl_bytes(Spec.LightClientUpdate(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.LightClientUpdate()), Some{[S.Variable{UW.WX(t, 0n, U32.to_nat(n))}]}, EW.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.LightClientUpdate()), Some{[S.Variable{UW.WX(t, 0n, U32.to_nat(n))}]}, EW.specwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}
 
@@ -95,7 +95,7 @@ law decode_unique:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   for +v: S.Value
@@ -124,11 +124,11 @@ def rj_m(+v: S.Value, +ys: +List<U32>, +mm: Maybe<&2, +List<S.Part>>, hf: DF.sin
     case None{}: Empty.absurd({Codec.parts(v, Spec.LightClientUpdate()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}, FD.logic__none_some(+List<U32>, ys, e))
     case Some{+ps}: rj_p(v, ys, ps, hf, em, e)
 
-def rej_f(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def rej_f(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool}, +v: S.Value,
     +e: {Codec.encoding_for_legal_type(Spec.LightClientUpdate(), v) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   FD.logic__true_false(Equal.trans(Bool, True{}, CHK(t, n), False{},
-    Equal.sym(Bool, CHK(t, n), True{}, EW.invw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, v, rj_m(v, VW(t, n), Codec.parts(v, Spec.LightClientUpdate()), UW.vsingle(v, ["attested_header", "next_sync_committee", "next_sync_committee_branch", "finalized_header", "finality_branch", "sync_aggregate", "signature_slot"], S.Chain{Spec.Schema91(), S.Chain{Spec.Schema53(), S.Chain{Spec.Schema59(), S.Chain{Spec.Schema91(), S.Chain{Spec.Schema12(), S.Chain{Spec.Schema15(), S.Chain{Spec.Schema3(), S.End{}}}}}}}}, {==}), {==}, e))), hchk))
+    Equal.sym(Bool, CHK(t, n), True{}, EW.invwD(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, v, rj_m(v, VW(t, n), Codec.parts(v, Spec.LightClientUpdate()), UW.vsingle(v, ["attested_header", "next_sync_committee", "next_sync_committee_branch", "finalized_header", "finality_branch", "sync_aggregate", "signature_slot"], S.Chain{Spec.Schema91(), S.Chain{Spec.Schema53(), S.Chain{Spec.Schema59(), S.Chain{Spec.Schema91(), S.Chain{Spec.Schema12(), S.Chain{Spec.Schema15(), S.Chain{Spec.Schema3(), S.End{}}}}}}}}, {==}), {==}, e))), hchk))
 
 # When the validator refuses, no value is related to the buffer's bytes.
 law decode_reject:
@@ -136,14 +136,14 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   Decoding.outside_image(Spec.LightClientUpdate(), VW(t, n))
 def decode_reject(d, t, n, pf, hd, hn, hchk):
   v => e => rej_f(d, t, n, pf, hd, hn, hchk, v, e)
 
-def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool})
     -> {FuluLightClientUpdate_r.LightClientUpdate_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   %Equal.sym(B.Buf & Bool, FuluLightClientUpdate_r.LightClientUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
@@ -158,7 +158,7 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {FuluLightClientUpdate_r.LightClientUpdate_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
