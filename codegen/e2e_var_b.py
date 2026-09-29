@@ -6624,19 +6624,26 @@ def vtx_deep(text):
         b = b.replace(HD, HD.replace('28n', '31n')).replace(HW, HW + ', ' + HWN)
         b = _re.sub(r'eo, hd, hw, (pft|pf)\b', r'eo, hd, hw, hwN, \1', b)
         out.append(b)
-    elv = ('def elvY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, ' + HD.replace('28n', '31n') + ',\n'
-           '    ' + HW + ', ' + HWN + ', +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32,\n'
-           '    +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool})\n'
-           '    -> {RT_L.v_bl1073741824_bx(RT_L.th_bl1073741824_bx(ND(d, t, x, off, s, e))) == TX.VE(t, x, s, e) : S.Value}:\n'
+    PP = '+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: U32, +e: U32, '
+    EE_ = '+h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool}'
+    elv = ('def elw1(' + PP + HW + ', ' + HWN + ', ' + EE_ + ') -> {Nat.is_le(Nat.add(Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
+           '  TX.hwab32(x, len, s, e, TX.el_ab(t, x, off, len, s, e, h), TX.el_b(t, x, off, len, s, e, h), hwN)\n\n'
+           'def elw2(' + PP + HW + ', ' + HWN + ', ' + EE_ + ') -> {Nat.is_le(VC.YL(U32.sub(e, s)), U32.to_nat(VB.UMAX())) == True{} : Bool}:\n'
+           '  VC.hyW(Nat.add(U32.to_nat(s), x), U32.sub(e, s), elw1(d, t, x, off, len, s, e, hw, hwN, h))\n\n'
+           'def elw4(' + PP + '+eo: {U32.to_nat(off) == x : Nat}, ' + HD.replace('28n', '31n') + ', ' + HW + ', ' + HWN + ', +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, ' + EE_ + ')\n'
+           '    -> {WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)))), U32.sub(e, s)}) == UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))) : +List<U32>}:\n'
            '  +hab = TX.el_ab(t, x, off, len, s, e, h)\n'
            '  +hb = TX.el_b(t, x, off, len, s, e, h)\n'
            '  +hW = TX.hwab(d, x, len, s, e, hab, hb, hw)\n'
-           '  +hWN = TX.hwab32(x, len, s, e, hab, hb, hwN)\n'
-           '  +hy = VC.hyW(Nat.add(U32.to_nat(s), x), U32.sub(e, s), hWN)\n'
+           '  +hy = elw2(d, t, x, off, len, s, e, hw, hwN, h)\n'
+           '  BX.bvgY(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)), Nat.add(U32.to_nat(s), x),\n'
+           '      TX.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), hab, hb), eo, hd, hw, hwN), hy, hW, pf, VC.hrgU(U32.sub(e, s), hy))\n\n'
+           'def elvY(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, ' + HD.replace('28n', '31n') + ',\n'
+           '    ' + HW + ', ' + HWN + ', +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: U32, +e: U32,\n'
+           '    +h: {TX.EE(True{}, t, x, off, len, s, e) == True{} : Bool})\n'
+           '    ' + _re.search(r'\n    (-> \{.*\}:)\n', blk('elv')).group(1) + '\n'
            '  Equal.cong(+List<U32>, S.Value, z => S.BytesValue{z}, WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)))), U32.sub(e, s)}),\n'
-           '    UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))),\n'
-           '    BX.bvgY(d, t, U32.add(off, s), U32.sub(e, s), VLS.DZ(U32.sub(e, s)), Nat.add(U32.to_nat(s), x),\n'
-           '      TX.eocD(d, x, off, len, s, FD.nat__le_trans(U32.to_nat(s), U32.to_nat(e), U32.to_nat(len), hab, hb), eo, hd, hw, hwN), hy, hW, pf, VC.hrgU(U32.sub(e, s), hy)))')
+           '    UW.WX(t, Nat.add(U32.to_nat(s), x), U32.to_nat(U32.sub(e, s))), elw4(d, t, x, off, len, s, e, eo, hd, hw, hwN, pf, h))')
     return text.rstrip('\n') + '\n\n# ---- the same at any tree depth d < 31, the window within NMAX ----\n' + elv + '\n\n' + '\n\n'.join(out) + '\n'
 
 
