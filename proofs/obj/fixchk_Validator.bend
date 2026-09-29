@@ -214,6 +214,40 @@ def Validator_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: 
     -> {FuluValidator_r.Validator_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 121), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
   Validator_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 121))
 
+def Validator_atD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluValidator_r.Validator_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}:
+  +hk = FD.nat__lt_le_trans(Nat.add(x, 88n), Nat.add(x, 121n), A.quad(VB.pw(d)), FD.nat__lt_add_left(88n, 121n, x, {==}), hb)
+  +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 88n), Nat.add(88n, x), FD.nat__add_comm(x, 88n), hk)
+  +ey = UR.offx31(d, off, 88, x, e, hd, hy)
+  %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, 88)), (UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)), VRB.okbD(d, t, n, U32.add(off, 88), Nat.add(88n, x), ey, hd, pf, hy)) :
+    {FuluValidator_r.Validator_v0(off, _) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}
+  %Equal.sym(B.Buf & Bool, FuluValidator_r.Validator_c0(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)), c0id(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off)) :
+    {_ == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}
+  %Equal.sym(U32, VBL.nthb(UW.WX(t, x, 121n), 88n), VBL.nthb(UA.BYT(t), Nat.add(x, 88n)),
+      Equal.trans(U32, VBL.nthb(UW.WX(t, x, 121n), 88n), VBL.nthb(VS.bdr(x, UA.BYT(t)), 88n), VBL.nthb(UA.BYT(t), Nat.add(x, 88n)),
+        VR.nth_bt(121n, VS.bdr(x, UA.BYT(t)), 88n, {==}), VR.nth_bdr(x, UA.BYT(t), 88n))) :
+    {(UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)) == (UA.BF(t, n), U32.is_le(_, 1)) : B.Buf & Bool}
+  %Equal.sym(Nat, Nat.add(x, 88n), Nat.add(88n, x), FD.nat__add_comm(x, 88n)) :
+    {(UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)) == (UA.BF(t, n), U32.is_le(VBL.nthb(UA.BYT(t), _), 1)) : B.Buf & Bool}
+  {==}
+
+def Validator_oklD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
+    -> {FuluValidator_r.Validator_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
+  match b:
+    case True{}: Validator_atD(d, t, n, off, x, e, hd, pf, hb)
+    case False{}: {==}
+
+# the validator returns the length check and the slashed byte's check
+def Validator_ok_evalD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
+    -> {FuluValidator_r.Validator_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 121), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
+  Validator_oklD(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 121))
+
 def Validator_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 121n), U32.is_le(VBL.nthb(bs, 88n), 1)) == False{} : Bool}, +v: S.Value,
     +e: {Codec.encoding_for_legal_type(Spec.Validator(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
   VRB.chk_true(Nat.is_eq(List.length(&2, U32, bs), 121n), U32.is_le(VBL.nthb(bs, 88n), 1),

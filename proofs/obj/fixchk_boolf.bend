@@ -49,6 +49,34 @@ def boolean_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
     -> {boolean_r.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   boolean_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
+def boolean_atD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {boolean_r.bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
+  +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n), A.quad(VB.pw(d)), VTX.ltp(x, 0n), hb)
+  %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okbD(d, t, n, off, x, e, hd, pf, hx)) :
+    {_ == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}
+  %Equal.sym(+List<U32>, UW.WX(t, x, 1n), Con{VRB.BX(t, x), UW.WX(t, 1n+x, 0n)}, VRB.wxc(d, t, x, 0n, pf, hx)) :
+    {(UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)) == (UA.BF(t, n), VRB.ALLB(_)) : B.Buf & Bool}
+  %Equal.sym(Bool, Bool.and(U32.is_le(VRB.BX(t, x), 1), True{}), U32.is_le(VRB.BX(t, x), 1), VRB.and_true(U32.is_le(VRB.BX(t, x), 1))) :
+    {(UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)) == (UA.BF(t, n), _) : B.Buf & Bool}
+  {==}
+
+def boolean_oklD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
+    -> {boolean_r.bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+  match b:
+    case True{}: boolean_atD(d, t, n, off, x, e, hd, pf, hb)
+    case False{}: {==}
+
+# the validator returns the length check and ALLB of the N window bytes
+def boolean_ok_evalD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
+    -> {boolean_r.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+  boolean_oklD(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
+
 def boolean_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 1n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.boolean(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
   VRB.chk_true(Nat.is_eq(List.length(&2, U32, bs), 1n), VRB.ALLB(bs),
     VRB.len_eq(SS.fixed_size(Spec.boolean()), 1n, bs, Codec.parts(v, Spec.boolean()), DS.facts(v, Spec.boolean(), {==}), {==}, e),
