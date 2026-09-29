@@ -21,6 +21,9 @@ import ./e2e_cap.bend as C
 import ../proofs/obj/root_gtypes2_light.bend as RT
 import ./e2e_gcx.bend as GP
 import ../proofs/obj/vbuf.bend as VB
+import ./e2e_gph.bend as GPH
+import ./e2e_hvk.bend as HVK
+import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/big_var_codec_Gp8A7851175B.bend as DC
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -34,6 +37,12 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
     +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_Gp8A7851175B(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
   GP.vw_Gp8A7851175BD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+
+# the decoded object's progressive bit list satisfies hv (the hv part of the encode record's SDPB; e2e_gph)
+def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
+    +hchk: {DC.CHK(t, n) == True{} : Bool}) -> HVK.SDXE(RT.pj_Gp8A7851175B_2(DC.OBJ(d, t, n))):
+  GPH.hv_Gp8A7851175BD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
 
 # ---- the loaded buffer ----
 
