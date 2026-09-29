@@ -28,11 +28,13 @@ import ../proofs/obj/big_var_codec_ExecutionPayload.bend as DC
 # (ii) through the view and (iii), for any input the object API accepts: hS, n <= VB.NMAX() (2^32 - 32).
 # The buffer is the loader's (e2e_load) at the capacity depth (e2e_cap: at most 30, the laws' d < 31).
 
-# ---- the view of a decoded object is the codec law's value (e2e_vbx_ExecutionPayload.vbD at the window (0, 0, n)) ----
+# ---- the view of a decoded object is the codec law's value (the window's view at offset 0, within NMAX) ----
+
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
     +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_ExecutionPayload(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
-  VWX.vbD(d, t, n, 0n, 0, n, {==}, hd, hn, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+  VWX.vbD(d, t, 0n, 0, n, {==}, hd, hn,
+    FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
 
 # ---- the loaded buffer ----
 

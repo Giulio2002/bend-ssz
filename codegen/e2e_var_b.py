@@ -6713,7 +6713,7 @@ if 'Nat.is_lt(d, 31n)' in _unlight((_OBJ / 'big_var_codec_ExecutionPayload.bend'
     import e2e_var_c as _EVC
     VDEC_VIEWS['ExecutionPayload'] = {'view': 'RT.v_ExecutionPayload', 'imports': ['import ../proofs/obj/root_types.bend as RT', 'import ./e2e_vbx_ExecutionPayload.bend as VWX',
                                                                                    'import ../proofs/obj/vbuf.bend as VB'],
-                                      'text': _EVC.deep_vv_text('ExecutionPayload', 'VWX.vbD', 'e2e_vbx_ExecutionPayload')}
+                                      'text': None}   # set below (vdec_bx_deep: vbD takes the window (x, off, len) without n)
 
 
 
@@ -7421,14 +7421,14 @@ SUPPORT_OUT['e2e_vbxY_SignedBeaconBlock.bend'] = blk_vbx('SignedBeaconBlock', 'b
 
 # the block names' views at any tree depth d < 31 with the input within NMAX (e2e_vbxY_<X>: the deep twins of the payload's and the
 # blob commitments' views); the K = 27 mode (inputs of at most 2^29 bytes, the d < 28 views e2e_vbx_<X>) is kept for the depth-28 lemmas
-def vdec_bx_deep(X):
-    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./e2e_vbxY_{X}.bend as VWX', 'import ../proofs/obj/vbuf.bend as VB'],
+def vdec_bx_deep(X, mod=None, fn='vb'):
+    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./{mod or "e2e_vbxY_" + X}.bend as VWX', 'import ../proofs/obj/vbuf.bend as VB'],
             'text': f'''# ---- the view of a decoded object is the codec law's value (the window's view at offset 0, within NMAX) ----
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}},
     +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  VWX.vb(d, t, 0n, 0, n, {{==}}, hd, hn,
+  VWX.{fn}(d, t, 0n, 0, n, {{==}}, hd, hn,
     FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
 
 '''}
@@ -7436,3 +7436,5 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 
 for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
     VDEC_VIEWS[_X] = vdec_bx_deep(_X)
+if VDEC_VIEWS['ExecutionPayload'].get('text') is None:
+    VDEC_VIEWS['ExecutionPayload'] = vdec_bx_deep('ExecutionPayload', 'e2e_vbx_ExecutionPayload', 'vbD')
