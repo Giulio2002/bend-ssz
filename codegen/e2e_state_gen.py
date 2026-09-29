@@ -286,3 +286,161 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
   VWX.vb(d, t, 0n, 0, n, {==}, hd, hn, pf, hchk)
 
 '''}
+
+
+# ==== the same at any tree depth (d < 31, the window within NMAX): BeaconState (ii)/(iii) at n <= NMAX ====
+# Each field lemma's copy is bounded by its length (hy: 31 + L <= UMAX, e2e_bx's ctwY / bvgY / fbvY, e2e_blist's
+# bviewY) in place of d < 28; the window's facts are its D / N ones (d < 31, hwN).
+HY = '+hy: {Nat.is_le(VC.YL(@L@), U32.to_nat(VB.UMAX())) == True{} : Bool}'
+HD28 = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool}'
+DEEP_HEAD = ['import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/elems48.bend as E48', 'import ../proofs/obj/root_names_light.bend as RN',
+             'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/vfx_SyncCommittee.bend as FSC',
+             'import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as XW', 'import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d',
+             'import ./e2e_fx.bend as FXE', 'import ./e2e_e48w.bend as EW', 'import ./e2e_vbx_ExecutionPayloadHeader.bend as VEH']
+
+
+def _block(text, name):
+    a = text.index(f'\ndef {name}(') + 1
+    m = re.search(r'\n(?=\n|# |def |law )', text[a:])
+    return text[a:a + m.start()] if m else text[a:]
+
+
+def _nohd(s):
+    assert not re.search(r'(?<![\w.])hd(?![\w])', s), s[:200]
+    return s
+
+
+def deep_text():
+    import e2e_var_b as EVB
+    full = BASE + lists_text()
+    out = ['''
+# ---- the same at any tree depth: each copy bounded by its length (hy), the window within NMAX ----
+def w32(+S: Nat, +h: {Nat.is_le(S, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_lt(S, FD.spec_common__pow2(32n)) == True{} : Bool}:
+  +h1 = Order.add_left(31n, S, U32.to_nat(VB.NMAX()), h)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, S), z) == True{} : Bool}, Nat.add(31n, U32.to_nat(VB.NMAX())), U32.to_nat(VB.UMAX()), VB.e_umax(), h1)
+  VB.umax_lt(S, FD.nat__le_trans(S, Nat.add(31n, S), U32.to_nat(VB.UMAX()), Order.left_below_sum(31n, S), h2))
+''']
+    for nm in ('pvv', 'vv8'):
+        b = _block(full, nm).replace(f'def {nm}(', f'def {nm}Y(', 1)
+        assert b.count(', ' + HD28 + ',\n    +L: U32') == 1
+        b = b.replace(', ' + HD28 + ',\n    +L: U32', ',\n    +L: U32', 1)
+        b = b.replace('+M: Nat,', '+M: Nat, ' + HY.replace('@L@', 'L') + ',', 1)
+        b = b.replace('BXW.ctw(d, t, off, L, dz, x, K, eo, hd, hw,', 'BXW.ctwY(d, t, off, L, dz, x, K, eo, hy, hw,')
+        out.append(_nohd(b))
+    for nm in ('shr', 'su64'):
+        b = _block(full, nm).replace(f'def {nm}(', f'def {nm}Y(', 1).replace(HD28, HY.replace('@L@', 'len'), 1)
+        b = re.sub(r'BXW\.ctw\((d, t, off, len, VLS\.DZ\(len\), x, [^,]+(?:\([^)]*\))?, eo), hd, hw, pf, VLS\.hrg\(d, len, hd, hL\)',
+                   r'BXW.ctwY(\1, hy, hw, pf, VC.hrgU(len, hy)', b)
+        out.append(_nohd(b))
+    b = _block(full, 'su8').replace('def su8(', 'def su8Y(', 1).replace(HD28, HY.replace('@L@', 'len'), 1)
+    b = b.replace('BL.bview(d, t, off, len, x, eo, hd, hw, pf)', 'BL.bviewY(d, t, off, len, x, eo, hw, pf, hy)')
+    out.append(_nohd(b))
+    # the sync committees (e2e_fx's pkc / fxsc)
+    fx = EVB.fx_text()
+    HY24 = 'VC.hyU(24576, 15n, {==}, {==})'
+    for nm in ('pkc', 'fxsc'):
+        b = _block(fx, nm).replace(f'def {nm}(', f'def {nm}Y(', 1).replace(', ' + HD28 + ',\n', ',\n', 1)
+        b = b.replace('BX.ctw(d, t, off, 24576, 13n, y, 6144n, eo, hd, hw,', f'BXW.ctwY(d, t, off, 24576, 13n, y, 6144n, eo, {HY24}, hw,')
+        b = b.replace('pkc(d, t, off, y, eo, hd, hw, pf)', 'pkcY(d, t, off, y, eo, hw, pf)')
+        b = re.sub(r'(?<![\w.])ltk\(', 'FXE.ltk(', b)
+        out.append(_nohd(b))
+    # the latest execution payload header (e2e-b's e2e_vbx_ExecutionPayloadHeader.vb): its window's D facts, its copies' hy
+    veh = EVB.SUPPORT_OUT['e2e_vbx_ExecutionPayloadHeader.bend']
+    b = _block(veh, 'vb').replace('def vb(', 'def ephY(', 1)
+    b = b.replace('+hd: {Nat.is_lt(d, 28n) == True{} : Bool},', '+hd: {Nat.is_lt(d, 31n) == True{} : Bool},', 1)
+    b = b.replace('+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},',
+                  '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool},', 1)
+    b = re.sub(r'(?<![\w.])W\.', 'XW.', b)
+    b = re.sub(r'(?<![\w.])BX\.', 'BXW.', b)
+    b = re.sub(r'\n  vz\(', '\n  VEH.vz(', b)
+    b = re.sub(r'XW\.eoc\(d, x, off, len, (\d+), \{==\}, eo, hd, hw, ha\)', r'XW.eocD(d, x, off, len, \1, {==}, eo, hd, hw, hw32, ha)', b)
+    assert b.count('), hd, XW.roomc(') == 1 and b.count('), hd, XW.hwv(') == 1, b[-800:]
+    b = b.replace('BXW.fbv(', 'BXW.fbvY(').replace('), hd, XW.roomc(', '), VC.hyU(256, 9n, {==}, {==}), XW.roomc(')
+    b = b.replace('BXW.bvg(', 'BXW.bvgY(').replace('), hd, XW.hwv(', '), VC.hyU(XW.LL(len), 6n, {==}, XW.hyL(len, hx)), XW.hwv(')
+    b = b.replace('\n  +ha = ', '\n  +hw32 = w32(Nat.add(x, U32.to_nat(len)), hwN)\n  +ha = ', 1)
+    out.append(b)
+    return '\n'.join(out) + '\n'
+
+
+def text_deep():
+    t = text()
+    h = '\n'.join(HEAD)
+    assert t.startswith(h)
+    return '\n'.join(HEAD + [i for i in DEEP_HEAD if i not in HEAD]) + t[len(h):] + deep_text()
+
+
+def _fxD(K):
+    x1 = f'Nat.add(x, U32.to_nat({K}))'
+    eo = f'W.eocXD(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hF, {K}, U32.to_nat({K}), {{==}}, VA.le_nat({K}, {FSZ}, {{==}}))'
+    return x1, eo
+
+
+def _hwD(K, S):
+    return f'W.roomFXD(d, t, 0, x, off, len, eo, hd, hw, hwN, pf, hF, U32.to_nat({K}), U32.to_nat({S}), VA.lea({K}, {S}, {FSZ}, U32.to_nat({S}), {{==}}, {{==}}, {{==}}))'
+
+
+def _hyC(L):
+    p = L.bit_length() - 1
+    assert L == 1 << p and p >= 5
+    return f'VC.hyU({L}, {p + 1}n, {{==}}, VG.yl_pow({L}, {p}n, {p + 1}n, {{==}}, {{==}}, {{==}}, {{==}}))'
+
+
+def state_holes_deep():
+    H = state_holes()
+    A6D = 'd, t, 0, x, off, len, eo, hd, hw, hwN, pf, hchk'
+    out = []
+    for h in H:
+        pf = h['pf']
+        m = re.match(r'SV\.(pvv|vv8)\(d, t, U32\.add\(off, (\d+)\), (Nat\.add\(x, U32\.to_nat\(\d+\)\)), W\.eocX\(.*?\), hd, (\d+), (\d+), (\d+)n, (\d+)n, (.*?), W\.roomFX\(', pf)
+        if m:
+            M, K, x1, L, Ku, e, dz, Mv = m.groups()
+            _, eo = _fxD(int(K))
+            pf = (f'SV.{M}Y(d, t, U32.add(off, {K}), {x1}, {eo}, {L}, {Ku}, {e}n, {dz}n, {Mv}, {_hyC(int(L))}, {_hwD(int(K), int(L))}, pf, '
+                  + ', '.join(['{==}'] * 6) + ')')
+        elif pf.startswith('FXE.fxsc('):
+            K = int(re.search(r'U32\.add\(off, (\d+)\)', pf).group(1))
+            x1, eo = _fxD(K)
+            pf = f'SV.fxscY(d, t, U32.add(off, {K}), {x1}, {eo}, {_hwD(K, 24576)}, pf)'
+        elif re.match(r'SV\.(shr|su64|su8)\(', pf):
+            m = re.match(r'SV\.(\w+)\(d, t, (W\.XJ(\d+)\(t, x\)), (W\.FJ\d+\(off, t, x\)), (W\.LJ\d+\(t, x(?:, len)?\)), ', pf)
+            lem, X, j, F_, L = m.groups()
+            pf = (f'SV.{lem}Y(d, t, {X}, {F_}, {L}, W.eoJ{j}D({A6D}), VC.hyW({X}, {L}, W.hwJ{j}N({A6D})), W.hwJ{j}D({A6D}), pf, W.itD{j}(t, x, off, len, hchk))')
+        elif pf.startswith('VEH.vb('):
+            m = re.match(r'VEH\.vb\(d, t, (W\.XJ(\d+)\(t, x\)), (W\.FJ\d+\(off, t, x\)), (W\.LJ\d+\(t, x(?:, len)?\)), ', pf)
+            X, j, F_, L = m.groups()
+            pf = f'SV.ephY(d, t, {X}, {F_}, {L}, W.eoJ{j}D({A6D}), hd, W.hwJ{j}D({A6D}), W.hwJ{j}N({A6D}), pf, W.itD{j}(t, x, off, len, hchk))'
+        else:
+            assert pf.startswith('SV.sbv4(') or pf.startswith('VL'), pf
+        assert not re.search(r'W\.(eocX|roomFX|eoJ\d+|hwJ\d+)\(', pf) or 'D(' in pf or 'N(' in pf, pf
+        out.append(dict(h, pf=pf))
+    return out
+
+
+def vbx_state_deep():
+    import e2e_var_b as EVB
+    imps = ['import ./e2e_stv.bend as SV', 'import ../proofs/obj/vbig.bend as VG',
+            'import ../proofs/obj/packed_bytes.bend as PB', 'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/ulist_obj.bend as UL',
+            'import ../proofs/obj/blist_obj.bend as BLI', 'import ../proofs/obj/arr_vec.bend as AV']
+    for j, V in ((1, 'l2048_Eth1Data'), (2, 'l1099511627776_Validator'), (8, 'l16777216_HistoricalSummary'), (9, 'l134217728_PendingDeposit'),
+                 (10, 'l134217728_PendingPartialWithdrawal'), (11, 'l262144_PendingConsolidation')):
+        imps.append(f'import ./e2e_vl_{V}.bend as VL{j}')
+    txt = EVB.vbx_module('BeaconState', 'big_var_winx_BeaconState', state_holes_deep(), ['+hF = W.hFc(t, x, off, len, hchk)'], imps)
+    a = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},'
+    assert txt.count(a) == 1
+    txt = txt.replace(a, '+hd: {Nat.is_lt(d, 31n) == True{} : Bool},\n    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, '
+                         '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool},')
+    return EVB.st_qualify(txt)
+
+
+def vdec_state_deep():
+    return {'view': 'ST.v_BeaconState', 'imports': ['import ../proofs/obj/root_state.bend as ST', 'import ./e2e_vbx_BeaconState.bend as VWX',
+                                                    'import ../proofs/obj/vbuf.bend as VB'],
+            'text': '''# ---- the view of a decoded BeaconState is the codec law's value (the window's view at offset 0, within NMAX) ----
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
+    +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {ST.v_BeaconState(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}:
+  VWX.vb(d, t, 0n, 0, n, {==}, hd, hn,
+    FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+
+'''}

@@ -166,6 +166,83 @@ def lenE(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes
       Equal.trans(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), List.length(&2, U32, VCN.AP(FP, PAY)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), e1, e2), e3),
     LY.lay_end(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n))
 
+# ---- OKW: the encoding below 2^31 bytes (the object API's limit: O.padd's poison bit), the children OKW ----
+
+def OKTW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW) -> Bool: Bool.and(EC_BeaconBlockBody.OKW(m_body), Nat.is_lt(ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)))
+
+def okr1W(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {Nat.is_lt(ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)) == True{} : Bool}: and_r(EC_BeaconBlockBody.OKW(m_body), Nat.is_lt(ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)), h)
+
+def ok_hok_bodyW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {EC_BeaconBlockBody.OKW(m_body) == True{} : Bool}: and_l(EC_BeaconBlockBody.OKW(m_body), Nat.is_lt(ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)), h)
+
+def ok_bndW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {Nat.is_lt(ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)) == True{} : Bool}: okr1W(slot, proposer_index, parent_root, state_root, m_body, h)
+
+def partsCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool})
+    -> {Codec.parts(S.Items{LV_u64(slot), S.Items{LV_u64(proposer_index), S.Items{LV_b32(parent_root), S.Items{LV_b32(state_root), S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}}}}}, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema104(), S.End{}}}}}}) == Some{PSC(slot, proposer_index, parent_root, state_root, m_body)} : Maybe<&2, +List<S.Part>>}:
+  FX.cat_fixed(Codec.parts(LV_u64(slot), Spec.Schema3()), VCN.PC(8n, FX.limbs(K.RW_u64(slot))), Codec.parts(S.Items{LV_u64(proposer_index), S.Items{LV_b32(parent_root), S.Items{LV_b32(state_root), S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}}}}, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema104(), S.End{}}}}}), [S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(parent_root)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}],
+    lvp_u64(slot), FX.cat_fixed(Codec.parts(LV_u64(proposer_index), Spec.Schema3()), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), Codec.parts(S.Items{LV_b32(parent_root), S.Items{LV_b32(state_root), S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}}}, S.Chain{Spec.Schema7(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema104(), S.End{}}}}), [S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(parent_root)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}],
+    lvp_u64(proposer_index), FX.cat_fixed(Codec.parts(LV_b32(parent_root), Spec.Schema7()), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), Codec.parts(S.Items{LV_b32(state_root), S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}}, S.Chain{Spec.Schema7(), S.Chain{Spec.Schema104(), S.End{}}}), [S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}],
+    lvp_b32(parent_root), FX.cat_fixed(Codec.parts(LV_b32(state_root), Spec.Schema7()), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), Codec.parts(S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}, S.Chain{Spec.Schema104(), S.End{}}), [S.Variable{EC_BeaconBlockBody.ENC(m_body)}],
+    lvp_b32(state_root), VS.cat_var(Codec.parts(EC_BeaconBlockBody.VAL(m_body), Spec.Schema104()), EC_BeaconBlockBody.ENC(m_body), Codec.parts(S.EmptyItems{}, S.End{}), [],
+    EC_BeaconBlockBody.encx_specO(m_body, ok_hok_bodyW(slot, proposer_index, parent_root, state_root, m_body, h)), {==})))))
+
+def validCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {Layout.bytes_valid(PSC(slot, proposer_index, parent_root, state_root, m_body)) == True{} : Bool}:
+  FD.logic__and_intro(SP.bytes_domain(VCN.PC(8n, FX.limbs(K.RW_u64(slot)))), Layout.bytes_valid([S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(parent_root)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}]), CS.domf(LV_u64(slot), S.Unsigned{P.U64{}}, VCN.PC(8n, FX.limbs(K.RW_u64(slot))), {==}, lvp_u64(slot)),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index)))), Layout.bytes_valid([S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(parent_root)))}, S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}]), CS.domf(LV_u64(proposer_index), S.Unsigned{P.U64{}}, VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), {==}, lvp_u64(proposer_index)),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(32n, FX.limbs(K.RW_b32(parent_root)))), Layout.bytes_valid([S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))}, S.Variable{EC_BeaconBlockBody.ENC(m_body)}]), CS.domf(LV_b32(parent_root), S.ByteVector{32n}, VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), {==}, lvp_b32(parent_root)),
+    FD.logic__and_intro(SP.bytes_domain(VCN.PC(32n, FX.limbs(K.RW_b32(state_root)))), Layout.bytes_valid([S.Variable{EC_BeaconBlockBody.ENC(m_body)}]), CS.domf(LV_b32(state_root), S.ByteVector{32n}, VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), {==}, lvp_b32(state_root)),
+    FD.logic__and_intro(SP.bytes_domain(EC_BeaconBlockBody.ENC(m_body)), Layout.bytes_valid([]), CS.domv(EC_BeaconBlockBody.VAL(m_body), Spec.Schema104(), EC_BeaconBlockBody.ENC(m_body), {==}, EC_BeaconBlockBody.encx_specO(m_body, ok_hok_bodyW(slot, proposer_index, parent_root, state_root, m_body, h))),
+    {==})))))
+
+def okoCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> LY.OKO(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n, OSC(slot, proposer_index, parent_root, state_root, m_body)):
+  ({==}, Unit{})
+
+def szCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {U32.to_nat(K.SZC(slot, proposer_index, parent_root, state_root, m_body)) == ENDC(slot, proposer_index, parent_root, state_root, m_body) : Nat}:
+  FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(slot, proposer_index, parent_root, state_root, m_body) : Nat}, O.padd(84, EC_BeaconBlockBody.SZ(m_body)), K.SZC(slot, proposer_index, parent_root, state_root, m_body), Equal.sym(U32, K.SZC(slot, proposer_index, parent_root, state_root, m_body), O.padd(84, EC_BeaconBlockBody.SZ(m_body)), eSZ(slot, proposer_index, parent_root, state_root, m_body, Unit{})),
+    CS.pstepB(84, EC_BeaconBlockBody.SZ(m_body), 84n, LY.LN(EC_BeaconBlockBody.ENC(m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), ok_bndW(slot, proposer_index, parent_root, state_root, m_body, h), {==}, EC_BeaconBlockBody.szxO(m_body, ok_hok_bodyW(slot, proposer_index, parent_root, state_root, m_body, h)), FD.nat__le_refl(ENDC(slot, proposer_index, parent_root, state_root, m_body))))
+
+def cellsCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {K.ENCC(slot, proposer_index, parent_root, state_root, m_body) == VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))) : +List<U32>}:
+  %Equal.sym(+List<U32>, K.ENCC(slot, proposer_index, parent_root, state_root, m_body), VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84), VCN.PC(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body))]), eENC(slot, proposer_index, parent_root, state_root, m_body, Unit{})) :
+    {_ == VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))) : +List<U32>}
+  %Equal.sym(+List<U32>, VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84), VCN.PC(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body))]), VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), VCN.CAT([VCN.PC(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body))])), VCN.cat_lap([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)], [VCN.PC(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body))])) :
+    {_ == VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))) : +List<U32>}
+  %Equal.sym(+List<U32>, VCN.PC(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body), VCN.pc_id(List.length(&2, U32, EC_BeaconBlockBody.ENC(m_body)), EC_BeaconBlockBody.ENC(m_body), {==})) :
+    {VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), VCN.CAT([_])) == VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))) : +List<U32>}
+  {==}
+
+def encEW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool})
+    -> {Layout.encoding(PSC(slot, proposer_index, parent_root, state_root, m_body)) == Some{K.ENCC(slot, proposer_index, parent_root, state_root, m_body)} : Maybe<&2, +List<U32>>}:
+  +FP = LY.HDRW(PSC(slot, proposer_index, parent_root, state_root, m_body), OSC(slot, proposer_index, parent_root, state_root, m_body))
+  +PAY = Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))
+  +hf = LY.hdr_fp(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n, OSC(slot, proposer_index, parent_root, state_root, m_body), okoCW(slot, proposer_index, parent_root, state_root, m_body, h))
+  +fit = CS.fitcB(84n, PAY, ENDC(slot, proposer_index, parent_root, state_root, m_body), ENDC(slot, proposer_index, parent_root, state_root, m_body), ok_bndW(slot, proposer_index, parent_root, state_root, m_body, h), LY.lay_end(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n), FD.nat__le_refl(ENDC(slot, proposer_index, parent_root, state_root, m_body)))
+  +e1 = LY.enc_genL(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n, FP, PAY, {==}, hf, {==}, validCW(slot, proposer_index, parent_root, state_root, m_body, h), fit)
+  FD.logic__subst(+List<U32>, z => {Layout.encoding(PSC(slot, proposer_index, parent_root, state_root, m_body)) == Some{z} : Maybe<&2, +List<U32>>}, VCN.AP(FP, PAY), K.ENCC(slot, proposer_index, parent_root, state_root, m_body),
+    Equal.sym(+List<U32>, K.ENCC(slot, proposer_index, parent_root, state_root, m_body), VCN.AP(FP, PAY), cellsCW(slot, proposer_index, parent_root, state_root, m_body, h)), e1)
+
+def specCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool})
+    -> {Codec.parts(VALC(slot, proposer_index, parent_root, state_root, m_body), Spec.BeaconBlock()) == Some{[S.Variable{K.ENCC(slot, proposer_index, parent_root, state_root, m_body)}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{LV_u64(slot), S.Items{LV_u64(proposer_index), S.Items{LV_b32(parent_root), S.Items{LV_b32(state_root), S.Items{EC_BeaconBlockBody.VAL(m_body), S.EmptyItems{}}}}}}, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema104(), S.End{}}}}}}), Some{PSC(slot, proposer_index, parent_root, state_root, m_body)}, partsCW(slot, proposer_index, parent_root, state_root, m_body, h)) :
+    {Codec.aggregate(_, None{}) == Some{[S.Variable{K.ENCC(slot, proposer_index, parent_root, state_root, m_body)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(PSC(slot, proposer_index, parent_root, state_root, m_body)), Some{K.ENCC(slot, proposer_index, parent_root, state_root, m_body)}, encEW(slot, proposer_index, parent_root, state_root, m_body, h)) :
+    {Codec.one(_, None{}) == Some{[S.Variable{K.ENCC(slot, proposer_index, parent_root, state_root, m_body)}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+def lenEW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)) == ENDC(slot, proposer_index, parent_root, state_root, m_body) : Nat}:
+  +PAY = Layout.payloads(PSC(slot, proposer_index, parent_root, state_root, m_body))
+  +FP = LY.HDRW(PSC(slot, proposer_index, parent_root, state_root, m_body), OSC(slot, proposer_index, parent_root, state_root, m_body))
+  +e1 = Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), K.ENCC(slot, proposer_index, parent_root, state_root, m_body), VCN.AP(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), PAY), cellsCW(slot, proposer_index, parent_root, state_root, m_body, h))
+  +e2 = VS.len_app(VCN.CAT([VCN.PC(8n, FX.limbs(K.RW_u64(slot))), VCN.PC(8n, FX.limbs(K.RW_u64(proposer_index))), VCN.PC(32n, FX.limbs(K.RW_b32(parent_root))), VCN.PC(32n, FX.limbs(K.RW_b32(state_root))), I.limb(84)]), PAY)
+  +e3 = Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, PAY)), List.length(&2, U32, FP), 84n,
+    Equal.trans(Nat, List.length(&2, U32, FP), List.length(&2, U32, Layout.fixed_parts(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n)), 84n,
+      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), FP, Layout.fixed_parts(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n), Equal.sym(+List<U32>, Layout.fixed_parts(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n), FP, LY.hdr_fp(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n, OSC(slot, proposer_index, parent_root, state_root, m_body), okoCW(slot, proposer_index, parent_root, state_root, m_body, h)))),
+      LY.lay_len(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n)))
+  Equal.trans(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Nat.add(84n, List.length(&2, U32, PAY)), ENDC(slot, proposer_index, parent_root, state_root, m_body),
+    Equal.trans(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), Nat.add(84n, List.length(&2, U32, PAY)),
+      Equal.trans(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), List.length(&2, U32, VCN.AP(FP, PAY)), Nat.add(List.length(&2, U32, FP), List.length(&2, U32, PAY)), e1, e2), e3),
+    LY.lay_end(PSC(slot, proposer_index, parent_root, state_root, m_body), 84n))
+
+
+
 # ==== BeaconBlock in the encoder-window interface ====
 
 type MW is Data:
@@ -177,6 +254,9 @@ def TH(m: MW) -> FuluBeaconBlock_d.BeaconBlock:
 def OK(m: MW) -> Bool:
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: OKT(slot, proposer_index, parent_root, state_root, m_body)
+def OKW(m: MW) -> Bool:
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: OKTW(slot, proposer_index, parent_root, state_root, m_body)
 def ENC(m: MW) -> +List<U32>:
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: K.ENCC(slot, proposer_index, parent_root, state_root, m_body)
@@ -218,6 +298,28 @@ def goW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes3
     LLv, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el), by)
   (rt2, by2)
 
+def goO(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body))))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)))), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), WD.PADB(r, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), WD.PADB(r, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body))))) : +List<U32>})
+    -> DK.P2(RTX(slot, proposer_index, parent_root, state_root, m_body, dd, D, X, q, r), BYX(slot, proposer_index, parent_root, state_root, m_body, dd, D, q, r)):
+  +hs31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), lenEW(slot, proposer_index, parent_root, state_root, m_body, h)), ok_bndW(slot, proposer_index, parent_root, state_root, m_body, h))
+  +LLv = K.LLC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r)
+  +el = lenC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r)
+  +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el, hl)
+  +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el, hz)
+  +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
+  +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
+  +g = K.putxO(slot, proposer_index, parent_root, state_root, m_body, ok_hok_bodyW(slot, proposer_index, parent_root, state_root, m_body, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el, hl32), pf, hz2)
+  +rt = K.putk_bridge(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r, PA(K.RTC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), K.SZXC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r))), g))
+  +g2 = PB(K.RTC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), K.SZXC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r))), g)
+  +by = PA(K.BYC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r), K.SZXC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r)), g2)
+  +rt2 = FD.logic__subst(U32, z => {FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, D), z, K.OBJC(slot, proposer_index, parent_root, state_root, m_body)) == (FD.array__thaw(U32, K.PUTC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r)), (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), K.SZC(slot, proposer_index, parent_root, state_root, m_body))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)},
+    XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
+  +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(slot, proposer_index, parent_root, state_root, m_body, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(slot, proposer_index, parent_root, state_root, m_body), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
+    LLv, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), LLv, el), by)
+  (rt2, by2)
+
 def go(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKT(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body))))), VB.pw(dd)) == True{} : Bool},
@@ -247,6 +349,26 @@ law putxW:
 def putxW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: PA(RTX(slot, proposer_index, parent_root, state_root, m_body, dd, D, X, q, r), BYX(slot, proposer_index, parent_root, state_root, m_body, dd, D, q, r), goW(slot, proposer_index, parent_root, state_root, m_body, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
+
+law putxO:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OKW(m) == True{} : Bool}
+  {FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)}
+def putxO(m, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz, hok):
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: PA(RTX(slot, proposer_index, parent_root, state_root, m_body, dd, D, X, q, r), BYX(slot, proposer_index, parent_root, state_root, m_body, dd, D, q, r), goO(slot, proposer_index, parent_root, state_root, m_body, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz))
 
 law putx:
   for +m: MW
@@ -287,6 +409,26 @@ def putx_bytesW(m, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: PB(RTX(slot, proposer_index, parent_root, state_root, m_body, dd, D, X, q, r), BYX(slot, proposer_index, parent_root, state_root, m_body, dd, D, q, r), goW(slot, proposer_index, parent_root, state_root, m_body, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hs31, hl32, hz))
 
+law putx_bytesO:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
+  for +hok: {OKW(m) == True{} : Bool}
+  {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}
+def putx_bytesO(m, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz, hok):
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: PB(RTX(slot, proposer_index, parent_root, state_root, m_body, dd, D, X, q, r), BYX(slot, proposer_index, parent_root, state_root, m_body, dd, D, q, r), goO(slot, proposer_index, parent_root, state_root, m_body, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hl32, hz))
+
 law putx_bytes:
   for +m: MW
   for +dd: Nat
@@ -313,6 +455,14 @@ def szx(m, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: Equal.trans(Nat, U32.to_nat(K.SZC(slot, proposer_index, parent_root, state_root, m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), szC(slot, proposer_index, parent_root, state_root, m_body, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), lenE(slot, proposer_index, parent_root, state_root, m_body, hok)))
 
+law szxO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {U32.to_nat(SZ(m)) == List.length(&2, U32, ENC(m)) : Nat}
+def szxO(m, hok):
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: Equal.trans(Nat, U32.to_nat(K.SZC(slot, proposer_index, parent_root, state_root, m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), szCW(slot, proposer_index, parent_root, state_root, m_body, hok), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), ENDC(slot, proposer_index, parent_root, state_root, m_body), lenEW(slot, proposer_index, parent_root, state_root, m_body, hok)))
+
 # The bytes within 4 2^k (k = 28, kept symbolic).
 law bndx:
   for +m: MW
@@ -332,6 +482,14 @@ def encx_spec(m, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: specC(slot, proposer_index, parent_root, state_root, m_body, hok, 28n, {==})
 
+law encx_specO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {Codec.parts(VAL(m), Spec.BeaconBlock()) == Some{[S.Variable{ENC(m)}]} : Maybe<&2, +List<S.Part>>}
+def encx_specO(m, hok):
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: specCW(slot, proposer_index, parent_root, state_root, m_body, hok)
+
 law domx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
@@ -339,6 +497,14 @@ law domx:
 def domx(m, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: CS.domv(VALC(slot, proposer_index, parent_root, state_root, m_body), Spec.BeaconBlock(), K.ENCC(slot, proposer_index, parent_root, state_root, m_body), {==}, specC(slot, proposer_index, parent_root, state_root, m_body, hok, 28n, {==}))
+
+law domxO:
+  for +m: MW
+  for +hok: {OKW(m) == True{} : Bool}
+  {SP.bytes_domain(ENC(m)) == True{} : Bool}
+def domxO(m, hok):
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: CS.domv(VALC(slot, proposer_index, parent_root, state_root, m_body), Spec.BeaconBlock(), K.ENCC(slot, proposer_index, parent_root, state_root, m_body), {==}, specCW(slot, proposer_index, parent_root, state_root, m_body, hok))
 
 law pfx:
   for +m: MW

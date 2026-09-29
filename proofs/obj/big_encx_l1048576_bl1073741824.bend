@@ -2059,3 +2059,23 @@ def bcat_dom(+k: Nat, +W: List<&2, MB<WMr>>, +i: Nat) -> {SP.bytes_domain(VR.bca
 # The list's bytes are bytes.
 def domx(+t: F.array__Tree<MB<WMr>>, +N: U32) -> {SP.bytes_domain(ENCL(t, N)) == True{} : Bool}:
   app_dom(VVL.OFFS(YSN(t, N), A.quad(U32.to_nat(N))), VR.bcat(YSN(t, N)), offs_dom(YSN(t, N), A.quad(U32.to_nat(N))), bcat_dom(U32.to_nat(N), SL(t), 0n))
+
+def encx_specB(+t: F.array__Tree<MB<WMr>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL(t, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL(t, N), Spec.Schema73()) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +n = U32.to_nat(N)
+  +W = SL(t)
+  +ys = YS(n, W, 0n)
+  +ec = cnt_ys(n, W, 0n)
+  +hcount = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(1048576)) == True{} : Bool}, n, Codec.count(XI(n, W, 0n)), Equal.sym(Nat, Codec.count(XI(n, W, 0n)), n, count_go(n, W, 0n)),
+    F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 1048576), Nat.is_le(n, U32.to_nat(1048576)), VU.le_u32(N, 1048576), okl_lim(t, N, h)))
+  +fit = F.logic__subst(Nat, z => {N.fits(4n, Nat.add(A.quad(z), VE2.LEN(VR.bcat(ys)))) == True{} : Bool}, n, VVL.CNT(ys), Equal.sym(Nat, VVL.CNT(ys), n, ec), VBZ.fitsB(LL(t, N), B, hL, hB))
+  %Equal.sym(Bool, Nat.is_le(Codec.count(XI(n, W, 0n)), U32.to_nat(1048576)), True{}, hcount) :
+    {Codec.require(_, Codec.aggregate(Codec.parts(XI(n, W, 0n), S.Repeat{Spec.Schema60()}), None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(XI(n, W, 0n), S.Repeat{Spec.Schema60()}), Some{VVL.VP(ys)}, parts_go(n, W, 0n, okl_e(t, N, h))) :
+    {Codec.require(True{}, Codec.aggregate(_, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(VVL.VP(ys)), Some{VE2.APP(VVL.OFFS(ys, A.quad(VVL.CNT(ys))), VR.bcat(ys))}, VVL.vp_enc(ys, valid_go(n, W, 0n), fit)) :
+    {Codec.require(True{}, Codec.one(_, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Nat, VVL.CNT(ys), n, ec) :
+    {Codec.require(True{}, Codec.one(Some{VE2.APP(VVL.OFFS(ys, A.quad(_)), VR.bcat(ys))}, None{})) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}
+  {==}

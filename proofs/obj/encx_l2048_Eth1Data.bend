@@ -549,3 +549,14 @@ def encx_spec_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U3
     VBZ.fitq(dx, LL_l2048_Eth1Data(A, N), hL, hdx))
   lpart_l2048_Eth1Data(U32.to_nat(N), A, hlim, fit)
 
+# szx_l2048_Eth1Data with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h32: {Nat.is_lt(LL_l2048_Eth1Data(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 72)) == LL_l2048_Eth1Data(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 72, 18n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l2048_Eth1Data(A, N), A.quad(Nat.mul(U32.to_nat(N), 18n)), {==}, h32))
+
+def encx_spec_l2048_Eth1DataB(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l2048_Eth1Data(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l2048_Eth1Data(A, N), S.ListOf{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, U32.to_nat(2048)}) == Some{[S.Variable{ENCL_l2048_Eth1Data(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 2048), Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), VU.le_u32(N, 2048), okl_lim_l2048_Eth1Data(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l2048_Eth1Data(A, N), List.length(&2, U32, ENCL_l2048_Eth1Data(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l2048_Eth1Data(A, N)), LL_l2048_Eth1Data(A, N), len_encl_l2048_Eth1Data(A, N)),
+    VBZ.fitsB(LL_l2048_Eth1Data(A, N), B, hL, hB))
+  lpart_l2048_Eth1Data(U32.to_nat(N), A, hlim, fit)

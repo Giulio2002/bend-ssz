@@ -533,3 +533,14 @@ def encx_spec_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSumma
     VBZ.fitq(dx, LL_l16777216_HistoricalSummary(A, N), hL, hdx))
   lpart_l16777216_HistoricalSummary(U32.to_nat(N), A, hlim, fit)
 
+# szx_l16777216_HistoricalSummary with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h32: {Nat.is_lt(LL_l16777216_HistoricalSummary(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 64)) == LL_l16777216_HistoricalSummary(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 64, 16n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16777216_HistoricalSummary(A, N), A.quad(Nat.mul(U32.to_nat(N), 16n)), {==}, h32))
+
+def encx_spec_l16777216_HistoricalSummaryB(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l16777216_HistoricalSummary(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l16777216_HistoricalSummary(A, N), S.ListOf{S.Container{["block_summary_root", "state_summary_root"], S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}, U32.to_nat(16777216)}) == Some{[S.Variable{ENCL_l16777216_HistoricalSummary(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16777216), Nat.is_le(U32.to_nat(N), U32.to_nat(16777216)), VU.le_u32(N, 16777216), okl_lim_l16777216_HistoricalSummary(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l16777216_HistoricalSummary(A, N), List.length(&2, U32, ENCL_l16777216_HistoricalSummary(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l16777216_HistoricalSummary(A, N)), LL_l16777216_HistoricalSummary(A, N), len_encl_l16777216_HistoricalSummary(A, N)),
+    VBZ.fitsB(LL_l16777216_HistoricalSummary(A, N), B, hL, hB))
+  lpart_l16777216_HistoricalSummary(U32.to_nat(N), A, hlim, fit)

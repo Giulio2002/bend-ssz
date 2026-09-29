@@ -548,3 +548,14 @@ def encx_spec_l134217728_PendingPartialWithdrawal(+A: FD.array__Tree<FuluPending
     VBZ.fitq(dx, LL_l134217728_PendingPartialWithdrawal(A, N), hL, hdx))
   lpart_l134217728_PendingPartialWithdrawal(U32.to_nat(N), A, hlim, fit)
 
+# szx_l134217728_PendingPartialWithdrawal with its bytes below 2^32 (no tree): the OKW twins' size.
+def szxB_l134217728_PendingPartialWithdrawal(+A: FD.array__Tree<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +N: U32, +h32: {Nat.is_lt(LL_l134217728_PendingPartialWithdrawal(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 24)) == LL_l134217728_PendingPartialWithdrawal(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 24, 6n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l134217728_PendingPartialWithdrawal(A, N), A.quad(Nat.mul(U32.to_nat(N), 6n)), {==}, h32))
+
+def encx_spec_l134217728_PendingPartialWithdrawalB(+A: FD.array__Tree<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +N: U32, +h: {OKL_l134217728_PendingPartialWithdrawal(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l134217728_PendingPartialWithdrawal(A, N), B) == True{} : Bool})
+    -> {Codec.parts(VALL_l134217728_PendingPartialWithdrawal(A, N), S.ListOf{S.Container{["validator_index", "amount", "withdrawable_epoch"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}, U32.to_nat(134217728)}) == Some{[S.Variable{ENCL_l134217728_PendingPartialWithdrawal(A, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 134217728), Nat.is_le(U32.to_nat(N), U32.to_nat(134217728)), VU.le_u32(N, 134217728), okl_lim_l134217728_PendingPartialWithdrawal(A, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l134217728_PendingPartialWithdrawal(A, N), List.length(&2, U32, ENCL_l134217728_PendingPartialWithdrawal(A, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l134217728_PendingPartialWithdrawal(A, N)), LL_l134217728_PendingPartialWithdrawal(A, N), len_encl_l134217728_PendingPartialWithdrawal(A, N)),
+    VBZ.fitsB(LL_l134217728_PendingPartialWithdrawal(A, N), B, hL, hB))
+  lpart_l134217728_PendingPartialWithdrawal(U32.to_nat(N), A, hlim, fit)
