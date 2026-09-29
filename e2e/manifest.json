@@ -3826,7 +3826,7 @@
     "laws": [
      "ComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 28n) (f_B's words below depth 28), hsD: BL.sdk(pj_3(o), 28n) (f_D's bytes below depth 28), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 28n) (f_E's list below depth 28), hsF: EV.sv4(pj_5(o), 28n) (f_F's record tree below depth 28), hsG: EV.sv2(pj_6(o), 31n, 28n) (f_G's mirror tree below depth 31, each element's list below depth 28)"
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; the D twins and the OKW laws: no container size budget; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 31n) (f_B's words below depth 31), hsD: BL.sdk(pj_3(o), 31n) (f_D's bytes below depth 31), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 31n) (f_E's list below depth 31), hsF: EV.sv4(pj_5(o), 31n) (f_F's record tree below depth 31), hsG: EV.sv2(pj_6(o), 31n, 31n) (f_G's mirror tree below depth 31, each element's list below depth 31)"
    }
   ],
   "FuluAggregateAndProof_e2e_generated.bend": [
