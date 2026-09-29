@@ -2789,30 +2789,6 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
-  "FuluBeaconBlock_e2e_dec_generated.bend": [
-   {
-    "name": "FuluBeaconBlock",
-    "generated_name": "BeaconBlock",
-    "laws": [
-     "FuluBeaconBlock_e2e_decode_view",
-     "FuluBeaconBlock_e2e_decode_reject"
-    ],
-    "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
-   }
-  ],
-  "FuluBeaconBlockBody_e2e_dec_generated.bend": [
-   {
-    "name": "FuluBeaconBlockBody",
-    "generated_name": "BeaconBlockBody",
-    "laws": [
-     "FuluBeaconBlockBody_e2e_decode_view",
-     "FuluBeaconBlockBody_e2e_decode_reject"
-    ],
-    "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
-   }
-  ],
   "FuluBeaconState_e2e_dec_generated.bend": [
    {
     "name": "FuluBeaconState",
@@ -2822,7 +2798,7 @@
      "FuluBeaconState_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluDataColumnSidecar_e2e_dec_generated.bend": [
@@ -2979,18 +2955,6 @@
     ],
     "ii": "view",
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
-   }
-  ],
-  "FuluSignedBeaconBlock_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSignedBeaconBlock",
-    "generated_name": "SignedBeaconBlock",
-    "laws": [
-     "FuluSignedBeaconBlock_e2e_decode_view",
-     "FuluSignedBeaconBlock_e2e_decode_reject"
-    ],
-    "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 31)"
    }
   ],
   "FuluTransaction_e2e_dec_generated.bend": [
@@ -3877,6 +3841,16 @@
      "FuluBeaconBlockBody_e2e_encode"
     ],
     "premise": "rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts' encode records' own bounds as premises, each a decoded-object gap the root law's invariant does not give: hs3/hs6 the proposer slashings' and deposits' storage (e2e_ml sdt), hs4 the attester slashings' (e2e_bbsl.sd1), hs5 the attestations' (e2e_bbatt.sd8), hs7/hs10 the voluntary exits' and BLS changes' trees at depth below 31 (sda), hs9 the execution payload's (e2e_epr.SHS_P, as its own (i)), hs11 the blob commitments' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests' lists at depth below 31 (sda), and hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlockBody.SZW, each part's byte count a witness; the parts' own size bounds are derived from it); hv11: the blob commitments' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)"
+   }
+  ],
+  "FuluBeaconState_e2e_generated.bend": [
+   {
+    "name": "FuluBeaconState",
+    "generated_name": "BeaconState",
+    "laws": [
+     "FuluBeaconState_e2e_encode"
+    ],
+    "premise": "rep: ST.rep_BeaconState(o, Spec.BeaconState()) and the encode record's storage bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound): the Bytes32 vectors (BL.sdpv) and uint64 vectors (BL.sdk1) and the sync committees' pubkeys (EW.sdsc) at depth below 31, the byte-storage lists at depth below 28 (U.sdk), the record lists' trees below their records' bounds (RLS.sda_L), the latest execution payload header's storage (e2e_mw.SHS_E), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZR of the fixed part and the parts' counts)"
    }
   ],
   "FuluDataColumnSidecar_e2e_generated.bend": [
@@ -6519,11 +6493,23 @@
   ]
  },
  "uncovered": {
-  "FuluBeaconState": {
-   "generated_name": "BeaconState",
+  "FuluBeaconBlockBody": {
+   "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluBeaconState_e2e_dec_generated.bend",
-   "root": "FuluBeaconState_e2e_root_generated.bend"
+   "root": "FuluBeaconBlockBody_e2e_root_generated.bend",
+   "encode": "FuluBeaconBlockBody_e2e_generated.bend"
+  },
+  "FuluBeaconBlock": {
+   "generated_name": "BeaconBlock",
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluBeaconBlock_e2e_root_generated.bend",
+   "encode": "FuluBeaconBlock_e2e_generated.bend"
+  },
+  "FuluSignedBeaconBlock": {
+   "generated_name": "SignedBeaconBlock",
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluSignedBeaconBlock_e2e_root_generated.bend",
+   "encode": "FuluSignedBeaconBlock_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -6980,17 +6966,11 @@
    "ii_iii": "FuluAttesterSlashing_e2e_dec_generated.bend",
    "iv": "FuluAttesterSlashing_e2e_root_generated.bend"
   },
-  "FuluBeaconBlock": {
-   "generated_name": "BeaconBlock",
-   "i": "FuluBeaconBlock_e2e_generated.bend",
-   "ii_iii": "FuluBeaconBlock_e2e_dec_generated.bend",
-   "iv": "FuluBeaconBlock_e2e_root_generated.bend"
-  },
-  "FuluBeaconBlockBody": {
-   "generated_name": "BeaconBlockBody",
-   "i": "FuluBeaconBlockBody_e2e_generated.bend",
-   "ii_iii": "FuluBeaconBlockBody_e2e_dec_generated.bend",
-   "iv": "FuluBeaconBlockBody_e2e_root_generated.bend"
+  "FuluBeaconState": {
+   "generated_name": "BeaconState",
+   "i": "FuluBeaconState_e2e_generated.bend",
+   "ii_iii": "FuluBeaconState_e2e_dec_generated.bend",
+   "iv": "FuluBeaconState_e2e_root_generated.bend"
   },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
@@ -7069,12 +7049,6 @@
    "i": "FuluSignedAggregateAndProof_e2e_generated.bend",
    "ii_iii": "FuluSignedAggregateAndProof_e2e_dec_generated.bend",
    "iv": "FuluSignedAggregateAndProof_e2e_root_generated.bend"
-  },
-  "FuluSignedBeaconBlock": {
-   "generated_name": "SignedBeaconBlock",
-   "i": "FuluSignedBeaconBlock_e2e_generated.bend",
-   "ii_iii": "FuluSignedBeaconBlock_e2e_dec_generated.bend",
-   "iv": "FuluSignedBeaconBlock_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
@@ -7351,8 +7325,8 @@
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071180,
    "covered": false,
    "bridged": null
@@ -7360,8 +7334,8 @@
   "FuluBeaconBlock": {
    "generated_name": "BeaconBlock",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071264,
    "covered": false,
    "bridged": null
@@ -7369,11 +7343,11 @@
   "FuluBeaconState": {
    "generated_name": "BeaconState",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 152862724982449,
    "covered": false,
-   "bridged": "FuluBeaconState_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
@@ -7495,8 +7469,8 @@
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
    "depth_bound": 31,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071364,
    "covered": false,
    "bridged": null
@@ -7814,19 +7788,19 @@
   },
   {
    "name": "FuluBeaconBlockBody",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071180 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071264 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluBeaconState",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "152862724982449 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
@@ -7838,7 +7812,7 @@
   },
   {
    "name": "FuluSignedBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071364 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
@@ -8119,6 +8093,42 @@
   "FuluNextSyncCommitteeBranch": {
    "generated_name": "NextSyncCommitteeBranch",
    "awaiting": []
+  }
+ },
+ "decoded_premises": {
+  "hv_SDB": {
+   "names": [
+    "BitsStruct",
+    "FuluAggregateAndProof",
+    "FuluAttestation",
+    "FuluBeaconBlock",
+    "FuluBeaconBlockBody",
+    "FuluPendingAttestation",
+    "FuluSignedAggregateAndProof",
+    "FuluSignedBeaconBlock",
+    "ProgressiveBitsStruct",
+    "ProgressiveComplexTestStruct",
+    "ProgressiveSingleListContainerTestStruct",
+    "ProgressiveTestStruct",
+    "ProgressiveVarTestStruct"
+   ],
+   "premise": "the bit list field's storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): its words' tree at depth below 31, room for word K >> 5, and hv, the bits of the last word at or above the length K clear",
+   "lemmas": "e2e/e2e_hv.bend: the decoder copies the words into a tree M, keeps bytes 0 .. p of the last word (mask_last) and clears the delimiter bit K = 8 (n - 1) + high_bit(last byte) (clear_bit); the result is a tree update of M with no bit at or above K set (hvw0 .. hvw3 on the last word, hcore0 .. hcore3 and hvobj on the tree)",
+   "decoded_objects": {
+    "BitsStruct": "not derived yet",
+    "FuluAggregateAndProof": "proved: FuluAggregateAndProof_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "FuluAttestation": "proved: FuluAttestation_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "FuluBeaconBlock": "not derived yet",
+    "FuluBeaconBlockBody": "not derived yet",
+    "FuluPendingAttestation": "proved: FuluPendingAttestation_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "FuluSignedAggregateAndProof": "proved: FuluSignedAggregateAndProof_e2e_dec_generated.bend decoded_hv (every accepted input's object satisfies the premise)",
+    "FuluSignedBeaconBlock": "not derived yet",
+    "ProgressiveBitsStruct": "not derived yet",
+    "ProgressiveComplexTestStruct": "not derived yet",
+    "ProgressiveSingleListContainerTestStruct": "not derived yet",
+    "ProgressiveTestStruct": "not derived yet",
+    "ProgressiveVarTestStruct": "not derived yet"
+   }
   }
  }
 }

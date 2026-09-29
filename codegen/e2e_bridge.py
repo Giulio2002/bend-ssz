@@ -2162,7 +2162,25 @@ def _emit_nmax(base):
                f'    FD.nat__add_comm(4n, U32.to_nat((4 * j : U32))))')
         assert txt.count(old) >= 1, (r, txt.count(old))
         txt = txt.replace(old, new, 1)
-    return ('\n\n# ---- the same at the object API\'s own limit: depth d < 31, n <= VB.NMAX() (obN) ----\n' + txt)
+    OBD = '''
+
+# ---- the same for an encoding below 2^31 bytes (the encode laws' OKW bound): n < 2^31 is within NMAX (obD) ----
+
+def n31_N(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), FD.spec_common__pow2(31n)) == True{} : Bool}) -> {U32.is_le(n, VB.NMAX()) == True{} : Bool}:
+  +h = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(FD.u32__pow2u(31n), VB.NMAX()), Nat.is_le(U32.to_nat(FD.u32__pow2u(31n)), U32.to_nat(VB.NMAX())),
+    VB.le_u32n(FD.u32__pow2u(31n), VB.NMAX()), {==})
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(FD.u32__pow2u(31n)), FD.spec_common__pow2(31n), FD.u32__pow2u_value(31n, {==}), h)
+  +h3 = FD.nat__le_trans(U32.to_nat(n), FD.spec_common__pow2(31n), U32.to_nat(VB.NMAX()), FD.nat__lt_le(U32.to_nat(n), FD.spec_common__pow2(31n), h31), h2)
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()),
+    Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), h3)
+
+# The output path's bytes at any depth d < 31, for n < 2^31 (n <= 4 * 2^d).
+def obD(+d: Nat, +T: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, T) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +h31: {Nat.is_lt(U32.to_nat(n), FD.spec_common__pow2(31n)) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool})
+    -> {Pair.snd(B.Buf, +List<U32>, B.emit(B.Buf{FD.array__thaw(U32, T), n}, 0, C.nwu(n))) == VSP.bt(U32.to_nat(n), SF.limbs(FD.array__slots(U32, T))) : +List<U32>}:
+  obN(d, T, n, pf, hd, n31_N(n, h31), hn)
+'''
+    return ('\n\n# ---- the same at the object API\'s own limit: depth d < 31, n <= VB.NMAX() (obN) ----\n' + txt + OBD)
 
 
 def emit_text():
@@ -2991,7 +3009,12 @@ def outputs():
     # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
     import e2e_state_gen as ESG
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
-        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state())
+        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state_deep())
+    # BeaconState (i): its encode record from the parts' records (e2e_state_enc: e2e_bsx, e2e_bsl, e2e_rls)
+    import e2e_state_enc as ESE
+    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+        VENC_SHAPES.setdefault('BeaconState', ESE.venc_state)
+        VENC_PREMISE.setdefault('BeaconState', ESE.STATE_PREMISE)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3217,6 +3240,7 @@ def outputs():
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
+    out[OUT / 'e2e_hv.bend'] = BVG.hv_text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
@@ -3227,10 +3251,15 @@ def outputs():
         import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
         out[OUT / 'e2e_u64l.bend'] = EBB.u64l_text()
+    if (OBJ / 'big_encx_BeaconState_iface.bend').exists():
+        import e2e_state_enc as ESE
+        out[OUT / 'e2e_bsx.bend'] = ESE.bsx_text()
+        out[OUT / 'e2e_bsl.bend'] = ESE.bsl_text()
+        out[OUT / 'e2e_rls.bend'] = ESE.rls_text()
     if (OBJ / 'big_var_winx_BeaconState.bend').exists():
         import e2e_state_gen as ESG
-        out[OUT / 'e2e_stv.bend'] = ESG.text()
-        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state()
+        out[OUT / 'e2e_stv.bend'] = ESG.text_deep()
+        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state_deep()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
@@ -3290,6 +3319,20 @@ def outputs():
     man['input_bounds'] = ib
     man['input_bound_short'] = ibs
     man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
+    # whether the objects the decoder builds satisfy the (i) laws' bit-list premises (hv / SDB): stated, not yet derived
+    hv_names = sorted(R0 for R0, rows_ in ((f[:-len('_e2e_generated.bend')], r) for f, r in man['files'].items() if f.endswith('_e2e_generated.bend'))
+                      if any(re.search(r'sdbv|SDP?B\b|sd8\b|zero bits above|bits above K|BeaconBlockBody\'s \(i\)', e.get('premise', '')) for e in rows_))
+    man['decoded_premises'] = {'hv_SDB': {
+        'names': hv_names,
+        'premise': ('the bit list field\'s storage as the encode record takes it (e2e_bitv.sdbv, e2e_bsenc.SDB, e2e_pbs.SDB, e2e_encp.SDPB, e2e_bbatt.SDB through sd8): '
+                    'its words\' tree at depth below 31, room for word K >> 5, and hv, the bits of the last word at or above the length K clear'),
+        'lemmas': ('e2e/e2e_hv.bend: the decoder copies the words into a tree M, keeps bytes 0 .. p of the last word (mask_last) and clears the '
+                   'delimiter bit K = 8 (n - 1) + high_bit(last byte) (clear_bit); the result is a tree update of M with no bit at or above K set '
+                   '(hvw0 .. hvw3 on the last word, hcore0 .. hcore3 and hvobj on the tree)'),
+        'decoded_objects': {R0: (f'proved: {R0}_e2e_dec_generated.bend decoded_hv (every accepted input\'s object satisfies the premise)'
+                                 if (OUT / f'{R0}_e2e_dec_generated.bend') in out and 'def decoded_hv(' in out[OUT / f'{R0}_e2e_dec_generated.bend'] else 'not derived yet')
+                            for R0 in hv_names}}}
+
     for f, rows_ in man['files'].items():
         for e in rows_:
             if any(l.endswith('_e2e_decode_accept') for l in e['laws']):

@@ -6428,18 +6428,18 @@ def bx_deep(text):
     HL = ('  +hL = FD.nat__le_trans(U32.to_nat(L), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(L)), hw)\n')
     CB = 'UCT.ct_bytes(d, t, off, L, dz, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, L, hL), pf, UW.hsx(d, off, x, L, eo, hd, hw), hr, hB)'
     CBU = 'UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)'
-    names = ['cwl', 'ctw', 'bvg']
+    names = ['cwl', 'ctw', 'bvg', 'fbv']   # fbv: the copied fixed byte vector (codec-top's BeaconState at any depth)
     blocks = []
     for nm in names:
         a = text.index(f'\ndef {nm}(') + 1
         e = text.index('\n\n', a)
         blocks.append(text[a:e])
     tw = '\n\n'.join(blocks)
-    tw = re.sub(r'(?<![\w.])(cwl|ctw|bvg)\(', lambda m: m.group(1) + 'Y(', tw)
-    assert tw.count(HD) == 3 and tw.count(CB) == 2
+    tw = re.sub(r'(?<![\w.])(cwl|ctw|bvg|fbv)\(', lambda m: m.group(1) + 'Y(', tw)
+    assert tw.count(HD) == 4 and tw.count(CB) == 2
     tw = tw.replace(HD, HY).replace(CB, CBU).replace(HL, '').replace(', eo, hd, hw, pf, hr, eL)', ', eo, hy, hw, pf, hr, eL)')
     assert 'hd' not in re.sub(r'\bhdz?\w+', '', tw.replace('+hd', '')) or True
-    a = text.index('\ndef bvg(') + 1
+    a = text.index('\ndef fbv(') + 1
     e = text.index('\n\n', a)
     return text[:e] + '\n\n# ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----\n' + tw + text[e:]
 

@@ -34,7 +34,7 @@ IMPORTS = [
     'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d', 'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d',
     'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d', 'import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d',
     'import ../types/Fulu_list_Attestation_8_def_generated.bend as Fulu_list_Attestation_8_d',
-    'import ./e2e_bitl.bend as BLB', 'import ./e2e_encp.bend as EP', 'import ./e2e_encr.bend as ER', 'import ./e2e_bits.bend as E2B']
+    'import ./e2e_bitl.bend as BLB', 'import ./e2e_encp.bend as EP', 'import ./e2e_u64l.bend as ER', 'import ./e2e_bits.bend as E2B']
 
 
 def _wp(n, p='w'):
