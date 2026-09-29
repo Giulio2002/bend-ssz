@@ -4637,7 +4637,7 @@ def main():
     comp = {}
     for q, (tb, tf) in _COMP.items():
         if q in out:
-            c = okw.okw_companion(out[q], tf, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem)
+            c = okw.okw_companion(out[q], tf, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem, 'codegen/var_cont_enc.py')
             if c:
                 comp[q.with_name(q.stem + '_o.bend')] = c
     names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}

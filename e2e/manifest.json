@@ -4499,6 +4499,17 @@
     "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
    }
   ],
+  "FuluValidator_e2e_dec_generated.bend": [
+   {
+    "name": "FuluValidator",
+    "generated_name": "Validator",
+    "ii": "view",
+    "laws": [
+     "FuluValidator_e2e_decode_view",
+     "FuluValidator_e2e_decode_reject"
+    ]
+   }
+  ],
   "FuluBlob_e2e_generated.bend": [
    {
     "name": "FuluBlob",
@@ -6529,12 +6540,7 @@
   ]
  },
  "uncovered": {},
- "decode_uncovered": {
-  "FuluValidator": {
-   "generated_name": "Validator",
-   "reason": "no decode_input / decode_none / decode_reject law"
-  }
- },
+ "decode_uncovered": {},
  "root_awaiting": {},
  "fixed_size": {
   "FuluBlob": {

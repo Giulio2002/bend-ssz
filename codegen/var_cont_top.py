@@ -1084,10 +1084,40 @@ def okw_sizes(out):
     for q, t in out.items():
         t2 = okw_size(q, t)
         if t2 != t:
-            comp[q.with_name(q.stem + '_o.bend')] = okw.okw_companion(t, t2, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem)
+            comp[q.with_name(q.stem + '_o.bend')] = okw.okw_companion(t, t2, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem, 'codegen/var_cont_top.py')
     names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
     for p in (ROOT / 'proofs/obj').glob('big_encx_*_iface_o.bend'):
         names[p.stem[:-2]] = okw._names(p.read_text())
+    return {q: okw.okw_relink(c, names) for q, c in comp.items()}
+
+
+def okw_tops(out):
+    """The encoder laws' O twins (encode_evalO / encode_specO on OKW, the output tree below depth 31; codegen/okw.py
+    top_o / gtop_o) of the tops with an OKW interface, in the companions big_var_codec_<C>_enc_o."""
+    import okw
+    comp = {}
+    for q, t in out.items():
+        if not (q.stem.startswith('big_var_codec_') and q.stem.endswith('_enc')):
+            continue
+        ci = re.search(r'^import \./(\w+)\.bend as CI$', t, re.M)
+        if not ci or 'def OKTW(' not in (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text() or 'law encode_eval:' not in t:
+            continue
+        if 'def putx0(' in t:
+            k = re.search(r'^import \./(\w+)\.bend as K$', t, re.M)
+            kt = (ROOT / f'proofs/obj/{k.group(1)}.bend').read_text()
+            t2 = okw.top_o(t, 'putxO' if '\ndef putxO(' in kt else 'putxW')
+        elif 'def room(' in t and 'Z.sizez(' not in t:   # (the wide generic containers' size module: later)
+            t2 = okw.gtop_o(t)
+        else:
+            continue
+        if t2 != t:
+            comp[q.with_name(q.stem + '_o.bend')] = okw.okw_companion(t, t2, q.stem, 'the encoder laws on OKW (encodings below 2^31 bytes) of ' + q.stem, 'codegen/var_cont_top.py')
+    names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
+    for p in (ROOT / 'proofs/obj').glob('big_encx_*_o.bend'):
+        names.setdefault(p.stem[:-2], okw._names(p.read_text()))
+    for q, t in out.items():
+        if q.stem.endswith('_size_o') or q.stem.endswith('_iface_o'):
+            names.setdefault(q.stem[:-2], okw._names(t))
     return {q: okw.okw_relink(c, names) for q, c in comp.items()}
 
 
@@ -1125,6 +1155,7 @@ def main():
             out[out_file(C)] = gtop_text(C)
     out = RR.rewire_out(out)
     out.update(okw_sizes(out))
+    out.update(okw_tops(out))
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:
