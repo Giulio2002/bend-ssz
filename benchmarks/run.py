@@ -72,7 +72,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import snappy_block as snappy  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-BEND = '/Users/monkeair/.bend/bin/bend'
+# the pinned runtime compiler (benchmarks/toolchain.json); BEND_RUNTIME names it where it lives elsewhere
+BEND = os.environ.get('BEND_RUNTIME') or json.loads((ROOT / 'benchmarks/toolchain.json').read_text())['bend']['path']
 ENV = {**os.environ, 'BEND_NO_TELEMETRY': '1'}
 OUT = ROOT / 'build/performance'
 INPUTS = OUT / 'inputs'

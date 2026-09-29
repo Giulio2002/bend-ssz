@@ -17,6 +17,8 @@ import sys
 
 import snappy
 
+from provenance import stamp
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 os.chdir(ROOT)
 groups = json.load(open('types/obj_groups.json'))
@@ -60,6 +62,6 @@ print(dict(res), 'types', len({c.split('/')[4] for c in cases if not only or c.s
 for x in fails[:12]:
     print(x)
 if not only:
-    json.dump({'cases': len(cases), 'result': dict(res), 'failures': fails},
+    json.dump({'cases': len(cases), 'result': dict(res), 'failures': fails, 'provenance': stamp()},
               open('benchmarks/evidence/object_conformance.json', 'w'), indent=1)
 sys.exit(1 if fails else 0)

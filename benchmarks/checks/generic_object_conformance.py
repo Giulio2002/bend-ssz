@@ -28,6 +28,8 @@ import sys
 
 import snappy
 
+from provenance import stamp
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -99,6 +101,6 @@ if not only:
     pathlib.Path('benchmarks/evidence').mkdir(parents=True, exist_ok=True)
     json.dump({'cases': total, 'passed': passed, 'api': 'generated typed object API (types/generic_obj*.bend)',
                'tally': {' '.join(k): v for k, v in sorted(tally.items())},
-               'unsupported_schemas': unsupported, 'failures': failures},
+               'unsupported_schemas': unsupported, 'failures': failures, 'provenance': stamp()},
               open('benchmarks/evidence/generic_object_conformance.json', 'w'), indent=1)
 sys.exit(1 if failures else 0)
