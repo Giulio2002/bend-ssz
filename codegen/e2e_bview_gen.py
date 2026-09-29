@@ -841,8 +841,9 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
   +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(L, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(L, 1))), Nat.mul(8n, m), emul), bd)
   +eNB = Equal.trans(Nat, U32.to_nat(DC.NBW(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(L, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(L, 1)), O.high_bit(V), {lim}, hadd),
     Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(L, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(L, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
-  +hNW = C.nw(L, d, FD.nat__lt_trans(d, @BD@, 29n, hd, {{==}}), hL)
-  +hr0 = VLS.hrg(d, L, hd, hL)
+  +hkc = FD.nat__le_trans(U32.to_nat(L), {nby}n, A.quad(FD.spec_common__pow2({kc}n)), hb, {{==}})
+  +hNW = C.nw(L, {kc}n, {{==}}, hkc)
+  +hr0 = DC.hrgB(n, hb)
   +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(L), 0n), C.nwn(U32.to_nat(L)),
     Equal.trans(Nat, Nat.add(VC.NW(L), 0n), VC.NW(L), C.nwn(U32.to_nat(L)), FD.nat__add_zero(VC.NW(L)), hNW), hr0)
   +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(L)), U32.to_nat(n), FD.spec_common__pow2(32n),

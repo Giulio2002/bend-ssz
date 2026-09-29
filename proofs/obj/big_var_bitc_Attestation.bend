@@ -88,11 +88,11 @@ def hLd(+d: Nat, +n: U32, +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.i
     -> {Nat.is_le(U32.to_nat(LL(n)), A.quad(VB.pw(d))) == True{} : Bool}:
   FD.nat__le_trans(U32.to_nat(LL(n)), Nat.add(A.quad(59n), U32.to_nat(LL(n))), A.quad(VB.pw(d)), Order.left_below_sum(A.quad(59n), U32.to_nat(LL(n))), hwL(d, n, ha, hn))
 
-# The header words k < H lie in the buffer.
-def hk(+d: Nat, +n: U32, +k: Nat, +hkH: {Nat.is_lt(k, 59n) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {Nat.is_lt(k, VB.pw(d)) == True{} : Bool}:
-  FD.nat__lt_le_trans(k, 59n, VB.pw(d), hkH, FD.nat__le_trans(59n, Nat.add(VC.NW(LL(n)), 59n), VB.pw(d), Order.left_below_sum(VC.NW(LL(n)), 59n), VBC.nwH(d, LL(n), 59n, hd, hwL(d, n, ha, hn))))
+# The offset word (word @PO < H) lies in the buffer: 4 H <= n <= 4 2^d.
+def hk(+d: Nat, +n: U32, +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_lt(0n, VB.pw(d)) == True{} : Bool}:
+  A.room_aligned(0n, VB.pw(d), FD.nat__le_trans(Nat.add(A.quad(0n), 4n), A.quad(59n), A.quad(VB.pw(d)), {==},
+    FD.nat__le_trans(A.quad(59n), Nat.add(A.quad(59n), U32.to_nat(LL(n))), A.quad(VB.pw(d)), FD.nat__le_add_right(A.quad(59n), U32.to_nat(LL(n))), hwL(d, n, ha, hn))))
 
 def hlt(+d: Nat, +n: U32, +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : Nat})
@@ -102,19 +102,24 @@ def hlt(+d: Nat, +n: U32, +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.i
       FD.nat__lt_add_left(M1(n), 1n+M1(n), A.quad(59n), FD.nat__lt_succ(M1(n)))),
     hwL(d, n, ha, hn))
 
-def eXW(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool},
+# The window ends below 2^32 (n is a U32).
+def hw32L(+n: U32, +ha: {U32.is_le(236, n) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(59n), U32.to_nat(LL(n))), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, U32.to_nat(n), Nat.add(236n, U32.to_nat(LL(n))), Equal.sym(Nat, Nat.add(236n, U32.to_nat(LL(n))), U32.to_nat(n), enFS(n, ha)), VB.u32_lt(n))
+
+def eXW(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : Nat})
     -> {U32.to_nat(XW(n)) == Nat.add(A.quad(59n), M1(n)) : Nat}:
-  VR.eXN(d, OW(), 59n, LL(n), M1(n), {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), hwL(d, n, ha, hn), e1)
+  VR.eXNw(OW(), 59n, LL(n), M1(n), {==}, hw32L(n, ha), e1)
 
-def hiW(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool},
+def hiW(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : Nat})
     -> {Nat.is_lt(VR.QX(XW(n)), VB.pw(d)) == True{} : Bool}:
   VR.hiX(d, XW(n), Nat.add(A.quad(59n), M1(n)), eXW(d, n, hd, ha, hn, e1), hlt(d, n, ha, hn, e1))
 
 # ---- the validator ----------------------------------------------------------------------------
 
-def okw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def okw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +a: Bool, +ea: {U32.is_lt(0, LL(n)) == a : Bool})
     -> {Fulu_bitlist_131072_r.bits131072_ok(BF(t, n), OW(), LL(n)) == (BF(t, n), chkw(a, t, n)) : B.Buf & Bool}:
@@ -126,7 +131,7 @@ def okw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
       +e1 = VR.e1n(LL(n), VR.pos1(LL(n), ea))
       %Equal.sym(Bool, U32.is_lt(0, LL(n)), True{}, ea) : {O.bitlist_nz(_, BF(t, n), OW(), LL(n), 131072, False{}) == (BF(t, n), chkw(True{}, t, n)) : B.Buf & Bool}
       %Equal.sym(B.Buf & U32, B.byte_at(BF(t, n), XW(n)), (BF(t, n), VWB(t, n)),
-          VR.byte_at_ok(d, t, n, XW(n), VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hiW(d, n, hd, ha, hn, e1), pf)) :
+          VR.byte_at_ok(d, t, n, XW(n), VB.lt32(d, hd), hiW(d, n, hd, ha, hn, e1), pf)) :
         {O.bitlist_pick(LL(n), 131072, False{}, _) == (BF(t, n), chkw(True{}, t, n)) : B.Buf & Bool}
       {==}
 
@@ -135,7 +140,7 @@ def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluAttesta
     case True{}: {==}
     case False{}: {==}
 
-def ok_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def ok_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(SPO(t), 236) == b : Bool})
     -> {FuluAttestation_r.Attestation_c0(b, BF(t, n), 0, n, SPO(t)) == (BF(t, n), chk3(True{}, b, CHKW(t, n))) : B.Buf & Bool}:
@@ -149,19 +154,19 @@ def ok_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
         {FuluAttestation_r.Attestation_v1(0, n, 236, _) == (BF(t, n), CHKW(t, n)) : B.Buf & Bool}
       c1_id(CHKW(t, n), BF(t, n), 0, n, 236)
 
-def ok_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def ok_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(236, n) == a : Bool})
     -> {FuluAttestation_r.Attestation_ok_len(a, BF(t, n), 0, n) == (BF(t, n), chk3(a, U32.is_eq(SPO(t), 236), CHKW(t, n))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(0, 0)), (VF.BF(t, n), SPO(t)),
-          VF.rd32a(d, t, n, U32.add(0, 0), 0n, {==}, VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hk(d, n, 0n, {==}, hd, ea, hn), pf)) :
+          VF.rd32a(d, t, n, U32.add(0, 0), 0n, {==}, VB.lt32(d, hd), hk(d, n, ea, hn), pf)) :
         {FuluAttestation_r.Attestation_v0(0, n, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPO(t), 236), CHKW(t, n))) : B.Buf & Bool}
       ok_c0(d, t, n, pf, hd, ea, hn, U32.is_eq(SPO(t), 236), {==})
 
 # The validator returns the buffer and CHK(t, n).
-def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluAttestation_r.Attestation_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   ok_len(d, t, n, pf, hd, hn, U32.is_le(236, n), {==})
@@ -217,14 +222,26 @@ def hB(+t: FD.array__Tree<U32>, +n: U32, +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : N
   %Equal.sym(Nat, U32.to_nat(LL(n)), 1n+M1(n), e1) : {Nat.is_le(_, 16385n) == True{} : Bool}
   VR.x8_inv(M1(n), 16384n, h8)
 
-def hdzK(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(LL(n)), A.quad(VB.pw(d))) == True{} : Bool},
+# 31 + L <= 2^@KB: the checks bound the window (whatever the buffer's depth).
+def hyB(+n: U32, +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool}) -> {Nat.is_le(VC.YL(LL(n)), VB.pw(15n)) == True{} : Bool}:
+  FD.nat__le_trans(VC.YL(LL(n)), Nat.add(31n, 16385n), VB.pw(15n), Order.add_left(31n, U32.to_nat(LL(n)), 16385n, hb), {==})
+
+def hWZ(+n: U32, +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(VC.WZ(LL(n))), O.pow2n(13n)) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(VC.WZ(LL(n))), Nat.add(VD.s_rng(2n, VC.YL(LL(n))), 8n), O.pow2n(13n),
+    VC.wz_le(LL(n), 15n, {==}, hyB(n, hb)),
+    FD.nat__le_trans(Nat.add(VD.s_rng(2n, VC.YL(LL(n))), 8n), Nat.add(VD.s_rng(2n, 16416n), 8n), O.pow2n(13n),
+      Order.add_right(VD.s_rng(2n, VC.YL(LL(n))), VD.s_rng(2n, 16416n), 8n, VC.rng_mono(2n, VC.YL(LL(n)), 16416n, Order.add_left(31n, U32.to_nat(LL(n)), 16385n, hb))),
+      {==}))
+
+def hdzK(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(LL(n)), A.quad(VB.pw(d))) == True{} : Bool},
     +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool}) -> {Nat.is_le(VLS.DZ(LL(n)), 13n) == True{} : Bool}:
-  VD.wd_min(VC.WZ(LL(n)), 13n,
-    FD.nat__le_trans(U32.to_nat(VC.WZ(LL(n))), Nat.add(VD.s_rng(2n, VC.YL(LL(n))), 8n), O.pow2n(13n),
-      VC.wz_le(LL(n), VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, LL(n), hL)),
-      FD.nat__le_trans(Nat.add(VD.s_rng(2n, VC.YL(LL(n))), 8n), Nat.add(VD.s_rng(2n, 16416n), 8n), O.pow2n(13n),
-        Order.add_right(VD.s_rng(2n, VC.YL(LL(n))), VD.s_rng(2n, 16416n), 8n, VC.rng_mono(2n, VC.YL(LL(n)), 16416n, Order.add_left(31n, U32.to_nat(LL(n)), 16385n, hb))),
-        {==})))
+  VD.wd_min(VC.WZ(LL(n)), 13n, hWZ(n, hb))
+
+# The list storage has room for the words.
+def hrgB(+n: U32, +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool}) -> {Nat.is_le(Nat.add(VC.NW(LL(n)), 0n), VB.pw(VLS.DZ(LL(n)))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(LL(n)), 0n), VC.NW(LL(n)), FD.nat__add_zero(VC.NW(LL(n)))) : {Nat.is_le(_, VB.pw(VLS.DZ(LL(n)))) == True{} : Bool}
+  %Equal.sym(Nat, VB.pw(VLS.DZ(LL(n))), O.pow2n(VLS.DZ(LL(n))), VD.s_pow2_eq(VLS.DZ(LL(n)))) : {Nat.is_le(VC.NW(LL(n)), _) == True{} : Bool}
+  FD.nat__le_trans(VC.NW(LL(n)), U32.to_nat(VC.WZ(LL(n))), O.pow2n(VLS.DZ(LL(n))), VC.nw_le_wz(LL(n), 15n, {==}, hyB(n, hb)), VD.wd_cover(VC.WZ(LL(n)), 13n, {==}, hWZ(n, hb)))
 
 def za_zero_le(+n: Nat) -> {Nat.is_le(0n, n) == True{} : Bool}:
   match n:
@@ -376,18 +393,18 @@ def NBW(+t: FD.array__Tree<U32>, +n: U32) -> U32: U32.add(U32.mul(8, U32.sub(LL(
 
 # The reader returns the object of the buffer words (bit list storage: depth dz).
 def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +dz: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +epo: {SPO(t) == 236 : U32},
-    +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : Nat},
+    +e1: {U32.to_nat(LL(n)) == 1n+M1(n) : Nat}, +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool},
     +ez: {B.zeros(B.words_depth_u(VC.WZ(LL(n)))) == Array.new(U32, dz, 0) : Array<U32>},
     +hr0: {Nat.is_le(Nat.add(VC.NW(LL(n)), 0n), VB.pw(dz)) == True{} : Bool})
     -> {FuluAttestation_r.Attestation_read(BF(t, n), 0, n) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}:
-  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
+  +hd31 = hd
   +hd32 = VB.lt32(d, hd31)
-  +hs = VBC.nwH(d, LL(n), 59n, hd, hwL(d, n, ha, hn))
+  +hs = VBC.nwHB(d, LL(n), 59n, 15n, {==}, hyB(n, hb), hwL(d, n, ha, hn))
   +hHi = FD.nat__le_trans(59n, Nat.add(VC.NW(LL(n)), 59n), VB.pw(d), Order.left_below_sum(VC.NW(LL(n)), 59n), hs)
   %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(0, 0)), (VF.BF(t, n), SPO(t)),
-      VF.rd32a(d, t, n, U32.add(0, 0), 0n, {==}, hd32, hk(d, n, 0n, {==}, hd, ha, hn), pf)) :
+      VF.rd32a(d, t, n, U32.add(0, 0), 0n, {==}, hd32, hk(d, n, ha, hn), pf)) :
     {FuluAttestation_r.Attestation_rd0(0, n, _) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
   %Equal.sym(U32, SPO(t), 236, epo) :
     {FuluAttestation_r.Attestation_rd1(0, n, _, Fulu_bitlist_131072_r.bits131072_read(BF(t, n), U32.add(0, _), U32.sub(n, _))) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
@@ -397,33 +414,34 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +dz: Nat, +pf: {FD.array__p
       VR.copy_in_ok2(d, t, n, OW(), 59n, LL(n), dz, pf, hd31, hdz, ez, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(d)) == True{} : Bool}, Nat.add(VC.NW(LL(n)), 59n), Nat.add(VC.NW(LL(n)), 59n), {==}, hs), hr0)) :
     {FuluAttestation_r.Attestation_rd1(0, n, 236, O.bits_clear(NBW(t, n), _)) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
   %Equal.sym(B.Buf & FuluAttestationData_d.AttestationData, FuluAttestationData_r.AttestationData_read(BF(t, n), U32.add(0, 4), 128), (BF(t, n), FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}),
-      VT.rd_AttestationData(d, t, n, U32.add(0, 4), 1n, {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), pf, FD.nat__le_trans(Nat.add(32n, 1n), 59n, VB.pw(d), {==}, hHi))) :
+      VT.rdd_AttestationData(d, t, n, U32.add(0, 4), 1n, {==}, hd, pf, FD.nat__le_trans(Nat.add(32n, 1n), 59n, VB.pw(d), {==}, hHi))) :
     {FuluAttestation_r.Attestation_rd2(0, n, 236, O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, _) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
   %Equal.sym(B.Buf & FuluBytes96_d.Bytes96, FuluBytes96_r.b96_read(BF(t, n), U32.add(0, 132), 96), (BF(t, n), FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}),
-      VT.rd_b96(d, t, n, U32.add(0, 132), 33n, {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), pf, FD.nat__le_trans(Nat.add(24n, 33n), 59n, VB.pw(d), {==}, hHi))) :
+      VT.rdd_b96(d, t, n, U32.add(0, 132), 33n, {==}, hd, pf, FD.nat__le_trans(Nat.add(24n, 33n), 59n, VB.pw(d), {==}, hHi))) :
     {FuluAttestation_r.Attestation_rd3(0, n, 236, O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, _) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
   %Equal.sym(B.Buf & Fulu_bitvector_64_d.Bitvector64, Fulu_bitvector_64_r.bv64_read(BF(t, n), U32.add(0, 228), 8), (BF(t, n), Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}),
-      VT.rd_bv64(d, t, n, U32.add(0, 228), 57n, {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), pf, FD.nat__le_trans(Nat.add(2n, 57n), 59n, VB.pw(d), {==}, hHi))) :
+      VT.rdd_bv64(d, t, n, U32.add(0, 228), 57n, {==}, hd, pf, FD.nat__le_trans(Nat.add(2n, 57n), 59n, VB.pw(d), {==}, hHi))) :
     {FuluAttestation_r.Attestation_rd4(0, n, 236, O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, _) == (BF(t, n), FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, dz, VC.ZT(dz), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}) : B.Buf & FuluAttestation_d.Attestation}
   {==}
 
 def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluAttestation_d.Attestation: FuluAttestation_d.Attestation{O.Bits{O.clear_bit(O.mask_last(LL(n), FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 59n, 0n, VLS.DZ(LL(n)), VC.ZT(VLS.DZ(LL(n))), t))), NBW(t, n)), NBW(t, n)}, FuluAttestationData_d.AttestationData{O.U64{VB.slot(t, 1n), VB.slot(t, 2n)}, O.U64{VB.slot(t, 3n), VB.slot(t, 4n)}, FuluBytes32_d.Bytes32{VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 13n), VB.slot(t, 14n)}, FuluBytes32_d.Bytes32{VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)}}, FuluCheckpoint_d.Checkpoint{O.U64{VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}, Fulu_bitvector_64_d.Bitvector64{VB.slot(t, 57n), VB.slot(t, 58n)}}
 
-def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +epo: {SPO(t) == 236 : U32}, +hw: {CHKW(t, n) == True{} : Bool})
     -> {FuluAttestation_r.Attestation_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
   +e1 = cwE(t, n, hw)
   +h1 = cw1(t, n, hw)
   +hL = hLd(d, n, ha, hn)
-  +hz = hdzK(d, n, hd, hL, hB(t, n, e1, cwC(t, n, h1, cwB(t, n, h1))))
+  +hb = hB(t, n, e1, cwC(t, n, h1, cwB(t, n, h1)))
+  +hz = hdzK(d, n, hd, hL, hb)
   +ez = zeros_at(B.words_depth_u(VC.WZ(LL(n))), VLS.DZ(LL(n)), VD.wdu(VC.WZ(LL(n))), hz)
   %Equal.sym(B.Buf & Bool, FuluAttestation_r.Attestation_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
     {FuluAttestation_r.Attestation_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {FuluAttestation_r.Attestation_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
   %Equal.sym(B.Buf & FuluAttestation_d.Attestation, FuluAttestation_r.Attestation_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
-      rd_ok(d, t, n, VLS.DZ(LL(n)), pf, hd, FD.nat__le_lt_trans(VLS.DZ(LL(n)), 13n, 31n, hz, {==}), ha, hn, epo, e1, ez, VLS.hrg(d, LL(n), hd, hL))) :
+      rd_ok(d, t, n, VLS.DZ(LL(n)), pf, hd, FD.nat__le_lt_trans(VLS.DZ(LL(n)), 13n, 31n, hz, {==}), ha, hn, epo, e1, hb, ez, hrgB(n, hb))) :
     {FuluAttestation_r.Attestation_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
   {==}
 
@@ -433,7 +451,7 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {FuluAttestation_r.Attestation_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
@@ -449,7 +467,7 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {FuluAttestation_r.Attestation_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
@@ -466,15 +484,15 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: S.Sequence{S.Items{S.BitsValue{VBL.bl(VR.WB(t, 59n, U32.to_nat(LL(n))))}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 1n), VB.slot(t, 2n), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 3n), VB.slot(t, 4n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)])}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 13n), VB.slot(t, 14n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)])}, S.EmptyItems{}}}}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 23n), VB.slot(t, 24n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)])}, S.EmptyItems{}}}}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)])}, S.Items{S.BitsValue{FB.bitsof([VB.slot(t, 57n), VB.slot(t, 58n)])}, S.EmptyItems{}}}}}}
 
-def fitN(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+def fitN(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +el: {List.length(&2, U32, VR.WB(t, 59n, 1n+M1(n))) == U32.to_nat(LL(n)) : Nat})
     -> {N.fits(4n, Nat.add(VS.FSZ([], [[VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n), VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)], [VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)], [VB.slot(t, 57n), VB.slot(t, 58n)]]), List.length(&2, U32, VR.WB(t, 59n, 1n+M1(n))))) == True{} : Bool}:
   %Equal.sym(Nat, List.length(&2, U32, VR.WB(t, 59n, 1n+M1(n))), U32.to_nat(LL(n)), el) : {N.fits(4n, Nat.add(236n, _)) == True{} : Bool}
   %Equal.sym(Nat, Nat.add(236n, U32.to_nat(LL(n))), U32.to_nat(n), enFS(n, ha)) : {N.fits(4n, _) == True{} : Bool}
-  VFT.fits4(2n+d, U32.to_nat(n), hn, FD.nat__lt_trans(d, 28n, 30n, hd, {==}))
+  VFT.fits4lt(U32.to_nat(n), VB.u32_lt(n))
 
 # The spec encoding of the value: the header words' limbs (offset 236), then the window's bytes.
-def enc_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+def enc_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +ha: {U32.is_le(236, n) == True{} : Bool}, +el: {List.length(&2, U32, VR.WB(t, 59n, 1n+M1(n))) == U32.to_nat(LL(n)) : Nat},
     +dom: {SP.bytes_domain(VR.WB(t, 59n, 1n+M1(n))) == True{} : Bool}, +nzl: {U32.is_eq(VBL.lastb(VR.WB(t, 59n, 1n+M1(n))), 0) == False{} : Bool},
     +hl: {Nat.is_le(List.length(&2, Bool, VBL.bl(VR.WB(t, 59n, 1n+M1(n)))), U32.to_nat(131072)) == True{} : Bool})
@@ -487,10 +505,11 @@ def enc_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 28n) 
   {==}
 
 # The header's limbs and the window's bytes are the buffer's bytes.
-def lim_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool}, +epo: {SPO(t) == 236 : U32})
+def lim_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool}, +epo: {SPO(t) == 236 : U32},
+    +hb: {Nat.is_le(U32.to_nat(LL(n)), 16385n) == True{} : Bool})
     -> {List.append(&2, U32, F.limbs([236, VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n), VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n), VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n), VB.slot(t, 57n), VB.slot(t, 58n)]), VR.WB(t, 59n, U32.to_nat(LL(n)))) == VW(t, n) : +List<U32>}:
-  +hs = VBC.nwH(d, LL(n), 59n, hd, hwL(d, n, ha, hn))
+  +hs = VBC.nwHB(d, LL(n), 59n, 15n, {==}, hyB(n, hb), hwL(d, n, ha, hn))
   +hpre = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(59n, 0n), z) == True{} : Bool}, VB.pw(d), VB.len(FD.array__slots(U32, t)), Equal.sym(Nat, VB.len(FD.array__slots(U32, t)), VB.pw(d), FD.array__slots_length(U32, d, t, pf)),
     FD.nat__le_trans(59n, Nat.add(VC.NW(LL(n)), 59n), VB.pw(d), Order.left_below_sum(VC.NW(LL(n)), 59n), hs))
   %enFS(n, ha) : {List.append(&2, U32, F.limbs([236, VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n), VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n), VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n), VB.slot(t, 57n), VB.slot(t, 58n)]), VR.WB(t, 59n, U32.to_nat(LL(n)))) == VS.bt(_, F.limbs(FD.array__slots(U32, t))) : +List<U32>}
@@ -504,7 +523,7 @@ def lim_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U3
   %epo : {List.append(&2, U32, F.limbs([_, VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n), VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n), VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n), VB.slot(t, 57n), VB.slot(t, 58n)]), VR.WB(t, 59n, U32.to_nat(LL(n)))) == List.append(&2, U32, F.limbs(VF.app(VF.wpre(59n, 0n, FD.array__slots(U32, t)), [])), VR.WB(t, 59n, U32.to_nat(LL(n)))) : +List<U32>}
   {==}
 
-def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(236, n) == True{} : Bool}, +epo: {SPO(t) == 236 : U32},
     +hw: {CHKW(t, n) == True{} : Bool})
     -> Decoding.decodes(Spec.Attestation(), VW(t, n), VAL(t, n)):
@@ -527,7 +546,7 @@ def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U
     Equal.sym(Nat, List.length(&2, Bool, VBL.bl(VR.WB(t, 59n, 1n+M1(n)))), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(VWB(t, n)))), len), bd1)
   %Equal.sym(Nat, U32.to_nat(LL(n)), 1n+m, e1) :
     {Codec.encoding_for_legal_type(Spec.Attestation(), S.Sequence{S.Items{S.BitsValue{VBL.bl(VR.WB(t, 59n, _))}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 1n), VB.slot(t, 2n), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 3n), VB.slot(t, 4n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)])}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 13n), VB.slot(t, 14n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)])}, S.EmptyItems{}}}}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 23n), VB.slot(t, 24n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)])}, S.EmptyItems{}}}}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)])}, S.Items{S.BitsValue{FB.bitsof([VB.slot(t, 57n), VB.slot(t, 58n)])}, S.EmptyItems{}}}}}}) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  %lim_eq(d, t, n, pf, hd, hn, ha, epo) :
+  %lim_eq(d, t, n, pf, hd, hn, ha, epo, hB(t, n, e1, bd)) :
     {Codec.encoding_for_legal_type(Spec.Attestation(), S.Sequence{S.Items{S.BitsValue{VBL.bl(VR.WB(t, 59n, 1n+M1(n)))}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 1n), VB.slot(t, 2n), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 3n), VB.slot(t, 4n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)])}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 13n), VB.slot(t, 14n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)])}, S.EmptyItems{}}}}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 23n), VB.slot(t, 24n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)])}, S.EmptyItems{}}}}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)])}, S.Items{S.BitsValue{FB.bitsof([VB.slot(t, 57n), VB.slot(t, 58n)])}, S.EmptyItems{}}}}}}) == Some{_} : Maybe<&2, +List<U32>>}
   %Equal.sym(Nat, U32.to_nat(LL(n)), 1n+m, e1) :
     {Codec.encoding_for_legal_type(Spec.Attestation(), S.Sequence{S.Items{S.BitsValue{VBL.bl(VR.WB(t, 59n, 1n+M1(n)))}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 1n), VB.slot(t, 2n), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 3n), VB.slot(t, 4n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n)])}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 13n), VB.slot(t, 14n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n)])}, S.EmptyItems{}}}}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{VB.slot(t, 23n), VB.slot(t, 24n), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)])}, S.EmptyItems{}}}}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)])}, S.Items{S.BitsValue{FB.bitsof([VB.slot(t, 57n), VB.slot(t, 58n)])}, S.EmptyItems{}}}}}}) == Some{List.append(&2, U32, F.limbs([236, VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n), VB.slot(t, 8n), VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n), VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n), VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n), VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n), VB.slot(t, 57n), VB.slot(t, 58n)]), VR.WB(t, 59n, _))} : Maybe<&2, +List<U32>>}
@@ -539,7 +558,7 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.Attestation(), VW(t, n), VAL(t, n))

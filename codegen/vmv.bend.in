@@ -210,3 +210,36 @@ def hl_st(+d: Nat, +t: F.array__Tree<U32>, +L: U32, +m: Nat, +q: Nat, +hd: {Nat.
     {Nat.is_le(m, _) == True{} : Bool}
   %VL.nwm(d, L, m, hd, hL, em) : {Nat.is_le(_, VB.pw(VL.DZ(L))) == True{} : Bool}
   F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(VL.DZ(L))) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr)
+
+# ---- the same with no depth bound: the list length (VL.nwmA) bounds the storage ----
+
+# The first m words of a list's storage (m = its word count, from word q of the buffer)
+# are the buffer's words q .. q + m.
+def winA(+d: Nat, +t: F.array__Tree<U32>, +L: U32, +m: Nat, +q: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +em: {U32.to_nat(L) == A.quad(m) : Nat},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(VL.DZ(L))) == True{} : Bool},
+    +hs: {Nat.is_le(Nat.add(VC.NW(L), q), VB.pw(d)) == True{} : Bool})
+    -> {VS.wtake(m, F.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t))) == VS.wtake(m, VB.wdr(q, F.array__slots(U32, t))) : List<&2, U32>}:
+  +S = F.array__slots(U32, t)
+  +Z = F.array__slots(U32, VC.ZT(VL.DZ(L)))
+  %VL.nwmA(L, m, em) :
+    {VS.wtake(_, F.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t))) == VS.wtake(_, VB.wdr(q, S)) : List<&2, U32>}
+  %Equal.sym(List<&2, U32>, F.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t)), VB.lm(VC.NW(L), q, 0n, Z, S),
+      VB.slots_mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t, F.array__trep_perfect(U32, VL.DZ(L), 0), hr)) :
+    {VS.wtake(VC.NW(L), _) == VS.wtake(VC.NW(L), VB.wdr(q, S)) : List<&2, U32>}
+  VB.lm_win(VC.NW(L), q, 0n, Z, S,
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(L), 0n), z) == True{} : Bool}, VB.pw(VL.DZ(L)), VB.len(Z),
+      Equal.sym(Nat, VB.len(Z), VB.pw(VL.DZ(L)), F.array__slots_length(U32, VL.DZ(L), VC.ZT(VL.DZ(L)), F.array__trep_perfect(U32, VL.DZ(L), 0))), hr),
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(L), q), z) == True{} : Bool}, VB.pw(d), VB.len(S),
+      Equal.sym(Nat, VB.len(S), VB.pw(d), F.array__slots_length(U32, d, t, pf)), hs))
+
+# m words of a list's storage lie in it: m <= its length.
+def hl_stA(+d: Nat, +t: F.array__Tree<U32>, +L: U32, +m: Nat, +q: Nat, +em: {U32.to_nat(L) == A.quad(m) : Nat},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(VL.DZ(L))) == True{} : Bool})
+    -> {Nat.is_le(m, F.spec_common__length(U32, F.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t)))) == True{} : Bool}:
+  %Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t))), VB.pw(VL.DZ(L)),
+      F.array__slots_length(U32, VL.DZ(L), VB.mone(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t),
+        VB.mone_perfect(VC.NW(L), q, 0n, VL.DZ(L), VC.ZT(VL.DZ(L)), t, F.array__trep_perfect(U32, VL.DZ(L), 0)))) :
+    {Nat.is_le(m, _) == True{} : Bool}
+  %VL.nwmA(L, m, em) : {Nat.is_le(_, VB.pw(VL.DZ(L))) == True{} : Bool}
+  F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(VL.DZ(L))) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr)

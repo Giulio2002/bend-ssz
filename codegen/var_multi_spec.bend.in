@@ -100,7 +100,7 @@ def cz2(+t: FD.array__Tree<U32>, +hl1: {Nat.is_le(M1(t), FD.spec_common__length(
   %Equal.sym(Nat, U32.to_nat(O1(t)), A.quad(Q1(t)), e1) : {U32.to_nat(O2(t)) == Nat.add(_, A.quad(M1(t))) : Nat}
   Equal.trans(Nat, U32.to_nat(O2(t)), A.quad(Q2(t)), Nat.add(A.quad(Q1(t)), A.quad(M1(t))), e2, VM.quad_add(Q1(t), M1(t)))
 
-def cz3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd28: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+def cz3(+t: FD.array__Tree<U32>, +n: U32,
     +hl2: {Nat.is_le(M2(t, n), FD.spec_common__length(U32, WL2(t, n))) == True{} : Bool},
     +e2: {U32.to_nat(O2(t)) == A.quad(Q2(t)) : Nat}, +eN: {U32.to_nat(n) == A.quad(QN(t, n)) : Nat})
     -> {N.fits(4n, Nat.add(U32.to_nat(O2(t)), List.length(&2, U32, F.limbs(Y2(t, n))))) == True{} : Bool}:
@@ -108,10 +108,10 @@ def cz3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd28: {Nat.is_lt(d, 28n) == 
   %Equal.sym(Nat, U32.to_nat(O2(t)), A.quad(Q2(t)), e2) : {N.fits(4n, Nat.add(_, A.quad(M2(t, n)))) == True{} : Bool}
   %VM.quad_add(Q2(t), M2(t, n)) : {N.fits(4n, _) == True{} : Bool}
   %eN : {N.fits(4n, _) == True{} : Bool}
-  VL.hfit(d, n, hd28, hn)
+  VL.hfitA(n)
 
-def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool},
     +hb: {CB(t) == True{} : Bool}, +hc: {CC(t, n) == True{} : Bool}, +hdd: {CD(t, n) == True{} : Bool},
     +he: {CE(t) == True{} : Bool}, +hf: {CF(t) == True{} : Bool}, +hg: {CG(t, n) == True{} : Bool})
     -> Decoding.decodes(Spec.@X(), VW(t, n), VAL(t, n)):
@@ -120,22 +120,19 @@ def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U
   +e1 = eO1(t, n, hb, hc, he)
   +e2 = eO2(t, n, hb, hc, hdd, he, hf)
   +eN = eN(t, n, hb, hc, hdd, he, hf, hg)
-  +hr0 = VL.hrg(d, L0(t), hd28, hL0)
-  +hr1 = VL.hrg(d, L1(t), hd28, hL1)
-  +hr2 = VL.hrg(d, L2(t, n), hd28, hL2)
-  +hl0 = VV.hl_st(d, t, L0(t), M0(t), 89n, hd28, hL0, eM0, hr0)
-  +hl1 = VV.hl_st(d, t, L1(t), M1(t), Q1(t), hd28, hL1, eM1, hr1)
-  +hl2 = VV.hl_st(d, t, L2(t, n), M2(t, n), Q2(t), hd28, hL2, eM2, hr2)
-  +w0 = VV.win(d, t, L0(t), M0(t), 89n, pf, hd28, hL0, eM0, hr0, hsg(d, L0(t), M0(t), 89n, hd, hL0, eM0, hQ1))
-  +w1 = VV.win(d, t, L1(t), M1(t), Q1(t), pf, hd28, hL1, eM1, hr1, hsg(d, L1(t), M1(t), Q1(t), hd, hL1, eM1, hQ2))
-  +w2 = VV.win(d, t, L2(t, n), M2(t, n), Q2(t), pf, hd28, hL2, eM2, hr2, hsg(d, L2(t, n), M2(t, n), Q2(t), hd, hL2, eM2, hN))
+  +hl0 = VV.hl_stA(d, t, L0(t), M0(t), 89n, eM0, hr0)
+  +hl1 = VV.hl_stA(d, t, L1(t), M1(t), Q1(t), eM1, hr1)
+  +hl2 = VV.hl_stA(d, t, L2(t, n), M2(t, n), Q2(t), eM2, hr2)
+  +w0 = VV.winA(d, t, L0(t), M0(t), 89n, pf, eM0, hr0, hsgD(d, L0(t), M0(t), 89n, eM0, hQ1))
+  +w1 = VV.winA(d, t, L1(t), M1(t), Q1(t), pf, eM1, hr1, hsgD(d, L1(t), M1(t), Q1(t), eM1, hQ2))
+  +w2 = VV.winA(d, t, L2(t, n), M2(t, n), Q2(t), pf, eM2, hr2, hsgD(d, L2(t, n), M2(t, n), Q2(t), eM2, hqn))
   +c0 = cz0(t, eo0)
   +c1 = cz1(t, hl0, eo0, e1)
   +c2 = cz2(t, hl1, e1, e2)
-  +c3 = cz3(d, t, n, hd28, hn, hl2, e2, eN)
-  +ft0 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L0(t)), A.quad(M0(t)), eM0, VL.hfit(d, L0(t), hd28, hL0))
-  +ft1 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L1(t)), A.quad(M1(t)), eM1, VL.hfit(d, L1(t), hd28, hL1))
-  +ft2 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L2(t, n)), A.quad(M2(t, n)), eM2, VL.hfit(d, L2(t, n), hd28, hL2))
+  +c3 = cz3(t, n, hl2, e2, eN)
+  +ft0 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L0(t)), A.quad(M0(t)), eM0, VL.hfitA(L0(t)))
+  +ft1 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L1(t)), A.quad(M1(t)), eM1, VL.hfitA(L1(t)))
+  +ft2 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L2(t, n)), A.quad(M2(t, n)), eM2, VL.hfitA(L2(t, n)))
   Equal.trans(Maybe<&2, +List<U32>>, Codec.encoding_for_legal_type(Spec.@X(), VAL(t, n)), Some{ENC(t, n)}, Some{VW(t, n)},
     enc_spec(t, n, @HK, hl0, hl1, hl2, ft0, ft1, ft2, c0, c1, c2, c3),
     Equal.cong(+List<U32>, Maybe<&2, +List<U32>>, z => Some{z}, ENC(t, n), VW(t, n), lim3(d, t, n, pf, eN, h89, w0, w1, w2)))
@@ -147,16 +144,17 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.@X(), VW(t, n), VAL(t, n))
-def decode_spec(d, t, n, pf, hd, hn, hchk):
+def decode_spec(d, t, n, pf, hd, hn, hN, hchk):
   +k1 = FD.logic__and_right(CA(n), K1(t, n), hchk)
   +k2 = FD.logic__and_right(CB(t), K2(t, n), k1)
   +k3 = FD.logic__and_right(CC(t, n), K3(t, n), k2)
   +k4 = FD.logic__and_right(CD(t, n), K4(t, n), k3)
   +k5 = FD.logic__and_right(CE(t), K5(t, n), k4)
-  spec_go(d, t, n, pf, hd, hn,
+  spec_go(d, t, n, pf, hd, hn, hN,
     FD.logic__and_left(CB(t), K2(t, n), k1), FD.logic__and_left(CC(t, n), K3(t, n), k2), FD.logic__and_left(CD(t, n), K4(t, n), k3),
     FD.logic__and_left(CE(t), K5(t, n), k4), FD.logic__and_left(CF(t), CG(t, n), k5), FD.logic__and_right(CF(t), CG(t, n), k5))

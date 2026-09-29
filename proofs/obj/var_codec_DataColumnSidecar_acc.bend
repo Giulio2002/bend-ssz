@@ -40,7 +40,7 @@ import ./var_codec_DataColumnSidecar.bend as DC
 # DataColumnSidecar: the reader, and acceptance: every buffer the validator accepts decodes to OBJ(t, n).
 
 
-def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +dz0: Nat, +dz1: Nat, +dz2: Nat,
     +hdz0: {Nat.is_lt(dz0, 31n) == True{} : Bool}, +hdz1: {Nat.is_lt(dz1, 31n) == True{} : Bool}, +hdz2: {Nat.is_lt(dz2, 31n) == True{} : Bool},
     +ez0: {B.zeros(B.words_depth_u(VC.WZ(DC.L0(t)))) == Array.new(U32, dz0, 0) : Array<U32>},
@@ -56,8 +56,8 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     +hr2: {Nat.is_le(Nat.add(VC.NW(DC.L2(t, n)), 0n), VB.pw(dz2)) == True{} : Bool},
     +h89: {Nat.is_le(89n, VB.pw(d)) == True{} : Bool})
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_read(DC.BF(t, n), 0, n) == (DC.BF(t, n), FuluDataColumnSidecar_d.DataColumnSidecar{O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L0(t)), 89n, 0n, dz0, VC.ZT(dz0), t)), DC.L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L1(t)), DC.Q1(t), 0n, dz1, VC.ZT(dz1), t)), DC.L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L2(t, n)), DC.Q2(t), 0n, dz2, VC.ZT(dz2), t)), DC.L2(t, n)}, O.BSome{FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, FuluBytes32_d.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, FuluBytes32_d.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, O.Words{FD.array__thaw(U32, VB.mone(32n, 57n, 0n, 6n, VC.ZT(6n), t)), 128}}) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
-  +hd29 = FD.nat__lt_trans(d, 23n, 29n, hd, {==})
-  +hd31 = FD.nat__lt_trans(d, 23n, 31n, hd, {==})
+  +hd29 = hd
+  +hd31 = hd
   +hd32 = VB.lt32(d, hd31)
   %Equal.sym(B.Buf & U32, B.word(DC.BF(t, n), 2), (DC.BF(t, n), DC.O0(t)), DC.rd32(d, t, n, 2, 2n, {==}, hd32, FD.nat__lt_le_trans(2n, 89n, VB.pw(d), {==}, h89), pf)) :
     {FuluDataColumnSidecar_r.DataColumnSidecar_rd0(0, n, _) == (DC.BF(t, n), FuluDataColumnSidecar_d.DataColumnSidecar{O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L0(t)), 89n, 0n, dz0, VC.ZT(dz0), t)), DC.L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L1(t)), DC.Q1(t), 0n, dz1, VC.ZT(dz1), t)), DC.L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L2(t, n)), DC.Q2(t), 0n, dz2, VC.ZT(dz2), t)), DC.L2(t, n)}, O.BSome{FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, FuluBytes32_d.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, FuluBytes32_d.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, O.Words{FD.array__thaw(U32, VB.mone(32n, 57n, 0n, 6n, VC.ZT(6n), t)), 128}}) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}
@@ -96,47 +96,40 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
 
 def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluDataColumnSidecar_d.DataColumnSidecar: FuluDataColumnSidecar_d.DataColumnSidecar{O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L0(t)), 89n, 0n, VL.DZ(DC.L0(t)), VC.ZT(VL.DZ(DC.L0(t))), t)), DC.L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L1(t)), DC.Q1(t), 0n, VL.DZ(DC.L1(t)), VC.ZT(VL.DZ(DC.L1(t))), t)), DC.L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(DC.L2(t, n)), DC.Q2(t), 0n, VL.DZ(DC.L2(t, n)), VC.ZT(VL.DZ(DC.L2(t, n))), t)), DC.L2(t, n)}, O.BSome{FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, FuluBytes32_d.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, FuluBytes32_d.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, FuluBytes32_d.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, FuluBytes96_d.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, O.Words{FD.array__thaw(U32, VB.mone(32n, 57n, 0n, 6n, VC.ZT(6n), t)), 128}}
 
-# the list's storage depth is at most 23
-def hz(+d: Nat, +L: U32, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool},
-    +h15: {Nat.is_le(15n, VB.pw(d)) == True{} : Bool})
-    -> {Nat.is_le(VL.DZ(L), 23n) == True{} : Bool}:
-  FD.nat__le_trans(VL.DZ(L), 1n+d, 23n, VM.dz_le(d, L, FD.nat__lt_trans(d, 23n, 28n, hd, {==}), hL, h15), FD.nat__lt_succ_le_succ(d, 23n, hd))
-
-def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool},
+def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool},
     +hb: {DC.CB(t) == True{} : Bool}, +hc: {DC.CC(t, n) == True{} : Bool}, +hdd: {DC.CD(t, n) == True{} : Bool},
     +he: {DC.CE(t) == True{} : Bool}, +hf: {DC.CF(t) == True{} : Bool}, +hg: {DC.CG(t, n) == True{} : Bool})
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
-  +hd28 = FD.nat__lt_trans(d, 23n, 28n, hd, {==})
-  +hd31 = FD.nat__lt_trans(d, 23n, 31n, hd, {==})
-  +hN = DC.hQN(d, t, n, pf, hd, hn, hb, hc, hdd, he, hf, hg)
-  +hQ2 = FD.nat__le_trans(DC.Q2(t), DC.QN(t, n), VB.pw(d), Order.below_sum(DC.Q2(t), DC.M2(t, n)), hN)
+  +hqn = DC.hQN(d, t, n, pf, hd, hn, hb, hc, hdd, he, hf, hg)
+  +hQ2 = FD.nat__le_trans(DC.Q2(t), DC.QN(t, n), VB.pw(d), Order.below_sum(DC.Q2(t), DC.M2(t, n)), hqn)
   +hQ1 = FD.nat__le_trans(DC.Q1(t), DC.Q2(t), VB.pw(d), Order.below_sum(DC.Q1(t), DC.M1(t)), hQ2)
   +h89 = FD.nat__le_trans(89n, DC.Q1(t), VB.pw(d), Order.below_sum(89n, DC.M0(t)), hQ1)
   +h15 = FD.nat__le_trans(15n, 89n, VB.pw(d), {==}, h89)
   +eM0 = DC.eL0(t, he)
   +eM1 = DC.eL1(t, hf)
   +eM2 = DC.eL2(t, n, hg)
-  +hL0 = DC.hLq(d, DC.L0(t), DC.M0(t), eM0, FD.nat__le_trans(DC.M0(t), DC.Q1(t), VB.pw(d), Order.left_below_sum(89n, DC.M0(t)), hQ1))
-  +hL1 = DC.hLq(d, DC.L1(t), DC.M1(t), eM1, FD.nat__le_trans(DC.M1(t), DC.Q2(t), VB.pw(d), Order.left_below_sum(DC.Q1(t), DC.M1(t)), hQ2))
-  +hL2 = DC.hLq(d, DC.L2(t, n), DC.M2(t, n), eM2, FD.nat__le_trans(DC.M2(t, n), DC.QN(t, n), VB.pw(d), Order.left_below_sum(DC.Q2(t), DC.M2(t, n)), hN))
-  +z0 = hz(d, DC.L0(t), hd, hL0, h15)
-  +z1 = hz(d, DC.L1(t), hd, hL1, h15)
-  +z2 = hz(d, DC.L2(t, n), hd, hL2, h15)
-  %Equal.sym(B.Buf & Bool, FuluDataColumnSidecar_r.DataColumnSidecar_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, hd31), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {==}, h89), pf)) :
+  +yy0 = DC.hy0(t, n, hb, hc, hdd, he, hf, hg, hN)
+  +yy1 = DC.hy1(t, n, hb, hc, hdd, he, hf, hg, hN)
+  +yy2 = DC.hy2(t, n, hb, hc, hdd, he, hf, hg, hN)
+  +hr0 = VC.hrgU(DC.L0(t), yy0)
+  +hr1 = VC.hrgU(DC.L1(t), yy1)
+  +hr2 = VC.hrgU(DC.L2(t, n), yy2)
+  +z0 = VC.dz30(DC.L0(t), yy0)
+  +z1 = VC.dz30(DC.L1(t), yy1)
+  +z2 = VC.dz30(DC.L2(t, n), yy2)
+  %Equal.sym(B.Buf & Bool, FuluDataColumnSidecar_r.DataColumnSidecar_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, hd), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {==}, h89), pf)) :
     {FuluDataColumnSidecar_r.DataColumnSidecar_built(n, _) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
   %Equal.sym(Bool, DC.CHK(t, n), True{}, hchk) :
     {FuluDataColumnSidecar_r.DataColumnSidecar_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
   %Equal.sym(B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar, FuluDataColumnSidecar_r.DataColumnSidecar_read(DC.BF(t, n), 0, n), (DC.BF(t, n), OBJ(t, n)),
       rd_ok(d, t, n, pf, hd, VL.DZ(DC.L0(t)), VL.DZ(DC.L1(t)), VL.DZ(DC.L2(t, n)),
-        FD.nat__le_lt_trans(VL.DZ(DC.L0(t)), 23n, 31n, z0, {==}), FD.nat__le_lt_trans(VL.DZ(DC.L1(t)), 23n, 31n, z1, {==}), FD.nat__le_lt_trans(VL.DZ(DC.L2(t, n)), 23n, 31n, z2, {==}),
-        VZ.zat(B.words_depth_u(VC.WZ(DC.L0(t))), VL.DZ(DC.L0(t)), VD.wdu(VC.WZ(DC.L0(t))), z0),
-        VZ.zat(B.words_depth_u(VC.WZ(DC.L1(t))), VL.DZ(DC.L1(t)), VD.wdu(VC.WZ(DC.L1(t))), z1),
-        VZ.zat(B.words_depth_u(VC.WZ(DC.L2(t, n))), VL.DZ(DC.L2(t, n)), VD.wdu(VC.WZ(DC.L2(t, n))), z2),
+        FD.nat__le_lt_trans(VL.DZ(DC.L0(t)), 30n, 31n, z0, {==}), FD.nat__le_lt_trans(VL.DZ(DC.L1(t)), 30n, 31n, z1, {==}), FD.nat__le_lt_trans(VL.DZ(DC.L2(t, n)), 30n, 31n, z2, {==}),
+        DC.ezd(DC.L0(t)), DC.ezd(DC.L1(t)), DC.ezd(DC.L2(t, n)),
         FD.u32alg__eq_of(DC.O0(t), 356, hb), DC.eO1(t, n, hb, hc, he), DC.eO2(t, n, hb, hc, hdd, he, hf),
         VL.and3_q(DC.L0(t), DC.M0(t), eM0), VL.and3_q(DC.L1(t), DC.M1(t), eM1), VL.and3_q(DC.L2(t, n), DC.M2(t, n), eM2),
-        DC.hsg(d, DC.L0(t), DC.M0(t), 89n, hd, hL0, eM0, hQ1), DC.hsg(d, DC.L1(t), DC.M1(t), DC.Q1(t), hd, hL1, eM1, hQ2), DC.hsg(d, DC.L2(t, n), DC.M2(t, n), DC.Q2(t), hd, hL2, eM2, hN),
-        VL.hrg(d, DC.L0(t), hd28, hL0), VL.hrg(d, DC.L1(t), hd28, hL1), VL.hrg(d, DC.L2(t, n), hd28, hL2),
+        DC.hsgD(d, DC.L0(t), DC.M0(t), 89n, eM0, hQ1), DC.hsgD(d, DC.L1(t), DC.M1(t), DC.Q1(t), eM1, hQ2), DC.hsgD(d, DC.L2(t, n), DC.M2(t, n), DC.Q2(t), eM2, hqn),
+        hr0, hr1, hr2,
         h89)) :
     {FuluDataColumnSidecar_r.DataColumnSidecar_some(_) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
   {==}
@@ -147,17 +140,18 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == True{} : Bool}
   {FuluDataColumnSidecar_r.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
-def decode_accept(d, t, n, pf, hd, hn, hchk):
+def decode_accept(d, t, n, pf, hd, hn, hN, hchk):
   +k1 = FD.logic__and_right(DC.CA(n), DC.K1(t, n), hchk)
   +k2 = FD.logic__and_right(DC.CB(t), DC.K2(t, n), k1)
   +k3 = FD.logic__and_right(DC.CC(t, n), DC.K3(t, n), k2)
   +k4 = FD.logic__and_right(DC.CD(t, n), DC.K4(t, n), k3)
   +k5 = FD.logic__and_right(DC.CE(t), DC.K5(t, n), k4)
-  acc_go(d, t, n, pf, hd, hn, hchk,
+  acc_go(d, t, n, pf, hd, hn, hN, hchk,
     FD.logic__and_left(DC.CB(t), DC.K2(t, n), k1), FD.logic__and_left(DC.CC(t, n), DC.K3(t, n), k2), FD.logic__and_left(DC.CD(t, n), DC.K4(t, n), k3),
     FD.logic__and_left(DC.CE(t), DC.K5(t, n), k4), FD.logic__and_left(DC.CF(t), DC.CG(t, n), k5), FD.logic__and_right(DC.CF(t), DC.CG(t, n), k5))
 

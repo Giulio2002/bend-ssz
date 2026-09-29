@@ -31,9 +31,9 @@ import ../obj/big_var_plist_GtE83F21B20A.bend as PRV
 def GtE83F21B20A__ok_eval__ok_eval(+t: FD.array__Tree<U32>, +n: U32) -> {proglist_uint64_r.pl_u64_ok(PRV.BF(t, n), 0, n) == (PRV.BF(t, n), PRV.CHK(n)) : B.Buf & Bool}:
   PRV.ok_eval(t, n)
 
-def GtE83F21B20A__decode_accept__decode_accept(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(n) == True{} : Bool}) -> {proglist_uint64_r.GtE83F21B20A_decode(PRV.BF(t, n), n) == (PRV.BF(t, n), Some{PRV.OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}:
-  PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
+def GtE83F21B20A__decode_accept__decode_accept(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {PRV.CHK(n) == True{} : Bool}) -> {proglist_uint64_r.GtE83F21B20A_decode(PRV.BF(t, n), n) == (PRV.BF(t, n), Some{PRV.OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.decode_accept(d, t, n, pf, hd, hn, hN, hchk)
 
-def GtE83F21B20A__decode_spec__decode_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(n) == True{} : Bool}) -> Decoding.decodes(GS.GtE83F21B20A(), PRV.VW(t, n), PRV.VAL(t, n)):
-  PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
+def GtE83F21B20A__decode_spec__decode_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {PRV.CHK(n) == True{} : Bool}) -> Decoding.decodes(GS.GtE83F21B20A(), PRV.VW(t, n), PRV.VAL(t, n)):
+  PRV.decode_spec(d, t, n, pf, hd, hn, hN, hchk)
 

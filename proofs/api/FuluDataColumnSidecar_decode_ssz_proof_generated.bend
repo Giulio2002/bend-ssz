@@ -24,6 +24,7 @@ import ../obj/vfix.bend as P0_VF
 import ../obj/vlist.bend as P0_VL
 import ../obj/vmul.bend as P0_VM
 import ../obj/vmv.bend as P0_VV
+import ../obj/big_vvlz.bend as P0_VZG
 import ../obj/var_codec_DataColumnSidecar.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
@@ -101,18 +102,18 @@ import ../obj/var_codec_DataColumnSidecar_rej.bend as P3_PRV
 def FuluDataColumnSidecar__ok_eval__ok_eval(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(4n, P0_VB.pw(d)) == True{} : Bool}, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluDataColumnSidecar_r.DataColumnSidecar_ok(P0_PRV.BF(t, n), 0, n) == (P0_PRV.BF(t, n), P0_PRV.CHK(t, n)) : P0_B.Buf & Bool}:
   P0_PRV.ok_eval(d, t, n, hd, hpo, pf)
 
-def FuluDataColumnSidecar__decode_accept__decode_accept(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_DC.CHK(t, n) == True{} : Bool}) -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(P1_DC.BF(t, n), n) == (P1_DC.BF(t, n), Some{P1_PRV.OBJ(t, n)}) : P1_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
-  P1_PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
+def FuluDataColumnSidecar__decode_accept__decode_accept(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P1_VB.NMAX()) == True{} : Bool}, +hchk: {P1_DC.CHK(t, n) == True{} : Bool}) -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(P1_DC.BF(t, n), n) == (P1_DC.BF(t, n), Some{P1_PRV.OBJ(t, n)}) : P1_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  P1_PRV.decode_accept(d, t, n, pf, hd, hn, hN, hchk)
 
-def FuluDataColumnSidecar__decode_spec__decode_spec(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.DataColumnSidecar(), P0_PRV.VW(t, n), P0_PRV.VAL(t, n)):
-  P0_PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
+def FuluDataColumnSidecar__decode_spec__decode_spec(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P0_VB.NMAX()) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.DataColumnSidecar(), P0_PRV.VW(t, n), P0_PRV.VAL(t, n)):
+  P0_PRV.decode_spec(d, t, n, pf, hd, hn, hN, hchk)
 
-def FuluDataColumnSidecar__decode_unique__decode_unique(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == True{} : Bool}, +v: P2_S.Value, spec: P2_Decoding.decodes(P2_Spec.DataColumnSidecar(), P2_DC.VW(t, n), v)) -> {v == P2_DC.VAL(t, n) : P2_S.Value}:
-  P2_PRV.decode_unique(d, t, n, pf, hd, hn, hchk, v, spec)
+def FuluDataColumnSidecar__decode_unique__decode_unique(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P2_VB.NMAX()) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == True{} : Bool}, +v: P2_S.Value, spec: P2_Decoding.decodes(P2_Spec.DataColumnSidecar(), P2_DC.VW(t, n), v)) -> {v == P2_DC.VAL(t, n) : P2_S.Value}:
+  P2_PRV.decode_unique(d, t, n, pf, hd, hn, hN, hchk, v, spec)
 
-def FuluDataColumnSidecar__decode_reject__decode_reject(+d: Nat, +t: P3_FD.array__Tree<U32>, +n: U32, +pf: {P3_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> P3_Decoding.outside_image(P3_Spec.DataColumnSidecar(), P3_DC.VW(t, n)):
-  P3_PRV.decode_reject(d, t, n, pf, hd, hn, hchk)
+def FuluDataColumnSidecar__decode_reject__decode_reject(+d: Nat, +t: P3_FD.array__Tree<U32>, +n: U32, +pf: {P3_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P3_VB.NMAX()) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> P3_Decoding.outside_image(P3_Spec.DataColumnSidecar(), P3_DC.VW(t, n)):
+  P3_PRV.decode_reject(d, t, n, pf, hd, hn, hN, hchk)
 
-def FuluDataColumnSidecar__decode_none__decode_none(+d: Nat, +t: P3_FD.array__Tree<U32>, +n: U32, +pf: {P3_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(P3_DC.BF(t, n), n) == (P3_DC.BF(t, n), None{}) : P3_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
-  P3_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
+def FuluDataColumnSidecar__decode_none__decode_none(+d: Nat, +t: P3_FD.array__Tree<U32>, +n: U32, +pf: {P3_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P3_VB.NMAX()) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(P3_DC.BF(t, n), n) == (P3_DC.BF(t, n), None{}) : P3_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  P3_PRV.decode_none(d, t, n, pf, hd, hn, hN, hchk)
 

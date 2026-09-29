@@ -53,7 +53,7 @@ def ow2(+t: FD.array__Tree<U32>, +n: U32, +x0: +List<U32>, +y0: +List<U32>, +y1:
   {==}
 
 # The shape of the bytes makes every check pass.
-def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +x0: +List<U32>, +l0: {List.length(&2, U32, x0) == 8n : Nat},
     +y0: +List<U32>, f0: VMR.LF(y0, 2048n, U32.to_nat(4096)), +y1: +List<U32>, f1: VMR.LF(y1, 48n, U32.to_nat(4096)), +y2: +List<U32>, f2: VMR.LF(y2, 48n, U32.to_nat(4096)),
@@ -68,7 +68,6 @@ def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U3
   +z0 = List.length(&2, U32, y0)
   +z1 = List.length(&2, U32, y1)
   +z2 = List.length(&2, U32, y2)
-  +hd29 = FD.nat__lt_trans(d, 23n, 29n, hd, {==})
   +eo = Equal.trans(+List<U32>, VMR.OUTN(x0, y0, y1, y2, [xh, xp]), VMR.OUTR(x0, y0, y1, y2, [xh, xp]), DC.VW(t, n), Equal.sym(+List<U32>, VMR.OUTR(x0, y0, y1, y2, [xh, xp]), VMR.OUTN(x0, y0, y1, y2, [xh, xp]), VMR.out_n(x0, y0, y1, y2, [xh, xp])), eo0)
   +ef = eF(x0, xh, xp, l0, lh, lp)
   +en = enN(d, t, n, pf, hn, x0, y0, y1, y2, xh, xp, ef, eo)
@@ -90,11 +89,11 @@ def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U3
   +e0n = Equal.cong(U32, Nat, z => U32.to_nat(z), DC.O0(t), 356, e0)
   # word 3 is 356 + |y0|, word 4 is 356 + |y0| + |y1|
   +b3 = VN.byteK2(d, t, n, 3n, pf, hn, FD.nat__le_trans(Nat.add(A.quad(3n), 4n), 356n, U32.to_nat(n), {==}, N356))
-  +e1 = VG.digits_word(DC.O1(t), A1, VMR.fitsn(d, n, A1, hd29, hn, lA1),
+  +e1 = VG.digits_word(DC.O1(t), A1, VMR.fitsnA(n, A1, lA1),
     Equal.trans(+List<U32>, F.limbs([DC.O1(t)]), VS.bt(4n, VS.bdr(A.quad(3n), DC.VW(t, n))), N.digits(4n, A1),
       Equal.sym(+List<U32>, VS.bt(4n, VS.bdr(A.quad(3n), DC.VW(t, n))), F.limbs([DC.O1(t)]), b3), ow1(t, n, x0, y0, y1, y2, xh, xp, l0, ef, eo)))
   +b4 = VN.byteK2(d, t, n, 4n, pf, hn, FD.nat__le_trans(Nat.add(A.quad(4n), 4n), 356n, U32.to_nat(n), {==}, N356))
-  +e2 = VG.digits_word(DC.O2(t), A2, VMR.fitsn(d, n, A2, hd29, hn, lA2),
+  +e2 = VG.digits_word(DC.O2(t), A2, VMR.fitsnA(n, A2, lA2),
     Equal.trans(+List<U32>, F.limbs([DC.O2(t)]), VS.bt(4n, VS.bdr(A.quad(4n), DC.VW(t, n))), N.digits(4n, A2),
       Equal.sym(+List<U32>, VS.bt(4n, VS.bdr(A.quad(4n), DC.VW(t, n))), F.limbs([DC.O2(t)]), b4), ow2(t, n, x0, y0, y1, y2, xh, xp, l0, ef, eo)))
   # the lists' lengths
