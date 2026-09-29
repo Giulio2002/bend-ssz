@@ -17,6 +17,13 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vbig.bend as VG
 import ../proofs/obj/vbitenc.bend as VBT
+import ../proofs/obj/vbytes.bend as VYS
+import ../proofs/obj/vbytes.bend as VBY
+import ../proofs/obj/vcopy.bend as VC
+import ../proofs/obj/vbrt.bend as VR
+import ../proofs/obj/vua_copy.bend as UC
+import ../proofs/obj/vua_ct.bend as UCT
+import ../proofs/obj/venc.bend as VE
 import ./e2e_cap.bend as C
 import ./e2e_bview.bend as BV
 import ./e2e_bitv.bend as BTV

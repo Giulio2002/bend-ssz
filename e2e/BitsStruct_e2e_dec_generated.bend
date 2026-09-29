@@ -30,6 +30,9 @@ import ../proofs/obj/vfx_bv2.bend as FX2
 import ../proofs/obj/vfx_bv8.bend as FX8
 import ./e2e_bvsub.bend as BVS
 import ./e2e_bsw.bend as BSW
+import ../proofs/obj/dk.bend as DK
+import ./e2e_bsenc.bend as BSE
+import ./e2e_bswh.bend as BSH
 import ../proofs/obj/var_codec_Gc85FA758A04.bend as DC
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -51,6 +54,13 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
     Equal.trans(S.Value, S.Sequence{S.Items{CB5.VALw(t, BW.XJ0(t, 0n), BW.LJ0(t, 0n)), S.Items{FX2.VAL(t, Nat.add(0n, U32.to_nat(4))), S.Items{FX1.VAL(t, Nat.add(0n, U32.to_nat(5))), S.Items{S.BitsValue{BO.bview(CB6.OBJw(d, t, BW.XJ1(t, 0n), BW.FJ1(0, t, 0n), BW.LJ1(t, 0n, n)))}, S.Items{RN.v_bv8(FX8.OBJ(d, t, Nat.add(0n, U32.to_nat(10)))), S.EmptyItems{}}}}}}}, S.Sequence{S.Items{CB5.VALw(t, BW.XJ0(t, 0n), BW.LJ0(t, 0n)), S.Items{FX2.VAL(t, Nat.add(0n, U32.to_nat(4))), S.Items{FX1.VAL(t, Nat.add(0n, U32.to_nat(5))), S.Items{CB6.VALw(t, BW.XJ1(t, 0n), BW.LJ1(t, 0n, n)), S.Items{RN.v_bv8(FX8.OBJ(d, t, Nat.add(0n, U32.to_nat(10)))), S.EmptyItems{}}}}}}}, S.Sequence{S.Items{CB5.VALw(t, BW.XJ0(t, 0n), BW.LJ0(t, 0n)), S.Items{FX2.VAL(t, Nat.add(0n, U32.to_nat(4))), S.Items{FX1.VAL(t, Nat.add(0n, U32.to_nat(5))), S.Items{CB6.VALw(t, BW.XJ1(t, 0n), BW.LJ1(t, 0n, n)), S.Items{FX8.VAL(t, Nat.add(0n, U32.to_nat(10))), S.EmptyItems{}}}}}}},
     Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{CB5.VALw(t, BW.XJ0(t, 0n), BW.LJ0(t, 0n)), S.Items{FX2.VAL(t, Nat.add(0n, U32.to_nat(4))), S.Items{FX1.VAL(t, Nat.add(0n, U32.to_nat(5))), S.Items{z, S.Items{RN.v_bv8(FX8.OBJ(d, t, Nat.add(0n, U32.to_nat(10)))), S.EmptyItems{}}}}}}}, S.BitsValue{BO.bview(CB6.OBJw(d, t, BW.XJ1(t, 0n), BW.FJ1(0, t, 0n), BW.LJ1(t, 0n, n)))}, CB6.VALw(t, BW.XJ1(t, 0n), BW.LJ1(t, 0n, n)), BSW.b6_bw(d, t, BW.XJ1(t, 0n), BW.FJ1(0, t, 0n), BW.LJ1(t, 0n, n), BW.eoJ1D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), hd, BW.hwJ1D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), BW.hwJ1_32(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), pf, BW.itD1(t, 0n, 0, n, hchk))),
     Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{CB5.VALw(t, BW.XJ0(t, 0n), BW.LJ0(t, 0n)), S.Items{FX2.VAL(t, Nat.add(0n, U32.to_nat(4))), S.Items{FX1.VAL(t, Nat.add(0n, U32.to_nat(5))), S.Items{CB6.VALw(t, BW.XJ1(t, 0n), BW.LJ1(t, 0n, n)), S.Items{z, S.EmptyItems{}}}}}}}, RN.v_bv8(FX8.OBJ(d, t, Nat.add(0n, U32.to_nat(10)))), FX8.VAL(t, Nat.add(0n, U32.to_nat(10))), BVS.bv8(d, t, Nat.add(0n, U32.to_nat(10))))))))
+
+# the decoded object's bit lists satisfy the encode record's storage premise (e2e_bsenc.SDB: hv, no bit at or above the length)
+def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool})
+    -> DK.P2(BSE.SDB(RG2.pj_Gc85FA758A04_0(DC.OBJ(d, t, n)), 31n), BSE.SDB(RG2.pj_Gc85FA758A04_3(DC.OBJ(d, t, n)), 31n)):
+  (BSH.b5_bw_hv(d, t, BW.XJ0(t, 0n), BW.FJ0(0, t, 0n), BW.LJ0(t, 0n), BW.eoJ0D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), hd, BW.hwJ0D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), BW.hwJ0_32(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), pf, BW.itD0(t, 0n, 0, n, hchk)),
+   BSH.b6_bw_hv(d, t, BW.XJ1(t, 0n), BW.FJ1(0, t, 0n), BW.LJ1(t, 0n, n), BW.eoJ1D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), hd, BW.hwJ1D(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), BW.hwJ1_32(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk), pf, BW.itD1(t, 0n, 0, n, hchk)))
 
 # ---- the loaded buffer ----
 
