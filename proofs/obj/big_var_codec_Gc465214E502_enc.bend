@@ -27,6 +27,7 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_l1024_u16.bend as EX_l1024_u16
+import ./big_encx_l1024_u16_d.bend as EX_l1024_u16_D
 import ./vrecb.bend as VRB
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding

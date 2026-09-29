@@ -4086,7 +4086,7 @@
     "laws": [
      "VarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage below its encode law's depth bound 28, read from the law; the root law gives dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 31n) (the list field's storage below its encode law's depth bound 31, read from the law (the D twin of the list, big_encx_l1024_u16_d, on the OKW laws: no container size budget); the root law gives dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "progbitlist_e2e_generated.bend": [

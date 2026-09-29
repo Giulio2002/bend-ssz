@@ -30,6 +30,7 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_l1024_u16.bend as EX_l1024_u16
+import ./big_encx_l1024_u16_d.bend as EX_l1024_u16_D
 import ./vrecb.bend as VRB
 import ./big_encx_Gc465214E502.bend as K
 import ./big_encx_Gc465214E502_iface.bend as OB
@@ -40,14 +41,14 @@ import ./big_encx_Gc465214E502_iface.bend as OB
 def sizeCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OB.OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C)) : VarTestStruct_d.Gc465214E502 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, OB.ok_hpzW(f_A, m_f_B, f_C, h))) :
     {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), _) : VarTestStruct_d.Gc465214E502 & U32}
-  %Equal.sym(O.Words & U32, list_uint16_1024_e.l1024_u16_size(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), EX_l1024_u16.SZ(m_f_B)), EX_l1024_u16.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
+  %Equal.sym(O.Words & U32, list_uint16_1024_e.l1024_u16_size(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), EX_l1024_u16.SZ(m_f_B)), EX_l1024_u16_D.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
     {VarTestStruct_e.Gc465214E502_sz0(f_A, f_C, 7, _) == (K.OBJC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B))) : VarTestStruct_d.Gc465214E502 & U32}
   {==}
 
 def rvalidCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OB.OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_valid(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}:
   %Equal.sym(Bool, Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), True{}, OB.ok_hpzW(f_A, m_f_B, f_C, h)) :
     {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, _, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
-  %Equal.sym(O.Words & Bool, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), True{}), EX_l1024_u16.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
+  %Equal.sym(O.Words & Bool, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), True{}), EX_l1024_u16_D.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
     {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, True{}, _) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
   {==}
 
