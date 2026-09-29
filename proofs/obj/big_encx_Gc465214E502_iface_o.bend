@@ -1,0 +1,68 @@
+import Base
+import ../../src/obj.bend as O
+import ../../src/primitives.bend as I
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
+import ../../types/list_uint16_1024_encode_ssz_generated.bend as list_uint16_1024_e
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
+import ../../types/schema.bend as S
+import ../../types/primitive.bend as P
+import ../../spec/codec.bend as Codec
+import ../../spec/layout.bend as Layout
+import ../../spec/primitives.bend as SP
+import ./generic_specs.bend as Spec
+import ../compact/found.bend as FD
+import ../compact/arith.bend as A
+import ../../proofs/nat_order.bend as Order
+import ./spec_fixed.bend as FX
+import ./vspec.bend as VS
+import ./vbuf.bend as VB
+import ./vua.bend as UA
+import ./vuw.bend as UW
+import ./vuwd.bend as WD
+import ./vcopy.bend as VC
+import ./vrecx.bend as VRX
+import ./vcont.bend as VCN
+import ./vua_lay.bend as LY
+import ./vconts.bend as CS
+import ./spec_bits.bend as FB
+import ./dk.bend as DK
+import ./vpiece.bend as VPC
+import ./big_encx_l1024_u16.bend as EX_l1024_u16
+import ./vrecb.bend as VRB
+import ./big_encx_Gc465214E502.bend as K
+import ./big_encx_Gc465214E502_iface.bend as OB
+
+# GENERATED (codegen/okw.py okw_companion). Do not edit.
+# the size and validity passes on OKW (encodings below 2^31 bytes) of big_encx_Gc465214E502_iface
+
+def sizeCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OB.OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C)) : VarTestStruct_d.Gc465214E502 & U32}:
+  %Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, OB.ok_hpzW(f_A, m_f_B, f_C, h))) :
+    {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), _) : VarTestStruct_d.Gc465214E502 & U32}
+  %Equal.sym(O.Words & U32, list_uint16_1024_e.l1024_u16_size(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), EX_l1024_u16.SZ(m_f_B)), EX_l1024_u16.sizex(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
+    {VarTestStruct_e.Gc465214E502_sz0(f_A, f_C, 7, _) == (K.OBJC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B))) : VarTestStruct_d.Gc465214E502 & U32}
+  {==}
+
+def rvalidCW(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OB.OKTW(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_valid(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}:
+  %Equal.sym(Bool, Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), True{}, OB.ok_hpzW(f_A, m_f_B, f_C, h)) :
+    {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, _, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
+  %Equal.sym(O.Words & Bool, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), True{}), EX_l1024_u16.validx(m_f_B, OB.ok_hok_f_BW(f_A, m_f_B, f_C, h))) :
+    {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, True{}, _) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
+  {==}
+
+law sizexO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {VarTestStruct_e.Gc465214E502_size(OB.TH(m)) == (OB.TH(m), OB.SZ(m)) : VarTestStruct_d.Gc465214E502 & U32}
+def sizexO(m, hok):
+  match m:
+    case OB.MW{+f_A, +m_f_B, +f_C}: sizeCW(f_A, m_f_B, f_C, hok)
+
+law validxO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {VarTestStruct_e.Gc465214E502_valid(OB.TH(m)) == (OB.TH(m), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
+def validxO(m, hok):
+  match m:
+    case OB.MW{+f_A, +m_f_B, +f_C}: rvalidCW(f_A, m_f_B, f_C, hok)
