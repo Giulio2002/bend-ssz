@@ -107,6 +107,25 @@ def lib(rs):
     return '\n'.join(L) + '\n'
 
 
+def _with_deep(X, text):
+    """The validator laws (_at, _okl, _ok_eval) at any depth d < 31: twins X_atD / X_oklD / X_ok_evalD after the d < 28
+    originals (which stay, for the callers that have d < 28). The byte at K + x is strictly inside the tree (hy), so the
+    strict-bound lemmas of the deep interface (UR.offx31, hd < 31 for VR.byte_at_ok) are all it needs."""
+    a = text.index(f'def {X}_at(')
+    b = text.index('# every encoding at BitVector')
+    core = text[a:b]
+    d = core
+    for old, new in [(f'{X}_at', f'{X}_atD'), (f'{X}_okl', f'{X}_oklD'), (f'{X}_ok_eval', f'{X}_ok_evalD'),
+                     ('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')]:
+        assert old in d, old
+        d = d.replace(old, new)
+    d, n1 = re.subn(r'UR\.offx\(d, off, (\d+), x, e, FD\.nat__lt_trans\(d, 28n, 30n, hd, \{==\}\), hy\)', r'UR.offx31(d, off, \1, x, e, hd, hy)', d)
+    d, n2 = re.subn(r'FD\.nat__lt_trans\(d, 28n, 32n, hd, \{==\}\)', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})', d)
+    assert n1 == 1 and n2 == 1, (n1, n2)
+    assert '28n' not in d, d
+    return text[:b] + d + text[b:]
+
+
 def name_text(X, p, n, K, r, N):
     s = f'GS.{X}()'
     W = f'UW.WX(t, x, {N}n)'
@@ -119,7 +138,7 @@ def name_text(X, p, n, K, r, N):
     ABS = ''.join(f"    case S.{c}: Empty.absurd({{{PK('bs')} == {TRUE}}}, FD.logic__none_some(+List<U32>, bs, e))\n"
                   for c in ['BooleanValue{+b}', 'UnsignedValue{+u}', 'BytesValue{+xs}', 'Sequence{+it}', 'Items{+hh, +tt}', 'EmptyItems{}', 'Selected{+sel, +sv}', 'NullValue{}'])
     y = f'Nat.add({K}n, x)'
-    return f'''# ---- {X} (BitVector[{n}], {N} bytes; validator T.{p}_ok: bits {r}..7 of byte {K} clear) ----
+    return _with_deep(X, f'''# ---- {X} (BitVector[{n}], {N} bytes; validator T.{p}_ok: bits {r}..7 of byte {K} clear) ----
 def {X}_at({sig})
     -> {{T.{p}_ok_at({BF}, off) == ({BF}, {PK(W)}) : B.Buf & Bool}}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, {K}n), Nat.add(x, {N}n), {P}, FD.nat__lt_add_left({K}n, {N}n, x, {{==}}), hb)
@@ -170,7 +189,7 @@ def {X}_rj(+bs: +List<U32>, +h: {{Bool.and(Nat.is_eq(List.length(&2, U32, bs), {
 # a byte list of another length, or with a padding bit set, is no encoding
 def {X}_decode_reject(+bs: +List<U32>, +h: {{Bool.and(Nat.is_eq(List.length(&2, U32, bs), {N}n), {PK("bs")}) == False{{}} : Bool}}) -> Decoding.outside_image({s}, bs):
   v => e => {X}_rj(bs, h, v, e)
-'''
+''')
 
 
 def module(rs):

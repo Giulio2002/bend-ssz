@@ -1299,6 +1299,12 @@ def union_view(R, X):
     vbody = re.search(rf'^def v_{X}\(o: .*?\n  match o:\n((?:    case .*\n)+)', vsrc, re.M).group(1)
     ctor = dict((int(c), (sel, vw)) for c, sel, vw in re.findall(rf'case \w+\.{X}_c(\d+){{v}}: S\.Selected{{(\d+), ([\w.]+)\(v\)}}', vbody))
     WIN = 'XJ(t, x), FJ(off), LJ(len)'
+    # the laws at any depth (d < 31): the window's D interface, its end below 2^32 (hw32) or by NMAX (hwN, when an arm's window is)
+    deep = 'Nat.is_lt(d, 31n)' in src and re.search(r'^def hwJ_32\(', wsrc, re.M) is not None
+    hwN = deep and re.search(r'^def hwJN\(', wsrc, re.M) is not None
+    HWD = ('+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}' if hwN else
+           '+hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}') if deep else ''
+    HWN = ('hwN' if hwN else 'hw32') if deep else ''
     L = []
     last = ks[-1]
     for k in reversed(ks):
@@ -1314,11 +1320,14 @@ def union_view(R, X):
         cv = UNION_CHILD[alias_mod[ch]]
         cvp = '{==}' if cv is None else (f'{cv}(d, t, n, W.XJ(t, x), W.FJ(off), W.LJ(len), W.eoJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), hd, '
                                           f'W.hwJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), pf, hk)')
+        if deep:
+            WA_ = f'd, t, n, x, off, len, eo, hd, hw, {HWN}, pf, h1'
+            cvp = '{==}' if cv is None else (f'{cv}D(d, t, n, W.XJ(t, x), W.FJ(off), W.LJ(len), W.eoJ({WA_}), hd, W.hwJ({WA_}), W.hwJN({WA_}), pf, hk)')
         GOAL = f'{{RT.v_{X}(W.OB{k}(c, W.BX(t, x), d, t, x, off, len)) == S.Selected{{W.BX(t, x), W.VV{k}(c, W.BX(t, x), t, x, len)}} : S.Value}}'
-        nxt = (f'      u{k + 1}(d, t, n, x, off, len, eo, hd, hw, pf, h1, U32.is_eq(W.BX(t, x), {sels[k + 1]}), {{==}}, hk)' if k != last else
+        nxt = (f'      u{k + 1}(d, t, n, x, off, len, eo, hd, hw, {HWN + ", " if deep else ""}pf, h1, U32.is_eq(W.BX(t, x), {sels[k + 1]}), {{==}}, hk)' if k != last else
                f'      Empty.absurd({GOAL.replace("(c, ", "(False{}, ")}, FD.logic__false_true(hk))')
-        L.append(f'''def u{k}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},
-    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +h1: W.H1(t, x, off, len),
+        L.append(f'''def u{k}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, {31 if deep else 28}n) == True{{}} : Bool}},
+    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HWD + ', ' if deep else ''}+pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +h1: W.H1(t, x, off, len),
     +c: Bool, +ec: {{U32.is_eq(W.BX(t, x), {sel}) == c : Bool}}, +hk: {{W.K{k}(c, W.BX(t, x), t, x, off, len) == True{{}} : Bool}}) -> {GOAL}:
   match c:
     case True{{}}:
@@ -1327,12 +1336,15 @@ def union_view(R, X):
     case False{{}}:
 {nxt}
 ''')
+    HNP = '+hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, ' if hwN else ''
+    HWT = ("FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), " if hwN else
+           'VB.u32_lt(n), ') if deep else ''
     text = f'''# ---- the view of a decoded object is the codec law's value: the selected arm's view at its window ----
 
 {chr(10).join(L)}
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
-    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
-  u0(d, t, n, 0n, 0, n, {{==}}, hd, hn, pf, W.le_nat(1, n, W.hch1(t, 0n, 0, n, hchk)), U32.is_eq(W.BX(t, 0n), {sels[0]}), {{==}}, W.hchk0(t, 0n, 0, n, hchk))
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, {HNP}+hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  u0(d, t, n, 0n, 0, n, {{==}}, hd, hn, {HWT}pf, W.le_nat(1, n, W.hch1(t, 0n, 0, n, hchk)), U32.is_eq(W.BX(t, 0n), {sels[0]}), {{==}}, W.hchk0(t, 0n, 0, n, hchk))
 
 '''
     chs = sorted(set(arm.values()))

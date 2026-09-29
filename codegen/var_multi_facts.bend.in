@@ -5,15 +5,6 @@ def hLq(+d: Nat, +L: U32, +m: Nat, +em: {U32.to_nat(L) == A.quad(m) : Nat}, +hm:
   FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, A.quad(m), U32.to_nat(L), Equal.sym(Nat, U32.to_nat(L), A.quad(m), em),
     FD.nat__double_le(Nat.double(m), Nat.double(VB.pw(d)), FD.nat__double_le(m, VB.pw(d), hm)))
 
-# the list's words, from word q on, lie in the buffer
-def hsg(+d: Nat, +L: U32, +m: Nat, +q: Nat, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
-    +hL: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool}, +em: {U32.to_nat(L) == A.quad(m) : Nat},
-    +h: {Nat.is_le(Nat.add(q, m), VB.pw(d)) == True{} : Bool})
-    -> {Nat.is_le(Nat.add(VC.NW(L), q), VB.pw(d)) == True{} : Bool}:
-  %Equal.sym(Nat, VC.NW(L), m, VL.nwm(d, L, m, FD.nat__lt_trans(d, 23n, 28n, hd, {==}), hL, em)) : {Nat.is_le(Nat.add(_, q), VB.pw(d)) == True{} : Bool}
-  %FD.nat__add_comm(q, m) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
-  h
-
 # the tails of CHK
 def K5(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CF(t), CG(t, n))
 def K4(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CE(t), K5(t, n))

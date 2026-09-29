@@ -269,6 +269,10 @@ def fitsn(+d: Nat, +n: U32, +x: Nat, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, 
     +hx: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
   VFT.fits4(2n+d, x, F.nat__le_trans(x, U32.to_nat(n), A.quad(VB.pw(d)), hx, hn), F.nat__lt_trans(d, 29n, 30n, hd, {==}))
 
+# ... with x <= n and n a U32 (no depth bound).
+def fitsnA(+n: U32, +x: Nat, +hx: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
+  VFT.fits4lt(x, F.nat__le_lt_trans(x, U32.to_nat(n), F.spec_common__pow2(32n), hx, VB.u32_lt(n)))
+
 # b = x and a = x + y: a - b = y.
 def subL(+a: U32, +b: U32, +x: Nat, +y: Nat, +hb: {U32.to_nat(b) == x : Nat}, +ha: {U32.to_nat(a) == Nat.add(x, y) : Nat})
     -> {U32.to_nat(U32.sub(a, b)) == y : Nat}:
