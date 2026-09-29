@@ -3866,7 +3866,7 @@
     "laws": [
      "FuluBeaconBlock_e2e_encode"
     ],
-    "premise": "rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs34..hc124, hv114: the body's parts' decoded-object gaps and object API validity) with hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' bounds derived from it)"
+    "premise": "rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs34..hc124, hv114: the body's parts' decoded-object gaps and object API validity) with hZ the encoding below 2^31 bytes (the OKW laws' container bound; e2e_rec_BeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' OKW bounds derived from it) and hs34..hc124 including the body's attester slashings' and attestations' own byte budgets (hzb44, hzb54)"
    }
   ],
   "FuluBeaconBlockBody_e2e_generated.bend": [
@@ -3876,7 +3876,7 @@
     "laws": [
      "FuluBeaconBlockBody_e2e_encode"
     ],
-    "premise": "rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts' encode records' own bounds as premises, each a decoded-object gap the root law's invariant does not give: hs3/hs6 the proposer slashings' and deposits' storage (e2e_ml sdt), hs4 the attester slashings' (e2e_bbsl.sd1), hs5 the attestations' (e2e_bbatt.sd8), hs7/hs10 the voluntary exits' and BLS changes' trees at depth below 31 (sda), hs9 the execution payload's (e2e_epr.SHS_P, as its own (i)), hs11 the blob commitments' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests' lists at depth below 31 (sda), and hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlockBody.SZW, each part's byte count a witness; the parts' own size bounds are derived from it); hv11: the blob commitments' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)"
+    "premise": "rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts' encode records' own bounds as premises, each a decoded-object gap the root law's invariant does not give: hs3/hs6 the proposer slashings' and deposits' storage (e2e_ml sdt), hs4 the attester slashings' (e2e_bbsl.sd1), hs5 the attestations' (e2e_bbatt.sd8), hzb4/hzb5 those two lists' own encode records' byte budgets (4 * 2^28 each: e2e_bbsl.SZ1, e2e_bbatt.SZ8; the lists' OK bound them and nothing in the object does), hs7/hs10 the voluntary exits' and BLS changes' trees at depth below 31 (sda), hs9 the execution payload's (e2e_epr.SHS_P, as its own (i)), hs11 the blob commitments' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests' lists at depth below 31 (sda), and hZ the encoding below 2^31 bytes (the OKW laws' container bound; e2e_rec_BeaconBlockBody.SZW, each part's byte count a witness; the execution payload's and requests' OKW bounds are derived from it); hv11: the blob commitments' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)"
    }
   ],
   "FuluBeaconState_e2e_generated.bend": [
@@ -3916,7 +3916,7 @@
     "laws": [
      "FuluExecutionPayload_e2e_encode"
     ],
-    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; dropped when the encode records take the object API's limit): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 31 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)"
+    "premise": "rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record's own bounds as premises, each a decoded-object gap (the root law's invariant gives depth below 32 and no size bound; on the OKW laws: OKW, encode_evalO / encode_specO): hL the logs bloom (BL.sdk1) and hW the withdrawals' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions' tree below 31 and each transaction's bytes below 31 (e2e_eptx.sdt), hZ the encoding below 2^31 bytes (SZOK, the OKW laws' container bound; the 4 * 2^28 premise is gone)"
    }
   ],
   "FuluExecutionPayloadHeader_e2e_generated.bend": [
@@ -4026,7 +4026,7 @@
     "laws": [
      "FuluSignedBeaconBlock_e2e_encode"
     ],
-    "premise": "rep: RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs340..hc1240, hv1140: the body's parts' decoded-object gaps and object API validity) with hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_SignedBeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' bounds derived from it)"
+    "premise": "rep: RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs340..hc1240, hv1140: the body's parts' decoded-object gaps and object API validity) with hZ the encoding below 2^31 bytes (the OKW laws' container bound; e2e_rec_SignedBeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' OKW bounds derived from it) and hs340..hc1240 including the body's attester slashings' and attestations' own byte budgets (hzb440, hzb540)"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -4046,7 +4046,7 @@
     "laws": [
      "ProgressiveComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the D twins and the OKW laws (the container encodes below 2^31 bytes; no depth-28 storage premise, no per-field 2^28 + 1 budget): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8), each unbounded list field's size measure below 2^31 (a word list's length, 4 N of a record list, EL.LL of a variable-element list), and one object-level total TOT_Gp8A7851175B: the fixed part plus the measures of the list fields (a bit list at its constant bound 2^29 + 1) below 2^31, which is what the container law needs; the measures are object-level, but nothing in the object bounds a list's length, so the total stays a premise"
    }
   ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
@@ -4066,7 +4066,7 @@
     "laws": [
      "ProgressiveTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the D twins and the OKW laws (the container encodes below 2^31 bytes; no depth-28 storage premise, no per-field 2^28 + 1 budget): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8), each unbounded list field's size measure below 2^31 (a word list's length, 4 N of a record list, EL.LL of a variable-element list), and one object-level total TOT_Gc221EC01D83: the fixed part plus the measures of the list fields (a bit list at its constant bound 2^29 + 1) below 2^31, which is what the container law needs; the measures are object-level, but nothing in the object bounds a list's length, so the total stays a premise"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [

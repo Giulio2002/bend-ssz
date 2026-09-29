@@ -27,6 +27,8 @@ import ../proofs/obj/big_var_codec_BeaconBlock_enc.bend as EN
 import ../proofs/obj/big_encx_BeaconBlock_iface.bend as CI
 import ../proofs/obj/big_encx_BeaconBlock.bend as K
 import ../proofs/obj/dk.bend as DK
+import ../proofs/obj/big_var_codec_BeaconBlock_enc_o.bend as ENO
+import ../proofs/obj/big_encx_BeaconBlock_iface_o.bend as CIo
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
 import ./e2e_cap.bend as C
@@ -69,30 +71,32 @@ import ../proofs/obj/big_encx_BeaconBlockBody_size.bend as ES_BeaconBlockBody
 # object the root law represents (rep) whose parts' storage is as their encode records ask, through its record
 # (e2e_rec_BeaconBlock: mk_BeaconBlock).
 
-# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 29 (EN.room), the size within it
-def obM(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
-  +g = EN.room(m, hok, 28n, {==})
-  +hd = CI.PA(EN.HD(m), DK.P2(EN.HL(m), EN.HZ(m)), g)
-  +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(EN.HD(m), DK.P2(EN.HL(m), EN.HZ(m)), g))
+# the encoder's buffer's bytes on the OKW laws (the encoding below 2^31 bytes): the output tree is perfect at depth DO(size) < 31 (ENO.roomO), the size within it
+def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
+  +g = ENO.roomO(m, hok, 29n, {==})
+  +hd = CI.PA(ENO.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g)
+  +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENO.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g))
   +hl0 = FD.logic__subst(Nat, z => {Nat.is_le(WD.NWN(z), VB.pw(VL.DO(CI.SZ(m)))) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),
-    Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok)), hl)
+    Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), hl)
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),
+    Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CIo.bndxO(m, hok))
   +ep = VCN.padb_id(0n, U32.to_nat(CI.SZ(m)))
   +hq = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(CI.SZ(m)), z) == True{} : Bool}, Nat.add(U32.to_nat(CI.SZ(m)), WD.PADB(0n, U32.to_nat(CI.SZ(m)))), A.quad(WD.NWN(U32.to_nat(CI.SZ(m)))), ep,
     FD.nat__le_add_right(U32.to_nat(CI.SZ(m)), WD.PADB(0n, U32.to_nat(CI.SZ(m)))))
   +hn = FD.nat__le_trans(U32.to_nat(CI.SZ(m)), A.quad(WD.NWN(U32.to_nat(CI.SZ(m)))), A.quad(FD.spec_common__pow2(VL.DO(CI.SZ(m)))), hq, C.q4(WD.NWN(U32.to_nat(CI.SZ(m))), FD.spec_common__pow2(VL.DO(CI.SZ(m))), hl0))
-  EM.ob(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, hn)
+  EM.obD(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, h31, hn)
 
 # (i) on a record
-def enc_m(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m))))} == API.serialize(Spec.BeaconBlock(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), EN.encode_eval(m, hok)) :
+def enc_m(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m))))} == API.serialize(Spec.BeaconBlock(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m)), (CI.TH(m), B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), ENO.encode_evalO(m, hok)) :
     {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, _))} == API.serialize(Spec.BeaconBlock(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}), VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))), obM(m, hok)) : {Some{_} == API.serialize(Spec.BeaconBlock(), CI.VAL(m)) : Maybe<&2, +List<U32>>}
   Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.BeaconBlock(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
     Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.BeaconBlock(), CI.VAL(m)), Encoding.encoding_for_legal_type(Spec.BeaconBlock(), CI.VAL(m)), Some{VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m))))},
-      E.serialize_legal(Spec.BeaconBlock(), CI.VAL(m), VS.public_sound(Spec.BeaconBlock(), {==})), EN.encode_spec(m, hok)))
+      E.serialize_legal(Spec.BeaconBlock(), CI.VAL(m), VS.public_sound(Spec.BeaconBlock(), {==})), ENO.encode_specO(m, hok)))
 
 # an object, as a record: o == TH(m), its view VAL(m), OK(m)
-def via(-o: FuluBeaconBlock_d.BeaconBlock, +m: CI.MW, +eo: {o == CI.TH(m) : FuluBeaconBlock_d.BeaconBlock}, +ev: {RT.v_BeaconBlock(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OK(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(o)))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(o)) : Maybe<&2, +List<U32>>}:
+def via(-o: FuluBeaconBlock_d.BeaconBlock, +m: CI.MW, +eo: {o == CI.TH(m) : FuluBeaconBlock_d.BeaconBlock}, +ev: {RT.v_BeaconBlock(CI.TH(m)) == CI.VAL(m) : S.Value}, +hok: {CI.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(o)))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(FuluBeaconBlock_d.BeaconBlock, o, CI.TH(m), eo) : {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(_)))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(_)) : Maybe<&2, +List<U32>>}
   %Equal.sym(S.Value, RT.v_BeaconBlock(CI.TH(m)), CI.VAL(m), ev) : {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m))))} == API.serialize(Spec.BeaconBlock(), _) : Maybe<&2, +List<U32>>}
   enc_m(m, hok)
@@ -106,5 +110,5 @@ def fin(-o: FuluBeaconBlock_d.BeaconBlock, +w: RK.R_BeaconBlock(o)) -> {Some{E.o
   via(o, m, eo, ev, ok)
 
 # (i): for every object the root law represents, with its parts' premises (the body's, as BeaconBlockBody's (i))
-def FuluBeaconBlock_e2e_encode(-o: FuluBeaconBlock_d.BeaconBlock, +rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()), +hs34: PS3.sdt(RT.pj_BeaconBlockBody_3(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs44: AS4.sd1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs54: AT5.sd8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs64: DP6.sdt(RT.pj_BeaconBlockBody_6(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs74: RV7.sda_l16_SignedVoluntaryExit(RT.pj_BeaconBlockBody_7(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))), 31n), +hs94: RC9.SHS_P(RT.pj_ExecutionPayload_4(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_10(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_13(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_14(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))))), +hs104: RV10.sda_l16_SignedBLSToExecutionChange(RT.pj_BeaconBlockBody_10(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))), 31n), +hs114: K11.sdk48(RT.pj_BeaconBlockBody_11(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hv114: {O.unit_ok(48, WO.len(RT.pj_BeaconBlockBody_11(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))) == True{} : Bool}, +ha124: RQ0.sda_l8192_DepositRequest(RT.pj_ExecutionRequests_0(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hb124: RQ1.sda_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hc124: RQ2.sda_l2_ConsolidationRequest(RT.pj_ExecutionRequests_2(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hZ: RK.SZW(o)) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(o)))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(o)) : Maybe<&2, +List<U32>>}:
-  fin(o, RK.mk_BeaconBlock(o, rep, hs34, hs44, hs54, hs64, hs74, hs94, hs104, hs114, hv114, ha124, hb124, hc124, hZ))
+def FuluBeaconBlock_e2e_encode(-o: FuluBeaconBlock_d.BeaconBlock, +rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()), +hs34: PS3.sdt(RT.pj_BeaconBlockBody_3(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs44: AS4.sd1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hzb44: AS4.SZ1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs54: AT5.sd8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hzb54: AT5.SZ8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs64: DP6.sdt(RT.pj_BeaconBlockBody_6(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hs74: RV7.sda_l16_SignedVoluntaryExit(RT.pj_BeaconBlockBody_7(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))), 31n), +hs94: RC9.SHS_P(RT.pj_ExecutionPayload_4(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_10(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_13(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))), RT.pj_ExecutionPayload_14(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))))), +hs104: RV10.sda_l16_SignedBLSToExecutionChange(RT.pj_BeaconBlockBody_10(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))), 31n), +hs114: K11.sdk48(RT.pj_BeaconBlockBody_11(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), +hv114: {O.unit_ok(48, WO.len(RT.pj_BeaconBlockBody_11(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o))))) == True{} : Bool}, +ha124: RQ0.sda_l8192_DepositRequest(RT.pj_ExecutionRequests_0(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hb124: RQ1.sda_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hc124: RQ2.sda_l2_ConsolidationRequest(RT.pj_ExecutionRequests_2(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)))), 31n), +hZ: RK.SZW(o)) -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(o)))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(o)) : Maybe<&2, +List<U32>>}:
+  fin(o, RK.mk_BeaconBlock(o, rep, hs34, hs44, hzb44, hs54, hzb54, hs64, hs74, hs94, hs104, hs114, hv114, ha124, hb124, hc124, hZ))
