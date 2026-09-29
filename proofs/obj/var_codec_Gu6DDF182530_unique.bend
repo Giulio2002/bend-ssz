@@ -15,11 +15,12 @@ law decode_unique:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == True{} : Bool}
   for +v: S.Value
   for spec: Decoding.decodes(GS.Gu6DDF182530(), DC.VW(t, n), v)
   {v == DC.VAL(t, n) : S.Value}
-def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
-  DCO.valid_unique(GS.Gu6DDF182530(), DC.VW(t, n), v, DC.VAL(t, n), {==}, spec, DC.decode_spec(d, t, n, pf, hd, hn, hchk))
+def decode_unique(d, t, n, pf, hd, hn, hN, hchk, v, spec):
+  DCO.valid_unique(GS.Gu6DDF182530(), DC.VW(t, n), v, DC.VAL(t, n), {==}, spec, DC.decode_spec(d, t, n, pf, hd, hn, hN, hchk))

@@ -61,12 +61,146 @@ def arm_types(name):
     return re.findall(r'  ' + name + r'_c(\d+)\{v: (\w+)\}', m.group(1))
 
 
+def child_mode(mod):
+    """'hwN' / 'hw32' for an arm window module with the deep interface (readwD), None otherwise."""
+    q = ROOT / 'proofs/obj' / mod
+    t = q.read_text() if q.exists() else ''
+    m = re.search(r'^def readwD\((.*?)\) -> \{', t, re.M | re.S)
+    if not m:
+        return None
+    return 'hwN' if '+hwN:' in m.group(1) else 'hw32'
+
+
+def _brace(t, i):
+    """The index just past the '{...}' group starting at t[i] == '{'."""
+    d = 0
+    while True:
+        if t[i] == '{':
+            d += 1
+        elif t[i] == '}':
+            d -= 1
+            if d == 0:
+                return i + 1
+        i += 1
+
+
+def arm_prem(i, modname):
+    """The arm's invwD premise on its pbits field ({j: type text}, empty for an arm without one), stated at the union's window:
+    the arm's window is (XJ(t, x), LJ(len)); its field offset O<j>(t, x) is read at the arm's start."""
+    q = ROOT / 'proofs/obj' / modname
+    t = q.read_text() if q.exists() else ''
+    m = re.search(r'^def invwD\(.*?\) -> \{CHKw', t, re.M | re.S)
+    if not m:
+        return None
+    mm = re.search(r'\+hP\d+: (?=\{)', m.group(0))
+    if not mm:
+        return None
+    a = m.start() + mm.end()
+    return t[a:_brace(t, a)]
+
+
+def prem_at(i, prem, x, ln, ns=''):
+    """The arm premise at the union window (x, len): the arm's own window (XJ, LJ), its O<j>(t, x) at the arm's XJ."""
+    prem = re.sub(r'(?<![\w.])O(\d+)\(t, x\)', lambda m: f'CH{i}.O{m.group(1)}(t, @XJ)', prem)
+    prem = re.sub(r'(?<![\w.])len(?![\w])', '@LJ', prem)
+    return prem.replace('@XJ', f'{ns}XJ(t, {x})').replace('@LJ', f'{ns}LJ({ln})')
+
+
+def union_hps(U):
+    _, _, _ = union_schema(U)
+    rts = [t for _, t in arm_types(U)]
+    out = {}
+    for i, rt in enumerate(rts):
+        pr = arm_prem(i, ARMS[rt])
+        if pr:
+            out[i] = pr
+    return out
+
+
+def union_deep(text, rts):
+    """The union window at any depth d < 31: the window's end below 2^32 (hw32) or by NMAX (hwN, when an arm's window is),
+    offsets by VB.add_lt32, the arms through their D interface (var_winb.winb_deep's pattern); the old interface stays
+    under the old names."""
+    import deep
+    kids = {i: child_mode(ARMS[rt]) for i, rt in enumerate(rts)}
+    assert all(kids.values()), kids
+    mode = 'hwN' if 'hwN' in kids.values() else 'hw32'
+    P32, NM = WB.P32, WB.NM
+    assert WB.EOJ_OLD in text, 'eoj'
+    text = text.replace(WB.EOJ_OLD, WB.EOJ_N if mode == 'hwN' else WB.EOJ_32)
+    assert 'VR.byte_at_ok(d, t, n, off, FD.nat__lt_trans(d, 28n, 32n, hd, {==})' in text
+    text = text.replace('FD.nat__lt_trans(d, 28n, 32n, hd, {==})', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})')
+    # hwj twins
+    a = text.index('\ndef hwj(') + 1
+    b = text.index('\n\n', a)
+    h = text[a:b]
+    pe = deep._close(h, h.index('(') + 1)
+    ps = h[h.index('(') + 1:pe]
+    pn = ', '.join(x_.split(':')[0].strip().lstrip('+') for x_ in deep._split_args(ps))
+    hdr = h[:h.index('\n    -> ')]
+
+    def twin(name, cmp, bound, hn):
+        return (f'\n\n{hdr.replace("def hwj(", f"def {name}(")}\n    -> {{Nat.{cmp}(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(len, o))), {bound}) == {TRUE}}}:\n'
+                f'  %Equal.sym(Nat, U32.to_nat(U32.sub(len, o)), Nat.sub(U32.to_nat(len), U32.to_nat(o)), FD.u32__sub_nat(len, o, h2)) : '
+                f'{{Nat.{cmp}(Nat.add(Nat.add(U32.to_nat(o), x), _), {bound}) == {TRUE}}}\n'
+                f'  %Equal.sym(Nat, Nat.add(Nat.add(U32.to_nat(o), x), Nat.sub(U32.to_nat(len), U32.to_nat(o))), Nat.add(x, U32.to_nat(len)), alg(U32.to_nat(o), x, U32.to_nat(len), h2)) :\n'
+                f'    {{Nat.{cmp}(_, {bound}) == {TRUE}}}\n  {hn}')
+    if mode == 'hwN':
+        ext = twin('hwjN', 'is_le', NM, 'hwN')
+        ext += (f'\n\n{hdr.replace("def hwj(", "def hwj32(")}\n    -> {{Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(len, o))), {P32}) == {TRUE}}}:\n'
+                f'  VB.le_n_lt32(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(len, o))), VB.NMAX(), hwjN({pn}))')
+    else:
+        ext = twin('hwj32', 'is_lt', P32, 'hw32')
+    text = text[:b] + ext + text[b:]
+    # hwJ twins
+    a = text.index('\ndef hwJ(') + 1
+    e = text.index('\n', text.index(': hwj(', a))
+    m = re.fullmatch(r'def hwJ\((.*)\) -> \{Nat\.is_le\((.*), A\.quad\(VB\.pw\(d\)\)\) == True\{\} : Bool\}: hwj\((.*)\)', text[a:e], re.S)
+    assert m
+    x2 = []
+    if mode == 'hwN':
+        x2.append(f'def hwJN({m.group(1)}) -> {{Nat.is_le({m.group(2)}, {NM}) == {TRUE}}}: hwjN({m.group(3)})')
+    x2.append(f'def hwJ_32({m.group(1)}) -> {{Nat.is_lt({m.group(2)}, {P32}) == {TRUE}}}: hwj32({m.group(3)})')
+    text = text[:e] + '\n' + '\n'.join(x2) + text[e:]
+    # the arms' D interface
+    pat = re.compile(r'(?<![\w.])CH(\d+)\.(ok_evalw|readw|specw|invw)\(')
+    out, i = [], 0
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        h_ = args[8]
+        assert re.match(r'\s*hwJ\(', h_), h_[:60]
+        args.insert(9, h_.replace('hwJ(', 'hwJN(' if kids[int(m.group(1))] == 'hwN' else 'hwJ_32(', 1))
+        out.append(text[i:m.start()] + f'CH{m.group(1)}.{m.group(2)}D(' + ','.join(args) + ')')
+        i = b + 1
+    text = ''.join(out)
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    left = [m.start() for m in re.finditer(r'lt_trans\(d, 28n|is_lt\(d, 28n', text)]
+    assert not left, text[left[0] - 200:left[0] + 80]
+    HX = W.HWNX if mode == 'hwN' else W.HW32X
+    hn = 'hwN' if mode == 'hwN' else 'hw32'
+    text = deep.thread(text, W.HWX, HX, hw32=hn)
+    kw = dict(hw32='hwN', hw32_term='VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)') if mode == 'hwN' else {}
+    import var_winx_c as WXC
+    text = WXC._body_newline(text, W.XIFACE)
+    text = deep.compat(text, W.XIFACE, W.HWX, HX, 'Nat.add(x, U32.to_nat(len))', **kw)
+    return text, mode
+
+
 def module_text(U):
     sels, arms, _ = union_schema(U)
     rts = [t for _, t in arm_types(U)]
     k = len(sels)
     assert len(rts) == k == len(arms)
     Tn = f'T.{U}'
+    hps = {i: prem_at(i, pr, 'x', 'len') for i, pr in union_hps(U).items()}
+    HPP = lambda js: ''.join(f', +hP{j}: {hps[j]}' for j in js if j in hps)
+    HPA = lambda js: ''.join(f', hP{j}' for j in js if j in hps)
     SB = 'BX(t, x)'
     XJ, FJ, LJ = 'XJ(t, x)', 'FJ(off)', 'LJ(len)'
     YJ = f'UW.WX(t, {XJ}, U32.to_nat({LJ}))'
@@ -79,6 +213,8 @@ def module_text(U):
     imps += [ln for ln in extra if ln.split(' as ')[-1] not in have]
     for i, rt in enumerate(rts):
         imps.append(f'import ./{ARMS[rt]} as CH{i}')
+    if hps:
+        imps.append('import ./vpb29.bend as VP')
     w = []
     a = w.append
     a(W.COMMONX)
@@ -278,29 +414,29 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
         CKi = f'Bool.and(U32.is_le(1, len), K0(U32.is_eq(z, {sels[0]}), z, {TXOA}))'
         PKi = 'S.Fixed' if rts[i] in FIXARMS else 'S.Variable'
         a(f'def ivv{i}({CW}, +sel: U32, +w: S.Value, +xs: +List<U32>, +em: {{Codec.parts(w, {arms[i]}) == Some{{[{PKi}{{xs}}]}} : {MP}}},')
-        a(f'    +ey: {{sel <> xs == {WBL} : +List<U32>}}, +es: {{{sels[i]} == sel : U32}}) -> {GOAL}:')
+        a(f'    +ey: {{sel <> xs == {WBL} : +List<U32>}}, +es: {{{sels[i]} == sel : U32}}{HPP([i])}) -> {GOAL}:')
         a(f'  +h1 = h1of({CWA}, sel, xs, ey)')
         a(f'  +e2 = Equal.trans(+List<U32>, sel <> xs, {WBL}, {SB} <> {YJ}, ey, ewx({CWA}, h1))')
         a(f'  +eh = Equal.cong(+List<U32>, U32, z => HDL(z), sel <> xs, {SB} <> {YJ}, e2)')
         a(f'  +et = Equal.cong(+List<U32>, +List<U32>, z => TLL(z), sel <> xs, {SB} <> {YJ}, e2)')
         a(f'  +ew = FD.logic__subst(+List<U32>, z => {{Codec.parts(w, GS.{rts[i]}()) == Some{{[{PKi}{{z}}]}} : {MP}}}, xs, {YJ}, et, em)')
-        a(f'  +hc = CH{i}.invw(d, t, n, {XJ}, {FJ}, {LJ}, eoJ({CWA}, h1), hd, hwJ({CWA}, h1), pf, w, ew)')
+        a(f'  +hc = CH{i}.invw(d, t, n, {XJ}, {FJ}, {LJ}, eoJ({CWA}, h1), hd, hwJ({CWA}, h1), pf, w, ew{HPA([i])})')
         a(f'  +p = FD.logic__and_intro(U32.is_le(1, len), CH{i}.CHKw(t, {XJ}, {FJ}, {LJ}), VMR.u32le(1, len, h1), hc)')
         a(f'  FD.logic__subst(U32, z => {{{CKi} == {TRUE}}}, {sels[i]}, {SB}, Equal.trans(U32, {sels[i]}, sel, {SB}, es, eh), p)')
         a('')
         WD = f'Some{{{FIXARMS[rts[i]]}n}}' if rts[i] in FIXARMS else 'None{}'
         a(f'def ivt{i}({CW}, +sel: U32, +w: S.Value, +m: {MP}, hf: DF.single_result({WD}, m), +em: {{Codec.parts(w, {arms[i]}) == m : {MP}}},')
-        a(f'    +e: {{Codec.tagged(sel, m) == {TGT} : {MP}}}, +es: {{{sels[i]} == sel : U32}}) -> {GOAL}:')
+        a(f'    +e: {{Codec.tagged(sel, m) == {TGT} : {MP}}}, +es: {{{sels[i]} == sel : U32}}{HPP([i])}) -> {GOAL}:')
         a('  match m:')
         a(f'    case None{{}}: {AB("e")}')
         a(f'    case Some{{Nil{{}}}}: {AB("e")}')
         if rts[i] in FIXARMS:
-            a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es)')
+            a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es{HPA([i])})')
             a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {FIXARMS[rts[i]]}n, Equal.sym(Maybe<&2, Nat>, Some{{{FIXARMS[rts[i]]}n}}, None{{}}, hf)))')
         else:
             a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}:')
             a(f'      Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
-            a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es)')
+            a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es{HPA([i])})')
         a(f'    case Some{{Con{{S.Fixed{{+xs}}, Con{{+h2, +r2}}}}}}: {AB("e")}')
         a(f'    case Some{{Con{{S.Variable{{+xs}}, Con{{+h2, +r2}}}}}}: {AB("e")}')
         a('')
@@ -308,19 +444,19 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
         rest = f'SS.compatible_option({"[" + ", ".join(str(s) for s in sels[i + 1:]) + "]"}, {chain_suffix(arms, i + 1)}, sel)'
         m = re.fullmatch(r'S\.ProgressiveContainer\{(\[.*?\]), (.*), (\[.*?\])\}', arms[i])
         a(f'def ivs{i}({CW}, +sel: U32, +w: S.Value, +b: Bool, +eb: {{U32.is_eq({sels[i]}, sel) == b : Bool}},')
-        a(f'    +e: {{Codec.with_option(SS.selected(b, {arms[i]}, {rest}), s => Codec.tagged(sel, Codec.parts(w, s))) == {TGT} : {MP}}}) -> {GOAL}:')
+        a(f'    +e: {{Codec.with_option(SS.selected(b, {arms[i]}, {rest}), s => Codec.tagged(sel, Codec.parts(w, s))) == {TGT} : {MP}}}{HPP(range(i, k))}) -> {GOAL}:')
         a('  match b:')
         FACT = f'DS.facts(w, {arms[i]}, {{==}})' if rts[i] in FIXARMS else f'vsingleP(w, {m.group(1)}, {m.group(2)}, {m.group(3)}, {{==}})'
-        a(f'    case True{{}}: ivt{i}({CWA}, sel, w, Codec.parts(w, {arms[i]}), {FACT}, {{==}}, e, FD.u32alg__eq_of({sels[i]}, sel, eb))')
+        a(f'    case True{{}}: ivt{i}({CWA}, sel, w, Codec.parts(w, {arms[i]}), {FACT}, {{==}}, e, FD.u32alg__eq_of({sels[i]}, sel, eb){HPA([i])})')
         if i + 1 < k:
-            a(f'    case False{{}}: ivs{i + 1}({CWA}, sel, w, U32.is_eq({sels[i + 1]}, sel), {{==}}, e)')
+            a(f'    case False{{}}: ivs{i + 1}({CWA}, sel, w, U32.is_eq({sels[i + 1]}, sel), {{==}}, e{HPA(range(i + 1, k))})')
         else:
             a(f'    case False{{}}: {AB("e")}')
         a('')
     a(f'# Every value whose spec parts are the window\'s bytes passes the checks.')
-    a(f'def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, GS.{U}()) == {TGT} : {MP}}}) -> {GOAL}:')
+    a(f'def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, GS.{U}()) == {TGT} : {MP}}}{HPP(range(k))}) -> {GOAL}:')
     a('  match v:')
-    a(f'    case S.Selected{{+sel, +w}}: ivs0({CWA}, sel, w, U32.is_eq({sels[0]}, sel), {{==}}, e)')
+    a(f'    case S.Selected{{+sel, +w}}: ivs0({CWA}, sel, w, U32.is_eq({sels[0]}, sel), {{==}}, e{HPA(range(k))})')
     for c, args in W.VALUE_CTORS:
         if c == 'Selected':
             continue
@@ -328,7 +464,7 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
         a(f'    case {pat}: {AB("e")}')
     a('')
     head = imps + ['', HDR, f'# {U}: a CompatibleUnion at a window of any byte offset (the selector byte, then the arm\'s window): the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(head) + '\n'.join(w) + '\n'
+    return union_deep('\n'.join(head) + '\n'.join(w) + '\n', rts)[0]
 
 
 def fixw_deep(text):
@@ -487,7 +623,58 @@ def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U3
         ln = ln.replace('import ../../spec/fulu_schemas.bend as Spec', 'import ./generic_specs.bend as Spec')
         out.append(ln)
     out.insert(out.index('import ./generic_specs.bend as Spec') + 1, 'import ../../spec/schema.bend as SS')
-    return '\n'.join(out)
+    return union_top_deep('\n'.join(out), U)
+
+
+def union_top_deep(text, U):
+    """The whole-buffer laws at any depth d < 31 over the window's D interface (var_winb.top_deep): n <= NMAX the laws'
+    premise hN when an arm's window ends by NMAX; the arms' pbits representation premises are one Bool premise PBQ(t, n)
+    of the rejection law (each arm's field [O, len) is at most PMAX bytes)."""
+    import deep
+    rts = [t for _, t in arm_types(U)]
+    kids = [child_mode(ARMS[rt]) for rt in rts]
+    mode = 'hwN' if 'hwN' in kids else 'hw32'
+    text = WB.top_deep(text, 'W', mode, None)
+    hps = union_hps(U)
+    if not hps:
+        return text
+    T_ = 'True{} : Bool'
+    js = sorted(hps)
+    a = text.index('\nimport ./') + 1
+    text = text[:a] + 'import ./vpb29.bend as VP\n' + ''.join(f'import ./{ARMS[rts[j]]} as CH{j}\n' for j in js) + text[a:]
+    conj = {}
+    for j in js:
+        c = prem_at(j, hps[j], '0n', 'n', 'W.')
+        conj[j] = c[1:c.index(' == True{} : Bool}')]
+    body = conj[js[-1]]
+    for j in reversed(js[:-1]):
+        body = f'Bool.and({conj[j]}, {body})'
+    defs = ['', "# The arms' progressive bit lists' representation bound on the buffer: each arm's field [O, len) has at most",
+            '# PMAX = 2^29 bytes (the runtime refuses a longer one, which the spec would accept).',
+            f'def PBQ(+t: FD.array__Tree<U32>, +n: U32) -> Bool: {body}']
+    rest = body
+    for i, j in enumerate(js):
+        if i == len(js) - 1:
+            defs.append(f'def pbq{j}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{conj[j]} == {T_}}}: ' + ('h' if i == 0 else f'pbr{i}(t, n, h)'))
+            break
+        tail = rest[len(f'Bool.and({conj[j]}, '):-1]
+        prev = 'h' if i == 0 else f'pbr{i}(t, n, h)'
+        defs.append(f'def pbq{j}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{conj[j]} == {T_}}}: FD.logic__and_left({conj[j]}, {tail}, {prev})')
+        defs.append(f'def pbr{i + 1}(+t: FD.array__Tree<U32>, +n: U32, +h: {{PBQ(t, n) == {T_}}}) -> {{{tail} == {T_}}}: FD.logic__and_right({conj[j]}, {tail}, {prev})')
+        rest = tail
+    a0 = text.index('\ndef tg(')
+    text = text[:a0] + '\n'.join(defs) + '\n' + text[a0:]
+    m = re.search(r'W\.invwD\(', text)
+    b0 = deep._close(text, m.end())
+    text = text[:b0] + ''.join(f', pbq{j}(t, n, hPB)' for j in js) + text[b0:]
+    a0 = text.index('\ndef rej_v(') + len('\ndef rej_v(')
+    b0 = deep._close(text, a0)
+    text = text[:b0] + f', +hPB: {{PBQ(t, n) == {T_}}}' + text[b0:]
+    m = re.search(r'^law decode_reject:\n((?:  for .*\n)+)', text, re.M)
+    text = text[:m.end()] + f'  for +hPB: {{PBQ(t, n) == {T_}}}\n' + text[m.end():]
+    m = re.search(r'^def decode_reject\(([^)]*)\):\n  v => e => rej_v\(([^)]*)\)', text, re.M)
+    assert m, 'decode_reject'
+    return text[:m.start(1)] + m.group(1) + ', hPB' + text[m.end(1):m.start(2)] + m.group(2) + ', hPB' + text[m.end(2):]
 
 
 def outputs(no_big=False):
@@ -496,7 +683,9 @@ def outputs(no_big=False):
         wm = f'var_winx_{U}.bend'
         out[ROOT / 'proofs/obj' / wm] = module_text(U)
         out[ROOT / 'proofs/obj' / f'var_codec_{U}.bend'] = top_text(U, wm)
-        out[ROOT / 'proofs/obj' / f'var_codec_{U}_unique.bend'] = WB.generic_unique_text(U, f'var_codec_{U}.bend')
+        uq = WB.generic_unique_text(U, f'var_codec_{U}.bend')
+        kids = [child_mode(ARMS[rt]) for _, rt in arm_types(U)]
+        out[ROOT / 'proofs/obj' / f'var_codec_{U}_unique.bend'] = WB.unique_deep(uq, 'hwN' if 'hwN' in kids else 'hw32')
     return out
 
 
