@@ -38,6 +38,9 @@ import generic as GEN  # noqa: E402
 
 index = json.load(open('types/generic_obj_index.json'))
 generated, unsupported = index['generated'], index['unsupported']
+# the five generic forms that are also Fulu names (boolean, uint8, uint32, uint64, uint256) have one
+# object API, the fork's: their cases run through the Fulu programs (build/obj-g<k>)
+fork = json.load(open('types/obj_groups.json'))
 owner = GEN.case_names()
 cases = [c for c in json.load(open('cases.json')) if '/ssz_generic/' in c]
 only = None
@@ -66,14 +69,16 @@ for case in cases:
             failures.append({'case': case, 'schema': name, 'checks': {'unsupported_but_valid': False},
                              'reason': unsupported[name]})
         continue
-    g = generated[name]
+    g = generated.get(name)
+    prog = f"build/obj-x{g['group']}" if g else f"build/obj-g{fork[name]['group']}"
+    g = g or fork[name]
     f = tmp / 'generic-object.ssz'
     out = tmp / 'generic-object-out.ssz'
     f.write_bytes(data)
     out.unlink(missing_ok=True)
     env = {**os.environ, 'SSZ_MODE': '0', 'SSZ_INDEX': str(g['index']), 'SSZ_OPS': '1',
            'SSZ_INPUT': str(f), 'SSZ_OUTPUT': str(out)}
-    r = subprocess.run([f"build/obj-x{g['group']}"] + flags, env=env, capture_output=True, text=True)
+    r = subprocess.run([prog] + flags, env=env, capture_output=True, text=True)
     accepted = r.returncode == 0 and 'DECODED=1' in r.stdout
     if valid:
         want = re.search(r'0x([0-9a-f]{64})', (d / 'meta.yaml').read_text()).group(1)
