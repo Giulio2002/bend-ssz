@@ -2834,7 +2834,7 @@
      "FuluDataColumnSidecar_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^24 bytes (16 MiB) (hS: n <= 4 * 2^K with K = 22, a parameter; the codec laws take buffers of depth below 23)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend": [
@@ -7392,9 +7392,9 @@
   },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
-   "depth_bound": 23,
-   "input_bound": "2^24",
-   "input_bound_bytes": 16777216,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 8782180,
    "covered": true,
    "bridged": null
