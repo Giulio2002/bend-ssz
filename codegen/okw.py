@@ -108,20 +108,23 @@ def list_btwins(t):
 # The OKW twins of the containers in LIST_D_STEMS take their list children's validity from the D modules (the base
 # child stops at dw < 28): OK, the size / spec / validity laws and the writers' putxW / putx_bytesW of the D module.
 
-LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface'}
-LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW')
+LIST_D_STEMS = {'big_encx_Gc465214E502', 'big_encx_Gc465214E502_iface', 'big_encx_Gp66304057C3', 'big_encx_Gp66304057C3_iface',
+                'big_encx_Gc56D855869F', 'big_encx_Gc56D855869F_iface'}
+LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
 
 
 def list_d_children(t):
     """{alias: (dalias, p)} of the list children t imports that have a D module."""
     import encx_d
     return {m.group(2): (m.group(2) + '_D', m.group(1)) for m in re.finditer(r'^import \./big_encx_(\w+)\.bend as (\w+)$', t, re.M)
-            if m.group(1) in encx_d.CFG}
+            if m.group(1) in encx_d.CFG or m.group(1) in encx_d.CLOSURES}
 
 
 def list_d_swap(s, ld):
+    import encx_d
     for al, (dal, p) in ld.items():
-        s = re.sub(r'(?<![\w.])' + re.escape(al) + r'\.(' + '|'.join(LD_LAWS) + r')\(', dal + r'.\1(', s)
+        ns = [n for n in LD_LAWS if n in encx_d.d_names(p)]
+        s = re.sub(r'(?<![\w.])' + re.escape(al) + r'\.(' + '|'.join(ns) + r')\(', dal + r'.\1(', s)
     return s
 
 
@@ -149,7 +152,6 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
     if not m or 'def OKTW(' in t:
         return t, bad
     ld = list_d_children(t) if dchild else {}
-    assert not (ld and child_okw), 'list D children beside container children: not handled'
     OPS = m.group(1)
     OAS = ', '.join(p.lstrip('+').split(':')[0].strip() for p in deep._args(OPS + ')', 0)[0])
     ENDC = f'ENDC({OAS})'
@@ -388,6 +390,7 @@ def okw_writer(t, child_okw, dchild=False):
         return t
     if not child_okw:
         return t
+    ld = list_d_children(t) if dchild else {}
     tb = deep._twin_blocks(t)
     names = [n for n, _, _, _ in tb]
     pat = '|'.join(re.escape(al) + r'(?:OK|putxW|putx_bytesW|szx)\(' for al in child_okw)
@@ -415,8 +418,8 @@ def okw_writer(t, child_okw, dchild=False):
             blk = re.sub(r'(?<![\w.])' + re.escape(al) + r'szx\(', al + 'szxO(', blk)
         for m in aff:
             blk = re.sub(r'(?<![\w.])' + re.escape(m) + r'\(', oname(m) + '(', blk)
-        new.append(blk)
-    return t.rstrip('\n') + '\n' + _topo('\n' + '\n'.join(new))
+        new.append(list_d_swap(blk, ld))
+    return list_d_imports(t.rstrip('\n') + '\n' + _topo('\n' + '\n'.join(new)), ld)
 
 def _topo(seg):
     """The defs of seg in dependency order (a def after the defs it calls), comments kept with their def."""

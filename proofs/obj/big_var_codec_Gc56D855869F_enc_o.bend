@@ -27,10 +27,14 @@ import ./spec_bits.bend as FB
 import ./dk.bend as DK
 import ./vpiece.bend as VPC
 import ./big_encx_v4_GcDC3E457711.bend as RV_v4_GcDC3E457711
+import ./big_encx_v4_GcDC3E457711_d.bend as RV_v4_GcDC3E457711_D
 import ./big_encx_l128_u16.bend as EX_l128_u16
+import ./big_encx_l128_u16_d.bend as EX_l128_u16_D
 import ./big_encx_bl256.bend as EX_bl256
+import ./big_encx_bl256_d.bend as EX_bl256_D
 import ./big_encx_Gc465214E502_iface.bend as EX_Gc465214E502
 import ./big_encx_v2_Gc465214E502.bend as EX_v2_Gc465214E502
+import ./big_encx_v2_Gc465214E502_d.bend as EX_v2_Gc465214E502_D
 import ./vrecb.bend as VRB
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
