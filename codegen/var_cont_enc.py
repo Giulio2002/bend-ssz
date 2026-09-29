@@ -4581,7 +4581,12 @@ def cont_strict(q, t, res):
             child.add(mi.group(2) + '.')
     bad3 = []
     if q.stem in OKW_SKIP:
-        pass   # (its OKW chains would double a 40 s check past the 600 s limit: BeaconState keeps OK's 2^30)
+        # (its OKW twins in the companion module only: the base module keeps its size, and its importers' check time)
+        if 'def OKT(' in t:
+            tf, bad3 = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True)
+            _COMP[q] = (t, tf)
+        elif 'def PUTC(' in t:
+            _COMP[q] = (t, okw.okw_writer(t, child))
     elif 'def OKT(' in t:
         tf, _ = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True)
         t, bad3 = okw.okw_iface(t, child)
@@ -4593,7 +4598,7 @@ def cont_strict(q, t, res):
 
 _OKT_MODS = set()
 _COMP = {}
-OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}
+OKW_SKIP = {'big_encx_BeaconState_iface', 'big_encx_BeaconState'}   # (their OKW twins live in the companions only)
 PROBE_POST = cont_strict
 
 
@@ -4637,7 +4642,7 @@ def main():
             raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     out = RR.rewire_out(out)
     global _OKT_MODS
-    _OKT_MODS = {pathlib.Path(q).stem for q, t in out.items() if 'def OKT(' in t} - OKW_SKIP
+    _OKT_MODS = {pathlib.Path(q).stem for q, t in out.items() if 'def OKT(' in t}
     out = _deep.dify_out(out, handled={'fposW'}, post=cont_strict)  # the dd < 31 twins
     # the ifaces' companions (codegen/okw.py okw_companion): the O laws only their callers check
     import okw
