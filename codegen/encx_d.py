@@ -31,6 +31,11 @@ CFG = {
     'pl_u16': ('prog', None, None),
     'pl_bool': ('prog', None, None),
     'pl_u64': ('prog', None, None),
+    # BeaconState's big lists (codegen/var_rec_enc.py): balances / inactivity_scores / the participation lists (no limit
+    # in the validity: the object API's NMAX), historical_roots (N <= 2^29 bytes in the base validity, and the NMAX conjunct)
+    'l1099511627776_u64': ('prog', None, None),
+    'l1099511627776_u8': ('prog', None, None),
+    'l16777216_b32': ('prog', None, None),
 }
 
 DROP_DEFS = {'TH', 'ENC', 'VAL', 'SZ', 'PUTX', 'PADB', 'putx_go', 'bytes_go', 'putx', 'putx_bytes'}

@@ -1147,7 +1147,7 @@ def okw_size(q, t):
             child.add(mi.group(2) + '.')
     imp = (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text()
     me = re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', imp, re.M)
-    t, bad = okw.okw_size(t, child, es, me.group(1) if me else None)
+    t, bad = okw.okw_size(t, child, es, me.group(1) if me else None, dchild=ci.group(1) in okw.LIST_D_STEMS)
     if bad:
         raise SystemExit(f'var_cont_top: {q.name}: uses of k okw_size does not handle: {bad[:3]}')
     return t

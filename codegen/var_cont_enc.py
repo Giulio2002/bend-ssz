@@ -4582,11 +4582,12 @@ def cont_strict(q, t, res):
     bad3 = []
     if q.stem in OKW_SKIP:
         # (its OKW twins in the companion module only: the base module keeps its size, and its importers' check time)
+        dch = q.stem in okw.LIST_D_STEMS
         if 'def OKT(' in t:
-            tf, bad3 = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True)
+            tf, bad3 = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True, dchild=dch)
             _COMP[q] = (t, tf)
         elif 'def PUTC(' in t:
-            _COMP[q] = (t, okw.okw_writer(t, child))
+            _COMP[q] = (t, okw.okw_writer(t, child, dchild=dch))
     elif 'def OKT(' in t:
         dch = q.stem in okw.LIST_D_STEMS   # (its list children in D form)
         tf, _ = okw.okw_iface(t, child, olaws=okw.OLAWS_C, keep=True, dchild=dch)
