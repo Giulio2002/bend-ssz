@@ -3314,7 +3314,7 @@
      "proglist_bool_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint128_e2e_dec_generated.bend": [
@@ -3326,7 +3326,7 @@
      "proglist_uint128_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint16_e2e_dec_generated.bend": [
@@ -3338,7 +3338,7 @@
      "proglist_uint16_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint256_e2e_dec_generated.bend": [
@@ -3350,7 +3350,7 @@
      "proglist_uint256_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint32_e2e_dec_generated.bend": [
@@ -3362,7 +3362,7 @@
      "proglist_uint32_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint64_e2e_dec_generated.bend": [
@@ -3374,7 +3374,7 @@
      "proglist_uint64_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "proglist_uint8_e2e_dec_generated.bend": [
@@ -3386,7 +3386,7 @@
      "proglist_uint8_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "BitsStruct_e2e_root_generated.bend": [
@@ -7752,63 +7752,63 @@
   },
   "proglist_bool": {
    "generated_name": "Gt83D8B3D008",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint128": {
    "generated_name": "Gt1C2FA69562",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint16": {
    "generated_name": "GtF23A2FB97E",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint256": {
    "generated_name": "GtA8457965E2",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint32": {
    "generated_name": "Gt3A9420DD8E",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint64": {
    "generated_name": "GtE83F21B20A",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "proglist_uint8": {
    "generated_name": "GtDE4B86A990",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
@@ -7895,43 +7895,43 @@
   },
   {
    "name": "proglist_bool",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint128",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint16",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint256",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint32",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint64",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "proglist_uint8",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   }

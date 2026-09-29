@@ -2391,6 +2391,7 @@ def vdec_info(R):
             'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s)),
             # laws at the object API's limit: n <= NMAX is a premise of their own (hN, an hwN window)
             'hN': bool(re.search(r'\+hN: \{U32\.is_le\(n, \w+\.NMAX\(\)\) == True', sig)),
+            'hNrej': '+hN:' in mods['decode_reject'][1],
             # the rejection law's premise on the progressive bit lists (hPB: every pbits field <= 2^29 bytes)
             'pbq': bool(re.search(r'\+hPB: \{\w+\.PBQ\(t, n\) == True', mods['decode_reject'][1])),
             'lawhN': '+hN: {U32.is_le(n, ' in sig}
@@ -2475,9 +2476,14 @@ def text_vdec(R, X, info):
         assert '@K@' not in body, 'NMAX mode: a K-bound left in the template'
         if info.get('hN'):
             # the laws' own premise n <= NMAX is hS
-            n0 = body.count('C.capM_q(n, hS), hchk)')
-            body = body.replace('C.capM_q(n, hS), hchk)', 'C.capM_q(n, hS), hS, hchk)')
-            assert n0 == 4, n0
+            # (a rejection law that does not take it, the bare progressive lists', is called without)
+            lines, n0 = body.split('\n'), 0
+            for i_, l_ in enumerate(lines):
+                if 'C.capM_q(n, hS), hchk)' in l_ and not ('.decode_reject(' in l_ and not info.get('hNrej')):
+                    lines[i_] = l_.replace('C.capM_q(n, hS), hchk)', 'C.capM_q(n, hS), hS, hchk)')
+                    n0 += 1
+            body = '\n'.join(lines)
+            assert n0 == 2 + (0 if info['noneshort'] else 1) + (1 if info.get('hNrej') else 0), n0
         if '+hN: {U32.is_le(n, VB.NMAX())' in vw['text']:
             # the view vv takes n <= NMAX too (the laws themselves may not)
             assert body.count('C.capM_q(n, hS), ec))') == 1
