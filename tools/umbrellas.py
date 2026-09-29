@@ -103,7 +103,7 @@ def main():
     own = {}
     for f in order:  # topological: the closure's other modules are already estimated
         if f in t:
-            own[f] = max(0.0, t[f] - base - sum(own[order[j]] for j in clo[f] if j != idx[f]))
+            own[f] = max(0.0, t[f] - base - sum(own.get(order[j], 0.0) for j in clo[f] if j != idx[f]))
     med = statistics.median(own.values()) if own else 1.0
     w = [own.get(f, med) + 0.02 for f in order]
 
