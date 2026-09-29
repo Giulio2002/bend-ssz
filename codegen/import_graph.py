@@ -12,6 +12,7 @@ reading import lines by hand.
 `--check` fails if a module that is not part of the generated production path
 becomes reachable from a measured or public entry point.
 """
+import functools
 import pathlib
 import re
 import sys
@@ -36,10 +37,11 @@ OTHER = {
 }
 
 
+@functools.lru_cache(maxsize=None)
 def imports(rel):
     path = ROOT / rel
     if not path.exists():
-        return []
+        return ()
     out = []
     for raw in IMPORT.findall(path.read_text()):
         if raw.startswith('/') or raw.startswith('0x'):
@@ -49,7 +51,7 @@ def imports(rel):
             out.append(str(target.relative_to(ROOT)))
         except ValueError:
             continue           # the pinned BendHub package, outside the tree
-    return out
+    return tuple(out)
 
 
 def reach(roots):

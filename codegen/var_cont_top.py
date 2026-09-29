@@ -1075,6 +1075,45 @@ def eval_go_sized(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}})
     return '\n'.join(hs) + '\n' + body
 
 
+def okw_sizes(out):
+    """The size modules' companions <size>_o: their O laws on the interface's OKW (codegen/okw.py okw_size: the
+    encoding below 2^31 bytes, the object API's own limit), in their own module so that only their callers check
+    them; the interfaces' companions (<iface>_o, codegen/var_cont_enc.py) through okw_relink."""
+    import okw
+    comp = {}
+    for q, t in out.items():
+        t2 = okw_size(q, t)
+        if t2 != t:
+            comp[q.with_name(q.stem + '_o.bend')] = okw.okw_companion(t, t2, q.stem, 'the size and validity passes on OKW (encodings below 2^31 bytes) of ' + q.stem)
+    names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
+    for p in (ROOT / 'proofs/obj').glob('big_encx_*_iface_o.bend'):
+        names[p.stem[:-2]] = okw._names(p.read_text())
+    return {q: okw.okw_relink(c, names) for q, c in comp.items()}
+
+
+def okw_size(q, t):
+    """A size module with its O laws on its interface's OKW, when the interface has OKW."""
+    import okw
+    if not q.stem.endswith('_size'):
+        return t
+    ci = re.search(r'^import \./(\w+)\.bend as CI$', t, re.M)
+    if not ci or 'def OKTW(' not in (ROOT / f'proofs/obj/{ci.group(1)}.bend').read_text():
+        return t
+    child, es = set(), set()
+    for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)$', t, re.M):
+        p = ROOT / f'proofs/obj/{mi.group(1)}.bend'
+        if mi.group(2) in ('CI', 'Z', 'K'):
+            continue
+        if mi.group(1).endswith('_size'):
+            es.add(mi.group(2) + '.')
+        elif p.exists() and 'def OKTW(' in p.read_text():
+            child.add(mi.group(2) + '.')
+    t, bad = okw.okw_size(t, child, es)
+    if bad:
+        raise SystemExit(f'var_cont_top: {q.name}: uses of k okw_size does not handle: {bad[:3]}')
+    return t
+
+
 def main():
     out = {}
     if '--no-big' not in sys.argv:
@@ -1085,6 +1124,7 @@ def main():
         for C in GTOPS:
             out[out_file(C)] = gtop_text(C)
     out = RR.rewire_out(out)
+    out.update(okw_sizes(out))
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

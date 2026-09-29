@@ -26,8 +26,7 @@ def hv_Gp66304057C3D(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U
     -> HVK.SDXE(RT.pj_Gp66304057C3_2(W1.OBJw(d, t, x, off, len))):
   (VLS.DZ(W1.LJ1(t, x, len)), PH.pbv_hv(d, t, W1.XJ1(t, x), W1.FJ1(off, t, x), W1.LJ1(t, x, len), W1.eoJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, W1.hwJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), W1.hwJ1N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, W1.itD1(t, x, off, len, h)))
 
-def hv_Gp8A7851175B(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W2.CHKw(t, x, off, len) == True{} : Bool})
+def hv_Gp8A7851175BD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W2.CHKw(t, x, off, len) == True{} : Bool})
     -> HVK.SDXE(RT.pj_Gp8A7851175B_2(W2.OBJw(d, t, x, off, len))):
-  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
-  (VLS.DZ(W2.LJ1(t, x)), PH.pbv_hv(d, t, W2.XJ1(t, x), W2.FJ1(off, t, x), W2.LJ1(t, x), W2.eoJ1(d, t, n, x, off, len, eo, hd, hw, pf, h), hd31, W2.hwJ1(d, t, n, x, off, len, eo, hd, hw, pf, h), VB.hwNof(d, Nat.add(W2.XJ1(t, x), U32.to_nat(W2.LJ1(t, x))), hd, W2.hwJ1(d, t, n, x, off, len, eo, hd, hw, pf, h)), pf, W2.itD1(t, x, off, len, h)))
+  (VLS.DZ(W2.LJ1(t, x)), PH.pbv_hv(d, t, W2.XJ1(t, x), W2.FJ1(off, t, x), W2.LJ1(t, x), W2.eoJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, W2.hwJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), W2.hwJ1N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, W2.itD1(t, x, off, len, h)))

@@ -357,7 +357,7 @@ GB2 = ROOT / 'proofs/obj/root_gtypes2.bend'
 # The definitions a light companion (<X>_light.bend, codegen/light_split.py) takes from a root-law module:
 # the object views and their projections, mirrors and representation invariants (what e2e files state
 # against), not the digests or laws.
-LIGHT_SEED = re.compile(r'^(v|pj|pjb|pju|por|pc|th|fz|am|tfz|xi|xv|xlen_o|rep|ereps|rp|vb|bits|last|domain|blen)_|^xat_(?!at_)|^(M_\w+|MB|WMr|BMr)$')
+LIGHT_SEED = re.compile(r'^(v|pj|pjb|pju|por|pc|th|fz|am|tfz|tfzam|fzth|amset|amsize|amswap|nth|xi|xv|xlen_o|rep|ereps|rp|vb|bits|last|domain|blen)_|^xat_(?!at_)|^(M_\w+|MB|WMr|BMr)$')
 
 
 def light_outs(outs, gen):

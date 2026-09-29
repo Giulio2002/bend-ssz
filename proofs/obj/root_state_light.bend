@@ -24,6 +24,7 @@ import ../../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
 import ../../types/schema.bend as S
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
+import ./mtree_defs.bend as MD
 import ./pv_obj_light.bend as PV
 import ./root_names_light.bend as RN
 import ./ulist_obj_light.bend as UL
@@ -47,6 +48,18 @@ def xat_l2048_Eth1Data(W: List<&2, FuluEth1Data_d.Eth1Data>, +i: Nat) -> FuluEth
       match i:
         case 0n: x
         case 1n+j: xat_l2048_Eth1Data(t, j)
+law nth_l2048_Eth1Data:
+  for +W: List<&2, FuluEth1Data_d.Eth1Data>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluEth1Data_d.Eth1Data, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluEth1Data_d.Eth1Data, W, i) == Some{xat_l2048_Eth1Data(W, i)} : Maybe<&2, FuluEth1Data_d.Eth1Data>}
+def nth_l2048_Eth1Data(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluEth1Data_d.Eth1Data, Nil{}, i) == Some{xat_l2048_Eth1Data(Nil{}, i)} : Maybe<&2, FuluEth1Data_d.Eth1Data>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l2048_Eth1Data(t, j, hi)
 def xi_l2048_Eth1Data(k: Nat, +W: List<&2, FuluEth1Data_d.Eth1Data>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -72,6 +85,18 @@ def xat_l1099511627776_Validator(W: List<&2, FuluValidator_d.Validator>, +i: Nat
       match i:
         case 0n: x
         case 1n+j: xat_l1099511627776_Validator(t, j)
+law nth_l1099511627776_Validator:
+  for +W: List<&2, FuluValidator_d.Validator>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluValidator_d.Validator, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluValidator_d.Validator, W, i) == Some{xat_l1099511627776_Validator(W, i)} : Maybe<&2, FuluValidator_d.Validator>}
+def nth_l1099511627776_Validator(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluValidator_d.Validator, Nil{}, i) == Some{xat_l1099511627776_Validator(Nil{}, i)} : Maybe<&2, FuluValidator_d.Validator>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l1099511627776_Validator(t, j, hi)
 def xi_l1099511627776_Validator(k: Nat, +W: List<&2, FuluValidator_d.Validator>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -105,6 +130,18 @@ def xat_l16777216_HistoricalSummary(W: List<&2, FuluHistoricalSummary_d.Historic
       match i:
         case 0n: x
         case 1n+j: xat_l16777216_HistoricalSummary(t, j)
+law nth_l16777216_HistoricalSummary:
+  for +W: List<&2, FuluHistoricalSummary_d.HistoricalSummary>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluHistoricalSummary_d.HistoricalSummary, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluHistoricalSummary_d.HistoricalSummary, W, i) == Some{xat_l16777216_HistoricalSummary(W, i)} : Maybe<&2, FuluHistoricalSummary_d.HistoricalSummary>}
+def nth_l16777216_HistoricalSummary(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluHistoricalSummary_d.HistoricalSummary, Nil{}, i) == Some{xat_l16777216_HistoricalSummary(Nil{}, i)} : Maybe<&2, FuluHistoricalSummary_d.HistoricalSummary>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l16777216_HistoricalSummary(t, j, hi)
 def xi_l16777216_HistoricalSummary(k: Nat, +W: List<&2, FuluHistoricalSummary_d.HistoricalSummary>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -130,6 +167,18 @@ def xat_l134217728_PendingDeposit(W: List<&2, FuluPendingDeposit_d.PendingDeposi
       match i:
         case 0n: x
         case 1n+j: xat_l134217728_PendingDeposit(t, j)
+law nth_l134217728_PendingDeposit:
+  for +W: List<&2, FuluPendingDeposit_d.PendingDeposit>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingDeposit_d.PendingDeposit, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluPendingDeposit_d.PendingDeposit, W, i) == Some{xat_l134217728_PendingDeposit(W, i)} : Maybe<&2, FuluPendingDeposit_d.PendingDeposit>}
+def nth_l134217728_PendingDeposit(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingDeposit_d.PendingDeposit, Nil{}, i) == Some{xat_l134217728_PendingDeposit(Nil{}, i)} : Maybe<&2, FuluPendingDeposit_d.PendingDeposit>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l134217728_PendingDeposit(t, j, hi)
 def xi_l134217728_PendingDeposit(k: Nat, +W: List<&2, FuluPendingDeposit_d.PendingDeposit>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -155,6 +204,18 @@ def xat_l134217728_PendingPartialWithdrawal(W: List<&2, FuluPendingPartialWithdr
       match i:
         case 0n: x
         case 1n+j: xat_l134217728_PendingPartialWithdrawal(t, j)
+law nth_l134217728_PendingPartialWithdrawal:
+  for +W: List<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W, i) == Some{xat_l134217728_PendingPartialWithdrawal(W, i)} : Maybe<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
+def nth_l134217728_PendingPartialWithdrawal(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, Nil{}, i) == Some{xat_l134217728_PendingPartialWithdrawal(Nil{}, i)} : Maybe<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l134217728_PendingPartialWithdrawal(t, j, hi)
 def xi_l134217728_PendingPartialWithdrawal(k: Nat, +W: List<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
@@ -180,6 +241,18 @@ def xat_l262144_PendingConsolidation(W: List<&2, FuluPendingConsolidation_d.Pend
       match i:
         case 0n: x
         case 1n+j: xat_l262144_PendingConsolidation(t, j)
+law nth_l262144_PendingConsolidation:
+  for +W: List<&2, FuluPendingConsolidation_d.PendingConsolidation>
+  for +i: Nat
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluPendingConsolidation_d.PendingConsolidation, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, W, i) == Some{xat_l262144_PendingConsolidation(W, i)} : Maybe<&2, FuluPendingConsolidation_d.PendingConsolidation>}
+def nth_l262144_PendingConsolidation(W, i, hi):
+  match W:
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, Nil{}, i) == Some{xat_l262144_PendingConsolidation(Nil{}, i)} : Maybe<&2, FuluPendingConsolidation_d.PendingConsolidation>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Con{+x, +t}:
+      match i:
+        case 0n: {==}
+        case 1n+ +j: nth_l262144_PendingConsolidation(t, j, hi)
 def xi_l262144_PendingConsolidation(k: Nat, +W: List<&2, FuluPendingConsolidation_d.PendingConsolidation>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}

@@ -1,0 +1,65 @@
+import Base
+import ../../src/obj.bend as O
+import ../../src/primitives.bend as I
+import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
+import ../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
+import ../../types/schema.bend as S
+import ../../types/primitive.bend as P
+import ../../spec/codec.bend as Codec
+import ../../spec/layout.bend as Layout
+import ../../spec/primitives.bend as SP
+import ../../spec/fulu_schemas.bend as Spec
+import ../compact/found.bend as FD
+import ../compact/arith.bend as A
+import ../../proofs/nat_order.bend as Order
+import ./spec_fixed.bend as FX
+import ./vspec.bend as VS
+import ./vbuf.bend as VB
+import ./vua.bend as UA
+import ./vuw.bend as UW
+import ./vuwd.bend as WD
+import ./vcopy.bend as VC
+import ./vrecx.bend as VRX
+import ./vcont.bend as VCN
+import ./vua_lay.bend as LY
+import ./vconts.bend as CS
+import ./spec_bits.bend as FB
+import ./dk.bend as DK
+import ../../spec/nat_bytes.bend as N
+import ./vuwv_SyncCommittee.bend as V_SyncCommittee
+import ./vuwv_v6_b32.bend as V_v6_b32
+import ./vuwv_v7_b32.bend as V_v7_b32
+import ./encx_recs.bend as ER
+import ./big_encx_LightClientHeader_iface.bend as EC_LightClientHeader
+import ./big_encx_LightClientHeader_iface_o.bend as EC_LightClientHeadero
+import ./vfixw_spec.bend as FWS
+import ./vuw_bits.bend as UWB
+import ./big_encx_LightClientUpdate.bend as K
+import ./big_encx_LightClientUpdate_iface.bend as OB
+
+# GENERATED (codegen/okw.py okw_companion). Do not edit.
+# the size and validity passes on OKW (encodings below 2^31 bytes) of big_encx_LightClientUpdate_iface
+
+def sizeCW(+wR: K.KW, +h: {OB.OKTW(wR) == True{} : Bool}) -> {FuluLightClientUpdate_e.LightClientUpdate_size(K.OBJC(wR)) == (K.OBJC(wR), K.SZC(wR)) : FuluLightClientUpdate_d.LightClientUpdate & U32}:
+  %Equal.sym(U32, K.SZC(wR), O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))), Equal.trans(U32, K.SZC(wR), (O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32), O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))), Equal.trans(U32, K.SZC(wR), ((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32), (O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32), Equal.trans(U32, K.SZC(wR), (((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32) .|. 0 : U32), ((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32), Equal.trans(U32, K.SZC(wR), ((((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32) .|. 0 : U32) .|. 0 : U32), (((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32) .|. 0 : U32), OB.eSZ(wR, Unit{}), UWB.or0r((((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32) .|. 0 : U32))), UWB.or0r(((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32) .|. 0 : U32))), UWB.or0r((O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))) .|. 0 : U32))), UWB.or0r(O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR)))))) :
+    {FuluLightClientUpdate_e.LightClientUpdate_size(K.OBJC(wR)) == (K.OBJC(wR), _) : FuluLightClientUpdate_d.LightClientUpdate & U32}
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader & U32, FuluLightClientHeader_e.LightClientHeader_size(EC_LightClientHeader.TH(K.F_m_attested_header(wR))), (EC_LightClientHeader.TH(K.F_m_attested_header(wR)), EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeadero.sizexO(K.F_m_attested_header(wR), OB.ok_hok_attested_headerW(wR, h))) :
+    {FuluLightClientUpdate_e.LightClientUpdate_sz0(FuluSyncCommittee_d.SyncCommittee{O.Words{FD.array__thaw(U32, K.F_TB_next_sync_committee(wR)), 24576}, FuluBytes48_d.Bytes48{K.F_next_sync_committee_a0(wR), K.F_next_sync_committee_a1(wR), K.F_next_sync_committee_a2(wR), K.F_next_sync_committee_a3(wR), K.F_next_sync_committee_a4(wR), K.F_next_sync_committee_a5(wR), K.F_next_sync_committee_a6(wR), K.F_next_sync_committee_a7(wR), K.F_next_sync_committee_a8(wR), K.F_next_sync_committee_a9(wR), K.F_next_sync_committee_a10(wR), K.F_next_sync_committee_a11(wR)}}, O.Words{FD.array__thaw(U32, K.F_TB_next_sync_committee_branch(wR)), 192}, EC_LightClientHeader.TH(K.F_m_finalized_header(wR)), O.Words{FD.array__thaw(U32, K.F_TB_finality_branch(wR)), 224}, O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{K.F_sync_aggregate_w0(wR), K.F_sync_aggregate_w1(wR), K.F_sync_aggregate_w2(wR), K.F_sync_aggregate_w3(wR), K.F_sync_aggregate_w4(wR), K.F_sync_aggregate_w5(wR), K.F_sync_aggregate_w6(wR), K.F_sync_aggregate_w7(wR), K.F_sync_aggregate_w8(wR), K.F_sync_aggregate_w9(wR), K.F_sync_aggregate_w10(wR), K.F_sync_aggregate_w11(wR), K.F_sync_aggregate_w12(wR), K.F_sync_aggregate_w13(wR), K.F_sync_aggregate_w14(wR), K.F_sync_aggregate_w15(wR)}, FuluBytes96_d.Bytes96{K.F_sync_aggregate_w16(wR), K.F_sync_aggregate_w17(wR), K.F_sync_aggregate_w18(wR), K.F_sync_aggregate_w19(wR), K.F_sync_aggregate_w20(wR), K.F_sync_aggregate_w21(wR), K.F_sync_aggregate_w22(wR), K.F_sync_aggregate_w23(wR), K.F_sync_aggregate_w24(wR), K.F_sync_aggregate_w25(wR), K.F_sync_aggregate_w26(wR), K.F_sync_aggregate_w27(wR), K.F_sync_aggregate_w28(wR), K.F_sync_aggregate_w29(wR), K.F_sync_aggregate_w30(wR), K.F_sync_aggregate_w31(wR), K.F_sync_aggregate_w32(wR), K.F_sync_aggregate_w33(wR), K.F_sync_aggregate_w34(wR), K.F_sync_aggregate_w35(wR), K.F_sync_aggregate_w36(wR), K.F_sync_aggregate_w37(wR), K.F_sync_aggregate_w38(wR), K.F_sync_aggregate_w39(wR)}}, O.BNone{}}, K.F_signature_slot(wR), 25216, _) == (K.OBJC(wR), O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR)))) : FuluLightClientUpdate_d.LightClientUpdate & U32}
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader & U32, FuluLightClientHeader_e.LightClientHeader_size(EC_LightClientHeader.TH(K.F_m_finalized_header(wR))), (EC_LightClientHeader.TH(K.F_m_finalized_header(wR)), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR))), EC_LightClientHeadero.sizexO(K.F_m_finalized_header(wR), OB.ok_hok_finalized_headerW(wR, h))) :
+    {FuluLightClientUpdate_e.LightClientUpdate_sz1(FuluSyncCommittee_d.SyncCommittee{O.Words{FD.array__thaw(U32, K.F_TB_next_sync_committee(wR)), 24576}, FuluBytes48_d.Bytes48{K.F_next_sync_committee_a0(wR), K.F_next_sync_committee_a1(wR), K.F_next_sync_committee_a2(wR), K.F_next_sync_committee_a3(wR), K.F_next_sync_committee_a4(wR), K.F_next_sync_committee_a5(wR), K.F_next_sync_committee_a6(wR), K.F_next_sync_committee_a7(wR), K.F_next_sync_committee_a8(wR), K.F_next_sync_committee_a9(wR), K.F_next_sync_committee_a10(wR), K.F_next_sync_committee_a11(wR)}}, O.Words{FD.array__thaw(U32, K.F_TB_next_sync_committee_branch(wR)), 192}, O.Words{FD.array__thaw(U32, K.F_TB_finality_branch(wR)), 224}, O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{K.F_sync_aggregate_w0(wR), K.F_sync_aggregate_w1(wR), K.F_sync_aggregate_w2(wR), K.F_sync_aggregate_w3(wR), K.F_sync_aggregate_w4(wR), K.F_sync_aggregate_w5(wR), K.F_sync_aggregate_w6(wR), K.F_sync_aggregate_w7(wR), K.F_sync_aggregate_w8(wR), K.F_sync_aggregate_w9(wR), K.F_sync_aggregate_w10(wR), K.F_sync_aggregate_w11(wR), K.F_sync_aggregate_w12(wR), K.F_sync_aggregate_w13(wR), K.F_sync_aggregate_w14(wR), K.F_sync_aggregate_w15(wR)}, FuluBytes96_d.Bytes96{K.F_sync_aggregate_w16(wR), K.F_sync_aggregate_w17(wR), K.F_sync_aggregate_w18(wR), K.F_sync_aggregate_w19(wR), K.F_sync_aggregate_w20(wR), K.F_sync_aggregate_w21(wR), K.F_sync_aggregate_w22(wR), K.F_sync_aggregate_w23(wR), K.F_sync_aggregate_w24(wR), K.F_sync_aggregate_w25(wR), K.F_sync_aggregate_w26(wR), K.F_sync_aggregate_w27(wR), K.F_sync_aggregate_w28(wR), K.F_sync_aggregate_w29(wR), K.F_sync_aggregate_w30(wR), K.F_sync_aggregate_w31(wR), K.F_sync_aggregate_w32(wR), K.F_sync_aggregate_w33(wR), K.F_sync_aggregate_w34(wR), K.F_sync_aggregate_w35(wR), K.F_sync_aggregate_w36(wR), K.F_sync_aggregate_w37(wR), K.F_sync_aggregate_w38(wR), K.F_sync_aggregate_w39(wR)}}, O.BNone{}}, K.F_signature_slot(wR), EC_LightClientHeader.TH(K.F_m_attested_header(wR)), O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), _) == (K.OBJC(wR), O.padd(O.padd(25216, EC_LightClientHeader.SZ(K.F_m_attested_header(wR))), EC_LightClientHeader.SZ(K.F_m_finalized_header(wR)))) : FuluLightClientUpdate_d.LightClientUpdate & U32}
+  {==}
+
+law sizexO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {FuluLightClientUpdate_e.LightClientUpdate_size(OB.TH(m)) == (OB.TH(m), OB.SZ(m)) : FuluLightClientUpdate_d.LightClientUpdate & U32}
+def sizexO(m, hok):
+  match m:
+    case OB.MW{+wR}: sizeCW(wR, hok)

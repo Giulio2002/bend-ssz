@@ -1,0 +1,58 @@
+import Base
+import ../../src/obj.bend as O
+import ../../src/primitives.bend as I
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_encode_ssz_generated.bend as FuluExecutionPayloadHeader_e
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
+import ../../types/schema.bend as S
+import ../../types/primitive.bend as P
+import ../../spec/codec.bend as Codec
+import ../../spec/layout.bend as Layout
+import ../../spec/primitives.bend as SP
+import ../../spec/fulu_schemas.bend as Spec
+import ../compact/found.bend as FD
+import ../compact/arith.bend as A
+import ../../proofs/nat_order.bend as Order
+import ./spec_fixed.bend as FX
+import ./vspec.bend as VS
+import ./vbuf.bend as VB
+import ./vua.bend as UA
+import ./vuw.bend as UW
+import ./vuwd.bend as WD
+import ./vcopy.bend as VC
+import ./vrecx.bend as VRX
+import ./vcont.bend as VCN
+import ./vua_lay.bend as LY
+import ./vconts.bend as CS
+import ./spec_bits.bend as FB
+import ./dk.bend as DK
+import ./encx_recs.bend as ER
+import ./vuwv_v4_b32.bend as V_v4_b32
+import ./big_encx_ExecutionPayloadHeader_iface.bend as EC_ExecutionPayloadHeader
+import ./big_encx_ExecutionPayloadHeader_size.bend as ES_ExecutionPayloadHeader
+import ./big_encx_ExecutionPayloadHeader_size_o.bend as ES_ExecutionPayloadHeadero
+import ./vfixw_spec.bend as FWS
+import ./vuw_bits.bend as UWB
+import ./big_encx_LightClientHeader.bend as K
+import ./big_encx_LightClientHeader_iface.bend as OB
+
+# GENERATED (codegen/okw.py okw_companion). Do not edit.
+# the size and validity passes on OKW (encodings below 2^31 bytes) of big_encx_LightClientHeader_iface
+
+def sizeCW(+beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OB.OKTW(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}) -> {FuluLightClientHeader_e.LightClientHeader_size(K.OBJC(beacon, m_execution, dB_execution_branch, TB_execution_branch)) == (K.OBJC(beacon, m_execution, dB_execution_branch, TB_execution_branch), K.SZC(beacon, m_execution, dB_execution_branch, TB_execution_branch)) : FuluLightClientHeader_d.LightClientHeader & U32}:
+  %Equal.sym(U32, K.SZC(beacon, m_execution, dB_execution_branch, TB_execution_branch), O.padd(244, EC_ExecutionPayloadHeader.SZ(m_execution)), Equal.trans(U32, K.SZC(beacon, m_execution, dB_execution_branch, TB_execution_branch), (O.padd(244, EC_ExecutionPayloadHeader.SZ(m_execution)) .|. 0 : U32), O.padd(244, EC_ExecutionPayloadHeader.SZ(m_execution)), OB.eSZ(beacon, m_execution, dB_execution_branch, TB_execution_branch, Unit{}), UWB.or0r(O.padd(244, EC_ExecutionPayloadHeader.SZ(m_execution))))) :
+    {FuluLightClientHeader_e.LightClientHeader_size(K.OBJC(beacon, m_execution, dB_execution_branch, TB_execution_branch)) == (K.OBJC(beacon, m_execution, dB_execution_branch, TB_execution_branch), _) : FuluLightClientHeader_d.LightClientHeader & U32}
+  %Equal.sym(O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_size(O.BSome{EC_ExecutionPayloadHeader.TH(m_execution), O.BNone{}}), (O.BSome{EC_ExecutionPayloadHeader.TH(m_execution), O.BNone{}}, EC_ExecutionPayloadHeader.SZ(m_execution)), Equal.cong(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32, O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32, z => FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_size_back(z), FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_size(EC_ExecutionPayloadHeader.TH(m_execution)), (EC_ExecutionPayloadHeader.TH(m_execution), EC_ExecutionPayloadHeader.SZ(m_execution)), ES_ExecutionPayloadHeadero.sizezO(m_execution, OB.ok_hok_executionW(beacon, m_execution, dB_execution_branch, TB_execution_branch, h)))) :
+    {FuluLightClientHeader_e.LightClientHeader_sz0(beacon, O.Words{FD.array__thaw(U32, TB_execution_branch), 128}, 244, _) == (K.OBJC(beacon, m_execution, dB_execution_branch, TB_execution_branch), O.padd(244, EC_ExecutionPayloadHeader.SZ(m_execution))) : FuluLightClientHeader_d.LightClientHeader & U32}
+  {==}
+
+law sizexO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {FuluLightClientHeader_e.LightClientHeader_size(OB.TH(m)) == (OB.TH(m), OB.SZ(m)) : FuluLightClientHeader_d.LightClientHeader & U32}
+def sizexO(m, hok):
+  match m:
+    case OB.MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: sizeCW(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok)

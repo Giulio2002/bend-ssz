@@ -49,6 +49,7 @@ import ./e2e_dl_l2_ConsolidationRequest.bend as DQ2
 import ./e2e_rl_l8192_DepositRequest.bend as RQ0
 import ./e2e_rl_l16_WithdrawalRequest.bend as RQ1
 import ./e2e_rl_l2_ConsolidationRequest.bend as RQ2
+import ./e2e_rec_BeaconBlockBody.bend as RB
 import ../src/primitives.bend as I
 import ../types/primitive.bend as P
 import ../spec/codec.bend as Codec
