@@ -67,3 +67,15 @@ For each covered name (`e2e/manifest.json`), in the terms of END_TO_END.bend's m
 
 Combined with END_TO_END's laws, each bridge says the object API meets the specification
 directly. END_TO_END's statements are frozen; only their proofs were changed.
+
+## Conformance (official vectors, through the generated object API)
+
+`benchmarks/evidence/object_conformance.json`: every `mainnet/fulu/ssz_static` case of
+consensus-specs v1.6.1 (295 cases, 59 types; decode, re-encode byte for byte, root against
+`roots.yaml`). `benchmarks/evidence/generic_object_conformance.json`: every `ssz_generic` case
+(5,145, valid and invalid, all 10 families; the 8 zero-length schemas are rejected by
+construction). Both files carry a provenance stamp (commit, time, runtime toolchain hashes, and
+the sha256 of the tested sources); `python3 benchmarks/checks/provenance.py` says whether the
+stamped sources are the current tree's. Rebuild: `python3 benchmarks/quick.py --build all`,
+`--build-generic all`, then the two scripts in `benchmarks/checks/` (on the ssz server, with
+`BEND_RUNTIME` naming the pinned runtime compiler of `benchmarks/toolchain.json`).

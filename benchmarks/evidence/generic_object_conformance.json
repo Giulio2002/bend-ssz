@@ -25,14 +25,28 @@
   "uints valid pass": 48
  },
  "unsupported_schemas": {
-  "vec_uint64_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint8_0": "schema: a zero-length vector is not an SSZ type",
   "bitvector_0": "schema: a zero-length bit vector is not an SSZ type",
+  "vec_bool_0": "schema: a zero-length vector is not an SSZ type",
   "vec_uint128_0": "schema: a zero-length vector is not an SSZ type",
   "vec_uint16_0": "schema: a zero-length vector is not an SSZ type",
   "vec_uint256_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_bool_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint32_0": "schema: a zero-length vector is not an SSZ type"
+  "vec_uint32_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint64_0": "schema: a zero-length vector is not an SSZ type",
+  "vec_uint8_0": "schema: a zero-length vector is not an SSZ type"
  },
- "failures": []
+ "failures": [],
+ "provenance": {
+  "git_commit": "468ba87253764d003e80f5589ad9aca3e4cfa67f",
+  "git_dirty": null,
+  "utc": "2026-09-29T23:47:03Z",
+  "runtime": {
+   "bend_sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf",
+   "base_sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
+  },
+  "sources_sha256": {
+   "types/*_generated.bend": "c083b7e4d2083fc9cdbb32cbca5feb14857a21d39dbcd107c6a7d8023853a097",
+   "src/*.bend": "cbb61e030f6b3fa8b3a705cb4f265b4173c890e1c783fbb2acfc9f77921ae7c9",
+   "benchmarks/objprog/*.bend": "9860a2ecf89602f10f6a9e1fba1bd60be0ed07cff676e775b9eab66b686aa38e"
+  }
+ }
 }
