@@ -4046,7 +4046,7 @@
     "laws": [
      "ProgressiveComplexTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
+    "premise": "rep: RT.rep_Gp8A7851175B(o, Spec.Gp8A7851175B()) and hs: EQ.PREM_Gp8A7851175B(o), the D twins and the OKW laws (the container encodes below 2^31 bytes; no depth-28 storage premise, no per-field 2^28 + 1 budget): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8), each unbounded list field's size measure below 2^31 (a word list's length, 4 N of a record list, EL.LL of a variable-element list), and one object-level total TOT_Gp8A7851175B: the fixed part plus the measures of the list fields (a bit list at its constant bound 2^29 + 1) below 2^31, which is what the container law needs; the measures are object-level, but nothing in the object bounds a list's length, so the total stays a premise"
    }
   ],
   "ProgressiveSingleListContainerTestStruct_e2e_generated.bend": [
@@ -4066,7 +4066,7 @@
     "laws": [
      "ProgressiveTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the D twins and the OKW laws (the container encodes below 2^31 bytes, no depth-28 storage premise): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8) and each unbounded list field's encoding within EL.P1 = 2^28 + 1 bytes (a bit list: 2^29 + 1, counted as two), a per-field budget: nothing in the object bounds a list's length, and 7 units of 2^28 with the closed part stay below 2^31 (EL.finD); the object-level total bound replaces the per-field budgets once the object API exposes it"
+    "premise": "rep: RT.rep_Gc221EC01D83(o, Spec.Gc221EC01D83()) and hs: EQ.PREM_Gc221EC01D83(o), the D twins and the OKW laws (the container encodes below 2^31 bytes; no depth-28 storage premise, no per-field 2^28 + 1 budget): each list field's storage below depth 31 (record trees 30, bit lists EP.SDPB at K <= 2^32 - 8), each unbounded list field's size measure below 2^31 (a word list's length, 4 N of a record list, EL.LL of a variable-element list), and one object-level total TOT_Gc221EC01D83: the fixed part plus the measures of the list fields (a bit list at its constant bound 2^29 + 1) below 2^31, which is what the container law needs; the measures are object-level, but nothing in the object bounds a list's length, so the total stays a premise"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
