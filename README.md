@@ -36,7 +36,8 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
 
     python3 codegen/regen_all.py            # regenerate every generated file (idempotent)
     python3 codegen/regen_all.py --check    # fail if any generated file is stale
-    tools/check_fast.sh                     # check every .bend file through umbrellas (~4 min at 20 jobs)
-    tools/check_all.sh                      # check every .bend file one by one (~55 min at 20 jobs)
+    tools/check_fast.sh                     # the full check: every .bend file, through umbrellas (~3 min at 20 jobs);
+                                            # on failure it bisects and prints the failing files
+    tools/check.sh <file.bend>              # one file
 
-See [docs/BUILD.md](docs/BUILD.md) for the checker, the resource limits and the per-file commands.
+See [docs/BUILD.md](docs/BUILD.md) for the checker and the resource limits.

@@ -10,7 +10,7 @@ other file imports; their closures cover every file) into umbrellas of about S e
 seconds each, grouping roots whose closures overlap, and writes DIR/NNN.bend plus DIR/plan.tsv
 (umbrella, estimated seconds, modules, roots), largest first. tools/check_fast.sh runs them.
 
-Costs: FILE is a tools/check_all.sh summary.tsv (file, exit, ok, seconds, peak MB). A module's
+Costs: FILE holds per-file check times (file, exit, ok, seconds, peak MB; tools/check_costs.tsv). A module's
 own cost is estimated as its standalone time minus the estimated own costs of the rest of its
 closure (clamped at 0); files missing from FILE get the median. Only the balance of the
 partition depends on the costs, never its coverage: every file is in some umbrella's closure,
