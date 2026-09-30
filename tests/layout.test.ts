@@ -1,6 +1,6 @@
 import {test, expect} from 'bun:test';
-import Layout from '../../src/layout.bend';
-import Normative from '../../spec/layout_decoding.bend';
+import Layout from '../src/layout.bend';
+import Normative from '../spec/layout_decoding.bend';
 
 const list = (xs: any[]): any => xs.reduceRight((tail, head) => ({$: 'Con', head, tail}), {$: 'Nil'});
 const widths = (xs: (number|null)[]) => list(xs.map(n => n === null ? {$: 'None'} : {$: 'Some', value: BigInt(n)}));

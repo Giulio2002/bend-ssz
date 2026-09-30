@@ -23,7 +23,9 @@ What is frozen, and how it is hashed:
     and of each bridge file's statements themselves (signatures: hypotheses and conclusion).
 
 tools/check_fast.sh runs this check before checking anything. The lock's own sha256 is printed
-by --update and recorded in README ("Confirming what was checked").
+by --update; it is not written in README. The full check's stamp records it
+(benchmarks/evidence/check_fast.json, "frozen_lock_sha256"), and `git log -p frozen.lock.json`
+shows every change to it.
 """
 import glob
 import hashlib
