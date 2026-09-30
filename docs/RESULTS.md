@@ -72,22 +72,27 @@ directly. END_TO_END's statements are frozen; only their proofs were changed.
 
 Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`:
 
-- field laws, `proofs/obj/fields_*.bend` (`codegen/laws.py`): <!-- fig:obj_field_statements -->1,242<!-- /fig -->
-  statements over <!-- fig:obj_field_containers -->59<!-- /fig --> Fulu containers: read after write,
-  the other fields unchanged, a second write wins;
-- collection laws, `proofs/obj/collections_*.bend` (`codegen/laws.py`): <!-- fig:obj_coll_statements -->103<!-- /fig -->
-  statements over <!-- fig:obj_coll_count -->41<!-- /fig --> collections: rejected writes and appends
-  change nothing and report False, accepted writes keep the length, accepted appends add one;
-- setter laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`): <!-- fig:obj_setter_laws -->127<!-- /fig -->
-  laws over <!-- fig:obj_setter_containers -->27<!-- /fig --> containers: every setter keeps `rep_X`;
-- setter compositions, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`): each setter
-  law applied with the root bridge (<!-- fig:set_root_count -->127<!-- /fig --> statements: the root of `set_f(o, v)`
-  is `API.hash_tree_root` of its view), and with the encode bridge where `rep` is its only premise
-  (<!-- fig:set_encode_count -->7<!-- /fig --> statements, <!-- fig:set_encode_names -->`FuluContributionAndProof`, `FuluProposerSlashing`, `FuluSignedContributionAndProof`<!-- /fig -->).
+- setter laws, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`), for
+  <!-- fig:set_containers -->71<!-- /fig --> containers (Fulu and generic, BeaconState included):
+  <!-- fig:set_view_count -->315<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
+  (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->315<!-- /fig -->
+  statements) and the encode bridge (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the
+  bridge's premises allow;
+- setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
+  <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
+- collection laws of the public API, `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`):
+  <!-- fig:obj_coll_statements -->279<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  collections: acceptance exactly by the spec's condition, rejection leaving the object unchanged,
+  None outside the length, the length after an accepted set or append, and read-back after set (and
+  append, for the lists of Data elements) for <!-- fig:obj_coll_readback -->27<!-- /fig --> collections: the lists of Data
+  elements and the packed collections of whole-word elements (`proofs/obj/words_rw.bend`,
+  `proofs/obj/coll_words.bend`).
 
-Not stated: setter-then-encode for the containers whose encode bridge takes storage premises
-(no setter law restates them), `view(set_f(o, v))` as the spec value with field f replaced, and
-laws for the generic-suite names' setters. [PREMISES.md](PREMISES.md) section 9.
+The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
+flag, rejection and accepted-value laws in the same files. Not stated: read-back for the boxed
+lists, the byte and bit collections and after a growing append, and setter-then-encode where the
+encode bridge takes storage premises.
+[PREMISES.md](PREMISES.md) section 9.
 
 ## Conformance (official vectors, through the generated object API)
 
@@ -96,6 +101,12 @@ consensus-specs v1.6.1 (295 cases, 59 types; decode, re-encode byte for byte, ro
 `roots.yaml`). `benchmarks/evidence/generic_object_conformance.json`: every `ssz_generic` case
 (5,145, valid and invalid, all 10 families; the 8 zero-length schemas are rejected by
 construction).
+
+The fixtures these runs read are the pinned release files: `tools/verify_fixtures.py` checks every
+committed fixture against `fixtures.manifest.json` (in every full check), and with `--tarballs`
+fetches `general.tar.gz` and `mainnet.tar.gz`, requires their sha256 to be `upstream.lock.json`'s,
+and requires the manifest to be exactly the archives' `ssz_generic` and `fulu/ssz_static` members,
+each with the same sha256.
 
 ## Other test evidence (finite regressions, not laws)
 

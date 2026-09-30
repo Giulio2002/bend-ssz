@@ -44,23 +44,24 @@ root); without the decode bridges: <!-- fig:no_dec_bridge -->none<!-- /fig -->.
 
 ### Field, element and setter access
 
-The mutation API (`X_get_f`, `X_set_f`, `put_at`, `push`, ...) has its own laws. They are
+The mutation API (`X_set_f`, `C_set`, `C_append`, `C_get`, ...) has its own laws. They are
 public statements: they are listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`
 like the bridges.
 
 | Laws | Where | Statements | What they say |
 |---|---|---|---|
-| field | `proofs/obj/fields_*.bend` | <!-- fig:obj_field_statements -->1,242<!-- /fig --> over <!-- fig:obj_field_containers -->59<!-- /fig --> Fulu containers | reading a field right after writing it returns the value written, in the object with that field replaced; every other field reads what it was; a second write to the same field wins (over an object built from variables, so for every object) |
-| collection | `proofs/obj/collections_*.bend` | <!-- fig:obj_coll_statements -->103<!-- /fig --> over <!-- fig:obj_coll_count -->41<!-- /fig --> collections | a rejected write or append leaves the value unchanged and reports False; an accepted write keeps the length; an accepted append adds one |
-| setter keeps rep | `proofs/obj/prep_setters.bend` | <!-- fig:obj_setter_laws -->127<!-- /fig --> over <!-- fig:obj_setter_containers -->27<!-- /fig --> containers | from `rep_X(o, s)` (and, for a field with its own invariant, that invariant of the new value) follows `rep_X(set_f(o, v), s)` |
-| setter, then root | `e2e/<Name>_e2e_set_generated.bend` | <!-- fig:set_root_count -->127<!-- /fig --> | the setter law composed with the root bridge: for `o` satisfying `rep`, the root of `set_f(o, v)` is `API.hash_tree_root` of its view |
-| setter, then encode | same files | <!-- fig:set_encode_count -->7<!-- /fig --> | the same for the encoding, for the containers whose encode bridge has no premise but `rep`: <!-- fig:set_encode_names -->`FuluContributionAndProof`, `FuluProposerSlashing`, `FuluSignedContributionAndProof`<!-- /fig --> |
+| setter, spec value | `e2e/<Name>_e2e_set_generated.bend` | <!-- fig:set_view_count -->315<!-- /fig --> over <!-- fig:set_containers -->71<!-- /fig --> containers | for every object `o` and value `w`: `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, the spec value with field f (the k-th) replaced by `w`'s value and every other field unchanged (`proofs/obj/value_set.bend`) |
+| setter, then root | same files | <!-- fig:set_root_count -->315<!-- /fig --> | the root of `set_f(o, w)` is `API.hash_tree_root` of that replaced spec value (under `rep`, through the setter-keeps-rep law, where the root bridge has that premise) |
+| range-checked setter | same files | <!-- fig:set_checked_count -->11<!-- /fig --> setters | for the generic `uint8` / `uint16` fields, whose setter returns a flag: the flag is exactly the range check, a rejected value leaves the object unchanged, and an accepted one gives the spec value with the field replaced (then the root and encoding as above, given the new value's range invariant) |
+| setter, then encode | same files | <!-- fig:set_encode_count -->114<!-- /fig --> | the same for the encoding, where the encode bridge has no premise but the object and `rep` |
+| setter keeps rep | `proofs/obj/prep_setters{,_g1,_g2}.bend` | <!-- fig:obj_setter_laws -->211<!-- /fig --> over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers (BeaconState included) | from `rep_X(o, s)` (and, for a field with its own invariant, that invariant of the new value) follows `rep_X(set_f(o, v), s)` |
+| collections | `proofs/obj/coll_api_*.bend` | <!-- fig:obj_coll_statements -->279<!-- /fig --> over <!-- fig:obj_coll_count -->41<!-- /fig --> collections | over the public `C_set` / `C_append` / `C_get` with the guard the runtime computes: the flag returned is exactly the spec's condition (index below the length; new length within the limit; a byte for byte elements); a rejected set or append returns the object unchanged; `C_get` outside the length is None; for the array-stored lists an accepted set keeps the length and an accepted append adds one; for the lists of Data elements, a set value reads back at its index, every other index reads what it held, and an appended value reads back at the old length (when the storage has room); for the packed collections of whole-word elements (Bytes32, Bytes48, uint64), a set value reads back and the length is kept: read-back after set holds for <!-- fig:obj_coll_readback -->27<!-- /fig --> collections |
 
-The other containers' encode bridges also take storage premises (`hs*`, `hc*`, ...), and no
-setter law states those of `set_f(o, v)`, so for them setter-then-encode is not a theorem. Two
-further things are not stated: that `view(set_f(o, v))` is the spec value with field f replaced
-(the view is related to the object only through the bridges), and any law for the generic-suite
-names' setters.
+Not stated yet: setter-then-encode where the encode bridge also takes storage premises
+(`hs*`, `hc*`; no law says a setter keeps them), and read-back for the boxed lists (Type-kind elements), the byte and bit collections (sub-word
+writes) and after an append that grows the storage.
+The definitional field laws (`proofs/obj/fields_*.bend`) and the helper-level collection laws
+(`proofs/obj/collections_*.bend`) are still checked but are no longer listed as statements.
 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).
@@ -75,6 +76,7 @@ checked, at the commit you rely on:
 
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
     python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
+    python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
     git clone https://github.com/bendlang/bend T/bend-src && git -C T/bend-src checkout 3ddfb0366cc14622202aaa3808e695412241f23f
     # put Bun 1.4.2 (linux-x64) at T/bun-linux-x64/bun
     python3 tools/verify_pins.py --toolchain T   # checker, Bun and the vendored SHA-256 package match toolchain.lock.json

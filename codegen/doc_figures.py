@@ -12,8 +12,8 @@ naming the file and key, when a doc differs, or a key is unknown). Sources:
   e2e/manifest.json          the bridges, their premises and input bounds (codegen/e2e_bridge.py)
   proofs/api/                the facades (codegen/api_facade.py)
   e2e/COMPOSED.txt           the composed decode;encode / decode;root theorems (codegen/e2e_compose.py)
-  codegen/statements.py      the statement files: the object-mutation laws (proofs/obj/fields_*,
-                             collections_*, prep_setters.bend) and the setter compositions
+  codegen/statements.py      the statement files: the object-mutation laws (proofs/obj/coll_api_*,
+                             prep_setters.bend) and the setter laws
                              (e2e/*_e2e_set_generated.bend, codegen/e2e_setters.py)
   benchmarks/evidence/check_fast.json   the recorded full check (tools/check_fast.sh): its size and timings,
                              so a new stamp makes this check fail until the docs are regenerated
@@ -163,6 +163,9 @@ def figures():
     f['check_wall'] = f'{wall / 60:.1f}' if wall else f'at least {slow / 60:.1f}'
     f['check_commit'] = st.get('commit', 'unknown')[:8]
     f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
+    dr = sorted(p.name[:-len('_e2e_decrep_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_decrep_generated.bend'))
+    f['decrep_count'] = str(len(dr))
+    f['decrep_names'] = names_list(['`%s`' % n for n in dr])
     f.update(object_law_figures())
     return f
 
@@ -184,18 +187,19 @@ def object_law_figures():
             for m in re.finditer(r'^# ---- (\w+) ----$', p.read_text(), re.M):
                 names.add(re.sub(strip, '', m.group(1)))
         return len(names)
-    f['obj_field_statements'] = f"{stm('proofs/obj/fields_'):,}"
-    f['obj_field_containers'] = str(sections('proofs/obj/fields_*.bend'))
-    f['obj_coll_statements'] = str(stm('proofs/obj/collections_'))
-    f['obj_coll_count'] = str(sections('proofs/obj/collections_*.bend', r'$^'))
-    f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters.bend'))
+    coll = [l for k, v in sf.items() if k.startswith('proofs/obj/coll_api_') for l in v]
+    f['obj_coll_statements'] = str(len(coll))
+    f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
+    f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))
+    f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters'))
     f['obj_setter_containers'] = str(len({re.match(r'(\w+?)_set_', l).group(1)
-                                          for l in sf.get('proofs/obj/prep_setters.bend', [])}))
+                                          for k, v in sf.items() if k.startswith('proofs/obj/prep_setters') for l in v}))
     sets = [l for k, v in sf.items() if k.endswith('_e2e_set_generated.bend') for l in v]
+    f['set_containers'] = str(sum(1 for k in sf if k.endswith('_e2e_set_generated.bend')))
+    f['set_view_count'] = str(sum(1 for l in sets if l.endswith('_view')))
     f['set_root_count'] = str(sum(1 for l in sets if l.endswith('_root')))
     f['set_encode_count'] = str(sum(1 for l in sets if l.endswith('_encode')))
-    f['set_encode_names'] = names_list(sorted({'`%s`' % re.match(r'(\w+?)_e2e_set_', l).group(1)
-                                               for l in sets if l.endswith('_encode')}))
+    f['set_checked_count'] = str(sum(1 for l in sets if l.endswith('_flag')))
     return f
 
 

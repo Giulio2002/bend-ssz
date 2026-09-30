@@ -42,6 +42,11 @@ way. It describes the current tree only. The development notes it replaced are k
 - **Unions.** A Union with more than 128 options, or with no option at all, is illegal
   (`type_legality`: at most 127 options after the first). The prose says only that selectors above
   127 "should not" be used and that there is at least one option. No reference type is affected.
+- **No `None` in a CompatibleUnion.** A CompatibleUnion option may not be `None`
+  (`type_legality.legal`: the options are checked with `legal(options, True{})`, and a `T.Null{}`
+  outside the first option of a plain `Union` is `Empty`). The prose (EIP-7495's
+  `CompatibleUnion`) does not state this; it lists only non-empty option types, and no reference
+  type or official vector uses `None` there.
 - **Duplicate field names** in a container or progressive container are illegal
   (`type_legality.named_fields`, `distinct_names`). The prose has no such rule; a Python container
   cannot express duplicates.
@@ -57,6 +62,23 @@ way. It describes the current tree only. The development notes it replaced are k
 - **Decoding as the image of serialization** implies every item of the prose's hardening list
   (first offset, monotone offsets, bounds, no trailing bytes, delimiter and padding bits, selector
   range).
+
+## Errata: stale comments in the frozen files
+
+Three comments in frozen spec files predate the proofs and are out of date. The files are frozen
+(`frozen.lock.json`), so they are corrected here, not edited; the comments are not part of any
+definition, and no statement depends on them.
+
+- `spec/codec.bend` (lines 10-12) calls public type legality and its composition "separate
+  unfinished obligations" and the file "not yet the complete public SSZ specification".
+  END_TO_END.bend proves serialization exact for every legal type and None for every illegal one
+  (`serialize_correct` and the laws after it).
+- `spec/decoding_relation.bend` (line 7) calls type legality and decoding completeness
+  "separate". END_TO_END.bend's `deserialize_correct` and `deserialize_rejection_correct` prove
+  deserialization sound and complete on the canonical image, and rejection exactly outside it.
+- `spec/root_relation.bend` (lines 22-25) calls public domain/totality and rejection equivalence
+  "separate proof obligations". END_TO_END.bend's `hash_tree_root_correct` and ROOT_DOMAIN.bend
+  prove the root sound, complete and total on the root domain.
 
 ## The schemas, and how they are cross-checked
 
