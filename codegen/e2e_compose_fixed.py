@@ -194,7 +194,8 @@ def pad_word(eht):
 
 def build(name, lf, api):
     W = api.W
-    dl = lf.get(f'{name}_e2e_decode_view')
+    kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
+    dl = lf.get(f'{name}_e2e_decode_{kind}')
     el, rl = lf.get(f'{name}_e2e_encode'), lf.get(f'{name}_e2e_root')
     if not (dl and el and rl):
         return None
@@ -235,7 +236,6 @@ def build(name, lf, api):
         cf = f'MK.cf{8 * j + r}({x})' if j < 3 else f'MK.cw{24 + r}({x})'
         a2 = [m.start() for m in re.finditer(re.escape(padx) + r'(?=[},])', obj1)][-1]
         obj1 = obj1[:a2] + cf + obj1[a2 + len(padx):]
-    kind = 'view'
     dps, dc = api.sig(dm, f'{name}_e2e_decode_{kind}')
     W.PREFER.clear()
     W.PREFER[dm.path] = 'DB'
@@ -264,15 +264,23 @@ def build(name, lf, api):
     R = ctx.lift(rm, rt[0])
     if ctx.lift(rm, rt[2]) != V or ctx.lift(rm, rt[1]) != SPEC:
         return None, 'the (i) and (iv) views differ textually'
-    mo = re.match(r'\{(\w+)\((.*)\) == (API\.deserialize\(.*\)) : Maybe<&2, S\.Value>\}$', dc, re.S)
-    MV, DEC, DES = mo.group(1), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3))
-    MT = ctx.lift(dm, re.search(r'Pair\.snd\(B\.Buf, (Maybe<&1, [\w.]+>)', dc).group(1))
-    hyps = [(m_, b, ctx.lift(dm, t)) for m_, b, t in dps if b not in ('bs', 'n')]
-    args = ', '.join(b for _, b, _ in dps)
-    accT = f'{{{DES} == Some{{{V}}} : Maybe<&2, S.Value>}}'
-    acc_body = (f'  Equal.trans(Maybe<&2, S.Value>, {DES}, {DB}.{MV}({DEC}), Some{{{V}}},\n'
-                f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
-                f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
+    if kind == 'accept':
+        mo = re.match(r'\(\{(.*?) == Some\{o\} : (Maybe<&1, [^>]*>)\} -> (\{API\.deserialize\(.*?\} : Maybe<&2, S\.Value>\})\) & \((.*)\)$', dc, re.S)
+        DEC, MT, ACC, BWD = ctx.lift(dm, mo.group(1)), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3)), ctx.lift(dm, mo.group(4))
+        hyps = [(m_, b, ctx.lift(dm, t)) for m_, b, t in dps if b not in ('bs', 'n', 'o')]
+        args = ', '.join(b for _, b, _ in dps)
+        acc_body = (f'  Pair.fst({{{DEC} == Some{{o}} : {MT}}} -> {ACC}, {BWD}, {DB}.{name}_e2e_decode_accept({args}))(dec)')
+        accT = ACC
+    else:
+        mo = re.match(r'\{(\w+)\((.*)\) == (API\.deserialize\(.*\)) : Maybe<&2, S\.Value>\}$', dc, re.S)
+        MV, DEC, DES = mo.group(1), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3))
+        MT = ctx.lift(dm, re.search(r'Pair\.snd\(B\.Buf, (Maybe<&1, [\w.]+>)', dc).group(1))
+        hyps = [(m_, b, ctx.lift(dm, t)) for m_, b, t in dps if b not in ('bs', 'n')]
+        args = ', '.join(b for _, b, _ in dps)
+        accT = f'{{{DES} == Some{{{V}}} : Maybe<&2, S.Value>}}'
+        acc_body = (f'  Equal.trans(Maybe<&2, S.Value>, {DES}, {DB}.{MV}({DEC}), Some{{{V}}},\n'
+                    f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
+                    f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
     OT = MT[len('Maybe<&1, '):-1]
     # everything this file adds is lifted before build_lit writes the imports
     OBJ, OBJ1 = ctx.lift(dm, obj0), ctx.lift(dm, obj1)
@@ -281,8 +289,32 @@ def build(name, lf, api):
         PX, XX = ctx.lift(dm, padx), ctx.lift(dm, x)
     ctx.alias(ROOT / 'proofs/compact/found.bend')
     ctx.alias(ROOT / 'spec/primitives.bend')
-    text, err = api.build_lit(name, (K, obj1, why), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT,
-                              accT, acc_body, hyps, kind)
+    base = api.LSynth
+
+    class Syn(base):
+        # a premise defined by a match on the container itself (rp_<Name>: case <Name>{x0, ..}): its fields
+        def unfold(self, m2, body, env2):
+            mt = api.W.parse_match(body)
+            if mt:
+                var, cases = mt
+                mdl = env2.get(var)
+                mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0]) if len(cases) == 1 else None
+                if mc and isinstance(mdl, api.W.Cont) and mc.group(1).split('.')[-1] == mdl.tname:
+                    bs_ = [b.strip().lstrip('+') for b in api.W.split_top(mc.group(2))]
+                    if len(bs_) == len(mdl.fields):
+                        env3 = dict(env2)
+                        env3['__e'] = dict(env2.get('__e', {}))
+                        for b_, (fe, fm) in zip(bs_, mdl.fields):
+                            env3[b_] = fm
+                            env3['__e'][b_] = fe
+                        return self.prove(m2, cases[0][1], env3)
+            return super().unfold(m2, body, env2)
+    api.LSynth = Syn
+    try:
+        text, err = api.build_lit(name, (K, obj1, why), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT,
+                                  accT, acc_body, hyps, kind)
+    finally:
+        api.LSynth = base
     if text is None:
         return None, err
     # the decoder's object in clean form: OBJ == OBJ' (one rewrite per masked word), and the decoder gives OBJ'
@@ -324,6 +356,8 @@ def build(name, lf, api):
         FDA = re.search(r'import \.\./proofs/compact/found\.bend as (\w+)', text).group(1)
         tail = eh_tail(tail, name, DB, DEC, MT, OT, OBJ1, EH, FDA)
     text = head + eqdefs + '\n' + tail
+    if kind == 'accept':   # the accept bridge takes the object as a relevant argument
+        text = text.replace('def acc(+bs: +List<U32>, +n: U32, -o:', 'def acc(+bs: +List<U32>, +n: U32, +o:')
     return text.replace(api.HEADER, HEADER, 1), None
 
 
