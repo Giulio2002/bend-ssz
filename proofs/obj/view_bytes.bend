@@ -233,3 +233,117 @@ def view_set_u8(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +p: U32, +q: Nat, +v: 
   %Equal.sym(Nat, U32.to_nat(p), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), idx(p, q, hq)) :
     {S.Sequence{PB.it1(U32.to_nat(n), VS.list_set(WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v))} == VS.field_set(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))))}, _, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PB.it1(U32.to_nat(n), VS.list_set(WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v)), VS.items_set(PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t)))), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}), it1_set(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v))
+
+# the bytes of a word list are four per word
+def limbs_len(+W: List<&2, U32>) -> {F.spec_common__length(U32, FX.limbs(W)) == Nat.double(Nat.double(F.spec_common__length(U32, W))) : Nat}:
+  match W:
+    case Nil{}: {==}
+    case Con{h, t}:
+      %Equal.sym(Nat, F.spec_common__length(U32, FX.limbs(t)), Nat.double(Nat.double(F.spec_common__length(U32, t))), limbs_len(t)) :
+        {1n+1n+1n+1n+_ == Nat.double(Nat.double(1n+F.spec_common__length(U32, t))) : Nat}
+      {==}
+
+# the byte offset below 4 in a word below the list's length is inside the bytes
+def idx_lt(+q: Nat, +s: Nat, +hs: {Nat.is_lt(s, 4n) == True{} : Bool}) -> {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), s), Nat.double(Nat.double(1n+q))) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), s), z) == True{} : Bool}, Nat.add(Nat.double(Nat.double(q)), 4n), Nat.double(Nat.double(1n+q)),
+    Equal.trans(Nat, Nat.add(Nat.double(Nat.double(q)), 4n), Nat.add(4n, Nat.double(Nat.double(q))), Nat.double(Nat.double(1n+q)), F.nat__add_comm(Nat.double(Nat.double(q)), 4n), {==}),
+    F.nat__lt_add_left(s, 4n, Nat.double(Nat.double(q)), hs))
+
+def limbs_room0(+W: List<&2, U32>, +q: Nat, +p: U32, +hq: {Nat.is_lt(q, F.spec_common__length(U32, W)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), Nat.double(Nat.double(F.spec_common__length(U32, W)))) == True{} : Bool}:
+  match p:
+    case U32{WCon{False{}, WCon{False{}, +r}}}:
+      %Equal.sym(Word(30n), Word.and(30n, r, Word.zero(30n)), Word.zero(30n), UB.wand_zero(30n, r)) :
+        {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32{WCon{False{}, WCon{False{}, _}}})), Nat.double(Nat.double(F.spec_common__length(U32, W)))) == True{} : Bool}
+      F.nat__lt_le_trans(Nat.add(Nat.double(Nat.double(q)), 0n), Nat.double(Nat.double(1n+q)), Nat.double(Nat.double(F.spec_common__length(U32, W))), idx_lt(q, 0n, {==}),
+        F.nat__double_le(Nat.double(1n+q), Nat.double(F.spec_common__length(U32, W)), F.nat__double_le(1n+q, F.spec_common__length(U32, W), F.nat__lt_succ_le_succ(q, F.spec_common__length(U32, W), hq))))
+    case U32{WCon{True{}, WCon{False{}, +r}}}:
+      %Equal.sym(Word(30n), Word.and(30n, r, Word.zero(30n)), Word.zero(30n), UB.wand_zero(30n, r)) :
+        {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32{WCon{True{}, WCon{False{}, _}}})), Nat.double(Nat.double(F.spec_common__length(U32, W)))) == True{} : Bool}
+      F.nat__lt_le_trans(Nat.add(Nat.double(Nat.double(q)), 1n), Nat.double(Nat.double(1n+q)), Nat.double(Nat.double(F.spec_common__length(U32, W))), idx_lt(q, 1n, {==}),
+        F.nat__double_le(Nat.double(1n+q), Nat.double(F.spec_common__length(U32, W)), F.nat__double_le(1n+q, F.spec_common__length(U32, W), F.nat__lt_succ_le_succ(q, F.spec_common__length(U32, W), hq))))
+    case U32{WCon{False{}, WCon{True{}, +r}}}:
+      %Equal.sym(Word(30n), Word.and(30n, r, Word.zero(30n)), Word.zero(30n), UB.wand_zero(30n, r)) :
+        {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32{WCon{False{}, WCon{True{}, _}}})), Nat.double(Nat.double(F.spec_common__length(U32, W)))) == True{} : Bool}
+      F.nat__lt_le_trans(Nat.add(Nat.double(Nat.double(q)), 2n), Nat.double(Nat.double(1n+q)), Nat.double(Nat.double(F.spec_common__length(U32, W))), idx_lt(q, 2n, {==}),
+        F.nat__double_le(Nat.double(1n+q), Nat.double(F.spec_common__length(U32, W)), F.nat__double_le(1n+q, F.spec_common__length(U32, W), F.nat__lt_succ_le_succ(q, F.spec_common__length(U32, W), hq))))
+    case U32{WCon{True{}, WCon{True{}, +r}}}:
+      %Equal.sym(Word(30n), Word.and(30n, r, Word.zero(30n)), Word.zero(30n), UB.wand_zero(30n, r)) :
+        {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32{WCon{True{}, WCon{True{}, _}}})), Nat.double(Nat.double(F.spec_common__length(U32, W)))) == True{} : Bool}
+      F.nat__lt_le_trans(Nat.add(Nat.double(Nat.double(q)), 3n), Nat.double(Nat.double(1n+q)), Nat.double(Nat.double(F.spec_common__length(U32, W))), idx_lt(q, 3n, {==}),
+        F.nat__double_le(Nat.double(1n+q), Nat.double(F.spec_common__length(U32, W)), F.nat__double_le(1n+q, F.spec_common__length(U32, W), F.nat__lt_succ_le_succ(q, F.spec_common__length(U32, W), hq))))
+
+def limbs_room(+W: List<&2, U32>, +q: Nat, +p: U32, +hq: {Nat.is_lt(q, F.spec_common__length(U32, W)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), F.spec_common__length(U32, FX.limbs(W))) == True{} : Bool}:
+  %Equal.sym(Nat, F.spec_common__length(U32, FX.limbs(W)), Nat.double(Nat.double(F.spec_common__length(U32, W))), limbs_len(W)) :
+    {Nat.is_lt(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), _) == True{} : Bool}
+  limbs_room0(W, q, p, hq)
+
+# appending a byte: cutting to one more than the index after the replacement is the cut before with the byte added
+def btake_snoc(+m: Nat, +L: +List<U32>, +v: U32, +h: {Nat.is_lt(m, F.spec_common__length(U32, L)) == True{} : Bool})
+    -> {WS.btake(1n+m, VS.list_set(L, m, v)) == VS.list_snoc(WS.btake(m, L), v) : +List<U32>}:
+  match m L:
+    case 0n Nil{}: Empty.absurd({WS.btake(1n, VS.list_set(Nil{}, 0n, v)) == VS.list_snoc(WS.btake(0n, Nil{}), v) : +List<U32>}, F.nat__lt_zero_absurd(0n, h))
+    case 0n Con{x, t}: {==}
+    case 1n+p Nil{}: Empty.absurd({WS.btake(2n+p, VS.list_set(Nil{}, 1n+p, v)) == VS.list_snoc(WS.btake(1n+p, Nil{}), v) : +List<U32>}, F.nat__lt_zero_absurd(1n+p, h))
+    case 1n+p Con{x, t}:
+      %Equal.sym(+List<U32>, WS.btake(1n+p, VS.list_set(t, p, v)), VS.list_snoc(WS.btake(p, t), v), btake_snoc(p, t, v, h)) :
+        {Con{x, _} == VS.list_snoc(Con{x, WS.btake(p, t)}, v) : +List<U32>}
+      {==}
+
+def btake_len(+m: Nat, +L: +List<U32>, +h: {Nat.is_le(m, F.spec_common__length(U32, L)) == True{} : Bool}) -> {F.spec_common__length(U32, WS.btake(m, L)) == m : Nat}:
+  match m L:
+    case 0n _: {==}
+    case 1n+p Nil{}: Empty.absurd({F.spec_common__length(U32, WS.btake(1n+p, Nil{})) == 1n+p : Nat}, F.logic__false_true(h))
+    case 1n+p Con{x, t}:
+      %Equal.sym(Nat, F.spec_common__length(U32, WS.btake(p, t)), p, btake_len(p, t, h)) :
+        {1n+_ == 1n+p : Nat}
+      {==}
+
+# the list of uint8: one more item at the end for one more byte
+def it1_snoc(+xs: +List<U32>, +v: U32)
+    -> {PB.it1(1n+F.spec_common__length(U32, xs), VS.list_snoc(xs, v)) == VS.items_snoc(PB.it1(F.spec_common__length(U32, xs), xs), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  match xs:
+    case Nil{}: {==}
+    case Con{x, t}:
+      %Equal.sym(S.Value, PB.it1(1n+F.spec_common__length(U32, t), VS.list_snoc(t, v)), VS.items_snoc(PB.it1(F.spec_common__length(U32, t), t), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}), it1_snoc(t, v)) :
+        {S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, _} == VS.items_snoc(PB.it1(1n+F.spec_common__length(U32, t), Con{x, t}), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+      {==}
+
+def view_app(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +nb: U32, +p: U32, +q: Nat, +v: U32, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(p, 2n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hp: {U32.to_nat(p) == U32.to_nat(n) : Nat}, +hnb: {U32.to_nat(nb) == 1n+U32.to_nat(n) : Nat})
+    -> {S.BytesValue{WO.wview(O.Words{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), nb})} == VS.bytes_snoc(S.BytesValue{WO.wview(O.Words{F.array__thaw(U32, t), n})}, v) : S.Value}:
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)))), F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)), F.array__freeze_thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)))) :
+    {S.BytesValue{WS.btake(U32.to_nat(nb), FX.limbs(F.array__slots(U32, _)))} == VS.bytes_snoc(S.BytesValue{WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t)))))}, v) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.BytesValue{WS.btake(U32.to_nat(nb), FX.limbs(F.array__slots(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)))))} == VS.bytes_snoc(S.BytesValue{WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, _)))}, v) : S.Value}
+  %Equal.sym(List<&2, U32>, F.array__slots(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), F.spec_common__update(U32, F.array__slots(U32, t), q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)), F.array__upd_slots(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1), hk, pf)) :
+    {S.BytesValue{WS.btake(U32.to_nat(nb), FX.limbs(_))} == VS.bytes_snoc(S.BytesValue{WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t)))}, v) : S.Value}
+  %Equal.sym(+List<U32>, FX.limbs(F.spec_common__update(U32, F.array__slots(U32, t), q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v), limbs_upd_p(F.array__slots(U32, t), q, p, v, hv)) :
+    {S.BytesValue{WS.btake(U32.to_nat(nb), _)} == VS.bytes_snoc(S.BytesValue{WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t)))}, v) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(nb), 1n+U32.to_nat(n), hnb) :
+    {S.BytesValue{WS.btake(_, VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v))} == VS.bytes_snoc(S.BytesValue{WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t)))}, v) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(n), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), Equal.trans(Nat, U32.to_nat(n), U32.to_nat(p), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), Equal.sym(Nat, U32.to_nat(p), U32.to_nat(n), hp), idx(p, q, hq))) :
+    {S.BytesValue{WS.btake(1n+_, VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v))} == VS.bytes_snoc(S.BytesValue{WS.btake(_, FX.limbs(F.array__slots(U32, t)))}, v) : S.Value}
+  %Equal.sym(+List<U32>, WS.btake(1n+Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v)), VS.list_snoc(WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))), v), btake_snoc(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)), v, limbs_room(F.array__slots(U32, t), q, p, F.logic__subst(Nat, z => {Nat.is_lt(q, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf)), hk)))) :
+    {S.BytesValue{_} == VS.bytes_snoc(S.BytesValue{WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)))}, v) : S.Value}
+  {==}
+
+def view_app_u8(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +nb: U32, +p: U32, +q: Nat, +v: U32, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(p, 2n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hp: {U32.to_nat(p) == U32.to_nat(n) : Nat}, +hnb: {U32.to_nat(nb) == 1n+U32.to_nat(n) : Nat})
+    -> {PB.vview1(O.Words{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), nb}) == VS.seq_append(PB.vview1(O.Words{F.array__thaw(U32, t), n}), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)))), F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)), F.array__freeze_thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)))) :
+    {S.Sequence{PB.it1(U32.to_nat(nb), WS.btake(U32.to_nat(nb), FX.limbs(F.array__slots(U32, _))))} == VS.seq_append(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{PB.it1(U32.to_nat(nb), WS.btake(U32.to_nat(nb), FX.limbs(F.array__slots(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))))))} == VS.seq_append(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, _))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(List<&2, U32>, F.array__slots(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), F.spec_common__update(U32, F.array__slots(U32, t), q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1)), F.array__upd_slots(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1), hk, pf)) :
+    {S.Sequence{PB.it1(U32.to_nat(nb), WS.btake(U32.to_nat(nb), FX.limbs(_)))} == VS.seq_append(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(+List<U32>, FX.limbs(F.spec_common__update(U32, F.array__slots(U32, t), q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(p, 3), 1))), VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v), limbs_upd_p(F.array__slots(U32, t), q, p, v, hv)) :
+    {S.Sequence{PB.it1(U32.to_nat(nb), WS.btake(U32.to_nat(nb), _))} == VS.seq_append(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(nb), 1n+U32.to_nat(n), hnb) :
+    {S.Sequence{PB.it1(_, WS.btake(_, VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v)))} == VS.seq_append(S.Sequence{PB.it1(U32.to_nat(n), WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, t))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(n), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), Equal.trans(Nat, U32.to_nat(n), U32.to_nat(p), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), Equal.sym(Nat, U32.to_nat(p), U32.to_nat(n), hp), idx(p, q, hq))) :
+    {S.Sequence{PB.it1(1n+_, WS.btake(1n+_, VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v)))} == VS.seq_append(S.Sequence{PB.it1(_, WS.btake(_, FX.limbs(F.array__slots(U32, t))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(+List<U32>, WS.btake(1n+Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), VS.list_set(FX.limbs(F.array__slots(U32, t)), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), v)), VS.list_snoc(WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))), v), btake_snoc(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)), v, limbs_room(F.array__slots(U32, t), q, p, F.logic__subst(Nat, z => {Nat.is_lt(q, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf)), hk)))) :
+    {S.Sequence{PB.it1(1n+Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), _)} == VS.seq_append(S.Sequence{PB.it1(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))))}, S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PB.it1(1n+Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), VS.list_snoc(WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))), v)), VS.items_snoc(PB.it1(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)))), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}),
+    F.logic__subst(Nat, z => {PB.it1(1n+z, VS.list_snoc(WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))), v)) == VS.items_snoc(PB.it1(z, WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)))), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}, F.spec_common__length(U32, WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)))), Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))),
+      btake_len(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t)), F.nat__lt_le(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), F.spec_common__length(U32, FX.limbs(F.array__slots(U32, t))), limbs_room(F.array__slots(U32, t), q, p, F.logic__subst(Nat, z => {Nat.is_lt(q, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf)), hk)))), it1_snoc(WS.btake(Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3))), FX.limbs(F.array__slots(U32, t))), v)))

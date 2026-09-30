@@ -492,6 +492,33 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(Bool, %s, True{}, hw) : {%s.%s_get_in(_, %s, %s) == %s}' % (gw, DA, c, OBJG(TWG), LN, RESG))
     w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READG, OBJG(TWG), V, kind, lg, DA, c, RESG))
     w('  {==}')
+    # the spec value: the view after an accepted append that reallocates the storage is the view before with the new element's view at the end
+    vw = VIEWS.get((kind, c[0]))
+    if vw:
+        path, al, VIEW, cnt, conv = vw
+        fam = VL.FAMILIES[kind]
+        cnt_of = lambda nn: re.sub(r'(?<![\w.])n(?![\w.])', nn, cnt)
+        MKV = fam['MK'](xs)
+        KK = 'U32.to_nat(U32.shrn((n + 3 : U32), 2n))'
+        premvg = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                  '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, %s, '
+                  '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(%s)) == True{} : Bool}, '
+                  '+hqe: {q == %s : Nat}, +hcn: {%s == 1n+%s : Nat}, +hcov: {Nat.is_le(%s, 1n+%s) == True{} : Bool}'
+                  % (', '.join('+%s: U32' % x for x in xs), GA, GW['prem'], PA, W, GW['D2'], fam['BASE'](cnt_of('n')), cnt_of(NB), cnt_of('n'),
+                     fam['BASE'](cnt_of('n')), KK))
+        RESVG = 'VS.seq_append(%s(%s), %s)' % (VIEW, OBJ('t'), MKV)
+        w('def %s_api_view_append_grow(%s)\n    -> {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}:' % (c, premvg, VIEW, APP, RESVG))
+        w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}' % (GA, VIEW, GROW, RESVG))
+        w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), n}, %s) : {%s(Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))) == %s : S.Value}'
+          % (OBJ('t'), NB, TG, GW['call'], VIEW, DA, c, NB, LN, V, RESVG))
+        w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s(_) == %s : S.Value}' % (WRG, OBJG(TWG), kind, lg, VIEW, RESVG))
+        TR = 'F.array__trep(U32, %s, 0)' % GW['D2']
+        callv = '%s, %s, %s, d, %s, t, %s, %s, q, hqe, hcn, hcov, hr, b2, %s' % (cnt_of('n'), cnt_of(NB), KK, GW['D2'], TR, ', '.join(xs), 'pf2' if False else GW['pf2'] if 'pf2' in GW else 'F.array__trep_perfect(U32, %s, 0)' % GW['D2'])
+        if conv:
+            w('  VI_%s.view_app_grow_%s(%s, b1, pf)' % (kind, conv, callv))
+        else:
+            w('  VI_%s.view_app_grow(%s)' % (kind, callv))
+        nl += 1
     return nl + 2
 
 
@@ -584,13 +611,13 @@ def seq_view_law(w, I, DA, T, EL, GS, c, imps):
     sp = viewseq.seq_specs().get(c)
     if not sp:
         return 0
-    imps['RTL'] = 'proofs/obj/root_types_light.bend'
+    imps[sp['M']] = 'proofs/obj/' + sp['path'][2:]
     imps['VQ'] = 'proofs/obj/view_seq.bend'
     imps['VS'] = 'proofs/obj/value_set.bend'
     imps['S'] = 'types/schema.bend'
     imps['RN'] = 'proofs/obj/root_names_light.bend'
     TH = 'F.array__thaw(%s, t)' % EL
-    XV = 'RTL.xv_%s' % c
+    XV = '%s.xv_%s' % (sp['M'], c)
     SEQ = lambda a: '%s.%s{%s, n}' % (DA, I['T'], a)
     GSx = re.sub(r'(?<![\w.])arr(?![\w.])', TH, GS)
     SETO = '%s.%s_set(%s, i, v)' % (DA, c, SEQ(TH))
@@ -1512,6 +1539,36 @@ def coll_bytes(cs):
                   [('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
                    ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom))' % (O0, NB, O0, NB),
                     'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]))
+            n += 1
+            # the spec value of an append with room: the view before with the new byte at the end
+            PA = re.sub(r'(?<![\w.])i(?![\w.])', LN, P)
+            JWa = 'U32.shrn(%s, 2n)' % PA
+            S3a = 'U32.and(%s, 3)' % PA
+            NEWWa = 'O.merge_word(%s, v, %s, 1)' % (X, S3a)
+            T1a = 'F.array__upd(U32, d, t, q, %s)' % NEWWa
+            OBJa = lambda t_: 'O.Words{F.array__thaw(U32, %s), %s}' % (t_, NB)
+            if c.endswith('_u8'):
+                VWa = lambda inner: 'PB.vview1(%s)' % inner
+                RESa = 'VS.seq_append(PB.vview1(%s), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}})' % O0
+                fina = 'VB.view_app_u8'
+            else:
+                VWa = lambda inner: 'S.BytesValue{WO.wview(%s)}' % inner
+                RESa = 'VS.bytes_snoc(S.BytesValue{WO.wview(%s)}, v)' % O0
+                fina = 'VB.view_app'
+            L.append('def %s_api_view_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, '
+                     '+hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, +hv: {%s == True{} : Bool}, '
+                     '+hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool}, '
+                     '+hp: {U32.to_nat(%s) == U32.to_nat(n) : Nat}, +hnb: {U32.to_nat(%s) == 1n+U32.to_nat(n) : Nat})' % (c, GA, NB, LE, JWa, PA, NB))
+            L.append('    -> {%s == %s : S.Value}:' % (VWa('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RESa))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : S.Value}' % (GA, VWa('Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)), RESa))
+            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s : S.Value}'
+                     % (O0, NB, O0, NB, VWa('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN)), RESa))
+            L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : S.Value}'
+                     % (OBJa('t'), JWa, OBJa('t'), X, NB, JWa, VWa('O.put_in(%s, v, %s, 1, _)' % (JWa, S3a)), RESa))
+            L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : S.Value}'
+                     % (OBJa('t'), JWa, NEWWa, OBJa(T1a), NB, JWa, NEWWa, VWa('_'), RESa))
+            L.append('  %s(d, t, n, %s, %s, q, v, hv, hq, hk, pf, hp, hnb)' % (fina, NB, PA))
             n += 1
             GW = grow_parts('n', NB)
             imps['CW'] = os.path.relpath(CW, ROOT)

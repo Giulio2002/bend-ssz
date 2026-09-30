@@ -326,6 +326,58 @@ def view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +q: Nat, 
        BASE('c'),
        ITEMS('1n+c', 'F.array__slots(U32, WW.tk(%s, d, t, _, 0n))' % XS, '0n'), ITEMS('c', W1, '0n'),
        ITEMS('1n+c', 'F.array__slots(U32, WW.tk(%s, d, t, %s, 0n))' % (XS, BASE('c')), '0n'), ITEMS('c', W1, '0n'), BASE('c'))))
+    # ---- an append that reallocates: the storage is first copied into a bigger tree (words_rw.bend's cpy) ----
+    CPY = 'WR.cpy(d2, t, Kc, 0n, T2)'
+    W2c = 'F.array__slots(U32, %s)' % CPY
+    hcbase = '+hb2: {Nat.is_le(Nat.add(0n, 1n+Kc), F.spec_common__pow2(d2)) == True{} : Bool}, +pf2: {F.array__perfect(U32, d2, T2) == True{} : Bool}'
+    w(sub('''# the copy keeps the words of the blocks below 1 + Kc: an element read from the copy is the element of the source
+def el_cpy(+Kc: Nat, +d2: Nat, +t: F.array__Tree<U32>, +T2: F.array__Tree<U32>, +i: Nat, +hc: {Nat.is_le(Nat.add(%s, @K@), 1n+Kc) == True{} : Bool}, %s)
+    -> {%s == %s : S.Value}:
+  elem_to(%s, i, %s, %s)
+
+def items_cong(+k: Nat, +Kc: Nat, +d2: Nat, +t: F.array__Tree<U32>, +T2: F.array__Tree<U32>, +i0: Nat, +hcov: {Nat.is_le(%s, 1n+Kc) == True{} : Bool}, %s)
+    -> {%s == %s : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+p:
+      +hc = F.nat__le_trans(Nat.add(%s, @K@), %s, 1n+Kc,
+        F.logic__subst(Nat, z => {Nat.is_le(z, %s) == True{} : Bool}, %s, Nat.add(%s, @K@), Equal.sym(Nat, Nat.add(%s, @K@), %s, blk(i0)),
+          mono(1n+i0, Nat.add(i0, 1n+p), F.logic__subst(Nat, z => {Nat.is_le(1n+i0, z) == True{} : Bool}, 1n+Nat.add(i0, p), Nat.add(i0, 1n+p), Equal.sym(Nat, Nat.add(i0, 1n+p), 1n+Nat.add(i0, p), F.nat__add_succ(i0, p)), F.nat__le_add_right(i0, p)))),
+        hcov)
+      %%Equal.sym(S.Value, %s, %s, el_cpy(Kc, d2, t, T2, i0, hc, hb2, pf2)) :
+        {S.Items{_, %s} == S.Items{%s, %s} : S.Value}
+      %%Equal.sym(S.Value, %s, %s, items_cong(p, Kc, d2, t, T2, 1n+i0, F.logic__subst(Nat, z => {Nat.is_le(%s, 1n+Kc) == True{} : Bool}, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), WW.add_shift_plain(i0, p), hcov), hb2, pf2)) :
+        {S.Items{%s, _} == S.Items{%s, %s} : S.Value}
+      {==}
+''' % (BASE('i'), hcbase, EL(W2c, 'i'), EL(W1, 'i'), W2c, ', '.join(atom(W1, 'i', m) for m in range(K)),
+       ', '.join('WW.wd_cpy_in(Kc, Nat.add(%s, %dn), d2, t, 0n, T2, F.nat__lt_succ_le(Nat.add(%s, %dn), Kc, WR.bound(%s, %dn, %s, 1n+Kc, hc, {==})), hb2, pf2)' % (BASE('i'), m, BASE('i'), m, BASE('i'), m, KN) for m in range(K)),
+       BASE('Nat.add(i0, k)'), hcbase, ITEMS('k', W2c, 'i0'), ITEMS('k', W1, 'i0'),
+       BASE('i0'), BASE('Nat.add(i0, 1n+p)'),
+       BASE('Nat.add(i0, 1n+p)'), BASE('1n+i0'), BASE('i0'), BASE('i0'), BASE('1n+i0'),
+       EL(W2c, 'i0'), EL(W1, 'i0'), ITEMS('p', W2c, '1n+i0'), EL(W1, 'i0'), ITEMS('p', W1, '1n+i0'),
+       ITEMS('p', W2c, '1n+i0'), ITEMS('p', W1, '1n+i0'), BASE('z'),
+       EL(W1, 'i0'), EL(W1, 'i0'), ITEMS('p', W1, '1n+i0'))))
+    FZ = lambda T: 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, %s)))' % T
+    TQG = 'WW.tk(%s, d2, %s, q, 0n)' % (XS, CPY)
+    growp = '+c: Nat, +c2: Nat, +Kc: Nat, +d1: Nat, +d2: Nat, +t: F.array__Tree<U32>, +T2: F.array__Tree<U32>, @XP@, +q: Nat, +hq: {q == %s : Nat}, +hc2: {c2 == 1n+c : Nat}, +hcov: {Nat.is_le(%s, 1n+Kc) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(q, @K@), F.spec_common__pow2(d2)) == True{} : Bool}, %s' % (BASE('c'), BASE('c'), hcbase)
+    w(sub('''# the view after the new item is written into the copy of the storage (Kc + 1 words copied into the tree T2 of depth d2): the view before with the new item at the end
+def view_app_grow(%s)
+    -> {S.Sequence{%s} == VS.seq_append(S.Sequence{%s}, @MKX@) : S.Value}:
+  Equal.trans(S.Value, S.Sequence{%s}, VS.seq_append(S.Sequence{%s}, @MKX@), VS.seq_append(S.Sequence{%s}, @MKX@),
+    view_app(c, c2, d2, %s, @XA@, q, hq, hc2, hb, WR.cpy_perfect(d2, t, Kc, 0n, T2, pf2)),
+    Equal.cong(S.Value, S.Value, z => VS.seq_append(S.Sequence{z}, @MKX@), %s, %s,
+      Equal.trans(S.Value, %s, %s, %s,
+        Equal.cong(F.array__Tree<U32>, S.Value, z => %s, F.array__freeze(U32, F.array__thaw(U32, %s)), %s, F.array__freeze_thaw(U32, %s)),
+        Equal.trans(S.Value, %s, %s, %s,
+          items_cong(c, Kc, d2, t, T2, 0n, hcov, hb2, pf2),
+          Equal.cong(F.array__Tree<U32>, S.Value, z => %s, t, F.array__freeze(U32, F.array__thaw(U32, t)), Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)))))))
+''' % (growp, ITEMS('c2', FZ(TQG), '0n'), ITEMS('c', FZ('t'), '0n'),
+       ITEMS('c2', FZ(TQG), '0n'), ITEMS('c', FZ(CPY), '0n'), ITEMS('c', FZ('t'), '0n'),
+       CPY, ITEMS('c', FZ(CPY), '0n'), ITEMS('c', FZ('t'), '0n'),
+       ITEMS('c', FZ(CPY), '0n'), ITEMS('c', W2c, '0n'), ITEMS('c', FZ('t'), '0n'),
+       ITEMS('c', 'F.array__slots(U32, z)', '0n'), CPY, CPY, CPY,
+       ITEMS('c', W2c, '0n'), ITEMS('c', W1, '0n'), ITEMS('c', FZ('t'), '0n'),
+       ITEMS('c', 'F.array__slots(U32, z)', '0n'))))
     for name_, fn in sp.get('builders', []):
         # the same for a structural builder (equal to the indexed one when the storage holds its words)
         SL = lambda T: 'F.array__slots(U32, %s)' % T
@@ -392,6 +444,26 @@ def view_app_%s(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +q: Na
        name_, SL('t'), SL('t'), fn, SL('t'), LEN2('t', 'pf', 'c', hcap0),
        SL(TQ),
        BASE('c'), BASE('c'), BASE('c'))))
+        LENG1 = 'F.logic__subst(Nat, z => {Nat.is_le(Nat.double(1n+c), z) == True{} : Bool}, F.spec_common__pow2(d2), F.spec_common__length(U32, %s), Equal.sym(Nat, F.spec_common__length(U32, %s), F.spec_common__pow2(d2), WW.len_fz(d2, %s, WW.tk_perfect(%s, d2, %s, q, 0n, WR.cpy_perfect(d2, t, Kc, 0n, T2, pf2)))), %s)' % (FZ(TQG), FZ(TQG), TQG, XS, CPY, 'F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d2)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), %s, hb)' % eq2)
+        hcapt = 'F.nat__le_trans(Nat.double(c), 1n+Kc, F.spec_common__pow2(d1), hcov, b1)'
+        LENT = 'F.logic__subst(Nat, z => {Nat.is_le(Nat.double(c), z) == True{} : Bool}, F.spec_common__pow2(d1), F.spec_common__length(U32, %s), Equal.sym(Nat, F.spec_common__length(U32, %s), F.spec_common__pow2(d1), WW.len_fz(d1, t, pf1)), %s)' % (FZ('t'), FZ('t'), hcapt)
+        growb = growp + ', +b1: {Nat.is_le(Nat.add(0n, 1n+Kc), F.spec_common__pow2(d1)) == True{} : Bool}, +pf1: {F.array__perfect(U32, d1, t) == True{} : Bool}'
+        w(sub('''# the same for %s
+def view_app_grow_%s(%s)
+    -> {S.Sequence{%s(c2, %s)} == VS.seq_append(S.Sequence{%s(c, %s)}, @MKX@) : S.Value}:
+  %%Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{%s(_, %s)} == VS.seq_append(S.Sequence{%s(c, %s)}, @MKX@) : S.Value}
+  %%Equal.sym(S.Value, %s(1n+c, %s), items2(1n+c, %s, 0n), conv_%s(1n+c, %s, %s)) :
+    {S.Sequence{_} == VS.seq_append(S.Sequence{%s(c, %s)}, @MKX@) : S.Value}
+  %%Equal.sym(S.Value, %s(c, %s), items2(c, %s, 0n), conv_%s(c, %s, %s)) :
+    {S.Sequence{items2(1n+c, %s, 0n)} == VS.seq_append(S.Sequence{_}, @MKX@) : S.Value}
+  view_app_grow(c, 1n+c, Kc, d1, d2, t, T2, @XA@, q, hq, {==}, hcov, hb, hb2, pf2)
+''' % (name_, fn, growb, name_, FZ(TQG), name_, FZ('t'),
+       name_, FZ(TQG), name_, FZ('t'),
+       name_, FZ(TQG), FZ(TQG), fn, FZ(TQG), LENG1,
+       name_, FZ('t'),
+       name_, FZ('t'), FZ('t'), fn, FZ('t'), LENT,
+       FZ(TQG))))
     return '\n'.join(out)
 
 

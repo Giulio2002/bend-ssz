@@ -47,3 +47,14 @@ def bytes_set(x: S.Value, +k: Nat, v: U32) -> S.Value:
   match x:
     case S.BytesValue{bs}: S.BytesValue{list_set(bs, k, v)}
     case _: x
+
+# The bytes of a byte sequence with one byte added at the end: list_snoc / bytes_snoc, the reference of the byte-list append laws.
+def list_snoc(xs: +List<U32>, v: U32) -> +List<U32>:
+  match xs:
+    case Nil{}: [v]
+    case Con{h, t}: Con{h, list_snoc(t, v)}
+
+def bytes_snoc(x: S.Value, v: U32) -> S.Value:
+  match x:
+    case S.BytesValue{bs}: S.BytesValue{list_snoc(bs, v)}
+    case _: x

@@ -99,6 +99,10 @@ def at_tk_in(+xs: List<&2, U32>, +d: Nat, +t: F.array__Tree<U32>, +q: Nat, +m: N
         {WR.at(F.array__slots(U32, tk(Con{x, r}, d, t, q, m)), _) == WR.at(r, p) : U32}
       at_tk_in(r, d, F.array__upd(U32, d, t, Nat.add(q, m), x), q, 1n+m, p, hj, shift_le(q, m, F.spec_common__length(U32, r), F.spec_common__pow2(d), hb), F.array__upd_perfect(U32, d, t, Nat.add(q, m), x, pf))
 
+# J + (1 + p) is (1 + J) + p
+def add_shift_plain(+J: Nat, +p: Nat) -> {Nat.add(J, 1n+p) == Nat.add(1n+J, p) : Nat}:
+  F.nat__add_succ(J, p)
+
 # ---- reading the written storage through the spec's word lookup MR.wd ----
 def wd_at(+W: List<&2, U32>, +k: Nat) -> {MR.wd(W, k) == WR.at(W, k) : U32}:
   match W k:
@@ -139,3 +143,63 @@ def wd_in(+xs: List<&2, U32>, +d: Nat, +t: F.array__Tree<U32>, +q: Nat, +j: Nat,
       at_tk_in(xs, d, t, q, 0n, j, hj,
         F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, F.spec_common__length(U32, xs)), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.add(q, 0n), Equal.sym(Nat, Nat.add(q, 0n), q, F.nat__add_zero(q)), hb), pf)))
 
+
+# ---- the copy of a storage into a bigger one (words_rw.bend's cpy: words J .. J + k of t1 go into T2) ----
+# the first word of a run of 1 + k words is below the bound
+def room_first(+J: Nat, +k: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(J, 1n+k), P) == True{} : Bool}) -> {Nat.is_lt(J, P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(z, P) == True{} : Bool}, Nat.add(J, 0n), J, F.nat__add_zero(J),
+    first_lt(J, 0n, k, P, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n+k), P) == True{} : Bool}, J, Nat.add(J, 0n), Equal.sym(Nat, Nat.add(J, 0n), J, F.nat__add_zero(J)), h)))
+
+# a word before the copied ones is T2's
+def at_cpy_before(+k: Nat, +d2: Nat, +t1: F.array__Tree<U32>, +J: Nat, +T2: F.array__Tree<U32>, +y: Nat, +hy: {Nat.is_lt(y, J) == True{} : Bool},
+    +b2: {Nat.is_le(Nat.add(J, 1n+k), F.spec_common__pow2(d2)) == True{} : Bool}, +pf2: {F.array__perfect(U32, d2, T2) == True{} : Bool})
+    -> {WR.at(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), y) == WR.at(F.array__slots(U32, T2), y) : U32}:
+  match k:
+    case 0n: WR.at_upd_other(d2, T2, J, y, WR.at(F.array__slots(U32, t1), J), WR.neq_sym(y, J, F.nat__is_eq_lt(y, J, hy)), room_first(J, 0n, F.spec_common__pow2(d2), b2), pf2)
+    case 1n+q:
+      Equal.trans(U32, WR.at(F.array__slots(U32, WR.cpy(d2, t1, q, 1n+J, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J)))), y),
+        WR.at(F.array__slots(U32, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J))), y), WR.at(F.array__slots(U32, T2), y),
+        at_cpy_before(q, d2, t1, 1n+J, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J)), y,
+          F.nat__lt_trans(y, J, 1n+J, hy, F.nat__lt_succ(J)), WR.shift_b(J, q, F.spec_common__pow2(d2), b2), F.array__upd_perfect(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J), pf2)),
+        WR.at_upd_other(d2, T2, J, y, WR.at(F.array__slots(U32, t1), J), WR.neq_sym(y, J, F.nat__is_eq_lt(y, J, hy)), room_first(J, 1n+q, F.spec_common__pow2(d2), b2), pf2))
+
+# word J + m of the copy, m <= k, is the source's word
+def at_cpy_in(+k: Nat, +m: Nat, +d2: Nat, +t1: F.array__Tree<U32>, +J: Nat, +T2: F.array__Tree<U32>, +hm: {Nat.is_le(m, k) == True{} : Bool},
+    +b2: {Nat.is_le(Nat.add(J, 1n+k), F.spec_common__pow2(d2)) == True{} : Bool}, +pf2: {F.array__perfect(U32, d2, T2) == True{} : Bool})
+    -> {WR.at(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)) == WR.at(F.array__slots(U32, t1), Nat.add(J, m)) : U32}:
+  match k m:
+    case 0n 0n:
+      %Equal.sym(Nat, Nat.add(J, 0n), J, F.nat__add_zero(J)) :
+        {WR.at(F.array__slots(U32, WR.cpy(d2, t1, 0n, J, T2)), _) == WR.at(F.array__slots(U32, t1), _) : U32}
+      WR.at_upd_same(d2, T2, J, WR.at(F.array__slots(U32, t1), J), room_first(J, 0n, F.spec_common__pow2(d2), b2), pf2)
+    case 0n 1n+p: Empty.absurd({WR.at(F.array__slots(U32, WR.cpy(d2, t1, 0n, J, T2)), Nat.add(J, 1n+p)) == WR.at(F.array__slots(U32, t1), Nat.add(J, 1n+p)) : U32}, F.logic__false_true(hm))
+    case 1n+q 0n:
+      %Equal.sym(Nat, Nat.add(J, 0n), J, F.nat__add_zero(J)) :
+        {WR.at(F.array__slots(U32, WR.cpy(d2, t1, 1n+q, J, T2)), _) == WR.at(F.array__slots(U32, t1), _) : U32}
+      Equal.trans(U32, WR.at(F.array__slots(U32, WR.cpy(d2, t1, q, 1n+J, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J)))), J),
+        WR.at(F.array__slots(U32, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J))), J), WR.at(F.array__slots(U32, t1), J),
+        at_cpy_before(q, d2, t1, 1n+J, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J)), J, F.nat__lt_succ(J), WR.shift_b(J, q, F.spec_common__pow2(d2), b2),
+          F.array__upd_perfect(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J), pf2)),
+        WR.at_upd_same(d2, T2, J, WR.at(F.array__slots(U32, t1), J), room_first(J, 1n+q, F.spec_common__pow2(d2), b2), pf2))
+    case 1n+q 1n+p:
+      %Equal.sym(Nat, Nat.add(J, 1n+p), Nat.add(1n+J, p), add_shift_plain(J, p)) :
+        {WR.at(F.array__slots(U32, WR.cpy(d2, t1, 1n+q, J, T2)), _) == WR.at(F.array__slots(U32, t1), _) : U32}
+      at_cpy_in(q, p, d2, t1, 1n+J, F.array__upd(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J)), hm, WR.shift_b(J, q, F.spec_common__pow2(d2), b2),
+        F.array__upd_perfect(U32, d2, T2, J, WR.at(F.array__slots(U32, t1), J), pf2))
+
+# the same through the spec's word lookup MR.wd
+def wd_cpy_in(+k: Nat, +m: Nat, +d2: Nat, +t1: F.array__Tree<U32>, +J: Nat, +T2: F.array__Tree<U32>, +hm: {Nat.is_le(m, k) == True{} : Bool},
+    +b2: {Nat.is_le(Nat.add(J, 1n+k), F.spec_common__pow2(d2)) == True{} : Bool}, +pf2: {F.array__perfect(U32, d2, T2) == True{} : Bool})
+    -> {MR.wd(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)) == MR.wd(F.array__slots(U32, t1), Nat.add(J, m)) : U32}:
+  Equal.trans(U32, MR.wd(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)), WR.at(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)), MR.wd(F.array__slots(U32, t1), Nat.add(J, m)),
+    wd_at(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)),
+    Equal.trans(U32, WR.at(F.array__slots(U32, WR.cpy(d2, t1, k, J, T2)), Nat.add(J, m)), WR.at(F.array__slots(U32, t1), Nat.add(J, m)), MR.wd(F.array__slots(U32, t1), Nat.add(J, m)),
+      at_cpy_in(k, m, d2, t1, J, T2, hm, b2, pf2),
+      Equal.sym(U32, MR.wd(F.array__slots(U32, t1), Nat.add(J, m)), WR.at(F.array__slots(U32, t1), Nat.add(J, m)), wd_at(F.array__slots(U32, t1), Nat.add(J, m)))))
+
+# a perfect tree's slots after freeze(thaw(.)) are 2^d
+def len_fz(+d: Nat, +T: F.array__Tree<U32>, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {F.spec_common__length(U32, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, T)))) == F.spec_common__pow2(d) : Nat}:
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, T)), T, F.array__freeze_thaw(U32, T)) :
+    {F.spec_common__length(U32, F.array__slots(U32, _)) == F.spec_common__pow2(d) : Nat}
+  F.array__slots_length(U32, d, T, pf)
