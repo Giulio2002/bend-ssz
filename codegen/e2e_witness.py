@@ -14,6 +14,14 @@ array words_new(n) is thaw(trep(d, 0)) at its depth d, by found.array__new; an e
 leaf of depth 0), and every equality is closed by computation ({==}), except the word-array
 equation (the per-size lemma WZ<n>) and a word tree's perfectness (found.array__trep_perfect).
 
+A second witness per name applies the same bridge to a NON-empty object NE(): the default with
+every list reachable through containers and boxes (not inside list elements) holding one element:
+a list of Data or boxed elements is Seq{ALeaf{e}, 1} with e the element's default (boxed: its
+_bx_default()), a byte or packed list is O.words_new(k) for one k-byte element. Its storage
+witnesses are the one-leaf tree (TLeaf{e}, or the mirror tfz_<list>(ALeaf{e})) at depth 0 with
+N = 1, and the element-wise premises (predicates defined by `match k`) are unfolded once and
+proved of the element. So no premise holds only of empty lists.
+
     python3 codegen/e2e_witness.py            # write
     python3 codegen/e2e_witness.py --check    # nonzero exit if any output is stale
 """
@@ -248,6 +256,30 @@ class Leaf:
         self.expr = expr
 
 
+class BitsM:
+    """O.Bits{Array.new(U32, d, 0), k}: a zero bit array of depth d holding k bits"""
+    def __init__(self, d, k):
+        self.d, self.k = d, k
+
+
+class OneList:
+    """a list holding one element: Seq{ALeaf{elem}, 1}"""
+    def __init__(self, elem, eexpr):
+        self.elem, self.eexpr = elem, eexpr
+
+
+class Tree:
+    """the storage tree witnessed for a OneList: one leaf holding the element"""
+    def __init__(self, elem):
+        self.elem = elem
+
+
+class Slots:
+    """array__slots of a Tree: the list [elem]"""
+    def __init__(self, elem):
+        self.elem = elem
+
+
 PREFER = {}   # path -> the alias the bridge file gives it
 
 
@@ -312,6 +344,9 @@ def model_of_(ctx, mod, expr):
     b = body.strip()
     if b.startswith('O.words_new('):
         return Words(int(parse_call(b)[1][0]))
+    mbits = re.fullmatch(r'O\.Bits\{Array\.new\(U32, (\d+)n, 0\), (\d+)\}', b)
+    if mbits:
+        return BitsM(int(mbits.group(1)), int(mbits.group(2)))
     mb = parse_call(b)
     if mb and mb[0].endswith('_bx_wrap'):
         return Box(model_of(ctx, m2, mb[1][0]), ctx.lift(m2, mb[1][0]))
@@ -333,6 +368,136 @@ def model_of_(ctx, mod, expr):
     return Leaf(ctx.lift(m2, b))
 
 
+# the element size in bytes of a byte or packed list module (its default is O.words_new(0))
+def words_list_elem(path):
+    n = Path(path).name
+    m = re.match(r'Fulu_bytelist_\d+_def_generated\.bend$', n)
+    if m:
+        return 1
+    m = re.match(r'Fulu_list_uint(\d+)_\d+_def_generated\.bend$', n)
+    if m:
+        return int(m.group(1)) // 8
+    m = re.match(r'Fulu_list_bytevec_(\d+)_\d+_def_generated\.bend$', n)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def model_ne(ctx, mod, expr):
+    """the model of the non-empty object built from the default expression expr of module mod: every list
+    reachable through containers and boxes holds one element. Its .expr is the object's expression."""
+    c = parse_call(expr)
+    if c is None:
+        raise SystemExit(f'e2e_witness: no model for {expr!r} ({mod.path.name})')
+    fn, args = c
+    m2, name = mod.resolve(fn)
+    if fn == 'O.words_new' or m2 is None or name not in m2.defs:
+        return model_of(ctx, mod, expr)
+    params, ret, body = m2.signature(name)
+    b = body.strip()
+    if b == 'O.words_new(0)' and words_list_elem(m2.path):
+        k = words_list_elem(m2.path)
+        m = Words(k)
+        m.expr = f'O.words_new({k})'
+        m.changed = True
+        return m
+    mb = parse_call(b)
+    if mb and mb[0].endswith('_bx_wrap'):
+        inner = model_ne(ctx, m2, mb[1][0])
+        if not getattr(inner, 'changed', False):
+            return model_of(ctx, mod, expr)
+        m = Box(inner, inner.expr)
+        m.expr = f'{ctx.lift(m2, mb[0])}({inner.expr})'
+        m.changed = True
+        return m
+    ms = re.match(r'(\w+)\{(.*)\}$', b, re.S)
+    if ms and ms.group(1).endswith('_Seq'):
+        items = split_top(ms.group(2))
+        fill = parse_call(items[0])
+        mw = re.search(r'Array\.set\([^,]+, arr, i, ([\w.]+_bx_wrap)\(v\)\)', m2.text)
+        if mw:
+            wm, wn = m2.resolve(mw.group(1))
+            eexpr_local = mw.group(1)[:-len('_bx_wrap')] + '_bx_default()'
+        else:
+            fb = m2.signature(fill[0])[2].strip()
+            mf = re.match(r'Array\.new\(([^,]+), d, (.*)\)$', fb)
+            if not mf:
+                raise SystemExit(f'e2e_witness: no element default for {fn} ({m2.path.name})')
+            eexpr_local = mf.group(2)
+        elem = model_of(ctx, m2, eexpr_local)
+        m = OneList(elem, elem.expr)
+        m.expr = f'{ctx.lift(m2, ms.group(1))}{{ALeaf{{{elem.expr}}}, 1}}'
+        m.changed = True
+        return m
+    if ms and all(parse_call(a) for a in split_top(ms.group(2))):
+        fields, parts, changed = [], [], False
+        for a in split_top(ms.group(2)):
+            sub = model_ne(ctx, m2, a)
+            changed |= getattr(sub, 'changed', False)
+            parts.append(sub.expr)
+            if isinstance(sub, Cont) and sub.tname.startswith(ms.group(1) + '_g'):
+                fields.extend(sub.fields)
+            else:
+                fields.append((sub.expr, sub))
+        if not changed:
+            return model_of(ctx, mod, expr)
+        m = Cont(m2, ms.group(1), fields)
+        m.expr = f'{ctx.lift(m2, ms.group(1))}{{{", ".join(parts)}}}'
+        m.changed = True
+        return m
+    return model_of(ctx, mod, expr)
+
+
+def nat_value(e):
+    """the value of a closed numeral expression (Nn, N, U32.to_nat(N), 1n+..), else None"""
+    e = e.strip()
+    m = re.fullmatch(r'(\d+)n?', e)
+    if m:
+        return int(m.group(1))
+    m = re.fullmatch(r'U32\.to_nat\((.*)\)', e)
+    if m:
+        return nat_value(m.group(1))
+    m = re.fullmatch(r'1n\+(.*)', e)
+    if m:
+        v = nat_value(m.group(1))
+        return None if v is None else v + 1
+    return None
+
+
+def parse_match(body):
+    """(scrutinee, [(pattern, branch text)]) of a def body `match x:` with its cases, else None"""
+    lines = body.split('\n')
+    m = re.fullmatch(r'match (\w+):', lines[0].strip())
+    if not m:
+        return None
+    rest = [l for l in lines[1:] if l.strip()]
+    if not rest:
+        return None
+    ind = len(rest[0]) - len(rest[0].lstrip())
+    cases, cur = [], None
+    for l in rest:
+        li = len(l) - len(l.lstrip())
+        if li == ind:
+            mc = re.match(r'\s*case (.*?): ?(.*)$', l)
+            if not mc:
+                return None
+            cur = [mc.group(1).strip(), [mc.group(2)] if mc.group(2).strip() else []]
+            cases.append(cur)
+        elif li > ind and cur is not None:
+            cur[1].append(l)
+        else:
+            return None
+    out = []
+    for pat, bl in cases:
+        if len(bl) > 1 or (bl and bl[0] != bl[0].lstrip()):
+            k = min(len(x) - len(x.lstrip()) for x in bl)
+            text = '\n'.join(x[k:] for x in bl)
+        else:
+            text = bl[0].strip() if bl else ''
+        out.append((pat, text.strip()))
+    return m.group(1), out
+
+
 # ---------------------------------------------------------------- premise synthesis
 
 class Synth:
@@ -352,13 +517,23 @@ class Synth:
         """the model of an argument expression: a variable of env, or projections of one"""
         e = e.strip()
         if e in env:
-            return env[e]
+            x = env[e]
+            if isinstance(x, tuple):
+                return x[2] if len(x) > 2 else None
+            return x
         c = parse_call(e)
         if c is None:
             return None
         fn, args = c
         base = fn.split('.')[-1]
+        if base == 'array__slots' and len(args) == 2:
+            t = self.arg_model(args[1], env)
+            return Slots(t.elem) if isinstance(t, Tree) else None
         inner = self.arg_model(args[0], env) if args else None
+        if re.match(r'xat_\w+$', base) and isinstance(inner, Slots):
+            return inner.elem
+        if re.match(r'(th|fz)_\w+$', base) and inner is not None:
+            return inner
         if inner is None:
             return None
         m = re.match(r'pj_\w+_(\d+)$', base)
@@ -373,6 +548,8 @@ class Synth:
         p = pred.strip()
         if p.startswith('{'):
             return self.eq(p, env)
+        if p.startswith('match '):
+            return self.unfold(mod, p, env)
         c = parse_call(p)
         if c is None:
             raise SystemExit(f'e2e_witness: cannot read {p[:120]!r}')
@@ -386,22 +563,25 @@ class Synth:
                 v = mv.group(1)
                 wit = self.witness(mod, args[0], v, lam[mv.end():], env)
                 env2 = dict(env)
-                env2[v] = ('val', wit)
+                subj = env.get('__subj')
+                if isinstance(subj, OneList) and 'array__Tree<' in args[0]:
+                    env2[v] = ('val', wit, Tree(subj.elem))
+                else:
+                    env2[v] = ('val', wit)
                 return f'({wit}, {self.prove(mod, lam[mv.end():], env2)})'
             if base == 'P2':
                 return f'({self.prove(mod, args[0], env)}, {self.prove(mod, args[1], env)})'
             if base == 'Or2':
                 subj = env.get('__subj')
-                if isinstance(subj, Words) and subj.n == 0:
+                if (isinstance(subj, Words) and subj.n == 0) or (isinstance(subj, BitsM) and subj.k == 0):
                     return f'Inl{{{self.prove(mod, args[0], env)}}}'
                 return f'Inr{{{self.prove(mod, args[1], env)}}}'
         if m2 is None or name not in m2.defs:
             raise SystemExit(f'e2e_witness: no def {fn} ({mod.path.name})')
         params, ret, body = m2.signature(name)
-        if body.startswith('match'):
-            return R     # an element-wise premise over zero elements: {True{} == True{}}
-        env2 = {'__e': {}}
+        env2 = {'__e': {}, '__raw': {}}
         for pn, a in zip(params, args):
+            env2['__raw'][pn] = (a, env)
             mdl = self.arg_model(a, env)
             if mdl is not None:
                 env2[pn] = mdl
@@ -410,6 +590,8 @@ class Synth:
             env2['__subj'] = env2[params[0]]
         elif '__subj' in env:
             env2['__subj'] = env['__subj']
+        if body.startswith('match'):
+            return self.unfold(m2, body, env2)
         subj = env2.get('__subj')
         full = list(m2.fullp)
         if isinstance(subj, Words) and pow2_of(subj.n) and params and params[0] in env2 \
@@ -426,6 +608,47 @@ class Synth:
                 self.lemmas[f'z{len(self.named):03d}_{nm}'] = f'def {nm}() -> {ty}:\n  {term}'
             return f'{self.named[key]}()'
         return self.prove(m2, body, env2)
+
+    def unfold(self, m2, body, env2):
+        """a premise defined by a match, at known arguments. On a numeral k (`case 0n: A / case 1n+q: B`,
+        the element-wise premises): A at 0 (over zero elements, {True{} == True{}}), B with q := k-1
+        otherwise. On a boxed or mirrored element (`case MSome{v}` / `case BSome{v, ..}`) whose model is
+        a box: the Some case with v the inner model. On a container mirror (`case M_X{a0, ..}`) whose
+        model is a container: its fields (boxes unwrapped). Anything else keeps the old reading, R."""
+        mt = parse_match(body)
+        if mt is None:
+            return R
+        var, cases = mt
+        pats = [p for p, _ in cases]
+        if pats[:1] == ['0n'] and len(cases) == 2 and re.fullmatch(r'1n\+\+?\w+', pats[1]):
+            raw, cenv = env2.get('__raw', {}).get(var, ('', {}))
+            # the caller's Ex-bound variables (N, ..) by their witnesses
+            raw = re.sub(r'(?<![\w.])[A-Za-z_]\w*(?![\w.{(])',
+                         lambda m: cenv[m.group(0)][1] if isinstance(cenv.get(m.group(0)), tuple) else m.group(0), raw)
+            k = nat_value(self.subst(m2, raw, cenv)) if raw else None
+            if not k:
+                return R
+            q = pats[1][3:].lstrip('+')
+            env3 = dict(env2)
+            env3['__e'] = dict(env2['__e'])
+            env3['__e'][q] = f'{k - 1}n'
+            env3[q] = ('val', f'{k - 1}n')
+            return self.prove(m2, cases[1][1], env3)
+        mdl = env2.get(var)
+        for pat, sub in cases:
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', pat)
+            if not mc:
+                continue
+            ctor, binders = mc.group(1).split('.')[-1], [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+            env3 = dict(env2)
+            if ctor in ('MSome', 'BSome') and isinstance(mdl, Box):
+                env3[binders[0]] = mdl.inner
+                return self.prove(m2, sub, env3)
+            if isinstance(mdl, Cont) and ctor.startswith('M_') and len(binders) == len(mdl.fields):
+                for b, (_, fm) in zip(binders, mdl.fields):
+                    env3[b] = fm.inner if isinstance(fm, Box) else fm
+                return self.prove(m2, sub, env3)
+        return R
 
     def leaf(self, m2, name, full, params, body, env2, subj):
         """a storage predicate (DK.Ex over a word tree t) of a large zero array 2^b bytes, 2^c chunks, depth d:
@@ -501,6 +724,23 @@ class Synth:
                 return f'{(subj.n - 1) // 32}n'
             if v == 'r':
                 return f'{subj.n - 32 * ((subj.n - 1) // 32)}n'
+        if isinstance(subj, BitsM):
+            if ty.endswith('array__Tree<U32>'):
+                return f'FD.array__trep(U32, {subj.d}n, 0)'
+            if v == 'dw':
+                return f'{subj.d}n'
+            if v in ('K', 'N'):
+                return f'{subj.k}'
+        if isinstance(subj, OneList):
+            if 'array__Tree<' in ty:
+                ma = re.search(r'(?<![\w])(\w+\.)?am_(\w+)\(' + v + r'\)', body)
+                if ma:
+                    return self.ctx.lift(mod, (ma.group(1) or '') + 'tfz_' + ma.group(2)) + f'(ALeaf{{{subj.eexpr}}})'
+                return f'FD.TLeaf{{{subj.eexpr}}}'
+            if v == 'dw':
+                return '0n'
+            if v == 'N':
+                return '1'
         if isinstance(subj, EList):
             if 'array__Tree<' in ty:
                 inner = ty[ty.index('array__Tree<') + len('array__Tree<'):-1]
@@ -539,8 +779,19 @@ class Synth:
             return x.expr
         return re.sub(r'(?<![\w.])[a-z]\w*(?![\w.{(])', sub, e)
 
+    def bz(self, d, k):
+        nm = f'BZ{d}_{k}'
+        self.lemmas[nm] = (f'def {nm}() -> {{O.Bits{{Array.new(U32, {d}n, 0), {k}}} == O.Bits{{FD.array__thaw(U32, FD.array__trep(U32, {d}n, 0)), {k}}} : O.Bits}}:\n'
+                           f'  %FD.array__new(U32, {d}n, 0) : {{O.Bits{{Array.new(U32, {d}n, 0), {k}}} == O.Bits{{_, {k}}} : O.Bits}}\n'
+                           f'  {{==}}')
+        return f'{nm}()'
+
     def eq(self, p, env):
         subj = env.get('__subj')
+        if isinstance(subj, BitsM) and re.search(r'== O\.Bits\{', p) and 'array__thaw' in p:
+            return self.bz(subj.d, subj.k)
+        if isinstance(subj, BitsM) and 'array__perfect(U32' in p:
+            return f'FD.array__trep_perfect(U32, {subj.d}n, 0)'
         if isinstance(subj, Words) and re.search(r'== O\.Words\{', p) and 'array__thaw' in p:
             return self.wz(subj.n, subj.d)
         if isinstance(subj, Words) and 'array__perfect(U32' in p:
@@ -651,6 +902,23 @@ def build(name):
         env['__subj'] = None
         term = szr_term(syn, mod, pt.strip(), at_d) or syn.prove(mod, pt, env)
         prem.append((pn.strip(), at_d(pt.strip()), term))
+
+    # the same bridge at the non-empty object NE() (one element in every list)
+    ne = model_ne(ctx, tmod, dflt)
+    tyname = f'{dmod_alias}.{tmod.signature(dflt[:-2])[1].strip()}'
+    ne_expr = ne.expr
+    ne.expr = 'NE()'
+    env1 = {'o': ne}
+
+    def at_ne(t):
+        t = ctx.lift(mod, t)
+        return re.sub(r'(?<![\w.])o(?=[),])', 'NE()', t)
+    prem1 = []
+    for p in params[1:]:
+        pn, pt = p.lstrip('+-').split(':', 1)
+        env1['__subj'] = None
+        term = szr_term(syn, mod, pt.strip(), at_ne) or syn.prove(mod, pt, env1)
+        prem1.append((pn.strip(), at_ne(pt.strip()), term))
     bralias = 'BR'
     concl_c = at_d(concl)
     ctx.alias(ROOT / 'src/obj.bend')
@@ -664,12 +932,21 @@ def build(name):
     txt = '\n'.join(lines) + '\n\n' + HEADER + '\n'
     txt += (f'# Non-vacuity of the encode bridge {name}_e2e_encode: every premise holds of the default object\n'
             f'# D = {X}_default() (one def per premise, named after its binder), so the bridge applies to D.\n\n')
+    # NE() first: a def is unfolded only after it is declared, and the lemmas mention NE()
+    txt += (f'# NE() is the default with one element in every list reachable through containers and boxes\n'
+            f'# (the second witness, {name}_e2e_witness_nonempty, at the end).\n'
+            f'def NE() -> {tyname}:\n  {ne_expr}\n\n')
     for nm in sorted(syn.lemmas):
         txt += syn.lemmas[nm] + '\n\n'
     for pn, pt, term in prem:
         txt += f'def premise_{pn}() -> {pt}:\n  {term}\n\n'
     txt += (f'def {name}_e2e_witness() -> {concl_c}:\n  {bralias}.{name}_e2e_encode({D}, '
             + ', '.join(f'premise_{pn}()' for pn, _, _ in prem) + ')\n')
+    txt += (f'\n# The same bridge at the non-empty object NE(): every premise is proved of NE().\n\n')
+    for pn, pt, term in prem1:
+        txt += f'def premise_ne_{pn}() -> {pt}:\n  {term}\n\n'
+    txt += (f'def {name}_e2e_witness_nonempty() -> {at_ne(concl)}:\n  {bralias}.{name}_e2e_encode(NE(), '
+            + ', '.join(f'premise_ne_{pn}()' for pn, _, _ in prem1) + ')\n')
     return txt
 
 

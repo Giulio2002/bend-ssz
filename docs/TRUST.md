@@ -6,12 +6,29 @@ Trusted (not proved here):
   bendlang/bend, run on Bun 1.4.2. `toolchain.lock.json` pins the commit and the sha256 of every
   file the checker runs (`bend2/main.ts`, `bend.ts`, `comp.ts`, `base.bend`) and of the Bun
   binary; `tools/check.sh` and `tools/check_fast.sh` refuse to run on any other bytes
-  (`tools/verify_pins.py`). This is a branch of an open upstream pull request, not a Bend
-  release: the syntactic-identity check it adds is conservative, but it has not been reviewed or
-  released upstream. Moving to a released Bend is planned once the proofs fit its budget.
+  (`tools/verify_pins.py`). This is **not a Bend release and not upstream code**: 3ddfb036 is on
+  the branch of bendlang/bend#1075 ("Conversion checks syntactic identity before normalizing"),
+  and that pull request was **closed without being merged on 2026-09-27**. Its five commits are
+  not on Bend's main (which is 44 commits further on). What that means for trust: the checker
+  every result here rests on is Bend 2.0.28 plus a conversion shortcut (two syntactically
+  identical terms are equal without normalizing them) that upstream reviewed and declined to
+  merge. The shortcut is sound in principle (syntactic identity implies definitional equality),
+  but its implementation has had no upstream acceptance, so a reader must trust these five
+  commits, and the rest of the checker, on their own review. The way out is a port of the proofs
+  to a released Bend or current main: the slow closed facts (limits of 2^30 bytes and above) have
+  to be rewritten on the proof side (for example once-computed literal constants), never by
+  patching the checker. Until that port lands, every "checks" claim in this repository means
+  "checks under 3ddfb036".
   `tools/check_fast.sh` accepts an umbrella only on the exact line `All terms check.` (never the
-  checker's "All terms check, but N defs rely on unsafe or foreign code"), and
-  `tools/verify_no_escapes.py` bans `@unsafe`, `def f?(` and foreign bodies textually. #1075 compares syntactically identical terms before
+  checker's "All terms check, but N defs rely on unsafe or foreign code"). That report covers only
+  the top file's defs and the laws, so in an umbrella (which only imports) an unsafe dependency of
+  a bridge def would not show; the guard for every def is `tools/verify_no_escapes.py`, run before
+  any check. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
+  file, in every spelling the pinned parser accepts: it lexes comments, strings and char literals
+  like the parser and allows whitespace, newlines and comments wherever the parser skips them
+  (`@` newline `unsafe`, `: import "x.js"` on the def's line, `import"x.js"`). Its planted cases
+  run on every invocation, and `--probe` runs each positive one through the pinned checker, which
+  reports all 19 as relying on unsafe or foreign code. #1075 compares syntactically identical terms before
   normalizing them; without it, some closed facts (limits of 2^30 bytes and above) would be
   evaluated in unary and not finish. Soundness of the result rests on this checker.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of

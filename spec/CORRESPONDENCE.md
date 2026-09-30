@@ -58,6 +58,28 @@ way. It describes the current tree only. The development notes it replaced are k
   (first offset, monotone offsets, bounds, no trailing bytes, delimiter and padding bits, selector
   range).
 
+## The schemas, and how they are cross-checked
+
+- **Fulu.** `spec/fulu_schemas.bend` is the 109 names of `schemas/fulu_mainnet.json`, which is
+  the structural form of the classes of `vendor/consensus-specs/fulu_mainnet.py`.
+  `tools/verify_schemas.py` checks both steps with its own readers (the Python module is read
+  with `ast`, never executed; the Bend file is parsed into terms): every name has the same
+  structure (field names and order, widths, lengths, limits, nesting) in all three. Limits of
+  2^32 and above are written `Nat.mul(2^30, 1024n)`-style in Bend and compared as integers.
+- **Generic classes.** The 131 generic names are the forms of the official `ssz_generic` suite
+  that are SSZ types. Their schemas come from the suite's README (`test_formats/ssz_generic`,
+  vendored), read by the frozen `tools/test_schemas.py` (type declarations only, no reference SSZ
+  code), and are written to `proofs/obj/generic_specs.bend` by `codegen/root_laws_generic.py`, so
+  that file is generator output, not an independent transcription; it is hash-frozen. What makes
+  it trustworthy is the cross-check: `tools/verify_schemas.py` resolves every one of the 5,145
+  ssz_generic cases of `cases.json` to its schema with `tools/test_schemas.py` (144 schemas), and
+  requires the 136 that are SSZ types (all but the 8 zero-length vectors and bit vectors), minus
+  the 5 basic types shared with Fulu, to be exactly the 131 schemas of `generic_specs.bend`
+  (parsed independently; the classes' field names `A`, `B`, .. appear as `f_A`, `f_B`, ..), with
+  no schema there that has no case. Every case also has its fixture files.
+- Both checks run in `tools/check_fast.sh` before anything is checked, and in
+  `codegen/check_schema.py --check` (so in `regen_all.py --check`).
+
 ## Outside the transcription
 
 Default values and `is_zero`, summaries and expansions, the JSON mapping, and `merkle-proofs.md`

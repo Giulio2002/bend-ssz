@@ -14,18 +14,20 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-BUN = '/Users/monkeair/.bun/bin/bun'
+BUN = os.environ.get('BUN') or '/Users/monkeair/.bun/bin/bun'
 LOADER = ROOT / 'tools/bend_loader.ts'
 BASELINE = {'iteration': '0011 (Bend 2.0.5, historical)', 'tests': 51, 'assertions': 20009}
 
 
 def main(argv):
     if not argv:
-        print('run_runtime_tests: no test files given', file=sys.stderr)
-        return 2
+        argv = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'tests').rglob('*.test.ts'))
     lock = json.loads((ROOT / 'benchmarks/toolchain.json').read_text())
+    bend = Path(os.environ.get('BEND_RUNTIME') or lock['bend']['path'])
+    paths = {'bend': bend, 'base': bend.parents[1] / 'bend2/base.bend' if os.environ.get('BEND_RUNTIME')
+             else Path(lock['base']['path'])}
     for key in ('bend', 'base'):
-        if hashlib.sha256(Path(lock[key]['path']).read_bytes()).hexdigest() != lock[key]['sha256']:
+        if hashlib.sha256(paths[key].read_bytes()).hexdigest() != lock[key]['sha256']:
             print('run_runtime_tests: pinned toolchain changed: ' + key, file=sys.stderr)
             return 2
     files = []

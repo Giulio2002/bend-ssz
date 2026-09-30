@@ -17,11 +17,19 @@ for generic forms), and the encode bridges of some names also take storage premi
 `hc`, `hd*`, `hsP`: a field's words tree at depth below 31). The decode bridges (ii)/(iii) fix
 the decoded object's view (its spec value), not its representation.
 
-**Open:** no checked law yet states that the object the decoder returns satisfies `rep_X` or the
-storage premises, except `decoded_hv` (the bit-list word invariant, section 6). So the pipeline
-bytes -> decode -> hash_tree_root (or -> encode) is covered by the laws only through that gap;
-the official vectors (295 ssz_static cases: decode, byte-exact re-encode, root) are the evidence
-for it today.
+**Composed theorems.** Where the (i) and (iv) bridges take only the object, or the name is
+fixed-size and its decoder's object is written out (`<Name>_d_some`, the words the input's; its
+`rep` and storage premises are then proved of that object by computation), the pipeline is one
+checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
+bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
+gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
+<!-- fig:composed -->119<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+
+**Open:** for the other names no checked law yet states that the object the decoder returns
+satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
+section 6). For them the pipeline bytes -> decode -> hash_tree_root (or -> encode) is covered by
+the laws only through that gap; the official vectors (295 ssz_static cases: decode, byte-exact
+re-encode, root) are the evidence for it today.
 
 ## Premises per name
 
@@ -240,3 +248,16 @@ default object `<X>_default()`. Each premise is proved of that object in its own
 and `<Name>_e2e_witness` is the bridge's conclusion for it. So each of these premise sets is jointly
 satisfiable, and each bridge's conclusion holds of at least one object. The large zero arrays of FuluBeaconState
 (2^16 to 2^21 bytes) go through lemmas that keep their sizes symbolic (`e2e/e2e_wit.bend`).
+
+Each file also applies the same bridge to a non-empty object, `NE()`: the default with one element
+in every list reachable through containers and boxes. A list of Data or boxed elements holds its
+element's default (`Seq{ALeaf{e}, 1}`), and a byte or packed list holds one zero element
+(`O.words_new(k)`), so for example FuluBeaconBlockBody's `NE()` has one proposer slashing, attester
+slashing, attestation, deposit, voluntary exit, transaction, withdrawal, BLS change, blob commitment
+and execution request of each kind. Every premise is proved of `NE()` in `premise_ne_<binder>`, and
+`<Name>_e2e_witness_nonempty` is the bridge's conclusion for it. The storage premises are met
+by a one-leaf tree at depth 0 with count 1. The element-wise premises (`ereps`, `SDKS`, defined by
+`match k`) are unfolded once and proved of the element, including its mirror (`MSome`, `M_X{..}`).
+So none of these premise sets holds only for empty lists. What this does not cover: lists nested
+inside list elements stay empty, the elements are zero-valued, and the objects are built with
+constructors, not by the decoder (that the decoder's output meets the premises is section 1).

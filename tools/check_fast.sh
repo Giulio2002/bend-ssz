@@ -13,10 +13,13 @@
 # root files are printed with the definition the checker names. Writes DIR/<n>.log,
 # DIR/summary.tsv (umbrella, exit, ok, seconds, peak MB, roots), DIR/bisect/*.log and
 # DIR/failed.tsv (root file, log, first Location line), and DIR/stamp.json (tools/check_stamp.py:
-# commit, checker, lock and source hashes, per-umbrella results). Exits nonzero if any umbrella fails.
+# commit, checker, lock, source, harness and plan hashes, per-umbrella results, totals); a full run
+# (no --files) also copies the stamp to benchmarks/evidence/check_fast.json. Exits nonzero if any
+# umbrella fails, or if any planned umbrella has no result row (its run died without a verdict).
 # First, tools/verify_pins.py checks the toolchain and the SHA-256 package against
 # toolchain.lock.json, tools/verify_frozen.py the frozen statements against frozen.lock.json, and
-# tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies (exit 3 on any of them).
+# tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies, and tools/verify_schemas.py
+# cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas (exit 3 on any failure).
 # Run from the repository root.
 set -u
 J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
@@ -36,6 +39,7 @@ T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
 python3 tools/verify_pins.py --lock "${BEND_LOCK:-toolchain.lock.json}" --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3
+python3 tools/verify_schemas.py || exit 3
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
@@ -97,9 +101,24 @@ cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"
+CHECK_FAST_FILES=$FILES python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
+# a full run records its stamp in the tree: benchmarks/evidence/check_fast.json
+[ -z "$FILES" ] && cp "$OUT/stamp.json" benchmarks/evidence/check_fast.json
 bad=$(awk -F'\t' '$2 != 0 || $3 == 0 {print $1}' "$OUT/summary.tsv")
-[ -z "$bad" ] && { echo "all files check (stamp: $OUT/stamp.json)"; exit 0; }
+# every planned umbrella must have exactly one result row: one whose run died before writing it
+# (killed, out of memory in the shell, ...) fails the check instead of silently vanishing
+missing=$(cut -f1 "$OUT/umb/plan.tsv" | sort | comm -23 - <(cut -f1 "$OUT/summary.tsv" | sort))
+[ $stamp_rc != 0 ] && [ -z "$missing" ] && { echo "FAILED: the stamp's plan/summary comparison failed"; exit 1; }
+if [ -n "$missing" ]; then
+  echo "FAILED: planned umbrellas with no result row (their run died without a verdict):"
+  for u in $missing; do echo "  $u  $OUT/${u%.bend}.log"; done
+  exit 1
+fi
+if [ -z "$bad" ]; then
+  [ -z "$FILES" ] && echo "all files check (stamp: $OUT/stamp.json, benchmarks/evidence/check_fast.json)" \
+    || echo "listed files check (stamp: $OUT/stamp.json)"
+  exit 0
+fi
 echo "FAILED umbrellas:"
 for u in $bad; do echo "  $OUT/${u%.bend}.log"; grep -m1 -A1 '^Location' "$OUT/${u%.bend}.log" | sed 's/^/    /'; done
 if [ $LOC = 1 ]; then

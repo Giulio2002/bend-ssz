@@ -17,6 +17,8 @@
 | `vendor/` | pinned consensus-specs; `vendor/bendhub/` the SHA-256 BendHub package | vendored |
 | `toolchain.lock.json`, `tools/verify_pins.py` | the checker, Bun and SHA-256 package pins, and their check | hand |
 | `tools/verify_no_escapes.py`, `tools/check_stamp.py` | the textual ban on unsafe/foreign code; the full check's stamp (`benchmarks/evidence/check_fast.json`) | hand |
+| `tools/generate_*.py` | the early proof layer (`proofs/*.bend`), some `spec/` and `types/` files, benchmark scaffolding; `codegen/tool_generators.py --check` reruns the reproducible ones | hand |
+| `tests/`, `tools/run_runtime_tests.py`, `tools/bend_loader.ts` | Bun tests of compiled runtime modules and one Python unit test ([BUILD.md](BUILD.md), Tests) | hand |
 | `docs/history/` | superseded reviews and development notes, kept for provenance | hand |
 | `frozen.lock.json`, `tools/verify_frozen.py` | the hashes of the frozen spec and statements, and their check | `tools/verify_frozen.py --update` (deliberate changes only) |
 

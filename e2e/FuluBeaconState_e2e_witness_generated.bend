@@ -29,6 +29,7 @@ import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBytes4_def_generated.bend as FuluBytes4_d
+import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
 import ../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
@@ -56,6 +57,7 @@ import ../types/Fulu_vec_bytevec_32_8192_def_generated.bend as Fulu_vec_bytevec_
 import ../types/Fulu_vec_bytevec_48_512_def_generated.bend as Fulu_vec_bytevec_48_512_d
 import ../types/Fulu_vec_uint64_64_def_generated.bend as Fulu_vec_uint64_64_d
 import ../types/Fulu_vec_uint64_8192_def_generated.bend as Fulu_vec_uint64_8192_d
+import ../types/boolean_def_generated.bend as boolean_d
 import ../types/uint256_def_generated.bend as uint256_d
 import ../types/uint64_def_generated.bend as uint64_d
 
@@ -63,8 +65,17 @@ import ../types/uint64_def_generated.bend as uint64_d
 # Non-vacuity of the encode bridge FuluBeaconState_e2e_encode: every premise holds of the default object
 # D = BeaconState_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+# NE() is the default with one element in every list reachable through containers and boxes
+# (the second witness, FuluBeaconState_e2e_witness_nonempty, at the end).
+def NE() -> FuluBeaconState_d.BeaconState:
+  FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{uint64_d.u64_default(), FuluBytes32_d.b32_default(), uint64_d.u64_default(), FuluFork_d.Fork_default(), FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), O.words_new(32)}, FuluBeaconState_d.BeaconState_g1{FuluEth1Data_d.Eth1Data_default(), Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{ALeaf{FuluEth1Data_d.Eth1Data_default()}, 1}, uint64_d.u64_default(), Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{ALeaf{FuluValidator_d.Validator_default()}, 1}, O.words_new(8), Fulu_vec_bytevec_32_65536_d.v65536_b32_default(), Fulu_vec_uint64_8192_d.v8192_u64_default(), O.words_new(1)}, FuluBeaconState_d.BeaconState_g2{O.words_new(1), Fulu_bitvector_4_d.bv4_default(), FuluCheckpoint_d.Checkpoint_default(), FuluCheckpoint_d.Checkpoint_default(), FuluCheckpoint_d.Checkpoint_default(), O.words_new(8), FuluSyncCommittee_d.SyncCommittee_default(), FuluSyncCommittee_d.SyncCommittee_default()}, FuluBeaconState_d.BeaconState_g3{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{uint64_d.u64_default(), uint64_d.u64_default(), O.words_new(1), uint256_d.u256_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), uint64_d.u64_default()}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()}), uint64_d.u64_default(), uint64_d.u64_default(), Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{ALeaf{FuluHistoricalSummary_d.HistoricalSummary_default()}, 1}, uint64_d.u64_default(), uint64_d.u64_default(), uint64_d.u64_default(), uint64_d.u64_default()}, FuluBeaconState_d.BeaconState_g4{uint64_d.u64_default(), uint64_d.u64_default(), Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{ALeaf{FuluPendingDeposit_d.PendingDeposit_default()}, 1}, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{ALeaf{FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()}, 1}, Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{ALeaf{FuluPendingConsolidation_d.PendingConsolidation_default()}, 1}, Fulu_vec_uint64_64_d.v64_u64_default()}}
+
 def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 3n, 0)), 0} : O.Words}:
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
+  {==}
+
+def WZ1() -> {O.words_new(1) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 1} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(1) == O.Words{_, 1} : O.Words}
   {==}
 
 def WZ2097152() -> {O.words_new(2097152) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 20n, 0)), 2097152} : O.Words}:
@@ -83,12 +94,20 @@ def WZ262144() -> {O.words_new(262144) == O.Words{FD.array__thaw(U32, FD.array__
   %FD.array__new(U32, 17n, 0) : {O.words_new(262144) == O.Words{_, 262144} : O.Words}
   {==}
 
+def WZ32() -> {O.words_new(32) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 32} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(32) == O.Words{_, 32} : O.Words}
+  {==}
+
 def WZ512() -> {O.words_new(512) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 8n, 0)), 512} : O.Words}:
   %FD.array__new(U32, 8n, 0) : {O.words_new(512) == O.Words{_, 512} : O.Words}
   {==}
 
 def WZ65536() -> {O.words_new(65536) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 15n, 0)), 65536} : O.Words}:
   %FD.array__new(U32, 15n, 0) : {O.words_new(65536) == O.Words{_, 65536} : O.Words}
+  {==}
+
+def WZ8() -> {O.words_new(8) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 8} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(8) == O.Words{_, 8} : O.Words}
   {==}
 
 # SZR(F, t0, .., tn) = F + (t0 + .. + tn)
@@ -152,6 +171,36 @@ def big12() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(FuluBeaconStat
   (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
 
 def big13() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_23(FuluBeaconState_d.BeaconState_default())), 31n):
+  (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
+
+def big14() -> PV.rep_pv(ST.pj_BeaconState_5(NE()), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState())))))))):
+  (sym_PV_wfv(ST.pj_BeaconState_5(NE()), 13n, 18n, 17n, {==}, {==}, {==}, WZ262144(), {==}), {==})
+
+def big15() -> PV.rep_pv(ST.pj_BeaconState_6(NE()), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState()))))))))):
+  (sym_PV_wfv(ST.pj_BeaconState_6(NE()), 13n, 18n, 17n, {==}, {==}, {==}, WZ262144(), {==}), {==})
+
+def big16() -> PV.rep_pv(ST.pj_BeaconState_13(NE()), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState())))))))))))))))):
+  (sym_PV_wfv(ST.pj_BeaconState_13(NE()), 16n, 21n, 20n, {==}, {==}, {==}, WZ2097152(), {==}), {==})
+
+def big17() -> PK_L.rep_v8(ST.pj_BeaconState_14(NE()), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState()))))))))))))))))):
+  (sym_WO_L_wf1(ST.pj_BeaconState_14(NE()), 11n, 16n, 15n, {==}, {==}, {==}, WZ65536(), {==}, {==}, {==}, {==}), (WT.len8(ST.pj_BeaconState_14(NE()), 13n, 16n, 15n, {==}, {==}, WZ65536()), {==}))
+
+def big18() -> E48.wfe(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(NE()))):
+  (FD.array__trep(U32, 13n, 0), (13n, (24576, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==}))))))
+
+def big19() -> E48.rep_ev(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(NE())), SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState()))))))))))))))))))))))))))):
+  (big18(), {==})
+
+def big20() -> E48.wfe(RT.pj_SyncCommittee_0(ST.pj_BeaconState_23(NE()))):
+  (FD.array__trep(U32, 13n, 0), (13n, (24576, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==}))))))
+
+def big21() -> E48.rep_ev(RT.pj_SyncCommittee_0(ST.pj_BeaconState_23(NE())), SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BeaconState())))))))))))))))))))))))))))):
+  (big20(), {==})
+
+def big22() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(NE())), 31n):
+  (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
+
+def big23() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_23(NE())), 31n):
   (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
 
 def premise_rep() -> ST.rep_BeaconState(FuluBeaconState_d.BeaconState_default(), Spec.BeaconState()):
@@ -234,3 +283,86 @@ def premise_hZ() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(S
 
 def FuluBeaconState_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(FuluBeaconState_d.BeaconState_default())))} == API.serialize(Spec.BeaconState(), ST.v_BeaconState(FuluBeaconState_d.BeaconState_default())) : Maybe<&2, +List<U32>>}:
   BR.FuluBeaconState_e2e_encode(FuluBeaconState_d.BeaconState_default(), premise_rep(), premise_hs5(), premise_hs6(), premise_hs7(), premise_hm7(), premise_hs9(), premise_hs11(), premise_hs12(), premise_hm12(), premise_hs13(), premise_hs14(), premise_hs15(), premise_hm15(), premise_hs16(), premise_hm16(), premise_hs21(), premise_hm21(), premise_hs22(), premise_hs23(), premise_hs24(), premise_hs27(), premise_hs34(), premise_hs35(), premise_hs36(), premise_hs37(), premise_hZ())
+
+# The same bridge at the non-empty object NE(): every premise is proved of NE().
+
+def premise_ne_rep() -> ST.rep_BeaconState(NE(), Spec.BeaconState()):
+  (uint64_d.u64_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (FuluFork_d.Fork_default(), (FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), (FuluEth1Data_d.Eth1Data_default(), (uint64_d.u64_default(), (Fulu_bitvector_4_d.bv4_default(), (FuluCheckpoint_d.Checkpoint_default(), (FuluCheckpoint_d.Checkpoint_default(), (FuluCheckpoint_d.Checkpoint_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (big14(), (big15(), ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (32, (0n, (32n, (WZ32(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, ({==}, {==})), (((FD.TLeaf{FuluEth1Data_d.Eth1Data_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), (((FD.TLeaf{FuluValidator_d.Validator_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, ({==}, {==})), (big16(), (big17(), ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}), ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}), ({==}, ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, ({==}, {==})), ((FuluBytes48_d.b48_default(), ({==}, big19())), ((FuluBytes48_d.b48_default(), ({==}, big21())), (({==}, (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), (Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}))))))))))))))))))), (((FD.TLeaf{FuluHistoricalSummary_d.HistoricalSummary_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), (((FD.TLeaf{FuluPendingDeposit_d.PendingDeposit_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), (((FD.TLeaf{FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), (((FD.TLeaf{FuluPendingConsolidation_d.PendingConsolidation_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}), ((FD.array__trep(U32, 8n, 0), (8n, (512, (15n, (32n, (WZ512(), (FD.array__trep_perfect(U32, 8n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), ({==}, {==})))))))))))))))))))))))))))))))))))))))))
+
+def premise_ne_hs5() -> BL.sdpv(ST.pj_BeaconState_5(NE()), 31n):
+  sym_BL_sdpv(ST.pj_BeaconState_5(NE()), 31n, 13n, 18n, 17n, {==}, {==}, {==}, WZ262144(), {==})
+
+def premise_ne_hs6() -> BL.sdpv(ST.pj_BeaconState_6(NE()), 31n):
+  sym_BL_sdpv(ST.pj_BeaconState_6(NE()), 31n, 13n, 18n, 17n, {==}, {==}, {==}, WZ262144(), {==})
+
+def premise_ne_hs7() -> U.sdk(ST.pj_BeaconState_7(NE()), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (32, (0n, (32n, (WZ32(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hm7() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), VB.pw(31n)) == True{} : Bool}:
+  {==}
+
+def premise_ne_hs9() -> RLS.sda_l2048_Eth1Data(ST.pj_BeaconState_9(NE()), 31n):
+  (FD.TLeaf{FuluEth1Data_d.Eth1Data_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs11() -> RLS.sda_l1099511627776_Validator(ST.pj_BeaconState_11(NE()), 31n):
+  (FD.TLeaf{FuluValidator_d.Validator_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs12() -> U.sdk(ST.pj_BeaconState_12(NE()), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hm12() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), VB.pw(31n)) == True{} : Bool}:
+  {==}
+
+def premise_ne_hs13() -> BL.sdpv(ST.pj_BeaconState_13(NE()), 31n):
+  sym_BL_sdpv(ST.pj_BeaconState_13(NE()), 31n, 16n, 21n, 20n, {==}, {==}, {==}, WZ2097152(), {==})
+
+def premise_ne_hs14() -> BL.sdk1(ST.pj_BeaconState_14(NE()), 31n):
+  sym_BL_sdk1(ST.pj_BeaconState_14(NE()), 31n, 11n, 16n, 15n, {==}, {==}, {==}, WZ65536(), {==}, {==}, {==}, {==})
+
+def premise_ne_hs15() -> U.sdk(ST.pj_BeaconState_15(NE()), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hm15() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), VB.pw(31n)) == True{} : Bool}:
+  {==}
+
+def premise_ne_hs16() -> U.sdk(ST.pj_BeaconState_16(NE()), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hm16() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), VB.pw(31n)) == True{} : Bool}:
+  {==}
+
+def premise_ne_hs21() -> U.sdk(ST.pj_BeaconState_21(NE()), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hm21() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), VB.pw(31n)) == True{} : Bool}:
+  {==}
+
+def premise_ne_hs22() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(NE())), 31n):
+  big22()
+
+def premise_ne_hs23() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_23(NE())), 31n):
+  big23()
+
+def premise_ne_hs24() -> MW.SHS_E(RT.pjb_ExecutionPayloadHeader_bx(ST.pj_BeaconState_24(NE()))):
+  ((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))})
+
+def premise_ne_hs27() -> RLS.sda_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE()), 31n):
+  (FD.TLeaf{FuluHistoricalSummary_d.HistoricalSummary_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs34() -> RLS.sda_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE()), 31n):
+  (FD.TLeaf{FuluPendingDeposit_d.PendingDeposit_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs35() -> RLS.sda_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE()), 31n):
+  (FD.TLeaf{FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs36() -> RLS.sda_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()), 31n):
+  (FD.TLeaf{FuluPendingConsolidation_d.PendingConsolidation_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hs37() -> BL.sdk1(ST.pj_BeaconState_37(NE()), 31n):
+  (FD.array__trep(U32, 8n, 0), (8n, (512, (15n, (32n, (WZ512(), (FD.array__trep_perfect(U32, 8n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def premise_ne_hZ() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), VB.pw(31n)) == True{} : Bool}:
+  szr_lt(2737225, U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE())), {==})
+
+def FuluBeaconState_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(NE())))} == API.serialize(Spec.BeaconState(), ST.v_BeaconState(NE())) : Maybe<&2, +List<U32>>}:
+  BR.FuluBeaconState_e2e_encode(NE(), premise_ne_rep(), premise_ne_hs5(), premise_ne_hs6(), premise_ne_hs7(), premise_ne_hm7(), premise_ne_hs9(), premise_ne_hs11(), premise_ne_hs12(), premise_ne_hm12(), premise_ne_hs13(), premise_ne_hs14(), premise_ne_hs15(), premise_ne_hm15(), premise_ne_hs16(), premise_ne_hm16(), premise_ne_hs21(), premise_ne_hm21(), premise_ne_hs22(), premise_ne_hs23(), premise_ne_hs24(), premise_ne_hs27(), premise_ne_hs34(), premise_ne_hs35(), premise_ne_hs36(), premise_ne_hs37(), premise_ne_hZ())

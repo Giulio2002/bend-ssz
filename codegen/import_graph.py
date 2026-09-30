@@ -29,9 +29,9 @@ MEASURED += [str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glo
 MEASURED += ['native_bench/driver.bend']
 OTHER = {
     'proof roots': ['PROOF.bend', 'END_TO_END.bend', 'ROOT_DOMAIN.bend', 'HASH_PROOF.bend'],
-    # the list model: the frozen END_TO_END/ROOT_DOMAIN propositions speak about it and the
-    # protected Bun runtime tests (tests/new/*.test.ts, via tools/generic_transport.ts and
-    # tools/primitive_backend.ts) exercise it; the official spectests no longer do
+    # the list model: the frozen END_TO_END/ROOT_DOMAIN propositions speak about it; the Bun
+    # runtime tests that exercised types/fulu.bend were removed (2026-09-30) because the runtime
+    # compiler cannot compile types/fulu*.bend as an entry (see docs/BUILD.md, Tests)
     'legacy list model (frozen propositions, protected runtime tests)': ['src/ssz.bend', 'types/fulu.bend'],
     'independent specification': sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'spec').glob('*.bend')),
 }
