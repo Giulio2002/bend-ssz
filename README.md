@@ -8,7 +8,7 @@ hash_tree_root, field and element access), and machine-checked proofs relating i
 transcription of the SSZ specification (`spec/`). The guarantee a user relies on is: the
 end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with the laws of
 END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). For
-<!-- fig:composed -->174<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
+<!-- fig:composed -->176<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
 followed by hash_tree_root (the spec root of the deserialized value) are single checked statements
 (`e2e/<Name>_e2e_comp_generated.bend`, list in `e2e/COMPOSED.txt`). For the others it is not yet proved
 that the decoded object satisfies the encode and root bridges' representation premises (PREMISES
@@ -74,7 +74,7 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
     python3 codegen/regen_all.py            # regenerate every generated file (idempotent)
     python3 codegen/regen_all.py --check    # fail if any generated file is stale
     tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
-                                            # (last recorded run: <!-- fig:check_wall -->at least 6.1<!-- /fig --> min wall at 20 jobs);
+                                            # (last recorded run: <!-- fig:check_wall -->5.4<!-- /fig --> min wall at 20 jobs);
                                             # on failure it bisects and prints the failing files
     tools/check.sh <file.bend>              # one file
 

@@ -164,7 +164,26 @@ def attester_slashing(lf):
                           lets, None, 'proofs/obj/var_codec_AttesterSlashing.bend')
 
 
+BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+BUF_ARGS = set()   # names whose p_* defs take the loaded buffer's depth facts (d, pf, hd, hn) after the object's arguments
+
+
+def bit_container(name, codec, lf):
+    """a container whose field 0 is a bit list (the dec bridge file proves its rep_bits and storage premise:
+    decoded_rep / decoded_hv, from the buffer's depth facts)"""
+    BUF_ARGS.add(name)
+
+    def lets(al):
+        DE = al(f'e2e/{name}_e2e_dec_generated.bend')
+        a = 'd, t, n, pf, hd, hn, hchk'
+        return [], None, (lambda e: BitsDec(e, f'{DE}.decoded_rep({a})', f'{DE}.decoded_hv({a})'))
+    return container_file(name, lf, f'proofs/obj/{codec}.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, f'proofs/obj/{codec}.bend')
+
+
 PROVERS = {
+    'FuluAttestation': lambda lf: bit_container('FuluAttestation', 'var_bitc_Attestation', lf),
+    'FuluPendingAttestation': lambda lf: bit_container('FuluPendingAttestation', 'var_bitc_PendingAttestation', lf),
     'FuluIndexedAttestation': lambda lf: u64_list_alone('FuluIndexedAttestation', 'var_codec_IndexedAttestation', 228, 131072, 21, lf),
     'FuluDataColumnsByRootIdentifier': lambda lf: u64_list_alone('FuluDataColumnsByRootIdentifier', 'var_codec_DataColumnsByRootIdentifier', 36, 128, 11, lf),
     'FuluAttesterSlashing': lambda lf: attester_slashing(lf),
@@ -186,6 +205,16 @@ class WordsDec:
     def __init__(self, expr, any_=None, one=None, limit=None, facts=()):
         self.expr, self.any_, self.one, self.limit, self.facts = expr, any_, one, limit, list(facts)
         self.n, self.d = 1, 1
+
+
+class BitsDec:
+    """a decoded bit list: its rep_bits and storage (sdbv) premises are laws of the name's dec bridge file"""
+    def __init__(self, expr, rep, hs):
+        self.expr, self.rep, self.hs = expr, rep, hs
+
+
+BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
+        ('e2e_bitv.bend', 'sdbv'): 'hs'}
 
 
 class WordsFix:
@@ -224,6 +253,10 @@ class DSynth(W.Synth):
             m2, name = mod.resolve(fn)
             if m2 is not None:
                 key = (m2.path.name, name)
+                if key in BITS and args:
+                    mdl = self.arg_model(args[0], env)
+                    if isinstance(mdl, BitsDec):
+                        return getattr(mdl, BITS[key])
                 if key in STORAGE and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, WordsDec):
@@ -260,7 +293,7 @@ def body_of(modpath, name, subst):
     return m, body
 
 
-def dec_model(e, words, expand=lambda e: None):
+def dec_model(e, words, expand=lambda e: None, bits=None):
     """the model of a decoded object's term (this file's aliases); expand(e) unfolds a call to the codec's object
     helpers (OBJw, MKw); a fixed-length word field over a VB.mone copy is WordsFix, the others words(i, expr)"""
     cnt = [0]
@@ -282,6 +315,8 @@ def dec_model(e, words, expand=lambda e: None):
             md = words(cnt[0], e)
             cnt[0] += 1
             return md
+        if bits is not None and re.match(r'(\w+)\.Bits\{(.*)\}$', e, re.S):
+            return bits(e)
         m = re.match(r'(\w+)\.BSome\{(.*)\}$', e, re.S)
         if m:
             x, rest = W.split_top(m.group(2))
@@ -342,8 +377,11 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         ctx.alias(ROOT / p_)
     OBJ = ctx.lift(om, body)
     inv = {a: pth for pth, a in W.PREFER.items()}
+    bits = None
     if callable(lets):
-        lets, words = lets(lambda path: ctx.alias(ROOT / path))
+        r_ = lets(lambda path: ctx.alias(ROOT / path))
+        lets, words = r_[0], r_[1]
+        bits = r_[2] if len(r_) > 2 else None
 
     def expand(e):
         c = W.parse_call(e)
@@ -360,7 +398,7 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         for pn, v in zip(ps, c[1]):
             bd = re.sub(r'(?<![\w.])' + re.escape(pn) + r'(?![\w])', v, bd)
         return bd
-    model = dec_model(OBJ, words, expand)
+    model = dec_model(OBJ, words, expand, bits)
     syn = DSynth(ctx)
     defs = []
     done = {}
