@@ -26,6 +26,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import e2e_witness as W  # noqa: E402  (the Bend source reader and alias lifting)
+try:
+    # the extension point for the fixed-size names this module leaves pending (masked words, large objects):
+    # codegen/e2e_compose_fixed.py, owned separately. Its build(name, lf, api) returns (text, None) to compose a
+    # name, (None, reason) to keep it pending with that reason, or None to leave the name to this module; its
+    # optional outputs() returns extra files {Path: text} (support lemmas) that this generator writes and checks.
+    import e2e_compose_fixed as EXT  # noqa: E402
+except ImportError:
+    EXT = None
 
 ROOT = W.ROOT
 E2E = W.E2E
@@ -206,6 +214,14 @@ def some_lhs(concl, fn):
 
 
 def build(name, lf):
+    if EXT is not None:
+        r = EXT.build(name, lf, sys.modules[__name__])
+        if r is not None:
+            return r
+    return build_std(name, lf)
+
+
+def build_std(name, lf):
     dl = lf.get(f'{name}_e2e_decode_accept') or lf.get(f'{name}_e2e_decode_view')
     kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
     el, rl = lf.get(f'{name}_e2e_encode'), lf.get(f'{name}_e2e_root')
@@ -383,6 +399,8 @@ def outputs():
     lf = law_files()
     names = sorted({re.sub(r'_e2e_\w+$', '', l) for l in lf if l.endswith('_e2e_encode')})
     outs = {E2E / 'e2e_comp.bend': SUPPORT}
+    if EXT is not None and hasattr(EXT, 'outputs'):
+        outs.update(EXT.outputs())
     rows = []
     for n in names:
         t, why = build(n, lf)
