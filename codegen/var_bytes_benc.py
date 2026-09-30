@@ -190,6 +190,10 @@ def scput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos1: U32, +P1: Nat, +e1: {{U32.t
   +hd31 = FD.nat__lt_trans(dd, 29n, 31n, hdd, {{==}})
   +hbw = FD.nat__le_trans(Nat.add({SCW}n, Nat.add(0n, P1)), Nat.add({SCW + SCG}n, P1), VB.pw(dd), Order.add_right({SCW}n, {SCW + SCG}n, P1, {{==}}), hbs)
   +hbr = FD.nat__le_trans(Nat.add({SCG}n, Nat.add(VC.NW({SCW * 4}), P1)), Nat.add({SCW + SCG}n, P1), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add({SCW + SCG}n, P1)) == {TRUE}}}, Nat.add(Nat.add({SCG}n, VC.NW({SCW * 4})), P1), Nat.add({SCG}n, Nat.add(VC.NW({SCW * 4}), P1)), FD.nat__add_assoc({SCG}n, VC.NW({SCW * 4}), P1), Order.add_right(Nat.add({SCG}n, VC.NW({SCW * 4})), {SCW + SCG}n, P1, {{==}})), hbs)
+  # hbw and hz with the pubkeys' word count named (VC.NW / VY.QL of {SCW * 4}, as put_words_any
+  # states them), so no conversion compares {SCW}n with an unevaluated Nat.add over it
+  +hbwN = FD.nat__le_trans(Nat.add(VC.NW({SCW * 4}), P1), Nat.add({SCW + SCG}n, P1), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, P1), Nat.add({SCW + SCG}n, P1)) == {TRUE}}}, {SCW}n, VC.NW({SCW * 4}), {{==}}, Order.add_right({SCW}n, {SCW + SCG}n, P1, {{==}})), hbs)
+  +hzN = FD.logic__subst(Nat, z => {{VB.slot(D1, Nat.add(z, P1)) == 0 : U32}}, {SCW}n, VY.QL({SCW * 4}), {{==}}, hz)
   +e0 = VF.off_add(pos1, 0, P1, 0n, 2n+dd, e1, {{==}}, hdd, hq4(0n, P1, dd, {SCW}n, hbw))
   +e2 = VF.off_add(pos1, {SCW * 4}, P1, VC.NW({SCW * 4}), 2n+dd, e1, FD.nat__eq_from_is_eq(U32.to_nat({SCW * 4}), A.quad(VC.NW({SCW * 4})), {{==}}), hdd, hq4(VC.NW({SCW * 4}), P1, dd, {SCG}n, hbr))
   %Equal.sym(O.Words & Bool, T.v512_b48_valid({PUB}), ({PUB}, True{{}}),
@@ -197,7 +201,7 @@ def scput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos1: U32, +P1: Nat, +e1: {{U32.t
     {{T.SyncCommittee_pw0(pos1, 0, {AGG}, T.v512_b48_pk(FD.array__thaw(U32, D1), U32.add(pos1, 0), _)) == {SCR} : {STY}}}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D1), U32.add(pos1, 0), {PUB}), (FD.array__thaw(U32, {MON}), {PUB}),
       VBE.put_words_any(dd, dS, D1, TS, U32.add(pos1, 0), P1, {SCW * 4}, {KYS}n, pf1, pfS, hd31, hdS, VF.al_3(U32.add(pos1, 0), P1, e0), VF.al_q(U32.add(pos1, 0), P1, e0),
-        {{==}}, {{==}}, hrS, hbw, hz)) :
+        {{==}}, {{==}}, hrS, hbwN, hzN)) :
     {{T.SyncCommittee_pw0(pos1, 0, {AGG}, T.v512_b48_pk_ok(_)) == {SCR} : {STY}}}
   %Equal.sym(Array<U32>, T.b48_put(FD.array__thaw(U32, {MON}), U32.add(pos1, {SCW * 4}), {AGG}), FD.array__thaw(U32, VF.updv({GL}, dd, {MON}, Nat.add(VC.NW({SCW * 4}), P1))),
       VT.put_b48(dd, {MON}, U32.add(pos1, {SCW * 4}), Nat.add(VC.NW({SCW * 4}), P1), e2, hdd, VB.mone_perfect(VC.NW({SCW * 4}), 0n, P1, dd, D1, TS, pf1), hbr, {", ".join(G)})) :
@@ -358,13 +362,18 @@ def XE({EP}) -> S.Value: XEY({OWA}, YE.XE({C.A}))
     W4 = lambda m, p: f'VF.WIN({m}, {p}, {S_})'  # noqa: E731
     Wt = lambda m, p, t: f'VF.WIN({m}, {p}, {SL(t)})'  # noqa: E731
     EQG = f'eqg(P)'
-    hbG = f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({SCG}n, z), VB.pw(dd)) == {TRUE}}}, Nat.add({1 + SCW}n, P), {pg}, {EQG}, {hbw(SCG, 1 + SCW)})'
+    # the aggregate key's offset 1 + NW + P, spelled as the window split leaves it (not {1 + SCW}n + P):
+    # a conversion between the two spellings would walk NW = {SCW} in unary
+    p45 = f'Nat.add(Nat.add(1n, {NWS}), P)'
+    hb45 = (f'hb({SCG}n, Nat.add(1n, {NWS}), P, dd, FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({SCG}n, Nat.add(1n, z)), {H}n) == {TRUE}}}, '
+            f'{SCW}n, {NWS}, {{==}}, {{==}}), hHP(N, dd, P, hdst))')
+    hbG = f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({SCG}n, z), VB.pw(dd)) == {TRUE}}}, {p45}, {pg}, {EQG}, {hb45})'
     hbM = (f'FD.nat__le_trans(Nat.add({NWS}, {pk}), Nat.add({SCW + SCG}n, {pk}), VB.pw(dd), Order.add_right({NWS}, {SCW + SCG}n, {pk}, {{==}}), '
            f'{hbw(SCW + SCG, 1)})')
 
     def lepg(a, cc):
         # Nat.add(a, pg) <= Nat.add(cc, P)
-        return (f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({a}n, z), Nat.add({cc}n, P)) == {TRUE}}}, Nat.add({1 + SCW}n, P), {pg}, {EQG}, '
+        return (f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({a}n, z), Nat.add({cc}n, P)) == {TRUE}}}, {p45}, {pg}, {EQG}, '
                 f'posle({a}n, {1 + SCW}n, {cc}n, P, {{==}}))')
 
     def chain(terms, proofs):
@@ -376,8 +385,13 @@ def XE({EP}) -> S.Value: XEY({OWA}, YE.XE({C.A}))
 def posle(+a: Nat, +b: Nat, +cc: Nat, +P: Nat, +h: {{Nat.is_le(Nat.add(a, b), cc) == {TRUE}}}) -> {{Nat.is_le(Nat.add(a, Nat.add(b, P)), Nat.add(cc, P)) == {TRUE}}}:
   FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(cc, P)) == {TRUE}}}, Nat.add(Nat.add(a, b), P), Nat.add(a, Nat.add(b, P)), FD.nat__add_assoc(a, b, P), Order.add_right(Nat.add(a, b), cc, P, h))
 
-def eqg(+P: Nat) -> {{Nat.add({1 + SCW}n, P) == {pg} : Nat}}:
-  Equal.sym(Nat, Nat.add(Nat.add(VC.NW({SCW * 4}), 1n), P), {pg}, FD.nat__add_assoc(VC.NW({SCW * 4}), 1n, P))
+# at a symbolic n, so that no conversion evaluates the word count VC.NW({SCW * 4}) ({SCW}) in unary
+def add1_swap(+n: Nat, +P: Nat) -> {{Nat.add(Nat.add(1n, n), P) == Nat.add(n, Nat.add(1n, P)) : Nat}}:
+  Equal.sym(Nat, Nat.add(n, Nat.add(1n, P)), Nat.add(Nat.add(1n, n), P), FD.nat__add_succ(n, P))
+
+def eqg(+P: Nat) -> {{{p45} == {pg} : Nat}}:
+  add1_swap(VC.NW({SCW * 4}), P)
+
 """)
     # ---- the header segments of the output ----
     m1 = [W4('1n', p0), Wt('1n', p0, L3), Wt('1n', p0, L2), Wt('1n', p0, L1), Wt('1n', p0, D2), f'[{FS}]']
@@ -390,8 +404,8 @@ def eqg(+P: Nat) -> {{Nat.add({1 + SCW}n, P) == {pg} : Nat}}:
     pr2 = [f'V2.peel_hi({WLB}, dd, {L3}, {pb}, {NWS}, {pk}, {pfl3}, {hbw(WB, KB)}, posle({NWS}, 1n, {KB}n, P, {{==}}))',
            f'V2.peel_hi({GL}, dd, {L2}, {pg}, {NWS}, {pk}, {pfl2}, {hbG}, Order.reflexive({pg}))',
            f'VBE.own_mone({NWS}, {pk}, dd, {L1}, dS, TS, {pf1}, pfS, {hbM}, hrS)']
-    m3 = [W4(f'{SCG}n', f'Nat.add({1 + SCW}n, P)'), W4(f'{SCG}n', pg), Wt(f'{SCG}n', pg, L3), GL]
-    pr3 = [f'Equal.cong(Nat, {LT}, z => VF.WIN({SCG}n, z, {S_}), Nat.add({1 + SCW}n, P), {pg}, {EQG})',
+    m3 = [W4(f'{SCG}n', p45), W4(f'{SCG}n', pg), Wt(f'{SCG}n', pg, L3), GL]
+    pr3 = [f'Equal.cong(Nat, {LT}, z => VF.WIN({SCG}n, z, {S_}), {p45}, {pg}, {EQG})',
            f'V2.peel_hi({WLB}, dd, {L3}, {pb}, {SCG}n, {pg}, {pfl3}, {hbw(WB, KB)}, {lepg(SCG, KB)})',
            f'V2.own({GL}, dd, {L2}, {pg}, {pfl2}, {hbG})']
     BWL_ = BWL
@@ -413,8 +427,8 @@ def eqg(+P: Nat) -> {{Nat.add({1 + SCW}n, P) == {pg} : Nat}}:
     w(f'  %Equal.sym({LT}, {W4(f"Nat.add({NWS}, {SCG}n)", pk)}, VF.app({W4(NWS, pk)}, {W4(f"{SCG}n", f"Nat.add(Nat.add(1n, {NWS}), P)")}), VBE.win_splitP({NWS}, {SCG}n, 1n, P, {S_})) :')
     w(f'    {{VF.app([{FS}], VF.app(_, {W4(f"{WB}n", pb)})) == {RHS} : {LT}}}')
     w(f'  %Equal.sym({LT}, {W4(NWS, pk)}, {WPK}, seg1({WA_})) :')
-    w(f'    {{VF.app([{FS}], VF.app(VF.app(_, {W4(f"{SCG}n", f"Nat.add({1 + SCW}n, P)")}), {W4(f"{WB}n", pb)})) == {RHS} : {LT}}}')
-    w(f'  %Equal.sym({LT}, {W4(f"{SCG}n", f"Nat.add({1 + SCW}n, P)")}, {GL}, seg2({WA_})) :')
+    w(f'    {{VF.app([{FS}], VF.app(VF.app(_, {W4(f"{SCG}n", p45)}), {W4(f"{WB}n", pb)})) == {RHS} : {LT}}}')
+    w(f'  %Equal.sym({LT}, {W4(f"{SCG}n", p45)}, {GL}, seg2({WA_})) :')
     w(f'    {{VF.app([{FS}], VF.app(VF.app({WPK}, _), {W4(f"{WB}n", pb)})) == {RHS} : {LT}}}')
     w(f'  %Equal.sym({LT}, {W4(f"Nat.add({WB}n, 0n)", pb)}, VF.app({W4(f"{WB}n", pb)}, {W4("0n", f"Nat.add(Nat.add({KB}n, {WB}n), P)")}), VBE.win_splitP({WB}n, 0n, {KB}n, P, {S_})) :')
     w(f'    {{VF.app([{FS}], VF.app({SEGC}, _)) == {RHS} : {LT}}}')

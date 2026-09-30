@@ -1304,7 +1304,12 @@ def venc_state(R, X):
            f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ_}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))), A.quad(WD.NWN(U32.to_nat({SZ_}))), ep,\n"
            f"    FD.nat__le_add_right(U32.to_nat({SZ_}), WD.PADB(0n, U32.to_nat({SZ_}))))\n"
            f"  +hn = FD.nat__le_trans(U32.to_nat({SZ_}), A.quad(WD.NWN(U32.to_nat({SZ_}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ_})), FD.spec_common__pow2({DO}), hl0))\n"
-           f"  EM.obD({DO}, {OUT}, {SZ_}, CI.pfx(CI.MW{{wR}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, h31, hn)\n\n"
+           # the tree's perfection from K.pfC at PUTC(wR, .., 0, 0n, 0n), restated at OUTC(wR) (which is that
+           # term by definition) in a motive over the tree: a conversion between two spellings under
+           # array__perfect would unfold array__perfect over the whole tree first
+           f"  +pfo = FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, {DO}, z) == True{{}} : Bool}}, K.PUTC(wR, {DO}, VC.ZT({DO}), 0, 0n, 0n), {OUT}, {{==}},\n"
+           f"    K.pfC(wR, {DO}, VC.ZT({DO}), 0, 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)))\n"
+           f"  EM.obD({DO}, {OUT}, {SZ_}, pfo, hd, h31, hn)\n\n"
            f"def obM(+m: CI.MW, +hok: {{CIo.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
            f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 29n, {{==}})\n")
     a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')

@@ -21,7 +21,7 @@ def vec_uint256_513_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_513_r.v
 def vec_uint256_513_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_513_r.v513_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 16416)) : B.Buf & Bool}:
   vec_uint256_513_okb(buf, off, U32.is_eq(len, 16416))
 def vec_uint256_513_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(GS.vec_uint256_513())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint256_513(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.vec_uint256_513()), VRF.SZ(GS.vec_uint256_513()), bs, Codec.parts(v, GS.vec_uint256_513()), DS.facts(v, GS.vec_uint256_513(), {==}), VRF.some_sz(SS.fixed_size(GS.vec_uint256_513()), {==}), e, hn)
+  VRF.lo(SS.fixed_size(GS.vec_uint256_513()), VRF.SZ(GS.vec_uint256_513()), bs, Codec.parts(v, GS.vec_uint256_513()), DS.facts(v, GS.vec_uint256_513(), {==}), VRF.some_szs(GS.vec_uint256_513(), {==}), e, hn)
 def vec_uint256_513_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(GS.vec_uint256_513())) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint256_513(), bs):
   v => e => vec_uint256_513_rj(bs, hn, v, e)
 

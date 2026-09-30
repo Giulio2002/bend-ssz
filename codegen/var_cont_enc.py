@@ -3119,6 +3119,11 @@ def putx_core(text, bigs):
                            f'SZ{v}, {FORM(v)}, eSZ{v}, {prev})')
                 cur = cur.replace(f'SZ{v}', FORM(v))
                 prev = prev + 'L'
+            # ENCCs at the literals to ENCC by name, in the motive: BYC states it as ENCC(..), and a
+            # conversion that meets ENCCs(.., literals) against it would unfold the SPL around them first
+            out.append(f'  +{prev}C = FD.logic__subst(+List<U32>, ze => {{UA.BYT(PUTC{margs}) == {spl.replace(", zz)", ", VCN.AP(ze, " + ap[1] + "))", 1)} : +List<U32>}}, '
+                       f'{cur}, ENCC({oas}), {{==}}, {prev})')
+            prev = prev + 'C'
             ren['byf'] = prev
             putc_lemmas.append((mcall, margs, ap[0], oas, vs))
             continue

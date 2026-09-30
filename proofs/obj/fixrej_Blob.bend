@@ -21,7 +21,7 @@ def Blob_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBlob_r.b131072_ok_len(b, b
 def Blob_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBlob_r.b131072_ok(buf, off, len) == (buf, U32.is_eq(len, 131072)) : B.Buf & Bool}:
   Blob_okb(buf, off, U32.is_eq(len, 131072))
 def Blob_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.Blob())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Blob(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.Blob()), VRF.SZ(Spec.Blob()), bs, Codec.parts(v, Spec.Blob()), DS.facts(v, Spec.Blob(), {==}), VRF.some_sz(SS.fixed_size(Spec.Blob()), {==}), e, hn)
+  VRF.lo(SS.fixed_size(Spec.Blob()), VRF.SZ(Spec.Blob()), bs, Codec.parts(v, Spec.Blob()), DS.facts(v, Spec.Blob(), {==}), VRF.some_szs(Spec.Blob(), {==}), e, hn)
 def Blob_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.Blob())) == False{} : Bool}) -> Decoding.outside_image(Spec.Blob(), bs):
   v => e => Blob_rj(bs, hn, v, e)
 

@@ -146,7 +146,9 @@ def obC(+wR: K.KW, +h: {CIo.OKTW(wR) == True{} : Bool}, +k: Nat, +ek: {k == 29n 
   +hq = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(Z.SZS(wR)), z) == True{} : Bool}, Nat.add(U32.to_nat(Z.SZS(wR)), WD.PADB(0n, U32.to_nat(Z.SZS(wR)))), A.quad(WD.NWN(U32.to_nat(Z.SZS(wR)))), ep,
     FD.nat__le_add_right(U32.to_nat(Z.SZS(wR)), WD.PADB(0n, U32.to_nat(Z.SZS(wR)))))
   +hn = FD.nat__le_trans(U32.to_nat(Z.SZS(wR)), A.quad(WD.NWN(U32.to_nat(Z.SZS(wR)))), A.quad(FD.spec_common__pow2(VL.DO(Z.SZS(wR)))), hq, C.q4(WD.NWN(U32.to_nat(Z.SZS(wR))), FD.spec_common__pow2(VL.DO(Z.SZS(wR))), hl0))
-  EM.obD(VL.DO(Z.SZS(wR)), EN.OUTC(wR), Z.SZS(wR), CI.pfx(CI.MW{wR}, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(Z.SZS(wR)), 0)), hd, h31, hn)
+  +pfo = FD.logic__subst(FD.array__Tree<U32>, z => {FD.array__perfect(U32, VL.DO(Z.SZS(wR)), z) == True{} : Bool}, K.PUTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n), EN.OUTC(wR), {==},
+    K.pfC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n, FD.array__trep_perfect(U32, VL.DO(Z.SZS(wR)), 0)))
+  EM.obD(VL.DO(Z.SZS(wR)), EN.OUTC(wR), Z.SZS(wR), pfo, hd, h31, hn)
 
 def obM(+m: CI.MW, +hok: {CIo.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
   match m:

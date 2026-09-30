@@ -98,7 +98,11 @@ def cp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +pf: {
     +hbw: {{Nat.is_le(Nat.add({wW}n, Nat.add(0n, i)), VB.pw(d)) == True{{}} : Bool}})
     -> {{T.{f["wp"]}_read(VF.BF(t, n), U32.add(off, 0), {ws}) == (VF.BF(t, n), {WO}) : B.Buf & O.Words}}:
   %cpeq_{p}(t, i) : {{T.{f["wp"]}_read(VF.BF(t, n), U32.add(off, 0), {ws}) == (VF.BF(t, n), O.Words{{FD.array__thaw(U32, _), {ws}}}) : B.Buf & O.Words}}
-  VY.copy_into_any(d, t, n, U32.add(off, 0), i, {ws}, {dz}n, {kw}n, pf, hd31, {{==}}, h3, e0, hbw, {{==}}, {{==}}, {{==}})
+  # hbw with the word count named (VC.NW({ws}), as copy_into_any states it): each step is a motive
+  # over a variable, so no conversion evaluates {wW} in unary
+  +hbi = FD.logic__subst(Nat, w => {{Nat.is_le(Nat.add({wW}n, w), VB.pw(d)) == True{{}} : Bool}}, Nat.add(0n, i), i, {{==}}, hbw)
+  +hbN = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, i), VB.pw(d)) == True{{}} : Bool}}, {wW}n, VC.NW({ws}), {{==}}, hbi)
+  VY.copy_into_any(d, t, n, U32.add(off, 0), i, {ws}, {dz}n, {kw}n, pf, hd31, {{==}}, h3, e0, hbN, {{==}}, {{==}}, {{==}})
 
 # The {p} reader at off = 4 i: its packed words are a copy of words i .., its record the next words.
 def hq4(+k: Nat, +i: Nat, +d: Nat, +W: Nat, +h: {{Nat.is_le(Nat.add(W, Nat.add(k, i)), VB.pw(d)) == True{{}} : Bool}})
@@ -121,6 +125,36 @@ def rd_comp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +
     {{T.{p}_rd1(off, {f["size"]}, {WO}, _) == {RHS} : {TY}}}
   {{==}}
 ''']
+
+
+def rd_comp_shift(f, k):
+    """rd_comp_<p> read at k + i restates its record's words at Nat.add(k + w, i) (OBJw's spelling)
+    instead of Nat.add(w, Nat.add(k, i)): one motive per word over shiftk at a symbolic word index, so no
+    conversion compares the two spellings by walking the word index in unary. [shiftk, the lemma]."""
+    p, wW, dz, ws, rft = f['p'], f['wW'], f['wdz'], f['wsize'], f['rft']
+    WO = f'O.Words{{FD.array__thaw(U32, VB.mone({wW}n, Nat.add({k}n, i), 0n, {dz}n, VC.ZT({dz}n), t)), {ws}}}'
+
+    def ty(m, hole=None):
+        words = [f'VB.slot(t, Nat.add({k + wW + j}n, i))' if j < m else f'VB.slot(t, Nat.add({wW + j}n, Nat.add({k}n, i)))'
+                 for j in range(rft.W)]
+        if hole is not None:
+            words[hole] = 'VB.slot(t, z)'
+        return f'{{T.{p}_read(VF.BF(t, n), off, {f["size"]}) == (VF.BF(t, n), T.{p}{{{WO}, {rft.obj(words)}}}) : B.Buf & T.{p}}}'
+    body = 'h'
+    for j in range(rft.W):
+        body = (f'FD.logic__subst(Nat, z => {ty(j, j)}, Nat.add({wW + j}n, Nat.add({k}n, i)), Nat.add({k + wW + j}n, i), '
+                f'shiftk({k}n, {wW + j}n, i), {body})')
+    shk = """# at a symbolic K: Nat.add(K, a + i) == Nat.add(a + K, i); instantiated at literals it converts
+# without walking K in unary
+def shiftk(+a: Nat, +K: Nat, +i: Nat) -> {Nat.add(K, Nat.add(a, i)) == Nat.add(Nat.add(a, K), i) : Nat}:
+  Equal.trans(Nat, Nat.add(K, Nat.add(a, i)), Nat.add(Nat.add(K, a), i), Nat.add(Nat.add(a, K), i),
+    Equal.sym(Nat, Nat.add(Nat.add(K, a), i), Nat.add(K, Nat.add(a, i)), FD.nat__add_assoc(K, a, i)),
+    Equal.cong(Nat, Nat, z => Nat.add(z, i), Nat.add(K, a), Nat.add(a, K), FD.nat__add_comm(K, a)))
+"""
+    lem = (f"# rd_comp_{p} at {k} + i, its record's words restated at {k + wW} + i .. (OBJw's spelling)\n"
+           f'def rdc_shift_{p}_{k}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat,\n'
+           f'    +h: {ty(0)})\n    -> {ty(rft.W)}:\n  {body}\n')
+    return shk, lem
 
 
 # ---- the spec side with symbolic word segments ----------------------------------------------------
@@ -274,6 +308,12 @@ def VALw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> S.Value: XVw(t, i, {VY_
 ''']
     w = L.append
     # the header window as the concatenated segments
+    w('# Order.left_below_sum at a symbolic k, with the sum\'s literal part named 1 + k; instantiated at')
+    w('# k = H - 1 it converts to H + i without walking H - 1 in unary')
+    w('def lbs1(+k: Nat, +i: Nat) -> {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), Nat.add(Nat.add(1n, k), i)) == True{} : Bool}:')
+    w('  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), z) == True{} : Bool}, Nat.add(k, Nat.add(1n, Nat.add(0n, i))), '
+      'Nat.add(Nat.add(1n, k), i), FD.nat__add_succ(k, i), Order.left_below_sum(k, Nat.add(1n, Nat.add(0n, i))))')
+    w('')
     w(f'def winH(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +len: U32, {VBY.PF}, +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})')
     w(f'    -> {{VS.wtake({H}n, VB.wdr(i, {s})) == VZ.cat({SEGSs}) : List<&2, U32>}}:')
     w(f'  +hsl = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({H}n, i), z) == True{{}} : Bool}}, VB.pw(d), VB.len({s}), Equal.sym(Nat, VB.len({s}), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), hHi(d, i, len, hw, ha))')
@@ -283,8 +323,12 @@ def VALw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> S.Value: XVw(t, i, {VY_
         return f'VF.WIN({m}, {p}, {s})'
 
     def hpre(W, k):
+        # the first word (W = 1 at k = 0) through lbs1 at a symbolic bound: left_below_sum at the
+        # literal H - 1 would be compared with H + i by walking H - 1 in unary
+        lbs = (f'lbs1({H - 1}n, i)' if (W, k) == (1, 0) else
+               f'Order.left_below_sum({H - W - k}n, Nat.add({W}n, Nat.add({k}n, i)))')
         return (f'FD.nat__le_trans(Nat.add({W}n, Nat.add({k}n, i)), Nat.add({H}n, i), VB.len({s}), '
-                f'Order.left_below_sum({H - W - k}n, Nat.add({W}n, Nat.add({k}n, i))), hsl)')
+                f'{lbs}, hsl)')
     R, pos_ = H, 0
     pre = lambda t: t  # noqa: E731
     RHS = f'VZ.cat({SEGSs})'

@@ -322,9 +322,14 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
   %Equal.sym(U32, SPOw(t, i), {FS}, epo) : {{(VF.BF(t, n), _) == (VF.BF(t, n), {FS}) : B.Buf & U32}}
   {{==}}
 ''')
+    shk_done = False
     for f in x.fields:
         if f['kind'] == 'comp':
             L.extend(VBB.rd_comp_lemma(f))
+            if f['k'] != 0:
+                shk, lem = VBB.rd_comp_shift(f, f['k'])
+                L.extend(([] if shk_done else [shk + '\n']) + [lem + '\n'])
+                shk_done = True
     leaves, OBJ = read_plan(x)
     RHS = '(VF.BF(t, n), OBJw(t, i, len))'
     TY = f'B.Buf & {Tn}'
@@ -353,7 +358,10 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
             w(f'      VT.rd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {ecf(f["k"], f["c"])}, hd, pf, {hb(f["W"], f["k"])})) :')
         elif kind == 'comp':
             w(f'  %Equal.sym(B.Buf & T.{f["p"]}, {call}, (VF.BF(t, n), {val}),')
-            w(f'      rd_comp_{f["p"]}(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {ecf(f["k"], f["c"])}, hd, pf, {hb(f["W"], f["k"])})) :')
+            rc = f'rd_comp_{f["p"]}(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {ecf(f["k"], f["c"])}, hd, pf, {hb(f["W"], f["k"])})'
+            if f['k'] != 0:
+                rc = f'rdc_shift_{f["p"]}_{f["k"]}(d, t, n, U32.add(off, {f["c"]}), i, {rc})'
+            w(f'      {rc}) :')
         elif kind == 'words':
             e = ecf(f['k'], f['c'])
             kw = VBY.kfit(31 + f['size'])
