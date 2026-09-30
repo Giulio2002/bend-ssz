@@ -90,9 +90,92 @@ def pz_lemmas(j, r):
     return out
 
 
+BOOL_LIB = r'''
+# ---- bytes of a masked word, and boolean bytes (vec_bool) ----
+
+def wand_step(+p: Nat, +x: Bool, +y: Bool, +z: Bool, +at: Word(p), +bt: Word(p), +ct: Word(p), +ih: {Word.and(p, Word.and(p, at, bt), ct) == Word.and(p, at, Word.and(p, bt, ct)) : Word(p)})
+    -> {WCon{Bool.and(Bool.and(x, y), z), Word.and(p, Word.and(p, at, bt), ct)} == WCon{Bool.and(x, Bool.and(y, z)), Word.and(p, at, Word.and(p, bt, ct))} : Word(1n+p)}:
+  match x:
+    case True{}: Equal.cong(Word(p), Word(1n+p), w => WCon{Bool.and(y, z), w}, Word.and(p, Word.and(p, at, bt), ct), Word.and(p, at, Word.and(p, bt, ct)), ih)
+    case False{}: Equal.cong(Word(p), Word(1n+p), w => WCon{False{}, w}, Word.and(p, Word.and(p, at, bt), ct), Word.and(p, at, Word.and(p, bt, ct)), ih)
+
+def wand_assoc(+n: Nat, +a: Word(n), +b: Word(n), +c: Word(n)) -> {Word.and(n, Word.and(n, a, b), c) == Word.and(n, a, Word.and(n, b, c)) : Word(n)}:
+  match n a b c:
+    case 0n WNil{} WNil{} WNil{}: {==}
+    case 1n+p WCon{x, at} WCon{y, bt} WCon{z, ct}: wand_step(p, x, y, z, at, bt, ct, wand_assoc(p, at, bt, ct))
+
+def and_assoc(+a: U32, +b: U32, +c: U32) -> {U32.and(U32.and(a, b), c) == U32.and(a, U32.and(b, c)) : U32}:
+  match a b c:
+    case U32{x} U32{y} U32{z}: Equal.cong(Word(32n), U32, w => U32{w}, Word.and(32n, Word.and(32n, x, y), z), Word.and(32n, x, Word.and(32n, y, z)), wand_assoc(32n, x, y, z))
+
+def pad_and(+p: Nat, +x: Word(p), +y: Word(p)) -> {Word.shr.pad(p, Word.and(p, x, y)) == Word.and(1n+p, Word.shr.pad(p, x), Word.shr.pad(p, y)) : Word(1n+p)}:
+  match p x y:
+    case 0n WNil{} WNil{}: {==}
+    case 1n+q WCon{xb, xt} WCon{yb, yt}:
+      Equal.cong(Word(1n+q), Word(2n+q), w => WCon{Bool.and(xb, yb), w}, Word.shr.pad(q, Word.and(q, xt, yt)), Word.and(1n+q, Word.shr.pad(q, xt), Word.shr.pad(q, yt)), pad_and(q, xt, yt))
+
+def shr_and(+a: U32, +b: U32) -> {U32.shr(U32.and(a, b)) == U32.and(U32.shr(a), U32.shr(b)) : U32}:
+  match a b:
+    case U32{WCon{xb, xt}} U32{WCon{yb, yt}}:
+      Equal.cong(Word(32n), U32, w => U32{w}, Word.shr.pad(31n, Word.and(31n, xt, yt)), Word.and(32n, Word.shr.pad(31n, xt), Word.shr.pad(31n, yt)), pad_and(31n, xt, yt))
+
+def shrn_and(+k: Nat, +a: U32, +b: U32) -> {U32.shrn(U32.and(a, b), k) == U32.and(U32.shrn(a, k), U32.shrn(b, k)) : U32}:
+  match k:
+    case 0n: {==}
+    case 1n+p:
+      Equal.trans(U32, U32.shr(U32.shrn(U32.and(a, b), p)), U32.shr(U32.and(U32.shrn(a, p), U32.shrn(b, p))), U32.and(U32.shr(U32.shrn(a, p)), U32.shr(U32.shrn(b, p))),
+        Equal.cong(U32, U32, z => U32.shr(z), U32.shrn(U32.and(a, b), p), U32.and(U32.shrn(a, p), U32.shrn(b, p)), shrn_and(p, a, b)),
+        shr_and(U32.shrn(a, p), U32.shrn(b, p)))
+
+# byte k/8 of a masked word: the mask's byte (a literal) is applied to the word's byte
+def bsel(+k: Nat, +x: U32, +m: U32) -> {U32.and(U32.shrn(U32.and(x, m), k), 255) == U32.and(U32.shrn(x, k), U32.and(U32.shrn(m, k), 255)) : U32}:
+  Equal.trans(U32, U32.and(U32.shrn(U32.and(x, m), k), 255), U32.and(U32.and(U32.shrn(x, k), U32.shrn(m, k)), 255), U32.and(U32.shrn(x, k), U32.and(U32.shrn(m, k), 255)),
+    Equal.cong(U32, U32, z => U32.and(z, 255), U32.shrn(U32.and(x, m), k), U32.and(U32.shrn(x, k), U32.shrn(m, k)), shrn_and(k, x, m)),
+    and_assoc(U32.shrn(x, k), U32.shrn(m, k), 255))
+
+# a byte at most 1 is below 2
+def lhE(+a0: Bool, +a1: Bool, +h: {Cmp.is_le(Word.cmp.fin(a0, True{}, Word.cmp.fin(a1, False{}, EQ{}))) == True{} : Bool})
+    -> {Cmp.is_lt(Word.cmp.fin(a0, False{}, Word.cmp.fin(a1, True{}, EQ{}))) == True{} : Bool}:
+  match a1:
+    case True{}: Empty.absurd({Cmp.is_lt(Word.cmp.fin(a0, False{}, Word.cmp.fin(True{}, True{}, EQ{}))) == True{} : Bool}, FD.logic__false_true(h))
+    case False{}: {==}
+
+def lh(+a0: Bool, +a1: Bool, +c: Cmp, +h: {Cmp.is_le(Word.cmp.fin(a0, True{}, Word.cmp.fin(a1, False{}, c))) == True{} : Bool})
+    -> {Cmp.is_lt(Word.cmp.fin(a0, False{}, Word.cmp.fin(a1, True{}, c))) == True{} : Bool}:
+  match c:
+    case LT{}: {==}
+    case EQ{}: lhE(a0, a1, h)
+    case GT{}: Empty.absurd({Cmp.is_lt(Word.cmp.fin(a0, False{}, Word.cmp.fin(a1, True{}, GT{}))) == True{} : Bool}, FD.logic__false_true(h))
+
+def le1_lt2(+x: U32, +h: {U32.is_le(x, 1) == True{} : Bool}) -> {U32.is_lt(x, 2) == True{} : Bool}:
+  match x:
+    case U32{WCon{a0, WCon{a1, t}}}: lh(a0, a1, Word.cmp(30n, t, Word.zero(30n)), h)
+
+# bytes each at most 1 (the decoder's check, SPK.ble) are each below 2 (the representation's bscope)
+def band_l(+c: Bool, +q: Bool, +h: {Bool.and(c, q) == True{} : Bool}) -> {c == True{} : Bool}:
+  match c:
+    case True{}: {==}
+    case False{}: Empty.absurd({False{} == True{} : Bool}, FD.logic__false_true(h))
+
+def band_r(+c: Bool, +q: Bool, +h: {Bool.and(c, q) == True{} : Bool}) -> {q == True{} : Bool}:
+  match c:
+    case True{}: h
+    case False{}: Empty.absurd({q == True{} : Bool}, FD.logic__false_true(h))
+
+def bsb(+xs: +List<U32>, +h: {SPK.ble(xs) == True{} : Bool}) -> {PBL.bscope(List.length(&2, U32, xs), xs) == True{} : Bool}:
+  match xs:
+    case Nil{}: {==}
+    case Con{+x, +t}:
+      %Equal.sym(Bool, U32.is_lt(x, 2), True{}, le1_lt2(x, band_l(U32.is_le(x, 1), SPK.ble(t), h))) :
+        {Bool.and(_, PBL.bscope(List.length(&2, U32, t), t)) == True{} : Bool}
+      bsb(t, band_r(U32.is_le(x, 1), SPK.ble(t), h))
+'''
+
+
 def mask_lib(ks):
     out = ['import Base', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
-           'import ../proofs/compact/found.bend as FD', '', HEADER,
+           'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/sub_pack.bend as SPK',
+           'import ../proofs/obj/packed_bytes_light.bend as PBL', '', HEADER,
            '# Masked words in clean form: cf<k>(x) keeps the low k bits of x (opaque) and has its high bits',
            '# literally zero; mk<k>(x) is the decoder\'s mask U32.and(x, 2^k - 1) in that form.', '']
     for i in range(32):
@@ -124,6 +207,7 @@ def wz(+n: Nat, +w: Word(n)) -> {Word.and(n, w, Word.zero(n)) == Word.zero(n) : 
         out.append(f'# the low {k} bits of x as they are, the rest zero\ndef cw{k}(+x: U32) -> U32: U32{{{raw}}}\n')
     for j, r in PADS:
         out += pz_lemmas(j, r)
+    out.append(BOOL_LIB)
     return '\n'.join(out)
 
 
@@ -219,8 +303,9 @@ def build(name, lf, api):
     why = 'the (i)/(iv) bridges take ' + ', '.join(extra) + ' (decoded-object laws pending)'
     eh = sps[5][2] if len(binders) == 6 else None
     pw = pad_word(eh) if eh else None
-    if eh and not pw:
-        return None        # an eh that is not a bit vector's padding check (vec_bool): not yet
+    boolv = bool(eh and not pw and re.match(r'\{\w+\.lf\(', eh))
+    if eh and not pw and not boolv:
+        return None        # an eh this module does not read
     mw = masked(obj0)
     padx = None
     if pw:
@@ -230,7 +315,7 @@ def build(name, lf, api):
             return None, why + '; the padded word is not in the decoder\'s object'
         mw = [m for m in mw if obj0[m[0]:m[1]] != padx]
     large = K > 1500
-    if not mw and not pw and not large:
+    if not mw and not pw and not large and not boolv:
         return None        # unmasked: e2e_compose.py's own path
     if large and (mw or pw):
         return None, why + '; large and masked'
@@ -317,6 +402,12 @@ def build(name, lf, api):
         PX, XX = ctx.lift(dm, padx), ctx.lift(dm, x)
     ctx.alias(ROOT / 'proofs/compact/found.bend')
     ctx.alias(ROOT / 'spec/primitives.bend')
+    if boolv:
+        PBLA = ctx.alias(ROOT / 'proofs/obj/packed_bytes_light.bend')
+        WOA = ctx.alias(ROOT / 'proofs/obj/words_obj_light.bend')
+        SPKA = ctx.alias(ROOT / 'proofs/obj/sub_pack.bend')
+        LIST = W.split_top(EH[EH.index('.lf(') + 4:EH.rindex(') == True{} : Bool}')])[0].strip()
+        mwl = masked(OBJ)
     base = api.LSynth
 
     class Syn(base):
@@ -399,6 +490,8 @@ def build(name, lf, api):
     else:
         FDA = re.search(r'import \.\./proofs/compact/found\.bend as (\w+)', text).group(1)
         tail = eh_tail(tail, name, DB, DEC, MT, OT, OBJ1, EH, FDA)
+    if boolv:
+        head, tail = bool_premise(head, tail, name, OBJ, OBJ1, EH, LIST, mwl, PBLA, WOA, SPKA, K)
     text = head + eqdefs + '\n' + tail
     if kind == 'accept':   # the accept bridge takes the object as a relevant argument
         text = text.replace('def acc(+bs: +List<U32>, +n: U32, -o:', 'def acc(+bs: +List<U32>, +n: U32, +o:')
@@ -428,3 +521,71 @@ def eh_tail(tail, name, DB, DEC, MT, OT, OBJ1, EH, FDX):
                 f'    case False{{}}:\n      {fbody}\n')
         tail = tail[:m.start()] + new1 + '\n' + new2 + tail[m.end():]
     return tail
+
+
+def leaves(arr):
+    """the ALeaf contents of an array literal, in order"""
+    out, i = [], 0
+    while True:
+        i = arr.find('ALeaf{', i)
+        if i < 0:
+            return out
+        d, j = 0, i + 5
+        while True:
+            if arr[j] == '{':
+                d += 1
+            elif arr[j] == '}':
+                d -= 1
+                if d == 0:
+                    break
+            j += 1
+        out.append(arr[i + 6:j])
+        i = j
+
+
+def bool_premise(head, tail, name, OBJ, OBJ1, EH, LIST, mwl, PBLA, WOA, SPKA, K):
+    """vec_bool: the rep premise's third part (every byte of the view below 2) from the decoder's check eh (every
+    byte at most 1): the view of the clean object is the checked byte list (the masked word's bytes by bsel), then
+    MK.bsb. The rep premise takes eh; its calls pass it."""
+    mw = mwl[0] if mwl else None
+    m = re.match(r'(\w+)\.Words\{(.*), (\d+)\}$', OBJ, re.S)
+    ws = leaves(m.group(2))
+
+    def bytes_of(wv):
+        out = []
+        for w in wv:
+            out += [f'U32.and({w}, 255)', f'U32.and(U32.shrn({w}, 8n), 255)', f'U32.and(U32.shrn({w}, 16n), 255)', f'U32.shrn({w}, 24n)']
+        return out[:K]
+    lines = []
+    if mw:
+        _, _, x, k = mw
+        MSK = 2 ** k - 1
+        w_i = [i for i, w in enumerate(ws) if w == f'U32.and({x}, {MSK})'][0]
+        cfw = f'MK.cf{k}({x})'
+        a = OBJ1.rindex(cfw)
+        lines.append(f'  %MK.mk{k}({x}) :\n    {{{WOA}.wview({OBJ1[:a]}_{OBJ1[a + len(cfw):]}) == {LIST} : +List<U32>}}')
+        cur = bytes_of(ws)
+        for i in range(k // 8):
+            pos = 4 * w_i + i
+            rhs = f'U32.and(U32.shrn({x}, {8 * i}n), U32.and(U32.shrn({MSK}, {8 * i}n), 255))'
+            mot = cur[:pos] + ['_'] + cur[pos + 1:]
+            lhs = f'U32.and(U32.shrn(U32.and({x}, {MSK}), {8 * i}n), 255)'
+            lines.append(f'  %Equal.sym(U32, {lhs}, {rhs}, MK.bsel({8 * i}n, {x}, {MSK})) :\n    {{[{", ".join(mot)}] == {LIST} : +List<U32>}}')
+            cur[pos] = rhs
+    lines.append('  {==}')
+    vb = (f'# the view of the clean object is the byte list the decoder checked\n'
+          f'def vbv(+bs: +List<U32>) -> {{{WOA}.wview({OBJ1}) == {LIST} : +List<U32>}}:\n' + '\n'.join(lines) + '\n\n'
+          f'# every byte of the view is below 2: the decoder checked every byte is at most 1\n'
+          f'def bscp(+bs: +List<U32>, +eh: {EH}) -> {{{PBLA}.bscope(U32.to_nat({WOA}.len({OBJ1})), {WOA}.wview({OBJ1})) == True{{}} : Bool}}:\n'
+          f'  %Equal.sym(+List<U32>, {WOA}.wview({OBJ1}), {LIST}, vbv(bs)) :\n'
+          f'    {{{PBLA}.bscope(U32.to_nat({WOA}.len({OBJ1})), _) == True{{}} : Bool}}\n'
+          f'  MK.bsb({LIST}, {SPKA}.lf_ble({LIST}, True{{}}, eh))\n\n')
+    # the rep premise defs: take eh, and their last component (bscope) is bscp
+    for pm in re.finditer(r'^def (p[er]_rep)\(\+bs: \+List<U32>\) -> (.*?):\n  (.*)$', head, re.M):
+        nm, ty, term = pm.groups()
+        k2 = term.rindex('{==}')
+        new = f'def {nm}(+bs: +List<U32>, +eh: {EH}) -> {ty}:\n  {term[:k2]}bscp(bs, eh){term[k2 + 4:]}'
+        head = head.replace(pm.group(0), new)
+        tail = tail.replace(f'{nm}(bs)', f'{nm}(bs, eh)')
+    i = head.index('\ndef ') + 1
+    return head[:i] + vb + head[i:], tail
