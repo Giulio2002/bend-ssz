@@ -150,3 +150,22 @@ def fit_roomy(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +want: U32, +pf: {F.arra
   %Equal.sym(Bool, U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)), True{}, hroom) :
     {O.fit_pick(_, n, want, F.u32__pow2u(d), F.array__thaw(U32, t)) == O.Words{F.array__thaw(U32, t), n} : O.Words}
   {==}
+
+# ---- disjoint elements ----
+# a != b gives b != a
+def neq_sym(+a: Nat, +b: Nat, +h: {Nat.is_eq(a, b) == False{} : Bool}) -> {Nat.is_eq(b, a) == False{} : Bool}:
+  match a b:
+    case 0n 0n: h
+    case 0n 1n+q: {==}
+    case 1n+p 0n: {==}
+    case 1n+p 1n+q: neq_sym(p, q, h)
+
+# word a of an element at q (W words) and word b of an element at r that starts at or after q + W differ
+def ne_lo(+q: Nat, +a: Nat, +W: Nat, +r: Nat, +b: Nat, +h: {Nat.is_le(Nat.add(q, W), r) == True{} : Bool}, +ha: {Nat.is_lt(a, W) == True{} : Bool})
+    -> {Nat.is_eq(Nat.add(q, a), Nat.add(r, b)) == False{} : Bool}:
+  F.nat__is_eq_lt(Nat.add(q, a), Nat.add(r, b), F.nat__lt_le_trans(Nat.add(q, a), r, Nat.add(r, b), bound(q, a, W, r, h, ha), F.nat__le_add_right(r, b)))
+
+# the same when the other element ends at or before q
+def ne_hi(+q: Nat, +a: Nat, +W: Nat, +r: Nat, +b: Nat, +h: {Nat.is_le(Nat.add(r, W), q) == True{} : Bool}, +hb: {Nat.is_lt(b, W) == True{} : Bool})
+    -> {Nat.is_eq(Nat.add(q, a), Nat.add(r, b)) == False{} : Bool}:
+  neq_sym(Nat.add(r, b), Nat.add(q, a), ne_lo(r, b, W, q, a, h, hb))
