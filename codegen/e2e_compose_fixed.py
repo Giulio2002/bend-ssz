@@ -312,13 +312,16 @@ def build_tree(name, lf, api):
         return None, 'a tree-form decoder object this module does not read'
     b = N.bit_length() - 1
     c = b - 5
-    if N > 17000:
+    if N > 2 ** 17:
         return None, f'the decoded object\'s rep premise over {N} bytes overflows the checker\'s stack'
     eps, ec = api.sig(em, f'{name}_e2e_encode')
     rps, rc = api.sig(rm, f'{name}_e2e_root')
-    if [x for _, x, _ in eps] != ['o', 'rep'] or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
+    if [x for _, x, _ in eps] not in (['o', 'rep'], ['o', 'rep', 'hc']) or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
         return None
-    k = int(re.search(r'rep_v(\d+)\(o', eps[1][2]).group(1))
+    mk_ = re.search(r'rep_v(\d+)\(o', eps[1][2])
+    k = int(mk_.group(1)) if mk_ else None     # None: a byte vector (rep_bv)
+    if k is None and 'rep_bv(o' not in eps[1][2]:
+        return None
     obj0 = ms.group(2).replace('segt(dd, ', f'segt({D}n, ').replace('pow2(dd)', f'pow2({D}n)')
     W.PREFER.clear()
     W.PREFER[dm.path] = 'DB'
@@ -356,6 +359,8 @@ def build_tree(name, lf, api):
     OBJ = ctx.lift(dm, obj0)
     EY = ctx.alias(E2E / 'e2e_bytes.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    if k is None:
+        SHA, XWA = ctx.alias(ROOT / 'proofs/obj/schema_shapes.bend'), ctx.alias(E2E / 'e2e_fixdw.bend')
     ctx.alias(ROOT / 'spec/primitives.bend')
     base_depth, base_syn, base_big = api.arr_depth, api.LSynth, W.BIG
 
@@ -400,12 +405,20 @@ def build_tree(name, lf, api):
     S_ = f'{ACA}.segt({D}n, 0n, {LA}.wlp(bs))'
     T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
     lsyn = W.Synth(ctx)
-    lenpf = lsyn.big_lfact(N, OBJ, k) if k == 32 or (k in (8, 16) and N >= SYM) else '{==}'     # the count, in halves (e2e_witness's big fact)
+    lenpf = lsyn.big_lfact(N, OBJ, k) if k is not None and (k == 32 or (k in (8, 16) and N >= SYM)) else '{==}'     # the count, in halves (e2e_witness's big fact)
     lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()))
     # the length as 2^b (a U32 the checker computes bitwise) from SYM bytes: its Nat is never compared in unary
     NW = f'{FDA}.u32__pow2u({b}n)' if N >= SYM else f'{N}'
+    if k is None:
+        SCH = re.search(r'rep_bv\(o, (.*)\)$', ctx.lift(em, eps[1][2])).group(1)
+        nk = f'{XWA}.nk({b}n, {{==}}, {NW}, {{==}}, {SHA}.ByteVector_length({SCH}), {{==}})'
+        lenpf = (f'{FDA}.logic__subst(Nat, z => {{Nat.is_eq(U32.to_nat({NW}), z) == True{{}} : Bool}}, U32.to_nat({NW}), {SHA}.ByteVector_length({SCH}), {nk}, '
+                 f'{FDA}.nat__is_eq_refl(U32.to_nat({NW})))')
+        tail = lenpf
+    else:
+        tail = f'({lenpf}, {{==}})'
     term = (f'(({T}, ({D + 1}n, ({NW}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {NW}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
-            f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), ({lenpf}, {{==}}))')
+            f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), {tail})')
     SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
     lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()) if re.search(r'def \w+\(', v).group(0) not in text)
@@ -421,10 +434,21 @@ def build_tree(name, lf, api):
             f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
     m = re.search(r'^def pe_rep\(\+bs: \+List<U32>\) -> (.*?):\n  (.*)$', text, re.M)
     text = text.replace(m.group(0), f'def pe_rep(+bs: +List<U32>) -> {m.group(1)}:\n  {term}')
+    mh = re.search(r'^def pe_hc\(\+bs: \+List<U32>\) -> (.*?):\n  \{==\}$', text, re.M)
+    if mh:   # the storage depth 16 of the object: its tree, perfect by pft (the object equals the thawed tree)
+        TW = f'O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}}'
+        text = text.replace(mh.group(0), f'def pe_hc(+bs: +List<U32>) -> {mh.group(1)}:\n'
+                            f'  {FDA}.logic__subst(O.Words, z => {{E3.at_depth(z, {D + 1}n) == True{{}} : Bool}}, {TW}, {OBJ}, Equal.sym(O.Words, {OBJ}, {TW}, oeqt(bs)),\n'
+                            f'    {FDA}.logic__subst({FDA}.array__Tree<U32>, z => {{{FDA}.array__perfect(U32, {D + 1}n, z) == True{{}} : Bool}}, {T}, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})),\n'
+                            f'      Equal.sym({FDA}.array__Tree<U32>, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})), {T}, {FDA}.array__freeze_thaw(U32, {T})), pft(bs)))')
     i = text.index('\ndef ') + 1
     text = text[:i] + defs + text[i:]
     text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
     text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+    if k is None:   # the symbolic size lemmas of the discarded closed rep proof are unused
+        for mm in re.findall(r'^def (NB\d+\w*)\(\)', text, re.M)[::-1]:
+            if len(re.findall(r'\b' + mm + r'\b', text)) == 1:
+                text = re.sub(r'^def ' + mm + r'\(\).*?\n\n+', '', text, count=1, flags=re.M | re.S)
     return bigK(text, N).replace(api.HEADER, HEADER, 1), None
 
 

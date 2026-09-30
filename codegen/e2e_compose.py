@@ -195,6 +195,9 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     if name in DR.BUF_ARGS:
         BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
         xa = f', {BA}.capacity(n), {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
+    if name in DR.BUF_D:   # the object's arguments already start with the depth: the loaded buffer's (pf, hd, hn) follow
+        BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
+        xa = f', {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
     hv_ = ''
     if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly: the encode laws' own size premise hZ (docs/PREMISES.md section 3), not the API's NMAX
         hyps = hyps + [('+', 'h31', DR.HEAVY[name].replace('VB.', ctx.alias(ROOT / 'proofs/obj/vbuf.bend') + '.'))]

@@ -166,6 +166,7 @@ def attester_slashing(lf):
 
 BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+BUF_D = set()   # names whose object's arguments already start with the depth d: only (pf, hd, hn) follow
 BUF_ARGS = set()   # names whose p_* defs take the loaded buffer's depth facts (d, pf, hd, hn) after the object's arguments
 
 
@@ -389,9 +390,83 @@ def bit_standalone(name, lf):
     return container_file(name, lf, f'proofs/obj/var_bits_{name}.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, f'proofs/obj/var_bits_{name}.bend')
 
 
+def prog_list(name, codec, k):
+    """a progressive list of uint8/16/32/64/128/256 alone (k = 0..5: 2^k-byte elements, 0 for the byte list): rep_pl*, hM, hs.
+    uint8/uint16 are window readers (copy UCT.CT, no mask: DZ.ct_dec), the wider ones the tree reader O.Words{thaw(VL.MMg(t, n)), n}
+    (the mask keeps the tree: their length is a whole number of words, e2e_dpl.and3q)"""
+    win = k <= 1
+    repn = {0: 'rep_pl1', 1: 'rep_pl2', 2: 'rep_pl4', 3: 'rep_pl8', 4: 'rep_pl16', 5: 'rep_pl32'}[k]
+    obj = 'DC.OBJ(d, t, n)' if win else 'DC.OBJ(t, n)'
+    ps = ('+d: Nat, ' if win else '') + '+t: FD.array__Tree<U32>, +n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {' + ('DC.CHK(t, n)' if win else 'DC.CHK(n)') + ' == True{} : Bool}'
+    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
+               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbytes.bend as VY',
+               'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/words_obj_light.bend as WO', 'import ../proofs/obj/list_obj_light.bend as LO',
+               'import ../proofs/obj/prog_list_light.bend as PG', 'import ../proofs/obj/ulist_obj_light.bend as UL', 'import ../proofs/obj/packed_obj_light.bend as PK',
+               'import ../proofs/obj/packed_bytes_light.bend as PB', 'import ../proofs/obj/var_elems.bend as EL', 'import ../proofs/obj/generic_specs.bend as Spec',
+               f'import ../proofs/obj/{codec}.bend as DC', 'import ./e2e_blist.bend as BL', 'import ./e2e_dz.bend as DZ', 'import ./e2e_dpl.bend as DP']
+    hy = HY
+    cq = 'WN.CQ(n)' if win else 'DC.CQ(n)'
+    if win:
+        def sdk(K):
+            return f'DZ.ct_dec(d, t, 0, n, {K}n, {{==}}, {hy})'
+        wi = {'proglist_uint8': 'var_winp_u8', 'proglist_uint16': 'var_winp_u16'}[name]
+        imports.append(f'import ../proofs/obj/{wi}.bend as WN')
+        esc = 'WN.eLc(t, 0n, 0, n, hchk)' if k == 1 else None
+        pre = ''
+    else:
+        M = 'VB.mone(VC.NW(n), 0n, 0n, VLS.DZ(n), VC.ZT(VLS.DZ(n)), t)'
+        hrm = 'FD.u32alg__eq_true(U32.and(n, 3), 0, DP.and3q(n, DC.M(n), DC.eq(n, hchk)))'
+
+        def sdk(K):
+            return (f'FD.logic__subst(FD.array__Tree<U32>, z => BL.sdk(O.Words{{FD.array__thaw(U32, z), n}}, {K}n), VY.MK(n, VLS.DZ(n), {M}), {M}, '
+                    f'DZ.mk_id(n, VLS.DZ(n), {M}, {hrm}), DZ.dec_bytes(n, 0n, t, {K}n, {{==}}, {hy}))')
+        w = {2: 1, 3: 2, 4: 4, 5: 8}[k]
+        esc = f'Equal.trans(Nat, U32.to_nat(n), A.quad(DC.M(n)), DP.sc({k}n, {cq}), DC.eq(n, hchk), Equal.cong(Nat, Nat, z => A.quad(z), DC.M(n), {DP_DJ[w].replace("c", cq)}, DP.wd{w}(DC.CQ(n))))'
+    body = ''
+    if k == 0:
+        rep = sdk(32)
+    else:
+        E = {1: 'Nat.double(z)', 2: 'PK.e4(z)', 3: 'O.e8(z)', 4: 'PK.e16(z)', 5: 'PK.e32(z)'}[k]
+        cn = f'U32.to_nat(U32.shrn(n, {k}n))'
+        ln = (f'Equal.trans(Nat, U32.to_nat(n), {E.replace("z", cq)}, {E.replace("z", cn)}, {esc}, '
+              f'Equal.cong(Nat, Nat, z => {E}, {cq}, {cn}, Equal.sym(Nat, {cn}, {cq}, DP.cnt({k}n, n, {cq}, {esc}))))')
+        rep = f'({sdk(32)}, {ln})'
+    defs = (f'def p_rep({ps})\n    -> PG.{repn}({obj}, Spec.{name}()):\n  {rep}\n\n'
+            f'def p_hM({ps})\n    -> {{U32.is_le(WO.len({obj}), VB.NMAX()) == True{{}} : Bool}}:\n  hN\n\n'
+            f'def p_hs({ps})\n    -> BL.sdk({obj}, 31n):\n  {sdk(31)}\n')
+    return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
+
+
+def prog_bool(name, codec):
+    """the progressive list of bool alone (the window reader var_winp_bool): rep_plb (storage, and each byte below 2 from the decoder's
+    check ALLB over the window's bytes), hM, hs"""
+    BUF_D.add(name)
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
+               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_win.bend as UW',
+               'import ../proofs/obj/words_obj_light.bend as WO', 'import ../proofs/obj/prog_list_light.bend as PG', 'import ../proofs/obj/packed_bytes_light.bend as PBL',
+               'import ../proofs/obj/generic_specs.bend as Spec', f'import ../proofs/obj/{codec}.bend as DC', 'import ./e2e_blist.bend as BL', 'import ./e2e_dz.bend as DZ',
+               'import ./e2e_dpl.bend as DP']
+    obj = 'DC.OBJ(d, t, n)'
+    sc = (f'FD.logic__subst(+List<U32>, z => {{PBL.bscope(U32.to_nat(n), z) == True{{}} : Bool}}, BL.WX0(t, n), WO.wview({obj}), '
+          f'Equal.sym(+List<U32>, WO.wview({obj}), BL.WX0(t, n), BL.bviewY(d, t, 0, n, 0n, {{==}}, hn, pf, {HY})), '
+          f'FD.logic__subst(Nat, z => {{PBL.bscope(z, BL.WX0(t, n)) == True{{}} : Bool}}, List.length(&2, U32, BL.WX0(t, n)), U32.to_nat(n), UW.lenWX(d, t, 0n, U32.to_nat(n), pf, hn), '
+          f'DP.bsc(BL.WX0(t, n), hchk)))')
+    defs = (f'def p_rep({ps})\n    -> PG.rep_plb({obj}, Spec.{name}()):\n  (DZ.ct_dec(d, t, 0, n, 32n, {{==}}, {HY}), {sc})\n\n'
+            f'def p_hM({ps})\n    -> {{U32.is_le(WO.len({obj}), VB.NMAX()) == True{{}} : Bool}}:\n  hN\n\n'
+            f'def p_hs({ps})\n    -> BL.sdk({obj}, 31n):\n  DZ.ct_dec(d, t, 0, n, 31n, {{==}}, {HY})\n')
+    return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
+
+
+DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
+
+
 PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
+    'proglist_bool': lambda lf: prog_bool('proglist_bool', 'var_plist_proglist_bool_top'),
+    **{f'proglist_uint{8 << k}': (lambda lf, k=k: prog_list(f'proglist_uint{8 << k}', ('var_plist_proglist_uint8_top' if k == 0 else 'var_plist_proglist_uint16_top' if k == 1 else f'var_plist_proglist_uint{8 << k}'), k + 0)) for k in range(6)},
     'FuluExecutionRequests': lambda lf: execution_requests(lf),
     'FuluAttestation': lambda lf: bit_container('FuluAttestation', 'var_bitc_Attestation', lf),
     'FuluPendingAttestation': lambda lf: bit_container('FuluPendingAttestation', 'var_bitc_PendingAttestation', lf),
