@@ -73,3 +73,14 @@ def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: S.S
   (sdl(d, t, x, off, len, 32n, {==}, hchk),
     FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l2048_Eth1Data(W.OBJw(d, t, x, off, len))), z) == True{} : Bool}, U32.to_nat(2048), SH.ListOf_limit(s),
       Equal.sym(Nat, SH.ListOf_limit(s), U32.to_nat(2048), es), lm(U32.is_eq(len, 0), len, t, x, W.hcw(len, hchk))))
+
+# its records times the record size are its bytes
+def lnz(+c: Bool, +len: U32, +t: FD.array__Tree<U32>, +x: Nat, +ec: {U32.is_eq(len, 0) == c : Bool}, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 72n) : Nat})
+    -> {Nat.mul(U32.to_nat(RTL.xlen_o_l2048_Eth1Data(W.LOBJ(c, t, x, len))), 72n) == U32.to_nat(len) : Nat}:
+  match c:
+    case True{}: Equal.sym(Nat, U32.to_nat(len), 0n, Equal.cong(U32, Nat, z => U32.to_nat(z), len, 0, FD.u32alg__eq_of(len, 0, ec)))
+    case False{}: Equal.sym(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 72n), e)
+
+def ln(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool})
+    -> {Nat.mul(U32.to_nat(RTL.xlen_o_l2048_Eth1Data(W.OBJw(d, t, x, off, len))), 72n) == U32.to_nat(len) : Nat}:
+  lnz(U32.is_eq(len, 0), len, t, x, {==}, W.ecw(len, hchk))

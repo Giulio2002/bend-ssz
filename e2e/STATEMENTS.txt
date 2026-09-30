@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3298 statements in 908 files.
+# 3300 statements in 909 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -1134,6 +1134,23 @@ def FuluBeaconBlock_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.B
 def FuluBeaconBlock_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(NE())))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlock_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, D.Digest, Pair.snd(B.Buf, FuluBeaconBlock_d.BeaconBlock & D.Digest, FuluBeaconBlock_h.BeaconBlock_hash_tree_root(B.alloc(0), FuluBeaconBlock_d.BeaconBlock_default()))))} == API.hash_tree_root(Spec.BeaconBlock(), RT.v_BeaconBlock(FuluBeaconBlock_d.BeaconBlock_default())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlock_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, D.Digest, Pair.snd(B.Buf, FuluBeaconBlock_d.BeaconBlock & D.Digest, FuluBeaconBlock_h.BeaconBlock_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.BeaconBlock(), RT.v_BeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluBeaconState_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluBeaconState_decode_ssz_generated.bend as FuluBeaconState_r
+import ../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
+import ../types/FuluBeaconState_encode_ssz_generated.bend as FuluBeaconState_e
+import ../types/FuluBeaconState_hashtreeroot_generated.bend as FuluBeaconState_h
+def FuluBeaconState_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluBeaconState_d.BeaconState, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBeaconState_d.BeaconState>})
+    -> {E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(o))) == bs : +List<U32>}:
+def FuluBeaconState_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluBeaconState_d.BeaconState, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBeaconState_d.BeaconState>})
+    -> {Some{D.bytes(Pair.snd(FuluBeaconState_d.BeaconState, D.Digest, Pair.snd(B.Buf, FuluBeaconState_d.BeaconState & D.Digest, FuluBeaconState_h.BeaconState_hash_tree_root(h, o))))} == C.droot(Spec.BeaconState(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBeaconState_e2e_dec_generated.bend
 import ../src/model.bend as API

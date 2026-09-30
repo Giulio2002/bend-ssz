@@ -112,6 +112,7 @@
     "e2e/FuluBeaconBlock_e2e_root_generated.bend": "23f356d025e8c12ef0c4c6dc6cd562bcaababd9476e673bd6f1585a9a1f82006",
     "e2e/FuluBeaconBlock_e2e_set_generated.bend": "ff467462bb12c1a8ac21d7c05515cd7923a217e39f12ebf6aa892b5b73642005",
     "e2e/FuluBeaconBlock_e2e_witness_generated.bend": "92c153f99ec07981078c375e236c192812cab7e8cb46c84fc56dbe979bb6efdd",
+    "e2e/FuluBeaconState_e2e_comp_generated.bend": "6572418745518c10708a221fe1f4e735e5c53238097ba16846c5619f9e2a9839",
     "e2e/FuluBeaconState_e2e_dec_generated.bend": "0fbf0d886e38d8570d87f79060a0b469b269e9883869599c8234b336a44269e6",
     "e2e/FuluBeaconState_e2e_generated.bend": "a1f9661d5a8280e0853d40afed6ddf6c82fc1dca31c9332b1fc725a308c4e15d",
     "e2e/FuluBeaconState_e2e_root_generated.bend": "136a1d9ed4f99886e418990e489df62c298d83af8602b98c17d9f6df8cb01010",
