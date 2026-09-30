@@ -12,6 +12,9 @@ naming the file and key, when a doc differs, or a key is unknown). Sources:
   e2e/manifest.json          the bridges, their premises and input bounds (codegen/e2e_bridge.py)
   proofs/api/                the facades (codegen/api_facade.py)
   e2e/COMPOSED.txt           the composed decode;encode / decode;root theorems (codegen/e2e_compose.py)
+  codegen/statements.py      the statement files: the object-mutation laws (proofs/obj/fields_*,
+                             collections_*, prep_setters.bend) and the setter compositions
+                             (e2e/*_e2e_set_generated.bend, codegen/e2e_setters.py)
   benchmarks/evidence/check_fast.json   the recorded full check (tools/check_fast.sh): its size and timings,
                              so a new stamp makes this check fail until the docs are regenerated
 
@@ -156,6 +159,39 @@ def figures():
     f['check_wall'] = f'{wall / 60:.1f}' if wall else f'at least {slow / 60:.1f}'
     f['check_commit'] = st.get('commit', 'unknown')[:8]
     f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
+    f.update(object_law_figures())
+    return f
+
+
+def object_law_figures():
+    """the object-mutation laws and their compositions with the bridges, as e2e/STATEMENTS.txt lists
+    them (codegen/statements.py statement_files())"""
+    sys.path.insert(0, str(ROOT / 'codegen'))
+    import statements as ST
+    sf = ST.statement_files()
+    f = {}
+
+    def stm(prefix):
+        return sum(len(v) for k, v in sf.items() if k.startswith(prefix))
+
+    def sections(glob, strip=r'(_obj)?_g\d+$'):
+        names = set()
+        for p in ROOT.glob(glob):
+            for m in re.finditer(r'^# ---- (\w+) ----$', p.read_text(), re.M):
+                names.add(re.sub(strip, '', m.group(1)))
+        return len(names)
+    f['obj_field_statements'] = f"{stm('proofs/obj/fields_'):,}"
+    f['obj_field_containers'] = str(sections('proofs/obj/fields_*.bend'))
+    f['obj_coll_statements'] = str(stm('proofs/obj/collections_'))
+    f['obj_coll_count'] = str(sections('proofs/obj/collections_*.bend', r'$^'))
+    f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters.bend'))
+    f['obj_setter_containers'] = str(len({re.match(r'(\w+?)_set_', l).group(1)
+                                          for l in sf.get('proofs/obj/prep_setters.bend', [])}))
+    sets = [l for k, v in sf.items() if k.endswith('_e2e_set_generated.bend') for l in v]
+    f['set_root_count'] = str(sum(1 for l in sets if l.endswith('_root')))
+    f['set_encode_count'] = str(sum(1 for l in sets if l.endswith('_encode')))
+    f['set_encode_names'] = names_list(sorted({'`%s`' % re.match(r'(\w+?)_e2e_set_', l).group(1)
+                                               for l in sets if l.endswith('_encode')}))
     return f
 
 
