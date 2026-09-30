@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3298 statements in 908 files.
+# 3300 statements in 909 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -6495,6 +6495,19 @@ import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
 import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as ProgressiveComplexTestStruct_h
 def ProgressiveComplexTestStruct_e2e_root(h: B.Buf, -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +rep: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), RT_L.v_ProgressiveComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/ProgressiveComplexTestStruct_e2e_witness_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/root_gtypes2_light.bend as RT
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/model.bend as API
+import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as ProgressiveComplexTestStruct_e
+import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as ProgressiveComplexTestStruct_h
+def ProgressiveComplexTestStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())))} == API.serialize(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) : Maybe<&2, +List<U32>>}:
+def ProgressiveComplexTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(B.alloc(0), ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default()))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), RT.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleFieldContainerTestStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C

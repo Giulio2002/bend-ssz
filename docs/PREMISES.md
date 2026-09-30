@@ -242,9 +242,9 @@ table above. They are dropped when the encode laws take dw < 32.
 ## 8. Non-vacuity of the premises
 
 Of the <!-- fig:witness_total -->166<!-- /fig --> names whose encode (i) or root (iv) bridge takes premises
-besides the object, <!-- fig:witness_count -->165<!-- /fig --> have a checked witness
+besides the object, <!-- fig:witness_count -->166<!-- /fig --> have a checked witness
 `e2e/<Name>_e2e_witness_generated.bend` (`codegen/e2e_witness.py`; the list, with the reason for any
-pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->ProgressiveComplexTestStruct<!-- /fig -->). Each witness applies
+pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->none<!-- /fig -->). Each witness applies
 the bridge to the object API's default object (`<X>_default()`; where the default holds empty boxes in a
 vector of boxed values, `DV()`, the default with valid elements there; a bare `U32` object is `0`). Each
 premise is proved of that object in its own def (`premise_<binder>`, `premise_root_<binder>`), and

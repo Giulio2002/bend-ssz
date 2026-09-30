@@ -1,6 +1,7 @@
 import Base
 import ./ProgressiveTestStruct_e2e_generated.bend as BR
 import ./ProgressiveTestStruct_e2e_root_generated.bend as RB
+import ./e2e_encld.bend as W_e2e_e2e_encld
 import ./e2e_encq2d.bend as EQ
 import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
@@ -28,11 +29,26 @@ def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
   {==}
 
+def PC1() -> W_e2e_e2e_encld.PW1(RT.pj_ProgressiveTestStruct_0(ProgressiveTestStruct_d.ProgressiveTestStruct_default())):
+  (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==})
+
+def PC2() -> W_e2e_e2e_encld.PW1(RT.pj_ProgressiveTestStruct_1(ProgressiveTestStruct_d.ProgressiveTestStruct_default())):
+  (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==})
+
+def PC3() -> W_e2e_e2e_encld.PRL_pl_SmallTestStruct(RT.pj_ProgressiveTestStruct_2(ProgressiveTestStruct_d.ProgressiveTestStruct_default())):
+  ({==}, {==})
+
+def PC4() -> W_e2e_e2e_encld.PRV_pl_pl_VarTestStruct(RT.pj_ProgressiveTestStruct_3(ProgressiveTestStruct_d.ProgressiveTestStruct_default())):
+  ({==}, ({==}, {==}))
+
+def PC5() -> EQ.TOT_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_default()):
+  {==}
+
 def premise_rep() -> RT.rep_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_default(), Spec.ProgressiveTestStruct()):
   ({==}, (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ((Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==}), ((FD.TLeaf{SmallTestStruct_d.SmallTestStruct_default()}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==}))))))), (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))))))
 
 def premise_hs() -> EQ.PREM_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_default()):
-  ((Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==}), ((Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==}), (({==}, {==}), (({==}, ({==}, {==})), {==}))))
+  (PC1(), (PC2(), (PC3(), (PC4(), PC5()))))
 
 def ProgressiveTestStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, B.Buf, ProgressiveTestStruct_e.ProgressiveTestStruct_encode(ProgressiveTestStruct_d.ProgressiveTestStruct_default())))} == API.serialize(Spec.ProgressiveTestStruct(), RT.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_default())) : Maybe<&2, +List<U32>>}:
   BR.ProgressiveTestStruct_e2e_encode(ProgressiveTestStruct_d.ProgressiveTestStruct_default(), premise_rep(), premise_hs())
