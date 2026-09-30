@@ -3415,8 +3415,9 @@ def outputs():
 
 def main():
     out = outputs()
-    # the non-vacuity witnesses (*_e2e_witness_generated.bend) belong to codegen/e2e_witness.py
-    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith('_e2e_witness_generated.bend')] if OUT.exists() else []
+    # the non-vacuity witnesses (*_e2e_witness_generated.bend) belong to codegen/e2e_witness.py, the composed
+    # theorems (*_e2e_comp_generated.bend) to codegen/e2e_compose.py
+    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend'))] if OUT.exists() else []
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
