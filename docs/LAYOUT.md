@@ -36,3 +36,27 @@ names for every other form (`bitvector_512`, `bitlist_33`, `vec_uint16_4`, `list
 `progbitlist`). The basic types `boolean`, `uint8`, `uint32`, `uint64` and `uint256` are shared by the fork and the generic suite: one
 type, one set of files (`uint16` and `uint128` exist only in the suite). File names and symbols carry no hashes or `big_` prefixes: a module is named for what it proves
 (`encx_<Name>` the encoder-window laws, `var_codec_<Name>_enc` the encoder, `root_<Name>` the root laws).
+
+## Modules nothing imports
+
+The full check finds every `.bend` file through the files no other file imports (the umbrella
+roots, `tools/umbrellas.py`), so a module nothing imports is still checked. Apart from the four
+roots, the facades (`proofs/api/`), the gates (`proofs/gate/`), the bridges and the other statement
+files in `e2e/`, and the benchmark and test programs, these are the modules nothing imports, and why
+each is kept:
+
+| Module | What it proves | Why nothing imports it |
+|---|---|---|
+| `proofs/obj/fields_*.bend`, `proofs/obj/collections_*.bend` | the field and collection laws of the object API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
+| `proofs/obj/cache.bend`, `proofs/obj/chist.bend` | the cached Merkle tree of `BeaconState.validators`: a write or append through the cache API updates the element and the dirty range, and every history of accepted operations keeps the cache valid | results about the root cache, a runtime feature outside the SSZ statements; `benchmarks/evidence/object_cache.json` tests the same cache |
+| `proofs/obj/cached_<list>.bend` (`codegen/cached_laws.py`) | for five of the cached lists, the runtime's cached-root loops compute the reference tree of the element roots (instances of the Validator-list proof) | the same: the cache's own laws |
+| `proofs/obj/cspec_<list>.bend` (`codegen/cached_laws.py`) | for six other lists, the cached root's element roots are the ones the uncached root law relates to the spec (`RR.roots`) | the same |
+| `proofs/obj/ccost.bend`, `proofs/obj/cost.bend` | the cost model: how many node hashes a cached sweep does, and the closed form of the generated loops' cost | cost bounds, not correctness statements |
+| `proofs/obj/seq_elem.bend` | element read-after-write for a list of whole objects (`BeaconState.validators`) | an element law of the one list stored as a packed object array; the collection laws cover the others |
+| `proofs/obj/fill_pieces.bend` | the native driver's input path (64 KiB pieces, `native_bench/driver.bend`) fills the buffer as one whole fill, which is what the decode statements assume | it is about the native driver, which no proof imports |
+| `types/fulu.bend` (`tools/generate_fulu.py`) | the closed name index of the Fulu inventory | an input that `tools/generate_fulu_*.py` read, not a module anything imports |
+
+`codegen/retired.py` lists the generated modules that were deleted because nothing imported them
+(audit round 5): the generators no longer write them. `tools/generate_decode_rank.py`,
+`tools/generate_decode_selection_bound.py`, `tools/generate_schema_selection_shape.py` and
+`codegen/var_union_o.py` were deleted with their only outputs.

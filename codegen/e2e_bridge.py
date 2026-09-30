@@ -3420,6 +3420,8 @@ def main():
     # (*_e2e_set_generated.bend) to codegen/e2e_setters.py
     mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend', '_e2e_decrep_generated.bend', '_e2e_set_generated.bend'))] if OUT.exists() else []
     out = RR.rewire_out(out)
+    import retired  # modules nothing imports: not written (codegen/retired.py)
+    out = retired.drop(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]

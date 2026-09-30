@@ -29,7 +29,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OBJ = ROOT / 'proofs/obj'
 
 # the children of the generic containers and unions (and the Fulu ones in the same interface)
-PREFIXES = ['pl_u8', 'pl_u16', 'pl_bool', 'pl_u64', 'l1024_u16', 'l128_u16', 'l123_u16', 'bl256', 'bl32',
+# (pl_u16 and pl_bool are retired: codegen/retired.py)
+PREFIXES = ['pl_u8', 'pl_u64', 'l1024_u16', 'l128_u16', 'l123_u16', 'bl256', 'bl32',
             'bits5', 'bits6', 'bits256', 'bits257', 'bits1280', 'bits1281', 'bits131072', 'pbits',
             'pl_SmallTestStruct', 'l10_ProgressiveSingleFieldContainerTestStruct',
             # lists of variable-size elements (codegen/var_vlist_enc.py GLISTS)
@@ -82,7 +83,7 @@ LEAVES = {
 # vt: the premise U32.shrn(w_last, 8n) == 0 (the runtime's bits-above-zero check) between pf and hz.
 WLEAVES = {p: {'module': f'vuwg_{p}.bend', 'ctor': f'T.Bitvector{p[2:]}', 'W': W, 'size': m, 'model': f'PX_{p}', 'rt': f'{p}_any',
                'bytes': f'{p}_any_bytes', 'perfect': f'{p}x_perfect', 'runtime': f'T.{p}_put', 'pad': pad, 'vt': pad, 'rt_hz': True}
-           for p, W, m, pad in [('bv1', 1, 1, True), ('bv2', 1, 1, True), ('bv8', 1, 1, True), ('bv256', 8, 32, False), ('bv257', 9, 33, True)]}
+           for p, W, m, pad in [('bv256', 8, 32, False), ('bv257', 9, 33, True)]}  # (bv1, bv2, bv8 retired: codegen/retired.py)
 
 # the packed-words leaves (O.Words{thaw TB, m} objects, checked writers T.<p>_putk returning size 0) at a word
 # position (q, r): <p>_any(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, [htz, hbz,] hz)
