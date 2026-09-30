@@ -8,7 +8,7 @@ hash_tree_root, field and element access), and machine-checked proofs relating i
 transcription of the SSZ specification (`spec/`). The guarantee a user relies on is: the
 end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with the laws of
 END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). For
-<!-- fig:composed -->74<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
+<!-- fig:composed -->119<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
 followed by hash_tree_root (the spec root of the deserialized value) are single checked statements
 (`e2e/<Name>_e2e_comp_generated.bend`, list in `e2e/COMPOSED.txt`). For the others it is not yet proved
 that the decoded object satisfies the encode and root bridges' representation premises (PREMISES

@@ -10,8 +10,11 @@ with the object o:
 The proofs compose the bridges with END_TO_END's accepted_spec / serialize_correct (the accepted
 bytes are the canonical encoding of the decoded value). They need whatever the bridges need of o
 (its representation invariant rep and storage premises): the names whose (i) / (iv) bridges take
-only o are composed here; the others wait for the decoded-object laws (docs/PREMISES.md section 1),
-listed in the file e2e/COMPOSED.txt with the reason.
+only o are composed directly. A fixed-size name whose decoder's object is written out
+(<X>_d_some: the words are the input's) is composed with its premises proved of that object
+(LSynth: every closed fact computed); the decoder accepts only inputs of that length (<X>_d_none),
+so the statements' object is that one. The others wait for the decoded-object laws
+(docs/PREMISES.md section 1), listed in the file e2e/COMPOSED.txt with the reason.
 
     python3 codegen/e2e_compose.py            # write
     python3 codegen/e2e_compose.py --check    # nonzero exit if any output is stale
@@ -71,6 +74,81 @@ def dec_root(+s: S.Schema, +bs: +List<U32>, +v: S.Value, -r: +List<U32>, +acc: {
   %Equal.sym(Maybe<&2, S.Value>, API.deserialize(s, bs), Some{v}, acc) : {Some{r} == droot_m(s, _) : Maybe<&2, +List<U32>>}
   rt
 '''
+
+
+# ---------------------------------------------------------------- decoded fixed-size objects
+
+class WordsLit(W.Words):
+    """a word array written out: O.Words{<array literal>, N} (a fixed-size decoder's object)"""
+    def __init__(self, n, arr, d):
+        self.n, self.d, self.arr = n, d, arr
+
+
+def arr_depth(a):
+    a = a.strip()
+    if a.startswith('ALeaf{'):
+        return 0
+    m = re.match(r'ANode\{(.*)\}$', a, re.S)
+    return 1 + arr_depth(W.split_top(m.group(1))[0])
+
+
+def lit_model(e):
+    """the model of a decoded object's term (already in this file's aliases)"""
+    e = e.strip()
+    m = re.match(r'(\w+)\.Words\{(.*)\}$', e, re.S)
+    if m:
+        a, nn = W.split_top(m.group(2))
+        if re.fullmatch(r'\d+', nn.strip()):
+            md = WordsLit(int(nn), a, arr_depth(a))
+            md.expr = e
+            return md
+    m = re.match(r'(\w+)\.BSome\{(.*)\}$', e, re.S)
+    if m:
+        x, rest = W.split_top(m.group(2))
+        md = W.Box(lit_model(x), x)
+        md.expr = e
+        return md
+    m = re.match(r'([\w.]+)\{(.*)\}$', e, re.S)
+    if m and '.' in m.group(1):
+        tn = m.group(1).split('.')[-1]
+        fields = []
+        for a in W.split_top(m.group(2)):
+            sub = lit_model(a)
+            if isinstance(sub, W.Cont) and sub.tname.startswith(tn + '_g'):
+                fields.extend(sub.fields)
+            else:
+                fields.append((a.strip(), sub))
+        md = W.Cont(None, tn, fields)
+        md.expr = e
+        return md
+    md = W.Leaf(e)
+    md.expr = e
+    return md
+
+
+class LSynth(W.Synth):
+    """premise proofs for a decoded object: its words are the input's, so every closed fact is computed"""
+    def witness(self, mod, ty, v, body, env):
+        subj = env.get('__subj')
+        if isinstance(subj, WordsLit):
+            if ty.strip().endswith('array__Tree<U32>'):
+                return f'FD.array__freeze(U32, {subj.arr})'
+            if v == 'dw':
+                return f'{subj.d}n'
+            if v == 'N':
+                return f'{subj.n}'
+            if v == 'q':
+                if re.search(r'U32\.to_nat\(N\) == Nat\.add\(WS\.e32\(q\), 32n\)', body):
+                    return f'{subj.n // 32 - 1}n'
+                return f'{(subj.n - 1) // 32}n'
+            if v == 'r':
+                return f'{subj.n - 32 * ((subj.n - 1) // 32)}n'
+        return super().witness(mod, ty, v, body, env)
+
+    def eq(self, p, env):
+        if isinstance(env.get('__subj'), WordsLit):
+            return W.R
+        return super().eq(p, env)
 
 
 def law_files():
@@ -136,9 +214,23 @@ def build(name, lf):
     dm, em, rm = W.Mod.get(dl), W.Mod.get(el), W.Mod.get(rl)
     eps, ec = sig(em, f'{name}_e2e_encode')
     rps, rc = sig(rm, f'{name}_e2e_root')
+    lit = None
     if [b for _, b, _ in eps] != ['o'] or [b for _, b, _ in rps] != ['h', 'o']:
         extra = sorted({b for _, b, _ in eps + rps} - {'o', 'h'})
-        return None, 'the (i)/(iv) bridges take ' + ', '.join(extra) + ' (decoded-object laws pending)'
+        why = 'the (i)/(iv) bridges take ' + ', '.join(extra) + ' (decoded-object laws pending)'
+        # a fixed-size decoder's object written out (<X>_d_some / _d_none): its premises are computed
+        if 'o' not in [b for _, b, _ in eps] or kind != 'view' or f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
+            return None, why
+        sps, sc = sig(dm, f'{name}_d_some')
+        if [b for _, b, _ in sps] != ['bs', 'n', 'hn', 'hd', 'ec']:
+            return None, why
+        mk = re.match(r'\{Nat\.is_eq\(List\.length\(&2, U32, bs\), (\d+)n\) == True\{\} : Bool\}$', sps[4][2])
+        ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
+        if 'U32.and(' in ms.group(2) or 'byte_sel(' in ms.group(2):
+            return None, why + '; the decoded words are masked (bit-level lemmas pending)'
+        if int(mk.group(1)) > 1500:
+            return None, why + '; the decoded object is too large to compute its premises (FuluCell, FuluMatrixEntry: 2048+ bytes)'
+        lit = (int(mk.group(1)), ms.group(2), why)
     dps, dc = sig(dm, f'{name}_e2e_decode_{kind}')
     W.PREFER.clear()
     W.PREFER[dm.path] = 'DB'
@@ -190,6 +282,8 @@ def build(name, lf):
                     f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
                     f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
     OT = MT[len('Maybe<&1, '):-1]
+    if lit:
+        return build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, kind)
     hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)
     ha = ''.join(f', {b}' for _, b, _ in hyps)
     dect = f'dec: {{{DEC} == Some{{o}} : {MT}}}'
@@ -202,14 +296,87 @@ def build(name, lf):
             f'# (iv) after (ii): the decoded object\'s root is the spec root of the value deserialize gives for the input bytes',
             f'def {name}_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, +o: {OT}{hp}, {dect})\n    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n'
             f'  C.dec_root({SPEC}, bs, {V}, {R}, acc(bs, n, o{ha}, dec), {RB}.{name}_e2e_root(h, o))', '']
+    return finish(ctx, body), None
+
+
+def finish(ctx, body):
     for p_ in ('types/schema.bend', 'src/buffer.bend', 'src/model.bend'):
         ctx.alias(ROOT / p_)
     lines = ['import Base']
     for a, pth in sorted(ctx.used.items(), key=lambda x: x[1].relative_to(ROOT).as_posix()):
         rel = ('./' + pth.name) if pth.parent == E2E else (Path('..') / pth.relative_to(ROOT)).as_posix()
         lines.append(f'import {rel} as {a}')
-    txt = '\n'.join(lines) + '\n\n' + HEADER + '\n' + '\n'.join(body)
-    return txt, None
+    return '\n'.join(lines) + '\n\n' + HEADER + '\n' + '\n'.join(body)
+
+
+def sub_o(t, obj):
+    return re.sub(r'(?<![\w.])o(?![\w{(])', lambda m: obj, t)
+
+
+def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, kind):
+    K, obj0, why = lit
+    OBJ = ctx.lift(dm, obj0)
+    ctx.alias(ROOT / 'proofs/compact/found.bend')
+    FDA = W.canon(ROOT / 'proofs/compact/found.bend')
+    syn = LSynth(ctx)
+    model = lit_model(OBJ)
+    omode = [m_ for m_, b, _ in eps if b == 'o'][0]
+    body = [f'# {name}: decoding accepted bytes, then re-encoding / hashing the object (codegen/e2e_compose.py). The decoder\'s',
+            f'# object is written out ({DB}.{name}_d_some): the (i)/(iv) premises are proved of it, and the statements\' object is it.', '']
+    prem, tys = {}, {}
+    for tag, mod, ps in (('e', em, eps), ('r', rm, rps)):
+        for m_, b, t in ps:
+            if b in ('o', 'h'):
+                continue
+            try:
+                term = syn.prove(mod, t, {'o': model, '__subj': None, '__e': {'o': OBJ}})
+            except SystemExit as ex:
+                return None, why + f'; no synthesized proof ({str(ex)[:80]})'
+            ty = sub_o(ctx.lift(mod, t), OBJ)
+            same = [k for k, v in tys.items() if v == ty]
+            if same:
+                prem[(tag, b)] = prem[same[0]]
+                continue
+            tys[(tag, b)] = ty
+            prem[(tag, b)] = f'p{tag}_{b}'
+            body.append(f'def p{tag}_{b}(+bs: +List<U32>) -> {ty}:\n  {term}\n')
+    for nm in sorted(syn.lemmas):
+        body.insert(2, syn.lemmas[nm] + '\n')
+    dect = f'dec: {{{DEC} == Some{{o}} : {MT}}}'
+    ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {K}n) == c : Bool}}'
+    SOME = f'{DB}.{name}_d_some(bs, n, hn, hd, ec)'
+    eqo = (f'Equal.cong({MT}, {OT}, z => gm(z, {OBJ}), Some{{o}}, Some{{{OBJ}}}, '
+           f'Equal.trans({MT}, Some{{o}}, {DEC}, Some{{{OBJ}}}, Equal.sym({MT}, {DEC}, Some{{o}}, dec), {SOME}))')
+    none = (f'{FDA}.logic__false_true(Equal.cong({MT}, Bool, z => isS(z), None{{}}, Some{{o}}, '
+            f'Equal.trans({MT}, None{{}}, {DEC}, Some{{o}}, Equal.sym({MT}, {DEC}, None{{}}, {DB}.{name}_d_none(bs, n, hn, ec)), dec)))')
+    ea = ', '.join(f'{prem[("e", b)]}(bs)' for _, b, _ in eps if b != 'o')
+    ra = ', '.join(f'{prem[("r", b)]}(bs)' for _, b, _ in rps if b not in ('o', 'h'))
+    XO, RO, VO = sub_o(X, OBJ), sub_o(R, OBJ), sub_o(V, OBJ)
+    body += [f'def gm(m: {MT}, d: {OT}) -> {OT}:\n  match m:\n    case Some{{x}}: x\n    case None{{}}: d',
+             f'def isS(m: {MT}) -> Bool:\n  match m:\n    case Some{{x}}: True{{}}\n    case None{{}}: False{{}}', '',
+             f'# the value deserialize gives for the accepted bytes is the decoded object\'s view',
+             f'def acc(+bs: +List<U32>, +n: U32, -o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect})\n    -> {accT}:\n{acc_body}', '',
+             f'def ge(+bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect},\n'
+             f'    +c: Bool, +ec: {ecT}) -> {{{X} == bs : +List<U32>}}:\n'
+             f'  match c:\n    case True{{}}:\n'
+             f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{{sub_o(X, "_")} == bs : +List<U32>}}\n'
+             f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {EB}.{name}_e2e_encode({OBJ}{", " + ea if ea else ""}))\n'
+             f'    case False{{}}:\n      Empty.absurd({{{X} == bs : +List<U32>}}, {none})', '',
+             f'def gr(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect},\n'
+             f'    +c: Bool, +ec: {ecT}) -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n'
+             f'  match c:\n    case True{{}}:\n'
+             f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{Some{{{sub_o(R, "_")}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}\n'
+             f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {RB}.{name}_e2e_root(h, {OBJ}{", " + ra if ra else ""}))\n'
+             f'    case False{{}}:\n      Empty.absurd({{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}, {none})', '',
+             f'# (i) after (ii): the decoded object re-encodes to exactly the input bytes',
+             f'def {name}_e2e_decode_encode(+bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect})\n'
+             f'    -> {{{X} == bs : +List<U32>}}:\n  ge(bs, n, o, hn, hd, dec, Nat.is_eq(List.length(&2, U32, bs), {K}n), {{==}})', '',
+             f'# (iv) after (ii): the decoded object\'s root is the spec root of the value deserialize gives for the input bytes',
+             f'def {name}_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect})\n'
+             f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n  gr(h, bs, n, o, hn, hd, dec, Nat.is_eq(List.length(&2, U32, bs), {K}n), {{==}})', '']
+    SPA = ctx.alias(ROOT / 'spec/primitives.bend')
+    body = [l.replace('SP_.', SPA + '.') for l in body]
+    return finish(ctx, body), None
 
 
 def outputs():
