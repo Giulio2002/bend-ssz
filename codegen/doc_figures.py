@@ -151,6 +151,13 @@ def figures():
     wpend = [r[0] for r in wrows if r[1] != 'witnessed']
     f['witness_pending'] = names_list(wpend) if wpend else 'none'
     f['witness_nonempty'] = str(sum(1 for n in wit if 'def NE()' in (ROOT / f'e2e/{n}_e2e_witness_generated.bend').read_text()))
+    capi = sorted((ROOT / 'e2e').glob('*_api_witness_generated.bend')) + sorted((ROOT / 'e2e').glob('*_api_root_witness_generated.bend'))
+    cset = sorted((ROOT / 'e2e').glob('*_e2e_set_witness_generated.bend'))
+    f['collw_files'] = str(len(capi))
+    f['collw_api'] = str(sum(q.read_text().count('_witness() ->') for q in capi))
+    f['collw_set'] = str(sum(q.read_text().count('_witness() ->') for q in cset))
+    f['collw_set_files'] = str(len(cset))
+    f['collw_pending'] = str(sum(1 for l in (ROOT / 'e2e/COLL_WITNESS.txt').read_text().splitlines() if l.startswith('  pending')))
     serf = list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))
     sert = [q.read_text() for q in serf]
     f['ser_files'] = str(len(serf))
