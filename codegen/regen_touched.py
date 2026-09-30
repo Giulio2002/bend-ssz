@@ -2,7 +2,8 @@
 """regen_all.py --touched: regenerate only the generators whose inputs changed (a dev-loop speedup).
 
     python3 codegen/regen_all.py --touched [-j N] [-v] [--passes K]
-    python3 codegen/regen_all.py --touched --reset-stamps      # forget what was recorded
+    python3 codegen/regen_all.py --touched --force a,b         # also rerun these generators (and whatever they change)
+    python3 codegen/regen_all.py --reset-stamps                # forget what was recorded
 
 Every generator run is traced (codegen/regen_trace/sitecustomize.py): the files it read, the directories it
 listed, the modules it loaded (its own source included). build/regen_stamps.json records, per generator,
@@ -176,5 +177,11 @@ def main(a, order, have):
     if '--reset-stamps' in a:
         STAMPS.unlink(missing_ok=True)
         return
+    if '--force' in a:                       # --force a,b: treat these generators as dirty (their stamps are dropped)
+        if STAMPS.exists():
+            st = json.loads(STAMPS.read_text())
+            for g in a[a.index('--force') + 1].split(','):
+                st.pop(g, None)
+            STAMPS.write_text(json.dumps(st))
     passes = int(a[a.index('--passes') + 1]) if '--passes' in a else 6
     touched(order, have, '-v' in a, passes)
