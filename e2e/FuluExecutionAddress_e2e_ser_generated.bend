@@ -23,3 +23,9 @@ def FuluExecutionAddress_e2e_serialize_refused(+o: FuluBytes20_d.Bytes20, +v: {W
 def FuluExecutionAddress_e2e_serialize(+o: FuluBytes20_d.Bytes20, +v: {W_types_FuluBytes20_encode_ssz_generated.b20_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluExecutionAddress_encode_ssz_generated.ExecutionAddress_serialize(o)))} == API.serialize(W_spec_fulu_schemas.ExecutionAddress(), W_proofs_obj_root_names_light.v_b20(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluExecutionAddress_encode_ssz_generated.ExecutionAddress_serialize(o), O.encoded(W_types_FuluExecutionAddress_encode_ssz_generated.ExecutionAddress_encode(o)), FuluExecutionAddress_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.ExecutionAddress(), W_proofs_obj_root_names_light.v_b20(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluExecutionAddress_e2e_generated.FuluExecutionAddress_e2e_encode(o)
+
+def FuluExecutionAddress_e2e_valid_default() -> {W_types_FuluBytes20_encode_ssz_generated.b20_valid(FuluBytes20_d.b20_default()) == True{} : Bool}:
+  {==}
+
+def FuluExecutionAddress_e2e_valid_total(+o: FuluBytes20_d.Bytes20) -> {W_types_FuluBytes20_encode_ssz_generated.b20_valid(o) == True{} : Bool}:
+  {==}

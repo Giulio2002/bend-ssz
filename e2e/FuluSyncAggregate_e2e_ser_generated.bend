@@ -22,3 +22,9 @@ def FuluSyncAggregate_e2e_serialize_refused(+o: FuluSyncAggregate_d.SyncAggregat
 def FuluSyncAggregate_e2e_serialize(+o: FuluSyncAggregate_d.SyncAggregate, +v: {W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SyncAggregate(), W_proofs_obj_root_names_light.v_SyncAggregate(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_serialize(o), O.encoded(W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_encode(o)), FuluSyncAggregate_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SyncAggregate(), W_proofs_obj_root_names_light.v_SyncAggregate(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSyncAggregate_e2e_generated.FuluSyncAggregate_e2e_encode(o)
+
+def FuluSyncAggregate_e2e_valid_default() -> {W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_valid(FuluSyncAggregate_d.SyncAggregate_default()) == True{} : Bool}:
+  {==}
+
+def FuluSyncAggregate_e2e_valid_total(+o: FuluSyncAggregate_d.SyncAggregate) -> {W_types_FuluSyncAggregate_encode_ssz_generated.SyncAggregate_valid(o) == True{} : Bool}:
+  {==}

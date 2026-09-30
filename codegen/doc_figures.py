@@ -152,6 +152,11 @@ def figures():
     f['witness_pending'] = names_list(wpend) if wpend else 'none'
     f['witness_nonempty'] = str(sum(1 for n in wit if 'def NE()' in (ROOT / f'e2e/{n}_e2e_witness_generated.bend').read_text()))
     serf = list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))
+    sert = [q.read_text() for q in serf]
+    f['ser_files'] = str(len(serf))
+    f['ser_total'] = str(sum(1 for t in sert if '_e2e_valid_total(' in t))
+    f['ser_prem'] = str(sum(1 for t in sert if '_e2e_valid_of_prem(' in t))
+    f['ser_domain'] = str(sum(1 for t in sert if '_e2e_serialize_domain(' in t))
     f['ser_count'] = str(sum(1 for q in serf if '_ser_l2(' not in q.read_text()))
     f['ser_lin_count'] = str(sum(1 for q in serf if '_ser_l2(' in q.read_text()))
     # the recorded full check (tools/check_fast.sh's stamp)

@@ -23,3 +23,9 @@ def FuluForkDigest_e2e_serialize_refused(+o: FuluBytes4_d.Bytes4, +v: {W_types_F
 def FuluForkDigest_e2e_serialize(+o: FuluBytes4_d.Bytes4, +v: {W_types_FuluBytes4_encode_ssz_generated.b4_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluForkDigest_encode_ssz_generated.ForkDigest_serialize(o)))} == API.serialize(W_spec_fulu_schemas.ForkDigest(), W_proofs_obj_root_names_light.v_b4(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluForkDigest_encode_ssz_generated.ForkDigest_serialize(o), O.encoded(W_types_FuluForkDigest_encode_ssz_generated.ForkDigest_encode(o)), FuluForkDigest_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.ForkDigest(), W_proofs_obj_root_names_light.v_b4(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluForkDigest_e2e_generated.FuluForkDigest_e2e_encode(o)
+
+def FuluForkDigest_e2e_valid_default() -> {W_types_FuluBytes4_encode_ssz_generated.b4_valid(FuluBytes4_d.b4_default()) == True{} : Bool}:
+  {==}
+
+def FuluForkDigest_e2e_valid_total(+o: FuluBytes4_d.Bytes4) -> {W_types_FuluBytes4_encode_ssz_generated.b4_valid(o) == True{} : Bool}:
+  {==}

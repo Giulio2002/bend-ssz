@@ -22,3 +22,9 @@ def FuluSyncCommitteeMessage_e2e_serialize_refused(+o: FuluSyncCommitteeMessage_
 def FuluSyncCommitteeMessage_e2e_serialize(+o: FuluSyncCommitteeMessage_d.SyncCommitteeMessage, +v: {W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SyncCommitteeMessage(), W_proofs_obj_root_names_light.v_SyncCommitteeMessage(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_serialize(o), O.encoded(W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_encode(o)), FuluSyncCommitteeMessage_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SyncCommitteeMessage(), W_proofs_obj_root_names_light.v_SyncCommitteeMessage(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSyncCommitteeMessage_e2e_generated.FuluSyncCommitteeMessage_e2e_encode(o)
+
+def FuluSyncCommitteeMessage_e2e_valid_default() -> {W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_valid(FuluSyncCommitteeMessage_d.SyncCommitteeMessage_default()) == True{} : Bool}:
+  {==}
+
+def FuluSyncCommitteeMessage_e2e_valid_total(+o: FuluSyncCommitteeMessage_d.SyncCommitteeMessage) -> {W_types_FuluSyncCommitteeMessage_encode_ssz_generated.SyncCommitteeMessage_valid(o) == True{} : Bool}:
+  {==}

@@ -22,3 +22,9 @@ def FuluBeaconBlockHeader_e2e_serialize_refused(+o: FuluBeaconBlockHeader_d.Beac
 def FuluBeaconBlockHeader_e2e_serialize(+o: FuluBeaconBlockHeader_d.BeaconBlockHeader, +v: {W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_serialize(o)))} == API.serialize(W_spec_fulu_schemas.BeaconBlockHeader(), W_proofs_obj_root_names_light.v_BeaconBlockHeader(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_serialize(o), O.encoded(W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_encode(o)), FuluBeaconBlockHeader_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.BeaconBlockHeader(), W_proofs_obj_root_names_light.v_BeaconBlockHeader(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluBeaconBlockHeader_e2e_generated.FuluBeaconBlockHeader_e2e_encode(o)
+
+def FuluBeaconBlockHeader_e2e_valid_default() -> {W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_valid(FuluBeaconBlockHeader_d.BeaconBlockHeader_default()) == True{} : Bool}:
+  {==}
+
+def FuluBeaconBlockHeader_e2e_valid_total(+o: FuluBeaconBlockHeader_d.BeaconBlockHeader) -> {W_types_FuluBeaconBlockHeader_encode_ssz_generated.BeaconBlockHeader_valid(o) == True{} : Bool}:
+  {==}

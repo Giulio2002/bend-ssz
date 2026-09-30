@@ -22,3 +22,9 @@ def FuluSignedBLSToExecutionChange_e2e_serialize_refused(+o: FuluSignedBLSToExec
 def FuluSignedBLSToExecutionChange_e2e_serialize(+o: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +v: {W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SignedBLSToExecutionChange(), W_proofs_obj_root_names_light.v_SignedBLSToExecutionChange(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_serialize(o), O.encoded(W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_encode(o)), FuluSignedBLSToExecutionChange_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SignedBLSToExecutionChange(), W_proofs_obj_root_names_light.v_SignedBLSToExecutionChange(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSignedBLSToExecutionChange_e2e_generated.FuluSignedBLSToExecutionChange_e2e_encode(o)
+
+def FuluSignedBLSToExecutionChange_e2e_valid_default() -> {W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_valid(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default()) == True{} : Bool}:
+  {==}
+
+def FuluSignedBLSToExecutionChange_e2e_valid_total(+o: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> {W_types_FuluSignedBLSToExecutionChange_encode_ssz_generated.SignedBLSToExecutionChange_valid(o) == True{} : Bool}:
+  {==}

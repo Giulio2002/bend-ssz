@@ -22,6 +22,10 @@ def bvs4(+w: U32, +e: {U32.is_lt(w, 16) == True{} : Bool}) -> {w == U32{WSp.join
     case U32{+x}:
       Equal.cong(Word(32n), U32, z => U32{z}, x, WSp.join(4n, 28n, WSp.take(4n, 32n, x), Word.zero(28n)), V.shz(4n, 27n, x, e))
 
+def bvt4(+w: U32, +e: {w == U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(w)), Word.zero(28n))} : U32}) -> {U32.is_lt(w, 16) == True{} : Bool}:
+  %Equal.sym(U32, w, U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(w)), Word.zero(28n))}, e) : {U32.is_lt(_, 16) == True{} : Bool}
+  V.lt_sh(4n, 27n, WSp.take(4n, 32n, PD.bits(w)))
+
 def bitvector_4_e2e_serialize_ok(+o: Fulu_bitvector_4_d.Bitvector4, +v: {W_types_Fulu_bitvector_4_encode_ssz_generated.bv4_valid(o) == True{} : Bool}) -> {W_types_bitvector_4_encode_ssz_generated.bitvector_4_serialize(o) == O.encoded(W_types_bitvector_4_encode_ssz_generated.bitvector_4_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_Fulu_bitvector_4_encode_ssz_generated.bv4_valid(o), True{}, v) : {W_types_bitvector_4_encode_ssz_generated.bitvector_4_ser_pick(_, o) == O.encoded(W_types_bitvector_4_encode_ssz_generated.bitvector_4_encode(o)) : O.Encoded}
   {==}
@@ -37,3 +41,10 @@ def bitvector_4_ser_prem(+o: Fulu_bitvector_4_d.Bitvector4, +v: {W_types_Fulu_bi
 def bitvector_4_e2e_serialize(+o: Fulu_bitvector_4_d.Bitvector4, +v: {W_types_Fulu_bitvector_4_encode_ssz_generated.bv4_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_4_encode_ssz_generated.bitvector_4_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_4(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_4_bits(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_4_encode_ssz_generated.bitvector_4_serialize(o), O.encoded(W_types_bitvector_4_encode_ssz_generated.bitvector_4_encode(o)), bitvector_4_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_4(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_4_bits(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_4_e2e_generated.bitvector_4_e2e_encode(o, bitvector_4_ser_prem(o, v))
+
+def bitvector_4_e2e_valid_default() -> {W_types_Fulu_bitvector_4_encode_ssz_generated.bv4_valid(Fulu_bitvector_4_d.bv4_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_4_e2e_valid_of_prem(+o: Fulu_bitvector_4_d.Bitvector4, +p: {W_proofs_obj_gbits_small_light.bitvector_4_last(o) == U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(W_proofs_obj_gbits_small_light.bitvector_4_last(o))), Word.zero(28n))} : U32}) -> {W_types_Fulu_bitvector_4_encode_ssz_generated.bv4_valid(o) == True{} : Bool}:
+  match o:
+    case Fulu_bitvector_4_d.Bitvector4{+w0}: bvt4(w0, p)

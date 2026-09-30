@@ -22,3 +22,9 @@ def FuluCheckpoint_e2e_serialize_refused(+o: FuluCheckpoint_d.Checkpoint, +v: {W
 def FuluCheckpoint_e2e_serialize(+o: FuluCheckpoint_d.Checkpoint, +v: {W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Checkpoint(), W_proofs_obj_root_names_light.v_Checkpoint(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_serialize(o), O.encoded(W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_encode(o)), FuluCheckpoint_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Checkpoint(), W_proofs_obj_root_names_light.v_Checkpoint(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluCheckpoint_e2e_generated.FuluCheckpoint_e2e_encode(o)
+
+def FuluCheckpoint_e2e_valid_default() -> {W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_valid(FuluCheckpoint_d.Checkpoint_default()) == True{} : Bool}:
+  {==}
+
+def FuluCheckpoint_e2e_valid_total(+o: FuluCheckpoint_d.Checkpoint) -> {W_types_FuluCheckpoint_encode_ssz_generated.Checkpoint_valid(o) == True{} : Bool}:
+  {==}

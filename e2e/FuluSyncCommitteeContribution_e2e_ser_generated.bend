@@ -22,3 +22,9 @@ def FuluSyncCommitteeContribution_e2e_serialize_refused(+o: FuluSyncCommitteeCon
 def FuluSyncCommitteeContribution_e2e_serialize(+o: FuluSyncCommitteeContribution_d.SyncCommitteeContribution, +v: {W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SyncCommitteeContribution(), W_proofs_obj_root_names_light.v_SyncCommitteeContribution(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_serialize(o), O.encoded(W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_encode(o)), FuluSyncCommitteeContribution_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SyncCommitteeContribution(), W_proofs_obj_root_names_light.v_SyncCommitteeContribution(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSyncCommitteeContribution_e2e_generated.FuluSyncCommitteeContribution_e2e_encode(o)
+
+def FuluSyncCommitteeContribution_e2e_valid_default() -> {W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_valid(FuluSyncCommitteeContribution_d.SyncCommitteeContribution_default()) == True{} : Bool}:
+  {==}
+
+def FuluSyncCommitteeContribution_e2e_valid_total(+o: FuluSyncCommitteeContribution_d.SyncCommitteeContribution) -> {W_types_FuluSyncCommitteeContribution_encode_ssz_generated.SyncCommitteeContribution_valid(o) == True{} : Bool}:
+  {==}

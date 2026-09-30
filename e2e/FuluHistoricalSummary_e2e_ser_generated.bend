@@ -22,3 +22,9 @@ def FuluHistoricalSummary_e2e_serialize_refused(+o: FuluHistoricalSummary_d.Hist
 def FuluHistoricalSummary_e2e_serialize(+o: FuluHistoricalSummary_d.HistoricalSummary, +v: {W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_serialize(o)))} == API.serialize(W_spec_fulu_schemas.HistoricalSummary(), W_proofs_obj_root_names_light.v_HistoricalSummary(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_serialize(o), O.encoded(W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_encode(o)), FuluHistoricalSummary_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.HistoricalSummary(), W_proofs_obj_root_names_light.v_HistoricalSummary(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluHistoricalSummary_e2e_generated.FuluHistoricalSummary_e2e_encode(o)
+
+def FuluHistoricalSummary_e2e_valid_default() -> {W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_valid(FuluHistoricalSummary_d.HistoricalSummary_default()) == True{} : Bool}:
+  {==}
+
+def FuluHistoricalSummary_e2e_valid_total(+o: FuluHistoricalSummary_d.HistoricalSummary) -> {W_types_FuluHistoricalSummary_encode_ssz_generated.HistoricalSummary_valid(o) == True{} : Bool}:
+  {==}

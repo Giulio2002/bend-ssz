@@ -21,6 +21,10 @@ def bvs9(+w: U32, +e: {U32.is_lt(w, 512) == True{} : Bool}) -> {w == U32{WSp.joi
     case U32{+x}:
       Equal.cong(Word(32n), U32, z => U32{z}, x, WSp.join(9n, 23n, WSp.take(9n, 32n, x), Word.zero(23n)), V.shz(9n, 22n, x, e))
 
+def bvt9(+w: U32, +e: {w == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(w)), Word.zero(23n))} : U32}) -> {U32.is_lt(w, 512) == True{} : Bool}:
+  %Equal.sym(U32, w, U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(w)), Word.zero(23n))}, e) : {U32.is_lt(_, 512) == True{} : Bool}
+  V.lt_sh(9n, 22n, WSp.take(9n, 32n, PD.bits(w)))
+
 def bitvector_9_e2e_serialize_ok(+o: bitvector_9_d.Bitvector9, +v: {W_types_bitvector_9_encode_ssz_generated.bv9_valid(o) == True{} : Bool}) -> {W_types_bitvector_9_encode_ssz_generated.bitvector_9_serialize(o) == O.encoded(W_types_bitvector_9_encode_ssz_generated.bitvector_9_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_bitvector_9_encode_ssz_generated.bv9_valid(o), True{}, v) : {W_types_bitvector_9_encode_ssz_generated.bitvector_9_ser_pick(_, o) == O.encoded(W_types_bitvector_9_encode_ssz_generated.bitvector_9_encode(o)) : O.Encoded}
   {==}
@@ -36,3 +40,10 @@ def bitvector_9_ser_prem(+o: bitvector_9_d.Bitvector9, +v: {W_types_bitvector_9_
 def bitvector_9_e2e_serialize(+o: bitvector_9_d.Bitvector9, +v: {W_types_bitvector_9_encode_ssz_generated.bv9_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_9_encode_ssz_generated.bitvector_9_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_9(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_9_bits(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_9_encode_ssz_generated.bitvector_9_serialize(o), O.encoded(W_types_bitvector_9_encode_ssz_generated.bitvector_9_encode(o)), bitvector_9_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_9(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_9_bits(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_9_e2e_generated.bitvector_9_e2e_encode(o, bitvector_9_ser_prem(o, v))
+
+def bitvector_9_e2e_valid_default() -> {W_types_bitvector_9_encode_ssz_generated.bv9_valid(bitvector_9_d.bv9_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_9_e2e_valid_of_prem(+o: bitvector_9_d.Bitvector9, +p: {W_proofs_obj_gbits_small_light.bitvector_9_last(o) == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(W_proofs_obj_gbits_small_light.bitvector_9_last(o))), Word.zero(23n))} : U32}) -> {W_types_bitvector_9_encode_ssz_generated.bv9_valid(o) == True{} : Bool}:
+  match o:
+    case bitvector_9_d.Bitvector9{+w0}: bvt9(w0, p)

@@ -7,6 +7,7 @@ import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O
+import ../types/FuluCell_def_generated.bend as FuluCell_d
 import ../types/FuluCell_encode_ssz_generated.bend as W_types_FuluCell_encode_ssz_generated
 import ../types/schema.bend as S
 
@@ -32,3 +33,6 @@ def FuluCell_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_words_obj_ligh
 def FuluCell_e2e_serialize(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Cell()), +hc: {W_e2e_e2e_tree.at_depth(o, 10n) == True{} : Bool}, +hv: {(o, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_FuluCell_encode_ssz_generated.Cell_serialize(o))))} == API.serialize(W_spec_fulu_schemas.Cell(), S.BytesValue{W_proofs_obj_words_obj_light.wview(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Words & O.Encoded, W_types_FuluCell_encode_ssz_generated.Cell_serialize(o), (Pair.fst(O.Words, W_src_buffer.Buf, W_types_FuluCell_encode_ssz_generated.Cell_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_FuluCell_encode_ssz_generated.Cell_encode(o)))), FuluCell_e2e_serialize_ok(o, rep, hc, hv)) : {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, _)))} == API.serialize(W_spec_fulu_schemas.Cell(), S.BytesValue{W_proofs_obj_words_obj_light.wview(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_FuluCell_e2e_generated.FuluCell_e2e_encode(o, rep, hc)
+
+def FuluCell_e2e_valid_default() -> {(FuluCell_d.b2048_default(), True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(FuluCell_d.b2048_default()) : O.Words & Bool}:
+  {==}

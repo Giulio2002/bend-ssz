@@ -22,3 +22,9 @@ def FuluValidator_e2e_serialize_refused(+o: FuluValidator_d.Validator, +v: {W_ty
 def FuluValidator_e2e_serialize(+o: FuluValidator_d.Validator, +v: {W_types_FuluValidator_encode_ssz_generated.Validator_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluValidator_encode_ssz_generated.Validator_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Validator(), W_proofs_obj_root_names_light.v_Validator(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluValidator_encode_ssz_generated.Validator_serialize(o), O.encoded(W_types_FuluValidator_encode_ssz_generated.Validator_encode(o)), FuluValidator_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Validator(), W_proofs_obj_root_names_light.v_Validator(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluValidator_e2e_generated.FuluValidator_e2e_encode(o)
+
+def FuluValidator_e2e_valid_default() -> {W_types_FuluValidator_encode_ssz_generated.Validator_valid(FuluValidator_d.Validator_default()) == True{} : Bool}:
+  {==}
+
+def FuluValidator_e2e_valid_total(+o: FuluValidator_d.Validator) -> {W_types_FuluValidator_encode_ssz_generated.Validator_valid(o) == True{} : Bool}:
+  {==}

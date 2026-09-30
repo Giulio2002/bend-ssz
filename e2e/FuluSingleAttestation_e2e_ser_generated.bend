@@ -22,3 +22,9 @@ def FuluSingleAttestation_e2e_serialize_refused(+o: FuluSingleAttestation_d.Sing
 def FuluSingleAttestation_e2e_serialize(+o: FuluSingleAttestation_d.SingleAttestation, +v: {W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SingleAttestation(), W_proofs_obj_root_names_light.v_SingleAttestation(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_serialize(o), O.encoded(W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_encode(o)), FuluSingleAttestation_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SingleAttestation(), W_proofs_obj_root_names_light.v_SingleAttestation(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSingleAttestation_e2e_generated.FuluSingleAttestation_e2e_encode(o)
+
+def FuluSingleAttestation_e2e_valid_default() -> {W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_valid(FuluSingleAttestation_d.SingleAttestation_default()) == True{} : Bool}:
+  {==}
+
+def FuluSingleAttestation_e2e_valid_total(+o: FuluSingleAttestation_d.SingleAttestation) -> {W_types_FuluSingleAttestation_encode_ssz_generated.SingleAttestation_valid(o) == True{} : Bool}:
+  {==}
