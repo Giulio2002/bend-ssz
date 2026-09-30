@@ -20,10 +20,13 @@ the decoded object's view (its spec value), not its representation.
 **Composed theorems.** Where the (i) and (iv) bridges take only the object, or the name is
 fixed-size and its decoder's object is written out (`<Name>_d_some`, the words the input's; its
 `rep` and storage premises are then proved of that object by computation), the pipeline is one
-checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
+checked statement (and, for a variable-size name, when its decoded-object premises are proved:
+`e2e/<Name>_e2e_decrep_generated.bend` proves every (i)/(iv) premise of the codec's object
+`DC.OBJ` for each input the codec accepts, from the byte-storage library `e2e/e2e_dz.bend`,
+`codegen/e2e_decoded.py`): `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->120<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->124<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,

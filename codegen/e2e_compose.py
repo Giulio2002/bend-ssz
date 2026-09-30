@@ -174,15 +174,12 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', ac, re.S)
     OBJ = ctx.lift(dm, ms.group(2))
     oa = W.split_top(OBJ[OBJ.index('(') + 1:-1])
-    if len(oa) != 3:
-        return None, 'unexpected decoded object'
-    dT, tT, nT = oa
-    txt = DR.PROVERS[name]()
+    txt = DR.PROVERS[name](law_files())
     EXTRA[E2E / f'{name}_e2e_decrep_generated.bend'] = txt
     DRA = ctx.alias(E2E / f'{name}_e2e_decrep_generated.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
     omode = [m_ for m_, b, _ in eps if b == 'o'][0]
-    call = lambda b: f'{DRA}.p_{b}({dT}, {tT}, {nT}, hS, ec)'
+    call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + ', hS, ec)'
     ea = ''.join(f', {call(b)}' for _, b, _ in eps if b != 'o')
     ra = ''.join(f', {call(b)}' for _, b, _ in rps if b not in ('o', 'h'))
     hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)
