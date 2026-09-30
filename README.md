@@ -10,7 +10,7 @@ end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with th
 END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md), and for
 objects read or changed through the API, the field, collection and setter laws, also listed in
 `e2e/STATEMENTS.txt` (below, "Field, element and setter access"). For
-<!-- fig:composed -->184<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
+<!-- fig:composed -->188<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
 followed by hash_tree_root (the spec root of the deserialized value) are single checked statements
 (`e2e/<Name>_e2e_comp_generated.bend`, list in `e2e/COMPOSED.txt`). For the others it is not yet proved
 that the decoded object satisfies the encode and root bridges' representation premises (PREMISES

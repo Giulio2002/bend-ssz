@@ -25,12 +25,12 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
   run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->10<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAttestation`, `FuluAttesterSlashing`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluTransaction`<!-- /fig -->.
+  <!-- fig:decrep_count -->14<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->184<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->188<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
