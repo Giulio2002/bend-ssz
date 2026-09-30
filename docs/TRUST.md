@@ -6,7 +6,12 @@ Trusted (not proved here):
   bendlang/bend, run on Bun 1.4.2. `toolchain.lock.json` pins the commit and the sha256 of every
   file the checker runs (`bend2/main.ts`, `bend.ts`, `comp.ts`, `base.bend`) and of the Bun
   binary; `tools/check.sh` and `tools/check_fast.sh` refuse to run on any other bytes
-  (`tools/verify_pins.py`). #1075 compares syntactically identical terms before
+  (`tools/verify_pins.py`). This is a branch of an open upstream pull request, not a Bend
+  release: the syntactic-identity check it adds is conservative, but it has not been reviewed or
+  released upstream. Moving to a released Bend is planned once the proofs fit its budget.
+  `tools/check_fast.sh` accepts an umbrella only on the exact line `All terms check.` (never the
+  checker's "All terms check, but N defs rely on unsafe or foreign code"), and
+  `tools/verify_no_escapes.py` bans `@unsafe`, `def f?(` and foreign bodies textually. #1075 compares syntactically identical terms before
   normalizing them; without it, some closed facts (limits of 2^30 bytes and above) would be
   evaluated in unary and not finish. Soundness of the result rests on this checker.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
@@ -14,8 +19,11 @@ Trusted (not proved here):
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of
   END_TO_END.bend, ROOT_DOMAIN.bend, PROOF.bend and HASH_PROOF.bend. These are reviewed, not
   proved; the generators never write them. `frozen.lock.json` records the sha256 of every spec
-  file (and the representations and normative sources it rests on) and of the four roots'
-  statement text (proof bodies excluded); `tools/verify_frozen.py` checks it, and that
+  file (and the representations and normative sources it rests on), of the four roots'
+  statement text (proof bodies excluded), of `types/fulu_model.bend` and
+  `proofs/obj/generic_specs.bend` (what END_TO_END's per-name laws and the generic bridges
+  quantify over), and, per file, of every bridge statement and every definition it reaches
+  outside `src/`, `types/`, `spec/` (the object views, `rep` invariants and their helpers); `tools/verify_frozen.py` checks it, and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `0xe4067e0d858024083f36a7abe7281e89` (bend-collections),

@@ -11,49 +11,26 @@ import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ./bitlist_pack.bend as BK
 
-# The bit-list representation invariant of bitlist_obj.bend (blen, bview, wfb, rep_bits), without
-# the root machinery: for the encoders (importing bitlist_obj re-checks zero_roots, 149 s).
-# Hand-written; the definitions are bitlist_obj's, verbatim.
+import ./bitlist_obj_light.bend as BL
 
-def blen(o: O.Bits) -> U32:
-  match o:
-    case O.Bits{ws, +k}: k
+# The bit-list representation invariant (blen, bview, wfb, rep_bits) for the encoders, without the
+# root machinery (importing bitlist_obj re-checks zero_roots, 149 s). Hand-written. Each definition
+# shared with bitlist_obj is that module's own, through its light companion bitlist_obj_light (one
+# definition, so the encode view and the root view of a bit list cannot diverge).
 
-def bview(o: O.Bits) -> +List<Bool>:
-  match o:
-    case O.Bits{ws, +k}: BK.btk(U32.to_nat(k), BK.bitsof(F.array__slots(U32, F.array__freeze(U32, ws))))
+def blen(o: O.Bits) -> U32: BL.blen(o)
 
-def wfb0(o: O.Bits) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, K =>
-    DK.P2({o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-          {U32.to_nat(K) == 0n : Nat}))))))
+def bview(o: O.Bits) -> +List<Bool>: BL.bview(o)
 
-def wfb1(o: O.Bits) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, K => DK.Ex(Nat, q => DK.Ex(Nat, r =>
-    DK.P2({o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-    DK.P2({U32.to_nat(O.bits_nbytes(K)) == Nat.add(WS.e32(q), r) : Nat},
-    DK.P2({Nat.is_lt(0n, r) == True{} : Bool},
-    DK.P2({Nat.is_le(r, 32n) == True{} : Bool},
-    DK.P2({Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
-    DK.P2({WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
-    DK.P2({BK.zt(F.array__slots(U32, t), U32.to_nat(K)) == True{} : Bool},
-    DK.P2({Bp.byte_count(U32.to_nat(K)) == U32.to_nat(O.bits_nbytes(K)) : Nat},
-          {List.length(&2, Bool, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, t)))) == U32.to_nat(K) : Nat})))))))))))))))
+def wfb0(o: O.Bits) -> Data: BL.wfb0(o)
 
-def wfb(o: O.Bits) -> Data:
-  DK.Or2(wfb0(o), wfb1(o))
+def wfb1(o: O.Bits) -> Data: BL.wfb1(o)
 
-def rep_bits(o: O.Bits, +s: S.Schema) -> Data:
-  DK.P2(wfb(o), DK.P2({Nat.is_le(U32.to_nat(blen(o)), SH.BitList_limit(s)) == True{} : Bool},
-    {Nat.is_le(O.chunks_of(O.bits_nbytes(blen(o))), Bm.chunk_limit(SH.BitList_limit(s))) == True{} : Bool}))
+def wfb(o: O.Bits) -> Data: BL.wfb(o)
 
-def rep_wf(-o: O.Bits, +s: S.Schema, +rep: rep_bits(o, s)) -> wfb(o):
-  (+w, +z) = rep
-  w
+def rep_bits(o: O.Bits, +s: S.Schema) -> Data: BL.rep_bits(o, s)
+
+def rep_wf(-o: O.Bits, +s: S.Schema, +rep: rep_bits(o, s)) -> wfb(o): BL.rep_wf(o, s, rep)
 
 def blen_at(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}) -> {blen(o) == K : U32}:
   Equal.cong(O.Bits, U32, blen, o, O.Bits{F.array__thaw(U32, t), K}, eo)
