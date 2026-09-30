@@ -12,10 +12,11 @@
 # so every file is checked exactly as in the full run) until single roots remain, and the failing
 # root files are printed with the definition the checker names. Writes DIR/<n>.log,
 # DIR/summary.tsv (umbrella, exit, ok, seconds, peak MB, roots), DIR/bisect/*.log and
-# DIR/failed.tsv (root file, log, first Location line). Exits nonzero if any umbrella fails.
+# DIR/failed.tsv (root file, log, first Location line), and DIR/stamp.json (tools/check_stamp.py:
+# commit, checker, lock and source hashes, per-umbrella results). Exits nonzero if any umbrella fails.
 # First, tools/verify_pins.py checks the toolchain and the SHA-256 package against
-# toolchain.lock.json, and tools/verify_frozen.py the frozen statements against frozen.lock.json
-# (exit 3 on a mismatch).
+# toolchain.lock.json, tools/verify_frozen.py the frozen statements against frozen.lock.json, and
+# tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies (exit 3 on any of them).
 # Run from the repository root.
 set -u
 J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
@@ -34,22 +35,24 @@ rm -rf "$OUT"; mkdir -p "$OUT/bisect"; : > "$OUT/summary.tsv"; : > "$OUT/failed.
 T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
 python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
 python3 tools/verify_frozen.py || exit 3
+python3 tools/verify_no_escapes.py || exit 3
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
-# run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints "All terms check"
+# run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints exactly the line
+# "All terms check." (not "All terms check, but N defs rely on unsafe or foreign code")
 # (else the checker's exit code, or 1)
 run() {
   CHECK_MEMMAX=${UMB_MEMMAX:-16G} CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
     BUN_JSC_forceRAMSize=${UMB_RAM:-12000000000} tools/check.sh "$1" > "$2" 2>&1
   local rc=$?; [ $rc != 0 ] && return $rc
-  grep -q 'All terms check' "$2" || return 1
+  grep -qx 'All terms check\.' "$2" || return 1
 }
 one() {
   u=$1; out=$2
   lg=$out/${u%.bend}.log
   run "$out/umb/$u" "$lg"; rc=$?
-  ok=$(grep -c 'All terms check' "$lg")
+  ok=$(grep -cx 'All terms check\.' "$lg")
   tl=$(grep '^CHECK_TIME' "$lg" | tail -n 1)
   s=$(echo "$tl" | awk '{print $2}'); kb=$(echo "$tl" | awk '{print $3}')
   roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")
@@ -94,8 +97,9 @@ cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
+python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"
 bad=$(awk -F'\t' '$2 != 0 || $3 == 0 {print $1}' "$OUT/summary.tsv")
-[ -z "$bad" ] && { echo "all files check"; exit 0; }
+[ -z "$bad" ] && { echo "all files check (stamp: $OUT/stamp.json)"; exit 0; }
 echo "FAILED umbrellas:"
 for u in $bad; do echo "  $OUT/${u%.bend}.log"; grep -m1 -A1 '^Location' "$OUT/${u%.bend}.log" | sed 's/^/    /'; done
 if [ $LOC = 1 ]; then

@@ -44,8 +44,13 @@ default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-2
 (`BEND_LIB`, default the vendored `vendor/bendhub`), and prints `All terms check.` and a final
 `CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
 checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
-`check_fast.sh` also runs `tools/verify_frozen.py` first: the spec and the four roots' statements
-must match `frozen.lock.json`. Each check runs under the limits it was measured with:
+`check_fast.sh` also runs `tools/verify_frozen.py` first: the spec, the four roots' statements, and
+the bridge statements with the definitions they reach must match `frozen.lock.json`. A deliberate
+statement change is recorded with `python3 tools/verify_frozen.py --update` in the same commit. It
+then runs `tools/verify_no_escapes.py`, and at the end writes `DIR/stamp.json`
+(`tools/check_stamp.py`); the committed `benchmarks/evidence/check_fast.json` is the stamp of the
+last full check, and `python3 tools/check_stamp.py verify benchmarks/evidence/check_fast.json`
+says whether it describes the current tree. Each check runs under the limits it was measured with:
 
 | Limit | Value |
 |---|---|
