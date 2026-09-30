@@ -13,8 +13,11 @@ They take no arguments and are deterministic, so --check copies the tree (withou
 and node_modules/) to a scratch directory, runs each one there in turn, and compares every file
 it wrote (by modification time, or new) with the original tree. Each must write at least one
 file (the files it writes are listed with -v) and every written file must equal the committed
-one. Frozen files some of them write (spec/*.bend, types/fulu_model.bend, ...) are thereby
-checked to be exactly what their generator produces, on top of frozen.lock.json.
+one. Frozen files some of them write (spec/bit_packing.bend by generate_bit_packing,
+spec/bit_decoding.bend by generate_bit_decoding, spec/fulu_schemas.bend by
+generate_fulu_schema_proofs, types/fulu_model.bend by generate_fulu) are thereby checked to be
+exactly what their generator produces, on top of frozen.lock.json. None of these outputs carries a
+GENERATED header.
 
 ONE_SHOT lists the six that cannot be rerun from the tree or write no committed file, with the
 reason; they are not run,
