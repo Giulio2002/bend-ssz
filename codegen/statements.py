@@ -90,7 +90,8 @@ def statement_files():
     for p in sorted((ROOT / 'e2e').glob('*_e2e_witness_generated.bend')):
         n = p.name[:-len('_e2e_witness_generated.bend')]
         t = p.read_text()
-        out[p.name] = [l for l in (f'{n}_e2e_witness', f'{n}_e2e_witness_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
+        out[p.name] = [l for l in (f'{n}_e2e_witness', f'{n}_e2e_witness_nonempty', f'{n}_e2e_witness_root',
+                                   f'{n}_e2e_witness_root_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
     return out
 
 

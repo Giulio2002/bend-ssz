@@ -49,3 +49,30 @@ def len8(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {3n+a == b : Nat}, +hb: {N
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(3n+a)), FD.spec_common__pow2(3n+a), FD.u32__pow2u_value(3n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 3n+a, Equal.sym(Nat, 3n+a, b, eb), hb))) : {_ == PK.e8(U32.to_nat(FD.u32__pow2u(a))) : Nat}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 3n+a, 32n, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 3n+a, Equal.sym(Nat, 3n+a, b, eb), hb)))) : {FD.spec_common__pow2(3n+a) == PK.e8(_) : Nat}
   {==}
+
+# shifting 2^(5 + a) right by 5 gives 2^a
+def shr5(+a: Nat, +h: {Nat.is_lt(5n+a, 32n) == True{} : Bool}) -> {U32.shrn(FD.u32__pow2u(5n+a), 5n) == FD.u32__pow2u(a) : U32}:
+  %Equal.sym(U32, U32.shr(FD.u32__pow2u(5n+a)), FD.u32__pow2u(4n+a), FD.u32__shr_pow2u(4n+a, h)) : {U32.shr(U32.shr(U32.shr(U32.shr(_)))) == FD.u32__pow2u(a) : U32}
+  %Equal.sym(U32, U32.shr(FD.u32__pow2u(4n+a)), FD.u32__pow2u(3n+a), FD.u32__shr_pow2u(3n+a, FD.nat__lt_trans(4n+a, 5n+a, 32n, FD.nat__lt_succ(4n+a), h))) : {U32.shr(U32.shr(U32.shr(_))) == FD.u32__pow2u(a) : U32}
+  shr3(a, FD.nat__lt_trans(3n+a, 5n+a, 32n, FD.nat__lt_trans(3n+a, 4n+a, 5n+a, FD.nat__lt_succ(3n+a), FD.nat__lt_succ(4n+a)), h))
+
+# a zero array of 2^b = 32 * 2^a bytes holds a whole number of 32-byte elements (packed_obj_light.rep_v32's count)
+def len32(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool},
+    +ew: {w == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words})
+    -> {U32.to_nat(WO.len(w)) == PK.e32(PK.cnt32(w)) : Nat}:
+  %Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)}, ew) : {U32.to_nat(WO.len(_)) == PK.e32(PK.cnt32(w)) : Nat}
+  %Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)}, ew) : {U32.to_nat(FD.u32__pow2u(b)) == PK.e32(PK.cnt32(_)) : Nat}
+  %Equal.sym(Nat, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb)) : {U32.to_nat(FD.u32__pow2u(_)) == PK.e32(U32.to_nat(U32.shrn(FD.u32__pow2u(_), 5n))) : Nat}
+  %Equal.sym(U32, U32.shrn(FD.u32__pow2u(5n+a), 5n), FD.u32__pow2u(a), shr5(a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {U32.to_nat(FD.u32__pow2u(5n+a)) == PK.e32(U32.to_nat(_)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(5n+a)), FD.spec_common__pow2(5n+a), FD.u32__pow2u_value(5n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {_ == PK.e32(U32.to_nat(FD.u32__pow2u(a))) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
+  {==}
+
+# the same for any word array of 2^b bytes (a decoder's tree-form object)
+def len32g(-arr: Array<U32>, +a: Nat, +b: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, FD.u32__pow2u(b)})) == PK.e32(PK.cnt32(O.Words{arr, FD.u32__pow2u(b)})) : Nat}:
+  %Equal.sym(Nat, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb)) : {U32.to_nat(FD.u32__pow2u(_)) == PK.e32(U32.to_nat(U32.shrn(FD.u32__pow2u(_), 5n))) : Nat}
+  %Equal.sym(U32, U32.shrn(FD.u32__pow2u(5n+a), 5n), FD.u32__pow2u(a), shr5(a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {U32.to_nat(FD.u32__pow2u(5n+a)) == PK.e32(U32.to_nat(_)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(5n+a)), FD.spec_common__pow2(5n+a), FD.u32__pow2u_value(5n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {_ == PK.e32(U32.to_nat(FD.u32__pow2u(a))) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
+  {==}

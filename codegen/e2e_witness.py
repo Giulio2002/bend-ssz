@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Non-vacuity witnesses for the encode (i) bridges: e2e/<Name>_e2e_witness_generated.bend.
+"""Non-vacuity witnesses for the bridges that take premises: e2e/<Name>_e2e_witness_generated.bend.
 
-For each name in NAMES, one checked def applies the name's encode bridge
-(<Name>_e2e_encode of e2e/<Name>_e2e_generated.bend) to the object API's default object
-<Name>_default(), with every premise of the bridge (rep and each storage, size and budget premise)
-proved of that object. So the bridge's premises are jointly satisfiable and its conclusion holds
-of at least one object: the bridge is not vacuous.
+For every name whose encode (i) or root (iv) bridge takes premises besides the object (premised(): read
+from e2e/manifest.json), checked defs apply those bridges (<Name>_e2e_encode, <Name>_e2e_root) to the
+object API's default object (the def <..>_default() returning the bridge's object type; DV(), the default
+with valid elements, where a vector holds empty boxes; the literal 0 for a bare U32), with every premise
+of the bridge (rep and each storage, size and budget premise) proved of that object: <Name>_e2e_witness
+and <Name>_e2e_witness_root. So each premise set is jointly satisfiable and each bridge's conclusion holds
+of at least one object: no bridge is vacuous. The light-client branch types' bridges quantify over a
+perfect word tree: their witness is the zero tree of the least depth with room. e2e/WITNESS.txt lists
+every premised name, witnessed or pending with the reason.
 
 The premise proofs are synthesized from the premise predicates' own definitions (read from the
 modules the bridge imports): a predicate is a nest of DK.Ex / DK.P2 / DK.Or2 over equalities; the
@@ -25,6 +29,7 @@ proved of the element. So no premise holds only of empty lists.
     python3 codegen/e2e_witness.py            # write
     python3 codegen/e2e_witness.py --check    # nonzero exit if any output is stale
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -91,9 +96,35 @@ def len8(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {3n+a == b : Nat}, +hb: {N
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(3n+a)), FD.spec_common__pow2(3n+a), FD.u32__pow2u_value(3n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 3n+a, Equal.sym(Nat, 3n+a, b, eb), hb))) : {_ == PK.e8(U32.to_nat(FD.u32__pow2u(a))) : Nat}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 3n+a, 32n, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 3n+a, Equal.sym(Nat, 3n+a, b, eb), hb)))) : {FD.spec_common__pow2(3n+a) == PK.e8(_) : Nat}
   {==}
+
+# shifting 2^(5 + a) right by 5 gives 2^a
+def shr5(+a: Nat, +h: {Nat.is_lt(5n+a, 32n) == True{} : Bool}) -> {U32.shrn(FD.u32__pow2u(5n+a), 5n) == FD.u32__pow2u(a) : U32}:
+  %Equal.sym(U32, U32.shr(FD.u32__pow2u(5n+a)), FD.u32__pow2u(4n+a), FD.u32__shr_pow2u(4n+a, h)) : {U32.shr(U32.shr(U32.shr(U32.shr(_)))) == FD.u32__pow2u(a) : U32}
+  %Equal.sym(U32, U32.shr(FD.u32__pow2u(4n+a)), FD.u32__pow2u(3n+a), FD.u32__shr_pow2u(3n+a, FD.nat__lt_trans(4n+a, 5n+a, 32n, FD.nat__lt_succ(4n+a), h))) : {U32.shr(U32.shr(U32.shr(_))) == FD.u32__pow2u(a) : U32}
+  shr3(a, FD.nat__lt_trans(3n+a, 5n+a, 32n, FD.nat__lt_trans(3n+a, 4n+a, 5n+a, FD.nat__lt_succ(3n+a), FD.nat__lt_succ(4n+a)), h))
+
+# a zero array of 2^b = 32 * 2^a bytes holds a whole number of 32-byte elements (packed_obj_light.rep_v32's count)
+def len32(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool},
+    +ew: {w == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words})
+    -> {U32.to_nat(WO.len(w)) == PK.e32(PK.cnt32(w)) : Nat}:
+  %Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)}, ew) : {U32.to_nat(WO.len(_)) == PK.e32(PK.cnt32(w)) : Nat}
+  %Equal.sym(O.Words, w, O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)}, ew) : {U32.to_nat(FD.u32__pow2u(b)) == PK.e32(PK.cnt32(_)) : Nat}
+  %Equal.sym(Nat, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb)) : {U32.to_nat(FD.u32__pow2u(_)) == PK.e32(U32.to_nat(U32.shrn(FD.u32__pow2u(_), 5n))) : Nat}
+  %Equal.sym(U32, U32.shrn(FD.u32__pow2u(5n+a), 5n), FD.u32__pow2u(a), shr5(a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {U32.to_nat(FD.u32__pow2u(5n+a)) == PK.e32(U32.to_nat(_)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(5n+a)), FD.spec_common__pow2(5n+a), FD.u32__pow2u_value(5n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {_ == PK.e32(U32.to_nat(FD.u32__pow2u(a))) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
+  {==}
+
+# the same for any word array of 2^b bytes (a decoder's tree-form object)
+def len32g(-arr: Array<U32>, +a: Nat, +b: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, FD.u32__pow2u(b)})) == PK.e32(PK.cnt32(O.Words{arr, FD.u32__pow2u(b)})) : Nat}:
+  %Equal.sym(Nat, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb)) : {U32.to_nat(FD.u32__pow2u(_)) == PK.e32(U32.to_nat(U32.shrn(FD.u32__pow2u(_), 5n))) : Nat}
+  %Equal.sym(U32, U32.shrn(FD.u32__pow2u(5n+a), 5n), FD.u32__pow2u(a), shr5(a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {U32.to_nat(FD.u32__pow2u(5n+a)) == PK.e32(U32.to_nat(_)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(5n+a)), FD.spec_common__pow2(5n+a), FD.u32__pow2u_value(5n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {_ == PK.e32(U32.to_nat(FD.u32__pow2u(a))) : Nat}
+  %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
+  {==}
 '''
 HEADER = '# GENERATED by codegen/e2e_witness.py. Do not edit.'
-
 
 # ---------------------------------------------------------------- Bend source reading
 
@@ -268,6 +299,18 @@ class OneList:
         self.elem, self.eexpr = elem, eexpr
 
 
+class VecN:
+    """a vector (or list) of n Data elements, all the element's default: Seq{Array.new(T, d, e), n}"""
+    def __init__(self, elem, eexpr, ty, n, d):
+        self.elem, self.eexpr, self.ty, self.n, self.d = elem, eexpr, ty, n, d
+
+
+class ArrM:
+    """an array of copies of one element (a vector's items)"""
+    def __init__(self, elem):
+        self.elem = elem
+
+
 class Tree:
     """the storage tree witnessed for a OneList: one leaf holding the element"""
     def __init__(self, elem):
@@ -354,7 +397,14 @@ def model_of_(ctx, mod, expr):
     if ms and ms.group(1).endswith('_Seq'):
         items = split_top(ms.group(2))
         if items[1].strip() != '0':
-            raise SystemExit(f'e2e_witness: nonempty default list {fn}')
+            n = int(items[1].strip())
+            fill = parse_call(items[0])
+            fb = m2.signature(fill[0])[2].strip() if fill and fill[0] in m2.defs else ''
+            mf = re.match(r'Array\.new\(([^,]+), d, (.*)\)$', fb)
+            if not mf:
+                raise SystemExit(f'e2e_witness: nonempty default list {fn}')
+            el = model_of(ctx, m2, mf.group(2))
+            return VecN(el, el.expr, ctx.lift(m2, mf.group(1)), n, (n - 1).bit_length())
         return EList((m2, items[0]))
     if ms and all(parse_call(a) for a in split_top(ms.group(2))):
         fields = []
@@ -383,9 +433,11 @@ def words_list_elem(path):
     return None
 
 
-def model_ne(ctx, mod, expr):
+def model_ne(ctx, mod, expr, lists=True):
     """the model of the non-empty object built from the default expression expr of module mod: every list
-    reachable through containers and boxes holds one element. Its .expr is the object's expression."""
+    reachable through containers and boxes holds one element (lists=False: lists stay empty). A vector of
+    boxed elements (whose default holds empty boxes, BNone) holds valid ones (_bx_default()), in both
+    modes. Its .expr is the object's expression."""
     c = parse_call(expr)
     if c is None:
         raise SystemExit(f'e2e_witness: no model for {expr!r} ({mod.path.name})')
@@ -395,7 +447,7 @@ def model_ne(ctx, mod, expr):
         return model_of(ctx, mod, expr)
     params, ret, body = m2.signature(name)
     b = body.strip()
-    if b == 'O.words_new(0)' and words_list_elem(m2.path):
+    if b == 'O.words_new(0)' and words_list_elem(m2.path) and lists:
         k = words_list_elem(m2.path)
         m = Words(k)
         m.expr = f'O.words_new({k})'
@@ -403,7 +455,7 @@ def model_ne(ctx, mod, expr):
         return m
     mb = parse_call(b)
     if mb and mb[0].endswith('_bx_wrap'):
-        inner = model_ne(ctx, m2, mb[1][0])
+        inner = model_ne(ctx, m2, mb[1][0], lists)
         if not getattr(inner, 'changed', False):
             return model_of(ctx, mod, expr)
         m = Box(inner, inner.expr)
@@ -414,6 +466,25 @@ def model_ne(ctx, mod, expr):
     if ms and ms.group(1).endswith('_Seq'):
         items = split_top(ms.group(2))
         fill = parse_call(items[0])
+        mw = re.search(r'Array\.set\([^,]+, arr, i, ([\w.]+_bx_wrap)\(v\)\)', m2.text)
+        if items[1].strip() != '0':
+            # a vector: its length is fixed; boxed elements must be valid (the default's are empty boxes)
+            if not mw:
+                return model_of(ctx, mod, expr)
+            n = int(items[1].strip())
+            d = (n - 1).bit_length()
+            ty = ctx.lift(m2, re.match(r'Array<(.*)>$', m2.signature(fill[0])[1].strip()).group(1))
+            el = model_of(ctx, m2, mw.group(1)[:-len('_bx_wrap')] + '_bx_default()')
+            items_e = f'ALeaf{{{el.expr}}}'      # the array of 2^d copies, written out (boxes are not Data)
+            for _ in range(d):
+                items_e = f'ANode{{{items_e}, {items_e}}}'
+            m = VecN(el, el.expr, ty, n, d)
+            m.items = items_e
+            m.expr = f'{ctx.lift(m2, ms.group(1))}{{{items_e}, {n}}}'
+            m.changed = True
+            return m
+        if not lists:
+            return model_of(ctx, mod, expr)
         mw = re.search(r'Array\.set\([^,]+, arr, i, ([\w.]+_bx_wrap)\(v\)\)', m2.text)
         if mw:
             wm, wn = m2.resolve(mw.group(1))
@@ -432,7 +503,7 @@ def model_ne(ctx, mod, expr):
     if ms and all(parse_call(a) for a in split_top(ms.group(2))):
         fields, parts, changed = [], [], False
         for a in split_top(ms.group(2)):
-            sub = model_ne(ctx, m2, a)
+            sub = model_ne(ctx, m2, a, lists)
             changed |= getattr(sub, 'changed', False)
             parts.append(sub.expr)
             if isinstance(sub, Cont) and sub.tname.startswith(ms.group(1) + '_g'):
@@ -530,6 +601,10 @@ class Synth:
             t = self.arg_model(args[1], env)
             return Slots(t.elem) if isinstance(t, Tree) else None
         inner = self.arg_model(args[0], env) if args else None
+        if base.startswith('tfz_') and isinstance(inner, ArrM):
+            return Tree(inner.elem)
+        if re.match(r'pju_\w+_\d+$', base) and isinstance(inner, Cont) and len(inner.fields) == 1:
+            return inner.fields[0][1]
         if re.match(r'xat_\w+$', base) and isinstance(inner, Slots):
             return inner.elem
         if re.match(r'(th|fz)_\w+$', base) and inner is not None:
@@ -547,7 +622,7 @@ class Synth:
         """a proof term of the Data predicate text pred (written in mod), with its variables' models in env"""
         p = pred.strip()
         if p.startswith('{'):
-            return self.eq(p, env)
+            return self.eq(p, dict(env, __mod=mod))
         if p.startswith('match '):
             return self.unfold(mod, p, env)
         c = parse_call(p)
@@ -564,7 +639,7 @@ class Synth:
                 wit = self.witness(mod, args[0], v, lam[mv.end():], env)
                 env2 = dict(env)
                 subj = env.get('__subj')
-                if isinstance(subj, OneList) and 'array__Tree<' in args[0]:
+                if isinstance(subj, (OneList, VecN)) and 'array__Tree<' in args[0]:
                     env2[v] = ('val', wit, Tree(subj.elem))
                 else:
                     env2[v] = ('val', wit)
@@ -573,6 +648,11 @@ class Synth:
                 return f'({self.prove(mod, args[0], env)}, {self.prove(mod, args[1], env)})'
             if base == 'Or2':
                 subj = env.get('__subj')
+                mu = re.match(r'.*_c(\d+)$', subj.tname) if isinstance(subj, Cont) else None
+                if mu:
+                    ma0 = re.search(r'_(\d+)\(', args[0])
+                    return (f'Inl{{{self.prove(mod, args[0], env)}}}' if ma0 and ma0.group(1) == mu.group(1)
+                            else f'Inr{{{self.prove(mod, args[1], env)}}}')
                 if (isinstance(subj, Words) and subj.n == 0) or (isinstance(subj, BitsM) and subj.k == 0):
                     return f'Inl{{{self.prove(mod, args[0], env)}}}'
                 return f'Inr{{{self.prove(mod, args[1], env)}}}'
@@ -635,6 +715,74 @@ class Synth:
             env3[q] = ('val', f'{k - 1}n')
             return self.prove(m2, cases[1][1], env3)
         mdl = env2.get(var)
+        if isinstance(mdl, Cont):
+            # a match on the container (or union option) itself: the case of its constructor, fields bound
+            for pat_, sub_ in cases:
+                mc = re.fullmatch(r'([\w.]+)\{(.*)\}', pat_)
+                if mc and mc.group(1).split('.')[-1] == mdl.tname:
+                    bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                    if len(bs_) == len(mdl.fields):
+                        env3 = dict(env2)
+                        env3['__e'] = dict(env2.get('__e', {}))
+                        for b_, (fe, fm) in zip(bs_, mdl.fields):
+                            env3[b_] = fm
+                            env3['__e'][b_] = fe
+                        return self.prove(m2, sub_, env3)
+        if isinstance(mdl, OneList) and len(cases) == 1:
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0])
+            if mc and mc.group(1).endswith('_Seq'):
+                bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                env3 = dict(env2)
+                env3['__e'] = dict(env2.get('__e', {}))
+                it = f'ALeaf{{{mdl.eexpr}}}'
+                env3[bs_[0]] = ('val', it, ArrM(mdl.elem))
+                env3['__e'][bs_[0]] = it
+                env3[bs_[1]] = ('val', '1')
+                env3['__e'][bs_[1]] = '1'
+                return self.prove(m2, cases[0][1], env3)
+        if isinstance(mdl, EList) and len(cases) == 1:
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0])
+            if mc and mc.group(1).endswith('_Seq'):
+                bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                env3 = dict(env2)
+                env3['__e'] = dict(env2.get('__e', {}))
+                fm_, fe_ = mdl.fill
+                env3[bs_[0]] = ('val', self.ctx.lift(fm_, fe_))
+                env3['__e'][bs_[0]] = self.ctx.lift(fm_, fe_)
+                env3[bs_[1]] = ('val', '0')
+                env3['__e'][bs_[1]] = '0'
+                return self.prove(m2, cases[0][1], env3)
+        if isinstance(mdl, Words) and len(cases) == 1:
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0])
+            if mc and mc.group(1).split('.')[-1] == 'Words':
+                bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                env3 = dict(env2)
+                env3['__e'] = dict(env2.get('__e', {}))
+                for b_, v_ in zip(bs_, (f'FD.array__thaw(U32, FD.array__trep(U32, {mdl.d}n, 0))', f'{mdl.n}')):
+                    env3[b_] = ('val', v_)
+                    env3['__e'][b_] = v_
+                return self.prove(m2, cases[0][1], env3)
+        if isinstance(mdl, VecN) and len(cases) == 1 and getattr(mdl, 'items', None):
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0])
+            if mc and mc.group(1).endswith('_Seq'):
+                bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                env3 = dict(env2)
+                env3['__e'] = dict(env2.get('__e', {}))
+                env3[bs_[0]] = ('val', mdl.items, ArrM(mdl.elem))
+                env3['__e'][bs_[0]] = mdl.items
+                env3[bs_[1]] = ('val', f'{mdl.n}')
+                env3['__e'][bs_[1]] = f'{mdl.n}'
+                return self.prove(m2, cases[0][1], env3)
+        if isinstance(mdl, BitsM) and len(cases) == 1:
+            mc = re.fullmatch(r'([\w.]+)\{(.*)\}', cases[0][0])
+            if mc and mc.group(1).split('.')[-1] == 'Bits':
+                bs_ = [b.strip().lstrip('+') for b in split_top(mc.group(2))]
+                env3 = dict(env2)
+                env3['__e'] = dict(env2.get('__e', {}))
+                for b_, v_ in zip(bs_, (f'Array.new(U32, {mdl.d}n, 0)', f'{mdl.k}')):
+                    env3[b_] = ('val', v_)
+                    env3['__e'][b_] = v_
+                return self.prove(m2, cases[0][1], env3)
         for pat, sub in cases:
             mc = re.fullmatch(r'([\w.]+)\{(.*)\}', pat)
             if not mc:
@@ -731,6 +879,24 @@ class Synth:
                 return f'{subj.d}n'
             if v in ('K', 'N'):
                 return f'{subj.k}'
+        if isinstance(subj, VecN):
+            if 'array__Tree<' in ty:
+                ma = re.search(r'(?<![\w])(\w+\.)?am_(\w+)\(' + v + r'\)', body)
+                if ma and getattr(subj, 'items', None):
+                    return self.ctx.lift(mod, (ma.group(1) or '') + 'tfz_' + ma.group(2)) + f'({subj.items})'
+                return f'FD.array__trep({subj.ty}, {subj.d}n, {subj.eexpr})'
+            if v == 'dw':
+                return f'{subj.d}n'
+            if v == 'N':
+                return f'{subj.n}'
+        if isinstance(subj, Words) and v == 'd':
+            return f'{subj.d}n'
+        if isinstance(subj, Cont):
+            mc = re.search(r'\{\w+ == ([\w.]+)\{(.*?)\} : ', body)
+            if mc:
+                cargs = [a_.strip() for a_ in split_top(mc.group(2))]
+                if v in cargs and len(cargs) == len(subj.fields):
+                    return subj.fields[cargs.index(v)][0]
         if isinstance(subj, OneList):
             if 'array__Tree<' in ty:
                 ma = re.search(r'(?<![\w])(\w+\.)?am_(\w+)\(' + v + r'\)', body)
@@ -788,6 +954,16 @@ class Synth:
 
     def eq(self, p, env):
         subj = env.get('__subj')
+        if isinstance(subj, VecN) and 'array__thaw' in p and '== ' in p:
+            q = self.subst(env['__mod'], p, env) if env.get('__mod') else p
+            q = re.sub(r'(?<![\w.])[A-Za-z_]\w*(?![\w.{(])',
+                       lambda m: env[m.group(0)][1] if isinstance(env.get(m.group(0)), tuple) else m.group(0), q)
+            tt = f'FD.array__thaw({subj.ty}, FD.array__trep({subj.ty}, {subj.d}n, {subj.eexpr}))'
+            if tt in q:
+                nm = f'VZ{len(self.lemmas)}'
+                self.lemmas[nm] = (f'def {nm}() -> {q}:\n  %FD.array__new({subj.ty}, {subj.d}n, {subj.eexpr}) : '
+                                   f'{q.replace(tt, "_", 1)}\n  {{==}}')
+                return f'{nm}()'
         if isinstance(subj, BitsM) and re.search(r'== O\.Bits\{', p) and 'array__thaw' in p:
             return self.bz(subj.d, subj.k)
         if isinstance(subj, BitsM) and 'array__perfect(U32' in p:
@@ -802,6 +978,9 @@ class Synth:
         if pw and re.search(r'^\{U32\.to_nat\(WO\.len\(o\)\) == e8\(cnt8\(o\)\) : Nat\}$', p) and pw >= 3:
             self.ctx.alias(E2E / 'e2e_wit.bend')
             return f'WT.len8({env["__e"]["o"]}, {pw - 3}n, {pw}n, {subj.d}n, {{==}}, {{==}}, {self.wz(subj.n, subj.d)})'
+        if pw and re.search(r'^\{U32\.to_nat\(WO\.len\(o\)\) == e32\(cnt32\(o\)\) : Nat\}$', p) and pw >= 5:
+            self.ctx.alias(E2E / 'e2e_wit.bend')
+            return f'WT.len32({env["__e"]["o"]}, {pw - 5}n, {pw}n, {subj.d}n, {{==}}, {{==}}, {self.wz(subj.n, subj.d)})'
         if pw and re.search(r'Nat\.is_le\(O\.e8\(1n\+q\), \w+\.spec_common__pow2\(dw\)\)', p):
             return f'WT.eQ({pw - 5}n, {subj.d}n, {{==}})'
         return R
@@ -852,26 +1031,13 @@ def szr_term(syn, mod, pt, at_d):
     return f'szr_lt({mf.group(1)}, ' + ', '.join(at_d(a) for a in args[1:]) + ', {==})'
 
 
-def bridge_decl(name):
-    f = E2E / f'{name}_e2e_generated.bend'
-    mod = Mod.get(f)
-    d = mod.defs[f'{name}_e2e_encode']
-    return mod, d
+def law_files():
+    """{law name: bridge file path} from e2e/manifest.json"""
+    man = json.loads((E2E / 'manifest.json').read_text())
+    return {l: E2E / f for f, es in man['files'].items() for e in es for l in e['laws']}
 
 
-def build(name):
-    mod, d = bridge_decl(name)
-    PREFER.clear()
-    taken = set()
-    for a, pth in mod.imports.items():
-        if pth not in PREFER and a not in taken:
-            PREFER[pth] = a
-            taken.add(a)
-    PREFER[mod.path] = 'BR'
-    PREFER[(E2E / 'e2e_wit.bend').resolve()] = 'WT'
-    ctx = Ctx()
-    ctx.alias(mod.path)
-    syn = Synth(ctx)
+def params_of(d):
     k = d.index('(')
     depth, j = 0, k
     while True:
@@ -883,75 +1049,245 @@ def build(name):
             if depth == 0:
                 break
         j += 1
-    params = split_top(d[k + 1:j])
-    concl = re.search(r'\) -> (\{Some\{.*\}):\n', d, re.S).group(1)
-    tmod = Mod.get(ROOT / f'types/{name}_def_generated.bend')
-    X = name[len('Fulu'):] if name.startswith('Fulu') else name
-    dflt = f'{X}_default()'
-    obj = model_of(ctx, tmod, dflt)
-    env = {'o': obj}
-    dmod_alias = ctx.alias(tmod.path)
-    D = f'{dmod_alias}.{dflt}'
+    rest = d[j + 1:]
+    a = rest.index('{')
+    depth, e = 0, a
+    while True:
+        if rest[e] == '{':
+            depth += 1
+        elif rest[e] == '}':
+            depth -= 1
+            if depth == 0:
+                break
+        e += 1
+    return split_top(d[k + 1:j]), rest[a:e + 1]
 
-    def at_d(t):
-        t = ctx.lift(mod, t)
-        return re.sub(r'(?<![\w.])o(?=[),])', D, t)
-    prem = []
-    for p in params[1:]:
-        pn, pt = p.lstrip('+-').split(':', 1)
-        env['__subj'] = None
-        term = szr_term(syn, mod, pt.strip(), at_d) or syn.prove(mod, pt, env)
-        prem.append((pn.strip(), at_d(pt.strip()), term))
 
-    # the same bridge at the non-empty object NE() (one element in every list)
-    ne = model_ne(ctx, tmod, dflt)
-    tyname = f'{dmod_alias}.{tmod.signature(dflt[:-2])[1].strip()}'
-    ne_expr = ne.expr
-    ne.expr = 'NE()'
-    env1 = {'o': ne}
+def premised(lf):
+    """the names whose encode (i) or root (iv) bridge takes premises besides the object (and the buffer)"""
+    out = []
+    for l in sorted(lf):
+        if not l.endswith('_e2e_encode'):
+            continue
+        n = l[:-len('_e2e_encode')]
+        ep, _ = params_of(Mod.get(lf[l]).defs[l])
+        rp, _ = params_of(Mod.get(lf[n + '_e2e_root']).defs[n + '_e2e_root'])
+        if [x.lstrip('+-').split(':')[0].strip() for x in ep] != ['o'] or \
+                [x.lstrip('+-').split(':')[0].strip() for x in rp] != ['h', 'o']:
+            out.append(n)
+    return out
 
-    def at_ne(t):
-        t = ctx.lift(mod, t)
-        return re.sub(r'(?<![\w.])o(?=[),])', 'NE()', t)
-    prem1 = []
-    for p in params[1:]:
-        pn, pt = p.lstrip('+-').split(':', 1)
-        env1['__subj'] = None
-        term = szr_term(syn, mod, pt.strip(), at_ne) or syn.prove(mod, pt, env1)
-        prem1.append((pn.strip(), at_ne(pt.strip()), term))
-    bralias = 'BR'
-    concl_c = at_d(concl)
-    ctx.alias(ROOT / 'src/obj.bend')
+
+def default_of(ctx, mod, otype, name):
+    """(module, default call) of the object API's default object of the bridge's object type"""
+    otype = otype.strip()
+    a, _, tn = otype.rpartition('.')
+    path = mod.imports.get(a) if a else mod.path
+    if path is None or not re.search(r'types/\w+_def_generated\.bend$', str(path)):
+        path = ROOT / f'types/{name}_def_generated.bend'
+    tmod = Mod.get(path)
+    for d in tmod.defs:
+        if d.endswith('_default') and '_bx_' not in d:
+            ps, ret, _ = tmod.signature(d)
+            if not ps and ret.strip().split('.')[-1] == tn:
+                return tmod, f'{d}()'
+    if tn == 'U32':
+        return None, '0'
+    raise SystemExit(f'e2e_witness: no default {tn} in {Path(path).name}')
+
+
+BRANCH_T = 'FD.array__Tree<U32>'
+
+
+def build_branch(name, lf):
+    """a branch type's bridges quantify over a perfect word tree t of depth dw: the zero tree of the least depth"""
+    em = Mod.get(lf[f'{name}_e2e_encode'])
+    rm = Mod.get(lf[f'{name}_e2e_root'])
+    ctx = Ctx()
+    PREFER.clear()
+    for m_ in (em, rm):
+        for a, pth in m_.imports.items():
+            PREFER.setdefault(pth, a)
+    PREFER[em.path], PREFER[rm.path] = 'BR', 'RB'
+    ctx.alias(em.path)
+    ctx.alias(rm.path)
+    out = []
+    for tag, mod, law, extra in (('', em, f'{name}_e2e_encode', ''), ('_root', rm, f'{name}_e2e_root', 'B.alloc(0), ')):
+        ps, concl = params_of(mod.defs[law])
+        cap = next(p for p in ps if p.lstrip('+').startswith('cap:'))
+        k = int(re.search(r'O\.e8\((\d+)n\)', cap).group(1))
+        dw = max(0, (8 * k - 1).bit_length())
+        sub = {'t': f'FD.array__trep(U32, {dw}n, 0)', 'dw': f'{dw}n', 'h': 'B.alloc(0)'}
+        c = ctx.lift(mod, concl)
+        c = re.sub(r'(?<![\w.])(t|dw|h)(?=[),}])', lambda m: sub[m.group(1)], c)
+        args = [sub['t'], sub['dw'], '{==}', f'FD.array__trep_perfect(U32, {dw}n, 0)', '{==}']
+        out.append(f'def {name}_e2e_witness{tag}() -> {c}:\n  {"BR" if not tag else "RB"}.{law}({extra}{", ".join(args)})\n')
+    ctx.alias(ROOT / 'src/buffer.bend')
     ctx.alias(ROOT / 'proofs/compact/found.bend')
+    head = imports_text(ctx)
+    return head + '\n\n' + HEADER + '\n' + (
+        f'# Non-vacuity of the bridges of {name}: they quantify over a perfect word tree t of depth dw with\n'
+        f'# room for the vector; the zero tree of the least such depth meets every premise.\n\n') + '\n'.join(out)
+
+
+def build_u32(name, em, rm, eparams, econcl, rparams, rconcl, ctx, syn):
+    """a bridge over a bare U32 object: the object 0, every premise computed"""
+    BUF = ctx.alias(ROOT / 'src/buffer.bend') + '.alloc(0)'
+    out = []
+    for tag, mod, law, ps, concl, pre in (('', em, f'{name}_e2e_encode', eparams, econcl, ''),
+                                          ('_root', rm, f'{name}_e2e_root', rparams, rconcl, BUF + ', ')):
+        extra = [p_ for p_ in ps if p_.lstrip('+-').split(':')[0].strip() not in ('o', 'h')]
+        if not extra:
+            continue
+        c = re.sub(r'(?<![\w.])o(?=[),])', '0', ctx.lift(mod, concl))
+        c = re.sub(r'(?<![\w.])h(?=[),])', BUF, c)
+        al = PREFER[mod.path]
+        out.append(f'def {name}_e2e_witness{tag}() -> {c}:\n  {al}.{law}({pre}0, ' + ', '.join('{==}' for _ in extra) + ')\n')
+    return imports_text(ctx) + '\n\n' + HEADER + '\n' + f'# Non-vacuity of the bridges of {name} that take premises: they hold of the object 0.\n\n' + '\n'.join(out)
+
+
+def imports_text(ctx):
     lines = ['import Base']
     for a, pth in sorted(ctx.used.items(), key=lambda x: x[1].relative_to(ROOT).as_posix()):
         rel = pth.relative_to(E2E).as_posix() if pth.parent == E2E else (Path('..') / pth.relative_to(ROOT)).as_posix()
         if pth.parent == E2E:
             rel = './' + rel
         lines.append(f'import {rel} as {a}')
-    txt = '\n'.join(lines) + '\n\n' + HEADER + '\n'
-    txt += (f'# Non-vacuity of the encode bridge {name}_e2e_encode: every premise holds of the default object\n'
-            f'# D = {X}_default() (one def per premise, named after its binder), so the bridge applies to D.\n\n')
-    # NE() first: a def is unfolded only after it is declared, and the lemmas mention NE()
-    txt += (f'# NE() is the default with one element in every list reachable through containers and boxes\n'
-            f'# (the second witness, {name}_e2e_witness_nonempty, at the end).\n'
-            f'def NE() -> {tyname}:\n  {ne_expr}\n\n')
+    return '\n'.join(lines)
+
+
+# premised names whose witness the pinned checker cannot evaluate (with the reason); e2e/WITNESS.txt lists them
+PENDING = {
+    'vec_uint256_513': 'the rep premise counts 16416 bytes in unary: the checker overflows its stack',
+    'ProgressiveComplexTestStruct': 'the witness does not finish within the checker\'s time limit (1200 s in an umbrella)',
+}
+# names whose default-object witness checks but whose non-empty one is not synthesized (the progressive
+# lists' element premises, nested progressive containers): the default witness only
+NO_NE = {'ProgressiveTestStruct'}
+
+
+def build(name, lf=None):
+    lf = lf or law_files()
+    if name in PENDING:
+        raise SystemExit(PENDING[name])
+    em = Mod.get(lf[f'{name}_e2e_encode'])
+    rm = Mod.get(lf[f'{name}_e2e_root'])
+    ed, rd = em.defs[f'{name}_e2e_encode'], rm.defs[f'{name}_e2e_root']
+    eparams, econcl = params_of(ed)
+    rparams, rconcl = params_of(rd)
+    if eparams[0].lstrip('+-').split(':')[0].strip() != 'o':
+        return build_branch(name, lf)
+    PREFER.clear()
+    PREFER[em.path] = 'BR'
+    if rm.path != em.path:
+        PREFER[rm.path] = 'RB'
+    taken = {'BR', 'RB', 'WT'}
+    for m_ in (em, rm):
+        for a, pth in m_.imports.items():
+            if pth not in PREFER and a not in taken:
+                PREFER[pth] = a
+                taken.add(a)
+    PREFER[(E2E / 'e2e_wit.bend').resolve()] = 'WT'
+    ctx = Ctx()
+    ctx.alias(em.path)
+    ctx.alias(rm.path)
+    RBA = PREFER[rm.path]
+    syn = Synth(ctx)
+    otype = eparams[0].lstrip('+-').split(':', 1)[1]
+    tmod, dflt = default_of(ctx, em, otype, name)
+    if tmod is None:            # a bare U32 (FuluParticipationFlags): the literal 0
+        return build_u32(name, em, rm, eparams, econcl, rparams, rconcl, ctx, syn)
+    dmod_alias = ctx.alias(tmod.path)
+    D = f'{dmod_alias}.{dflt}'
+    BUF = ctx.alias(ROOT / 'src/buffer.bend') + '.alloc(0)'
+    enc_prem = len(eparams) > 1
+    root_prem = len(rparams) > 2
+
+    def subst_obj(mod, t, obj):
+        t = ctx.lift(mod, t)
+        t = re.sub(r'(?<![\w.])o(?=[),])', obj, t)
+        return re.sub(r'(?<![\w.])h(?=[),])', BUF, t)
+
+    def prove_all(mod, params, obj, model, prefix):
+        env = {'o': model}
+        out = []
+        for p_ in params:
+            pn, pt = p_.lstrip('+-').split(':', 1)
+            pn = pn.strip()
+            if pn in ('o', 'h'):
+                continue
+            env['__subj'] = None
+            term = szr_term(syn, mod, pt.strip(), lambda t: subst_obj(mod, t, obj)) or syn.prove(mod, pt, env)
+            out.append((f'{prefix}{pn}', subst_obj(mod, pt.strip(), obj), term))
+        return out
+
+    obj = model_ne(ctx, tmod, dflt, lists=False)
+    dv_expr = None
+    if getattr(obj, 'changed', False):       # the default holds empty boxes where a vector needs values: DV()
+        dv_expr, obj.expr, D = obj.expr, 'DV()', 'DV()'
+    else:
+        obj = model_of(ctx, tmod, dflt)
+    sections = []   # (premises, witness name, conclusion, application)
+    if enc_prem:
+        pr = prove_all(em, eparams, D, obj, 'premise_')
+        sections.append((pr, f'{name}_e2e_witness', subst_obj(em, econcl, D),
+                         f'BR.{name}_e2e_encode({D}, ' + ', '.join(f'{p}()' for p, _, _ in pr) + ')'))
+    if root_prem:
+        pr = prove_all(rm, rparams, D, obj, 'premise_root_')
+        sections.append((pr, f'{name}_e2e_witness_root', subst_obj(rm, rconcl, D),
+                         f'{RBA}.{name}_e2e_root({BUF}, {D}, ' + ', '.join(f'{p}()' for p, _, _ in pr) + ')'))
+    # the same bridges at the non-empty object NE() (one element in every list), when there are lists
+    ne_expr, tyname = None, f'{dmod_alias}.{tmod.signature(dflt[:-2])[1].strip()}'
+    try:
+        if name in NO_NE:
+            raise SystemExit('no non-empty witness')
+        ne = model_ne(ctx, tmod, dflt)
+        if getattr(ne, 'changed', False):
+            ne_expr = ne.expr
+            ne.expr = 'NE()'
+            nes = []
+            if enc_prem:
+                pr = prove_all(em, eparams, 'NE()', ne, 'premise_ne_')
+                nes.append((pr, f'{name}_e2e_witness_nonempty', subst_obj(em, econcl, 'NE()'),
+                            f'BR.{name}_e2e_encode(NE(), ' + ', '.join(f'{p}()' for p, _, _ in pr) + ')'))
+            if root_prem:
+                ne2 = model_ne(ctx, tmod, dflt)
+                ne2.expr = 'NE()'
+                pr = prove_all(rm, rparams, 'NE()', ne2, 'premise_ne_root_')
+                nes.append((pr, f'{name}_e2e_witness_root_nonempty', subst_obj(rm, rconcl, 'NE()'),
+                            f'{RBA}.{name}_e2e_root({BUF}, NE(), ' + ', '.join(f'{p}()' for p, _, _ in pr) + ')'))
+            sections += nes
+    except SystemExit:
+        ne_expr = None
+        sections = [s_ for s_ in sections if 'NE()' not in s_[3]]
+    ctx.alias(ROOT / 'src/obj.bend')
+    ctx.alias(ROOT / 'proofs/compact/found.bend')
+    X = dflt[:-2]
+    txt = imports_text(ctx) + '\n\n' + HEADER + '\n'
+    txt += (f'# Non-vacuity of the bridges of {name} that take premises: every premise holds of the default object\n'
+            f'# D = {X}() (one def per premise, named after its binder), so the bridge applies to D.\n\n')
+    if dv_expr:
+        txt += (f'# DV() is the default with valid elements in its vectors of boxed values (the default\'s are empty)\n'
+                f'def DV() -> {tyname}:\n  {dv_expr}\n\n')
+    if ne_expr:
+        # NE() first: a def is unfolded only after it is declared, and the lemmas mention NE()
+        txt += (f'# NE() is the default with one element in every list reachable through containers and boxes\n'
+                f'# (the witnesses named _nonempty).\n'
+                f'def NE() -> {tyname}:\n  {ne_expr}\n\n')
     for nm in sorted(syn.lemmas):
         txt += syn.lemmas[nm] + '\n\n'
-    for pn, pt, term in prem:
-        txt += f'def premise_{pn}() -> {pt}:\n  {term}\n\n'
-    txt += (f'def {name}_e2e_witness() -> {concl_c}:\n  {bralias}.{name}_e2e_encode({D}, '
-            + ', '.join(f'premise_{pn}()' for pn, _, _ in prem) + ')\n')
-    txt += (f'\n# The same bridge at the non-empty object NE(): every premise is proved of NE().\n\n')
-    for pn, pt, term in prem1:
-        txt += f'def premise_ne_{pn}() -> {pt}:\n  {term}\n\n'
-    txt += (f'def {name}_e2e_witness_nonempty() -> {at_ne(concl)}:\n  {bralias}.{name}_e2e_encode(NE(), '
-            + ', '.join(f'premise_ne_{pn}()' for pn, _, _ in prem1) + ')\n')
-    return txt
-
-
-def outputs():
-    return {E2E / f'{n}_e2e_witness_generated.bend': build(n) for n in NAMES}
+    seen = {}
+    for k_, (pr, wn, concl, app) in enumerate(sections):
+        if k_ and ('NE()' in app) != ('NE()' in sections[k_ - 1][3]):
+            txt += '# The same bridges at the non-empty object NE(): every premise is proved of NE().\n\n'
+        for pn, pt, term in pr:
+            if pt in seen:          # the same premise as an earlier bridge's: reuse its def
+                app = app.replace(f'{pn}()', f'{seen[pt]}()')
+                continue
+            seen[pt] = pn
+            txt += f'def {pn}() -> {pt}:\n  {term}\n\n'
+        txt += f'def {wn}() -> {concl}:\n  {app}\n\n'
+    return txt.rstrip('\n') + '\n'
 
 
 def main():
@@ -960,10 +1296,22 @@ def main():
     if '--only' in sys.argv:
         only = sys.argv[sys.argv.index('--only') + 1].split(',')
     outs = {E2E / 'e2e_wit.bend': SUPPORT}
-    for n in NAMES:
+    lf = law_files()
+    rows = []
+    for n in premised(lf):
         if only and n not in only:
             continue
-        outs[E2E / f'{n}_e2e_witness_generated.bend'] = build(n)
+        Mod.cache.clear()
+        try:
+            outs[E2E / f'{n}_e2e_witness_generated.bend'] = build(n, lf)
+            rows.append(f'{n}\twitnessed')
+        except SystemExit as e:
+            rows.append(f'{n}\tpending: {str(e).replace(chr(10), " ")[:200]}')
+    if not only:
+        done = sum(1 for r in rows if r.endswith('\twitnessed'))
+        outs[E2E / 'WITNESS.txt'] = (f'# GENERATED by codegen/e2e_witness.py. Do not edit.\n# {done} of {len(rows)} names whose encode or root '
+                                     f'bridge takes premises have a checked witness (e2e/<Name>_e2e_witness_generated.bend)\n'
+                                     + '\n'.join(rows) + '\n')
     stale = []
     for p, t in outs.items():
         if not p.exists() or p.read_text() != t:

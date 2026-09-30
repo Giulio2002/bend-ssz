@@ -276,7 +276,139 @@ def pad_word(eht):
     return int(m.group(2)), int(m.group(5)), m.group(3)
 
 
+TREE_OBJ = re.compile(r'O\.Words\{ANode\{(\w+)\.array__thaw\(U32, (\w+)\.segt\(dd, 0n, (\w+)\.wlp\(bs\)\)\), Array\.new\(U32, (\d+)n, 0\)\}, (\d+)\}$')
+
+
+def build_tree(name, lf, api):
+    """a fixed-size vector of 2^b bytes whose decoder builds its words as a tree (AC.segt) beside a zero
+    half: the decode bridge's d_some(dd, ed, bs, n, hn, hd, en) gives O.Words{ANode{thaw(segt(dd, 0, wlp(bs))),
+    Array.new(U32, dd, 0)}, 2^b}. The rep premise is proved of that object with the tree TNode{segt, trep}
+    (perfect by L.seg_pf), and the size facts by the symbolic lemmas of e2e/e2e_wit.bend."""
+    W = api.W
+    dl, el, rl = lf.get(f'{name}_e2e_decode_view'), lf.get(f'{name}_e2e_encode'), lf.get(f'{name}_e2e_root')
+    if not (dl and el and rl):
+        return None
+    dm, em, rm = W.Mod.get(dl), W.Mod.get(el), W.Mod.get(rl)
+    if 'd_some' not in dm.defs or 'd_none' not in dm.defs:
+        return None
+    sps, sc = api.sig(dm, 'd_some')
+    if [b for _, b, _ in sps] != ['dd', 'ed', 'bs', 'n', 'hn', 'hd', 'en']:
+        return None
+    ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
+    mo_ = TREE_OBJ.match(ms.group(2)) if ms else None
+    mdd = re.match(r'\{dd == (\d+)n : Nat\}$', sps[1][2])
+    # the other shape (a 2^b + 32-byte vector): the words of segt's spine beside one more word, written out
+    mo2 = re.match(r'O\.Words\{(\w+)\.array__thaw\(U32, (.*)\), (\d+)\}$', ms.group(2), re.S) if ms else None
+    if not mdd or not (mo_ or mo2):
+        return None, 'a tree-form decoder object this module does not read'
+    D = int(mdd.group(1))
+    N = int(mo_.group(5)) if mo_ else int(mo2.group(3))
+    lit = mo_ is None
+    if mo_ and (int(mo_.group(4)) != D or N & (N - 1)):
+        return None, 'a tree-form decoder object this module does not read'
+    b = N.bit_length() - 1
+    c = b - 5
+    if N > 9000:
+        return None, f'the decoded object\'s rep premise over {N} bytes overflows the checker\'s stack'
+    eps, ec = api.sig(em, f'{name}_e2e_encode')
+    rps, rc = api.sig(rm, f'{name}_e2e_root')
+    if [x for _, x, _ in eps] != ['o', 'rep'] or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
+        return None
+    k = int(re.search(r'rep_v(\d+)\(o', eps[1][2]).group(1))
+    obj0 = ms.group(2).replace('segt(dd, ', f'segt({D}n, ').replace('pow2(dd)', f'pow2({D}n)')
+    W.PREFER.clear()
+    W.PREFER[dm.path] = 'DB'
+    W.PREFER.setdefault(em.path, 'EB')
+    W.PREFER.setdefault(rm.path, 'RB')
+    W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
+    W.PREFER[(ROOT / 'types/schema.bend').resolve()] = 'S'
+    W.PREFER[(ROOT / 'src/buffer.bend').resolve()] = 'B'
+    W.PREFER[(ROOT / 'src/model.bend').resolve()] = 'API'
+    W.PREFER[(E2E / 'e2e_wit.bend').resolve()] = 'WT'
+    taken = set(W.PREFER.values())
+    for m_ in (em, rm, dm):
+        for a_, pth in m_.imports.items():
+            if pth not in W.PREFER and a_ not in taken:
+                W.PREFER[pth] = a_
+                taken.add(a_)
+    ctx = W.Ctx()
+    for p_ in (dm.path, em.path, rm.path, (E2E / 'e2e_comp.bend').resolve(), (E2E / 'e2e_wit.bend').resolve()):
+        ctx.alias(p_)
+    DB, EB, RB = W.PREFER[dm.path], W.PREFER[em.path], W.PREFER[rm.path]
+    enc, rt = api.some_lhs(ec, 'serialize'), api.some_lhs(rc, 'hash_tree_root')
+    X, SPEC, V = ctx.lift(em, enc[0]), ctx.lift(em, enc[1]), ctx.lift(em, enc[2])
+    R = ctx.lift(rm, rt[0])
+    dps, dc = api.sig(dm, f'{name}_e2e_decode_view')
+    mo = re.match(r'\{(\w+)\((.*)\) == (API\.deserialize\(.*\)) : Maybe<&2, S\.Value>\}$', dc, re.S)
+    MV, DEC, DES = mo.group(1), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3))
+    MT = ctx.lift(dm, re.search(r'Pair\.snd\(B\.Buf, (Maybe<&1, [\w.]+>)', dc).group(1))
+    hyps = [(m_, b_, ctx.lift(dm, t)) for m_, b_, t in dps if b_ not in ('bs', 'n')]
+    args = ', '.join(b_ for _, b_, _ in dps)
+    accT = f'{{{DES} == Some{{{V}}} : Maybe<&2, S.Value>}}'
+    acc_body = (f'  Equal.trans(Maybe<&2, S.Value>, {DES}, {DB}.{MV}({DEC}), Some{{{V}}},\n'
+                f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
+                f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
+    OT = MT[len('Maybe<&1, '):-1]
+    OBJ = ctx.lift(dm, obj0)
+    EY = ctx.alias(E2E / 'e2e_bytes.bend')
+    FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    ctx.alias(ROOT / 'spec/primitives.bend')
+    base_depth = api.arr_depth
+    if lit:
+        tdepth = len(re.match(r'((?:\w+\.TNode\{)*)', mo2.group(2)).group(1).split('TNode{')) - 1
+        api.arr_depth = lambda t: tdepth if t.strip().startswith(FDA + '.array__thaw') else base_depth(t)
+    else:
+        LA = ctx.alias(dm.imports[mo_.group(3)])
+        ACA = ctx.alias(dm.imports[mo_.group(2)])
+        api.arr_depth = lambda t: D + 1 if t.strip().startswith('ANode{' + FDA + '.array__thaw') else base_depth(t)
+    try:
+        text, err = api.build_lit(name, (N, obj0, 'tree-form'), ctx, dm, em, rm, eps, rps,
+                                  DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, 'view')
+    finally:
+        api.arr_depth = base_depth
+    if text is None:
+        return None, err
+    ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
+    SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
+    if lit:        # every premise computed of the written-out tree (LSynth); only the decoder's facts are adapted
+        defs = (f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
+                f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
+                f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
+        i = text.index('\ndef ') + 1
+        text = text[:i] + defs + text[i:]
+        text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
+        text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+        return text.replace(api.HEADER, HEADER, 1), None
+    S_ = f'{ACA}.segt({D}n, 0n, {LA}.wlp(bs))'
+    T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
+    lenpf = f'WT.len32g({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {c}n, {b}n, {{==}}, {{==}})' if k == 32 else '{==}'
+    term = (f'(({T}, ({D + 1}n, ({N}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {N}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
+            f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), ({lenpf}, {{==}}))')
+    SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
+    ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
+    defs = (f'# the decoder\'s tree-form object: its words are the tree segt of the input words, beside a zero half\n'
+            f'def oeqt(+bs: +List<U32>) -> {{{OBJ} == O.Words{{{FDA}.array__thaw(U32, {T}), {N}}} : O.Words}}:\n'
+            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{OBJ} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {N}}} : O.Words}}\n  {{==}}\n\n'
+            f'def pft(+bs: +List<U32>) -> {{{FDA}.array__perfect(U32, {D + 1}n, {T}) == True{{}} : Bool}}:\n'
+            f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D}n, {S_}), True{{}}, {LA}.seg_pf({D}n, {LA}.wlp(bs))) :\n'
+            f'    {{Bool.and(_, {FDA}.array__perfect(U32, {D}n, {FDA}.array__trep(U32, {D}n, 0))) == True{{}} : Bool}}\n'
+            f'  {FDA}.array__trep_perfect(U32, {D}n, 0)\n\n'
+            f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
+            f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
+            f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
+    m = re.search(r'^def pe_rep\(\+bs: \+List<U32>\) -> (.*?):\n  (.*)$', text, re.M)
+    text = text.replace(m.group(0), f'def pe_rep(+bs: +List<U32>) -> {m.group(1)}:\n  {term}')
+    i = text.index('\ndef ') + 1
+    text = text[:i] + defs + text[i:]
+    text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
+    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+    return text.replace(api.HEADER, HEADER, 1), None
+
+
 def build(name, lf, api):
+    r = build_tree(name, lf, api)
+    if r is not None:
+        return r
     W = api.W
     kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
     dl = lf.get(f'{name}_e2e_decode_{kind}')
