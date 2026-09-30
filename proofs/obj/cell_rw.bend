@@ -2,6 +2,8 @@ import Base
 import ../../src/obj.bend as O
 import ../compact/found.bend as F
 import ./words_rw.bend as WR
+import ./words_win.bend as WW
+import ./words_list.bend as WL
 
 # The block copies of packed storage, for a list whose elements are whole packed values (O.Words):
 # O.words_blit writes the words of a value into the storage at word B (the loop O.bl_go), and
@@ -253,3 +255,14 @@ def cell_word(+d: Nat, +t: F.array__Tree<U32>, +s: F.array__Tree<U32>, +d2: Nat,
   Equal.trans(U32, WR.at(F.array__slots(U32, scp(d2, bcp(d, s, k, 0n, B, t), k, 0n, B, OUT)), m), WR.at(F.array__slots(U32, bcp(d, s, k, 0n, B, t)), Nat.add(B, m)), WR.at(F.array__slots(U32, s), m),
     scp_in(d2, bcp(d, s, k, 0n, B, t), k, m, 0n, B, OUT, hm, bo, pfo),
     bcp_in(d, s, k, m, 0n, B, t, hm, bzero(B, k, F.spec_common__pow2(d), hr), pf))
+# the blit tree is the run of the source's words written at the place (words_win.bend's tk)
+def bcp_tk(+k: Nat, +S: Nat, +B: Nat, +d: Nat, +s: F.array__Tree<U32>, +T: F.array__Tree<U32>)
+    -> {bcp(d, s, k, S, B, T) == WW.tk(WL.alist(1n+k, F.array__slots(U32, s), S), d, T, B, S) : F.array__Tree<U32>}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(F.array__Tree<U32>, bcp(d, s, q, 1n+S, B, F.array__upd(U32, d, T, Nat.add(B, S), WR.at(F.array__slots(U32, s), S))),
+          WW.tk(WL.alist(1n+q, F.array__slots(U32, s), 1n+S), d, F.array__upd(U32, d, T, Nat.add(B, S), WR.at(F.array__slots(U32, s), S)), B, 1n+S),
+          bcp_tk(q, 1n+S, B, d, s, F.array__upd(U32, d, T, Nat.add(B, S), WR.at(F.array__slots(U32, s), S)))) :
+        {_ == WW.tk(WL.alist(2n+q, F.array__slots(U32, s), S), d, T, B, S) : F.array__Tree<U32>}
+      {==}
