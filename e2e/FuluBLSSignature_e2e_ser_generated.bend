@@ -23,3 +23,9 @@ def FuluBLSSignature_e2e_serialize_refused(+o: FuluBytes96_d.Bytes96, +v: {W_typ
 def FuluBLSSignature_e2e_serialize(+o: FuluBytes96_d.Bytes96, +v: {W_types_FuluBytes96_encode_ssz_generated.b96_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluBLSSignature_encode_ssz_generated.BLSSignature_serialize(o)))} == API.serialize(W_spec_fulu_schemas.BLSSignature(), W_proofs_obj_root_names_light.v_b96(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluBLSSignature_encode_ssz_generated.BLSSignature_serialize(o), O.encoded(W_types_FuluBLSSignature_encode_ssz_generated.BLSSignature_encode(o)), FuluBLSSignature_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.BLSSignature(), W_proofs_obj_root_names_light.v_b96(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluBLSSignature_e2e_generated.FuluBLSSignature_e2e_encode(o)
+
+def FuluBLSSignature_e2e_valid_default() -> {W_types_FuluBytes96_encode_ssz_generated.b96_valid(FuluBytes96_d.b96_default()) == True{} : Bool}:
+  {==}
+
+def FuluBLSSignature_e2e_valid_total(+o: FuluBytes96_d.Bytes96) -> {W_types_FuluBytes96_encode_ssz_generated.b96_valid(o) == True{} : Bool}:
+  {==}

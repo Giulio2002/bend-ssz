@@ -22,3 +22,9 @@ def FuluEth1Data_e2e_serialize_refused(+o: FuluEth1Data_d.Eth1Data, +v: {W_types
 def FuluEth1Data_e2e_serialize(+o: FuluEth1Data_d.Eth1Data, +v: {W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Eth1Data(), W_proofs_obj_root_names_light.v_Eth1Data(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_serialize(o), O.encoded(W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_encode(o)), FuluEth1Data_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Eth1Data(), W_proofs_obj_root_names_light.v_Eth1Data(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluEth1Data_e2e_generated.FuluEth1Data_e2e_encode(o)
+
+def FuluEth1Data_e2e_valid_default() -> {W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_valid(FuluEth1Data_d.Eth1Data_default()) == True{} : Bool}:
+  {==}
+
+def FuluEth1Data_e2e_valid_total(+o: FuluEth1Data_d.Eth1Data) -> {W_types_FuluEth1Data_encode_ssz_generated.Eth1Data_valid(o) == True{} : Bool}:
+  {==}

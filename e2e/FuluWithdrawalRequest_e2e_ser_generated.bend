@@ -22,3 +22,9 @@ def FuluWithdrawalRequest_e2e_serialize_refused(+o: FuluWithdrawalRequest_d.With
 def FuluWithdrawalRequest_e2e_serialize(+o: FuluWithdrawalRequest_d.WithdrawalRequest, +v: {W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_serialize(o)))} == API.serialize(W_spec_fulu_schemas.WithdrawalRequest(), W_proofs_obj_root_names_light.v_WithdrawalRequest(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_serialize(o), O.encoded(W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_encode(o)), FuluWithdrawalRequest_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.WithdrawalRequest(), W_proofs_obj_root_names_light.v_WithdrawalRequest(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluWithdrawalRequest_e2e_generated.FuluWithdrawalRequest_e2e_encode(o)
+
+def FuluWithdrawalRequest_e2e_valid_default() -> {W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_valid(FuluWithdrawalRequest_d.WithdrawalRequest_default()) == True{} : Bool}:
+  {==}
+
+def FuluWithdrawalRequest_e2e_valid_total(+o: FuluWithdrawalRequest_d.WithdrawalRequest) -> {W_types_FuluWithdrawalRequest_encode_ssz_generated.WithdrawalRequest_valid(o) == True{} : Bool}:
+  {==}

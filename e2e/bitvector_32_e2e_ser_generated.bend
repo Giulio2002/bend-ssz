@@ -22,3 +22,9 @@ def bitvector_32_e2e_serialize_refused(+o: bitvector_32_d.Bitvector32, +v: {W_ty
 def bitvector_32_e2e_serialize(+o: bitvector_32_d.Bitvector32, +v: {W_types_bitvector_32_encode_ssz_generated.bv32_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_32_encode_ssz_generated.bitvector_32_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_32(), W_proofs_obj_root_gnames_light.v_bv32(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_32_encode_ssz_generated.bitvector_32_serialize(o), O.encoded(W_types_bitvector_32_encode_ssz_generated.bitvector_32_encode(o)), bitvector_32_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_32(), W_proofs_obj_root_gnames_light.v_bv32(o)) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_32_e2e_generated.bitvector_32_e2e_encode(o)
+
+def bitvector_32_e2e_valid_default() -> {W_types_bitvector_32_encode_ssz_generated.bv32_valid(bitvector_32_d.bv32_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_32_e2e_valid_total(+o: bitvector_32_d.Bitvector32) -> {W_types_bitvector_32_encode_ssz_generated.bv32_valid(o) == True{} : Bool}:
+  {==}

@@ -31,3 +31,14 @@ def FuluBytes1_ser_prem(+o: FuluBytes1_d.Bytes1, +v: {W_types_FuluBytes1_encode_
 def FuluBytes1_e2e_serialize(+o: FuluBytes1_d.Bytes1, +v: {W_types_FuluBytes1_encode_ssz_generated.b1_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluBytes1_encode_ssz_generated.Bytes1_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Bytes1(), S.BytesValue{[W_proofs_obj_leaf_small.b1_byte(o)]}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluBytes1_encode_ssz_generated.Bytes1_serialize(o), O.encoded(W_types_FuluBytes1_encode_ssz_generated.Bytes1_encode(o)), FuluBytes1_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Bytes1(), S.BytesValue{[W_proofs_obj_leaf_small.b1_byte(o)]}) : Maybe<&2, +List<U32>>}
   W_e2e_FuluBytes1_e2e_generated.FuluBytes1_e2e_encode(o, FuluBytes1_ser_prem(o, v))
+
+def FuluBytes1_e2e_valid_default() -> {W_types_FuluBytes1_encode_ssz_generated.b1_valid(FuluBytes1_d.b1_default()) == True{} : Bool}:
+  {==}
+
+def FuluBytes1_e2e_valid_of_prem(+o: FuluBytes1_d.Bytes1, +p: {U32.is_lt(W_proofs_obj_leaf_small.b1_byte(o), 256) == True{} : Bool}) -> {W_types_FuluBytes1_encode_ssz_generated.b1_valid(o) == True{} : Bool}:
+  match o:
+    case FuluBytes1_d.Bytes1{+w0}: p
+
+def FuluBytes1_e2e_serialize_domain(+o: FuluBytes1_d.Bytes1, +v: {W_types_FuluBytes1_encode_ssz_generated.b1_valid(o) == False{} : Bool}) -> {API.serialize(W_spec_fulu_schemas.Bytes1(), S.BytesValue{[W_proofs_obj_leaf_small.b1_byte(o)]}) == None{} : Maybe<&2, +List<U32>>}:
+  match o:
+    case FuluBytes1_d.Bytes1{+w0}: V.b1_none(w0, v)

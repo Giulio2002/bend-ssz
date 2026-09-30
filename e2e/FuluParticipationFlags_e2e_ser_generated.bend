@@ -2,6 +2,7 @@ import Base
 import ./FuluParticipationFlags_e2e_generated.bend as W_e2e_FuluParticipationFlags_e2e_generated
 import ./e2e_support.bend as E
 import ./e2e_valid.bend as V
+import ./ser_e2e_uintdom_generated.bend as UD
 import ../proofs/compact/found.bend as FD
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp
@@ -20,6 +21,10 @@ def ltp8(+o: U32, +v: {U32.is_le(o, 255) == True{} : Bool}) -> {U32.is_lt(o, 256
   match o:
     case U32{+x}: V.le_lt(8n, 23n, x, v)
 
+def ltq8(+o: U32, +v: {U32.is_lt(o, 256) == True{} : Bool}) -> {U32.is_le(o, 255) == True{} : Bool}:
+  match o:
+    case U32{+x}: V.lt_le(8n, 23n, x, v)
+
 def FuluParticipationFlags_e2e_serialize_ok(+o: U32, +v: {W_types_uint8_encode_ssz_generated.u8_valid(o) == True{} : Bool}) -> {W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_serialize(o) == O.encoded(W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_uint8_encode_ssz_generated.u8_valid(o), True{}, v) : {W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_ser_pick(_, o) == O.encoded(W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_encode(o)) : O.Encoded}
   {==}
@@ -34,3 +39,12 @@ def FuluParticipationFlags_ser_prem(+o: U32, +v: {W_types_uint8_encode_ssz_gener
 def FuluParticipationFlags_e2e_serialize(+o: U32, +v: {W_types_uint8_encode_ssz_generated.u8_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_serialize(o)))} == API.serialize(W_spec_fulu_schemas.ParticipationFlags(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_serialize(o), O.encoded(W_types_FuluParticipationFlags_encode_ssz_generated.ParticipationFlags_encode(o)), FuluParticipationFlags_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.ParticipationFlags(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) : Maybe<&2, +List<U32>>}
   W_e2e_FuluParticipationFlags_e2e_generated.FuluParticipationFlags_e2e_encode(o, FuluParticipationFlags_ser_prem(o, v))
+
+def FuluParticipationFlags_e2e_valid_default() -> {W_types_uint8_encode_ssz_generated.u8_valid(0) == True{} : Bool}:
+  {==}
+
+def FuluParticipationFlags_e2e_valid_of_prem(+o: U32, +p: {U32.is_lt(o, 256) == True{} : Bool}) -> {W_types_uint8_encode_ssz_generated.u8_valid(o) == True{} : Bool}:
+  ltq8(o, p)
+
+def FuluParticipationFlags_e2e_serialize_domain(+o: U32, +v: {W_types_uint8_encode_ssz_generated.u8_valid(o) == False{} : Bool}) -> {API.serialize(W_spec_fulu_schemas.ParticipationFlags(), S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}) == None{} : Maybe<&2, +List<U32>>}:
+  UD.u8_none(o, v)

@@ -22,3 +22,9 @@ def FuluSyncAggregatorSelectionData_e2e_serialize_refused(+o: FuluSyncAggregator
 def FuluSyncAggregatorSelectionData_e2e_serialize(+o: FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData, +v: {W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SyncAggregatorSelectionData(), W_proofs_obj_root_names_light.v_SyncAggregatorSelectionData(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_serialize(o), O.encoded(W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_encode(o)), FuluSyncAggregatorSelectionData_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SyncAggregatorSelectionData(), W_proofs_obj_root_names_light.v_SyncAggregatorSelectionData(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSyncAggregatorSelectionData_e2e_generated.FuluSyncAggregatorSelectionData_e2e_encode(o)
+
+def FuluSyncAggregatorSelectionData_e2e_valid_default() -> {W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_valid(FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData_default()) == True{} : Bool}:
+  {==}
+
+def FuluSyncAggregatorSelectionData_e2e_valid_total(+o: FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData) -> {W_types_FuluSyncAggregatorSelectionData_encode_ssz_generated.SyncAggregatorSelectionData_valid(o) == True{} : Bool}:
+  {==}

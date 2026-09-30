@@ -22,3 +22,9 @@ def FuluEth1Block_e2e_serialize_refused(+o: FuluEth1Block_d.Eth1Block, +v: {W_ty
 def FuluEth1Block_e2e_serialize(+o: FuluEth1Block_d.Eth1Block, +v: {W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Eth1Block(), W_proofs_obj_root_names_light.v_Eth1Block(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_serialize(o), O.encoded(W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_encode(o)), FuluEth1Block_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Eth1Block(), W_proofs_obj_root_names_light.v_Eth1Block(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluEth1Block_e2e_generated.FuluEth1Block_e2e_encode(o)
+
+def FuluEth1Block_e2e_valid_default() -> {W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_valid(FuluEth1Block_d.Eth1Block_default()) == True{} : Bool}:
+  {==}
+
+def FuluEth1Block_e2e_valid_total(+o: FuluEth1Block_d.Eth1Block) -> {W_types_FuluEth1Block_encode_ssz_generated.Eth1Block_valid(o) == True{} : Bool}:
+  {==}

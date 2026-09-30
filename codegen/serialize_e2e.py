@@ -25,6 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import e2e_witness as W  # noqa: E402
+import uintdom  # noqa: E402
 
 ROOT = W.ROOT
 E2E = W.E2E
@@ -81,6 +82,95 @@ def linear_names(lf):
     return out
 
 
+
+def brace_args(text, head):
+    """the top-level arguments of `head{...}` at the start of text"""
+    text = text.strip()
+    assert text.startswith(head + '{') and text.endswith('}'), (head, text[:80])
+    return W.split_top(text[len(head) + 1:-1])
+
+
+def struct_domain(ctx, n2, R, VAL, cons, xs, expr, concl2, O_):
+    """<Name>_e2e_serialize_domain for a container of uint8 / uint16 fields: a refused object has a field the spec has no
+    encoding for, so the spec has none for the whole value (one or two checked fields: the head, or the second of two)"""
+    m = re.search(r' == API\.serialize\((.*?), (\S*\.?v_\w+\(o\))\) : Maybe<&2, \+List<U32>>\}$', concl2, re.S)
+    sch, view = m.group(1), m.group(2)
+    gsm = W.Mod.get(ROOT / 'proofs/obj/generic_specs.bend')
+    sname = sch.rpartition('.')[2].rstrip('()')
+    _, _, sbody = gsm.signature(sname)
+    vm_path = None
+    for a_, pth in ctx.used.items():
+        pass
+    vname = view.rpartition('.')[2].split('(')[0]
+    vmod = W.Mod.get(ROOT / 'proofs/obj/root_gnames_light.bend')
+    _, _, vbody = vmod.signature(vname)
+    mvw = re.match(r'^match o:\n\s+case ([\w.]+)\{([^}]*)\}: (.*)$', vbody.strip(), re.S)
+    ve = mvw.group(3)
+    xs = [f.strip().lstrip('+') for f in mvw.group(2).split(',')]
+    cons = ctx.lift(vmod, mvw.group(1))
+    items = brace_args(brace_args(ve, 'S.Sequence')[0], 'S.Items')
+    H, T = ctx.lift(vmod, items[0]), ctx.lift(vmod, items[1])
+    if sbody.strip().startswith('S.ProgressiveContainer'):
+        names, chain, act = (ctx.lift(gsm, x) for x in brace_args(sbody, 'S.ProgressiveContainer'))
+        pc = True
+    else:
+        names, chain = (ctx.lift(gsm, x) for x in brace_args(sbody, 'S.Container'))
+        act, pc = None, False
+    s1, rest = brace_args(chain, 'S.Chain')
+    leaf = {'S.Unsigned{P.U8{}}': 'u8', 'S.Unsigned{P.U16{}}': 'u16'}
+    obj = f'{cons}{{{", ".join(xs)}}}'
+    viewc = view.replace('(o)', f'({obj})')
+    tr = lambda last: (f'Equal.trans(Maybe<&2, +List<U32>>, API.serialize({sch}, {viewc}), Encoding.encoding_for_legal_type({sch}, {viewc}), None{{}},\n'
+                       f'      E.serialize_legal({sch}, {viewc}, VS.public_sound({sch}, {{==}})), {last})')
+    goal = f'{{API.serialize({sch}, {viewc}) == None{{}} : Maybe<&2, +List<U32>>}}'
+    ctx.alias(E2E / 'ser_e2e_uintdom_generated.bend')
+    for a_ in ('proofs/type_validator_soundness.bend', 'spec/codec.bend', 'e2e/e2e_support.bend', 'e2e/e2e_valid.bend'):
+        ctx.alias(ROOT / a_)
+    head = (f'V.pcont_head_none({names}, {s1}, {rest}, {act}, {H}, {T}, ' if pc else f'V.cont_head_none({names}, {s1}, {rest}, {H}, {T}, ')
+    mand = re.match(r'^Bool\.and\((.*)\)$', expr.strip(), re.S)
+    if not mand:
+        lw = leaf[s1]
+        return (f'def {n2}_e2e_serialize_domain(+o: {R}, +v: {{{VAL}(o) == False{{}} : Bool}}) -> '
+                f'{{API.serialize({sch}, {view}) == None{{}} : Maybe<&2, +List<U32>>}}:\n'
+                f'  match o:\n    case {obj}:\n      {tr(head + f"UD.{lw}_parts_none({xs[0]}, v))")}')
+    # two checked fields
+    if pc:
+        raise SystemExit(f'serialize_e2e: {n2}: two checked fields of a progressive container')
+    s2, end = brace_args(rest, 'S.Chain')
+    h2 = brace_args(T, 'S.Items')
+    lw = leaf[s1]
+    assert leaf[s2] == lw
+    lim = 255 if lw == 'u8' else 65535
+    go = (f'def {n2}_dom_go(+a: Bool, +b: Bool, +{xs[0]}: U32, +{xs[1]}: U32, +ha: {{U32.is_le({xs[0]}, {lim}) == a : Bool}}, '
+          f'+hb: {{U32.is_le({xs[1]}, {lim}) == b : Bool}}, +e: {{Bool.and(a, b) == False{{}} : Bool}}) -> {goal}:\n'
+          f'  match a:\n    case False{{}}: {tr(head + f"UD.{lw}_parts_none({xs[0]}, ha))")}\n'
+          f'    case True{{}}:\n      match b:\n'
+          f'        case False{{}}: {tr(f"V.cont_second_none({names}, {s1}, {s2}, {end}, {H}, {h2[0]}, UD.{lw}_parts_none({xs[1]}, hb))")}\n'
+          f'        case True{{}}: Empty.absurd({goal}, FD.logic__true_false(e))')
+    main = (f'def {n2}_e2e_serialize_domain(+o: {R}, +v: {{{VAL}(o) == False{{}} : Bool}}) -> '
+            f'{{API.serialize({sch}, {view}) == None{{}} : Maybe<&2, +List<U32>>}}:\n'
+            f'  match o:\n    case {obj}: {n2}_dom_go(U32.is_le({xs[0]}, {lim}), U32.is_le({xs[1]}, {lim}), {xs[0]}, {xs[1]}, {{==}}, {{==}}, v)')
+    return go + '\n\n' + main
+
+
+def default_for(ctx, bmod, otype, n2):
+    """(module, call) of the default object of the object type: W.default_of, and for an alias of a shared object type
+    (O.U64 of the Fulu integer aliases) the default of the file that defines it"""
+    try:
+        return W.default_of(ctx, bmod, otype, n2)
+    except SystemExit:
+        tn = otype.strip().rpartition('.')[2]
+        for f in sorted((ROOT / 'types').glob('*_def_generated.bend')):
+            tm = W.Mod.get(f)
+            for d in tm.defs:
+                if d.endswith('_default') and '_bx_' not in d:
+                    ps, ret, _ = tm.signature(d)
+                    if not ps and ret.strip().split('.')[-1] == tn and f.name in ('uint64_def_generated.bend', 'uint128_def_generated.bend',
+                                                                                  'uint256_def_generated.bend', 'boolean_def_generated.bend'):
+                        return tm, f'{d}()'
+        raise
+
+
 def build_linear(n, tfile, P, k, lf):
     """the linear (object-threading) serializer of a fixed-size name: given `X_valid(o) == (o, True)`, it is the
     encoder's object and END_TO_END's bytes"""
@@ -125,9 +215,13 @@ def build_linear(n, tfile, P, k, lf):
             f'  %Equal.sym({R} & {O_}.Encoded, {SER}(o), {RES}, {n2}_e2e_serialize_ok({args}, hv)) : '
             f'{concl2.replace(f"Pair.snd({R}, {O_}.Encoded, {SER}(o))", f"Pair.snd({R}, {O_}.Encoded, _)", 1)}\n'
             f'  {BR}({args})')
+    # non-vacuity: the validity pass returns the default object unchanged with True
+    dmod, dcall = default_for(ctx, bmod, ps[0].split(':', 1)[1], n2)
+    DEF = ctx.lift(dmod, dcall) if dmod is not None else dcall
+    vdef = f'def {n2}_e2e_valid_default() -> {{({DEF}, True{{}}) == {VAL}({DEF}) : {R} & Bool}}:\n  {{==}}'
     return W.imports_text(ctx) + '\n\n' + HEADER + '\n' + \
         f'# {n2}: given that the validity pass returns the object with True, the checked serializer is the encoder,\n' \
-        f'# and its bytes are END_TO_END\'s serialize of the object\'s value.\n\n' + '\n\n'.join([l1, ok, refused, main]) + '\n'
+        f'# and its bytes are END_TO_END\'s serialize of the object\'s value.\n\n' + '\n\n'.join([l1, ok, refused, main, vdef]) + '\n'
 
 
 def valid_body(tmod, vname):
@@ -152,6 +246,26 @@ def struct_term(ctx, vmod, expr, pf, need, depth=0):
     r = int(mu.group(2))
     need.add(r)
     return f'ltp{r}({mu.group(3)}, {pf})'
+
+
+def struct_conv(ctx, vmod, expr, pv, need, k=0):
+    """(lines, term): the validity `expr == True` of a container from the pair pv of its fields' rp facts
+    (the converse of struct_term)"""
+    expr = expr.strip()
+    ma = re.match(r'^Bool\.and\((.*)\)$', expr, re.S)
+    if ma:
+        a, b = W.split_top(ma.group(1))
+        la, lb = ctx.lift(vmod, a), ctx.lift(vmod, b)
+        pl, pr = f'pl{k}', f'pr{k}'
+        l1, ta = struct_conv(ctx, vmod, a, pl, need, k + 1)
+        l2, tb = struct_conv(ctx, vmod, b, pr, need, k + 100)
+        return [f'({pl}, {pr}) = {pv}'] + l1 + l2, f'FD.logic__and_intro({la}, {lb}, {ta}, {tb})'
+    mu = re.match(r'^(\w+)\.u(8|16)_valid\((\w+)\)$', expr)
+    if not mu:
+        raise SystemExit(f'serialize_e2e: cannot read the validity check {expr!r}')
+    r = int(mu.group(2))
+    need.add(r)
+    return [], f'ltq{r}({mu.group(3)}, {pv})'
 
 
 def build(n, tfile, lf):
@@ -190,6 +304,8 @@ def build(n, tfile, lf):
           f'  %Equal.sym(Bool, {VAL}(o), True{{}}, v) : {{{PICK}(_, o) == {O_}.encoded({ENC}(o)) : {O_}.Encoded}}\n  {{==}}')
     refused = (f'def {n2}_e2e_serialize_refused(+o: {R}, +v: {VF}) -> {{{SER}(o) == {O_}.refused() : {O_}.Encoded}}:\n'
                f'  %Equal.sym(Bool, {VAL}(o), False{{}}, v) : {{{PICK}(_, o) == {O_}.refused() : {O_}.Encoded}}\n  {{==}}')
+    conv = None
+    domain = None
     # the bridge's premise from validity
     if len(ps) == 1:
         prem, callp = None, f'{BR}(o)'
@@ -232,12 +348,81 @@ def build(n, tfile, lf):
             defs.append(f'def ltp{r}(+o: U32, +v: {{U32.is_le(o, {(1 << r) - 1}) == True{{}} : Bool}}) -> {{U32.is_lt(o, {1 << r}) == True{{}} : Bool}}:\n'
                         f'  match o:\n    case U32{{+x}}: V.le_lt({r}n, {31 - r}n, x, v)')
         prem = (f'def {n2}_ser_prem(+o: {R}, +v: {VT}) -> {ptype}:\n{pdef}')
+        # the converse: the premise gives validity (so refusal is exactly the failure of the bridge's premise)
+        PT = f'{{{VAL}(o) == True{{}} : Bool}}'
+        if pname == 'e' and re.search(r'is_lt\(o, 256\)', ptype) and not mm:
+            cneed = {8}
+            cbody = '  ltq8(o, p)'
+        elif pname == 'e' and 'b1_byte' in ptype:
+            cneed = set()
+            cbody = f'  match o:\n    case {cons}{{{", ".join("+" + f for f in fields)}}}: p'
+        elif pname == 'e' and 'join(' in ptype:
+            cneed = set()
+            cbody = (f'  match o:\n    case {cons}{{{", ".join("+" + f for f in fields)}}}: bvt{r}({mu.group(1)}, p)')
+            defs.append(
+                f'def bvt{r}(+w: U32, +e: {{w == U32{{WSp.join({r}n, {m}n, WSp.take({r}n, 32n, PD.bits(w)), Word.zero({m}n))}} : U32}}) -> '
+                f'{{U32.is_lt(w, {1 << r}) == True{{}} : Bool}}:\n'
+                f'  %Equal.sym(U32, w, U32{{WSp.join({r}n, {m}n, WSp.take({r}n, 32n, PD.bits(w)), Word.zero({m}n))}}, e) : {{U32.is_lt(_, {1 << r}) == True{{}} : Bool}}\n'
+                f'  V.lt_sh({r}n, {m - 1}n, WSp.take({r}n, 32n, PD.bits(w)))')
+        elif pname == 'rp' and mm:
+            cneed = set()
+            ls, tm = struct_conv(ctx, vmod, expr, 'p', cneed)
+            cbody = (f'  match o:\n    case {cons}{{{", ".join("+" + f for f in fields)}}}:\n' +
+                     ''.join(f'      {l}\n' for l in ls) + f'      {tm}')
+        elif pname == 'rp':
+            cneed = {16}
+            cbody = '  ltq16(o, p)'
+        else:
+            raise SystemExit(f'serialize_e2e: {n}: no converse for {ps[1][:120]!r}')
+        if pname == 'e' and re.search(r'is_lt\(o, 256\)', ptype) and not mm:
+            ctx.alias(E2E / 'ser_e2e_uintdom_generated.bend')
+            rhs = re.search(r' == (API\.serialize\(.*\)) : Maybe<&2, \+List<U32>>\}$', concl2, re.S).group(1)
+            domain = (f'def {n2}_e2e_serialize_domain(+o: {R}, +v: {{{VAL}(o) == False{{}} : Bool}}) -> '
+                      f'{{{rhs} == None{{}} : Maybe<&2, +List<U32>>}}:\n  UD.u8_none(o, v)')
+        elif pname == 'rp' and not mm and ('rp_u16' in ptype or 'is_lt(o, 65536)' in ptype):
+            ctx.alias(E2E / 'ser_e2e_uintdom_generated.bend')
+            rhs = re.search(r' == (API\.serialize\(.*\)) : Maybe<&2, \+List<U32>>\}$', concl2, re.S).group(1)
+            domain = (f'def {n2}_e2e_serialize_domain(+o: {R}, +v: {{{VAL}(o) == False{{}} : Bool}}) -> '
+                      f'{{{rhs} == None{{}} : Maybe<&2, +List<U32>>}}:\n  UD.u16_none(o, v)')
+        for r_ in sorted(cneed):
+            defs.append(f'def ltq{r_}(+o: U32, +v: {{U32.is_lt(o, {1 << r_}) == True{{}} : Bool}}) -> {{U32.is_le(o, {(1 << r_) - 1}) == True{{}} : Bool}}:\n'
+                        f'  match o:\n    case U32{{+x}}: V.lt_le({r_}n, {31 - r_}n, x, v)')
+        conv = f'def {n2}_e2e_valid_of_prem(+o: {R}, +p: {ptype}) -> {PT}:\n{cbody}'
+        if pname == 'rp' and mm:
+            domain = struct_domain(ctx, n2, R, VAL, cons, [f.strip().lstrip('+') for f in mm.group(2).split(',')], expr, concl2, O_)
+        if pname == 'e' and 'b1_byte' in ptype:
+            # a byte above 255 has no encoding: a refused object is one the spec has no bytes for
+            rhs = re.search(r' == (API\.serialize\(.*\)) : Maybe<&2, \+List<U32>>\}$', concl2, re.S).group(1)
+            domain = (f'def {n2}_e2e_serialize_domain(+o: {R}, +v: {{{VAL}(o) == False{{}} : Bool}}) -> '
+                      f'{{{rhs} == None{{}} : Maybe<&2, +List<U32>>}}:\n'
+                      f'  match o:\n    case {cons}{{{", ".join("+" + f for f in fields)}}}: V.b1_none({fields[0]}, v)')
+
         callp = f'{BR}(o, {n2}_ser_prem(o, v))'
+    # non-vacuity: the validity predicate holds of the default object (and of every object, when it is trivial)
+    dmod, dcall = default_for(ctx, bmod, ps[0].split(':', 1)[1], n2)
+    DEF = ctx.lift(dmod, dcall) if dmod is not None else dcall
+    vdef = (f'def {n2}_e2e_valid_default() -> {{{VAL}({DEF}) == True{{}} : Bool}}:\n  {{==}}')
+    extra = [vdef]
+    if len(ps) == 1:
+        vmod, vb = valid_body(tmod, vname)
+        mt = re.match(r'^match o:\n\s+case ([\w.]+)\{([^}]*)\}: True\{\}$', vb.strip(), re.S)
+        if vb.strip() == 'True{}':
+            extra.append(f'def {n2}_e2e_valid_total(+o: {R}) -> {VT}:\n  {{==}}')
+        elif mt:
+            cons = ctx.lift(vmod, mt.group(1))
+            extra.append(f'def {n2}_e2e_valid_total(+o: {R}) -> {{{VAL}(o) == True{{}} : Bool}}:\n'
+                         f'  match o:\n    case {cons}{{{", ".join("+" + f.strip().lstrip("+") for f in mt.group(2).split(","))}}}: {{==}}')
+        else:
+            raise SystemExit(f'serialize_e2e: {n}: premise-free but the validity is {vb[:80]!r}')
+    if conv:
+        extra.append(conv)
+    if domain:
+        extra.append(domain)
     main = (f'def {n2}_e2e_serialize(+o: {R}, +v: {VT}) -> {concl2}:\n'
             f'  %Equal.sym({O_}.Encoded, {SER}(o), {O_}.encoded({ENC}(o)), {n2}_e2e_serialize_ok(o, v)) : '
             f'{concl2.replace(f"{O_}.ser_out({SER}(o))", f"{O_}.ser_out(_)", 1)}\n'
             f'  {callp}')
-    body = defs + [ok, refused] + ([prem] if prem else []) + [main]
+    body = defs + [ok, refused] + ([prem] if prem else []) + [main] + extra
     return W.imports_text(ctx) + '\n\n' + HEADER + '\n' + \
         f'# {n2}: the checked serializer of a valid object is END_TO_END\'s serialize of its value.\n\n' + '\n\n'.join(body) + '\n'
 
@@ -250,7 +435,8 @@ def main():
     for pth, a in ((ROOT / 'src/obj.bend', 'O'), (ROOT / 'src/model.bend', 'API'), (ROOT / 'types/schema.bend', 'S'),
                    (ROOT / 'types/primitive.bend', 'P'), (E2E / 'e2e_support.bend', 'E'), (E2E / 'e2e_valid.bend', 'V'),
                    (ROOT / 'proofs/word_split.bend', 'WSp'), (ROOT / 'proofs/power_division.bend', 'PD'),
-                   (ROOT / 'proofs/compact/found.bend', 'FD')):
+                   (ROOT / 'proofs/compact/found.bend', 'FD'), (E2E / 'ser_e2e_uintdom_generated.bend', 'UD'), (ROOT / 'spec/codec.bend', 'Encoding'),
+                   (ROOT / 'proofs/type_validator_soundness.bend', 'VS')):
         W.PREFER[pth.resolve()] = a
     outs = {}
     for n, tfile in data_names():
@@ -263,6 +449,8 @@ def main():
             continue
         n2 = n if f'{n}_e2e_encode' in lf else 'Fulu' + n
         outs[E2E / f'{n2}_e2e_ser_generated.bend'] = build_linear(n, tfile, P, k, lf)
+    if not only:
+        outs[E2E / 'ser_e2e_uintdom_generated.bend'] = uintdom.uintdom_lib()
     stale = []
     for p, t in outs.items():
         if not p.exists() or p.read_text() != t:

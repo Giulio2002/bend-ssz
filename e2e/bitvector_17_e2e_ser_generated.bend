@@ -21,6 +21,10 @@ def bvs17(+w: U32, +e: {U32.is_lt(w, 131072) == True{} : Bool}) -> {w == U32{WSp
     case U32{+x}:
       Equal.cong(Word(32n), U32, z => U32{z}, x, WSp.join(17n, 15n, WSp.take(17n, 32n, x), Word.zero(15n)), V.shz(17n, 14n, x, e))
 
+def bvt17(+w: U32, +e: {w == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(w)), Word.zero(15n))} : U32}) -> {U32.is_lt(w, 131072) == True{} : Bool}:
+  %Equal.sym(U32, w, U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(w)), Word.zero(15n))}, e) : {U32.is_lt(_, 131072) == True{} : Bool}
+  V.lt_sh(17n, 14n, WSp.take(17n, 32n, PD.bits(w)))
+
 def bitvector_17_e2e_serialize_ok(+o: bitvector_17_d.Bitvector17, +v: {W_types_bitvector_17_encode_ssz_generated.bv17_valid(o) == True{} : Bool}) -> {W_types_bitvector_17_encode_ssz_generated.bitvector_17_serialize(o) == O.encoded(W_types_bitvector_17_encode_ssz_generated.bitvector_17_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_bitvector_17_encode_ssz_generated.bv17_valid(o), True{}, v) : {W_types_bitvector_17_encode_ssz_generated.bitvector_17_ser_pick(_, o) == O.encoded(W_types_bitvector_17_encode_ssz_generated.bitvector_17_encode(o)) : O.Encoded}
   {==}
@@ -36,3 +40,10 @@ def bitvector_17_ser_prem(+o: bitvector_17_d.Bitvector17, +v: {W_types_bitvector
 def bitvector_17_e2e_serialize(+o: bitvector_17_d.Bitvector17, +v: {W_types_bitvector_17_encode_ssz_generated.bv17_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_17_encode_ssz_generated.bitvector_17_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_17(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_17_bits(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_17_encode_ssz_generated.bitvector_17_serialize(o), O.encoded(W_types_bitvector_17_encode_ssz_generated.bitvector_17_encode(o)), bitvector_17_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_17(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_17_bits(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_17_e2e_generated.bitvector_17_e2e_encode(o, bitvector_17_ser_prem(o, v))
+
+def bitvector_17_e2e_valid_default() -> {W_types_bitvector_17_encode_ssz_generated.bv17_valid(bitvector_17_d.bv17_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_17_e2e_valid_of_prem(+o: bitvector_17_d.Bitvector17, +p: {W_proofs_obj_gbits_small_light.bitvector_17_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(W_proofs_obj_gbits_small_light.bitvector_17_last(o))), Word.zero(15n))} : U32}) -> {W_types_bitvector_17_encode_ssz_generated.bv17_valid(o) == True{} : Bool}:
+  match o:
+    case bitvector_17_d.Bitvector17{+w0}: bvt17(w0, p)

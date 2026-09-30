@@ -21,6 +21,10 @@ def bvs31(+w: U32, +e: {U32.is_lt(w, 2147483648) == True{} : Bool}) -> {w == U32
     case U32{+x}:
       Equal.cong(Word(32n), U32, z => U32{z}, x, WSp.join(31n, 1n, WSp.take(31n, 32n, x), Word.zero(1n)), V.shz(31n, 0n, x, e))
 
+def bvt31(+w: U32, +e: {w == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(w)), Word.zero(1n))} : U32}) -> {U32.is_lt(w, 2147483648) == True{} : Bool}:
+  %Equal.sym(U32, w, U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(w)), Word.zero(1n))}, e) : {U32.is_lt(_, 2147483648) == True{} : Bool}
+  V.lt_sh(31n, 0n, WSp.take(31n, 32n, PD.bits(w)))
+
 def bitvector_31_e2e_serialize_ok(+o: bitvector_31_d.Bitvector31, +v: {W_types_bitvector_31_encode_ssz_generated.bv31_valid(o) == True{} : Bool}) -> {W_types_bitvector_31_encode_ssz_generated.bitvector_31_serialize(o) == O.encoded(W_types_bitvector_31_encode_ssz_generated.bitvector_31_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_bitvector_31_encode_ssz_generated.bv31_valid(o), True{}, v) : {W_types_bitvector_31_encode_ssz_generated.bitvector_31_ser_pick(_, o) == O.encoded(W_types_bitvector_31_encode_ssz_generated.bitvector_31_encode(o)) : O.Encoded}
   {==}
@@ -36,3 +40,10 @@ def bitvector_31_ser_prem(+o: bitvector_31_d.Bitvector31, +v: {W_types_bitvector
 def bitvector_31_e2e_serialize(+o: bitvector_31_d.Bitvector31, +v: {W_types_bitvector_31_encode_ssz_generated.bv31_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_31_encode_ssz_generated.bitvector_31_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_31(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_31_bits(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_31_encode_ssz_generated.bitvector_31_serialize(o), O.encoded(W_types_bitvector_31_encode_ssz_generated.bitvector_31_encode(o)), bitvector_31_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_31(), S.BitsValue{W_proofs_obj_gbits_small_light.bitvector_31_bits(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_31_e2e_generated.bitvector_31_e2e_encode(o, bitvector_31_ser_prem(o, v))
+
+def bitvector_31_e2e_valid_default() -> {W_types_bitvector_31_encode_ssz_generated.bv31_valid(bitvector_31_d.bv31_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_31_e2e_valid_of_prem(+o: bitvector_31_d.Bitvector31, +p: {W_proofs_obj_gbits_small_light.bitvector_31_last(o) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(W_proofs_obj_gbits_small_light.bitvector_31_last(o))), Word.zero(1n))} : U32}) -> {W_types_bitvector_31_encode_ssz_generated.bv31_valid(o) == True{} : Bool}:
+  match o:
+    case bitvector_31_d.Bitvector31{+w0}: bvt31(w0, p)

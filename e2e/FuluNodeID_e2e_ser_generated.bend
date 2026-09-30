@@ -23,3 +23,9 @@ def FuluNodeID_e2e_serialize_refused(+o: uint256_d.Uint256, +v: {W_types_uint256
 def FuluNodeID_e2e_serialize(+o: uint256_d.Uint256, +v: {W_types_uint256_encode_ssz_generated.u256_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluNodeID_encode_ssz_generated.NodeID_serialize(o)))} == API.serialize(W_spec_fulu_schemas.NodeID(), W_proofs_obj_root_names_light.v_u256(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluNodeID_encode_ssz_generated.NodeID_serialize(o), O.encoded(W_types_FuluNodeID_encode_ssz_generated.NodeID_encode(o)), FuluNodeID_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.NodeID(), W_proofs_obj_root_names_light.v_u256(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluNodeID_e2e_generated.FuluNodeID_e2e_encode(o)
+
+def FuluNodeID_e2e_valid_default() -> {W_types_uint256_encode_ssz_generated.u256_valid(uint256_d.u256_default()) == True{} : Bool}:
+  {==}
+
+def FuluNodeID_e2e_valid_total(+o: uint256_d.Uint256) -> {W_types_uint256_encode_ssz_generated.u256_valid(o) == True{} : Bool}:
+  {==}

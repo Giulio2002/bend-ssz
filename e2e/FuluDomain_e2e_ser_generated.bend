@@ -23,3 +23,9 @@ def FuluDomain_e2e_serialize_refused(+o: FuluBytes32_d.Bytes32, +v: {W_types_Ful
 def FuluDomain_e2e_serialize(+o: FuluBytes32_d.Bytes32, +v: {W_types_FuluBytes32_encode_ssz_generated.b32_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluDomain_encode_ssz_generated.Domain_serialize(o)))} == API.serialize(W_spec_fulu_schemas.Domain(), W_proofs_obj_root_names_light.v_b32(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluDomain_encode_ssz_generated.Domain_serialize(o), O.encoded(W_types_FuluDomain_encode_ssz_generated.Domain_encode(o)), FuluDomain_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.Domain(), W_proofs_obj_root_names_light.v_b32(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluDomain_e2e_generated.FuluDomain_e2e_encode(o)
+
+def FuluDomain_e2e_valid_default() -> {W_types_FuluBytes32_encode_ssz_generated.b32_valid(FuluBytes32_d.b32_default()) == True{} : Bool}:
+  {==}
+
+def FuluDomain_e2e_valid_total(+o: FuluBytes32_d.Bytes32) -> {W_types_FuluBytes32_encode_ssz_generated.b32_valid(o) == True{} : Bool}:
+  {==}
