@@ -20,7 +20,9 @@ Trusted (not proved here):
   patching the checker. Until that port lands, every "checks" claim in this repository means
   "checks under 3ddfb036".
   `tools/check_fast.sh` accepts an umbrella only on the exact line `All terms check.` (never the
-  checker's "All terms check, but N defs rely on unsafe or foreign code"). That report covers only
+  checker's "All terms check, but N defs rely on unsafe or foreign code"). An umbrella whose first run
+  printed "the machine stack overflowed" (nondeterministic under load on this checker) is run once more and the second run
+  decides, again only on that exact line; the first log is kept as `<n>.log.try1` (docs/BUILD.md). That report covers only
   the top file's defs and the laws, so in an umbrella (which only imports) an unsafe dependency of
   a bridge def would not show; the guard for every def is `tools/verify_no_escapes.py`, run before
   any check. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
@@ -103,3 +105,13 @@ proved: the statements to review are the facades' (`proofs/api/`) and the bridge
 whose conclusions are END_TO_END's model functions and `spec/`.
 
 The premises and runtime limits the laws are stated under are listed in [PREMISES.md](PREMISES.md); they are part of what a reader must accept.
+
+Not in the gate (limits of what "checks" covers):
+
+- **Laws waiting for the checker port.** The read-back laws of the <!-- fig:rigid_count -->17<!-- /fig --> array-stored collections
+  (`read_set`, `read_append`, and `other_set` of the boxed lists) are proved only for the rigid checker, on the out-of-tree branch
+  `agent/solid3-rigid` (`proofs/obj/tarray.bend`, `coll_seq.bend`). They are not checked by `tools/check_fast.sh` and no claim of
+  this repository covers them: <!-- fig:rigid_collections -->`l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l2048_Eth1Data`, `l1099511627776_Validator`, `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`, `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`, `l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`<!-- /fig -->.
+- **Fixture provenance.** The committed fixtures are tied to the pinned upstream release archives only in a gate run
+  (`tools/check_fast.sh --tarballs DIR`, stamp field `fixtures_tarballs_verified`); a run without it checks them against
+  `fixtures.manifest.json` only.

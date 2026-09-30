@@ -129,10 +129,11 @@ WHOLE = ('spec/', 'vendor/', 'END_TO_END.bend')
 # END_TO_END's frozen laws).
 SUBJECT = re.compile(r'^(src/model\.bend|types/\w+_(encode_ssz|decode_ssz|hashtreeroot)_generated\.bend)$')
 # The exception to that carve-out: the validity predicates of the generated encoders (X_valid and the
-# helpers it is built from, X_va0 ..., X_va_back). They are not the implementation under test but the
+# helpers it is built from: X_va0 ..., X_va_back, X_va_cap, X_va_one, X_va_go, X_va_fin, X_va_nz: any `_va` or `_va_<word>`
+# def of an encode file; every helper the predicates call is one of them, checked by the self-test). They are not the implementation under test but the
 # premise of the validating-serializer statements (e2e/*_e2e_ser_generated.bend: `X_valid(o) == True`),
 # so a weakened predicate would weaken what those statements say: they are hashed and traversed.
-PREMISE_SIDE = re.compile(r'(_valid|_va\d+|_va_back|_va)$')
+PREMISE_SIDE = re.compile(r'_(valid|va(\d+|_[a-z]+)?)$')
 _mods = {}
 _override = {}  # path -> text, for the planted-change self-test only
 
@@ -255,7 +256,40 @@ PLANTED = [
 ]
 
 
+def self_test_helpers():
+    """every def of a generated encode file named like a validity helper is premise-side (so none is left
+    unlocked), and planting a change in a helper a serializer statement's predicate calls changes that statement's hash"""
+    import glob
+    for f in glob.glob(os.path.join(ROOT, 'types/*_encode_ssz_generated.bend')):
+        for m in re.finditer(r'^def (\w+)', open(f).read(), re.M):
+            if re.search(r'_va($|[\d_])', m.group(1)) and not PREMISE_SIDE.search(m.group(1)):
+                sys.exit('verify_frozen: self-test FAILED: %s: %s is a validity helper that PREMISE_SIDE misses' % (f, m.group(1)))
+    f = 'e2e/FuluCheckpoint_e2e_ser_generated.bend'
+    path = 'types/FuluCheckpoint_encode_ssz_generated.bend'
+    text = open(os.path.join(ROOT, path)).read()
+    lines = text.split('\n')
+    i = [k for k, l in enumerate(lines) if l.startswith('def Checkpoint_valid')][0]
+    j = i + 1
+    while j < len(lines) and (not lines[j].strip() or lines[j][0] in ' \t'):
+        j += 1
+    n = 0
+    for h in ('va_cap', 'va_one', 'va_go', 'va_fin', 'va_nz', 'va_back', 'va7'):
+        hashes = []
+        for body in ('True{}', 'False{}'):
+            _mods.clear()
+            _override[path] = '\n'.join(lines[:i] + ['def Checkpoint_valid(o: C.Checkpoint) -> Bool: Checkpoint_%s(o)' % h, '',
+                                                     'def Checkpoint_%s(o: C.Checkpoint) -> Bool: %s' % (h, body), ''] + lines[j:])
+            hashes.append(statement_defs([f]))
+            _override.clear()
+            _mods.clear()
+        if hashes[0] == hashes[1]:
+            sys.exit('verify_frozen: self-test FAILED: a change in the validity helper Checkpoint_%s does not change the hash of %s' % (h, f))
+        n += 1
+    return n
+
+
 def self_test():
+    n_helpers = self_test_helpers()
     for f, path, name, repl, must in PLANTED:
         _mods.clear()
         _override.clear()
@@ -277,7 +311,7 @@ def self_test():
         if (got != base) != must:
             sys.exit('verify_frozen: self-test FAILED: planting %s.%s %s the hash of %s' % (
                 path, name, 'did not change' if must else 'changed', f))
-    return len(PLANTED)
+    return len(PLANTED) + n_helpers
 
 
 def Path_(p):

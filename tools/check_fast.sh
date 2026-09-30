@@ -20,10 +20,11 @@
 # toolchain.lock.json, tools/verify_frozen.py the frozen statements against frozen.lock.json, and
 # tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies, and tools/verify_schemas.py
 # cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas, and
-# tools/verify_fixtures.py the fixtures against fixtures.manifest.json (exit 3 on any failure).
+# tools/verify_fixtures.py the fixtures against fixtures.manifest.json (exit 3 on any failure); with --tarballs DIR (or
+# CHECK_TARBALLS=DIR, the gate run) also against the pinned release tarballs, and the stamp then has fixtures_tarballs_verified: true.
 # Run from the repository root.
 set -u
-J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1
+J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; TARB=${CHECK_TARBALLS:-}
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -31,7 +32,8 @@ while [ $# -gt 0 ]; do
     --out) OUT=$2; shift 2;;
     --files) FILES=$2; shift 2;;
     --no-localize) LOC=0; shift;;
-    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize]" >&2; exit 2;;
+    --tarballs) TARB=$2; shift 2;;
+    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize] [--tarballs DIR]" >&2; exit 2;;
   esac
 done
 t0=$(date +%s)
@@ -41,7 +43,12 @@ python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3
 python3 tools/verify_schemas.py || exit 3
-python3 tools/verify_fixtures.py || exit 3
+if [ -n "$TARB" ]; then
+  # gate run: also the manifest against the pinned release tarballs (cached in DIR, fetched if absent); the stamp records it
+  python3 tools/verify_fixtures.py --tarballs "$TARB" --record "$OUT/fixtures.json" || exit 3
+else
+  python3 tools/verify_fixtures.py || exit 3
+fi
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
