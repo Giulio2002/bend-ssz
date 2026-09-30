@@ -76,3 +76,38 @@ def len32g(-arr: Array<U32>, +a: Nat, +b: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(5n+a)), FD.spec_common__pow2(5n+a), FD.u32__pow2u_value(5n+a, FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb))) : {_ == PK.e32(U32.to_nat(FD.u32__pow2u(a))) : Nat}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
   {==}
+# e32 written out: the checker compares Nat.double chains without expanding the sums (the defs e32 / e8 would be walked)
+def e32d(-x: Nat) -> {WS.e32(x) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(x))))) : Nat}: {==}
+def pe32d(-x: Nat) -> {PK.e32(x) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(x))))) : Nat}: {==}
+def pe16d(-x: Nat) -> {PK.e16(x) == Nat.double(Nat.double(Nat.double(Nat.double(x)))) : Nat}: {==}
+def pe8d(-x: Nat) -> {PK.e8(x) == Nat.double(Nat.double(Nat.double(x))) : Nat}: {==}
+
+# the length fact of an n-byte word array, with the sum proved by the caller in a form the checker compares in halves
+def lbig(-o: O.Words, +n: U32, +hl: {WO.len(o) == n : U32}, +h: {U32.to_nat(n) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt32(o)))))) : Nat})
+    -> {U32.to_nat(WO.len(o)) == PK.e32(PK.cnt32(o)) : Nat}:
+  %Equal.sym(Nat, PK.e32(PK.cnt32(o)), Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt32(o)))))), pe32d(PK.cnt32(o))) : {U32.to_nat(WO.len(o)) == _ : Nat}
+  %Equal.sym(U32, WO.len(o), n, hl) : {U32.to_nat(_) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt32(o)))))) : Nat}
+  h
+def lbig16(-o: O.Words, +n: U32, +hl: {WO.len(o) == n : U32}, +h: {U32.to_nat(n) == Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt16(o))))) : Nat})
+    -> {U32.to_nat(WO.len(o)) == PK.e16(PK.cnt16(o)) : Nat}:
+  %Equal.sym(Nat, PK.e16(PK.cnt16(o)), Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt16(o))))), pe16d(PK.cnt16(o))) : {U32.to_nat(WO.len(o)) == _ : Nat}
+  %Equal.sym(U32, WO.len(o), n, hl) : {U32.to_nat(_) == Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt16(o))))) : Nat}
+  h
+def lbig8(-o: O.Words, +n: U32, +hl: {WO.len(o) == n : U32}, +h: {U32.to_nat(n) == Nat.double(Nat.double(Nat.double(PK.cnt8(o)))) : Nat})
+    -> {U32.to_nat(WO.len(o)) == PK.e8(PK.cnt8(o)) : Nat}:
+  %Equal.sym(Nat, PK.e8(PK.cnt8(o)), Nat.double(Nat.double(Nat.double(PK.cnt8(o)))), pe8d(PK.cnt8(o))) : {U32.to_nat(WO.len(o)) == _ : Nat}
+  %Equal.sym(U32, WO.len(o), n, hl) : {U32.to_nat(_) == Nat.double(Nat.double(Nat.double(PK.cnt8(o)))) : Nat}
+  h
+
+
+# 2x + 2k = 2(x + k), by x's structure (a big sum rewritten into doublings the checker compares level by level)
+def dadd2(+x: Nat, +k: Nat) -> {Nat.add(Nat.double(x), Nat.double(k)) == Nat.double(Nat.add(x, k)) : Nat}:
+  match x:
+    case 0n: {==}
+    case 1n+p: Equal.cong(Nat, Nat, z => 2n+z, Nat.add(Nat.double(p), Nat.double(k)), Nat.double(Nat.add(p, k)), dadd2(p, k))
+
+# dadd2 with the doubled constant a literal (k2), so a caller's sum is compared syntactically, never evaluated
+def daddk(+x: Nat, +k: Nat, +k2: Nat, +hk: {Nat.double(k) == k2 : Nat}) -> {Nat.add(Nat.double(x), k2) == Nat.double(Nat.add(x, k)) : Nat}:
+  %hk : {Nat.add(Nat.double(x), _) == Nat.double(Nat.add(x, k)) : Nat}
+  dadd2(x, k)
+

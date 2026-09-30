@@ -4,7 +4,9 @@ import ./FuluDataColumnSidecar_e2e_root_generated.bend as RB
 import ./e2e_blist.bend as BL
 import ./e2e_support.bend as E
 import ./e2e_ve_DataColumnSidecar.bend as VEV
+import ./e2e_wit.bend as WT
 import ../proofs/compact/found.bend as FD
+import ../proofs/obj/cells_light.bend as CE
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/words_obj_light.bend as WO
@@ -50,6 +52,15 @@ def WZ48() -> {O.words_new(48) == O.Words{FD.array__thaw(U32, FD.array__trep(U32
   %FD.array__new(U32, 5n, 0) : {O.words_new(48) == O.Words{_, 48} : O.Words}
   {==}
 
+def sym_CE_wfe(-o: O.Words, +c: Nat, +b: Nat, +d: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hd: {Nat.is_le(Nat.add(3n, c), d) == True{} : Bool}, +ew: {o == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words}, +h0: {Nat.is_lt(d, 32n) == True{} : Bool}, +h1: {Nat.is_le(Nat.mul(CE.kc(FD.u32__pow2u(b)), 512n), FD.spec_common__pow2(d)) == True{} : Bool}) -> CE.wfe(o):
+  (FD.array__trep(U32, d, 0), (d, (FD.u32__pow2u(b), (ew, (FD.array__trep_perfect(U32, d, 0), (h0, h1))))))
+
+def sym_VEV_sdd(-w: O.Words, +k: Nat, +c: Nat, +b: Nat, +d: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hd: {Nat.is_le(Nat.add(3n, c), d) == True{} : Bool}, +ew: {w == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words}, +h0: {Nat.is_lt(d, k) == True{} : Bool}) -> VEV.sdd(w, k):
+  (FD.array__trep(U32, d, 0), (d, (FD.u32__pow2u(b), (ew, (FD.array__trep_perfect(U32, d, 0), h0)))))
+
+def big1() -> CE.rep_el(RT.pj_DataColumnSidecar_1(NE()), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar())))):
+  (sym_CE_wfe(RT.pj_DataColumnSidecar_1(NE()), 6n, 11n, 10n, {==}, {==}, {==}, WZ2048(), {==}, {==}), {==})
+
 def premise_rep() -> RT.rep_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Spec.DataColumnSidecar()):
   (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==}), ((FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==}), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))))))
 
@@ -83,10 +94,10 @@ def FuluDataColumnSidecar_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluDataC
 # The same bridges at the non-empty object NE(): every premise is proved of NE().
 
 def premise_ne_rep() -> RT.rep_DataColumnSidecar(NE(), Spec.DataColumnSidecar()):
-  (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 10n, 0), (10n, (2048, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), ((FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==}), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))))))
+  (uint64_d.u64_default(), ({==}, (big1(), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), ((FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==}), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))))))
 
 def premise_ne_hd0() -> VEV.sdd(RT.pj_DataColumnSidecar_1(NE()), 31n):
-  (FD.array__trep(U32, 10n, 0), (10n, (2048, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), {==})))))
+  sym_VEV_sdd(RT.pj_DataColumnSidecar_1(NE()), 31n, 6n, 11n, 10n, {==}, {==}, {==}, WZ2048(), {==})
 
 def premise_ne_hd1() -> VEV.sdd(RT.pj_DataColumnSidecar_2(NE()), 31n):
   (FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), {==})))))
