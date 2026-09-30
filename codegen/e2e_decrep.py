@@ -459,12 +459,41 @@ def prog_bool(name, codec):
     return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
 
 
+def list_u16_container(name, codec, top_win, inner_win, limit, ky, lf):
+    """a container with fixed unsigned fields and one List[uint16, limit] at a data-dependent offset (the window reader inner_win,
+    var_winx_<L>_u16; its offset/length functions XJ0/FJ0/LJ0 and check itD0 are the top window's): rep_l2 and the storage premise"""
+    BUF_D.add(name)
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+    def lets(al):
+        BW, CH, DPA, PBA = al(top_win), al(inner_win), al('e2e/e2e_dpl.bend'), al('proofs/obj/packed_bytes_light.bend')
+        X, F_, L_ = f'{BW}.XJ0(t, 0n)', f'{BW}.FJ0(0, t, 0n)', f'{BW}.LJ0(t, 0n, n)'
+        out = [f'+hcI = {BW}.itD0(t, 0n, 0, n, hchk)',
+               f'+hb = {CH}.hB(t, {X}, {F_}, {L_}, hcI)',
+               f'+hy = VC.hyU({L_}, {ky}n, {{==}}, {CH}.hyB({L_}, hb))',
+               f'+eL = {CH}.eLc(t, {X}, {F_}, {L_}, hcI)',
+               f'+hl = {CH}.hcL(t, {X}, {F_}, {L_}, hcI)',
+               f'+ec = {DPA}.cnt(1n, {L_}, {CH}.CQ({L_}), eL)']
+        cnt = f'U32.to_nat(U32.shrn({L_}, 1n))'
+        lenf = (f'Equal.trans(Nat, U32.to_nat({L_}), Nat.double({CH}.CQ({L_})), Nat.double({cnt}), eL, '
+                f'Equal.cong(Nat, Nat, z => Nat.double(z), {CH}.CQ({L_}), {cnt}, Equal.sym(Nat, {cnt}, {CH}.CQ({L_}), ec)))')
+        limf = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, {limit}n) == True{{}} : Bool}}, {CH}.CQ({L_}), {cnt}, Equal.sym(Nat, {cnt}, {CH}.CQ({L_}), ec), hl)')
+
+        def words(j, e):
+            return WordsDec(e, any_=lambda k: f'DZ.ct_dec(d, t, {F_}, {L_}, {k}, {{==}}, hy)',
+                            facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == Nat\.double\(\w+\.cnt2\(o\)\)', lenf), (r'Nat\.is_le\(\w+\.cnt2\(o\), ', limf)])
+        return out, words
+    return container_file(name, lf, f'proofs/obj/{codec}.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None, f'proofs/obj/{codec}.bend')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
 PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
+    'VarTestStruct': lambda lf: list_u16_container('VarTestStruct', 'var_codec_VarTestStruct', 'proofs/obj/var_winx_VarTestStruct.bend', 'proofs/obj/var_winx_l1024_u16.bend', 1024, 12, lf),
     'proglist_bool': lambda lf: prog_bool('proglist_bool', 'var_plist_proglist_bool_top'),
     **{f'proglist_uint{8 << k}': (lambda lf, k=k: prog_list(f'proglist_uint{8 << k}', ('var_plist_proglist_uint8_top' if k == 0 else 'var_plist_proglist_uint16_top' if k == 1 else f'var_plist_proglist_uint{8 << k}'), k + 0)) for k in range(6)},
     'FuluExecutionRequests': lambda lf: execution_requests(lf),
@@ -578,6 +607,28 @@ class DSynth(W.Synth):
 
     def eq(self, p, env):
         subj = env.get('__subj')
+        ms = re.fullmatch(r'\{U32\.is_lt\(o, (256|65536)\) == True\{\} : Bool\}', p.strip())
+        if ms and env.get('__e', {}).get('o'):
+            e = env['__e']['o'].strip()
+            mo = re.fullmatch(r'(\w+)\.OBJ\(\w+, (\w+), (.*)\)', e, re.S)
+            pth = self.ctx.used.get(mo.group(1)) if mo else None
+            if pth is not None and pth.name in ('vfx_u16.bend', 'vfx_u8.bend'):   # a fixed field's reader: its body
+                t_, x_ = mo.group(2), mo.group(3)
+                if pth.name == 'vfx_u16.bend':
+                    e = f"{self.ctx.alias(ROOT / 'src/obj.bend')}.keep(2, {self.ctx.alias(ROOT / 'proofs/obj/vua_rd.bend')}.RWN({t_}, {x_}))"
+                else:
+                    e = f"{self.ctx.alias(ROOT / 'proofs/obj/vbitl.bend')}.nthb({self.ctx.alias(ROOT / 'proofs/obj/vua.bend')}.BYT({t_}), {x_})"
+            mk = re.fullmatch(r'(\w+)\.keep\((1|2), (.*)\)', e, re.S)
+            if mk and (mk.group(2) == '1') == (ms.group(1) == '256'):
+                MKA = self.ctx.alias(ROOT / 'e2e/e2e_mask.bend')
+                nb = 8 * int(mk.group(2))
+                return (f'FD.logic__subst(U32, z => {{U32.is_lt(z, {ms.group(1)}) == True{{}} : Bool}}, {MKA}.cf{nb}({mk.group(3)}), {e}, '
+                        f'Equal.sym(U32, {e}, {MKA}.cf{nb}({mk.group(3)}), {MKA}.mk{nb}({mk.group(3)})), {{==}})')
+            mb = re.fullmatch(r'(\w+)\.nthb\((\w+)\.BYT\((\w+)\), (.*)\)', e, re.S)
+            if mb and ms.group(1) == '256':
+                DPA, FXA, VRA = (self.ctx.alias(ROOT / 'e2e/e2e_dpl.bend'), self.ctx.alias(ROOT / 'proofs/obj/spec_fixed.bend'),
+                                 self.ctx.alias(ROOT / 'proofs/obj/vbrt.bend'))
+                return f'{DPA}.nthb_lt({mb.group(2)}.BYT({mb.group(3)}), {mb.group(4)}, {FXA}.domain_limbs({VRA}.SL({mb.group(3)})))'
         if isinstance(subj, WordsFix):
             if 'array__perfect(U32' in p:
                 return subj.pf

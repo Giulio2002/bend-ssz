@@ -306,6 +306,11 @@ def build(name, lf):
     return build_std(name, lf)
 
 
+BRANCH_E = ['t', 'dw', 'hd', 'pf', 'cap']   # the branch names' laws state the object as O.Words{thaw(t), N} for a perfect tree t
+BRANCH_R = ['h', 't', 'dw', 'hd', 'pf', 'cap']
+TOBJ = re.compile(r'\w+\.Words\{\w+\.array__thaw\(U32, t\), \d+\}')
+
+
 def build_std(name, lf):
     dl = lf.get(f'{name}_e2e_decode_accept') or lf.get(f'{name}_e2e_decode_view')
     kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
@@ -324,7 +329,8 @@ def build_std(name, lf):
             lit = ('var', why)
         else:
             # a fixed-size decoder's object written out (<X>_d_some / _d_none): its premises are computed
-            if 'o' not in [b for _, b, _ in eps] or kind != 'view' or f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
+            br_ = [b for _, b, _ in eps] == BRANCH_E and [b for _, b, _ in rps] == BRANCH_R
+            if ('o' not in [b for _, b, _ in eps] and not br_) or kind != 'view' or f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
                 return None, why
             sps, sc = sig(dm, f'{name}_d_some')
             if [b for _, b, _ in sps] != ['bs', 'n', 'hn', 'hd', 'ec']:
@@ -373,6 +379,9 @@ def build_std(name, lf):
         return bool(rep and obj) and a.replace(rep[0] + '.', obj[0] + '.') == b.replace(rep[0] + '.', obj[0] + '.')
     if not same_view(ctx.lift(rm, rt[2]), V) or ctx.lift(rm, rt[1]) != SPEC:
         return None, 'the (i) and (iv) views differ textually'
+    if [b for _, b, _ in eps] == BRANCH_E:   # the object is the statements' O.Words{thaw(t), N}; its view is the decode bridge's <Name>_ov
+        X, R = TOBJ.sub('o', X), TOBJ.sub('o', R)
+        V = f'{DB}.{name}_ov(o)'
     if kind == 'accept':
         mo = re.match(r'\(\{(.*?) == Some\{o\} : (Maybe<&1, [^>]*>)\} -> (\{API\.deserialize\(.*?\} : Maybe<&2, S\.Value>\})\) & \((.*)\)$', dc, re.S)
         DEC, MT, ACC, BWD = ctx.lift(dm, mo.group(1)), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3)), ctx.lift(dm, mo.group(4))
@@ -433,13 +442,14 @@ def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, D
     FDA = W.canon(ROOT / 'proofs/compact/found.bend')
     syn = LSynth(ctx)
     model = lit_model(OBJ)
-    omode = [m_ for m_, b, _ in eps if b == 'o'][0]
+    omode = ([m_ for m_, b, _ in eps if b == 'o'] or ['-'])[0]
     body = [f'# {name}: decoding accepted bytes, then re-encoding / hashing the object (codegen/e2e_compose.py). The decoder\'s',
             f'# object is written out ({DB}.{name}_d_some): the (i)/(iv) premises are proved of it, and the statements\' object is it.', '']
     prem, tys = {}, {}
+    br = [b for _, b, _ in eps] == BRANCH_E
     for tag, mod, ps in (('e', em, eps), ('r', rm, rps)):
         for m_, b, t in ps:
-            if b in ('o', 'h'):
+            if b in ('o', 'h') or br:
                 continue
             try:
                 term = syn.prove(mod, t, {'o': model, '__subj': None, '__e': {'o': OBJ}})
@@ -458,12 +468,24 @@ def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, D
     dect = f'dec: {{{DEC} == Some{{o}} : {MT}}}'
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {K}n) == c : Bool}}'
     SOME = f'{DB}.{name}_d_some(bs, n, hn, hd, ec)'
+    if br:   # the object as the laws state it, O.Words{thaw(t), N} at t = freeze(the written-out array): syntactically the laws' own, so nothing is compared by evaluation
+        OA = re.match(r'(\w+)\.Words\{', OBJ).group(1)
+        OBJ_NEW = f'{OA}.Words{{{FDA}.array__thaw(U32, {FDA}.array__freeze(U32, {model.arr})), {model.n}}}'
+        body.append(f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, +ec: {{Nat.is_eq(List.length(&2, U32, bs), {K}n) == True{{}} : Bool}})\n'
+                    f'    -> {{{DEC} == Some{{{OBJ_NEW}}} : {MT}}}:\n  {SOME}\n')
+        OBJ, SOME = OBJ_NEW, 'dsome(bs, n, hn, hd, ec)'
     eqo = (f'Equal.cong({MT}, {OT}, z => gm(z, {OBJ}), Some{{o}}, Some{{{OBJ}}}, '
            f'Equal.trans({MT}, Some{{o}}, {DEC}, Some{{{OBJ}}}, Equal.sym({MT}, {DEC}, Some{{o}}, dec), {SOME}))')
     none = (f'{FDA}.logic__false_true(Equal.cong({MT}, Bool, z => isS(z), None{{}}, Some{{o}}, '
             f'Equal.trans({MT}, None{{}}, {DEC}, Some{{o}}, Equal.sym({MT}, {DEC}, None{{}}, {DB}.{name}_d_none(bs, n, hn, ec)), dec)))')
-    ea = ', '.join(f'{prem[("e", b)]}(bs)' for _, b, _ in eps if b != 'o')
-    ra = ', '.join(f'{prem[("r", b)]}(bs)' for _, b, _ in rps if b not in ('o', 'h'))
+    if br:   # the tree of the written-out object, perfect at its depth (all computed)
+        arr = model.arr
+        T0 = f'{FDA}.array__freeze(U32, {arr})'
+        ea = f'{T0}, {model.d}n, {{==}}, {{==}}, {{==}}'
+        ra = ea
+    else:
+        ea = ', '.join(f'{prem[("e", b)]}(bs)' for _, b, _ in eps if b != 'o')
+        ra = ', '.join(f'{prem[("r", b)]}(bs)' for _, b, _ in rps if b not in ('o', 'h'))
     XO, RO, VO = sub_o(X, OBJ), sub_o(R, OBJ), sub_o(V, OBJ)
     body += [f'def gm(m: {MT}, d: {OT}) -> {OT}:\n  match m:\n    case Some{{x}}: x\n    case None{{}}: d',
              f'def isS(m: {MT}) -> Bool:\n  match m:\n    case Some{{x}}: True{{}}\n    case None{{}}: False{{}}', '',
@@ -473,13 +495,13 @@ def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, D
              f'    +c: Bool, +ec: {ecT}) -> {{{X} == bs : +List<U32>}}:\n'
              f'  match c:\n    case True{{}}:\n'
              f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{{sub_o(X, "_")} == bs : +List<U32>}}\n'
-             f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {EB}.{name}_e2e_encode({OBJ}{", " + ea if ea else ""}))\n'
+             f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {EB}.{name}_e2e_encode({ea if br else OBJ + (", " + ea if ea else "")}))\n'
              f'    case False{{}}:\n      Empty.absurd({{{X} == bs : +List<U32>}}, {none})', '',
              f'def gr(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect},\n'
              f'    +c: Bool, +ec: {ecT}) -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n'
              f'  match c:\n    case True{{}}:\n'
              f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{Some{{{sub_o(R, "_")}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}\n'
-             f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {RB}.{name}_e2e_root(h, {OBJ}{", " + ra if ra else ""}))\n'
+             f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}, hn, hd, {SOME}), {RB}.{name}_e2e_root(h, {ra if br else OBJ + (", " + ra if ra else "")}))\n'
              f'    case False{{}}:\n      Empty.absurd({{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}, {none})', '',
              f'# (i) after (ii): the decoded object re-encodes to exactly the input bytes',
              f'def {name}_e2e_decode_encode(+bs: +List<U32>, +n: U32, {omode}o: {OT}, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{SP_.bytes_domain(bs) == True{{}} : Bool}}, {dect})\n'

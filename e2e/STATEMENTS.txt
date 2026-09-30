@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4081 statements in 1163 files.
+# 4091 statements in 1168 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -3181,6 +3181,22 @@ import ../types/FuluContributionAndProof_hashtreeroot_generated.bend as FuluCont
 def FuluContributionAndProof_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, B.Buf, FuluContributionAndProof_e.ContributionAndProof_encode(FuluContributionAndProof_d.ContributionAndProof_default())))} == API.serialize(Spec.ContributionAndProof(), M1.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof_default())) : Maybe<&2, +List<U32>>}:
 def FuluContributionAndProof_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(B.alloc(0), FuluContributionAndProof_d.ContributionAndProof_default()))))} == API.hash_tree_root(Spec.ContributionAndProof(), M1.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/FuluCurrentSyncCommitteeBranch_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
+import ../types/FuluCurrentSyncCommitteeBranch_encode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_e
+import ../types/FuluCurrentSyncCommitteeBranch_hashtreeroot_generated.bend as FuluCurrentSyncCommitteeBranch_h
+def FuluCurrentSyncCommitteeBranch_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, FuluCurrentSyncCommitteeBranch_e.CurrentSyncCommitteeBranch_encode(o))) == bs : +List<U32>}:
+def FuluCurrentSyncCommitteeBranch_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCurrentSyncCommitteeBranch_h.CurrentSyncCommitteeBranch_hash_tree_root(h, o))))} == C.droot(Spec.CurrentSyncCommitteeBranch(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/FuluCurrentSyncCommitteeBranch_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -4354,6 +4370,22 @@ def FuluExecutionAddress_e2e_serialize(+o: FuluBytes20_d.Bytes20, +v: {W_types_F
 def FuluExecutionAddress_e2e_valid_default() -> {W_types_FuluBytes20_encode_ssz_generated.b20_valid(FuluBytes20_d.b20_default()) == True{} : Bool}:
 def FuluExecutionAddress_e2e_valid_total(+o: FuluBytes20_d.Bytes20) -> {W_types_FuluBytes20_encode_ssz_generated.b20_valid(o) == True{} : Bool}:
 
+## e2e/FuluExecutionBranch_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/FuluExecutionBranch_decode_ssz_generated.bend as FuluExecutionBranch_r
+import ../types/FuluExecutionBranch_encode_ssz_generated.bend as FuluExecutionBranch_e
+import ../types/FuluExecutionBranch_hashtreeroot_generated.bend as FuluExecutionBranch_h
+def FuluExecutionBranch_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, FuluExecutionBranch_e.ExecutionBranch_encode(o))) == bs : +List<U32>}:
+def FuluExecutionBranch_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluExecutionBranch_h.ExecutionBranch_hash_tree_root(h, o))))} == C.droot(Spec.ExecutionBranch(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/FuluExecutionBranch_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -4833,6 +4865,22 @@ def FuluExecutionRequests_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluExecution
 def FuluExecutionRequests_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(NE())))} == API.serialize(Spec.ExecutionRequests(), RT.v_ExecutionRequests(NE())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionRequests_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_default()))))} == API.hash_tree_root(Spec.ExecutionRequests(), RT.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionRequests_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.ExecutionRequests(), RT.v_ExecutionRequests(NE())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluFinalityBranch_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/FuluFinalityBranch_decode_ssz_generated.bend as FuluFinalityBranch_r
+import ../types/FuluFinalityBranch_encode_ssz_generated.bend as FuluFinalityBranch_e
+import ../types/FuluFinalityBranch_hashtreeroot_generated.bend as FuluFinalityBranch_h
+def FuluFinalityBranch_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, FuluFinalityBranch_e.FinalityBranch_encode(o))) == bs : +List<U32>}:
+def FuluFinalityBranch_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluFinalityBranch_h.FinalityBranch_hash_tree_root(h, o))))} == C.droot(Spec.FinalityBranch(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluFinalityBranch_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -6360,6 +6408,22 @@ import ../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_e
 import ../types/FuluMatrixEntry_hashtreeroot_generated.bend as FuluMatrixEntry_h
 def FuluMatrixEntry_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_default())))} == API.serialize(Spec.MatrixEntry(), M1.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default())) : Maybe<&2, +List<U32>>}:
 def FuluMatrixEntry_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_default()))))} == API.hash_tree_root(Spec.MatrixEntry(), M1.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluNextSyncCommitteeBranch_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/FuluNextSyncCommitteeBranch_decode_ssz_generated.bend as FuluNextSyncCommitteeBranch_r
+import ../types/FuluNextSyncCommitteeBranch_encode_ssz_generated.bend as FuluNextSyncCommitteeBranch_e
+import ../types/FuluNextSyncCommitteeBranch_hashtreeroot_generated.bend as FuluNextSyncCommitteeBranch_h
+def FuluNextSyncCommitteeBranch_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, FuluNextSyncCommitteeBranch_e.NextSyncCommitteeBranch_encode(o))) == bs : +List<U32>}:
+def FuluNextSyncCommitteeBranch_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluNextSyncCommitteeBranch_h.NextSyncCommitteeBranch_hash_tree_root(h, o))))} == C.droot(Spec.NextSyncCommitteeBranch(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluNextSyncCommitteeBranch_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10037,6 +10101,23 @@ import ../types/SmallTestStruct_encode_ssz_generated.bend as SmallTestStruct_e
 import ../types/SmallTestStruct_hashtreeroot_generated.bend as SmallTestStruct_h
 def SmallTestStruct_e2e_witness() -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(SmallTestStruct_d.SmallTestStruct_default()))} == API.serialize(Spec.SmallTestStruct(), M1.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default())) : Maybe<&2, +List<U32>>}:
 def SmallTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(B.alloc(0), SmallTestStruct_d.SmallTestStruct_default())))} == API.hash_tree_root(Spec.SmallTestStruct(), M1.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/VarTestStruct_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/VarTestStruct_decode_ssz_generated.bend as VarTestStruct_r
+import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
+import ../types/VarTestStruct_hashtreeroot_generated.bend as VarTestStruct_h
+def VarTestStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: VarTestStruct_d.VarTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, VarTestStruct_d.VarTestStruct>})
+    -> {E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(o))) == bs : +List<U32>}:
+def VarTestStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: VarTestStruct_d.VarTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, VarTestStruct_d.VarTestStruct>})
+    -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(h, o))))} == C.droot(Spec.VarTestStruct(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/VarTestStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
