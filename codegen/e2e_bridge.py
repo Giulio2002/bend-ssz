@@ -2803,6 +2803,7 @@ VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
 import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
+import e2e_arr512 as EA  # noqa: E402  (decode bridges of the one-tree word-storage vectors)
 import e2e_bview_gen as BVG  # noqa: E402  (the bit-list view module and the bit lists' view lemmas)
 for _m in (EVB, EVC, EFD):
     for _k, _v in _m.VDEC_VIEWS.items():
@@ -3204,6 +3205,17 @@ def outputs():
         fn = f'{rows[0]["R"]}_e2e_dec_generated.bend'
         out[OUT / fn] = text_wdec(rows)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_decode_view', f'{r["R"]}_e2e_decode_reject'], 'ii': 'view'} for r in rows]
+    # (ii)/(iii) of the word-storage vectors whose decode laws are over one perfect tree (codegen/e2e_arr512.py)
+    wall = {r['X']: r for r in wrows + wrows_extra if 'dd' not in r}
+    sa, fa, ca = EA.build(amap, {X0: r['R'] for X0, r in wall.items()})
+    for f_, t_ in sa.items():
+        out[OUT / f_] = t_
+    for X0, r in wall.items():
+        if r['R'] in ca:
+            fn, laws_ = ca[r['R']]
+            out[OUT / fn] = fa[fn]
+            man['files'][fn] = [{'name': r['R'], 'generated_name': X0, 'laws': laws_, 'ii': 'view'}]
+            r['dd'] = 'e2e_arr512'
     wr = []
     for r in wrows + [x for x in wrows_extra if x['kind'] == 'rep']:
         vf = wvalid(r)

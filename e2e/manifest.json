@@ -2287,6 +2287,50 @@
     "ii": "view"
    }
   ],
+  "vec_uint128_512_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_512",
+    "generated_name": "vec_uint128_512",
+    "laws": [
+     "vec_uint128_512_e2e_decode_view",
+     "vec_uint128_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_512_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_512",
+    "generated_name": "vec_uint256_512",
+    "laws": [
+     "vec_uint256_512_e2e_decode_view",
+     "vec_uint256_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_512_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_512",
+    "generated_name": "vec_uint32_512",
+    "laws": [
+     "vec_uint32_512_e2e_decode_view",
+     "vec_uint32_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_512_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_512",
+    "generated_name": "vec_uint64_512",
+    "laws": [
+     "vec_uint64_512_e2e_decode_view",
+     "vec_uint64_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
   "vec_uint128_1_e2e_root_generated.bend": [
    {
     "name": "vec_uint128_1",
@@ -7604,9 +7648,7 @@
   },
   "vec_uint128_512": {
    "generated_name": "vec_uint128_512",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint128_513": {
    "generated_name": "vec_uint128_513",
@@ -7616,9 +7658,7 @@
   },
   "vec_uint256_512": {
    "generated_name": "vec_uint256_512",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint256_513": {
    "generated_name": "vec_uint256_513",
@@ -7628,9 +7668,7 @@
   },
   "vec_uint32_512": {
    "generated_name": "vec_uint32_512",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint32_513": {
    "generated_name": "vec_uint32_513",
@@ -7640,9 +7678,7 @@
   },
   "vec_uint64_512": {
    "generated_name": "vec_uint64_512",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint64_513": {
    "generated_name": "vec_uint64_513",
