@@ -3,10 +3,12 @@ import ./FuluBlob_e2e_root_generated.bend as RB
 import ./FuluCell_e2e_generated.bend as BR
 import ./e2e_support.bend as E
 import ./e2e_tree.bend as E3
+import ./e2e_wit.bend as WT
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as M0_WO_WS
 import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API
@@ -24,8 +26,14 @@ def WZ2048() -> {O.words_new(2048) == O.Words{FD.array__thaw(U32, FD.array__trep
   %FD.array__new(U32, 10n, 0) : {O.words_new(2048) == O.Words{_, 2048} : O.Words}
   {==}
 
+def sym_WO_wf1(-o: O.Words, +c: Nat, +b: Nat, +d: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hd: {Nat.is_le(Nat.add(3n, c), d) == True{} : Bool}, +ew: {o == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words}, +h0: {Nat.is_lt(d, 32n) == True{} : Bool}, +h1: {Nat.is_lt(0n, 32n) == True{} : Bool}, +h2: {Nat.is_le(32n, 32n) == True{} : Bool}, +h3: {M0_WO_WS.bdrop(32n, M0_WO_WS.cb(FD.array__slots(U32, FD.array__trep(U32, d, 0)), Nat.add(WT.QP(c), 0n))) == SP.zero_bytes(Nat.sub(32n, 32n)) : +List<U32>}) -> WO.wf1(o):
+  (FD.array__trep(U32, d, 0), (d, (FD.u32__pow2u(b), (WT.QP(c), (32n, (ew, (FD.array__trep_perfect(U32, d, 0), (h0, (WT.eN(c, b, eb, FD.u32__pow2u(b), FD.u32__pow2u_value(b, hb)), (h1, (h2, (WT.eQ(c, d, hd), h3))))))))))))
+
+def big1() -> WO.rep_bv(FuluCell_d.b2048_default(), Spec.Cell()):
+  (sym_WO_wf1(FuluCell_d.b2048_default(), 6n, 11n, 10n, {==}, {==}, {==}, WZ2048(), {==}, {==}, {==}, {==}), {==})
+
 def premise_rep() -> WO.rep_bv(FuluCell_d.b2048_default(), Spec.Cell()):
-  ((FD.array__trep(U32, 10n, 0), (10n, (2048, (63n, (32n, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(2048), Nat.add(M0_WO_WS.e32(63n), 32n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), {==})
+  big1()
 
 def premise_hc() -> {E3.at_depth(FuluCell_d.b2048_default(), 10n) == True{} : Bool}:
   {==}

@@ -1,5 +1,6 @@
 import Base
 import ./e2e_support.bend as E
+import ./e2e_wit.bend as WT
 import ./vec_uint128_512_e2e_root_generated.bend as RB
 import ./vec_uint64_512_e2e_generated.bend as BR
 import ../proofs/compact/found.bend as FD
@@ -7,6 +8,7 @@ import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/packed_obj_light.bend as PK
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
+import ../spec/primitives.bend as W_spec_primitives
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API
@@ -23,8 +25,14 @@ def WZ4096() -> {O.words_new(4096) == O.Words{FD.array__thaw(U32, FD.array__trep
   %FD.array__new(U32, 11n, 0) : {O.words_new(4096) == O.Words{_, 4096} : O.Words}
   {==}
 
+def sym_WO_wf1(-o: O.Words, +c: Nat, +b: Nat, +d: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hd: {Nat.is_le(Nat.add(3n, c), d) == True{} : Bool}, +ew: {o == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words}, +h0: {Nat.is_lt(d, 32n) == True{} : Bool}, +h1: {Nat.is_lt(0n, 32n) == True{} : Bool}, +h2: {Nat.is_le(32n, 32n) == True{} : Bool}, +h3: {W_proofs_obj_words_spec.bdrop(32n, W_proofs_obj_words_spec.cb(FD.array__slots(U32, FD.array__trep(U32, d, 0)), Nat.add(WT.QP(c), 0n))) == W_spec_primitives.zero_bytes(Nat.sub(32n, 32n)) : +List<U32>}) -> WO.wf1(o):
+  (FD.array__trep(U32, d, 0), (d, (FD.u32__pow2u(b), (WT.QP(c), (32n, (ew, (FD.array__trep_perfect(U32, d, 0), (h0, (WT.eN(c, b, eb, FD.u32__pow2u(b), FD.u32__pow2u_value(b, hb)), (h1, (h2, (WT.eQ(c, d, hd), h3))))))))))))
+
+def big1() -> PK.rep_v8(vec_uint64_512_d.v512_u64_default(), GS.vec_uint64_512()):
+  (sym_WO_wf1(vec_uint64_512_d.v512_u64_default(), 7n, 12n, 11n, {==}, {==}, {==}, WZ4096(), {==}, {==}, {==}, {==}), (WT.len8(vec_uint64_512_d.v512_u64_default(), 9n, 12n, 11n, {==}, {==}, WZ4096()), {==}))
+
 def premise_rep() -> PK.rep_v8(vec_uint64_512_d.v512_u64_default(), GS.vec_uint64_512()):
-  ((FD.array__trep(U32, 11n, 0), (11n, (4096, (127n, (32n, (WZ4096(), (FD.array__trep_perfect(U32, 11n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(4096), Nat.add(W_proofs_obj_words_spec.e32(127n), 32n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), (FD.nat__eq_from_is_eq(U32.to_nat(WO.len(vec_uint64_512_d.v512_u64_default())), PK.e8(PK.cnt8(vec_uint64_512_d.v512_u64_default())), {==}), {==}))
+  big1()
 
 def vec_uint64_512_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_512_e.vec_uint64_512_encode(vec_uint64_512_d.v512_u64_default())))} == API.serialize(GS.vec_uint64_512(), PK.vview8(vec_uint64_512_d.v512_u64_default())) : Maybe<&2, +List<U32>>}:
   BR.vec_uint64_512_e2e_encode(vec_uint64_512_d.v512_u64_default(), premise_rep())

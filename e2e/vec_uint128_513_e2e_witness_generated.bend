@@ -1,5 +1,6 @@
 import Base
 import ./e2e_support.bend as E
+import ./e2e_wit.bend as WT
 import ./vec_uint128_512_e2e_generated.bend as BR
 import ./vec_uint128_512_e2e_root_generated.bend as RB
 import ../proofs/compact/found.bend as FD
@@ -19,12 +20,46 @@ import ../types/vec_uint128_513_hashtreeroot_generated.bend as vec_uint128_513_h
 # Non-vacuity of the bridges of vec_uint128_513 that take premises: every premise holds of the default object
 # D = v513_u128_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+def LB8208_16() -> {U32.to_nat(8208) == Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt16(vec_uint128_513_d.v513_u128_default()))))) : Nat}:
+  Equal.trans(Nat, U32.to_nat(8208), Nat.double(Nat.double(Nat.double(Nat.double(513n)))), Nat.double(Nat.double(Nat.double(Nat.double(PK.cnt16(vec_uint128_513_d.v513_u128_default()))))), Equal.trans(Nat, U32.to_nat(8208), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(8208)), Nat.double(U32.to_nat(U32.shr(8208)))), Nat.double(Nat.double(Nat.double(Nat.double(513n)))), FD.u32__shr_split(8208), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(8208)), Nat.double(z)), U32.to_nat(U32.shr(8208)), Nat.double(Nat.double(Nat.double(513n))), Equal.trans(Nat, U32.to_nat(4104), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(4104)), Nat.double(U32.to_nat(U32.shr(4104)))), Nat.double(Nat.double(Nat.double(513n))), FD.u32__shr_split(4104), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(4104)), Nat.double(z)), U32.to_nat(U32.shr(4104)), Nat.double(Nat.double(513n)), Equal.trans(Nat, U32.to_nat(2052), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(2052)), Nat.double(U32.to_nat(U32.shr(2052)))), Nat.double(Nat.double(513n)), FD.u32__shr_split(2052), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(2052)), Nat.double(z)), U32.to_nat(U32.shr(2052)), Nat.double(513n), Equal.trans(Nat, U32.to_nat(1026), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(1026)), Nat.double(U32.to_nat(U32.shr(1026)))), Nat.double(513n), FD.u32__shr_split(1026), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(1026)), Nat.double(z)), U32.to_nat(U32.shr(1026)), 513n, {==})))))))),
+    Equal.cong(Nat, Nat, z => Nat.double(Nat.double(Nat.double(Nat.double(z)))), 513n, PK.cnt16(vec_uint128_513_d.v513_u128_default()), {==}))
+
+def NB8208s0() -> {Nat.add(W_proofs_obj_words_spec.e32(256n), 16n) == Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(256n))))), 16n) : Nat}:
+  Equal.cong(Nat, Nat, z => Nat.add(z, 16n), W_proofs_obj_words_spec.e32(256n), Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(256n))))), WT.e32d(256n))
+
+def NB8208s1() -> {Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(256n))))), 16n) == Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n)) : Nat}:
+  WT.daddk(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n, 16n, {==})
+
+def NB8208s2() -> {Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n)) == Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n))) : Nat}:
+  Equal.cong(Nat, Nat, z => Nat.double(z), Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n), Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n)), WT.daddk(Nat.double(Nat.double(Nat.double(256n))), 4n, 8n, {==}))
+
+def NB8208s3() -> {Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n))) == Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(256n)), 2n)))) : Nat}:
+  Equal.cong(Nat, Nat, z => Nat.double(Nat.double(z)), Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n), Nat.double(Nat.add(Nat.double(Nat.double(256n)), 2n)), WT.daddk(Nat.double(Nat.double(256n)), 2n, 4n, {==}))
+
+def NB8208s4() -> {Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(256n)), 2n)))) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))) : Nat}:
+  Equal.cong(Nat, Nat, z => Nat.double(Nat.double(Nat.double(z))), Nat.add(Nat.double(Nat.double(256n)), 2n), Nat.double(Nat.add(Nat.double(256n), 1n)), WT.daddk(Nat.double(256n), 1n, 2n, {==}))
+
+def NB8208r() -> {Nat.add(W_proofs_obj_words_spec.e32(256n), 16n) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))) : Nat}:
+  Equal.trans(Nat, Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(256n)), 2n)))), Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))), Equal.trans(Nat, Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n))), Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(256n)), 2n)))), Equal.trans(Nat, Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n)), Nat.double(Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(256n))), 4n))), Equal.trans(Nat, Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(256n))))), 16n), Nat.double(Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(256n)))), 8n)), NB8208s0(), NB8208s1()), NB8208s2()), NB8208s3()), NB8208s4())
+
+def NB8208c() -> {U32.to_nat(8208) == Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))) : Nat}:
+  Equal.trans(Nat, U32.to_nat(8208), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(8208)), Nat.double(U32.to_nat(U32.shr(8208)))), Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))), FD.u32__shr_split(8208), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(8208)), Nat.double(z)), U32.to_nat(U32.shr(8208)), Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n)))), Equal.trans(Nat, U32.to_nat(4104), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(4104)), Nat.double(U32.to_nat(U32.shr(4104)))), Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n)))), FD.u32__shr_split(4104), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(4104)), Nat.double(z)), U32.to_nat(U32.shr(4104)), Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))), Equal.trans(Nat, U32.to_nat(2052), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(2052)), Nat.double(U32.to_nat(U32.shr(2052)))), Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))), FD.u32__shr_split(2052), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(2052)), Nat.double(z)), U32.to_nat(U32.shr(2052)), Nat.double(Nat.add(Nat.double(256n), 1n)), Equal.trans(Nat, U32.to_nat(1026), Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(1026)), Nat.double(U32.to_nat(U32.shr(1026)))), Nat.double(Nat.add(Nat.double(256n), 1n)), FD.u32__shr_split(1026), Equal.cong(Nat, Nat, z => Nat.add(FD.spec_numeric__bit_value(FD.u32__low_bit(1026)), Nat.double(z)), U32.to_nat(U32.shr(1026)), Nat.add(Nat.double(256n), 1n), {==}))))))))
+
+def NB8208() -> {U32.to_nat(8208) == Nat.add(W_proofs_obj_words_spec.e32(256n), 16n) : Nat}:
+  Equal.trans(Nat, U32.to_nat(8208), Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))), Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), NB8208c(), Equal.sym(Nat, Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), Nat.double(Nat.double(Nat.double(Nat.double(Nat.add(Nat.double(256n), 1n))))), NB8208r()))
+
 def WZ8208() -> {O.words_new(8208) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 12n, 0)), 8208} : O.Words}:
   %FD.array__new(U32, 12n, 0) : {O.words_new(8208) == O.Words{_, 8208} : O.Words}
   {==}
 
+def big0() -> WO.wf1(vec_uint128_513_d.v513_u128_default()):
+  (FD.array__trep(U32, 12n, 0), (12n, (8208, (256n, (16n, (WZ8208(), (FD.array__trep_perfect(U32, 12n, 0), ({==}, (NB8208(), ({==}, ({==}, ({==}, {==}))))))))))))
+
+def big1() -> PK.rep_v16(vec_uint128_513_d.v513_u128_default(), GS.vec_uint128_513()):
+  (big0(), (WT.lbig16(vec_uint128_513_d.v513_u128_default(), 8208, {==}, LB8208_16()), {==}))
+
 def premise_rep() -> PK.rep_v16(vec_uint128_513_d.v513_u128_default(), GS.vec_uint128_513()):
-  ((FD.array__trep(U32, 12n, 0), (12n, (8208, (256n, (16n, (WZ8208(), (FD.array__trep_perfect(U32, 12n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(8208), Nat.add(W_proofs_obj_words_spec.e32(256n), 16n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), (FD.nat__eq_from_is_eq(U32.to_nat(WO.len(vec_uint128_513_d.v513_u128_default())), PK.e16(PK.cnt16(vec_uint128_513_d.v513_u128_default())), {==}), {==}))
+  big1()
 
 def vec_uint128_513_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint128_513_e.vec_uint128_513_encode(vec_uint128_513_d.v513_u128_default())))} == API.serialize(GS.vec_uint128_513(), PK.vview16(vec_uint128_513_d.v513_u128_default())) : Maybe<&2, +List<U32>>}:
   BR.vec_uint128_513_e2e_encode(vec_uint128_513_d.v513_u128_default(), premise_rep())
