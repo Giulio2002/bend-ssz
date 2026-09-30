@@ -29,8 +29,17 @@ import ../types/uint64_def_generated.bend as uint64_d
 # Non-vacuity of the encode bridge FuluLightClientOptimisticUpdate_e2e_encode: every premise holds of the default object
 # D = LightClientOptimisticUpdate_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+# NE() is the default with one element in every list reachable through containers and boxes
+# (the second witness, FuluLightClientOptimisticUpdate_e2e_witness_nonempty, at the end).
+def NE() -> FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate:
+  FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{FuluLightClientHeader_d.LightClientHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{uint64_d.u64_default(), uint64_d.u64_default(), O.words_new(1), uint256_d.u256_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), uint64_d.u64_default()}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()}), FuluExecutionBranch_d.v4_b32_default()}, FuluSyncAggregate_d.SyncAggregate_bx_default(), uint64_d.u64_default()}
+
 def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 3n, 0)), 0} : O.Words}:
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
+  {==}
+
+def WZ1() -> {O.words_new(1) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 1} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(1) == O.Words{_, 1} : O.Words}
   {==}
 
 def WZ128() -> {O.words_new(128) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 6n, 0)), 128} : O.Words}:
@@ -55,3 +64,20 @@ def premise_hs54() -> BL.sdpv(RT.pj_LightClientHeader_2(RT.pj_LightClientOptimis
 
 def FuluLightClientOptimisticUpdate_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default())))} == API.serialize(Spec.LightClientOptimisticUpdate(), RT.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default())) : Maybe<&2, +List<U32>>}:
   BR.FuluLightClientOptimisticUpdate_e2e_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), premise_rep(), premise_hs49(), premise_hs50(), premise_hs54())
+
+# The same bridge at the non-empty object NE(): every premise is proved of NE().
+
+def premise_ne_rep() -> RT.rep_LightClientOptimisticUpdate(NE(), Spec.LightClientOptimisticUpdate()):
+  (uint64_d.u64_default(), ({==}, ((FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), ({==}, (({==}, (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), (Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}))))))))))))))))))), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))), (FuluSyncAggregate_d.SyncAggregate_default(), {==}))))
+
+def premise_ne_hs49() -> BL.sdk1(RT.pj_ExecutionPayloadHeader_4(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientOptimisticUpdate_0(NE())))), 31n):
+  (FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def premise_ne_hs50() -> BL.sdk(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientOptimisticUpdate_0(NE())))), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hs54() -> BL.sdpv(RT.pj_LightClientHeader_2(RT.pj_LightClientOptimisticUpdate_0(NE())), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluLightClientOptimisticUpdate_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(NE())))} == API.serialize(Spec.LightClientOptimisticUpdate(), RT.v_LightClientOptimisticUpdate(NE())) : Maybe<&2, +List<U32>>}:
+  BR.FuluLightClientOptimisticUpdate_e2e_encode(NE(), premise_ne_rep(), premise_ne_hs49(), premise_ne_hs50(), premise_ne_hs54())

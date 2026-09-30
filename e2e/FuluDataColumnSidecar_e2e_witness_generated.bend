@@ -26,12 +26,25 @@ import ../types/uint64_def_generated.bend as uint64_d
 # Non-vacuity of the encode bridge FuluDataColumnSidecar_e2e_encode: every premise holds of the default object
 # D = DataColumnSidecar_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+# NE() is the default with one element in every list reachable through containers and boxes
+# (the second witness, FuluDataColumnSidecar_e2e_witness_nonempty, at the end).
+def NE() -> FuluDataColumnSidecar_d.DataColumnSidecar:
+  FuluDataColumnSidecar_d.DataColumnSidecar{uint64_d.u64_default(), O.words_new(2048), O.words_new(48), O.words_new(48), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), FuluExecutionBranch_d.v4_b32_default()}
+
 def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 3n, 0)), 0} : O.Words}:
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
   {==}
 
 def WZ128() -> {O.words_new(128) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 6n, 0)), 128} : O.Words}:
   %FD.array__new(U32, 6n, 0) : {O.words_new(128) == O.Words{_, 128} : O.Words}
+  {==}
+
+def WZ2048() -> {O.words_new(2048) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 10n, 0)), 2048} : O.Words}:
+  %FD.array__new(U32, 10n, 0) : {O.words_new(2048) == O.Words{_, 2048} : O.Words}
+  {==}
+
+def WZ48() -> {O.words_new(48) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 5n, 0)), 48} : O.Words}:
+  %FD.array__new(U32, 5n, 0) : {O.words_new(48) == O.Words{_, 48} : O.Words}
   {==}
 
 def premise_rep() -> RT.rep_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Spec.DataColumnSidecar()):
@@ -60,3 +73,32 @@ def premise_hsP() -> BL.sdpv(RT.pj_DataColumnSidecar_5(FuluDataColumnSidecar_d.D
 
 def FuluDataColumnSidecar_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default())))} == API.serialize(Spec.DataColumnSidecar(), RT.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default())) : Maybe<&2, +List<U32>>}:
   BR.FuluDataColumnSidecar_e2e_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), premise_rep(), premise_hd0(), premise_hd1(), premise_hd2(), premise_hv0(), premise_hv1(), premise_hv2(), premise_hsP())
+
+# The same bridge at the non-empty object NE(): every premise is proved of NE().
+
+def premise_ne_rep() -> RT.rep_DataColumnSidecar(NE(), Spec.DataColumnSidecar()):
+  (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 10n, 0), (10n, (2048, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), (((FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), ({==}, {==})))))), {==}), ((FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==}), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))))))
+
+def premise_ne_hd0() -> VEV.sdd(RT.pj_DataColumnSidecar_1(NE()), 31n):
+  (FD.array__trep(U32, 10n, 0), (10n, (2048, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), {==})))))
+
+def premise_ne_hd1() -> VEV.sdd(RT.pj_DataColumnSidecar_2(NE()), 31n):
+  (FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), {==})))))
+
+def premise_ne_hd2() -> VEV.sdd(RT.pj_DataColumnSidecar_3(NE()), 31n):
+  (FD.array__trep(U32, 5n, 0), (5n, (48, (WZ48(), (FD.array__trep_perfect(U32, 5n, 0), {==})))))
+
+def premise_ne_hv0() -> {O.unit_ok(2048, WO.len(RT.pj_DataColumnSidecar_1(NE()))) == True{} : Bool}:
+  {==}
+
+def premise_ne_hv1() -> {O.unit_ok(48, WO.len(RT.pj_DataColumnSidecar_2(NE()))) == True{} : Bool}:
+  {==}
+
+def premise_ne_hv2() -> {O.unit_ok(48, WO.len(RT.pj_DataColumnSidecar_3(NE()))) == True{} : Bool}:
+  {==}
+
+def premise_ne_hsP() -> BL.sdpv(RT.pj_DataColumnSidecar_5(NE()), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluDataColumnSidecar_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(NE())))} == API.serialize(Spec.DataColumnSidecar(), RT.v_DataColumnSidecar(NE())) : Maybe<&2, +List<U32>>}:
+  BR.FuluDataColumnSidecar_e2e_encode(NE(), premise_ne_rep(), premise_ne_hd0(), premise_ne_hd1(), premise_ne_hd2(), premise_ne_hv0(), premise_ne_hv1(), premise_ne_hv2(), premise_ne_hsP())
