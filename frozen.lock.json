@@ -246,6 +246,7 @@
     "e2e/FuluExecutionPayload_e2e_root_generated.bend": "4fb2ad899135729890c323cafee39722c1a624113c8fb67cdbda68145e9a53a4",
     "e2e/FuluExecutionPayload_e2e_set_generated.bend": "b7c16a5ac2bd3b414451353a8b0ece0020e0f88042d66bf719bb1b9e436cb16c",
     "e2e/FuluExecutionPayload_e2e_witness_generated.bend": "285f1cc7a9bcc1dd130197408c0e06b54bffaa25b8106fc8565d16274048c3a2",
+    "e2e/FuluExecutionRequests_e2e_comp_generated.bend": "56af12a01dbdb728382636c3bd8966d49a925578cf5047b72b16c4fe111c66a6",
     "e2e/FuluExecutionRequests_e2e_dec_generated.bend": "39d9698535cf7a57419983f71c8e09599752491b7d36ce6651b38c705cf83369",
     "e2e/FuluExecutionRequests_e2e_generated.bend": "b94b521910b08ab07bae42d6087d56a9384f8003ce360f00c8fd0008d31cd6c2",
     "e2e/FuluExecutionRequests_e2e_root_generated.bend": "114a34215ebdce37e32b08068c11d3b5af2a68a2567639a7022f211a67f1f03e",

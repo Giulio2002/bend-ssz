@@ -181,7 +181,30 @@ def bit_container(name, codec, lf):
     return container_file(name, lf, f'proofs/obj/{codec}.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, f'proofs/obj/{codec}.bend')
 
 
+def execution_requests(lf):
+    """three record lists (DepositRequest, WithdrawalRequest, ConsolidationRequest): their window checks from the
+    container's (CHKw = CA and CB and CC and CD and CE and CF and CG)"""
+    def lets(al):
+        EW = al('proofs/obj/var_winx_ExecutionRequests.bend')
+        a = 't, 0n, 0, n'
+        C = lambda nm: f'{EW}.{nm}(t, 0n)' if nm == 'CB' else (f'{EW}.{nm}(t, 0n, n)' if nm in ('CC', 'CD') else f'{EW}.{nm}({a})')
+        L = [f'+k1 = DK.and_r({EW}.CA(n), {EW}.K1({a}), hchk)',
+             f'+k2 = DK.and_r({C("CB")}, {EW}.K2({a}), k1)',
+             f'+k3 = DK.and_r({C("CC")}, {EW}.K3({a}), k2)',
+             f'+k4 = DK.and_r({C("CD")}, {EW}.K4({a}), k3)',
+             f'+hE = DK.and_l({C("CE")}, {EW}.K5({a}), k4)',
+             f'+k5 = DK.and_r({C("CE")}, {EW}.K5({a}), k4)',
+             f'+hF = DK.and_l({C("CF")}, {C("CG")}, k5)',
+             f'+hG = DK.and_r({C("CF")}, {C("CG")}, k5)']
+        al('proofs/obj/dk.bend')
+        return L, None, None, (lambda j: ('hE', 'hF', 'hG')[j])
+    ps = '+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}'
+    return container_file('FuluExecutionRequests', lf, 'proofs/obj/var_codec_ExecutionRequests.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps),
+                          lets, None, 'proofs/obj/var_codec_ExecutionRequests.bend')
+
+
 PROVERS = {
+    'FuluExecutionRequests': lambda lf: execution_requests(lf),
     'FuluAttestation': lambda lf: bit_container('FuluAttestation', 'var_bitc_Attestation', lf),
     'FuluPendingAttestation': lambda lf: bit_container('FuluPendingAttestation', 'var_bitc_PendingAttestation', lf),
     'FuluAggregateAndProof': lambda lf: bit_container('FuluAggregateAndProof', 'var_win_AggregateAndProof_top', lf),
@@ -213,6 +236,12 @@ class BitsDec:
     """a decoded bit list: its rep_bits and storage (sdbv) premises are laws of the name's dec bridge file"""
     def __init__(self, expr, rep, hs):
         self.expr, self.rep, self.hs = expr, rep, hs
+
+
+class RLDec:
+    """a decoded list of fixed-size records: its storage premise (sda) and rep_<L> are e2e_drl_<L> laws"""
+    def __init__(self, expr, sda, rep):
+        self.expr, self.sda, self.rep = expr, sda, rep
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
@@ -255,6 +284,11 @@ class DSynth(W.Synth):
             m2, name = mod.resolve(fn)
             if m2 is not None:
                 key = (m2.path.name, name)
+                if (name.startswith('sda_') or name.startswith('rep_')) and len(args) == 2:
+                    mdl = self.arg_model(args[0], env)
+                    if isinstance(mdl, RLDec):
+                        a1 = self.subst(mod, args[1], env)
+                        return mdl.sda(a1) if name.startswith('sda_') else mdl.rep(a1)
                 if key in BITS and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, BitsDec):
@@ -295,13 +329,16 @@ def body_of(modpath, name, subst):
     return m, body
 
 
-def dec_model(e, words, expand=lambda e: None, bits=None):
+def dec_model(e, words, expand=lambda e: None, bits=None, leaf=lambda e: None):
     """the model of a decoded object's term (this file's aliases); expand(e) unfolds a call to the codec's object
     helpers (OBJw, MKw); a fixed-length word field over a VB.mone copy is WordsFix, the others words(i, expr)"""
     cnt = [0]
 
     def go(e, top):
         e = e.strip()
+        lf_ = leaf(e)
+        if lf_ is not None:
+            return lf_
         x = expand(e)
         if x is not None:
             return go(x, top)
@@ -362,7 +399,7 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
     W.PREFER[(ROOT / 'src/obj.bend').resolve()] = 'O'
     for p_, a_ in (('proofs/compact/arith.bend', 'A'), ('proofs/nat_order.bend', 'Order'), ('proofs/obj/vbuf.bend', 'VB'), ('proofs/obj/vcopy.bend', 'VC'),
                    ('proofs/obj/vdepth.bend', 'VD'), ('proofs/obj/vlist.bend', 'VLS'), ('proofs/obj/vspec.bend', 'VSP'), ('e2e/e2e_ulist.bend', 'UW'),
-                   ('proofs/obj/vbytes.bend', 'VY'), ('e2e/e2e_blist.bend', 'BL')):
+                   ('proofs/obj/vbytes.bend', 'VY'), ('e2e/e2e_blist.bend', 'BL'), ('proofs/obj/dk.bend', 'DK')):
         W.PREFER[(ROOT / p_).resolve()] = a_
     om, body = body_of(obj_mod, obj_def, obj_subst)
     taken = set(W.PREFER.values())
@@ -384,6 +421,26 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         r_ = lets(lambda path: ctx.alias(ROOT / path))
         lets, words = r_[0], r_[1]
         bits = r_[2] if len(r_) > 2 else None
+        rlchk = r_[3] if len(r_) > 3 else None
+    else:
+        rlchk = None
+    rl_n = [0]
+
+    def leaf(e):
+        """a record list a window reader builds (var_winx_<L>.OBJw, with an e2e_drl_<L> file): RLDec"""
+        c = W.parse_call(e)
+        if c is None or rlchk is None or not c[0].endswith('.OBJw'):
+            return None
+        al = c[0].split('.', 1)[0]
+        pth = inv.get(al) or ctx.used.get(al)
+        mm = re.fullmatch(r'var_winx_(l\w+)\.bend', pth.name) if pth is not None else None
+        if mm is None or not (ROOT / 'e2e' / f'e2e_drl_{mm.group(1)}.bend').exists():
+            return None
+        DRL = ctx.alias(ROOT / 'e2e' / f'e2e_drl_{mm.group(1)}.bend')
+        hx = rlchk(rl_n[0])
+        rl_n[0] += 1
+        a = ', '.join(c[1])
+        return RLDec(e, lambda k: f'{DRL}.sdl({a}, {k}, {{==}}, {hx})', lambda sc: f'{DRL}.rep({a}, {sc}, {{==}}, {hx})')
 
     def expand(e):
         c = W.parse_call(e)
@@ -400,7 +457,7 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         for pn, v in zip(ps, c[1]):
             bd = re.sub(r'(?<![\w.])' + re.escape(pn) + r'(?![\w])', v, bd)
         return bd
-    model = dec_model(OBJ, words, expand, bits)
+    model = dec_model(OBJ, words, expand, bits, leaf)
     syn = DSynth(ctx)
     defs = []
     done = {}

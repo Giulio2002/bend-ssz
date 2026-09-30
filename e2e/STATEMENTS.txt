@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3296 statements in 907 files.
+# 3298 statements in 908 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -3272,6 +3272,23 @@ def FuluExecutionPayload_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionP
 def FuluExecutionPayload_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, B.Buf, FuluExecutionPayload_e.ExecutionPayload_encode(NE())))} == API.serialize(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionPayload_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(B.alloc(0), FuluExecutionPayload_d.ExecutionPayload_default()))))} == API.hash_tree_root(Spec.ExecutionPayload(), RT.v_ExecutionPayload(FuluExecutionPayload_d.ExecutionPayload_default())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionPayload_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluExecutionRequests_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluExecutionRequests_decode_ssz_generated.bend as FuluExecutionRequests_r
+import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
+import ../types/FuluExecutionRequests_encode_ssz_generated.bend as FuluExecutionRequests_e
+import ../types/FuluExecutionRequests_hashtreeroot_generated.bend as FuluExecutionRequests_h
+def FuluExecutionRequests_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluExecutionRequests_d.ExecutionRequests, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>})
+    -> {E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(o))) == bs : +List<U32>}:
+def FuluExecutionRequests_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluExecutionRequests_d.ExecutionRequests, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>})
+    -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(h, o))))} == C.droot(Spec.ExecutionRequests(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluExecutionRequests_e2e_dec_generated.bend
 import ../src/model.bend as API
