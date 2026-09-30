@@ -7,16 +7,13 @@ python3 benchmarks/run.py --report build/performance/report.json
 python3 tools/generate_benchmarks_md.py build/performance/report.json
 ```
 
-The frozen operator gate that reads the same report is
-`python3 automation/performance_gate.py`.
-
 ## Method
 
 Both sides are native and built fresh by the runner, one sequential thread each.
 Bend is the **generated typed owning object API** through its native C
 backend, run with `--threads 1 --gpu off`; the measured programs are
 `benchmarks/objprog/g<k>.bend` over `types/<Name>_*_generated.bend`, which
-`codegen/generate.py` emits from `codegen/fulu.yaml` (see docs/CODEGEN.md).
+`codegen/generate.py` emits from `codegen/fulu.yaml` (see docs/LAYOUT.md).
 Each is built under a compile-memory cap, every attempt recorded in the
 report's `bend_compiles`. Go is pinned fastssz via go-eth2-client, built
 with `go build` and run with `GOMAXPROCS(1)`. No Bun/JavaScript result

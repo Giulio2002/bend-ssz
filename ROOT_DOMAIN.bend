@@ -31,7 +31,7 @@ import ./END_TO_END.bend as EndToEnd
 # root of a structurally valid value, computed recursively over child roots
 # (spec/root_relation.bend). The previous, serializable-only relation is
 # SerializableRoots.serializable_root_for_legal_type and the previous domain is
-# Domain.serializable_root_domain. See ROOT_DOMAIN_REVIEW.md.
+# Domain.serializable_root_domain. The laws below relate the two (docs/RESULTS.md).
 
 # ---------------------------------------------------------------------------
 # Complete public root contract for one schema/value pair: soundness (with the

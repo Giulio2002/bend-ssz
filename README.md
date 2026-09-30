@@ -4,13 +4,20 @@ Pure-Bend SSZ for the 109 pinned mainnet Fulu names and the 136 supported forms 
 `ssz_generic` suite (144 schemas in the suite; the 8 zero-length vectors and bit vectors are not SSZ types and are
 refused; 5 of the 136 are the fork's own `boolean` / `uint8` / `uint32` / `uint64` / `uint256`, so the object API has
 109 Fulu + 131 generic = 240 names). For every name there is a generated typed object API (decode, encode,
-hash_tree_root, field and element access), and machine-checked proofs that this API computes
-exactly what an independent transcription of the SSZ specification says.
+hash_tree_root, field and element access), and machine-checked proofs relating it to an independent
+transcription of the SSZ specification (`spec/`). The guarantee a user relies on is: the
+end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with the laws of
+END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). In particular,
+it is not yet proved that the object a decoder returns satisfies the encode and root bridges'
+representation premises (PREMISES section 1), so decode followed by encode or hash_tree_root is
+not yet one checked statement.
 
 ## What is proved
 
 For every one of the <!-- fig:names -->240<!-- /fig --> names `X`, in the object API's own terms
-(`proofs/api/X_<op>_proof_generated.bend`):
+(`proofs/api/X_<op>_proof_generated.bend`; these facades are stated over the generator's internal
+object and view definitions, so they are building blocks, not the public statements; the public
+statements are the bridges below):
 
 | Operation | Laws for every name |
 |---|---|

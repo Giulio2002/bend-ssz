@@ -28,6 +28,43 @@ BRIDGE = {'e2e_encode': 'i', 'e2e_decode_accept': 'ii', 'e2e_decode_view': 'ii',
 POW = {2 ** 32 - 32: 'NMAX = 2^32 - 32', 2 ** 30: '2^30', 2 ** 29: '2^29'}
 
 
+def _params(sig):
+    """the binder names of a def signature's parameters (top level only)"""
+    s = sig.replace('->', '=>')
+    i = s.index('(') + 1
+    depth, cur, out = 0, '', []
+    for ch in s[i:]:
+        if ch in '({[<':
+            depth += 1
+        if ch in ')}]>':
+            if depth == 0:
+                out.append(cur)
+                break
+            depth -= 1
+        if ch == ',' and depth == 0:
+            out.append(cur)
+            cur = ''
+            continue
+        cur += ch
+    return [re.match(r'\s*[+-]?(\w+)', p).group(1) for p in out if p.strip()]
+
+
+def premise_rows():
+    """per bridged name, the hypotheses of its (i), (ii) and (iv) statements beyond the object / input
+    (e2e/STATEMENTS.txt)"""
+    t = (ROOT / 'e2e/STATEMENTS.txt').read_text()
+    rows = {}
+    for m in re.finditer(r'^def (\w+)_e2e_(encode|decode_view|decode_accept|root)\(.*?(?=\n(?:def |## |import |$))', t, re.M | re.S):
+        rows.setdefault(m.group(1), {})[m.group(2)] = _params(m.group(0))
+    out = {}
+    for n, r in sorted(rows.items()):
+        e = [p for p in r.get('encode', []) if p not in ('o', 'rep')]
+        d = [p for p in (r.get('decode_view') or r.get('decode_accept') or []) if p not in ('bs', 'n', 'hn', 'hd', 'o')]
+        ro = [p for p in r.get('root', []) if p not in ('h', 'o', 'rep')]
+        out[n] = (e, d, ro)
+    return out
+
+
 def names_list(ns):
     return ', '.join(ns) if ns else 'none'
 
@@ -88,6 +125,16 @@ def figures():
     short = [e['name'] for e in man['input_bound_short']]
     f['input_bound_short_count'] = str(len(short))
     f['input_bound_short'] = names_list(short)
+    pr = premise_rows()
+    rows = ['| Name | (i) encode | (ii)/(iii) decode | (iv) root |', '|---|---|---|---|']
+    for n, (e, d, ro) in pr.items():
+        if e or d or ro:
+            rows.append('| %s | %s | %s | %s |' % (n, ', '.join('`%s`' % x for x in e) or '-', ', '.join('`%s`' % x for x in d) or '-',
+                                                  ', '.join('`%s`' % x for x in ro) or '-'))
+    f['premise_table'] = '\n' + '\n'.join(rows) + '\n'
+    f['premise_free'] = str(sum(1 for e, d, ro in pr.values() if not (e or d or ro)))
+    f['encode_premise_free'] = str(sum(1 for e, d, ro in pr.values() if not e))
+    f['root_premise_free'] = str(sum(1 for e, d, ro in pr.values() if not ro))
     hv = man['decoded_premises']['hv_SDB']['names']
     f['hv_decoded_count'] = str(len(hv))
     f['hv_decoded'] = names_list(hv)
