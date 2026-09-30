@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4081 statements in 1163 files.
+# 4082 statements in 1163 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -19457,6 +19457,8 @@ import ./ulist_obj_light.bend as UL_L
 import ../../types/primitive.bend as P
 import ../../types/Fulu_list_bytevec_2048_4096_def_generated.bend as l4096_b2048_c
 import ./cell_rw.bend as CR
+import ./cells_light.bend as CL
+import ./words_obj_light.bend as WO
 def b131072_api_set_flag(-ws: Array<U32>, +n: U32, +i: U32, +v: U32) -> {Pair.snd(O.Words, Bool, b131072_c.b131072_set(O.Words{ws, n}, i, v)) == Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)) : Bool}:
 def b131072_api_set_rejected(-ws: Array<U32>, +n: U32, +i: U32, +v: U32, +e: {Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)) == False{} : Bool}) -> {b131072_c.b131072_set(O.Words{ws, n}, i, v) == (O.Words{ws, n}, False{}) : O.Words & Bool}:
 def b131072_api_get_outside(-ws: Array<U32>, +n: U32, +i: U32, +e: {U32.is_lt(i, n) == False{} : Bool}) -> {b131072_c.b131072_get(O.Words{ws, n}, i) == (O.Words{ws, n}, None{}) : O.Words & Maybe<&1, U32>}:
@@ -19512,6 +19514,8 @@ def l4096_b2048_api_read_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, 
     -> {l4096_b2048_c.l4096_b2048_get(Pair.fst(O.Words, Bool, l4096_b2048_c.l4096_b2048_set(O.Words{F.array__thaw(U32, t), n}, i, O.Words{F.array__thaw(U32, tv), 2048})), i) == (O.Words{F.array__thaw(U32, CR.bcp(d, tv, 511n, 0n, q, t)), n}, Some{O.Words{F.array__thaw(U32, CR.scp(U32.to_nat(B.words_depth_u((U32.shrn((2048 + 31 : U32), 5n) * 8 + 8 : U32))), CR.bcp(d, tv, 511n, 0n, q, t), 511n, 0n, q, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((2048 + 31 : U32), 5n) * 8 + 8 : U32))), 0))), 2048}}) : O.Words & Maybe<&1, O.Words>}:
 def l4096_b2048_api_read_set_word(+d: Nat, +t: F.array__Tree<U32>, +tv: F.array__Tree<U32>, +q: Nat, +m: Nat, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hm: {Nat.is_le(m, 511n) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(q, 512n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {WR.at(F.array__slots(U32, CR.scp(U32.to_nat(B.words_depth_u((U32.shrn((2048 + 31 : U32), 5n) * 8 + 8 : U32))), CR.bcp(d, tv, 511n, 0n, q, t), 511n, 0n, q, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((2048 + 31 : U32), 5n) * 8 + 8 : U32))), 0))), m) == WR.at(F.array__slots(U32, tv), m) : U32}:
+def l4096_b2048_api_view_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +dv: Nat, +tv: F.array__Tree<U32>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hdv: {Nat.is_lt(dv, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(512n, F.spec_common__pow2(dv)) == True{} : Bool}, +hg: {U32.is_lt(i, (U32.div(n, 2048))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 2048 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 512n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == O.e8(Nat.mul(U32.to_nat(i), 64n)) : Nat}, +hcap: {Nat.is_le(O.e8(Nat.mul(CL.kc(n), 64n)), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {CL.eview(Pair.fst(O.Words, Bool, l4096_b2048_c.l4096_b2048_set(O.Words{F.array__thaw(U32, t), n}, i, O.Words{F.array__thaw(U32, tv), 2048}))) == VS.field_set(CL.eview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{WO.wview(O.Words{F.array__thaw(U32, tv), 2048})}) : S.Value}:
 
 ## proofs/obj/coll_bits.bend
 import ./words_rw.bend as WR
