@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3479 statements in 1127 files.
+# 3525 statements in 1145 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -1249,6 +1249,7 @@ def FuluBeaconBlockBody_e2e_set_execution_requests_root(h: B.Buf, o: FuluBeaconB
     -> {Some{D.bytes(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, D.Digest, Pair.snd(B.Buf, FuluBeaconBlockBody_d.BeaconBlockBody & D.Digest, FuluBeaconBlockBody_h.BeaconBlockBody_hash_tree_root(h, FuluBeaconBlockBody_d.BeaconBlockBody_set_execution_requests(o, w)))))} == API.hash_tree_root(Spec.BeaconBlockBody(), VS.field_set(RT.v_BeaconBlockBody(o), 12n, RT.v_ExecutionRequests(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBeaconBlockBody_e2e_witness_generated.bend
+import ./e2e_rec_BeaconBlockBody.bend as W_e2e_e2e_rec_BeaconBlockBody
 import ./e2e_support.bend as E
 import ../proofs/obj/root_types_light.bend as RT
 import ../spec/fulu_schemas.bend as Spec
@@ -1295,6 +1296,8 @@ def FuluBeaconBlockBody_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock
 def FuluBeaconBlockBody_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(NE())))} == API.serialize(Spec.BeaconBlockBody(), RT.v_BeaconBlockBody(NE())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlockBody_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, D.Digest, Pair.snd(B.Buf, FuluBeaconBlockBody_d.BeaconBlockBody & D.Digest, FuluBeaconBlockBody_h.BeaconBlockBody_hash_tree_root(B.alloc(0), FuluBeaconBlockBody_d.BeaconBlockBody_default()))))} == API.hash_tree_root(Spec.BeaconBlockBody(), RT.v_BeaconBlockBody(FuluBeaconBlockBody_d.BeaconBlockBody_default())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlockBody_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, D.Digest, Pair.snd(B.Buf, FuluBeaconBlockBody_d.BeaconBlockBody & D.Digest, FuluBeaconBlockBody_h.BeaconBlockBody_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.BeaconBlockBody(), RT.v_BeaconBlockBody(NE())) : Maybe<&2, +List<U32>>}:
+def FuluBeaconBlockBody_e2e_witness_size() -> W_e2e_e2e_rec_BeaconBlockBody.SZW(FuluBeaconBlockBody_d.BeaconBlockBody_default()):
+def FuluBeaconBlockBody_e2e_witness_size_nonempty() -> W_e2e_e2e_rec_BeaconBlockBody.SZW(NE()):
 
 ## e2e/FuluBeaconBlockHeader_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -1485,6 +1488,7 @@ def FuluBeaconBlock_e2e_set_body_root(h: B.Buf, o: FuluBeaconBlock_d.BeaconBlock
     -> {Some{D.bytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, D.Digest, Pair.snd(B.Buf, FuluBeaconBlock_d.BeaconBlock & D.Digest, FuluBeaconBlock_h.BeaconBlock_hash_tree_root(h, FuluBeaconBlock_d.BeaconBlock_set_body(o, w)))))} == API.hash_tree_root(Spec.BeaconBlock(), VS.field_set(RT.v_BeaconBlock(o), 4n, RT.v_BeaconBlockBody_bx(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBeaconBlock_e2e_witness_generated.bend
+import ./e2e_rec_BeaconBlock.bend as RK
 import ./e2e_support.bend as E
 import ../proofs/obj/root_types_light.bend as RT
 import ../spec/fulu_schemas.bend as Spec
@@ -1532,6 +1536,8 @@ def FuluBeaconBlock_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.B
 def FuluBeaconBlock_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(NE())))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlock_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, D.Digest, Pair.snd(B.Buf, FuluBeaconBlock_d.BeaconBlock & D.Digest, FuluBeaconBlock_h.BeaconBlock_hash_tree_root(B.alloc(0), FuluBeaconBlock_d.BeaconBlock_default()))))} == API.hash_tree_root(Spec.BeaconBlock(), RT.v_BeaconBlock(FuluBeaconBlock_d.BeaconBlock_default())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconBlock_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, D.Digest, Pair.snd(B.Buf, FuluBeaconBlock_d.BeaconBlock & D.Digest, FuluBeaconBlock_h.BeaconBlock_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.BeaconBlock(), RT.v_BeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
+def FuluBeaconBlock_e2e_witness_size() -> RK.SZW(FuluBeaconBlock_d.BeaconBlock_default()):
+def FuluBeaconBlock_e2e_witness_size_nonempty() -> RK.SZW(NE()):
 
 ## e2e/FuluBeaconState_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -1787,8 +1793,12 @@ def FuluBeaconState_e2e_set_proposer_lookahead_root(h: B.Buf, o: FuluBeaconState
     -> {Some{D.bytes(Pair.snd(FuluBeaconState_d.BeaconState, D.Digest, Pair.snd(B.Buf, FuluBeaconState_d.BeaconState & D.Digest, FuluBeaconState_h.BeaconState_hash_tree_root(h, FuluBeaconState_d.BeaconState_set_proposer_lookahead(o, w)))))} == API.hash_tree_root(Spec.BeaconState(), VS.field_set(ST.v_BeaconState(o), 37n, PK.vview8(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBeaconState_e2e_witness_generated.bend
+import ./FuluBeaconState_e2e_generated.bend as BR
+import ./e2e_rls.bend as RLS
 import ./e2e_support.bend as E
 import ../proofs/obj/root_state_light.bend as ST
+import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/words_obj_light.bend as WO_L
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -1828,6 +1838,8 @@ def FuluBeaconState_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.B
 def FuluBeaconState_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(NE())))} == API.serialize(Spec.BeaconState(), ST.v_BeaconState(NE())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconState_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluBeaconState_d.BeaconState, D.Digest, Pair.snd(B.Buf, FuluBeaconState_d.BeaconState & D.Digest, FuluBeaconState_h.BeaconState_hash_tree_root(B.alloc(0), FuluBeaconState_d.BeaconState_default()))))} == API.hash_tree_root(Spec.BeaconState(), ST.v_BeaconState(FuluBeaconState_d.BeaconState_default())) : Maybe<&2, +List<U32>>}:
 def FuluBeaconState_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluBeaconState_d.BeaconState, D.Digest, Pair.snd(B.Buf, FuluBeaconState_d.BeaconState & D.Digest, FuluBeaconState_h.BeaconState_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.BeaconState(), ST.v_BeaconState(NE())) : Maybe<&2, +List<U32>>}:
+def FuluBeaconState_e2e_witness_size() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def FuluBeaconState_e2e_witness_size_nonempty() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), VB.pw(31n)) == True{} : Bool}:
 
 ## e2e/FuluBlobIdentifier_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -4595,6 +4607,7 @@ def FuluExecutionPayload_e2e_set_excess_blob_gas_root(h: B.Buf, o: FuluExecution
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(h, FuluExecutionPayload_d.ExecutionPayload_set_excess_blob_gas(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayload(), VS.field_set(RT.v_ExecutionPayload(o), 16n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluExecutionPayload_e2e_witness_generated.bend
+import ./e2e_epr.bend as RC
 import ./e2e_support.bend as E
 import ../proofs/obj/root_types_light.bend as RT
 import ../spec/fulu_schemas.bend as Spec
@@ -4618,6 +4631,8 @@ def FuluExecutionPayload_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionP
 def FuluExecutionPayload_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, B.Buf, FuluExecutionPayload_e.ExecutionPayload_encode(NE())))} == API.serialize(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionPayload_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(B.alloc(0), FuluExecutionPayload_d.ExecutionPayload_default()))))} == API.hash_tree_root(Spec.ExecutionPayload(), RT.v_ExecutionPayload(FuluExecutionPayload_d.ExecutionPayload_default())) : Maybe<&2, +List<U32>>}:
 def FuluExecutionPayload_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
+def FuluExecutionPayload_e2e_witness_size() -> {RC.SZOK(RT.pj_ExecutionPayload_10(FuluExecutionPayload_d.ExecutionPayload_default()), RT.pj_ExecutionPayload_13(FuluExecutionPayload_d.ExecutionPayload_default()), RT.pj_ExecutionPayload_14(FuluExecutionPayload_d.ExecutionPayload_default())) == True{} : Bool}:
+def FuluExecutionPayload_e2e_witness_size_nonempty() -> {RC.SZOK(RT.pj_ExecutionPayload_10(NE()), RT.pj_ExecutionPayload_13(NE()), RT.pj_ExecutionPayload_14(NE())) == True{} : Bool}:
 
 ## e2e/FuluExecutionRequests_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -7440,6 +7455,7 @@ def FuluSignedBeaconBlock_e2e_set_signature_root(h: B.Buf, o: FuluSignedBeaconBl
     -> {Some{D.bytes(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, D.Digest, Pair.snd(B.Buf, FuluSignedBeaconBlock_d.SignedBeaconBlock & D.Digest, FuluSignedBeaconBlock_h.SignedBeaconBlock_hash_tree_root(h, FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(o, w)))))} == API.hash_tree_root(Spec.SignedBeaconBlock(), VS.field_set(RT.v_SignedBeaconBlock(o), 1n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluSignedBeaconBlock_e2e_witness_generated.bend
+import ./e2e_rec_SignedBeaconBlock.bend as RS
 import ./e2e_support.bend as E
 import ../proofs/obj/root_types_light.bend as RT
 import ../spec/fulu_schemas.bend as Spec
@@ -7488,6 +7504,8 @@ def FuluSignedBeaconBlock_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluSignedBea
 def FuluSignedBeaconBlock_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, B.Buf, FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(NE())))} == API.serialize(Spec.SignedBeaconBlock(), RT.v_SignedBeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
 def FuluSignedBeaconBlock_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, D.Digest, Pair.snd(B.Buf, FuluSignedBeaconBlock_d.SignedBeaconBlock & D.Digest, FuluSignedBeaconBlock_h.SignedBeaconBlock_hash_tree_root(B.alloc(0), FuluSignedBeaconBlock_d.SignedBeaconBlock_default()))))} == API.hash_tree_root(Spec.SignedBeaconBlock(), RT.v_SignedBeaconBlock(FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) : Maybe<&2, +List<U32>>}:
 def FuluSignedBeaconBlock_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, D.Digest, Pair.snd(B.Buf, FuluSignedBeaconBlock_d.SignedBeaconBlock & D.Digest, FuluSignedBeaconBlock_h.SignedBeaconBlock_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.SignedBeaconBlock(), RT.v_SignedBeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
+def FuluSignedBeaconBlock_e2e_witness_size() -> RS.SZW(FuluSignedBeaconBlock_d.SignedBeaconBlock_default()):
+def FuluSignedBeaconBlock_e2e_witness_size_nonempty() -> RS.SZW(NE()):
 
 ## e2e/FuluSignedContributionAndProof_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -9922,6 +9940,23 @@ import ../types/VarTestStruct_hashtreeroot_generated.bend as VarTestStruct_h
 def VarTestStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_default())))} == API.serialize(Spec.VarTestStruct(), RT.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default())) : Maybe<&2, +List<U32>>}:
 def VarTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default()))))} == API.hash_tree_root(Spec.VarTestStruct(), RT.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_15_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_15_decode_ssz_generated.bend as bitlist_15_r
+import ../types/bitlist_15_encode_ssz_generated.bend as bitlist_15_e
+import ../types/bitlist_15_hashtreeroot_generated.bend as bitlist_15_h
+def bitlist_15_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_15_r.bitlist_15_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_15_e.bitlist_15_encode(o))) == bs : +List<U32>}:
+def bitlist_15_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_15_r.bitlist_15_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_15_h.bitlist_15_hash_tree_root(h, o))))} == C.droot(GS.bitlist_15(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_15_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -9968,6 +10003,23 @@ import ../types/bitlist_15_hashtreeroot_generated.bend as bitlist_15_h
 import ../types/schema.bend as S
 def bitlist_15_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_15_e.bitlist_15_encode(bitlist_15_d.bits15_default())))} == API.serialize(GS.bitlist_15(), S.BitsValue{BOr.bview(bitlist_15_d.bits15_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_15_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_15_h.bitlist_15_hash_tree_root(B.alloc(0), bitlist_15_d.bits15_default()))))} == API.hash_tree_root(GS.bitlist_15(), S.BitsValue{BO.bview(bitlist_15_d.bits15_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_16_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_16_decode_ssz_generated.bend as bitlist_16_r
+import ../types/bitlist_16_encode_ssz_generated.bend as bitlist_16_e
+import ../types/bitlist_16_hashtreeroot_generated.bend as bitlist_16_h
+def bitlist_16_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_16_e.bitlist_16_encode(o))) == bs : +List<U32>}:
+def bitlist_16_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_16_h.bitlist_16_hash_tree_root(h, o))))} == C.droot(GS.bitlist_16(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_16_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10016,6 +10068,23 @@ import ../types/schema.bend as S
 def bitlist_16_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_16_e.bitlist_16_encode(bitlist_16_d.bits16_default())))} == API.serialize(GS.bitlist_16(), S.BitsValue{BOr.bview(bitlist_16_d.bits16_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_16_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_16_h.bitlist_16_hash_tree_root(B.alloc(0), bitlist_16_d.bits16_default()))))} == API.hash_tree_root(GS.bitlist_16(), S.BitsValue{BO.bview(bitlist_16_d.bits16_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_17_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_17_decode_ssz_generated.bend as bitlist_17_r
+import ../types/bitlist_17_encode_ssz_generated.bend as bitlist_17_e
+import ../types/bitlist_17_hashtreeroot_generated.bend as bitlist_17_h
+def bitlist_17_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_17_r.bitlist_17_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_17_e.bitlist_17_encode(o))) == bs : +List<U32>}:
+def bitlist_17_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_17_r.bitlist_17_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_17_h.bitlist_17_hash_tree_root(h, o))))} == C.droot(GS.bitlist_17(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_17_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10062,6 +10131,23 @@ import ../types/bitlist_17_hashtreeroot_generated.bend as bitlist_17_h
 import ../types/schema.bend as S
 def bitlist_17_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_17_e.bitlist_17_encode(bitlist_17_d.bits17_default())))} == API.serialize(GS.bitlist_17(), S.BitsValue{BOr.bview(bitlist_17_d.bits17_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_17_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_17_h.bitlist_17_hash_tree_root(B.alloc(0), bitlist_17_d.bits17_default()))))} == API.hash_tree_root(GS.bitlist_17(), S.BitsValue{BO.bview(bitlist_17_d.bits17_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_1_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_1_decode_ssz_generated.bend as bitlist_1_r
+import ../types/bitlist_1_encode_ssz_generated.bend as bitlist_1_e
+import ../types/bitlist_1_hashtreeroot_generated.bend as bitlist_1_h
+def bitlist_1_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_1_r.bitlist_1_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_1_e.bitlist_1_encode(o))) == bs : +List<U32>}:
+def bitlist_1_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_1_r.bitlist_1_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_1_h.bitlist_1_hash_tree_root(h, o))))} == C.droot(GS.bitlist_1(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_1_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10135,6 +10221,23 @@ import ../types/schema.bend as S
 def bitlist_1_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_1_e.bitlist_1_encode(bitlist_1_d.bits1_default())))} == API.serialize(GS.bitlist_1(), S.BitsValue{BOr.bview(bitlist_1_d.bits1_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_1_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_1_h.bitlist_1_hash_tree_root(B.alloc(0), bitlist_1_d.bits1_default()))))} == API.hash_tree_root(GS.bitlist_1(), S.BitsValue{BO.bview(bitlist_1_d.bits1_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_2_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_2_decode_ssz_generated.bend as bitlist_2_r
+import ../types/bitlist_2_encode_ssz_generated.bend as bitlist_2_e
+import ../types/bitlist_2_hashtreeroot_generated.bend as bitlist_2_h
+def bitlist_2_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_2_e.bitlist_2_encode(o))) == bs : +List<U32>}:
+def bitlist_2_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_2_h.bitlist_2_hash_tree_root(h, o))))} == C.droot(GS.bitlist_2(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_2_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10181,6 +10284,23 @@ import ../types/bitlist_2_hashtreeroot_generated.bend as bitlist_2_h
 import ../types/schema.bend as S
 def bitlist_2_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_2_e.bitlist_2_encode(bitlist_2_d.bits2_default())))} == API.serialize(GS.bitlist_2(), S.BitsValue{BOr.bview(bitlist_2_d.bits2_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_2_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_2_h.bitlist_2_hash_tree_root(B.alloc(0), bitlist_2_d.bits2_default()))))} == API.hash_tree_root(GS.bitlist_2(), S.BitsValue{BO.bview(bitlist_2_d.bits2_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_31_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_31_decode_ssz_generated.bend as bitlist_31_r
+import ../types/bitlist_31_encode_ssz_generated.bend as bitlist_31_e
+import ../types/bitlist_31_hashtreeroot_generated.bend as bitlist_31_h
+def bitlist_31_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_31_r.bitlist_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_31_e.bitlist_31_encode(o))) == bs : +List<U32>}:
+def bitlist_31_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_31_r.bitlist_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_31_h.bitlist_31_hash_tree_root(h, o))))} == C.droot(GS.bitlist_31(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_31_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10229,6 +10349,23 @@ import ../types/schema.bend as S
 def bitlist_31_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_31_e.bitlist_31_encode(bitlist_31_d.bits31_default())))} == API.serialize(GS.bitlist_31(), S.BitsValue{BOr.bview(bitlist_31_d.bits31_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_31_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_31_h.bitlist_31_hash_tree_root(B.alloc(0), bitlist_31_d.bits31_default()))))} == API.hash_tree_root(GS.bitlist_31(), S.BitsValue{BO.bview(bitlist_31_d.bits31_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_32_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_32_decode_ssz_generated.bend as bitlist_32_r
+import ../types/bitlist_32_encode_ssz_generated.bend as bitlist_32_e
+import ../types/bitlist_32_hashtreeroot_generated.bend as bitlist_32_h
+def bitlist_32_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_32_r.bitlist_32_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_32_e.bitlist_32_encode(o))) == bs : +List<U32>}:
+def bitlist_32_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_32_r.bitlist_32_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_32_h.bitlist_32_hash_tree_root(h, o))))} == C.droot(GS.bitlist_32(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_32_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10275,6 +10412,23 @@ import ../types/bitlist_32_hashtreeroot_generated.bend as bitlist_32_h
 import ../types/schema.bend as S
 def bitlist_32_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_32_e.bitlist_32_encode(bitlist_32_d.bits32_default())))} == API.serialize(GS.bitlist_32(), S.BitsValue{BOr.bview(bitlist_32_d.bits32_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_32_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_32_h.bitlist_32_hash_tree_root(B.alloc(0), bitlist_32_d.bits32_default()))))} == API.hash_tree_root(GS.bitlist_32(), S.BitsValue{BO.bview(bitlist_32_d.bits32_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_33_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_33_decode_ssz_generated.bend as bitlist_33_r
+import ../types/bitlist_33_encode_ssz_generated.bend as bitlist_33_e
+import ../types/bitlist_33_hashtreeroot_generated.bend as bitlist_33_h
+def bitlist_33_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_33_r.bitlist_33_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.bitlist_33_encode(o))) == bs : +List<U32>}:
+def bitlist_33_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_33_r.bitlist_33_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_33_h.bitlist_33_hash_tree_root(h, o))))} == C.droot(GS.bitlist_33(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_33_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10348,6 +10502,23 @@ import ../types/schema.bend as S
 def bitlist_33_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_33_e.bitlist_33_encode(bitlist_33_d.bits33_default())))} == API.serialize(GS.bitlist_33(), S.BitsValue{BOr.bview(bitlist_33_d.bits33_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_33_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_33_h.bitlist_33_hash_tree_root(B.alloc(0), bitlist_33_d.bits33_default()))))} == API.hash_tree_root(GS.bitlist_33(), S.BitsValue{BO.bview(bitlist_33_d.bits33_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_3_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_3_decode_ssz_generated.bend as bitlist_3_r
+import ../types/bitlist_3_encode_ssz_generated.bend as bitlist_3_e
+import ../types/bitlist_3_hashtreeroot_generated.bend as bitlist_3_h
+def bitlist_3_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_3_r.bitlist_3_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_3_e.bitlist_3_encode(o))) == bs : +List<U32>}:
+def bitlist_3_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_3_r.bitlist_3_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_3_h.bitlist_3_hash_tree_root(h, o))))} == C.droot(GS.bitlist_3(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_3_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10394,6 +10565,23 @@ import ../types/bitlist_3_hashtreeroot_generated.bend as bitlist_3_h
 import ../types/schema.bend as S
 def bitlist_3_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_3_e.bitlist_3_encode(bitlist_3_d.bits3_default())))} == API.serialize(GS.bitlist_3(), S.BitsValue{BOr.bview(bitlist_3_d.bits3_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_3_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_3_h.bitlist_3_hash_tree_root(B.alloc(0), bitlist_3_d.bits3_default()))))} == API.hash_tree_root(GS.bitlist_3(), S.BitsValue{BO.bview(bitlist_3_d.bits3_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_4_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_4_decode_ssz_generated.bend as bitlist_4_r
+import ../types/bitlist_4_encode_ssz_generated.bend as bitlist_4_e
+import ../types/bitlist_4_hashtreeroot_generated.bend as bitlist_4_h
+def bitlist_4_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_4_r.bitlist_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_4_e.bitlist_4_encode(o))) == bs : +List<U32>}:
+def bitlist_4_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_4_r.bitlist_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_4_h.bitlist_4_hash_tree_root(h, o))))} == C.droot(GS.bitlist_4(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_4_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10442,6 +10630,23 @@ import ../types/schema.bend as S
 def bitlist_4_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_4_e.bitlist_4_encode(bitlist_4_d.bits4_default())))} == API.serialize(GS.bitlist_4(), S.BitsValue{BOr.bview(bitlist_4_d.bits4_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_4_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_4_h.bitlist_4_hash_tree_root(B.alloc(0), bitlist_4_d.bits4_default()))))} == API.hash_tree_root(GS.bitlist_4(), S.BitsValue{BO.bview(bitlist_4_d.bits4_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_511_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_511_decode_ssz_generated.bend as bitlist_511_r
+import ../types/bitlist_511_encode_ssz_generated.bend as bitlist_511_e
+import ../types/bitlist_511_hashtreeroot_generated.bend as bitlist_511_h
+def bitlist_511_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_511_r.bitlist_511_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_511_e.bitlist_511_encode(o))) == bs : +List<U32>}:
+def bitlist_511_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_511_r.bitlist_511_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_511_h.bitlist_511_hash_tree_root(h, o))))} == C.droot(GS.bitlist_511(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_511_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10488,6 +10693,23 @@ import ../types/bitlist_511_hashtreeroot_generated.bend as bitlist_511_h
 import ../types/schema.bend as S
 def bitlist_511_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_511_e.bitlist_511_encode(bitlist_511_d.bits511_default())))} == API.serialize(GS.bitlist_511(), S.BitsValue{BOr.bview(bitlist_511_d.bits511_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_511_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_511_h.bitlist_511_hash_tree_root(B.alloc(0), bitlist_511_d.bits511_default()))))} == API.hash_tree_root(GS.bitlist_511(), S.BitsValue{BO.bview(bitlist_511_d.bits511_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_512_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_512_decode_ssz_generated.bend as bitlist_512_r
+import ../types/bitlist_512_encode_ssz_generated.bend as bitlist_512_e
+import ../types/bitlist_512_hashtreeroot_generated.bend as bitlist_512_h
+def bitlist_512_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_512_r.bitlist_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_512_e.bitlist_512_encode(o))) == bs : +List<U32>}:
+def bitlist_512_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_512_r.bitlist_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_512_h.bitlist_512_hash_tree_root(h, o))))} == C.droot(GS.bitlist_512(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_512_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10536,6 +10758,23 @@ import ../types/schema.bend as S
 def bitlist_512_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_512_e.bitlist_512_encode(bitlist_512_d.bits512_default())))} == API.serialize(GS.bitlist_512(), S.BitsValue{BOr.bview(bitlist_512_d.bits512_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_512_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_512_h.bitlist_512_hash_tree_root(B.alloc(0), bitlist_512_d.bits512_default()))))} == API.hash_tree_root(GS.bitlist_512(), S.BitsValue{BO.bview(bitlist_512_d.bits512_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_513_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_513_decode_ssz_generated.bend as bitlist_513_r
+import ../types/bitlist_513_encode_ssz_generated.bend as bitlist_513_e
+import ../types/bitlist_513_hashtreeroot_generated.bend as bitlist_513_h
+def bitlist_513_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_513_r.bitlist_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_513_e.bitlist_513_encode(o))) == bs : +List<U32>}:
+def bitlist_513_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_513_r.bitlist_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_513_h.bitlist_513_hash_tree_root(h, o))))} == C.droot(GS.bitlist_513(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_513_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10582,6 +10821,23 @@ import ../types/bitlist_513_hashtreeroot_generated.bend as bitlist_513_h
 import ../types/schema.bend as S
 def bitlist_513_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_513_e.bitlist_513_encode(bitlist_513_d.bits513_default())))} == API.serialize(GS.bitlist_513(), S.BitsValue{BOr.bview(bitlist_513_d.bits513_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_513_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_513_h.bitlist_513_hash_tree_root(B.alloc(0), bitlist_513_d.bits513_default()))))} == API.hash_tree_root(GS.bitlist_513(), S.BitsValue{BO.bview(bitlist_513_d.bits513_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_5_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_5_decode_ssz_generated.bend as bitlist_5_r
+import ../types/bitlist_5_encode_ssz_generated.bend as bitlist_5_e
+import ../types/bitlist_5_hashtreeroot_generated.bend as bitlist_5_h
+def bitlist_5_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_5_r.bitlist_5_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_5_e.bitlist_5_encode(o))) == bs : +List<U32>}:
+def bitlist_5_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_5_r.bitlist_5_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_5_h.bitlist_5_hash_tree_root(h, o))))} == C.droot(GS.bitlist_5(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_5_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10630,6 +10886,23 @@ import ../types/schema.bend as S
 def bitlist_5_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_5_e.bitlist_5_encode(bitlist_5_d.bits5_default())))} == API.serialize(GS.bitlist_5(), S.BitsValue{BOr.bview(bitlist_5_d.bits5_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_5_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_5_h.bitlist_5_hash_tree_root(B.alloc(0), bitlist_5_d.bits5_default()))))} == API.hash_tree_root(GS.bitlist_5(), S.BitsValue{BO.bview(bitlist_5_d.bits5_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_6_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_6_decode_ssz_generated.bend as bitlist_6_r
+import ../types/bitlist_6_encode_ssz_generated.bend as bitlist_6_e
+import ../types/bitlist_6_hashtreeroot_generated.bend as bitlist_6_h
+def bitlist_6_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_6_r.bitlist_6_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_6_e.bitlist_6_encode(o))) == bs : +List<U32>}:
+def bitlist_6_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_6_r.bitlist_6_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_6_h.bitlist_6_hash_tree_root(h, o))))} == C.droot(GS.bitlist_6(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_6_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10677,6 +10950,23 @@ import ../types/schema.bend as S
 def bitlist_6_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_6_e.bitlist_6_encode(bitlist_6_d.bits6_default())))} == API.serialize(GS.bitlist_6(), S.BitsValue{BOr.bview(bitlist_6_d.bits6_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_6_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_6_h.bitlist_6_hash_tree_root(B.alloc(0), bitlist_6_d.bits6_default()))))} == API.hash_tree_root(GS.bitlist_6(), S.BitsValue{BO.bview(bitlist_6_d.bits6_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/bitlist_7_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_7_decode_ssz_generated.bend as bitlist_7_r
+import ../types/bitlist_7_encode_ssz_generated.bend as bitlist_7_e
+import ../types/bitlist_7_hashtreeroot_generated.bend as bitlist_7_h
+def bitlist_7_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_7_e.bitlist_7_encode(o))) == bs : +List<U32>}:
+def bitlist_7_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_7_h.bitlist_7_hash_tree_root(h, o))))} == C.droot(GS.bitlist_7(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/bitlist_7_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10723,6 +11013,23 @@ import ../types/bitlist_7_hashtreeroot_generated.bend as bitlist_7_h
 import ../types/schema.bend as S
 def bitlist_7_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_7_e.bitlist_7_encode(bitlist_7_d.bits7_default())))} == API.serialize(GS.bitlist_7(), S.BitsValue{BOr.bview(bitlist_7_d.bits7_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_7_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_7_h.bitlist_7_hash_tree_root(B.alloc(0), bitlist_7_d.bits7_default()))))} == API.hash_tree_root(GS.bitlist_7(), S.BitsValue{BO.bview(bitlist_7_d.bits7_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_8_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_8_decode_ssz_generated.bend as bitlist_8_r
+import ../types/bitlist_8_encode_ssz_generated.bend as bitlist_8_e
+import ../types/bitlist_8_hashtreeroot_generated.bend as bitlist_8_h
+def bitlist_8_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_8_r.bitlist_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_8_e.bitlist_8_encode(o))) == bs : +List<U32>}:
+def bitlist_8_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_8_r.bitlist_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_8_h.bitlist_8_hash_tree_root(h, o))))} == C.droot(GS.bitlist_8(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_8_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -10783,6 +11090,23 @@ import ../types/bitlist_8_hashtreeroot_generated.bend as bitlist_8_h
 import ../types/schema.bend as S
 def bitlist_8_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_8_e.bitlist_8_encode(bitlist_8_d.bits8_default())))} == API.serialize(GS.bitlist_8(), S.BitsValue{BOr.bview(bitlist_8_d.bits8_default())}) : Maybe<&2, +List<U32>>}:
 def bitlist_8_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_8_h.bitlist_8_hash_tree_root(B.alloc(0), bitlist_8_d.bits8_default()))))} == API.hash_tree_root(GS.bitlist_8(), S.BitsValue{BO.bview(bitlist_8_d.bits8_default())}) : Maybe<&2, +List<U32>>}:
+
+## e2e/bitlist_9_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/bitlist_9_decode_ssz_generated.bend as bitlist_9_r
+import ../types/bitlist_9_encode_ssz_generated.bend as bitlist_9_e
+import ../types/bitlist_9_hashtreeroot_generated.bend as bitlist_9_h
+def bitlist_9_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_9_r.bitlist_9_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, bitlist_9_e.bitlist_9_encode(o))) == bs : +List<U32>}:
+def bitlist_9_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_9_r.bitlist_9_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, bitlist_9_h.bitlist_9_hash_tree_root(h, o))))} == C.droot(GS.bitlist_9(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/bitlist_9_e2e_dec_generated.bend
 import ../src/model.bend as API

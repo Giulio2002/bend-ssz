@@ -125,7 +125,7 @@ def statement_files():
         n = p.name[:-len('_e2e_witness_generated.bend')]
         t = p.read_text()
         out['e2e/' + p.name] = [l for l in (f'{n}_e2e_witness', f'{n}_e2e_witness_nonempty', f'{n}_e2e_witness_root',
-                                            f'{n}_e2e_witness_root_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
+                                            f'{n}_e2e_witness_root_nonempty', f'{n}_e2e_witness_size', f'{n}_e2e_witness_size_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
     for p in sorted((ROOT / 'e2e').glob('*_e2e_ser_generated.bend')):
         n = p.name[:-len('_e2e_ser_generated.bend')]
         out['e2e/' + p.name] = [f'{n}_e2e_serialize', f'{n}_e2e_serialize_ok', f'{n}_e2e_serialize_refused']
