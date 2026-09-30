@@ -8,9 +8,15 @@ the name sets must be equal, and the YAML must define no other exported name.
 A second check runs the resolver on malformed documents and requires each to
 be rejected with a SchemaError.
 
-    /opt/homebrew/bin/python3 codegen/check_schema.py
+    python3 codegen/check_schema.py [--check]
+
+It then runs tools/verify_schemas.py, the independent cross-checks of vendor/consensus-specs/
+fulu_mainnet.py, schemas/fulu_mainnet.json and spec/fulu_schemas.bend, and of cases.json against
+the fixtures and the generic schemas (proofs/obj/generic_specs.bend). It only reads, so --check
+(the flag regen_all.py and strictcheck pass) changes nothing; the exit is nonzero if either fails.
 """
 import json
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -57,8 +63,11 @@ def main():
         print('FAIL', b)
     print(f'{len(frozen)} frozen names; {len(types)} YAML names; '
           f'{len(negatives)} malformed documents; {"OK" if not bad else "FAILED"}')
-    sys.exit(1 if bad else 0)
+    r = subprocess.run([sys.executable, str(ROOT / 'tools/verify_schemas.py')], capture_output=True, text=True)
+    print((r.stdout + r.stderr).strip())
+    sys.exit(1 if bad or r.returncode else 0)
 
 
 if __name__ == '__main__':
+    sys.argv = [a for a in sys.argv if a != '--check']  # read-only either way
     main()

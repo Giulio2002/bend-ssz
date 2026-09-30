@@ -18,7 +18,8 @@
 # umbrella fails, or if any planned umbrella has no result row (its run died without a verdict).
 # First, tools/verify_pins.py checks the toolchain and the SHA-256 package against
 # toolchain.lock.json, tools/verify_frozen.py the frozen statements against frozen.lock.json, and
-# tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies (exit 3 on any of them).
+# tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies, and tools/verify_schemas.py
+# cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas (exit 3 on any failure).
 # Run from the repository root.
 set -u
 J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
@@ -38,6 +39,7 @@ T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
 python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3
+python3 tools/verify_schemas.py || exit 3
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 

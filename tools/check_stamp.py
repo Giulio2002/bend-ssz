@@ -9,7 +9,7 @@ time, the checker commit and the sha256 of toolchain.lock.json and frozen.lock.j
 of the checked sources (every .bend file outside tools/, vendor/ and build/: sorted
 "path\\0sha256\\n" lines; the vendored SHA-256 package is pinned by toolchain.lock.json), the
 number of files, the sha256 of each harness script (HARNESS: the runners, the umbrella planner and
-the three pre-checks), the sha256 of the umbrella plan (DIR/umb/plan.tsv) with its umbrella and
+the four pre-checks), the sha256 of the umbrella plan (DIR/umb/plan.tsv) with its umbrella and
 root counts, the scope (all files, or the --files list), every planned umbrella's result (exit,
 whether the exact line "All terms check." was printed, seconds, peak MB, number of roots) and the
 verdict.
@@ -33,7 +33,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HARNESS = ['tools/check.sh', 'tools/check_fast.sh', 'tools/umbrellas.py', 'tools/check_stamp.py',
-           'tools/verify_pins.py', 'tools/verify_frozen.py', 'tools/verify_no_escapes.py']
+           'tools/verify_pins.py', 'tools/verify_frozen.py', 'tools/verify_no_escapes.py',
+           'tools/verify_schemas.py', 'tools/test_schemas.py']
 
 
 def sha(b):
