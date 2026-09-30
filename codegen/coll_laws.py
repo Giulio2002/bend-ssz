@@ -38,7 +38,9 @@ proofs/obj/words_rw.bend and the generated proofs/obj/coll_words.bend:
 The guards GS, GA and the length are read from the generated runtime (types/*_def_generated.bend),
 so the statements follow it. The bit lists (coll_bits.bend) and the byte collections
 (coll_bytes.bend) have read_set through proofs/obj/u32bits.bend. Not covered: read-back for
-l4096_b2048 (a block copy) and after an append to a packed collection (docs/RESULTS.md).
+l4096_b2048 (a block copy) and after an append that reallocates a packed list; with room
+(O.words_fit leaves the storage alone: words_rw.bend's fit_roomy) the packed lists have
+read_append (docs/RESULTS.md).
 
     python3 codegen/coll_laws.py            # write
     python3 codegen/coll_laws.py --check    # nonzero exit if an output is stale or orphaned
@@ -159,7 +161,8 @@ def info(c):
         else:
             I['GA'] = None
         gb = body(t, c + '_get_n')[2].split('\n')[-1].strip()
-        I['GG'] = subst_n(call_args(gb, c + '_get_in')[0], I['ln'])
+        I['GGraw'] = call_args(gb, c + '_get_in')[0]
+        I['GG'] = subst_n(I['GGraw'], I['ln'])
         pt = re.search(r'case True\{\}: \((.*), True\{\}\)$', body(t, c + '_put_at')[2], re.M)
         I['put_true'] = pt.group(1) if pt else None
     return I
@@ -308,7 +311,39 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : U32}' % (GS, LENX('Pair.fst(O.Words, Bool, %s)' % PUT), LEN))
     w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
     w('  {==}')
-    return 2
+    if not I.get('GA'):
+        return 2
+    # append, then get the old length: when the storage has room (O.words_fit does not reallocate)
+    imps['WR'] = 'proofs/obj/words_rw.bend'
+    GA = q(I['GA'])
+    LN = LEN if re.fullmatch(r'\w+', LEN) else '(%s)' % LEN
+    NB = '((%s + 1 : U32) * %s : U32)' % (LN, K)
+    PA = '(%s * %s : U32)' % (LN, K)
+    OBJN = lambda tr: 'O.Words{F.array__thaw(U32, %s), %s}' % (tr, NB)
+    gw = re.sub(r'(?<![\w.])(n|i)(?![\w.])', lambda mm: {'n': NB, 'i': LN}[mm.group(1)], q(subst_n(I['GGraw'], I['ln'])))
+    prema = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+             '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, '
+             '+hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, '
+             '+hw: {%s == True{} : Bool}, '
+             '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}'
+             % (', '.join('+%s: U32' % x for x in xs), GA, NB, gw, PA, W))
+    la = 'd, t, %s, %s, q, hd, pf, hq, hr, %s' % (NB, PA, ', '.join(xs))
+    APP = '%s.%s_append(%s, %s)' % (DA, c, OBJ('t'), V)
+    GROW = '%s.%s(_, %s, %s, %s)' % (DA, I['afn'], OBJ('t'), LN, V)
+    RESA = '(%s, Some{%s}) : O.Words & Maybe<&1, %s>' % (OBJN(TW), V, ET)
+    GETA = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, LN)
+    WRA = re.sub(r'\(o, \(i \* ', '(%s, (%s * ' % (OBJN('t'), LN), pt, count=1)
+    WRA = WRA[:-len(', v)')] + ', %s)' % V
+    READA = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJN(TW), PA)
+    w('def %s_api_read_append(%s)\n    -> {%s == %s}:' % (c, prema, GETA('Pair.fst(O.Words, Bool, %s)' % APP), RESA))
+    w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s}' % (GA, GETA('Pair.fst(O.Words, Bool, %s)' % GROW), RESA))
+    w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s}'
+      % (OBJ('t'), NB, OBJ('t'), NB, GETA('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))' % (DA, c, NB, LN, V)), RESA))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s}' % (WRA, OBJN(TW), kind, la, GETA('_'), RESA))
+    w('  %%Equal.sym(Bool, %s, True{}, hw) : {%s.%s_get_in(_, %s, %s) == %s}' % (gw, DA, c, OBJN(TW), LN, RESA))
+    w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READA, OBJN(TW), V, kind, la, DA, c, RESA))
+    w('  {==}')
+    return 3
 
 
 def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
@@ -389,7 +424,39 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : U32}' % (GS, LENX('Pair.fst(O.Words, Bool, %s)' % PUT), LEN))
     w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
     w('  {==}')
-    return 2
+    if not I.get('GA'):
+        return 2
+    # append, then get the old length: when the storage has room (O.words_fit does not reallocate)
+    imps['WR'] = 'proofs/obj/words_rw.bend'
+    GA = q(I['GA'])
+    LN = LEN if re.fullmatch(r'\w+', LEN) else '(%s)' % LEN
+    NB = '((%s + 1 : U32) * %s : U32)' % (LN, K)
+    PA = '(%s * %s : U32)' % (LN, K)
+    OBJN = lambda tr: 'O.Words{F.array__thaw(U32, %s), %s}' % (tr, NB)
+    gw = re.sub(r'(?<![\w.])(n|i)(?![\w.])', lambda mm: {'n': NB, 'i': LN}[mm.group(1)], q(subst_n(I['GGraw'], I['ln'])))
+    prema = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+             '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, '
+             '+hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, '
+             '+hw: {%s == True{} : Bool}, '
+             '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}'
+             % (', '.join('+%s: U32' % x for x in xs), GA, NB, gw, PA, W))
+    la = 'd, t, %s, %s, q, hd, pf, hq, hr, %s' % (NB, PA, ', '.join(xs))
+    APP = '%s.%s_append(%s, %s)' % (DA, c, OBJ('t'), V)
+    GROW = '%s.%s(_, %s, %s, %s)' % (DA, I['afn'], OBJ('t'), LN, V)
+    RESA = '(%s, Some{%s}) : O.Words & Maybe<&1, %s>' % (OBJN(TW), V, ET)
+    GETA = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, LN)
+    WRA = re.sub(r'\(o, \(i \* ', '(%s, (%s * ' % (OBJN('t'), LN), pt, count=1)
+    WRA = WRA[:-len(', v)')] + ', %s)' % V
+    READA = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJN(TW), PA)
+    w('def %s_api_read_append(%s)\n    -> {%s == %s}:' % (c, prema, GETA('Pair.fst(O.Words, Bool, %s)' % APP), RESA))
+    w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s}' % (GA, GETA('Pair.fst(O.Words, Bool, %s)' % GROW), RESA))
+    w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s}'
+      % (OBJ('t'), NB, OBJ('t'), NB, GETA('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))' % (DA, c, NB, LN, V)), RESA))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s}' % (WRA, OBJN(TW), kind, la, GETA('_'), RESA))
+    w('  %%Equal.sym(Bool, %s, True{}, hw) : {%s.%s_get_in(_, %s, %s) == %s}' % (gw, DA, c, OBJN(TW), LN, RESA))
+    w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READA, OBJN(TW), V, kind, la, DA, c, RESA))
+    w('  {==}')
+    return 3
 
 
 def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
@@ -766,33 +833,51 @@ def coll_bits(cs):
         imps[DA] = os.path.relpath(I['file'], ROOT)
         GS, GG = I['GS'], I['GG']
         assert GS == GG == 'U32.is_lt(i, n)', (c, GS, GG)
-        OBJT = lambda t_: 'O.Bits{F.array__thaw(U32, %s), n}' % t_
         X = 'WR.at(F.array__slots(U32, t), q)'
-        NEWW = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(i, 31)))' % X
-        T1 = 'F.array__upd(U32, d, t, q, %s)' % NEWW
-        JW = 'U32.shrn(i, 5n)'
-        RES = '(%s, Some{v}) : O.Bits & Maybe<&1, Bool>' % OBJT(T1)
-        GET = lambda o: '%s.%s_get(%s, i)' % (DA, c, o)
         L.append('# ---- %s ----' % c)
-        L.append('def %s_api_read_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
-                 '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, '
-                 '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, GS, JW))
-        L.append('    -> {%s == %s}:' % (GET('Pair.fst(O.Bits, Bool, %s.%s_set(%s, i, v))' % (DA, c, OBJT('t'))), RES))
-        L.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s}' % (GS, GET('Pair.fst(O.Bits, Bool, %s.%s_put_at(_, %s, i, v))' % (DA, c, OBJT('t'))), RES))
-        L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, n, %s, q, hd, hq, hk, pf)) : {%s == %s}'
-                 % (OBJT('t'), JW, OBJT('t'), X, JW, GET('O.bit_put(i, v, _)'), RES))
-        L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, n, %s, q, %s, hd, hq, hk, pf)) : {%s == %s}'
-                 % (OBJT('t'), JW, NEWW, OBJT(T1), JW, NEWW, GET('_'), RES))
-        L.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, i) == %s}' % (GG, DA, c, OBJT(T1), RES))
-        L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.bword_thaw(d, %s, n, %s, q, hd, hq, hk, F.array__upd_perfect(U32, d, t, q, %s, pf))) : {%s.%s_some(O.bit_of(i, _)) == %s}'
-                 % (OBJT(T1), JW, OBJT(T1), T1, T1, JW, NEWW, DA, c, RES))
-        L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(d, t, q, %s, hk, pf)) : {%s.%s_some((%s, U32.is_eq(U32.and(M.shr_by(_, U32.and(i, 31)), 1), 1))) == %s}'
-                 % (T1, NEWW, NEWW, DA, c, OBJT(T1), RES))
-        L.append('  %%Equal.sym(Bool, U32.is_eq(U32.and(M.shr_by(%s, U32.and(i, 31)), 1), 1), v, bit_rw(%s, i, v)) : {%s.%s_some((%s, _)) == %s}'
-                 % (NEWW, X, DA, c, OBJT(T1), RES))
-        L.append('  {==}')
-        L.append('')
+
+        def emit(name, NBT, IX, prem, first, opening):
+            OBJT = lambda t_: 'O.Bits{F.array__thaw(U32, %s), %s}' % (t_, NBT)
+            NEWW = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(%s, 31)))' % (X, IX)
+            T1 = 'F.array__upd(U32, d, t, q, %s)' % NEWW
+            JW = 'U32.shrn(%s, 5n)' % IX
+            RES = '(%s, Some{v}) : O.Bits & Maybe<&1, Bool>' % OBJT(T1)
+            GET = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, IX)
+            gg = 'U32.is_lt(%s, %s)' % (IX, NBT)
+            L.append('def %s_api_%s(+d: Nat, +t: F.array__Tree<U32>, +n: U32, %s+q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, %s+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, '
+                     '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, name, '+i: U32, ' if IX == 'i' else '', prem, gg, JW))
+            L.append('    -> {%s == %s}:' % (GET(first), RES))
+            for eq, goal in opening:
+                L.append('  %s : {%s == %s}' % (eq, GET(goal), RES))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s}'
+                     % (OBJT('t'), JW, OBJT('t'), X, NBT, JW, GET('O.bit_put(%s, v, _)' % IX), RES))
+            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s}'
+                     % (OBJT('t'), JW, NEWW, OBJT(T1), NBT, JW, NEWW, GET('_'), RES))
+            L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s.%s_get_in(_, %s, %s) == %s}' % (gg, DA, c, OBJT(T1), IX, RES))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.bword_thaw(d, %s, %s, %s, q, hd, hq, hk, F.array__upd_perfect(U32, d, t, q, %s, pf))) : {%s.%s_some(O.bit_of(%s, _)) == %s}'
+                     % (OBJT(T1), JW, OBJT(T1), T1, T1, NBT, JW, NEWW, DA, c, IX, RES))
+            L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(d, t, q, %s, hk, pf)) : {%s.%s_some((%s, U32.is_eq(U32.and(M.shr_by(_, U32.and(%s, 31)), 1), 1))) == %s}'
+                     % (T1, NEWW, NEWW, DA, c, OBJT(T1), IX, RES))
+            L.append('  %%Equal.sym(Bool, U32.is_eq(U32.and(M.shr_by(%s, U32.and(%s, 31)), 1), 1), v, bit_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
+                     % (NEWW, IX, X, IX, DA, c, OBJT(T1), RES))
+            L.append('  {==}')
+        O0 = 'O.Bits{F.array__thaw(U32, t), n}'
+        emit('read_set', 'n', 'i', '', 'Pair.fst(O.Bits, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0),
+             [('%%Equal.sym(Bool, %s, True{}, hg)' % GS, 'Pair.fst(O.Bits, Bool, %s.%s_put_at(_, %s, i, v))' % (DA, c, O0))])
         n += 1
+        if I['GA']:
+            N1 = '(n + 1 : U32)'
+            NBY = 'O.bits_nbytes(%s)' % N1
+            WB = 'O.Words{F.array__thaw(U32, t), %s}' % NBY
+            emit('read_append', N1, 'n',
+                 '+ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, ' % (I['GA'], NBY),
+                 'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
+                 [('%%Equal.sym(Bool, %s, True{}, ha)' % I['GA'], 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
+                  ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom))' % (WB, NBY, WB, NBY, NBY),
+                   'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
+            n += 1
+        L.append('')
     head = ['import Base'] + ['import %s as %s' % (rel(pth), a) for a, pth in imps.items()]
     head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_bits)'),
              '# The bit lists: setting bit i and reading it back returns the bit. lowk_<k>: bit k of a word after',
@@ -865,37 +950,61 @@ def coll_bytes(cs):
         GG = I['GG']
         LE = 'U32.is_le(v, 255)'
         assert I['GS'] == 'Bool.and(%s, %s)' % (GG, LE), (c, I['GS'], GG)
-        OBJT = lambda t_: 'O.Words{F.array__thaw(U32, %s), n}' % t_
         X = 'WR.at(F.array__slots(U32, t), q)'
-        S3 = 'U32.and(%s, 3)' % P
-        NEWW = 'O.merge_word(%s, v, %s, 1)' % (X, S3)
-        T1 = 'F.array__upd(U32, d, t, q, %s)' % NEWW
-        JW = 'U32.shrn(%s, 2n)' % P
-        RES = '(%s, Some{v}) : O.Words & Maybe<&1, U32>' % OBJT(T1)
-        GET = lambda o: '%s.%s_get(%s, i)' % (DA, c, o)
-        PUT = lambda g: 'Pair.fst(O.Words, Bool, %s.%s_put_at(%s, %s, i, v))' % (DA, c, g, OBJT('t'))
         L.append('# ---- %s ----' % c)
-        L.append('def %s_api_read_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +v: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
-                 '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hi: {%s == True{} : Bool}, +hv: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, '
-                 '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, GG, LE, JW))
-        L.append('    -> {%s == %s}:' % (GET('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, v))' % (DA, c, OBJT('t'))), RES))
-        L.append('  %%Equal.sym(Bool, %s, True{}, hi) : {%s == %s}' % (GG, GET(PUT('Bool.and(_, %s)' % LE)), RES))
-        L.append('  %%Equal.sym(Bool, %s, True{}, hv) : {%s == %s}' % (LE, GET(PUT('_')), RES))
-        L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, n, %s, q, hd, hq, hk, pf)) : {%s == %s}'
-                 % (OBJT('t'), JW, OBJT('t'), X, JW, GET('O.put_in(%s, v, %s, 1, _)' % (JW, S3)), RES))
-        L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, t, n, %s, q, %s, hd, hq, hk, pf)) : {%s == %s}'
-                 % (OBJT('t'), JW, NEWW, OBJT(T1), JW, NEWW, GET('_'), RES))
-        L.append('  %%Equal.sym(Bool, %s, True{}, hi) : {%s.%s_get_in(_, %s, i) == %s}' % (GG, DA, c, OBJT(T1), RES))
-        L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.word_thaw(d, %s, n, %s, q, hd, hq, hk, F.array__upd_perfect(U32, d, t, q, %s, pf))) : {%s.%s_some(O.read_at(%s, 1, _)) == %s}'
-                 % (OBJT(T1), JW, OBJT(T1), T1, T1, JW, NEWW, DA, c, P, RES))
-        L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(d, t, q, %s, hk, pf)) : {%s.%s_some((%s, U32.and(O.shr_bytes(_, %s), 255))) == %s}'
-                 % (T1, NEWW, NEWW, DA, c, OBJT(T1), S3, RES))
-        L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(v, 255), byte_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
-                 % (NEWW, S3, X, P, DA, c, OBJT(T1), RES))
-        L.append('  %%Equal.sym(U32, U32.and(v, 255), v, UB.byte_id(v, hv)) : {%s.%s_some((%s, _)) == %s}' % (DA, c, OBJT(T1), RES))
-        L.append('  {==}')
-        L.append('')
+
+        def emit(name, NB, IX, prem, opening):
+            """get(.., IX) after the byte write at IX into storage of NB bytes; opening: the rewrites that
+            expose the write (from the public call), as (equation, goal-with-hole builder) pairs"""
+            Px = re.sub(r'(?<![\w.])i(?![\w.])', IX, P)
+            OBJT = lambda t_: 'O.Words{F.array__thaw(U32, %s), %s}' % (t_, NB)
+            S3 = 'U32.and(%s, 3)' % Px
+            NEWW = 'O.merge_word(%s, v, %s, 1)' % (X, S3)
+            T1 = 'F.array__upd(U32, d, t, q, %s)' % NEWW
+            JW = 'U32.shrn(%s, 2n)' % Px
+            RES = '(%s, Some{v}) : O.Words & Maybe<&1, U32>' % OBJT(T1)
+            GET = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, IX)
+            gg = re.sub(r'(?<![\w.])(n|i)(?![\w.])', lambda mm: {'n': NB, 'i': IX}[mm.group(1)], subst_n(I['GGraw'], I['ln']))
+            L.append('def %s_api_%s(+d: Nat, +t: F.array__Tree<U32>, +n: U32, %s+q: Nat, +v: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, %s+hv: {%s == True{} : Bool}, +hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, '
+                     '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, name, '+i: U32, ' if IX == 'i' else '', prem, LE, gg, JW))
+            L.append('    -> {%s == %s}:' % (GET(opening[0]), RES))
+            for eq, goal in opening[1]:
+                L.append('  %s : {%s == %s}' % (eq, GET(goal), RES))
+            L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s}'
+                     % (OBJT('t'), JW, OBJT('t'), X, NB, JW, GET('O.put_in(%s, v, %s, 1, _)' % (JW, S3)), RES))
+            L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s}'
+                     % (OBJT('t'), JW, NEWW, OBJT(T1), NB, JW, NEWW, GET('_'), RES))
+            L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s.%s_get_in(_, %s, %s) == %s}' % (gg, DA, c, OBJT(T1), IX, RES))
+            L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.word_thaw(d, %s, %s, %s, q, hd, hq, hk, F.array__upd_perfect(U32, d, t, q, %s, pf))) : {%s.%s_some(O.read_at(%s, 1, _)) == %s}'
+                     % (OBJT(T1), JW, OBJT(T1), T1, T1, NB, JW, NEWW, DA, c, Px, RES))
+            L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(d, t, q, %s, hk, pf)) : {%s.%s_some((%s, U32.and(O.shr_bytes(_, %s), 255))) == %s}'
+                     % (T1, NEWW, NEWW, DA, c, OBJT(T1), S3, RES))
+            L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(v, 255), byte_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
+                     % (NEWW, S3, X, Px, DA, c, OBJT(T1), RES))
+            L.append('  %%Equal.sym(U32, U32.and(v, 255), v, UB.byte_id(v, hv)) : {%s.%s_some((%s, _)) == %s}' % (DA, c, OBJT(T1), RES))
+            L.append('  {==}')
+        O0 = 'O.Words{F.array__thaw(U32, t), n}'
+        PUT = lambda g: 'Pair.fst(O.Words, Bool, %s.%s_put_at(%s, %s, i, v))' % (DA, c, g, O0)
+        emit('read_set', 'n', 'i', '',
+             ('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0),
+              [('%%Equal.sym(Bool, %s, True{}, hg)' % GG, PUT('Bool.and(_, %s)' % LE)),
+               ('%%Equal.sym(Bool, %s, True{}, hv)' % LE, PUT('_'))]))
         n += 1
+        if I['GA']:
+            LN = I['ln'] if re.fullmatch(r'\w+', I['ln']) else '(%s)' % I['ln']
+            K1 = re.search(r'\(i \* (\d+) : U32\)', P)
+            assert K1, (c, P)
+            NB = '((%s + 1 : U32) * %s : U32)' % (LN, K1.group(1))
+            GA = I['GA']
+            emit('read_append', NB, LN,
+                 '+ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, ' % (GA, NB),
+                 ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
+                  [('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
+                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom))' % (O0, NB, O0, NB),
+                    'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]))
+            n += 1
+        L.append('')
     head = ['import Base'] + ['import %s as %s' % (rel(pth), a) for a, pth in imps.items()]
     head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_bytes)'),
              '# The byte collections: setting byte i (a value at most 255) and reading it back returns the value.',

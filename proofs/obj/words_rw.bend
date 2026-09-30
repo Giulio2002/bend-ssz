@@ -138,3 +138,15 @@ def idx(+j: U32, +q: Nat, +m: U32, +mm: Nat, +d: Nat, +hd: {Nat.is_lt(d, 32n) ==
 # word 0 is at q itself
 def idx0(+j: U32, +q: Nat, +eq: {U32.to_nat(j) == q : Nat}) -> {U32.to_nat(j) == Nat.add(q, 0n) : Nat}:
   Equal.trans(Nat, U32.to_nat(j), q, Nat.add(q, 0n), eq, Equal.sym(Nat, Nat.add(q, 0n), q, F.nat__add_zero(q)))
+
+# ---- room ----
+# O.words_fit leaves the storage alone when it has room for `want` bytes (no reallocation): the
+# capacity it asks for, 8 * ceil(want / 32) + 8 words, is within the 2^d words of the tree
+def fit_roomy(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +want: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hroom: {U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool})
+    -> {O.words_fit(O.Words{F.array__thaw(U32, t), n}, want) == O.Words{F.array__thaw(U32, t), n} : O.Words}:
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf)) :
+    {O.fit_sized(n, want, _) == O.Words{F.array__thaw(U32, t), n} : O.Words}
+  %Equal.sym(Bool, U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)), True{}, hroom) :
+    {O.fit_pick(_, n, want, F.u32__pow2u(d), F.array__thaw(U32, t)) == O.Words{F.array__thaw(U32, t), n} : O.Words}
+  {==}
