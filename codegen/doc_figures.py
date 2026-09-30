@@ -187,7 +187,7 @@ def object_law_figures():
             for m in re.finditer(r'^# ---- (\w+) ----$', p.read_text(), re.M):
                 names.add(re.sub(strip, '', m.group(1)))
         return len(names)
-    coll = [l for k, v in sf.items() if k.startswith('proofs/obj/coll_api_') for l in v]
+    coll = [l for k, v in sf.items() if k.startswith(('proofs/obj/coll_api_', 'proofs/obj/coll_boxed')) for l in v]
     f['obj_coll_statements'] = str(len(coll))
     f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
     f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))

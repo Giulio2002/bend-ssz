@@ -541,6 +541,78 @@ def coll_words():
     return '\n'.join(head) + '\n'.join(elem_lemmas(k)[0] for k in ELEMS)
 
 
+# ---- the boxed lists (Array<O.Boxed<X>>, Type-kind elements): read-back through proofs/obj/tarray.bend ----
+CB = OBJ / 'coll_boxed.bend'
+
+
+def boxed_laws(I, imps):
+    """read_set of a boxed list: get(set(o, i, v), i) returns v (and takes it out of its slot, as the
+    runtime's get of a boxed element does), for every array; N names the array's size"""
+    c, t = I['c'], I['text']
+    DA = c + '_c'
+    imps[DA] = os.path.relpath(I['file'], ROOT)
+    di = imports_of(I['file'])
+    ren = {}
+    for a, pth in di.items():
+        have = [k for k, q_ in imps.items() if q_ == pth]
+        if have:
+            ren[a] = have[0]
+        else:
+            b = a if a not in imps else a + '_' + c
+            imps[b] = pth
+            ren[a] = b
+    defs = set(re.findall(r'^(?:def|type) (\w+)', t, re.M))
+
+    def q(x):
+        def sub(m):
+            a, r = m.group(1), m.group(2)
+            if r is not None and a in ren:
+                return ren[a] + '.' + r
+            if r is None and a in defs:
+                return DA + '.' + a
+            return m.group(0)
+        return re.sub(r'(?<![\w.])([A-Za-z_]\w*)(?:\.([A-Za-z_]\w*))?', sub, x)
+    T, VT, ET, EL = q(I['T']), q(I['VT']), q(I['ET']), q(I['EL'])
+    GS, GG = q(I['GS']), q(I['GG'])
+    assert GS == GG, (c, GS, GG)
+    pb = body(t, c + '_put_in')[2]
+    wrap = re.search(r'case True\{\}: \(%s\{Array\.set\(.*, arr, i, (.*)\), n\}, True\{\}\)$' % I['T'], pb, re.M).group(1)
+    WV = q(wrap)
+    ab = body(t, c + '_at')[2]
+    assert 'Array.swap(' in ab and 'O.BNone{}' in ab, (c, ab)
+    SEQ = lambda a: '%s.%s{%s, n}' % (DA, I['T'], a)
+    SETA = lambda x: 'Array.set(%s, arr, i, %s)' % (EL, x)
+    RES = '(%s, Some{v}) : %s & Maybe<&1, %s>' % (SEQ(SETA('O.BNone{}')), T, ET)
+    out = ['# ---- %s ----' % c]
+    out.append('def %s_api_read_set(arr: Array<%s>, +n: U32, +N: U32, +i: U32, v: %s, +hz: {TA.sz(%s, arr) == N : U32}, +hs: {%s == True{} : Bool})'
+               % (c, EL, VT, EL, GS))
+    out.append('    -> {%s.%s_get(Pair.fst(%s, Bool, %s.%s_set(%s, i, v)), i) == %s}:' % (DA, c, T, DA, c, SEQ('arr'), RES))
+    out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get(Pair.fst(%s, Bool, %s.%s_put_in(_, arr, n, i, v)), i) == %s}' % (GS, DA, c, T, DA, c, RES))
+    out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, n, i) == %s}' % (GG, DA, c, SETA(WV), RES))
+    out.append('  %%Equal.sym(Array<%s> & %s, Array.swap(%s, %s, i, O.BNone{}), (%s, %s), TA.swap_set_same(%s, arr, N, i, %s, O.BNone{}, hz)) : {%s.%s_took(n, _) == %s}'
+               % (EL, EL, EL, SETA(WV), SETA('O.BNone{}'), WV, EL, WV, DA, c, RES))
+    out.append('  {==}')
+    out.append('')
+    return '\n'.join(out)
+
+
+def coll_boxed(cs):
+    imps = {'TA': 'proofs/obj/tarray.bend', 'O': 'src/obj.bend'}
+    parts = []
+    for c in cs:
+        I = info(c)
+        if I['kind'] == 'seq' and not I['data']:
+            parts.append(boxed_laws(I, imps))
+    body_ = '\n'.join(parts)
+    used = [a for a in imps if re.search(r'(?<![\w.])%s\.' % re.escape(a), body_)]
+    head = ['import Base'] + ['import %s as %s' % (rel(imps[a]), a) for a in used]
+    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_boxed)'),
+             '# The boxed lists (elements O.Boxed<X>, X a Type-kind container): reading the index just set',
+             '# returns the value set. No premise on the storage: N is the array\'s size (proofs/obj/tarray.bend).',
+             '# The runtime\'s get of a boxed element takes it out of its slot, which the result shows.', '']
+    return '\n'.join(head) + body_, len(parts)
+
+
 def rel(p):
     r = os.path.relpath(ROOT / p, OBJ)
     return r if r.startswith('.') else './' + r
@@ -549,6 +621,9 @@ def rel(p):
 def outputs():
     cs = collections()
     outs, total = {CW: coll_words()}, 0
+    bt, bn = coll_boxed(cs)
+    outs[CB] = bt
+    total += bn
     for k in range(0, len(cs), PER_FILE):
         imps = {'F': 'proofs/compact/found.bend'}
         parts = []

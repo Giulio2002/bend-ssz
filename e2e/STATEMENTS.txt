@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 2953 statements in 949 files.
+# 2958 statements in 950 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -16158,6 +16158,29 @@ def l4096_b2048_api_set_rejected(-ws: Array<U32>, +n: U32, +i: U32, -v: O.Words,
 def l4096_b2048_api_get_outside(-ws: Array<U32>, +n: U32, +i: U32, +e: {U32.is_lt(i, (U32.div(n, 2048))) == False{} : Bool}) -> {l4096_b2048_c.l4096_b2048_get(O.Words{ws, n}, i) == (O.Words{ws, n}, None{}) : O.Words & Maybe<&1, O.Words>}:
 def l4096_b2048_api_append_flag(-ws: Array<U32>, +n: U32, -v: O.Words) -> {Pair.snd(O.Words, Bool, l4096_b2048_c.l4096_b2048_append(O.Words{ws, n}, v)) == U32.is_le(((U32.div(n, 2048)) + 1 : U32), 4096) : Bool}:
 def l4096_b2048_api_append_rejected(-ws: Array<U32>, +n: U32, -v: O.Words, +e: {U32.is_le(((U32.div(n, 2048)) + 1 : U32), 4096) == False{} : Bool}) -> {l4096_b2048_c.l4096_b2048_append(O.Words{ws, n}, v) == (O.Words{ws, n}, False{}) : O.Words & Bool}:
+
+## proofs/obj/coll_boxed.bend
+import ./tarray.bend as TA
+import ../../src/obj.bend as O
+import ../../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as l1048576_bl1073741824_c
+import ../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as l16_ProposerSlashing_c
+import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
+import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as l1_AttesterSlashing_c
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/Fulu_list_Attestation_8_def_generated.bend as l8_Attestation_c
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/Fulu_list_Deposit_16_def_generated.bend as l16_Deposit_c
+import ../../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+def l1048576_bl1073741824_api_read_set(arr: Array<O.Boxed<O.Words>>, +n: U32, +N: U32, +i: U32, v: O.Words, +hz: {TA.sz(O.Boxed<O.Words>, arr) == N : U32}, +hs: {U32.is_lt(i, n) == True{} : Bool})
+    -> {l1048576_bl1073741824_c.l1048576_bl1073741824_get(Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{arr, n}, i, v)), i) == (l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{Array.set(O.Boxed<O.Words>, arr, i, O.BNone{}), n}, Some{v}) : l1048576_bl1073741824_c.l1048576_bl1073741824_Seq & Maybe<&1, O.Words>}:
+def l16_ProposerSlashing_api_read_set(arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +N: U32, +i: U32, v: FuluProposerSlashing_d.ProposerSlashing, +hz: {TA.sz(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr) == N : U32}, +hs: {U32.is_lt(i, n) == True{} : Bool})
+    -> {l16_ProposerSlashing_c.l16_ProposerSlashing_get(Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{arr, n}, i, v)), i) == (l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, O.BNone{}), n}, Some{v}) : l16_ProposerSlashing_c.l16_ProposerSlashing_Seq & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+def l1_AttesterSlashing_api_read_set(arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32, +N: U32, +i: U32, v: FuluAttesterSlashing_d.AttesterSlashing, +hz: {TA.sz(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr) == N : U32}, +hs: {U32.is_lt(i, n) == True{} : Bool})
+    -> {l1_AttesterSlashing_c.l1_AttesterSlashing_get(Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{arr, n}, i, v)), i) == (l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, i, O.BNone{}), n}, Some{v}) : l1_AttesterSlashing_c.l1_AttesterSlashing_Seq & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+def l8_Attestation_api_read_set(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +N: U32, +i: U32, v: FuluAttestation_d.Attestation, +hz: {TA.sz(O.Boxed<FuluAttestation_d.Attestation>, arr) == N : U32}, +hs: {U32.is_lt(i, n) == True{} : Bool})
+    -> {l8_Attestation_c.l8_Attestation_get(Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(l8_Attestation_c.l8_Attestation_Seq{arr, n}, i, v)), i) == (l8_Attestation_c.l8_Attestation_Seq{Array.set(O.Boxed<FuluAttestation_d.Attestation>, arr, i, O.BNone{}), n}, Some{v}) : l8_Attestation_c.l8_Attestation_Seq & Maybe<&1, FuluAttestation_d.Attestation>}:
+def l16_Deposit_api_read_set(arr: Array<O.Boxed<FuluDeposit_d.Deposit>>, +n: U32, +N: U32, +i: U32, v: FuluDeposit_d.Deposit, +hz: {TA.sz(O.Boxed<FuluDeposit_d.Deposit>, arr) == N : U32}, +hs: {U32.is_lt(i, n) == True{} : Bool})
+    -> {l16_Deposit_c.l16_Deposit_get(Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(l16_Deposit_c.l16_Deposit_Seq{arr, n}, i, v)), i) == (l16_Deposit_c.l16_Deposit_Seq{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, i, O.BNone{}), n}, Some{v}) : l16_Deposit_c.l16_Deposit_Seq & Maybe<&1, FuluDeposit_d.Deposit>}:
 
 ## proofs/obj/prep_setters.bend
 import ./root_state_light.bend as ST

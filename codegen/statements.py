@@ -94,7 +94,7 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/prep_setters*.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_boxed.bend', 'proofs/obj/prep_setters*.bend']
 
 
 def eq_defs(text):
@@ -131,7 +131,7 @@ def statement_files():
     for g in OBJECT_LAWS:
         for p in sorted(ROOT.glob(g)):
             ls = eq_defs(p.read_text())
-            if p.name.startswith('coll_api_'):
+            if p.name.startswith(('coll_api_', 'coll_boxed')):
                 ls = [l for l in ls if '_api_' in l]   # not the flag case-split helpers
             out[str(p.relative_to(ROOT))] = ls
     return out
