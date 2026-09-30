@@ -20,3 +20,30 @@ def field_set(x: S.Value, +k: Nat, v: S.Value) -> S.Value:
   match x:
     case S.Sequence{items}: S.Sequence{items_set(items, k, v)}
     case _: x
+
+# The spec value of a list that grows by one element at the end: items_snoc / seq_append (a value that is not a Sequence is
+# returned unchanged), the reference the append laws are stated against.
+def items_snoc(xs: S.Value, e: S.Value) -> S.Value:
+  match xs:
+    case S.Items{h, t}: S.Items{h, items_snoc(t, e)}
+    case _: S.Items{e, S.EmptyItems{}}
+
+def seq_append(x: S.Value, e: S.Value) -> S.Value:
+  match x:
+    case S.Sequence{items}: S.Sequence{items_snoc(items, e)}
+    case _: x
+
+# The bytes of a byte sequence with byte k replaced (no change past its end): list_set / bytes_set, the reference of the
+# byte collections' setters.
+def list_set(xs: +List<U32>, +k: Nat, v: U32) -> +List<U32>:
+  match xs:
+    case Nil{}: []
+    case Con{h, t}:
+      match k:
+        case 0n: Con{v, t}
+        case 1n+p: Con{h, list_set(t, p, v)}
+
+def bytes_set(x: S.Value, +k: Nat, v: U32) -> S.Value:
+  match x:
+    case S.BytesValue{bs}: S.BytesValue{list_set(bs, k, v)}
+    case _: x

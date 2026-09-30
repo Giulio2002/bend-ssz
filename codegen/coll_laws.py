@@ -1295,7 +1295,10 @@ def coll_bytes(cs):
         L.append('      %%Equal.sym(Word(30n), Word.and(30n, r, %s), %s, UB.wand_zero(30n, r)) : {%s == %s : U32}' % (Z30, Z30, ZO(kk, P3('pj')), YO(P3('pj'))))
         L.append('      byte_other_%d(old, pj, v, F.logic__subst(Word(30n), zz => {U32.is_eq(U32{%s}, U32.and(pj, 3)) == False{} : Bool}, Word.and(30n, r, %s), %s, UB.wand_zero(30n, r), ne))' % (si, wpat(lit2(si), 'zz'), Z30, Z30))
     L.append('')
-    imps = {'UB': 'proofs/obj/u32bits.bend', 'WM': 'proofs/obj/word_mul.bend', 'WR': 'proofs/obj/words_rw.bend', 'O': 'src/obj.bend', 'F': 'proofs/compact/found.bend'}
+    PRE = L[:]
+    L.clear()
+    imps = {'UB': 'proofs/obj/u32bits.bend', 'WM': 'proofs/obj/word_mul.bend', 'WR': 'proofs/obj/words_rw.bend', 'O': 'src/obj.bend', 'F': 'proofs/compact/found.bend',
+            'BB': 'proofs/obj/byte_bits.bend'}
     n = 0
     for c in cs:
         I = info(c)
@@ -1341,7 +1344,7 @@ def coll_bytes(cs):
                      % (OBJT(T1), JW, OBJT(T1), T1, DD, T1, NB, JW, HD, DD, TT, NEWW, PF, DA, c, Px, RES))
             L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(%s, %s, q, %s, hk, %s)) : {%s.%s_some((%s, U32.and(O.shr_bytes(_, %s), 255))) == %s}'
                      % (T1, NEWW, DD, TT, NEWW, PF, DA, c, OBJT(T1), S3, RES))
-            L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(v, 255), byte_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
+            L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(v, 255), BB.byte_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
                      % (NEWW, S3, XX, Px, DA, c, OBJT(T1), RES))
             L.append('  %%Equal.sym(U32, U32.and(v, 255), v, UB.byte_id(v, hv)) : {%s.%s_some((%s, _)) == %s}' % (DA, c, OBJT(T1), RES))
             L.append('  {==}')
@@ -1351,6 +1354,45 @@ def coll_bytes(cs):
              ('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0),
               [('%%Equal.sym(Bool, %s, True{}, hg)' % GG, PUT('Bool.and(_, %s)' % LE)),
                ('%%Equal.sym(Bool, %s, True{}, hv)' % LE, PUT('_'))]))
+        n += 1
+        # the spec value: the view after the write is the view before with byte i replaced
+        imps['VB'] = 'proofs/obj/view_bytes.bend'
+        imps['VS'] = 'proofs/obj/value_set.bend'
+        imps['S'] = 'types/schema.bend'
+        u8 = c.endswith('_u8')
+        if u8:
+            imps['PB'] = 'proofs/obj/packed_bytes_light.bend'
+            imps['P'] = 'types/primitive.bend'
+            VW = lambda o: 'PB.vview1(%s)' % o
+            RESV = 'VS.field_set(%s, U32.to_nat(i), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}})' % VW(O0)
+            fin = 'VB.view_set_u8'
+        else:
+            imps['WO'] = 'proofs/obj/words_obj_light.bend'
+            VW = lambda o: 'S.BytesValue{WO.wview(%s)}' % o
+            RESV = 'VS.bytes_set(%s, U32.to_nat(i), v)' % VW(O0)
+            fin = 'VB.view_set'
+        JWv = 'U32.shrn(%s, 2n)' % P
+        S3v = 'U32.and(%s, 3)' % P
+        NEWWv = 'O.merge_word(%s, v, %s, 1)' % (X, S3v)
+        T1v = 'F.array__upd(U32, d, t, q, %s)' % NEWWv
+        OBJv = lambda t_: 'O.Words{F.array__thaw(U32, %s), n}' % t_
+        L.append('def %s_api_view_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +v: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                 '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hv: {%s == True{} : Bool}, +hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, '
+                 '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, LE, GG, JWv))
+        L.append('    -> {%s == %s : S.Value}:' % (VW('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0)) if u8 else 'S.BytesValue{WO.wview(Pair.fst(O.Words, Bool, %s.%s_set(%s, i, v)))}' % (DA, c, O0), RESV))
+        VWi = (lambda inner: 'PB.vview1(%s)' % inner) if u8 else (lambda inner: 'S.BytesValue{WO.wview(%s)}' % inner)
+        L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s : S.Value}' % (GG, VWi('Pair.fst(O.Words, Bool, %s.%s_put_at(Bool.and(_, %s), %s, i, v))' % (DA, c, LE, O0)), RESV))
+        L.append('  %%Equal.sym(Bool, %s, True{}, hv) : {%s == %s : S.Value}' % (LE, VWi('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, v))' % (DA, c, O0)), RESV))
+        L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, n, %s, q, hd, hq, hk, pf)) : {%s == %s : S.Value}'
+                 % (OBJv('t'), JWv, OBJv('t'), X, JWv, VWi('O.put_in(%s, v, %s, 1, _)' % (JWv, S3v)), RESV))
+        L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, t, n, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : S.Value}'
+                 % (OBJv('t'), JWv, NEWWv, OBJv(T1v), JWv, NEWWv, VWi('_'), RESV))
+        if P == 'i':
+            L.append('  %s(d, t, n, i, q, v, hv, hq, hk, pf)' % fin)
+        else:
+            assert P == '(i * 1 : U32)', (c, P)
+            RESz = RESV.replace('U32.to_nat(i)', 'U32.to_nat(z)')
+            L.append('  F.logic__subst(U32, z => {%s == %s : S.Value}, %s, i, VB.mul1(i), %s(d, t, n, %s, q, v, hv, hq, hk, pf))' % (VWi(OBJv(T1v)), RESz, P, fin, P))
         n += 1
         # set byte i, then read byte j: in another word, or another byte of the same word
         Pi = P
@@ -1397,7 +1439,7 @@ def coll_bytes(cs):
                          % (OBJ(T1), JWj, OBJ(T1), T1, T1, JWj, PF1, DA, c, Pj, RES))
                 L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(d, t, q, %s, hk, pf)) : {%s.%s_some((%s, U32.and(O.shr_bytes(_, %s), 255))) == %s}'
                          % (T1, NEWW, NEWW, DA, c, OBJ(T1), S3j, RES))
-                L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(O.shr_bytes(%s, %s), 255), byte_other(%s, %s, %s, v, ne)) : {%s.%s_some((%s, _)) == %s}'
+                L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(O.shr_bytes(%s, %s), 255), BB.byte_other(%s, %s, %s, v, ne)) : {%s.%s_some((%s, _)) == %s}'
                          % (NEWW, S3j, X, S3j, X, Pi, Pj, DA, c, OBJ(T1), RES))
             L.append('  {==}')
             n += 1
@@ -1431,7 +1473,12 @@ def coll_bytes(cs):
              '# byte_rw_<s>: the byte at offset s of a word after the runtime\'s merge, s = 0..3 (the shift by',
              '# multiplication is word_mul.bend\'s mul256 / mul65536 / mul16777216); byte_rw: at s = p & 3, for every',
              '# position; then per collection, over storage thaw(t) (the word q = p / 4 below 2^d).', '']
-    return '\n'.join(head) + '\n'.join(L), n
+    pre_head = ['import Base', 'import ./u32bits.bend as UB', 'import ./word_mul.bend as WM', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F', '',
+                HEADER.replace('coll_laws.py', 'coll_laws.py (byte_bits)'),
+                '# The byte of a word after the runtime\'s merge (O.merge_word, byte offset s = 0..3): byte_rw_<s>: the byte at offset s',
+                '# is the low byte of the value written (the shift by multiplication is word_mul.bend\'s mul256 / mul65536 / mul16777216);',
+                '# byte_rw: at s = p & 3, for every position; byte_other_<si>_<sj>, byte_other: another byte of the word is as it was.', '']
+    return '\n'.join(head) + '\n'.join(L), n, '\n'.join(pre_head) + '\n'.join(PRE)
 
 
 def rel(p):
@@ -1449,8 +1496,9 @@ def outputs():
     bt, bn = coll_bits(cs)
     outs[CBITS] = bt
     total += bn
-    bt, bn = coll_bytes(cs)
+    bt, bn, pre = coll_bytes(cs)
     outs[CBYTES] = bt
+    outs[OBJ / 'byte_bits.bend'] = pre
     total += bn
     for k in range(0, len(cs), PER_FILE):
         imps = {'F': 'proofs/compact/found.bend'}

@@ -26,6 +26,7 @@ items_set (the induction) and view_set.
 import sys
 from pathlib import Path
 
+import viewbytes
 import viewseq
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -318,6 +319,7 @@ def view_set_%s(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +J: Nat, +q: Nat
 def outputs():
     outs = {OBJ / ('view_%s.bend' % n): family(n, sp) for n, sp in FAMILIES.items()}
     outs[OBJ / 'view_seq.bend'] = viewseq.seq_file()
+    outs[OBJ / 'view_bytes.bend'] = viewbytes.bytes_file()
     return outs
 
 

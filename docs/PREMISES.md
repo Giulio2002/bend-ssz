@@ -341,6 +341,6 @@ The spec-value laws (`..._api_view_set`) add to these only what relates the mach
 collections of Bytes32, Bytes48 and uint64, `hqe`, that the element's first word `q` is the block base of its index
 (`q == 8 * i`, `12 * i`, `2 * i`); for a uint64 collection, `hcap`, that the storage holds the words of its element count
 (`2 * count <= 2^d`, which the representation invariant gives), because the list view stops at the end of the word list. For the
-record lists they take the old element `x` at the index (`hx`, as the other-index law does) and the index below `2^d`. They
+record lists they take the old element `x` at the index (`hx`, as the other-index law does) and the index below `2^d`. The byte collections' laws take what their read-back law takes (the word index `q` of the byte, `hq`, below `2^d`, `hk`, the value a byte, `hv`, the index below the length, `hg`); the spec index `to_nat(i)` is the word and offset the write used by `proofs/obj/u32split.bend` (no premise). They
 do not assume the accepted set's index is below the length beyond the guard `hs`, and they state the view, not the guard, so
 they say nothing about the relation of the runtime's guard to the spec's length limit.

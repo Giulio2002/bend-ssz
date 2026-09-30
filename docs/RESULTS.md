@@ -81,21 +81,22 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->364<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->370<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->24<!-- /fig --> collections: the packed collections of whole-word
   elements (`proofs/obj/words_rw.bend`, `proofs/obj/coll_words.bend`), the bit lists and byte collections (`proofs/obj/u32bits.bend`,
   `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend`) and the list of 2048-byte cells (`proofs/obj/cell_rw.bend`); the other-index law of the
   Data-element lists. The array-list read-back and the boxed-list laws (`proofs/obj/tarray.bend`, `coll_seq.bend`) are on `agent/solid3-rigid`.
-  The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->21<!-- /fig --> collections: the spec view of the collection after an accepted
+  The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->27<!-- /fig --> collections: the spec view of the collection after an accepted
   set is the view before with that item replaced by the view of the new element (`proofs/obj/value_set.bend`'s `field_set`: the k-th item of
-  a Sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`), so a
-  reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend` and `view_seq.bend`
-  (`codegen/view_laws.py`) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts.
+  a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
+  `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
+  `view_seq.bend` and `view_bytes.bend` (`codegen/view_laws.py`) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
+  (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
-flag, rejection and accepted-value laws in the same files. Not stated: the spec-value law of the byte and bit collections, the cell list, the record lists
+flag, rejection and accepted-value laws in the same files. Not stated: the spec-value law of the bit lists, the cell list, the record lists
 without a root view and the boxed lists, the spec-value law of an append, and setter-then-encode where the
 encode bridge takes storage premises.
 [PREMISES.md](PREMISES.md) section 9.
