@@ -261,3 +261,16 @@ by a one-leaf tree at depth 0 with count 1. The element-wise premises (`ereps`, 
 So none of these premise sets holds only for empty lists. What this does not cover: lists nested
 inside list elements stay empty, the elements are zero-valued, and the objects are built with
 constructors, not by the decoder (that the decoder's output meets the premises is section 1).
+
+## 9. Objects changed through the API
+
+The setter laws (`proofs/obj/prep_setters.bend`) say that a field setter keeps `rep_X` (given, for
+a field with its own invariant, that invariant of the new value). Every root bridge of those
+containers has `rep` as its only premise, so `e2e/<Name>_e2e_set_generated.bend` composes each
+setter law with it: an object satisfying `rep` and changed by a setter has the spec root
+(<!-- fig:set_root_count -->127<!-- /fig --> statements). For the encoding this holds only where the encode bridge's
+only premise is `rep` (<!-- fig:set_encode_count -->7<!-- /fig --> statements); elsewhere the encode bridge also needs
+storage premises (`hs*`, `hc*`, section 1) of the changed object, and no setter law states them.
+The composition is generated for every setter law, so it covers new setter laws with no further
+work; extending it to encode needs a storage-preservation law per setter, which does not exist yet.
+The generic-suite names' setters have no laws.

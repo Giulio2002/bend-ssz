@@ -238,6 +238,8 @@ def main():
         print('encx D twins: none in this mode')
         return
     out = outputs()
+    import retired  # modules nothing imports: not written (codegen/retired.py)
+    out = retired.drop(out)
     if '--check' in sys.argv:
         stale = [str(p) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

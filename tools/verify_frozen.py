@@ -26,10 +26,14 @@ What is frozen, and how it is hashed:
     is locked whole (above) and the implementation under test (SUBJECT: the generated per-name
     encoder, decoder and root, and the model API src/model.bend), which the proofs pin down. PLANTED
     changes (a premise-side src/ def, a def reached only transitively, an object type, and the
-    encoder as the negative case) are run first on every invocation. The statement files are codegen/statements.py's statement_files(): the bridges of
-    e2e/manifest.json, the composed theorems e2e/*_e2e_comp_generated.bend and the witnesses
-    e2e/*_e2e_witness_generated.bend, found by name, so a new composed or witness file fails this
-    check until it is locked (--update).
+    encoder as the negative case) are run first on every invocation. The getters and setters in
+    types/*_def_generated.bend that the object-mutation laws are about are hashed with the object
+    types (they share the file), so changing one is a deliberate lock update. The statement files
+    are codegen/statements.py's statement_files(): the bridges of e2e/manifest.json, the composed
+    theorems e2e/*_e2e_comp_generated.bend, the witnesses e2e/*_e2e_witness_generated.bend, the
+    setter compositions e2e/*_e2e_set_generated.bend and the object-mutation laws
+    (proofs/obj/fields_*, collections_*, prep_setters.bend), found by name, so a new statement file
+    fails this check until it is locked (--update).
 
 tools/check_fast.sh runs this check before checking anything. The lock's own sha256 is printed
 by --update; it is not written in README. The full check's stamp records it
@@ -182,7 +186,7 @@ def statement_defs(only=None):
     seen, todo, stmts = set(), [], {}
     for f in sorted(sf):
         laws = sf[f]
-        path = 'e2e/' + f
+        path = f
         imps_, local, stm = ST.file_statements(Path_(path), laws)
         todo.append((path, '\n'.join(local + stm), set(laws)))
         stmts[path] = '\n'.join(stm)
@@ -224,13 +228,13 @@ def statement_defs(only=None):
 # statement), an object type in types/*_def_generated.bend, and, as the negative case, the
 # implementation under test (the encoder), whose change the proofs re-establish.
 PLANTED = [
-    ('FuluExecutionBranch_e2e_generated.bend', 'src/obj.bend', 'e8',
+    ('e2e/FuluExecutionBranch_e2e_generated.bend', 'src/obj.bend', 'e8',
      'def e8(+i: Nat) -> Nat: 0n', True),
-    ('FuluCheckpoint_e2e_dec_generated.bend', 'src/buffer.bend', 'fill_go',
+    ('e2e/FuluCheckpoint_e2e_dec_generated.bend', 'src/buffer.bend', 'fill_go',
      'def fill_go(xs: +List<U32>, ws: Array<U32>, +i: U32) -> Array<U32>: ws', True),
-    ('FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_def_generated.bend', 'Checkpoint',
+    ('e2e/FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_def_generated.bend', 'Checkpoint',
      'type Checkpoint is Data:\n  Checkpoint{epoch: O.U64}', True),
-    ('FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_encode_ssz_generated.bend',
+    ('e2e/FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_encode_ssz_generated.bend',
      'Checkpoint_encode', 'def Checkpoint_encode(o: C.Checkpoint) -> Nat: 0n', False),
 ]
 

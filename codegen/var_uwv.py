@@ -1171,6 +1171,8 @@ def main():
     out = RR.rewire_out(out)
     import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
     out = deep.dify_out(out, handled={'fposW'})  # its fields' offsets are literals: the strict 4 k < L is {==}
+    import retired  # modules nothing imports: not written (codegen/retired.py)
+    out = retired.drop(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

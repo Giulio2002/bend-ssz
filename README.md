@@ -7,7 +7,9 @@ refused; 5 of the 136 are the fork's own `boolean` / `uint8` / `uint32` / `uint6
 hash_tree_root, field and element access), and machine-checked proofs relating it to an independent
 transcription of the SSZ specification (`spec/`). The guarantee a user relies on is: the
 end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with the laws of
-END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). For
+END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md), and for
+objects read or changed through the API, the field, collection and setter laws, also listed in
+`e2e/STATEMENTS.txt` (below, "Field, element and setter access"). For
 <!-- fig:composed -->174<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
 followed by hash_tree_root (the spec root of the deserialized value) are single checked statements
 (`e2e/<Name>_e2e_comp_generated.bend`, list in `e2e/COMPOSED.txt`). For the others it is not yet proved
@@ -39,6 +41,26 @@ laws (serialize_correct, deserialize_correct, deserialize_rejection_correct,
 hash_tree_root_correct, ...) relate that model to the specification in `spec/`.
 <!-- fig:bridged_full -->240<!-- /fig --> names have all four bridges (encode, decode accept, decode reject,
 root); without the decode bridges: <!-- fig:no_dec_bridge -->none<!-- /fig -->.
+
+### Field, element and setter access
+
+The mutation API (`X_get_f`, `X_set_f`, `put_at`, `push`, ...) has its own laws. They are
+public statements: they are listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`
+like the bridges.
+
+| Laws | Where | Statements | What they say |
+|---|---|---|---|
+| field | `proofs/obj/fields_*.bend` | <!-- fig:obj_field_statements -->1,242<!-- /fig --> over <!-- fig:obj_field_containers -->59<!-- /fig --> Fulu containers | reading a field right after writing it returns the value written, in the object with that field replaced; every other field reads what it was; a second write to the same field wins (over an object built from variables, so for every object) |
+| collection | `proofs/obj/collections_*.bend` | <!-- fig:obj_coll_statements -->103<!-- /fig --> over <!-- fig:obj_coll_count -->41<!-- /fig --> collections | a rejected write or append leaves the value unchanged and reports False; an accepted write keeps the length; an accepted append adds one |
+| setter keeps rep | `proofs/obj/prep_setters.bend` | <!-- fig:obj_setter_laws -->127<!-- /fig --> over <!-- fig:obj_setter_containers -->27<!-- /fig --> containers | from `rep_X(o, s)` (and, for a field with its own invariant, that invariant of the new value) follows `rep_X(set_f(o, v), s)` |
+| setter, then root | `e2e/<Name>_e2e_set_generated.bend` | <!-- fig:set_root_count -->127<!-- /fig --> | the setter law composed with the root bridge: for `o` satisfying `rep`, the root of `set_f(o, v)` is `API.hash_tree_root` of its view |
+| setter, then encode | same files | <!-- fig:set_encode_count -->7<!-- /fig --> | the same for the encoding, for the containers whose encode bridge has no premise but `rep`: <!-- fig:set_encode_names -->`FuluContributionAndProof`, `FuluProposerSlashing`, `FuluSignedContributionAndProof`<!-- /fig --> |
+
+The other containers' encode bridges also take storage premises (`hs*`, `hc*`, ...), and no
+setter law states those of `set_f(o, v)`, so for them setter-then-encode is not a theorem. Two
+further things are not stated: that `view(set_f(o, v))` is the spec value with field f replaced
+(the view is related to the object only through the bridges), and any law for the generic-suite
+names' setters.
 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).

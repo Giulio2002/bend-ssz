@@ -4657,6 +4657,8 @@ def main():
     names = {q.stem[:-2]: okw._names(c) for q, c in comp.items()}
     names.update({f'encx_{C}_size': {x + 'O' for x in okw.SLAWS} for C in ('ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'ProgressiveBitsStruct')})
     out.update({q: okw.okw_relink(c, names) for q, c in comp.items()})
+    import retired  # modules nothing imports: not written (codegen/retired.py)
+    out = retired.drop(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale or SKIPPED:
