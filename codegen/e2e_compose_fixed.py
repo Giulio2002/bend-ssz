@@ -184,6 +184,14 @@ def clean(obj, ms):
     return s + obj[last:]
 
 
+def pad_word(eht):
+    """(j, r, x) of a bit vector's padding check U32.is_eq(U32.and(B.byte_sel(j, x), U32.not(O.low_mask(r))), 0)"""
+    m = re.match(r'\{U32\.is_eq\(U32\.and\((\w+)\.byte_sel\((\d), (.*)\), U32\.not\((\w+)\.low_mask\((\d)\)\)\), 0\) == True\{\} : Bool\}$', eht, re.S)
+    if not m:
+        return None
+    return int(m.group(2)), int(m.group(5)), m.group(3)
+
+
 def build(name, lf, api):
     W = api.W
     dl = lf.get(f'{name}_e2e_decode_view')
@@ -194,7 +202,8 @@ def build(name, lf, api):
     if f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
         return None
     sps, sc = api.sig(dm, f'{name}_d_some')
-    if [b for _, b, _ in sps] != ['bs', 'n', 'hn', 'hd', 'ec']:
+    binders = [b for _, b, _ in sps]
+    if binders not in (['bs', 'n', 'hn', 'hd', 'ec'], ['bs', 'n', 'hn', 'hd', 'ec', 'eh']):
         return None
     eps, ec = api.sig(em, f'{name}_e2e_encode')
     rps, rc = api.sig(rm, f'{name}_e2e_root')
@@ -205,12 +214,27 @@ def build(name, lf, api):
     if not mk or not ms:
         return None
     K, obj0 = int(mk.group(1)), ms.group(2)
-    mw = masked(obj0)
-    if not mw or K > 1500:
-        return None        # unmasked or large: e2e_compose.py's own path
     extra = sorted({b for _, b, _ in eps + rps} - {'o', 'h'})
     why = 'the (i)/(iv) bridges take ' + ', '.join(extra) + ' (decoded-object laws pending)'
+    eh = sps[5][2] if len(binders) == 6 else None
+    pw = pad_word(eh) if eh else None
+    if eh and not pw:
+        return None        # an eh that is not a bit vector's padding check (vec_bool): not yet
+    mw = masked(obj0)
+    padx = None
+    if pw:
+        j, r, x = pw
+        padx = f'U32.and({x}, {2 ** (8 * j + 8) - 1})' if j < 3 else x
+        if padx not in obj0:
+            return None, why + '; the padded word is not in the decoder\'s object'
+        mw = [m for m in mw if obj0[m[0]:m[1]] != padx]
+    if (not mw and not pw) or K > 1500:
+        return None        # unmasked or large: e2e_compose.py's own path
     obj1 = clean(obj0, mw)
+    if pw:
+        cf = f'MK.cf{8 * j + r}({x})' if j < 3 else f'MK.cw{24 + r}({x})'
+        a2 = [m.start() for m in re.finditer(re.escape(padx) + r'(?=[},])', obj1)][-1]
+        obj1 = obj1[:a2] + cf + obj1[a2 + len(padx):]
     kind = 'view'
     dps, dc = api.sig(dm, f'{name}_e2e_decode_{kind}')
     W.PREFER.clear()
@@ -250,37 +274,79 @@ def build(name, lf, api):
                 f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
                 f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
     OT = MT[len('Maybe<&1, '):-1]
-    r = api.build_lit(name, (K, obj1, why), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT,
-                      accT, acc_body, hyps, kind)
-    text, err = r
+    # everything this file adds is lifted before build_lit writes the imports
+    OBJ, OBJ1 = ctx.lift(dm, obj0), ctx.lift(dm, obj1)
+    EH = ctx.lift(dm, eh) if eh else None
+    if pw:
+        PX, XX = ctx.lift(dm, padx), ctx.lift(dm, x)
+    ctx.alias(ROOT / 'proofs/compact/found.bend')
+    ctx.alias(ROOT / 'spec/primitives.bend')
+    text, err = api.build_lit(name, (K, obj1, why), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT,
+                              accT, acc_body, hyps, kind)
     if text is None:
         return None, err
     # the decoder's object in clean form: OBJ == OBJ' (one rewrite per masked word), and the decoder gives OBJ'
-    OBJ, OBJ1 = ctx.lift(dm, obj0), ctx.lift(dm, obj1)
-    mwl = masked(OBJ)
-    steps = []
-    cur = OBJ
-    for i, (a, b, x, k) in enumerate(mwl):
-        # replace occurrence i of cur (positions shift as earlier ones are replaced: recompute)
+    steps, cur = [], OBJ
+    while True:
         cm = masked(cur)
+        if pw:
+            cm = [m for m in cm if cur[m[0]:m[1]] != PX]
+        if not cm:
+            break
         a2, b2, x2, k2 = cm[0]
         mot = cur[:a2] + '_' + cur[b2:]
         steps.append(f'  %Equal.sym(U32, U32.and({x2}, {2 ** k2 - 1}), MK.cf{k2}({x2}), MK.mk{k2}({x2})) :\n'
                      f'    {{{mot} == {OBJ1} : {OT}}}')
         cur = cur[:a2] + f'MK.cf{k2}({x2})' + cur[b2:]
-    SOME = f'{DB}.{name}_d_some(bs, n, hn, hd, ec)'
+    if pw:
+        CF = f'MK.cf{8 * j + r}({XX})' if j < 3 else f'MK.cw{24 + r}({XX})'
+        a2 = [m.start() for m in re.finditer(re.escape(PX) + r'(?=[},])', cur)][-1]
+        mot = cur[:a2] + '_' + cur[a2 + len(PX):]
+        steps.append(f'  %Equal.sym(U32, {PX}, {CF}, MK.pz{j}_{r}({XX}, eh)) :\n    {{{mot} == {OBJ1} : {OT}}}')
+    ehp = f', +eh: {EH}' if eh else ''
+    eha = ', eh' if eh else ''
+    ecT = ctx.lift(dm, sps[4][2])
+    SOME = f'{DB}.{name}_d_some(bs, n, hn, hd, ec{eha})'
     eqdefs = (f'# the decoder\'s object with its masked words in clean form (e2e/e2e_mask.bend)\n'
-              f'def oeq(+bs: +List<U32>) -> {{{OBJ} == {OBJ1} : {OT}}}:\n' + '\n'.join(steps) + '\n  {==}\n\n'
+              f'def oeq(+bs: +List<U32>{ehp}) -> {{{OBJ} == {OBJ1} : {OT}}}:\n' + '\n'.join(steps) + '\n  {==}\n\n'
               f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, '
-              f'+hd: {{SPX.bytes_domain(bs) == True{{}} : Bool}}, +ec: {sps[4][2]})\n'
+              f'+hd: {{SPX.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT}{ehp})\n'
               f'    -> {{{DEC} == Some{{{OBJ1}}} : {MT}}}:\n'
               f'  Equal.trans({MT}, {DEC}, Some{{{OBJ}}}, Some{{{OBJ1}}}, {SOME},\n'
-              f'    Equal.cong({OT}, {MT}, z => Some{{z}}, {OBJ}, {OBJ1}, oeq(bs)))\n')
+              f'    Equal.cong({OT}, {MT}, z => Some{{z}}, {OBJ}, {OBJ1}, oeq(bs{eha})))\n')
     SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
     eqdefs = eqdefs.replace('SPX.', SPA + '.')
-    eqdefs = eqdefs.replace(f'{{Nat.is_eq(List.length(&2, U32, bs)', f'{{Nat.is_eq(List.length(&2, U32, bs)')
-    text = text.replace(SOME, 'dsome(bs, n, hn, hd, ec)')
     i = text.index('def gm(')
-    text = text[:i] + eqdefs + '\n' + text[i:]
-    text = text.replace(api.HEADER, HEADER, 1)
-    return text, None
+    head, tail = text[:i], text[i:]
+    if not eh:
+        tail = tail.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
+    else:
+        FDA = re.search(r'import \.\./proofs/compact/found\.bend as (\w+)', text).group(1)
+        tail = eh_tail(tail, name, DB, DEC, MT, OT, OBJ1, EH, FDA)
+    text = head + eqdefs + '\n' + tail
+    return text.replace(api.HEADER, HEADER, 1), None
+
+
+def eh_tail(tail, name, DB, DEC, MT, OT, OBJ1, EH, FDX):
+    """build_lit's ge/gr for a decoder with a padding check eh: after the length case, a case on eh (True: the
+    decoder gives the clean object; False: it rejects, _d_noneh)"""
+    out = []
+    for fn in ('ge', 'gr'):
+        m = re.search(r'^def ' + fn + r'\((.*?)\n    \+c: Bool, \+ec: (\{.*?\})\) -> (\{.*?\}):\n  match c:\n    case True\{\}:\n(.*?)\n    case False\{\}:\n      (Empty\.absurd\(.*\))\n',
+                      tail, re.S | re.M)
+        params, ecT, goal, tbody, fbody = m.groups()
+        ect = ecT.replace('== c :', '== True{} :')
+        tbody = tbody.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec, eh)')
+        tbody = tbody.replace('{==}', '{==}')  # the clean object's eqo is in terms of dsome now
+        tbody = '\n'.join('  ' + l for l in tbody.split('\n'))
+        noneh = (f'Empty.absurd({goal}, {FDX}.logic__false_true(Equal.cong({MT}, Bool, z => isS(z), None{{}}, Some{{o}}, '
+                 f'Equal.trans({MT}, None{{}}, {DEC}, Some{{o}}, Equal.sym({MT}, {DEC}, None{{}}, {DB}.{name}_d_noneh(bs, n, hn, hd, ec, eh)), dec))))')
+        first = params.split(',')[0]
+        hdr = f'def {fn}1({params}\n    +ec: {ect}, +c2: Bool, +eh: {{{EH[1:EH.rindex(" == True{} : Bool}")]} == c2 : Bool}}) -> {goal}:\n'
+        new1 = hdr + f'  match c2:\n    case True{{}}:\n{tbody}\n    case False{{}}:\n      {noneh}\n'
+        names = [p.split(':')[0].strip().lstrip('+-') for p in split_args(params) if p.strip()]
+        call = f'{fn}1({", ".join(names)}, ec, {EH[1:EH.rindex(" == True{} : Bool}")]}, {{==}})'
+        new2 = (f'def {fn}({params}\n    +c: Bool, +ec: {ecT}) -> {goal}:\n  match c:\n    case True{{}}:\n      {call}\n'
+                f'    case False{{}}:\n      {fbody}\n')
+        tail = tail[:m.start()] + new1 + '\n' + new2 + tail[m.end():]
+    return tail
