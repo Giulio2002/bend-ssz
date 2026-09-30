@@ -47,6 +47,18 @@ in the same file, with the lemmas of `e2e/e2e_valid.bend`): `u8_valid`/`u16_vali
 and a container's `Bool.and` of them gives its `rp`; a bit vector's `is_lt(last word, 2^r)` gives the
 last-word shape `e`. The refused laws are vacuous for a name whose `X_valid` is `True` for every object.
 
+For the <!-- fig:ser_lin_count -->72<!-- /fig --> fixed-size packed vectors and byte vectors (`vec_*`, `Blob`, `Cell`), whose serializer
+threads the object (`X_serialize(o)` is a pair of the object and an `O.Encoded`),
+`<Name>_e2e_serialize` takes the bridge's own premises (`rep`, `hc`, ...) and one more,
+`hv: {(o, True) == X_valid(o)}` (the validity pass returned the object unchanged with True), and gives the same
+conclusion (`Some{obytes(ser_out(Pair.snd(X_serialize(o))))} == API.serialize(Spec.X(), view(o))`);
+`<Name>_e2e_serialize_ok` states `X_serialize(o) == (object of X_encode(o), O.encoded(bytes of X_encode(o)))`
+and `<Name>_e2e_serialize_refused` that a failing pass gives `(o, O.refused())`. `hv` is a hypothesis, not derived:
+`O.bools_ok` and the checked writers hand the array back through `Array.get` pairs, so that the returned object is `o`
+is a fact about the array primitives that no lemma states yet. The other threading names (bit lists, progressive
+lists, `Transaction`, the branches, every variable-size container) have serializers through a size pass and per-field
+checked writers and are not covered by these statements yet.
+
 **Why validity does not give `rep` for the other 142 names** (bit lists, packed vectors,
 progressive lists, the variable-size containers). `rep_X`, `hs*`, `hc*`, `sd*` assert that the
 object's word storage is `thaw(T)` of a perfect tree of depth below 31 (`WO.wf1`, `BL.sdb`,

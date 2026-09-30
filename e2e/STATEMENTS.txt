@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3594 statements in 1007 files.
+# 3810 statements in 1079 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -1516,6 +1516,20 @@ def FuluHistoricalBatch_e2e_root(h: B.Buf, -o: FuluHistoricalBatch_d.HistoricalB
 def FuluMatrixEntry_e2e_root(h: B.Buf, -o: FuluMatrixEntry_d.MatrixEntry, +rep: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry())) -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.MatrixEntry(), M0_L.v_MatrixEntry(o)) : Maybe<&2, +List<U32>>}:
 def FuluProposerSlashing_e2e_root(h: B.Buf, -o: FuluProposerSlashing_d.ProposerSlashing, +rep: M0_L.rep_ProposerSlashing(o, Spec.ProposerSlashing())) -> {Some{D.bytes(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, D.Digest, Pair.snd(B.Buf, FuluProposerSlashing_d.ProposerSlashing & D.Digest, FuluProposerSlashing_h.ProposerSlashing_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProposerSlashing(), M0_L.v_ProposerSlashing(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/FuluBlob_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
+import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/FuluBlob_encode_ssz_generated.bend as W_types_FuluBlob_encode_ssz_generated
+import ../types/schema.bend as S
+def FuluBlob_e2e_serialize(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Blob()), +hc: {W_e2e_e2e_tree.at_depth(o, 16n) == True{} : Bool}, +hv: {(o, True{}) == W_types_FuluBlob_encode_ssz_generated.b131072_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_FuluBlob_encode_ssz_generated.Blob_serialize(o))))} == API.serialize(W_spec_fulu_schemas.Blob(), S.BytesValue{W_proofs_obj_words_obj_light.wview(o)}) : Maybe<&2, +List<U32>>}:
+def FuluBlob_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Blob()), +hc: {W_e2e_e2e_tree.at_depth(o, 16n) == True{} : Bool}, +hv: {(o, True{}) == W_types_FuluBlob_encode_ssz_generated.b131072_valid(o) : O.Words & Bool}) -> {W_types_FuluBlob_encode_ssz_generated.Blob_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_FuluBlob_encode_ssz_generated.Blob_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_FuluBlob_encode_ssz_generated.Blob_encode(o)))) : O.Words & O.Encoded}:
+def FuluBlob_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Blob()), +hc: {W_e2e_e2e_tree.at_depth(o, 16n) == True{} : Bool}, +hv: {(o, False{}) == W_types_FuluBlob_encode_ssz_generated.b131072_valid(o) : O.Words & Bool}) -> {W_types_FuluBlob_encode_ssz_generated.Blob_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/FuluBlob_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/words_obj_light.bend as WO
@@ -2043,6 +2057,20 @@ import ../types/FuluCell_encode_ssz_generated.bend as FuluCell_e
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/words_obj_light.bend as M1_WO
 def FuluCell_e2e_encode(-o: O.Words, +rep: M1_WO.rep_bv(o, Spec.Cell()), +hc: {E3.at_depth(o, 10n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, FuluCell_e.Cell_encode(o)))} == API.serialize(Spec.Cell(), S.BytesValue{M1_WO.wview(o)}) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluCell_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
+import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/FuluCell_encode_ssz_generated.bend as W_types_FuluCell_encode_ssz_generated
+import ../types/schema.bend as S
+def FuluCell_e2e_serialize(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Cell()), +hc: {W_e2e_e2e_tree.at_depth(o, 10n) == True{} : Bool}, +hv: {(o, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_FuluCell_encode_ssz_generated.Cell_serialize(o))))} == API.serialize(W_spec_fulu_schemas.Cell(), S.BytesValue{W_proofs_obj_words_obj_light.wview(o)}) : Maybe<&2, +List<U32>>}:
+def FuluCell_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Cell()), +hc: {W_e2e_e2e_tree.at_depth(o, 10n) == True{} : Bool}, +hv: {(o, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}) -> {W_types_FuluCell_encode_ssz_generated.Cell_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_FuluCell_encode_ssz_generated.Cell_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_FuluCell_encode_ssz_generated.Cell_encode(o)))) : O.Words & O.Encoded}:
+def FuluCell_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv(o, W_spec_fulu_schemas.Cell()), +hc: {W_e2e_e2e_tree.at_depth(o, 10n) == True{} : Bool}, +hv: {(o, False{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}) -> {W_types_FuluCell_encode_ssz_generated.Cell_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/FuluCell_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -10939,6 +10967,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_16_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_16()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_16_e.vec_bool_16_encode(o)))} == API.serialize(Spec.vec_bool_16(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_16_encode_ssz_generated.bend as W_types_vec_bool_16_encode_ssz_generated
+def vec_bool_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_16_encode_ssz_generated.v16_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_16_encode_ssz_generated.vec_bool_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_16(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_16_encode_ssz_generated.v16_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_16_encode_ssz_generated.vec_bool_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_16_encode_ssz_generated.vec_bool_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_16_encode_ssz_generated.vec_bool_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_16_encode_ssz_generated.v16_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_16_encode_ssz_generated.vec_bool_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11011,6 +11052,19 @@ def vec_bool_1_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bo
 def vec_bool_16_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_16())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_16_h.vec_bool_16_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_16(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 def vec_bool_2_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_2())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_2_h.vec_bool_2_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_2(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_1_encode_ssz_generated.bend as W_types_vec_bool_1_encode_ssz_generated
+def vec_bool_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_1_encode_ssz_generated.v1_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_1_encode_ssz_generated.vec_bool_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_1(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_1_encode_ssz_generated.v1_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_1_encode_ssz_generated.vec_bool_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_1_encode_ssz_generated.vec_bool_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_1_encode_ssz_generated.vec_bool_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_1_encode_ssz_generated.v1_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_1_encode_ssz_generated.vec_bool_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11069,6 +11123,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_2_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_2()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_2_e.vec_bool_2_encode(o)))} == API.serialize(Spec.vec_bool_2(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_2_encode_ssz_generated.bend as W_types_vec_bool_2_encode_ssz_generated
+def vec_bool_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_2_encode_ssz_generated.v2_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_2_encode_ssz_generated.vec_bool_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_2(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_2_encode_ssz_generated.v2_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_2_encode_ssz_generated.vec_bool_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_2_encode_ssz_generated.vec_bool_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_2_encode_ssz_generated.vec_bool_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_2_encode_ssz_generated.v2_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_2_encode_ssz_generated.vec_bool_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11126,6 +11193,19 @@ import ../types/vec_bool_31_encode_ssz_generated.bend as vec_bool_31_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_31_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_31()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_31_e.vec_bool_31_encode(o)))} == API.serialize(Spec.vec_bool_31(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_bool_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_31_encode_ssz_generated.bend as W_types_vec_bool_31_encode_ssz_generated
+def vec_bool_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_31_encode_ssz_generated.v31_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_31_encode_ssz_generated.vec_bool_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_31(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_31_encode_ssz_generated.v31_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_31_encode_ssz_generated.vec_bool_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_31_encode_ssz_generated.vec_bool_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_31_encode_ssz_generated.vec_bool_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_31_encode_ssz_generated.v31_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_31_encode_ssz_generated.vec_bool_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_bool_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11199,6 +11279,19 @@ def vec_bool_3_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bo
 def vec_bool_31_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_31())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_31_h.vec_bool_31_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_31(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 def vec_bool_4_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_4())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_4_h.vec_bool_4_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_4(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_3_encode_ssz_generated.bend as W_types_vec_bool_3_encode_ssz_generated
+def vec_bool_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_3_encode_ssz_generated.v3_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_3_encode_ssz_generated.vec_bool_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_3(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_3_encode_ssz_generated.v3_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_3_encode_ssz_generated.vec_bool_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_3_encode_ssz_generated.vec_bool_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_3_encode_ssz_generated.vec_bool_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_3_encode_ssz_generated.v3_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_3_encode_ssz_generated.vec_bool_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11256,6 +11349,19 @@ import ../types/vec_bool_4_encode_ssz_generated.bend as vec_bool_4_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_4_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_4()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_4_e.vec_bool_4_encode(o)))} == API.serialize(Spec.vec_bool_4(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_bool_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_4_encode_ssz_generated.bend as W_types_vec_bool_4_encode_ssz_generated
+def vec_bool_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_4_encode_ssz_generated.v4_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_4_encode_ssz_generated.vec_bool_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_4(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_4_encode_ssz_generated.v4_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_4_encode_ssz_generated.vec_bool_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_4_encode_ssz_generated.vec_bool_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_4_encode_ssz_generated.vec_bool_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_4_encode_ssz_generated.v4_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_4_encode_ssz_generated.vec_bool_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_bool_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11315,6 +11421,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_512_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_512()), +hc: {E3.at_depth(o, 8n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_512_e.vec_bool_512_encode(o)))} == API.serialize(Spec.vec_bool_512(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_512_encode_ssz_generated.bend as W_types_vec_bool_512_encode_ssz_generated
+def vec_bool_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_512_encode_ssz_generated.v512_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_512_encode_ssz_generated.vec_bool_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_512(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_512_encode_ssz_generated.v512_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_512_encode_ssz_generated.vec_bool_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_512_encode_ssz_generated.vec_bool_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_512_encode_ssz_generated.vec_bool_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_512_encode_ssz_generated.v512_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_512_encode_ssz_generated.vec_bool_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11372,6 +11491,19 @@ import ../types/vec_bool_513_encode_ssz_generated.bend as vec_bool_513_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_bool_513_e2e_encode(-o: O.Words, +rep: M1_PB.rep_vb(o, Spec.vec_bool_513()), +hc: {E3.at_depth(o, 8n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_bool_513_e.vec_bool_513_encode(o)))} == API.serialize(Spec.vec_bool_513(), M1_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_bool_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_513_encode_ssz_generated.bend as W_types_vec_bool_513_encode_ssz_generated
+def vec_bool_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_513_encode_ssz_generated.v513_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_513_encode_ssz_generated.vec_bool_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_513(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_513_encode_ssz_generated.v513_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_513_encode_ssz_generated.vec_bool_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_513_encode_ssz_generated.vec_bool_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_513_encode_ssz_generated.vec_bool_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_513_encode_ssz_generated.v513_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_513_encode_ssz_generated.vec_bool_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_bool_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11445,6 +11577,19 @@ def vec_bool_5_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bo
 def vec_bool_512_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_512())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_512_h.vec_bool_512_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_512(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 def vec_bool_513_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bool_513())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_bool_513_h.vec_bool_513_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_bool_513(), M0_PB.vviewb(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_5_encode_ssz_generated.bend as W_types_vec_bool_5_encode_ssz_generated
+def vec_bool_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_5_encode_ssz_generated.v5_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_5_encode_ssz_generated.vec_bool_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_5(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_5_encode_ssz_generated.v5_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_5_encode_ssz_generated.vec_bool_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_5_encode_ssz_generated.vec_bool_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_5_encode_ssz_generated.vec_bool_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_5_encode_ssz_generated.v5_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_5_encode_ssz_generated.vec_bool_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11517,6 +11662,19 @@ def vec_bool_8_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_vb(o, Spec.vec_bo
 def vec_uint16_1_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_1())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_1_h.vec_uint16_1_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_1(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint16_16_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_16())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_16_h.vec_uint16_16_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_16(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_bool_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_bool_8_encode_ssz_generated.bend as W_types_vec_bool_8_encode_ssz_generated
+def vec_bool_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_8_encode_ssz_generated.v8_bool_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_bool_8_encode_ssz_generated.vec_bool_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_bool_8(), W_proofs_obj_packed_bytes_light.vviewb(o)) : Maybe<&2, +List<U32>>}:
+def vec_bool_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_bool_8_encode_ssz_generated.v8_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_8_encode_ssz_generated.vec_bool_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_bool_8_encode_ssz_generated.vec_bool_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_bool_8_encode_ssz_generated.vec_bool_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_bool_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_vb(o, W_proofs_obj_generic_specs.vec_bool_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_bool_8_encode_ssz_generated.v8_bool_valid(o) : O.Words & Bool}) -> {W_types_vec_bool_8_encode_ssz_generated.vec_bool_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_bool_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -11563,6 +11721,18 @@ def vec_uint128_16_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint128_16_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint128_16_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_16_r.vec_uint128_16_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint128_16(), bs) : Maybe<&2, S.Value>}:
 def vec_uint128_16_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_16_r.vec_uint128_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_16(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_16(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_16_r.vec_uint128_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint128_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_16_encode_ssz_generated.bend as W_types_vec_uint128_16_encode_ssz_generated
+def vec_uint128_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_16()), +hv: {(o, True{}) == W_types_vec_uint128_16_encode_ssz_generated.v16_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_16_encode_ssz_generated.vec_uint128_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_16(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_16()), +hv: {(o, True{}) == W_types_vec_uint128_16_encode_ssz_generated.v16_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_16_encode_ssz_generated.vec_uint128_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_16_encode_ssz_generated.vec_uint128_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_16_encode_ssz_generated.vec_uint128_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_16()), +hv: {(o, False{}) == W_types_vec_uint128_16_encode_ssz_generated.v16_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_16_encode_ssz_generated.vec_uint128_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint128_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11649,6 +11819,18 @@ def vec_uint128_4_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v16(o, GS.vec_uin
 def vec_uint128_5_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_5_h.vec_uint128_5_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint128_5(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint128_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint128_8_h.vec_uint128_8_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint128_8(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint128_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_1_encode_ssz_generated.bend as W_types_vec_uint128_1_encode_ssz_generated
+def vec_uint128_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_1()), +hv: {(o, True{}) == W_types_vec_uint128_1_encode_ssz_generated.v1_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_1_encode_ssz_generated.vec_uint128_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_1(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_1()), +hv: {(o, True{}) == W_types_vec_uint128_1_encode_ssz_generated.v1_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_1_encode_ssz_generated.vec_uint128_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_1_encode_ssz_generated.vec_uint128_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_1_encode_ssz_generated.vec_uint128_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_1()), +hv: {(o, False{}) == W_types_vec_uint128_1_encode_ssz_generated.v1_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_1_encode_ssz_generated.vec_uint128_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint128_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -11696,6 +11878,18 @@ def vec_uint128_2_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2
 def vec_uint128_2_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_2_r.vec_uint128_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_2(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_2(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_2_r.vec_uint128_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint128_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_2_encode_ssz_generated.bend as W_types_vec_uint128_2_encode_ssz_generated
+def vec_uint128_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_2()), +hv: {(o, True{}) == W_types_vec_uint128_2_encode_ssz_generated.v2_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_2_encode_ssz_generated.vec_uint128_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_2(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_2()), +hv: {(o, True{}) == W_types_vec_uint128_2_encode_ssz_generated.v2_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_2_encode_ssz_generated.vec_uint128_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_2_encode_ssz_generated.vec_uint128_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_2_encode_ssz_generated.vec_uint128_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_2()), +hv: {(o, False{}) == W_types_vec_uint128_2_encode_ssz_generated.v2_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_2_encode_ssz_generated.vec_uint128_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint128_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -11742,6 +11936,18 @@ def vec_uint128_31_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint128_31_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint128_31_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_31_r.vec_uint128_31_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint128_31(), bs) : Maybe<&2, S.Value>}:
 def vec_uint128_31_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_31_r.vec_uint128_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_31(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_31(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_31_r.vec_uint128_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint128_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_31_encode_ssz_generated.bend as W_types_vec_uint128_31_encode_ssz_generated
+def vec_uint128_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_31()), +hv: {(o, True{}) == W_types_vec_uint128_31_encode_ssz_generated.v31_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_31_encode_ssz_generated.vec_uint128_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_31(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_31()), +hv: {(o, True{}) == W_types_vec_uint128_31_encode_ssz_generated.v31_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_31_encode_ssz_generated.vec_uint128_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_31_encode_ssz_generated.vec_uint128_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_31_encode_ssz_generated.vec_uint128_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_31()), +hv: {(o, False{}) == W_types_vec_uint128_31_encode_ssz_generated.v31_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_31_encode_ssz_generated.vec_uint128_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint128_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11804,6 +12010,18 @@ def vec_uint128_3_e2e_encode(-o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_3()
 def vec_uint128_31_e2e_encode(-o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_31())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint128_31_e.vec_uint128_31_encode(o)))} == API.serialize(GS.vec_uint128_31(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint128_4_e2e_encode(-o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_4())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint128_4_e.vec_uint128_4_encode(o)))} == API.serialize(GS.vec_uint128_4(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint128_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_3_encode_ssz_generated.bend as W_types_vec_uint128_3_encode_ssz_generated
+def vec_uint128_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_3()), +hv: {(o, True{}) == W_types_vec_uint128_3_encode_ssz_generated.v3_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_3_encode_ssz_generated.vec_uint128_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_3(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_3()), +hv: {(o, True{}) == W_types_vec_uint128_3_encode_ssz_generated.v3_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_3_encode_ssz_generated.vec_uint128_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_3_encode_ssz_generated.vec_uint128_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_3_encode_ssz_generated.vec_uint128_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_3()), +hv: {(o, False{}) == W_types_vec_uint128_3_encode_ssz_generated.v3_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_3_encode_ssz_generated.vec_uint128_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint128_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -11850,6 +12068,18 @@ def vec_uint128_4_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint128_4_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint128_4_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_4_r.vec_uint128_4_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint128_4(), bs) : Maybe<&2, S.Value>}:
 def vec_uint128_4_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_4_r.vec_uint128_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_4(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_4(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_4_r.vec_uint128_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint128_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_4_encode_ssz_generated.bend as W_types_vec_uint128_4_encode_ssz_generated
+def vec_uint128_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_4()), +hv: {(o, True{}) == W_types_vec_uint128_4_encode_ssz_generated.v4_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_4_encode_ssz_generated.vec_uint128_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_4(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_4()), +hv: {(o, True{}) == W_types_vec_uint128_4_encode_ssz_generated.v4_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_4_encode_ssz_generated.vec_uint128_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_4_encode_ssz_generated.vec_uint128_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_4_encode_ssz_generated.vec_uint128_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_4()), +hv: {(o, False{}) == W_types_vec_uint128_4_encode_ssz_generated.v4_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_4_encode_ssz_generated.vec_uint128_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint128_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -11936,6 +12166,18 @@ def vec_uint32_513_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.vec_uin
 def vec_uint64_512_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_512())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_512_h.vec_uint64_512_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint64_512(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint64_513_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_513())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_513_h.vec_uint64_513_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint64_513(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint128_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_512_encode_ssz_generated.bend as W_types_vec_uint128_512_encode_ssz_generated
+def vec_uint128_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_512()), +hv: {(o, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_512_encode_ssz_generated.vec_uint128_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_512(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_512()), +hv: {(o, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_512_encode_ssz_generated.vec_uint128_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_512_encode_ssz_generated.vec_uint128_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_512_encode_ssz_generated.vec_uint128_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_512()), +hv: {(o, False{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_512_encode_ssz_generated.vec_uint128_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint128_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -11982,6 +12224,18 @@ def mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint128_513_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_513_r.vec_uint128_513_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint128_513(), bs) : Maybe<&2, S.Value>}:
 def vec_uint128_513_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_513_r.vec_uint128_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_513(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_513(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_513_r.vec_uint128_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint128_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_513_encode_ssz_generated.bend as W_types_vec_uint128_513_encode_ssz_generated
+def vec_uint128_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_513()), +hv: {(o, True{}) == W_types_vec_uint128_513_encode_ssz_generated.v513_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_513_encode_ssz_generated.vec_uint128_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_513(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_513()), +hv: {(o, True{}) == W_types_vec_uint128_513_encode_ssz_generated.v513_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_513_encode_ssz_generated.vec_uint128_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_513_encode_ssz_generated.vec_uint128_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_513_encode_ssz_generated.vec_uint128_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_513()), +hv: {(o, False{}) == W_types_vec_uint128_513_encode_ssz_generated.v513_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_513_encode_ssz_generated.vec_uint128_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint128_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12042,6 +12296,18 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint128_5_e2e_encode(-o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_5())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint128_5_e.vec_uint128_5_encode(o)))} == API.serialize(GS.vec_uint128_5(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint128_8_e2e_encode(-o: O.Words, +rep: PK.rep_v16(o, GS.vec_uint128_8())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint128_8_e.vec_uint128_8_encode(o)))} == API.serialize(GS.vec_uint128_8(), PK.vview16(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint128_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_5_encode_ssz_generated.bend as W_types_vec_uint128_5_encode_ssz_generated
+def vec_uint128_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_5()), +hv: {(o, True{}) == W_types_vec_uint128_5_encode_ssz_generated.v5_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_5_encode_ssz_generated.vec_uint128_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_5(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_5()), +hv: {(o, True{}) == W_types_vec_uint128_5_encode_ssz_generated.v5_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_5_encode_ssz_generated.vec_uint128_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_5_encode_ssz_generated.vec_uint128_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_5_encode_ssz_generated.vec_uint128_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_5()), +hv: {(o, False{}) == W_types_vec_uint128_5_encode_ssz_generated.v5_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_5_encode_ssz_generated.vec_uint128_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint128_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -12088,6 +12354,18 @@ def vec_uint128_8_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint128_8_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint128_8_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_8_r.vec_uint128_8_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint128_8(), bs) : Maybe<&2, S.Value>}:
 def vec_uint128_8_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_8_r.vec_uint128_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint128_8(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint128_8(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_8_r.vec_uint128_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint128_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint128_8_encode_ssz_generated.bend as W_types_vec_uint128_8_encode_ssz_generated
+def vec_uint128_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_8()), +hv: {(o, True{}) == W_types_vec_uint128_8_encode_ssz_generated.v8_u128_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint128_8_encode_ssz_generated.vec_uint128_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint128_8(), W_proofs_obj_packed_obj_light.vview16(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint128_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_8()), +hv: {(o, True{}) == W_types_vec_uint128_8_encode_ssz_generated.v8_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_8_encode_ssz_generated.vec_uint128_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint128_8_encode_ssz_generated.vec_uint128_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint128_8_encode_ssz_generated.vec_uint128_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint128_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v16(o, W_proofs_obj_generic_specs.vec_uint128_8()), +hv: {(o, False{}) == W_types_vec_uint128_8_encode_ssz_generated.v8_u128_valid(o) : O.Words & Bool}) -> {W_types_vec_uint128_8_encode_ssz_generated.vec_uint128_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint128_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12147,6 +12425,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_16_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_16()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_16_e.vec_uint16_16_encode(o)))} == API.serialize(Spec.vec_uint16_16(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_16_encode_ssz_generated.bend as W_types_vec_uint16_16_encode_ssz_generated
+def vec_uint16_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_16_encode_ssz_generated.v16_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_16_encode_ssz_generated.vec_uint16_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_16(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_16_encode_ssz_generated.v16_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_16_encode_ssz_generated.vec_uint16_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_16_encode_ssz_generated.vec_uint16_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_16_encode_ssz_generated.vec_uint16_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_16_encode_ssz_generated.v16_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_16_encode_ssz_generated.vec_uint16_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12204,6 +12495,19 @@ import ../types/vec_uint16_1_encode_ssz_generated.bend as vec_uint16_1_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_1_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_1()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_1_e.vec_uint16_1_encode(o)))} == API.serialize(Spec.vec_uint16_1(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint16_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_1_encode_ssz_generated.bend as W_types_vec_uint16_1_encode_ssz_generated
+def vec_uint16_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_1_encode_ssz_generated.v1_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_1_encode_ssz_generated.vec_uint16_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_1(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_1_encode_ssz_generated.v1_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_1_encode_ssz_generated.vec_uint16_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_1_encode_ssz_generated.vec_uint16_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_1_encode_ssz_generated.vec_uint16_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_1_encode_ssz_generated.v1_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_1_encode_ssz_generated.vec_uint16_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint16_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12277,6 +12581,19 @@ def vec_uint16_2_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_
 def vec_uint16_3_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_3())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_3_h.vec_uint16_3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_3(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint16_31_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_31())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_31_h.vec_uint16_31_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_31(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_2_encode_ssz_generated.bend as W_types_vec_uint16_2_encode_ssz_generated
+def vec_uint16_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_2_encode_ssz_generated.v2_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_2_encode_ssz_generated.vec_uint16_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_2(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_2_encode_ssz_generated.v2_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_2_encode_ssz_generated.vec_uint16_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_2_encode_ssz_generated.vec_uint16_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_2_encode_ssz_generated.vec_uint16_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_2_encode_ssz_generated.v2_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_2_encode_ssz_generated.vec_uint16_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12335,6 +12652,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_31_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_31()), +hc: {E3.at_depth(o, 5n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_31_e.vec_uint16_31_encode(o)))} == API.serialize(Spec.vec_uint16_31(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_31_encode_ssz_generated.bend as W_types_vec_uint16_31_encode_ssz_generated
+def vec_uint16_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 5n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_31_encode_ssz_generated.v31_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_31_encode_ssz_generated.vec_uint16_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_31(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 5n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_31_encode_ssz_generated.v31_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_31_encode_ssz_generated.vec_uint16_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_31_encode_ssz_generated.vec_uint16_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_31_encode_ssz_generated.vec_uint16_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 5n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_31_encode_ssz_generated.v31_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_31_encode_ssz_generated.vec_uint16_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12392,6 +12722,19 @@ import ../types/vec_uint16_3_encode_ssz_generated.bend as vec_uint16_3_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_3_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_3()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_3_e.vec_uint16_3_encode(o)))} == API.serialize(Spec.vec_uint16_3(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint16_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_3_encode_ssz_generated.bend as W_types_vec_uint16_3_encode_ssz_generated
+def vec_uint16_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_3_encode_ssz_generated.v3_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_3_encode_ssz_generated.vec_uint16_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_3(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_3_encode_ssz_generated.v3_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_3_encode_ssz_generated.vec_uint16_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_3_encode_ssz_generated.vec_uint16_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_3_encode_ssz_generated.vec_uint16_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_3_encode_ssz_generated.v3_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_3_encode_ssz_generated.vec_uint16_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint16_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12465,6 +12808,19 @@ def vec_uint16_4_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_
 def vec_uint16_5_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_5_h.vec_uint16_5_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_5(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint16_512_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_512())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_512_h.vec_uint16_512_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_512(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_4_encode_ssz_generated.bend as W_types_vec_uint16_4_encode_ssz_generated
+def vec_uint16_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_4_encode_ssz_generated.v4_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_4_encode_ssz_generated.vec_uint16_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_4(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_4_encode_ssz_generated.v4_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_4_encode_ssz_generated.vec_uint16_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_4_encode_ssz_generated.vec_uint16_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_4_encode_ssz_generated.vec_uint16_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_4_encode_ssz_generated.v4_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_4_encode_ssz_generated.vec_uint16_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12522,6 +12878,19 @@ import ../types/vec_uint16_512_encode_ssz_generated.bend as vec_uint16_512_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_512_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_512()), +hc: {E3.at_depth(o, 9n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_512_e.vec_uint16_512_encode(o)))} == API.serialize(Spec.vec_uint16_512(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint16_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_512_encode_ssz_generated.bend as W_types_vec_uint16_512_encode_ssz_generated
+def vec_uint16_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_512_encode_ssz_generated.v512_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_512_encode_ssz_generated.vec_uint16_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_512(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_512_encode_ssz_generated.v512_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_512_encode_ssz_generated.vec_uint16_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_512_encode_ssz_generated.vec_uint16_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_512_encode_ssz_generated.vec_uint16_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_512_encode_ssz_generated.v512_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_512_encode_ssz_generated.vec_uint16_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint16_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12595,6 +12964,19 @@ def vec_uint16_513_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.ve
 def vec_uint16_8_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v2(o, Spec.vec_uint16_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint16_8_h.vec_uint16_8_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint16_8(), M0_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint8_1_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_1())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_1_h.vec_uint8_1_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_1(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_513_encode_ssz_generated.bend as W_types_vec_uint16_513_encode_ssz_generated
+def vec_uint16_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_513_encode_ssz_generated.v513_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_513_encode_ssz_generated.vec_uint16_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_513(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_513_encode_ssz_generated.v513_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_513_encode_ssz_generated.vec_uint16_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_513_encode_ssz_generated.vec_uint16_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_513_encode_ssz_generated.vec_uint16_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 9n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_513_encode_ssz_generated.v513_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_513_encode_ssz_generated.vec_uint16_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12652,6 +13034,19 @@ import ../types/vec_uint16_5_encode_ssz_generated.bend as vec_uint16_5_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_5_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_5()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_5_e.vec_uint16_5_encode(o)))} == API.serialize(Spec.vec_uint16_5(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint16_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_5_encode_ssz_generated.bend as W_types_vec_uint16_5_encode_ssz_generated
+def vec_uint16_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_5_encode_ssz_generated.vec_uint16_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_5(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_5_encode_ssz_generated.vec_uint16_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_5_encode_ssz_generated.vec_uint16_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_5_encode_ssz_generated.vec_uint16_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_5_encode_ssz_generated.vec_uint16_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint16_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12711,6 +13106,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint16_8_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v2(o, Spec.vec_uint16_8()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint16_8_e.vec_uint16_8_encode(o)))} == API.serialize(Spec.vec_uint16_8(), M1_PB.vview2(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint16_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint16_8_encode_ssz_generated.bend as W_types_vec_uint16_8_encode_ssz_generated
+def vec_uint16_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_8_encode_ssz_generated.v8_u16_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint16_8_encode_ssz_generated.vec_uint16_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint16_8(), W_proofs_obj_packed_bytes_light.vview2(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint16_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint16_8_encode_ssz_generated.v8_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_8_encode_ssz_generated.vec_uint16_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint16_8_encode_ssz_generated.vec_uint16_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint16_8_encode_ssz_generated.vec_uint16_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint16_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v2(o, W_proofs_obj_generic_specs.vec_uint16_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint16_8_encode_ssz_generated.v8_u16_valid(o) : O.Words & Bool}) -> {W_types_vec_uint16_8_encode_ssz_generated.vec_uint16_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint16_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -12757,6 +13165,18 @@ def vec_uint256_16_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint256_16_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint256_16_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint256_16(), bs) : Maybe<&2, S.Value>}:
 def vec_uint256_16_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_16(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_16(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint256_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_16_encode_ssz_generated.bend as W_types_vec_uint256_16_encode_ssz_generated
+def vec_uint256_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_16()), +hv: {(o, True{}) == W_types_vec_uint256_16_encode_ssz_generated.v16_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_16_encode_ssz_generated.vec_uint256_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_16(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_16()), +hv: {(o, True{}) == W_types_vec_uint256_16_encode_ssz_generated.v16_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_16_encode_ssz_generated.vec_uint256_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_16_encode_ssz_generated.vec_uint256_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_16_encode_ssz_generated.vec_uint256_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_16()), +hv: {(o, False{}) == W_types_vec_uint256_16_encode_ssz_generated.v16_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_16_encode_ssz_generated.vec_uint256_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint256_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12843,6 +13263,18 @@ def vec_uint256_4_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.vec_uin
 def vec_uint256_5_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.vec_uint256_5_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint256_5(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint256_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_8_h.vec_uint256_8_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint256_8(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_1_encode_ssz_generated.bend as W_types_vec_uint256_1_encode_ssz_generated
+def vec_uint256_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_1()), +hv: {(o, True{}) == W_types_vec_uint256_1_encode_ssz_generated.v1_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_1_encode_ssz_generated.vec_uint256_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_1(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_1()), +hv: {(o, True{}) == W_types_vec_uint256_1_encode_ssz_generated.v1_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_1_encode_ssz_generated.vec_uint256_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_1_encode_ssz_generated.vec_uint256_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_1_encode_ssz_generated.vec_uint256_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_1()), +hv: {(o, False{}) == W_types_vec_uint256_1_encode_ssz_generated.v1_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_1_encode_ssz_generated.vec_uint256_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -12890,6 +13322,18 @@ def vec_uint256_2_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2
 def vec_uint256_2_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_2_r.vec_uint256_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_2(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_2(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_2_r.vec_uint256_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint256_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_2_encode_ssz_generated.bend as W_types_vec_uint256_2_encode_ssz_generated
+def vec_uint256_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_2()), +hv: {(o, True{}) == W_types_vec_uint256_2_encode_ssz_generated.v2_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_2_encode_ssz_generated.vec_uint256_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_2(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_2()), +hv: {(o, True{}) == W_types_vec_uint256_2_encode_ssz_generated.v2_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_2_encode_ssz_generated.vec_uint256_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_2_encode_ssz_generated.vec_uint256_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_2_encode_ssz_generated.vec_uint256_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_2()), +hv: {(o, False{}) == W_types_vec_uint256_2_encode_ssz_generated.v2_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_2_encode_ssz_generated.vec_uint256_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -12936,6 +13380,18 @@ def vec_uint256_31_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint256_31_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint256_31_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_31_r.vec_uint256_31_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint256_31(), bs) : Maybe<&2, S.Value>}:
 def vec_uint256_31_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_31_r.vec_uint256_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_31(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_31(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_31_r.vec_uint256_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint256_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_31_encode_ssz_generated.bend as W_types_vec_uint256_31_encode_ssz_generated
+def vec_uint256_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_31()), +hv: {(o, True{}) == W_types_vec_uint256_31_encode_ssz_generated.v31_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_31_encode_ssz_generated.vec_uint256_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_31(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_31()), +hv: {(o, True{}) == W_types_vec_uint256_31_encode_ssz_generated.v31_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_31_encode_ssz_generated.vec_uint256_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_31_encode_ssz_generated.vec_uint256_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_31_encode_ssz_generated.vec_uint256_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_31()), +hv: {(o, False{}) == W_types_vec_uint256_31_encode_ssz_generated.v31_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_31_encode_ssz_generated.vec_uint256_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint256_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -12998,6 +13454,18 @@ def vec_uint256_3_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_3()
 def vec_uint256_31_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_31())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_31_e.vec_uint256_31_encode(o)))} == API.serialize(GS.vec_uint256_31(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint256_4_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_4())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_4_e.vec_uint256_4_encode(o)))} == API.serialize(GS.vec_uint256_4(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_3_encode_ssz_generated.bend as W_types_vec_uint256_3_encode_ssz_generated
+def vec_uint256_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_3()), +hv: {(o, True{}) == W_types_vec_uint256_3_encode_ssz_generated.v3_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_3_encode_ssz_generated.vec_uint256_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_3(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_3()), +hv: {(o, True{}) == W_types_vec_uint256_3_encode_ssz_generated.v3_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_3_encode_ssz_generated.vec_uint256_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_3_encode_ssz_generated.vec_uint256_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_3_encode_ssz_generated.vec_uint256_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_3()), +hv: {(o, False{}) == W_types_vec_uint256_3_encode_ssz_generated.v3_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_3_encode_ssz_generated.vec_uint256_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13045,6 +13513,18 @@ def vec_uint256_4_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2
 def vec_uint256_4_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_4_r.vec_uint256_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_4(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_4(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_4_r.vec_uint256_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint256_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_4_encode_ssz_generated.bend as W_types_vec_uint256_4_encode_ssz_generated
+def vec_uint256_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_4()), +hv: {(o, True{}) == W_types_vec_uint256_4_encode_ssz_generated.v4_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_4_encode_ssz_generated.vec_uint256_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_4(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_4()), +hv: {(o, True{}) == W_types_vec_uint256_4_encode_ssz_generated.v4_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_4_encode_ssz_generated.vec_uint256_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_4_encode_ssz_generated.vec_uint256_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_4_encode_ssz_generated.vec_uint256_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_4()), +hv: {(o, False{}) == W_types_vec_uint256_4_encode_ssz_generated.v4_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_4_encode_ssz_generated.vec_uint256_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13091,6 +13571,18 @@ def mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint256_512_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_512_r.vec_uint256_512_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint256_512(), bs) : Maybe<&2, S.Value>}:
 def vec_uint256_512_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_512_r.vec_uint256_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_512(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_512(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_512_r.vec_uint256_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint256_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_512_encode_ssz_generated.bend as W_types_vec_uint256_512_encode_ssz_generated
+def vec_uint256_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_512()), +hv: {(o, True{}) == W_types_vec_uint256_512_encode_ssz_generated.v512_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_512_encode_ssz_generated.vec_uint256_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_512(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_512()), +hv: {(o, True{}) == W_types_vec_uint256_512_encode_ssz_generated.v512_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_512_encode_ssz_generated.vec_uint256_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_512_encode_ssz_generated.vec_uint256_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_512_encode_ssz_generated.vec_uint256_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_512()), +hv: {(o, False{}) == W_types_vec_uint256_512_encode_ssz_generated.v512_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_512_encode_ssz_generated.vec_uint256_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint256_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13153,6 +13645,18 @@ def vec_uint256_513_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_5
 def vec_uint32_512_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_512())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_512_e.vec_uint32_512_encode(o)))} == API.serialize(GS.vec_uint32_512(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_513_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_513())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_513_e.vec_uint32_513_encode(o)))} == API.serialize(GS.vec_uint32_513(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_513_encode_ssz_generated.bend as W_types_vec_uint256_513_encode_ssz_generated
+def vec_uint256_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_513()), +hv: {(o, True{}) == W_types_vec_uint256_513_encode_ssz_generated.v513_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_513_encode_ssz_generated.vec_uint256_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_513(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_513()), +hv: {(o, True{}) == W_types_vec_uint256_513_encode_ssz_generated.v513_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_513_encode_ssz_generated.vec_uint256_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_513_encode_ssz_generated.vec_uint256_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_513_encode_ssz_generated.vec_uint256_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_513()), +hv: {(o, False{}) == W_types_vec_uint256_513_encode_ssz_generated.v513_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_513_encode_ssz_generated.vec_uint256_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13212,6 +13716,18 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint256_5_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_5())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_5_e.vec_uint256_5_encode(o)))} == API.serialize(GS.vec_uint256_5(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint256_8_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_8())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_8_e.vec_uint256_8_encode(o)))} == API.serialize(GS.vec_uint256_8(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_5_encode_ssz_generated.bend as W_types_vec_uint256_5_encode_ssz_generated
+def vec_uint256_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_5()), +hv: {(o, True{}) == W_types_vec_uint256_5_encode_ssz_generated.v5_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_5_encode_ssz_generated.vec_uint256_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_5(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_5()), +hv: {(o, True{}) == W_types_vec_uint256_5_encode_ssz_generated.v5_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_5_encode_ssz_generated.vec_uint256_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_5_encode_ssz_generated.vec_uint256_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_5_encode_ssz_generated.vec_uint256_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_5()), +hv: {(o, False{}) == W_types_vec_uint256_5_encode_ssz_generated.v5_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_5_encode_ssz_generated.vec_uint256_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13259,6 +13775,18 @@ def vec_uint256_8_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2
 def vec_uint256_8_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_8_r.vec_uint256_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint256_8(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint256_8(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_8_r.vec_uint256_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint256_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_8_encode_ssz_generated.bend as W_types_vec_uint256_8_encode_ssz_generated
+def vec_uint256_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_8()), +hv: {(o, True{}) == W_types_vec_uint256_8_encode_ssz_generated.v8_u256_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint256_8_encode_ssz_generated.vec_uint256_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint256_8(), W_proofs_obj_packed_obj_light.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint256_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_8()), +hv: {(o, True{}) == W_types_vec_uint256_8_encode_ssz_generated.v8_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_8_encode_ssz_generated.vec_uint256_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint256_8_encode_ssz_generated.vec_uint256_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint256_8_encode_ssz_generated.vec_uint256_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint256_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v32(o, W_proofs_obj_generic_specs.vec_uint256_8()), +hv: {(o, False{}) == W_types_vec_uint256_8_encode_ssz_generated.v8_u256_valid(o) : O.Words & Bool}) -> {W_types_vec_uint256_8_encode_ssz_generated.vec_uint256_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint256_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13305,6 +13833,18 @@ def vec_uint32_16_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint32_16_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint32_16_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_16_r.vec_uint32_16_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint32_16(), bs) : Maybe<&2, S.Value>}:
 def vec_uint32_16_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_16_r.vec_uint32_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_16(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_16(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_16_r.vec_uint32_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint32_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_16_encode_ssz_generated.bend as W_types_vec_uint32_16_encode_ssz_generated
+def vec_uint32_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_16()), +hv: {(o, True{}) == W_types_vec_uint32_16_encode_ssz_generated.v16_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_16_encode_ssz_generated.vec_uint32_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_16(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_16()), +hv: {(o, True{}) == W_types_vec_uint32_16_encode_ssz_generated.v16_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_16_encode_ssz_generated.vec_uint32_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_16_encode_ssz_generated.vec_uint32_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_16_encode_ssz_generated.vec_uint32_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_16()), +hv: {(o, False{}) == W_types_vec_uint32_16_encode_ssz_generated.v16_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_16_encode_ssz_generated.vec_uint32_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint32_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13391,6 +13931,18 @@ def vec_uint32_4_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint3
 def vec_uint32_5_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_5_h.vec_uint32_5_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint32_5(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.vec_uint32_8_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint32_8(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint32_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_1_encode_ssz_generated.bend as W_types_vec_uint32_1_encode_ssz_generated
+def vec_uint32_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_1()), +hv: {(o, True{}) == W_types_vec_uint32_1_encode_ssz_generated.v1_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_1_encode_ssz_generated.vec_uint32_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_1(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_1()), +hv: {(o, True{}) == W_types_vec_uint32_1_encode_ssz_generated.v1_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_1_encode_ssz_generated.vec_uint32_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_1_encode_ssz_generated.vec_uint32_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_1_encode_ssz_generated.vec_uint32_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_1()), +hv: {(o, False{}) == W_types_vec_uint32_1_encode_ssz_generated.v1_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_1_encode_ssz_generated.vec_uint32_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13438,6 +13990,18 @@ def vec_uint32_2_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2,
 def vec_uint32_2_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_2_r.vec_uint32_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_2(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_2(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_2_r.vec_uint32_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint32_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_2_encode_ssz_generated.bend as W_types_vec_uint32_2_encode_ssz_generated
+def vec_uint32_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_2()), +hv: {(o, True{}) == W_types_vec_uint32_2_encode_ssz_generated.v2_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_2_encode_ssz_generated.vec_uint32_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_2(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_2()), +hv: {(o, True{}) == W_types_vec_uint32_2_encode_ssz_generated.v2_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_2_encode_ssz_generated.vec_uint32_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_2_encode_ssz_generated.vec_uint32_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_2_encode_ssz_generated.vec_uint32_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_2()), +hv: {(o, False{}) == W_types_vec_uint32_2_encode_ssz_generated.v2_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_2_encode_ssz_generated.vec_uint32_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13484,6 +14048,18 @@ def vec_uint32_31_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint32_31_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint32_31_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_31_r.vec_uint32_31_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint32_31(), bs) : Maybe<&2, S.Value>}:
 def vec_uint32_31_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_31_r.vec_uint32_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_31(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_31(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_31_r.vec_uint32_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint32_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_31_encode_ssz_generated.bend as W_types_vec_uint32_31_encode_ssz_generated
+def vec_uint32_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_31()), +hv: {(o, True{}) == W_types_vec_uint32_31_encode_ssz_generated.v31_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_31_encode_ssz_generated.vec_uint32_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_31(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_31()), +hv: {(o, True{}) == W_types_vec_uint32_31_encode_ssz_generated.v31_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_31_encode_ssz_generated.vec_uint32_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_31_encode_ssz_generated.vec_uint32_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_31_encode_ssz_generated.vec_uint32_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_31()), +hv: {(o, False{}) == W_types_vec_uint32_31_encode_ssz_generated.v31_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_31_encode_ssz_generated.vec_uint32_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint32_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13546,6 +14122,18 @@ def vec_uint32_3_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_3())) 
 def vec_uint32_31_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_31())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_31_e.vec_uint32_31_encode(o)))} == API.serialize(GS.vec_uint32_31(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_4_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_4())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_4_e.vec_uint32_4_encode(o)))} == API.serialize(GS.vec_uint32_4(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint32_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_3_encode_ssz_generated.bend as W_types_vec_uint32_3_encode_ssz_generated
+def vec_uint32_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_3()), +hv: {(o, True{}) == W_types_vec_uint32_3_encode_ssz_generated.v3_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_3_encode_ssz_generated.vec_uint32_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_3(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_3()), +hv: {(o, True{}) == W_types_vec_uint32_3_encode_ssz_generated.v3_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_3_encode_ssz_generated.vec_uint32_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_3_encode_ssz_generated.vec_uint32_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_3_encode_ssz_generated.vec_uint32_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_3()), +hv: {(o, False{}) == W_types_vec_uint32_3_encode_ssz_generated.v3_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_3_encode_ssz_generated.vec_uint32_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13592,6 +14180,18 @@ def vec_uint32_4_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint32_4_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint32_4_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_4_r.vec_uint32_4_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint32_4(), bs) : Maybe<&2, S.Value>}:
 def vec_uint32_4_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_4_r.vec_uint32_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_4(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_4(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_4_r.vec_uint32_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint32_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_4_encode_ssz_generated.bend as W_types_vec_uint32_4_encode_ssz_generated
+def vec_uint32_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_4()), +hv: {(o, True{}) == W_types_vec_uint32_4_encode_ssz_generated.v4_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_4_encode_ssz_generated.vec_uint32_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_4(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_4()), +hv: {(o, True{}) == W_types_vec_uint32_4_encode_ssz_generated.v4_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_4_encode_ssz_generated.vec_uint32_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_4_encode_ssz_generated.vec_uint32_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_4_encode_ssz_generated.vec_uint32_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_4()), +hv: {(o, False{}) == W_types_vec_uint32_4_encode_ssz_generated.v4_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_4_encode_ssz_generated.vec_uint32_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint32_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13640,6 +14240,18 @@ def vec_uint32_512_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&
 def vec_uint32_512_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_512(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_512(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint32_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_512_encode_ssz_generated.bend as W_types_vec_uint32_512_encode_ssz_generated
+def vec_uint32_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_512()), +hv: {(o, True{}) == W_types_vec_uint32_512_encode_ssz_generated.v512_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_512_encode_ssz_generated.vec_uint32_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_512(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_512()), +hv: {(o, True{}) == W_types_vec_uint32_512_encode_ssz_generated.v512_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_512_encode_ssz_generated.vec_uint32_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_512_encode_ssz_generated.vec_uint32_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_512_encode_ssz_generated.vec_uint32_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_512()), +hv: {(o, False{}) == W_types_vec_uint32_512_encode_ssz_generated.v512_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_512_encode_ssz_generated.vec_uint32_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13686,6 +14298,18 @@ def mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint32_513_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_513_r.vec_uint32_513_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint32_513(), bs) : Maybe<&2, S.Value>}:
 def vec_uint32_513_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_513_r.vec_uint32_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_513(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_513(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_513_r.vec_uint32_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint32_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_513_encode_ssz_generated.bend as W_types_vec_uint32_513_encode_ssz_generated
+def vec_uint32_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_513()), +hv: {(o, True{}) == W_types_vec_uint32_513_encode_ssz_generated.v513_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_513_encode_ssz_generated.vec_uint32_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_513(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_513()), +hv: {(o, True{}) == W_types_vec_uint32_513_encode_ssz_generated.v513_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_513_encode_ssz_generated.vec_uint32_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_513_encode_ssz_generated.vec_uint32_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_513_encode_ssz_generated.vec_uint32_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_513()), +hv: {(o, False{}) == W_types_vec_uint32_513_encode_ssz_generated.v513_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_513_encode_ssz_generated.vec_uint32_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint32_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13746,6 +14370,18 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint32_5_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_5())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_5_e.vec_uint32_5_encode(o)))} == API.serialize(GS.vec_uint32_5(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_8_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_8())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_8_e.vec_uint32_8_encode(o)))} == API.serialize(GS.vec_uint32_8(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint32_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_5_encode_ssz_generated.bend as W_types_vec_uint32_5_encode_ssz_generated
+def vec_uint32_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_5()), +hv: {(o, True{}) == W_types_vec_uint32_5_encode_ssz_generated.v5_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_5_encode_ssz_generated.vec_uint32_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_5(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_5()), +hv: {(o, True{}) == W_types_vec_uint32_5_encode_ssz_generated.v5_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_5_encode_ssz_generated.vec_uint32_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_5_encode_ssz_generated.vec_uint32_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_5_encode_ssz_generated.vec_uint32_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_5()), +hv: {(o, False{}) == W_types_vec_uint32_5_encode_ssz_generated.v5_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_5_encode_ssz_generated.vec_uint32_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13793,6 +14429,18 @@ def vec_uint32_8_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2,
 def vec_uint32_8_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_8_r.vec_uint32_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint32_8(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint32_8(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_8_r.vec_uint32_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint32_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint32_8_encode_ssz_generated.bend as W_types_vec_uint32_8_encode_ssz_generated
+def vec_uint32_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_8()), +hv: {(o, True{}) == W_types_vec_uint32_8_encode_ssz_generated.v8_u32_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint32_8_encode_ssz_generated.vec_uint32_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint32_8(), W_proofs_obj_packed_obj_light.vview4(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_8()), +hv: {(o, True{}) == W_types_vec_uint32_8_encode_ssz_generated.v8_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_8_encode_ssz_generated.vec_uint32_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint32_8_encode_ssz_generated.vec_uint32_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint32_8_encode_ssz_generated.vec_uint32_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint32_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v4(o, W_proofs_obj_generic_specs.vec_uint32_8()), +hv: {(o, False{}) == W_types_vec_uint32_8_encode_ssz_generated.v8_u32_valid(o) : O.Words & Bool}) -> {W_types_vec_uint32_8_encode_ssz_generated.vec_uint32_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint32_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13839,6 +14487,18 @@ def vec_uint64_16_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint64_16_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint64_16_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_16_r.vec_uint64_16_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint64_16(), bs) : Maybe<&2, S.Value>}:
 def vec_uint64_16_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_16_r.vec_uint64_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_16(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_16(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_16_r.vec_uint64_16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint64_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_16_encode_ssz_generated.bend as W_types_vec_uint64_16_encode_ssz_generated
+def vec_uint64_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_16()), +hv: {(o, True{}) == W_types_vec_uint64_16_encode_ssz_generated.v16_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_16_encode_ssz_generated.vec_uint64_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_16(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_16()), +hv: {(o, True{}) == W_types_vec_uint64_16_encode_ssz_generated.v16_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_16_encode_ssz_generated.vec_uint64_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_16_encode_ssz_generated.vec_uint64_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_16_encode_ssz_generated.vec_uint64_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_16()), +hv: {(o, False{}) == W_types_vec_uint64_16_encode_ssz_generated.v16_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_16_encode_ssz_generated.vec_uint64_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint64_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -13925,6 +14585,18 @@ def vec_uint64_4_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint6
 def vec_uint64_5_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_5_h.vec_uint64_5_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint64_5(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint64_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.vec_uint64_8_hash_tree_root(h, o))))} == API.hash_tree_root(GS.vec_uint64_8(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint64_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_1_encode_ssz_generated.bend as W_types_vec_uint64_1_encode_ssz_generated
+def vec_uint64_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_1()), +hv: {(o, True{}) == W_types_vec_uint64_1_encode_ssz_generated.v1_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_1_encode_ssz_generated.vec_uint64_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_1(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_1()), +hv: {(o, True{}) == W_types_vec_uint64_1_encode_ssz_generated.v1_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_1_encode_ssz_generated.vec_uint64_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_1_encode_ssz_generated.vec_uint64_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_1_encode_ssz_generated.vec_uint64_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_1()), +hv: {(o, False{}) == W_types_vec_uint64_1_encode_ssz_generated.v1_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_1_encode_ssz_generated.vec_uint64_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint64_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -13972,6 +14644,18 @@ def vec_uint64_2_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2,
 def vec_uint64_2_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_2_r.vec_uint64_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_2(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_2(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_2_r.vec_uint64_2_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
 
+## e2e/vec_uint64_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_2_encode_ssz_generated.bend as W_types_vec_uint64_2_encode_ssz_generated
+def vec_uint64_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_2()), +hv: {(o, True{}) == W_types_vec_uint64_2_encode_ssz_generated.v2_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_2_encode_ssz_generated.vec_uint64_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_2(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_2()), +hv: {(o, True{}) == W_types_vec_uint64_2_encode_ssz_generated.v2_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_2_encode_ssz_generated.vec_uint64_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_2_encode_ssz_generated.vec_uint64_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_2_encode_ssz_generated.vec_uint64_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_2()), +hv: {(o, False{}) == W_types_vec_uint64_2_encode_ssz_generated.v2_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_2_encode_ssz_generated.vec_uint64_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint64_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -14018,6 +14702,18 @@ def vec_uint64_31_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint64_31_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint64_31_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_31_r.vec_uint64_31_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint64_31(), bs) : Maybe<&2, S.Value>}:
 def vec_uint64_31_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_31_r.vec_uint64_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_31(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_31(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_31_r.vec_uint64_31_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint64_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_31_encode_ssz_generated.bend as W_types_vec_uint64_31_encode_ssz_generated
+def vec_uint64_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_31()), +hv: {(o, True{}) == W_types_vec_uint64_31_encode_ssz_generated.v31_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_31_encode_ssz_generated.vec_uint64_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_31(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_31()), +hv: {(o, True{}) == W_types_vec_uint64_31_encode_ssz_generated.v31_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_31_encode_ssz_generated.vec_uint64_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_31_encode_ssz_generated.vec_uint64_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_31_encode_ssz_generated.vec_uint64_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_31()), +hv: {(o, False{}) == W_types_vec_uint64_31_encode_ssz_generated.v31_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_31_encode_ssz_generated.vec_uint64_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint64_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14080,6 +14776,18 @@ def vec_uint64_3_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_3())) 
 def vec_uint64_31_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_31())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_31_e.vec_uint64_31_encode(o)))} == API.serialize(GS.vec_uint64_31(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint64_4_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_4())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_4_e.vec_uint64_4_encode(o)))} == API.serialize(GS.vec_uint64_4(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint64_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_3_encode_ssz_generated.bend as W_types_vec_uint64_3_encode_ssz_generated
+def vec_uint64_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_3()), +hv: {(o, True{}) == W_types_vec_uint64_3_encode_ssz_generated.v3_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_3_encode_ssz_generated.vec_uint64_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_3(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_3()), +hv: {(o, True{}) == W_types_vec_uint64_3_encode_ssz_generated.v3_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_3_encode_ssz_generated.vec_uint64_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_3_encode_ssz_generated.vec_uint64_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_3_encode_ssz_generated.vec_uint64_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_3()), +hv: {(o, False{}) == W_types_vec_uint64_3_encode_ssz_generated.v3_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_3_encode_ssz_generated.vec_uint64_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint64_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -14126,6 +14834,18 @@ def vec_uint64_4_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint64_4_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint64_4_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_4_r.vec_uint64_4_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint64_4(), bs) : Maybe<&2, S.Value>}:
 def vec_uint64_4_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_4_r.vec_uint64_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_4(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_4(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_4_r.vec_uint64_4_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint64_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_4_encode_ssz_generated.bend as W_types_vec_uint64_4_encode_ssz_generated
+def vec_uint64_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_4()), +hv: {(o, True{}) == W_types_vec_uint64_4_encode_ssz_generated.v4_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_4_encode_ssz_generated.vec_uint64_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_4(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_4()), +hv: {(o, True{}) == W_types_vec_uint64_4_encode_ssz_generated.v4_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_4_encode_ssz_generated.vec_uint64_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_4_encode_ssz_generated.vec_uint64_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_4_encode_ssz_generated.vec_uint64_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_4()), +hv: {(o, False{}) == W_types_vec_uint64_4_encode_ssz_generated.v4_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_4_encode_ssz_generated.vec_uint64_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint64_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14186,6 +14906,18 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint64_512_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_512())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_512_e.vec_uint64_512_encode(o)))} == API.serialize(GS.vec_uint64_512(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint64_513_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_513())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_513_e.vec_uint64_513_encode(o)))} == API.serialize(GS.vec_uint64_513(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint64_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_512_encode_ssz_generated.bend as W_types_vec_uint64_512_encode_ssz_generated
+def vec_uint64_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_512()), +hv: {(o, True{}) == W_types_vec_uint64_512_encode_ssz_generated.v512_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_512_encode_ssz_generated.vec_uint64_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_512(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_512()), +hv: {(o, True{}) == W_types_vec_uint64_512_encode_ssz_generated.v512_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_512_encode_ssz_generated.vec_uint64_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_512_encode_ssz_generated.vec_uint64_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_512_encode_ssz_generated.vec_uint64_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_512()), +hv: {(o, False{}) == W_types_vec_uint64_512_encode_ssz_generated.v512_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_512_encode_ssz_generated.vec_uint64_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint64_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -14232,6 +14964,18 @@ def mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint64_513_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_513_r.vec_uint64_513_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint64_513(), bs) : Maybe<&2, S.Value>}:
 def vec_uint64_513_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_513_r.vec_uint64_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_513(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_513(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_513_r.vec_uint64_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint64_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_513_encode_ssz_generated.bend as W_types_vec_uint64_513_encode_ssz_generated
+def vec_uint64_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_513()), +hv: {(o, True{}) == W_types_vec_uint64_513_encode_ssz_generated.v513_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_513_encode_ssz_generated.vec_uint64_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_513(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_513()), +hv: {(o, True{}) == W_types_vec_uint64_513_encode_ssz_generated.v513_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_513_encode_ssz_generated.vec_uint64_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_513_encode_ssz_generated.vec_uint64_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_513_encode_ssz_generated.vec_uint64_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_513()), +hv: {(o, False{}) == W_types_vec_uint64_513_encode_ssz_generated.v513_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_513_encode_ssz_generated.vec_uint64_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint64_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14292,6 +15036,18 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint64_5_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_5())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_5_e.vec_uint64_5_encode(o)))} == API.serialize(GS.vec_uint64_5(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint64_8_e2e_encode(-o: O.Words, +rep: PK.rep_v8(o, GS.vec_uint64_8())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint64_8_e.vec_uint64_8_encode(o)))} == API.serialize(GS.vec_uint64_8(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint64_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_5_encode_ssz_generated.bend as W_types_vec_uint64_5_encode_ssz_generated
+def vec_uint64_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_5()), +hv: {(o, True{}) == W_types_vec_uint64_5_encode_ssz_generated.v5_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_5_encode_ssz_generated.vec_uint64_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_5(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_5()), +hv: {(o, True{}) == W_types_vec_uint64_5_encode_ssz_generated.v5_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_5_encode_ssz_generated.vec_uint64_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_5_encode_ssz_generated.vec_uint64_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_5_encode_ssz_generated.vec_uint64_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_5()), +hv: {(o, False{}) == W_types_vec_uint64_5_encode_ssz_generated.v5_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_5_encode_ssz_generated.vec_uint64_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint64_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as GS
@@ -14338,6 +15094,18 @@ def vec_uint64_8_mv(m: Maybe<&1, O.Words>) -> Maybe<&2, S.Value>:
 def vec_uint64_8_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint64_8_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_8_r.vec_uint64_8_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.vec_uint64_8(), bs) : Maybe<&2, S.Value>}:
 def vec_uint64_8_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_8_r.vec_uint64_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(GS.vec_uint64_8(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.vec_uint64_8(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_8_r.vec_uint64_8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
+
+## e2e/vec_uint64_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint64_8_encode_ssz_generated.bend as W_types_vec_uint64_8_encode_ssz_generated
+def vec_uint64_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_8()), +hv: {(o, True{}) == W_types_vec_uint64_8_encode_ssz_generated.v8_u64_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint64_8_encode_ssz_generated.vec_uint64_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint64_8(), W_proofs_obj_packed_obj_light.vview8(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_8()), +hv: {(o, True{}) == W_types_vec_uint64_8_encode_ssz_generated.v8_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_8_encode_ssz_generated.vec_uint64_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint64_8_encode_ssz_generated.vec_uint64_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint64_8_encode_ssz_generated.vec_uint64_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint64_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_obj_light.rep_v8(o, W_proofs_obj_generic_specs.vec_uint64_8()), +hv: {(o, False{}) == W_types_vec_uint64_8_encode_ssz_generated.v8_u64_valid(o) : O.Words & Bool}) -> {W_types_vec_uint64_8_encode_ssz_generated.vec_uint64_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint64_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14411,6 +15179,19 @@ def vec_uint8_16_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_
 def vec_uint8_2_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_2())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_2_h.vec_uint8_2_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_2(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint8_3_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_3())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_3_h.vec_uint8_3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_3(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_16_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_16_encode_ssz_generated.bend as W_types_vec_uint8_16_encode_ssz_generated
+def vec_uint8_16_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_16_encode_ssz_generated.v16_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_16_encode_ssz_generated.vec_uint8_16_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_16(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_16_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_16_encode_ssz_generated.v16_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_16_encode_ssz_generated.vec_uint8_16_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_16_encode_ssz_generated.vec_uint8_16_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_16_encode_ssz_generated.vec_uint8_16_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_16_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_16()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_16_encode_ssz_generated.v16_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_16_encode_ssz_generated.vec_uint8_16_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_16_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14469,6 +15250,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_1_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_1()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_1_e.vec_uint8_1_encode(o)))} == API.serialize(Spec.vec_uint8_1(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_1_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_1_encode_ssz_generated.bend as W_types_vec_uint8_1_encode_ssz_generated
+def vec_uint8_1_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_1_encode_ssz_generated.v1_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_1_encode_ssz_generated.vec_uint8_1_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_1(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_1_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_1_encode_ssz_generated.v1_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_1_encode_ssz_generated.vec_uint8_1_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_1_encode_ssz_generated.vec_uint8_1_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_1_encode_ssz_generated.vec_uint8_1_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_1_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_1()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_1_encode_ssz_generated.v1_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_1_encode_ssz_generated.vec_uint8_1_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_1_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14526,6 +15320,19 @@ import ../types/vec_uint8_2_encode_ssz_generated.bend as vec_uint8_2_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_2_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_2()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_2_e.vec_uint8_2_encode(o)))} == API.serialize(Spec.vec_uint8_2(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint8_2_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_2_encode_ssz_generated.bend as W_types_vec_uint8_2_encode_ssz_generated
+def vec_uint8_2_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_2_encode_ssz_generated.v2_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_2_encode_ssz_generated.vec_uint8_2_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_2(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_2_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_2_encode_ssz_generated.v2_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_2_encode_ssz_generated.vec_uint8_2_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_2_encode_ssz_generated.vec_uint8_2_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_2_encode_ssz_generated.vec_uint8_2_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_2_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_2()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_2_encode_ssz_generated.v2_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_2_encode_ssz_generated.vec_uint8_2_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint8_2_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14599,6 +15406,19 @@ def vec_uint8_31_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_
 def vec_uint8_4_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_4())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_4_h.vec_uint8_4_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_4(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint8_5_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_5())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_5_h.vec_uint8_5_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_5(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_31_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_31_encode_ssz_generated.bend as W_types_vec_uint8_31_encode_ssz_generated
+def vec_uint8_31_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_31_encode_ssz_generated.v31_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_31_encode_ssz_generated.vec_uint8_31_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_31(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_31_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_31_encode_ssz_generated.v31_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_31_encode_ssz_generated.vec_uint8_31_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_31_encode_ssz_generated.vec_uint8_31_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_31_encode_ssz_generated.vec_uint8_31_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_31_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_31()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_31_encode_ssz_generated.v31_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_31_encode_ssz_generated.vec_uint8_31_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_31_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14657,6 +15477,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_3_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_3()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_3_e.vec_uint8_3_encode(o)))} == API.serialize(Spec.vec_uint8_3(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_3_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_3_encode_ssz_generated.bend as W_types_vec_uint8_3_encode_ssz_generated
+def vec_uint8_3_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_3_encode_ssz_generated.v3_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_3_encode_ssz_generated.vec_uint8_3_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_3(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_3_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_3_encode_ssz_generated.v3_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_3_encode_ssz_generated.vec_uint8_3_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_3_encode_ssz_generated.vec_uint8_3_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_3_encode_ssz_generated.vec_uint8_3_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_3_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_3()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_3_encode_ssz_generated.v3_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_3_encode_ssz_generated.vec_uint8_3_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_3_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14714,6 +15547,19 @@ import ../types/vec_uint8_4_encode_ssz_generated.bend as vec_uint8_4_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_4_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_4()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_4_e.vec_uint8_4_encode(o)))} == API.serialize(Spec.vec_uint8_4(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint8_4_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_4_encode_ssz_generated.bend as W_types_vec_uint8_4_encode_ssz_generated
+def vec_uint8_4_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_4_encode_ssz_generated.v4_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_4_encode_ssz_generated.vec_uint8_4_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_4(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_4_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_4_encode_ssz_generated.v4_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_4_encode_ssz_generated.vec_uint8_4_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_4_encode_ssz_generated.vec_uint8_4_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_4_encode_ssz_generated.vec_uint8_4_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_4_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_4()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_4_encode_ssz_generated.v4_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_4_encode_ssz_generated.vec_uint8_4_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint8_4_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14787,6 +15633,19 @@ def vec_uint8_512_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec
 def vec_uint8_513_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_513())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_513_h.vec_uint8_513_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_513(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint8_8_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_PB.rep_v1(o, Spec.vec_uint8_8())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_8_h.vec_uint8_8_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.vec_uint8_8(), M0_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_512_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_512_encode_ssz_generated.bend as W_types_vec_uint8_512_encode_ssz_generated
+def vec_uint8_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_512_encode_ssz_generated.v512_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_512_encode_ssz_generated.vec_uint8_512_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_512(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_512_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_512_encode_ssz_generated.v512_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_512_encode_ssz_generated.vec_uint8_512_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_512_encode_ssz_generated.vec_uint8_512_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_512_encode_ssz_generated.vec_uint8_512_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_512_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_512()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_512_encode_ssz_generated.v512_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_512_encode_ssz_generated.vec_uint8_512_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_512_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14844,6 +15703,19 @@ import ../types/vec_uint8_513_encode_ssz_generated.bend as vec_uint8_513_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_513_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_513()), +hc: {E3.at_depth(o, 8n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_513_e.vec_uint8_513_encode(o)))} == API.serialize(Spec.vec_uint8_513(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint8_513_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_513_encode_ssz_generated.bend as W_types_vec_uint8_513_encode_ssz_generated
+def vec_uint8_513_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_513_encode_ssz_generated.v513_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_513_encode_ssz_generated.vec_uint8_513_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_513(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_513_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_513_encode_ssz_generated.v513_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_513_encode_ssz_generated.vec_uint8_513_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_513_encode_ssz_generated.vec_uint8_513_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_513_encode_ssz_generated.vec_uint8_513_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_513_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_513()), +hc: {W_e2e_e2e_tree.at_depth(o, 8n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_513_encode_ssz_generated.v513_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_513_encode_ssz_generated.vec_uint8_513_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint8_513_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -14903,6 +15775,19 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_5_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_5()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_5_e.vec_uint8_5_encode(o)))} == API.serialize(Spec.vec_uint8_5(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint8_5_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_5_encode_ssz_generated.bend as W_types_vec_uint8_5_encode_ssz_generated
+def vec_uint8_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_5_encode_ssz_generated.v5_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_5_encode_ssz_generated.vec_uint8_5_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_5(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_5_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_5_encode_ssz_generated.v5_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_5_encode_ssz_generated.vec_uint8_5_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_5_encode_ssz_generated.vec_uint8_5_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_5_encode_ssz_generated.vec_uint8_5_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_5_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_5()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_5_encode_ssz_generated.v5_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_5_encode_ssz_generated.vec_uint8_5_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
+
 ## e2e/vec_uint8_5_e2e_witness_generated.bend
 import ./e2e_support.bend as E
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14960,6 +15845,19 @@ import ../types/vec_uint8_8_encode_ssz_generated.bend as vec_uint8_8_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
 def vec_uint8_8_e2e_encode(-o: O.Words, +rep: M1_PB.rep_v1(o, Spec.vec_uint8_8()), +hc: {E3.at_depth(o, 4n) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_8_e.vec_uint8_8_encode(o)))} == API.serialize(Spec.vec_uint8_8(), M1_PB.vview1(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint8_8_e2e_ser_generated.bend
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../src/buffer.bend as W_src_buffer
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint8_8_encode_ssz_generated.bend as W_types_vec_uint8_8_encode_ssz_generated
+def vec_uint8_8_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_8_encode_ssz_generated.v8_u8_valid(o) : O.Words & Bool}) -> {Some{E.obytes(O.ser_out(Pair.snd(O.Words, O.Encoded, W_types_vec_uint8_8_encode_ssz_generated.vec_uint8_8_serialize(o))))} == API.serialize(W_proofs_obj_generic_specs.vec_uint8_8(), W_proofs_obj_packed_bytes_light.vview1(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint8_8_e2e_serialize_ok(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, True{}) == W_types_vec_uint8_8_encode_ssz_generated.v8_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_8_encode_ssz_generated.vec_uint8_8_serialize(o) == (Pair.fst(O.Words, W_src_buffer.Buf, W_types_vec_uint8_8_encode_ssz_generated.vec_uint8_8_encode(o)), O.encoded(Pair.snd(O.Words, W_src_buffer.Buf, W_types_vec_uint8_8_encode_ssz_generated.vec_uint8_8_encode(o)))) : O.Words & O.Encoded}:
+def vec_uint8_8_e2e_serialize_refused(o: O.Words, +rep: W_proofs_obj_packed_bytes_light.rep_v1(o, W_proofs_obj_generic_specs.vec_uint8_8()), +hc: {W_e2e_e2e_tree.at_depth(o, 4n) == True{} : Bool}, +hv: {(o, False{}) == W_types_vec_uint8_8_encode_ssz_generated.v8_u8_valid(o) : O.Words & Bool}) -> {W_types_vec_uint8_8_encode_ssz_generated.vec_uint8_8_serialize(o) == (o, O.refused()) : O.Words & O.Encoded}:
 
 ## e2e/vec_uint8_8_e2e_witness_generated.bend
 import ./e2e_support.bend as E

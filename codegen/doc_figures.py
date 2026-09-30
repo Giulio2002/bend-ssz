@@ -151,7 +151,9 @@ def figures():
     wpend = [r[0] for r in wrows if r[1] != 'witnessed']
     f['witness_pending'] = names_list(wpend) if wpend else 'none'
     f['witness_nonempty'] = str(sum(1 for n in wit if 'def NE()' in (ROOT / f'e2e/{n}_e2e_witness_generated.bend').read_text()))
-    f['ser_count'] = str(len(list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))))
+    serf = list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))
+    f['ser_count'] = str(sum(1 for q in serf if '_ser_l2(' not in q.read_text()))
+    f['ser_lin_count'] = str(sum(1 for q in serf if '_ser_l2(' in q.read_text()))
     # the recorded full check (tools/check_fast.sh's stamp)
     st = json.loads((ROOT / 'benchmarks/evidence/check_fast.json').read_text())
     tot = st.get('totals', {})

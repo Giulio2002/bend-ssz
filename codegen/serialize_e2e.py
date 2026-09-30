@@ -11,7 +11,9 @@
 
 The encode bridge's premise beyond the object (none, `e`, `rp`) is derived from `X_valid(o) = True`
 (<Name>_ser_prem, by the shape of the validity predicate; lemmas in e2e/e2e_valid.bend), so the
-statement has no premise but validity. Only Data names: for the others the bridge premises (rep,
+statement has no premise but validity. Only Data names here: for the fixed-size packed and byte vectors (`linear_names`), whose serializer threads the
+object, the same three statements take the bridge's premises plus `hv: (o, True) == X_valid(o)` (the pass returns
+the object unchanged with True) and prove `X_serialize(o) == (object of encode, encoded(bytes of encode))`. For the others the bridge premises (rep,
 storage depth) assert the shape of the object's word tree, which X_valid does not (docs/PREMISES.md).
 
     python3 codegen/serialize_e2e.py [--check] [--only A,B]
@@ -51,6 +53,81 @@ def data_names():
         if m:
             out.append((m.group(1), f))
     return out
+
+
+def linear_names(lf):
+    """the non-Data names whose serializer is `X_senc_out(P_putk(O.out_at(k), 0, o))` with `P_putk` the leaf form
+    `P_pk(out, pos, P_valid(o))` and whose encoder is `X_enc_out(P_put(O.out_at(k), 0, o))`: the packed vectors
+    and the byte vectors (Blob, Cell). {name: (types file, P, k)}"""
+    out = {}
+    for f in sorted((ROOT / 'types').glob('*_encode_ssz_generated.bend')):
+        t = f.read_text()
+        if '_ser_pick(' in t:
+            continue
+        for m in re.finditer(r'^def (\w+)_serialize\(([^)]*)\) -> [^:]*: (.*)$', t, re.M):
+            n, _, b = m.groups()
+            ms = re.match(rf'{n}_senc_out\((\w+)_putk\(O\.out_at\((\d+)n\), 0, o\)\)$', b)
+            if not ms:
+                continue
+            P, k = ms.groups()
+            pk = re.search(rf'^def {P}_putk\([^)]*\) -> [^:]*: (.*)$', t, re.M)
+            me = re.search(rf'^def {n}_encode\([^)]*\) -> [^:]*: (.*)$', t, re.M)
+            if pk and pk.group(1) == f'{P}_pk(out, pos, {P}_valid(o))' and me and \
+                    me.group(1) == f'{n}_enc_out({P}_put(O.out_at({k}n), 0, o))':
+                n2 = n if f'{n}_e2e_encode' in lf else 'Fulu' + n
+                b0 = W.params_of(W.Mod.get(lf[f'{n2}_e2e_encode']).defs[f'{n2}_e2e_encode'])[0]
+                if re.match(r'^[+-]?o:', b0[0]):
+                    out[n] = (f, P, int(k))
+    return out
+
+
+def build_linear(n, tfile, P, k, lf):
+    """the linear (object-threading) serializer of a fixed-size name: given `X_valid(o) == (o, True)`, it is the
+    encoder's object and END_TO_END's bytes"""
+    W.Mod.cache.clear()
+    ctx = W.Ctx()
+    tmod = W.Mod.get(tfile)
+    n2 = n if f'{n}_e2e_encode' in lf else 'Fulu' + n
+    bmod = W.Mod.get(lf[f'{n2}_e2e_encode'])
+    ps, concl = W.params_of(bmod.defs[f'{n2}_e2e_encode'])
+    R = ctx.lift(bmod, ps[0].split(':', 1)[1].strip())
+    O_ = ctx.alias(ROOT / 'src/obj.bend')
+    Bf = ctx.alias(ROOT / 'src/buffer.bend')
+    q = lambda x: ctx.lift(tmod, x)
+    SER, ENC, SENC, PK, PKOK, PUT, ENCO, VAL = (q(x) for x in (f'{n}_serialize', f'{n}_encode', f'{n}_senc_out', f'{P}_pk',
+                                                                 f'{P}_pk_ok', f'{P}_put', f'{n}_enc_out', f'{P}_valid'))
+    BR = f'{ctx.alias(bmod.path)}.{n2}_e2e_encode'
+    binders = ', '.join(ctx.lift(bmod, re.sub(r'^[+-]', '', x) if i == 0 else x) for i, x in enumerate(ps))
+    args = ', '.join(x.split(':', 1)[0].strip().lstrip('+-') for x in ps)
+    ENCP = f'Pair.snd({R}, {Bf}.Buf, {ENC}(o))'
+    ENCF = f'Pair.fst({R}, {Bf}.Buf, {ENC}(o))'
+    RES = f'({ENCF}, {O_}.encoded({ENCP}))'
+    OUT = f'{O_}.out_at({k}n)'
+    HT = f'{{(o, True{{}}) == {VAL}(o) : {R} & Bool}}'
+    HF = f'{{(o, False{{}}) == {VAL}(o) : {R} & Bool}}'
+    L = ctx.lift(bmod, concl)
+    if ENCP.replace(' ', '') not in L.replace(' ', ''):
+        raise SystemExit(f'serialize_e2e: {n}: the bridge does not encode {ENCP!r}')
+    concl2 = L.replace(ENCP, f'{O_}.ser_out(Pair.snd({R}, {O_}.Encoded, {SER}(o)))', 1)
+    # the lemma over the writer's result P (the pair the put returns), so nothing is stuck on the object
+    RESP = (f'(Pair.fst({R}, {Bf}.Buf, {ENCO}(P)), {O_}.encoded(Pair.snd({R}, {Bf}.Buf, {ENCO}(P))))')
+    l1 = (f'def {n2}_ser_l2(P: Array<U32> & {R}) -> {{{SENC}({PKOK}(P)) == {RESP} : {R} & {O_}.Encoded}}:\n'
+          f'  match P:\n    case Tuple{{out, o}}: {{==}}\n\n'
+          f'def {n2}_ser_l1(o: {R}) -> {{{SENC}({PKOK}({PUT}({OUT}, 0, o))) == {RES} : {R} & {O_}.Encoded}}:\n'
+          f'  {n2}_ser_l2({PUT}({OUT}, 0, o))')
+    ok = (f'def {n2}_e2e_serialize_ok({binders}, +hv: {HT}) -> {{{SER}(o) == {RES} : {R} & {O_}.Encoded}}:\n'
+          f'  %hv : {{{SENC}({PK}({OUT}, 0, _)) == {RES} : {R} & {O_}.Encoded}}\n'
+          f'  {n2}_ser_l1(o)')
+    refused = (f'def {n2}_e2e_serialize_refused({binders}, +hv: {HF}) -> {{{SER}(o) == (o, {O_}.refused()) : {R} & {O_}.Encoded}}:\n'
+               f'  %hv : {{{SENC}({PK}({OUT}, 0, _)) == (o, {O_}.refused()) : {R} & {O_}.Encoded}}\n'
+               f'  {{==}}')
+    main = (f'def {n2}_e2e_serialize({binders}, +hv: {HT}) -> {concl2}:\n'
+            f'  %Equal.sym({R} & {O_}.Encoded, {SER}(o), {RES}, {n2}_e2e_serialize_ok({args}, hv)) : '
+            f'{concl2.replace(f"Pair.snd({R}, {O_}.Encoded, {SER}(o))", f"Pair.snd({R}, {O_}.Encoded, _)", 1)}\n'
+            f'  {BR}({args})')
+    return W.imports_text(ctx) + '\n\n' + HEADER + '\n' + \
+        f'# {n2}: given that the validity pass returns the object with True, the checked serializer is the encoder,\n' \
+        f'# and its bytes are END_TO_END\'s serialize of the object\'s value.\n\n' + '\n\n'.join([l1, ok, refused, main]) + '\n'
 
 
 def valid_body(tmod, vname):
@@ -181,6 +258,11 @@ def main():
             continue
         n2 = n if f'{n}_e2e_encode' in lf else 'Fulu' + n
         outs[E2E / f'{n2}_e2e_ser_generated.bend'] = build(n, tfile, lf)
+    for n, (tfile, P, k) in linear_names(lf).items():
+        if only and n not in only:
+            continue
+        n2 = n if f'{n}_e2e_encode' in lf else 'Fulu' + n
+        outs[E2E / f'{n2}_e2e_ser_generated.bend'] = build_linear(n, tfile, P, k, lf)
     stale = []
     for p, t in outs.items():
         if not p.exists() or p.read_text() != t:
