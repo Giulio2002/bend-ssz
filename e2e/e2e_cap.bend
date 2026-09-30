@@ -175,7 +175,7 @@ def cap_w(+bs: +List<U32>, +n: U32, +k: Nat, +hn: {List.length(&2, U32, bs) == U
 def nwM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {U32.to_nat(nwu(n)) == nwn(U32.to_nat(n)) : Nat}:
   +h3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), Nat.add(31n, U32.to_nat(n)), FD.spec_common__pow2(32n), Order.add_right(3n, 31n, U32.to_nat(n), {==}), VB.nmax_lt(n, hN))
   Equal.trans(Nat, U32.to_nat(nwu(n)), VD.s_rng(2n, U32.to_nat((n + 3 : U32))), nwn(U32.to_nat(n)), VD.shrk(2n, (n + 3 : U32)),
-    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat((n + 3 : U32)), Nat.add(3n, U32.to_nat(n)), VB.add_lt32(n, 3, U32.to_nat(n), {==}, h3)))
+    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat((n + 3 : U32)), Nat.add(3n, U32.to_nat(n)), VB.add_lt32k(n, 3, 3n, U32.to_nat(n), {==}, {==}, h3)))
 
 def nwkM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(nwu(n)), O.pow2n(30n)) == True{} : Bool}:
   +hq = FD.nat__lt_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(30n)), VB.u32_lt(n))

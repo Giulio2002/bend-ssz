@@ -439,4 +439,5 @@ def r32w(+x: Nat, +d: Nat, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +h: {Nat.i
   +hk = F.nat__lt_succ_le(d, 28n, hd)
   F.nat__le_lt_trans(A.quad(x), VB.pw(2n+d), F.spec_common__pow2(32n), hq,
     F.nat__lt_le_trans(VB.pw(2n+d), VB.pw(Nat.add(3n, d)), F.spec_common__pow2(32n), F.nat__pow2_lt_succ(2n+d),
-      F.nat__pow2_mono(Nat.add(3n, d), 32n, F.nat__le_trans(Nat.add(3n, d), 31n, 32n, hk, {==}))))
+      F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(32n)) == True{} : Bool}, F.spec_common__pow2(Nat.add(3n, d)), VB.pw(Nat.add(3n, d)), {==},
+        F.nat__pow2_mono(Nat.add(3n, d), 32n, F.nat__le_trans(Nat.add(3n, d), 31n, 32n, hk, {==})))))

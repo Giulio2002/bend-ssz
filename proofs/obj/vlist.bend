@@ -297,7 +297,7 @@ def q3lt(+k: Nat, +m: Nat, +h: {Nat.is_lt(A.quad(m), F.spec_common__pow2(2n+k)) 
 # A word-aligned U32 length: (N + 3) >> 2 = m.
 def eNWa(+L: U32, +h3: {Nat.is_lt(3n+U32.to_nat(L), F.spec_common__pow2(32n)) == True{} : Bool})
     -> {VC.NW(L) == VD.s_rng(2n, 3n+U32.to_nat(L)) : Nat}:
-  %Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), VB.add_lt32(L, 3, U32.to_nat(L), {==}, h3)) :
+  %Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), VB.add_lt32k(L, 3, 3n, U32.to_nat(L), {==}, {==}, h3)) :
     {VC.NW(L) == _ : Nat}
   VD.shrk(2n, U32.add(L, 3))
 

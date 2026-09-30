@@ -73,6 +73,10 @@ def some_sz(+m: Maybe<&2, Nat>, +h: {SOMEm(m) == True{} : Bool}) -> {m == Some{S
   match m:
     case Some{n}: {==}
     case None{}: Empty.absurd({None{} == Some{SZm(None{})} : Maybe<&2, Nat>}, FD.logic__false_true(h))
+# The same at a schema, with the size named SZ(s) as the reject laws state it (for a symbolic s,
+# SZ(s) and SZm(SS.fixed_size(s)) meet without evaluating either).
+def some_szs(+s: S.Schema, +h: {SOMEm(SS.fixed_size(s)) == True{} : Bool}) -> {SS.fixed_size(s) == Some{SZ(s)} : Maybe<&2, Nat>}:
+  some_sz(SS.fixed_size(s), h)
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.
@@ -122,7 +126,7 @@ def chunk_text(tag, rows, solo=False):
     for X, _, P, N in rows:
         s = f'{SCH}.{X}()'
         NN = f'VRF.SZ({s})' if solo else f'{N}n'
-        HW = f'VRF.some_sz(SS.fixed_size({s}), {{==}})' if solo else '{==}'
+        HW = f'VRF.some_szs({s}, {{==}})' if solo else '{==}'
         L.append(f'''# ---- {X} ({N} bytes; validator T.{P}_ok) ----
 def {X}_okb(buf: B.Buf, +off: U32, +b: Bool) -> {{T.{P}_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}}:
   match b:

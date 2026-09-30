@@ -727,6 +727,12 @@ def add_lt32(+a: U32, +c: U32, +i: Nat, +ea: {U32.to_nat(a) == i : Nat},
   %Equal.sym(Nat, U32.to_nat(a), i, ea) : {Nat.add(_, U32.to_nat(c)) == S : Nat}
   F.nat__add_comm(i, U32.to_nat(c))
 
+# add_lt32 with the addend's value k given as a Nat (as add_nwk).
+def add_lt32k(+a: U32, +c: U32, +k: Nat, +i: Nat, +ea: {U32.to_nat(a) == i : Nat}, +ek: {U32.to_nat(c) == k : Nat},
+    +h: {Nat.is_lt(Nat.add(k, i), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(a, c)) == Nat.add(U32.to_nat(c), i) : Nat}:
+  add_lt32(a, c, i, ea, F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, i), F.spec_common__pow2(32n)) == True{} : Bool}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ek), h))
+
 # 31 + n < 2^32 for every n <= NMAX.
 def nmax_lt(+n: U32, +hN: {U32.is_le(n, NMAX()) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(31n, U32.to_nat(n)), F.spec_common__pow2(32n)) == True{} : Bool}:
