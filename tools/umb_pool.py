@@ -14,6 +14,7 @@ changes, never what is checked; the exit status is 0 (check_fast.sh reads the ve
 """
 import argparse
 import os
+import re
 import subprocess
 import sys
 import time
@@ -35,6 +36,8 @@ def main():
     ap.add_argument('--plan', required=True)
     ap.add_argument('--budget-mb', type=int, default=int(os.environ.get('UMB_BUDGET_MB', 170000)))
     ap.add_argument('--reserve-mb', type=int, default=int(os.environ.get('UMB_RESERVE_MB', 40000)))
+    ap.add_argument('--big-re', default=os.environ.get('UMB_BIG_RE', ''), help='roots matching this regex: expected peak --big-mb')
+    ap.add_argument('--big-mb', type=int, default=int(os.environ.get('UMB_BIG_MB', 30000)))
     ap.add_argument('cmd', nargs=argparse.REMAINDER)
     a = ap.parse_args()
     cmd = a.cmd[1:] if a.cmd and a.cmd[0] == '--' else a.cmd
@@ -42,7 +45,10 @@ def main():
     for line in open(a.plan):
         p = line.rstrip('\n').split('\t')
         if p and p[0]:
-            todo.append((p[0], min(14000, 4000 + 50 * float(p[1]) if len(p) > 1 else 8000)))
+            est = min(14000, 4000 + 50 * float(p[1]) if len(p) > 1 else 8000)
+            if a.big_re and len(p) > 3 and re.search(a.big_re, p[3]):
+                est = a.big_mb
+            todo.append((p[0], est))
     running = {}   # pid -> (Popen, est)
     t0 = time.time()
     peak = 0
