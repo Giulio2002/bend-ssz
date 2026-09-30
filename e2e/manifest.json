@@ -2298,6 +2298,17 @@
     "ii": "view"
    }
   ],
+  "vec_uint128_513_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_513",
+    "generated_name": "vec_uint128_513",
+    "laws": [
+     "vec_uint128_513_e2e_decode_view",
+     "vec_uint128_513_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
   "vec_uint256_512_e2e_dec_generated.bend": [
    {
     "name": "vec_uint256_512",
@@ -2305,6 +2316,17 @@
     "laws": [
      "vec_uint256_512_e2e_decode_view",
      "vec_uint256_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_513_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_513",
+    "generated_name": "vec_uint256_513",
+    "laws": [
+     "vec_uint256_513_e2e_decode_view",
+     "vec_uint256_513_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -2320,6 +2342,17 @@
     "ii": "view"
    }
   ],
+  "vec_uint32_513_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_513",
+    "generated_name": "vec_uint32_513",
+    "laws": [
+     "vec_uint32_513_e2e_decode_view",
+     "vec_uint32_513_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
   "vec_uint64_512_e2e_dec_generated.bend": [
    {
     "name": "vec_uint64_512",
@@ -2327,6 +2360,17 @@
     "laws": [
      "vec_uint64_512_e2e_decode_view",
      "vec_uint64_512_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_513_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_513",
+    "generated_name": "vec_uint64_513",
+    "laws": [
+     "vec_uint64_513_e2e_decode_view",
+     "vec_uint64_513_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -7652,9 +7696,7 @@
   },
   "vec_uint128_513": {
    "generated_name": "vec_uint128_513",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint256_512": {
    "generated_name": "vec_uint256_512",
@@ -7662,9 +7704,7 @@
   },
   "vec_uint256_513": {
    "generated_name": "vec_uint256_513",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint32_512": {
    "generated_name": "vec_uint32_512",
@@ -7672,9 +7712,7 @@
   },
   "vec_uint32_513": {
    "generated_name": "vec_uint32_513",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "vec_uint64_512": {
    "generated_name": "vec_uint64_512",
@@ -7682,9 +7720,7 @@
   },
   "vec_uint64_513": {
    "generated_name": "vec_uint64_513",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "FuluCurrentSyncCommitteeBranch": {
    "generated_name": "CurrentSyncCommitteeBranch",

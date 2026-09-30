@@ -28,8 +28,8 @@ These are then bridged to the list-based model of [END_TO_END.bend](END_TO_END.b
 `deserialize` and `hash_tree_root` of END_TO_END's model at the object's value. END_TO_END's
 laws (serialize_correct, deserialize_correct, deserialize_rejection_correct,
 hash_tree_root_correct, ...) relate that model to the specification in `spec/`.
-<!-- fig:bridged_full -->236<!-- /fig --> names have all four bridges (encode, decode accept, decode reject,
-root); without the decode bridges: <!-- fig:no_dec_bridge -->`vec_uint128_513`, `vec_uint256_513`, `vec_uint32_513`, `vec_uint64_513`<!-- /fig -->.
+<!-- fig:bridged_full -->240<!-- /fig --> names have all four bridges (encode, decode accept, decode reject,
+root); without the decode bridges: <!-- fig:no_dec_bridge -->none<!-- /fig -->.
 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).

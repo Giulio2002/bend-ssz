@@ -33,8 +33,8 @@
 | `serialize_valid` | 74 |
 <!-- /fig -->
 - End-to-end bridges (`e2e/manifest.json`): <!-- fig:bridged_i -->240<!-- /fig --> names have the encode bridge (i),
-  <!-- fig:bridged_iv -->240<!-- /fig --> the root bridge (iv), <!-- fig:bridged_dec -->236<!-- /fig --> the decode bridges
-  (ii)/(iii); <!-- fig:bridged_full -->236<!-- /fig --> have all four. Without (ii)/(iii): <!-- fig:no_dec_bridge -->`vec_uint128_513`, `vec_uint256_513`, `vec_uint32_513`, `vec_uint64_513`<!-- /fig -->.
+  <!-- fig:bridged_iv -->240<!-- /fig --> the root bridge (iv), <!-- fig:bridged_dec -->240<!-- /fig --> the decode bridges
+  (ii)/(iii); <!-- fig:bridged_full -->240<!-- /fig --> have all four. Without (ii)/(iii): <!-- fig:no_dec_bridge -->none<!-- /fig -->.
   The manifest's open lists: <!-- fig:manifest_open -->`uncovered` empty, `decode_uncovered` empty, `root_awaiting` empty<!-- /fig -->.
   The remaining premises and limits are in [PREMISES.md](PREMISES.md).
 
