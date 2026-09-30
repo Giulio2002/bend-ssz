@@ -1,5 +1,6 @@
 import Base
 import ../../src/obj.bend as O
+import ../../src/buffer.bend as B
 import ../compact/found.bend as F
 import ./words_rw.bend as WR
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -10,6 +11,199 @@ import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 # Bytes48, uint64): writing the element at byte position p (q = p / 4 its first word, the W words
 # below 2^d) is updating slots q .. q + W - 1 of the storage tree (K_write), reading it returns
 # those slots (K_read), and so reading the written tree returns the element written (K_rw).
+# ---- B.zeros(d) is Array.new(U32, d, 0), for every d (the chain of src/buffer.bend, walked) ----
+def zc_26(+t: Bool, +d: U32, +et: {U32.is_eq(d, 26) == t : Bool}) -> {B.zeros_c26(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 26, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: {==}
+
+def zc_25(+t: Bool, +d: U32, +et: {U32.is_eq(d, 25) == t : Bool}) -> {B.zeros_c25(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 25, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_26(U32.is_eq(d, 26), d, {==})
+
+def zc_24(+t: Bool, +d: U32, +et: {U32.is_eq(d, 24) == t : Bool}) -> {B.zeros_c24(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 24, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_25(U32.is_eq(d, 25), d, {==})
+
+def zc_23(+t: Bool, +d: U32, +et: {U32.is_eq(d, 23) == t : Bool}) -> {B.zeros_c23(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 23, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_24(U32.is_eq(d, 24), d, {==})
+
+def zc_22(+t: Bool, +d: U32, +et: {U32.is_eq(d, 22) == t : Bool}) -> {B.zeros_c22(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 22, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_23(U32.is_eq(d, 23), d, {==})
+
+def zc_21(+t: Bool, +d: U32, +et: {U32.is_eq(d, 21) == t : Bool}) -> {B.zeros_c21(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 21, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_22(U32.is_eq(d, 22), d, {==})
+
+def zc_20(+t: Bool, +d: U32, +et: {U32.is_eq(d, 20) == t : Bool}) -> {B.zeros_c20(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 20, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_21(U32.is_eq(d, 21), d, {==})
+
+def zc_19(+t: Bool, +d: U32, +et: {U32.is_eq(d, 19) == t : Bool}) -> {B.zeros_c19(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 19, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_20(U32.is_eq(d, 20), d, {==})
+
+def zc_18(+t: Bool, +d: U32, +et: {U32.is_eq(d, 18) == t : Bool}) -> {B.zeros_c18(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 18, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_19(U32.is_eq(d, 19), d, {==})
+
+def zc_17(+t: Bool, +d: U32, +et: {U32.is_eq(d, 17) == t : Bool}) -> {B.zeros_c17(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 17, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_18(U32.is_eq(d, 18), d, {==})
+
+def zc_16(+t: Bool, +d: U32, +et: {U32.is_eq(d, 16) == t : Bool}) -> {B.zeros_c16(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 16, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_17(U32.is_eq(d, 17), d, {==})
+
+def zc_15(+t: Bool, +d: U32, +et: {U32.is_eq(d, 15) == t : Bool}) -> {B.zeros_c15(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 15, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_16(U32.is_eq(d, 16), d, {==})
+
+def zc_14(+t: Bool, +d: U32, +et: {U32.is_eq(d, 14) == t : Bool}) -> {B.zeros_c14(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 14, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_15(U32.is_eq(d, 15), d, {==})
+
+def zc_13(+t: Bool, +d: U32, +et: {U32.is_eq(d, 13) == t : Bool}) -> {B.zeros_c13(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 13, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_14(U32.is_eq(d, 14), d, {==})
+
+def zc_12(+t: Bool, +d: U32, +et: {U32.is_eq(d, 12) == t : Bool}) -> {B.zeros_c12(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 12, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_13(U32.is_eq(d, 13), d, {==})
+
+def zc_11(+t: Bool, +d: U32, +et: {U32.is_eq(d, 11) == t : Bool}) -> {B.zeros_c11(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 11, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_12(U32.is_eq(d, 12), d, {==})
+
+def zc_10(+t: Bool, +d: U32, +et: {U32.is_eq(d, 10) == t : Bool}) -> {B.zeros_c10(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 10, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_11(U32.is_eq(d, 11), d, {==})
+
+def zc_9(+t: Bool, +d: U32, +et: {U32.is_eq(d, 9) == t : Bool}) -> {B.zeros_c9(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 9, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_10(U32.is_eq(d, 10), d, {==})
+
+def zc_8(+t: Bool, +d: U32, +et: {U32.is_eq(d, 8) == t : Bool}) -> {B.zeros_c8(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 8, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_9(U32.is_eq(d, 9), d, {==})
+
+def zc_7(+t: Bool, +d: U32, +et: {U32.is_eq(d, 7) == t : Bool}) -> {B.zeros_c7(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 7, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_8(U32.is_eq(d, 8), d, {==})
+
+def zc_6(+t: Bool, +d: U32, +et: {U32.is_eq(d, 6) == t : Bool}) -> {B.zeros_c6(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 6, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_7(U32.is_eq(d, 7), d, {==})
+
+def zc_5(+t: Bool, +d: U32, +et: {U32.is_eq(d, 5) == t : Bool}) -> {B.zeros_c5(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 5, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_6(U32.is_eq(d, 6), d, {==})
+
+def zc_4(+t: Bool, +d: U32, +et: {U32.is_eq(d, 4) == t : Bool}) -> {B.zeros_c4(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 4, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_5(U32.is_eq(d, 5), d, {==})
+
+def zc_3(+t: Bool, +d: U32, +et: {U32.is_eq(d, 3) == t : Bool}) -> {B.zeros_c3(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 3, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_4(U32.is_eq(d, 4), d, {==})
+
+def zc_2(+t: Bool, +d: U32, +et: {U32.is_eq(d, 2) == t : Bool}) -> {B.zeros_c2(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 2, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_3(U32.is_eq(d, 3), d, {==})
+
+def zc_1(+t: Bool, +d: U32, +et: {U32.is_eq(d, 1) == t : Bool}) -> {B.zeros_c1(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 1, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_2(U32.is_eq(d, 2), d, {==})
+
+def zc_0(+t: Bool, +d: U32, +et: {U32.is_eq(d, 0) == t : Bool}) -> {B.zeros_c0(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  match t:
+    case True{}:
+      %WR.u32_eq_nat(d, 0, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}
+      {==}
+    case False{}: zc_1(U32.is_eq(d, 1), d, {==})
+
+def zeros_new(+d: U32) -> {B.zeros(d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:
+  zc_0(U32.is_eq(d, 0), d, {==})
+
 def b32_write(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +p: U32, +q: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(p, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool}, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> {FuluBytes32_d.Bytes32_into_words(O.Words{F.array__thaw(U32, t), n}, p, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
   +b0 = WR.bound(q, 0n, 8n, F.spec_common__pow2(d), hr, {==})

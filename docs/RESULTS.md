@@ -81,10 +81,10 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->370<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->380<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: acceptance exactly by the spec's condition, rejection leaving the object unchanged,
   None outside the length, the length after an accepted set or append, and read-back after set (and
-  append, for the array lists, growth included) for <!-- fig:obj_coll_readback -->40<!-- /fig --> collections: the lists of Data
+  append, growth included) for <!-- fig:obj_coll_readback -->40<!-- /fig --> collections: the lists of Data
   elements, the packed collections of whole-word elements (`proofs/obj/words_rw.bend`,
   `proofs/obj/coll_words.bend`) the boxed lists (`proofs/obj/tarray.bend`,
   `proofs/obj/coll_seq.bend`) and the bit lists and byte collections (`proofs/obj/u32bits.bend`, `proofs/obj/coll_bits.bend`,
@@ -92,7 +92,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: read-back for the list
-of 2048-byte cells and after an append that reallocates a packed list (with room, it is stated), and setter-then-encode where the
+of 2048-byte cells, and setter-then-encode where the
 encode bridge takes storage premises.
 [PREMISES.md](PREMISES.md) section 9.
 
