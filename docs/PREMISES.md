@@ -334,4 +334,13 @@ a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and 
 the append read-back also assumes the storage has room for the new element (no reallocation) and
 that the length is not `2^32 - 1`. For the packed collections of whole-word elements the element's
 first word index `q` is given with `U32.to_nat((i * K) / 4) == q` (the byte offset `i * K` does not
-wrap) and its words below `2^d`.
+wrap) and its words below `2^d`; an append that reallocates states the new depth is below 32 and that the words copied fit in the
+old and the new tree (`hfull`, `hd2`, `b1`, `b2` of `_read_append_grow`).
+
+The spec-value laws (`..._api_view_set`) add to these only what relates the machine index to the spec index: for the packed
+collections of Bytes32, Bytes48 and uint64, `hqe`, that the element's first word `q` is the block base of its index
+(`q == 8 * i`, `12 * i`, `2 * i`); for a uint64 collection, `hcap`, that the storage holds the words of its element count
+(`2 * count <= 2^d`, which the representation invariant gives), because the list view stops at the end of the word list. For the
+record lists they take the old element `x` at the index (`hx`, as the other-index law does) and the index below `2^d`. They
+do not assume the accepted set's index is below the length beyond the guard `hs`, and they state the view, not the guard, so
+they say nothing about the relation of the runtime's guard to the spec's length limit.

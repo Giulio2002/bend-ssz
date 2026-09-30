@@ -43,6 +43,9 @@ proofs/obj/words_rw.bend and the generated proofs/obj/coll_words.bend:
                      before, the written ones
     set_length       an accepted set keeps the length
     read_append      get(append(o, v), old length) returns v, when the storage has room
+    view_set         the spec view after an accepted set is the view before with item i replaced by the view of the new
+                     element (value_set.bend's field_set; the views of the root bridges: view_b32/b48/u64.bend over
+                     words_win.bend for the packed words, view_seq.bend for the record lists with a root view)
     read_append_grow the same when it has none: O.words_fit copies the old words into a zeroed tree
                      of the new depth (words_rw.bend's cpy / fit_grow), and v reads back there
 
@@ -59,6 +62,8 @@ word of the value read back is the value's (docs/RESULTS.md).
 """
 import os
 import re
+import view_laws as VL
+import viewseq
 import sys
 from pathlib import Path
 
@@ -271,10 +276,59 @@ def laws(I, imps):
             n += 1
         if I['data']:
             n += data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c)
+            n += seq_view_law(w, I, DA, T, EL, GS, c, imps)
     elif I['kind'] == 'words' and I.get('put_true'):
         n += words_readback(w, I, q, DA, T, ET, GS, GG, imps) or cells_readback(w, I, q, DA, GS, GG, imps)
     w('')
     return '\n'.join(out), n
+
+
+# the spec view of each packed collection (the object the root and encode bridges state against): (module path,
+# alias, view function, element count as the view reads it, the structural builder the view is built with when it is not
+# view_laws.py's indexed one), by the element kind and whether it is a list or a vector
+VIEWS = {
+    ('b32', 'l'): ('proofs/obj/blist_obj_light.bend', 'BLI', 'BLI.hview', 'U32.to_nat(U32.shrn(n, 5n))', None),
+    ('b32', 'v'): ('proofs/obj/pv_obj_light.bend', 'PVL', 'PVL.pview', 'O.chunks_of(n)', None),
+    ('b48', 'l'): ('proofs/obj/elems48_light.bend', 'EL48L', 'EL48L.eview', 'EL48L.k48(n)', None),
+    ('b48', 'v'): ('proofs/obj/elems48_light.bend', 'EL48L', 'EL48L.eview', 'EL48L.k48(n)', None),
+    ('u64', 'l'): ('proofs/obj/ulist_obj_light.bend', 'UL_L', 'UL_L.uview', 'U32.to_nat(U32.shrn(n, 3n))', 'uitems'),
+    ('u64', 'v'): ('proofs/obj/packed_obj_light.bend', 'PK_L', 'PK_L.vview8', 'U32.to_nat(U32.shrn(n, 3n))', 'it8'),
+}
+
+
+def view_set_law(w, I, c, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS, imps):
+    """the spec view of the collection after an accepted set is the view before with item i replaced by the view
+    of the new element (value_set.bend's field_set: the k-th item of a Sequence), through view_laws.py's view_<kind>.bend"""
+    vw = VIEWS.get((kind, c[0]))
+    if not vw:
+        return 0
+    path, al, VIEW, cnt, conv = vw
+    fam = VL.FAMILIES[kind]
+    imps[al] = path
+    imps['VI_' + kind] = 'proofs/obj/view_%s.bend' % kind
+    imps['VS'] = 'proofs/obj/value_set.bend'
+    imps['S'] = 'types/schema.bend'
+    if kind == 'b32':
+        imps['FX'] = 'proofs/obj/spec_fixed.bend'
+    elif kind == 'b48':
+        imps['RN_L'] = 'proofs/obj/root_names_light.bend'
+    elif kind == 'u64':
+        imps['P'] = 'types/primitive.bend'
+    ES = fam['MK'](xs)
+    base = fam['BASE']('U32.to_nat(i)')
+    premv = prem + ', +hqe: {q == %s : Nat}' % base
+    if conv:
+        premv += ', +hcap: {Nat.is_le(Nat.double(%s), F.spec_common__pow2(d)) == True{} : Bool}' % cnt
+    lhs = '%s(Pair.fst(O.Words, Bool, %s))' % (VIEW, SET)
+    RES = 'VS.field_set(%s(%s), U32.to_nat(i), %s)' % (VIEW, OBJ('t'), ES)
+    w('def %s_api_view_set(%s)\n    -> {%s == %s : S.Value}:' % (c, premv, lhs, RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}' % (GS, VIEW, PUT, RES))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s(_) == %s : S.Value}' % (WRITE, OBJ(TW), kind, largs, VIEW, RES))
+    if conv:
+        w('  VI_%s.view_set_%s(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf, hcap)' % (kind, conv, cnt, ', '.join(xs)))
+    else:
+        w('  VI_%s.view_set(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf)' % (kind, cnt, ', '.join(xs)))
+    return 1
 
 
 def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
@@ -324,8 +378,9 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : U32}' % (GS, LENX('Pair.fst(O.Words, Bool, %s)' % PUT), LEN))
     w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
     w('  {==}')
-    # set, then get another element (its words disjoint from the written ones: after, or before)
     nl = 2
+    nl += view_set_law(w, I, c, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS, imps)
+    # set, then get another element (its words disjoint from the written ones: after, or before)
     PJ = '(j * %s : U32)' % K
     ATS = ', '.join('WR.at(F.array__slots(U32, t), Nat.add(r, %dn))' % k for k in range(W))
     for var, dis in (('after', 'Nat.is_le(Nat.add(q, %dn), r)' % W), ('before', 'Nat.is_le(Nat.add(r, %dn), q)' % W)):
@@ -487,6 +542,35 @@ def grow_parts(nstore, want):
             '+b2: {Nat.is_le(Nat.add(0n, 1n+%s), F.spec_common__pow2(%s)) == True{} : Bool}' % (want, D2, K, K, D2))
     call = 'WR.fit_grow(d, t, %s, %s, hd, pf, hfull, CW.zeros_new(%s), hd2, b1, b2)' % (nstore, want, WDU)
     return {'D2': D2, 'G': G, 'pfG': pfG, 'prem': prem, 'call': call}
+
+
+def seq_view_law(w, I, DA, T, EL, GS, c, imps):
+    """the view xv_<list> (root_types_light.bend) of a list of Data elements after an accepted set: the view before with item i
+    replaced by the new element's view (value_set.bend's field_set), through view_seq.bend"""
+    sp = viewseq.seq_specs().get(c)
+    if not sp:
+        return 0
+    imps['RTL'] = 'proofs/obj/root_types_light.bend'
+    imps['VQ'] = 'proofs/obj/view_seq.bend'
+    imps['VS'] = 'proofs/obj/value_set.bend'
+    imps['S'] = 'types/schema.bend'
+    imps['RN'] = 'proofs/obj/root_names_light.bend'
+    TH = 'F.array__thaw(%s, t)' % EL
+    XV = 'RTL.xv_%s' % c
+    SEQ = lambda a: '%s.%s{%s, n}' % (DA, I['T'], a)
+    GSx = re.sub(r'(?<![\w.])arr(?![\w.])', TH, GS)
+    SETO = '%s.%s_set(%s, i, v)' % (DA, c, SEQ(TH))
+    RES = 'VS.field_set(%s(%s), U32.to_nat(i), %s(v))' % (XV, SEQ(TH), sp['V'])
+    pre = ('+d: Nat, +t: F.array__Tree<%s>, +n: U32, +i: U32, +v: %s, +x: %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+           '+hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, '
+           '+hx: {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(i)) == Some{x} : Maybe<&2, %s>}, '
+           '+pf: {F.array__perfect(%s, d, t) == True{} : Bool}, +hs: {%s == True{} : Bool}' % (EL, EL, EL, EL, EL, EL, EL, GSx))
+    w('def %s_api_view_set(%s)\n    -> {%s(Pair.fst(%s.%s, Bool, %s)) == %s : S.Value}:' % (c, pre, XV, DA, I['T'], SETO, RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s(Pair.fst(%s.%s, Bool, %s.%s_put_in(_, %s, n, i, v))) == %s : S.Value}' % (GSx, XV, DA, I['T'], DA, c, TH, RES))
+    w('  %%Equal.sym(Array<%s>, Array.set(%s, %s, i, v), F.array__thaw(%s, F.array__upd(%s, d, t, U32.to_nat(i), v)), F.array__set(%s, d, t, i, v, x, hd, hi, hx, pf)) :'
+      ' {%s(%s.%s{_, n}) == %s : S.Value}' % (EL, EL, TH, EL, EL, EL, XV, DA, I['T'], RES))
+    w('  VQ.%s_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)' % c)
+    return 1
 
 
 def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
