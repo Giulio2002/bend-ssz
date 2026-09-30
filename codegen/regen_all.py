@@ -29,7 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIRST = ['generate']
-LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'statements', 'doc_figures']
+LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'e2e_setters', 'statements', 'doc_figures']
 # the slowest generators (measured), started first so the pool's tail is short
 HEAVY = ['var_cont_enc', 'var_winb', 'e2e_bridge', 'api_gate', 'spec_laws', 'root_laws_b', 'api_facade', 'valid_laws']
 JOBS = 1

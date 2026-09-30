@@ -68,6 +68,27 @@ For each covered name (`e2e/manifest.json`), in the terms of END_TO_END.bend's m
 Combined with END_TO_END's laws, each bridge says the object API meets the specification
 directly. END_TO_END's statements are frozen; only their proofs were changed.
 
+## Object-mutation laws (field, element and setter access)
+
+Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`:
+
+- field laws, `proofs/obj/fields_*.bend` (`codegen/laws.py`): <!-- fig:obj_field_statements -->1,242<!-- /fig -->
+  statements over <!-- fig:obj_field_containers -->59<!-- /fig --> Fulu containers: read after write,
+  the other fields unchanged, a second write wins;
+- collection laws, `proofs/obj/collections_*.bend` (`codegen/laws.py`): <!-- fig:obj_coll_statements -->103<!-- /fig -->
+  statements over <!-- fig:obj_coll_count -->41<!-- /fig --> collections: rejected writes and appends
+  change nothing and report False, accepted writes keep the length, accepted appends add one;
+- setter laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`): <!-- fig:obj_setter_laws -->127<!-- /fig -->
+  laws over <!-- fig:obj_setter_containers -->27<!-- /fig --> containers: every setter keeps `rep_X`;
+- setter compositions, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`): each setter
+  law applied with the root bridge (<!-- fig:set_root_count -->127<!-- /fig --> statements: the root of `set_f(o, v)`
+  is `API.hash_tree_root` of its view), and with the encode bridge where `rep` is its only premise
+  (<!-- fig:set_encode_count -->7<!-- /fig --> statements, <!-- fig:set_encode_names -->`FuluContributionAndProof`, `FuluProposerSlashing`, `FuluSignedContributionAndProof`<!-- /fig -->).
+
+Not stated: setter-then-encode for the containers whose encode bridge takes storage premises
+(no setter law restates them), `view(set_f(o, v))` as the spec value with field f replaced, and
+laws for the generic-suite names' setters. [PREMISES.md](PREMISES.md) section 9.
+
 ## Conformance (official vectors, through the generated object API)
 
 `benchmarks/evidence/object_conformance.json`: every `mainnet/fulu/ssz_static` case of
