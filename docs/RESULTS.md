@@ -81,10 +81,10 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->279<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->343<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: acceptance exactly by the spec's condition, rejection leaving the object unchanged,
   None outside the length, the length after an accepted set or append, and read-back after set (and
-  append, for the lists of Data elements) for <!-- fig:obj_coll_readback -->27<!-- /fig --> collections: the lists of Data
+  append, for the lists of Data elements) for <!-- fig:obj_coll_readback -->24<!-- /fig --> collections: the lists of Data
   elements and the packed collections of whole-word elements (`proofs/obj/words_rw.bend`,
   `proofs/obj/coll_words.bend`).
 
