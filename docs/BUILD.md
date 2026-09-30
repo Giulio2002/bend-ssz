@@ -48,9 +48,15 @@ checker's files, Bun and the package with the lock's sha256s and refuses a misma
 the bridge statements with the definitions they reach must match `frozen.lock.json`. A deliberate
 statement change is recorded with `python3 tools/verify_frozen.py --update` in the same commit. It
 then runs `tools/verify_no_escapes.py`, and at the end writes `DIR/stamp.json`
-(`tools/check_stamp.py`); the committed `benchmarks/evidence/check_fast.json` is the stamp of the
-last full check, and `python3 tools/check_stamp.py verify benchmarks/evidence/check_fast.json`
-says whether it describes the current tree. Each check runs under the limits it was measured with:
+(`tools/check_stamp.py`: commit, checker commit, the sha256 of both locks, of every checked
+`.bend` file, of each harness script and of the umbrella plan, every planned umbrella's result and
+the totals). A full run (no `--files`) also writes it to `benchmarks/evidence/check_fast.json`,
+which is committed after each full check on the server. The run fails if any umbrella fails *or*
+if any planned umbrella has no result row (a run that died without a verdict); the stamp then
+says `FAILED` and lists the missing umbrellas. `python3 tools/check_stamp.py verify
+benchmarks/evidence/check_fast.json` recomputes the source, harness and lock hashes and exits 0
+only if they equal the stamp's and its verdict is `all files check`, i.e. the tree in hand is
+the one that was checked. Each check runs under the limits it was measured with:
 
 | Limit | Value |
 |---|---|
