@@ -1,8 +1,8 @@
 import Base
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as PF
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as PS
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as VS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as PF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as PS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as VS
 
 # The SHA-256 bridge between the two copies of FIPS 180-4 that were in play.
 # Since both now come from bend-collections (spec/crypto/sha.bend), PF and VF

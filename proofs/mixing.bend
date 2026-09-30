@@ -1,6 +1,6 @@
 import ./basic_root.bend as Padding
 import Base
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 import ../src/mixing.bend as I
 import ../src/merkle.bend as M
 import ../src/primitives.bend as R

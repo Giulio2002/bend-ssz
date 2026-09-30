@@ -10,6 +10,8 @@ and tools/check_fast.sh run it before checking anything, so a verdict is only pr
 pinned checker on the pinned package. Reads a few MB; safe to run anywhere.
 
 Tree hashes (the package): sha256 over the sorted lines "<relative path>\\0<sha256 of file>\\n".
+When the lock records manifest_sha256, the package directory must also be the whole published
+package: its BendHub id, recomputed from its files (hub_id), must be the pinned id.
 """
 import argparse
 import hashlib
@@ -33,6 +35,14 @@ def tree_hash(d):
     return h.hexdigest(), len(files)
 
 
+def hub_id(d):
+    """The BendHub id of a package directory: '0x' + the first 32 hex digits of the sha256 of its
+    manifest, the sorted lines '<sha256 of file> <relative path>' (each ending in a newline)."""
+    files = sorted(os.path.relpath(os.path.join(a, f), d) for a, _, fs in os.walk(d) for f in fs)
+    man = ''.join('%s %s\n' % (file_hash(os.path.join(d, f)), f) for f in files)
+    return '0x' + hashlib.sha256(man.encode()).hexdigest()[:32]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--toolchain', help='checker directory (tools/check.sh BEND_TOOLCHAIN): the files listed under checker.files, and bun if the lock pins one')
@@ -53,6 +63,8 @@ def main():
         got, n = tree_hash(d)
         if got != pkg['tree_sha256']:
             bad.append('%s: tree sha256 %s (%d files), pinned %s' % (d, got, n, pkg['tree_sha256']))
+        elif pkg.get('manifest_sha256') and hub_id(d) != pkg['id']:
+            bad.append('%s: BendHub id %s, pinned %s' % (d, hub_id(d), pkg['id']))
 
     if a.toolchain:
         chk = lock['checker']

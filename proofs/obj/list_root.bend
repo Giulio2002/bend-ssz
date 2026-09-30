@@ -10,7 +10,7 @@ import ../../spec/bit_root.bend as Mix
 import ../../spec/nat_bytes.bend as Len
 import ../../spec/packing.bend as Pack
 import ../../spec/limits.bend as Lim
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
 import ../compact/found.bend as F
 import ./spec_fixed.bend as FX
 import ./mtree_defs.bend as MD

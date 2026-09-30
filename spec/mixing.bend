@@ -1,7 +1,7 @@
 import Base
 import ./primitives.bend as P
 import ../types/primitive.bend as T
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 
 # simple-serialize.md, Merkleization: hash(root || uint256_LE(length)).
 # full_digits is independent arithmetic base-256 expansion of eight limbs.

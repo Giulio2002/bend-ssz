@@ -1,6 +1,6 @@
 import Base
 import ./nat_bytes.bend as Length
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 import ./bitfields.bend as Fields
 import ./bit_packing.bend as Bits
 import ./packing.bend as Pack

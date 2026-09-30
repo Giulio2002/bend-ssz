@@ -13,7 +13,7 @@ import ./mtree_run.bend as MR
 import ./mtree_spec.bend as MS
 import ./words_spec.bend as WS
 import ./sha_node.bend as SN
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
 
 # The progressive chunk tree (SSZ merkleize_progressive) of the runtime:
 # O.ptree over packed words is `pr` over the chunk digests (pt_run), and the

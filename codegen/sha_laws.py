@@ -67,17 +67,17 @@ def emit():
     w = L.append
     w('import Base')
     w('import ../../src/digest.bend as D')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as VS')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as PF')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as PS')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha/packed.bend as PSP')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as VS')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as PF')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as PS')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha/packed.bend as PSP')
     w('import ../../proofs/compact/bits.bend as BT')
     w('import ./sha_bridge.bend as SB')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/buffer.bend as Buf')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/laws.bend as PL')
-    w('import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/proof.bend as PC')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.bend as Buf')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/sha256.bend as PKG')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/laws.bend as PL')
+    w('import 0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/proof.bend as PC')
     w('import ../../spec/merkle.bend as M')
     w('import ../../spec/primitives.bend as P')
     w('')
@@ -281,7 +281,7 @@ def emit_fast():
     equal to the specification for every input (sha256_bytes_eq)."""
     L = []
     w = L.append
-    PKG = '0xe4067e0d858024083f36a7abe7281e89'
+    PKG = '0xd9a2fae439ac7ff9e21e0853948f94fe'
     w('import Base')
     w(f'import {PKG}/spec/crypto/sha.bend as VF')
     w(f'import {PKG}/src/crypto/sha/state.bend as Types')
@@ -592,7 +592,7 @@ def emit_fast():
 
 
 # ---- proofs/obj/sha_hex.bend and proofs/obj/zero_roots.bend ----------------------
-PKG = '0xe4067e0d858024083f36a7abe7281e89'
+PKG = '0xd9a2fae439ac7ff9e21e0853948f94fe'
 HX = [f'X{i:X}' for i in range(16)]
 def hx(v): return HX[v] + '{}'
 def bo(b): return 'True{}' if b else 'False{}'

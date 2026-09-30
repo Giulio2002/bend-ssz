@@ -1,8 +1,8 @@
 import Base
 import ../../src/digest.bend as D
 import ../../spec/merkle.bend as M
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as Types
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as Types
 import ../compact/found.bend as F
 import ./sha_node.bend as SN
 import ./sha_hex.bend as SH

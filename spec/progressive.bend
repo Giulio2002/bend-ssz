@@ -2,7 +2,7 @@ import Base
 import ./tree.bend as Tree
 import ./primitives.bend as P
 import ./packing.bend as Pack
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 
 # SSZ merkleize_progressive: right subtree capacities are 1, 4, 16, ...;
 # the recursive remainder is the LEFT hash input. depth denotes log2(capacity).

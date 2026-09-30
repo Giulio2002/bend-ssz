@@ -5,7 +5,7 @@
     "commit": "5fa6edcca8ab4cf548653e6680b17b9d3e04d225"
   },
   "sha256": {
-    "see": "toolchain.lock.json sha256_package (BendHub 0xe4067e0d858024083f36a7abe7281e89, vendored at vendor/bendhub, tree-hash pinned)"
+    "see": "toolchain.lock.json sha256_package (BendHub 0xd9a2fae439ac7ff9e21e0853948f94fe, vendored at vendor/bendhub, tree-hash pinned)"
   },
   "vectors": {
     "url": "https://github.com/ethereum/consensus-specs/releases/download/v1.6.1/general.tar.gz",

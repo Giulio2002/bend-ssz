@@ -8,7 +8,7 @@ import ../spec/merkle.bend as M
 import ../spec/packing.bend as Pack
 import ../spec/primitives.bend as P
 import ../src/primitives.bend as R
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 import ../HASH_PROOF.bend as Hash
 import ./merkle.bend as Nodes
 import ./packing.bend as Packing

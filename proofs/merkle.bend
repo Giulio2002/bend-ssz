@@ -4,7 +4,7 @@ import ../src/sha256.bend as H
 import ../spec/merkle.bend as S
 import ../spec/primitives.bend as P
 import ../src/primitives.bend as Runtime
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 import ../HASH_PROOF.bend as Hash
 import ./primitives.bend as Basic
 import ./primitive_invariants.bend as V

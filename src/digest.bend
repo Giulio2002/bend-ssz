@@ -1,11 +1,11 @@
 import Base
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/sha256.bend as PKG
 
 # A 32-byte SSZ chunk held as eight big-endian words instead of thirty-two
 # list cells, and the single hashing primitive SSZ merkleization needs.
 #
 # Hashing goes through the packed SHA-256 of bend-collections (BendHub package
-# `0xe4067e0d858024083f36a7abe7281e89`, src/crypto/sha/packed/), whose sole
+# `0xd9a2fae439ac7ff9e21e0853948f94fe`, src/crypto/sha/packed/), whose sole
 # production entry point takes a packed `Array<U32>` and a byte length and
 # returns eight packed words. Nothing on this path builds, walks or consumes a
 # linked list: the sixteen input words are written into a sixteen-slot array

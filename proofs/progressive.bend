@@ -8,7 +8,7 @@ import ../src/tree.bend as T
 import ../spec/tree.bend as TS
 import ../src/lists.bend as Lists
 import ../src/sha256.bend as Hash
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as FIPS
 import ../HASH_PROOF.bend as H
 import ./tree.bend as Tree
 import ./lists.bend as L

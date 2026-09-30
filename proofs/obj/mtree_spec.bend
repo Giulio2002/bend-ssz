@@ -3,7 +3,7 @@ import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../spec/tree.bend as Tr
 import ../../spec/merkle.bend as M
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
 import ./mtree_defs.bend as MD
 import ./sha_node.bend as SN
 import ./zero_roots.bend as ZR

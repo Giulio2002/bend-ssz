@@ -43,9 +43,13 @@ Trusted (not proved here):
   outside `src/`, `types/`, `spec/` (the object views, `rep` invariants and their helpers); `tools/verify_frozen.py` checks it, and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
-- **SHA-256.** The BendHub package `0xe4067e0d858024083f36a7abe7281e89` (bend-collections),
-  vendored at `vendor/bendhub/` and pinned by tree hash in `toolchain.lock.json` (the checks use
-  the vendored copy unless `BEND_LIB` names another, which must hash the same). Its FIPS 180-4
+- **SHA-256.** The BendHub package `bend-collections@1.0.0.0` = `0xd9a2fae439ac7ff9e21e0853948f94fe`
+  (bend-collections' Bend 2.0.34 port), vendored whole (142 files) at `vendor/bendhub/` and pinned
+  in `toolchain.lock.json` by tree hash and by its BendHub id, which `tools/verify_pins.py`
+  recomputes from the files (the first 128 bits of the sha256 of its manifest), so the vendored
+  copy is exactly the published package (the checks use it unless `BEND_LIB` names another, which
+  must hash the same). What is trusted from it: the FIPS 180-4 model and nothing else; the
+  package's own proofs are checked as part of every check that imports them. Its FIPS 180-4
   model (`spec/crypto/sha.bend`) is part of the specification: `spec/merkle.bend`,
   `spec/progressive.bend` and the other root specs hash with it. Its byte API, which `src/`
   runs, is proved against that model inside the package. Every official root vector passing

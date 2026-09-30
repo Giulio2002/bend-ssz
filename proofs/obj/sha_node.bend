@@ -1,16 +1,16 @@
 import Base
 import ../../src/digest.bend as D
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as VS
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as PF
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as PS
-import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha/packed.bend as PSP
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as VS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as PF
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/state.bend as PS
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha/packed.bend as PSP
 import ../../proofs/compact/bits.bend as BT
 import ./sha_bridge.bend as SB
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/buffer.bend as Buf
-import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG
-import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/laws.bend as PL
-import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/proof.bend as PC
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.bend as Buf
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/sha256.bend as PKG
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/laws.bend as PL
+import 0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/proof.bend as PC
 import ../../spec/merkle.bend as M
 import ../../spec/primitives.bend as P
 
