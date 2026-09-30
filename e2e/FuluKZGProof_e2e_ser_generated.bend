@@ -23,3 +23,9 @@ def FuluKZGProof_e2e_serialize_refused(+o: FuluBytes48_d.Bytes48, +v: {W_types_F
 def FuluKZGProof_e2e_serialize(+o: FuluBytes48_d.Bytes48, +v: {W_types_FuluBytes48_encode_ssz_generated.b48_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluKZGProof_encode_ssz_generated.KZGProof_serialize(o)))} == API.serialize(W_spec_fulu_schemas.KZGProof(), W_proofs_obj_root_names_light.v_b48(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluKZGProof_encode_ssz_generated.KZGProof_serialize(o), O.encoded(W_types_FuluKZGProof_encode_ssz_generated.KZGProof_encode(o)), FuluKZGProof_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.KZGProof(), W_proofs_obj_root_names_light.v_b48(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluKZGProof_e2e_generated.FuluKZGProof_e2e_encode(o)
+
+def FuluKZGProof_e2e_valid_default() -> {W_types_FuluBytes48_encode_ssz_generated.b48_valid(FuluBytes48_d.b48_default()) == True{} : Bool}:
+  {==}
+
+def FuluKZGProof_e2e_valid_total(+o: FuluBytes48_d.Bytes48) -> {W_types_FuluBytes48_encode_ssz_generated.b48_valid(o) == True{} : Bool}:
+  {==}

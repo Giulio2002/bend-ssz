@@ -22,3 +22,9 @@ def FuluDepositRequest_e2e_serialize_refused(+o: FuluDepositRequest_d.DepositReq
 def FuluDepositRequest_e2e_serialize(+o: FuluDepositRequest_d.DepositRequest, +v: {W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_serialize(o)))} == API.serialize(W_spec_fulu_schemas.DepositRequest(), W_proofs_obj_root_names_light.v_DepositRequest(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_serialize(o), O.encoded(W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_encode(o)), FuluDepositRequest_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.DepositRequest(), W_proofs_obj_root_names_light.v_DepositRequest(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluDepositRequest_e2e_generated.FuluDepositRequest_e2e_encode(o)
+
+def FuluDepositRequest_e2e_valid_default() -> {W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_valid(FuluDepositRequest_d.DepositRequest_default()) == True{} : Bool}:
+  {==}
+
+def FuluDepositRequest_e2e_valid_total(+o: FuluDepositRequest_d.DepositRequest) -> {W_types_FuluDepositRequest_encode_ssz_generated.DepositRequest_valid(o) == True{} : Bool}:
+  {==}

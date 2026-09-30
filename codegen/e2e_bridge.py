@@ -3419,7 +3419,7 @@ def main():
     # theorems (*_e2e_comp_generated.bend) to codegen/e2e_compose.py, the setter compositions
     # (*_e2e_set_generated.bend) to codegen/e2e_setters.py, the validating serializer (*_e2e_ser_generated.bend)
     # to codegen/serialize_e2e.py
-    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend', '_e2e_decrep_generated.bend', '_e2e_set_generated.bend', '_e2e_ser_generated.bend'))] if OUT.exists() else []
+    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend', '_e2e_decrep_generated.bend', '_e2e_set_generated.bend', '_e2e_ser_generated.bend', '_e2e_uintdom_generated.bend'))] if OUT.exists() else []
     out = RR.rewire_out(out)
     import retired  # modules nothing imports: not written (codegen/retired.py)
     out = retired.drop(out)

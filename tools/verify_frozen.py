@@ -128,13 +128,20 @@ WHOLE = ('spec/', 'vendor/', 'END_TO_END.bend')
 # encoder, decoder and root (pinned by the bridges) and the model API src/model.bend (pinned by
 # END_TO_END's frozen laws).
 SUBJECT = re.compile(r'^(src/model\.bend|types/\w+_(encode_ssz|decode_ssz|hashtreeroot)_generated\.bend)$')
+# The exception to that carve-out: the validity predicates of the generated encoders (X_valid and the
+# helpers it is built from, X_va0 ..., X_va_back). They are not the implementation under test but the
+# premise of the validating-serializer statements (e2e/*_e2e_ser_generated.bend: `X_valid(o) == True`),
+# so a weakened predicate would weaken what those statements say: they are hashed and traversed.
+PREMISE_SIDE = re.compile(r'(_valid|_va\d+|_va_back|_va)$')
 _mods = {}
 _override = {}  # path -> text, for the planted-change self-test only
 
 
-def boundary(path):
+def boundary(path, name=None):
     # the whole-locked types/ files (types/schema.bend, types/fulu_model.bend, ...) are not
     # traversed; proofs/obj/generic_specs.bend, locked whole too, still is (as before)
+    if SUBJECT.match(path) and path.startswith('types/') and name is not None and PREMISE_SIDE.search(name):
+        return False
     return (path.startswith(WHOLE) or bool(SUBJECT.match(path))
             or (path in _whole_set() and path.startswith(('src/', 'types/'))))
 
@@ -204,7 +211,7 @@ def statement_defs(only=None):
             if m.group(1) in defs and m.group(1) not in skip:
                 refs.append((path, m.group(1)))
         for tgt, name in refs:
-            if boundary(tgt) or (tgt, name) in seen:
+            if boundary(tgt, name) or (tgt, name) in seen:
                 continue
             if not os.path.exists(os.path.join(ROOT, tgt)):
                 continue
@@ -236,6 +243,15 @@ PLANTED = [
      'type Checkpoint is Data:\n  Checkpoint{epoch: O.U64}', True),
     ('e2e/FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_encode_ssz_generated.bend',
      'Checkpoint_encode', 'def Checkpoint_encode(o: C.Checkpoint) -> Nat: 0n', False),
+    # the validity predicate of the validating serializer is premise-side: hashed (a serializer that
+    # always refuses would otherwise pass with `valid` weakened or strengthened); the serializer
+    # itself is the implementation under test, like the encoder
+    ('e2e/FuluCheckpoint_e2e_ser_generated.bend', 'types/FuluCheckpoint_encode_ssz_generated.bend',
+     'Checkpoint_valid', 'def Checkpoint_valid(o: C.Checkpoint) -> Bool: False{}', True),
+    ('e2e/uint8_e2e_ser_generated.bend', 'types/uint8_encode_ssz_generated.bend',
+     'u8_valid', 'def u8_valid(+o: U32) -> Bool: True{}', True),
+    ('e2e/uint8_e2e_ser_generated.bend', 'types/uint8_encode_ssz_generated.bend',
+     'uint8_serialize', 'def uint8_serialize(+o: U32) -> O.Encoded: O.refused()', False),
 ]
 
 

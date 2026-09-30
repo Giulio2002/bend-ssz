@@ -23,3 +23,9 @@ def bitvector_512_e2e_serialize_refused(+o: Fulu_bitvector_512_d.Bitvector512, +
 def bitvector_512_e2e_serialize(+o: Fulu_bitvector_512_d.Bitvector512, +v: {W_types_Fulu_bitvector_512_encode_ssz_generated.bv512_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_512_encode_ssz_generated.bitvector_512_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_512(), W_proofs_obj_root_gnames_light.v_bv512(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_512_encode_ssz_generated.bitvector_512_serialize(o), O.encoded(W_types_bitvector_512_encode_ssz_generated.bitvector_512_encode(o)), bitvector_512_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_512(), W_proofs_obj_root_gnames_light.v_bv512(o)) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_512_e2e_generated.bitvector_512_e2e_encode(o)
+
+def bitvector_512_e2e_valid_default() -> {W_types_Fulu_bitvector_512_encode_ssz_generated.bv512_valid(Fulu_bitvector_512_d.bv512_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_512_e2e_valid_total(+o: Fulu_bitvector_512_d.Bitvector512) -> {W_types_Fulu_bitvector_512_encode_ssz_generated.bv512_valid(o) == True{} : Bool}:
+  {==}

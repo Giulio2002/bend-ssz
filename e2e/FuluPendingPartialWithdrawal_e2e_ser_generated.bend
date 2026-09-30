@@ -22,3 +22,9 @@ def FuluPendingPartialWithdrawal_e2e_serialize_refused(+o: FuluPendingPartialWit
 def FuluPendingPartialWithdrawal_e2e_serialize(+o: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, +v: {W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_serialize(o)))} == API.serialize(W_spec_fulu_schemas.PendingPartialWithdrawal(), W_proofs_obj_root_names_light.v_PendingPartialWithdrawal(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_serialize(o), O.encoded(W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_encode(o)), FuluPendingPartialWithdrawal_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.PendingPartialWithdrawal(), W_proofs_obj_root_names_light.v_PendingPartialWithdrawal(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluPendingPartialWithdrawal_e2e_generated.FuluPendingPartialWithdrawal_e2e_encode(o)
+
+def FuluPendingPartialWithdrawal_e2e_valid_default() -> {W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_valid(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()) == True{} : Bool}:
+  {==}
+
+def FuluPendingPartialWithdrawal_e2e_valid_total(+o: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> {W_types_FuluPendingPartialWithdrawal_encode_ssz_generated.PendingPartialWithdrawal_valid(o) == True{} : Bool}:
+  {==}

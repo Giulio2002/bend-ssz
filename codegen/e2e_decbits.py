@@ -43,6 +43,8 @@ import ../spec/bit_root.bend as Bm
 import ../types/schema.bend as TS
 import ../proofs/division.bend as DV
 import ../proofs/bit_chunk_count.bend as BCC
+import ./e2e_bitv.bend as BTV
+import ./e2e_bitl.bend as BLT
 import ./e2e_dz.bend as DZ
 import ./e2e_hv.bend as HV
 """
@@ -600,6 +602,29 @@ def dispatch_d(d):
     return (f'def bwd{d}({COMMON_PS},\n    +AK: U32, +eAK: {{U32.to_nat(AK) == m : Nat}}, {extra_ps})\n    -> BOL.rep_bits({OB}, TS.BitList{{NL}}):\n  match AK:\n' + '\n'.join(rows) + '\n')
 
 
+SDBX = """
+# ---- the bit list storage premises of the encode laws from e2e_bitv.sdbv (their conjuncts) ----
+def sdbv_sdb(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdb(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (T, (dw, (K, (eo, (pT, hd)))))
+
+def sdbv_sdbc(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdbc(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (+hr, +hv) = x6
+  (T, (dw, (K, (eo, (pT, (hd, hr))))))
+"""
+
+
 ARITH = """
 # ---- arithmetic ----
 law rot1:
@@ -771,6 +796,7 @@ def cases():
         for v in range(32):
             out.append(case00() if (d == 0 and v == 0) else case(d, v))
         out.append(dispatch_d(d))
+    out.append(SDBX)
     out.append(TOP)
     return '\n'.join(out)
 

@@ -1503,6 +1503,15 @@ def build(name, lf=None):
             seen[pt] = pn
             txt += f'def {pn}() -> {pt}:\n  {term}\n\n'
         txt += f'def {wn}() -> {concl}:\n  {app}\n\n'
+    # the total-size premise hZ at the default (and non-empty) object, stated on its own: the composed theorems of a
+    # heavy name take n < 2^31 (docs/PREMISES.md, section 3), and a decoded object re-encodes to n bytes, so this is
+    # the instance of that hypothesis at the object's own encoding size
+    for pr, wn, concl, app in sections:
+        for pn, pt, term in pr:
+            if pn in ('premise_hZ', 'premise_ne_hZ'):
+                suffix = '_nonempty' if pn.startswith('premise_ne') else ''
+                txt += (f'# the size premise hZ holds of the {"non-empty" if suffix else "default"} object: its encoding is below 2^31 bytes\n'
+                        f'def {name}_e2e_witness_size{suffix}() -> {pt}:\n  {seen[pt]}()\n\n')
     return txt.rstrip('\n') + '\n'
 
 

@@ -22,3 +22,9 @@ def uint128_e2e_serialize_refused(+o: uint128_d.Uint128, +v: {W_types_uint128_en
 def uint128_e2e_serialize(+o: uint128_d.Uint128, +v: {W_types_uint128_encode_ssz_generated.u128_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_uint128_encode_ssz_generated.uint128_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.uint128(), W_proofs_obj_root_gnames_light.v_u128(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_uint128_encode_ssz_generated.uint128_serialize(o), O.encoded(W_types_uint128_encode_ssz_generated.uint128_encode(o)), uint128_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.uint128(), W_proofs_obj_root_gnames_light.v_u128(o)) : Maybe<&2, +List<U32>>}
   W_e2e_uint128_e2e_generated.uint128_e2e_encode(o)
+
+def uint128_e2e_valid_default() -> {W_types_uint128_encode_ssz_generated.u128_valid(uint128_d.u128_default()) == True{} : Bool}:
+  {==}
+
+def uint128_e2e_valid_total(+o: uint128_d.Uint128) -> {W_types_uint128_encode_ssz_generated.u128_valid(o) == True{} : Bool}:
+  {==}

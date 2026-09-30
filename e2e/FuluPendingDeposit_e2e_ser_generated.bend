@@ -22,3 +22,9 @@ def FuluPendingDeposit_e2e_serialize_refused(+o: FuluPendingDeposit_d.PendingDep
 def FuluPendingDeposit_e2e_serialize(+o: FuluPendingDeposit_d.PendingDeposit, +v: {W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_serialize(o)))} == API.serialize(W_spec_fulu_schemas.PendingDeposit(), W_proofs_obj_root_names_light.v_PendingDeposit(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_serialize(o), O.encoded(W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_encode(o)), FuluPendingDeposit_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.PendingDeposit(), W_proofs_obj_root_names_light.v_PendingDeposit(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluPendingDeposit_e2e_generated.FuluPendingDeposit_e2e_encode(o)
+
+def FuluPendingDeposit_e2e_valid_default() -> {W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_valid(FuluPendingDeposit_d.PendingDeposit_default()) == True{} : Bool}:
+  {==}
+
+def FuluPendingDeposit_e2e_valid_total(+o: FuluPendingDeposit_d.PendingDeposit) -> {W_types_FuluPendingDeposit_encode_ssz_generated.PendingDeposit_valid(o) == True{} : Bool}:
+  {==}

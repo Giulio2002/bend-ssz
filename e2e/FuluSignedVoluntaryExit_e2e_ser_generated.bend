@@ -22,3 +22,9 @@ def FuluSignedVoluntaryExit_e2e_serialize_refused(+o: FuluSignedVoluntaryExit_d.
 def FuluSignedVoluntaryExit_e2e_serialize(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +v: {W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SignedVoluntaryExit(), W_proofs_obj_root_names_light.v_SignedVoluntaryExit(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_serialize(o), O.encoded(W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_encode(o)), FuluSignedVoluntaryExit_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SignedVoluntaryExit(), W_proofs_obj_root_names_light.v_SignedVoluntaryExit(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSignedVoluntaryExit_e2e_generated.FuluSignedVoluntaryExit_e2e_encode(o)
+
+def FuluSignedVoluntaryExit_e2e_valid_default() -> {W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_valid(FuluSignedVoluntaryExit_d.SignedVoluntaryExit_default()) == True{} : Bool}:
+  {==}
+
+def FuluSignedVoluntaryExit_e2e_valid_total(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> {W_types_FuluSignedVoluntaryExit_encode_ssz_generated.SignedVoluntaryExit_valid(o) == True{} : Bool}:
+  {==}

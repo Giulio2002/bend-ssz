@@ -21,6 +21,10 @@ def bvs31(+w: U32, +e: {U32.is_lt(w, 2147483648) == True{} : Bool}) -> {w == U32
     case U32{+x}:
       Equal.cong(Word(32n), U32, z => U32{z}, x, WSp.join(31n, 1n, WSp.take(31n, 32n, x), Word.zero(1n)), V.shz(31n, 0n, x, e))
 
+def bvt31(+w: U32, +e: {w == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(w)), Word.zero(1n))} : U32}) -> {U32.is_lt(w, 2147483648) == True{} : Bool}:
+  %Equal.sym(U32, w, U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(w)), Word.zero(1n))}, e) : {U32.is_lt(_, 2147483648) == True{} : Bool}
+  V.lt_sh(31n, 0n, WSp.take(31n, 32n, PD.bits(w)))
+
 def bitvector_511_e2e_serialize_ok(+o: bitvector_511_d.Bitvector511, +v: {W_types_bitvector_511_encode_ssz_generated.bv511_valid(o) == True{} : Bool}) -> {W_types_bitvector_511_encode_ssz_generated.bitvector_511_serialize(o) == O.encoded(W_types_bitvector_511_encode_ssz_generated.bitvector_511_encode(o)) : O.Encoded}:
   %Equal.sym(Bool, W_types_bitvector_511_encode_ssz_generated.bv511_valid(o), True{}, v) : {W_types_bitvector_511_encode_ssz_generated.bitvector_511_ser_pick(_, o) == O.encoded(W_types_bitvector_511_encode_ssz_generated.bitvector_511_encode(o)) : O.Encoded}
   {==}
@@ -36,3 +40,10 @@ def bitvector_511_ser_prem(+o: bitvector_511_d.Bitvector511, +v: {W_types_bitvec
 def bitvector_511_e2e_serialize(+o: bitvector_511_d.Bitvector511, +v: {W_types_bitvector_511_encode_ssz_generated.bv511_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_bitvector_511_encode_ssz_generated.bitvector_511_serialize(o)))} == API.serialize(W_proofs_obj_generic_specs.bitvector_511(), S.BitsValue{W_proofs_obj_gbits_bitvector_511_light.bitvector_511_bits(o)}) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_bitvector_511_encode_ssz_generated.bitvector_511_serialize(o), O.encoded(W_types_bitvector_511_encode_ssz_generated.bitvector_511_encode(o)), bitvector_511_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_proofs_obj_generic_specs.bitvector_511(), S.BitsValue{W_proofs_obj_gbits_bitvector_511_light.bitvector_511_bits(o)}) : Maybe<&2, +List<U32>>}
   W_e2e_bitvector_511_e2e_generated.bitvector_511_e2e_encode(o, bitvector_511_ser_prem(o, v))
+
+def bitvector_511_e2e_valid_default() -> {W_types_bitvector_511_encode_ssz_generated.bv511_valid(bitvector_511_d.bv511_default()) == True{} : Bool}:
+  {==}
+
+def bitvector_511_e2e_valid_of_prem(+o: bitvector_511_d.Bitvector511, +p: {W_proofs_obj_gbits_bitvector_511_light.bitvector_511_last(o) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(W_proofs_obj_gbits_bitvector_511_light.bitvector_511_last(o))), Word.zero(1n))} : U32}) -> {W_types_bitvector_511_encode_ssz_generated.bv511_valid(o) == True{} : Bool}:
+  match o:
+    case bitvector_511_d.Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bvt31(w15, p)

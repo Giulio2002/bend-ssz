@@ -25,12 +25,12 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
   run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->14<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`<!-- /fig -->.
+  <!-- fig:decrep_count -->32<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->188<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->206<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
@@ -39,34 +39,55 @@ the laws only through that gap; the official vectors (295 ssz_static cases: deco
 re-encode, root) are the evidence for it today.
 
 **The validating serializer.** `X_serialize` is the public encoder: it encodes a valid object and
-refuses an invalid one (`X_valid`, generated with the encoder). For the <!-- fig:ser_count -->98<!-- /fig --> names whose
-object is plain `Data` (the integers, byte vectors, bit vectors, the fixed-size Fulu containers and
-the small test structs), `e2e/<Name>_e2e_ser_generated.bend` (`codegen/serialize_e2e.py`) states, with
-no premise but validity:
+refuses an invalid one (`X_valid`, generated with the encoder). `e2e/<Name>_e2e_ser_generated.bend`
+(`codegen/serialize_e2e.py`, <!-- fig:ser_files -->170<!-- /fig --> names) states, per name:
 
-- `<Name>_e2e_serialize(o, v: X_valid(o) == True)`: the serializer's bytes are exactly END_TO_END's
-  `serialize` of the object's value (the conclusion of `<Name>_e2e_encode`);
-- `<Name>_e2e_serialize_ok`: `X_serialize(o) == O.encoded(X_encode(o))`;
-- `<Name>_e2e_serialize_refused(o, v: X_valid(o) == False)`: `X_serialize(o) == O.refused()`.
+- *Soundness.* `<Name>_e2e_serialize(o, v: X_valid(o) == True)`: the serializer's bytes are exactly
+  END_TO_END's `serialize` of the object's value (the conclusion of `<Name>_e2e_encode`);
+  `<Name>_e2e_serialize_ok`: `X_serialize(o) == O.encoded(X_encode(o))`; `<Name>_e2e_serialize_refused(o,
+  v: X_valid(o) == False)`: `X_serialize(o) == O.refused()`.
+- *Non-vacuity.* `<Name>_e2e_valid_default`: `X_valid` holds of the default object (for every one of the
+  <!-- fig:ser_files -->170<!-- /fig --> names), so the soundness statement applies to a concrete object and a serializer that always
+  refuses cannot satisfy it (its bytes would be empty, not the spec's). For the <!-- fig:ser_total -->74<!-- /fig --> names whose
+  validity is `True` for every object, `<Name>_e2e_valid_total(o)` states it of *every* object: they never refuse, so
+  their `_refused` law is vacuous and that is now a stated fact, not an omission (and every object a decoder returns for
+  them is valid). For the other 24 and for the 72 packed and byte vectors, that a decoded object is valid is not stated: it is a fact
+  about the decoder's writers (the round trip through the object API), which the decode bridges do not cover.
+- *Completeness.* For the <!-- fig:ser_prem -->24<!-- /fig --> names whose encode bridge takes a premise (`e` or `rp`: uint8, uint16,
+  Bytes1, ParticipationFlags, the four test structs of uint8/uint16 fields, and the 16 bit vectors with a partial last
+  word), `<Name>_e2e_valid_of_prem(o, p)` is the converse of the derivation of that premise from validity: the premise
+  implies `X_valid(o) == True`. So refusal is exactly the failure of the bridge's own premise (`X_valid` iff `p`).
+  For the <!-- fig:ser_domain -->8<!-- /fig --> names uint8, uint16, ParticipationFlags, Bytes1, FixedTestStruct, SmallTestStruct,
+  SingleFieldTestStruct and ProgressiveSingleFieldContainerTestStruct, `<Name>_e2e_serialize_domain(o, v: X_valid(o) ==
+  False)` ties refusal to the spec: `API.serialize(Spec.X(), view(o)) == None`, the spec itself has no encoding of the
+  value (a uint8 above 255, a uint16 above 65535, a byte above 255, or a container with such a field;
+  `e2e/ser_e2e_uintdom_generated.bend` proves it on the bits of the word, `e2e/e2e_valid.bend` lifts it through the
+  container). For these names `X_valid` holds exactly when the value is in the spec's domain.
 
-The encode bridge's own premise (none, `e`, or `rp`) is derived from `X_valid(o) == True` (`X_ser_prem`
-in the same file, with the lemmas of `e2e/e2e_valid.bend`): `u8_valid`/`u16_valid` give `rp_u8`/`rp_u16`
-and a container's `Bool.and` of them gives its `rp`; a bit vector's `is_lt(last word, 2^r)` gives the
-last-word shape `e`. The refused laws are vacuous for a name whose `X_valid` is `True` for every object.
+Not stated, and why. (1) *The 16 bit vectors with a partial last word* (`bitvector_{1..9,15,16,17,31,33,511,513}`):
+the object's view keeps the first n bits of the word, so a stray bit above bit n does not change the spec value, the
+spec has an encoding for the view, and refusal is a statement about the object's storage (the encoder would copy the
+stray bit into the output and differ from the spec), not about the spec's domain. The precise statement is the
+`valid_of_prem` iff above: refusal exactly when the last word is not `join(n low bits, zeros)`. (2) *The packed and
+byte vectors* (`vec_*`, `Blob`, `Cell`, <!-- fig:ser_lin_count -->72<!-- /fig --> names): the serializer threads the object (`X_serialize(o)` is an object and an
+`O.Encoded`), so their `_e2e_serialize` takes the bridge's own premises (`rep`, `hc`, ...) and `hv: {(o, True) ==
+X_valid(o)}` (the validity pass returned the object unchanged with True); `hv` is a hypothesis, not derived,
+because `O.bools_ok` and `O.words_ok` hand the array back through `Array.get` pairs and no lemma states that they
+return it unchanged. `<Name>_e2e_valid_default` states `hv` of the default object. Refusal is not tied to the spec's
+domain for them: the view `vview*` of a words object is meaningful only under `rep` (a perfect tree), and `X_valid` checks
+lengths, capacity and byte ranges, not the tree (the next paragraph). (3) *The 70 names without serializer statements*:
+the 18 bit lists, `progbitlist`, the 7 progressive lists, BitsStruct, CompatibleUnionA/ABCA/BC, ComplexTestStruct,
+VarTestStruct, the five Progressive* test structs, `Transaction`, the four Branch names, and every Fulu container
+with a variable-size or packed-vector field (`Attestation`, `BeaconBlock`, `BeaconBlockBody`, `BeaconState`,
+`LightClient*`, `ExecutionPayload`, ...). Their serializer is a size pass and per-field checked writers (`putk`; the fixed-size containers of packed vectors
+(`BlobSidecar`, `Deposit`, `HistoricalBatch`, `MatrixEntry`, `SyncCommittee`, `ProposerSlashing`, `ContributionAndProof`,
+`SignedContributionAndProof`, the four Branches) have the writer chain only). The result of a checked writer is `poisoned` past
+2^31, and its equality with the encoder needs a bound on the size the writer returns (`O.put_bits_n`, `O.put_words`,
+the per-field `_size`) that no law states; proving it is a proof per writer shape, not one statement per name, and is
+not done. The same 70 names are the ones whose `rep`/`hs*` premises
+cannot be derived from validity.
 
-For the <!-- fig:ser_lin_count -->72<!-- /fig --> fixed-size packed vectors and byte vectors (`vec_*`, `Blob`, `Cell`), whose serializer
-threads the object (`X_serialize(o)` is a pair of the object and an `O.Encoded`),
-`<Name>_e2e_serialize` takes the bridge's own premises (`rep`, `hc`, ...) and one more,
-`hv: {(o, True) == X_valid(o)}` (the validity pass returned the object unchanged with True), and gives the same
-conclusion (`Some{obytes(ser_out(Pair.snd(X_serialize(o))))} == API.serialize(Spec.X(), view(o))`);
-`<Name>_e2e_serialize_ok` states `X_serialize(o) == (object of X_encode(o), O.encoded(bytes of X_encode(o)))`
-and `<Name>_e2e_serialize_refused` that a failing pass gives `(o, O.refused())`. `hv` is a hypothesis, not derived:
-`O.bools_ok` and the checked writers hand the array back through `Array.get` pairs, so that the returned object is `o`
-is a fact about the array primitives that no lemma states yet. The other threading names (bit lists, progressive
-lists, `Transaction`, the branches, every variable-size container) have serializers through a size pass and per-field
-checked writers and are not covered by these statements yet.
-
-**Why validity does not give `rep` for the other 142 names** (bit lists, packed vectors,
+**Why validity does not give `rep` for the 142 non-data names** (bit lists, packed vectors,
 progressive lists, the variable-size containers). `rep_X`, `hs*`, `hc*`, `sd*` assert that the
 object's word storage is `thaw(T)` of a perfect tree of depth below 31 (`WO.wf1`, `BL.sdb`,
 `E3.at_depth`, ...). `X_valid` (`O.words_ok`, `O.bits_ok`, `O.bools_ok`, the checked writers) only
@@ -75,7 +96,12 @@ tree, and no lemma turns an arbitrary `Array<U32>` back into a tree (there is no
 So `X_valid(o) = True` implies `rep_X` for those names only together with the fact that the object came
 from the API (a decoder or a checked setter), which is a property of how objects are produced, not of the
 predicate. Their serializer statements keep `rep` and the storage premises as explicit hypotheses beside
-validity (see below).
+validity.
+
+**The lock.** `tools/verify_frozen.py` hashes the validity predicates the serializer statements name (`X_valid`
+and the helpers it is built from, in `types/*_encode_ssz_generated.bend`, which otherwise count as the implementation under
+test), so a weakened or strengthened `valid` changes the lock; the serializer `X_serialize` itself is proved, not
+hashed. Its self-test plants a change to `Checkpoint_valid` and `u8_valid` (must trip) and to `uint8_serialize` (must not).
 
 ## Premises per name
 
@@ -238,6 +264,17 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
   it stays a premise.
 - **`hm<j>`** (`hm7`, `hm12`, ...; the manifest writes `hM_j`): FuluBeaconState only. Each byte-storage
   list `j` has its bytes below 2^31, its share of the total that `hZ` bounds.
+- **`h31` in the composed theorems (FuluBeaconState).** `<Name>_e2e_decode_encode` and `_decode_root` of
+  a name with `hZ` take the explicit hypothesis `h31: U32.to_nat(n) < 2^31` on the input length. It is `hZ`
+  restated on the input: the decoded object re-encodes to exactly the input (that is the theorem), so
+  its encoding size is `n`, and `e2e/e2e_dbs.bend` (`szr`, `hz`) proves `hZ` from `n < 2^31` by the telescoping
+  of the codec's offsets. The bound is the encode laws' own (section 2, the container encode limit); it is not the
+  API's U32 byte length, which is `hS` (`n <= NMAX = 2^32 - 32`) and is also a hypothesis of the composed theorem.
+  Non-vacuity: `<Name>_e2e_witness_size` (and `_nonempty`) in `e2e/<Name>_e2e_witness_generated.bend` states `hZ`
+  of the default and the non-empty object, so the bound holds of real objects (the default state encodes to
+  2,737,809 bytes); every other premise of the composed theorem is proved of the decoder's object for every accepted
+  input (`e2e/<Name>_e2e_decrep_generated.bend`). Not computed: the decode of the default state's encoding itself
+  (a 2.7 MB input whose word positions are unary Nats in the checker).
 - **Per-object totals `TOT_<Name>`**: ProgressiveTestStruct, ProgressiveComplexTestStruct: the
   fixed part plus the measures of the list fields below 2^31, plus one size measure per unbounded
   list field (word-list length, 4 N of a record list, `EL.LL` of a variable-element list).

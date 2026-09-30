@@ -22,3 +22,9 @@ def FuluConsolidationRequest_e2e_serialize_refused(+o: FuluConsolidationRequest_
 def FuluConsolidationRequest_e2e_serialize(+o: FuluConsolidationRequest_d.ConsolidationRequest, +v: {W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_serialize(o)))} == API.serialize(W_spec_fulu_schemas.ConsolidationRequest(), W_proofs_obj_root_names_light.v_ConsolidationRequest(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_serialize(o), O.encoded(W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_encode(o)), FuluConsolidationRequest_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.ConsolidationRequest(), W_proofs_obj_root_names_light.v_ConsolidationRequest(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluConsolidationRequest_e2e_generated.FuluConsolidationRequest_e2e_encode(o)
+
+def FuluConsolidationRequest_e2e_valid_default() -> {W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_valid(FuluConsolidationRequest_d.ConsolidationRequest_default()) == True{} : Bool}:
+  {==}
+
+def FuluConsolidationRequest_e2e_valid_total(+o: FuluConsolidationRequest_d.ConsolidationRequest) -> {W_types_FuluConsolidationRequest_encode_ssz_generated.ConsolidationRequest_valid(o) == True{} : Bool}:
+  {==}

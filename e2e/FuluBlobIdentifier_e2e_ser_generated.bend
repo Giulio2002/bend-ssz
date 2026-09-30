@@ -22,3 +22,9 @@ def FuluBlobIdentifier_e2e_serialize_refused(+o: FuluBlobIdentifier_d.BlobIdenti
 def FuluBlobIdentifier_e2e_serialize(+o: FuluBlobIdentifier_d.BlobIdentifier, +v: {W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_serialize(o)))} == API.serialize(W_spec_fulu_schemas.BlobIdentifier(), W_proofs_obj_root_names_light.v_BlobIdentifier(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_serialize(o), O.encoded(W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_encode(o)), FuluBlobIdentifier_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.BlobIdentifier(), W_proofs_obj_root_names_light.v_BlobIdentifier(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluBlobIdentifier_e2e_generated.FuluBlobIdentifier_e2e_encode(o)
+
+def FuluBlobIdentifier_e2e_valid_default() -> {W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_valid(FuluBlobIdentifier_d.BlobIdentifier_default()) == True{} : Bool}:
+  {==}
+
+def FuluBlobIdentifier_e2e_valid_total(+o: FuluBlobIdentifier_d.BlobIdentifier) -> {W_types_FuluBlobIdentifier_encode_ssz_generated.BlobIdentifier_valid(o) == True{} : Bool}:
+  {==}

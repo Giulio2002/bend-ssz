@@ -29,6 +29,8 @@ import ../spec/bit_root.bend as Bm
 import ../types/schema.bend as TS
 import ../proofs/division.bend as DV
 import ../proofs/bit_chunk_count.bend as BCC
+import ./e2e_bitv.bend as BTV
+import ./e2e_bitl.bend as BLT
 import ./e2e_dz.bend as DZ
 import ./e2e_hv.bend as HV
 
@@ -4233,6 +4235,27 @@ def bwd1(+L: U32, +i: Nat, +S: FD.array__Tree<U32>, +dz: Nat, +NB: U32, +m: Nat,
       bw1_30(L, i, S, dz, NB, m, h, T, hy, hwc, hdz, hq, e1, hh, eNB, eT, pT, hv, eo, zt, bcv, lenv, NL, hNL, Word.to_nat(27n, r), Equal.sym(Nat, U32.to_nat(U32{WCon{False{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, r}}}}}}), m, eAK), enb, hh1)
     case U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, +r}}}}}}:
       bw1_31(L, i, S, dz, NB, m, h, T, hy, hwc, hdz, hq, e1, hh, eNB, eT, pT, hv, eo, zt, bcv, lenv, NL, hNL, Word.to_nat(27n, r), Equal.sym(Nat, U32.to_nat(U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, r}}}}}}), m, eAK), enb, hh1)
+
+
+# ---- the bit list storage premises of the encode laws from e2e_bitv.sdbv (their conjuncts) ----
+def sdbv_sdb(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdb(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (T, (dw, (K, (eo, (pT, hd)))))
+
+def sdbv_sdbc(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdbc(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (+hr, +hv) = x6
+  (T, (dw, (K, (eo, (pT, (hd, hr))))))
 
 
 # ---- the decoded bit list is well formed (bitlist_obj.wfb) ----

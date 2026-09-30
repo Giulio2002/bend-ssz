@@ -22,3 +22,9 @@ def FuluSigningData_e2e_serialize_refused(+o: FuluSigningData_d.SigningData, +v:
 def FuluSigningData_e2e_serialize(+o: FuluSigningData_d.SigningData, +v: {W_types_FuluSigningData_encode_ssz_generated.SigningData_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluSigningData_encode_ssz_generated.SigningData_serialize(o)))} == API.serialize(W_spec_fulu_schemas.SigningData(), W_proofs_obj_root_names_light.v_SigningData(o)) : Maybe<&2, +List<U32>>}:
   %Equal.sym(O.Encoded, W_types_FuluSigningData_encode_ssz_generated.SigningData_serialize(o), O.encoded(W_types_FuluSigningData_encode_ssz_generated.SigningData_encode(o)), FuluSigningData_e2e_serialize_ok(o, v)) : {Some{E.obytes(O.ser_out(_))} == API.serialize(W_spec_fulu_schemas.SigningData(), W_proofs_obj_root_names_light.v_SigningData(o)) : Maybe<&2, +List<U32>>}
   W_e2e_FuluSigningData_e2e_generated.FuluSigningData_e2e_encode(o)
+
+def FuluSigningData_e2e_valid_default() -> {W_types_FuluSigningData_encode_ssz_generated.SigningData_valid(FuluSigningData_d.SigningData_default()) == True{} : Bool}:
+  {==}
+
+def FuluSigningData_e2e_valid_total(+o: FuluSigningData_d.SigningData) -> {W_types_FuluSigningData_encode_ssz_generated.SigningData_valid(o) == True{} : Bool}:
+  {==}
