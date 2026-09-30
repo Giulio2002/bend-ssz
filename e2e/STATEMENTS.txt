@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4065 statements in 1155 files.
+# 4081 statements in 1163 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -2078,6 +2078,22 @@ import ../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
 import ../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
 def FuluBlobSidecar_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_default())))} == API.serialize(Spec.BlobSidecar(), M1.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default())) : Maybe<&2, +List<U32>>}:
 def FuluBlobSidecar_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default()))))} == API.hash_tree_root(Spec.BlobSidecar(), M1.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluBlob_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/FuluBlob_decode_ssz_generated.bend as FuluBlob_r
+import ../types/FuluBlob_encode_ssz_generated.bend as FuluBlob_e
+import ../types/FuluBlob_hashtreeroot_generated.bend as FuluBlob_h
+def FuluBlob_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, FuluBlob_e.Blob_encode(o))) == bs : +List<U32>}:
+def FuluBlob_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluBlob_h.Blob_hash_tree_root(h, o))))} == C.droot(Spec.Blob(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBlob_e2e_generated.bend
 import ../src/model.bend as API
@@ -12865,6 +12881,23 @@ import ../types/schema.bend as S
 def progbitlist_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(progbitlist_d.pbits_default())))} == API.serialize(Spec.progbitlist(), S.BitsValue{BO.bview(progbitlist_d.pbits_default())}) : Maybe<&2, +List<U32>>}:
 def progbitlist_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(B.alloc(0), progbitlist_d.pbits_default()))))} == API.hash_tree_root(Spec.progbitlist(), S.BitsValue{BO.bview(progbitlist_d.pbits_default())}) : Maybe<&2, +List<U32>>}:
 
+## e2e/proglist_bool_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_bool_decode_ssz_generated.bend as proglist_bool_r
+import ../types/proglist_bool_encode_ssz_generated.bend as proglist_bool_e
+import ../types/proglist_bool_hashtreeroot_generated.bend as proglist_bool_h
+def proglist_bool_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_bool_r.proglist_bool_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_bool_e.proglist_bool_encode(o))) == bs : +List<U32>}:
+def proglist_bool_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_bool_r.proglist_bool_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(h, o))))} == C.droot(Spec.proglist_bool(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/proglist_bool_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -12921,6 +12954,23 @@ import ../types/proglist_bool_encode_ssz_generated.bend as proglist_bool_e
 import ../types/proglist_bool_hashtreeroot_generated.bend as proglist_bool_h
 def proglist_bool_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_bool_e.proglist_bool_encode(proglist_bool_d.pl_bool_default())))} == API.serialize(Spec.proglist_bool(), PBF.vviewb(proglist_bool_d.pl_bool_default())) : Maybe<&2, +List<U32>>}:
 def proglist_bool_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_bool_h.proglist_bool_hash_tree_root(B.alloc(0), proglist_bool_d.pl_bool_default()))))} == API.hash_tree_root(Spec.proglist_bool(), PBF.vviewb(proglist_bool_d.pl_bool_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/proglist_uint128_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint128_decode_ssz_generated.bend as proglist_uint128_r
+import ../types/proglist_uint128_encode_ssz_generated.bend as proglist_uint128_e
+import ../types/proglist_uint128_hashtreeroot_generated.bend as proglist_uint128_h
+def proglist_uint128_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint128_r.proglist_uint128_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint128_e.proglist_uint128_encode(o))) == bs : +List<U32>}:
+def proglist_uint128_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint128_r.proglist_uint128_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint128_h.proglist_uint128_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint128(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/proglist_uint128_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -12979,6 +13029,23 @@ import ../types/proglist_uint128_hashtreeroot_generated.bend as proglist_uint128
 def proglist_uint128_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint128_e.proglist_uint128_encode(proglist_uint128_d.pl_u128_default())))} == API.serialize(Spec.proglist_uint128(), PK.vview16(proglist_uint128_d.pl_u128_default())) : Maybe<&2, +List<U32>>}:
 def proglist_uint128_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint128_h.proglist_uint128_hash_tree_root(B.alloc(0), proglist_uint128_d.pl_u128_default()))))} == API.hash_tree_root(Spec.proglist_uint128(), PK.vview16(proglist_uint128_d.pl_u128_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/proglist_uint16_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint16_decode_ssz_generated.bend as proglist_uint16_r
+import ../types/proglist_uint16_encode_ssz_generated.bend as proglist_uint16_e
+import ../types/proglist_uint16_hashtreeroot_generated.bend as proglist_uint16_h
+def proglist_uint16_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint16_r.proglist_uint16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(o))) == bs : +List<U32>}:
+def proglist_uint16_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint16_r.proglist_uint16_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint16_h.proglist_uint16_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint16(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/proglist_uint16_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -13035,6 +13102,23 @@ import ../types/proglist_uint16_encode_ssz_generated.bend as proglist_uint16_e
 import ../types/proglist_uint16_hashtreeroot_generated.bend as proglist_uint16_h
 def proglist_uint16_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(proglist_uint16_d.pl_u16_default())))} == API.serialize(Spec.proglist_uint16(), PBF.vview2(proglist_uint16_d.pl_u16_default())) : Maybe<&2, +List<U32>>}:
 def proglist_uint16_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint16_h.proglist_uint16_hash_tree_root(B.alloc(0), proglist_uint16_d.pl_u16_default()))))} == API.hash_tree_root(Spec.proglist_uint16(), PBF.vview2(proglist_uint16_d.pl_u16_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/proglist_uint256_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint256_decode_ssz_generated.bend as proglist_uint256_r
+import ../types/proglist_uint256_encode_ssz_generated.bend as proglist_uint256_e
+import ../types/proglist_uint256_hashtreeroot_generated.bend as proglist_uint256_h
+def proglist_uint256_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint256_e.proglist_uint256_encode(o))) == bs : +List<U32>}:
+def proglist_uint256_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint256_h.proglist_uint256_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint256(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/proglist_uint256_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -13093,6 +13177,23 @@ import ../types/proglist_uint256_hashtreeroot_generated.bend as proglist_uint256
 def proglist_uint256_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint256_e.proglist_uint256_encode(proglist_uint256_d.pl_u256_default())))} == API.serialize(Spec.proglist_uint256(), PK.vview32(proglist_uint256_d.pl_u256_default())) : Maybe<&2, +List<U32>>}:
 def proglist_uint256_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint256_h.proglist_uint256_hash_tree_root(B.alloc(0), proglist_uint256_d.pl_u256_default()))))} == API.hash_tree_root(Spec.proglist_uint256(), PK.vview32(proglist_uint256_d.pl_u256_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/proglist_uint32_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint32_decode_ssz_generated.bend as proglist_uint32_r
+import ../types/proglist_uint32_encode_ssz_generated.bend as proglist_uint32_e
+import ../types/proglist_uint32_hashtreeroot_generated.bend as proglist_uint32_h
+def proglist_uint32_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint32_r.proglist_uint32_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint32_e.proglist_uint32_encode(o))) == bs : +List<U32>}:
+def proglist_uint32_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint32_r.proglist_uint32_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint32_h.proglist_uint32_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint32(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/proglist_uint32_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -13150,6 +13251,23 @@ import ../types/proglist_uint32_hashtreeroot_generated.bend as proglist_uint32_h
 def proglist_uint32_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint32_e.proglist_uint32_encode(proglist_uint32_d.pl_u32_default())))} == API.serialize(Spec.proglist_uint32(), PK.vview4(proglist_uint32_d.pl_u32_default())) : Maybe<&2, +List<U32>>}:
 def proglist_uint32_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint32_h.proglist_uint32_hash_tree_root(B.alloc(0), proglist_uint32_d.pl_u32_default()))))} == API.hash_tree_root(Spec.proglist_uint32(), PK.vview4(proglist_uint32_d.pl_u32_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/proglist_uint64_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
+import ../types/proglist_uint64_encode_ssz_generated.bend as proglist_uint64_e
+import ../types/proglist_uint64_hashtreeroot_generated.bend as proglist_uint64_h
+def proglist_uint64_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint64_e.proglist_uint64_encode(o))) == bs : +List<U32>}:
+def proglist_uint64_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint64_h.proglist_uint64_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint64(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/proglist_uint64_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -13206,6 +13324,23 @@ import ../types/proglist_uint64_encode_ssz_generated.bend as proglist_uint64_e
 import ../types/proglist_uint64_hashtreeroot_generated.bend as proglist_uint64_h
 def proglist_uint64_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint64_e.proglist_uint64_encode(proglist_uint64_d.pl_u64_default())))} == API.serialize(Spec.proglist_uint64(), UL.uview(proglist_uint64_d.pl_u64_default())) : Maybe<&2, +List<U32>>}:
 def proglist_uint64_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint64_h.proglist_uint64_hash_tree_root(B.alloc(0), proglist_uint64_d.pl_u64_default()))))} == API.hash_tree_root(Spec.proglist_uint64(), UL.uview(proglist_uint64_d.pl_u64_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/proglist_uint8_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/proglist_uint8_decode_ssz_generated.bend as proglist_uint8_r
+import ../types/proglist_uint8_encode_ssz_generated.bend as proglist_uint8_e
+import ../types/proglist_uint8_hashtreeroot_generated.bend as proglist_uint8_h
+def proglist_uint8_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint8_r.proglist_uint8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, proglist_uint8_e.proglist_uint8_encode(o))) == bs : +List<U32>}:
+def proglist_uint8_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint8_r.proglist_uint8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, proglist_uint8_h.proglist_uint8_hash_tree_root(h, o))))} == C.droot(Spec.proglist_uint8(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/proglist_uint8_e2e_dec_generated.bend
 import ../src/model.bend as API
