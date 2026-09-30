@@ -26,9 +26,18 @@ depth d < 32 (what Array.new builds and Array.set keeps; proofs/compact/found.be
     read_append      get(append(o, v), n) returns v, when the storage has room for element n
                      (n < 2^d, the append does not grow the array) and n + 1 does not wrap
 
+and, for the packed collections whose elements are whole aligned words (Bytes32, Bytes48, uint64
+elements in O.Words storage thaw(t), t a perfect tree of words of depth d < 32), through
+proofs/obj/words_rw.bend and the generated proofs/obj/coll_words.bend:
+
+    read_set         get(set(o, i, v), i) returns v (its W words start at word q = (i * K) / 4,
+                     K its bytes, and end below 2^d)
+    set_length       an accepted set keeps the length
+
 The guards GS, GA and the length are read from the generated runtime (types/*_def_generated.bend),
-so the statements follow it. Read-back for the boxed lists and for the packed (O.Words / O.Bits)
-collections needs word-level array laws that do not exist yet (docs/RESULTS.md).
+so the statements follow it. Not covered: read-back for the boxed lists (Type-kind array
+elements), the byte and bit collections (sub-word writes), and after an append that grows the
+storage (docs/RESULTS.md).
 
     python3 codegen/coll_laws.py            # write
     python3 codegen/coll_laws.py --check    # nonzero exit if an output is stale or orphaned
@@ -150,6 +159,8 @@ def info(c):
             I['GA'] = None
         gb = body(t, c + '_get_n')[2].split('\n')[-1].strip()
         I['GG'] = subst_n(call_args(gb, c + '_get_in')[0], I['ln'])
+        pt = re.search(r'case True\{\}: \((.*), True\{\}\)$', body(t, c + '_put_at')[2], re.M)
+        I['put_true'] = pt.group(1) if pt else None
     return I
 
 
@@ -244,8 +255,59 @@ def laws(I, imps):
             n += 1
         if I['data']:
             n += data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c)
+    elif I['kind'] == 'words' and I.get('put_true'):
+        n += words_readback(w, I, q, DA, T, ET, GS, GG, imps)
     w('')
     return '\n'.join(out), n
+
+
+def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
+    """read-back and length after set of a packed collection whose elements are whole aligned words"""
+    c = I['c']
+    pt = q(I['put_true'])
+    m = re.match(r'([\w.]+)\(o, \(i \* (\d+) : U32\), v\)$', pt)
+    if not m:
+        return 0
+    wfn, K = m.group(1).split('.')[-1], m.group(2)
+    kind = [k for k, e in ELEMS.items() if e[2] == wfn]
+    if not kind or GS != GG:
+        return 0
+    kind = kind[0]
+    _p, _a, _w, rfn, ctor, W = ELEMS[kind]
+    imps['CW'] = os.path.relpath(CW, ROOT)
+    xs = ['x%d' % k for k in range(W)]
+    V = '%s{%s}' % (ET, ', '.join(xs))
+    OBJ = lambda tr: 'O.Words{F.array__thaw(U32, %s), n}' % tr
+    TW = 't'
+    for k in range(W):
+        TW = 'F.array__upd(U32, d, %s, Nat.add(q, %dn), %s)' % (TW, k, xs[k])
+    P = '(i * %s : U32)' % K
+    WRITE = pt.replace('(o, ', '(%s, ' % OBJ('t'), 1).replace(', v)', ', %s)' % V)
+    WRITE = re.sub(r'\(o, ', '(%s, ' % OBJ('t'), pt, count=1)
+    WRITE = WRITE[:-len(', v)')] + ', %s)' % V
+    READ = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJ(TW), P)
+    prem = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+            '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {%s == True{} : Bool}, '
+            '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}'
+            % (', '.join('+%s: U32' % x for x in xs), GS, P, W))
+    largs = 'd, t, n, %s, q, hd, pf, hq, hr, %s' % (P, ', '.join(xs))
+    SET = '%s.%s_set(%s, i, %s)' % (DA, c, OBJ('t'), V)
+    PUT = '%s.%s_put_at(_, %s, i, %s)' % (DA, c, OBJ('t'), V)
+    RES = '(%s, Some{%s}) : O.Words & Maybe<&1, %s>' % (OBJ(TW), V, ET)
+    GET = lambda o: '%s.%s_get(%s, i)' % (DA, c, o)
+    w('def %s_api_read_set(%s)\n    -> {%s == %s}:' % (c, prem, GET('Pair.fst(O.Words, Bool, %s)' % SET), RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s}' % (GS, GET('Pair.fst(O.Words, Bool, %s)' % PUT), RES))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s}' % (WRITE, OBJ(TW), kind, largs, GET('_'), RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, i) == %s}' % (GG, DA, c, OBJ(TW), RES))
+    w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READ, OBJ(TW), V, kind, largs, DA, c, RES))
+    w('  {==}')
+    LEN = I['ln']
+    LENX = lambda o: 'Pair.snd(O.Words, U32, %s.%s_len(%s))' % (DA, c, o)
+    w('def %s_api_set_length(%s)\n    -> {%s == %s : U32}:' % (c, prem, LENX('Pair.fst(O.Words, Bool, %s)' % SET), LEN))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : U32}' % (GS, LENX('Pair.fst(O.Words, Bool, %s)' % PUT), LEN))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
+    w('  {==}')
+    return 2
 
 
 def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
@@ -314,6 +376,171 @@ def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
     return 3
 
 
+# ---- packed collections whose elements are whole aligned words: read-back through proofs/obj/words_rw.bend ----
+# (element kind: the file defining it, the module alias it is imported under, write fn, read fn, constructor, words)
+ELEMS = {
+    'b32': ('types/FuluBytes32_def_generated.bend', 'FuluBytes32_d', 'Bytes32_into_words', 'Bytes32_of_words', 'Bytes32', 8),
+    'b48': ('types/FuluBytes48_def_generated.bend', 'FuluBytes48_d', 'Bytes48_into_words', 'Bytes48_of_words', 'Bytes48', 12),
+    'u64': ('src/obj.bend', 'O', 'words_write_u64', 'words_u64_at', 'U64', 2),
+}
+CW = OBJ / 'coll_words.bend'
+
+
+def def_of(text, name):
+    """(param names, body text) of `def name(...) -> T:` (one-line or indented body)"""
+    m = re.search(r'^def %s\((.*?)\) -> [^\n]*?:(.*)$' % re.escape(name), text, re.M)
+    params = [re.match(r'[+-]?(\w+)', x).group(1) for x in split_top(m.group(1))]
+    if m.group(2).strip():
+        return params, m.group(2).strip()
+    lines = []
+    for l in text[m.end():].split('\n')[1:]:
+        if not l.startswith(' '):
+            break
+        lines.append(l)
+    return params, '\n'.join(lines)
+
+
+def subst(expr, env):
+    return re.sub(r'(?<![\w.])([A-Za-z_]\w*)(?![\w])', lambda m: env.get(m.group(1), m.group(1)), expr)
+
+
+def elem_lemmas(kind):
+    """(text of the lemmas of element kind, its type) : K_write, K_read, K_rw"""
+    path, al, wfn, rfn, ctor, W = ELEMS[kind]
+    text = (ROOT / path).read_text()
+    defs = set(re.findall(r'^(?:def|type) (\w+)', text, re.M))
+    qual = lambda e: re.sub(r'(?<![\w.])([A-Za-z_]\w*)(?=[({])', lambda m: al + '.' + m.group(1) if m.group(1) in defs else m.group(1), e)
+    CT = al + '.' + ctor
+    TY = CT
+    Wn = '%dn' % W
+    OBJT = lambda t: 'O.Words{F.array__thaw(U32, %s), n}' % t
+    xs = ['x%d' % m for m in range(W)]
+    # the write: its constructor's field variables and the nested words_setw calls, innermost first
+    ps, body = def_of(text, wfn)
+    m = re.search(r'case %s\{([^}]*)\}: (.*)$' % ctor, body, re.M)
+    fvars = [a.strip().lstrip('+') for a in m.group(1).split(',')]
+    wb = qual(m.group(2))
+    wo = ps[0]
+    writes = re.findall(r', (\(U32\.shrn\(p, 2n\) \+ \d+ : U32\)|U32\.shrn\(p, 2n\)), (\w+)\)', wb)
+    assert len(writes) == W and [v for _, v in writes] == fvars, (kind, writes, fvars)
+    J = lambda e: e
+    trees = ['t']
+    for k in range(W):
+        trees.append('F.array__upd(U32, d, %s, Nat.add(q, %dn), %s)' % (trees[k], k, xs[k]))
+    pre = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +p: U32, +q: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+           '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(p, 2n)) == q : Nat}, '
+           '+hr: {Nat.is_le(Nat.add(q, %s), F.spec_common__pow2(d)) == True{} : Bool}' % Wn)
+    xb = ', '.join('+%s: U32' % x for x in xs)
+    V = '%s{%s}' % (CT, ', '.join(xs))
+
+    def bounds(out):
+        for k in range(W):
+            out.append('  +b%d = WR.bound(q, %dn, %s, F.spec_common__pow2(d), hr, {==})' % (k, k, Wn))
+
+    def eqs(out, idxs, tag):
+        for k, j in enumerate(idxs):
+            if j == 'U32.shrn(p, 2n)':
+                out.append('  +%s%d = WR.idx0(U32.shrn(p, 2n), q, hq)' % (tag, k))
+            else:
+                mm = re.match(r'\(U32\.shrn\(p, 2n\) \+ (\d+) : U32\)', j).group(1)
+                assert int(mm) == k, (kind, j, k)
+                out.append('  +%s%d = WR.idx(U32.shrn(p, 2n), q, %s, %sn, d, hd, hq, {==}, b%d)' % (tag, k, mm, mm, k))
+
+    def perfects(out):
+        out.append('  +p0 = pf')
+        for k in range(W):
+            out.append('  +t%d = %s' % (k + 1, 'F.array__upd(U32, d, %s, Nat.add(q, %dn), %s)' % ('t' if k == 0 else 't%d' % k, k, xs[k])))
+            out.append('  +p%d = F.array__upd_perfect(U32, d, %s, Nat.add(q, %dn), %s, p%d)' % (k + 1, 't' if k == 0 else 't%d' % k, k, xs[k], k))
+    tn = lambda k: 't' if k == 0 else 't%d' % k
+    L = []
+    # K_write
+    WRITE = lambda o, pp, v: '%s.%s(%s, %s, %s)' % (al, wfn, o, pp, v)
+    L.append('def %s_write(%s, %s)\n    -> {%s == %s : O.Words}:' % (kind, pre, xb, WRITE(OBJT('t'), 'p', V), OBJT(trees[W])))
+    b = []
+    bounds(b)
+    eqs(b, [j for j, _ in writes], 'e')
+    perfects(b)
+    L += b
+    for k in range(W):
+        ctx = '_'
+        for kk in range(k + 1, W):
+            ctx = 'O.words_setw(%s, %s, %s)' % (ctx, writes[kk][0], xs[kk])
+        L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, %s, n, %s, Nat.add(q, %dn), %s, hd, e%d, b%d, p%d)) : {%s == %s : O.Words}'
+                 % (OBJT(tn(k)), writes[k][0], xs[k], OBJT(tn(k + 1)), tn(k), writes[k][0], k, xs[k], k, k, k, ctx, OBJT('t%d' % W)))
+    L.append('  {==}')
+    L.append('')
+    # K_read: interpret the read chain
+    AT = lambda k: 'WR.at(F.array__slots(U32, t), Nat.add(q, %dn))' % k
+    RESR = '(%s, %s{%s}) : O.Words & %s' % (OBJT('t'), CT, ', '.join(AT(k) for k in range(W)), TY)
+    ps, rb = def_of(text, rfn)
+    expr = qual(subst(rb, {ps[0]: OBJT('t'), ps[1]: 'p'}))
+    steps, idxs = [], []
+    k = 0
+    while True:
+        mm = re.match(r'([\w.]+)\((.*)\)$', expr)
+        if not mm:   # the final (o, K{..}) pair
+            break
+        fn, args = mm.group(1), split_top(mm.group(2))
+        last = args[-1]
+        wm = re.match(r'O\.words_word\((.*)\)$', last)
+        if not wm:
+            break
+        o_, j_ = split_top(wm.group(1))
+        idxs.append(j_)
+        steps.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, n, %s, Nat.add(q, %dn), hd, r%d, b%d, pf)) : {%s(%s) == %s}'
+                     % (OBJT('t'), j_, OBJT('t'), AT(k), j_, k, k, k, fn, ', '.join(args[:-1] + ['_']), RESR))
+        fname = fn.split('.')[-1]
+        fps, fb = def_of(text, fname)
+        lines = [l.strip() for l in fb.split('\n') if l.strip()]
+        dm = re.match(r'\((\w+), \+?(\w+)\) = (\w+)$', lines[0])
+        env = dict(zip(fps[:-1], args[:-1]))
+        env[dm.group(1)] = OBJT('t')
+        env[dm.group(2)] = AT(k)
+        expr = qual(subst(lines[-1], env))
+        k += 1
+    assert k == W, (kind, k)
+    L.append('def %s_read(%s)\n    -> {%s.%s(%s, p) == %s}:' % (kind, pre, al, rfn, OBJT('t'), RESR))
+    b = []
+    bounds(b)
+    eqs(b, idxs, 'r')
+    L += b + steps + ['  {==}', '']
+    # K_rw: the written tree reads back the element
+    RESW = '(%s, %s) : O.Words & %s' % (OBJT(trees[W]), V, TY)
+    L.append('def %s_rw(%s, %s)\n    -> {%s.%s(%s, p) == %s}:' % (kind, pre, xb, al, rfn, OBJT(trees[W]), RESW))
+    b = []
+    bounds(b)
+    perfects(b)
+    L += b
+    # the at-values of the written tree
+    def val(m, kk):
+        if kk == m + 1:
+            return 'WR.at_upd_same(d, %s, Nat.add(q, %dn), %s, b%d, p%d)' % (tn(m), m, xs[m], m, m)
+        return ('Equal.trans(U32, WR.at(F.array__slots(U32, t%d), Nat.add(q, %dn)), WR.at(F.array__slots(U32, %s), Nat.add(q, %dn)), %s, '
+                'WR.at_upd_other(d, %s, Nat.add(q, %dn), Nat.add(q, %dn), %s, WR.neq_add(q, %dn, %dn, {==}), b%d, p%d), %s)'
+                % (kk, m, tn(kk - 1), m, xs[m], tn(kk - 1), kk - 1, m, xs[kk - 1], kk - 1, m, kk - 1, kk - 1, val(m, kk - 1)))
+    ATW = lambda k: 'WR.at(F.array__slots(U32, t%d), Nat.add(q, %dn))' % (W, k)
+    L.append('  %%Equal.sym(O.Words & %s, %s.%s(%s, p), (%s, %s{%s}), %s_read(d, t%d, n, p, q, hd, p%d, hq, hr)) : {_ == %s}'
+             % (TY, al, rfn, OBJT('t%d' % W), OBJT('t%d' % W), CT, ', '.join(ATW(k) for k in range(W)), kind, W, W, RESW))
+    for m in range(W):
+        vals = xs[:m] + ['_'] + [ATW(k) for k in range(m + 1, W)]
+        L.append('  %%Equal.sym(U32, %s, %s, %s) : {(%s, %s{%s}) == %s}' % (ATW(m), xs[m], val(m, W), OBJT('t%d' % W), CT, ', '.join(vals), RESW))
+    L += ['  {==}', '']
+    return '\n'.join(L), TY, trees[W]
+
+
+def coll_words():
+    head = ['import Base', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F', 'import ./words_rw.bend as WR']
+    for kind, (path, al, *_r) in ELEMS.items():
+        if al != 'O':
+            head.append('import %s as %s' % (rel(path), al))
+    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_words)'),
+             '# Per element kind of the packed collections whose elements are whole aligned words (Bytes32,',
+             '# Bytes48, uint64): writing the element at byte position p (q = p / 4 its first word, the W words',
+             '# below 2^d) is updating slots q .. q + W - 1 of the storage tree (K_write), reading it returns',
+             '# those slots (K_read), and so reading the written tree returns the element written (K_rw).', '']
+    return '\n'.join(head) + '\n'.join(elem_lemmas(k)[0] for k in ELEMS)
+
+
 def rel(p):
     r = os.path.relpath(ROOT / p, OBJ)
     return r if r.startswith('.') else './' + r
@@ -321,7 +548,7 @@ def rel(p):
 
 def outputs():
     cs = collections()
-    outs, total = {}, 0
+    outs, total = {CW: coll_words()}, 0
     for k in range(0, len(cs), PER_FILE):
         imps = {'F': 'proofs/compact/found.bend'}
         parts = []

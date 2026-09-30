@@ -293,4 +293,6 @@ container's range invariants), the set file proves that the setter keeps it. A r
 The collection read-back laws (`proofs/obj/coll_api_*.bend`) are stated for storage `thaw(t)`, `t`
 a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and `Array.set` keeps);
 the append read-back also assumes the storage has room for the new element (no reallocation) and
-that the length is not `2^32 - 1`.
+that the length is not `2^32 - 1`. For the packed collections of whole-word elements the element's
+first word index `q` is given with `U32.to_nat((i * K) / 4) == q` (the byte offset `i * K` does not
+wrap) and its words below `2^d`.
