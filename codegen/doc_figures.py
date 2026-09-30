@@ -151,6 +151,14 @@ def figures():
     wpend = [r[0] for r in wrows if r[1] != 'witnessed']
     f['witness_pending'] = names_list(wpend) if wpend else 'none'
     f['witness_nonempty'] = str(sum(1 for n in wit if 'def NE()' in (ROOT / f'e2e/{n}_e2e_witness_generated.bend').read_text()))
+    serf = list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))
+    sert = [q.read_text() for q in serf]
+    f['ser_files'] = str(len(serf))
+    f['ser_total'] = str(sum(1 for t in sert if '_e2e_valid_total(' in t))
+    f['ser_prem'] = str(sum(1 for t in sert if '_e2e_valid_of_prem(' in t))
+    f['ser_domain'] = str(sum(1 for t in sert if '_e2e_serialize_domain(' in t))
+    f['ser_count'] = str(sum(1 for q in serf if '_ser_l2(' not in q.read_text()))
+    f['ser_lin_count'] = str(sum(1 for q in serf if '_ser_l2(' in q.read_text()))
     # the recorded full check (tools/check_fast.sh's stamp)
     st = json.loads((ROOT / 'benchmarks/evidence/check_fast.json').read_text())
     tot = st.get('totals', {})
@@ -191,7 +199,9 @@ def object_law_figures():
     f['obj_coll_statements'] = str(len(coll))
     f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
     f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))
+    f['obj_coll_view'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_view_set')}))
     f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters'))
+    f['obj_swap_laws'] = str(stm('proofs/obj/fields_'))
     f['obj_setter_containers'] = str(len({re.match(r'(\w+?)_set_', l).group(1)
                                           for k, v in sf.items() if k.startswith('proofs/obj/prep_setters') for l in v}))
     sets = [l for k, v in sf.items() if k.endswith('_e2e_set_generated.bend') for l in v]

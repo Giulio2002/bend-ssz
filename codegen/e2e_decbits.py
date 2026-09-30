@@ -41,6 +41,10 @@ import ./e2e_bview.bend as BV
 import ./e2e_tz.bend as TZ
 import ../spec/bit_root.bend as Bm
 import ../types/schema.bend as TS
+import ../proofs/division.bend as DV
+import ../proofs/bit_chunk_count.bend as BCC
+import ./e2e_bitv.bend as BTV
+import ./e2e_bitl.bend as BLT
 import ./e2e_dz.bend as DZ
 import ./e2e_hv.bend as HV
 """
@@ -489,9 +493,8 @@ def chunk(q, R, s_expr, hs, qX):
     L_ = []
     L_.append(f'  +eC = Equal.trans(Nat, O.chunks_of(O.bits_nbytes(NB)), Nat.div(Nat.add(Nat.add(WS.e32({q}), {R}n), 31n), 32n), 1n+Nat.add({q}, 0n), '
               f'Equal.cong(Nat, Nat, z => Nat.div(Nat.add(z, 31n), 32n), U32.to_nat(O.bits_nbytes(NB)), Nat.add(WS.e32({q}), {R}n), eN), '
-              f'Equal.trans(Nat, Nat.div(Nat.add(Nat.add(WS.e32({q}), {R}n), 31n), 32n), Nat.div(Nat.add(WS.e32({q}), {R + 31}n), 32n), 1n+Nat.add({q}, 0n), '
-              f'Equal.cong(Nat, Nat, z => Nat.div(z, 32n), Nat.add(Nat.add(WS.e32({q}), {R}n), 31n), Nat.add(WS.e32({q}), {R + 31}n), FD.nat__add_assoc(WS.e32({q}), {R}n, 31n)), '
-              f'Equal.cong(Nat & Nat, Nat, z => Nat.div.fin(z), Nat.divmod.go(Nat.add(WS.e32({q}), {R + 31}n), 31n, 0n, 0n), Nat.divmod.go({R + 31}n, 31n, Nat.add({q}, 0n), 0n), dg({q}, {R + 31}n, 0n))))')
+              f'Equal.trans(Nat, Nat.div(Nat.add(Nat.add(WS.e32({q}), {R}n), 31n), 32n), 1n+{q}, 1n+Nat.add({q}, 0n), cq({q}, {R - 1}n, {{==}}), '
+              f'Equal.cong(Nat, Nat, z => 1n+z, {q}, Nat.add({q}, 0n), Equal.sym(Nat, Nat.add({q}, 0n), {q}, FD.nat__add_zero({q})))))')
     # NB within NL
     L_.append(f'  +hN1 = FD.logic__subst(Nat, z => {{Nat.is_le(z, NL) == True{{}} : Bool}}, U32.to_nat(NB), Nat.add(VSP.x8(m), h), eNB, hNL)')
     return L_
@@ -579,7 +582,7 @@ def case00():
             + ''.join('    ' + l + '\n' for l in chunk('p', 32, None, None, 'p'))
             + '      +hN2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(VSP.x8(z), h), NL) == True{} : Bool}, m, WS.e32(1n+p), em, hN1)\n'
             + '      +hN3 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(VSP.x8(WS.e32(1n+p)), z), NL) == True{} : Bool}, h, 0n, eh0, hN2)\n'
-            + '    ' + rep_tail(wfb1("p", 32, "eN", "room", "{==}"), 'FD.logic__subst(Nat, z => {Nat.is_le(z, Bm.chunk_limit(NL)) == True{} : Bool}, 1n+p, 1n+Nat.add(p, 0n), Equal.cong(Nat, Nat, z => 1n+z, p, Nat.add(p, 0n), Equal.sym(Nat, Nat.add(p, 0n), p, FD.nat__add_zero(p))), cb_core(1n+p, NL, FD.nat__le_trans(Nat.add(VSP.x8(WS.e32(1n+p)), 0n), NL, Nat.add(NL, 255n), hN3, FD.nat__le_add_right(NL, 255n))))').replace('Xq', 'p').replace('\n  ', '\n      ').replace('  +hck', '      +hck', 1))
+            + '    ' + rep_tail(wfb1("p", 32, "eN", "room", "{==}"), 'FD.logic__subst(Nat, z => {Nat.is_le(z, Bm.chunk_limit(NL)) == True{} : Bool}, 1n+p, 1n+Nat.add(p, 0n), Equal.cong(Nat, Nat, z => 1n+z, p, Nat.add(p, 0n), Equal.sym(Nat, Nat.add(p, 0n), p, FD.nat__add_zero(p))), cbound0(p, NL, hN3))').replace('Xq', 'p').replace('\n  ', '\n      ').replace('  +hck', '      +hck', 1))
     return sig_ + body
 
 
@@ -597,6 +600,29 @@ def dispatch_d(d):
         Kc = Kp.replace('+r', 'r')
         rows.append(f'    case {Kp}:\n      bw{d}_{v}({COMMON_AS}, Word.to_nat(27n, r), Equal.sym(Nat, U32.to_nat({Kc}), m, eAK), {extra_as})')
     return (f'def bwd{d}({COMMON_PS},\n    +AK: U32, +eAK: {{U32.to_nat(AK) == m : Nat}}, {extra_ps})\n    -> BOL.rep_bits({OB}, TS.BitList{{NL}}):\n  match AK:\n' + '\n'.join(rows) + '\n')
+
+
+SDBX = """
+# ---- the bit list storage premises of the encode laws from e2e_bitv.sdbv (their conjuncts) ----
+def sdbv_sdb(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdb(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (T, (dw, (K, (eo, (pT, hd)))))
+
+def sdbv_sdbc(-o: O.Bits, +x: BTV.sdbv(o)) -> BLT.sdbc(o):
+  (+T, x1) = x
+  (+dw, x2) = x1
+  (+K, x3) = x2
+  (+eo, x4) = x3
+  (+pT, x5) = x4
+  (+hd, x6) = x5
+  (+hr, +hv) = x6
+  (T, (dw, (K, (eo, (pT, (hd, hr))))))
+"""
 
 
 ARITH = """
@@ -633,77 +659,61 @@ def km(+k: Nat, +Y: Nat, +h: Nat) -> {Nat.add(k, Nat.add(Y, h)) == Nat.add(Y, Na
     Equal.trans(Nat, Nat.add(Nat.add(k, Y), h), Nat.add(Nat.add(Y, k), h), Nat.add(Y, Nat.add(k, h)), Equal.cong(Nat, Nat, z => Nat.add(z, h), Nat.add(k, Y), Nat.add(Y, k), FD.nat__add_comm(k, Y)),
       FD.nat__add_assoc(Y, k, h)))
 
-# the quotient of divmod.go grows with its input
-law gge:
-  for +b: Nat
-  for +m: Nat
-  for +d: Nat
-  for +r: Nat
-  {Nat.is_le(d, Nat.div.fin(Nat.divmod.go(b, m, d, r))) == True{} : Bool}
-def gge(b, m, d, r):
-  match b m:
-    case 0n _: FD.nat__le_refl(d)
-    case 1n+ +b1 0n: FD.nat__le_trans(d, 1n+d, Nat.div.fin(Nat.divmod.go(b1, r, 1n+d, 0n)), A.le_skip(1n, d), gge(b1, r, 1n+d, 0n))
-    case 1n+ +b1 1n+ +m1: gge(b1, m1, d, 1n+r)
-
-law gmono:
-  for +a: Nat
-  for +b: Nat
-  for +m: Nat
-  for +d: Nat
-  for +r: Nat
-  for +h: {Nat.is_le(a, b) == True{} : Bool}
-  {Nat.is_le(Nat.div.fin(Nat.divmod.go(a, m, d, r)), Nat.div.fin(Nat.divmod.go(b, m, d, r))) == True{} : Bool}
-def gmono(a, b, m, d, r, h):
-  match a b m:
-    case 0n _ _: gge(b, m, d, r)
-    case 1n+ +a1 0n _: Empty.absurd({Nat.is_le(Nat.div.fin(Nat.divmod.go(1n+a1, m, d, r)), Nat.div.fin(Nat.divmod.go(0n, m, d, r))) == True{} : Bool}, FD.logic__false_true(h))
-    case 1n+ +a1 1n+ +b1 0n: gmono(a1, b1, r, 1n+d, 0n, h)
-    case 1n+ +a1 1n+ +b1 1n+ +m1: gmono(a1, b1, m1, d, 1n+r, h)
-
-# dividing 256 q + n by 256: q whole rounds, then n
-law dg256:
+# 32 q + 256 X as products
+law em32:
   for +q: Nat
-  for +n: Nat
-  for +d: Nat
-  {Nat.divmod.go(Nat.add(VSP.x8(WS.e32(q)), n), 255n, d, 0n) == Nat.divmod.go(n, 255n, Nat.add(q, d), 0n) : Nat & Nat}
-def dg256(q, n, d):
+  {WS.e32(q) == Nat.mul(q, 32n) : Nat}
+def em32(q):
   match q:
     case 0n: {==}
-    case 1n+ +p:
-      Equal.trans(Nat & Nat, Nat.divmod.go(Nat.add(VSP.x8(WS.e32(p)), n), 255n, 1n+d, 0n), Nat.divmod.go(n, 255n, Nat.add(p, 1n+d), 0n), Nat.divmod.go(n, 255n, 1n+Nat.add(p, d), 0n), dg256(p, n, 1n+d),
-        Equal.cong(Nat, Nat & Nat, z => Nat.divmod.go(n, 255n, z, 0n), Nat.add(p, 1n+d), 1n+Nat.add(p, d), FD.nat__add_succ(p, d)))
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 32n+z, WS.e32(p), Nat.mul(p, 32n), em32(p))
 
-# 256 Z <= NL + 255: Z chunks of 32 bytes fit the chunk limit of NL bits
-def cb_core(+Z: Nat, +NL: Nat, +h: {Nat.is_le(Nat.add(VSP.x8(WS.e32(Z)), 0n), Nat.add(NL, 255n)) == True{} : Bool}) -> {Nat.is_le(Z, Bm.chunk_limit(NL)) == True{} : Bool}:
-  +e = Equal.trans(Nat, Nat.div.fin(Nat.divmod.go(Nat.add(VSP.x8(WS.e32(Z)), 0n), 255n, 0n, 0n)), Nat.div.fin(Nat.divmod.go(0n, 255n, Nat.add(Z, 0n), 0n)), Z,
-    Equal.cong(Nat & Nat, Nat, z => Nat.div.fin(z), Nat.divmod.go(Nat.add(VSP.x8(WS.e32(Z)), 0n), 255n, 0n, 0n), Nat.divmod.go(0n, 255n, Nat.add(Z, 0n), 0n), dg256(Z, 0n, 0n)), FD.nat__add_zero(Z))
-  FD.logic__subst(Nat, z => {Nat.is_le(z, Bm.chunk_limit(NL)) == True{} : Bool}, Nat.div.fin(Nat.divmod.go(Nat.add(VSP.x8(WS.e32(Z)), 0n), 255n, 0n, 0n)), Z, e,
-    gmono(Nat.add(VSP.x8(WS.e32(Z)), 0n), Nat.add(NL, 255n), 255n, 0n, 0n, h))
+law em256:
+  for +X: Nat
+  {VSP.x8(WS.e32(X)) == Nat.mul(X, 256n) : Nat}
+def em256(X):
+  match X:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 256n+z, VSP.x8(WS.e32(p)), Nat.mul(p, 256n), em256(p))
+
+# the chunk count of 32 q + (1 + j) bytes is 1 + q (j <= 31)
+def cq(+q: Nat, +j: Nat, +hj: {Nat.is_le(j, 31n) == True{} : Bool}) -> {Nat.div(Nat.add(Nat.add(WS.e32(q), 1n+j), 31n), 32n) == 1n+q : Nat}:
+  +E = WS.e32(q)
+  +e1 = Equal.trans(Nat, Nat.add(Nat.add(E, 1n+j), 31n), Nat.add(E, Nat.add(1n+j, 31n)), Nat.add(E, Nat.add(32n, j)), FD.nat__add_assoc(E, 1n+j, 31n),
+    Equal.cong(Nat, Nat, z => Nat.add(E, 1n+z), Nat.add(j, 31n), Nat.add(31n, j), FD.nat__add_comm(j, 31n)))
+  +e2 = Equal.trans(Nat, Nat.add(E, Nat.add(32n, j)), Nat.add(32n, Nat.add(E, j)), Nat.add(Nat.mul(1n+q, 32n), j), Equal.sym(Nat, Nat.add(32n, Nat.add(E, j)), Nat.add(E, Nat.add(32n, j)), km(32n, E, j)),
+    Equal.trans(Nat, Nat.add(32n, Nat.add(E, j)), Nat.add(32n, Nat.add(Nat.mul(q, 32n), j)), Nat.add(Nat.mul(1n+q, 32n), j), Equal.cong(Nat, Nat, z => Nat.add(32n, Nat.add(z, j)), E, Nat.mul(q, 32n), em32(q)),
+      Equal.sym(Nat, Nat.add(Nat.mul(1n+q, 32n), j), Nat.add(32n, Nat.add(Nat.mul(q, 32n), j)), FD.nat__add_assoc(32n, Nat.mul(q, 32n), j))))
+  Equal.trans(Nat, Nat.div(Nat.add(Nat.add(E, 1n+j), 31n), 32n), Nat.div(Nat.add(Nat.mul(1n+q, 32n), j), 32n), 1n+q,
+    Equal.cong(Nat, Nat, z => Nat.div(z, 32n), Nat.add(Nat.add(E, 1n+j), 31n), Nat.add(Nat.mul(1n+q, 32n), j), Equal.trans(Nat, Nat.add(Nat.add(E, 1n+j), 31n), Nat.add(E, Nat.add(32n, j)), Nat.add(Nat.mul(1n+q, 32n), j), e1, e2)),
+    DV.div_exact(1n+q, j, 31n, hj))
+
+# chunk_limit(256 X + 1) = 1 + X and chunk_limit(256 (1 + p)) = 1 + p
+def cl1(+X: Nat) -> {Bm.chunk_limit(Nat.add(VSP.x8(WS.e32(X)), 1n)) == 1n+X : Nat}:
+  +Y = VSP.x8(WS.e32(X))
+  +M = Nat.mul(X, 256n)
+  +e1 = Equal.trans(Nat, Nat.add(Nat.add(Y, 1n), 255n), Nat.add(Y, 256n), Nat.add(Nat.mul(1n+X, 256n), 0n), FD.nat__add_assoc(Y, 1n, 255n),
+    Equal.trans(Nat, Nat.add(Y, 256n), Nat.add(256n, M), Nat.add(Nat.mul(1n+X, 256n), 0n), Equal.trans(Nat, Nat.add(Y, 256n), Nat.add(256n, Y), Nat.add(256n, M), FD.nat__add_comm(Y, 256n),
+      Equal.cong(Nat, Nat, z => Nat.add(256n, z), Y, M, em256(X))), Equal.sym(Nat, Nat.add(Nat.mul(1n+X, 256n), 0n), Nat.add(256n, M), FD.nat__add_zero(Nat.mul(1n+X, 256n)))))
+  Equal.trans(Nat, Nat.div(Nat.add(Nat.add(Y, 1n), 255n), 256n), Nat.div(Nat.add(Nat.mul(1n+X, 256n), 0n), 256n), 1n+X,
+    Equal.cong(Nat, Nat, z => Nat.div(z, 256n), Nat.add(Nat.add(Y, 1n), 255n), Nat.add(Nat.mul(1n+X, 256n), 0n), e1), DV.div_exact(1n+X, 0n, 255n, {==}))
+
+def cl0(+p: Nat) -> {Bm.chunk_limit(Nat.add(VSP.x8(WS.e32(1n+p)), 0n)) == 1n+p : Nat}:
+  +Y = VSP.x8(WS.e32(1n+p))
+  +e1 = Equal.cong(Nat, Nat, z => Nat.add(z, 255n), Nat.add(Y, 0n), Nat.mul(1n+p, 256n), Equal.trans(Nat, Nat.add(Y, 0n), Y, Nat.mul(1n+p, 256n), FD.nat__add_zero(Y), em256(1n+p)))
+  Equal.trans(Nat, Nat.div(Nat.add(Nat.add(Y, 0n), 255n), 256n), Nat.div(Nat.add(Nat.mul(1n+p, 256n), 255n), 256n), 1n+p,
+    Equal.cong(Nat, Nat, z => Nat.div(z, 256n), Nat.add(Nat.add(Y, 0n), 255n), Nat.add(Nat.mul(1n+p, 256n), 255n), e1), DV.div_exact(1n+p, 255n, 255n, {==}))
 
 # 256 X + s <= NL with s >= 1: X + 1 chunks fit
 def cbound(+X: Nat, +NL: Nat, +s: Nat, +hs: {Nat.is_le(1n, s) == True{} : Bool}, +h: {Nat.is_le(Nat.add(VSP.x8(WS.e32(X)), s), NL) == True{} : Bool})
     -> {Nat.is_le(1n+X, Bm.chunk_limit(NL)) == True{} : Bool}:
   +Y = VSP.x8(WS.e32(X))
   +h1 = FD.nat__le_trans(Nat.add(Y, 1n), Nat.add(Y, s), NL, Order.add_left(Y, 1n, s, hs), h)
-  +h2 = Order.add_right(Nat.add(Y, 1n), NL, 255n, h1)
-  +e1 = Equal.trans(Nat, Nat.add(Nat.add(Y, 1n), 255n), Nat.add(Y, Nat.add(1n, 255n)), Nat.add(256n, Y), FD.nat__add_assoc(Y, 1n, 255n), FD.nat__add_comm(Y, 256n))
-  +e2 = Equal.trans(Nat, Nat.add(VSP.x8(WS.e32(1n+X)), 0n), VSP.x8(WS.e32(1n+X)), Nat.add(256n, Y), FD.nat__add_zero(VSP.x8(WS.e32(1n+X))), {==})
-  cb_core(1n+X, NL, FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(NL, 255n)) == True{} : Bool}, Nat.add(Nat.add(Y, 1n), 255n), Nat.add(VSP.x8(WS.e32(1n+X)), 0n),
-    Equal.trans(Nat, Nat.add(Nat.add(Y, 1n), 255n), Nat.add(256n, Y), Nat.add(VSP.x8(WS.e32(1n+X)), 0n), e1, Equal.sym(Nat, Nat.add(VSP.x8(WS.e32(1n+X)), 0n), Nat.add(256n, Y), e2)), h2))
+  FD.logic__subst(Nat, z => {Nat.is_le(z, Bm.chunk_limit(NL)) == True{} : Bool}, Bm.chunk_limit(Nat.add(Y, 1n)), 1n+X, cl1(X), BCC.chunk_limit_monotone(Nat.add(Y, 1n), NL, h1))
 
-# dividing 32 q + n by 32: q whole rounds, then n
-law dg:
-  for +q: Nat
-  for +n: Nat
-  for +d: Nat
-  {Nat.divmod.go(Nat.add(WS.e32(q), n), 31n, d, 0n) == Nat.divmod.go(n, 31n, Nat.add(q, d), 0n) : Nat & Nat}
-def dg(q, n, d):
-  match q:
-    case 0n: {==}
-    case 1n+ +p:
-      Equal.trans(Nat & Nat, Nat.divmod.go(Nat.add(WS.e32(p), n), 31n, 1n+d, 0n), Nat.divmod.go(n, 31n, Nat.add(p, 1n+d), 0n), Nat.divmod.go(n, 31n, 1n+Nat.add(p, d), 0n), dg(p, n, 1n+d),
-        Equal.cong(Nat, Nat & Nat, z => Nat.divmod.go(n, 31n, z, 0n), Nat.add(p, 1n+d), 1n+Nat.add(p, d), FD.nat__add_succ(p, d)))
+# 256 (1 + p) <= NL: 1 + p chunks fit
+def cbound0(+p: Nat, +NL: Nat, +h: {Nat.is_le(Nat.add(VSP.x8(WS.e32(1n+p)), 0n), NL) == True{} : Bool}) -> {Nat.is_le(1n+p, Bm.chunk_limit(NL)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, Bm.chunk_limit(NL)) == True{} : Bool}, Bm.chunk_limit(Nat.add(VSP.x8(WS.e32(1n+p)), 0n)), 1n+p, cl0(p), BCC.chunk_limit_monotone(Nat.add(VSP.x8(WS.e32(1n+p)), 0n), NL, h))
 
 def dlt(h: Nat) -> Nat:
   match h:
@@ -786,6 +796,7 @@ def cases():
         for v in range(32):
             out.append(case00() if (d == 0 and v == 0) else case(d, v))
         out.append(dispatch_d(d))
+    out.append(SDBX)
     out.append(TOP)
     return '\n'.join(out)
 
