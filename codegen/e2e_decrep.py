@@ -375,7 +375,22 @@ def bs_post_rep(term, ctx, obj):
     return new, lem
 
 
+def bit_standalone(name, lf):
+    """a bit list decoded alone (var_bits_<name>: OBJ(t, n) an O.Bits): rep_bits and the storage premises (sdb / sdbc / sdbv)
+    from the dec bridge's decoded_rep / decoded_hv (e2e_db.dbits)"""
+    BUF_ARGS.add(name)
+
+    def lets(al):
+        DE = al(f'e2e/{name}_e2e_dec_generated.bend')
+        DBD = al('e2e/e2e_db.bend')
+        a = 'd, t, n, pf, hd, hn, hchk'
+        hv = f'{DE}.decoded_hv({a})'
+        return [], None, (lambda e: BitsDec(e, f'{DE}.decoded_rep({a})', hv, f'{DBD}.sdbv_sdb({e}, {hv})', f'{DBD}.sdbv_sdbc({e}, {hv})'))
+    return container_file(name, lf, f'proofs/obj/var_bits_{name}.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, f'proofs/obj/var_bits_{name}.bend')
+
+
 PROVERS = {
+    **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
     'FuluExecutionRequests': lambda lf: execution_requests(lf),
     'FuluAttestation': lambda lf: bit_container('FuluAttestation', 'var_bitc_Attestation', lf),
@@ -407,8 +422,8 @@ class WordsDec:
 
 class BitsDec:
     """a decoded bit list: its rep_bits and storage (sdbv) premises are laws of the name's dec bridge file"""
-    def __init__(self, expr, rep, hs):
-        self.expr, self.rep, self.hs = expr, rep, hs
+    def __init__(self, expr, rep, hs, hsb=None, hsbc=None):
+        self.expr, self.rep, self.hs, self.hsb, self.hsbc = expr, rep, hs, hsb, hsbc
 
 
 class FxWords:
@@ -424,7 +439,7 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs'}
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc'}
 
 
 class WordsFix:

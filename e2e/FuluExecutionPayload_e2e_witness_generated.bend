@@ -98,3 +98,11 @@ def FuluExecutionPayload_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluE
 
 def FuluExecutionPayload_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, D.Digest, Pair.snd(B.Buf, FuluExecutionPayload_d.ExecutionPayload & D.Digest, FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
   RB.FuluExecutionPayload_e2e_root(B.alloc(0), NE(), premise_ne_rep())
+
+# the size premise hZ holds of the default object: its encoding is below 2^31 bytes
+def FuluExecutionPayload_e2e_witness_size() -> {RC.SZOK(RT.pj_ExecutionPayload_10(FuluExecutionPayload_d.ExecutionPayload_default()), RT.pj_ExecutionPayload_13(FuluExecutionPayload_d.ExecutionPayload_default()), RT.pj_ExecutionPayload_14(FuluExecutionPayload_d.ExecutionPayload_default())) == True{} : Bool}:
+  premise_hZ()
+
+# the size premise hZ holds of the non-empty object: its encoding is below 2^31 bytes
+def FuluExecutionPayload_e2e_witness_size_nonempty() -> {RC.SZOK(RT.pj_ExecutionPayload_10(NE()), RT.pj_ExecutionPayload_13(NE()), RT.pj_ExecutionPayload_14(NE())) == True{} : Bool}:
+  premise_ne_hZ()

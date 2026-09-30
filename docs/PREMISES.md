@@ -25,12 +25,12 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
   run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->14<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`<!-- /fig -->.
+  <!-- fig:decrep_count -->32<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->188<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->206<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
@@ -264,6 +264,17 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
   it stays a premise.
 - **`hm<j>`** (`hm7`, `hm12`, ...; the manifest writes `hM_j`): FuluBeaconState only. Each byte-storage
   list `j` has its bytes below 2^31, its share of the total that `hZ` bounds.
+- **`h31` in the composed theorems (FuluBeaconState).** `<Name>_e2e_decode_encode` and `_decode_root` of
+  a name with `hZ` take the explicit hypothesis `h31: U32.to_nat(n) < 2^31` on the input length. It is `hZ`
+  restated on the input: the decoded object re-encodes to exactly the input (that is the theorem), so
+  its encoding size is `n`, and `e2e/e2e_dbs.bend` (`szr`, `hz`) proves `hZ` from `n < 2^31` by the telescoping
+  of the codec's offsets. The bound is the encode laws' own (section 2, the container encode limit); it is not the
+  API's U32 byte length, which is `hS` (`n <= NMAX = 2^32 - 32`) and is also a hypothesis of the composed theorem.
+  Non-vacuity: `<Name>_e2e_witness_size` (and `_nonempty`) in `e2e/<Name>_e2e_witness_generated.bend` states `hZ`
+  of the default and the non-empty object, so the bound holds of real objects (the default state encodes to
+  2,737,809 bytes); every other premise of the composed theorem is proved of the decoder's object for every accepted
+  input (`e2e/<Name>_e2e_decrep_generated.bend`). Not computed: the decode of the default state's encoding itself
+  (a 2.7 MB input whose word positions are unary Nats in the checker).
 - **Per-object totals `TOT_<Name>`**: ProgressiveTestStruct, ProgressiveComplexTestStruct: the
   fixed part plus the measures of the list fields below 2^31, plus one size measure per unbounded
   list field (word-list length, 4 N of a record list, `EL.LL` of a variable-element list).

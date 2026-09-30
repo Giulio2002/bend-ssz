@@ -26,6 +26,8 @@ import ../types/schema.bend as S
 # FuluBeaconState: decoding accepted bytes, then re-encoding / hashing the object (codegen/e2e_compose.py). The decoder
 # accepts when its check holds, with the object DB.d_acc gives; the (i)/(iv) premises are proved of that object
 # (W_e2e_FuluBeaconState_e2e_decrep_generated, e2e/FuluBeaconState_e2e_decrep_generated.bend).
+# h31: n < 2^31 is the encode laws' own total-size premise hZ (docs/PREMISES.md, section 3) restated on the input length: a decoded
+# object re-encodes to exactly the input, so its encoding size is n. It is not the API's U32 length limit NMAX (2^32 - 32, hS).
 
 def gm(m: Maybe<&1, FuluBeaconState_d.BeaconState>, d: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState:
   match m:

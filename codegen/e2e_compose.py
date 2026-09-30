@@ -196,7 +196,7 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
         BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
         xa = f', {BA}.capacity(n), {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
     hv_ = ''
-    if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly (the runtime's limit)
+    if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly: the encode laws' own size premise hZ (docs/PREMISES.md section 3), not the API's NMAX
         hyps = hyps + [('+', 'h31', DR.HEAVY[name].replace('VB.', ctx.alias(ROOT / 'proofs/obj/vbuf.bend') + '.'))]
         hv_ = ', h31'
     call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + xa + hv_ + ', hS, ec)'
@@ -214,7 +214,9 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     XO, RO, VO = sub_o(X, OBJ), sub_o(R, OBJ), sub_o(V, OBJ)
     body = [f'# {name}: decoding accepted bytes, then re-encoding / hashing the object (codegen/e2e_compose.py). The decoder',
             f'# accepts when its check holds, with the object {DB}.d_acc gives; the (i)/(iv) premises are proved of that object',
-            f'# ({DRA}, e2e/{name}_e2e_decrep_generated.bend).', '',
+            f'# ({DRA}, e2e/{name}_e2e_decrep_generated.bend).',
+            *(['# h31: n < 2^31 is the encode laws\' own total-size premise hZ (docs/PREMISES.md, section 3) restated on the input length: a decoded',
+               '# object re-encodes to exactly the input, so its encoding size is n. It is not the API\'s U32 length limit NMAX (2^32 - 32, hS).'] if name in DR.HEAVY else []), '',
             f'def gm(m: {MT}, d: {OT}) -> {OT}:\n  match m:\n    case Some{{x}}: x\n    case None{{}}: d',
             f'def isS(m: {MT}) -> Bool:\n  match m:\n    case Some{{x}}: True{{}}\n    case None{{}}: False{{}}', '',
             f'# the value deserialize gives for the accepted bytes is the decoded object\'s view',
@@ -360,7 +362,13 @@ def build_std(name, lf):
     SPEC = ctx.lift(em, enc[1])
     V = ctx.lift(em, enc[2])
     R = ctx.lift(rm, rt[0])
-    if ctx.lift(rm, rt[2]) != V or ctx.lift(rm, rt[1]) != SPEC:
+    def same_view(a, b):   # equal, or equal but for bitlist_rep's thin wrappers (bview, rep_bits) over bitlist_obj_light's
+        if a == b:
+            return True
+        rep = [al for al, pth in ctx.used.items() if pth.name == 'bitlist_rep.bend']
+        obj = [al for al, pth in ctx.used.items() if pth.name == 'bitlist_obj_light.bend']
+        return bool(rep and obj) and a.replace(rep[0] + '.', obj[0] + '.') == b.replace(rep[0] + '.', obj[0] + '.')
+    if not same_view(ctx.lift(rm, rt[2]), V) or ctx.lift(rm, rt[1]) != SPEC:
         return None, 'the (i) and (iv) views differ textually'
     if kind == 'accept':
         mo = re.match(r'\(\{(.*?) == Some\{o\} : (Maybe<&1, [^>]*>)\} -> (\{API\.deserialize\(.*?\} : Maybe<&2, S\.Value>\})\) & \((.*)\)$', dc, re.S)
