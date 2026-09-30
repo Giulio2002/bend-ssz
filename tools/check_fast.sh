@@ -33,26 +33,26 @@ done
 t0=$(date +%s)
 rm -rf "$OUT"; mkdir -p "$OUT/bisect"; : > "$OUT/summary.tsv"; : > "$OUT/failed.tsv"
 T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
-python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
+python3 tools/verify_pins.py --lock "${BEND_LOCK:-toolchain.lock.json}" --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
 # run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints exactly the line
-# "All terms check." (not "All terms check, but N defs rely on unsafe or foreign code")
-# (else the checker's exit code, or 1)
+# "ALL PROOFS CHECK" (Bend 2.0.34; "All terms check." on 2.0.28, not "All terms check, but N defs
+# rely on unsafe or foreign code") (else the checker's exit code, or 1)
 run() {
   CHECK_MEMMAX=${UMB_MEMMAX:-16G} CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
     BUN_JSC_forceRAMSize=${UMB_RAM:-12000000000} tools/check.sh "$1" > "$2" 2>&1
   local rc=$?; [ $rc != 0 ] && return $rc
-  grep -qx 'All terms check\.' "$2" || return 1
+  grep -qx -e 'ALL PROOFS CHECK' -e 'All terms check\.' "$2" || return 1
 }
 one() {
   u=$1; out=$2
   lg=$out/${u%.bend}.log
   run "$out/umb/$u" "$lg"; rc=$?
-  ok=$(grep -cx 'All terms check\.' "$lg")
+  ok=$(grep -cx -e 'ALL PROOFS CHECK' -e 'All terms check\.' "$lg")
   tl=$(grep '^CHECK_TIME' "$lg" | tail -n 1)
   s=$(echo "$tl" | awk '{print $2}'); kb=$(echo "$tl" | awk '{print $3}')
   roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")

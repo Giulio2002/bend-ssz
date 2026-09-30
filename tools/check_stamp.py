@@ -54,10 +54,11 @@ def write(d, out):
                      'peak_mb': int(mb), 'roots': len(roots.split())})
     rows.sort(key=lambda r: r['umbrella'])
     digest, n = sources()
-    lock = json.load(open(os.path.join(ROOT, 'toolchain.lock.json')))
+    lockp = os.path.join(ROOT, os.environ.get('BEND_LOCK') or 'toolchain.lock.json')
+    lock = json.load(open(lockp))
     st = {'commit': commit(), 'utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
           'checker_commit': lock['checker']['commit'],
-          'toolchain_lock_sha256': sha(open(os.path.join(ROOT, 'toolchain.lock.json'), 'rb').read()),
+          'toolchain_lock_sha256': sha(open(lockp, 'rb').read()),
           'frozen_lock_sha256': sha(open(os.path.join(ROOT, 'frozen.lock.json'), 'rb').read()),
           'sources_sha256': digest, 'files': n, 'umbrellas': rows,
           'verdict': 'all files check' if rows and all(r['exit'] == 0 and r['all_terms_check'] for r in rows) else 'FAILED'}

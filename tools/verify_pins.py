@@ -35,10 +35,11 @@ def tree_hash(d):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--toolchain', help='directory with bun-linux-x64/bun and bend-src/ (tools/check.sh BEND_TOOLCHAIN)')
+    ap.add_argument('--toolchain', help='checker directory (tools/check.sh BEND_TOOLCHAIN): the files listed under checker.files, and bun if the lock pins one')
+    ap.add_argument('--lock', default=os.path.join(ROOT, 'toolchain.lock.json'), help='the lock to verify against (tools/check.sh BEND_LOCK)')
     ap.add_argument('--lib', help='BendHub package cache in use (tools/check.sh BEND_LIB); default the vendored copy')
     a = ap.parse_args()
-    lock = json.load(open(os.path.join(ROOT, 'toolchain.lock.json')))
+    lock = json.load(open(a.lock))
     bad = []
 
     pkg = lock['sha256_package']
@@ -55,7 +56,8 @@ def main():
 
     if a.toolchain:
         chk = lock['checker']
-        for rel, want in list(chk['files'].items()) + [(lock['bun']['path'], lock['bun']['sha256'])]:
+        bun = [(lock['bun']['path'], lock['bun']['sha256'])] if 'bun' in lock else []
+        for rel, want in list(chk['files'].items()) + bun:
             p = os.path.join(a.toolchain, rel)
             if not os.path.isfile(p):
                 bad.append('%s: missing' % p)
@@ -63,7 +65,7 @@ def main():
                 bad.append('%s: sha256 %s, pinned %s' % (p, file_hash(p), want))
 
     if bad:
-        print('verify_pins: MISMATCH against toolchain.lock.json:\n  ' + '\n  '.join(bad))
+        print('verify_pins: MISMATCH against %s:' % a.lock + '\n  ' + '\n  '.join(bad))
         sys.exit(1)
 
 
