@@ -18,13 +18,14 @@ and, for the lists stored as an array of elements (C_Seq{arr, n}):
     set_length       an accepted set keeps the length
     append_length    an accepted append adds one to the length
 
-and, for those whose elements are Data (not boxed), over storage that is a perfect tree t of
-depth d < 32 (what Array.new builds and Array.set keeps; proofs/compact/found.bend's array laws):
+    read_set         get(set(o, i, v), i) returns v              (proofs/obj/coll_seq.bend, over
+    read_append      get(append(o, v), n) returns v              proofs/obj/tarray.bend: for every
+                     storage array, growth included; n + 1 does not wrap)
 
-    read_set         get(set(o, i, v), i) returns v
+and, for those whose elements are Data (not boxed), over storage that is a perfect tree t of
+depth d < 32 (proofs/compact/found.bend's array laws):
+
     other_set        get(set(o, i, v), j) returns the old element j, for j != i
-    read_append      get(append(o, v), n) returns v, when the storage has room for element n
-                     (n < 2^d, the append does not grow the array) and n + 1 does not wrap
 
 and, for the packed collections whose elements are whole aligned words (Bytes32, Bytes48, uint64
 elements in O.Words storage thaw(t), t a perfect tree of words of depth d < 32), through
@@ -35,9 +36,9 @@ proofs/obj/words_rw.bend and the generated proofs/obj/coll_words.bend:
     set_length       an accepted set keeps the length
 
 The guards GS, GA and the length are read from the generated runtime (types/*_def_generated.bend),
-so the statements follow it. Not covered: read-back for the boxed lists (Type-kind array
-elements), the byte and bit collections (sub-word writes), and after an append that grows the
-storage (docs/RESULTS.md).
+so the statements follow it. The bit lists (coll_bits.bend) and the byte collections
+(coll_bytes.bend) have read_set through proofs/obj/u32bits.bend. Not covered: read-back for
+l4096_b2048 (a block copy) and after an append to a packed collection (docs/RESULTS.md).
 
     python3 codegen/coll_laws.py            # write
     python3 codegen/coll_laws.py --check    # nonzero exit if an output is stale or orphaned
@@ -327,14 +328,87 @@ def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
     GET = lambda o, j: '%s.%s_get(%s, %s)' % (DA, c, o, j)
     SETO = '%s.%s_set(%s, i, v)' % (DA, c, OBJ)
     AS = 'Array.set(%s, %s, i, v)' % (EL, TH)
-    # set, then get the same index
-    w('def %s_api_read_set(%s, +hs: {%s == True{} : Bool}) -> {%s == %s}:' % (c, pre, GSx, GET(TR(SETO), 'i'), RES('v')))
-    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s}' % (GSx, GET(TR('%s.%s_put_in(_, %s, n, i, v)' % (DA, c, TH)), 'i'), RES('v')))
-    assert GS == GG, (c, GS, GG)   # a Data list's set and get guards are both i < n
-    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, n, i) == %s}' % (GG, DA, c, AS, RES('v')))
-    w('  %%Equal.sym(Array<%s> & %s, Array.get(%s, %s, i), (F.array__thaw(%s, %s), v), F.array__get_set_same(%s, d, t, i, v, x, hd, hi, hx, pf)) : {%s.%s_took(n, _) == %s}'
-      % (EL, EL, EL, AS, EL, UP('i', 'v'), EL, DA, c, RES('v')))
+    # set, then get another index
+    pre2 = pre + (', +j: U32, +y: %s, +hj: {Nat.is_lt(U32.to_nat(j), F.spec_common__pow2(d)) == True{} : Bool}, '
+                  '+ne: {Nat.is_eq(U32.to_nat(i), U32.to_nat(j)) == False{} : Bool}, '
+                  '+hy: {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(j)) == Some{y} : Maybe<&2, %s>}, '
+                  '+hm: {%s == True{} : Bool}' % (EL, EL, EL, EL, sub(GG, i='j')))
+    gj = sub(GG, i='j')
+    w('def %s_api_other_set(%s, +hs: {%s == True{} : Bool}) -> {%s == %s}:' % (c, pre2, GSx, GET(TR(SETO), 'j'), RES('y')))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s}' % (GSx, GET(TR('%s.%s_put_in(_, %s, n, i, v)' % (DA, c, TH)), 'j'), RES('y')))
+    w('  %%Equal.sym(Bool, %s, True{}, hm) : {%s.%s_get_in(_, %s, n, j) == %s}' % (gj, DA, c, AS, RES('y')))
+    w('  %%Equal.sym(Array<%s> & %s, Array.get(%s, %s, j), (F.array__thaw(%s, %s), y), F.array__get_set_other(%s, d, t, i, j, v, x, y, hd, hi, hj, ne, hx, hy, pf)) : {%s.%s_took(n, _) == %s}'
+      % (EL, EL, EL, AS, EL, UP('i', 'v'), EL, DA, c, RES('y')))
     w('  {==}')
+    return 1
+
+
+def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
+    """read-back and length after set of a packed collection whose elements are whole aligned words"""
+    c = I['c']
+    pt = q(I['put_true'])
+    m = re.match(r'([\w.]+)\(o, \(i \* (\d+) : U32\), v\)$', pt)
+    if not m:
+        return 0
+    wfn, K = m.group(1).split('.')[-1], m.group(2)
+    kind = [k for k, e in ELEMS.items() if e[2] == wfn]
+    if not kind or GS != GG:
+        return 0
+    kind = kind[0]
+    _p, _a, _w, rfn, ctor, W = ELEMS[kind]
+    imps['CW'] = os.path.relpath(CW, ROOT)
+    xs = ['x%d' % k for k in range(W)]
+    V = '%s{%s}' % (ET, ', '.join(xs))
+    OBJ = lambda tr: 'O.Words{F.array__thaw(U32, %s), n}' % tr
+    TW = 't'
+    for k in range(W):
+        TW = 'F.array__upd(U32, d, %s, Nat.add(q, %dn), %s)' % (TW, k, xs[k])
+    P = '(i * %s : U32)' % K
+    WRITE = pt.replace('(o, ', '(%s, ' % OBJ('t'), 1).replace(', v)', ', %s)' % V)
+    WRITE = re.sub(r'\(o, ', '(%s, ' % OBJ('t'), pt, count=1)
+    WRITE = WRITE[:-len(', v)')] + ', %s)' % V
+    READ = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJ(TW), P)
+    prem = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+            '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {%s == True{} : Bool}, '
+            '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}'
+            % (', '.join('+%s: U32' % x for x in xs), GS, P, W))
+    largs = 'd, t, n, %s, q, hd, pf, hq, hr, %s' % (P, ', '.join(xs))
+    SET = '%s.%s_set(%s, i, %s)' % (DA, c, OBJ('t'), V)
+    PUT = '%s.%s_put_at(_, %s, i, %s)' % (DA, c, OBJ('t'), V)
+    RES = '(%s, Some{%s}) : O.Words & Maybe<&1, %s>' % (OBJ(TW), V, ET)
+    GET = lambda o: '%s.%s_get(%s, i)' % (DA, c, o)
+    w('def %s_api_read_set(%s)\n    -> {%s == %s}:' % (c, prem, GET('Pair.fst(O.Words, Bool, %s)' % SET), RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s}' % (GS, GET('Pair.fst(O.Words, Bool, %s)' % PUT), RES))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s}' % (WRITE, OBJ(TW), kind, largs, GET('_'), RES))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, i) == %s}' % (GG, DA, c, OBJ(TW), RES))
+    w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READ, OBJ(TW), V, kind, largs, DA, c, RES))
+    w('  {==}')
+    LEN = I['ln']
+    LENX = lambda o: 'Pair.snd(O.Words, U32, %s.%s_len(%s))' % (DA, c, o)
+    w('def %s_api_set_length(%s)\n    -> {%s == %s : U32}:' % (c, prem, LENX('Pair.fst(O.Words, Bool, %s)' % SET), LEN))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : U32}' % (GS, LENX('Pair.fst(O.Words, Bool, %s)' % PUT), LEN))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
+    w('  {==}')
+    return 2
+
+
+def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
+    """read-back laws of a Data-element list over storage thaw(t), t a perfect tree of depth d < 32"""
+    TH = 'F.array__thaw(%s, t)' % EL
+    UP = lambda j, x: 'F.array__upd(%s, d, t, U32.to_nat(%s), %s)' % (EL, j, x)
+    SEQ = lambda a, m: '%s.%s{%s, %s}' % (DA, I['T'], a, m)
+    OBJ = SEQ(TH, 'n')
+    sub = lambda g, **kw: re.sub(r'(?<![\w.])(arr|n|i)(?![\w.])', lambda m: kw.get(m.group(1), m.group(1)), g)
+    GSx = sub(GS, arr=TH)
+    TR = lambda x: 'Pair.fst(%s, Bool, %s)' % (T, x)
+    pre = ('+d: Nat, +t: F.array__Tree<%s>, +n: U32, +i: U32, %sv: %s, +x: %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+           '+hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, '
+           '+hx: {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(i)) == Some{x} : Maybe<&2, %s>}, '
+           '+pf: {F.array__perfect(%s, d, t) == True{} : Bool}' % (EL, '+', EL, EL, EL, EL, EL, EL))
+    RES = lambda y: '(%s, Some{%s}) : %s & Maybe<&1, %s>' % (SEQ('F.array__thaw(%s, %s)' % (EL, UP('i', 'v')), 'n'), y, T, ET)
+    GET = lambda o, j: '%s.%s_get(%s, %s)' % (DA, c, o, j)
+    SETO = '%s.%s_set(%s, i, v)' % (DA, c, OBJ)
+    AS = 'Array.set(%s, %s, i, v)' % (EL, TH)
     # set, then get another index
     pre2 = pre + (', +j: U32, +y: %s, +hj: {Nat.is_lt(U32.to_nat(j), F.spec_common__pow2(d)) == True{} : Bool}, '
                   '+ne: {Nat.is_eq(U32.to_nat(i), U32.to_nat(j)) == False{} : Bool}, '
@@ -542,10 +616,10 @@ def coll_words():
 
 
 # ---- the boxed lists (Array<O.Boxed<X>>, Type-kind elements): read-back through proofs/obj/tarray.bend ----
-CB = OBJ / 'coll_boxed.bend'
+CB = OBJ / 'coll_seq.bend'
 
 
-def boxed_laws(I, imps):
+def seq_laws(I, imps):
     """read_set of a boxed list: get(set(o, i, v), i) returns v (and takes it out of its slot, as the
     runtime's get of a boxed element does), for every array; N names the array's size"""
     c, t = I['c'], I['text']
@@ -578,39 +652,68 @@ def boxed_laws(I, imps):
     pb = body(t, c + '_put_in')[2]
     wrap = re.search(r'case True\{\}: \(%s\{Array\.set\(.*, arr, i, (.*)\), n\}, True\{\}\)$' % I['T'], pb, re.M).group(1)
     WV = q(wrap)
+    boxed = not I['data']
     ab = body(t, c + '_at')[2]
-    assert 'Array.swap(' in ab and 'O.BNone{}' in ab, (c, ab)
-    SEQ = lambda a: '%s.%s{%s, n}' % (DA, I['T'], a)
-    SETA = lambda x: 'Array.set(%s, arr, i, %s)' % (EL, x)
-    RES = '(%s, Some{v}) : %s & Maybe<&1, %s>' % (SEQ(SETA('O.BNone{}')), T, ET)
+    assert ('Array.swap(' in ab and 'O.BNone{}' in ab) if boxed else 'Array.get(' in ab, (c, ab)
+    vb = 'v: %s' % VT if boxed else '+v: %s' % VT
+    SEQ = lambda a_, m_: '%s.%s{%s, %s}' % (DA, I['T'], a_, m_)
     out = ['# ---- %s ----' % c]
-    out.append('def %s_api_read_set(arr: Array<%s>, +n: U32, +N: U32, +i: U32, v: %s, +hz: {TA.sz(%s, arr) == N : U32}, +hs: {%s == True{} : Bool})'
-               % (c, EL, VT, EL, GS))
-    out.append('    -> {%s.%s_get(Pair.fst(%s, Bool, %s.%s_set(%s, i, v)), i) == %s}:' % (DA, c, T, DA, c, SEQ('arr'), RES))
-    out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get(Pair.fst(%s, Bool, %s.%s_put_in(_, arr, n, i, v)), i) == %s}' % (GS, DA, c, T, DA, c, RES))
-    out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s.%s_get_in(_, %s, n, i) == %s}' % (GG, DA, c, SETA(WV), RES))
-    out.append('  %%Equal.sym(Array<%s> & %s, Array.swap(%s, %s, i, O.BNone{}), (%s, %s), TA.swap_set_same(%s, arr, N, i, %s, O.BNone{}, hz)) : {%s.%s_took(n, _) == %s}'
-               % (EL, EL, EL, SETA(WV), SETA('O.BNone{}'), WV, EL, WV, DA, c, RES))
-    out.append('  {==}')
+
+    def law(name, A, IX, M_, prem, first, guard):
+        """get(.., IX) after writing WV at IX in array A (length M_ after): the lemma gives the value"""
+        SETW = 'Array.set(%s, %s, %s, %s)' % (EL, A, IX, WV)
+        if boxed:
+            AFTER = 'Array.set(%s, %s, %s, O.BNone{})' % (EL, A, IX)
+            lem = ('%%Equal.sym(Array<%s> & %s, Array.swap(%s, %s, %s, O.BNone{}), (%s, %s), TA.swap_set_same(%s, %s, N, %s, %s, O.BNone{}, hz))'
+                   % (EL, EL, EL, SETW, IX, AFTER, WV, EL, A, IX, WV))
+        else:
+            AFTER = SETW
+            lem = ('%%Equal.sym(Array<%s> & %s, Array.get(%s, %s, %s), (%s, %s), TA.get_set_same(%s, %s, N, %s, %s, hz))'
+                   % (EL, EL, EL, SETW, IX, AFTER, WV, EL, A, IX, WV))
+        RES = '(%s, Some{v}) : %s & Maybe<&1, %s>' % (SEQ(AFTER, M_), T, ET)
+        out.append('def %s_api_%s(arr: Array<%s>, +n: U32, +N: U32, %s%s, +hz: {TA.sz(%s, %s) == N : U32}, %s)'
+                   % (c, name, EL, '+i: U32, ' if IX == 'i' else '', vb, EL, A, prem))
+        out.append('    -> {%s.%s_get(Pair.fst(%s, Bool, %s), %s) == %s}:' % (DA, c, T, first[0], IX, RES))
+        out.append('  %s : {%s.%s_get(Pair.fst(%s, Bool, %s), %s) == %s}' % (first[1], DA, c, T, first[2], IX, RES))
+        out.append('  %s : {%s.%s_get_in(_, %s, %s, %s) == %s}' % (guard, DA, c, SETW, M_, IX, RES))
+        out.append('  %s : {%s.%s_took(%s, _) == %s}' % (lem, DA, c, M_, RES))
+        out.append('  {==}')
+    law('read_set', 'arr', 'i', 'n', '+hs: {%s == True{} : Bool}' % GS,
+        ('%s.%s_set(%s, i, v)' % (DA, c, SEQ('arr', 'n')), '%%Equal.sym(Bool, %s, True{}, hs)' % GS, '%s.%s_put_in(_, arr, n, i, v)' % (DA, c)),
+        '%%Equal.sym(Bool, %s, True{}, hs)' % GG)
+    k = 1
+    if I['GA']:
+        GA = q(I['GA'])
+        N1 = '(n + 1 : U32)'
+        gw = re.sub(r'(?<![\w.])(n|i)(?![\w.])', lambda m: {'n': N1, 'i': 'n'}[m.group(1)], GG)
+        law('read_append', '%s.%s_room(arr, n)' % (DA, c), 'n', N1,
+            '+ha: {%s == True{} : Bool}, +hw: {%s == True{} : Bool}' % (GA, gw),
+            ('%s.%s_append(%s, v)' % (DA, c, SEQ('arr', 'n')), '%%Equal.sym(Bool, %s, True{}, ha)' % GA, '%s.%s_app_in(_, arr, n, v)' % (DA, c)),
+            '%%Equal.sym(Bool, %s, True{}, hw)' % gw)
+        k = 2
     out.append('')
-    return '\n'.join(out)
+    return '\n'.join(out), k
 
 
-def coll_boxed(cs):
+def coll_seq(cs):
     imps = {'TA': 'proofs/obj/tarray.bend', 'O': 'src/obj.bend'}
-    parts = []
+    parts, n = [], 0
     for c in cs:
         I = info(c)
-        if I['kind'] == 'seq' and not I['data']:
-            parts.append(boxed_laws(I, imps))
+        if I['kind'] == 'seq':
+            t_, k = seq_laws(I, imps)
+            parts.append(t_)
+            n += k
     body_ = '\n'.join(parts)
     used = [a for a in imps if re.search(r'(?<![\w.])%s\.' % re.escape(a), body_)]
     head = ['import Base'] + ['import %s as %s' % (rel(imps[a]), a) for a in used]
-    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_boxed)'),
-             '# The boxed lists (elements O.Boxed<X>, X a Type-kind container): reading the index just set',
-             '# returns the value set. No premise on the storage: N is the array\'s size (proofs/obj/tarray.bend).',
-             '# The runtime\'s get of a boxed element takes it out of its slot, which the result shows.', '']
-    return '\n'.join(head) + body_, len(parts)
+    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_seq)'),
+             '# The lists stored as an array of elements (Data elements, or boxed Type-kind containers): reading',
+             '# the index just set returns the value set, and reading the old length after an accepted append',
+             '# returns the value appended, whether or not the append had to grow the storage. No premise on',
+             '# the storage: N names the size of the array written (proofs/obj/tarray.bend). The runtime\'s get of',
+             '# a boxed element takes it out of its slot, which the result shows. hw: the length does not wrap.', '']
+    return '\n'.join(head) + body_, n
 
 
 # ---- the bit lists: a set bit reads back (proofs/obj/u32bits.bend, proofs/obj/words_rw.bend) ----
@@ -810,7 +913,7 @@ def rel(p):
 def outputs():
     cs = collections()
     outs, total = {CW: coll_words()}, 0
-    bt, bn = coll_boxed(cs)
+    bt, bn = coll_seq(cs)
     outs[CB] = bt
     total += bn
     bt, bn = coll_bits(cs)
@@ -840,7 +943,7 @@ def main():
     check = '--check' in sys.argv
     outs, total = outputs()
     stale = [p.name for p, t in outs.items() if not p.exists() or p.read_text() != t]
-    orphans = sorted({p.name for p in OBJ.glob('coll_api_*.bend')} - {p.name for p in outs})
+    orphans = sorted({p.name for p in list(OBJ.glob('coll_api_*.bend')) + list(OBJ.glob('coll_boxed.bend'))} - {p.name for p in outs})
     if check:
         if stale or orphans:
             print('stale: ' + ', '.join(stale + [o + ' (orphan)' for o in orphans]))

@@ -94,7 +94,7 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_boxed.bend', 'proofs/obj/coll_bits.bend', 'proofs/obj/coll_bytes.bend', 'proofs/obj/prep_setters*.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_seq.bend', 'proofs/obj/coll_bits.bend', 'proofs/obj/coll_bytes.bend', 'proofs/obj/prep_setters*.bend']
 
 
 def eq_defs(text):

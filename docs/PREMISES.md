@@ -290,9 +290,9 @@ container's range invariants), the set file proves that the setter keeps it. A r
 (generic `uint8` / `uint16` fields) is stated under its guard, with the new value's range invariant
 (`rp_u8` / `rp_u16`) as a premise of the root and encode compositions.
 
-The collection read-back laws (`proofs/obj/coll_api_*.bend`) are stated for storage `thaw(t)`, `t`
-a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and `Array.set` keeps);
-the append read-back also assumes the storage has room for the new element (no reallocation) and
-that the length is not `2^32 - 1`. For the packed collections of whole-word elements the element's
-first word index `q` is given with `U32.to_nat((i * K) / 4) == q` (the byte offset `i * K` does not
-wrap) and its words below `2^d`.
+The read-back laws of the array lists (`proofs/obj/coll_seq.bend`) have no storage premise: `N`
+names the size of the array written, and the append law assumes only that the length is not
+`2^32 - 1`. The other read-back laws (`coll_api_*`, `coll_bits`, `coll_bytes`) are stated for packed
+storage `thaw(t)`, `t` a perfect tree of words of depth `d < 32`, with the element's first word index
+`q` given by `U32.to_nat(p / 4) == q` (`p` its byte offset, which does not wrap) and its words below
+`2^d`; the other-index law of the Data lists is stated over a perfect element tree in the same way.

@@ -147,3 +147,52 @@ def swap_set_go(-T: Type, -a: Array<T>, -N: U32, -i: U32, -w: T, -u: T, +hz: {sz
 def swap_set_same(-T: Type, a: Array<T>, +N: U32, +i: U32, w: T, u: T, +hz: {sz(T, a) == N : U32})
     -> {Array.swap(T, Array.set(T, a, i, w), i, u) == (Array.set(T, a, i, u), w) : Array<T> & T}:
   swap_set_go(T, a, N, i, w, u, hz, rw(T, a, N, J(N, i), w, u, Z(N, i)))
+
+# ---- Data elements: reading (Array.get, which copies) the position just written ----
+def get_l(-T: Data, -xs: Array<T>, -ys: Array<T>, -n: U32, -i: U32, -w: T, +ih: {Array.get.go(T, put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), U32.shr(n), i, U32.is_lt(i, U32.shr(U32.shr(n)))) == (put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), w) : Array<T> & T})
+    -> {Array.get.go(T, put(T, ANode{xs, ys}, n, i, w, True{}), n, i, True{}) == (put(T, ANode{xs, ys}, n, i, w, True{}), w) : Array<T> & T}:
+  %Equal.sym(Array<T> & T, Array.get.go(T, put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), U32.shr(n), i, U32.is_lt(i, U32.shr(U32.shr(n)))), (put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), w), ih) : {Array.swap.lo(T, ys, _) == (put(T, ANode{xs, ys}, n, i, w, True{}), w) : Array<T> & T}
+  {==}
+
+def get_r(-T: Data, -xs: Array<T>, -ys: Array<T>, -n: U32, -i: U32, -w: T, +ih: {Array.get.go(T, put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), U32.shr(n), U32.sub(i, U32.shr(n)), U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))) == (put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), w) : Array<T> & T})
+    -> {Array.get.go(T, put(T, ANode{xs, ys}, n, i, w, False{}), n, i, False{}) == (put(T, ANode{xs, ys}, n, i, w, False{}), w) : Array<T> & T}:
+  %Equal.sym(Array<T> & T, Array.get.go(T, put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), U32.shr(n), U32.sub(i, U32.shr(n)), U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), (put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), w), ih) : {Array.swap.hi(T, xs, _) == (put(T, ANode{xs, ys}, n, i, w, False{}), w) : Array<T> & T}
+  {==}
+
+def rg_l(-T: Data, -xs: Array<T>, -ys: Array<T>, -n: U32, -i: U32, -w: T, ih: {Array.swap.go(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))) == (put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), old(T, xs, U32.shr(n), i, U32.is_lt(i, U32.shr(U32.shr(n))))) : Array<T> & T} & ({Array.get.go(T, put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), U32.shr(n), i, U32.is_lt(i, U32.shr(U32.shr(n)))) == (put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), w) : Array<T> & T} & ({Array.size(T, xs) == (xs, sz(T, xs)) : Array<T> & U32} & ({Array.size(T, put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n))))) == (put(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))), sz(T, xs)) : Array<T> & U32}))))
+    -> {Array.swap.go(T, ANode{xs, ys}, n, i, w, True{}) == (put(T, ANode{xs, ys}, n, i, w, True{}), old(T, ANode{xs, ys}, n, i, True{})) : Array<T> & T} & ({Array.get.go(T, put(T, ANode{xs, ys}, n, i, w, True{}), n, i, True{}) == (put(T, ANode{xs, ys}, n, i, w, True{}), w) : Array<T> & T} & ({Array.size(T, ANode{xs, ys}) == (ANode{xs, ys}, sz(T, ANode{xs, ys})) : Array<T> & U32} & ({Array.size(T, put(T, ANode{xs, ys}, n, i, w, True{})) == (put(T, ANode{xs, ys}, n, i, w, True{}), sz(T, ANode{xs, ys})) : Array<T> & U32}))):
+  (+h1, r1) = ih
+  (+h2, r2) = r1
+  (+h3, h4) = r2
+  (go_l1(T, xs, ys, n, i, w, w, h1), (get_l(T, xs, ys, n, i, w, h2), (size_node(T, xs, ys, h3), size_put_l(T, xs, ys, n, i, w, w, h4))))
+
+def rg_r(-T: Data, -xs: Array<T>, -ys: Array<T>, -n: U32, -i: U32, -w: T, ih: {Array.swap.go(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))) == (put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), old(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n))))) : Array<T> & T} & ({Array.get.go(T, put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), U32.shr(n), U32.sub(i, U32.shr(n)), U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))) == (put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), w) : Array<T> & T} & ({Array.size(T, ys) == (ys, sz(T, ys)) : Array<T> & U32} & ({Array.size(T, put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n))))) == (put(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), sz(T, ys)) : Array<T> & U32}))), +sx: {Array.size(T, xs) == (xs, sz(T, xs)) : Array<T> & U32})
+    -> {Array.swap.go(T, ANode{xs, ys}, n, i, w, False{}) == (put(T, ANode{xs, ys}, n, i, w, False{}), old(T, ANode{xs, ys}, n, i, False{})) : Array<T> & T} & ({Array.get.go(T, put(T, ANode{xs, ys}, n, i, w, False{}), n, i, False{}) == (put(T, ANode{xs, ys}, n, i, w, False{}), w) : Array<T> & T} & ({Array.size(T, ANode{xs, ys}) == (ANode{xs, ys}, sz(T, ANode{xs, ys})) : Array<T> & U32} & ({Array.size(T, put(T, ANode{xs, ys}, n, i, w, False{})) == (put(T, ANode{xs, ys}, n, i, w, False{}), sz(T, ANode{xs, ys})) : Array<T> & U32}))):
+  (+h1, r1) = ih
+  (+h2, r2) = r1
+  (go_r1(T, xs, ys, n, i, w, w, h1), (get_r(T, xs, ys, n, i, w, h2), (size_node(T, xs, ys, sx), size_put_r(T, xs, ys, n, i, w, w, sx))))
+
+# swap.go writing w is put / old; Array.get.go of the written array at the same position returns w and
+# the array unchanged; the sizes: by one induction, as rw
+def rg(-T: Data, a: Array<T>, +n: U32, +i: U32, +w: T, +z: Bool)
+    -> {Array.swap.go(T, a, n, i, w, z) == (put(T, a, n, i, w, z), old(T, a, n, i, z)) : Array<T> & T} & ({Array.get.go(T, put(T, a, n, i, w, z), n, i, z) == (put(T, a, n, i, w, z), w) : Array<T> & T} & ({Array.size(T, a) == (a, sz(T, a)) : Array<T> & U32} & ({Array.size(T, put(T, a, n, i, w, z)) == (put(T, a, n, i, w, z), sz(T, a)) : Array<T> & U32}))):
+  match a z:
+    case ALeaf{x} _: ({==}, ({==}, ({==}, {==})))
+    case ANode{xs, ys} True{}: rg_l(T, xs, ys, n, i, w, rg(T, xs, U32.shr(n), i, w, U32.is_lt(i, U32.shr(U32.shr(n)))))
+    case ANode{xs, ys} False{}: rg_r(T, xs, ys, n, i, w, rg(T, ys, U32.shr(n), U32.sub(i, U32.shr(n)), w, U32.is_lt(U32.sub(i, U32.shr(n)), U32.shr(U32.shr(n)))), size_sz(T, xs))
+
+def get_set_go(-T: Data, -a: Array<T>, -N: U32, -i: U32, -w: T, +hz: {sz(T, a) == N : U32}, b: {Array.swap.go(T, a, N, J(N, i), w, Z(N, i)) == (put(T, a, N, J(N, i), w, Z(N, i)), old(T, a, N, J(N, i), Z(N, i))) : Array<T> & T} & ({Array.get.go(T, put(T, a, N, J(N, i), w, Z(N, i)), N, J(N, i), Z(N, i)) == (put(T, a, N, J(N, i), w, Z(N, i)), w) : Array<T> & T} & ({Array.size(T, a) == (a, sz(T, a)) : Array<T> & U32} & ({Array.size(T, put(T, a, N, J(N, i), w, Z(N, i))) == (put(T, a, N, J(N, i), w, Z(N, i)), sz(T, a)) : Array<T> & U32}))))
+    -> {Array.get(T, Array.set(T, a, i, w), i) == (Array.set(T, a, i, w), w) : Array<T> & T}:
+  (+f1, r1) = b
+  (+f2, r2) = r1
+  (+f3, f4) = r2
+  %Equal.sym(Array<T>, Array.set(T, a, i, w), put(T, a, N, J(N, i), w, Z(N, i)), set_step(T, a, N, i, w, hz, f1, f3)) : {Array.get(T, _, i) == (_, w) : Array<T> & T}
+  %Equal.sym(Array<T> & U32, Array.size(T, put(T, a, N, J(N, i), w, Z(N, i))), (put(T, a, N, J(N, i), w, Z(N, i)), sz(T, a)), f4) : {Array.get.at(T, i, _) == (put(T, a, N, J(N, i), w, Z(N, i)), w) : Array<T> & T}
+  %Equal.sym(U32, sz(T, a), N, hz) : {Array.get.at(T, i, (put(T, a, N, J(N, i), w, Z(N, i)), _)) == (put(T, a, N, J(N, i), w, Z(N, i)), w) : Array<T> & T}
+  f2
+
+# Reading the position just written returns the value written and leaves the array as written:
+# for every array (of size N) of Data elements and every index.
+def get_set_same(-T: Data, a: Array<T>, +N: U32, +i: U32, +w: T, +hz: {sz(T, a) == N : U32})
+    -> {Array.get(T, Array.set(T, a, i, w), i) == (Array.set(T, a, i, w), w) : Array<T> & T}:
+  get_set_go(T, a, N, i, w, hz, rg(T, a, N, J(N, i), w, Z(N, i)))
