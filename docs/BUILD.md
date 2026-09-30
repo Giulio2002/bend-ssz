@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->2da67db8<!-- /fig -->):
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->aa48803b<!-- /fig -->):
 <!-- fig:check_umbrellas -->40<!-- /fig --> umbrellas over <!-- fig:check_files -->5,686<!-- /fig --> files,
-<!-- fig:check_cpu -->3,399<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.9<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->334<!-- /fig --> s. A
+<!-- fig:check_cpu -->2,878<!-- /fig --> CPU seconds, <!-- fig:check_wall -->4.8<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->173<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -111,3 +111,17 @@ object API replaced that layer. `tests/new/test_transport.py` tested the JSON tr
 former JS spectest runner, which `tools/spectests.py` no longer has, and `tools/probe_backend.py`
 imported names `tools/spectests.py` no longer defines; both were removed too. The object API is
 tested by the official vectors and the evidence in [RESULTS.md](RESULTS.md).
+
+## Fast iteration
+
+`tools/iter.sh [--gen a,b] [--base REF] [-j N] [--no-regen] [--cache] [files...]` is the dev loop. It
+rsyncs the checkout to a per-user server directory, runs `codegen/regen_all.py --touched` (only the
+generators whose traced inputs changed since their last clean run; stamps in `build/regen_stamps.json`),
+then checks with `tools/check.sh` only the `.bend` files that changed locally, were rewritten by the
+regeneration, or are named, at most `-j` (4) at once, with no localization and no full-check lock. It prints
+PASS/FAIL per file with seconds and the failing location, and pulls the regenerated files back.
+`--cache` uses a dev-only toolchain with a module cache (`/srv/ssz-optimization/toolchain-dev-cache`,
+rigid Bend + bendlang/bend#1209): a cache trusts earlier results, so it is never a gate and never makes a
+stamp. Only the full `tools/check_fast.sh` (with localization) and strictcheck gate a merge; iter.sh results
+are not evidence. `regen_all.py --check` stays the authority on generated files; `--touched` output is
+byte-identical to a full regeneration.
