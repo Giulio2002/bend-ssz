@@ -60,8 +60,8 @@ like the bridges.
 Not stated yet: setter-then-encode where the encode bridge also takes storage premises
 (`hs*`, `hc*`; no law says a setter keeps them), and read-back for the boxed lists (Type-kind elements), the byte and bit collections (sub-word
 writes) and after an append that grows the storage.
-The definitional field laws (`proofs/obj/fields_*.bend`) and the helper-level collection laws
-(`proofs/obj/collections_*.bend`) are still checked but are no longer listed as statements.
+The field swap laws of `proofs/obj/fields_*.bend` (<!-- fig:obj_swap_laws -->118<!-- /fig --> laws: the old value is handed back and the new one stored) are listed and locked; the other definitional field laws
+and the helper-level collection laws (`proofs/obj/collections_*.bend`) are still checked but are no longer listed as statements (the setter spec-value laws and the collection laws state what they did).
 
 Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
 [docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).

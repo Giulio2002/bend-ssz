@@ -12,9 +12,10 @@ non-vacuity witness e2e/<Name>_e2e_witness_generated.bend (<Name>_e2e_witness an
 laws of OBJECT_LAWS: the collection laws of the public API proofs/obj/coll_api_*.bend
 (codegen/coll_laws.py: its `_api_` defs) and the setter laws proofs/obj/prep_setters*.bend (a setter
 keeps rep); for these, every def whose result is an equality proposition and every `law` block is
-a statement. (The definitional field laws proofs/obj/fields_*.bend and the helper-level
-collection laws proofs/obj/collections_*.bend of codegen/laws.py are checked but not listed: the
-spec-value laws of the setters and the public-API collection laws state what they did.) Found by name, so a new composed or witness file is listed (and, through
+a statement. The field swap laws of proofs/obj/fields_*.bend (`X_swap_f`: the old value handed back and
+the new one stored) are listed too: no setter composition restates them. (The other definitional field laws
+of fields_*.bend and the helper-level collection laws proofs/obj/collections_*.bend of codegen/laws.py are
+checked but not listed: the spec-value laws of the setters and the public-API collection laws state what they did.) Found by name, so a new composed or witness file is listed (and, through
 tools/verify_frozen.py's statement_defs, must be locked) without any edit here. For each (sorted),
 writes the statements of its laws
 (the signature of each def the manifest lists: its hypotheses and conclusion, no proof), the
@@ -136,6 +137,12 @@ def statement_files():
             ls = eq_defs(p.read_text())
             if p.name.startswith('coll_'):
                 ls = [l for l in ls if '_api_' in l]   # not the flag case-split helpers
+            out[str(p.relative_to(ROOT))] = ls
+    # the field swap laws (old value handed back, new one stored): the one family of proofs/obj/fields_*.bend that no
+    # setter composition in e2e/*_e2e_set_generated.bend restates, so they stay listed (and locked)
+    for p in sorted(ROOT.glob('proofs/obj/fields_*.bend')):
+        ls = [l for l in eq_defs(p.read_text()) if re.search(r'_swap_\w+$', l)]
+        if ls:
             out[str(p.relative_to(ROOT))] = ls
     return out
 

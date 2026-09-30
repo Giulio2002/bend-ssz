@@ -195,6 +195,7 @@ def object_law_figures():
     f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
     f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))
     f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters'))
+    f['obj_swap_laws'] = str(stm('proofs/obj/fields_'))
     f['obj_setter_containers'] = str(len({re.match(r'(\w+?)_set_', l).group(1)
                                           for k, v in sf.items() if k.startswith('proofs/obj/prep_setters') for l in v}))
     sets = [l for k, v in sf.items() if k.endswith('_e2e_set_generated.bend') for l in v]
