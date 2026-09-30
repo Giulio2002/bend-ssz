@@ -48,12 +48,41 @@ Trusted (not proved here):
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of
   END_TO_END.bend, ROOT_DOMAIN.bend, PROOF.bend and HASH_PROOF.bend. These are reviewed, not
-  proved; the generators never write them. `frozen.lock.json` records the sha256 of every spec
-  file (and the representations and normative sources it rests on), of the four roots'
-  statement text (proof bodies excluded), of `types/fulu_model.bend` and
-  `proofs/obj/generic_specs.bend` (what END_TO_END's per-name laws and the generic bridges
-  quantify over), and, per file, of every bridge statement and every definition it reaches
-  outside `src/`, `types/`, `spec/` (the object views, `rep` invariants and their helpers); `tools/verify_frozen.py` checks it, and that
+  proved. The `codegen/` generators never write them, but three spec files are the output of
+  `tools/generate_*.py` scripts and carry no `# GENERATED` header:
+  `spec/bit_packing.bend` (`tools/generate_bit_packing.py`, which also writes
+  `src/bit_packing.bend` and `proofs/bit_packing.bend`), `spec/bit_decoding.bend`
+  (`tools/generate_bit_decoding.py`, which also writes `src/bit_decoding.bend` and
+  `proofs/bit_decoding.bend`) and `spec/fulu_schemas.bend` (`tools/generate_fulu_schema_proofs.py`,
+  a transcription of `schemas/fulu_mainnet.json`). They are frozen like every spec file (their
+  bytes are in `frozen.lock.json`), and `codegen/tool_generators.py --check` reruns the three
+  scripts and requires the committed bytes, so the script is a record of how the text was
+  produced, not a way to change it. What they are reviewed as is the text they contain.
+  **Independence of the bit packing.** `spec/bit_packing.bend` and `src/bit_packing.bend` come
+  from one template: `pack` (eight bits per byte, lowest index at weight 1, a short final group
+  padded with `False`) is the same text in both, and only `octet` differs (the spec sums the bit
+  weights with `U32.add`, the runtime combines them with `U32.or`). `proofs/bit_packing.bend`
+  proves the two equal, so that proof establishes the `add`/`or` equivalence and nothing about
+  the grouping: a grouping error in the template would sit in the spec and the runtime alike and
+  no law would catch it. The grouping is reviewed against simple-serialize.md (the `Bitvector` /
+  `Bitlist` rows of `spec/CORRESPONDENCE.md`) and cross-checked by the official `ssz_generic`
+  bitvector and bitlist vectors, which all pass. `spec/bit_decoding.bend` and
+  `src/bit_decoding.bend` share only the outer form (eight bits, lowest first); the spec reads
+  digit i arithmetically (`(x / 2^i) mod 2`), the runtime by shift and mask.
+  `frozen.lock.json` records the sha256 of every spec file (and the representations and
+  normative sources it rests on), of the four roots' statement text (proof bodies excluded), of
+  `types/fulu_model.bend` and `proofs/obj/generic_specs.bend` (what END_TO_END's per-name laws
+  and the generic bridges quantify over), and, per file, of every statement in
+  `e2e/STATEMENTS.txt` and every definition it reaches, transitively, on the premise side and the
+  conclusion side: the object views, `rep` invariants and their helpers in `proofs/` and `e2e/`,
+  and in `src/` and `types/` the helpers a statement names (`B.fill_at`, `B.alloc`, `D.bytes`,
+  `O.e8` in the Branch `cap` premise, the object types) with everything they reach. Only the
+  implementation under test is left out: the generated per-name encoder, decoder and root
+  (`types/*_{encode_ssz,decode_ssz,hashtreeroot}_generated.bend`, which the bridges pin down) and
+  the model API `src/model.bend` (which END_TO_END's laws pin down). So a change to a src/ def
+  cannot weaken or empty a premise without changing the lock. `tools/verify_frozen.py` checks
+  all of this (after planting four changes, three that must trip the lock and the encoder, which
+  must not), and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `0xe4067e0d858024083f36a7abe7281e89` (bend-collections),

@@ -65,7 +65,8 @@ default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-2
 `CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
 checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
 `check_fast.sh` also runs `tools/verify_frozen.py` first: the spec, the four roots' statements, and
-the bridge statements with the definitions they reach must match `frozen.lock.json`. A deliberate
+the bridge statements with the definitions they reach (in `src/` and `types/` too, except the
+implementation under test) must match `frozen.lock.json`. A deliberate
 statement change is recorded with `python3 tools/verify_frozen.py --update` in the same commit. It
 then runs `tools/verify_no_escapes.py`, and at the end writes `DIR/stamp.json`
 (`tools/check_stamp.py`: commit, checker commit, the sha256 of both locks, of every checked
