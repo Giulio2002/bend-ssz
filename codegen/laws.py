@@ -41,8 +41,9 @@ Variable-size shapes need the offset development. Neither is claimed.
 Every law is stated over an object built from variables - one variable per
 field, nothing assumed about them - so it holds for every object of the type,
 including the ones decode returns. The proofs are by computation: both sides
-reduce to the same record. Element read-after-write for lists of objects is in
-proofs/obj/seq_elem.bend, which needs the array lemmas of proofs/compact.
+reduce to the same record. Element read-after-write for lists of objects, over the
+public API, is in proofs/obj/coll_api_*.bend (codegen/coll_laws.py), which needs the
+array lemmas of proofs/compact.
 
 A wide container (more than GROUP fields) keeps its fields in groups. Its laws
 are stated with the group that holds the field expanded and the other groups

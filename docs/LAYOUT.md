@@ -9,8 +9,8 @@
 | `proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend` | the per-name facades: every law in the object API's terms | `codegen/api_facade.py` |
 | `proofs/gate/` | one-import gates that check each law module in isolation; `MISSING.txt`, `api_map.json` | `codegen/api_gate.py` |
 | `e2e/<Name>_e2e_{,dec_,root_}generated.bend` (fixed-size names keep encode and decode in `<Name>_e2e_generated.bend`), `e2e/manifest.json` | the bridges to END_TO_END's model, and their index | `codegen/e2e_bridge.py` |
-| `e2e/<Name>_e2e_set_generated.bend` | the setter laws (`proofs/obj/prep_setters.bend`) composed with the root bridge, and with the encode bridge where its only premise is `rep` | `codegen/e2e_setters.py` |
-| `e2e/STATEMENTS.txt` | every public statement: the bridges, composed theorems, witnesses, setter compositions and the object-mutation laws (`proofs/obj/fields_*`, `collections_*`, `prep_setters.bend`), with the imports and local defs they use (no proofs) | `codegen/statements.py` |
+| `e2e/<Name>_e2e_set_generated.bend` | per container with field setters: the spec-value law of each setter (`view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, `proofs/obj/value_set.bend`) and its composition with the root bridge and, where the premises allow, the encode bridge | `codegen/e2e_setters.py` |
+| `e2e/STATEMENTS.txt` | every public statement: the bridges, composed theorems, witnesses, setter laws and the object-mutation laws (`proofs/obj/coll_api_*`, `prep_setters.bend`), with the imports and local defs they use (no proofs) | `codegen/statements.py` |
 | `END_TO_END.bend`, `ROOT_DOMAIN.bend`, `PROOF.bend`, `HASH_PROOF.bend` | the model API's public laws | hand (statements frozen) |
 | `codegen/` | the generators; `codegen/fulu.yaml` and the frozen generic descriptions are their inputs | hand |
 | the figures marked `<!-- fig:KEY -->` in README.md, docs/RESULTS.md, docs/PREMISES.md | coverage counts and name lists, from `proofs/gate/` and `e2e/manifest.json` | `codegen/doc_figures.py` |
@@ -47,12 +47,12 @@ each is kept:
 
 | Module | What it proves | Why nothing imports it |
 |---|---|---|
-| `proofs/obj/fields_*.bend`, `proofs/obj/collections_*.bend` | the field and collection laws of the object API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
+| `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`) | the collection laws of the public API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
+| `proofs/obj/fields_*.bend`, `proofs/obj/collections_*.bend` (`codegen/laws.py`) | read-after-write laws of the field accessors over record literals, and rejected/accepted laws of the internal collection helpers with the guard given as a constant | they hold by unfolding a definition; the spec-value setter laws and the public-API collection laws (`coll_api_*`) state what they did, so they are no longer public statements |
 | `proofs/obj/cache.bend`, `proofs/obj/chist.bend` | the cached Merkle tree of `BeaconState.validators`: a write or append through the cache API updates the element and the dirty range, and every history of accepted operations keeps the cache valid | results about the root cache, a runtime feature outside the SSZ statements; `benchmarks/evidence/object_cache.json` tests the same cache |
 | `proofs/obj/cached_<list>.bend` (`codegen/cached_laws.py`) | for five of the cached lists, the runtime's cached-root loops compute the reference tree of the element roots (instances of the Validator-list proof) | the same: the cache's own laws |
 | `proofs/obj/cspec_<list>.bend` (`codegen/cached_laws.py`) | for six other lists, the cached root's element roots are the ones the uncached root law relates to the spec (`RR.roots`) | the same |
 | `proofs/obj/ccost.bend`, `proofs/obj/cost.bend` | the cost model: how many node hashes a cached sweep does, and the closed form of the generated loops' cost | cost bounds, not correctness statements |
-| `proofs/obj/seq_elem.bend` | element read-after-write for a list of whole objects (`BeaconState.validators`) | an element law of the one list stored as a packed object array; the collection laws cover the others |
 | `proofs/obj/fill_pieces.bend` | the native driver's input path (64 KiB pieces, `native_bench/driver.bend`) fills the buffer as one whole fill, which is what the decode statements assume | it is about the native driver, which no proof imports |
 | `types/fulu.bend` (`tools/generate_fulu.py`) | the closed name index of the Fulu inventory | an input that `tools/generate_fulu_*.py` read, not a module anything imports |
 

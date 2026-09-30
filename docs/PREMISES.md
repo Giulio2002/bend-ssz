@@ -277,13 +277,18 @@ constructors, not by the decoder (that the decoder's output meets the premises i
 
 ## 9. Objects changed through the API
 
-The setter laws (`proofs/obj/prep_setters.bend`) say that a field setter keeps `rep_X` (given, for
-a field with its own invariant, that invariant of the new value). Every root bridge of those
-containers has `rep` as its only premise, so `e2e/<Name>_e2e_set_generated.bend` composes each
-setter law with it: an object satisfying `rep` and changed by a setter has the spec root
-(<!-- fig:set_root_count -->127<!-- /fig --> statements). For the encoding this holds only where the encode bridge's
-only premise is `rep` (<!-- fig:set_encode_count -->7<!-- /fig --> statements); elsewhere the encode bridge also needs
-storage premises (`hs*`, `hc*`, section 1) of the changed object, and no setter law states them.
-The composition is generated for every setter law, so it covers new setter laws with no further
-work; extending it to encode needs a storage-preservation law per setter, which does not exist yet.
-The generic-suite names' setters have no laws.
+`e2e/<Name>_e2e_set_generated.bend` states, for every field setter, that the view of the changed
+object is the old view with that field's value replaced (`proofs/obj/value_set.bend`'s
+`field_set`); this law has no premise. Composed with the root bridge it gives the spec root of the
+changed value (<!-- fig:set_root_count -->265<!-- /fig --> statements): with no further premise where the root bridge
+takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters.bend`
+(a setter keeps `rep`, given the new value's own invariant for fields that have one). The same for
+the encoding (<!-- fig:set_encode_count -->107<!-- /fig --> statements) where the encode bridge takes only the object or
+`rep`; elsewhere it also needs storage premises (`hs*`, `hc*`, section 1) of the changed object,
+and no law states that a setter keeps them. Generic containers whose root bridge takes `rp_*`, or a
+`rep` with no setter law, have the spec-value law but no root composition.
+
+The collection read-back laws (`proofs/obj/coll_api_*.bend`) are stated for storage `thaw(t)`, `t`
+a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and `Array.set` keeps);
+the append read-back also assumes the storage has room for the new element (no reallocation) and
+that the length is not `2^32 - 1`.

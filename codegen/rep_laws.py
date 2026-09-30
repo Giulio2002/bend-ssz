@@ -27,6 +27,8 @@ import schema as SC  # noqa: E402
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 RT_PATH = ROOT / 'proofs/obj/root_types.bend'
+# BeaconState's rep (and its projections) are in root_state.bend, imported as ST
+ST_PATH = ROOT / 'proofs/obj/root_state.bend'
 OUT = ROOT / 'proofs/obj/prep_setters.bend'
 
 
@@ -74,13 +76,17 @@ def parse_rep(name, body):
             walk(y)
         else:
             m2 = re.fullmatch(r'([\w.]+)\(pj_' + name + r'_(\d+)\(o\), (.*)\)', t)
-            comps.append((m2.group(1), int(m2.group(2)), m2.group(3)))
+            if m2:
+                comps.append((m2.group(1), int(m2.group(2)), m2.group(3)))
+            else:   # an invariant of a Data-kind field's witness x<i> (BeaconState's rp_bv4(x17))
+                m3 = re.fullmatch(r'([\w.]+)\(x(\d+)\)', t)
+                comps.append((m3.group(1), int(m3.group(2)), None))
     walk(b)
     return exs, args, comps
 
 
-def qual(n):
-    return n if '.' in n else 'RT.' + n
+def qual(n, mod='RT'):
+    return n if '.' in n else mod + '.' + n
 
 
 def setters(name, nfields):
@@ -98,13 +104,13 @@ def setters(name, nfields):
     return out
 
 
-def law(name, exs, args, comps):
+def law(name, exs, args, comps, mod='RT'):
     L = []
     w = L.append
     ex_idx = {i: (t, x) for t, x, i in exs}
     comp_idx = {i: (c, sch) for c, i, sch in comps}
     all_idx = sorted(set(ex_idx) | {i for _, i, _ in comps} | {int(k) for k in re.findall(r'pj_' + name + r'_(\d+)\(o\)', args)})
-    qargs = re.sub(r'\bpj_', 'RT.pj_', args)
+    qargs = re.sub(r'\bpj_', mod + '.pj_', args)
     for i, f, vt in setters(name, max(all_idx) + 1):
         data = i in ex_idx
         hyp = comp_idx.get(i)
@@ -113,10 +119,10 @@ def law(name, exs, args, comps):
         w(f'  for -o: T.{name}')
         w('  for +s: S.Schema')
         w(f'  for {vq}: {vt}')
-        w(f'  for +r: RT.rep_{name}(o, s)')
+        w(f'  for +r: {mod}.rep_{name}(o, s)')
         if hyp:
-            w(f'  for +rv: {qual(hyp[0])}(v, {hyp[1]})')
-        w(f'  RT.rep_{name}(T.{name}_set_{f}(o, v), s)')
+            w(f'  for +rv: {qual(hyp[0], mod)}(v{"" if hyp[1] is None else ", " + hyp[1]})')
+        w(f'  {mod}.rep_{name}(T.{name}_set_{f}(o, v), s)')
         w(f'def {name}_set_{f}_rep(o, s, v, r{", rv" if hyp else ""}):')
         prev = 'r'
         for k, (t, x, j) in enumerate(exs):
@@ -130,7 +136,7 @@ def law(name, exs, args, comps):
             for k in range(len(comps) - 1):
                 nxt = f'+{qs[k + 1]}' if k == len(comps) - 2 else f'c{k + 1}'
                 w(f'  (+{qs[k]}, {nxt}) = c{k}')
-        w(f'  %Equal.sym(T.{name}, o, T.{name}{{{qargs}}}, eo) : RT.rep_{name}(T.{name}_set_{f}(_, v), s)')
+        w(f'  %Equal.sym(T.{name}, o, T.{name}{{{qargs}}}, eo) : {mod}.rep_{name}(T.{name}_set_{f}(_, v), s)')
         reps = ['rv' if j == i else f'q{j}' for _, j, _ in comps]
         tup = reps[-1]
         for rr in reversed(reps[:-1]):
@@ -154,13 +160,21 @@ def build():
                       '# rep_X(o, s) and, for a field with its own invariant, that invariant of the new',
                       '# value, rep_X(set_f(o, v), s) holds with field f replaced and the rest unchanged.', '']
     body, names = [], []
-    for m in re.finditer(r'^def rep_(\w+)\(o: T\.(\w+), \+s: S\.Schema\) -> Data:\n  (.*)$', rt, re.M):
-        name, ty, b = m.groups()
-        if name != ty or (name.startswith('l') and name[1].isdigit()):
-            continue
-        exs, args, comps = parse_rep(name, b)
-        body.extend(law(name, exs, args, comps))
-        names.append(name)
+    st = RR.unwire(ST_PATH.read_text())
+    have = {l.split(' as ')[1] for l in head if l.startswith('import ') and ' as ' in l}
+    for l in st.split('\n'):   # root_state's own imports (its types), and root_state itself as ST
+        if l.startswith('import ') and ' as ' in l and not l.endswith((' as RT', ' as ST', ' as LV')) and l.split(' as ')[1] not in have:
+            head.insert(1, l)
+            have.add(l.split(' as ')[1])
+    head.insert(1, 'import ./root_state.bend as ST')
+    for text, mod in ((rt, 'RT'), (st, 'ST')):
+        for m in re.finditer(r'^def rep_(\w+)\(o: T\.(\w+), \+s: S\.Schema\) -> Data:\n  (.*)$', text, re.M):
+            name, ty, b = m.groups()
+            if name != ty or (name.startswith('l') and name[1].isdigit()):
+                continue
+            exs, args, comps = parse_rep(name, b)
+            body.extend(law(name, exs, args, comps, mod))
+            names.append(name)
     return '\n'.join(head + body) + '\n', names
 
 

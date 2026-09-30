@@ -9,10 +9,12 @@ decoding then re-encoding gives the input, decoding then hashing gives the spec 
 non-vacuity witness e2e/<Name>_e2e_witness_generated.bend (<Name>_e2e_witness and, when present,
 <Name>_e2e_witness_nonempty), every setter composition e2e/<Name>_e2e_set_generated.bend
 (codegen/e2e_setters.py: a setter then root or encode gives the spec's), and the object-mutation
-laws of OBJECT_LAWS: the field laws proofs/obj/fields_*.bend (read after write, overwrite,
-unchanged fields), the collection laws proofs/obj/collections_*.bend (rejected and accepted writes
-and appends) and the setter laws proofs/obj/prep_setters.bend (a setter keeps rep); for these,
-every def whose result is an equality proposition and every `law` block is a statement. Found by name, so a new composed or witness file is listed (and, through
+laws of OBJECT_LAWS: the collection laws of the public API proofs/obj/coll_api_*.bend
+(codegen/coll_laws.py: its `_api_` defs) and the setter laws proofs/obj/prep_setters.bend (a setter
+keeps rep); for these, every def whose result is an equality proposition and every `law` block is
+a statement. (The definitional field laws proofs/obj/fields_*.bend and the helper-level
+collection laws proofs/obj/collections_*.bend of codegen/laws.py are checked but not listed: the
+spec-value laws of the setters and the public-API collection laws state what they did.) Found by name, so a new composed or witness file is listed (and, through
 tools/verify_frozen.py's statement_defs, must be locked) without any edit here. For each (sorted),
 writes the statements of its laws
 (the signature of each def the manifest lists: its hypotheses and conclusion, no proof), the
@@ -92,7 +94,7 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/fields_*.bend', 'proofs/obj/collections_*.bend', 'proofs/obj/prep_setters.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/prep_setters.bend']
 
 
 def eq_defs(text):
@@ -128,7 +130,10 @@ def statement_files():
         out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_set_\w+)\(', p.read_text(), re.M)
     for g in OBJECT_LAWS:
         for p in sorted(ROOT.glob(g)):
-            out[str(p.relative_to(ROOT))] = eq_defs(p.read_text())
+            ls = eq_defs(p.read_text())
+            if p.name.startswith('coll_api_'):
+                ls = [l for l in ls if '_api_' in l]   # not the flag case-split helpers
+            out[str(p.relative_to(ROOT))] = ls
     return out
 
 
@@ -137,7 +142,7 @@ def render():
            '# Every end-to-end statement: the bridges (e2e/manifest.json), the composed decode;encode and',
            '# decode;root theorems (e2e/*_e2e_comp_generated.bend), the non-vacuity witnesses',
            '# (e2e/*_e2e_witness_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and',
-           '# the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the',
+           '# the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the',
            '# imports and file-local defs they use; the proofs are in the named files, which',
            '# tools/check_fast.sh checks.', '']
     n = 0
