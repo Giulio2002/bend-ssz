@@ -72,22 +72,36 @@ directly. END_TO_END's statements are frozen; only their proofs were changed.
 
 Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`:
 
-- field laws, `proofs/obj/fields_*.bend` (`codegen/laws.py`): <!-- fig:obj_field_statements -->1,242<!-- /fig -->
-  statements over <!-- fig:obj_field_containers -->59<!-- /fig --> Fulu containers: read after write,
-  the other fields unchanged, a second write wins;
-- collection laws, `proofs/obj/collections_*.bend` (`codegen/laws.py`): <!-- fig:obj_coll_statements -->103<!-- /fig -->
-  statements over <!-- fig:obj_coll_count -->41<!-- /fig --> collections: rejected writes and appends
-  change nothing and report False, accepted writes keep the length, accepted appends add one;
-- setter laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`): <!-- fig:obj_setter_laws -->127<!-- /fig -->
-  laws over <!-- fig:obj_setter_containers -->27<!-- /fig --> containers: every setter keeps `rep_X`;
-- setter compositions, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`): each setter
-  law applied with the root bridge (<!-- fig:set_root_count -->127<!-- /fig --> statements: the root of `set_f(o, v)`
-  is `API.hash_tree_root` of its view), and with the encode bridge where `rep` is its only premise
-  (<!-- fig:set_encode_count -->7<!-- /fig --> statements, <!-- fig:set_encode_names -->`FuluContributionAndProof`, `FuluProposerSlashing`, `FuluSignedContributionAndProof`<!-- /fig -->).
+- setter laws, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`), for
+  <!-- fig:set_containers -->71<!-- /fig --> containers (Fulu and generic, BeaconState included):
+  <!-- fig:set_view_count -->315<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
+  (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->315<!-- /fig -->
+  statements) and the encode bridge (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the
+  bridge's premises allow;
+- setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
+  <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
+- collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/coll_laws.py`):
+  <!-- fig:obj_coll_statements -->425<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
+  with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
+  append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->24<!-- /fig --> collections: the packed collections of whole-word
+  elements (`proofs/obj/words_rw.bend`, `proofs/obj/coll_zeros.bend`, `coll_b32.bend`, `coll_b48.bend`, `coll_u64.bend`), the bit lists and byte collections (`proofs/obj/u32bits.bend`,
+  `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend`) and the list of 2048-byte cells (`proofs/obj/cell_rw.bend`); the other-index law of the
+  Data-element lists. The array-list read-back and the boxed-list laws (`proofs/obj/tarray.bend`, `coll_seq.bend`) are on `agent/solid3-rigid`.
+  The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->33<!-- /fig --> collections: the spec view of the collection after an accepted
+  set is the view before with that item replaced by the view of the new element (`proofs/obj/value_set.bend`'s `field_set`: the k-th item of
+  a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
+  `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
+  `view_seq.bend` and `view_bytes.bend` (`codegen/view_laws.py`) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
+  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant): `..._api_root_set`, for <!-- fig:obj_coll_root -->9<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
+  An accepted append with room in the storage gives `seq_append`: the view before with the new element's view at the end (`..._api_view_append`; the word lists, the record lists and the byte lists), and `..._api_view_append_grow` when the append reallocates (the word lists: `proofs/obj/words_win.bend`'s `at_cpy_in` says the copy keeps the old words).
+  (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 
-Not stated: setter-then-encode for the containers whose encode bridge takes storage premises
-(no setter law restates them), `view(set_f(o, v))` as the spec value with field f replaced, and
-laws for the generic-suite names' setters. [PREMISES.md](PREMISES.md) section 9.
+The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
+flag, rejection and accepted-value laws in the same files. Not stated: the spec-value law of the bit lists, the cell list, the boxed lists, of an append that reallocates the storage of a byte list, the record lists
+without a root view and the boxed lists, the spec-value law of an append, and setter-then-encode where the
+encode bridge takes storage premises.
+[PREMISES.md](PREMISES.md) section 9.
 
 ## Conformance (official vectors, through the generated object API)
 
@@ -96,6 +110,12 @@ consensus-specs v1.6.1 (295 cases, 59 types; decode, re-encode byte for byte, ro
 `roots.yaml`). `benchmarks/evidence/generic_object_conformance.json`: every `ssz_generic` case
 (5,145, valid and invalid, all 10 families; the 8 zero-length schemas are rejected by
 construction).
+
+The fixtures these runs read are the pinned release files: `tools/verify_fixtures.py` checks every
+committed fixture against `fixtures.manifest.json` (in every full check), and with `--tarballs`
+fetches `general.tar.gz` and `mainnet.tar.gz`, requires their sha256 to be `upstream.lock.json`'s,
+and requires the manifest to be exactly the archives' `ssz_generic` and `fulu/ssz_static` members,
+each with the same sha256.
 
 ## Other test evidence (finite regressions, not laws)
 

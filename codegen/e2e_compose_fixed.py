@@ -279,6 +279,10 @@ def pad_word(eht):
 TREE_OBJ = re.compile(r'O\.Words\{ANode\{(\w+)\.array__thaw\(U32, (\w+)\.segt\(dd, 0n, (\w+)\.wlp\(bs\)\)\), Array\.new\(U32, (\d+)n, 0\)\}, (\d+)\}$')
 
 
+# from this many bytes a size is never compared in unary: the rigid checker's stack gives out between 4096 and 8192
+# levels of a Nat comparison (the facts are split by low bits, or stated on U32 literals)
+SYM = 2048
+
 def build_tree(name, lf, api):
     """a fixed-size vector of 2^b bytes whose decoder builds its words as a tree (AC.segt) beside a zero
     half: the decode bridge's d_some(dd, ed, bs, n, hn, hd, en) gives O.Words{ANode{thaw(segt(dd, 0, wlp(bs))),
@@ -308,13 +312,16 @@ def build_tree(name, lf, api):
         return None, 'a tree-form decoder object this module does not read'
     b = N.bit_length() - 1
     c = b - 5
-    if N > 9000:
+    if N > 2 ** 17:
         return None, f'the decoded object\'s rep premise over {N} bytes overflows the checker\'s stack'
     eps, ec = api.sig(em, f'{name}_e2e_encode')
     rps, rc = api.sig(rm, f'{name}_e2e_root')
-    if [x for _, x, _ in eps] != ['o', 'rep'] or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
+    if [x for _, x, _ in eps] not in (['o', 'rep'], ['o', 'rep', 'hc']) or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
         return None
-    k = int(re.search(r'rep_v(\d+)\(o', eps[1][2]).group(1))
+    mk_ = re.search(r'rep_v(\d+)\(o', eps[1][2])
+    k = int(mk_.group(1)) if mk_ else None     # None: a byte vector (rep_bv)
+    if k is None and 'rep_bv(o' not in eps[1][2]:
+        return None
     obj0 = ms.group(2).replace('segt(dd, ', f'segt({D}n, ').replace('pow2(dd)', f'pow2({D}n)')
     W.PREFER.clear()
     W.PREFER[dm.path] = 'DB'
@@ -352,8 +359,24 @@ def build_tree(name, lf, api):
     OBJ = ctx.lift(dm, obj0)
     EY = ctx.alias(E2E / 'e2e_bytes.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    if k is None:
+        SHA, XWA = ctx.alias(ROOT / 'proofs/obj/schema_shapes.bend'), ctx.alias(E2E / 'e2e_fixdw.bend')
     ctx.alias(ROOT / 'spec/primitives.bend')
-    base_depth = api.arr_depth
+    base_depth, base_syn, base_big = api.arr_depth, api.LSynth, W.BIG
+
+    class BigSyn(base_syn):
+        # a word array of SYM bytes or more: its two sums compared in halves (e2e_witness's big facts)
+        def eq(self, p, env):
+            subj = env.get('__subj')
+            if isinstance(subj, api.WordsLit) and subj.n >= SYM:
+                if re.search(r'U32\.to_nat\(N\) == Nat\.add\(WS\.e32\(q\), (32n|r)\)', p):
+                    return self.big_nfact(subj.n)
+                ml = re.search(r'^\{U32\.to_nat\(WO\.len\(o\)\) == e(8|16|32)\(cnt\1\(o\)\) : Nat\}$', p)
+                if ml and subj.n % int(ml.group(1)) == 0:
+                    return self.big_lfact(subj.n, env['__e']['o'], int(ml.group(1)))
+            return super().eq(p, env)
+    api.LSynth = BigSyn
+    W.BIG = 10 ** 9      # no symbolic lemma over a decoder's object (its words are the input's)
     if lit:
         tdepth = len(re.match(r'((?:\w+\.TNode\{)*)', mo2.group(2)).group(1).split('TNode{')) - 1
         api.arr_depth = lambda t: tdepth if t.strip().startswith(FDA + '.array__thaw') else base_depth(t)
@@ -365,7 +388,7 @@ def build_tree(name, lf, api):
         text, err = api.build_lit(name, (N, obj0, 'tree-form'), ctx, dm, em, rm, eps, rps,
                                   DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, 'view')
     finally:
-        api.arr_depth = base_depth
+        api.arr_depth, api.LSynth, W.BIG = base_depth, base_syn, base_big
     if text is None:
         return None, err
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
@@ -373,46 +396,84 @@ def build_tree(name, lf, api):
     if lit:        # every premise computed of the written-out tree (LSynth); only the decoder's facts are adapted
         defs = (f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
                 f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
-                f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == True{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))\n\n')
+                f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
         i = text.index('\ndef ') + 1
         text = text[:i] + defs + text[i:]
         text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
-        text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == False{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))')
-        return text.replace(api.HEADER, HEADER, 1), None
+        text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+        return bigK(text, N).replace(api.HEADER, HEADER, 1), None
     S_ = f'{ACA}.segt({D}n, 0n, {LA}.wlp(bs))'
     T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
-    # the length fact at the literal byte count by evaluation (WT.len_isq<k>), never by a conversion that walks N
-    lenpf = (f'WT.len32g({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {c}n, {b}n, {{==}}, {{==}})' if k == 32 else
-             f'WT.len_isq{k}({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {N}, {{==}})')
-    term = (f'(({T}, ({D + 1}n, ({N}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {N}, {FDA}.nat__eq_from_is_eq(U32.to_nat({N}), {FDA}.spec_common__pow2({b}n), {{==}})), '
-            f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), ({lenpf}, {{==}}))')
+    lsyn = W.Synth(ctx)
+    lenpf = lsyn.big_lfact(N, OBJ, k) if k is not None and (k == 32 or (k in (8, 16) and N >= SYM)) else '{==}'     # the count, in halves (e2e_witness's big fact)
+    lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()))
+    # the length as 2^b (a U32 the checker computes bitwise) from SYM bytes: its Nat is never compared in unary
+    NW = f'{FDA}.u32__pow2u({b}n)' if N >= SYM else f'{N}'
+    if k is None:
+        SCH = re.search(r'rep_bv\(o, (.*)\)$', ctx.lift(em, eps[1][2])).group(1)
+        nk = f'{XWA}.nk({b}n, {{==}}, {NW}, {{==}}, {SHA}.ByteVector_length({SCH}), {{==}})'
+        lenpf = (f'{FDA}.logic__subst(Nat, z => {{Nat.is_eq(U32.to_nat({NW}), z) == True{{}} : Bool}}, U32.to_nat({NW}), {SHA}.ByteVector_length({SCH}), {nk}, '
+                 f'{FDA}.nat__is_eq_refl(U32.to_nat({NW})))')
+        tail = lenpf
+    else:
+        tail = f'({lenpf}, {{==}})'
+    term = (f'(({T}, ({D + 1}n, ({NW}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {NW}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
+            f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), {tail})')
     SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
-    defs = (f'# the decoder\'s tree-form object: its words are the tree segt of the input words, beside a zero half\n'
-            f'def oeqt(+bs: +List<U32>) -> {{{OBJ} == O.Words{{{FDA}.array__thaw(U32, {T}), {N}}} : O.Words}}:\n'
-            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{OBJ} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {N}}} : O.Words}}\n  {{==}}\n\n'
+    lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()) if re.search(r'def \w+\(', v).group(0) not in text)
+    defs = lendefs + (f'# the decoder\'s tree-form object: its words are the tree segt of the input words, beside a zero half\n'
+            f'def oeqt(+bs: +List<U32>) -> {{{OBJ} == O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}} : O.Words}}:\n'
+            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{OBJ} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {NW}}} : O.Words}}\n  {{==}}\n\n'
             f'def pft(+bs: +List<U32>) -> {{{FDA}.array__perfect(U32, {D + 1}n, {T}) == True{{}} : Bool}}:\n'
             f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D}n, {S_}), True{{}}, {LA}.seg_pf({D}n, {LA}.wlp(bs))) :\n'
             f'    {{Bool.and(_, {FDA}.array__perfect(U32, {D}n, {FDA}.array__trep(U32, {D}n, 0))) == True{{}} : Bool}}\n'
             f'  {FDA}.array__trep_perfect(U32, {D}n, 0)\n\n'
             f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
             f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
-            f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == True{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))\n\n')
+            f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
     m = re.search(r'^def pe_rep\(\+bs: \+List<U32>\) -> (.*?):\n  (.*)$', text, re.M)
     text = text.replace(m.group(0), f'def pe_rep(+bs: +List<U32>) -> {m.group(1)}:\n  {term}')
+    mh = re.search(r'^def pe_hc\(\+bs: \+List<U32>\) -> (.*?):\n  \{==\}$', text, re.M)
+    if mh:   # the storage depth 16 of the object: its tree, perfect by pft (the object equals the thawed tree)
+        TW = f'O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}}'
+        text = text.replace(mh.group(0), f'def pe_hc(+bs: +List<U32>) -> {mh.group(1)}:\n'
+                            f'  {FDA}.logic__subst(O.Words, z => {{E3.at_depth(z, {D + 1}n) == True{{}} : Bool}}, {TW}, {OBJ}, Equal.sym(O.Words, {OBJ}, {TW}, oeqt(bs)),\n'
+                            f'    {FDA}.logic__subst({FDA}.array__Tree<U32>, z => {{{FDA}.array__perfect(U32, {D + 1}n, z) == True{{}} : Bool}}, {T}, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})),\n'
+                            f'      Equal.sym({FDA}.array__Tree<U32>, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})), {T}, {FDA}.array__freeze_thaw(U32, {T})), pft(bs)))')
     i = text.index('\ndef ') + 1
     text = text[:i] + defs + text[i:]
     text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
-    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == False{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))')
-    if 'WT.len_isq' in text and 'e2e_wit.bend as WT' not in text:   # the length facts of the written-out tree
-        text = text.replace('import Base\n', 'import Base\nimport ./e2e_wit.bend as WT\n', 1)
-    return text.replace(api.HEADER, HEADER, 1), None
+    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+    if k is None:   # the symbolic size lemmas of the discarded closed rep proof are unused
+        for mm in re.findall(r'^def (NB\d+\w*)\(\)', text, re.M)[::-1]:
+            if len(re.findall(r'\b' + mm + r'\b', text)) == 1:
+                text = re.sub(r'^def ' + mm + r'\(\).*?\n\n+', '', text, count=1, flags=re.M | re.S)
+    return bigK(text, N).replace(api.HEADER, HEADER, 1), None
+
+
+def bigK(text, N):
+    """for a vector of SYM bytes or more, the length is written U32.to_nat(N) (as the decode bridge's lemmas state
+    it), not the literal Nn: the checker would compare the two in unary, deeper than its stack"""
+    if N < SYM:
+        return text
+    return text.replace(f'List.length(&2, U32, bs), {N}n)', f'List.length(&2, U32, bs), U32.to_nat({N}))')
 
 
 def build(name, lf, api):
     r = build_tree(name, lf, api)
     if r is not None:
         return r
+    W = api.W
+    base_big = W.BIG
+    W.BIG = 10 ** 9      # no symbolic lemma over a decoder's object (its words are the input's, not a zero array)
+    try:
+        return build_flat(name, lf, api)
+    finally:
+        W.BIG = base_big
+
+
+def build_flat(name, lf, api):
     W = api.W
     kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
     dl = lf.get(f'{name}_e2e_decode_{kind}')

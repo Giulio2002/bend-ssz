@@ -100,10 +100,12 @@ Trusted (not proved here):
   `O.e8` in the Branch `cap` premise, the object types) with everything they reach. Only the
   implementation under test is left out: the generated per-name encoder, decoder and root
   (`types/*_{encode_ssz,decode_ssz,hashtreeroot}_generated.bend`, which the bridges pin down) and
-  the model API `src/model.bend` (which END_TO_END's laws pin down). So a change to a src/ def
+  the model API `src/model.bend` (which END_TO_END's laws pin down); but not the validity predicates
+  of those encoders (`X_valid` and its helpers, the premise of the validating-serializer statements), which are
+  hashed. So a change to a src/ def
   cannot weaken or empty a premise without changing the lock. `tools/verify_frozen.py` checks
-  all of this (after planting four changes, three that must trip the lock and the encoder, which
-  must not), and that
+  all of this (after planting seven changes: five that must trip the lock, among them a weakened
+  `Checkpoint_valid` and `u8_valid`, and two that must not, the encoder and the serializer, which the proofs pin down), and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `bend-collections@1.0.0.0` = `0xd9a2fae439ac7ff9e21e0853948f94fe`

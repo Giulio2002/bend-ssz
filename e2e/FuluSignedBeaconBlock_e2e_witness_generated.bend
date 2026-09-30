@@ -214,3 +214,11 @@ def FuluSignedBeaconBlock_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(Fulu
 
 def FuluSignedBeaconBlock_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, D.Digest, Pair.snd(B.Buf, FuluSignedBeaconBlock_d.SignedBeaconBlock & D.Digest, FuluSignedBeaconBlock_h.SignedBeaconBlock_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.SignedBeaconBlock(), RT.v_SignedBeaconBlock(NE())) : Maybe<&2, +List<U32>>}:
   RB.FuluSignedBeaconBlock_e2e_root(B.alloc(0), NE(), premise_ne_rep())
+
+# the size premise hZ holds of the default object: its encoding is below 2^31 bytes
+def FuluSignedBeaconBlock_e2e_witness_size() -> RS.SZW(FuluSignedBeaconBlock_d.SignedBeaconBlock_default()):
+  premise_hZ()
+
+# the size premise hZ holds of the non-empty object: its encoding is below 2^31 bytes
+def FuluSignedBeaconBlock_e2e_witness_size_nonempty() -> RS.SZW(NE()):
+  premise_ne_hZ()

@@ -12,6 +12,7 @@ import ../proofs/obj/var_win_AggregateAndProof.bend as WA
 import ../proofs/obj/var_win_SignedAggregateAndProof.bend as WS
 import ./e2e_attw.bend as ATW
 import ./e2e_bitv.bend as BTV
+import ../proofs/obj/bitlist_obj_light.bend as DBL
 
 # The AggregateAndProof a word-aligned window reader builds (off = 4 i) views as the value the codec reads there.
 def aap_w(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
@@ -38,6 +39,18 @@ def aap_w_hv(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +e
   +hc = WA.ch_c(a, b, c, hchk)
   ATW.att_w_hv(d, t, WA.JW(i), WA.OWc(off), WA.LLw(len), WA.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WA.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WA.hwc32(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), pf, hc)
 
+# ... and its Attestation's bit list is well formed and within its limit (bitlist_obj.rep_bits, e2e_db)
+def aap_w_rep(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {WA.CHKw(t, i, off, len) == True{} : Bool})
+    -> DBL.rep_bits(RT.pj_Attestation_0(RT.pjb_Attestation_bx(RT.pj_AggregateAndProof_1(WA.OBJw(t, i, off, len)))), S.BitList{U32.to_nat(131072)}):
+  +a = U32.is_le(108, len)
+  +b = U32.is_eq(WA.SPOw(t, i), 108)
+  +c = WT.CHKw(t, WA.JW(i), WA.OWc(off), WA.LLw(len))
+  +ha = WA.ch_a(a, b, c, hchk)
+  +hc = WA.ch_c(a, b, c, hchk)
+  ATW.att_w_rep(d, t, WA.JW(i), WA.OWc(off), WA.LLw(len), WA.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WA.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WA.hwc32(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), pf, hc)
+
 # The SignedAggregateAndProof a word-aligned window reader builds (off = 4 i) views as the value the codec reads there.
 def saap_w(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
@@ -62,3 +75,15 @@ def saap_w_hv(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +
   +ha = WS.ch_a(a, b, c, hchk)
   +hc = WS.ch_c(a, b, c, hchk)
   aap_w_hv(d, t, WS.JW(i), WS.OWc(off), WS.LLw(len), WS.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WS.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WS.hwc32(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), pf, hc)
+
+# ... and its Attestation's bit list is well formed and within its limit (bitlist_obj.rep_bits, e2e_db)
+def saap_w_rep(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {WS.CHKw(t, i, off, len) == True{} : Bool})
+    -> DBL.rep_bits(RT.pj_Attestation_0(RT.pjb_Attestation_bx(RT.pj_AggregateAndProof_1(RT.pj_SignedAggregateAndProof_0(WS.OBJw(t, i, off, len))))), S.BitList{U32.to_nat(131072)}):
+  +a = U32.is_le(100, len)
+  +b = U32.is_eq(WS.SPOw(t, i), 100)
+  +c = WA.CHKw(t, WS.JW(i), WS.OWc(off), WS.LLw(len))
+  +ha = WS.ch_a(a, b, c, hchk)
+  +hc = WS.ch_c(a, b, c, hchk)
+  aap_w_rep(d, t, WS.JW(i), WS.OWc(off), WS.LLw(len), WS.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WS.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WS.hwc32(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), pf, hc)

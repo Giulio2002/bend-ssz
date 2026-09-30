@@ -9,10 +9,13 @@ decoding then re-encoding gives the input, decoding then hashing gives the spec 
 non-vacuity witness e2e/<Name>_e2e_witness_generated.bend (<Name>_e2e_witness and, when present,
 <Name>_e2e_witness_nonempty), every setter composition e2e/<Name>_e2e_set_generated.bend
 (codegen/e2e_setters.py: a setter then root or encode gives the spec's), and the object-mutation
-laws of OBJECT_LAWS: the field laws proofs/obj/fields_*.bend (read after write, overwrite,
-unchanged fields), the collection laws proofs/obj/collections_*.bend (rejected and accepted writes
-and appends) and the setter laws proofs/obj/prep_setters.bend (a setter keeps rep); for these,
-every def whose result is an equality proposition and every `law` block is a statement. Found by name, so a new composed or witness file is listed (and, through
+laws of OBJECT_LAWS: the collection laws of the public API proofs/obj/coll_api_*.bend
+(codegen/coll_laws.py: its `_api_` defs) and the setter laws proofs/obj/prep_setters*.bend (a setter
+keeps rep); for these, every def whose result is an equality proposition and every `law` block is
+a statement. The field swap laws of proofs/obj/fields_*.bend (`X_swap_f`: the old value handed back and
+the new one stored) are listed too: no setter composition restates them. (The other definitional field laws
+of fields_*.bend and the helper-level collection laws proofs/obj/collections_*.bend of codegen/laws.py are
+checked but not listed: the spec-value laws of the setters and the public-API collection laws state what they did.) Found by name, so a new composed or witness file is listed (and, through
 tools/verify_frozen.py's statement_defs, must be locked) without any edit here. For each (sorted),
 writes the statements of its laws
 (the signature of each def the manifest lists: its hypotheses and conclusion, no proof), the
@@ -92,12 +95,12 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/fields_*.bend', 'proofs/obj/collections_*.bend', 'proofs/obj/prep_setters.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_seq.bend', 'proofs/obj/coll_bits.bend', 'proofs/obj/coll_bytes.bend', 'proofs/obj/coll_root.bend', 'proofs/obj/prep_setters*.bend']
 
 
 def eq_defs(text):
-    """the defs of a law file whose result is an equality proposition (their signature is the
-    statement), and its `law` blocks, in file order"""
+    """the defs of a law file whose result is an equality proposition or a specification-root relation (RR.roots; their
+    signature is the statement), and its `law` blocks, in file order"""
     out = []
     for b in blocks(text):
         m = re.match(r'law (\S+):', b[0])
@@ -105,14 +108,14 @@ def eq_defs(text):
             out.append(m.group(1))
             continue
         m = DEF.match(b[0])
-        if m and m.group(1) not in out and re.search(r'-> \{.*\}:$', ' '.join(signature(b))):
+        if m and m.group(1) not in out and re.search(r'-> (\{.*\}|RR\.roots\(.*\)):$', ' '.join(signature(b))):
             out.append(m.group(1))
     return out
 
 
 def statement_files():
     """{root-relative path: [law names]}: the bridges (e2e/manifest.json), the composed theorems,
-    the witnesses, the setter compositions (e2e/*_e2e_set_generated.bend) and the object-mutation
+    the witnesses, the validating serializer (e2e/*_e2e_ser_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and the object-mutation
     laws (OBJECT_LAWS)"""
     man = json.loads((ROOT / 'e2e/manifest.json').read_text())
     out = {'e2e/' + f: [l for e in man['files'][f] for l in e['laws']] for f in man['files']}
@@ -123,12 +126,24 @@ def statement_files():
         n = p.name[:-len('_e2e_witness_generated.bend')]
         t = p.read_text()
         out['e2e/' + p.name] = [l for l in (f'{n}_e2e_witness', f'{n}_e2e_witness_nonempty', f'{n}_e2e_witness_root',
-                                            f'{n}_e2e_witness_root_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
+                                            f'{n}_e2e_witness_root_nonempty', f'{n}_e2e_witness_size', f'{n}_e2e_witness_size_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
+    for p in sorted((ROOT / 'e2e').glob('*_e2e_ser_generated.bend')):
+        n = p.name[:-len('_e2e_ser_generated.bend')]
+        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_(?:serialize\w*|valid_\w+))\(', p.read_text(), re.M)
     for p in sorted((ROOT / 'e2e').glob('*_e2e_set_generated.bend')):
         out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_set_\w+)\(', p.read_text(), re.M)
     for g in OBJECT_LAWS:
         for p in sorted(ROOT.glob(g)):
-            out[str(p.relative_to(ROOT))] = eq_defs(p.read_text())
+            ls = eq_defs(p.read_text())
+            if p.name.startswith('coll_'):
+                ls = [l for l in ls if '_api_' in l]   # not the flag case-split helpers
+            out[str(p.relative_to(ROOT))] = ls
+    # the field swap laws (old value handed back, new one stored): the one family of proofs/obj/fields_*.bend that no
+    # setter composition in e2e/*_e2e_set_generated.bend restates, so they stay listed (and locked)
+    for p in sorted(ROOT.glob('proofs/obj/fields_*.bend')):
+        ls = [l for l in eq_defs(p.read_text()) if re.search(r'_swap_\w+$', l)]
+        if ls:
+            out[str(p.relative_to(ROOT))] = ls
     return out
 
 
@@ -136,8 +151,8 @@ def render():
     out = ['# GENERATED by codegen/statements.py. Do not edit.',
            '# Every end-to-end statement: the bridges (e2e/manifest.json), the composed decode;encode and',
            '# decode;root theorems (e2e/*_e2e_comp_generated.bend), the non-vacuity witnesses',
-           '# (e2e/*_e2e_witness_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and',
-           '# the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the',
+           '# (e2e/*_e2e_witness_generated.bend), the validating serializer (e2e/*_e2e_ser_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and',
+           '# the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the',
            '# imports and file-local defs they use; the proofs are in the named files, which',
            '# tools/check_fast.sh checks.', '']
     n = 0
