@@ -22,7 +22,7 @@
 # cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas (exit 3 on any failure).
 # Run from the repository root.
 set -u
-J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
+J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -97,7 +97,8 @@ localize() {
 UP=$(python3 -c 'import os, sys; print(os.path.relpath(".", sys.argv[1]))' "$OUT/umb")
 export OUT UP
 export -f run one umb bisect localize
-cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
+# tools/umb_pool.py: at most J at once, and only while the running umbrellas' expected memory fits (UMB_BUDGET_MB, default 170000)
+python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan.tsv" -- bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
