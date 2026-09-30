@@ -109,7 +109,9 @@ def write(d, out):
           'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,
           'totals': {'umbrellas': len(rows), 'passed': sum(r['result'] == 'pass' for r in rows),
                      'failed': sum(r['result'] == 'fail' for r in rows), 'missing': len(missing),
-                     'cpu_seconds': round(sum(r['seconds'] or 0 for r in rows), 1)},
+                     'cpu_seconds': round(sum(r['seconds'] or 0 for r in rows), 1),
+                     'slowest_umbrella_seconds': max([r['seconds'] or 0 for r in rows] or [0]),
+                     'wall_seconds': int(os.environ['CHECK_FAST_WALL']) if os.environ.get('CHECK_FAST_WALL') else None},
           'missing': missing, 'duplicate_rows': dup, 'unplanned_rows': extra, 'umbrellas': rows,
           'verdict': ('all files check' if scope == 'all' else 'listed files check') if ok else 'FAILED'}
     with open(out, 'w') as h:
