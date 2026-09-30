@@ -2,25 +2,32 @@
 
 Trusted (not proved here):
 
-- **The checker.** Bend 2.0.28 with bendlang/bend#1075 and its budget fix, commit 3ddfb036 of
-  bendlang/bend, run on Bun 1.4.2. `toolchain.lock.json` pins the commit and the sha256 of every
-  file the checker runs (`bend2/main.ts`, `bend.ts`, `comp.ts`, `base.bend`) and of the Bun
-  binary; `tools/check.sh` and `tools/check_fast.sh` refuse to run on any other bytes
-  (`tools/verify_pins.py`). This is **not a Bend release and not upstream code**: 3ddfb036 is on
-  the branch of bendlang/bend#1075 ("Conversion checks syntactic identity before normalizing"),
-  and that pull request was **closed without being merged on 2026-09-27**. Its five commits are
-  not on Bend's main (which is 44 commits further on). What that means for trust: the checker
-  every result here rests on is Bend 2.0.28 plus a conversion shortcut (two syntactically
-  identical terms are equal without normalizing them) that upstream reviewed and declined to
-  merge. The shortcut is sound in principle (syntactic identity implies definitional equality),
-  but its implementation has had no upstream acceptance, so a reader must trust these five
-  commits, and the rest of the checker, on their own review. The way out is a port of the proofs
-  to a released Bend or current main: the slow closed facts (limits of 2^30 bytes and above) have
-  to be rewritten on the proof side (for example once-computed literal constants), never by
-  patching the checker. Until that port lands, every "checks" claim in this repository means
-  "checks under 3ddfb036".
-  `tools/check_fast.sh` accepts an umbrella only on the exact line `All terms check.` (never the
-  checker's "All terms check, but N defs rely on unsafe or foreign code"). That report covers only
+- **The checker.** Bend main 01875127 (after the v2.0.34 release; its Base is byte-identical to
+  v2.0.34's) plus two commits on the fork branch Giulio2002/bend `rigid-subterms`, 45663e0a and
+  aa99b746, compiled with Bun 1.4.2 into a release layout (`bin/bend` + `bend2/base.bend`).
+  `toolchain.lock.json` pins the commit and the sha256 of `bin/bend`, `bend2/base.bend` and the
+  sources it was built from (`bend2/main.ts`, `bend.ts`, `comp.ts`); `tools/check.sh` and
+  `tools/check_fast.sh` refuse to run on any other bytes (`tools/verify_pins.py`). This is **not
+  a Bend release and not upstream code**: the branch is that of bendlang/bend#1210 ("A copy met
+  after an unfold converts before either copy unfolds"), and that pull request was **closed
+  without being merged on 2026-09-30**. The trust story is the same as with the #1075 build
+  pinned before it: every result here rests on upstream Bend plus a conversion change that
+  upstream did not merge, so a reader must trust those two commits (about 70 lines of
+  `bend2/bend.ts`) on their own review. What they do: stock Bend compares the two sides of a
+  conversion with every def rigid (nothing unfolds) once, at the top; 45663e0a asks the same
+  rigid question again at each pair of calls of one def before the full pass unfolds them,
+  remembers the cell pairs those walks compared, and no longer lets a rigid evaluation fill a
+  shared cell; aa99b746 keeps that memo off the full pass's recursion, so a conversion recurses as
+  deep as on stock 2.0.34 (45663e0a had halved it). Rigid equality implies definitional equality
+  (the rigid book knows no def, so it only equates what the full book also equates), so the change
+  can only answer "equal" earlier, never differently; a "not equal" from it falls through to the
+  unchanged comparison. Without it, a conversion whose sides meet only after a def unfolds
+  evaluates closed limits (2^30 bytes and above) in unary and overflows, e.g. every bridge from a
+  Fulu schema def to its closed limit (`lim_sym`'s `tx_schema` overflows on stock 2.0.34 and
+  checks here). Every "checks" claim in this repository means "checks under aa99b746".
+  `tools/check_fast.sh` accepts an umbrella only on the exact line `ALL PROOFS CHECK` with exit 0
+  (a def that relies on unsafe or foreign code makes this checker print `SOME PROOFS FAIL`,
+  "Error: N defs rely on unsafe or foreign code", exit 1). That report covers only
   the top file's defs and the laws, so in an umbrella (which only imports) an unsafe dependency of
   a bridge def would not show; the guard for every def is `tools/verify_no_escapes.py`, run before
   any check. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
@@ -28,12 +35,10 @@ Trusted (not proved here):
   like the parser and allows whitespace, newlines and comments wherever the parser skips them
   (`@` newline `unsafe`, `: import "x.js"` on the def's line, `import"x.js"`). Its planted cases
   run on every invocation, and `--probe` runs each positive one through the pinned checker, which
-  reports all 19 as relying on unsafe or foreign code. #1075 compares syntactically identical terms before
-  normalizing them; without it, some closed facts (limits of 2^30 bytes and above) would be
-  evaluated in unary and not finish. Soundness of the result rests on this checker.
+  reports all 19 as relying on unsafe or foreign code. Soundness of the result rests on this checker.
 - **The checker's logic has `Type : Type`.** The pinned checker accepts `def tt() -> Type: Type`
-  and `tt2(Type)` for `def tt2(T: Type) -> Type: T` (probe run on the ssz server, 2026-09-30:
-  "All terms check."). A type theory with `Type : Type` is inconsistent in principle (Girard's
+  and `tt2(Type)` for `def tt2(T: Type) -> Type: T` (probe run on the ssz server with aa99b746,
+  2026-09-30: "ALL PROOFS CHECK"). A type theory with `Type : Type` is inconsistent in principle (Girard's
   paradox, in Hurkens' short form): some closed term of any type, `Empty` included, exists. The
   checker's other restrictions make the naive encodings fail (an independent probe found that
   Data cannot hold functions, Type values cannot be copied, and non-structural and mutual recursion

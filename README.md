@@ -53,9 +53,11 @@ checked, at the commit you rely on:
 
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
     python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
-    git clone https://github.com/bendlang/bend T/bend-src && git -C T/bend-src checkout 3ddfb0366cc14622202aaa3808e695412241f23f
-    # put Bun 1.4.2 (linux-x64) at T/bun-linux-x64/bun
-    python3 tools/verify_pins.py --toolchain T   # checker, Bun and the vendored SHA-256 package match toolchain.lock.json
+    git clone https://github.com/Giulio2002/bend T/bend-src && git -C T/bend-src checkout aa99b746e4e9d5d4ba309414e673650b095fdff0
+    cp -r T/bend-src/bend2 T/bend2 && (cd T/bend-src && bun build --compile bend2/main.ts --outfile $PWD/T/bin/bend)   # Bun 1.4.2, linux-x64
+    # bin/bend embeds its output path: its sha256 matches the lock only when built at T = /srv/ssz-optimization/toolchain-rigid-aa99b746;
+    # elsewhere compare the bend2/ sources (verify_pins.py lists each file that differs) or use the source layout (tools/check.sh)
+    python3 tools/verify_pins.py --toolchain T   # checker and the vendored SHA-256 package match toolchain.lock.json
     BEND_TOOLCHAIN=T tools/check_fast.sh    # prints "all files check"
 
 `check_fast.sh` repeats the two verifications itself and refuses to run on any mismatch. A change

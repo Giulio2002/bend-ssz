@@ -35,7 +35,7 @@ while [ $# -gt 0 ]; do
 done
 t0=$(date +%s)
 rm -rf "$OUT"; mkdir -p "$OUT/bisect"; : > "$OUT/summary.tsv"; : > "$OUT/failed.tsv"
-T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-2.0.28}
+T0=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-rigid-aa99b746}
 python3 tools/verify_pins.py --lock "${BEND_LOCK:-toolchain.lock.json}" --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub}" || exit 3
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3

@@ -21,8 +21,9 @@ at 3ddfb036), which is the only place a def becomes unsafe (`def.u`) or foreign 
                name a .bend file; they cannot bring in foreign code.
 
 Base's own foreign defs (base.bend, `b === true`) are the checker's, pinned by hash. main.ts's
-cli_report prints "All terms check, but N defs rely on unsafe or foreign code" only for the top
-file's defs and the laws; an umbrella only imports, so an unsafe dependency of a bridge def would
+cli_report reports defs that rely on unsafe or foreign code ("SOME PROOFS FAIL" / "Error: N defs
+rely on unsafe or foreign code" on 2.0.34; "All terms check, but N defs rely on ..." on 2.0.28) only
+for the top file's defs and the laws; an umbrella only imports, so an unsafe dependency of a bridge def would
 not be reported there. This scan is the guard that covers every def.
 
 The scan works on a skeleton of each file that the lexer keeps aligned with the checker's
@@ -170,7 +171,9 @@ def probe():
             r = subprocess.run([os.path.join(ROOT, 'tools/check.sh'), f], capture_output=True, text=True,
                                cwd=ROOT)
             out = r.stdout + r.stderr
-            ok = re.search(r'All terms check, but \d+ defs? rel(y|ies) on unsafe or foreign code', out)
+            # 2.0.28: "All terms check, but N defs rely on ..."; 2.0.34: "SOME PROOFS FAIL" with
+            # "Error: N def(s) rel(y|ies) on unsafe or foreign code"
+            ok = re.search(r'(All terms check, but|Error:) \d+ defs? rel(y|ies) on unsafe or foreign code', out)
             print('%s %r' % ('accepted-as-unsafe' if ok else 'NOT-REPORTED', src))
             if not ok:
                 bad.append('%r:\n%s' % (src, out[-600:]))

@@ -57,13 +57,16 @@ their imports.
 `tools/check_costs.tsv` holds per-file check times (file, exit, ok, seconds, peak MB) measured once
 with the pinned checker; `umbrellas.py` uses them only to balance the partition, never for coverage.
 
-`check.sh` runs `bun <bend-src>/bend2/main.ts <file> --check-only` with the checker pinned in
-`toolchain.lock.json` (Bend 2.0.28 + the branch of bendlang/bend#1075, closed unmerged, at 3ddfb036: see
-[TRUST.md](TRUST.md); found through `BEND_TOOLCHAIN`,
-default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-256 package
-(`BEND_LIB`, default the vendored `vendor/bendhub`), and prints `All terms check.` and a final
+`check.sh` runs `<toolchain>/bin/bend <file> --check-only` with the checker pinned in
+`toolchain.lock.json` (Bend main 01875127, after v2.0.34, plus commits 45663e0a and aa99b746 of the fork
+branch Giulio2002/bend `rigid-subterms`, whose upstream PR bendlang/bend#1210 was closed unmerged: see
+[TRUST.md](TRUST.md); found through `BEND_TOOLCHAIN`, default the ssz server's
+`/srv/ssz-optimization/toolchain-rigid-aa99b746`; a source layout, `bun-linux-x64/bun` +
+`bend-src/bend2/main.ts`, is also accepted) and the SHA-256 package
+(`BEND_LIB`, default the vendored `vendor/bendhub`, BendHub bend-collections@1.0.0.0), and prints
+`ALL PROOFS CHECK` and a final
 `CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
-checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
+checker's files and the package with the lock's sha256s and refuses a mismatch (exit 3).
 `check_fast.sh` also runs `tools/verify_frozen.py` first: the spec, the four roots' statements, and
 the bridge statements with the definitions they reach must match `frozen.lock.json`. A deliberate
 statement change is recorded with `python3 tools/verify_frozen.py --update` in the same commit. It
