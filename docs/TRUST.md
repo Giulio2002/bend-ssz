@@ -10,8 +10,15 @@ Trusted (not proved here):
   release: the syntactic-identity check it adds is conservative, but it has not been reviewed or
   released upstream. Moving to a released Bend is planned once the proofs fit its budget.
   `tools/check_fast.sh` accepts an umbrella only on the exact line `All terms check.` (never the
-  checker's "All terms check, but N defs rely on unsafe or foreign code"), and
-  `tools/verify_no_escapes.py` bans `@unsafe`, `def f?(` and foreign bodies textually. #1075 compares syntactically identical terms before
+  checker's "All terms check, but N defs rely on unsafe or foreign code"). That report covers only
+  the top file's defs and the laws, so in an umbrella (which only imports) an unsafe dependency of
+  a bridge def would not show; the guard for every def is `tools/verify_no_escapes.py`, run before
+  any check. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
+  file, in every spelling the pinned parser accepts: it lexes comments, strings and char literals
+  like the parser and allows whitespace, newlines and comments wherever the parser skips them
+  (`@` newline `unsafe`, `: import "x.js"` on the def's line, `import"x.js"`). Its planted cases
+  run on every invocation, and `--probe` runs each positive one through the pinned checker, which
+  reports all 19 as relying on unsafe or foreign code. #1075 compares syntactically identical terms before
   normalizing them; without it, some closed facts (limits of 2^30 bytes and above) would be
   evaluated in unary and not finish. Soundness of the result rests on this checker.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
