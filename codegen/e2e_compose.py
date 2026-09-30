@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import e2e_witness as W  # noqa: E402  (the Bend source reader and alias lifting)
+import e2e_decrep as DR  # noqa: E402  (decoded-object premises of variable-size names)
 try:
     # the extension point for the fixed-size names this module leaves pending (masked words, large objects):
     # codegen/e2e_compose_fixed.py, owned separately. Its build(name, lf, api) returns (text, None) to compose a
@@ -159,6 +160,67 @@ class LSynth(W.Synth):
         return super().eq(p, env)
 
 
+EXTRA = {}   # the decoded-object premise files the variable-size names' composed theorems import
+
+
+def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps):
+    """a variable-size name: the decoder accepts when its codec's check DC.CHK(t, n) holds, with the object
+    DC.OBJ(d, t, n) (the bridge file's d_acc / d_none), whose premises e2e/<name>_e2e_decrep_generated.bend proves"""
+    aps, ac = sig(dm, 'd_acc')
+    if [b for _, b, _ in aps] != ['bs', 'n', 'hn', 'hd', 'hS', 'hchk']:
+        return None, 'unexpected d_acc'
+    mc = re.match(r'\{(.*) == True\{\} : Bool\}$', aps[5][2])
+    CHK = ctx.lift(dm, mc.group(1))
+    ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', ac, re.S)
+    OBJ = ctx.lift(dm, ms.group(2))
+    oa = W.split_top(OBJ[OBJ.index('(') + 1:-1])
+    if len(oa) != 3:
+        return None, 'unexpected decoded object'
+    dT, tT, nT = oa
+    txt = DR.PROVERS[name]()
+    EXTRA[E2E / f'{name}_e2e_decrep_generated.bend'] = txt
+    DRA = ctx.alias(E2E / f'{name}_e2e_decrep_generated.bend')
+    FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    omode = [m_ for m_, b, _ in eps if b == 'o'][0]
+    call = lambda b: f'{DRA}.p_{b}({dT}, {tT}, {nT}, hS, ec)'
+    ea = ''.join(f', {call(b)}' for _, b, _ in eps if b != 'o')
+    ra = ''.join(f', {call(b)}' for _, b, _ in rps if b not in ('o', 'h'))
+    hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)
+    dect = f'dec: {{{DEC} == Some{{o}} : {MT}}}'
+    ecT = f'{{{CHK} == c : Bool}}'
+    ACC = f'{DB}.d_acc(bs, n, hn, hd, hS, ec)'
+    eqo = (f'Equal.cong({MT}, {OT}, z => gm(z, {OBJ}), Some{{o}}, Some{{{OBJ}}}, '
+           f'Equal.trans({MT}, Some{{o}}, {DEC}, Some{{{OBJ}}}, Equal.sym({MT}, {DEC}, Some{{o}}, dec), {ACC}))')
+    none = (f'{FDA}.logic__false_true(Equal.cong({MT}, Bool, z => isS(z), None{{}}, Some{{o}}, '
+            f'Equal.trans({MT}, None{{}}, {DEC}, Some{{o}}, Equal.sym({MT}, {DEC}, None{{}}, {DB}.d_none(bs, n, hn, hd, hS, ec)), dec)))')
+    XO, RO, VO = sub_o(X, OBJ), sub_o(R, OBJ), sub_o(V, OBJ)
+    body = [f'# {name}: decoding accepted bytes, then re-encoding / hashing the object (codegen/e2e_compose.py). The decoder',
+            f'# accepts when its check holds, with the object {DB}.d_acc gives; the (i)/(iv) premises are proved of that object',
+            f'# ({DRA}, e2e/{name}_e2e_decrep_generated.bend).', '',
+            f'def gm(m: {MT}, d: {OT}) -> {OT}:\n  match m:\n    case Some{{x}}: x\n    case None{{}}: d',
+            f'def isS(m: {MT}) -> Bool:\n  match m:\n    case Some{{x}}: True{{}}\n    case None{{}}: False{{}}', '',
+            f'# the value deserialize gives for the accepted bytes is the decoded object\'s view',
+            f'def acc(+bs: +List<U32>, +n: U32, -o: {OT}{hp}, {dect})\n    -> {accT}:\n{acc_body}', '',
+            f'def ge(+bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect}, +c: Bool, +ec: {ecT}) -> {{{X} == bs : +List<U32>}}:\n'
+            f'  match c:\n    case True{{}}:\n'
+            f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{{sub_o(X, "_")} == bs : +List<U32>}}\n'
+            f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}, hn, hd, hS, {ACC}), {EB}.{name}_e2e_encode({OBJ}{ea}))\n'
+            f'    case False{{}}:\n      Empty.absurd({{{X} == bs : +List<U32>}}, {none})', '',
+            f'def gr(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect}, +c: Bool, +ec: {ecT})\n'
+            f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n'
+            f'  match c:\n    case True{{}}:\n'
+            f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{Some{{{sub_o(R, "_")}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}\n'
+            f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}, hn, hd, hS, {ACC}), {RB}.{name}_e2e_root(h, {OBJ}{ra}))\n'
+            f'    case False{{}}:\n      Empty.absurd({{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}, {none})', '',
+            f'# (i) after (ii): the decoded object re-encodes to exactly the input bytes',
+            f'def {name}_e2e_decode_encode(+bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect})\n'
+            f'    -> {{{X} == bs : +List<U32>}}:\n  ge(bs, n, o, hn, hd, hS, dec, {CHK}, {{==}})', '',
+            f'# (iv) after (ii): the decoded object\'s root is the spec root of the value deserialize gives for the input bytes',
+            f'def {name}_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect})\n'
+            f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n  gr(h, bs, n, o, hn, hd, hS, dec, {CHK}, {{==}})', '']
+    return finish(ctx, body), None
+
+
 def law_files():
     """{law name: bridge file path}"""
     man = json.loads((E2E / 'manifest.json').read_text())
@@ -234,19 +296,23 @@ def build_std(name, lf):
     if [b for _, b, _ in eps] != ['o'] or [b for _, b, _ in rps] != ['h', 'o']:
         extra = sorted({b for _, b, _ in eps + rps} - {'o', 'h'})
         why = 'the (i)/(iv) bridges take ' + ', '.join(extra) + ' (decoded-object laws pending)'
-        # a fixed-size decoder's object written out (<X>_d_some / _d_none): its premises are computed
-        if 'o' not in [b for _, b, _ in eps] or kind != 'view' or f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
-            return None, why
-        sps, sc = sig(dm, f'{name}_d_some')
-        if [b for _, b, _ in sps] != ['bs', 'n', 'hn', 'hd', 'ec']:
-            return None, why
-        mk = re.match(r'\{Nat\.is_eq\(List\.length\(&2, U32, bs\), (\d+)n\) == True\{\} : Bool\}$', sps[4][2])
-        ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
-        if 'U32.and(' in ms.group(2) or 'byte_sel(' in ms.group(2):
-            return None, why + '; the decoded words are masked (bit-level lemmas pending)'
-        if int(mk.group(1)) > 1500:
-            return None, why + '; the decoded object is too large to compute its premises (FuluCell, FuluMatrixEntry: 2048+ bytes)'
-        lit = (int(mk.group(1)), ms.group(2), why)
+        if name in DR.PROVERS and kind == 'view' and 'd_acc' in dm.defs and 'd_none' in dm.defs:
+            # a variable-size name with its decoded-object premises (e2e_decrep.py)
+            lit = ('var', why)
+        else:
+            # a fixed-size decoder's object written out (<X>_d_some / _d_none): its premises are computed
+            if 'o' not in [b for _, b, _ in eps] or kind != 'view' or f'{name}_d_some' not in dm.defs or f'{name}_d_none' not in dm.defs:
+                return None, why
+            sps, sc = sig(dm, f'{name}_d_some')
+            if [b for _, b, _ in sps] != ['bs', 'n', 'hn', 'hd', 'ec']:
+                return None, why
+            mk = re.match(r'\{Nat\.is_eq\(List\.length\(&2, U32, bs\), (\d+)n\) == True\{\} : Bool\}$', sps[4][2])
+            ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
+            if 'U32.and(' in ms.group(2) or 'byte_sel(' in ms.group(2):
+                return None, why + '; the decoded words are masked (bit-level lemmas pending)'
+            if int(mk.group(1)) > 1500:
+                return None, why + '; the decoded object is too large to compute its premises (FuluCell, FuluMatrixEntry: 2048+ bytes)'
+            lit = (int(mk.group(1)), ms.group(2), why)
     dps, dc = sig(dm, f'{name}_e2e_decode_{kind}')
     W.PREFER.clear()
     W.PREFER[dm.path] = 'DB'
@@ -298,6 +364,8 @@ def build_std(name, lf):
                     f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
                     f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
     OT = MT[len('Maybe<&1, '):-1]
+    if lit and lit[0] == 'var':
+        return build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps)
     if lit:
         return build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, kind)
     hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)
@@ -401,6 +469,7 @@ def outputs():
     outs = {E2E / 'e2e_comp.bend': SUPPORT}
     if EXT is not None and hasattr(EXT, 'outputs'):
         outs.update(EXT.outputs())
+    EXTRA.clear()
     rows = []
     for n in names:
         t, why = build(n, lf)
@@ -409,6 +478,7 @@ def outputs():
             rows.append(f'{n}\tcomposed')
         else:
             rows.append(f'{n}\tpending: {why}')
+    outs.update(EXTRA)
     done = sum(1 for r in rows if r.endswith('\tcomposed'))
     outs[E2E / 'COMPOSED.txt'] = (f'# GENERATED by codegen/e2e_compose.py. Do not edit.\n# {done} of {len(names)} names have their composed '
                                   f'decode;encode and decode;root theorems (e2e/<Name>_e2e_comp_generated.bend)\n' + '\n'.join(rows) + '\n')
@@ -419,7 +489,7 @@ def main():
     check = '--check' in sys.argv
     outs = outputs()
     stale = [p.name for p, t in outs.items() if not p.exists() or p.read_text() != t]
-    have = {p.name for p in E2E.glob('*_e2e_comp_generated.bend')}
+    have = {p.name for p in E2E.glob('*_e2e_comp_generated.bend')} | {p.name for p in E2E.glob('*_e2e_decrep_generated.bend')}
     orphans = sorted(have - {p.name for p in outs})
     if check:
         if stale or orphans:
