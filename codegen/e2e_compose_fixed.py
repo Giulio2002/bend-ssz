@@ -31,8 +31,68 @@ def pat(k):
     return f'U32{{{s}}}'
 
 
+# the padded last bytes the bit vectors use: (byte j of the word, r bits used in it)
+PADS = [(0, r) for r in range(1, 8)] + [(1, 1), (1, 7), (2, 1), (3, 7)]
+
+
+def full(fixed=()):
+    """U32{WCon{a0, .. WCon{a31, WNil{}}}}, with the bits in fixed written False{}"""
+    s = 'WNil{}'
+    for i in reversed(range(32)):
+        s = f'WCon{{{"False{}" if i in fixed else f"a{i}"}, {s}}}'
+    return f'U32{{{s}}}'
+
+
+def pz_lemmas(j, r):
+    """pz<j>_<r>(x, h): the decoder's last word of a bit vector whose last used byte is byte j of the word with r
+    bits used, given the decoder's padding check h, in clean form (bits past 8j + r literally zero)"""
+    k = 8 * j + r
+
+    def forms(fixed):
+        X = full(fixed)
+        if j < 3:
+            H = f'{{U32.is_eq(U32.and(cf8(U32.shrn({X}, {8 * j}n)), U32.not(O.low_mask({r}))), 0) == True{{}} : Bool}}'
+            goal = f'{{cf{8 * j + 8}({X}) == cf{k}({X}) : U32}}'
+        else:
+            H = f'{{U32.is_eq(U32.and(B.byte_sel(3, {X}), U32.not(O.low_mask({r}))), 0) == True{{}} : Bool}}'
+            goal = f'{{{X} == cw{k}({X}) : U32}}'
+        return X, H, goal
+
+    # pc<j>_<r>_<i>: the pad bits a[i] .. a[8j+r], from the top, the bits above i already False{} (one def per
+    # bit: a match is on a parameter); a True one makes the padding check false
+    pads = list(range(8 * j + 7, 8 * j + r - 1, -1))
+    out = []
+    for n_, i in enumerate(pads):
+        fixed = set(pads[:n_])
+        free = [b for b in range(32) if b not in fixed]
+        X, H, goal = forms(fixed)
+        ps = ', '.join(f'+a{b}: Bool' for b in free)
+        if n_ + 1 < len(pads):
+            nxt = f'pc{j}_{r}_{pads[n_ + 1]}(' + ', '.join(f'a{b}' for b in free if b != i) + ', h)'
+        else:
+            nxt = '{==}'
+        out.append(f'def pc{j}_{r}_{i}({ps}, +h: {H}) -> {goal}:\n  match a{i}:\n'
+                   f'    case True{{}}: Empty.absurd({goal}, FD.logic__false_true(h))\n    case False{{}}: {nxt}\n')
+    out.reverse()   # a def is used after it is declared
+    X, H, goal = forms(())
+    alla = ', '.join(f'a{b}' for b in range(32))
+    if j < 3:
+        lhs, cf = f'U32.and(x, {2 ** (8 * j + 8) - 1})', f'cf{k}(x)'
+        sub = (f'FD.logic__subst(U32, z => {{U32.is_eq(U32.and(z, U32.not(O.low_mask({r}))), 0) == True{{}} : Bool}}, '
+               f'U32.and(U32.shrn({X}, {8 * j}n), 255), cf8(U32.shrn({X}, {8 * j}n)), mk8(U32.shrn({X}, {8 * j}n)), h)')
+        pf = (f'Equal.trans(U32, U32.and({X}, {2 ** (8 * j + 8) - 1}), cf{8 * j + 8}({X}), cf{k}({X}), mk{8 * j + 8}({X}), '
+              f'pc{j}_{r}_{8 * j + 7}({alla}, {sub}))')
+    else:
+        lhs, cf = 'x', f'cw{k}(x)'
+        pf = f'pc{j}_{r}_{8 * j + 7}({alla}, h)'
+    out.append(f'def pz{j}_{r}(+x: U32, +h: {{U32.is_eq(U32.and(B.byte_sel({j}, x), U32.not(O.low_mask({r}))), 0) == True{{}} : Bool}})\n'
+               f'    -> {{{lhs} == {cf} : U32}}:\n  match x:\n    case {X}:\n      {pf}\n')
+    return out
+
+
 def mask_lib(ks):
-    out = ['import Base', '', HEADER,
+    out = ['import Base', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
+           'import ../proofs/compact/found.bend as FD', '', HEADER,
            '# Masked words in clean form: cf<k>(x) keeps the low k bits of x (opaque) and has its high bits',
            '# literally zero; mk<k>(x) is the decoder\'s mask U32.and(x, 2^k - 1) in that form.', '']
     for i in range(32):
@@ -57,6 +117,13 @@ def wz(+n: Nat, +w: Word(n)) -> {Word.and(n, w, Word.zero(n)) == Word.zero(n) : 
         out.append(f'def mk{k}(+x: U32) -> {{U32.and(x, {2 ** k - 1}) == cf{k}(x) : U32}}:\n  match x:\n    case {pat(k)}:\n'
                    f'      %Equal.sym(Word({m}n), Word.and({m}n, t, Word.zero({m}n)), Word.zero({m}n), wz({m}n, t)) : '
                    f'{{U32{{{mot}}} == cf{k}({pat(k)}) : U32}}\n      {{==}}\n')
+    for k in range(25, 32):
+        raw = f'Word.zero({32 - k}n)'
+        for i in reversed(range(k)):
+            raw = f'WCon{{b{i}(x), {raw}}}'
+        out.append(f'# the low {k} bits of x as they are, the rest zero\ndef cw{k}(+x: U32) -> U32: U32{{{raw}}}\n')
+    for j, r in PADS:
+        out += pz_lemmas(j, r)
     return '\n'.join(out)
 
 
