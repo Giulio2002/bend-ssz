@@ -23,7 +23,7 @@ fixed-size and its decoder's object is written out (`<Name>_d_some`, the words t
 checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->174<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->176<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,

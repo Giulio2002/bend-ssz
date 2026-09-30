@@ -179,7 +179,13 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     DRA = ctx.alias(E2E / f'{name}_e2e_decrep_generated.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
     omode = [m_ for m_, b, _ in eps if b == 'o'][0]
-    call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + ', hS, ec)'
+    xa = ''
+    if name in DR.BUF_ARGS:
+        W.PREFER[(E2E / 'e2e_cap.bend').resolve()] = 'CAP'   # the decrep synthesis resets PREFER; C is e2e_comp
+        W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
+        BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
+        xa = f', {BA}.capacity(n), {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
+    call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + xa + ', hS, ec)'
     ea = ''.join(f', {call(b)}' for _, b, _ in eps if b != 'o')
     ra = ''.join(f', {call(b)}' for _, b, _ in rps if b not in ('o', 'h'))
     hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)

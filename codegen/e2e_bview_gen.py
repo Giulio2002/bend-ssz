@@ -791,10 +791,11 @@ def bc_params(obj_dir, mod):
     lim = int(re.search(r'def hB\(.*?\+bd: \{Nat\.is_le\(BD\(t, n\), U32\.to_nat\((\d+)\)\)', s).group(1))
     nby = int(re.search(r'def hB\(.*?\n\s*-> \{Nat\.is_le\(U32\.to_nat\(LL\(n\)\), (\d+)n\)', s, re.S).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(LL\(n\)\), (\d+)n\)', s, re.S).group(1))
-    return i0, lim, nby, kdz, rest
+    ky = int(re.search(r'def hyB\(.*?-> \{Nat\.is_le\(VC\.YL\(LL\(n\)\), VB\.pw\((\d+)n\)\)', s).group(1))
+    return i0, lim, nby, kdz, rest, ky
 
 
-def bc_view(name, i0, lim, nby, kdz, rest):
+def bc_view(name, i0, lim, nby, kdz, rest, ky):
     kc = 0
     while 4 * 2 ** kc < nby:
         kc += 1
@@ -813,6 +814,9 @@ def bc_view(name, i0, lim, nby, kdz, rest):
         head_bv = f'Equal.trans(S.Value, RT.v_{name}(DC.OBJ(t, n)), {MID}, {VALT},\n    '
         tail_bv = (f',\n    Equal.cong(+List<Bool>, S.Value, z => S.Sequence{{S.Items{{S.BitsValue{{{RHSB}}}, {rest.replace("FB.bitsof(" + L0 + ")", "z")}}}}}, E2B.wcat({L0}), FB.bitsof({L0}),'
                    f' Equal.sym(+List<Bool>, FB.bitsof({L0}), E2B.wcat({L0}), E2B.bw({L0}))))')
+    kb = 0
+    while 2 ** kb < lim + 8:
+        kb += 1
     text = f'''# ---- the view of a decoded {name}: its bit list's first NB bits are the value bits of its bytes (e2e_bview) ----
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
@@ -885,8 +889,28 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
   HV.sdbx({MA}, DC.NBW(t, n), dz, FD.nat__le_lt_trans(dz, {kdz}n, 31n, DC.hdzK(d, n, hd, hL, hb), {{==}}),
     HV.hvobj(L, dz, M, DC.NBW(t, n), m, h, pfM, hdz, hh, eNB, hN, hn3, e1, eh2))
 
+# ---- the decoded {name}'s bit list is well formed and within its limit (bitlist_obj.rep_bits, e2e_db) ----
+
+def hK0() -> {{Nat.is_le(Nat.add(U32.to_nat({lim}), 8n), O.pow2n({kb}n)) == True{{}} : Bool}}:
+  %VD.s_pow2_eq({kb}n) : {{Nat.is_le(Nat.add(U32.to_nat({lim}), 8n), _) == True{{}} : Bool}}
+  {{==}}
+
+def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}})
+    -> DBL.rep_bits(RT.pj_{name}_0(DC.OBJ(t, n)), S.BitList{{U32.to_nat({lim})}}):{lets_}
+  +LM = F.limbs(FD.array__slots(U32, M))
+  +elast = Equal.trans(U32, VBL.lastb(W1), VBL.lastb(VSP.bt(1n+m, LM)), VBL.nthb(LM, m), Equal.cong(+List<U32>, U32, z => VBL.lastb(z), W1, VSP.bt(1n+m, LM), Equal.sym(+List<U32>, VSP.bt(1n+m, LM), W1, ew)), BV.lbt(m, LM, hl))
+  +eh2 = Equal.trans(Nat, VY.hb(VBL.nthb(LM, m)), VY.hb(VBL.lastb(W1)), h, Equal.cong(U32, Nat, z => VY.hb(z), VBL.nthb(LM, m), VBL.lastb(W1), Equal.sym(U32, VBL.lastb(W1), VBL.nthb(LM, m), elast)), eh)
+  +hy = VC.hyU(L, {ky}n, {{==}}, DC.hyB(n, hb))
+  +hwc = VD.wd_cover(VC.WZ(L), 30n, {{==}}, VC.wz30(L, hy))
+  +hNL = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat({lim})) == True{{}} : Bool}}, Nat.add(U32.to_nat(U32.mul(8, U32.sub(L, 1))), h), U32.to_nat(DC.NBW(t, n)),
+    Equal.sym(Nat, U32.to_nat(DC.NBW(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(L, 1))), h), A.add_le(U32.mul(8, U32.sub(L, 1)), O.high_bit(V), {lim}, hadd)), hadd)
+  +hK = FD.nat__le_trans(Nat.add(U32.to_nat(DC.NBW(t, n)), 8n), Nat.add(U32.to_nat({lim}), 8n), O.pow2n({kb}n), Order.add_right(U32.to_nat(DC.NBW(t, n)), U32.to_nat({lim}), 8n, hNL), hK0())
+  DB.dbits(L, {i0}n, t, dz, DC.NBW(t, n), m, h, hdz, hh, eNB, hN, hn3, e1, eh2, hy, hwc, {kb}n, {{==}}, hK, U32.to_nat({lim}), hNL)
+
 '''
-    imports = ['import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/vbitl.bend as VBL',
+    imports = ['import ../proofs/obj/bitlist_pack.bend as BK', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/vdepth.bend as VD',
+               'import ../proofs/obj/bitlist_obj_light.bend as DBL', 'import ../proofs/obj/vbitl.bend as VBL',
                'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
                'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vbrt.bend as VR',
                'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/root_types.bend as RT',

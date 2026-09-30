@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 2940 statements in 746 files.
+# 2944 statements in 748 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -382,6 +382,23 @@ import ./e2e_support.bend as E
 import ../proofs/obj/root_names_light.bend as M1_L
 def FuluAttestationData_e2e_encode(+o: FuluAttestationData_d.AttestationData) -> {Some{E.obytes(FuluAttestationData_e.AttestationData_encode(o))} == API.serialize(Spec.AttestationData(), M1_L.v_AttestationData(o)) : Maybe<&2, +List<U32>>}:
 def FuluAttestationData_e2e_root(h: B.Buf, +o: FuluAttestationData_d.AttestationData) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluAttestationData_h.AttestationData_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.AttestationData(), M1_L.v_AttestationData(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluAttestation_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
+import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
+import ../types/FuluAttestation_hashtreeroot_generated.bend as FuluAttestation_h
+def FuluAttestation_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluAttestation_d.Attestation, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluAttestation_d.Attestation>})
+    -> {E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(o))) == bs : +List<U32>}:
+def FuluAttestation_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluAttestation_d.Attestation, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluAttestation_d.Attestation>})
+    -> {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, o))))} == C.droot(Spec.Attestation(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluAttestation_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -4308,6 +4325,23 @@ import ./e2e_support.bend as E
 import ../proofs/obj/root_names_light.bend as M1_L
 def FuluPayloadId_e2e_encode(+o: FuluBytes8_d.Bytes8) -> {Some{E.obytes(FuluPayloadId_e.PayloadId_encode(o))} == API.serialize(Spec.PayloadId(), M1_L.v_b8(o)) : Maybe<&2, +List<U32>>}:
 def FuluPayloadId_e2e_root(h: B.Buf, +o: FuluBytes8_d.Bytes8) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluPayloadId_h.PayloadId_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.PayloadId(), M1_L.v_b8(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluPendingAttestation_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluPendingAttestation_decode_ssz_generated.bend as FuluPendingAttestation_r
+import ../types/FuluPendingAttestation_def_generated.bend as FuluPendingAttestation_d
+import ../types/FuluPendingAttestation_encode_ssz_generated.bend as FuluPendingAttestation_e
+import ../types/FuluPendingAttestation_hashtreeroot_generated.bend as FuluPendingAttestation_h
+def FuluPendingAttestation_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluPendingAttestation_d.PendingAttestation, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>})
+    -> {E.obytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(o))) == bs : +List<U32>}:
+def FuluPendingAttestation_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluPendingAttestation_d.PendingAttestation, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>})
+    -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(h, o))))} == C.droot(Spec.PendingAttestation(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluPendingAttestation_e2e_dec_generated.bend
 import ../src/model.bend as API
