@@ -26,6 +26,8 @@ import time
 import snappy
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / 'codegen'))
 import oracle  # noqa: E402
@@ -203,7 +205,7 @@ def main():
 
     out = ROOT / 'benchmarks/evidence/object_cache.json'
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({'cases': rows, 'histories': hist_rows, 'pass': allok, 'arg': ARG,
+    out.write_text(json.dumps({'cases': rows, 'histories': hist_rows, 'pass': allok, 'arg': ARG, 'provenance': stamp(__file__),
                                'note': 'roots compared with codegen/oracle.py; times are whole-process '
                                        'wall clock including decode, min of %d' % REPEATS}, indent=1) + '\n')
     print(('all cached roots match the oracle' if allok else 'FAILURES') + f' ({len(rows)} fixtures)')

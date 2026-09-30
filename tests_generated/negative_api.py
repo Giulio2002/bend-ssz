@@ -30,7 +30,10 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
 import runtime_refs as RR  # noqa: E402
 os.chdir(ROOT)
-BEND = '/Users/monkeair/.bend/bin/bend'
+BEND = os.environ.get('BEND_RUNTIME') or json.loads((ROOT / 'benchmarks/toolchain.json').read_text())['bend']['path']
+sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+from provenance import stamp  # noqa: E402
+
 OUT = ROOT / 'build/negative'
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -112,7 +115,7 @@ def main():
         print(('pass ' if ok else 'FAIL ') + f'{name}: compiled={compiled}, required={must_compile}')
     out = ROOT / 'benchmarks/evidence/negative_api.json'
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({'cases': results, 'pass': allok}, indent=1) + '\n')
+    out.write_text(json.dumps({'cases': results, 'pass': allok, 'provenance': stamp(__file__)}, indent=1) + '\n')
     print(('all negative API checks behave as required' if allok else 'FAILURES') + f' ({len(results)} cases)')
     sys.exit(0 if allok else 1)
 
