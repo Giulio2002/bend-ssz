@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3292 statements in 905 files.
+# 3298 statements in 908 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -11838,6 +11838,22 @@ import ../types/vec_uint256_4_hashtreeroot_generated.bend as vec_uint256_4_h
 def vec_uint256_4_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_4_e.vec_uint256_4_encode(vec_uint256_4_d.v4_u256_default())))} == API.serialize(GS.vec_uint256_4(), PK.vview32(vec_uint256_4_d.v4_u256_default())) : Maybe<&2, +List<U32>>}:
 def vec_uint256_4_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.vec_uint256_4_hash_tree_root(B.alloc(0), vec_uint256_4_d.v4_u256_default()))))} == API.hash_tree_root(GS.vec_uint256_4(), PK.vview32(vec_uint256_4_d.v4_u256_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_512_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/vec_uint256_512_decode_ssz_generated.bend as vec_uint256_512_r
+import ../types/vec_uint256_512_encode_ssz_generated.bend as vec_uint256_512_e
+import ../types/vec_uint256_512_hashtreeroot_generated.bend as vec_uint256_512_h
+def vec_uint256_512_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_512_r.vec_uint256_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_512_e.vec_uint256_512_encode(o))) == bs : +List<U32>}:
+def vec_uint256_512_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_512_r.vec_uint256_512_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_512_h.vec_uint256_512_hash_tree_root(h, o))))} == C.droot(GS.vec_uint256_512(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/vec_uint256_512_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -11869,6 +11885,22 @@ import ../types/vec_uint256_512_hashtreeroot_generated.bend as vec_uint256_512_h
 def vec_uint256_512_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_512_e.vec_uint256_512_encode(vec_uint256_512_d.v512_u256_default())))} == API.serialize(GS.vec_uint256_512(), PK.vview32(vec_uint256_512_d.v512_u256_default())) : Maybe<&2, +List<U32>>}:
 def vec_uint256_512_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_512_h.vec_uint256_512_hash_tree_root(B.alloc(0), vec_uint256_512_d.v512_u256_default()))))} == API.hash_tree_root(GS.vec_uint256_512(), PK.vview32(vec_uint256_512_d.v512_u256_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/vec_uint256_513_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/vec_uint256_513_decode_ssz_generated.bend as vec_uint256_513_r
+import ../types/vec_uint256_513_encode_ssz_generated.bend as vec_uint256_513_e
+import ../types/vec_uint256_513_hashtreeroot_generated.bend as vec_uint256_513_h
+def vec_uint256_513_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_513_r.vec_uint256_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_513_e.vec_uint256_513_encode(o))) == bs : +List<U32>}:
+def vec_uint256_513_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_513_r.vec_uint256_513_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>})
+    -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_513_h.vec_uint256_513_hash_tree_root(h, o))))} == C.droot(GS.vec_uint256_513(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/vec_uint256_513_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -11899,6 +11931,20 @@ import ../proofs/obj/generic_specs.bend as GS
 def vec_uint256_513_e2e_encode(-o: O.Words, +rep: PK.rep_v32(o, GS.vec_uint256_513())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_513_e.vec_uint256_513_encode(o)))} == API.serialize(GS.vec_uint256_513(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_512_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_512())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_512_e.vec_uint32_512_encode(o)))} == API.serialize(GS.vec_uint32_512(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
 def vec_uint32_513_e2e_encode(-o: O.Words, +rep: PK.rep_v4(o, GS.vec_uint32_513())) -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint32_513_e.vec_uint32_513_encode(o)))} == API.serialize(GS.vec_uint32_513(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/vec_uint256_513_e2e_witness_generated.bend
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/packed_obj_light.bend as PK
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/model.bend as API
+import ../src/obj.bend as O
+import ../types/vec_uint256_513_def_generated.bend as vec_uint256_513_d
+import ../types/vec_uint256_513_encode_ssz_generated.bend as vec_uint256_513_e
+import ../types/vec_uint256_513_hashtreeroot_generated.bend as vec_uint256_513_h
+def vec_uint256_513_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint256_513_e.vec_uint256_513_encode(vec_uint256_513_d.v513_u256_default())))} == API.serialize(GS.vec_uint256_513(), PK.vview32(vec_uint256_513_d.v513_u256_default())) : Maybe<&2, +List<U32>>}:
+def vec_uint256_513_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_513_h.vec_uint256_513_hash_tree_root(B.alloc(0), vec_uint256_513_d.v513_u256_default()))))} == API.hash_tree_root(GS.vec_uint256_513(), PK.vview32(vec_uint256_513_d.v513_u256_default())) : Maybe<&2, +List<U32>>}:
 
 ## e2e/vec_uint256_5_e2e_comp_generated.bend
 import ./e2e_comp.bend as C

@@ -23,7 +23,7 @@ fixed-size and its decoder's object is written out (`<Name>_d_some`, the words t
 checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->182<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->184<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
@@ -242,9 +242,9 @@ table above. They are dropped when the encode laws take dw < 32.
 ## 8. Non-vacuity of the premises
 
 Of the <!-- fig:witness_total -->166<!-- /fig --> names whose encode (i) or root (iv) bridge takes premises
-besides the object, <!-- fig:witness_count -->164<!-- /fig --> have a checked witness
+besides the object, <!-- fig:witness_count -->165<!-- /fig --> have a checked witness
 `e2e/<Name>_e2e_witness_generated.bend` (`codegen/e2e_witness.py`; the list, with the reason for any
-pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->ProgressiveComplexTestStruct, vec_uint256_513<!-- /fig -->). Each witness applies
+pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->ProgressiveComplexTestStruct<!-- /fig -->). Each witness applies
 the bridge to the object API's default object (`<X>_default()`; where the default holds empty boxes in a
 vector of boxed values, `DV()`, the default with valid elements there; a bare `U32` object is `0`). Each
 premise is proved of that object in its own def (`premise_<binder>`, `premise_root_<binder>`), and
