@@ -1,4 +1,6 @@
 import Base
+import ../../src/obj.bend as O
+import ../compact/found.bend as F
 
 # Bit-level facts about U32 words that hold for every word (no case split over the 2^32 values):
 # masking with zeros, the low bit, and the test `(z & 1) == 1`. codegen/coll_laws.py builds the
@@ -131,3 +133,61 @@ def byte_tail(+v: U32, +h: {U32.is_le(v, 255) == True{} : Bool}) -> {lo8(v) == v
 # a byte value (at most 255) is its own low byte: v & 255 == v
 def byte_id(+v: U32, +h: {U32.is_le(v, 255) == True{} : Bool}) -> {U32.and(v, 255) == v : U32}:
   Equal.trans(U32, U32.and(v, 255), lo8(v), v, and255(v), byte_tail(v, h))
+
+# ---- single bits ----
+# bit k of a word (False past its width)
+def wbit(+n: Nat, w: Word(n), +k: Nat) -> Bool:
+  match n w k:
+    case 0n WNil{} _: False{}
+    case 1n+p WCon{b, t} 0n: b
+    case 1n+p WCon{b, t} 1n+q: wbit(p, t, q)
+
+def bitN(x: U32, +k: Nat) -> Bool:
+  match x:
+    case U32{w}: wbit(32n, w, k)
+
+def bor_false(+x: Bool) -> {Bool.or(x, False{}) == x : Bool}:
+  match x:
+    case False{}: {==}
+    case True{}: {==}
+
+def wbit_or(+n: Nat, +a: Word(n), +b: Word(n), +k: Nat) -> {wbit(n, Word.or(n, a, b), k) == Bool.or(wbit(n, a, k), wbit(n, b, k)) : Bool}:
+  match n a b k:
+    case 0n WNil{} WNil{} _: {==}
+    case 1n+p WCon{x, s} WCon{y, t} 0n: {==}
+    case 1n+p WCon{x, s} WCon{y, t} 1n+q: wbit_or(p, s, t, q)
+
+def wbit_and(+n: Nat, +a: Word(n), +b: Word(n), +k: Nat) -> {wbit(n, Word.and(n, a, b), k) == Bool.and(wbit(n, a, k), wbit(n, b, k)) : Bool}:
+  match n a b k:
+    case 0n WNil{} WNil{} _: {==}
+    case 1n+p WCon{x, s} WCon{y, t} 0n: {==}
+    case 1n+p WCon{x, s} WCon{y, t} 1n+q: wbit_and(p, s, t, q)
+
+# inside the width, the bit of NOT is NOT of the bit
+def wbit_not(+n: Nat, +a: Word(n), +k: Nat, +hk: {Nat.is_lt(k, n) == True{} : Bool}) -> {wbit(n, Word.not(n, a), k) == Bool.not(wbit(n, a, k)) : Bool}:
+  match n a k:
+    case 0n WNil{} _: Empty.absurd({wbit(0n, Word.not(0n, WNil{}), k) == Bool.not(wbit(0n, WNil{}, k)) : Bool}, F.nat__lt_zero_absurd(k, hk))
+    case 1n+p WCon{x, s} 0n: {==}
+    case 1n+p WCon{x, s} 1n+q: wbit_not(p, s, q, hk)
+
+# Setting or clearing the bits of a mask m (O.bit_merge) leaves every bit outside the mask as it was.
+def bit_merge_other(+v: Bool, +x: U32, +m: U32, +k: Nat, +hk: {Nat.is_lt(k, 32n) == True{} : Bool}, +hm: {bitN(m, k) == False{} : Bool})
+    -> {bitN(O.bit_merge(v, x, m), k) == bitN(x, k) : Bool}:
+  match v x m:
+    case True{} U32{+a} U32{+b}:
+      %Equal.sym(Bool, wbit(32n, Word.or(32n, a, b), k), Bool.or(wbit(32n, a, k), wbit(32n, b, k)), wbit_or(32n, a, b, k)) : {_ == wbit(32n, a, k) : Bool}
+      %Equal.sym(Bool, wbit(32n, b, k), False{}, hm) : {Bool.or(wbit(32n, a, k), _) == wbit(32n, a, k) : Bool}
+      bor_false(wbit(32n, a, k))
+    case False{} U32{+a} U32{+b}:
+      %Equal.sym(Bool, wbit(32n, Word.and(32n, a, Word.not(32n, b)), k), Bool.and(wbit(32n, a, k), wbit(32n, Word.not(32n, b), k)), wbit_and(32n, a, Word.not(32n, b), k)) : {_ == wbit(32n, a, k) : Bool}
+      %Equal.sym(Bool, wbit(32n, Word.not(32n, b), k), Bool.not(wbit(32n, b, k)), wbit_not(32n, b, k, hk)) : {Bool.and(wbit(32n, a, k), _) == wbit(32n, a, k) : Bool}
+      %Equal.sym(Bool, wbit(32n, b, k), False{}, hm) : {Bool.and(wbit(32n, a, k), Bool.not(_)) == wbit(32n, a, k) : Bool}
+      band_true(wbit(32n, a, k))
+
+# a bit of (old AND NOT m) OR (new AND m) outside the mask is the old bit
+def sel2(+x: Bool, +y: Bool) -> {Bool.or(Bool.and(x, True{}), Bool.and(y, False{})) == x : Bool}:
+  match x y:
+    case False{} False{}: {==}
+    case False{} True{}: {==}
+    case True{} False{}: {==}
+    case True{} True{}: {==}
