@@ -50,17 +50,16 @@ like the bridges.
 
 | Laws | Where | Statements | What they say |
 |---|---|---|---|
-| setter, spec value | `e2e/<Name>_e2e_set_generated.bend` | <!-- fig:set_view_count -->304<!-- /fig --> over <!-- fig:set_containers -->71<!-- /fig --> containers | for every object `o` and value `w`: `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, the spec value with field f (the k-th) replaced by `w`'s value and every other field unchanged (`proofs/obj/value_set.bend`) |
-| setter, then root | same files | <!-- fig:set_root_count -->265<!-- /fig --> | the root of `set_f(o, w)` is `API.hash_tree_root` of that replaced spec value (under `rep`, through the setter-keeps-rep law, where the root bridge has that premise) |
-| setter, then encode | same files | <!-- fig:set_encode_count -->107<!-- /fig --> | the same for the encoding, where the encode bridge has no premise but the object and `rep` |
-| setter keeps rep | `proofs/obj/prep_setters.bend` | <!-- fig:obj_setter_laws -->165<!-- /fig --> over <!-- fig:obj_setter_containers -->28<!-- /fig --> containers (BeaconState included) | from `rep_X(o, s)` (and, for a field with its own invariant, that invariant of the new value) follows `rep_X(set_f(o, v), s)` |
+| setter, spec value | `e2e/<Name>_e2e_set_generated.bend` | <!-- fig:set_view_count -->315<!-- /fig --> over <!-- fig:set_containers -->71<!-- /fig --> containers | for every object `o` and value `w`: `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, the spec value with field f (the k-th) replaced by `w`'s value and every other field unchanged (`proofs/obj/value_set.bend`) |
+| setter, then root | same files | <!-- fig:set_root_count -->315<!-- /fig --> | the root of `set_f(o, w)` is `API.hash_tree_root` of that replaced spec value (under `rep`, through the setter-keeps-rep law, where the root bridge has that premise) |
+| range-checked setter | same files | <!-- fig:set_checked_count -->11<!-- /fig --> setters | for the generic `uint8` / `uint16` fields, whose setter returns a flag: the flag is exactly the range check, a rejected value leaves the object unchanged, and an accepted one gives the spec value with the field replaced (then the root and encoding as above, given the new value's range invariant) |
+| setter, then encode | same files | <!-- fig:set_encode_count -->114<!-- /fig --> | the same for the encoding, where the encode bridge has no premise but the object and `rep` |
+| setter keeps rep | `proofs/obj/prep_setters{,_g1,_g2}.bend` | <!-- fig:obj_setter_laws -->211<!-- /fig --> over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers (BeaconState included) | from `rep_X(o, s)` (and, for a field with its own invariant, that invariant of the new value) follows `rep_X(set_f(o, v), s)` |
 | collections | `proofs/obj/coll_api_*.bend` | <!-- fig:obj_coll_statements -->249<!-- /fig --> over <!-- fig:obj_coll_count -->41<!-- /fig --> collections | over the public `C_set` / `C_append` / `C_get` with the guard the runtime computes: the flag returned is exactly the spec's condition (index below the length; new length within the limit; a byte for byte elements); a rejected set or append returns the object unchanged; `C_get` outside the length is None; for the array-stored lists an accepted set keeps the length and an accepted append adds one; for the <!-- fig:obj_coll_readback -->12<!-- /fig --> lists of Data elements, a set value reads back at its index, every other index reads what it held, and an appended value reads back at the old length (when the storage has room) |
 
 Not stated yet: setter-then-encode where the encode bridge also takes storage premises
-(`hs*`, `hc*`; no law says a setter keeps them); the range-checked setters of the generic
-`uint16` fields; setter-then-root for the generic containers whose root bridge takes a premise
-with no setter law (`rp_*`, and `rep` of the generic containers); and read-back for the boxed
-lists and the packed collections (`O.Words` / `O.Bits` storage), which needs word-level array laws.
+(`hs*`, `hc*`; no law says a setter keeps them), and read-back for the boxed lists and the packed
+collections (`O.Words` / `O.Bits` storage), which needs word-level array laws.
 The definitional field laws (`proofs/obj/fields_*.bend`) and the helper-level collection laws
 (`proofs/obj/collections_*.bend`) are still checked but are no longer listed as statements.
 

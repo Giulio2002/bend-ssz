@@ -74,20 +74,22 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 
 - setter laws, `e2e/<Name>_e2e_set_generated.bend` (`codegen/e2e_setters.py`), for
   <!-- fig:set_containers -->71<!-- /fig --> containers (Fulu and generic, BeaconState included):
-  <!-- fig:set_view_count -->304<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
-  (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->265<!-- /fig -->
-  statements) and the encode bridge (<!-- fig:set_encode_count -->107<!-- /fig --> statements) where the
+  <!-- fig:set_view_count -->315<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
+  (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->315<!-- /fig -->
+  statements) and the encode bridge (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the
   bridge's premises allow;
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
-  <!-- fig:obj_setter_laws -->165<!-- /fig --> laws over <!-- fig:obj_setter_containers -->28<!-- /fig --> containers;
+  <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`):
   <!-- fig:obj_coll_statements -->249<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: acceptance exactly by the spec's condition, rejection leaving the object unchanged,
   None outside the length, the length after an accepted set or append, and read-back after set and
   append for the <!-- fig:obj_coll_readback -->12<!-- /fig --> lists of Data elements.
 
-Not stated: read-back for the boxed lists and the packed collections, setter-then-encode where the
-encode bridge takes storage premises, and the range-checked generic setters.
+The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
+flag, rejection and accepted-value laws in the same files. Not stated: read-back for the boxed
+lists and the packed collections, and setter-then-encode where the encode bridge takes storage
+premises.
 [PREMISES.md](PREMISES.md) section 9.
 
 ## Conformance (official vectors, through the generated object API)

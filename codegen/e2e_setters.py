@@ -88,23 +88,50 @@ def bridge_file(man, name, law):
     return None
 
 
+LAW_FILES = [ROOT / 'proofs/obj/prep_setters.bend', ROOT / 'proofs/obj/prep_setters_g1.bend', ROOT / 'proofs/obj/prep_setters_g2.bend']
+
+
 def setter_laws():
-    """{container: {field: (binders [(mode, name, type)], setter expression, module alias of rep)}}"""
-    out = {}
-    for m in LAW.finditer(LAWS.read_text()):
-        x, f, body = m.group(1), m.group(2), m.group(3)
-        lines = [l.strip() for l in body.split('\n') if l.strip()]
-        binders = []
-        for l in lines[:-1]:
-            b = re.match(r'for ([+-]?)(\w+): (.*)$', l)
-            binders.append((b.group(1), b.group(2), b.group(3)))
-        concl = lines[-1]
-        mm = re.match(r'(\w+)\.rep_%s\((.*), s\)$' % x, concl)
-        assert mm, concl
-        names = [b[1] for b in binders]
-        assert names[:4] == ['o', 's', 'v', 'r'] and names[4:] in ([], ['rv']), (x, f, names)
-        out.setdefault(x, {})[f] = (binders, mm.group(2), mm.group(1))
+    """[(law file, {container: {field: (binders [(mode, name, type)], setter expression, rep module path)}})]"""
+    out = []
+    for lf in LAW_FILES:
+        li = imports(lf)
+        d = {}
+        for m in LAW.finditer(lf.read_text()):
+            x, f, body = m.group(1), m.group(2), m.group(3)
+            lines = [l.strip() for l in body.split('\n') if l.strip()]
+            binders = []
+            for l in lines[:-1]:
+                b = re.match(r'for ([+-]?)(\w+): (.*)$', l)
+                binders.append((b.group(1), b.group(2), b.group(3)))
+            concl = lines[-1]
+            mm = re.match(r'(\w+)\.rep_%s\((.*), s\)$' % x, concl)
+            assert mm, concl
+            names = [b[1] for b in binders]
+            assert names[:4] == ['o', 's', 'v', 'r'] and names[4:] in ([], ['rv']), (x, f, names)
+            d.setdefault(x, {})[f] = (binders, mm.group(2), li[mm.group(1)])
+        out.append((lf, d))
     return out
+
+
+def tree(e):
+    """a rp invariant's leaf expression as a tree of DK.P2 pairs"""
+    m = re.match(r'(\w+\.)?P2\(', e)
+    if m and e.endswith(')'):
+        a, b = split_params(e[m.end():-1])
+        return ('P2', tree(a), tree(b))
+    return ('L', e)
+
+
+def destructure(t, name, lines, ind, rv_for):
+    """lines that take proof `name` of tree t apart; returns the expression rebuilding it with the leaf
+    rv_for(leaf) (None: keep) replaced"""
+    if t[0] == 'L':
+        r = rv_for(t[1])
+        return r if r else name
+    a, b = name + 'a', name + 'b'
+    lines.append('%s(+%s, +%s) = %s' % (ind, a, b, name))
+    return '(%s, %s)' % (destructure(t[1], a, lines, ind, rv_for), destructure(t[2], b, lines, ind, rv_for))
 
 
 BUILTIN = {'U32', 'Bool', 'Nat', 'List', 'Maybe', 'Array', 'Pair', 'Equal', 'Base', 'Word', 'Some', 'None', 'True', 'False'}
@@ -217,7 +244,8 @@ def build(n, x, deff, laws, man):
     if rb is None:
         return None, 0
     params, concl = signature(rb, n + '_e2e_root')
-    concl = rename(concl, merge(imps, imports(rb), 'r'))
+    rmap_r = merge(imps, imports(rb), 'r')
+    concl = rename(concl, rmap_r)
     imps['R'] = os.path.relpath(rb, ROOT)
     m = re.search(r'API\.hash_tree_root\(((?:\w+\.)?\w+\(\)), (\w+)\.(v_\w+)\(o\)\)', concl)
     spec, va, vfn = m.groups()
@@ -228,53 +256,153 @@ def build(n, x, deff, laws, man):
     blk, leaf, expr = view_block(vpath, vfn)
     els = items(expr)
     assert len(els) == len(fields), (n, len(els), len(fields))
-    lw = laws.get(x, {})
-    if lw:
-        imps['PS'] = 'proofs/obj/prep_setters.bend'
-        lren = merge(imps, imports(LAWS), 'l')
+    params = [rename(p, rmap_r) for p in params]
     view = lambda t: '%s.%s(%s)' % (va, vfn, t)
+    # the setter-keeps-rep laws: the file whose rep module is the one the root bridge's rep premise names
+    lw, lren = {}, {}
+    rep_p = [p for p in params if p.startswith('+rep:')]
+    if rep_p:
+        rpath = imps[re.match(r'\+rep: (\w+)\.rep_', rep_p[0]).group(1)]
+        for lf, ls in laws:
+            if x in ls and all(v[2] == rpath for v in ls[x].values()):
+                lw = ls[x]
+                imps['PS'] = os.path.relpath(lf, ROOT)
+                lren = merge(imps, imports(lf), 'l')
+                break
+    # an rp_X premise (a Data container whose fields carry range invariants): its definition
+    rp_p = [p for p in params if p.startswith('+rp:')]
+    rp = None
+    if rp_p:
+        ra, rfn = re.match(r'\+rp: (\w+)\.(rp_\w+)\(o\)$', rp_p[0]).groups()
+        rpath = ROOT / imps[ra]
+        rimps, rdefs = imports(rpath), set(re.findall(r'^(?:def|type) (\w+)', rpath.read_text(), re.M))
+        rren = merge(imps, rimps, 'p')
+        lines = rpath.read_text().split('\n')
+        i0 = [k for k, l in enumerate(lines) if l.startswith('def %s(o: ' % rfn)][0]
+        j = i0 + 1
+        while j < len(lines) and lines[j].startswith(' '):
+            j += 1
+        rblk = [qualify(l, rimps, ra, rdefs, rren) for l in lines[i0 + 1:j]]
+        cut = rblk[-1].index('}: ') + 3
+        rp = {'call': lambda t: '%s.%s(%s)' % (ra, rfn, t), 'head': rblk[:-1], 'case': rblk[-1][:cut - 1],
+              'tree': tree(rblk[-1][cut:].strip()), 'ind': ' ' * (len(rblk[-1]) - len(rblk[-1].lstrip()) + 2)}
     # the proof skeleton: the view's own matches on o, the leaf closed by computation
     skel = [qualify(l, vimps, va, vdefs, vren) for l in blk[1:leaf]]
     skel.append(blk[leaf][:blk[leaf].index('S.Sequence{')] + '{==}')
-    defs, counts = [], {'view': 0, 'root': 0, 'encode': 0}
+    defs, counts = [], {'view': 0, 'root': 0, 'encode': 0, 'checked': 0}
     ob = [p for p in params if re.match(r'[+-]?o:', p)][0]
     otype = ob.split(':', 1)[1].strip()
+    omode = '+' if ob.startswith('+') else ''
     kinds = [('root', params, concl, 'R')]
     eb = bridge_file(man, n, n + '_e2e_encode')
     if eb is not None:
         ep, ec = signature(eb, n + '_e2e_encode')
         imps['N'] = os.path.relpath(eb, ROOT)
-        ec = rename(ec, merge(imps, imports(eb), 'e'))
-        kinds.append(('encode', ep, ec, 'N'))
+        rmap_e = merge(imps, imports(eb), 'e')
+        kinds.append(('encode', [rename(p, rmap_e) for p in ep], rename(ec, rmap_e), 'N'))
+
+    def rp_lemma(f, k, checked, g, wt):
+        """N_set_f_rp: the setter keeps rp_X (a checked setter: given its guard and rp of the new value)"""
+        lines = []
+        leaves = []
+        def rv_for(leaf):
+            if re.search(r'(?<![\w.])x%d(?![\w.])' % k, leaf):
+                leaves.append(leaf)
+                return 'rv'
+            return None
+        rebuilt = destructure(rp['tree'], 'r', lines, rp['ind'], rv_for)
+        if leaves and not checked:
+            return None    # a plain setter of a field with its own invariant: not in the generated API
+        name = '%s_set_%s_rp' % (n, f)
+        setx = '%s.%s_set_%s(o, w)' % (DA, x, f)
+        body = rp['head'] + [rp['case']] + lines + [rp['ind'] + rebuilt]
+        if checked:
+            assert len(leaves) == 1, (n, f, leaves)
+            rvt = re.sub(r'(?<![\w.])x%d(?![\w.])' % k, 'w', leaves[0])
+            go = '%s.%s_set_%s_go(o, w)' % (DA, x, f)
+            defs.append('def %s_go(+o: %s, +w: %s, +r: %s, +rv: %s)\n    -> %s:\n%s' % (
+                name, otype, wt, rp['call']('o'), rvt, rp['call'](go), '\n'.join(body)))
+            defs.append('def %s(+o: %s, +w: %s, +hg: {%s == True{} : Bool}, +r: %s, +rv: %s)\n    -> %s:\n  %%Equal.sym(Bool, %s, True{}, hg) : %s\n  %s_go(o, w, r, rv)' % (
+                name, otype, wt, g, rp['call']('o'), rvt, rp['call']('Pair.fst(%s, Bool, %s)' % (otype, setx)), g,
+                rp['call']('Pair.fst(%s, Bool, %s.%s_put_%s(_, o, w))' % (otype, DA, x, f)), name))
+        else:
+            defs.append('def %s(+o: %s, +w: %s, +r: %s)\n    -> %s:\n%s' % (name, otype, wt, rp['call']('o'), rp['call'](setx), '\n'.join(body)))
+        return name
+
     for k, f in enumerate(fields):
-        sm = re.search(r'^def %s_set_%s\(o: %s, (\+?)v: (.+?)\) -> %s:' % (x, f, x, x), deftext, re.M)
-        if not sm:   # a checked setter (X_set_f -> X & Bool, a range-checked uint16): not covered here
-            assert re.search(r'^def %s_set_%s\(o: %s, .*\) -> %s & Bool:' % (x, f, x, x), deftext, re.M), (n, f)
-            continue
-        wm = sm.group(1)
-        wt = qualify(sm.group(2), imports(deff), DA, ddefs, dren)
         el = els[k]
         vs = set(re.findall(r'(?<![\w.])x(\d+)(?![\w.])', el))
         assert vs == {str(k)}, (n, f, el)
         fv = qualify(re.sub(r'(?<![\w.])x%d(?![\w.])' % k, 'w', el), vimps, va, vdefs, vren)
-        setx = '%s.%s_set_%s(o, w)' % (DA, x, f)
         fs = 'VS.field_set(%s, %dn, %s)' % (view('o'), k, fv)
         vl = '%s_e2e_set_%s_view' % (n, f)
-        defs.append('def %s(%so: %s, %sw: %s)\n    -> {%s == %s : S.Value}:\n%s' % (
-            vl, '+' if ob.startswith('+') else '', otype, wm, wt, view(setx), fs, '\n'.join(skel)))
+        sm = re.search(r'^def %s_set_%s\(o: %s, (\+?)v: (.+?)\) -> %s:' % (x, f, x, x), deftext, re.M)
+        checked = None
+        if not sm:   # a range-checked setter: X_set_f(o, v) = X_put_f(guard, o, v) -> X & Bool
+            sm = re.search(r'^def %s_set_%s\(o: %s, (\+?)v: (.+?)\) -> %s & Bool: %s_put_%s\((.*), o, v\)$' % (x, f, x, x, x, f), deftext, re.M)
+            assert sm, (n, f)
+            checked = re.sub(r'(?<![\w.])v(?![\w.])', 'w', sm.group(3))
+        wm = '+' if checked else sm.group(1)
+        wt = qualify(sm.group(2), imports(deff), DA, ddefs, dren)
+        setx = '%s.%s_set_%s(o, w)' % (DA, x, f)
+        if checked:
+            g = checked
+            obj_after = 'Pair.fst(%s, Bool, %s)' % (otype, setx)
+            put = lambda b: '%s.%s_put_%s(%s, o, w)' % (DA, x, f, b)
+            defs.append('def %s_set_%s_flag_case(b: Bool, -o: %s, -w: %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:\n  match b:\n    case True{}: {==}\n    case False{}: {==}'
+                        % (n, f, otype, wt, otype, put('b')))
+            defs.append('def %s_e2e_set_%s_flag(-o: %s, +w: %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:\n  %s_set_%s_flag_case(%s, o, w)'
+                        % (n, f, otype, wt, otype, setx, g, n, f, g))
+            defs.append('def %s_e2e_set_%s_rejected(-o: %s, +w: %s, +hg: {%s == False{} : Bool}) -> {%s == (o, False{}) : %s & Bool}:\n  %%Equal.sym(Bool, %s, False{}, hg) : {%s == (o, False{}) : %s & Bool}\n  {==}'
+                        % (n, f, otype, wt, g, setx, otype, g, put('_'), otype))
+            go = '%s.%s_set_%s_go(o, w)' % (DA, x, f)
+            assert re.search(r'^def %s_set_%s_go\(o: %s, \+v: ' % (x, f, x), deftext, re.M), (n, f)
+            defs.append('def %s_go(%so: %s, +w: %s)\n    -> {%s == %s : S.Value}:\n%s' % (
+                vl, omode, otype, wt, view(go), fs, '\n'.join(skel)))
+            defs.append('def %s(%so: %s, +w: %s, +hg: {%s == True{} : Bool})\n    -> {%s == %s : S.Value}:\n  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s : S.Value}\n  %s_go(o, w)' % (
+                vl, omode, otype, wt, g, view(obj_after), fs, g, view('Pair.fst(%s, Bool, %s)' % (otype, put('_'))), fs, vl))
+            counts['checked'] += 3
+        else:
+            obj_after = setx
+            defs.append('def %s(%so: %s, %sw: %s)\n    -> {%s == %s : S.Value}:\n%s' % (
+                vl, omode, otype, wm, wt, view(setx), fs, '\n'.join(skel)))
         counts['view'] += 1
+        rpl = rp_lemma(f, k, bool(checked), checked, wt) if rp else None
         for kind, ps, cc, al in kinds:
             pn = [re.match(r'[+-]?(\w+)', p).group(1) for p in ps]
             law = lw.get(f)
-            if pn in (['h', 'o'], ['o']):
+            if pn in (['h', 'o'], ['o']) and not checked:
                 extra, rargs = [], ''
-            elif pn in (['h', 'o', 'rep'], ['o', 'rep']) and law:
+            elif pn in (['h', 'o', 'rep'], ['o', 'rep']) and law and not checked:
                 binders, lsetx, _ = law
                 extra = []
                 for mode, b, t in binders[3:]:
                     extra.append('%s%s: %s' % (mode, b, re.sub(r'(?<![\w.])v(?![\w.])', 'w', rename(VAR_S.sub(spec, t), lren))))
                 largs = ', '.join(spec if b[1] == 's' else ('w' if b[1] == 'v' else b[1]) for b in binders)
                 rargs = ', PS.%s_set_%s_rep(%s)' % (x, f, largs)
+            elif pn in (['h', 'o', 'rep'], ['o', 'rep']) and checked and lw.get(f + '_go'):
+                binders, lsetx, _ = lw[f + '_go']
+                hyps = [(b, re.sub(r'(?<![\w.])v(?![\w.])', 'w', rename(VAR_S.sub(spec, t), lren))) for mode, b, t in binders[3:]]
+                extra = ['+hg: {%s == True{} : Bool}' % checked] + ['+%s: %s' % h for h in hyps]
+                rname = '%s_set_%s_rep' % (n, f)
+                if not any(d.startswith('def %s(' % rname) for d in defs):
+                    reps = rename(VAR_S.sub(spec, binders[3][2]), lren)   # REP(o, SPEC)
+                    tgt = lambda e: re.sub(r'\(o, ', '(%s, ' % e, reps, count=1)
+                    largs = ', '.join(spec if b[1] == 's' else ('w' if b[1] == 'v' else b[1]) for b in binders)
+                    defs.append('def %s(-o: %s, +w: %s, %s)\n    -> %s:\n  %%Equal.sym(Bool, %s, True{}, hg) : %s\n  PS.%s_set_%s_go_rep(%s)' % (
+                        rname, otype, wt, ', '.join(extra), tgt('Pair.fst(%s, Bool, %s)' % (otype, setx)), checked,
+                        tgt('Pair.fst(%s, Bool, %s.%s_put_%s(_, o, w))' % (otype, DA, x, f)), x, f, largs))
+                rargs = ', %s(o, w, hg, %s)' % (rname, ', '.join(h[0] for h in hyps))
+            elif pn in (['h', 'o', 'rp'], ['o', 'rp']) and rpl:
+                rpt = [p for p in ps if p.startswith('+rp:')][0].split(':', 1)[1].strip()
+                assert rpt == rp['call']('o'), (n, rpt)
+                if checked:
+                    rvt = re.search(r'\+rv: (.*)\)$', [d for d in defs if d.startswith('def %s(' % rpl)][0].split('\n')[0]).group(1)
+                    extra = ['+hg: {%s == True{} : Bool}' % checked, '+rp: %s' % rpt, '+rv: %s' % rvt]
+                    rargs = ', %s(o, w, hg, rp, rv)' % rpl
+                else:
+                    extra = ['+rp: %s' % rpt]
+                    rargs = ', %s(o, w, rp)' % rpl
             else:
                 continue
             lhs, rhs = cc[1:-1].split(' == API.', 1)
@@ -282,14 +410,14 @@ def build(n, x, deff, laws, man):
             api = 'API.' + api
             want = '%s(%s, %s)' % (api.split('(', 1)[0], spec, view('o'))
             assert api == want, (api, want)
-            L = VAR_O.sub(lambda _: setx, lhs)
+            L = VAR_O.sub(lambda _: obj_after, lhs)
             fn = api.split('(', 1)[0]
             head = ['h: B.Buf'] if 'h' in pn else []
-            omode = '+' if ob.startswith('+') else ''
             sig = head + ['%so: %s' % (omode, otype), '%sw: %s' % (wm, wt)] + extra
-            call = '%s.%s_e2e_%s(%s%s%s)' % (al, n, kind, 'h, ' if 'h' in pn else '', setx, rargs)
-            defs.append('def %s_e2e_set_%s_%s(%s)\n    -> {%s == %s(%s, %s) : %s}:\n  %%%s(o, w) : {%s == %s(%s, _) : %s}\n  %s' % (
-                n, f, kind, ', '.join(sig), L, fn, spec, fs, ty, vl, L, fn, spec, ty, call))
+            call = '%s.%s_e2e_%s(%s%s%s)' % (al, n, kind, 'h, ' if 'h' in pn else '', obj_after, rargs)
+            vlc = '%s(o, w%s)' % (vl, ', hg' if checked else '')
+            defs.append('def %s_e2e_set_%s_%s(%s)\n    -> {%s == %s(%s, %s) : %s}:\n  %%%s : {%s == %s(%s, _) : %s}\n  %s' % (
+                n, f, kind, ', '.join(sig), L, fn, spec, fs, ty, vlc, L, fn, spec, ty, call))
             counts[kind] += 1
     body = '\n\n'.join(defs)
     used = [a for a in imps if re.search(r'(?<![\w.])%s\.' % re.escape(a), body)]
@@ -306,7 +434,7 @@ def build(n, x, deff, laws, man):
 def outputs():
     man = json.loads((E2E / 'manifest.json').read_text())
     laws = setter_laws()
-    outs, tot = {}, {'view': 0, 'root': 0, 'encode': 0}
+    outs, tot = {}, {'view': 0, 'root': 0, 'encode': 0, 'checked': 0}
     for n, x, deff in containers():
         t, c = build(n, x, deff, laws, man)
         if t:

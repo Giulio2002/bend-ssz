@@ -10,7 +10,7 @@ non-vacuity witness e2e/<Name>_e2e_witness_generated.bend (<Name>_e2e_witness an
 <Name>_e2e_witness_nonempty), every setter composition e2e/<Name>_e2e_set_generated.bend
 (codegen/e2e_setters.py: a setter then root or encode gives the spec's), and the object-mutation
 laws of OBJECT_LAWS: the collection laws of the public API proofs/obj/coll_api_*.bend
-(codegen/coll_laws.py: its `_api_` defs) and the setter laws proofs/obj/prep_setters.bend (a setter
+(codegen/coll_laws.py: its `_api_` defs) and the setter laws proofs/obj/prep_setters*.bend (a setter
 keeps rep); for these, every def whose result is an equality proposition and every `law` block is
 a statement. (The definitional field laws proofs/obj/fields_*.bend and the helper-level
 collection laws proofs/obj/collections_*.bend of codegen/laws.py are checked but not listed: the
@@ -94,7 +94,7 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/prep_setters.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/prep_setters*.bend']
 
 
 def eq_defs(text):

@@ -191,14 +191,15 @@ def object_law_figures():
     f['obj_coll_statements'] = str(len(coll))
     f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
     f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))
-    f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters.bend'))
+    f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters'))
     f['obj_setter_containers'] = str(len({re.match(r'(\w+?)_set_', l).group(1)
-                                          for l in sf.get('proofs/obj/prep_setters.bend', [])}))
+                                          for k, v in sf.items() if k.startswith('proofs/obj/prep_setters') for l in v}))
     sets = [l for k, v in sf.items() if k.endswith('_e2e_set_generated.bend') for l in v]
     f['set_containers'] = str(sum(1 for k in sf if k.endswith('_e2e_set_generated.bend')))
     f['set_view_count'] = str(sum(1 for l in sets if l.endswith('_view')))
     f['set_root_count'] = str(sum(1 for l in sets if l.endswith('_root')))
     f['set_encode_count'] = str(sum(1 for l in sets if l.endswith('_encode')))
+    f['set_checked_count'] = str(sum(1 for l in sets if l.endswith('_flag')))
     return f
 
 

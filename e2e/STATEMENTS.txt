@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 2776 statements in 947 files.
+# 2923 statements in 949 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -47,26 +47,42 @@ import ../types/BitsStruct_hashtreeroot_generated.bend as BitsStruct_h
 def BitsStruct_e2e_root(h: B.Buf, -o: BitsStruct_d.BitsStruct, +rep: RT_L.rep_BitsStruct(o, Spec.BitsStruct())) -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.BitsStruct(), RT_L.v_BitsStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/BitsStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../types/BitsStruct_hashtreeroot_generated.bend as BitsStruct_h
+import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../types/bitvector_2_def_generated.bend as bitvector_2_d
 import ../types/bitvector_8_def_generated.bend as bitvector_8_d
 def BitsStruct_e2e_set_f_A_view(o: BitsStruct_d.BitsStruct, w: O.Bits)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_A(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 0n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def BitsStruct_e2e_set_f_A_root(h: B.Buf, o: BitsStruct_d.BitsStruct, w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Container_fields(Spec.BitsStruct()))))
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 0n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def BitsStruct_e2e_set_f_B_view(o: BitsStruct_d.BitsStruct, +w: bitvector_2_d.Bitvector2)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 1n, RN.v_bv2(w)) : S.Value}:
+def BitsStruct_e2e_set_f_B_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvector_2_d.Bitvector2, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv2(w))
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 1n, RN.v_bv2(w))) : Maybe<&2, +List<U32>>}:
 def BitsStruct_e2e_set_f_C_view(o: BitsStruct_d.BitsStruct, +w: bitvector_1_d.Bitvector1)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 2n, RN.v_bv1(w)) : S.Value}:
+def BitsStruct_e2e_set_f_C_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvector_1_d.Bitvector1, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv1(w))
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 2n, RN.v_bv1(w))) : Maybe<&2, +List<U32>>}:
 def BitsStruct_e2e_set_f_D_view(o: BitsStruct_d.BitsStruct, w: O.Bits)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 3n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def BitsStruct_e2e_set_f_D_root(h: B.Buf, o: BitsStruct_d.BitsStruct, w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BitsStruct())))))))
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 3n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def BitsStruct_e2e_set_f_E_view(o: BitsStruct_d.BitsStruct, +w: bitvector_8_d.Bitvector8)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 4n, RN.v_bv8(w)) : S.Value}:
+def BitsStruct_e2e_set_f_E_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvector_8_d.Bitvector8, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv8(w))
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 4n, RN.v_bv8(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/BitsStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -297,26 +313,61 @@ import ../types/ComplexTestStruct_hashtreeroot_generated.bend as ComplexTestStru
 def ComplexTestStruct_e2e_root(h: B.Buf, -o: ComplexTestStruct_d.ComplexTestStruct, +rep: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct())) -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ComplexTestStruct(), RT_L.v_ComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ComplexTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
+import ../types/ComplexTestStruct_hashtreeroot_generated.bend as ComplexTestStruct_h
+import ../src/digest.bend as D
+import ../proofs/obj/list_obj_light.bend as LO
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../proofs/obj/words_obj_light.bend as WO
 import ../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
 import ../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
+def ComplexTestStruct_e2e_set_f_A_flag(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w)) == U32.is_le(w, 65535) : Bool}:
+def ComplexTestStruct_e2e_set_f_A_rejected(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == False{} : Bool}) -> {ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}:
+def ComplexTestStruct_e2e_set_f_A_view_go(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32)
+    -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_A_view(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool})
+    -> {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_A_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u16(w))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w))) : Maybe<&2, +List<U32>>}:
 def ComplexTestStruct_e2e_set_f_B_view(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 1n, PB.vview2(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_B_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
+def ComplexTestStruct_e2e_set_f_C_flag(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w)) == U32.is_le(w, 255) : Bool}:
+def ComplexTestStruct_e2e_set_f_C_rejected(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}:
+def ComplexTestStruct_e2e_set_f_C_view_go(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32)
+    -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_C_view(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_C_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w))) : Maybe<&2, +List<U32>>}:
 def ComplexTestStruct_e2e_set_f_D_view(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 3n, S.BytesValue{WO.wview(w)}) : S.Value}:
+def ComplexTestStruct_e2e_set_f_D_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: LO.rep_bl(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 3n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
 def ComplexTestStruct_e2e_set_f_E_view(o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_E_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ComplexTestStruct_e2e_set_f_F_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_F_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v4_FixedTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ComplexTestStruct_e2e_set_f_G_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w)) : S.Value}:
+def ComplexTestStruct_e2e_set_f_G_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v2_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ComplexTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -405,15 +456,40 @@ def SmallTestStruct_e2e_root(h: B.Buf, +o: SmallTestStruct_d.SmallTestStruct, +r
 def uint16_e2e_root(h: B.Buf, +o: U32, +rp: M0_L.rp_u16(o)) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.uint16_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint16(), M0_L.v_u16(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FixedTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
+import ../types/FixedTestStruct_encode_ssz_generated.bend as FixedTestStruct_e
+import ../types/FixedTestStruct_hashtreeroot_generated.bend as FixedTestStruct_h
 import ../proofs/obj/root_gnames_light.bend as M0_L
 import ../src/obj.bend as O
 import ../types/schema.bend as S
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
+def FixedTestStruct_e2e_set_f_A_flag(-o: FixedTestStruct_d.FixedTestStruct, +w: U32) -> {Pair.snd(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(o, w)) == U32.is_le(w, 255) : Bool}:
+def FixedTestStruct_e2e_set_f_A_rejected(-o: FixedTestStruct_d.FixedTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {FixedTestStruct_d.FixedTestStruct_set_f_A(o, w) == (o, False{}) : FixedTestStruct_d.FixedTestStruct & Bool}:
+def FixedTestStruct_e2e_set_f_A_view_go(+o: FixedTestStruct_d.FixedTestStruct, +w: U32)
+    -> {M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_set_f_A_go(o, w)) == VS.field_set(M0_L.v_FixedTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def FixedTestStruct_e2e_set_f_A_view(+o: FixedTestStruct_d.FixedTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {M0_L.v_FixedTestStruct(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(o, w))) == VS.field_set(M0_L.v_FixedTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def FixedTestStruct_e2e_set_f_A_root(h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_FixedTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(h, Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
+def FixedTestStruct_e2e_set_f_A_encode(+o: FixedTestStruct_d.FixedTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_FixedTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(o, w))))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
 def FixedTestStruct_e2e_set_f_B_view(+o: FixedTestStruct_d.FixedTestStruct, +w: O.U64)
     -> {M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_set_f_B(o, w)) == VS.field_set(M0_L.v_FixedTestStruct(o), 1n, M0_L.v_u64(w)) : S.Value}:
+def FixedTestStruct_e2e_set_f_B_root(h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct, +w: O.U64, +rp: M0_L.rp_FixedTestStruct(o))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(h, FixedTestStruct_d.FixedTestStruct_set_f_B(o, w))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 1n, M0_L.v_u64(w))) : Maybe<&2, +List<U32>>}:
+def FixedTestStruct_e2e_set_f_B_encode(+o: FixedTestStruct_d.FixedTestStruct, +w: O.U64, +rp: M0_L.rp_FixedTestStruct(o))
+    -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_B(o, w)))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 1n, M0_L.v_u64(w))) : Maybe<&2, +List<U32>>}:
 def FixedTestStruct_e2e_set_f_C_view(+o: FixedTestStruct_d.FixedTestStruct, +w: U32)
     -> {M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_set_f_C(o, w)) == VS.field_set(M0_L.v_FixedTestStruct(o), 2n, M0_L.v_u32(w)) : S.Value}:
+def FixedTestStruct_e2e_set_f_C_root(h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct, +w: U32, +rp: M0_L.rp_FixedTestStruct(o))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(h, FixedTestStruct_d.FixedTestStruct_set_f_C(o, w))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 2n, M0_L.v_u32(w))) : Maybe<&2, +List<U32>>}:
+def FixedTestStruct_e2e_set_f_C_encode(+o: FixedTestStruct_d.FixedTestStruct, +w: U32, +rp: M0_L.rp_FixedTestStruct(o))
+    -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_C(o, w)))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(o), 2n, M0_L.v_u32(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FixedTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8084,40 +8160,71 @@ import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as Progressive
 def ProgressiveBitsStruct_e2e_root(h: B.Buf, -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +rep: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), RT_L.v_ProgressiveBitsStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveBitsStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../src/digest.bend as D
 import ../src/obj.bend as O
+import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as ProgressiveBitsStruct_h
 import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/wbits_obj_light.bend as WBV
 import ../types/bitvector_256_def_generated.bend as bitvector_256_d
 import ../types/bitvector_257_def_generated.bend as bitvector_257_d
 def ProgressiveBitsStruct_e2e_set_f_A_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_256_d.Bitvector256)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 0n, RN.v_bv256(w)) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_A_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_256_d.Bitvector256, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 0n, RN.v_bv256(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_B_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 1n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_B_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 1n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_C_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 2n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 2n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_D_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_257_d.Bitvector257)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 3n, RN.v_bv257(w)) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_D_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_257_d.Bitvector257, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: RN.rp_bv257(w))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 3n, RN.v_bv257(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_E_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 4n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_E_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 4n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_F_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 5n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_F_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 5n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_G_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 6n, S.BitsValue{WBV.wbits(w, 1280n)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_G_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: WBV.rep_bvb(w, 1280n))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 6n, S.BitsValue{WBV.wbits(w, 1280n)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_H_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 7n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_H_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 7n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_I_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 8n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_I_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 8n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_J_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 9n, S.BitsValue{WBV.wbits(w, 1281n)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_J_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: WBV.rep_bvb(w, 1281n))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 9n, S.BitsValue{WBV.wbits(w, 1281n)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_K_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 10n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_K_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 10n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_set_f_L_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 11n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveBitsStruct_e2e_set_f_L_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 11n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveBitsStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8177,32 +8284,64 @@ import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as Prog
 def ProgressiveComplexTestStruct_e2e_root(h: B.Buf, -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +rep: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), RT_L.v_ProgressiveComplexTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveComplexTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/pbits_obj_light.bend as PBO
+import ../proofs/obj/prog_list_light.bend as PG
 import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as ProgressiveComplexTestStruct_h
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 import ../types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_d
 import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d
 import ../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
 import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+def ProgressiveComplexTestStruct_e2e_set_f_A_flag(-o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +w: U32) -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A(o, w)) == U32.is_le(w, 255) : Bool}:
+def ProgressiveComplexTestStruct_e2e_set_f_A_rejected(-o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A(o, w) == (o, False{}) : ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool}:
+def ProgressiveComplexTestStruct_e2e_set_f_A_view_go(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +w: U32)
+    -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 0n, RN.v_u8(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_A_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {RT_L.v_ProgressiveComplexTestStruct(Pair.fst(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A(o, w))) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 0n, RN.v_u8(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_A_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: RN.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, Pair.fst(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 0n, RN.v_u8(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_B_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 1n, PB.vview2(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_B_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Words, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_C_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 2n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Bits, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct()))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 2n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_D_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 3n, UL.uview(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_D_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: O.Words, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: PG.rep_pl8(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct())))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 3n, UL.uview(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_E_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 4n, RT_L.xv_pl_SmallTestStruct(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_E_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: RT_L.rep_pl_SmallTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct()))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 4n, RT_L.xv_pl_SmallTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_F_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 5n, RT_L.xv_pl_pl_VarTestStruct(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_F_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: RT_L.rep_pl_pl_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct())))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 5n, RT_L.xv_pl_pl_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_G_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 6n, RT_L.xv_l10_ProgressiveSingleFieldContainerTestStruct(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_G_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: RT_L.rep_l10_ProgressiveSingleFieldContainerTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct()))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 6n, RT_L.xv_l10_ProgressiveSingleFieldContainerTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveComplexTestStruct_e2e_set_f_H_view(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq)
     -> {RT_L.v_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_H(o, w)) == VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 7n, RT_L.xv_pl_ProgressiveVarTestStruct(w)) : S.Value}:
+def ProgressiveComplexTestStruct_e2e_set_f_H_root(h: B.Buf, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, w: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, +r: RT_L.rep_ProgressiveComplexTestStruct(o, Spec.ProgressiveComplexTestStruct()), +rv: RT_L.rep_pl_ProgressiveVarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveComplexTestStruct())))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_H(o, w)))))} == API.hash_tree_root(Spec.ProgressiveComplexTestStruct(), VS.field_set(RT_L.v_ProgressiveComplexTestStruct(o), 7n, RT_L.xv_pl_ProgressiveVarTestStruct(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleFieldContainerTestStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -8244,6 +8383,27 @@ import ../proofs/obj/root_gnames_light.bend as M1
 def ProgressiveSingleFieldContainerTestStruct_e2e_encode(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +rp: M1.rp_ProgressiveSingleFieldContainerTestStruct(o)) -> {Some{E.obytes(ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_encode(o))} == API.serialize(Spec.ProgressiveSingleFieldContainerTestStruct(), M1.v_ProgressiveSingleFieldContainerTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleFieldContainerTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ../proofs/obj/root_gnames_light.bend as M0_L
+import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_e
+import ../types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend as ProgressiveSingleFieldContainerTestStruct_h
+import ../types/schema.bend as S
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/value_set.bend as VS
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_flag(-o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32) -> {Pair.snd(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, Bool, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A(o, w)) == U32.is_le(w, 255) : Bool}:
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_rejected(-o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A(o, w) == (o, False{}) : ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct & Bool}:
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_view_go(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32)
+    -> {M0_L.v_ProgressiveSingleFieldContainerTestStruct(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(o, w)) == VS.field_set(M0_L.v_ProgressiveSingleFieldContainerTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_view(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {M0_L.v_ProgressiveSingleFieldContainerTestStruct(Pair.fst(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, Bool, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A(o, w))) == VS.field_set(M0_L.v_ProgressiveSingleFieldContainerTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_root(h: B.Buf, +o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_ProgressiveSingleFieldContainerTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.ProgressiveSingleFieldContainerTestStruct_hash_tree_root(h, Pair.fst(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, Bool, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.ProgressiveSingleFieldContainerTestStruct(), VS.field_set(M0_L.v_ProgressiveSingleFieldContainerTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
+def ProgressiveSingleFieldContainerTestStruct_e2e_set_f_A_encode(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_ProgressiveSingleFieldContainerTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{E.obytes(ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_encode(Pair.fst(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, Bool, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A(o, w))))} == API.serialize(Spec.ProgressiveSingleFieldContainerTestStruct(), VS.field_set(M0_L.v_ProgressiveSingleFieldContainerTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleFieldContainerTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8303,14 +8463,23 @@ import ../types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.
 def ProgressiveSingleListContainerTestStruct_e2e_root(h: B.Buf, -o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +rep: RT_L.rep_ProgressiveSingleListContainerTestStruct(o, Spec.ProgressiveSingleListContainerTestStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest, ProgressiveSingleListContainerTestStruct_h.ProgressiveSingleListContainerTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveSingleListContainerTestStruct(), RT_L.v_ProgressiveSingleListContainerTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../src/digest.bend as D
 import ../src/obj.bend as O
+import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend as ProgressiveSingleListContainerTestStruct_h
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 def ProgressiveSingleListContainerTestStruct_e2e_set_f_C_view(o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveSingleListContainerTestStruct(o), 0n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveSingleListContainerTestStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, w: O.Bits, +r: RT_L.rep_ProgressiveSingleListContainerTestStruct(o, Spec.ProgressiveSingleListContainerTestStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.ProgressiveContainer_fields(Spec.ProgressiveSingleListContainerTestStruct()))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest, ProgressiveSingleListContainerTestStruct_h.ProgressiveSingleListContainerTestStruct_hash_tree_root(h, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveSingleListContainerTestStruct(), VS.field_set(RT_L.v_ProgressiveSingleListContainerTestStruct(o), 0n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveSingleListContainerTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8365,23 +8534,38 @@ import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as Progressive
 def ProgressiveTestStruct_e2e_root(h: B.Buf, -o: ProgressiveTestStruct_d.ProgressiveTestStruct, +rep: RT_L.rep_ProgressiveTestStruct(o, Spec.ProgressiveTestStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveTestStruct(), RT_L.v_ProgressiveTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/prog_list_light.bend as PG
 import ../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as ProgressiveTestStruct_h
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 import ../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
 import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
 def ProgressiveTestStruct_e2e_set_f_A_view(o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_A(o, w)) == VS.field_set(RT_L.v_ProgressiveTestStruct(o), 0n, PB.vview1(w)) : S.Value}:
+def ProgressiveTestStruct_e2e_set_f_A_root(h: B.Buf, o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: O.Words, +r: RT_L.rep_ProgressiveTestStruct(o, Spec.ProgressiveTestStruct()), +rv: PG.rep_pl1(w, SH.Chain_head(SH.Container_fields(Spec.ProgressiveTestStruct()))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.ProgressiveTestStruct(), VS.field_set(RT_L.v_ProgressiveTestStruct(o), 0n, PB.vview1(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveTestStruct_e2e_set_f_B_view(o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ProgressiveTestStruct(o), 1n, UL.uview(w)) : S.Value}:
+def ProgressiveTestStruct_e2e_set_f_B_root(h: B.Buf, o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: O.Words, +r: RT_L.rep_ProgressiveTestStruct(o, Spec.ProgressiveTestStruct()), +rv: PG.rep_pl8(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveTestStruct(), VS.field_set(RT_L.v_ProgressiveTestStruct(o), 1n, UL.uview(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveTestStruct_e2e_set_f_C_view(o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq)
     -> {RT_L.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveTestStruct(o), 2n, RT_L.xv_pl_SmallTestStruct(w)) : S.Value}:
+def ProgressiveTestStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, +r: RT_L.rep_ProgressiveTestStruct(o, Spec.ProgressiveTestStruct()), +rv: RT_L.rep_pl_SmallTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveTestStruct()))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveTestStruct(), VS.field_set(RT_L.v_ProgressiveTestStruct(o), 2n, RT_L.xv_pl_SmallTestStruct(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveTestStruct_e2e_set_f_D_view(o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq)
     -> {RT_L.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ProgressiveTestStruct(o), 3n, RT_L.xv_pl_pl_VarTestStruct(w)) : S.Value}:
+def ProgressiveTestStruct_e2e_set_f_D_root(h: B.Buf, o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, +r: RT_L.rep_ProgressiveTestStruct(o, Spec.ProgressiveTestStruct()), +rv: RT_L.rep_pl_pl_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveTestStruct())))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ProgressiveTestStruct(), VS.field_set(RT_L.v_ProgressiveTestStruct(o), 3n, RT_L.xv_pl_pl_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8441,17 +8625,38 @@ import ../types/ProgressiveVarTestStruct_hashtreeroot_generated.bend as Progress
 def ProgressiveVarTestStruct_e2e_root(h: B.Buf, -o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +rep: RT_L.rep_ProgressiveVarTestStruct(o, Spec.ProgressiveVarTestStruct())) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), RT_L.v_ProgressiveVarTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveVarTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../types/ProgressiveVarTestStruct_hashtreeroot_generated.bend as ProgressiveVarTestStruct_h
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
+def ProgressiveVarTestStruct_e2e_set_f_A_flag(-o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +w: U32) -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(o, w)) == U32.is_le(w, 255) : Bool}:
+def ProgressiveVarTestStruct_e2e_set_f_A_rejected(-o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(o, w) == (o, False{}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & Bool}:
+def ProgressiveVarTestStruct_e2e_set_f_A_view_go(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +w: U32)
+    -> {RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(o, w)) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 0n, RN.v_u8(w)) : S.Value}:
+def ProgressiveVarTestStruct_e2e_set_f_A_view(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {RT_L.v_ProgressiveVarTestStruct(Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(o, w))) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 0n, RN.v_u8(w)) : S.Value}:
+def ProgressiveVarTestStruct_e2e_set_f_A_root(h: B.Buf, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_ProgressiveVarTestStruct(o, Spec.ProgressiveVarTestStruct()), +rv: RN.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(h, Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 0n, RN.v_u8(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveVarTestStruct_e2e_set_f_B_view(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 1n, PB.vview2(w)) : S.Value}:
+def ProgressiveVarTestStruct_e2e_set_f_B_root(h: B.Buf, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, w: O.Words, +r: RT_L.rep_ProgressiveVarTestStruct(o, Spec.ProgressiveVarTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveVarTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
 def ProgressiveVarTestStruct_e2e_set_f_C_view(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 2n, S.BitsValue{BO.bview(w)}) : S.Value}:
+def ProgressiveVarTestStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, w: O.Bits, +r: RT_L.rep_ProgressiveVarTestStruct(o, Spec.ProgressiveVarTestStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveVarTestStruct()))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), VS.field_set(RT_L.v_ProgressiveVarTestStruct(o), 2n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveVarTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8506,6 +8711,27 @@ import ../proofs/obj/root_gnames_light.bend as M1
 def SingleFieldTestStruct_e2e_encode(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +rp: M1.rp_SingleFieldTestStruct(o)) -> {Some{E.obytes(SingleFieldTestStruct_e.SingleFieldTestStruct_encode(o))} == API.serialize(Spec.SingleFieldTestStruct(), M1.v_SingleFieldTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/SingleFieldTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ../proofs/obj/root_gnames_light.bend as M0_L
+import ../types/schema.bend as S
+import ../types/SingleFieldTestStruct_def_generated.bend as SingleFieldTestStruct_d
+import ../types/SingleFieldTestStruct_encode_ssz_generated.bend as SingleFieldTestStruct_e
+import ../types/SingleFieldTestStruct_hashtreeroot_generated.bend as SingleFieldTestStruct_h
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/value_set.bend as VS
+def SingleFieldTestStruct_e2e_set_f_A_flag(-o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32) -> {Pair.snd(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(o, w)) == U32.is_le(w, 255) : Bool}:
+def SingleFieldTestStruct_e2e_set_f_A_rejected(-o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(o, w) == (o, False{}) : SingleFieldTestStruct_d.SingleFieldTestStruct & Bool}:
+def SingleFieldTestStruct_e2e_set_f_A_view_go(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32)
+    -> {M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(o, w)) == VS.field_set(M0_L.v_SingleFieldTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def SingleFieldTestStruct_e2e_set_f_A_view(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {M0_L.v_SingleFieldTestStruct(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(o, w))) == VS.field_set(M0_L.v_SingleFieldTestStruct(o), 0n, M0_L.v_u8(w)) : S.Value}:
+def SingleFieldTestStruct_e2e_set_f_A_root(h: B.Buf, +o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_SingleFieldTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.SingleFieldTestStruct_hash_tree_root(h, Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
+def SingleFieldTestStruct_e2e_set_f_A_encode(+o: SingleFieldTestStruct_d.SingleFieldTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +rp: M0_L.rp_SingleFieldTestStruct(o), +rv: M0_L.rp_u8(w))
+    -> {Some{E.obytes(SingleFieldTestStruct_e.SingleFieldTestStruct_encode(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(o, w))))} == API.serialize(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(o), 0n, M0_L.v_u8(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/SingleFieldTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8560,6 +8786,37 @@ import ../proofs/obj/root_gnames_light.bend as M1
 def SmallTestStruct_e2e_encode(+o: SmallTestStruct_d.SmallTestStruct, +rp: M1.rp_SmallTestStruct(o)) -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(o))} == API.serialize(Spec.SmallTestStruct(), M1.v_SmallTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/SmallTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ../proofs/obj/root_gnames_light.bend as M0_L
+import ../types/schema.bend as S
+import ../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../types/SmallTestStruct_encode_ssz_generated.bend as SmallTestStruct_e
+import ../types/SmallTestStruct_hashtreeroot_generated.bend as SmallTestStruct_h
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/value_set.bend as VS
+def SmallTestStruct_e2e_set_f_A_flag(-o: SmallTestStruct_d.SmallTestStruct, +w: U32) -> {Pair.snd(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(o, w)) == U32.is_le(w, 65535) : Bool}:
+def SmallTestStruct_e2e_set_f_A_rejected(-o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == False{} : Bool}) -> {SmallTestStruct_d.SmallTestStruct_set_f_A(o, w) == (o, False{}) : SmallTestStruct_d.SmallTestStruct & Bool}:
+def SmallTestStruct_e2e_set_f_A_view_go(+o: SmallTestStruct_d.SmallTestStruct, +w: U32)
+    -> {M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_set_f_A_go(o, w)) == VS.field_set(M0_L.v_SmallTestStruct(o), 0n, M0_L.v_u16(w)) : S.Value}:
+def SmallTestStruct_e2e_set_f_A_view(+o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool})
+    -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(o, w))) == VS.field_set(M0_L.v_SmallTestStruct(o), 0n, M0_L.v_u16(w)) : S.Value}:
+def SmallTestStruct_e2e_set_f_A_root(h: B.Buf, +o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +rp: M0_L.rp_SmallTestStruct(o), +rv: M0_L.rp_u16(w))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(h, Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(o), 0n, M0_L.v_u16(w))) : Maybe<&2, +List<U32>>}:
+def SmallTestStruct_e2e_set_f_A_encode(+o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +rp: M0_L.rp_SmallTestStruct(o), +rv: M0_L.rp_u16(w))
+    -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(o, w))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(o), 0n, M0_L.v_u16(w))) : Maybe<&2, +List<U32>>}:
+def SmallTestStruct_e2e_set_f_B_flag(-o: SmallTestStruct_d.SmallTestStruct, +w: U32) -> {Pair.snd(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(o, w)) == U32.is_le(w, 65535) : Bool}:
+def SmallTestStruct_e2e_set_f_B_rejected(-o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == False{} : Bool}) -> {SmallTestStruct_d.SmallTestStruct_set_f_B(o, w) == (o, False{}) : SmallTestStruct_d.SmallTestStruct & Bool}:
+def SmallTestStruct_e2e_set_f_B_view_go(+o: SmallTestStruct_d.SmallTestStruct, +w: U32)
+    -> {M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_set_f_B_go(o, w)) == VS.field_set(M0_L.v_SmallTestStruct(o), 1n, M0_L.v_u16(w)) : S.Value}:
+def SmallTestStruct_e2e_set_f_B_view(+o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool})
+    -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(o, w))) == VS.field_set(M0_L.v_SmallTestStruct(o), 1n, M0_L.v_u16(w)) : S.Value}:
+def SmallTestStruct_e2e_set_f_B_root(h: B.Buf, +o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +rp: M0_L.rp_SmallTestStruct(o), +rv: M0_L.rp_u16(w))
+    -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(h, Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(o), 1n, M0_L.v_u16(w))) : Maybe<&2, +List<U32>>}:
+def SmallTestStruct_e2e_set_f_B_encode(+o: SmallTestStruct_d.SmallTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +rp: M0_L.rp_SmallTestStruct(o), +rv: M0_L.rp_u16(w))
+    -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(o, w))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(o), 1n, M0_L.v_u16(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/SmallTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -8614,14 +8871,40 @@ import ../proofs/obj/root_gtypes_light.bend as RT_L
 def VarTestStruct_e2e_root(h: B.Buf, -o: VarTestStruct_d.VarTestStruct, +rep: RT_L.rep_VarTestStruct(o, Spec.VarTestStruct())) -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.VarTestStruct(), RT_L.v_VarTestStruct(o)) : Maybe<&2, +List<U32>>}:
 
 ## e2e/VarTestStruct_e2e_set_generated.bend
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../proofs/obj/blist_obj_light.bend as BLI
+import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../types/VarTestStruct_hashtreeroot_generated.bend as VarTestStruct_h
+def VarTestStruct_e2e_set_f_A_flag(-o: VarTestStruct_d.VarTestStruct, +w: U32) -> {Pair.snd(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(o, w)) == U32.is_le(w, 65535) : Bool}:
+def VarTestStruct_e2e_set_f_A_rejected(-o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == False{} : Bool}) -> {VarTestStruct_d.VarTestStruct_set_f_A(o, w) == (o, False{}) : VarTestStruct_d.VarTestStruct & Bool}:
+def VarTestStruct_e2e_set_f_A_view_go(o: VarTestStruct_d.VarTestStruct, +w: U32)
+    -> {RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_A_go(o, w)) == VS.field_set(RT_L.v_VarTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+def VarTestStruct_e2e_set_f_A_view(o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool})
+    -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(o, w))) == VS.field_set(RT_L.v_VarTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+def VarTestStruct_e2e_set_f_A_root(h: B.Buf, o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +r: RT_L.rep_VarTestStruct(o, Spec.VarTestStruct()), +rv: RN.rp_u16(w))
+    -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(h, Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(o), 0n, RN.v_u16(w))) : Maybe<&2, +List<U32>>}:
 def VarTestStruct_e2e_set_f_B_view(o: VarTestStruct_d.VarTestStruct, w: O.Words)
     -> {RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_VarTestStruct(o), 1n, PB.vview2(w)) : S.Value}:
+def VarTestStruct_e2e_set_f_B_root(h: B.Buf, o: VarTestStruct_d.VarTestStruct, w: O.Words, +r: RT_L.rep_VarTestStruct(o, Spec.VarTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.VarTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(h, VarTestStruct_d.VarTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
+def VarTestStruct_e2e_set_f_C_flag(-o: VarTestStruct_d.VarTestStruct, +w: U32) -> {Pair.snd(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(o, w)) == U32.is_le(w, 255) : Bool}:
+def VarTestStruct_e2e_set_f_C_rejected(-o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {VarTestStruct_d.VarTestStruct_set_f_C(o, w) == (o, False{}) : VarTestStruct_d.VarTestStruct & Bool}:
+def VarTestStruct_e2e_set_f_C_view_go(o: VarTestStruct_d.VarTestStruct, +w: U32)
+    -> {RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_C_go(o, w)) == VS.field_set(RT_L.v_VarTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+def VarTestStruct_e2e_set_f_C_view(o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(o, w))) == VS.field_set(RT_L.v_VarTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+def VarTestStruct_e2e_set_f_C_root(h: B.Buf, o: VarTestStruct_d.VarTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_VarTestStruct(o, Spec.VarTestStruct()), +rv: RN.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(h, Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(o, w))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(o), 2n, RN.v_u8(w))) : Maybe<&2, +List<U32>>}:
 
 ## e2e/VarTestStruct_e2e_witness_generated.bend
 import ./e2e_support.bend as E
@@ -16964,4 +17247,366 @@ law BeaconState_set_proposer_lookahead_rep:
   for +r: ST.rep_BeaconState(o, s)
   for +rv: PK.rep_v8(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))))))))))))))))
   ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_proposer_lookahead(o, v), s)
+
+## proofs/obj/prep_setters_g1.bend
+import ../../src/obj.bend as O
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
+import ../../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
+import ../../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
+import ../../types/schema.bend as S
+import ./schema_shapes.bend as SH
+import ./list_obj_light.bend as LO
+import ./root_gnames_light.bend as RN
+import ./blist_obj_light.bend as BLI
+import ./root_gtypes_light.bend as RT
+law VarTestStruct_set_f_A_go_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: RN.rp_u16(v)
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_A_go(o, v), s)
+law VarTestStruct_set_f_B_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: BLI.rep_l2(v, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_B(o, v), s)
+law VarTestStruct_set_f_C_go_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: RN.rp_u8(v)
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_C_go(o, v), s)
+law ComplexTestStruct_set_f_A_go_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: RN.rp_u16(v)
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(o, v), s)
+law ComplexTestStruct_set_f_B_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: BLI.rep_l2(v, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, v), s)
+law ComplexTestStruct_set_f_C_go_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: RN.rp_u8(v)
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(o, v), s)
+law ComplexTestStruct_set_f_D_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: LO.rep_bl(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, v), s)
+law ComplexTestStruct_set_f_E_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for -v: VarTestStruct_d.VarTestStruct
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: RT.rep_VarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, v), s)
+law ComplexTestStruct_set_f_F_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for -v: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: RT.rep_v4_FixedTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, v), s)
+law ComplexTestStruct_set_f_G_rep:
+  for -o: ComplexTestStruct_d.ComplexTestStruct
+  for +s: S.Schema
+  for -v: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq
+  for +r: RT.rep_ComplexTestStruct(o, s)
+  for +rv: RT.rep_v2_VarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))
+  RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, v), s)
+
+## proofs/obj/prep_setters_g2.bend
+import ../../src/obj.bend as O
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
+import ../../types/bitvector_257_def_generated.bend as bitvector_257_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+import ../../types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_d
+import ../../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d
+import ../../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../../types/schema.bend as S
+import ./schema_shapes.bend as SH
+import ./bitlist_obj_light.bend as BO
+import ./root_gnames_light.bend as RN
+import ./prog_list_light.bend as PG
+import ./blist_obj_light.bend as BLI
+import ./pbits_obj_light.bend as PBO
+import ./wbits_obj_light.bend as WBV
+import ./root_gtypes2_light.bend as RT
+law ProgressiveSingleListContainerTestStruct_set_f_C_rep:
+  for -o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveSingleListContainerTestStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.ProgressiveContainer_fields(s)))
+  RT.rep_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_set_f_C(o, v), s)
+law VarTestStruct_set_f_A_go_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: RN.rp_u16(v)
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_A_go(o, v), s)
+law VarTestStruct_set_f_B_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: BLI.rep_l2(v, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_B(o, v), s)
+law VarTestStruct_set_f_C_go_rep:
+  for -o: VarTestStruct_d.VarTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_VarTestStruct(o, s)
+  for +rv: RN.rp_u8(v)
+  RT.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_set_f_C_go(o, v), s)
+law ProgressiveVarTestStruct_set_f_A_go_rep:
+  for -o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_ProgressiveVarTestStruct(o, s)
+  for +rv: RN.rp_u8(v)
+  RT.rep_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(o, v), s)
+law ProgressiveVarTestStruct_set_f_B_rep:
+  for -o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveVarTestStruct(o, s)
+  for +rv: BLI.rep_l2(v, SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))
+  RT.rep_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(o, v), s)
+law ProgressiveVarTestStruct_set_f_C_rep:
+  for -o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveVarTestStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))))
+  RT.rep_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_C(o, v), s)
+law ProgressiveComplexTestStruct_set_f_A_go_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for +v: U32
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: RN.rp_u8(v)
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(o, v), s)
+law ProgressiveComplexTestStruct_set_f_B_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: BLI.rep_l2(v, SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_B(o, v), s)
+law ProgressiveComplexTestStruct_set_f_C_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_C(o, v), s)
+law ProgressiveComplexTestStruct_set_f_D_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: PG.rep_pl8(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_D(o, v), s)
+law ProgressiveComplexTestStruct_set_f_E_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: RT.rep_pl_SmallTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_E(o, v), s)
+law ProgressiveComplexTestStruct_set_f_F_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: RT.rep_pl_pl_VarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_F(o, v), s)
+law ProgressiveComplexTestStruct_set_f_G_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: RT.rep_l10_ProgressiveSingleFieldContainerTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))))))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(o, v), s)
+law ProgressiveComplexTestStruct_set_f_H_rep:
+  for -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct
+  for +s: S.Schema
+  for -v: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq
+  for +r: RT.rep_ProgressiveComplexTestStruct(o, s)
+  for +rv: RT.rep_pl_ProgressiveVarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))))))))
+  RT.rep_ProgressiveComplexTestStruct(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_H(o, v), s)
+law ProgressiveTestStruct_set_f_A_rep:
+  for -o: ProgressiveTestStruct_d.ProgressiveTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveTestStruct(o, s)
+  for +rv: PG.rep_pl1(v, SH.Chain_head(SH.Container_fields(s)))
+  RT.rep_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_A(o, v), s)
+law ProgressiveTestStruct_set_f_B_rep:
+  for -o: ProgressiveTestStruct_d.ProgressiveTestStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveTestStruct(o, s)
+  for +rv: PG.rep_pl8(v, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))
+  RT.rep_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_B(o, v), s)
+law ProgressiveTestStruct_set_f_C_rep:
+  for -o: ProgressiveTestStruct_d.ProgressiveTestStruct
+  for +s: S.Schema
+  for -v: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq
+  for +r: RT.rep_ProgressiveTestStruct(o, s)
+  for +rv: RT.rep_pl_SmallTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))
+  RT.rep_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_C(o, v), s)
+law ProgressiveTestStruct_set_f_D_rep:
+  for -o: ProgressiveTestStruct_d.ProgressiveTestStruct
+  for +s: S.Schema
+  for -v: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq
+  for +r: RT.rep_ProgressiveTestStruct(o, s)
+  for +rv: RT.rep_pl_pl_VarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))
+  RT.rep_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_D(o, v), s)
+law BitsStruct_set_f_A_rep:
+  for -o: BitsStruct_d.BitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_BitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Container_fields(s)))
+  RT.rep_BitsStruct(BitsStruct_d.BitsStruct_set_f_A(o, v), s)
+law BitsStruct_set_f_B_rep:
+  for -o: BitsStruct_d.BitsStruct
+  for +s: S.Schema
+  for +v: bitvector_2_d.Bitvector2
+  for +r: RT.rep_BitsStruct(o, s)
+  for +rv: RN.rp_bv2(v)
+  RT.rep_BitsStruct(BitsStruct_d.BitsStruct_set_f_B(o, v), s)
+law BitsStruct_set_f_C_rep:
+  for -o: BitsStruct_d.BitsStruct
+  for +s: S.Schema
+  for +v: bitvector_1_d.Bitvector1
+  for +r: RT.rep_BitsStruct(o, s)
+  for +rv: RN.rp_bv1(v)
+  RT.rep_BitsStruct(BitsStruct_d.BitsStruct_set_f_C(o, v), s)
+law BitsStruct_set_f_D_rep:
+  for -o: BitsStruct_d.BitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_BitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))
+  RT.rep_BitsStruct(BitsStruct_d.BitsStruct_set_f_D(o, v), s)
+law BitsStruct_set_f_E_rep:
+  for -o: BitsStruct_d.BitsStruct
+  for +s: S.Schema
+  for +v: bitvector_8_d.Bitvector8
+  for +r: RT.rep_BitsStruct(o, s)
+  for +rv: RN.rp_bv8(v)
+  RT.rep_BitsStruct(BitsStruct_d.BitsStruct_set_f_E(o, v), s)
+law ProgressiveBitsStruct_set_f_A_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for +v: bitvector_256_d.Bitvector256
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, v), s)
+law ProgressiveBitsStruct_set_f_B_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, v), s)
+law ProgressiveBitsStruct_set_f_C_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, v), s)
+law ProgressiveBitsStruct_set_f_D_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for +v: bitvector_257_d.Bitvector257
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: RN.rp_bv257(v)
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, v), s)
+law ProgressiveBitsStruct_set_f_E_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, v), s)
+law ProgressiveBitsStruct_set_f_F_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, v), s)
+law ProgressiveBitsStruct_set_f_G_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: WBV.rep_bvb(v, 1280n)
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, v), s)
+law ProgressiveBitsStruct_set_f_H_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, v), s)
+law ProgressiveBitsStruct_set_f_I_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, v), s)
+law ProgressiveBitsStruct_set_f_J_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: WBV.rep_bvb(v, 1281n)
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, v), s)
+law ProgressiveBitsStruct_set_f_K_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: BO.rep_bits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, v), s)
+law ProgressiveBitsStruct_set_f_L_rep:
+  for -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct
+  for +s: S.Schema
+  for -v: O.Bits
+  for +r: RT.rep_ProgressiveBitsStruct(o, s)
+  for +rv: PBO.rep_pbits(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))
+  RT.rep_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, v), s)
 

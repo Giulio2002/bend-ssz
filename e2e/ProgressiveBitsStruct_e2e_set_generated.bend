@@ -1,10 +1,19 @@
 import Base
+import ../src/model.bend as API
+import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../src/digest.bend as D
 import ../src/obj.bend as O
+import ../proofs/obj/pbits_obj_light.bend as PBO
+import ../proofs/obj/prep_setters_g2.bend as PS
 import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as ProgressiveBitsStruct_h
+import ./ProgressiveBitsStruct_e2e_root_generated.bend as R
 import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/wbits_obj_light.bend as WBV
 import ../types/bitvector_256_def_generated.bend as bitvector_256_d
@@ -26,6 +35,11 @@ def ProgressiveBitsStruct_e2e_set_f_A_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_A_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_256_d.Bitvector256, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 0n, RN.v_bv256(w))) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_A_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w), PS.ProgressiveBitsStruct_set_f_A_rep(o, Spec.ProgressiveBitsStruct(), w, r))
+
 def ProgressiveBitsStruct_e2e_set_f_B_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 1n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:
@@ -35,6 +49,11 @@ def ProgressiveBitsStruct_e2e_set_f_B_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_B_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 1n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_B_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_B(o, w), PS.ProgressiveBitsStruct_set_f_B_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
 
 def ProgressiveBitsStruct_e2e_set_f_C_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 2n, S.BitsValue{BO.bview(w)}) : S.Value}:
@@ -46,6 +65,11 @@ def ProgressiveBitsStruct_e2e_set_f_C_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_C_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 2n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_C_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_C(o, w), PS.ProgressiveBitsStruct_set_f_C_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
+
 def ProgressiveBitsStruct_e2e_set_f_D_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_257_d.Bitvector257)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 3n, RN.v_bv257(w)) : S.Value}:
   match o:
@@ -55,6 +79,11 @@ def ProgressiveBitsStruct_e2e_set_f_D_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_D_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_257_d.Bitvector257, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: RN.rp_bv257(w))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 3n, RN.v_bv257(w))) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_D_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(o, w), PS.ProgressiveBitsStruct_set_f_D_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
 
 def ProgressiveBitsStruct_e2e_set_f_E_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 4n, S.BitsValue{BO.bview(w)}) : S.Value}:
@@ -66,6 +95,11 @@ def ProgressiveBitsStruct_e2e_set_f_E_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_E_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 4n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_E_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_E(o, w), PS.ProgressiveBitsStruct_set_f_E_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
+
 def ProgressiveBitsStruct_e2e_set_f_F_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 5n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:
@@ -75,6 +109,11 @@ def ProgressiveBitsStruct_e2e_set_f_F_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_F_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 5n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_F_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_F(o, w), PS.ProgressiveBitsStruct_set_f_F_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
 
 def ProgressiveBitsStruct_e2e_set_f_G_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 6n, S.BitsValue{WBV.wbits(w, 1280n)}) : S.Value}:
@@ -86,6 +125,11 @@ def ProgressiveBitsStruct_e2e_set_f_G_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_G_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: WBV.rep_bvb(w, 1280n))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 6n, S.BitsValue{WBV.wbits(w, 1280n)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_G_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_G(o, w), PS.ProgressiveBitsStruct_set_f_G_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
+
 def ProgressiveBitsStruct_e2e_set_f_H_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 7n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:
@@ -95,6 +139,11 @@ def ProgressiveBitsStruct_e2e_set_f_H_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_H_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 7n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_H_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_H(o, w), PS.ProgressiveBitsStruct_set_f_H_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
 
 def ProgressiveBitsStruct_e2e_set_f_I_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 8n, S.BitsValue{BO.bview(w)}) : S.Value}:
@@ -106,6 +155,11 @@ def ProgressiveBitsStruct_e2e_set_f_I_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_I_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 8n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_I_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_I(o, w), PS.ProgressiveBitsStruct_set_f_I_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
+
 def ProgressiveBitsStruct_e2e_set_f_J_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 9n, S.BitsValue{WBV.wbits(w, 1281n)}) : S.Value}:
   match o:
@@ -115,6 +169,11 @@ def ProgressiveBitsStruct_e2e_set_f_J_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_J_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Words, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: WBV.rep_bvb(w, 1281n))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 9n, S.BitsValue{WBV.wbits(w, 1281n)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_J_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_J(o, w), PS.ProgressiveBitsStruct_set_f_J_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
 
 def ProgressiveBitsStruct_e2e_set_f_K_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 10n, S.BitsValue{BO.bview(w)}) : S.Value}:
@@ -126,6 +185,11 @@ def ProgressiveBitsStruct_e2e_set_f_K_view(o: ProgressiveBitsStruct_d.Progressiv
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
 
+def ProgressiveBitsStruct_e2e_set_f_K_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct()))))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 10n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_K_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_K(o, w), PS.ProgressiveBitsStruct_set_f_K_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))
+
 def ProgressiveBitsStruct_e2e_set_f_L_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 11n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:
@@ -135,3 +199,8 @@ def ProgressiveBitsStruct_e2e_set_f_L_view(o: ProgressiveBitsStruct_d.Progressiv
           match g1:
             case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{x8, x9, x10, x11}:
               {==}
+
+def ProgressiveBitsStruct_e2e_set_f_L_root(h: B.Buf, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, w: O.Bits, +r: RT_L.rep_ProgressiveBitsStruct(o, Spec.ProgressiveBitsStruct()), +rv: PBO.rep_pbits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ProgressiveBitsStruct())))))))))))))))
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 11n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %ProgressiveBitsStruct_e2e_set_f_L_view(o, w) : {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w)))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ProgressiveBitsStruct_e2e_root(h, ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_L(o, w), PS.ProgressiveBitsStruct_set_f_L_rep(o, Spec.ProgressiveBitsStruct(), w, r, rv))

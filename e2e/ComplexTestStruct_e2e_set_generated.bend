@@ -1,9 +1,20 @@
 import Base
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../proofs/obj/blist_obj_light.bend as BLI
 import ../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
+import ../types/ComplexTestStruct_hashtreeroot_generated.bend as ComplexTestStruct_h
+import ../src/digest.bend as D
+import ../proofs/obj/list_obj_light.bend as LO
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
+import ../proofs/obj/prep_setters_g1.bend as PS
+import ./ComplexTestStruct_e2e_root_generated.bend as R
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/root_gtypes_light.bend as RT_L
 import ../types/schema.bend as S
+import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../proofs/obj/words_obj_light.bend as WO
@@ -16,27 +27,116 @@ import ../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
 # proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+def ComplexTestStruct_set_f_A_flag_case(b: Bool, -o: ComplexTestStruct_d.ComplexTestStruct, -w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_A(b, o, w)) == b : Bool}:
+  match b:
+    case True{}: {==}
+    case False{}: {==}
+
+def ComplexTestStruct_e2e_set_f_A_flag(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w)) == U32.is_le(w, 65535) : Bool}:
+  ComplexTestStruct_set_f_A_flag_case(U32.is_le(w, 65535), o, w)
+
+def ComplexTestStruct_e2e_set_f_A_rejected(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == False{} : Bool}) -> {ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}:
+  %Equal.sym(Bool, U32.is_le(w, 65535), False{}, hg) : {ComplexTestStruct_d.ComplexTestStruct_put_f_A(_, o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}
+  {==}
+
+def ComplexTestStruct_e2e_set_f_A_view_go(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32)
+    -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+  match o:
+    case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
+
+def ComplexTestStruct_e2e_set_f_A_view(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool})
+    -> {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w)) : S.Value}:
+  %Equal.sym(Bool, U32.is_le(w, 65535), True{}, hg) : {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_A(_, o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w)) : S.Value}
+  ComplexTestStruct_e2e_set_f_A_view_go(o, w)
+
+def ComplexTestStruct_set_f_A_rep(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u16(w))
+    -> RT_L.rep_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w)), Spec.ComplexTestStruct()):
+  %Equal.sym(Bool, U32.is_le(w, 65535), True{}, hg) : RT_L.rep_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_A(_, o, w)), Spec.ComplexTestStruct())
+  PS.ComplexTestStruct_set_f_A_go_rep(o, Spec.ComplexTestStruct(), w, r, rv)
+
+def ComplexTestStruct_e2e_set_f_A_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 65535) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u16(w))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 0n, RN.v_u16(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_A_view(o, w, hg) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_A(o, w)), ComplexTestStruct_set_f_A_rep(o, w, hg, r, rv))
+
 def ComplexTestStruct_e2e_set_f_B_view(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 1n, PB.vview2(w)) : S.Value}:
   match o:
     case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
+
+def ComplexTestStruct_e2e_set_f_B_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_B_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w), PS.ComplexTestStruct_set_f_B_rep(o, Spec.ComplexTestStruct(), w, r, rv))
+
+def ComplexTestStruct_set_f_C_flag_case(b: Bool, -o: ComplexTestStruct_d.ComplexTestStruct, -w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_C(b, o, w)) == b : Bool}:
+  match b:
+    case True{}: {==}
+    case False{}: {==}
+
+def ComplexTestStruct_e2e_set_f_C_flag(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w)) == U32.is_le(w, 255) : Bool}:
+  ComplexTestStruct_set_f_C_flag_case(U32.is_le(w, 255), o, w)
+
+def ComplexTestStruct_e2e_set_f_C_rejected(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == False{} : Bool}) -> {ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}:
+  %Equal.sym(Bool, U32.is_le(w, 255), False{}, hg) : {ComplexTestStruct_d.ComplexTestStruct_put_f_C(_, o, w) == (o, False{}) : ComplexTestStruct_d.ComplexTestStruct & Bool}
+  {==}
+
+def ComplexTestStruct_e2e_set_f_C_view_go(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32)
+    -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+  match o:
+    case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
+
+def ComplexTestStruct_e2e_set_f_C_view(o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool})
+    -> {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w)) : S.Value}:
+  %Equal.sym(Bool, U32.is_le(w, 255), True{}, hg) : {RT_L.v_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_C(_, o, w))) == VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w)) : S.Value}
+  ComplexTestStruct_e2e_set_f_C_view_go(o, w)
+
+def ComplexTestStruct_set_f_C_rep(-o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u8(w))
+    -> RT_L.rep_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w)), Spec.ComplexTestStruct()):
+  %Equal.sym(Bool, U32.is_le(w, 255), True{}, hg) : RT_L.rep_ComplexTestStruct(Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_C(_, o, w)), Spec.ComplexTestStruct())
+  PS.ComplexTestStruct_set_f_C_go_rep(o, Spec.ComplexTestStruct(), w, r, rv)
+
+def ComplexTestStruct_e2e_set_f_C_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, +w: U32, +hg: {U32.is_le(w, 255) == True{} : Bool}, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RN.rp_u8(w))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 2n, RN.v_u8(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_C_view(o, w, hg) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w))))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, Pair.fst(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_set_f_C(o, w)), ComplexTestStruct_set_f_C_rep(o, w, hg, r, rv))
 
 def ComplexTestStruct_e2e_set_f_D_view(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 3n, S.BytesValue{WO.wview(w)}) : S.Value}:
   match o:
     case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
 
+def ComplexTestStruct_e2e_set_f_D_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: LO.rep_bl(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 3n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_D_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w), PS.ComplexTestStruct_set_f_D_rep(o, Spec.ComplexTestStruct(), w, r, rv))
+
 def ComplexTestStruct_e2e_set_f_E_view(o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w)) : S.Value}:
   match o:
     case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
+
+def ComplexTestStruct_e2e_set_f_E_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_E_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w), PS.ComplexTestStruct_set_f_E_rep(o, Spec.ComplexTestStruct(), w, r, rv))
 
 def ComplexTestStruct_e2e_set_f_F_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w)) : S.Value}:
   match o:
     case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
 
+def ComplexTestStruct_e2e_set_f_F_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v4_FixedTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_F_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w), PS.ComplexTestStruct_set_f_F_rep(o, Spec.ComplexTestStruct(), w, r, rv))
+
 def ComplexTestStruct_e2e_set_f_G_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w)) : S.Value}:
   match o:
     case ComplexTestStruct_d.ComplexTestStruct{+x0, x1, +x2, x3, x4, x5, x6}: {==}
+
+def ComplexTestStruct_e2e_set_f_G_root(h: B.Buf, o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v2_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))))))
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_G_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w), PS.ComplexTestStruct_set_f_G_rep(o, Spec.ComplexTestStruct(), w, r, rv))

@@ -280,13 +280,15 @@ constructors, not by the decoder (that the decoder's output meets the premises i
 `e2e/<Name>_e2e_set_generated.bend` states, for every field setter, that the view of the changed
 object is the old view with that field's value replaced (`proofs/obj/value_set.bend`'s
 `field_set`); this law has no premise. Composed with the root bridge it gives the spec root of the
-changed value (<!-- fig:set_root_count -->265<!-- /fig --> statements): with no further premise where the root bridge
+changed value (<!-- fig:set_root_count -->315<!-- /fig --> statements): with no further premise where the root bridge
 takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters.bend`
 (a setter keeps `rep`, given the new value's own invariant for fields that have one). The same for
-the encoding (<!-- fig:set_encode_count -->107<!-- /fig --> statements) where the encode bridge takes only the object or
+the encoding (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the encode bridge takes only the object or
 `rep`; elsewhere it also needs storage premises (`hs*`, `hc*`, section 1) of the changed object,
-and no law states that a setter keeps them. Generic containers whose root bridge takes `rp_*`, or a
-`rep` with no setter law, have the spec-value law but no root composition.
+and no law states that a setter keeps them. Where the root bridge takes `rp_*` (a generic Data
+container's range invariants), the set file proves that the setter keeps it. A range-checked setter
+(generic `uint8` / `uint16` fields) is stated under its guard, with the new value's range invariant
+(`rp_u8` / `rp_u16`) as a premise of the root and encode compositions.
 
 The collection read-back laws (`proofs/obj/coll_api_*.bend`) are stated for storage `thaw(t)`, `t`
 a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and `Array.set` keeps);
