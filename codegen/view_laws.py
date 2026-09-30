@@ -3,7 +3,7 @@
 
 The spec value of a packed list or vector (the `Sequence` of its items, the view the root and encode bridges state against)
 is built from the word list of its storage, element i from the K words of block i. When the runtime writes one element
-(K words at word K*J, the chain of F.array__upd that proofs/obj/coll_words.bend calls <kind>_write, words_win.bend's tk) the
+(K words at word K*J, the chain of F.array__upd that proofs/obj/coll_<kind>.bend (coll_b32, coll_b48, coll_u64) calls <kind>_write, words_win.bend's tk) the
 view is the old view with item J replaced by the view of the new element (value_set.bend's items_set):
 
     view_set(c, d, t, x0..x{K-1}, J, q, hq: q == BASE(J), hb: q + K <= 2^d, pf)

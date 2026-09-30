@@ -34,7 +34,7 @@ depth d < 32 (proofs/compact/found.bend's array laws):
 
 and, for the packed collections whose elements are whole aligned words (Bytes32, Bytes48, uint64
 elements in O.Words storage thaw(t), t a perfect tree of words of depth d < 32), through
-proofs/obj/words_rw.bend and the generated proofs/obj/coll_words.bend:
+proofs/obj/words_rw.bend and the generated proofs/obj/coll_<kind>.bend (coll_b32, coll_b48, coll_u64):
 
     read_set         get(set(o, i, v), i) returns v (its W words start at word q = (i * K) / 4,
                      K its bytes, and end below 2^d)
@@ -344,7 +344,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
         return 0
     kind = kind[0]
     _p, _a, _w, rfn, ctor, W = ELEMS[kind]
-    imps['CW'] = os.path.relpath(CW, ROOT)
+    cw_imps(imps)
     imps['WR'] = 'proofs/obj/words_rw.bend'
     xs = ['x%d' % k for k in range(W)]
     V = '%s{%s}' % (ET, ', '.join(xs))
@@ -379,6 +379,12 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s == %s : U32}' % (WRITE, OBJ(TW), kind, largs, LENX('_'), LEN))
     w('  {==}')
     nl = 2
+    # an accepted set is the written storage
+    w('def %s_api_set_eq(%s)\n    -> {Pair.fst(O.Words, Bool, %s) == %s : O.Words}:' % (c, prem, SET, OBJ(TW)))
+    w('  %%Equal.sym(Bool, %s, True{}, hs) : {Pair.fst(O.Words, Bool, %s) == %s : O.Words}' % (GS, PUT, OBJ(TW)))
+    w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {_ == %s : O.Words}' % (WRITE, OBJ(TW), kind, largs, OBJ(TW)))
+    w('  {==}')
+    nl += 1
     nl += view_set_law(w, I, c, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS, imps)
     # set, then get another element (its words disjoint from the written ones: after, or before)
     PJ = '(j * %s : U32)' % K
@@ -535,7 +541,7 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
     assert at[2].strip() == 'O.words_slice(o, (i * %s : U32), %s)' % (K, K), at
     W = int(K) // 4
     imps['WR'] = 'proofs/obj/words_rw.bend'
-    imps['CW'] = os.path.relpath(CW, ROOT)
+    cw_imps(imps)
     imps['CR'] = 'proofs/obj/cell_rw.bend'
     imps['B'] = 'src/buffer.bend'
     KW, WN = '%dn' % (W - 1), '%dn' % W
@@ -722,7 +728,36 @@ ELEMS = {
     'b48': ('types/FuluBytes48_def_generated.bend', 'FuluBytes48_d', 'Bytes48_into_words', 'Bytes48_of_words', 'Bytes48', 12),
     'u64': ('src/obj.bend', 'O', 'words_write_u64', 'words_u64_at', 'U64', 2),
 }
-CW = OBJ / 'coll_words.bend'
+CZ = OBJ / 'coll_zeros.bend'   # B.zeros(d) is Array.new(U32, d, 0) (the append that reallocates)
+
+
+def CWK(kind):
+    """the file of an element kind's write / read / read-write lemmas (Bytes32, Bytes48, uint64): one file each, so a
+    collection file imports only the kinds it uses"""
+    return OBJ / ('coll_%s.bend' % kind)
+
+
+def cw_imps(imps):
+    imps['CZ'] = os.path.relpath(CZ, ROOT)
+    for k in ELEMS:
+        imps['CW_' + k] = os.path.relpath(CWK(k), ROOT)
+
+
+def retarget(text):
+    """the lemmas are written CW.<kind>_<name> and CW.zeros_new: point them at their files"""
+    text = re.sub(r'\bCW\.(%s)_' % '|'.join(ELEMS), r'CW_\1.\1_', text)
+    return re.sub(r'\bCW\.zeros_new', 'CZ.zeros_new', text)
+
+
+def prune_cw(text):
+    """drop the imports of the CZ / CW_<kind> modules the text does not use"""
+    out = []
+    for l in text.split('\n'):
+        m = re.match(r'import (\S+) as (CZ|CW_\w+)$', l)
+        if m and not re.search(r'(?<![\w.])%s\.' % m.group(2), text):
+            continue
+        out.append(l)
+    return '\n'.join(out)
 
 
 def def_of(text, name):
@@ -905,8 +940,10 @@ def zeros_chain():
         L.append('def zc_%d(+t: Bool, +d: U32, +et: {U32.is_eq(d, %d) == t : Bool}) -> {B.zeros_c%d(t, d) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}:' % (k, k, k))
         L.append('  match t:')
         L.append('    case True{}:')
-        L.append('      %%WR.u32_eq_nat(d, %d, et) : {Array.new(U32, _, 0) == Array.new(U32, U32.to_nat(d), 0) : Array<U32>}' % k)
-        L.append('      {==}')
+        # through B.zeros_d<k>() = Array.new(U32, <k>n, 0): comparing the closed depth-k array with a differently written
+        # one makes the checker unfold it (2^k nodes), so the link to the literal is one delta step
+        L.append('      Equal.trans(Array<U32>, B.zeros_c%d(True{}, d), B.zeros_d%d(), Array.new(U32, U32.to_nat(d), 0), {==},' % (k, k))
+        L.append('        Equal.cong(Nat, Array<U32>, z => Array.new(U32, z, 0), %dn, U32.to_nat(d), Equal.sym(Nat, U32.to_nat(d), %dn, WR.u32_eq_nat(d, %d, et))))' % (k, k, k))
         if k == ks[-1]:
             L.append('    case False{}: {==}')
         else:
@@ -919,16 +956,20 @@ def zeros_chain():
 
 
 def coll_words():
-    head = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/buffer.bend as B', 'import ../compact/found.bend as F', 'import ./words_rw.bend as WR']
+    """{file: text}: coll_zeros.bend (zeros_new) and one file per element kind (K_write, K_read, K_rw, K_other_after, K_other_before)"""
+    doc = ['# Per element kind of the packed collections whose elements are whole aligned words (Bytes32,',
+           '# Bytes48, uint64): writing the element at byte position p (q = p / 4 its first word, the W words',
+           '# below 2^d) is updating slots q .. q + W - 1 of the storage tree (K_write), reading it returns',
+           '# those slots (K_read), and so reading the written tree returns the element written (K_rw).', '']
+    outs = {CZ: '\n'.join(['import Base', 'import ../../src/buffer.bend as B', 'import ./words_rw.bend as WR', '', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_zeros)'),
+                           '# B.zeros(d) is Array.new(U32, d, 0) for every d: the new storage of an append that reallocates is a perfect tree of zeros.', '']) + zeros_chain() + '\n'}
     for kind, (path, al, *_r) in ELEMS.items():
+        head = ['import Base', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F', 'import ./words_rw.bend as WR']
         if al != 'O':
             head.append('import %s as %s' % (rel(path), al))
-    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_words)'),
-             '# Per element kind of the packed collections whose elements are whole aligned words (Bytes32,',
-             '# Bytes48, uint64): writing the element at byte position p (q = p / 4 its first word, the W words',
-             '# below 2^d) is updating slots q .. q + W - 1 of the storage tree (K_write), reading it returns',
-             '# those slots (K_read), and so reading the written tree returns the element written (K_rw).', '']
-    return '\n'.join(head) + zeros_chain() + '\n' + '\n'.join(elem_lemmas(k)[0] for k in ELEMS)
+        head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_%s)' % kind)] + doc
+        outs[CWK(kind)] = '\n'.join(head) + '\n' + elem_lemmas(kind)[0] + '\n'
+    return outs
 
 
 # ---- the boxed lists (Array<O.Boxed<X>>, Type-kind elements): read-back through proofs/obj/tarray.bend ----
@@ -1252,7 +1293,7 @@ def coll_bits(cs):
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
             n += 1
             GW = grow_parts(NBY, NBY)
-            imps['CW'] = os.path.relpath(CW, ROOT)
+            cw_imps(imps)
             imps['B'] = 'src/buffer.bend'
             emit('read_append_grow', N1, 'n', '+ha: {%s == True{} : Bool}, %s, ' % (I['GA'], GW['prem']),
                  'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
@@ -1571,7 +1612,7 @@ def coll_bytes(cs):
             L.append('  %s(d, t, n, %s, %s, q, v, hv, hq, hk, pf, hp, hnb)' % (fina, NB, PA))
             n += 1
             GW = grow_parts('n', NB)
-            imps['CW'] = os.path.relpath(CW, ROOT)
+            cw_imps(imps)
             imps['B'] = 'src/buffer.bend'
             emit('read_append_grow', NB, LN, '+ha: {%s == True{} : Bool}, %s, ' % (GA, GW['prem']),
                  ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
@@ -1602,16 +1643,16 @@ def rel(p):
 
 def outputs():
     cs = collections()
-    outs, total = {CW: coll_words()}, 0
+    outs, total = dict(coll_words()), 0
     if (OBJ / 'tarray.bend').exists():   # the array-list laws need tarray.bend (rigid-checker only, branch agent/solid3-rigid)
         bt, bn = coll_seq(cs)
         outs[CB] = bt
         total += bn
     bt, bn = coll_bits(cs)
-    outs[CBITS] = bt
+    outs[CBITS] = prune_cw(retarget(bt))
     total += bn
     bt, bn, pre = coll_bytes(cs)
-    outs[CBYTES] = bt
+    outs[CBYTES] = prune_cw(retarget(bt))
     outs[OBJ / 'byte_bits.bend'] = pre
     total += bn
     for k in range(0, len(cs), PER_FILE):
@@ -1621,7 +1662,7 @@ def outputs():
             txt, m = laws(info(c), imps)
             parts.append(txt)
             total += m
-        body = '\n'.join(parts)
+        body = retarget('\n'.join(parts))
         used = [a for a in imps if re.search(r'(?<![\w.])%s\.' % re.escape(a), body)]
         head = ['import Base'] + ['import %s as %s' % (rel(imps[a]), a) for a in used]
         head += ['', HEADER,
