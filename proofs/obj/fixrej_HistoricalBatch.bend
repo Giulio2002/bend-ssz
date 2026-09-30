@@ -21,7 +21,7 @@ def HistoricalBatch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluHistoricalBatch
 def HistoricalBatch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluHistoricalBatch_r.HistoricalBatch_ok(buf, off, len) == (buf, U32.is_eq(len, 524288)) : B.Buf & Bool}:
   HistoricalBatch_okb(buf, off, U32.is_eq(len, 524288))
 def HistoricalBatch_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.HistoricalBatch())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.HistoricalBatch(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.HistoricalBatch()), VRF.SZ(Spec.HistoricalBatch()), bs, Codec.parts(v, Spec.HistoricalBatch()), DS.facts(v, Spec.HistoricalBatch(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(Spec.HistoricalBatch()), VRF.SZ(Spec.HistoricalBatch()), bs, Codec.parts(v, Spec.HistoricalBatch()), DS.facts(v, Spec.HistoricalBatch(), {==}), VRF.some_sz(SS.fixed_size(Spec.HistoricalBatch()), {==}), e, hn)
 def HistoricalBatch_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.HistoricalBatch())) == False{} : Bool}) -> Decoding.outside_image(Spec.HistoricalBatch(), bs):
   v => e => HistoricalBatch_rj(bs, hn, v, e)
 

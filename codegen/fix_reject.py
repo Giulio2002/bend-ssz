@@ -63,6 +63,16 @@ def SZm(+m: Maybe<&2, Nat>) -> Nat:
     case Some{n}: n
     case None{}: 0n
 def SZ(+s: S.Schema) -> Nat: SZm(SS.fixed_size(s))
+def SOMEm(+m: Maybe<&2, Nat>) -> Bool:
+  match m:
+    case Some{n}: True{}
+    case None{}: False{}
+# m is Some{SZm(m)} once it is known to be a Some: the width premise of lo for a schema whose size is
+# only named (VRF.SZ), without comparing two evaluations of the size (a closed Nat, in unary).
+def some_sz(+m: Maybe<&2, Nat>, +h: {SOMEm(m) == True{} : Bool}) -> {m == Some{SZm(m)} : Maybe<&2, Nat>}:
+  match m:
+    case Some{n}: {==}
+    case None{}: Empty.absurd({None{} == Some{SZm(None{})} : Maybe<&2, Nat>}, FD.logic__false_true(h))
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.
@@ -112,6 +122,7 @@ def chunk_text(tag, rows, solo=False):
     for X, _, P, N in rows:
         s = f'{SCH}.{X}()'
         NN = f'VRF.SZ({s})' if solo else f'{N}n'
+        HW = f'VRF.some_sz(SS.fixed_size({s}), {{==}})' if solo else '{==}'
         L.append(f'''# ---- {X} ({N} bytes; validator T.{P}_ok) ----
 def {X}_okb(buf: B.Buf, +off: U32, +b: Bool) -> {{T.{P}_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}}:
   match b:
@@ -120,7 +131,7 @@ def {X}_okb(buf: B.Buf, +off: U32, +b: Bool) -> {{T.{P}_ok_len(b, buf, off) == (
 def {X}_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {{T.{P}_ok(buf, off, len) == (buf, U32.is_eq(len, {N})) : B.Buf & Bool}}:
   {X}_okb(buf, off, U32.is_eq(len, {N}))
 def {X}_rj(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {NN}) == False{{}} : Bool}}, +v: S.Value, e: Decoding.decodes({s}, bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size({s}), {NN}, bs, Codec.parts(v, {s}), DS.facts(v, {s}, {{==}}), {{==}}, e, hn)
+  VRF.lo(SS.fixed_size({s}), {NN}, bs, Codec.parts(v, {s}), DS.facts(v, {s}, {{==}}), {HW}, e, hn)
 def {X}_decode_reject(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {NN}) == False{{}} : Bool}}) -> Decoding.outside_image({s}, bs):
   v => e => {X}_rj(bs, hn, v, e)
 ''')

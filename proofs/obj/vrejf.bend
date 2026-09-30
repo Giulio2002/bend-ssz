@@ -31,6 +31,16 @@ def SZm(+m: Maybe<&2, Nat>) -> Nat:
     case Some{n}: n
     case None{}: 0n
 def SZ(+s: S.Schema) -> Nat: SZm(SS.fixed_size(s))
+def SOMEm(+m: Maybe<&2, Nat>) -> Bool:
+  match m:
+    case Some{n}: True{}
+    case None{}: False{}
+# m is Some{SZm(m)} once it is known to be a Some: the width premise of lo for a schema whose size is
+# only named (VRF.SZ), without comparing two evaluations of the size (a closed Nat, in unary).
+def some_sz(+m: Maybe<&2, Nat>, +h: {SOMEm(m) == True{} : Bool}) -> {m == Some{SZm(m)} : Maybe<&2, Nat>}:
+  match m:
+    case Some{n}: {==}
+    case None{}: Empty.absurd({None{} == Some{SZm(None{})} : Maybe<&2, Nat>}, FD.logic__false_true(h))
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.

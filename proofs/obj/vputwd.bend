@@ -832,7 +832,7 @@ def mb1bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
   match b1 b2:
     case True{} _: FD.nat__zero_le(Nat.sub(U32.to_nat(n), 3n))
     case False{} True{}:
-    +ha = VB.add_nw(n, 1, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(1n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(1n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 1, 1n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(1n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(1n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 1)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 1), 4), Nat.is_lt(U32.to_nat(U32.add(n, 1)), 4n), VR.lt_u32(U32.add(n, 1), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 1), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 1), 4)), Nat.sub(U32.to_nat(U32.add(n, 1)), 4n), Nat.sub(U32.to_nat(n), 3n), es,
@@ -845,7 +845,7 @@ def mb1bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
       FD.nat__le_trans(A.quad(U32.to_nat(U32.sub(VC.nwu(n), 1))), A.quad(U32.to_nat(U32.shrn(U32.sub(U32.add(n, 1), 4), 2n))), Nat.sub(U32.to_nat(n), 3n),
         UW.quad_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 1), 4), 2n)), FD.nat__lt_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 1), 4), 2n)), hlt)), hsh)
     case False{} False{}:
-    +ha = VB.add_nw(n, 1, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(1n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(1n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 1, 1n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(1n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(1n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 1)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 1), 4), Nat.is_lt(U32.to_nat(U32.add(n, 1)), 4n), VR.lt_u32(U32.add(n, 1), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 1), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 1), 4)), Nat.sub(U32.to_nat(U32.add(n, 1)), 4n), Nat.sub(U32.to_nat(n), 3n), es,
@@ -979,7 +979,7 @@ def mb2bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
   match b1 b2:
     case True{} _: FD.nat__zero_le(Nat.sub(U32.to_nat(n), 2n))
     case False{} True{}:
-    +ha = VB.add_nw(n, 2, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(2n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(2n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 2, 2n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(2n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(2n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 2)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 2), 4), Nat.is_lt(U32.to_nat(U32.add(n, 2)), 4n), VR.lt_u32(U32.add(n, 2), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 2), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 2), 4)), Nat.sub(U32.to_nat(U32.add(n, 2)), 4n), Nat.sub(U32.to_nat(n), 2n), es,
@@ -992,7 +992,7 @@ def mb2bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
       FD.nat__le_trans(A.quad(U32.to_nat(U32.sub(VC.nwu(n), 1))), A.quad(U32.to_nat(U32.shrn(U32.sub(U32.add(n, 2), 4), 2n))), Nat.sub(U32.to_nat(n), 2n),
         UW.quad_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 2), 4), 2n)), FD.nat__lt_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 2), 4), 2n)), hlt)), hsh)
     case False{} False{}:
-    +ha = VB.add_nw(n, 2, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(2n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(2n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 2, 2n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(2n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(2n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 2)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 2), 4), Nat.is_lt(U32.to_nat(U32.add(n, 2)), 4n), VR.lt_u32(U32.add(n, 2), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 2), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 2), 4)), Nat.sub(U32.to_nat(U32.add(n, 2)), 4n), Nat.sub(U32.to_nat(n), 2n), es,
@@ -1126,7 +1126,7 @@ def mb3bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
   match b1 b2:
     case True{} _: FD.nat__zero_le(Nat.sub(U32.to_nat(n), 1n))
     case False{} True{}:
-    +ha = VB.add_nw(n, 3, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(3n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(3n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 3, 3n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(3n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(3n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 3)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 3), 4), Nat.is_lt(U32.to_nat(U32.add(n, 3)), 4n), VR.lt_u32(U32.add(n, 3), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 3), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 3), 4)), Nat.sub(U32.to_nat(U32.add(n, 3)), 4n), Nat.sub(U32.to_nat(n), 1n), es,
@@ -1139,7 +1139,7 @@ def mb3bU(+b1: Bool, +b2: Bool, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB
       FD.nat__le_trans(A.quad(U32.to_nat(U32.sub(VC.nwu(n), 1))), A.quad(U32.to_nat(U32.shrn(U32.sub(U32.add(n, 3), 4), 2n))), Nat.sub(U32.to_nat(n), 1n),
         UW.quad_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 3), 4), 2n)), FD.nat__lt_le(U32.to_nat(U32.sub(VC.nwu(n), 1)), U32.to_nat(U32.shrn(U32.sub(U32.add(n, 3), 4), 2n)), hlt)), hsh)
     case False{} False{}:
-    +ha = VB.add_nw(n, 3, U32.to_nat(n), {==}, FD.nat__le_trans(Nat.add(3n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(3n, 31n, U32.to_nat(n), {==}), hy))
+    +ha = VB.add_nwk(n, 3, 3n, U32.to_nat(n), {==}, {==}, FD.nat__le_trans(Nat.add(3n, U32.to_nat(n)), VC.YL(n), U32.to_nat(VB.UMAX()), Order.add_right(3n, 31n, U32.to_nat(n), {==}), hy))
     +h4 = FD.nat__not_lt_le(U32.to_nat(U32.add(n, 3)), 4n, FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(U32.add(n, 3), 4), Nat.is_lt(U32.to_nat(U32.add(n, 3)), 4n), VR.lt_u32(U32.add(n, 3), 4), eb1))
     +es = FD.u32__sub_nat(U32.add(n, 3), 4, h4)
     +e4 = Equal.trans(Nat, U32.to_nat(U32.sub(U32.add(n, 3), 4)), Nat.sub(U32.to_nat(U32.add(n, 3)), 4n), Nat.sub(U32.to_nat(n), 1n), es,

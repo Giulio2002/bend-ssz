@@ -21,7 +21,7 @@ def SyncCommittee_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSyncCommittee_r.S
 def SyncCommittee_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSyncCommittee_r.SyncCommittee_ok(buf, off, len) == (buf, U32.is_eq(len, 24624)) : B.Buf & Bool}:
   SyncCommittee_okb(buf, off, U32.is_eq(len, 24624))
 def SyncCommittee_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.SyncCommittee())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SyncCommittee(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.SyncCommittee()), VRF.SZ(Spec.SyncCommittee()), bs, Codec.parts(v, Spec.SyncCommittee()), DS.facts(v, Spec.SyncCommittee(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(Spec.SyncCommittee()), VRF.SZ(Spec.SyncCommittee()), bs, Codec.parts(v, Spec.SyncCommittee()), DS.facts(v, Spec.SyncCommittee(), {==}), VRF.some_sz(SS.fixed_size(Spec.SyncCommittee()), {==}), e, hn)
 def SyncCommittee_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.SyncCommittee())) == False{} : Bool}) -> Decoding.outside_image(Spec.SyncCommittee(), bs):
   v => e => SyncCommittee_rj(bs, hn, v, e)
 

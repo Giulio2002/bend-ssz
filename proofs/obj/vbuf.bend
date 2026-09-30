@@ -693,6 +693,13 @@ def add_nw(+a: U32, +c: U32, +i: Nat, +ea: {U32.to_nat(a) == i : Nat},
   %Equal.sym(Nat, U32.to_nat(a), i, ea) : {Nat.add(_, U32.to_nat(c)) == Nat.add(U32.to_nat(c), i) : Nat}
   F.nat__add_comm(i, U32.to_nat(c))
 
+# add_nw with the addend's value k given as a Nat (c + i <= UMAX spelled with k): the hypothesis
+# is moved to to_nat(c) inside a subst motive, so no conversion meets the closed UMAX in unary.
+def add_nwk(+a: U32, +c: U32, +k: Nat, +i: Nat, +ea: {U32.to_nat(a) == i : Nat}, +ek: {U32.to_nat(c) == k : Nat},
+    +h: {Nat.is_le(Nat.add(k, i), U32.to_nat(UMAX())) == True{} : Bool})
+    -> {U32.to_nat(U32.add(a, c)) == Nat.add(U32.to_nat(c), i) : Nat}:
+  add_nw(a, c, i, ea, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, i), U32.to_nat(UMAX())) == True{} : Bool}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ek), h))
+
 # Every U32 is below 2^32 (spelled F.spec_common__pow2(32n): a closed power is only compared syntactically).
 def u32_lt(+x: U32) -> {Nat.is_lt(U32.to_nat(x), F.spec_common__pow2(32n)) == True{} : Bool}:
   match x:

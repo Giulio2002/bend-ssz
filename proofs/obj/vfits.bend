@@ -183,4 +183,5 @@ def fits_lt(w, x, h):
 
 # The four-byte size bound for every x < 2^32 (every U32 value).
 def fits4lt(+x: Nat, +h: {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
-  fits_lt(4n, x, h)
+  fits_lt(4n, x, F.logic__subst(Nat, z => {Nat.is_lt(x, z) == True{} : Bool}, F.spec_common__pow2(32n), F.spec_common__pow2(D3(4n)),
+    Equal.cong(Nat, Nat, k => F.spec_common__pow2(k), 32n, D3(4n), {==}), h))
