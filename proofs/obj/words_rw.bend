@@ -67,6 +67,29 @@ def word_thaw(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +j: U32, +k: Nat,
   %Equal.sym(Nat, U32.to_nat(j), k, ek) : {(O.Words{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), _)) == (O.Words{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), k)) : O.Words & U32}
   {==}
 
+# the same two laws for bit storage O.Bits{thaw(t), n} (its words are read and written the same way)
+def bsetw_thaw(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +j: U32, +k: Nat, +x: U32,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +ek: {U32.to_nat(j) == k : Nat}, +hk: {Nat.is_lt(k, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {O.bits_setw(O.Bits{F.array__thaw(U32, t), n}, j, x) == O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, k, x)), n} : O.Bits}:
+  +hj = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(d)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ek), hk)
+  %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, t), j, x), F.array__thaw(U32, F.array__upd(U32, d, t, U32.to_nat(j), x)),
+      F.array__set(U32, d, t, j, x, at(F.array__slots(U32, t), U32.to_nat(j)), hd, hj, nth_at(F.array__slots(U32, t), U32.to_nat(j), slots_lt(d, t, U32.to_nat(j), hj, pf)), pf)) :
+    {O.Bits{_, n} == O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, k, x)), n} : O.Bits}
+  %Equal.sym(Nat, U32.to_nat(j), k, ek) : {O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, _, x)), n} == O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, k, x)), n} : O.Bits}
+  {==}
+
+def bword_thaw(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +j: U32, +k: Nat,
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +ek: {U32.to_nat(j) == k : Nat}, +hk: {Nat.is_lt(k, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {O.bits_word(O.Bits{F.array__thaw(U32, t), n}, j) == (O.Bits{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), k)) : O.Bits & U32}:
+  +hj = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(d)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ek), hk)
+  %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), j), (F.array__thaw(U32, t), at(F.array__slots(U32, t), U32.to_nat(j))),
+      F.array__get(U32, d, t, j, at(F.array__slots(U32, t), U32.to_nat(j)), hd, hj, nth_at(F.array__slots(U32, t), U32.to_nat(j), slots_lt(d, t, U32.to_nat(j), hj, pf)), pf)) :
+    {O.rewrap_b(n, _) == (O.Bits{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), k)) : O.Bits & U32}
+  %Equal.sym(Nat, U32.to_nat(j), k, ek) : {(O.Bits{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), _)) == (O.Bits{F.array__thaw(U32, t), n}, at(F.array__slots(U32, t), k)) : O.Bits & U32}
+  {==}
+
 def at_upd_same(+d: Nat, +t: F.array__Tree<U32>, +k: Nat, +x: U32, +hk: {Nat.is_lt(k, F.spec_common__pow2(d)) == True{} : Bool},
     +pf: {F.array__perfect(U32, d, t) == True{} : Bool}) -> {at(F.array__slots(U32, F.array__upd(U32, d, t, k, x)), k) == x : U32}:
   %Equal.sym(List<&2, U32>, F.array__slots(U32, F.array__upd(U32, d, t, k, x)), F.spec_common__update(U32, F.array__slots(U32, t), k, x), F.array__upd_slots(U32, d, t, k, x, hk, pf)) :
