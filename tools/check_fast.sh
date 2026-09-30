@@ -101,7 +101,7 @@ cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-CHECK_FAST_FILES=$FILES python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
+CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
 # a full run records its stamp in the tree: benchmarks/evidence/check_fast.json
 [ -z "$FILES" ] && cp "$OUT/stamp.json" benchmarks/evidence/check_fast.json
 bad=$(awk -F'\t' '$2 != 0 || $3 == 0 {print $1}' "$OUT/summary.tsv")

@@ -31,6 +31,19 @@ Trusted (not proved here):
   reports all 19 as relying on unsafe or foreign code. #1075 compares syntactically identical terms before
   normalizing them; without it, some closed facts (limits of 2^30 bytes and above) would be
   evaluated in unary and not finish. Soundness of the result rests on this checker.
+- **The checker's logic has `Type : Type`.** The pinned checker accepts `def tt() -> Type: Type`
+  and `tt2(Type)` for `def tt2(T: Type) -> Type: T` (probe run on the ssz server, 2026-09-30:
+  "All terms check."). A type theory with `Type : Type` is inconsistent in principle (Girard's
+  paradox, in Hurkens' short form): some closed term of any type, `Empty` included, exists. The
+  checker's other restrictions make the naive encodings fail (an independent probe found that
+  Data cannot hold functions, Type values cannot be copied, and non-structural and mutual recursion
+  are rejected), but no consistency argument for the logic exists. Nothing in this repository
+  constructs such a term on purpose: the proofs use `Type` only as the type of type parameters
+  (`-A: Type`, motives `P: A -> Type`), and every `Empty` they build comes from a contradictory
+  equality (`logic__false_true` on `{False == True}`) or a structural case. So "checks" means
+  "checks in the pinned checker's logic", which has no consistency proof; a reader must trust that
+  none of the generated proofs is a disguised paradox, which review of the generators and of the
+  proof style supports but does not prove.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of

@@ -18,9 +18,13 @@ What is frozen, and how it is hashed:
   - memory_bench/law-statements.json must hold exactly END_TO_END.bend's law blocks, verbatim;
   - types/fulu_model.bend (the typed Fulu model and index END_TO_END's per-name laws use) and
     proofs/obj/generic_specs.bend (the schemas of the 131 generic names), whole;
-  - statement_defs: per file, the sha256 of every definition a bridge statement (e2e/manifest.json)
-    reaches outside src/, types/, spec/ and vendor/ (the views, rep invariants and their helpers),
-    and of each bridge file's statements themselves (signatures: hypotheses and conclusion).
+  - statement_defs: per file, the sha256 of every definition an end-to-end statement reaches outside
+    src/, types/, spec/ and vendor/ (the views, rep invariants and their helpers, e2e/e2e_comp.bend's
+    droot), and of each statement file's statements themselves (signatures: hypotheses and
+    conclusion). The statement files are codegen/statements.py's statement_files(): the bridges of
+    e2e/manifest.json, the composed theorems e2e/*_e2e_comp_generated.bend and the witnesses
+    e2e/*_e2e_witness_generated.bend, found by name, so a new composed or witness file fails this
+    check until it is locked (--update).
 
 tools/check_fast.sh runs this check before checking anything. The lock's own sha256 is printed
 by --update; it is not written in README. The full check's stamp records it
@@ -135,14 +139,14 @@ LOC = re.compile(r'(?<![\w.])([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)')
 def statement_defs():
     """{file: sha256} over every definition, outside the boundary (src/, types/, spec/, vendor/,
     END_TO_END.bend: the implementation under test, and what is locked whole), that a bridge
-    statement of e2e/manifest.json reaches: its file-local defs and the imported defs they name,
+    statement (codegen/statements.py statement_files()) reaches: its file-local defs and the imported defs they name,
     transitively. A change to any of them changes what a bridge statement says."""
     sys.path.insert(0, os.path.join(ROOT, 'codegen'))
     import statements as ST
-    man = json.load(open(os.path.join(ROOT, 'e2e/manifest.json')))
+    sf = ST.statement_files()
     seen, todo, stmts = set(), [], {}
-    for f in sorted(man['files']):
-        laws = [l for e in man['files'][f] for l in e['laws']]
+    for f in sorted(sf):
+        laws = sf[f]
         path = 'e2e/' + f
         imps_, local, stm = ST.file_statements(Path_(path), laws)
         todo.append((path, '\n'.join(local + stm), set(laws)))

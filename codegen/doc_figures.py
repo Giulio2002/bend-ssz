@@ -11,6 +11,9 @@ naming the file and key, when a doc differs, or a key is unknown). Sources:
   proofs/gate/MISSING.txt    the core (name, law) pairs with no proving law (codegen/api_gate.py)
   e2e/manifest.json          the bridges, their premises and input bounds (codegen/e2e_bridge.py)
   proofs/api/                the facades (codegen/api_facade.py)
+  e2e/COMPOSED.txt           the composed decode;encode / decode;root theorems (codegen/e2e_compose.py)
+  benchmarks/evidence/check_fast.json   the recorded full check (tools/check_fast.sh): its size and timings,
+                             so a new stamp makes this check fail until the docs are regenerated
 
 So a doc cannot claim more coverage than the artifacts show: a regenerated artifact with other
 figures makes this check (part of regen_all --check) fail until the docs are regenerated.
@@ -21,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md']
+DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md', 'docs/BUILD.md']
 FIG = re.compile(r'<!-- fig:([a-z0-9_]+) -->(.*?)<!-- /fig -->', re.S)
 BRIDGE = {'e2e_encode': 'i', 'e2e_decode_accept': 'ii', 'e2e_decode_view': 'ii',
           'e2e_decode_reject': 'iii', 'e2e_root': 'iv'}
@@ -141,6 +144,17 @@ def figures():
     wit = sorted(p.name[:-len('_e2e_witness_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_witness_generated.bend'))
     f['witness_count'] = str(len(wit))
     f['witness_names'] = names_list(wit)
+    # the recorded full check (tools/check_fast.sh's stamp)
+    st = json.loads((ROOT / 'benchmarks/evidence/check_fast.json').read_text())
+    tot = st.get('totals', {})
+    f['check_umbrellas'] = str(st.get('plan_umbrellas', len(st.get('umbrellas', []))))
+    f['check_files'] = f"{st.get('files', 0):,}"
+    f['check_cpu'] = f"{round(tot.get('cpu_seconds', 0)):,}"
+    slow = tot.get('slowest_umbrella_seconds') or max([u.get('seconds') or 0 for u in st.get('umbrellas', [])] or [0])
+    f['check_slowest'] = f'{round(slow)}'
+    wall = tot.get('wall_seconds')
+    f['check_wall'] = f'{wall / 60:.1f}' if wall else f'at least {slow / 60:.1f}'
+    f['check_commit'] = st.get('commit', 'unknown')[:8]
     f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
     return f
 

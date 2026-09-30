@@ -211,7 +211,7 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
   ProgressiveBitsStruct, ProgressiveComplexTestStruct, ProgressiveSingleListContainerTestStruct and
   ProgressiveVarTestStruct: `hPB: PBQ(t, n) == True`, every progressive-bit-list field `[O, E)`
   inside the input has `E - O <= 2^29`.
-- **`hN` for FuluSyncCommittee / FuluSignedContributionAndProof (root and encode)**: the
+- **`hN` for FuluSyncCommittee (encode only)**: the
   pubkeys' length 24576 (`rep` fixes only the element count), with `hc`, the pubkeys' storage at
   depth 13.
 
