@@ -300,4 +300,9 @@ without (`hfull`, `_read_append_grow`), where the new depth `D2` (from `B.words_
 (`hd2`) and the words copied (`(nbytes + 3) / 4`) fit in both the old and the new tree (`b1`, `b2`);
 both assume that the old length is below the new one (`hw` / `hg`); the other-index law of the Data lists is stated over a perfect element tree in the same way, and
 that of the boxed lists over a perfect storage array (`TA.tperf(d, arr)`, what `Array.new` builds and
-`Array.set` keeps) with both indices below `2^d`.
+`Array.set` keeps) with both indices below `2^d`. The read-back of the list of 2048-byte cells
+(`l4096_b2048_api_read_set`, `_read_set_word`) takes the cell as `O.Words{thaw(tv), 2048}`, `tv` a perfect
+tree of depth `dv < 32` with at least 512 words (`hv`), and the storage as above with the cell's 512
+words at `q .. q + 511` below `2^d` (`hr`); it states the cell read back as the tree the slice builds,
+and that each of its words `m <= 511` is word `m` of `tv` (not that the two trees are equal: past
+word 511 the slice leaves zeros, and `tv` may hold anything there).
