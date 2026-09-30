@@ -227,3 +227,13 @@ table above. They are dropped when the encode laws take dw < 32.
 
 `word_storage` covers <!-- fig:word_storage -->44<!-- /fig --> `vec_uint{32,64,128,256}_N` forms; awaiting their
 (ii)/(iii) bridge: <!-- fig:word_storage_awaiting -->none<!-- /fig -->.
+
+## 8. Non-vacuity of the encode premises
+
+For the <!-- fig:witness_count -->13<!-- /fig --> names whose encode (i) bridge carries premises beyond `rep`
+(<!-- fig:witness_names -->FuluBeaconBlock, FuluBeaconBlockBody, FuluBeaconState, FuluDataColumnSidecar, FuluExecutionPayload, FuluExecutionPayloadHeader, FuluExecutionRequests, FuluLightClientBootstrap, FuluLightClientFinalityUpdate, FuluLightClientHeader, FuluLightClientOptimisticUpdate, FuluLightClientUpdate, FuluSignedBeaconBlock<!-- /fig -->),
+`e2e/<Name>_e2e_witness_generated.bend` (`codegen/e2e_witness.py`) applies the bridge to the object API's
+default object `<X>_default()`. Each premise is proved of that object in its own def, `premise_<binder>`,
+and `<Name>_e2e_witness` is the bridge's conclusion for it. So each of these premise sets is jointly
+satisfiable, and each bridge's conclusion holds of at least one object. The large zero arrays of FuluBeaconState
+(2^16 to 2^21 bytes) go through lemmas that keep their sizes symbolic (`e2e/e2e_wit.bend`).

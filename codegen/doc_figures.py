@@ -138,6 +138,9 @@ def figures():
     hv = man['decoded_premises']['hv_SDB']['names']
     f['hv_decoded_count'] = str(len(hv))
     f['hv_decoded'] = names_list(hv)
+    wit = sorted(p.name[:-len('_e2e_witness_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_witness_generated.bend'))
+    f['witness_count'] = str(len(wit))
+    f['witness_names'] = names_list(wit)
     return f
 
 
