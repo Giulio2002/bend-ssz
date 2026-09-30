@@ -176,19 +176,34 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     oa = W.split_top(OBJ[OBJ.index('(') + 1:-1])
     txt = DR.PROVERS[name](law_files())
     EXTRA[E2E / f'{name}_e2e_decrep_generated.bend'] = txt
+    # the decrep synthesis resets the alias table: restore this file's own aliases
+    W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
+    W.PREFER[(E2E / 'e2e_cap.bend').resolve()] = 'CAP'
+    if name in DR.WINDOW:   # the window reader's own form: no closed window start in any type a premise is compared with
+        _wx = (ROOT / 'proofs' / 'obj' / ('var_winx_' + name[4:] + '.bend')).resolve()
+        W.PREFER[_wx] = 'WX'   # the decrep synthesis leaves DC on the window module; the codec's DC stays the codec's
+        OBJ = f"{ctx.alias(_wx)}.OBJw({oa[0]}, {oa[1]}, 0n, 0, {oa[2]})"
     DRA = ctx.alias(E2E / f'{name}_e2e_decrep_generated.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
     omode = [m_ for m_, b, _ in eps if b == 'o'][0]
+    if name in DR.WINDOW:
+        oa = oa[:2] + ['0n', '0'] + oa[2:]
+        _BA, _CA, _FDA, _DBn = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend'), ctx.alias(ROOT / 'proofs/compact/found.bend'), ctx.alias(ROOT / 'proofs/obj/vbuf.bend')
+        oa = oa + [f'{DB}.pfe(bs, n)', f'{_FDA}.nat__le_lt_trans({_BA}.capacity(n), 30n, 31n, {_CA}.capM_le(n, hS), {{==}})', '{==}', f'{_CA}.capM_q(n, hS)',
+                   f'{_FDA}.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, {_DBn}.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat({_DBn}.NMAX())), {_DBn}.le_u32n(n, {_DBn}.NMAX()), hS)']
     xa = ''
     if name in DR.BUF_ARGS:
-        W.PREFER[(E2E / 'e2e_cap.bend').resolve()] = 'CAP'   # the decrep synthesis resets PREFER; C is e2e_comp
-        W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
         BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
         xa = f', {BA}.capacity(n), {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
-    call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + xa + ', hS, ec)'
+    hv_ = ''
+    if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly (the runtime's limit)
+        hyps = hyps + [('+', 'h31', DR.HEAVY[name].replace('VB.', ctx.alias(ROOT / 'proofs/obj/vbuf.bend') + '.'))]
+        hv_ = ', h31'
+    call = lambda b: f'{DRA}.p_{b}(' + ', '.join(oa) + xa + hv_ + ', hS, ec)'
     ea = ''.join(f', {call(b)}' for _, b, _ in eps if b != 'o')
     ra = ''.join(f', {call(b)}' for _, b, _ in rps if b not in ('o', 'h'))
     hp = ''.join(f', {m_}{b}: {t}' for m_, b, t in hyps)
+    ha = ''.join(f', {b}' for _, b, _ in hyps)
     dect = f'dec: {{{DEC} == Some{{o}} : {MT}}}'
     ecT = f'{{{CHK} == c : Bool}}'
     ACC = f'{DB}.d_acc(bs, n, hn, hd, hS, ec)'
@@ -207,20 +222,20 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
             f'def ge(+bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect}, +c: Bool, +ec: {ecT}) -> {{{X} == bs : +List<U32>}}:\n'
             f'  match c:\n    case True{{}}:\n'
             f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{{sub_o(X, "_")} == bs : +List<U32>}}\n'
-            f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}, hn, hd, hS, {ACC}), {EB}.{name}_e2e_encode({OBJ}{ea}))\n'
+            f'      C.dec_enc({SPEC}, bs, {VO}, {XO}, acc(bs, n, {OBJ}{ha}, {ACC}), {EB}.{name}_e2e_encode({OBJ}{ea}))\n'
             f'    case False{{}}:\n      Empty.absurd({{{X} == bs : +List<U32>}}, {none})', '',
             f'def gr(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect}, +c: Bool, +ec: {ecT})\n'
             f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n'
             f'  match c:\n    case True{{}}:\n'
             f'      %Equal.sym({OT}, o, {OBJ}, {eqo}) :\n        {{Some{{{sub_o(R, "_")}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}\n'
-            f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}, hn, hd, hS, {ACC}), {RB}.{name}_e2e_root(h, {OBJ}{ra}))\n'
+            f'      C.dec_root({SPEC}, bs, {VO}, {RO}, acc(bs, n, {OBJ}{ha}, {ACC}), {RB}.{name}_e2e_root(h, {OBJ}{ra}))\n'
             f'    case False{{}}:\n      Empty.absurd({{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}, {none})', '',
             f'# (i) after (ii): the decoded object re-encodes to exactly the input bytes',
             f'def {name}_e2e_decode_encode(+bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect})\n'
-            f'    -> {{{X} == bs : +List<U32>}}:\n  ge(bs, n, o, hn, hd, hS, dec, {CHK}, {{==}})', '',
+            f'    -> {{{X} == bs : +List<U32>}}:\n  ge(bs, n, o{ha}, dec, {CHK}, {{==}})', '',
             f'# (iv) after (ii): the decoded object\'s root is the spec root of the value deserialize gives for the input bytes',
             f'def {name}_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, {omode}o: {OT}{hp}, {dect})\n'
-            f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n  gr(h, bs, n, o, hn, hd, hS, dec, {CHK}, {{==}})', '']
+            f'    -> {{Some{{{R}}} == C.droot({SPEC}, bs) : Maybe<&2, +List<U32>>}}:\n  gr(h, bs, n, o{ha}, dec, {CHK}, {{==}})', '']
     return finish(ctx, body), None
 
 
