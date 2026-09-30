@@ -18,13 +18,22 @@ What is frozen, and how it is hashed:
   - memory_bench/law-statements.json must hold exactly END_TO_END.bend's law blocks, verbatim;
   - types/fulu_model.bend (the typed Fulu model and index END_TO_END's per-name laws use) and
     proofs/obj/generic_specs.bend (the schemas of the 131 generic names), whole;
-  - statement_defs: per file, the sha256 of every definition an end-to-end statement reaches outside
-    src/, types/, spec/ and vendor/ (the views, rep invariants and their helpers, e2e/e2e_comp.bend's
-    droot), and of each statement file's statements themselves (signatures: hypotheses and
-    conclusion). The statement files are codegen/statements.py's statement_files(): the bridges of
-    e2e/manifest.json, the composed theorems e2e/*_e2e_comp_generated.bend and the witnesses
-    e2e/*_e2e_witness_generated.bend, found by name, so a new composed or witness file fails this
-    check until it is locked (--update).
+  - statement_defs: per file, the sha256 of every definition an end-to-end statement reaches,
+    transitively, on the premise and the conclusion side (the views, rep invariants and their
+    helpers, e2e/e2e_comp.bend's droot, and in src/ and types/ the helpers a statement names, such
+    as B.fill_at, B.alloc, D.bytes, O.e8, the object types, and every def they reach), and of each
+    statement file's statements themselves (signatures: hypotheses and conclusion). Not hashed: what
+    is locked whole (above) and the implementation under test (SUBJECT: the generated per-name
+    encoder, decoder and root, and the model API src/model.bend), which the proofs pin down. PLANTED
+    changes (a premise-side src/ def, a def reached only transitively, an object type, and the
+    encoder as the negative case) are run first on every invocation. The getters and setters in
+    types/*_def_generated.bend that the object-mutation laws are about are hashed with the object
+    types (they share the file), so changing one is a deliberate lock update. The statement files
+    are codegen/statements.py's statement_files(): the bridges of e2e/manifest.json, the composed
+    theorems e2e/*_e2e_comp_generated.bend, the witnesses e2e/*_e2e_witness_generated.bend, the
+    setter compositions e2e/*_e2e_set_generated.bend and the object-mutation laws
+    (proofs/obj/fields_*, collections_*, prep_setters.bend), found by name, so a new statement file
+    fails this check until it is locked (--update).
 
 tools/check_fast.sh runs this check before checking anything. The lock's own sha256 is printed
 by --update; it is not written in README. The full check's stamp records it
@@ -112,15 +121,39 @@ def sha(b):
 
 
 # ---- the definitions the bridge statements depend on ----
-BOUNDARY = ('src/', 'types/', 'spec/', 'vendor/', 'END_TO_END.bend')
+# Locked whole elsewhere (whole_files(), END_TO_END's statements), so not traversed:
+WHOLE = ('spec/', 'vendor/', 'END_TO_END.bend')
+# The implementation under test: what the statements are proved about. A change to these is what
+# the proofs re-establish, so they are neither hashed nor traversed: the generated per-name
+# encoder, decoder and root (pinned by the bridges) and the model API src/model.bend (pinned by
+# END_TO_END's frozen laws).
+SUBJECT = re.compile(r'^(src/model\.bend|types/\w+_(encode_ssz|decode_ssz|hashtreeroot)_generated\.bend)$')
 _mods = {}
+_override = {}  # path -> text, for the planted-change self-test only
+
+
+def boundary(path):
+    # the whole-locked types/ files (types/schema.bend, types/fulu_model.bend, ...) are not
+    # traversed; proofs/obj/generic_specs.bend, locked whole too, still is (as before)
+    return (path.startswith(WHOLE) or bool(SUBJECT.match(path))
+            or (path in _whole_set() and path.startswith(('src/', 'types/'))))
+
+
+_ws = []
+
+
+def _whole_set():
+    if not _ws:
+        _ws.append(set(whole_files()))
+    return _ws[0]
 
 
 def module(path):
     """(imports {alias: path}, defs {name: block text}) of a .bend file (comments dropped)"""
     if path not in _mods:
         imps, defs = {}, {}
-        for b in blocks(open(os.path.join(ROOT, path)).read()):
+        text = _override[path] if path in _override else open(os.path.join(ROOT, path)).read()
+        for b in blocks(text):
             m = re.match(r'import (\S+) as (\w+)', b[0])
             if m:
                 imps[m.group(2)] = os.path.normpath(os.path.join(os.path.dirname(path), m.group(1)))
@@ -136,18 +169,24 @@ REF = re.compile(r'(?<![\w.])([A-Za-z_]\w*)\.([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)')
 LOC = re.compile(r'(?<![\w.])([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)')
 
 
-def statement_defs():
-    """{file: sha256} over every definition, outside the boundary (src/, types/, spec/, vendor/,
-    END_TO_END.bend: the implementation under test, and what is locked whole), that a bridge
-    statement (codegen/statements.py statement_files()) reaches: its file-local defs and the imported defs they name,
-    transitively. A change to any of them changes what a bridge statement says."""
+def statement_defs(only=None):
+    """{file: sha256} over every definition that a statement (codegen/statements.py
+    statement_files()) reaches: its file-local defs and the imported defs they name, transitively,
+    on the premise side and the conclusion side alike, in proofs/ and e2e/ and in src/ and types/
+    (the buffer, digest and object helpers a statement names, B.fill_at, B.alloc, D.bytes, O.e8,
+    the object types of types/*_def_generated.bend, and every def those reach). Not traversed: what
+    is locked whole (spec/, vendor/, END_TO_END.bend, whole_files()) and the implementation under
+    test (SUBJECT). A change to any hashed def changes what a statement says. `only` restricts
+    the statement files (the self-test)."""
     sys.path.insert(0, os.path.join(ROOT, 'codegen'))
     import statements as ST
     sf = ST.statement_files()
+    if only is not None:
+        sf = {f: sf[f] for f in only}
     seen, todo, stmts = set(), [], {}
     for f in sorted(sf):
         laws = sf[f]
-        path = 'e2e/' + f
+        path = f
         imps_, local, stm = ST.file_statements(Path_(path), laws)
         todo.append((path, '\n'.join(local + stm), set(laws)))
         stmts[path] = '\n'.join(stm)
@@ -165,7 +204,7 @@ def statement_defs():
             if m.group(1) in defs and m.group(1) not in skip:
                 refs.append((path, m.group(1)))
         for tgt, name in refs:
-            if tgt.startswith(BOUNDARY) or (tgt, name) in seen:
+            if boundary(tgt) or (tgt, name) in seen:
                 continue
             if not os.path.exists(os.path.join(ROOT, tgt)):
                 continue
@@ -183,6 +222,48 @@ def statement_defs():
     return {f: sha('\n'.join(v).encode()) for f, v in per.items()}
 
 
+# Planted changes: (statement file, module, def, replacement block, must the hash change?).
+# A premise-side src/ def (O.e8 in a Branch encode bridge's `cap` premise), a def reached only
+# transitively through a conclusion-side src/ def (B.fill_go, through B.fill_at in a decode
+# statement), an object type in types/*_def_generated.bend, and, as the negative case, the
+# implementation under test (the encoder), whose change the proofs re-establish.
+PLANTED = [
+    ('e2e/FuluExecutionBranch_e2e_generated.bend', 'src/obj.bend', 'e8',
+     'def e8(+i: Nat) -> Nat: 0n', True),
+    ('e2e/FuluCheckpoint_e2e_dec_generated.bend', 'src/buffer.bend', 'fill_go',
+     'def fill_go(xs: +List<U32>, ws: Array<U32>, +i: U32) -> Array<U32>: ws', True),
+    ('e2e/FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_def_generated.bend', 'Checkpoint',
+     'type Checkpoint is Data:\n  Checkpoint{epoch: O.U64}', True),
+    ('e2e/FuluCheckpoint_e2e_generated.bend', 'types/FuluCheckpoint_encode_ssz_generated.bend',
+     'Checkpoint_encode', 'def Checkpoint_encode(o: C.Checkpoint) -> Nat: 0n', False),
+]
+
+
+def self_test():
+    for f, path, name, repl, must in PLANTED:
+        _mods.clear()
+        _override.clear()
+        base = statement_defs([f])
+        if name not in module(path)[1]:
+            sys.exit('verify_frozen: self-test: %s has no def %s (update PLANTED)' % (path, name))
+        text = open(os.path.join(ROOT, path)).read()
+        blk = [b for b in blocks(text) if re.match(r'(?:def|law|type) %s\b' % re.escape(name), b[0])][0]
+        lines = text.split('\n')
+        i = lines.index(blk[0])
+        j = i + 1
+        while j < len(lines) and (not lines[j].strip() or lines[j][0] in ' \t'):
+            j += 1
+        _override[path] = '\n'.join(lines[:i] + [repl, ''] + lines[j:])
+        _mods.clear()
+        got = statement_defs([f])
+        _override.clear()
+        _mods.clear()
+        if (got != base) != must:
+            sys.exit('verify_frozen: self-test FAILED: planting %s.%s %s the hash of %s' % (
+                path, name, 'did not change' if must else 'changed', f))
+    return len(PLANTED)
+
+
 def Path_(p):
     from pathlib import Path
     return Path(ROOT) / p
@@ -195,6 +276,7 @@ def compute():
 
 
 def main():
+    planted = self_test()
     cur = compute()
     bad = []
     e2e = law_blocks(open(os.path.join(ROOT, 'END_TO_END.bend')).read())
@@ -217,6 +299,8 @@ def main():
     if bad:
         print('verify_frozen: MISMATCH against frozen.lock.json:\n  ' + '\n  '.join(bad))
         sys.exit(1)
+    print('verify_frozen: %d planted changes ok; %d files, %d statement roots, %d statement_defs files match'
+          % (planted, len(cur['files']), len(cur['statements']), len(cur['statement_defs'])))
 
 
 if __name__ == '__main__':

@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->cb437375<!-- /fig -->):
-<!-- fig:check_umbrellas -->40<!-- /fig --> umbrellas over <!-- fig:check_files -->5,688<!-- /fig --> files,
-<!-- fig:check_cpu -->3,020<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.1<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->285<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->2da67db8<!-- /fig -->):
+<!-- fig:check_umbrellas -->40<!-- /fig --> umbrellas over <!-- fig:check_files -->5,686<!-- /fig --> files,
+<!-- fig:check_cpu -->3,399<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.9<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->334<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -65,7 +65,8 @@ default the ssz server's `/srv/ssz-optimization/toolchain-2.0.28`) and the SHA-2
 `CHECK_TIME <seconds> <peak KB>` line. Before any run, `tools/verify_pins.py` compares the
 checker's files, Bun and the package with the lock's sha256s and refuses a mismatch (exit 3).
 `check_fast.sh` also runs `tools/verify_frozen.py` first: the spec, the four roots' statements, and
-the bridge statements with the definitions they reach must match `frozen.lock.json`. A deliberate
+the bridge statements with the definitions they reach (in `src/` and `types/` too, except the
+implementation under test) must match `frozen.lock.json`. A deliberate
 statement change is recorded with `python3 tools/verify_frozen.py --update` in the same commit. It
 then runs `tools/verify_no_escapes.py`, and at the end writes `DIR/stamp.json`
 (`tools/check_stamp.py`: commit, checker commit, the sha256 of both locks, of every checked

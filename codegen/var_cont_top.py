@@ -1165,6 +1165,8 @@ def main():
     out = RR.rewire_out(out)
     out.update(okw_sizes(out))
     out.update(okw_tops(out))
+    import retired  # modules nothing imports: not written (codegen/retired.py)
+    out = retired.drop(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:
