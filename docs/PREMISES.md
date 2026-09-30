@@ -31,6 +31,33 @@ section 6). For them the pipeline bytes -> decode -> hash_tree_root (or -> encod
 the laws only through that gap; the official vectors (295 ssz_static cases: decode, byte-exact
 re-encode, root) are the evidence for it today.
 
+**The validating serializer.** `X_serialize` is the public encoder: it encodes a valid object and
+refuses an invalid one (`X_valid`, generated with the encoder). For the <!-- fig:ser_count -->98<!-- /fig --> names whose
+object is plain `Data` (the integers, byte vectors, bit vectors, the fixed-size Fulu containers and
+the small test structs), `e2e/<Name>_e2e_ser_generated.bend` (`codegen/serialize_e2e.py`) states, with
+no premise but validity:
+
+- `<Name>_e2e_serialize(o, v: X_valid(o) == True)`: the serializer's bytes are exactly END_TO_END's
+  `serialize` of the object's value (the conclusion of `<Name>_e2e_encode`);
+- `<Name>_e2e_serialize_ok`: `X_serialize(o) == O.encoded(X_encode(o))`;
+- `<Name>_e2e_serialize_refused(o, v: X_valid(o) == False)`: `X_serialize(o) == O.refused()`.
+
+The encode bridge's own premise (none, `e`, or `rp`) is derived from `X_valid(o) == True` (`X_ser_prem`
+in the same file, with the lemmas of `e2e/e2e_valid.bend`): `u8_valid`/`u16_valid` give `rp_u8`/`rp_u16`
+and a container's `Bool.and` of them gives its `rp`; a bit vector's `is_lt(last word, 2^r)` gives the
+last-word shape `e`. The refused laws are vacuous for a name whose `X_valid` is `True` for every object.
+
+**Why validity does not give `rep` for the other 142 names** (bit lists, packed vectors,
+progressive lists, the variable-size containers). `rep_X`, `hs*`, `hc*`, `sd*` assert that the
+object's word storage is `thaw(T)` of a perfect tree of depth below 31 (`WO.wf1`, `BL.sdb`,
+`E3.at_depth`, ...). `X_valid` (`O.words_ok`, `O.bits_ok`, `O.bools_ok`, the checked writers) only
+checks lengths, capacity and bit or byte ranges: it says nothing about the shape or depth of the
+tree, and no lemma turns an arbitrary `Array<U32>` back into a tree (there is no `thaw(freeze(a)) == a`).
+So `X_valid(o) = True` implies `rep_X` for those names only together with the fact that the object came
+from the API (a decoder or a checked setter), which is a property of how objects are produced, not of the
+predicate. Their serializer statements keep `rep` and the storage premises as explicit hypotheses beside
+validity (see below).
+
 ## Premises per name
 
 Every hypothesis of every bridge statement beyond the object (`o`, `rep`) or the input (`bs`,
