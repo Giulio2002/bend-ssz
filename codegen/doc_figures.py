@@ -141,6 +141,7 @@ def figures():
     wit = sorted(p.name[:-len('_e2e_witness_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_witness_generated.bend'))
     f['witness_count'] = str(len(wit))
     f['witness_names'] = names_list(wit)
+    f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
     return f
 
 

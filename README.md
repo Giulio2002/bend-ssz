@@ -7,10 +7,12 @@ refused; 5 of the 136 are the fork's own `boolean` / `uint8` / `uint32` / `uint6
 hash_tree_root, field and element access), and machine-checked proofs relating it to an independent
 transcription of the SSZ specification (`spec/`). The guarantee a user relies on is: the
 end-to-end bridges (`e2e/`, statements in `e2e/STATEMENTS.txt`) composed with the laws of
-END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). In particular,
-it is not yet proved that the object a decoder returns satisfies the encode and root bridges'
-representation premises (PREMISES section 1), so decode followed by encode or hash_tree_root is
-not yet one checked statement.
+END_TO_END.bend, under the premises listed in [docs/PREMISES.md](docs/PREMISES.md). For
+<!-- fig:composed -->74<!-- /fig --> names, decode followed by encode (the input bytes back) and decode
+followed by hash_tree_root (the spec root of the deserialized value) are single checked statements
+(`e2e/<Name>_e2e_comp_generated.bend`, list in `e2e/COMPOSED.txt`). For the others it is not yet proved
+that the decoded object satisfies the encode and root bridges' representation premises (PREMISES
+section 1).
 
 ## What is proved
 
