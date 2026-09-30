@@ -45,6 +45,16 @@ def some_sz(+m: Maybe<&2, Nat>, +h: {SOMEm(m) == True{} : Bool}) -> {m == Some{S
 # SZ(s) and SZm(SS.fixed_size(s)) meet without evaluating either).
 def some_szs(+s: S.Schema, +h: {SOMEm(SS.fixed_size(s)) == True{} : Bool}) -> {SS.fixed_size(s) == Some{SZ(s)} : Maybe<&2, Nat>}:
   some_sz(SS.fixed_size(s), h)
+# m is Some{k} for a literal k, from evaluating SZIS (the checker's machine loops over the unary size
+# without recursing), never by a conversion that would recurse once per unit of k (near the stack limit).
+def SZIS(+m: Maybe<&2, Nat>, +k: Nat) -> Bool:
+  match m:
+    case Some{n}: Nat.is_eq(n, k)
+    case None{}: False{}
+def some_is(+m: Maybe<&2, Nat>, +k: Nat, +h: {SZIS(m, k) == True{} : Bool}) -> {m == Some{k} : Maybe<&2, Nat>}:
+  match m:
+    case Some{n}: Equal.cong(Nat, Maybe<&2, Nat>, z => Some{z}, n, k, FD.nat__eq_from_is_eq(n, k, h))
+    case None{}: Empty.absurd({None{} == Some{k} : Maybe<&2, Nat>}, FD.logic__false_true(h))
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.

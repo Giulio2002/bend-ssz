@@ -5,6 +5,8 @@ import ./vec_uint32_3_e2e_generated.bend as BR
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API

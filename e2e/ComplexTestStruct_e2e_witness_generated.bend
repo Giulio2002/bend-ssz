@@ -6,8 +6,10 @@ import ./e2e_encvd.bend as EV
 import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/root_gtypes_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/words_obj_light.bend as WO
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API

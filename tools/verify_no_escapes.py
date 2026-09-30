@@ -5,8 +5,8 @@
     python3 tools/verify_no_escapes.py FILE...      # self-test, then scan only these files
     python3 tools/verify_no_escapes.py --probe      # (ssz server) run the planted forms through the checker
 
-The forms are read off the pinned checker's parser (toolchain.lock.json: bend-src/bend2/bend.ts
-at 3ddfb036), which is the only place a def becomes unsafe (`def.u`) or foreign (`def.i`):
+The forms are read off the pinned checker's parser (toolchain.lock.json: bend2/bend.ts at
+aa99b746; parse_book/parse_def have the same three forms as at 3ddfb036, the build pinned before), which is the only place a def becomes unsafe (`def.u`) or foreign (`def.i`):
 
   parse_book   `@` is parse_take("@") and then parse_word("unsafe"): parse_skip runs in between,
                so any whitespace, newlines and `#` comments may separate them (`@ # x\\n unsafe`).
@@ -21,10 +21,10 @@ at 3ddfb036), which is the only place a def becomes unsafe (`def.u`) or foreign 
                name a .bend file; they cannot bring in foreign code.
 
 Base's own foreign defs (base.bend, `b === true`) are the checker's, pinned by hash. main.ts's
-cli_report reports defs that rely on unsafe or foreign code ("SOME PROOFS FAIL" / "Error: N defs
-rely on unsafe or foreign code" on 2.0.34; "All terms check, but N defs rely on ..." on 2.0.28) only
-for the top file's defs and the laws; an umbrella only imports, so an unsafe dependency of a bridge def would
-not be reported there. This scan is the guard that covers every def.
+cli_verdict fails the check ("SOME PROOFS FAIL", "Error: N defs rely on unsafe or foreign code") when
+any def outside Base relies on one, walking the whole book, imports included (2.0.28's report covered
+only the top file's defs and the laws). This scan is a second guard over every file, run before any
+check.
 
 The scan works on a skeleton of each file that the lexer keeps aligned with the checker's
 tokens: `#` comments (to end of line) become blanks, string literals keep their quotes but lose

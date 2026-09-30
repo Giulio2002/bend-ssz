@@ -68,6 +68,24 @@ def len32(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {5n+a == b : Nat}, +hb: {
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
   {==}
 
+# the length fact of rep_v4 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq4(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e4(U32.to_nat(U32.shrn(n, 2n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e4(PK.cnt4(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e4(U32.to_nat(U32.shrn(n, 2n))), h)
+
+# the length fact of rep_v8 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq8(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e8(U32.to_nat(U32.shrn(n, 3n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e8(PK.cnt8(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e8(U32.to_nat(U32.shrn(n, 3n))), h)
+
+# the length fact of rep_v16 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq16(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e16(U32.to_nat(U32.shrn(n, 4n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e16(PK.cnt16(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e16(U32.to_nat(U32.shrn(n, 4n))), h)
+
 # the same for any word array of 2^b bytes (a decoder's tree-form object)
 def len32g(-arr: Array<U32>, +a: Nat, +b: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool})
     -> {U32.to_nat(WO.len(O.Words{arr, FD.u32__pow2u(b)})) == PK.e32(PK.cnt32(O.Words{arr, FD.u32__pow2u(b)})) : Nat}:

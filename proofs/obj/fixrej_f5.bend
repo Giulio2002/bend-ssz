@@ -22,7 +22,7 @@ def MatrixEntry_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluMatrixEntry_r.Matri
 def MatrixEntry_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluMatrixEntry_r.MatrixEntry_ok(buf, off, len) == (buf, U32.is_eq(len, 2112)) : B.Buf & Bool}:
   MatrixEntry_okb(buf, off, U32.is_eq(len, 2112))
 def MatrixEntry_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2112n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.MatrixEntry(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.MatrixEntry()), 2112n, bs, Codec.parts(v, Spec.MatrixEntry()), DS.facts(v, Spec.MatrixEntry(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(Spec.MatrixEntry()), 2112n, bs, Codec.parts(v, Spec.MatrixEntry()), DS.facts(v, Spec.MatrixEntry(), {==}), VRF.some_is(SS.fixed_size(Spec.MatrixEntry()), 2112n, {==}), e, hn)
 def MatrixEntry_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2112n) == False{} : Bool}) -> Decoding.outside_image(Spec.MatrixEntry(), bs):
   v => e => MatrixEntry_rj(bs, hn, v, e)
 

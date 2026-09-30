@@ -96,7 +96,7 @@ def vec_uint64_512_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint64_512_r.v51
 def vec_uint64_512_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint64_512_r.v512_u64_ok(buf, off, len) == (buf, U32.is_eq(len, 4096)) : B.Buf & Bool}:
   vec_uint64_512_okb(buf, off, U32.is_eq(len, 4096))
 def vec_uint64_512_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4096n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint64_512(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.vec_uint64_512()), 4096n, bs, Codec.parts(v, GS.vec_uint64_512()), DS.facts(v, GS.vec_uint64_512(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(GS.vec_uint64_512()), 4096n, bs, Codec.parts(v, GS.vec_uint64_512()), DS.facts(v, GS.vec_uint64_512(), {==}), VRF.some_is(SS.fixed_size(GS.vec_uint64_512()), 4096n, {==}), e, hn)
 def vec_uint64_512_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4096n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint64_512(), bs):
   v => e => vec_uint64_512_rj(bs, hn, v, e)
 
@@ -108,7 +108,7 @@ def vec_uint64_513_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint64_513_r.v51
 def vec_uint64_513_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint64_513_r.v513_u64_ok(buf, off, len) == (buf, U32.is_eq(len, 4104)) : B.Buf & Bool}:
   vec_uint64_513_okb(buf, off, U32.is_eq(len, 4104))
 def vec_uint64_513_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4104n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.vec_uint64_513(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(GS.vec_uint64_513()), 4104n, bs, Codec.parts(v, GS.vec_uint64_513()), DS.facts(v, GS.vec_uint64_513(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(GS.vec_uint64_513()), 4104n, bs, Codec.parts(v, GS.vec_uint64_513()), DS.facts(v, GS.vec_uint64_513(), {==}), VRF.some_is(SS.fixed_size(GS.vec_uint64_513()), 4104n, {==}), e, hn)
 def vec_uint64_513_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4104n) == False{} : Bool}) -> Decoding.outside_image(GS.vec_uint64_513(), bs):
   v => e => vec_uint64_513_rj(bs, hn, v, e)
 

@@ -6,6 +6,8 @@ import ./vec_uint16_512_e2e_generated.bend as BR
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API
@@ -23,7 +25,7 @@ def WZ1024() -> {O.words_new(1024) == O.Words{FD.array__thaw(U32, FD.array__trep
   {==}
 
 def premise_rep() -> M1_PB.rep_v2(vec_uint16_512_d.v512_u16_default(), Spec.vec_uint16_512()):
-  ((FD.array__trep(U32, 9n, 0), (9n, (1024, (31n, (32n, (WZ1024(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), ({==}, {==}))
+  ((FD.array__trep(U32, 9n, 0), (9n, (1024, (31n, (32n, (WZ1024(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(1024), Nat.add(W_proofs_obj_words_spec.e32(31n), 32n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), (FD.nat__eq_from_is_eq(U32.to_nat(WO.len(vec_uint16_512_d.v512_u16_default())), Nat.double(M1_PB.cnt2(vec_uint16_512_d.v512_u16_default())), {==}), {==}))
 
 def premise_hc() -> {E3.at_depth(vec_uint16_512_d.v512_u16_default(), 9n) == True{} : Bool}:
   {==}

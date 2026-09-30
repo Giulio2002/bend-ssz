@@ -115,6 +115,24 @@ def len32(-w: O.Words, +a: Nat, +b: Nat, +d: Nat, +eb: {5n+a == b : Nat}, +hb: {
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(a)), FD.spec_common__pow2(a), FD.u32__pow2u_value(a, FD.nat__lt_trans(a, 5n+a, 32n, FD.nat__lt_trans(a, 4n+a, 5n+a, FD.nat__lt_trans(a, 3n+a, 4n+a, FD.nat__lt_trans(a, 2n+a, 3n+a, FD.nat__lt_trans(a, 1n+a, 2n+a, FD.nat__lt_succ(a), FD.nat__lt_succ(1n+a)), FD.nat__lt_succ(2n+a)), FD.nat__lt_succ(3n+a)), FD.nat__lt_succ(4n+a)), FD.logic__subst(Nat, z => {Nat.is_lt(z, 32n) == True{} : Bool}, b, 5n+a, Equal.sym(Nat, 5n+a, b, eb), hb)))) : {FD.spec_common__pow2(5n+a) == PK.e32(_) : Nat}
   {==}
 
+# the length fact of rep_v4 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq4(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e4(U32.to_nat(U32.shrn(n, 2n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e4(PK.cnt4(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e4(U32.to_nat(U32.shrn(n, 2n))), h)
+
+# the length fact of rep_v8 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq8(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e8(U32.to_nat(U32.shrn(n, 3n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e8(PK.cnt8(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e8(U32.to_nat(U32.shrn(n, 3n))), h)
+
+# the length fact of rep_v16 at a literal byte count n, by evaluating Nat.is_eq (the checker's machine
+# loops without recursing) instead of a conversion that would recurse once per unit of n
+def len_isq16(-arr: Array<U32>, +n: U32, +h: {Nat.is_eq(U32.to_nat(n), PK.e16(U32.to_nat(U32.shrn(n, 4n)))) == True{} : Bool})
+    -> {U32.to_nat(WO.len(O.Words{arr, n})) == PK.e16(PK.cnt16(O.Words{arr, n})) : Nat}:
+  FD.nat__eq_from_is_eq(U32.to_nat(n), PK.e16(U32.to_nat(U32.shrn(n, 4n))), h)
+
 # the same for any word array of 2^b bytes (a decoder's tree-form object)
 def len32g(-arr: Array<U32>, +a: Nat, +b: Nat, +eb: {5n+a == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool})
     -> {U32.to_nat(WO.len(O.Words{arr, FD.u32__pow2u(b)})) == PK.e32(PK.cnt32(O.Words{arr, FD.u32__pow2u(b)})) : Nat}:
@@ -337,6 +355,18 @@ def canon(path):
     return 'W_' + re.sub(r'\W', '_', rel[:-len('.bend')])
 
 
+_DECLS = {}   # id(mod) -> (mod, the type and constructor names its text declares)
+
+
+def _decl_names(mod):
+    """the names `^type N` and `^  N{` declare in mod.text (one scan per module: lift asked per token, which made
+    e2e_compose quadratic, 150 of its 157 s)"""
+    e = _DECLS.get(id(mod))
+    if e is None or e[0] is not mod:
+        e = _DECLS[id(mod)] = (mod, set(re.findall(r'^type (\w+)\b', mod.text, re.M)) | set(re.findall(r'^  (\w+)\{', mod.text, re.M)))
+    return e[1]
+
+
 class Ctx:
     """the imports the witness file needs, by canonical alias"""
 
@@ -357,8 +387,7 @@ class Ctx:
                 if a in mod.imports:
                     return self.alias(mod.imports[a]) + '.' + rest
                 return q
-            if q in mod.defs or re.search(r'^type ' + re.escape(q) + r'\b', mod.text, re.M) or \
-                    re.search(r'^  ' + re.escape(q) + r'\{', mod.text, re.M):
+            if q in mod.defs or q in _decl_names(mod):
                 return self.alias(mod.path) + '.' + q
             return q
         return re.sub(r'(?<![\w.])[A-Za-z_]\w*(?:\.\w+)?', sub, expr)
@@ -567,6 +596,20 @@ def parse_match(body):
             text = bl[0].strip() if bl else ''
         out.append((pat, text.strip()))
     return m.group(1), out
+
+
+def split_top_eq(t):
+    """[a, b] of the top-level `a == b` in t (outside brackets), or None"""
+    d = 0
+    for i in range(len(t) - 1):
+        c = t[i]
+        if c in '([{':
+            d += 1
+        elif c in ')]}':
+            d -= 1
+        elif d == 0 and t.startswith(' == ', i):
+            return [t[:i].strip(), t[i + 4:].strip()]
+    return None
 
 
 # ---------------------------------------------------------------- premise synthesis
@@ -983,7 +1026,30 @@ class Synth:
             return f'WT.len32({env["__e"]["o"]}, {pw - 5}n, {pw}n, {subj.d}n, {{==}}, {{==}}, {self.wz(subj.n, subj.d)})'
         if pw and re.search(r'Nat\.is_le\(O\.e8\(1n\+q\), \w+\.spec_common__pow2\(dw\)\)', p):
             return f'WT.eQ({pw - 5}n, {subj.d}n, {{==}})'
+        if isinstance(subj, (Words, VecN)):
+            return self.nat_eq_eval(p, env) or R
         return R
+
+    def nat_eq_eval(self, p, env):
+        """a Nat equation over a large literal (a byte or word count of 1024 or more), by evaluating Nat.is_eq,
+        which the checker's machine loops over without recursing; a conversion would recurse once per unit
+        (near the stack limit). None when p is not such an equation."""
+        if not (env.get('__mod') and re.match(r'^\{.* : Nat\}$', p, re.S)):
+            return None
+        try:
+            q = self.subst(env['__mod'], p, env)
+        except SystemExit:
+            return None
+        q = re.sub(r'(?<![\w.])[A-Za-z_]\w*(?![\w.{(])',
+                   lambda m: env[m.group(0)][1] if isinstance(env.get(m.group(0)), tuple) else m.group(0), q)
+        if not (any(int(x) >= 1024 for x in re.findall(r'(?<![\w.])(\d+)n?(?![\w.])', q))
+                or (isinstance(env.get('__subj'), (Words, VecN)) and env['__subj'].n >= 256 and '.len(' in q)):
+            return None
+        # a closed statement only: a variable the models left free (a list's element W, ..) stays a {==}
+        if any(t not in ('U32', 'Nat', 'Bool', 'U64', 'String') for t in re.findall(r'(?<![\w.])([A-Za-z_]\w*)(?![\w.({<])', q)):
+            return None
+        parts = split_top_eq(q[1:q.rindex(' : Nat}')])
+        return f'FD.nat__eq_from_is_eq({parts[0]}, {parts[1]}, {{==}})' if parts else None
 
 
 # ---------------------------------------------------------------- one name

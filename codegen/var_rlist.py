@@ -283,6 +283,7 @@ def list_text(g, names, parent, field, rec=None):
                       f'# The byte-offset window module of {p} (List[{R}, {LIM}], records of {RS} bytes): see the',
                       '# module docstring of codegen/var_rlist.py and the interface in proofs/obj/vua_win.bend.', '']
     w = L.append
+    RWL = '[' + ', '.join('UR.RWN(t, y)' if j == 0 else f'UR.RWN(t, {4 * j}n+y)' for j in range(W)) + ']'
     w(f'''def BF(t: {TR}, +n: U32) -> B.Buf: UA.BF(t, n)
 
 # ---- the records ---------------------------------------------------------------------------------
@@ -295,8 +296,13 @@ def RVAL(+t: {TR}, +y: Nat) -> S.Value: {val}
 # (RVAL unfolded by a rewrite: comparing parts(RVAL(t, y), s) with parts(<its body>, s) evaluates the parts)
 def RVQ(+t: {TR}, +y: Nat) -> {{{val} == RVAL(t, y) : S.Value}}:
   {{==}}
+# (RWS unfolded by a rewrite too: F.limbs of RWS against F.limbs of the written-out words would expand both
+# into bytes and compare them one level per byte)
+def RWSQ(+t: {TR}, +y: Nat) -> {{{RWL} == UR.RWS({W}n, t, y) : List<&2, U32>}}:
+  {{==}}
 def RPRF(+t: {TR}, +y: Nat) -> {{Codec.parts(RVAL(t, y), {sch}) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, y))}}]}} : Maybe<&2, +List<S.Part>>}}:
   %RVQ(t, y) : {{Codec.parts(_, {sch}) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, y))}}]}} : Maybe<&2, +List<S.Part>>}}
+  %RWSQ(t, y) : {{Codec.parts({val}, {sch}) == Some{{[S.Fixed{{F.limbs(_)}}]}} : Maybe<&2, +List<S.Part>>}}
   {proof}
 
 # the records j, j + 1, ..., j + k written into a record tree D

@@ -114,6 +114,7 @@ def vec_uint128_512_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_u
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2048n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(8192, 4n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it16(512n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(512n))), WA.it16c(512n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2048n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(2048n, AV.m4(512n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2048n)), S.Sequence{AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(2048n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 2048n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), 2048n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2048n)),
@@ -207,6 +208,7 @@ def vec_uint128_513_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_u
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2052n)), S.Sequence{PK_L.it16(U32.to_nat(U32.shrn(8208, 4n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it16(513n, F.array__slots(U32, t)), AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), AV.m4(513n))), WA.it16c(513n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2052n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(2052n, AV.m4(513n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2052n)), S.Sequence{AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(2052n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 2052n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu4(F.spec_common__take(U32, F.array__slots(U32, t), 2052n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2052n)),
@@ -297,6 +299,7 @@ def vec_uint256_512_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_u
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4096n)), S.Sequence{PK_L.it32(U32.to_nat(U32.shrn(16384, 5n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it32(512n, F.array__slots(U32, t)), AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), AV.m8(512n))), WA.it32c(512n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4096n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(4096n, AV.m8(512n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4096n)), S.Sequence{AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(4096n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 4096n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), 4096n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4096n)),
@@ -387,6 +390,7 @@ def vec_uint256_513_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_u
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4104n)), S.Sequence{PK_L.it32(U32.to_nat(U32.shrn(16416, 5n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it32(513n, F.array__slots(U32, t)), AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), AV.m8(513n))), WA.it32c(513n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4104n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(4104n, AV.m8(513n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4104n)), S.Sequence{AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(4104n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 4104n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu8(F.spec_common__take(U32, F.array__slots(U32, t), 4104n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4104n)),
@@ -477,6 +481,7 @@ def vec_uint32_512_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_ui
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 512n)), S.Sequence{PK_L.it4(U32.to_nat(U32.shrn(2048, 2n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it4(512n, F.array__slots(U32, t)), AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), AV.m1(512n))), WA.it4c(512n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 512n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(512n, AV.m1(512n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 512n)), S.Sequence{AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(512n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 512n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), 512n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 512n)),
@@ -570,6 +575,7 @@ def vec_uint32_513_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_ui
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 513n)), S.Sequence{PK_L.it4(U32.to_nat(U32.shrn(2052, 2n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it4(513n, F.array__slots(U32, t)), AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), AV.m1(513n))), WA.it4c(513n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 513n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(513n, AV.m1(513n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 513n)), S.Sequence{AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(513n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 513n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu1(F.spec_common__take(U32, F.array__slots(U32, t), 513n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 513n)),
@@ -660,6 +666,7 @@ def vec_uint64_512_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_ui
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1024n)), S.Sequence{PK_L.it8(U32.to_nat(U32.shrn(4096, 3n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it8(512n, F.array__slots(U32, t)), AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), AV.m2(512n))), WA.it8c(512n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1024n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(1024n, AV.m2(512n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1024n)), S.Sequence{AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(1024n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 1024n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), 1024n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1024n)),
@@ -753,6 +760,7 @@ def vec_uint64_513_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.vec_ui
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1026n)), S.Sequence{PK_L.it8(U32.to_nat(U32.shrn(4104, 3n)), F.array__slots(U32, _))})
   %Equal.sym(S.Value, PK_L.it8(513n, F.array__slots(U32, t)), AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), AV.m2(513n))), WA.it8c(513n, F.array__slots(U32, t))) :
     Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1026n)), S.Sequence{_})
+  %F.nat__eq_from_is_eq(1026n, AV.m2(513n), {==}) : Decoding.decodes(s, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1026n)), S.Sequence{AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), _))})
   +hlen = F.logic__subst(Nat, z => {Nat.is_le(1026n, z) == True{} : Bool}, F.spec_common__pow2(dw), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)
   +hl = WA.len_take(F.array__slots(U32, t), 1026n, hlen)
   SF.encoding_of_parts(s, S.Sequence{AV.chu2(F.spec_common__take(U32, F.array__slots(U32, t), 1026n))}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1026n)),

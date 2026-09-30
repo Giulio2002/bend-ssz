@@ -106,7 +106,7 @@ def Deposit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluDeposit_r.Deposit_ok_le
 def Deposit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluDeposit_r.Deposit_ok(buf, off, len) == (buf, U32.is_eq(len, 1240)) : B.Buf & Bool}:
   Deposit_okb(buf, off, U32.is_eq(len, 1240))
 def Deposit_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1240n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Deposit(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.Deposit()), 1240n, bs, Codec.parts(v, Spec.Deposit()), DS.facts(v, Spec.Deposit(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(Spec.Deposit()), 1240n, bs, Codec.parts(v, Spec.Deposit()), DS.facts(v, Spec.Deposit(), {==}), VRF.some_is(SS.fixed_size(Spec.Deposit()), 1240n, {==}), e, hn)
 def Deposit_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1240n) == False{} : Bool}) -> Decoding.outside_image(Spec.Deposit(), bs):
   v => e => Deposit_rj(bs, hn, v, e)
 

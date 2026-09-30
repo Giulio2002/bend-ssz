@@ -9,6 +9,12 @@
 #                   source layout (bun-linux-x64/bun and bend-src/bend2/main.ts)
 #   BEND_LIB        BendHub package cache (the SHA-256 dependency); default vendor/bendhub
 #   BEND_LOCK       the toolchain lock to verify against; default toolchain.lock.json
+#   CHECK_STACK_KB  the stack limit (ulimit -s) of the check; default 8192
+#   CHECK_JSC_STACK the JavaScriptCore stack budget (BUN_JSC_maxPerThreadStackUsage, bytes); default
+#                   5242880, JSC's own default. Both are pinned so that a shell's or an environment's
+#                   limits never change a result: the checker recurses once per level of a
+#                   conversion, and JSC stops at the smaller of the two (at 8192 KB, its 5 MB budget).
+#                   tools/check_fast.sh --jsc-stack runs the headroom gate at half the budget.
 # Before running, tools/verify_pins.py checks the checker's files, bun and the package against
 # toolchain.lock.json and refuses to run on a mismatch (CHECK_PINS_VERIFIED=1 skips it: check_fast.sh
 # verifies once for all its runs).
@@ -33,6 +39,9 @@ f=$1; shift
 export BEND_NO_TELEMETRY=1 BUN_JSC_forceRAMSize=${BUN_JSC_forceRAMSize:-8000000000}
 export BEND_LIB
 MEM=${CHECK_MEMMAX:-12G} CPU=${CHECK_CPUS:-2} TMO=${CHECK_TIMEOUT:-600}
+STK=${CHECK_STACK_KB:-8192}
+ulimit -s "$STK" 2>/dev/null || { echo "check.sh: cannot set the stack limit to $STK KB (ulimit -s)" >&2; exit 2; }
+export BUN_JSC_maxPerThreadStackUsage=${CHECK_JSC_STACK:-5242880}
 cmd=(nice -n 10 timeout "$TMO" /usr/bin/time -f "CHECK_TIME %e %M" "${CHK[@]}" "$f" "$@")
 if command -v systemd-run >/dev/null 2>&1 && [ "$(id -u)" = 0 ]; then
   exec systemd-run --quiet --scope -p MemoryMax="$MEM" -p MemorySwapMax=0 -p CPUQuota=$((CPU * 100))% "${cmd[@]}"

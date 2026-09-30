@@ -155,8 +155,15 @@ class LSynth(W.Synth):
         return super().witness(mod, ty, v, body, env)
 
     def eq(self, p, env):
-        if isinstance(env.get('__subj'), WordsLit):
-            return W.R
+        subj = env.get('__subj')
+        if isinstance(subj, WordsLit):
+            # the length fact of rep_v<k> at the literal byte count, by evaluation (WT.len_isq<k>): a
+            # conversion would walk the unary count, near the stack limit
+            m = re.match(r'^\{U32\.to_nat\(WO\.len\(o\)\) == e(\d+)\(cnt\1\(o\)\) : Nat\}$', p.strip())
+            if m and m.group(1) in ('4', '8', '16'):
+                self.ctx.alias(E2E / 'e2e_wit.bend')
+                return f'WT.len_isq{m.group(1)}({subj.arr}, {subj.n}, {{==}})'
+            return self.nat_eq_eval(p, env) or W.R
         return super().eq(p, env)
 
 
@@ -476,6 +483,8 @@ def outputs():
     rows = []
     for n in names:
         t, why = build(n, lf)
+        if t and 'WT.len_isq' in t and 'e2e_wit.bend as WT' not in t:   # the length facts of the written-out tree
+            t = t.replace('import Base\n', 'import Base\nimport ./e2e_wit.bend as WT\n', 1)
         if t:
             outs[E2E / f'{n}_e2e_comp_generated.bend'] = t
             rows.append(f'{n}\tcomposed')

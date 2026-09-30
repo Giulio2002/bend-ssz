@@ -373,16 +373,18 @@ def build_tree(name, lf, api):
     if lit:        # every premise computed of the written-out tree (LSynth); only the decoder's facts are adapted
         defs = (f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
                 f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
-                f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
+                f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == True{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))\n\n')
         i = text.index('\ndef ') + 1
         text = text[:i] + defs + text[i:]
         text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
-        text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+        text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == False{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))')
         return text.replace(api.HEADER, HEADER, 1), None
     S_ = f'{ACA}.segt({D}n, 0n, {LA}.wlp(bs))'
     T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
-    lenpf = f'WT.len32g({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {c}n, {b}n, {{==}}, {{==}})' if k == 32 else '{==}'
-    term = (f'(({T}, ({D + 1}n, ({N}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {N}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
+    # the length fact at the literal byte count by evaluation (WT.len_isq<k>), never by a conversion that walks N
+    lenpf = (f'WT.len32g({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {c}n, {b}n, {{==}}, {{==}})' if k == 32 else
+             f'WT.len_isq{k}({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {N}, {{==}})')
+    term = (f'(({T}, ({D + 1}n, ({N}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {N}, {FDA}.nat__eq_from_is_eq(U32.to_nat({N}), {FDA}.spec_common__pow2({b}n), {{==}})), '
             f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), ({lenpf}, {{==}}))')
     SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
@@ -395,13 +397,15 @@ def build_tree(name, lf, api):
             f'  {FDA}.array__trep_perfect(U32, {D}n, 0)\n\n'
             f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
             f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
-            f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, ec))\n\n')
+            f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == True{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))\n\n')
     m = re.search(r'^def pe_rep\(\+bs: \+List<U32>\) -> (.*?):\n  (.*)$', text, re.M)
     text = text.replace(m.group(0), f'def pe_rep(+bs: +List<U32>) -> {m.group(1)}:\n  {term}')
     i = text.index('\ndef ') + 1
     text = text[:i] + defs + text[i:]
     text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
-    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
+    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, {FDA}.logic__subst(Nat, z => {{Nat.is_eq(List.length(&2, U32, bs), z) == False{{}} : Bool}}, {N}n, U32.to_nat({N}), {FDA}.nat__eq_from_is_eq({N}n, U32.to_nat({N}), {{==}}), ec)))')
+    if 'WT.len_isq' in text and 'e2e_wit.bend as WT' not in text:   # the length facts of the written-out tree
+        text = text.replace('import Base\n', 'import Base\nimport ./e2e_wit.bend as WT\n', 1)
     return text.replace(api.HEADER, HEADER, 1), None
 
 

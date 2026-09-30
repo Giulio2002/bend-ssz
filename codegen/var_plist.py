@@ -20,8 +20,8 @@ with n <= 4 2^d, and every object O.Words{thaw(T), N} whose storage T is a
 perfect tree of depth dw < 28 holding its c elements. The per-name files are
 BIG (checked with `checkq --big`): a progressive list has no length limit, so
 the decoder's list storage depth ranges up to 29 and its zeros_at case split
-compares Array.new trees of up to 2^29 leaves, which stock Bend 2.0.28
-normalizes. The element-agnostic
+compares Array.new trees of up to 2^29 leaves, which stock Bend normalizes
+(the pinned checker compares the two identical calls rigidly). The element-agnostic
 facts are the hand-written, stock-checked proofs/obj/vlist.bend.
 """
 import re
@@ -299,7 +299,7 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/ob
 BIG_NOTE = ['# BIG (checkq --big): a progressive list has no length limit, so the list storage',
             '# is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with',
             '# Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to',
-            '# 2^26 leaves: stock Bend 2.0.28 normalizes them; with bendlang/bend#1075 they are identical terms.']
+            '# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.']
 
 
 def zeros_text():

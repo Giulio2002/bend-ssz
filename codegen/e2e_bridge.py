@@ -1529,12 +1529,22 @@ def any_core(R, X, sn, OBJ, VIEW, enc_call, dec_call, a):
     L.append(f'  +eb = Equal.trans(+List<U32>, Pair.snd(B.Buf, +List<U32>, {EM}), F.listed({EM}), WV, Equal.sym(+List<U32>, F.listed({EM}), Pair.snd(B.Buf, +List<U32>, {EM}), E4.lst({EM})),')
     L.append(f'    FD.logic__pair_snd(O.Words, +List<U32>, {SP_}, F.listed({EM}), {OBJ}, WV, em))')
     L.append(f'  %Equal.sym(Array<U32> & O.Words, {P}, ({FP}, {SP_}), e) : {{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{X}_enc_out(_)))}} == API.serialize(Spec.{sn}(), {VIEW}) : {M}}}')
+    # the buffer's bytes as the emit at the literal word count: E.obytes unfolds to the emit at the count
+    # U32.shrn((N + 3), 2n), which meets the literal in a U32 motive; a conversion from E.obytes straight to
+    # the literal count would unfold both emits and walk the words, the count spelled differently on each side
+    OB = f'E.obytes(Pair.snd(O.Words, B.Buf, T.{X}_enc_out(({FP}, {SP_}))))'
+    L.append(f'  Equal.trans({M}, Some{{{OB}}}, Some{{Pair.snd(B.Buf, +List<U32>, {EM})}}, API.serialize(Spec.{sn}(), {VIEW}),')
+    EMz = f'B.emit(B.Buf{{{FP}, {a["N"]}}}, 0, z)'
+    OBK = (f'FD.logic__subst(U32, z => {{{OB} == Pair.snd(B.Buf, +List<U32>, {EMz}) : +List<U32>}}, '
+           f'U32.shrn(({a["N"]} + 3 : U32), 2n), {a["NW"]}, {{==}}, {{==}})')
+    L.append(f'    Equal.cong(+List<U32>, {M}, z => Some{{z}}, {OB}, Pair.snd(B.Buf, +List<U32>, {EM}), {OBK}),')
     L.append(f'  Equal.trans({M}, Some{{Pair.snd(B.Buf, +List<U32>, {EM})}}, Some{{WV}}, API.serialize(Spec.{sn}(), {VIEW}),')
     L.append(f'    Equal.cong(+List<U32>, {M}, z => Some{{z}}, Pair.snd(B.Buf, +List<U32>, {EM}), WV, eb),')
     L.append(f'    Equal.sym({M}, API.serialize(Spec.{sn}(), {VIEW}), Some{{WV}},')
     L.append(f'      Equal.trans({M}, API.serialize(Spec.{sn}(), {VIEW}), Encoding.encoding_for_legal_type(Spec.{sn}(), {VIEW}), Some{{WV}},')
-    L.append(f'        E.serialize_legal(Spec.{sn}(), {VIEW}, VS.public_sound(Spec.{sn}(), {{==}})), {dec_call})))')
+    L.append(f'        E.serialize_legal(Spec.{sn}(), {VIEW}, VS.public_sound(Spec.{sn}(), {{==}})), {dec_call}))))')
     return '\n'.join(L)
+
 
 
 def text_any(rows):

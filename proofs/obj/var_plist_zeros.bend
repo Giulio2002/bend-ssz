@@ -6,7 +6,7 @@ import ../compact/found.bend as FD
 # BIG (checkq --big): a progressive list has no length limit, so the list storage
 # is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with
 # Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to
-# 2^26 leaves: stock Bend 2.0.28 normalizes them; with bendlang/bend#1075 they are identical terms.
+# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.
 # zs: the runtime zero array of depth u is Array.new(U32, to_nat(u), 0), for every u.
 
 def zc26(+du: U32, +b: Bool, +eb: {U32.is_eq(du, 26) == b : Bool}) -> {B.zeros_c26(b, du) == Array.new(U32, U32.to_nat(du), 0) : Array<U32>}:

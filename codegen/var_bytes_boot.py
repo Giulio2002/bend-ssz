@@ -14,6 +14,17 @@ LEN2 = ('AS.len2(F.array__slots(U32, a), F.array__slots(U32, b), 4096n, 2048n, 6
         'AS.len_tree(11n, b, 2048n, pb, {==}), {==})')
 
 
+
+def wsplit(a, b, k):
+    """(first width term, next position's literal sum, lemma): VBE.win_split[PRKS] with every literal sum
+    written small-first, as Nat.add recurses on its first argument (a large first literal would make the
+    conversion to the sum's literal recurse once per unit, near the checker's stack limit)."""
+    sw1, sw2 = a > b, k > a
+    first = f'Nat.add({b}n, {a}n)' if sw1 else f'Nat.add({a}n, {b}n)'
+    third = f'Nat.add({a}n, {k}n)' if sw2 else f'Nat.add({k}n, {a}n)'
+    lem = {(False, False): 'P', (True, False): 'R', (False, True): 'K', (True, True): 'S'}[(sw1, sw2)]
+    return first, third, f'VBE.win_split{lem}'
+
 def vsc_text():
     src = (ROOT / 'proofs/obj/spec_arr_SyncCommittee.bend').read_text().split('\n')
     i0 = [i for i, l in enumerate(src) if l.startswith('def SyncCommittee_spec_parts(')][0]
@@ -341,14 +352,16 @@ def VALw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> S.Value: XVw(t, i, {VY_
     for idx, (kind, k, Wd, tv, tb, f) in enumerate(segs):
         assert k == pos_
         rest = R - Wd
-        w(f'  %Equal.sym({LT}, {win(f"Nat.add({Wd}n, {rest}n)", f"Nat.add({pos_}n, i)")}, VF.app({win(f"{Wd}n", f"Nat.add({pos_}n, i)")}, {win(f"{rest}n", f"Nat.add(Nat.add({pos_}n, {Wd}n), i)")}),')
-        w(f'      VBE.win_splitP({Wd}n, {rest}n, {pos_}n, i, {s})) :')
+        s1, s3, sl = wsplit(Wd, rest, pos_)
+        w(f'  %Equal.sym({LT}, {win(s1, f"Nat.add({pos_}n, i)")}, VF.app({win(f"{Wd}n", f"Nat.add({pos_}n, i)")}, {win(f"{rest}n", f"Nat.add({s3}, i)")}),')
+        w(f'      {sl}({Wd}n, {rest}n, {pos_}n, i, {s})) :')
         w(f'    {{{pre("_")} == {RHS} : {LT}}}')
         nxt = win(f'{rest}n', f'Nat.add({pos_ + Wd}n, i)')
         if kind == 'comp':
             wW, gW = f['wW'], f['rft'].W
-            w(f'  %Equal.sym({LT}, {win(f"Nat.add({wW}n, {gW}n)", f"Nat.add({pos_}n, i)")}, VF.app({win(f"{wW}n", f"Nat.add({pos_}n, i)")}, {win(f"{gW}n", f"Nat.add(Nat.add({pos_}n, {wW}n), i)")}),')
-            w(f'      VBE.win_splitP({wW}n, {gW}n, {pos_}n, i, {s})) :')
+            s1, s3, sl = wsplit(wW, gW, pos_)
+            w(f'  %Equal.sym({LT}, {win(s1, f"Nat.add({pos_}n, i)")}, VF.app({win(f"{wW}n", f"Nat.add({pos_}n, i)")}, {win(f"{gW}n", f"Nat.add({s3}, i)")}),')
+            w(f'      {sl}({wW}n, {gW}n, {pos_}n, i, {s})) :')
             w(f'    {{{pre(f"VF.app(_, {nxt})")} == {RHS} : {LT}}}')
             w(f'  %Equal.sym({LT}, {win(f"{gW}n", f"Nat.add({pos_ + wW}n, i)")}, [{G}], VF.wt_pre({gW}n, 0n, Nat.add({pos_ + wW}n, i), {s}, {hpre(gW, pos_ + wW)})) :')
             w(f'    {{{pre(f"VF.app(VF.app({win(f"{wW}n", f"Nat.add({pos_}n, i)")}, _), {nxt})")} == {RHS} : {LT}}}')

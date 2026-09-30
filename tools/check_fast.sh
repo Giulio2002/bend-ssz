@@ -6,7 +6,11 @@
 # explains the soundness argument). Same pinned checker and cgroup limits as tools/check.sh, but
 # each umbrella gets a larger heap: UMB_MEMMAX (default 16G), UMB_RAM (JSC forceRAMSize, default
 # 12e9; the 8e9 of single files makes a big umbrella collect constantly), UMB_TIMEOUT (default
-# 1200 s).
+# 1200 s). The stack is tools/check.sh's pin (ulimit -s 8192, JSC budget 5242880 bytes);
+# --jsc-stack BYTES runs every umbrella with another JSC budget: the headroom gate is a full run at
+# half the budget (--jsc-stack 2621440), so that no conversion runs near the limit, where results
+# vary from run to run. A run at another budget writes its stamp to
+# benchmarks/evidence/check_fast_jsc<BYTES>.json instead of check_fast.json.
 #
 # Failures are localized: each failed umbrella is bisected into sub-umbrellas (still import-only,
 # so every file is checked exactly as in the full run) until single roots remain, and the failing
@@ -22,7 +26,7 @@
 # cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas (exit 3 on any failure).
 # Run from the repository root.
 set -u
-J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
+J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=5242880
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -30,7 +34,8 @@ while [ $# -gt 0 ]; do
     --out) OUT=$2; shift 2;;
     --files) FILES=$2; shift 2;;
     --no-localize) LOC=0; shift;;
-    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize]" >&2; exit 2;;
+    --jsc-stack) JSC=$2; shift 2;;
+    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize] [--jsc-stack BYTES]" >&2; exit 2;;
   esac
 done
 t0=$(date +%s)
@@ -44,19 +49,19 @@ export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
 # run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints exactly the line
-# "ALL PROOFS CHECK" (Bend 2.0.34; "All terms check." on 2.0.28, not "All terms check, but N defs
-# rely on unsafe or foreign code") (else the checker's exit code, or 1)
+# "ALL PROOFS CHECK" (a def relying on unsafe or foreign code makes the checker print "SOME PROOFS
+# FAIL" and exit 1) (else the checker's exit code, or 1)
 run() {
-  CHECK_MEMMAX=${UMB_MEMMAX:-16G} CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
+  CHECK_MEMMAX=${UMB_MEMMAX:-16G} CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} CHECK_JSC_STACK=$JSC \
     BUN_JSC_forceRAMSize=${UMB_RAM:-12000000000} tools/check.sh "$1" > "$2" 2>&1
   local rc=$?; [ $rc != 0 ] && return $rc
-  grep -qx -e 'ALL PROOFS CHECK' -e 'All terms check\.' "$2" || return 1
+  grep -qx 'ALL PROOFS CHECK' "$2" || return 1
 }
 one() {
   u=$1; out=$2
   lg=$out/${u%.bend}.log
   run "$out/umb/$u" "$lg"; rc=$?
-  ok=$(grep -cx -e 'ALL PROOFS CHECK' -e 'All terms check\.' "$lg")
+  ok=$(grep -cx 'ALL PROOFS CHECK' "$lg")
   tl=$(grep '^CHECK_TIME' "$lg" | tail -n 1)
   s=$(echo "$tl" | awk '{print $2}'); kb=$(echo "$tl" | awk '{print $3}')
   roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")
@@ -101,9 +106,13 @@ cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
-# a full run records its stamp in the tree: benchmarks/evidence/check_fast.json
-[ -z "$FILES" ] && cp "$OUT/stamp.json" benchmarks/evidence/check_fast.json
+CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES CHECK_STACK_KB=8192 CHECK_JSC_STACK=$JSC \
+  python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
+# a full run records its stamp in the tree: benchmarks/evidence/check_fast.json (at the pinned stack),
+# benchmarks/evidence/check_fast_jsc<BYTES>.json (a headroom run at another JSC budget)
+EVF=benchmarks/evidence/check_fast.json
+[ "$JSC" != 5242880 ] && EVF=benchmarks/evidence/check_fast_jsc$JSC.json
+[ -z "$FILES" ] && cp "$OUT/stamp.json" "$EVF"
 bad=$(awk -F'\t' '$2 != 0 || $3 == 0 {print $1}' "$OUT/summary.tsv")
 # every planned umbrella must have exactly one result row: one whose run died before writing it
 # (killed, out of memory in the shell, ...) fails the check instead of silently vanishing
@@ -115,7 +124,7 @@ if [ -n "$missing" ]; then
   exit 1
 fi
 if [ -z "$bad" ]; then
-  [ -z "$FILES" ] && echo "all files check (stamp: $OUT/stamp.json, benchmarks/evidence/check_fast.json)" \
+  [ -z "$FILES" ] && echo "all files check (stamp: $OUT/stamp.json, $EVF)" \
     || echo "listed files check (stamp: $OUT/stamp.json)"
   exit 0
 fi

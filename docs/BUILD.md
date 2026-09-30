@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->87b9db83<!-- /fig -->):
-<!-- fig:check_umbrellas -->36<!-- /fig --> umbrellas over <!-- fig:check_files -->5,531<!-- /fig --> files,
-<!-- fig:check_cpu -->2,478<!-- /fig --> CPU seconds, <!-- fig:check_wall -->4.3<!-- /fig --> minutes wall at 12 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->202<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->unknown<!-- /fig -->):
+<!-- fig:check_umbrellas -->40<!-- /fig --> umbrellas over <!-- fig:check_files -->5,686<!-- /fig --> files,
+<!-- fig:check_cpu -->4,670<!-- /fig --> CPU seconds, <!-- fig:check_wall -->7.5<!-- /fig --> minutes wall at 12 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->432<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -59,7 +59,8 @@ with the pinned checker; `umbrellas.py` uses them only to balance the partition,
 
 `check.sh` runs `<toolchain>/bin/bend <file> --check-only` with the checker pinned in
 `toolchain.lock.json` (Bend main 01875127, after v2.0.34, plus commits 45663e0a and aa99b746 of the fork
-branch Giulio2002/bend `rigid-subterms`, whose upstream PR bendlang/bend#1210 was closed unmerged: see
+branch Giulio2002/bend `rigid-subterms` (45663e0a was the head of bendlang/bend#1210, closed unmerged;
+aa99b746 was never submitted upstream): see
 [TRUST.md](TRUST.md); found through `BEND_TOOLCHAIN`, default the ssz server's
 `/srv/ssz-optimization/toolchain-rigid-aa99b746`; a source layout, `bun-linux-x64/bun` +
 `bend-src/bend2/main.ts`, is also accepted) and the SHA-256 package
@@ -88,6 +89,21 @@ the one that was checked. Each check runs under the limits it was measured with:
 | CPU | 2 cores, `nice 10` |
 | wall time | 600 s |
 | parallel checks | 10 |
+| stack | `ulimit -s 8192` and a JavaScriptCore budget of 5,242,880 bytes (`BUN_JSC_maxPerThreadStackUsage`, JSC's default) |
+
+The stack is pinned by `tools/check.sh` itself (`CHECK_STACK_KB`, `CHECK_JSC_STACK`), so a shell's or an
+environment's limits never change a result. It matters because the checker recurses once per level of a
+conversion: a conversion that compares two unary numerals recurses once per unit. It bears on whether a
+check finishes, never on what it accepts (an overflow is a failure). JSC stops at the smaller of the two
+limits: at `ulimit -s 8192` that is its 5 MB budget (a larger `ulimit -s` alone changes nothing). The depth
+probe `{U32.to_nat(n) == <n>n}` by `{==}` checks up to n ≈ 28,800 there, ≈ 11,100 at half the budget,
+≈ 22,700 at `ulimit -s 4096`; the budget scales it (10 MB: ≈ 58,600, 20 MB: ≈ 114,500), for the compiled
+`bin/bend` and for 2.0.28 alike. Near the limit a result can vary from run to run (JIT tiering changes the
+frame sizes), so the proofs are written to stay well below it: large literal facts are reached by
+evaluating `Nat.is_eq` (the checker's machine loops over a numeral without recursing), literal sums are
+written small-first (`Nat.add` recurses on its first argument), and a term that a rewrite must find is
+spelled as the code it unfolds from. The headroom gate is a full check at half the JSC budget,
+`tools/check_fast.sh --jsc-stack 2621440`, whose stamp is `benchmarks/evidence/check_fast_jsc2621440.json`.
 
 Umbrellas get a larger heap (`UMB_MEMMAX`, default 16 GB; `UMB_TIMEOUT`, default 1200 s).
 Target per file: 60 s and 8 GB (e2e files 45 s).

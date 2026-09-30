@@ -10,16 +10,17 @@ of the checked sources (every .bend file outside tools/, vendor/ and build/: sor
 "path\\0sha256\\n" lines; the vendored SHA-256 package is pinned by toolchain.lock.json), the
 number of files, the sha256 of each harness script (HARNESS: the runners, the umbrella planner and
 the four pre-checks), the sha256 of the umbrella plan (DIR/umb/plan.tsv) with its umbrella and
-root counts, the scope (all files, or the --files list), every planned umbrella's result (exit,
-whether the exact line "All terms check." was printed, seconds, peak MB, number of roots) and the
-verdict.
+root counts, the scope (all files, or the --files list), the path of the toolchain lock, the
+stack limit (ulimit -s, KB) and the JSC stack budget (bytes) the umbrellas ran under, every planned umbrella's result (exit, whether the exact
+line "ALL PROOFS CHECK" was printed, seconds, peak MB, number of roots) and the verdict.
 
 The verdict is "all files check" only if the scope is every file, every umbrella of the plan has
 exactly one result row, and every row exited 0 with the exact line. An umbrella whose run died
 before writing its row is recorded with "result": "missing" and fails the stamp; `write` exits 1
 then, and tools/check_fast.sh fails too.
 
-`verify` recomputes the sources, harness and lock hashes on the current tree: it exits 0 only if
+`verify` recomputes the sources, harness and lock hashes on the current tree (the toolchain lock at
+the path the stamp records; a BEND_LOCK naming another path is a difference): it exits 0 only if
 all of them equal the stamp's and the verdict is "all files check". So the committed
 benchmarks/evidence/check_fast.json (written by every full tools/check_fast.sh run) says whether
 the tree in hand is the one that was checked.
@@ -70,9 +71,9 @@ def harness():
     return {f: sha(open(os.path.join(ROOT, f), 'rb').read()) for f in HARNESS}
 
 
-def locks():
+def locks(lock=LOCK):
     return {k: sha(open(os.path.join(ROOT, f), 'rb').read())
-            for k, f in (('toolchain_lock_sha256', LOCK), ('frozen_lock_sha256', 'frozen.lock.json'))}
+            for k, f in (('toolchain_lock_sha256', lock), ('frozen_lock_sha256', 'frozen.lock.json'))}
 
 
 def write(d, out):
@@ -103,7 +104,9 @@ def write(d, out):
     missing = [r['umbrella'] for r in rows if r['result'] == 'missing']
     ok = bool(rows) and all(r['result'] == 'pass' for r in rows) and not dup and not extra
     st = {'commit': commit(), 'utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-          'checker_commit': lock['checker']['commit'], **locks(),
+          'checker_commit': lock['checker']['commit'], 'toolchain_lock': LOCK, **locks(),
+          'stack_kb': int(os.environ.get('CHECK_STACK_KB') or 8192),
+          'jsc_stack_bytes': int(os.environ.get('CHECK_JSC_STACK') or 5242880),
           'sources_sha256': digest, 'files': n, 'harness_sha256': harness(),
           'plan_sha256': sha(open(plan_path, 'rb').read()), 'plan_umbrellas': len(plan),
           'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,
@@ -128,7 +131,17 @@ def verify(f):
     diff = []
     if st['sources_sha256'] != digest:
         diff.append('sources (%d files stamped, %d here)' % (st['files'], n))
-    diff += [k for k, v in locks().items() if st.get(k) != v]
+    slock = st.get('toolchain_lock', 'toolchain.lock.json')
+    if os.environ.get('BEND_LOCK') and os.path.normpath(os.environ['BEND_LOCK']) != os.path.normpath(slock):
+        diff.append('toolchain lock path (stamped %s, BEND_LOCK %s)' % (slock, os.environ['BEND_LOCK']))
+    diff += [k for k, v in locks(slock).items() if st.get(k) != v]
+    # the stack the umbrellas ran under: tools/check.sh's pin, or the headroom run's JSC budget
+    # (a check_fast_jsc<BYTES>.json stamp)
+    import re
+    mj = re.search(r'_jsc(\d+)\.json$', f)
+    want = (8192, int(mj.group(1)) if mj else 5242880)
+    if (st.get('stack_kb'), st.get('jsc_stack_bytes')) != want:
+        diff.append('stack (stamped %s KB / %s bytes, expected %s KB / %s bytes)' % (st.get('stack_kb'), st.get('jsc_stack_bytes'), *want))
     h = harness()
     diff += ['harness ' + k for k in sorted(set(h) | set(st.get('harness_sha256', {})))
              if st.get('harness_sha256', {}).get(k) != h.get(k)]

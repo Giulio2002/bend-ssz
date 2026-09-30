@@ -8,6 +8,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/elems48_light.bend as W_proofs_obj_elems48_light
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/words_spec.bend as WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

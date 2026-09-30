@@ -8,9 +8,10 @@ Trusted (not proved here):
   `toolchain.lock.json` pins the commit and the sha256 of `bin/bend`, `bend2/base.bend` and the
   sources it was built from (`bend2/main.ts`, `bend.ts`, `comp.ts`); `tools/check.sh` and
   `tools/check_fast.sh` refuse to run on any other bytes (`tools/verify_pins.py`). This is **not
-  a Bend release and not upstream code**: the branch is that of bendlang/bend#1210 ("A copy met
+  a Bend release and not upstream code**: 45663e0a was the head of bendlang/bend#1210 ("A copy met
   after an unfold converts before either copy unfolds"), and that pull request was **closed
-  without being merged on 2026-09-30**. The trust story is the same as with the #1075 build
+  without being merged on 2026-09-30**; aa99b746 was added to the fork branch afterwards and was
+  **never submitted upstream**. The trust story is the same as with the #1075 build
   pinned before it: every result here rests on upstream Bend plus a conversion change that
   upstream did not merge, so a reader must trust those two commits (about 70 lines of
   `bend2/bend.ts`) on their own review. What they do: stock Bend compares the two sides of a
@@ -27,10 +28,10 @@ Trusted (not proved here):
   checks here). Every "checks" claim in this repository means "checks under aa99b746".
   `tools/check_fast.sh` accepts an umbrella only on the exact line `ALL PROOFS CHECK` with exit 0
   (a def that relies on unsafe or foreign code makes this checker print `SOME PROOFS FAIL`,
-  "Error: N defs rely on unsafe or foreign code", exit 1). That report covers only
-  the top file's defs and the laws, so in an umbrella (which only imports) an unsafe dependency of
-  a bridge def would not show; the guard for every def is `tools/verify_no_escapes.py`, run before
-  any check. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
+  "Error: N defs rely on unsafe or foreign code", exit 1). On this checker that report walks the
+  whole book, imports included (a probe that only imports a file with an `@unsafe def` fails with
+  "1 def relies on unsafe or foreign code"); 2.0.28's covered only the top file's defs and the
+  laws. `tools/verify_no_escapes.py`, run before any check, is a second guard over every file. It bans `@unsafe`, `def f?(` and foreign bodies (`import "x.js"`) in every `.bend`
   file, in every spelling the pinned parser accepts: it lexes comments, strings and char literals
   like the parser and allows whitespace, newlines and comments wherever the parser skips them
   (`@` newline `unsafe`, `: import "x.js"` on the def's line, `import"x.js"`). Its planted cases
@@ -49,6 +50,21 @@ Trusted (not proved here):
   "checks in the pinned checker's logic", which has no consistency proof; a reader must trust that
   none of the generated proofs is a disguised paradox, which review of the generators and of the
   proof style supports but does not prove.
+- **The stack is part of the setup, not of the logic.** A check that runs out of stack fails; it never
+  accepts more. `tools/check.sh` pins the limits (`ulimit -s 8192`, a JSC budget of 5 MB) so a result
+  does not depend on the shell, and every full check also passes at half the budget (the headroom
+  gate, docs/BUILD.md).
+- **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
+  verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
+  (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to
+  BendTT (`bend2/safe.ts`) and re-check it with the kernel proved in Lean (`bend2/bendtt.lean`,
+  whose claims are that no checked def has type `Empty` and that live code halts); a definition
+  bend2 accepts and the kernel rejects is reported as a mismatch. That would take bend.ts, the
+  rigid-subterms change included, out of the trusted base, and it would bear on the `Type : Type`
+  question above through the kernel's own logic. This repository does not run it: the kernel is
+  built separately with Lean v4.34.0, which `toolchain.lock.json` does not pin, and its cost on a
+  full check (about 5,700 files) has not been measured. So "checks" means "accepted by bend2's
+  checker at aa99b746 under `--check-only`", not the kernel's verdict.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of

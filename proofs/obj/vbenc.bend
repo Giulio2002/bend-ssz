@@ -466,6 +466,25 @@ def win_splitP(+a: Nat, +b: Nat, +k: Nat, +P: Nat, +X: List<&2, U32>)
   %e : {VF.WIN(Nat.add(a, b), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, _, X)) : List<&2, U32>}
   VF.win_split(a, b, Nat.add(k, P), X)
 
+# win_splitP with the split point written b + a: when a is a large literal and b a small one, Nat.add(b, a)
+# converts to their sum's literal in b steps, where Nat.add(a, b) would recurse a times
+def win_splitR(+a: Nat, +b: Nat, +k: Nat, +P: Nat, +X: List<&2, U32>)
+    -> {VF.WIN(Nat.add(b, a), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(Nat.add(k, a), P), X)) : List<&2, U32>}:
+  F.logic__subst(Nat, z => {VF.WIN(z, Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(Nat.add(k, a), P), X)) : List<&2, U32>},
+    Nat.add(a, b), Nat.add(b, a), F.nat__add_comm(a, b), win_splitP(a, b, k, P, X))
+
+# win_splitP and win_splitR with the next window's position written (a + k) + P, for when k is the larger
+# literal (Nat.add recurses on its first argument)
+def win_splitK(+a: Nat, +b: Nat, +k: Nat, +P: Nat, +X: List<&2, U32>)
+    -> {VF.WIN(Nat.add(a, b), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(Nat.add(a, k), P), X)) : List<&2, U32>}:
+  F.logic__subst(Nat, z => {VF.WIN(Nat.add(a, b), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(z, P), X)) : List<&2, U32>},
+    Nat.add(k, a), Nat.add(a, k), F.nat__add_comm(k, a), win_splitP(a, b, k, P, X))
+
+def win_splitS(+a: Nat, +b: Nat, +k: Nat, +P: Nat, +X: List<&2, U32>)
+    -> {VF.WIN(Nat.add(b, a), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(Nat.add(a, k), P), X)) : List<&2, U32>}:
+  F.logic__subst(Nat, z => {VF.WIN(Nat.add(b, a), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, Nat.add(z, P), X)) : List<&2, U32>},
+    Nat.add(k, a), Nat.add(a, k), F.nat__add_comm(k, a), win_splitR(a, b, k, P, X))
+
 # Byte prefixes of two word lists at p agree when the windows of m >= L/4 words there agree.
 def bytes_frame(+L: Nat, +m: Nat, +p: Nat, +X1: List<&2, U32>, +X2: List<&2, U32>, +hq: {Nat.is_le(L, A.quad(m)) == True{} : Bool},
     +h: {VF.WIN(m, p, X1) == VF.WIN(m, p, X2) : List<&2, U32>})

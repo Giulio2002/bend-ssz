@@ -9,6 +9,8 @@ import ./vec_uint16_16_e2e_generated.bend as EB
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/packed_bytes_light.bend as M1_PB
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

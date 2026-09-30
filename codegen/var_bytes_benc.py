@@ -230,6 +230,11 @@ def scput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos1: U32, +P1: Nat, +e1: {{U32.t
     lenL = lambda t, pft: (f'FD.logic__subst(Nat, z => {{Nat.is_lt({KS1}, z) == {TRUE}}}, VB.pw(dd), VB.len({SL(t)}), '  # noqa: E731
                            f'Equal.sym(Nat, VB.len({SL(t)}), VB.pw(dd), FD.array__slots_length(U32, dd, {t}, {pft})), hks)')
     pf2 = f'VF.updv_perfect([{FS}], dd, D, Nat.add(0n, P), pf)'
+    w('''# 1 + (k + (1 + P)) as (2 + k) + P at a symbolic k: instantiated at a literal k it converts without
+# walking k in unary (the literal's own Nat.add would recurse once per unit)
+def sh2(+k: Nat, +P: Nat) -> {Nat.add(1n, Nat.add(k, Nat.add(1n, P))) == Nat.add(Nat.add(2n, k), P) : Nat}:
+  Equal.cong(Nat, Nat, z => Nat.add(1n, z), Nat.add(k, Nat.add(1n, P)), Nat.add(1n, Nat.add(k, P)), FD.nat__add_succ(k, P))
+''')
     w(f'''# The writer at pos = 4 P over any perfect tree D (depth dd < 29) with room for the encoding, a zero
 # word under the child's innermost byte list and a zero word after the SyncCommittee's pubkeys.
 def putw({DP}, {", ".join(hyps)}, +pos: U32, +eP: {{U32.to_nat(pos) == A.quad(P) : Nat}},
@@ -237,7 +242,7 @@ def putw({DP}, {", ".join(hyps)}, +pos: U32, +eP: {{U32.to_nat(pos) == A.quad(P)
     -> {{{Tn}_putn(FD.array__thaw(U32, D), pos, {OBJ}) == {RHS} : {TY}}}:
   +hH = hHP(N, dd, P, hdst)
   +hks = FD.nat__lt_le_trans({KS1}, Nat.add(1n, {KS1}), VB.pw(dd), FD.nat__lt_succ({KS1}), hb({SCW + 1}n, 1n, P, dd, {{==}}, hH))
-  +hfr = FD.logic__subst(Nat, z => {{Nat.is_le(z, {PC}) == {TRUE}}}, Nat.add({SCW + 2}n, P), Nat.add(1n, {KS1}), Equal.sym(Nat, Nat.add(1n, {KS1}), Nat.add({SCW + 2}n, P), FD.nat__add_assoc({SCW + 1}n, 1n, P)),
+  +hfr = FD.logic__subst(Nat, z => {{Nat.is_le(z, {PC}) == {TRUE}}}, Nat.add({SCW + 2}n, P), Nat.add(1n, {KS1}), Equal.sym(Nat, Nat.add(1n, {KS1}), Nat.add({SCW + 2}n, P), sh2({SCW}n, P)),
     Order.add_right({SCW + 2}n, {H}n, P, {{==}}))
   +hzl = Equal.trans(U32, VB.slot({L1}, {KS1}), VB.slot({D2}, {KS1}), 0,
     VBZ.win1_slot({SL(L1)}, {SL(D2)}, {KS1}, {lenL(L1, f"pfL1({DA}, pf)")}, {lenL(D2, pf2)},
@@ -435,7 +440,8 @@ def eqg(+P: Nat) -> {{{p45} == {pg} : Nat}}:
     w(f'    {{_ == {RHS} : {LT}}}')
     w(f'  %Equal.sym({LT}, {W4("1n", p0)}, [{FS}], seg0({WA_})) :')
     w(f'    {{VF.app(_, {W4(f"{H - 1}n", "Nat.add(1n, P)")}) == {RHS} : {LT}}}')
-    w(f'  %Equal.sym({LT}, {W4(f"Nat.add({SCW + SCG}n, {WB}n)", pk)}, VF.app({W4(f"{SCW + SCG}n", pk)}, {W4(f"{WB}n", f"Nat.add(Nat.add(1n, {SCW + SCG}n), P)")}), VBE.win_splitP({SCW + SCG}n, {WB}n, 1n, P, {S_})) :')
+    # the split point written small-first (48 + 6156): Nat.add recurses on its first argument
+    w(f'  %Equal.sym({LT}, {W4(f"Nat.add({WB}n, {SCW + SCG}n)", pk)}, VF.app({W4(f"{SCW + SCG}n", pk)}, {W4(f"{WB}n", f"Nat.add(Nat.add(1n, {SCW + SCG}n), P)")}), VBE.win_splitR({SCW + SCG}n, {WB}n, 1n, P, {S_})) :')
     w(f'    {{VF.app([{FS}], _) == {RHS} : {LT}}}')
     w(f'  %Equal.sym({LT}, {W4(f"Nat.add({NWS}, {SCG}n)", pk)}, VF.app({W4(NWS, pk)}, {W4(f"{SCG}n", f"Nat.add(Nat.add(1n, {NWS}), P)")}), VBE.win_splitP({NWS}, {SCG}n, 1n, P, {S_})) :')
     w(f'    {{VF.app([{FS}], VF.app(_, {W4(f"{WB}n", pb)})) == {RHS} : {LT}}}')

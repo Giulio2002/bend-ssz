@@ -6,6 +6,7 @@ import ./e2e_tree.bend as E3
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types_light.bend as M1
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/words_spec.bend as M3_WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -27,7 +28,7 @@ def WZ2048() -> {O.words_new(2048) == O.Words{FD.array__thaw(U32, FD.array__trep
   {==}
 
 def premise_rep() -> M1.rep_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default(), Spec.MatrixEntry()):
-  (FuluBytes48_d.b48_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, ((FD.array__trep(U32, 10n, 0), (10n, (2048, (63n, (32n, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==})))))
+  (FuluBytes48_d.b48_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, ((FD.array__trep(U32, 10n, 0), (10n, (2048, (63n, (32n, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(2048), Nat.add(M3_WS.e32(63n), 32n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), {==})))))
 
 def premise_hc() -> {E3.at_depth(M1.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_default()), 10n) == True{} : Bool}:
   {==}

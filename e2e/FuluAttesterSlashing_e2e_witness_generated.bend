@@ -6,6 +6,9 @@ import ./e2e_ulist.bend as U
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/ulist_obj_light.bend as UL
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

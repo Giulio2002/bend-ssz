@@ -5,6 +5,7 @@ import ./e2e_support.bend as E
 import ./e2e_tree.bend as E3
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as M0_WO_WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -24,7 +25,7 @@ def WZ2048() -> {O.words_new(2048) == O.Words{FD.array__thaw(U32, FD.array__trep
   {==}
 
 def premise_rep() -> WO.rep_bv(FuluCell_d.b2048_default(), Spec.Cell()):
-  ((FD.array__trep(U32, 10n, 0), (10n, (2048, (63n, (32n, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==})
+  ((FD.array__trep(U32, 10n, 0), (10n, (2048, (63n, (32n, (WZ2048(), (FD.array__trep_perfect(U32, 10n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(2048), Nat.add(M0_WO_WS.e32(63n), 32n), {==}), ({==}, ({==}, ({==}, {==})))))))))))), {==})
 
 def premise_hc() -> {E3.at_depth(FuluCell_d.b2048_default(), 10n) == True{} : Bool}:
   {==}

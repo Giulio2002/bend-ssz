@@ -2706,10 +2706,10 @@ def mlen(+n: Nat, +x: Nat, +dd: Nat, +t: FD.array__Tree<U32>) -> {{VB.len(FD.arr
 def pkg(+M: FD.array__Tree<U32>, +W: List<&2, U32>, +hc: {{Nat.is_le(6144n, VB.len(FD.array__slots(U32, M))) == True{{}} : Bool}},
     +ew: {{VS.wtake(6144n, FD.array__slots(U32, M)) == W : List<&2, U32>}}) -> {{E48.eview(O.Words{{FD.array__thaw(U32, M), 24576}}) == S.Sequence{{AV.ch12(W)}} : S.Value}}:
   Equal.trans(S.Value, E48.eview(O.Words{{FD.array__thaw(U32, M), 24576}}), S.Sequence{{VM.bvit(512n, 12n, FD.array__slots(U32, M))}}, S.Sequence{{AV.ch12(W)}},
-    CH.e48v(M, 24576, hc),
+    CH.e48v(M, 24576, FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.len(FD.array__slots(U32, M))) == True{{}} : Bool}}, 6144n, Nat.add(VM.mulE(12n, E48.k48(24576)), 0n), FD.nat__eq_from_is_eq(6144n, Nat.add(VM.mulE(12n, E48.k48(24576)), 0n), {{==}}), hc)),
     Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, VM.bvit(512n, 12n, FD.array__slots(U32, M)), AV.ch12(W),
       Equal.trans(S.Value, VM.bvit(512n, 12n, FD.array__slots(U32, M)), AV.ch12(VS.wtake(6144n, FD.array__slots(U32, M))), AV.ch12(W),
-        bch(512n, FD.array__slots(U32, M), hc),
+        FD.logic__subst(Nat, z => {{VM.bvit(512n, 12n, FD.array__slots(U32, M)) == AV.ch12(VS.wtake(z, FD.array__slots(U32, M))) : S.Value}}, VM.mulE(12n, 512n), 6144n, FD.nat__eq_from_is_eq(VM.mulE(12n, 512n), 6144n, {{==}}), bch(512n, FD.array__slots(U32, M), FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.len(FD.array__slots(U32, M))) == True{{}} : Bool}}, 6144n, VM.mulE(12n, 512n), FD.nat__eq_from_is_eq(6144n, VM.mulE(12n, 512n), {{==}}), hc))),
         Equal.cong(List<&2, U32>, S.Value, z => AV.ch12(z), VS.wtake(6144n, FD.array__slots(U32, M)), W, ew))))
 
 # the (i) premise: a sync committee's pubkeys (24576 bytes) in a tree of depth below k holding their 6144 words
@@ -2725,7 +2725,8 @@ def pkt(+T: FD.array__Tree<U32>, +dw: Nat, +pf: {{FD.array__perfect(U32, dw, T) 
     -> {{E48.eview(O.Words{{FD.array__thaw(U32, T), 24576}}) == S.Sequence{{AV.ch12(VS.wtake(VC.NW(24576), FD.array__slots(U32, T)))}} : S.Value}}:
   pkg(T, VS.wtake(VC.NW(24576), FD.array__slots(U32, T)),
     FD.logic__subst(Nat, z => {{Nat.is_le(6144n, z) == True{{}} : Bool}}, VB.pw(dw), VB.len(FD.array__slots(U32, T)), Equal.sym(Nat, VB.len(FD.array__slots(U32, T)), VB.pw(dw), FD.array__slots_length(U32, dw, T, pf)), hr),
-    {{==}})
+    FD.logic__subst(Nat, z => {{VS.wtake(6144n, FD.array__slots(U32, T)) == VS.wtake(z, FD.array__slots(U32, T)) : List<&2, U32>}}, 6144n, VC.NW(24576),
+      FD.nat__eq_from_is_eq(6144n, VC.NW(24576), {{==}}), {{==}}))
 
 # a sync committee's pubkeys, copied from word x: the copy's root view is the window's value
 def pk(+t: FD.array__Tree<U32>, +x: Nat, +hi: {{Nat.is_le(Nat.add(6144n, x), VB.len(FD.array__slots(U32, t))) == True{{}} : Bool}})

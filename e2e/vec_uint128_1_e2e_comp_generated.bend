@@ -1,13 +1,16 @@
 import Base
+import ./e2e_wit.bend as WT
 import ./e2e_bytes.bend as W_e2e_e2e_bytes
 import ./e2e_comp.bend as C
 import ./e2e_support.bend as E
+import ./e2e_wit.bend as W_e2e_e2e_wit
 import ./vec_uint128_1_e2e_dec_generated.bend as DB
 import ./vec_uint128_1_e2e_generated.bend as EB
 import ./vec_uint128_1_e2e_root_generated.bend as RB
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -23,7 +26,7 @@ import ../types/vec_uint128_1_hashtreeroot_generated.bend as vec_uint128_1_h
 # object is written out (DB.vec_uint128_1_d_some): the (i)/(iv) premises are proved of it, and the statements' object is it.
 
 def pe_rep(+bs: +List<U32>) -> PK.rep_v16(O.Words{ANode{ANode{ANode{ANode{ALeaf{W_e2e_e2e_bytes.wn(0n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(1n, bs)}}, ANode{ALeaf{W_e2e_e2e_bytes.wn(2n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(3n, bs)}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 16}, GS.vec_uint128_1()):
-  ((FD.array__freeze(U32, ANode{ANode{ANode{ANode{ALeaf{W_e2e_e2e_bytes.wn(0n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(1n, bs)}}, ANode{ALeaf{W_e2e_e2e_bytes.wn(2n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(3n, bs)}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}), (4n, (16, (0n, (16n, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), ({==}, {==}))
+  ((FD.array__freeze(U32, ANode{ANode{ANode{ANode{ALeaf{W_e2e_e2e_bytes.wn(0n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(1n, bs)}}, ANode{ALeaf{W_e2e_e2e_bytes.wn(2n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(3n, bs)}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}), (4n, (16, (0n, (16n, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), (WT.len_isq16(ANode{ANode{ANode{ANode{ALeaf{W_e2e_e2e_bytes.wn(0n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(1n, bs)}}, ANode{ALeaf{W_e2e_e2e_bytes.wn(2n, bs)}, ALeaf{W_e2e_e2e_bytes.wn(3n, bs)}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 16, {==}), {==}))
 
 def gm(m: Maybe<&1, O.Words>, d: O.Words) -> O.Words:
   match m:

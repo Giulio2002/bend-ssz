@@ -8,6 +8,8 @@ import ./vec_uint256_2_e2e_dec_generated.bend as DB
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/obj/words_obj_light.bend as WO
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

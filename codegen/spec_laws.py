@@ -36,7 +36,7 @@ proofs/obj/spec_unique_<N>.bend adds
                       `valid_unique` = decode_complete `image_unique`, which
                       END_TO_END's frozen `deserialize_unique` is, from the
                       validator's acceptance of the schema; END_TO_END itself is
-                      not imported: on Bend 2.0.28 a check that imports it together
+                      not imported: on Bend 2.0.28 (pinned when this was written) a check that imports it together
                       with spec_fixed.bend fails to resolve spec_fixed's
                       primitive_invariants names).
 
@@ -97,7 +97,7 @@ acceptance and rejections, spec parts, uniqueness), with word_mul.bend.
 Uniqueness uses proofs/decode_unique.bend `valid_unique` (decode_complete's
 `image_unique` from the validator's acceptance of the schema, without the
 compatibility_* chain in the import closure), which END_TO_END's
-frozen `deserialize_unique` is: on Bend 2.0.28 a check that imports END_TO_END
+frozen `deserialize_unique` is: on Bend 2.0.28 (pinned when this was written) a check that imports END_TO_END
 together with spec_fixed.bend fails (spec_fixed's primitive_invariants names do
 not resolve), which broke the former spec_unique_* files.
 

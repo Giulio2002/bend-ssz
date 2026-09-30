@@ -6,6 +6,7 @@ import ./e2e_tree.bend as E3
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types_light.bend as M1
 import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/words_spec.bend as M3_WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -30,7 +31,7 @@ def WZ1056() -> {O.words_new(1056) == O.Words{FD.array__thaw(U32, FD.array__trep
   {==}
 
 def premise_rep() -> M1.rep_Deposit(FuluDeposit_d.Deposit_default(), Spec.Deposit()):
-  ({==}, (((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, ({==}, {==})))))))), {==}), (FuluDepositData_d.DepositData_default(), {==})))
+  ({==}, (((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(1056), Nat.add(M3_WS.e32(32n), 32n), {==}), {==})))))))), {==}), (FuluDepositData_d.DepositData_default(), {==})))
 
 def premise_hc() -> {E3.at_depth(M1.pj_Deposit_0(FuluDeposit_d.Deposit_default()), 9n) == True{} : Bool}:
   {==}

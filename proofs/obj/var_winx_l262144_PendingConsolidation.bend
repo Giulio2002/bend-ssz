@@ -56,8 +56,13 @@ def RVAL(+t: FD.array__Tree<U32>, +y: Nat) -> S.Value: hv0(UR.RWN(t, y), UR.RWN(
 # (RVAL unfolded by a rewrite: comparing parts(RVAL(t, y), s) with parts(<its body>, s) evaluates the parts)
 def RVQ(+t: FD.array__Tree<U32>, +y: Nat) -> {hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)) == RVAL(t, y) : S.Value}:
   {==}
+# (RWS unfolded by a rewrite too: F.limbs of RWS against F.limbs of the written-out words would expand both
+# into bytes and compare them one level per byte)
+def RWSQ(+t: FD.array__Tree<U32>, +y: Nat) -> {[UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)] == UR.RWS(4n, t, y) : List<&2, U32>}:
+  {==}
 def RPRF(+t: FD.array__Tree<U32>, +y: Nat) -> {Codec.parts(RVAL(t, y), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(UR.RWS(4n, t, y))}]} : Maybe<&2, +List<S.Part>>}:
   %RVQ(t, y) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(UR.RWS(4n, t, y))}]} : Maybe<&2, +List<S.Part>>}
+  %RWSQ(t, y) : {Codec.parts(hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(_)}]} : Maybe<&2, +List<S.Part>>}
   hp0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y))
 
 # the records j, j + 1, ..., j + k written into a record tree D

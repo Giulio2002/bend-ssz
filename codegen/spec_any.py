@@ -273,6 +273,9 @@ def gname(w, name, K, L, src):
     w(f'    Decoding.decodes(s, SF.limbs({TK}), S.Sequence{{PK.it{K}(U32.to_nat(U32.shrn({nb}, {sh}n)), F.array__slots(U32, _))}})')
     w(f'  %Equal.sym(S.Value, PK.it{K}({L}n, {SL}), AV.chu{n}(F.spec_common__take(U32, {SL}, AV.m{n}({L}n))), WA.it{K}c({L}n, {SL})) :')
     w(f'    Decoding.decodes(s, SF.limbs({TK}), S.Sequence{{_}})')
+    # the element-byte count m<n>(L) as the literal word count, by evaluating Nat.is_eq: a conversion under
+    # take/chu<n> would walk the {nw} words
+    w(f'  %F.nat__eq_from_is_eq({nw}n, AV.m{n}({L}n), {{==}}) : Decoding.decodes(s, SF.limbs({TK}), S.Sequence{{AV.chu{n}(F.spec_common__take(U32, {SL}, _))}})')
     w(f'  +hlen = F.logic__subst(Nat, z => {{Nat.is_le({nw}n, z) == True{{}} : Bool}}, F.spec_common__pow2(dw), F.spec_common__length(U32, {SL}), Equal.sym(Nat, F.spec_common__length(U32, {SL}), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)), hn)')
     w(f'  +hl = WA.len_take({SL}, {nw}n, hlen)')
     sub = lambda P: f'F.logic__subst(S.Schema, z => {P}, Spec.{name}(), s, Equal.sym(S.Schema, s, Spec.{name}(), es), {{==}})'

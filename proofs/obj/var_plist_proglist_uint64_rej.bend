@@ -33,7 +33,7 @@ import ./var_plist_proglist_uint64.bend as DC
 # BIG (checkq --big): a progressive list has no length limit, so the list storage
 # is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with
 # Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to
-# 2^26 leaves: stock Bend 2.0.28 normalizes them; with bendlang/bend#1075 they are identical terms.
+# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.
 
 def FACTS(bs: +List<U32>) -> Type: DK.Ex(Nat, k => DK.P2({List.length(&2, U32, bs) == EL.b2(k) : Nat}, {k == k : Nat}))
 

@@ -69,6 +69,17 @@ class NEnc:
         return f'T.{self.x.s.t.name}{{' + ', '.join(self.fobj[i] for i in range(len(self.x.fields))) + '}'
 
 
+
+def wsplit(a, b, k):
+    """(first width term, next position's literal sum, lemma): VBE.win_split[PRKS] with every literal sum
+    written small-first, as Nat.add recurses on its first argument (a large first literal would make the
+    conversion to the sum's literal recurse once per unit, near the checker's stack limit)."""
+    sw1, sw2 = a > b, k > a
+    first = f'Nat.add({b}n, {a}n)' if sw1 else f'Nat.add({a}n, {b}n)'
+    third = f'Nat.add({a}n, {k}n)' if sw2 else f'Nat.add({k}n, {a}n)'
+    lem = {(False, False): 'P', (True, False): 'R', (False, True): 'K', (True, True): 'S'}[(sw1, sw2)]
+    return first, third, f'VBE.win_split{lem}'
+
 def child_enc(n, g, names):
     """The encoder object of name n (EPH: codegen/var_bytes_enc.py Enc; nested: NEnc)."""
     if n in VBN.NEST:
@@ -396,8 +407,9 @@ def spec_text(x, E, layers, NL, tree, pfl, vterm, hbw, d2):
     for idx, (i, Wd, k0, Vs) in enumerate(segs):
         assert k0 == pos_
         if idx < len(segs) - 1:
-            w(f'  %Equal.sym({LT}, {win(f"Nat.add({Wd}n, {R - Wd}n)", f"Nat.add({pos_}n, P)", NL)}, VF.app({win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {win(f"{R - Wd}n", f"Nat.add(Nat.add({pos_}n, {Wd}n), P)", NL)}),')
-            w(f'      VBE.win_splitP({Wd}n, {R - Wd}n, {pos_}n, P, {S_})) :')
+            s1, s3, sl = wsplit(Wd, R - Wd, pos_)
+            w(f'  %Equal.sym({LT}, {win(s1, f"Nat.add({pos_}n, P)", NL)}, VF.app({win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {win(f"{R - Wd}n", f"Nat.add({s3}, P)", NL)}),')
+            w(f'      {sl}({Wd}n, {R - Wd}n, {pos_}n, P, {S_})) :')
             w(f'    {{{pre("_")} == {HDRE} : {LT}}}')
             rest = win(f'{R - Wd}n', f'Nat.add({pos_ + Wd}n, P)', NL)
             w(f'  %Equal.sym({LT}, {win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {Vs}, seg{i}({WA_})) :')

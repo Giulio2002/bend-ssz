@@ -162,7 +162,7 @@ def Cell_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluCell_r.b2048_ok_len(b, buf
 def Cell_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluCell_r.b2048_ok(buf, off, len) == (buf, U32.is_eq(len, 2048)) : B.Buf & Bool}:
   Cell_okb(buf, off, U32.is_eq(len, 2048))
 def Cell_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2048n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Cell(), bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size(Spec.Cell()), 2048n, bs, Codec.parts(v, Spec.Cell()), DS.facts(v, Spec.Cell(), {==}), {==}, e, hn)
+  VRF.lo(SS.fixed_size(Spec.Cell()), 2048n, bs, Codec.parts(v, Spec.Cell()), DS.facts(v, Spec.Cell(), {==}), VRF.some_is(SS.fixed_size(Spec.Cell()), 2048n, {==}), e, hn)
 def Cell_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2048n) == False{} : Bool}) -> Decoding.outside_image(Spec.Cell(), bs):
   v => e => Cell_rj(bs, hn, v, e)
 
