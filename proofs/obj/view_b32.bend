@@ -112,3 +112,36 @@ def view_set(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +x2: 
     {S.Sequence{WR_L.items(c, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, _, 0n)), 0n)} == VS.field_set(S.Sequence{WR_L.items(c, F.array__slots(U32, t), 0n)}, J, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, WR_L.items(c, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), 0n), VS.items_set(WR_L.items(c, F.array__slots(U32, t), 0n), J, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}),
     items_set(c, J, d, t, x0, x1, x2, x3, x4, x5, x6, x7, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 8n), F.spec_common__pow2(d)) == True{} : Bool}, q, O.e8(J), hq, hb), pf))
+
+# the run written at block J = i0 + k, one past the k blocks' items: the items are the old items and the new one
+def items_app(+k: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +i0: Nat, +J: Nat, +hJ: {J == Nat.add(i0, k) : Nat}, +hb: {Nat.is_le(Nat.add(O.e8(J), 8n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {WR_L.items(1n+k, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), i0) == VS.items_snoc(WR_L.items(k, F.array__slots(U32, t), i0), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(S.Value, S.BytesValue{WS.cb(F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), i0)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, F.logic__subst(Nat, z => {S.BytesValue{WS.cb(F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), z)} == S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])} : S.Value}, J, i0, eJ, el_hit(d, t, x0, x1, x2, x3, x4, x5, x6, x7, J, hb, pf))) :
+        {S.Items{_, S.EmptyItems{}} == S.Items{S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(S.Value, S.BytesValue{WS.cb(F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), i0)}, S.BytesValue{WS.cb(F.array__slots(U32, t), i0)}, el_same(d, t, x0, x1, x2, x3, x4, x5, x6, x7, i0, J, F.nat__is_eq_lt(i0, J, hlt), hb, pf)) :
+        {S.Items{_, WR_L.items(1n+p, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), 1n+i0)} == S.Items{S.BytesValue{WS.cb(F.array__slots(U32, t), i0)}, VS.items_snoc(WR_L.items(p, F.array__slots(U32, t), 1n+i0), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])})} : S.Value}
+      %Equal.sym(S.Value, WR_L.items(1n+p, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), 1n+i0), VS.items_snoc(WR_L.items(p, F.array__slots(U32, t), 1n+i0), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), items_app(p, d, t, x0, x1, x2, x3, x4, x5, x6, x7, 1n+i0, J, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hb, pf)) :
+        {S.Items{S.BytesValue{WS.cb(F.array__slots(U32, t), i0)}, _} == S.Items{S.BytesValue{WS.cb(F.array__slots(U32, t), i0)}, VS.items_snoc(WR_L.items(p, F.array__slots(U32, t), 1n+i0), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])})} : S.Value}
+      {==}
+
+# the view of the storage after the run is written at word q = O.e8(c), for one block past the c items: the view before with the new item at the end.
+# c' is the element count the view reads after (1 + c).
+def view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +q: Nat, +hq: {q == O.e8(c) : Nat}, +hc2: {c2 == 1n+c : Nat},
+    +hb: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {S.Sequence{WR_L.items(c2, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)))), 0n)} == VS.seq_append(S.Sequence{WR_L.items(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{WR_L.items(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)))), 0n)} == VS.seq_append(S.Sequence{WR_L.items(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n))), WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), F.array__freeze_thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n))) :
+    {S.Sequence{WR_L.items(1n+c, F.array__slots(U32, _), 0n)} == VS.seq_append(S.Sequence{WR_L.items(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{WR_L.items(1n+c, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), 0n)} == VS.seq_append(S.Sequence{WR_L.items(c, F.array__slots(U32, _), 0n)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  %Equal.sym(Nat, q, O.e8(c), hq) :
+    {S.Sequence{WR_L.items(1n+c, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, _, 0n)), 0n)} == VS.seq_append(S.Sequence{WR_L.items(c, F.array__slots(U32, t), 0n)}, S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, WR_L.items(1n+c, F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(c), 0n)), 0n), VS.items_snoc(WR_L.items(c, F.array__slots(U32, t), 0n), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}),
+    items_app(c, d, t, x0, x1, x2, x3, x4, x5, x6, x7, 0n, c, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 8n), F.spec_common__pow2(d)) == True{} : Bool}, q, O.e8(c), hq, hb), pf))

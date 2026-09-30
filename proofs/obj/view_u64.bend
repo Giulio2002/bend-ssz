@@ -157,6 +157,39 @@ def view_set(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +J: N
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), 0n), VS.items_set(items2(c, F.array__slots(U32, t), 0n), J, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
     items_set(c, J, d, t, x0, x1, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(J), hq, hb), pf))
 
+# the run written at block J = i0 + k, one past the k blocks' items: the items are the old items and the new one
+def items_app(+k: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +i0: Nat, +J: Nat, +hJ: {J == Nat.add(i0, k) : Nat}, +hb: {Nat.is_le(Nat.add(Nat.double(J), 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {items2(1n+k, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), i0) == VS.items_snoc(items2(k, F.array__slots(U32, t), i0), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(S.Value, el2(F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), i0), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, F.logic__subst(Nat, z => {el2(F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), z) == S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}} : S.Value}, J, i0, eJ, el_hit(d, t, x0, x1, J, hb, pf))) :
+        {S.Items{_, S.EmptyItems{}} == S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(S.Value, el2(F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), i0), el2(F.array__slots(U32, t), i0), el_same(d, t, x0, x1, i0, J, F.nat__is_eq_lt(i0, J, hlt), hb, pf)) :
+        {S.Items{_, items2(1n+p, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), 1n+i0)} == S.Items{el2(F.array__slots(U32, t), i0), VS.items_snoc(items2(p, F.array__slots(U32, t), 1n+i0), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}})} : S.Value}
+      %Equal.sym(S.Value, items2(1n+p, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), 1n+i0), VS.items_snoc(items2(p, F.array__slots(U32, t), 1n+i0), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), items_app(p, d, t, x0, x1, 1n+i0, J, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hb, pf)) :
+        {S.Items{el2(F.array__slots(U32, t), i0), _} == S.Items{el2(F.array__slots(U32, t), i0), VS.items_snoc(items2(p, F.array__slots(U32, t), 1n+i0), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}})} : S.Value}
+      {==}
+
+# the view of the storage after the run is written at word q = Nat.double(c), for one block past the c items: the view before with the new item at the end.
+# c' is the element count the view reads after (1 + c).
+def view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +q: Nat, +hq: {q == Nat.double(c) : Nat}, +hc2: {c2 == 1n+c : Nat},
+    +hb: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {S.Sequence{items2(c2, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{items2(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n))), WW.tk([x0, x1], d, t, q, 0n), F.array__freeze_thaw(U32, WW.tk([x0, x1], d, t, q, 0n))) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, _), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, _), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(Nat, q, Nat.double(c), hq) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, _, 0n)), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, t), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(c), 0n)), 0n), VS.items_snoc(items2(c, F.array__slots(U32, t), 0n), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
+    items_app(c, d, t, x0, x1, 0n, c, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(c), hq, hb), pf))
+
 # the same, for UL_L.uitems over storage that holds the element count's words
 def view_set_uitems(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +J: Nat, +q: Nat, +hq: {q == Nat.double(J) : Nat},
     +hb: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
@@ -175,6 +208,25 @@ def view_set_uitems(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), 0n), VS.items_set(items2(c, F.array__slots(U32, t), 0n), J, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
     items_set(c, J, d, t, x0, x1, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(J), hq, hb), pf))
 
+# the same for UL_L.uitems: the view after the new item is written at word q = Nat.double(c), for one block past the c items (the storage holds the words of both counts)
+def view_app_uitems(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +q: Nat, +hq: {q == Nat.double(c) : Nat}, +hc2: {c2 == 1n+c : Nat},
+    +hb: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {S.Sequence{UL_L.uitems(c2, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))))} == VS.seq_append(S.Sequence{UL_L.uitems(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{UL_L.uitems(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))))} == VS.seq_append(S.Sequence{UL_L.uitems(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n))), WW.tk([x0, x1], d, t, q, 0n), F.array__freeze_thaw(U32, WW.tk([x0, x1], d, t, q, 0n))) :
+    {S.Sequence{UL_L.uitems(1n+c, F.array__slots(U32, _))} == VS.seq_append(S.Sequence{UL_L.uitems(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{UL_L.uitems(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)))} == VS.seq_append(S.Sequence{UL_L.uitems(c, F.array__slots(U32, _))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(S.Value, UL_L.uitems(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), 0n), conv_uitems(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), F.logic__subst(Nat, z => {Nat.is_le(Nat.double(1n+c), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), F.spec_common__pow2(d), F.array__slots_length(U32, d, WW.tk([x0, x1], d, t, q, 0n), WW.tk_perfect([x0, x1], d, t, q, 0n, pf))), F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), Equal.trans(Nat, Nat.add(q, 2n), Nat.add(Nat.double(c), 2n), Nat.double(1n+c), Equal.cong(Nat, Nat, z => Nat.add(z, 2n), q, Nat.double(c), hq), Equal.trans(Nat, Nat.add(Nat.double(c), 2n), Nat.add(2n, Nat.double(c)), Nat.double(1n+c), F.nat__add_comm(Nat.double(c), 2n), {==})), hb)))) :
+    {S.Sequence{_} == VS.seq_append(S.Sequence{UL_L.uitems(c, F.array__slots(U32, t))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(S.Value, UL_L.uitems(c, F.array__slots(U32, t)), items2(c, F.array__slots(U32, t), 0n), conv_uitems(c, F.array__slots(U32, t), F.logic__subst(Nat, z => {Nat.is_le(Nat.double(c), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf)), F.nat__le_trans(Nat.double(c), Nat.double(1n+c), F.spec_common__pow2(d), F.nat__double_le(c, 1n+c, F.nat__le_succ(c)), F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), Equal.trans(Nat, Nat.add(q, 2n), Nat.add(Nat.double(c), 2n), Nat.double(1n+c), Equal.cong(Nat, Nat, z => Nat.add(z, 2n), q, Nat.double(c), hq), Equal.trans(Nat, Nat.add(Nat.double(c), 2n), Nat.add(2n, Nat.double(c)), Nat.double(1n+c), F.nat__add_comm(Nat.double(c), 2n), {==})), hb))))) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), 0n)} == VS.seq_append(S.Sequence{_}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(Nat, q, Nat.double(c), hq) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, _, 0n)), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, t), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(c), 0n)), 0n), VS.items_snoc(items2(c, F.array__slots(U32, t), 0n), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
+    items_app(c, d, t, x0, x1, 0n, c, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(c), hq, hb), pf))
+
 # the same, for PK_L.it8 over storage that holds the element count's words
 def view_set_it8(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +J: Nat, +q: Nat, +hq: {q == Nat.double(J) : Nat},
     +hb: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
@@ -192,3 +244,22 @@ def view_set_it8(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +
     {S.Sequence{items2(c, F.array__slots(U32, WW.tk([x0, x1], d, t, _, 0n)), 0n)} == VS.field_set(S.Sequence{items2(c, F.array__slots(U32, t), 0n)}, J, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(J), 0n)), 0n), VS.items_set(items2(c, F.array__slots(U32, t), 0n), J, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
     items_set(c, J, d, t, x0, x1, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(J), hq, hb), pf))
+
+# the same for PK_L.it8: the view after the new item is written at word q = Nat.double(c), for one block past the c items (the storage holds the words of both counts)
+def view_app_it8(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +q: Nat, +hq: {q == Nat.double(c) : Nat}, +hc2: {c2 == 1n+c : Nat},
+    +hb: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {S.Sequence{PK_L.it8(c2, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))))} == VS.seq_append(S.Sequence{PK_L.it8(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{PK_L.it8(_, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)))))} == VS.seq_append(S.Sequence{PK_L.it8(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n))), WW.tk([x0, x1], d, t, q, 0n), F.array__freeze_thaw(U32, WW.tk([x0, x1], d, t, q, 0n))) :
+    {S.Sequence{PK_L.it8(1n+c, F.array__slots(U32, _))} == VS.seq_append(S.Sequence{PK_L.it8(c, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{PK_L.it8(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)))} == VS.seq_append(S.Sequence{PK_L.it8(c, F.array__slots(U32, _))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(S.Value, PK_L.it8(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), 0n), conv_it8(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), F.logic__subst(Nat, z => {Nat.is_le(Nat.double(1n+c), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n))), F.spec_common__pow2(d), F.array__slots_length(U32, d, WW.tk([x0, x1], d, t, q, 0n), WW.tk_perfect([x0, x1], d, t, q, 0n, pf))), F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), Equal.trans(Nat, Nat.add(q, 2n), Nat.add(Nat.double(c), 2n), Nat.double(1n+c), Equal.cong(Nat, Nat, z => Nat.add(z, 2n), q, Nat.double(c), hq), Equal.trans(Nat, Nat.add(Nat.double(c), 2n), Nat.add(2n, Nat.double(c)), Nat.double(1n+c), F.nat__add_comm(Nat.double(c), 2n), {==})), hb)))) :
+    {S.Sequence{_} == VS.seq_append(S.Sequence{PK_L.it8(c, F.array__slots(U32, t))}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(S.Value, PK_L.it8(c, F.array__slots(U32, t)), items2(c, F.array__slots(U32, t), 0n), conv_it8(c, F.array__slots(U32, t), F.logic__subst(Nat, z => {Nat.is_le(Nat.double(c), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, t)), Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf)), F.nat__le_trans(Nat.double(c), Nat.double(1n+c), F.spec_common__pow2(d), F.nat__double_le(c, 1n+c, F.nat__le_succ(c)), F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), Equal.trans(Nat, Nat.add(q, 2n), Nat.add(Nat.double(c), 2n), Nat.double(1n+c), Equal.cong(Nat, Nat, z => Nat.add(z, 2n), q, Nat.double(c), hq), Equal.trans(Nat, Nat.add(Nat.double(c), 2n), Nat.add(2n, Nat.double(c)), Nat.double(1n+c), F.nat__add_comm(Nat.double(c), 2n), {==})), hb))))) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, q, 0n)), 0n)} == VS.seq_append(S.Sequence{_}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(Nat, q, Nat.double(c), hq) :
+    {S.Sequence{items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, _, 0n)), 0n)} == VS.seq_append(S.Sequence{items2(c, F.array__slots(U32, t), 0n)}, S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, items2(1n+c, F.array__slots(U32, WW.tk([x0, x1], d, t, Nat.double(c), 0n)), 0n), VS.items_snoc(items2(c, F.array__slots(U32, t), 0n), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}),
+    items_app(c, d, t, x0, x1, 0n, c, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), F.spec_common__pow2(d)) == True{} : Bool}, q, Nat.double(c), hq, hb), pf))

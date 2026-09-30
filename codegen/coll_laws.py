@@ -434,6 +434,40 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  %%Equal.sym(Bool, %s, True{}, hw) : {%s.%s_get_in(_, %s, %s) == %s}' % (gw, DA, c, OBJN(TW), LN, RESA))
     w('  %%Equal.sym(O.Words & %s, %s, (%s, %s), CW.%s_rw(%s)) : {%s.%s_some(_) == %s}' % (ET, READA, OBJN(TW), V, kind, la, DA, c, RESA))
     w('  {==}')
+    # the spec value: the view after an accepted append is the view before with the new element's view at the end
+    vw = VIEWS.get((kind, c[0]))
+    if vw:
+        path, al, VIEW, cnt, conv = vw
+        fam = VL.FAMILIES[kind]
+        imps[al] = path
+        imps['VI_' + kind] = 'proofs/obj/view_%s.bend' % kind
+        imps['VS'] = 'proofs/obj/value_set.bend'
+        imps['S'] = 'types/schema.bend'
+        if kind == 'b32':
+            imps['FX'] = 'proofs/obj/spec_fixed.bend'
+        elif kind == 'b48':
+            imps['RN_L'] = 'proofs/obj/root_names_light.bend'
+        elif kind == 'u64':
+            imps['P'] = 'types/primitive.bend'
+        cnt_of = lambda nn: re.sub(r'(?<![\w.])n(?![\w.])', nn, cnt)
+        MKV = fam['MK'](xs)
+        premva = ('+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                  '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, '
+                  '+hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, '
+                  '+hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}, '
+                  '+hqe: {q == %s : Nat}, +hcn: {%s == 1n+%s : Nat}'
+                  % (', '.join('+%s: U32' % x for x in xs), GA, NB, PA, W, fam['BASE'](cnt_of('n')), cnt_of(NB), cnt_of('n')))
+        RESVA = 'VS.seq_append(%s(%s), %s)' % (VIEW, OBJ('t'), MKV)
+        w('def %s_api_view_append(%s)\n    -> {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}:' % (c, premva, VIEW, APP, RESVA))
+        w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}' % (GA, VIEW, GROW, RESVA))
+        w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s(Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))) == %s : S.Value}'
+          % (OBJ('t'), NB, OBJ('t'), NB, VIEW, DA, c, NB, LN, V, RESVA))
+        w('  %%Equal.sym(O.Words, %s, %s, CW.%s_write(%s)) : {%s(_) == %s : S.Value}' % (WRA, OBJN(TW), kind, la, VIEW, RESVA))
+        if conv:
+            w('  VI_%s.view_app_%s(%s, %s, d, t, %s, q, hqe, hcn, hr, pf)' % (kind, conv, cnt_of('n'), cnt_of(NB), ', '.join(xs)))
+        else:
+            w('  VI_%s.view_app(%s, %s, d, t, %s, q, hqe, hcn, hr, pf)' % (kind, cnt_of('n'), cnt_of(NB), ', '.join(xs)))
+        nl += 1
     # the same when the append reallocates the storage (O.words_fit copies the old words into a new tree)
     GW = grow_parts('n', NB)
     TG = GW['G']
@@ -570,7 +604,30 @@ def seq_view_law(w, I, DA, T, EL, GS, c, imps):
     w('  %%Equal.sym(Array<%s>, Array.set(%s, %s, i, v), F.array__thaw(%s, F.array__upd(%s, d, t, U32.to_nat(i), v)), F.array__set(%s, d, t, i, v, x, hd, hi, hx, pf)) :'
       ' {%s(%s.%s{_, n}) == %s : S.Value}' % (EL, EL, TH, EL, EL, EL, XV, DA, I['T'], RES))
     w('  VQ.%s_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)' % c)
-    return 1
+    if not I['GA']:
+        return 1
+    # an accepted append (the storage has room): the view before with the new element's view at the end
+    GA = re.sub(r'(?<![\w.])arr(?![\w.])', TH, I['GA'])
+    GAx = GA
+    N1 = '(n + 1 : U32)'
+    APPO = '%s.%s_append(%s, v)' % (DA, c, SEQ(TH))
+    SEQA = lambda room: SEQ_('Array.set(%s, %s, n, v)' % (EL, room), N1)
+    SEQ_ = lambda a, m: '%s.%s{%s, %s}' % (DA, I['T'], a, m)
+    RESA = 'VS.seq_append(%s(%s), %s(v))' % (XV, SEQ(TH), sp['V'])
+    prea = ('+d: Nat, +t: F.array__Tree<%s>, +n: U32, +v: %s, +x: %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+            '+hr: {U32.is_lt(n, F.u32__pow2u(d)) == True{} : Bool}, '
+            '+hx: {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(n)) == Some{x} : Maybe<&2, %s>}, '
+            '+pf: {F.array__perfect(%s, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, +hcn: {U32.to_nat(%s) == 1n+U32.to_nat(n) : Nat}'
+            % (EL, EL, EL, EL, EL, EL, EL, GA, N1))
+    w('def %s_api_view_append(%s)\n    -> {%s(Pair.fst(%s.%s, Bool, %s)) == %s : S.Value}:' % (c, prea, XV, DA, I['T'], APPO, RESA))
+    w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(%s.%s, Bool, %s.%s_app_in(_, %s, n, v))) == %s : S.Value}' % (GAx, XV, DA, I['T'], DA, c, TH, RESA))
+    w('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, F.u32__pow2u(d)), F.array__size_thaw(%s, d, t, pf)) : {%s(%s) == %s : S.Value}'
+      % (EL, EL, TH, TH, EL, XV, SEQA('%s.%s_room_sized(n, _)' % (DA, c)), RESA))
+    w('  %%Equal.sym(Bool, U32.is_lt(n, F.u32__pow2u(d)), True{}, hr) : {%s(%s) == %s : S.Value}' % (XV, SEQA('%s.%s_room_pick(_, %s, n)' % (DA, c, TH)), RESA))
+    w('  %%Equal.sym(Array<%s>, Array.set(%s, %s, n, v), F.array__thaw(%s, F.array__upd(%s, d, t, U32.to_nat(n), v)), F.array__set(%s, d, t, n, v, x, hd, F.array__lt_bridge(n, d, hd, True{}, hr), hx, pf)) :'
+      ' {%s(%s.%s{_, %s}) == %s : S.Value}' % (EL, EL, TH, EL, EL, EL, XV, DA, I['T'], N1, RESA))
+    w('  VQ.%s_view_app(U32.to_nat(n), U32.to_nat(%s), d, t, v, F.array__lt_bridge(n, d, hd, True{}, hr), hcn, pf)' % (c, N1))
+    return 2
 
 
 def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):

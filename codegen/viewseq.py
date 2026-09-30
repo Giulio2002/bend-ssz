@@ -80,6 +80,40 @@ def %(c)s_xi_set(+k: Nat, +r: Nat, +W: List<&2, %(E)s>, +i0: Nat, +J: Nat, +e: %
       {==}
 '''
 
+XI_APP = '''# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def %(c)s_xi_app(+k: Nat, +W: List<&2, %(E)s>, +i0: Nat, +J: Nat, +e: %(E)s, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(%(E)s, W)) == True{} : Bool})
+    -> {%(a1)s == VS.items_snoc(%(b)s, %(V)s(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %%Equal.sym(%(E)s, %(xu)s, e, F.logic__subst(Nat, z => {%(xz)s == e : %(E)s}, J, i0, eJ, %(c)s_xat_same(W, J, e, hl))) :
+        {S.Items{%(V)s(_), S.EmptyItems{}} == S.Items{%(V)s(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %%Equal.sym(%(E)s, %(xu)s, %(xw)s, %(c)s_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{%(V)s(_), %(tu1)s} == S.Items{%(V)s(%(xw)s), VS.items_snoc(%(tw)s, %(V)s(e))} : S.Value}
+      %%Equal.sym(S.Value, %(tu1)s, VS.items_snoc(%(tw)s, %(V)s(e)), %(c)s_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{%(V)s(%(xw)s), _} == S.Items{%(V)s(%(xw)s), VS.items_snoc(%(tw)s, %(V)s(e))} : S.Value}
+      {==}
+'''
+
+VIEW_APP = '''def %(c)s_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<%(E)s>, +e: %(E)s, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(%(E)s, d, t) == True{} : Bool})
+    -> {S.Sequence{%(xa)s} == VS.seq_append(S.Sequence{%(xb)s}, %(V)s(e)) : S.Value}:
+  %%Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{%(xa_)s} == VS.seq_append(S.Sequence{%(xb)s}, %(V)s(e)) : S.Value}
+  %%Equal.sym(F.array__Tree<%(E)s>, %(ftu)s, %(tu)s, F.array__freeze_thaw(%(E)s, %(tu)s)) :
+    {S.Sequence{%(xi_)s} == VS.seq_append(S.Sequence{%(xb)s}, %(V)s(e)) : S.Value}
+  %%Equal.sym(F.array__Tree<%(E)s>, %(ft)s, t, F.array__freeze_thaw(%(E)s, t)) :
+    {S.Sequence{%(xa2)s} == VS.seq_append(S.Sequence{%(xi2)s}, %(V)s(e)) : S.Value}
+  %%Equal.sym(List<&2, %(E)s>, %(slu)s, %(upd)s, F.array__upd_slots(%(E)s, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_%(c)s(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_%(c)s(c, %(slt)s, 0n)}, %(V)s(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_%(c)s(1n+c, %(upd)s, 0n), VS.items_snoc(RTL.xi_%(c)s(c, %(slt)s, 0n), %(V)s(e)),
+    %(c)s_xi_app(c, %(slt)s, 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(%(E)s, %(slt)s), Equal.sym(Nat, F.spec_common__length(%(E)s, %(slt)s), F.spec_common__pow2(d), F.array__slots_length(%(E)s, d, t, pf)), hJ)))
+'''
+
 VIEW_SET = '''def %(c)s_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<%(E)s>, +J: Nat, +e: %(E)s, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
     +pf: {F.array__perfect(%(E)s, d, t) == True{} : Bool})
     -> {S.Sequence{%(xa)s} == VS.field_set(S.Sequence{%(xb)s}, J, %(V)s(e)) : S.Value}:
@@ -125,6 +159,8 @@ def seq_file():
         out.append(XI_LEMMAS % dict(c=c, E=E, V=V, a=XI('k', upd('W'), 'i0'), b=XI('k', 'W', 'i0'), xu=XAT(upd('W'), 'i0'), xw=XAT('W', 'i0'), xz=XAT(upd('W'), 'z'),
                                     tu=XI('q', upd('W'), '1n+i0'), tw=XI('q', 'W', '1n+i0')))
         TU = 'F.array__upd(%s, d, t, J, e)' % E
+        out.append(XI_APP % dict(c=c, E=E, V=V, a1=XI('1n+k', upd('W'), 'i0'), b=XI('k', 'W', 'i0'), xu=XAT(upd('W'), 'i0'), xw=XAT('W', 'i0'), xz=XAT(upd('W'), 'z'),
+                                 tu1=XI('1n+p', upd('W'), '1n+i0'), tw=XI('p', 'W', '1n+i0')))
 
         def SL(T):
             return 'F.array__slots(%s, %s)' % (E, T)
@@ -135,4 +171,10 @@ def seq_file():
                                    ftu=FT(TU), tu=TU, ft=FT('t'), xi_='RTL.xi_%s(c, %s, 0n)' % (c, SL('_')),
                                    xa2='RTL.xi_%s(c, %s, 0n)' % (c, SL(TU)), xi2='RTL.xi_%s(c, %s, 0n)' % (c, SL('_')),
                                    slu=SL(TU), upd=upd(SL('t')), slt=SL('t')))
+        TUc = 'F.array__upd(%s, d, t, c, e)' % E
+        out.append(VIEW_APP % dict(c=c, E=E, V=V, xa='RTL.xi_%s(c2, %s, 0n)' % (c, SL(FT(TUc))), xb='RTL.xi_%s(c, %s, 0n)' % (c, SL(FT('t'))),
+                                   xa_='RTL.xi_%s(_, %s, 0n)' % (c, SL(FT(TUc))),
+                                   ftu=FT(TUc), tu=TUc, ft=FT('t'), xi_='RTL.xi_%s(1n+c, %s, 0n)' % (c, SL('_')),
+                                   xa2='RTL.xi_%s(1n+c, %s, 0n)' % (c, SL(TUc)), xi2='RTL.xi_%s(c, %s, 0n)' % (c, SL('_')),
+                                   slu=SL(TUc), upd=upd(SL('t'), 'c'), slt=SL('t')))
     return '\n'.join(out)
