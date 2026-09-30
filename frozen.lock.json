@@ -44,6 +44,7 @@
     "vendor/consensus-specs/ssz/simple-serialize.md": "34c206fea354c2948a97fd33c288aaf4b7aacb823e985d0bbd2b73c4e2a023fd"
   },
   "statement_defs": {
+    "e2e/BitsStruct_e2e_comp_generated.bend": "13a9e65d2c68bc13518c7899f6633f534aaf9c807e8057082d656fba2f56002f",
     "e2e/BitsStruct_e2e_dec_generated.bend": "b7c67390459d86c7ca1375acfdf869f4f21752922f9ecce50c10e56f73ad3f56",
     "e2e/BitsStruct_e2e_generated.bend": "094a8dfaf59073ae554a7f26c7fbd23d4ef9fb9a50ffbfa6845ebe55af536956",
     "e2e/BitsStruct_e2e_root_generated.bend": "311d9a9b8310332977c61aed600a9b8d62c06f1cc1df1e8387b887e35f6232ee",
@@ -339,6 +340,7 @@
     "e2e/FuluHash32_e2e_dec_generated.bend": "99ec696bde959a40e00678643a01bf448a67bea6b96d19dcf40f6f174ca6f7c7",
     "e2e/FuluHash32_e2e_generated.bend": "71cb2cdffebdd1bd3d9d34502727b834b69aa00b006d8af212a3c1c74ff19ba6",
     "e2e/FuluHash32_e2e_ser_generated.bend": "49ca00c54fc8b135253c4a808ddf49b6a52811e95efa096e03177fab25c8b508",
+    "e2e/FuluHistoricalBatch_e2e_comp_generated.bend": "29496f5cb9dbd5e698903acf0aeb32fc7b3a33e365cec0d810b6ca6efaa9c1e8",
     "e2e/FuluHistoricalBatch_e2e_dec_generated.bend": "67f2d6ee1b08da0b6920fc42daadacb110c3877605b1c8a26873ae9e8b698837",
     "e2e/FuluHistoricalBatch_e2e_generated.bend": "cf5efd5f0ff4632343ed50e3b5f1e8d945c3e89f99bd16cdd3680a346782f214",
     "e2e/FuluHistoricalBatch_e2e_set_generated.bend": "27d5de4e659d16251ede4ba363caa634abcc6284263ee3dcdcc4240ca2bc7a84",
@@ -521,6 +523,7 @@
     "e2e/FuluSyncCommitteeMessage_e2e_generated.bend": "12282c1b55fd7612168a19ece496e8bca440eac8ea8d4ec46f4b1c3df37980d8",
     "e2e/FuluSyncCommitteeMessage_e2e_ser_generated.bend": "c3a7e3b724958b9f32400c98b668db1160c098fc8d966c773a04f564b4720064",
     "e2e/FuluSyncCommitteeMessage_e2e_set_generated.bend": "c472bd105b45f2aadddbf429c872f4cc8918b9df2ac46c2d387d565e3a56f33f",
+    "e2e/FuluSyncCommittee_e2e_comp_generated.bend": "f9a4df8d5971af209a8e2a229ba25ce5fa1b1c2ca3b3d585c5c78eb27e77261c",
     "e2e/FuluSyncCommittee_e2e_dec_generated.bend": "bd2f4b2038ed14f0f4aeab8e5ad99f4e58093a1664928425100c541d71093167",
     "e2e/FuluSyncCommittee_e2e_generated.bend": "0f68d732f5c83d430071939317155718dcacca739b0c5cdac8297fa2901ad533",
     "e2e/FuluSyncCommittee_e2e_set_generated.bend": "40f7b07af7a217a38c025770db5fbcbb0a1df8ae439084d6030dc98898b65ae4",

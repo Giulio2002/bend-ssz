@@ -166,6 +166,7 @@ def attester_slashing(lf):
 
 BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+BV_CFG = {}   # the decoded bit vectors' room and check facts of the container being synthesized (set by its provider)
 BUF_D = set()   # names whose object's arguments already start with the depth d: only (pf, hd, hn) follow
 BUF_ARGS = set()   # names whose p_* defs take the loaded buffer's depth facts (d, pf, hd, hn) after the object's arguments
 
@@ -487,12 +488,46 @@ def list_u16_container(name, codec, top_win, inner_win, limit, ky, lf):
     return container_file(name, lf, f'proofs/obj/{codec}.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None, f'proofs/obj/{codec}.bend')
 
 
+def bits_struct(lf):
+    """BitsStruct: two windowed bit lists (rep_bits and the storage premise from e2e_bswr / e2e_bswh) and three bit vectors
+    (e2e_dfx.rp<K>: the word's bits past K are zero, from the window's checks)"""
+    name = 'BitsStruct'
+    BUF_D.add(name)
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+    def lets(al):
+        BW, BSH, BSR = al('proofs/obj/var_winx_BitsStruct.bend'), al('e2e/e2e_bswh.bend'), al('e2e/e2e_bswr.bend')
+        al('e2e/e2e_dfx.bend')
+        al('proofs/obj/vua_ct.bend')
+        ws = lambda i: (f'd, t, {BW}.XJ{i}(t, 0n), {BW}.FJ{i}(0, t, 0n), {BW}.LJ{i}(t, 0n' + (', n)' if i else ')') + ', ' +
+                        ', '.join(f'{BW}.{fn}{i}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk)' if fn != 'hwJ' or True else '' for fn in ())
+                        )
+        def args(i):
+            L = f'{BW}.LJ{i}(t, 0n' + (', n)' if i else ')')
+            com = f'd, t, n, 0n, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk'
+            return (f'd, t, {BW}.XJ{i}(t, 0n), {BW}.FJ{i}(0, t, 0n), {L}, {BW}.eoJ{i}D({com}), hd, {BW}.hwJ{i}D({com}), {BW}.hwJ{i}_32({com}), pf, {BW}.itD{i}(t, 0n, 0, n, hchk)')
+        idx = [0]
+
+        def bitsf(e):
+            i = idx[0]
+            idx[0] += 1
+            P = ('b5', 'b6')[i]
+            return BitsDec(e, f'{BSR}.{P}_bw_rep({args(i)})', f'{BSH}.{P}_bw_hv({args(i)})')
+        BV_CFG['room'] = lambda Y: (f'{BW}.roomFXD(d, t, n, 0n, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, {BW}.hFc(t, 0n, 0, n, hchk), '
+                                    f'{Y[len("Nat.add(0n, "):-1]}, 4n, {{==}})')
+        BV_CFG['hc'] = {2: f'{BW}.it3(t, 0n, 0, n, hchk)', 1: f'{BW}.it4(t, 0n, 0, n, hchk)'}
+        return [], None, bitsf
+    return container_file(name, lf, 'proofs/obj/var_codec_BitsStruct.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None, 'proofs/obj/var_codec_BitsStruct.bend')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
 PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
+    'BitsStruct': lambda lf: bits_struct(lf),
     'VarTestStruct': lambda lf: list_u16_container('VarTestStruct', 'var_codec_VarTestStruct', 'proofs/obj/var_winx_VarTestStruct.bend', 'proofs/obj/var_winx_l1024_u16.bend', 1024, 12, lf),
     'proglist_bool': lambda lf: prog_bool('proglist_bool', 'var_plist_proglist_bool_top'),
     **{f'proglist_uint{8 << k}': (lambda lf, k=k: prog_list(f'proglist_uint{8 << k}', ('var_plist_proglist_uint8_top' if k == 0 else 'var_plist_proglist_uint16_top' if k == 1 else f'var_plist_proglist_uint{8 << k}'), k + 0)) for k in range(6)},
@@ -543,7 +578,7 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc'}
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs'}
 
 
 class WordsFix:
@@ -607,6 +642,18 @@ class DSynth(W.Synth):
 
     def eq(self, p, env):
         subj = env.get('__subj')
+        mbv = re.match(r'\{last_bv(1|2|8)\(o\) == ', p.strip())
+        if mbv and BV_CFG and env.get('__e', {}).get('o'):   # a decoded Bitvector<K> field: its bits past K are zero (e2e_dfx.rp<K>)
+            K_ = int(mbv.group(1))
+            e = env['__e']['o'].strip()
+            mo = re.fullmatch(r'(\w+)\.OBJ\(\w+, (\w+), (.*)\)', e, re.S)
+            pth = self.ctx.used.get(mo.group(1)) if mo else None
+            if pth is not None and pth.name == f'vfx_bv{K_}.bend':
+                DFXA = self.ctx.alias(ROOT / 'e2e/e2e_dfx.bend')
+                Y = mo.group(3)
+                if K_ == 8:
+                    return f'{DFXA}.rp8(d, {mo.group(2)}, {Y})'
+                return f'{DFXA}.rp{K_}(d, {mo.group(2)}, {Y}, pf, {BV_CFG["room"](Y)}, {BV_CFG["hc"][K_]})'
         ms = re.fullmatch(r'\{U32\.is_lt\(o, (256|65536)\) == True\{\} : Bool\}', p.strip())
         if ms and env.get('__e', {}).get('o'):
             e = env['__e']['o'].strip()

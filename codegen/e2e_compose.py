@@ -435,7 +435,7 @@ def sub_o(t, obj):
     return re.sub(r'(?<![\w.])o(?![\w{(])', lambda m: obj, t)
 
 
-def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, kind):
+def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, kind, over=None):
     K, obj0, why = lit
     OBJ = ctx.lift(dm, obj0)
     ctx.alias(ROOT / 'proofs/compact/found.bend')
@@ -452,7 +452,7 @@ def build_lit(name, lit, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, D
             if b in ('o', 'h') or br:
                 continue
             try:
-                term = syn.prove(mod, t, {'o': model, '__subj': None, '__e': {'o': OBJ}})
+                term = over[b] if over and b in over else syn.prove(mod, t, {'o': model, '__subj': None, '__e': {'o': OBJ}})
             except SystemExit as ex:
                 return None, why + f'; no synthesized proof ({str(ex)[:80]})'
             ty = sub_o(ctx.lift(mod, t), OBJ)

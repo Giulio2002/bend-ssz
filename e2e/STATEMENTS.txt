@@ -5,7 +5,24 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4091 statements in 1168 files.
+# 4097 statements in 1171 files.
+
+## e2e/BitsStruct_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/BitsStruct_decode_ssz_generated.bend as BitsStruct_r
+import ../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
+import ../types/BitsStruct_hashtreeroot_generated.bend as BitsStruct_h
+def BitsStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: BitsStruct_d.BitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, BitsStruct_d.BitsStruct>})
+    -> {E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(o))) == bs : +List<U32>}:
+def BitsStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: BitsStruct_d.BitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, BitsStruct_d.BitsStruct>})
+    -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, o))))} == C.droot(Spec.BitsStruct(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -5394,6 +5411,22 @@ def FuluHash32_e2e_serialize(+o: FuluBytes32_d.Bytes32, +v: {W_types_FuluBytes32
 def FuluHash32_e2e_valid_default() -> {W_types_FuluBytes32_encode_ssz_generated.b32_valid(FuluBytes32_d.b32_default()) == True{} : Bool}:
 def FuluHash32_e2e_valid_total(+o: FuluBytes32_d.Bytes32) -> {W_types_FuluBytes32_encode_ssz_generated.b32_valid(o) == True{} : Bool}:
 
+## e2e/FuluHistoricalBatch_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as M0_WO_SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluHistoricalBatch_decode_ssz_generated.bend as FuluHistoricalBatch_r
+import ../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
+import ../types/FuluHistoricalBatch_encode_ssz_generated.bend as FuluHistoricalBatch_e
+import ../types/FuluHistoricalBatch_hashtreeroot_generated.bend as FuluHistoricalBatch_h
+def FuluHistoricalBatch_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluHistoricalBatch_d.HistoricalBatch, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {M0_WO_SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>})
+    -> {E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(o))) == bs : +List<U32>}:
+def FuluHistoricalBatch_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluHistoricalBatch_d.HistoricalBatch, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {M0_WO_SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>})
+    -> {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(h, o))))} == C.droot(Spec.HistoricalBatch(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/FuluHistoricalBatch_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -8555,6 +8588,22 @@ def FuluSyncCommitteeMessage_e2e_set_signature_root(h: B.Buf, +o: FuluSyncCommit
     -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSyncCommitteeMessage_h.SyncCommitteeMessage_hash_tree_root(h, FuluSyncCommitteeMessage_d.SyncCommitteeMessage_set_signature(o, w))))} == API.hash_tree_root(Spec.SyncCommitteeMessage(), VS.field_set(M1_L.v_SyncCommitteeMessage(o), 3n, M1_L.v_b96(w))) : Maybe<&2, +List<U32>>}:
 def FuluSyncCommitteeMessage_e2e_set_signature_encode(+o: FuluSyncCommitteeMessage_d.SyncCommitteeMessage, +w: FuluBytes96_d.Bytes96)
     -> {Some{E.obytes(FuluSyncCommitteeMessage_e.SyncCommitteeMessage_encode(FuluSyncCommitteeMessage_d.SyncCommitteeMessage_set_signature(o, w)))} == API.serialize(Spec.SyncCommitteeMessage(), VS.field_set(M1_L.v_SyncCommitteeMessage(o), 3n, M1_L.v_b96(w))) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluSyncCommittee_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluSyncCommittee_decode_ssz_generated.bend as FuluSyncCommittee_r
+import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../types/FuluSyncCommittee_encode_ssz_generated.bend as FuluSyncCommittee_e
+import ../types/FuluSyncCommittee_hashtreeroot_generated.bend as FuluSyncCommittee_h
+def FuluSyncCommittee_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluSyncCommittee_d.SyncCommittee, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>})
+    -> {E.obytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, B.Buf, FuluSyncCommittee_e.SyncCommittee_encode(o))) == bs : +List<U32>}:
+def FuluSyncCommittee_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluSyncCommittee_d.SyncCommittee, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>})
+    -> {Some{D.bytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, D.Digest, Pair.snd(B.Buf, FuluSyncCommittee_d.SyncCommittee & D.Digest, FuluSyncCommittee_h.SyncCommittee_hash_tree_root(h, o))))} == C.droot(Spec.SyncCommittee(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluSyncCommittee_e2e_dec_generated.bend
 import ../src/model.bend as API
