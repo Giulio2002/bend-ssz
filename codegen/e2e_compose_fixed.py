@@ -229,9 +229,37 @@ def build(name, lf, api):
         if padx not in obj0:
             return None, why + '; the padded word is not in the decoder\'s object'
         mw = [m for m in mw if obj0[m[0]:m[1]] != padx]
-    if (not mw and not pw) or K > 1500:
-        return None        # unmasked or large: e2e_compose.py's own path
+    large = K > 1500
+    if not mw and not pw and not large:
+        return None        # unmasked: e2e_compose.py's own path
+    if large and (mw or pw):
+        return None, why + '; large and masked'
     obj1 = clean(obj0, mw)
+    # a large object (FuluCell, FuluMatrixEntry: 2048 bytes and more): its word arrays are named once (ARR<i>(bs)),
+    # so every statement mentions them by name and the checker unfolds each literal only where it computes
+    arrs = []
+    if large:
+        out_, last_ = '', 0
+        for m in re.finditer(r'(\w+)\.Words\{(?=ANode\{)', obj1):
+            if m.start() < last_:
+                continue
+            a0 = m.end()
+            d_, e_ = 0, a0
+            while True:
+                c_ = obj1[e_]
+                if c_ == '{':
+                    d_ += 1
+                elif c_ == '}':
+                    d_ -= 1
+                    if d_ == 0:
+                        e_ += 1
+                        break
+                e_ += 1
+            lit_ = obj1[a0:e_]
+            arrs.append(lit_)
+            out_ += obj1[last_:a0] + f'ARR{len(arrs) - 1}(bs)'
+            last_ = e_
+        obj1 = out_ + obj1[last_:]
     if pw:
         cf = f'MK.cf{8 * j + r}({x})' if j < 3 else f'MK.cw{24 + r}({x})'
         a2 = [m.start() for m in re.finditer(re.escape(padx) + r'(?=[},])', obj1)][-1]
@@ -310,11 +338,18 @@ def build(name, lf, api):
                         return self.prove(m2, cases[0][1], env3)
             return super().unfold(m2, body, env2)
     api.LSynth = Syn
+    base_depth = api.arr_depth
+
+    def arr_depth(t):
+        mm = re.fullmatch(r'ARR(\d+)\(bs\)', t.strip())
+        return base_depth(arrs[int(mm.group(1))]) if mm else base_depth(t)
+    api.arr_depth = arr_depth
     try:
         text, err = api.build_lit(name, (K, obj1, why), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT,
                                   accT, acc_body, hyps, kind)
     finally:
         api.LSynth = base
+        api.arr_depth = base_depth
     if text is None:
         return None, err
     # the decoder's object in clean form: OBJ == OBJ' (one rewrite per masked word), and the decoder gives OBJ'
@@ -350,6 +385,15 @@ def build(name, lf, api):
     eqdefs = eqdefs.replace('SPX.', SPA + '.')
     i = text.index('def gm(')
     head, tail = text[:i], text[i:]
+    if large:
+        arrdefs = ''.join(f'def ARR{i_}(+bs: +List<U32>) -> Array<U32>:\n  {ctx.lift(dm, l_)}\n\n' for i_, l_ in enumerate(arrs))
+        eqdefs = (arrdefs + f'# the decoder\'s object with its word arrays named (by definition)\n'
+                  f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, '
+                  f'+hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
+                  f'    -> {{{DEC} == Some{{{OBJ1}}} : {MT}}}:\n  {SOME}\n')
+        head = head.replace('# GENERATED', '# GENERATED', 1)
+        i2 = head.index('\ndef ') + 1 if '\ndef ' in head else len(head)
+        head, eqdefs = head[:i2] + arrdefs + head[i2:], eqdefs[len(arrdefs):]
     if not eh:
         tail = tail.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
     else:
