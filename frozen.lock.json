@@ -1048,6 +1048,7 @@
     "proofs/obj/coll_api_6.bend": "24f473257ee75828d34f6b9b6568eb00e7148b3aebda910365a01499babe56fb",
     "proofs/obj/coll_bits.bend": "7ee054e1cb4359ba0a5ec90c2ce00edf0dd602be676b350757d18ff3b12b9655",
     "proofs/obj/coll_boxed.bend": "96b65779b3853a27407feed91ce92b2dc587ed3205e9fb749d51e9e6ec316356",
+    "proofs/obj/coll_bytes.bend": "420849f8287017bc55d0f763f229d651a17a4080379ffefcdc184e3f25b294b6",
     "proofs/obj/dk.bend": "578db24fe048a16c38ab2cdfe36965ea2419df56be14c35cfa970b52cf9bdbdb",
     "proofs/obj/elems48_light.bend": "57a47809a4edc1b8a342234add349057ab74b266aecc89dd366f229372151e55",
     "proofs/obj/elems_obj.bend": "a00631818fcb81fc4eed813f73f503b21586be66ccaf5f0c64040af9e698a62d",

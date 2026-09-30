@@ -47,7 +47,7 @@ each is kept:
 
 | Module | What it proves | Why nothing imports it |
 |---|---|---|
-| `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_boxed.bend`, `proofs/obj/coll_bits.bend` (`codegen/coll_laws.py`) | the collection laws of the public API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
+| `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_boxed.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/coll_laws.py`) | the collection laws of the public API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
 | `proofs/obj/fields_*.bend`, `proofs/obj/collections_*.bend` (`codegen/laws.py`) | read-after-write laws of the field accessors over record literals, and rejected/accepted laws of the internal collection helpers with the guard given as a constant | they hold by unfolding a definition; the spec-value setter laws and the public-API collection laws (`coll_api_*`) state what they did, so they are no longer public statements |
 | `proofs/obj/cache.bend`, `proofs/obj/chist.bend` | the cached Merkle tree of `BeaconState.validators`: a write or append through the cache API updates the element and the dirty range, and every history of accepted operations keeps the cache valid | results about the root cache, a runtime feature outside the SSZ statements; `benchmarks/evidence/object_cache.json` tests the same cache |
 | `proofs/obj/cached_<list>.bend` (`codegen/cached_laws.py`) | for five of the cached lists, the runtime's cached-root loops compute the reference tree of the element roots (instances of the Validator-list proof) | the same: the cache's own laws |
