@@ -184,6 +184,8 @@ def bit_container(name, codec, lf):
 PROVERS = {
     'FuluAttestation': lambda lf: bit_container('FuluAttestation', 'var_bitc_Attestation', lf),
     'FuluPendingAttestation': lambda lf: bit_container('FuluPendingAttestation', 'var_bitc_PendingAttestation', lf),
+    'FuluAggregateAndProof': lambda lf: bit_container('FuluAggregateAndProof', 'var_win_AggregateAndProof_top', lf),
+    'FuluSignedAggregateAndProof': lambda lf: bit_container('FuluSignedAggregateAndProof', 'var_win_SignedAggregateAndProof_top', lf),
     'FuluIndexedAttestation': lambda lf: u64_list_alone('FuluIndexedAttestation', 'var_codec_IndexedAttestation', 228, 131072, 21, lf),
     'FuluDataColumnsByRootIdentifier': lambda lf: u64_list_alone('FuluDataColumnsByRootIdentifier', 'var_codec_DataColumnsByRootIdentifier', 36, 128, 11, lf),
     'FuluAttesterSlashing': lambda lf: attester_slashing(lf),

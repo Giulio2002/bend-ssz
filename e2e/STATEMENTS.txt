@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/fields_*, collections_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 3292 statements in 905 files.
+# 3296 statements in 907 files.
 
 ## e2e/BitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -372,6 +372,23 @@ import ../types/FixedTestStruct_encode_ssz_generated.bend as FixedTestStruct_e
 import ../types/FixedTestStruct_hashtreeroot_generated.bend as FixedTestStruct_h
 def FixedTestStruct_e2e_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_default()))} == API.serialize(Spec.FixedTestStruct(), M1.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default())) : Maybe<&2, +List<U32>>}:
 def FixedTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default())))} == API.hash_tree_root(Spec.FixedTestStruct(), M1.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluAggregateAndProof_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E2
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluAggregateAndProof_decode_ssz_generated.bend as FuluAggregateAndProof_r
+import ../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
+import ../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggregateAndProof_e
+import ../types/FuluAggregateAndProof_hashtreeroot_generated.bend as FuluAggregateAndProof_h
+def FuluAggregateAndProof_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluAggregateAndProof_d.AggregateAndProof, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>})
+    -> {E2.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(o))) == bs : +List<U32>}:
+def FuluAggregateAndProof_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluAggregateAndProof_d.AggregateAndProof, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>})
+    -> {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(h, o))))} == C.droot(Spec.AggregateAndProof(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluAggregateAndProof_e2e_dec_generated.bend
 import ../src/model.bend as API
@@ -5158,6 +5175,23 @@ import ./e2e_support.bend as E
 import ../proofs/obj/root_names_light.bend as M1_L
 def FuluRowIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluRowIndex_e.RowIndex_encode(o))} == API.serialize(Spec.RowIndex(), M1_L.v_u64(o)) : Maybe<&2, +List<U32>>}:
 def FuluRowIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluRowIndex_h.RowIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.RowIndex(), M1_L.v_u64(o)) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluSignedAggregateAndProof_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E2
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluSignedAggregateAndProof_decode_ssz_generated.bend as FuluSignedAggregateAndProof_r
+import ../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../types/FuluSignedAggregateAndProof_encode_ssz_generated.bend as FuluSignedAggregateAndProof_e
+import ../types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend as FuluSignedAggregateAndProof_h
+def FuluSignedAggregateAndProof_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>})
+    -> {E2.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(o))) == bs : +List<U32>}:
+def FuluSignedAggregateAndProof_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>})
+    -> {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(h, o))))} == C.droot(Spec.SignedAggregateAndProof(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluSignedAggregateAndProof_e2e_dec_generated.bend
 import ../src/model.bend as API
