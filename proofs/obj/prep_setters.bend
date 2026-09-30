@@ -1,14 +1,25 @@
 import Base
-import ../compact/found.bend as F
-import ../../src/buffer.bend as B
-import ../../src/digest.bend as D
-import ../../src/obj.bend as O
+import ./root_state_light.bend as ST
+import ./words_spec.bend as WS
+import ./spec_fixed.bend as FX
+import ../../proofs/word_split.bend as WSp
+import ../../proofs/power_division.bend as PD
+import ../../spec/primitives.bend as SP
+import ../../spec/packing.bend as Pack
+import ../../spec/bit_packing.bend as Bp
+import ./root_leaf.bend as RL
+import ./bits_leaf.bend as BLF
+import ./bitlist_pack.bend as BLP
+import ./blist_obj_light.bend as BLI
+import ./packed_obj_light.bend as PK
+import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
 import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/uint256_def_generated.bend as uint256_d
+import ../../types/FuluFork_def_generated.bend as FuluFork_d
 import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
 import ../../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
 import ../../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
@@ -18,6 +29,7 @@ import ../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedB
 import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
 import ../../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
 import ../../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
+import ../../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
 import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
@@ -36,6 +48,13 @@ import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutio
 import ../../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d
 import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as Fulu_list_Withdrawal_16_d
 import ../../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
+import ../../types/Fulu_list_Eth1Data_2048_def_generated.bend as Fulu_list_Eth1Data_2048_d
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
+import ../../types/Fulu_list_HistoricalSummary_16777216_def_generated.bend as Fulu_list_HistoricalSummary_16777216_d
+import ../../types/Fulu_list_PendingDeposit_134217728_def_generated.bend as Fulu_list_PendingDeposit_134217728_d
+import ../../types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend as Fulu_list_PendingPartialWithdrawal_134217728_d
+import ../../types/Fulu_list_PendingConsolidation_262144_def_generated.bend as Fulu_list_PendingConsolidation_262144_d
+import ../../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
 import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
 import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
@@ -54,6 +73,10 @@ import ../../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
 import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
 import ../../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
+import ../compact/found.bend as F
+import ../../src/buffer.bend as B
+import ../../src/digest.bend as D
+import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -2484,4 +2507,1886 @@ def DataColumnSidecar_set_kzg_commitments_inclusion_proof_rep(o, s, v, r, rv):
   (+q4, +q5) = c3
   %Equal.sym(FuluDataColumnSidecar_d.DataColumnSidecar, o, FuluDataColumnSidecar_d.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}, eo) : RT.rep_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments_inclusion_proof(_, v), s)
   (x0, ({==}, (q1, (q2, (q3, (q4, rv))))))
+
+law BeaconState_set_genesis_time_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_genesis_time(o, v), s)
+def BeaconState_set_genesis_time_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_genesis_time(_, v), s)
+  (v, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_genesis_validators_root_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluBytes32_d.Bytes32
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_genesis_validators_root(o, v), s)
+def BeaconState_set_genesis_validators_root_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_genesis_validators_root(_, v), s)
+  (x0, (v, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_slot_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_slot(o, v), s)
+def BeaconState_set_slot_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_slot(_, v), s)
+  (x0, (x1, (v, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_fork_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluFork_d.Fork
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_fork(o, v), s)
+def BeaconState_set_fork_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_fork(_, v), s)
+  (x0, (x1, (x2, (v, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_latest_block_header_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluBeaconBlockHeader_d.BeaconBlockHeader
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_latest_block_header(o, v), s)
+def BeaconState_set_latest_block_header_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_latest_block_header(_, v), s)
+  (x0, (x1, (x2, (x3, (v, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_block_roots_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: PV.rep_pv(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_block_roots(o, v), s)
+def BeaconState_set_block_roots_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_block_roots(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (rv, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_state_roots_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: PV.rep_pv(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_state_roots(o, v), s)
+def BeaconState_set_state_roots_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_state_roots(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (rv, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_historical_roots_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: BLI.rep_lh(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_historical_roots(o, v), s)
+def BeaconState_set_historical_roots_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_historical_roots(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (rv, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_eth1_data_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluEth1Data_d.Eth1Data
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_data(o, v), s)
+def BeaconState_set_eth1_data_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_data(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (v, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_eth1_data_votes_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l2048_Eth1Data(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_data_votes(o, v), s)
+def BeaconState_set_eth1_data_votes_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_data_votes(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (rv, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_eth1_deposit_index_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_deposit_index(o, v), s)
+def BeaconState_set_eth1_deposit_index_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_eth1_deposit_index(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (v, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_validators_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l1099511627776_Validator(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_validators(o, v), s)
+def BeaconState_set_validators_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_validators(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (rv, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_balances_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: UL.rep_ul(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_balances(o, v), s)
+def BeaconState_set_balances_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_balances(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (rv, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_randao_mixes_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: PV.rep_pv(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_randao_mixes(o, v), s)
+def BeaconState_set_randao_mixes_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_randao_mixes(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (rv, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_slashings_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: PK.rep_v8(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_slashings(o, v), s)
+def BeaconState_set_slashings_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_slashings(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (rv, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_previous_epoch_participation_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: BLI.rep_l1(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_previous_epoch_participation(o, v), s)
+def BeaconState_set_previous_epoch_participation_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_previous_epoch_participation(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (rv, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_current_epoch_participation_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: BLI.rep_l1(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_epoch_participation(o, v), s)
+def BeaconState_set_current_epoch_participation_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_epoch_participation(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (rv, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_justification_bits_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: Fulu_bitvector_4_d.Bitvector4
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rp_bv4(v)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_justification_bits(o, v), s)
+def BeaconState_set_justification_bits_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_justification_bits(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (v, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (rv, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_previous_justified_checkpoint_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluCheckpoint_d.Checkpoint
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_previous_justified_checkpoint(o, v), s)
+def BeaconState_set_previous_justified_checkpoint_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_previous_justified_checkpoint(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (v, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_current_justified_checkpoint_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluCheckpoint_d.Checkpoint
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_justified_checkpoint(o, v), s)
+def BeaconState_set_current_justified_checkpoint_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_justified_checkpoint(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (v, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_finalized_checkpoint_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: FuluCheckpoint_d.Checkpoint
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_finalized_checkpoint(o, v), s)
+def BeaconState_set_finalized_checkpoint_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_finalized_checkpoint(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (v, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_inactivity_scores_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: UL.rep_ul(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_inactivity_scores(o, v), s)
+def BeaconState_set_inactivity_scores_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_inactivity_scores(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (rv, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_current_sync_committee_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: FuluSyncCommittee_d.SyncCommittee
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: RT.rep_SyncCommittee(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_sync_committee(o, v), s)
+def BeaconState_set_current_sync_committee_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_current_sync_committee(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (rv, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_next_sync_committee_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: FuluSyncCommittee_d.SyncCommittee
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: RT.rep_SyncCommittee(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_sync_committee(o, v), s)
+def BeaconState_set_next_sync_committee_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_sync_committee(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (rv, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_latest_execution_payload_header_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: RT.rep_ExecutionPayloadHeader_bx(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_latest_execution_payload_header(o, v), s)
+def BeaconState_set_latest_execution_payload_header_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_latest_execution_payload_header(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (rv, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_next_withdrawal_index_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_withdrawal_index(o, v), s)
+def BeaconState_set_next_withdrawal_index_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_withdrawal_index(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (v, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_next_withdrawal_validator_index_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_withdrawal_validator_index(o, v), s)
+def BeaconState_set_next_withdrawal_validator_index_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_next_withdrawal_validator_index(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (v, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_historical_summaries_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l16777216_HistoricalSummary(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_historical_summaries(o, v), s)
+def BeaconState_set_historical_summaries_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_historical_summaries(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (rv, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_deposit_requests_start_index_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_deposit_requests_start_index(o, v), s)
+def BeaconState_set_deposit_requests_start_index_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_deposit_requests_start_index(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (v, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_deposit_balance_to_consume_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_deposit_balance_to_consume(o, v), s)
+def BeaconState_set_deposit_balance_to_consume_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_deposit_balance_to_consume(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (v, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_exit_balance_to_consume_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_exit_balance_to_consume(o, v), s)
+def BeaconState_set_exit_balance_to_consume_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_exit_balance_to_consume(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (v, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_earliest_exit_epoch_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_earliest_exit_epoch(o, v), s)
+def BeaconState_set_earliest_exit_epoch_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_earliest_exit_epoch(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (v, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_consolidation_balance_to_consume_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_consolidation_balance_to_consume(o, v), s)
+def BeaconState_set_consolidation_balance_to_consume_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_consolidation_balance_to_consume(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (v, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_earliest_consolidation_epoch_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for +v: O.U64
+  for +r: ST.rep_BeaconState(o, s)
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_earliest_consolidation_epoch(o, v), s)
+def BeaconState_set_earliest_consolidation_epoch_rep(o, s, v, r):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_earliest_consolidation_epoch(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (v, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_pending_deposits_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l134217728_PendingDeposit(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_deposits(o, v), s)
+def BeaconState_set_pending_deposits_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_deposits(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (rv, (q35, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_pending_partial_withdrawals_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l134217728_PendingPartialWithdrawal(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_partial_withdrawals(o, v), s)
+def BeaconState_set_pending_partial_withdrawals_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_partial_withdrawals(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (rv, (q36, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_pending_consolidations_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: ST.rep_l262144_PendingConsolidation(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_consolidations(o, v), s)
+def BeaconState_set_pending_consolidations_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_pending_consolidations(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (rv, q37)))))))))))))))))))))))))))))))))))))))
+
+law BeaconState_set_proposer_lookahead_rep:
+  for -o: FuluBeaconState_d.BeaconState
+  for +s: S.Schema
+  for -v: O.Words
+  for +r: ST.rep_BeaconState(o, s)
+  for +rv: PK.rep_v8(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))))))))))))))))
+  ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_proposer_lookahead(o, v), s)
+def BeaconState_set_proposer_lookahead_rep(o, s, v, r, rv):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x4, e4) = e3
+  (+x8, e5) = e4
+  (+x10, e6) = e5
+  (+x17, e7) = e6
+  (+x18, e8) = e7
+  (+x19, e9) = e8
+  (+x20, e10) = e9
+  (+x25, e11) = e10
+  (+x26, e12) = e11
+  (+x28, e13) = e12
+  (+x29, e14) = e13
+  (+x30, e15) = e14
+  (+x31, e16) = e15
+  (+x32, e17) = e16
+  (+x33, e18) = e17
+  (+eo, c0) = e18
+  (+q5, c1) = c0
+  (+q6, c2) = c1
+  (+q7, c3) = c2
+  (+q9, c4) = c3
+  (+q11, c5) = c4
+  (+q12, c6) = c5
+  (+q13, c7) = c6
+  (+q14, c8) = c7
+  (+q15, c9) = c8
+  (+q16, c10) = c9
+  (+q17, c11) = c10
+  (+q21, c12) = c11
+  (+q22, c13) = c12
+  (+q23, c14) = c13
+  (+q24, c15) = c14
+  (+q27, c16) = c15
+  (+q34, c17) = c16
+  (+q35, c18) = c17
+  (+q36, +q37) = c18
+  %Equal.sym(FuluBeaconState_d.BeaconState, o, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, ST.pj_BeaconState_5(o), ST.pj_BeaconState_6(o), ST.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, ST.pj_BeaconState_9(o), x10, ST.pj_BeaconState_11(o), ST.pj_BeaconState_12(o), ST.pj_BeaconState_13(o), ST.pj_BeaconState_14(o), ST.pj_BeaconState_15(o)}, FuluBeaconState_d.BeaconState_g2{ST.pj_BeaconState_16(o), x17, x18, x19, x20, ST.pj_BeaconState_21(o), ST.pj_BeaconState_22(o), ST.pj_BeaconState_23(o)}, FuluBeaconState_d.BeaconState_g3{ST.pj_BeaconState_24(o), x25, x26, ST.pj_BeaconState_27(o), x28, x29, x30, x31}, FuluBeaconState_d.BeaconState_g4{x32, x33, ST.pj_BeaconState_34(o), ST.pj_BeaconState_35(o), ST.pj_BeaconState_36(o), ST.pj_BeaconState_37(o)}}, eo) : ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_proposer_lookahead(_, v), s)
+  (x0, (x1, (x2, (x3, (x4, (x8, (x10, (x17, (x18, (x19, (x20, (x25, (x26, (x28, (x29, (x30, (x31, (x32, (x33, ({==}, (q5, (q6, (q7, (q9, (q11, (q12, (q13, (q14, (q15, (q16, (q17, (q21, (q22, (q23, (q24, (q27, (q34, (q35, (q36, rv)))))))))))))))))))))))))))))))))))))))
 

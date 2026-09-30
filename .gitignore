@@ -10,3 +10,4 @@ __pycache__/
 .autoresearch/
 /benchmarks/fastssz/benchmark
 /benchmarks/inputs/
+*.bend.out

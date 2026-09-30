@@ -19,10 +19,11 @@
 # First, tools/verify_pins.py checks the toolchain and the SHA-256 package against
 # toolchain.lock.json, tools/verify_frozen.py the frozen statements against frozen.lock.json, and
 # tools/verify_no_escapes.py bans @unsafe / def f?( / foreign bodies, and tools/verify_schemas.py
-# cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas (exit 3 on any failure).
+# cross-checks fulu_mainnet.py, the JSON, spec/fulu_schemas.bend and the generic schemas, and
+# tools/verify_fixtures.py the fixtures against fixtures.manifest.json (exit 3 on any failure).
 # Run from the repository root.
 set -u
-J=20; T=120; OUT=build/check_fast; FILES=""; LOC=1
+J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -40,15 +41,23 @@ python3 tools/verify_pins.py --toolchain "$T0" --lib "${BEND_LIB:-vendor/bendhub
 python3 tools/verify_frozen.py || exit 3
 python3 tools/verify_no_escapes.py || exit 3
 python3 tools/verify_schemas.py || exit 3
+python3 tools/verify_fixtures.py || exit 3
 export CHECK_PINS_VERIFIED=1
 python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
 # run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints exactly the line
 # "All terms check." (not "All terms check, but N defs rely on unsafe or foreign code")
 # (else the checker's exit code, or 1)
+# The umbrellas of the slowest roots (UMB_BIG_RE, matched against the roots in plan.tsv) get a larger heap,
+# UMB_BIG_MEMMAX / UMB_BIG_RAM: at the 12e9 heap the garbage collector thrashes (BeaconState witness 322 s -> ~150-230 s).
+BIG_RE=${UMB_BIG_RE:-e2e/Fulu(BeaconState|BeaconBlock|BeaconBlockBody|SignedBeaconBlock)_e2e_witness_generated|e2e/FuluBeaconState_e2e_(comp|decrep)_generated}
 run() {
-  CHECK_MEMMAX=${UMB_MEMMAX:-16G} CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
-    BUN_JSC_forceRAMSize=${UMB_RAM:-12000000000} tools/check.sh "$1" > "$2" 2>&1
+  local mem=${UMB_MEMMAX:-16G} ram=${UMB_RAM:-12000000000}
+  if [ -n "$BIG_RE" ] && awk -F'\t' -v u="$(basename "$1")" -v re="$BIG_RE" '$1 == u && $4 ~ re {f=1} END {exit !f}' "$OUT/umb/plan.tsv"; then
+    mem=${UMB_BIG_MEMMAX:-32G}; ram=${UMB_BIG_RAM:-24000000000}
+  fi
+  CHECK_MEMMAX=$mem CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
+    BUN_JSC_forceRAMSize=$ram tools/check.sh "$1" > "$2" 2>&1
   local rc=$?; [ $rc != 0 ] && return $rc
   grep -qx 'All terms check\.' "$2" || return 1
 }
@@ -95,9 +104,10 @@ localize() {
   bisect "${u%.bend}_" "$OUT/${u%.bend}.log" "${rs[@]}"
 }
 UP=$(python3 -c 'import os, sys; print(os.path.relpath(".", sys.argv[1]))' "$OUT/umb")
-export OUT UP
+export OUT UP BIG_RE
 export -f run one umb bisect localize
-cut -f1 "$OUT/umb/plan.tsv" | xargs -P "$J" -I{} bash -c 'one "$@"' _ {} "$OUT"
+# tools/umb_pool.py: at most J at once, and only while the running umbrellas' expected memory fits (UMB_BUDGET_MB, default 170000)
+UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan.tsv" -- bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'

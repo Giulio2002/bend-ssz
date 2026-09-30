@@ -5,6 +5,7 @@
     python3 codegen/regen_all.py --check         # every generator's --check; nonzero exit if any is stale
     python3 codegen/regen_all.py --only a,b      # just these generators (names without .py), in order
     python3 codegen/regen_all.py --list          # the order the generators run in
+    python3 codegen/regen_all.py --touched       # only the generators whose inputs changed since their last clean run (codegen/regen_touched.py)
     python3 codegen/regen_all.py -j N            # N generators at once (default min(8, cpus)); --serial or -j 1: one at a time
 
 The generators are every codegen/*.py that accepts --check. generate.py (the object API, which
@@ -29,7 +30,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIRST = ['generate']
-LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'e2e_setters', 'statements', 'doc_figures']
+# e2e_witness and e2e_compose read what e2e_bridge writes (e2e/manifest.json, the bridge files), and statements reads
+# e2e_compose's (the comp files), doc_figures COMPOSED.txt and STATEMENTS.txt: so this is the dependency order, and one
+# write pass converges (before, e2e_witness and e2e_compose ran in the pool ahead of e2e_bridge and were stale after every pass).
+LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'e2e_setters', 'e2e_witness', 'e2e_compose', 'statements', 'doc_figures']
+LAST_TOGETHER = ('e2e_witness', 'e2e_compose')   # independent of each other: one pool group
 # the slowest generators (measured), started first so the pool's tail is short
 HEAVY = ['var_cont_enc', 'var_winb', 'e2e_bridge', 'api_gate', 'spec_laws', 'root_laws_b', 'api_facade', 'valid_laws']
 JOBS = 1
@@ -39,7 +44,7 @@ FAIL_WORDS = ('stale', 'traceback', 'error', 'orphan', 'left after', 'fail', 'no
 def generators():
     have = {}
     for p in sorted((ROOT / 'codegen').glob('*.py')):
-        if p.name == 'regen_all.py':
+        if p.name in ('regen_all.py', 'regen_touched.py'):
             continue
         t = p.read_text(errors='replace')
         if "'--check'" in t or '"--check"' in t:
@@ -77,16 +82,28 @@ def check(order, have, verbose):
     return stale
 
 
+def write_groups(order):
+    """the write pass's schedule: lists of generators, run one list after the other, the members of a list in the pool"""
+    if JOBS <= 1:
+        return [[g] for g in order]
+    mid = [g for g in order if g not in FIRST and g not in LAST]
+    tog = [g for g in order if g in LAST_TOGETHER]
+    groups = [[g] for g in order if g in FIRST] + [mid]
+    for g in [g for g in order if g in LAST]:
+        if g in LAST_TOGETHER:
+            if g == tog[0]:
+                groups.append(tog)
+        else:
+            groups.append([g])
+    return groups
+
+
 def write_pass(order, have, k, verbose, only=None):
     """One write pass; the generators that failed (they may read a file a later or concurrent generator
     writes) are returned, never fatal: a later pass reruns them. {name: last output}."""
     if only is not None:   # later passes: just the generators the last check found stale or failing
         order = [g for g in order if g in only]
-    mid = [g for g in order if g not in FIRST and g not in LAST]
-    if JOBS <= 1:
-        groups = [[g] for g in order]
-    else:
-        groups = [[g] for g in order if g in FIRST] + [mid] + [[g] for g in order if g in LAST]
+    groups = write_groups(order)
     failed = {}
     for grp in groups:
         for g, (bad, out, dt) in zip(grp, run_many(grp, have, [])):
@@ -113,6 +130,9 @@ def main():
     verbose = '-v' in a
     global JOBS
     JOBS = 1 if '--serial' in a or ('--only' in a and '-j' not in a) else int(a[a.index('-j') + 1]) if '-j' in a else min(8, os.cpu_count() or 1)
+    if '--touched' in a or '--reset-stamps' in a:   # only what changed since the recorded stamps (regen_touched.py)
+        import regen_touched
+        return regen_touched.main(a, order, have)
     if '--check' in a:
         stale = check(order, have, verbose)
         print(f'{len(order) - len(stale)}/{len(order)} generators up to date')

@@ -409,6 +409,18 @@ def canon(path):
     return 'W_' + re.sub(r'\W', '_', rel[:-len('.bend')])
 
 
+_DECLS = {}   # id(mod) -> (mod, the type and constructor names its text declares)
+
+
+def _decl_names(mod):
+    """the names `^type N` and `^  N{` declare in mod.text (one scan per module: lift asked per token, which made
+    e2e_compose quadratic, 150 of its 157 s)"""
+    e = _DECLS.get(id(mod))
+    if e is None or e[0] is not mod:
+        e = _DECLS[id(mod)] = (mod, set(re.findall(r'^type (\w+)\b', mod.text, re.M)) | set(re.findall(r'^  (\w+)\{', mod.text, re.M)))
+    return e[1]
+
+
 class Ctx:
     """the imports the witness file needs, by canonical alias"""
 
@@ -429,8 +441,7 @@ class Ctx:
                 if a in mod.imports:
                     return self.alias(mod.imports[a]) + '.' + rest
                 return q
-            if q in mod.defs or re.search(r'^type ' + re.escape(q) + r'\b', mod.text, re.M) or \
-                    re.search(r'^  ' + re.escape(q) + r'\{', mod.text, re.M):
+            if q in mod.defs or q in _decl_names(mod):
                 return self.alias(mod.path) + '.' + q
             return q
         return re.sub(r'(?<![\w.])[A-Za-z_]\w*(?:\.\w+)?', sub, expr)

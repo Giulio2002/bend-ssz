@@ -17,13 +17,20 @@ for generic forms), and the encode bridges of some names also take storage premi
 `hc`, `hd*`, `hsP`: a field's words tree at depth below 31). The decode bridges (ii)/(iii) fix
 the decoded object's view (its spec value), not its representation.
 
-**Composed theorems.** Where the (i) and (iv) bridges take only the object, or the name is
-fixed-size and its decoder's object is written out (`<Name>_d_some`, the words the input's; its
-`rep` and storage premises are then proved of that object by computation), the pipeline is one
-checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
+**Composed theorems.** There are three routes:
+- The (i) and (iv) bridges take only the object.
+- The name is fixed-size and its decoder's object is written out (`<Name>_d_some`, the words
+  are the input's). Its `rep` and storage premises are then proved of that object by computation.
+- The name is variable-size and its decode bridge describes the accepted object as the codec's
+  `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
+  run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
+  the storage premises) of that object, for every input the codec accepts. This covers
+  <!-- fig:decrep_count -->14<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`<!-- /fig -->.
+
+In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->184<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->188<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
@@ -309,13 +316,22 @@ constructors, not by the decoder (that the decoder's output meets the premises i
 
 ## 9. Objects changed through the API
 
-The setter laws (`proofs/obj/prep_setters.bend`) say that a field setter keeps `rep_X` (given, for
-a field with its own invariant, that invariant of the new value). Every root bridge of those
-containers has `rep` as its only premise, so `e2e/<Name>_e2e_set_generated.bend` composes each
-setter law with it: an object satisfying `rep` and changed by a setter has the spec root
-(<!-- fig:set_root_count -->127<!-- /fig --> statements). For the encoding this holds only where the encode bridge's
-only premise is `rep` (<!-- fig:set_encode_count -->7<!-- /fig --> statements); elsewhere the encode bridge also needs
-storage premises (`hs*`, `hc*`, section 1) of the changed object, and no setter law states them.
-The composition is generated for every setter law, so it covers new setter laws with no further
-work; extending it to encode needs a storage-preservation law per setter, which does not exist yet.
-The generic-suite names' setters have no laws.
+`e2e/<Name>_e2e_set_generated.bend` states, for every field setter, that the view of the changed
+object is the old view with that field's value replaced (`proofs/obj/value_set.bend`'s
+`field_set`); this law has no premise. Composed with the root bridge it gives the spec root of the
+changed value (<!-- fig:set_root_count -->315<!-- /fig --> statements): with no further premise where the root bridge
+takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters.bend`
+(a setter keeps `rep`, given the new value's own invariant for fields that have one). The same for
+the encoding (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the encode bridge takes only the object or
+`rep`; elsewhere it also needs storage premises (`hs*`, `hc*`, section 1) of the changed object,
+and no law states that a setter keeps them. Where the root bridge takes `rp_*` (a generic Data
+container's range invariants), the set file proves that the setter keeps it. A range-checked setter
+(generic `uint8` / `uint16` fields) is stated under its guard, with the new value's range invariant
+(`rp_u8` / `rp_u16`) as a premise of the root and encode compositions.
+
+The collection read-back laws (`proofs/obj/coll_api_*.bend`) are stated for storage `thaw(t)`, `t`
+a perfect tree of depth `d < 32` holding the index (what `Array.new` builds and `Array.set` keeps);
+the append read-back also assumes the storage has room for the new element (no reallocation) and
+that the length is not `2^32 - 1`. For the packed collections of whole-word elements the element's
+first word index `q` is given with `U32.to_nat((i * K) / 4) == q` (the byte offset `i * K` does not
+wrap) and its words below `2^d`.
