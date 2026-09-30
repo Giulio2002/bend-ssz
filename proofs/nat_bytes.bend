@@ -34,7 +34,7 @@ law pair_correct:
   for +width: Nat
   for qr: Nat & Nat
   for recur: @+n: Nat -> {I.encode(width, n) == S.encoding(width, n) : Maybe<&2, +List<U32>>}
-  {I.encode_pair(qr, q => I.encode(width, q)) == P.optional(S.fits(width, Nat.div.fin(qr)), U32.from_nat(Nat.mod.fin(qr)) <> S.digits(width, Nat.div.fin(qr))) : Maybe<&2, +List<U32>>}
+  {I.encode_pair(qr, q => I.encode(width, q)) == P.optional(S.fits(width, Pair.fst(Nat, Nat, qr)), U32.from_nat(Pair.snd(Nat, Nat, qr)) <> S.digits(width, Pair.fst(Nat, Nat, qr))) : Maybe<&2, +List<U32>>}
 def pair_correct(width, qr, recur):
   (+q, +r) = qr
   %Equal.sym(Maybe<&2, +List<U32>>, I.encode(width, q), S.encoding(width, q), recur(q)) : {I.prepend(U32.from_nat(r), _) == P.optional(S.fits(width, q), U32.from_nat(r) <> S.digits(width, q)) : Maybe<&2, +List<U32>>}
@@ -82,7 +82,7 @@ law remainder_bound:
   for +d: Nat
   for +r: Nat
   for +sum: {Nat.add(m, r) == 255n : Nat}
-  {Nat.is_le(Nat.mod.fin(Nat.divmod.go(n, m, d, r)), 255n) == True{} : Bool}
+  {Nat.is_le(Pair.snd(Nat, Nat, Nat.divmod.go(n, m, d, r)), 255n) == True{} : Bool}
 def remainder_bound(n, m, d, r, sum):
   match n:
     case 0n:
@@ -455,7 +455,7 @@ def division_value(n, m, d, r, sum):
 
 law pair_projection:
   for qr: Nat & Nat
-  {pair_value(qr) == Nat.add(Nat.mod.fin(qr), Nat.mul(Nat.div.fin(qr), 256n)) : Nat}
+  {pair_value(qr) == Nat.add(Pair.snd(Nat, Nat, qr), Nat.mul(Pair.fst(Nat, Nat, qr), 256n)) : Nat}
 def pair_projection(qr):
   (q, r) = qr
   {==}

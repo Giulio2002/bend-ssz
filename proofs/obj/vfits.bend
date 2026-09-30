@@ -36,7 +36,7 @@ def dvalue(n, m, d, r, sum):
           %F.nat__add_succ(p, Nat.add(r, Nat.mul(d, 256n))) : {pv(Nat.divmod.go(p, q, d, 1n+r)) == _ : Nat}
           dvalue(p, q, d, 1n+r, Equal.trans(Nat, Nat.add(q, 1n+r), 1n+Nat.add(q, r), 255n, F.nat__add_succ(q, r), sum))
 
-def pproj(qr: Nat & Nat) -> {pv(qr) == Nat.add(Nat.mod.fin(qr), Nat.mul(Nat.div.fin(qr), 256n)) : Nat}:
+def pproj(qr: Nat & Nat) -> {pv(qr) == Nat.add(Pair.snd(Nat, Nat, qr), Nat.mul(Pair.fst(Nat, Nat, qr), 256n)) : Nat}:
   (q, r) = qr
   {==}
 

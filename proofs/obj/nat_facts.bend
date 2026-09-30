@@ -13,14 +13,14 @@ law quotient_lower:
   for +m: Nat
   for +d: Nat
   for +r: Nat
-  {Nat.is_le(d, Nat.div.fin(Nat.divmod.go(n, m, d, r))) == True{} : Bool}
+  {Nat.is_le(d, Pair.fst(Nat, Nat, Nat.divmod.go(n, m, d, r))) == True{} : Bool}
 def quotient_lower(n, m, d, r):
   match n:
     case 0n: Order.reflexive(d)
     case 1n+p:
       match m:
         case 0n:
-          Order.transitive(d, 1n+d, Nat.div.fin(Nat.divmod.go(p, r, 1n+d, 0n)), Order.step_right(d, d, Order.reflexive(d)), quotient_lower(p, r, 1n+d, 0n))
+          Order.transitive(d, 1n+d, Pair.fst(Nat, Nat, Nat.divmod.go(p, r, 1n+d, 0n)), Order.step_right(d, d, Order.reflexive(d)), quotient_lower(p, r, 1n+d, 0n))
         case 1n+q: quotient_lower(p, q, d, 1n+r)
 
 law quotient_monotone:
@@ -30,13 +30,13 @@ law quotient_monotone:
   for +d: Nat
   for +r: Nat
   for le: {Nat.is_le(a, b) == True{} : Bool}
-  {Nat.is_le(Nat.div.fin(Nat.divmod.go(a, m, d, r)), Nat.div.fin(Nat.divmod.go(b, m, d, r))) == True{} : Bool}
+  {Nat.is_le(Pair.fst(Nat, Nat, Nat.divmod.go(a, m, d, r)), Pair.fst(Nat, Nat, Nat.divmod.go(b, m, d, r))) == True{} : Bool}
 def quotient_monotone(a, b, m, d, r, le):
   match a b:
     case 0n 0n: Order.reflexive(d)
     case 0n 1n+q: quotient_lower(1n+q, m, d, r)
     case 1n+p 0n:
-      Empty.absurd({Nat.is_le(Nat.div.fin(Nat.divmod.go(1n+p, m, d, r)), d) == True{} : Bool}, MD.false_true(le))
+      Empty.absurd({Nat.is_le(Pair.fst(Nat, Nat, Nat.divmod.go(1n+p, m, d, r)), d) == True{} : Bool}, MD.false_true(le))
     case 1n+p 1n+q:
       match m:
         case 0n: quotient_monotone(p, q, r, 1n+d, 0n, le)

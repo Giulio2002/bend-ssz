@@ -181,7 +181,7 @@ def count_bytes(n):
     case 30n: {==}
     case 31n: {==}
     case 32n+p:
-      %Equal.sym(Nat, Nat.div.fin(Nat.divmod.go(Nat.add(p, 31n), 31n, 1n, 0n)), 1n+I.chunk_limit(p), Count.quotient_successor(Nat.add(p, 31n), 31n, 0n, 0n)) : {1n+Count.count(p, 31n, False{}) == _ : Nat}
+      %Equal.sym(Nat, Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(p, 31n), 31n, 1n, 0n)), 1n+I.chunk_limit(p), Count.quotient_successor(Nat.add(p, 31n), 31n, 0n, 0n)) : {1n+Count.count(p, 31n, False{}) == _ : Nat}
       Equal.cong(Nat, Nat, x => 1n+x, Count.count(p, 31n, False{}), I.chunk_limit(p), count_bytes(p))
 
 law packed_count:

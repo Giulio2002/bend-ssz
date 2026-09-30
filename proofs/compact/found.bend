@@ -34,6 +34,8 @@ import Base
 #   reference/lru/proofs/division_quotient.bend 7fa38b3625465c9e6806dc9b2178bf10db3ce42107f4d28fbb4286d8e18c0789
 #   proofs/lib/u32alg.bend 4bbcdea0904b247ae0191956f36c1e6920a02ad13ca1203c2b97a8e9378c99d9
 #   proofs/lib/u32half.bend 6285a15029e4547bd9a7fe0eb77364537126ebd709bfb8e7fbe18628272299cd
+# Base 2.0.34 port: Nat.div.fin/Nat.mod.fin written as Pair.fst/Pair.snd, and
+#   proofs/lib/array.bend blocks get_go, swap_go, get, swap from tools/compact_foundation_port.bend b129b9463323b0481bd98ccbad836429ca70b3894ecc40415dc720127616e9d4
 
 # ==== proofs/lib/logic.bend ====
 
@@ -878,13 +880,13 @@ def nat__acc2(i: Nat, m: Nat, +d: Nat, +r: Nat) -> {Nat.divmod.go(i, m, 1n+d, r)
 def nat__peel2(+i: Nat, +d: Nat) -> {Nat.divmod.go(Nat.add(2n, i), 1n, d, 0n) == Nat.divmod.go(i, 1n, 1n+d, 0n) : Nat & Nat}:
   {==}
 
-def nat__fst_bump2(p: Nat & Nat) -> {Nat.div.fin(nat__bump2(p)) == 1n+Nat.div.fin(p) : Nat}:
+def nat__fst_bump2(p: Nat & Nat) -> {Pair.fst(Nat, Nat, nat__bump2(p)) == 1n+Pair.fst(Nat, Nat, p) : Nat}:
   (q, r) = p
   {==}
 
 def nat__div2_step(+i: Nat) -> {Nat.div(Nat.add(2n, i), 2n) == 1n+Nat.div(i, 2n) : Nat}:
-  Equal.trans(Nat, Nat.div.fin(Nat.divmod.go(Nat.add(2n, i), 1n, 0n, 0n)), Nat.div.fin(nat__bump2(Nat.divmod.go(i, 1n, 0n, 0n))), 1n+Nat.div.fin(Nat.divmod.go(i, 1n, 0n, 0n)),
-    Equal.cong(Nat & Nat, Nat, Nat.div.fin, Nat.divmod.go(Nat.add(2n, i), 1n, 0n, 0n), nat__bump2(Nat.divmod.go(i, 1n, 0n, 0n)),
+  Equal.trans(Nat, Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(2n, i), 1n, 0n, 0n)), Pair.fst(Nat, Nat, nat__bump2(Nat.divmod.go(i, 1n, 0n, 0n))), 1n+Pair.fst(Nat, Nat, Nat.divmod.go(i, 1n, 0n, 0n)),
+    Equal.cong(Nat & Nat, Nat, qr => Pair.fst(Nat, Nat, qr), Nat.divmod.go(Nat.add(2n, i), 1n, 0n, 0n), nat__bump2(Nat.divmod.go(i, 1n, 0n, 0n)),
       Equal.trans(Nat & Nat, Nat.divmod.go(Nat.add(2n, i), 1n, 0n, 0n), Nat.divmod.go(i, 1n, 1n, 0n), nat__bump2(Nat.divmod.go(i, 1n, 0n, 0n)),
         nat__peel2(i, 0n), nat__acc2(i, 1n, 0n, 0n))),
     nat__fst_bump2(Nat.divmod.go(i, 1n, 0n, 0n)))
@@ -1473,10 +1475,10 @@ def lru_modular_addition__binary_division(value: Nat, +bit: Bool) -> {Nat.divmod
           Equal.trans(Nat & Nat, Nat.divmod(3n+Nat.double(p), 2n), lru_map_index__next_quotient(Nat.divmod(1n+Nat.double(p), 2n)), (1n+p, 1n), lru_modular_addition__stride(1n+Nat.double(p)), Equal.cong(Nat & Nat, Nat & Nat, lru_map_index__next_quotient, Nat.divmod(1n+Nat.double(p), 2n), (p, 1n), lru_modular_addition__binary_division(p, True{})))
 
 def lru_modular_addition__binary_quotient(+value: Nat, +bit: Bool) -> {Nat.div(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n) == value : Nat}:
-  Equal.cong(Nat & Nat, Nat, Nat.div.fin, Nat.divmod(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n), (value, spec_numeric__bit_value(bit)), lru_modular_addition__binary_division(value, bit))
+  Equal.cong(Nat & Nat, Nat, qr => Pair.fst(Nat, Nat, qr), Nat.divmod(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n), (value, spec_numeric__bit_value(bit)), lru_modular_addition__binary_division(value, bit))
 
 def lru_modular_addition__binary_remainder(+value: Nat, +bit: Bool) -> {Nat.mod(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n) == spec_numeric__bit_value(bit) : Nat}:
-  Equal.cong(Nat & Nat, Nat, Nat.mod.fin, Nat.divmod(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n), (value, spec_numeric__bit_value(bit)), lru_modular_addition__binary_division(value, bit))
+  Equal.cong(Nat & Nat, Nat, qr => Pair.snd(Nat, Nat, qr), Nat.divmod(Nat.add(spec_numeric__bit_value(bit), Nat.double(value)), 2n), (value, spec_numeric__bit_value(bit)), lru_modular_addition__binary_division(value, bit))
 
 def lru_modular_addition__bit_roundtrip(bit: Bool) -> {Nat.is_eq(spec_numeric__bit_value(bit), 1n) == bit : Bool}:
   match bit:
@@ -2001,7 +2003,7 @@ def lru_word_value__shift_carry(+bp: Nat, +n: Nat, +m: Nat, +r: Nat, inv: {Nat.a
   lru_nat_algebra__add_succ(Nat.add(m, bp), n)
 
 def lru_word_value__go_equation(bp: Nat, n: Nat, m: Nat, d: Nat, r: Nat) -> Type:
-  {Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), n) == Nat.add(Nat.mul(Nat.div.fin(Nat.divmod.go(n, m, d, r)), 1n+bp), Nat.mod.fin(Nat.divmod.go(n, m, d, r))) : Nat} & {Nat.is_le(Nat.mod.fin(Nat.divmod.go(n, m, d, r)), bp) == True{} : Bool}
+  {Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), n) == Nat.add(Nat.mul(Pair.fst(Nat, Nat, Nat.divmod.go(n, m, d, r)), 1n+bp), Pair.snd(Nat, Nat, Nat.divmod.go(n, m, d, r))) : Nat} & {Nat.is_le(Pair.snd(Nat, Nat, Nat.divmod.go(n, m, d, r)), bp) == True{} : Bool}
 
 def lru_word_value__bound_zero(+bp: Nat, +m: Nat, +r: Nat, inv: {Nat.add(m, r) == bp : Nat}) -> {Nat.is_le(r, bp) == True{} : Bool}:
   %inv : {Nat.is_le(r, _) == True{} : Bool}
@@ -2020,9 +2022,9 @@ def lru_word_value__go(+bp: Nat, n: Nat, m: Nat, +d: Nat, +r: Nat, +inv: {Nat.ad
     case 1n++np:
       match m:
         case 0n:
-          lru_word_value__extend(Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), 1n+np), Nat.add(Nat.add(Nat.mul(1n+d, 1n+bp), 0n), np), Nat.add(Nat.mul(Nat.div.fin(Nat.divmod.go(np, r, 1n+d, 0n)), 1n+bp), Nat.mod.fin(Nat.divmod.go(np, r, 1n+d, 0n))), {Nat.is_le(Nat.mod.fin(Nat.divmod.go(np, r, 1n+d, 0n)), bp) == True{} : Bool}, lru_word_value__shift_carry(bp, np, Nat.mul(d, 1n+bp), r, inv), lru_word_value__go(bp, np, r, 1n+d, 0n, Equal.trans(Nat, Nat.add(r, 0n), r, bp, lru_nat_algebra__add_zero(r), inv)))
+          lru_word_value__extend(Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), 1n+np), Nat.add(Nat.add(Nat.mul(1n+d, 1n+bp), 0n), np), Nat.add(Nat.mul(Pair.fst(Nat, Nat, Nat.divmod.go(np, r, 1n+d, 0n)), 1n+bp), Pair.snd(Nat, Nat, Nat.divmod.go(np, r, 1n+d, 0n))), {Nat.is_le(Pair.snd(Nat, Nat, Nat.divmod.go(np, r, 1n+d, 0n)), bp) == True{} : Bool}, lru_word_value__shift_carry(bp, np, Nat.mul(d, 1n+bp), r, inv), lru_word_value__go(bp, np, r, 1n+d, 0n, Equal.trans(Nat, Nat.add(r, 0n), r, bp, lru_nat_algebra__add_zero(r), inv)))
         case 1n++mp:
-          lru_word_value__extend(Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), 1n+np), Nat.add(Nat.add(Nat.mul(d, 1n+bp), 1n+r), np), Nat.add(Nat.mul(Nat.div.fin(Nat.divmod.go(np, mp, d, 1n+r)), 1n+bp), Nat.mod.fin(Nat.divmod.go(np, mp, d, 1n+r))), {Nat.is_le(Nat.mod.fin(Nat.divmod.go(np, mp, d, 1n+r)), bp) == True{} : Bool}, lru_word_value__shift_count(Nat.mul(d, 1n+bp), r, np), lru_word_value__go(bp, np, mp, d, 1n+r, Equal.trans(Nat, Nat.add(mp, 1n+r), 1n+Nat.add(mp, r), bp, lru_nat_algebra__add_succ(mp, r), inv)))
+          lru_word_value__extend(Nat.add(Nat.add(Nat.mul(d, 1n+bp), r), 1n+np), Nat.add(Nat.add(Nat.mul(d, 1n+bp), 1n+r), np), Nat.add(Nat.mul(Pair.fst(Nat, Nat, Nat.divmod.go(np, mp, d, 1n+r)), 1n+bp), Pair.snd(Nat, Nat, Nat.divmod.go(np, mp, d, 1n+r))), {Nat.is_le(Pair.snd(Nat, Nat, Nat.divmod.go(np, mp, d, 1n+r)), bp) == True{} : Bool}, lru_word_value__shift_count(Nat.mul(d, 1n+bp), r, np), lru_word_value__go(bp, np, mp, d, 1n+r, Equal.trans(Nat, Nat.add(mp, 1n+r), 1n+Nat.add(mp, r), bp, lru_nat_algebra__add_succ(mp, r), inv)))
 
 # v == 2*(v/2) + v%2 and v%2 <= 1, for the actual Nat.divmod.
 def lru_word_value__half(+v: Nat) -> {Nat.add(Nat.add(Nat.mul(0n, 2n), 0n), v) == Nat.add(Nat.mul(Nat.div(v, 2n), 2n), Nat.mod(v, 2n)) : Nat} & {Nat.is_le(Nat.mod(v, 2n), 1n) == True{} : Bool}:
@@ -2554,85 +2556,81 @@ def array__size_thaw(-T: Data, +d: Nat, +t: array__Tree<T>, +pf: {array__perfect
       %Equal.sym(Array<T> & U32, Array.size(T, array__thaw(T, l)), (array__thaw(T, l), u32__pow2u(p)), array__size_thaw(T, p, l, array__pf_left(T, p, l, r, pf))) : {Array.size.node(T, array__thaw(T, r), _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, U32.shl(u32__pow2u(p))) : Array<T> & U32}
       {==}
 
-def array__get_go(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +b: Bool, +eb: {U32.is_lt(i, u32__pow2u(nat__pred(d))) == b : Bool}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.get.go(T, array__thaw(T, t), u32__pow2u(d), i) == (array__thaw(T, t), x) : Array<T> & T}:
+def array__get_go(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +b: Bool, +eb: {U32.is_lt(i, U32.shr(u32__pow2u(d))) == b : Bool}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.get.go(T, array__thaw(T, t), u32__pow2u(d), i, b) == (array__thaw(T, t), x) : Array<T> & T}:
   match d t b:
     case 0n TLeaf{+y} _:
       %array__leaf_value(T, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{y}, y) == (ALeaf{y}, _) : Array<T> & T}
       {==}
     case 0n TNode{l, r} _:
-      Empty.absurd({Array.get.go(T, array__thaw(T, TNode{l, r}), 1, i) == (array__thaw(T, TNode{l, r}), x) : Array<T> & T}, logic__false_true(pf))
+      Empty.absurd({Array.get.go(T, array__thaw(T, TNode{l, r}), 1, i, b) == (array__thaw(T, TNode{l, r}), x) : Array<T> & T}, logic__false_true(pf))
     case 1n+p TLeaf{y} _:
-      Empty.absurd({Array.get.go(T, ALeaf{y}, u32__pow2u(1n+p), i) == (ALeaf{y}, x) : Array<T> & T}, logic__false_true(pf))
+      Empty.absurd({Array.get.go(T, ALeaf{y}, u32__pow2u(1n+p), i, b) == (ALeaf{y}, x) : Array<T> & T}, logic__false_true(pf))
     case 1n+ +p TNode{+l, +r} True{}:
       +hp = nat__lt_trans(p, 1n+p, 32n, nat__lt_succ(p), hd)
       +pl = array__pf_left(T, p, l, r, pf)
-      +hil = array__lt_bridge(i, p, hp, True{}, eb)
-      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.get.if(T, array__thaw(T, l), array__thaw(T, r), _, i, U32.is_lt(i, _)) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
-      %Equal.sym(Bool, U32.is_lt(i, u32__pow2u(p)), True{}, eb) : {Array.get.if(T, array__thaw(T, l), array__thaw(T, r), u32__pow2u(p), i, _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
-      %Equal.sym(Array<T> & T, Array.get.go(T, array__thaw(T, l), u32__pow2u(p), i), (array__thaw(T, l), x), array__get_go(T, p, l, i, x, hp, hil, Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, l), U32.to_nat(i)), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), spec_common__nth(T, array__slots(T, l), U32.to_nat(i)), list__nth_append_left(T, array__slots(T, l), array__slots(T, r), U32.to_nat(i), array__len_lt(T, p, l, U32.to_nat(i), pl, hil))), hx), U32.is_lt(i, u32__pow2u(nat__pred(p))), {==}, pl)) : {Array.swap.lo(T, array__thaw(T, r), _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
+      +hil = array__lt_bridge(i, p, hp, True{}, logic__subst(U32, w => {U32.is_lt(i, w) == True{} : Bool}, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd), eb))
+      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.lo(T, array__thaw(T, r), Array.get.go(T, array__thaw(T, l), _, i, U32.is_lt(i, U32.shr(_)))) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
+      %Equal.sym(Array<T> & T, Array.get.go(T, array__thaw(T, l), u32__pow2u(p), i, U32.is_lt(i, U32.shr(u32__pow2u(p)))), (array__thaw(T, l), x), array__get_go(T, p, l, i, x, hp, hil, Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, l), U32.to_nat(i)), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), spec_common__nth(T, array__slots(T, l), U32.to_nat(i)), list__nth_append_left(T, array__slots(T, l), array__slots(T, r), U32.to_nat(i), array__len_lt(T, p, l, U32.to_nat(i), pl, hil))), hx), U32.is_lt(i, U32.shr(u32__pow2u(p))), {==}, pl)) : {Array.swap.lo(T, array__thaw(T, r), _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
       {==}
     case 1n+ +p TNode{+l, +r} False{}:
       +hp = nat__lt_trans(p, 1n+p, 32n, nat__lt_succ(p), hd)
       +pl = array__pf_left(T, p, l, r, pf)
-      +le = nat__not_lt_le(U32.to_nat(i), spec_common__pow2(p), array__lt_bridge(i, p, hp, False{}, eb))
+      +le = nat__not_lt_le(U32.to_nat(i), spec_common__pow2(p), array__lt_bridge(i, p, hp, False{}, logic__subst(U32, w => {U32.is_lt(i, w) == False{} : Bool}, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd), eb)))
       +j = U32.sub(i, u32__pow2u(p))
       +ej = array__sub_bridge(i, p, hp, le)
       +hir = logic__subst(Nat, n => {Nat.is_lt(n, spec_common__pow2(p)) == True{} : Bool}, Nat.sub(U32.to_nat(i), spec_common__pow2(p)), U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), Nat.sub(U32.to_nat(i), spec_common__pow2(p)), ej), array__upper_lt(U32.to_nat(i), p, hi, le))
       +hxr = logic__subst(Nat, n => {spec_common__nth(T, array__slots(T, r), n) == Some{x} : Maybe<&2, T>}, Nat.sub(U32.to_nat(i), spec_common__pow2(p)), U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), Nat.sub(U32.to_nat(i), spec_common__pow2(p)), ej), Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, r), Nat.sub(U32.to_nat(i), spec_common__pow2(p))), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), U32.to_nat(i)), spec_common__nth(T, array__slots(T, r), Nat.sub(U32.to_nat(i), spec_common__pow2(p))), array__right_nth(T, p, l, r, U32.to_nat(i), pl, le)), hx))
-      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.get.if(T, array__thaw(T, l), array__thaw(T, r), _, i, U32.is_lt(i, _)) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
-      %Equal.sym(Bool, U32.is_lt(i, u32__pow2u(p)), False{}, eb) : {Array.get.if(T, array__thaw(T, l), array__thaw(T, r), u32__pow2u(p), i, _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
-      %Equal.sym(Array<T> & T, Array.get.go(T, array__thaw(T, r), u32__pow2u(p), j), (array__thaw(T, r), x), array__get_go(T, p, r, j, x, hp, hir, hxr, U32.is_lt(j, u32__pow2u(nat__pred(p))), {==}, array__pf_right(T, p, l, r, pf))) : {Array.swap.hi(T, array__thaw(T, l), _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
+      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.hi(T, array__thaw(T, l), Array.get.go(T, array__thaw(T, r), _, U32.sub(i, _), U32.is_lt(U32.sub(i, _), U32.shr(_)))) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
+      %Equal.sym(Array<T> & T, Array.get.go(T, array__thaw(T, r), u32__pow2u(p), j, U32.is_lt(j, U32.shr(u32__pow2u(p)))), (array__thaw(T, r), x), array__get_go(T, p, r, j, x, hp, hir, hxr, U32.is_lt(j, U32.shr(u32__pow2u(p))), {==}, array__pf_right(T, p, l, r, pf))) : {Array.swap.hi(T, array__thaw(T, l), _) == (ANode{array__thaw(T, l), array__thaw(T, r)}, x) : Array<T> & T}
       {==}
 
-def array__swap_go(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +v: T, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +b: Bool, +eb: {U32.is_lt(i, u32__pow2u(nat__pred(d))) == b : Bool}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.swap.go(T, array__thaw(T, t), u32__pow2u(d), i, v) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}:
+def array__swap_go(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +v: T, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +b: Bool, +eb: {U32.is_lt(i, U32.shr(u32__pow2u(d))) == b : Bool}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.swap.go(T, array__thaw(T, t), u32__pow2u(d), i, v, b) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}:
   match d t b:
     case 0n TLeaf{+y} _:
       %array__leaf_value(T, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{v}, y) == (ALeaf{v}, _) : Array<T> & T}
       {==}
     case 0n TNode{l, r} _:
-      Empty.absurd({Array.swap.go(T, array__thaw(T, TNode{l, r}), 1, i, v) == (array__thaw(T, array__upd(T, 0n, TNode{l, r}, U32.to_nat(i), v)), x) : Array<T> & T}, logic__false_true(pf))
+      Empty.absurd({Array.swap.go(T, array__thaw(T, TNode{l, r}), 1, i, v, b) == (array__thaw(T, array__upd(T, 0n, TNode{l, r}, U32.to_nat(i), v)), x) : Array<T> & T}, logic__false_true(pf))
     case 1n+p TLeaf{y} _:
-      Empty.absurd({Array.swap.go(T, ALeaf{y}, u32__pow2u(1n+p), i, v) == (array__thaw(T, array__upd(T, 1n+p, TLeaf{y}, U32.to_nat(i), v)), x) : Array<T> & T}, logic__false_true(pf))
+      Empty.absurd({Array.swap.go(T, ALeaf{y}, u32__pow2u(1n+p), i, v, b) == (array__thaw(T, array__upd(T, 1n+p, TLeaf{y}, U32.to_nat(i), v)), x) : Array<T> & T}, logic__false_true(pf))
     case 1n+ +p TNode{+l, +r} True{}:
       +hp = nat__lt_trans(p, 1n+p, 32n, nat__lt_succ(p), hd)
       +pl = array__pf_left(T, p, l, r, pf)
-      +hil = array__lt_bridge(i, p, hp, True{}, eb)
+      +hil = array__lt_bridge(i, p, hp, True{}, logic__subst(U32, w => {U32.is_lt(i, w) == True{} : Bool}, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd), eb))
       +ti = U32.to_nat(i)
-      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.if(T, array__thaw(T, l), array__thaw(T, r), _, i, v, U32.is_lt(i, _)) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
-      %Equal.sym(Bool, U32.is_lt(i, u32__pow2u(p)), True{}, eb) : {Array.swap.if(T, array__thaw(T, l), array__thaw(T, r), u32__pow2u(p), i, v, _) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
-      %Equal.sym(Bool, Nat.is_lt(ti, spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(T, array__thaw(T, r), Array.swap.go(T, array__thaw(T, l), u32__pow2u(p), i, v)) == (array__thaw(T, array__tupd(T, 1n+p, TNode{l, r}, ti, v, _)), x) : Array<T> & T}
-      %Equal.sym(Array<T> & T, Array.swap.go(T, array__thaw(T, l), u32__pow2u(p), i, v), (array__thaw(T, array__upd(T, p, l, ti, v)), x), array__swap_go(T, p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, l), ti), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), spec_common__nth(T, array__slots(T, l), ti), list__nth_append_left(T, array__slots(T, l), array__slots(T, r), ti, array__len_lt(T, p, l, ti, pl, hil))), hx), U32.is_lt(i, u32__pow2u(nat__pred(p))), {==}, pl)) : {Array.swap.lo(T, array__thaw(T, r), _) == (array__thaw(T, TNode{array__tupd(T, p, l, ti, v, array__ndec(p, ti)), r}), x) : Array<T> & T}
+      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.lo(T, array__thaw(T, r), Array.swap.go(T, array__thaw(T, l), _, i, v, U32.is_lt(i, U32.shr(_)))) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
+      %Equal.sym(Bool, Nat.is_lt(ti, spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(T, array__thaw(T, r), Array.swap.go(T, array__thaw(T, l), u32__pow2u(p), i, v, U32.is_lt(i, U32.shr(u32__pow2u(p))))) == (array__thaw(T, array__tupd(T, 1n+p, TNode{l, r}, ti, v, _)), x) : Array<T> & T}
+      %Equal.sym(Array<T> & T, Array.swap.go(T, array__thaw(T, l), u32__pow2u(p), i, v, U32.is_lt(i, U32.shr(u32__pow2u(p)))), (array__thaw(T, array__upd(T, p, l, ti, v)), x), array__swap_go(T, p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, l), ti), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), spec_common__nth(T, array__slots(T, l), ti), list__nth_append_left(T, array__slots(T, l), array__slots(T, r), ti, array__len_lt(T, p, l, ti, pl, hil))), hx), U32.is_lt(i, U32.shr(u32__pow2u(p))), {==}, pl)) : {Array.swap.lo(T, array__thaw(T, r), _) == (array__thaw(T, TNode{array__tupd(T, p, l, ti, v, array__ndec(p, ti)), r}), x) : Array<T> & T}
       {==}
     case 1n+ +p TNode{+l, +r} False{}:
       +hp = nat__lt_trans(p, 1n+p, 32n, nat__lt_succ(p), hd)
       +pl = array__pf_left(T, p, l, r, pf)
       +ti = U32.to_nat(i)
-      +nb = array__lt_bridge(i, p, hp, False{}, eb)
+      +nb = array__lt_bridge(i, p, hp, False{}, logic__subst(U32, w => {U32.is_lt(i, w) == False{} : Bool}, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd), eb))
       +le = nat__not_lt_le(ti, spec_common__pow2(p), nb)
       +j = U32.sub(i, u32__pow2u(p))
       +k = Nat.sub(ti, spec_common__pow2(p))
       +ej = array__sub_bridge(i, p, hp, le)
       +hir = logic__subst(Nat, n => {Nat.is_lt(n, spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), array__upper_lt(ti, p, hi, le))
       +hxr = logic__subst(Nat, n => {spec_common__nth(T, array__slots(T, r), n) == Some{x} : Maybe<&2, T>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, T>, spec_common__nth(T, array__slots(T, r), k), spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), Some{x}, Equal.sym(Maybe<&2, T>, spec_common__nth(T, spec_common__append(T, array__slots(T, l), array__slots(T, r)), ti), spec_common__nth(T, array__slots(T, r), k), array__right_nth(T, p, l, r, ti, pl, le)), hx))
-      +ih = array__swap_go(T, p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, u32__pow2u(nat__pred(p))), {==}, array__pf_right(T, p, l, r, pf))
-      +ih2 = logic__subst(Nat, n => {Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v) == (array__thaw(T, array__upd(T, p, r, n, v)), x) : Array<T> & T}, U32.to_nat(j), k, ej, ih)
-      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.if(T, array__thaw(T, l), array__thaw(T, r), _, i, v, U32.is_lt(i, _)) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
-      %Equal.sym(Bool, U32.is_lt(i, u32__pow2u(p)), False{}, eb) : {Array.swap.if(T, array__thaw(T, l), array__thaw(T, r), u32__pow2u(p), i, v, _) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
-      %Equal.sym(Bool, Nat.is_lt(ti, spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(T, array__thaw(T, l), Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v)) == (array__thaw(T, array__tupd(T, 1n+p, TNode{l, r}, ti, v, _)), x) : Array<T> & T}
-      %Equal.sym(Array<T> & T, Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v), (array__thaw(T, array__upd(T, p, r, k, v)), x), ih2) : {Array.swap.hi(T, array__thaw(T, l), _) == (array__thaw(T, TNode{l, array__tupd(T, p, r, k, v, array__ndec(p, k))}), x) : Array<T> & T}
+      +ih = array__swap_go(T, p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, U32.shr(u32__pow2u(p))), {==}, array__pf_right(T, p, l, r, pf))
+      +ih2 = logic__subst(Nat, n => {Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v, U32.is_lt(j, U32.shr(u32__pow2u(p)))) == (array__thaw(T, array__upd(T, p, r, n, v)), x) : Array<T> & T}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(u32__pow2u(1n+p)), u32__pow2u(p), u32__shr_pow2u(p, hd)) : {Array.swap.hi(T, array__thaw(T, l), Array.swap.go(T, array__thaw(T, r), _, U32.sub(i, _), v, U32.is_lt(U32.sub(i, _), U32.shr(_)))) == (array__thaw(T, array__upd(T, 1n+p, TNode{l, r}, ti, v)), x) : Array<T> & T}
+      %Equal.sym(Bool, Nat.is_lt(ti, spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(T, array__thaw(T, l), Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v, U32.is_lt(j, U32.shr(u32__pow2u(p))))) == (array__thaw(T, array__tupd(T, 1n+p, TNode{l, r}, ti, v, _)), x) : Array<T> & T}
+      %Equal.sym(Array<T> & T, Array.swap.go(T, array__thaw(T, r), u32__pow2u(p), j, v, U32.is_lt(j, U32.shr(u32__pow2u(p)))), (array__thaw(T, array__upd(T, p, r, k, v)), x), ih2) : {Array.swap.hi(T, array__thaw(T, l), _) == (array__thaw(T, TNode{l, array__tupd(T, p, r, k, v, array__ndec(p, k))}), x) : Array<T> & T}
       {==}
 
 # Public Base entry points. Premises: the tree is perfect of depth d < 32 and
 # the index is below 2^d; x is the value currently stored at that index.
 def array__get(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.get(T, array__thaw(T, t), i) == (array__thaw(T, t), x) : Array<T> & T}:
   %Equal.sym(Array<T> & U32, Array.size(T, array__thaw(T, t)), (array__thaw(T, t), u32__pow2u(d)), array__size_thaw(T, d, t, pf)) : {Array.get.at(T, i, _) == (array__thaw(T, t), x) : Array<T> & T}
-  %Equal.sym(U32, U32.and(i, U32.sub(u32__pow2u(d), 1)), i, u32__mask_pow2u(i, d, hd, hi)) : {Array.get.go(T, array__thaw(T, t), u32__pow2u(d), _) == (array__thaw(T, t), x) : Array<T> & T}
-  array__get_go(T, d, t, i, x, hd, hi, hx, U32.is_lt(i, u32__pow2u(nat__pred(d))), {==}, pf)
+  %Equal.sym(U32, U32.and(i, U32.sub(u32__pow2u(d), 1)), i, u32__mask_pow2u(i, d, hd, hi)) : {Array.get.go(T, array__thaw(T, t), u32__pow2u(d), _, U32.is_lt(_, U32.shr(u32__pow2u(d)))) == (array__thaw(T, t), x) : Array<T> & T}
+  array__get_go(T, d, t, i, x, hd, hi, hx, U32.is_lt(i, U32.shr(u32__pow2u(d))), {==}, pf)
 
 def array__swap(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +v: T, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.swap(T, array__thaw(T, t), i, v) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}:
   %Equal.sym(Array<T> & U32, Array.size(T, array__thaw(T, t)), (array__thaw(T, t), u32__pow2u(d)), array__size_thaw(T, d, t, pf)) : {Array.swap.at(T, i, v, _) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}
-  %Equal.sym(U32, U32.and(i, U32.sub(u32__pow2u(d), 1)), i, u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(T, array__thaw(T, t), u32__pow2u(d), _, v) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}
-  array__swap_go(T, d, t, i, v, x, hd, hi, hx, U32.is_lt(i, u32__pow2u(nat__pred(d))), {==}, pf)
+  %Equal.sym(U32, U32.and(i, U32.sub(u32__pow2u(d), 1)), i, u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(T, array__thaw(T, t), u32__pow2u(d), _, v, U32.is_lt(_, U32.shr(u32__pow2u(d)))) == (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x) : Array<T> & T}
+  array__swap_go(T, d, t, i, v, x, hd, hi, hx, U32.is_lt(i, U32.shr(u32__pow2u(d))), {==}, pf)
 
 def array__set(-T: Data, +d: Nat, +t: array__Tree<T>, +i: U32, +v: T, +x: T, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), spec_common__pow2(d)) == True{} : Bool}, +hx: {spec_common__nth(T, array__slots(T, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T>}, +pf: {array__perfect(T, d, t) == True{} : Bool}) -> {Array.set(T, array__thaw(T, t), i, v) == array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)) : Array<T>}:
   %Equal.sym(Array<T> & T, Array.swap(T, array__thaw(T, t), i, v), (array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)), x), array__swap(T, d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(T, _) == array__thaw(T, array__upd(T, d, t, U32.to_nat(i), v)) : Array<T>}

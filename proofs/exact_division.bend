@@ -37,7 +37,7 @@ law quotient:
   {Nat.div(Nat.mul(k, 1n+w), 1n+w) == k : Nat}
 def quotient(k, w):
   Equal.trans(Nat, Nat.div(Nat.mul(k, 1n+w), 1n+w), Nat.add(k, 0n), k,
-    Equal.cong(Nat & Nat, Nat, Nat.div.fin, Nat.divmod.go(Nat.mul(k, 1n+w), w, 0n, 0n), (Nat.add(k, 0n), 0n), multiple(k, w, 0n)),
+    Equal.cong(Nat & Nat, Nat, x => Pair.fst(Nat, Nat, x), Nat.divmod.go(Nat.mul(k, 1n+w), w, 0n, 0n), (Nat.add(k, 0n), 0n), multiple(k, w, 0n)),
     P.add_zero(k))
 
 law remainder:
@@ -45,4 +45,4 @@ law remainder:
   for +w: Nat
   {Nat.mod(Nat.mul(k, 1n+w), 1n+w) == 0n : Nat}
 def remainder(k, w):
-  Equal.cong(Nat & Nat, Nat, Nat.mod.fin, Nat.divmod.go(Nat.mul(k, 1n+w), w, 0n, 0n), (Nat.add(k, 0n), 0n), multiple(k, w, 0n))
+  Equal.cong(Nat & Nat, Nat, x => Pair.snd(Nat, Nat, x), Nat.divmod.go(Nat.mul(k, 1n+w), w, 0n, 0n), (Nat.add(k, 0n), 0n), multiple(k, w, 0n))

@@ -46,7 +46,7 @@ law div_exact:
   for +le: {Nat.is_le(r, w) == True{} : Bool}
   {Nat.div(Nat.add(Nat.mul(q, 1n+w), r), 1n+w) == q : Nat}
 def div_exact(q, r, w, le):
-  Equal.trans(Nat, Nat.div(Nat.add(Nat.mul(q, 1n+w), r), 1n+w), Nat.add(q, 0n), q, Equal.cong(Nat & Nat, Nat, Nat.div.fin, Nat.divmod.go(Nat.add(Nat.mul(q, 1n+w), r), w, 0n, 0n), (Nat.add(q, 0n), r), go_blocks(q, r, w, 0n, le)), Pack.add_zero(q))
+  Equal.trans(Nat, Nat.div(Nat.add(Nat.mul(q, 1n+w), r), 1n+w), Nat.add(q, 0n), q, Equal.cong(Nat & Nat, Nat, x => Pair.fst(Nat, Nat, x), Nat.divmod.go(Nat.add(Nat.mul(q, 1n+w), r), w, 0n, 0n), (Nat.add(q, 0n), r), go_blocks(q, r, w, 0n, le)), Pack.add_zero(q))
 
 law mod_exact:
   for +q: Nat
@@ -55,7 +55,7 @@ law mod_exact:
   for +le: {Nat.is_le(r, w) == True{} : Bool}
   {Nat.mod(Nat.add(Nat.mul(q, 1n+w), r), 1n+w) == r : Nat}
 def mod_exact(q, r, w, le):
-  Equal.cong(Nat & Nat, Nat, Nat.mod.fin, Nat.divmod.go(Nat.add(Nat.mul(q, 1n+w), r), w, 0n, 0n), (Nat.add(q, 0n), r), go_blocks(q, r, w, 0n, le))
+  Equal.cong(Nat & Nat, Nat, x => Pair.snd(Nat, Nat, x), Nat.divmod.go(Nat.add(Nat.mul(q, 1n+w), r), w, 0n, 0n), (Nat.add(q, 0n), r), go_blocks(q, r, w, 0n, le))
 
 # Every n is q*(1+w) + r with r <= w.
 def split_type(n: Nat, w: Nat) -> Type:

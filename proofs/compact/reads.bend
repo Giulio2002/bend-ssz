@@ -62,7 +62,7 @@ def word_any(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: U32,
   +x = F.flat__nthc(F.array__slots(U32, t), U32.to_nat(m))
   +hx = F.flat__nthc_nth(F.array__slots(U32, t), U32.to_nat(m), F.array__len_lt(U32, d, t, U32.to_nat(m), pf, hm))
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf)) : {B.rewrap(n, Array.get.at(U32, q, _)) == (B.Buf{F.array__thaw(U32, t), n}, wd(t, d, q)) : B.Buf & U32}
-  %Equal.sym(Array<U32> & U32, Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), m), (F.array__thaw(U32, t), x), F.array__get_go(U32, d, t, m, x, hd, hm, hx, U32.is_lt(m, F.u32__pow2u(F.nat__pred(d))), {==}, pf)) : {B.rewrap(n, _) == (B.Buf{F.array__thaw(U32, t), n}, wd(t, d, q)) : B.Buf & U32}
+  %Equal.sym(Array<U32> & U32, Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), m, U32.is_lt(m, U32.shr(F.u32__pow2u(d)))), (F.array__thaw(U32, t), x), F.array__get_go(U32, d, t, m, x, hd, hm, hx, U32.is_lt(m, U32.shr(F.u32__pow2u(d))), {==}, pf)) : {B.rewrap(n, _) == (B.Buf{F.array__thaw(U32, t), n}, wd(t, d, q)) : B.Buf & U32}
   {==}
 
 # ---- byte and four-byte reads at any index --------------------------------

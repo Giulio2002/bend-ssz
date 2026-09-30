@@ -20,7 +20,7 @@ law quotient_positive:
   for +m: Nat
   for +d: Nat
   for +r: Nat
-  {Nat.is_lt(0n, Nat.div.fin(Nat.divmod.go(n, m, 1n+d, r))) == True{} : Bool}
+  {Nat.is_lt(0n, Pair.fst(Nat, Nat, Nat.divmod.go(n, m, 1n+d, r))) == True{} : Bool}
 def quotient_positive(n, m, d, r):
   match n:
     case 0n: {==}

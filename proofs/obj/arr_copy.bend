@@ -639,7 +639,7 @@ def get_any(+d: Nat, +t: F.array__Tree<U32>, +q: U32, +hd: {Nat.is_lt(d, 32n) ==
   +x = F.flat__nthc(F.array__slots(U32, t), U32.to_nat(m))
   +hx = F.flat__nthc_nth(F.array__slots(U32, t), U32.to_nat(m), F.array__len_lt(U32, d, t, U32.to_nat(m), pf, hm))
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf)) : {Array.get.at(U32, q, _) == (F.array__thaw(U32, t), RD.wd(t, d, q)) : Array<U32> & U32}
-  F.array__get_go(U32, d, t, m, x, hd, hm, hx, U32.is_lt(m, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+  F.array__get_go(U32, d, t, m, x, hd, hm, hx, U32.is_lt(m, U32.shr(F.u32__pow2u(d))), {==}, pf)
 
 # The encoder's storage check of a word object on a perfect tree of depth d:
 # it accepts, whatever the words are (length and capacity are as given).

@@ -98,7 +98,7 @@ law cl:
   {BL.chunk_limit(TR.capacity(Nat.add(5n, d))) == TR.capacity(d) : Nat}
 def cl(d):
   %add_z(TR.capacity(d)) : {BL.chunk_limit(TR.capacity(Nat.add(5n, d))) == _ : Nat}
-  Equal.cong(Nat & Nat, Nat, x => Nat.div.fin(x), Nat.divmod.go(Nat.add(d5(TR.capacity(d)), 31n), 31n, 0n, 0n), (Nat.add(TR.capacity(d), 0n), 31n), go32(TR.capacity(d), 0n))
+  Equal.cong(Nat & Nat, Nat, x => Pair.fst(Nat, Nat, x), Nat.divmod.go(Nat.add(d5(TR.capacity(d)), 31n), 31n, 0n, 0n), (Nat.add(TR.capacity(d), 0n), 31n), go32(TR.capacity(d), 0n))
 
 law cmp_dbl:
   for +a: Nat

@@ -121,10 +121,10 @@ def get_wrap(+d: Nat, +t: F.array__Tree<U32>, +q: U32, +eq: {U32.to_nat(q) == VB
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf)) :
     {Array.get.at(U32, q, _) == (F.array__thaw(U32, t), VB.slot(t, 0n)) : Array<U32> & U32}
   %Equal.sym(U32, U32.and(q, U32.sub(F.u32__pow2u(d), 1)), 0, mask_top(q, U32.sub(F.u32__pow2u(d), 1), d, eq, pmask(d, hd))) :
-    {Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), _) == (F.array__thaw(U32, t), VB.slot(t, 0n)) : Array<U32> & U32}
+    {Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), _, U32.is_lt(_, U32.shr(F.u32__pow2u(d)))) == (F.array__thaw(U32, t), VB.slot(t, 0n)) : Array<U32> & U32}
   +M = U32.sub(F.u32__pow2u(d), 1)
-  Equal.trans(Array<U32> & U32, Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), 0), Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), U32.and(0, M)), (F.array__thaw(U32, t), VB.slot(t, 0n)),
-    Equal.cong(U32, Array<U32> & U32, z => Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), z), 0, U32.and(0, M), Equal.sym(U32, U32.and(0, M), 0, F.u32__mask_pow2u(0, d, hd, h0))),
+  Equal.trans(Array<U32> & U32, Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), 0, U32.is_lt(0, U32.shr(F.u32__pow2u(d)))), Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), U32.and(0, M), U32.is_lt(U32.and(0, M), U32.shr(F.u32__pow2u(d)))), (F.array__thaw(U32, t), VB.slot(t, 0n)),
+    Equal.cong(U32, Array<U32> & U32, z => Array.get.go(U32, F.array__thaw(U32, t), F.u32__pow2u(d), z, U32.is_lt(z, U32.shr(F.u32__pow2u(d)))), 0, U32.and(0, M), Equal.sym(U32, U32.and(0, M), 0, F.u32__mask_pow2u(0, d, hd, h0))),
     F.logic__subst(Array<U32> & U32, z => {Array.get.at(U32, 0, z) == (F.array__thaw(U32, t), VB.slot(t, 0n)) : Array<U32> & U32}, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf), g0))
 
 # ---- source words, wrapping at the array's size ------------------------------------------

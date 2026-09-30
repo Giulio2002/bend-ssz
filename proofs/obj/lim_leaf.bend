@@ -37,7 +37,7 @@ law clb:
   {Bm.chunk_limit(TR.capacity(Nat.add(8n, d))) == TR.capacity(d) : Nat}
 def clb(d):
   %LSY.add_z(TR.capacity(d)) : {Bm.chunk_limit(TR.capacity(Nat.add(8n, d))) == _ : Nat}
-  Equal.cong(Nat & Nat, Nat, x => Nat.div.fin(x), Nat.divmod.go(Nat.add(d8(TR.capacity(d)), 255n), 255n, 0n, 0n), (Nat.add(TR.capacity(d), 0n), 255n), go256(TR.capacity(d), 0n))
+  Equal.cong(Nat & Nat, Nat, x => Pair.fst(Nat, Nat, x), Nat.divmod.go(Nat.add(d8(TR.capacity(d)), 255n), 255n, 0n, 0n), (Nat.add(TR.capacity(d), 0n), 255n), go256(TR.capacity(d), 0n))
 
 # BitList[2^(8+d)] is minimal at depth d.
 law bits_okp:

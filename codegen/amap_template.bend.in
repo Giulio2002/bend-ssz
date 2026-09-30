@@ -15,50 +15,48 @@ def amsize_@P(+d: Nat, +t: F.array__Tree<A>, +pf: {F.array__perfect(A, d, t) == 
       %Equal.sym(Array<B> & U32, Array.size(B, am_@P(l)), (am_@P(l), F.u32__pow2u(p)), amsize_@P(p, l, F.array__pf_left(A, p, l, r, pf))) : {Array.size.node(B, am_@P(r), _) == (ANode{am_@P(l), am_@P(r)}, U32.shl(F.u32__pow2u(p))) : Array<B> & U32}
       {==}
 
-def amswap_go_@P(+d: Nat, +t: F.array__Tree<A>, +i: U32, +v: A, +x: A, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(A, F.array__slots(A, t), U32.to_nat(i)) == Some{x} : Maybe<&2, A>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(A, d, t) == True{} : Bool}) -> {Array.swap.go(B, am_@P(t), F.u32__pow2u(d), i, @TH(v)) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}:
+def amswap_go_@P(+d: Nat, +t: F.array__Tree<A>, +i: U32, +v: A, +x: A, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(A, F.array__slots(A, t), U32.to_nat(i)) == Some{x} : Maybe<&2, A>}, +b: Bool, +eb: {U32.is_lt(i, U32.shr(F.u32__pow2u(d))) == b : Bool}, +pf: {F.array__perfect(A, d, t) == True{} : Bool}) -> {Array.swap.go(B, am_@P(t), F.u32__pow2u(d), i, @TH(v), b) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}:
   match d t b:
     case 0n F.TLeaf{+y} _:
       %F.array__leaf_value(A, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{@TH(v)}, @TH(y)) == (ALeaf{@TH(v)}, @TH(_)) : Array<B> & B}
       {==}
     case 0n F.TNode{l, r} _:
-      Empty.absurd({Array.swap.go(B, am_@P(F.TNode{l, r}), 1, i, @TH(v)) == (am_@P(F.array__upd(A, 0n, F.TNode{l, r}, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}, F.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(B, am_@P(F.TNode{l, r}), 1, i, @TH(v), b) == (am_@P(F.array__upd(A, 0n, F.TNode{l, r}, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}, F.logic__false_true(pf))
     case 1n+p F.TLeaf{y} _:
-      Empty.absurd({Array.swap.go(B, ALeaf{@TH(y)}, F.u32__pow2u(1n+p), i, @TH(v)) == (am_@P(F.array__upd(A, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}, F.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(B, ALeaf{@TH(y)}, F.u32__pow2u(1n+p), i, @TH(v), b) == (am_@P(F.array__upd(A, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}, F.logic__false_true(pf))
     case 1n+ +p F.TNode{+l, +r} True{}:
       +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
       +pl = F.array__pf_left(A, p, l, r, pf)
-      +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
+      +hil = F.array__lt_bridge(i, p, hp, True{}, F.logic__subst(U32, w => {U32.is_lt(i, w) == True{} : Bool}, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd), eb))
       +ti = U32.to_nat(i)
-      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(B, am_@P(l), am_@P(r), _, i, @TH(v), U32.is_lt(i, _)) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(B, am_@P(l), am_@P(r), F.u32__pow2u(p), i, @TH(v), _) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(B, am_@P(r), Array.swap.go(B, am_@P(l), F.u32__pow2u(p), i, @TH(v))) == (am_@P(F.array__tupd(A, 1n+p, F.TNode{l, r}, ti, v, _)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Array<B> & B, Array.swap.go(B, am_@P(l), F.u32__pow2u(p), i, @TH(v)), (am_@P(F.array__upd(A, p, l, ti, v)), @TH(x)), amswap_go_@P(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, A>, F.spec_common__nth(A, F.array__slots(A, l), ti), F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), Some{x}, Equal.sym(Maybe<&2, A>, F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), F.spec_common__nth(A, F.array__slots(A, l), ti), F.list__nth_append_left(A, F.array__slots(A, l), F.array__slots(A, r), ti, F.array__len_lt(A, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(B, am_@P(r), _) == (am_@P(F.TNode{F.array__tupd(A, p, l, ti, v, F.array__ndec(p, ti)), r}), @TH(x)) : Array<B> & B}
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.lo(B, am_@P(r), Array.swap.go(B, am_@P(l), _, i, @TH(v), U32.is_lt(i, U32.shr(_)))) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(B, am_@P(r), Array.swap.go(B, am_@P(l), F.u32__pow2u(p), i, @TH(v), U32.is_lt(i, U32.shr(F.u32__pow2u(p))))) == (am_@P(F.array__tupd(A, 1n+p, F.TNode{l, r}, ti, v, _)), @TH(x)) : Array<B> & B}
+      %Equal.sym(Array<B> & B, Array.swap.go(B, am_@P(l), F.u32__pow2u(p), i, @TH(v), U32.is_lt(i, U32.shr(F.u32__pow2u(p)))), (am_@P(F.array__upd(A, p, l, ti, v)), @TH(x)), amswap_go_@P(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, A>, F.spec_common__nth(A, F.array__slots(A, l), ti), F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), Some{x}, Equal.sym(Maybe<&2, A>, F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), F.spec_common__nth(A, F.array__slots(A, l), ti), F.list__nth_append_left(A, F.array__slots(A, l), F.array__slots(A, r), ti, F.array__len_lt(A, p, l, ti, pl, hil))), hx), U32.is_lt(i, U32.shr(F.u32__pow2u(p))), {==}, pl)) : {Array.swap.lo(B, am_@P(r), _) == (am_@P(F.TNode{F.array__tupd(A, p, l, ti, v, F.array__ndec(p, ti)), r}), @TH(x)) : Array<B> & B}
       {==}
     case 1n+ +p F.TNode{+l, +r} False{}:
       +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
       +pl = F.array__pf_left(A, p, l, r, pf)
       +ti = U32.to_nat(i)
-      +nb = F.array__lt_bridge(i, p, hp, False{}, eb)
+      +nb = F.array__lt_bridge(i, p, hp, False{}, F.logic__subst(U32, w => {U32.is_lt(i, w) == False{} : Bool}, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd), eb))
       +le = F.nat__not_lt_le(ti, F.spec_common__pow2(p), nb)
       +j = U32.sub(i, F.u32__pow2u(p))
       +k = Nat.sub(ti, F.spec_common__pow2(p))
       +ej = F.array__sub_bridge(i, p, hp, le)
       +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
       +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(A, F.array__slots(A, r), n) == Some{x} : Maybe<&2, A>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, A>, F.spec_common__nth(A, F.array__slots(A, r), k), F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), Some{x}, Equal.sym(Maybe<&2, A>, F.spec_common__nth(A, F.spec_common__append(A, F.array__slots(A, l), F.array__slots(A, r)), ti), F.spec_common__nth(A, F.array__slots(A, r), k), F.array__right_nth(A, p, l, r, ti, pl, le)), hx))
-      +ih = amswap_go_@P(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(A, p, l, r, pf))
-      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v)) == (am_@P(F.array__upd(A, p, r, n, v)), @TH(x)) : Array<B> & B}, U32.to_nat(j), k, ej, ih)
-      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(B, am_@P(l), am_@P(r), _, i, @TH(v), U32.is_lt(i, _)) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(B, am_@P(l), am_@P(r), F.u32__pow2u(p), i, @TH(v), _) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(B, am_@P(l), Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v))) == (am_@P(F.array__tupd(A, 1n+p, F.TNode{l, r}, ti, v, _)), @TH(x)) : Array<B> & B}
-      %Equal.sym(Array<B> & B, Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v)), (am_@P(F.array__upd(A, p, r, k, v)), @TH(x)), ih2) : {Array.swap.hi(B, am_@P(l), _) == (am_@P(F.TNode{l, F.array__tupd(A, p, r, k, v, F.array__ndec(p, k))}), @TH(x)) : Array<B> & B}
+      +ih = amswap_go_@P(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, U32.shr(F.u32__pow2u(p))), {==}, F.array__pf_right(A, p, l, r, pf))
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v), U32.is_lt(j, U32.shr(F.u32__pow2u(p)))) == (am_@P(F.array__upd(A, p, r, n, v)), @TH(x)) : Array<B> & B}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.hi(B, am_@P(l), Array.swap.go(B, am_@P(r), _, U32.sub(i, _), @TH(v), U32.is_lt(U32.sub(i, _), U32.shr(_)))) == (am_@P(F.array__upd(A, 1n+p, F.TNode{l, r}, ti, v)), @TH(x)) : Array<B> & B}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(B, am_@P(l), Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v), U32.is_lt(j, U32.shr(F.u32__pow2u(p))))) == (am_@P(F.array__tupd(A, 1n+p, F.TNode{l, r}, ti, v, _)), @TH(x)) : Array<B> & B}
+      %Equal.sym(Array<B> & B, Array.swap.go(B, am_@P(r), F.u32__pow2u(p), j, @TH(v), U32.is_lt(j, U32.shr(F.u32__pow2u(p)))), (am_@P(F.array__upd(A, p, r, k, v)), @TH(x)), ih2) : {Array.swap.hi(B, am_@P(l), _) == (am_@P(F.TNode{l, F.array__tupd(A, p, r, k, v, F.array__ndec(p, k))}), @TH(x)) : Array<B> & B}
       {==}
 
 # Public Base entry points. Premises: the tree is perfect of depth d < 32 and
 # the index is below 2^d; x is the value currently stored at that index.
 def amswap_@P(+d: Nat, +t: F.array__Tree<A>, +i: U32, +v: A, +x: A, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(A, F.array__slots(A, t), U32.to_nat(i)) == Some{x} : Maybe<&2, A>}, +pf: {F.array__perfect(A, d, t) == True{} : Bool}) -> {Array.swap(B, am_@P(t), i, @TH(v)) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}:
   %Equal.sym(Array<B> & U32, Array.size(B, am_@P(t)), (am_@P(t), F.u32__pow2u(d)), amsize_@P(d, t, pf)) : {Array.swap.at(B, i, @TH(v), _) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}
-  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(B, am_@P(t), F.u32__pow2u(d), _, @TH(v)) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}
-  amswap_go_@P(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(B, am_@P(t), F.u32__pow2u(d), _, @TH(v), U32.is_lt(_, U32.shr(F.u32__pow2u(d)))) == (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)) : Array<B> & B}
+  amswap_go_@P(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, U32.shr(F.u32__pow2u(d))), {==}, pf)
 
 def amset_@P(+d: Nat, +t: F.array__Tree<A>, +i: U32, +v: A, +x: A, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(A, F.array__slots(A, t), U32.to_nat(i)) == Some{x} : Maybe<&2, A>}, +pf: {F.array__perfect(A, d, t) == True{} : Bool}) -> {Array.set(B, am_@P(t), i, @TH(v)) == am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)) : Array<B>}:
   %Equal.sym(Array<B> & B, Array.swap(B, am_@P(t), i, @TH(v)), (am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)), @TH(x)), amswap_@P(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(B, _) == am_@P(F.array__upd(A, d, t, U32.to_nat(i), v)) : Array<B>}

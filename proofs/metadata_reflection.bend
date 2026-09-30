@@ -7,7 +7,7 @@ law comparison_tail:
   for +a: Char
   for +b: Char
   for result: (String & String) & Cmp
-  {String.eq.fin(String.cmp.rec(a, b, result)) == String.eq.fin(result) : Bool}
+  {Cmp.is_eq(Pair.snd(String & String, Cmp, String.cmp.rec(a, b, result))) == Cmp.is_eq(Pair.snd(String & String, Cmp, result)) : Bool}
 def comparison_tail(a, b, result):
   ((x, y), c) = result
   {==}
@@ -18,7 +18,7 @@ law comparison_step:
   for +x: String
   for +y: String
   for +c: Cmp
-  {String.eq.fin(String.cmp.fin(x, y, ((a, b), c))) == Bool.and(Cmp.is_eq(c), String.eq(x, y)) : Bool}
+  {Cmp.is_eq(Pair.snd(String & String, Cmp, String.cmp.fin(x, y, ((a, b), c)))) == Bool.and(Cmp.is_eq(c), String.eq(x, y)) : Bool}
 def comparison_step(a, b, x, y, c):
   match c:
     case LT{}: {==}

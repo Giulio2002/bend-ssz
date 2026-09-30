@@ -73,26 +73,24 @@ ARR = r'''
 # ---- a read leaves the buffer as it is ----------------------------------------------------------
 
 def TH(+t: F.array__Tree<U32>) -> Array<U32>: F.array__thaw(U32, t)
-def GV(+t: F.array__Tree<U32>, +n: U32, +i: U32) -> U32: Pair.snd(Array<U32>, U32, Array.get.go(U32, TH(t), n, i))
+def GV(+t: F.array__Tree<U32>, +n: U32, +i: U32, +z: Bool) -> U32: Pair.snd(Array<U32>, U32, Array.get.go(U32, TH(t), n, i, z))
 
-def gif(+l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +h: U32, +i: U32, +z: Bool,
-    +ihl: {Array.get.go(U32, TH(l), h, i) == (TH(l), GV(l, h, i)) : Array<U32> & U32},
-    +ihr: {Array.get.go(U32, TH(r), h, U32.sub(i, h)) == (TH(r), GV(r, h, U32.sub(i, h))) : Array<U32> & U32})
-    -> {Array.get.if(U32, TH(l), TH(r), h, i, z) == (ANode{TH(l), TH(r)}, Pair.snd(Array<U32>, U32, Array.get.if(U32, TH(l), TH(r), h, i, z))) : Array<U32> & U32}:
-  match z:
-    case True{}:
-      %Equal.sym(Array<U32> & U32, Array.get.go(U32, TH(l), h, i), (TH(l), GV(l, h, i)), ihl) :
+def ggo(+t: F.array__Tree<U32>, +n: U32, +i: U32, +z: Bool) -> {Array.get.go(U32, TH(t), n, i, z) == (TH(t), GV(t, n, i, z)) : Array<U32> & U32}:
+  match t z:
+    case F.TLeaf{+x} _: {==}
+    case F.TNode{+l, +r} True{}:
+      +h = U32.shr(n)
+      +zl = U32.is_lt(i, U32.shr(h))
+      %Equal.sym(Array<U32> & U32, Array.get.go(U32, TH(l), h, i, zl), (TH(l), GV(l, h, i, zl)), ggo(l, h, i, zl)) :
         {Array.swap.lo(U32, TH(r), _) == (ANode{TH(l), TH(r)}, Pair.snd(Array<U32>, U32, Array.swap.lo(U32, TH(r), _))) : Array<U32> & U32}
       {==}
-    case False{}:
-      %Equal.sym(Array<U32> & U32, Array.get.go(U32, TH(r), h, U32.sub(i, h)), (TH(r), GV(r, h, U32.sub(i, h))), ihr) :
+    case F.TNode{+l, +r} False{}:
+      +h = U32.shr(n)
+      +j = U32.sub(i, h)
+      +zr = U32.is_lt(j, U32.shr(h))
+      %Equal.sym(Array<U32> & U32, Array.get.go(U32, TH(r), h, j, zr), (TH(r), GV(r, h, j, zr)), ggo(r, h, j, zr)) :
         {Array.swap.hi(U32, TH(l), _) == (ANode{TH(l), TH(r)}, Pair.snd(Array<U32>, U32, Array.swap.hi(U32, TH(l), _))) : Array<U32> & U32}
       {==}
-
-def ggo(+t: F.array__Tree<U32>, +n: U32, +i: U32) -> {Array.get.go(U32, TH(t), n, i) == (TH(t), GV(t, n, i)) : Array<U32> & U32}:
-  match t:
-    case F.TLeaf{+x}: {==}
-    case F.TNode{+l, +r}: gif(l, r, U32.shr(n), i, U32.is_lt(i, U32.shr(n)), ggo(l, U32.shr(n), i), ggo(r, U32.shr(n), U32.sub(i, U32.shr(n))))
 
 def SZ(+t: F.array__Tree<U32>) -> U32: Pair.snd(Array<U32>, U32, Array.size(U32, TH(t)))
 
@@ -104,11 +102,11 @@ def gsz(+t: F.array__Tree<U32>) -> {Array.size(U32, TH(t)) == (TH(t), SZ(t)) : A
         {Array.size.node(U32, TH(r), _) == (ANode{TH(l), TH(r)}, Pair.snd(Array<U32>, U32, Array.size.node(U32, TH(r), _))) : Array<U32> & U32}
       {==}
 
-def GW(+t: F.array__Tree<U32>, +i: U32) -> U32: GV(t, SZ(t), U32.and(i, U32.sub(SZ(t), 1)))
+def GW(+t: F.array__Tree<U32>, +i: U32) -> U32: GV(t, SZ(t), U32.and(i, U32.sub(SZ(t), 1)), U32.is_lt(U32.and(i, U32.sub(SZ(t), 1)), U32.shr(SZ(t))))
 
 def gget(+t: F.array__Tree<U32>, +i: U32) -> {Array.get(U32, TH(t), i) == (TH(t), GW(t, i)) : Array<U32> & U32}:
   %Equal.sym(Array<U32> & U32, Array.size(U32, TH(t)), (TH(t), SZ(t)), gsz(t)) : {Array.get.at(U32, i, _) == (TH(t), GW(t, i)) : Array<U32> & U32}
-  ggo(t, SZ(t), U32.and(i, U32.sub(SZ(t), 1)))
+  ggo(t, SZ(t), U32.and(i, U32.sub(SZ(t), 1)), U32.is_lt(U32.and(i, U32.sub(SZ(t), 1)), U32.shr(SZ(t))))
 
 # The word at any index i (in the buffer or not): the buffer comes back as it was.
 def wsame(+t: F.array__Tree<U32>, +n: U32, +i: U32) -> {B.word(UA.BF(t, n), i) == (UA.BF(t, n), GW(t, i)) : B.Buf & U32}:

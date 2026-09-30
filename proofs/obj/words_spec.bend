@@ -572,9 +572,9 @@ def divmod_e32(q, y, d):
 
 
 def count_last(+q: Nat, +r: Nat, +h1: {Nat.is_lt(0n, r) == True{} : Bool}, +h32: {Nat.is_le(r, 32n) == True{} : Bool})
-    -> {Nat.div.fin(Nat.divmod.go(Nat.add(r, 31n), 31n, q, 0n)) == 1n+q : Nat}:
+    -> {Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(r, 31n), 31n, q, 0n)) == 1n+q : Nat}:
   match r:
-    case 0n: Empty.absurd({Nat.div.fin(Nat.divmod.go(Nat.add(0n, 31n), 31n, q, 0n)) == 1n+q : Nat}, MS.false_true(h1))
+    case 0n: Empty.absurd({Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(0n, 31n), 31n, q, 0n)) == 1n+q : Nat}, MS.false_true(h1))
     case 1n+ +r1:
     match r1:
       case 0n: {==}
@@ -672,7 +672,7 @@ def count_last(+q: Nat, +r: Nat, +h1: {Nat.is_lt(0n, r) == True{} : Bool}, +h32:
                                                                   match r32:
                                                                     case 0n: {==}
                                                                     case 1n+ +r33:
-                                                                    Empty.absurd({Nat.div.fin(Nat.divmod.go(Nat.add(33n+r33, 31n), 31n, q, 0n)) == 1n+q : Nat}, MS.false_true(h32))
+                                                                    Empty.absurd({Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(33n+r33, 31n), 31n, q, 0n)) == 1n+q : Nat}, MS.false_true(h32))
 # 32q + r bytes (1 <= r <= 32) are q + 1 chunks.
 law chunks_count:
   for +q: Nat
@@ -684,9 +684,9 @@ def chunks_count(q, r, h1, h32):
   %Equal.sym(Nat, Nat.add(Nat.add(e32(q), r), 31n), Nat.add(e32(q), Nat.add(r, 31n)), add_assoc(e32(q), r, 31n)) :
     {Nat.div(_, 32n) == 1n+q : Nat}
   %Equal.sym(Nat & Nat, Nat.divmod.go(Nat.add(e32(q), Nat.add(r, 31n)), 31n, 0n, 0n), Nat.divmod.go(Nat.add(r, 31n), 31n, Nat.add(q, 0n), 0n), divmod_e32(q, Nat.add(r, 31n), 0n)) :
-    {Nat.div.fin(_) == 1n+q : Nat}
+    {Pair.fst(Nat, Nat, _) == 1n+q : Nat}
   %Equal.sym(Nat, Nat.add(q, 0n), q, MR.add_zero(q)) :
-    {Nat.div.fin(Nat.divmod.go(Nat.add(r, 31n), 31n, _, 0n)) == 1n+q : Nat}
+    {Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(r, 31n), 31n, _, 0n)) == 1n+q : Nat}
   count_last(q, r, h1, h32)
 
 # A scoped byte list is in the byte domain and has exactly that length.
