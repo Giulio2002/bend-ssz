@@ -22,6 +22,11 @@ and, for the lists stored as an array of elements (C_Seq{arr, n}):
     read_append      get(append(o, v), n) returns v              proofs/obj/tarray.bend: for every
                      storage array, growth included; n + 1 does not wrap)
 
+and, for the boxed lists, over a perfect storage array of depth d < 32 (tarray.bend's tperf and
+swap_other; i and j below 2^d and different):
+
+    other_set        get(set(o, i, v), j) returns what get(o, j) returned
+
 and, for those whose elements are Data (not boxed), over storage that is a perfect tree t of
 depth d < 32 (proofs/compact/found.bend's array laws):
 
@@ -839,6 +844,43 @@ def seq_laws(I, imps):
             ('%s.%s_append(%s, v)' % (DA, c, SEQ('arr', 'n')), '%%Equal.sym(Bool, %s, True{}, ha)' % GA, '%s.%s_app_in(_, arr, n, v)' % (DA, c)),
             '%%Equal.sym(Bool, %s, True{}, hw)' % gw)
         k = 2
+    if boxed:
+        # set at i, then get another index j: what get of j returned before (a perfect storage array)
+        imps['F'] = 'proofs/compact/found.bend'
+        NN = 'F.u32__pow2u(d)'
+        Ji, Zi, Jj, Zj = ('TA.J(%s, i)' % NN, 'TA.Z(%s, i)' % NN, 'TA.J(%s, j)' % NN, 'TA.Z(%s, j)' % NN)
+        PW = 'TA.put(%s, arr, %s, %s, %s, %s)' % (EL, NN, Ji, WV, Zi)
+        OJ = 'TA.old(%s, arr, %s, %s, %s)' % (EL, NN, Jj, Zj)
+        R1 = '(TA.put(%s, %s, %s, %s, O.BNone{}, %s), %s)' % (EL, PW, NN, Jj, Zj, OJ)
+        R2 = '(TA.put(%s, arr, %s, %s, O.BNone{}, %s), %s)' % (EL, NN, Jj, Zj, OJ)
+        SW1 = 'Array.swap(%s, Array.set(%s, arr, i, %s), j, O.BNone{})' % (EL, EL, WV)
+        SW2 = 'Array.swap(%s, arr, j, O.BNone{})' % EL
+        PT = 'Array<%s> & %s' % (EL, EL)
+        E1 = '{%s == %s : %s}' % (SW1, R1, PT)
+        E2 = '{%s == %s : %s}' % (SW2, R2, PT)
+        gj = re.sub(r'(?<![\w.])i(?![\w.])', 'j', GG)
+        SND = lambda x: 'Pair.snd(%s, Maybe<&1, %s>, %s)' % (T, ET, x)
+        LHS = SND('%s.%s_get(Pair.fst(%s, Bool, %s.%s_set(%s, i, v)), j)' % (DA, c, T, DA, c, SEQ('arr', 'n')))
+        RHS = SND('%s.%s_get(%s, j)' % (DA, c, SEQ('arr', 'n')))
+        MT = 'Maybe<&1, %s>' % ET
+        out.append('def %s_other_go(-arr: Array<%s>, -n: U32, -d: Nat, -i: U32, -j: U32, -v: %s, +hs: {%s == True{} : Bool}, +hm: {%s == True{} : Bool}, b: %s & %s)'
+                   % (c, EL, VT, GS, gj, E1, E2))
+        out.append('    -> {%s == %s : %s}:' % (LHS, RHS, MT))
+        out.append('  (+e1, e2) = b')
+        out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s == %s : %s}'
+                   % (GS, SND('%s.%s_get(Pair.fst(%s, Bool, %s.%s_put_in(_, arr, n, i, v)), j)' % (DA, c, T, DA, c)), RHS, MT))
+        out.append('  %%Equal.sym(Bool, %s, True{}, hm) : {%s == %s : %s}'
+                   % (gj, SND('%s.%s_get_in(_, Array.set(%s, arr, i, %s), n, j)' % (DA, c, EL, WV)), SND('%s.%s_get_in(_, arr, n, j)' % (DA, c)), MT))
+        out.append('  %%Equal.sym(%s, %s, %s, e1) : {%s == %s : %s}' % (PT, SW1, R1, SND('%s.%s_took(n, _)' % (DA, c)), SND('%s.%s_took(n, %s)' % (DA, c, SW2)), MT))
+        out.append('  %%Equal.sym(%s, %s, %s, e2) : {%s == %s : %s}' % (PT, SW2, R2, SND('%s.%s_took(n, %s)' % (DA, c, R1)), SND('%s.%s_took(n, _)' % (DA, c)), MT))
+        out.append('  {==}')
+        out.append('def %s_api_other_set(arr: Array<%s>, +n: U32, +d: Nat, +i: U32, +j: U32, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                   '+hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hj: {Nat.is_lt(U32.to_nat(j), F.spec_common__pow2(d)) == True{} : Bool}, '
+                   '+ne: {Nat.is_eq(U32.to_nat(i), U32.to_nat(j)) == False{} : Bool}, pf: TA.tperf(%s, d, arr), +hs: {%s == True{} : Bool}, +hm: {%s == True{} : Bool})'
+                   % (c, EL, vb, EL, GS, gj))
+        out.append('    -> {%s == %s : %s}:' % (LHS, RHS, MT))
+        out.append('  %s_other_go(arr, n, d, i, j, v, hs, hm, TA.swap_other(%s, d, arr, i, j, %s, O.BNone{}, hd, hi, hj, ne, pf))' % (c, EL, WV))
+        k += 1
     out.append('')
     return '\n'.join(out), k
 

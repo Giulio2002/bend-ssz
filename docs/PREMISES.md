@@ -296,4 +296,6 @@ names the size of the array written, and the append law assumes only that the le
 storage `thaw(t)`, `t` a perfect tree of words of depth `d < 32`, with the element's first word index
 `q` given by `U32.to_nat(p / 4) == q` (`p` its byte offset, which does not wrap) and its words below
 `2^d`; their append laws also assume that the storage has room (`hroom`: `O.words_fit` does not
-reallocate) and that the old length is below the new one (`hw` / `hg`); the other-index law of the Data lists is stated over a perfect element tree in the same way.
+reallocate) and that the old length is below the new one (`hw` / `hg`); the other-index law of the Data lists is stated over a perfect element tree in the same way, and
+that of the boxed lists over a perfect storage array (`TA.tperf(d, arr)`, what `Array.new` builds and
+`Array.set` keeps) with both indices below `2^d`.
