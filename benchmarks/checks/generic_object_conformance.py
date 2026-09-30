@@ -106,6 +106,6 @@ if not only:
     pathlib.Path('benchmarks/evidence').mkdir(parents=True, exist_ok=True)
     json.dump({'cases': total, 'passed': passed, 'api': 'generated typed object API (types/generic_obj*.bend)',
                'tally': {' '.join(k): v for k, v in sorted(tally.items())},
-               'unsupported_schemas': unsupported, 'failures': failures, 'provenance': stamp()},
+               'unsupported_schemas': unsupported, 'failures': failures, 'provenance': stamp(__file__)},
               open('benchmarks/evidence/generic_object_conformance.json', 'w'), indent=1)
 sys.exit(1 if failures else 0)

@@ -1,28 +1,28 @@
 {
- "seed": 20260926,
+ "seed": 20260921,
  "types": 109,
- "valid_per_type": 6,
- "mutations_per_value": 12,
- "histories_per_type": 4,
- "operations_per_history": 8,
+ "valid_per_type": 3,
+ "mutations_per_value": 6,
+ "histories_per_type": 2,
+ "operations_per_history": 6,
  "counts": {
-  "valid": 654,
-  "invalid": 7848,
+  "valid": 327,
+  "invalid": 1962,
   "accepted_invalid": 0,
   "rejected_valid": 0,
-  "history": 2048
+  "history": 768
  },
  "mutation_kinds": {
-  "zero_prefix": 775,
-  "extend": 750,
-  "set_high_bit": 862,
-  "swap_bytes": 779,
-  "flip_byte": 747,
-  "empty": 754,
-  "offset_word": 779,
-  "grow_last": 818,
-  "drop_last": 771,
-  "truncate": 813
+  "grow_last": 203,
+  "extend": 191,
+  "empty": 188,
+  "drop_last": 196,
+  "zero_prefix": 202,
+  "flip_byte": 186,
+  "offset_word": 188,
+  "truncate": 214,
+  "set_high_bit": 192,
+  "swap_bytes": 202
  },
  "named_operations": {
   "boolean": 0,
@@ -135,28 +135,54 @@
   "DataColumnSidecar": 6,
   "CustodyIndex": 0
  },
- "elapsed_s": 70.2,
- "command": "/srv/ssz-optimization/venv/bin/python3 tests_generated/fuzz_objects.py --seed 20260926 --valid 6 --invalid 12",
+ "elapsed_s": 16.7,
+ "command": "/srv/ssz-optimization/venv/bin/python3 tests_generated/fuzz_objects.py --seed 20260921 --valid 3 --invalid 6",
  "toolchain": {
-  "note": "Operator-authorized toolchain migration of 2026-09-22 (USER TOOLCHAIN OVERRIDE): stock upstream Bend 2.0.25 as installed by `bend update`, backed up at ~/.bend/bend-2.0.25-backup and reinstated unchanged. automation/toolchain.json (protected) still pins 2.0.16 and needs the hash-only update recorded in docs/TOOLCHAIN.md. Operator remote migration 2026-09-24: stock Linux x86_64 Bend 2.0.25, same Base bytes; only platform binary hash changed. Mac evidence remains historical.",
+  "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py): stock upstream Bend 2.0.28 (2026-09-25), release bend-2.0.28-linux-x64.tar.gz from github.com/bendlang/bend; base.bend is byte-identical on every platform and to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
   "bend": {
    "path": "/Users/monkeair/.bend/bin/bend",
-   "sha256": "d9c0dad1f77be6a13dd8dcc16aef4f59047a956a2744f25d5c220cb8de384693"
+   "sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf"
   },
   "base": {
    "path": "/Users/monkeair/.bend/bend2/base.bend",
-   "sha256": "e5639663177f2de93ef34867c029698aa4e68a98d46629f0b15452b67b99d798"
+   "sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
   },
-  "version": "2.0.25"
+  "version": "2.0.28"
  },
  "source_sha256": {
-  "types/fulu_obj.bend": "5d70ec7054762dffd0ff9e7d039bdbbbba0936b490463c53ec2210c05e09fe72",
-  "src/obj.bend": "be61a015ce60227cdc13c97381f34269b1dacab03efdaa16ab60761276d6b5b4",
-  "codegen/fulu.yaml": "8ce462a76c00b2a3a7149c2c81f2160db06680468faec600be5c56a07e6e9cdd",
-  "codegen/generate.py": "359b58408d60abfa5761751217b6cc06e3a197b82e2371ee95a50985fc7ce2fd",
-  "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183"
+  "src/obj.bend": "43586186fa2cedf18702a3b43376fc940e10a30572384347879e816e126d7673",
+  "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
+  "codegen/generate.py": "8d59741a1db8c8edd05127cf3cdd47963705d36a8761f855d605f5399bdf037a",
+  "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183",
+  "types/*_generated.bend": "f6d7bdf163655f2ba2afe1fe473f9e66749b32a96c04353091d770fb9dc15ff1"
  },
  "findings": [],
  "findings_total": 0,
+ "provenance": {
+  "git_commit": "ed83adea44d0c089a1b182337f30dc14eb3006d5",
+  "git_dirty": null,
+  "utc": "2026-09-30T02:44:47Z",
+  "runtime": {
+   "bend_sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf",
+   "base_sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
+  },
+  "argv": [],
+  "sources_sha256": {
+   "types/*.bend": "46cd0d306d221075f57c1093a6b317753828617fcec95e6fa4826342271f7207",
+   "src/*.bend": "cbb61e030f6b3fa8b3a705cb4f265b4173c890e1c783fbb2acfc9f77921ae7c9",
+   "benchmarks/objprog/*.bend": "9860a2ecf89602f10f6a9e1fba1bd60be0ed07cff676e775b9eab66b686aa38e",
+   "benchmarks/compact/*.bend": "a8a2cb947594a27ab7d48867d661b666fd2f457ef2fbceb302322b7351f67e6e",
+   "cases.json": "046028487a69b7661ede94092dcaafdbc8fa9056d8b730cc33e19a07b6d866bf",
+   "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
+  },
+  "harness_sha256": {
+   "tests_generated/fuzz_objects.py": "69c6bcab634e9490597f481d142f3a57243cebf546e4bfa573e6affe6912bb3b",
+   "benchmarks/checks/provenance.py": "a1c49175439a6fcda897f397e6b6efdd04c7a464e987001178d27127aadbafbf",
+   "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183",
+   "codegen/schema.py": "2c355881ca82c65b111b94ed1d1247900c7aea8fcd0cd5041f98e248d59c800b",
+   "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
+   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
+  }
+ },
  "note": "oracle = codegen/oracle.py, written from the SSZ specification and validated against the 295 official static cases; comparison is full bytes and full 32-byte roots, not checksums"
 }

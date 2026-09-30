@@ -16,6 +16,7 @@ import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
 import ../types/FuluExecutionPayload_encode_ssz_generated.bend as FuluExecutionPayload_e
+import ../types/FuluTransaction_def_generated.bend as FuluTransaction_d
 import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
 import ../types/Fulu_bytelist_32_def_generated.bend as Fulu_bytelist_32_d
 import ../types/Fulu_bytevec_256_def_generated.bend as Fulu_bytevec_256_d
@@ -28,8 +29,17 @@ import ../types/uint64_def_generated.bend as uint64_d
 # Non-vacuity of the encode bridge FuluExecutionPayload_e2e_encode: every premise holds of the default object
 # D = ExecutionPayload_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+# NE() is the default with one element in every list reachable through containers and boxes
+# (the second witness, FuluExecutionPayload_e2e_witness_nonempty, at the end).
+def NE() -> FuluExecutionPayload_d.ExecutionPayload:
+  FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_default(), FuluExecutionPayload_d.ExecutionPayload_g1{uint64_d.u64_default(), uint64_d.u64_default(), O.words_new(1), uint256_d.u256_default(), FuluBytes32_d.b32_default(), Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{ALeaf{FuluTransaction_d.bl1073741824_bx_default()}, 1}, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{ALeaf{FuluWithdrawal_d.Withdrawal_default()}, 1}, uint64_d.u64_default()}, FuluExecutionPayload_d.ExecutionPayload_g2_default()}
+
 def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 3n, 0)), 0} : O.Words}:
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
+  {==}
+
+def WZ1() -> {O.words_new(1) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 1} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(1) == O.Words{_, 1} : O.Words}
   {==}
 
 def WZ256() -> {O.words_new(256) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 7n, 0)), 256} : O.Words}:
@@ -56,3 +66,26 @@ def premise_hZ() -> {RC.SZOK(RT.pj_ExecutionPayload_10(FuluExecutionPayload_d.Ex
 
 def FuluExecutionPayload_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, B.Buf, FuluExecutionPayload_e.ExecutionPayload_encode(FuluExecutionPayload_d.ExecutionPayload_default())))} == API.serialize(Spec.ExecutionPayload(), RT.v_ExecutionPayload(FuluExecutionPayload_d.ExecutionPayload_default())) : Maybe<&2, +List<U32>>}:
   BR.FuluExecutionPayload_e2e_encode(FuluExecutionPayload_d.ExecutionPayload_default(), premise_rep(), premise_hL(), premise_hB(), premise_hT(), premise_hW(), premise_hZ())
+
+# The same bridge at the non-empty object NE(): every premise is proved of NE().
+
+def premise_ne_rep() -> RT.rep_ExecutionPayload(NE(), Spec.ExecutionPayload()):
+  (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), ((Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}), (((RT.tfz_l1048576_bl1073741824(ALeaf{FuluTransaction_d.bl1073741824_bx_default()}), (0n, (1, ({==}, ({==}, ({==}, ({==}, (({==}, (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==})), {==})))))))), {==}), ((FD.TLeaf{FuluWithdrawal_d.Withdrawal_default()}, (0n, (1, ({==}, ({==}, ({==}, {==})))))), {==}))))))))))))))))))
+
+def premise_ne_hL() -> BL.sdk1(RT.pj_ExecutionPayload_4(NE()), 31n):
+  (FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def premise_ne_hB() -> BL.sdk(RT.pj_ExecutionPayload_10(NE()), 28n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hT() -> TX.sdt(RT.pj_ExecutionPayload_13(NE())):
+  (RT.tfz_l1048576_bl1073741824(ALeaf{FuluTransaction_d.bl1073741824_bx_default()}), (0n, (1, ({==}, ({==}, ({==}, ({==}, (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==}))))))))
+
+def premise_ne_hW() -> RLV.sda_l16_Withdrawal(RT.pj_ExecutionPayload_14(NE()), 31n):
+  (FD.TLeaf{FuluWithdrawal_d.Withdrawal_default()}, (0n, (1, ({==}, ({==}, ({==}, {==}))))))
+
+def premise_ne_hZ() -> {RC.SZOK(RT.pj_ExecutionPayload_10(NE()), RT.pj_ExecutionPayload_13(NE()), RT.pj_ExecutionPayload_14(NE())) == True{} : Bool}:
+  {==}
+
+def FuluExecutionPayload_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluExecutionPayload_d.ExecutionPayload, B.Buf, FuluExecutionPayload_e.ExecutionPayload_encode(NE())))} == API.serialize(Spec.ExecutionPayload(), RT.v_ExecutionPayload(NE())) : Maybe<&2, +List<U32>>}:
+  BR.FuluExecutionPayload_e2e_encode(NE(), premise_ne_rep(), premise_ne_hL(), premise_ne_hB(), premise_ne_hT(), premise_ne_hW(), premise_ne_hZ())

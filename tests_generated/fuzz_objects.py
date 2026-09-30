@@ -38,6 +38,8 @@ import sys
 import time
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / 'codegen'))
 import oracle  # noqa: E402
@@ -377,7 +379,7 @@ def main():
                           # the runtime, split per name and operation: its files in name order, concatenated
                           'types/*_generated.bend': hashlib.sha256(b''.join(
                               q.read_bytes() for q in sorted((ROOT / 'types').glob('*_generated.bend')))).hexdigest()},
-        'findings': findings[:50], 'findings_total': len(findings),
+        'findings': findings[:50], 'findings_total': len(findings), 'provenance': stamp(__file__),
         'note': 'oracle = codegen/oracle.py, written from the SSZ specification and validated '
                 'against the 295 official static cases; comparison is full bytes and full '
                 '32-byte roots, not checksums',

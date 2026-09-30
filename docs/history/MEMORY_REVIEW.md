@@ -100,9 +100,9 @@ whole gate process tree under `benchmarks/checks/capped_run.py`; log:
 `BeaconState` fixtures, three Bend and three Go samples each, medians. Apple M4
 / macOS 15.6 arm64, Bend 2.0.16 native C (`--threads 1 --gpu off`), Go 1.25.5
 with pinned fastssz / go-eth2-client. Raw report:
-`benchmarks/evidence/native-comparison.json`. Emitted C:
-`benchmarks/evidence/driver-emitted.c.gz`. Executable and C hashes:
-`benchmarks/evidence/driver-artifacts.sha256`.
+`docs/history/evidence/native-comparison.json`. Emitted C:
+`docs/history/evidence/driver-emitted.c.gz`. Executable and C hashes:
+`docs/history/evidence/driver-artifacts.sha256`.
 
 | fixture | input bytes | Bend baseline | Bend decode peak | **Bend decode overhead** | worst sample | Go baseline | Go decode peak | Go decode overhead |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|

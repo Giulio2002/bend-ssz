@@ -12,7 +12,10 @@ import {join, relative, resolve} from 'node:path';
 
 const ROOT = resolve(import.meta.dir, '..');
 const LOCK = JSON.parse(readFileSync(join(ROOT, 'benchmarks/toolchain.json'), 'utf8'));
-const BEND: string = LOCK.bend.path;
+// BEND_RUNTIME names the pinned runtime compiler where it is not at the lock's path (the ssz
+// server: /srv/ssz-optimization/toolchain-2.0.28/bend/bin/bend); its Base is <bin>/../bend2/base.bend.
+const BEND: string = process.env.BEND_RUNTIME ?? LOCK.bend.path;
+const BASE: string = process.env.BEND_RUNTIME ? join(BEND, '..', '..', 'bend2', 'base.bend') : LOCK.base.path;
 const CACHE = join(ROOT, 'build/bend-loader');
 
 function sha256(data: string | Buffer): string {
@@ -21,7 +24,7 @@ function sha256(data: string | Buffer): string {
 
 function pinned(): string {
   const parts = ['bend', 'base'].map(key => {
-    const actual = sha256(readFileSync(LOCK[key].path));
+    const actual = sha256(readFileSync(key === 'bend' ? BEND : BASE));
     if (actual !== LOCK[key].sha256) throw Error(`bend loader: pinned ${key} changed (${actual})`);
     return actual;
   });

@@ -248,3 +248,16 @@ default object `<X>_default()`. Each premise is proved of that object in its own
 and `<Name>_e2e_witness` is the bridge's conclusion for it. So each of these premise sets is jointly
 satisfiable, and each bridge's conclusion holds of at least one object. The large zero arrays of FuluBeaconState
 (2^16 to 2^21 bytes) go through lemmas that keep their sizes symbolic (`e2e/e2e_wit.bend`).
+
+Each file also applies the same bridge to a non-empty object, `NE()`: the default with one element
+in every list reachable through containers and boxes. A list of Data or boxed elements holds its
+element's default (`Seq{ALeaf{e}, 1}`), and a byte or packed list holds one zero element
+(`O.words_new(k)`), so for example FuluBeaconBlockBody's `NE()` has one proposer slashing, attester
+slashing, attestation, deposit, voluntary exit, transaction, withdrawal, BLS change, blob commitment
+and execution request of each kind. Every premise is proved of `NE()` in `premise_ne_<binder>`, and
+`<Name>_e2e_witness_nonempty` is the bridge's conclusion for it. The storage premises are met
+by a one-leaf tree at depth 0 with count 1. The element-wise premises (`ereps`, `SDKS`, defined by
+`match k`) are unfolded once and proved of the element, including its mirror (`MSome`, `M_X{..}`).
+So none of these premise sets holds only for empty lists. What this does not cover: lists nested
+inside list elements stay empty, the elements are zero-valued, and the objects are built with
+constructors, not by the decoder (that the decoder's output meets the premises is section 1).

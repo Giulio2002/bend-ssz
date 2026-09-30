@@ -74,8 +74,36 @@ directly. END_TO_END's statements are frozen; only their proofs were changed.
 consensus-specs v1.6.1 (295 cases, 59 types; decode, re-encode byte for byte, root against
 `roots.yaml`). `benchmarks/evidence/generic_object_conformance.json`: every `ssz_generic` case
 (5,145, valid and invalid, all 10 families; the 8 zero-length schemas are rejected by
-construction). Both files carry a provenance stamp (commit, time, runtime toolchain hashes, and
-the sha256 of the tested sources); `python3 benchmarks/checks/provenance.py` says whether the
-stamped sources are the current tree's. Rebuild: `python3 benchmarks/quick.py --build all`,
-`--build-generic all`, then the two scripts in `benchmarks/checks/` (on the ssz server, with
-`BEND_RUNTIME` naming the pinned runtime compiler of `benchmarks/toolchain.json`).
+construction).
+
+## Other test evidence (finite regressions, not laws)
+
+All against the independent oracle `codegen/oracle.py` (written from the specification, sharing
+no code with the generated runtime) unless noted; last run 2026-09-30 on the ssz server at
+ed83adea, all passing.
+
+| File | Harness | What |
+|---|---|---|
+| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | 109 types, seed 20260921: 327 valid values, 1,962 corrupted encodings (10 mutation kinds), 768 mutation-history steps through the object setters; 0 mismatches |
+| `object_mutations.json` | `benchmarks/checks/object_mutations.py` | malformed variants of every ssz_static case (5,455 inputs); the verdict of each comes from the oracle; 0 disagreements |
+| `object_mutation_tests.json` | `tests_generated/mutations.py` | 8 field/element updates through the object API against the oracle's re-encoding, rejections leave the value unchanged |
+| `invalid_objects.json` | `tests_generated/invalid_objects.py` | 14 cases: representable but invalid objects (built with raw constructors) are refused by the checked encoder, each with a valid control |
+| `negative_api.json` | `tests_generated/negative_api.py` | 7 programs: appending to vectors, use after move, duplication and a stale collection must not compile (for the stated reason), a positive control must |
+| `object_cache.json` | `benchmarks/checks/object_cache.py` | cached validator-list roots under 7 modes and 100 seeded histories equal the uncached root and the oracle's |
+
+Every evidence file carries a provenance stamp: commit, time, runtime toolchain hashes, the
+arguments, the sha256 of the tested sources (the whole `types/*.bend`, including the dispatch
+modules `types/fulu_obj_*.bend` and `types/generic_obj_*.bend` the programs call, `src/*.bend`,
+the drivers `benchmarks/objprog/*.bend` and `benchmarks/compact/*.bend`, and the vector set
+`cases.json` + `fixtures.manifest.json`) and of the harness that produced it with the oracle and
+schema readers it relies on. `python3 benchmarks/checks/provenance.py` says, for each file,
+whether those hashes are the current tree's. Rebuild the programs with
+`python3 benchmarks/quick.py --build all`, `--build-generic all`, `--build-fuzz all` and
+`bend benchmarks/compact/<o>.bend -o build/compact-<o>`, then run the harnesses (on the ssz
+server, with `BEND_RUNTIME` naming the pinned runtime compiler of `benchmarks/toolchain.json`).
+
+Removed as stale on 2026-09-30: `spectests-js.json` (the JavaScript-runtime spectest run of
+09-23; that runner no longer exists, and the native object-API conformance above covers the same
+vectors). Moved to `docs/history/evidence/`: `native-comparison.json` and the driver artifacts
+of the 09-21 memory comparison with Go (a macOS measurement of an earlier Bend, cited by
+`docs/history/MEMORY_REVIEW.md`; performance, not correctness).

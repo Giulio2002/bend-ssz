@@ -18,6 +18,8 @@ import sys
 import snappy
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / 'codegen'))
 import oracle  # noqa: E402
@@ -114,7 +116,7 @@ def main():
     allok &= check('IndexedAttestation.attesting_indices[len] rejected, value unchanged',
                    got, data, ok, False, results)
 
-    json.dump({'results': results, 'pass': allok}, open('benchmarks/evidence/object_mutation_tests.json', 'w'), indent=1)
+    json.dump({'results': results, 'pass': allok, 'provenance': stamp(__file__)}, open('benchmarks/evidence/object_mutation_tests.json', 'w'), indent=1)
     print(('all mutation regressions pass' if allok else 'FAILURES') + f' ({len(results)} cases)')
     sys.exit(0 if allok else 1)
 

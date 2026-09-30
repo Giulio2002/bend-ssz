@@ -21,6 +21,7 @@ import snappy
 
 sys.path.insert(0, 'codegen')
 import oracle  # noqa: E402
+from provenance import stamp  # noqa: E402
 import schema  # noqa: E402
 
 TY = dict(schema.load('codegen/fulu.yaml').items())
@@ -78,6 +79,6 @@ for k, v in sorted(tally.items()):
 print('disagreements', len(bad))
 for b in bad[:10]:
     print(b)
-json.dump({'tally': {' '.join(k): v for k, v in tally.items()}, 'disagreements': bad},
+json.dump({'tally': {' '.join(k): v for k, v in tally.items()}, 'disagreements': bad, 'provenance': stamp(__file__)},
           open('benchmarks/evidence/object_mutations.json', 'w'), indent=1)
 sys.exit(1 if bad else 0)

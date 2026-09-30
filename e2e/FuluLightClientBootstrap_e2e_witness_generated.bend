@@ -32,8 +32,17 @@ import ../types/uint64_def_generated.bend as uint64_d
 # Non-vacuity of the encode bridge FuluLightClientBootstrap_e2e_encode: every premise holds of the default object
 # D = LightClientBootstrap_default() (one def per premise, named after its binder), so the bridge applies to D.
 
+# NE() is the default with one element in every list reachable through containers and boxes
+# (the second witness, FuluLightClientBootstrap_e2e_witness_nonempty, at the end).
+def NE() -> FuluLightClientBootstrap_d.LightClientBootstrap:
+  FuluLightClientBootstrap_d.LightClientBootstrap{FuluLightClientHeader_d.LightClientHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{uint64_d.u64_default(), uint64_d.u64_default(), O.words_new(1), uint256_d.u256_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), FuluBytes32_d.b32_default(), uint64_d.u64_default()}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()}), FuluExecutionBranch_d.v4_b32_default()}, FuluSyncCommittee_d.SyncCommittee_default(), FuluCurrentSyncCommitteeBranch_d.v6_b32_default()}
+
 def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 3n, 0)), 0} : O.Words}:
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
+  {==}
+
+def WZ1() -> {O.words_new(1) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 4n, 0)), 1} : O.Words}:
+  %FD.array__new(U32, 4n, 0) : {O.words_new(1) == O.Words{_, 1} : O.Words}
   {==}
 
 def WZ128() -> {O.words_new(128) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 6n, 0)), 128} : O.Words}:
@@ -61,6 +70,15 @@ def big1() -> W_proofs_obj_elems48_light.rep_ev(RT.pj_SyncCommittee_0(RT.pj_Ligh
 def big2() -> EW.sdsc(RT.pj_SyncCommittee_0(RT.pj_LightClientBootstrap_1(FuluLightClientBootstrap_d.LightClientBootstrap_default())), 31n):
   (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
 
+def big3() -> W_proofs_obj_elems48_light.wfe(RT.pj_SyncCommittee_0(RT.pj_LightClientBootstrap_1(NE()))):
+  (FD.array__trep(U32, 13n, 0), (13n, (24576, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==}))))))
+
+def big4() -> W_proofs_obj_elems48_light.rep_ev(RT.pj_SyncCommittee_0(RT.pj_LightClientBootstrap_1(NE())), SH.Chain_head(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientBootstrap())))))):
+  (big3(), {==})
+
+def big5() -> EW.sdsc(RT.pj_SyncCommittee_0(RT.pj_LightClientBootstrap_1(NE())), 31n):
+  (FD.array__trep(U32, 13n, 0), (13n, (WZ24576(), (FD.array__trep_perfect(U32, 13n, 0), ({==}, {==})))))
+
 def premise_rep() -> RT.rep_LightClientBootstrap(FuluLightClientBootstrap_d.LightClientBootstrap_default(), Spec.LightClientBootstrap()):
   ({==}, ((FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), ({==}, (({==}, (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==}))))))))))))))))))), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))), ((FuluBytes48_d.b48_default(), ({==}, big1())), ((FD.array__trep(U32, 6n, 0), (6n, (192, (5n, (WZ192(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==}))))
 
@@ -81,3 +99,26 @@ def premise_hs63() -> BL.sdpv(RT.pj_LightClientBootstrap_2(FuluLightClientBootst
 
 def FuluLightClientBootstrap_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, B.Buf, FuluLightClientBootstrap_e.LightClientBootstrap_encode(FuluLightClientBootstrap_d.LightClientBootstrap_default())))} == API.serialize(Spec.LightClientBootstrap(), RT.v_LightClientBootstrap(FuluLightClientBootstrap_d.LightClientBootstrap_default())) : Maybe<&2, +List<U32>>}:
   BR.FuluLightClientBootstrap_e2e_encode(FuluLightClientBootstrap_d.LightClientBootstrap_default(), premise_rep(), premise_hs49(), premise_hs50(), premise_hs54(), premise_hs61(), premise_hs63())
+
+# The same bridge at the non-empty object NE(): every premise is proved of NE().
+
+def premise_ne_rep() -> RT.rep_LightClientBootstrap(NE(), Spec.LightClientBootstrap()):
+  ({==}, ((FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), ({==}, (({==}, (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), (Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}, {==}))))))))))))))))))), ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})))), ((FuluBytes48_d.b48_default(), ({==}, big4())), ((FD.array__trep(U32, 6n, 0), (6n, (192, (5n, (WZ192(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==}))))
+
+def premise_ne_hs49() -> BL.sdk1(RT.pj_ExecutionPayloadHeader_4(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientBootstrap_0(NE())))), 31n):
+  (FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def premise_ne_hs50() -> BL.sdk(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientBootstrap_0(NE())))), 31n):
+  Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
+
+def premise_ne_hs54() -> BL.sdpv(RT.pj_LightClientHeader_2(RT.pj_LightClientBootstrap_0(NE())), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def premise_ne_hs61() -> EW.sdsc(RT.pj_SyncCommittee_0(RT.pj_LightClientBootstrap_1(NE())), 31n):
+  big5()
+
+def premise_ne_hs63() -> BL.sdpv(RT.pj_LightClientBootstrap_2(NE()), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (192, (5n, (WZ192(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluLightClientBootstrap_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, B.Buf, FuluLightClientBootstrap_e.LightClientBootstrap_encode(NE())))} == API.serialize(Spec.LightClientBootstrap(), RT.v_LightClientBootstrap(NE())) : Maybe<&2, +List<U32>>}:
+  BR.FuluLightClientBootstrap_e2e_encode(NE(), premise_ne_rep(), premise_ne_hs49(), premise_ne_hs50(), premise_ne_hs54(), premise_ne_hs61(), premise_ne_hs63())

@@ -7,9 +7,22 @@
 A stamp records the commit (git, or EVIDENCE_COMMIT where the tree is a copy without .git), UTC
 time, the checker commit and the sha256 of toolchain.lock.json and frozen.lock.json, the sha256
 of the checked sources (every .bend file outside tools/, vendor/ and build/: sorted
-"path\\0sha256\\n" lines), the number of files, every umbrella's result (exit, whether the exact
-line "All terms check." was printed, seconds, peak MB, number of roots) and the verdict.
-benchmarks/evidence/check_fast.json is the committed stamp of the last full check.
+"path\\0sha256\\n" lines; the vendored SHA-256 package is pinned by toolchain.lock.json), the
+number of files, the sha256 of each harness script (HARNESS: the runners, the umbrella planner and
+the four pre-checks), the sha256 of the umbrella plan (DIR/umb/plan.tsv) with its umbrella and
+root counts, the scope (all files, or the --files list), every planned umbrella's result (exit,
+whether the exact line "All terms check." was printed, seconds, peak MB, number of roots) and the
+verdict.
+
+The verdict is "all files check" only if the scope is every file, every umbrella of the plan has
+exactly one result row, and every row exited 0 with the exact line. An umbrella whose run died
+before writing its row is recorded with "result": "missing" and fails the stamp; `write` exits 1
+then, and tools/check_fast.sh fails too.
+
+`verify` recomputes the sources, harness and lock hashes on the current tree: it exits 0 only if
+all of them equal the stamp's and the verdict is "all files check". So the committed
+benchmarks/evidence/check_fast.json (written by every full tools/check_fast.sh run) says whether
+the tree in hand is the one that was checked.
 """
 import datetime
 import hashlib
@@ -19,6 +32,9 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HARNESS = ['tools/check.sh', 'tools/check_fast.sh', 'tools/umbrellas.py', 'tools/check_stamp.py',
+           'tools/verify_pins.py', 'tools/verify_frozen.py', 'tools/verify_no_escapes.py',
+           'tools/verify_schemas.py', 'tools/test_schemas.py']
 
 
 def sha(b):
@@ -46,32 +62,74 @@ def commit():
         return os.environ.get('EVIDENCE_COMMIT', 'unknown')
 
 
+def harness():
+    return {f: sha(open(os.path.join(ROOT, f), 'rb').read()) for f in HARNESS}
+
+
+def locks():
+    return {k: sha(open(os.path.join(ROOT, f), 'rb').read())
+            for k, f in (('toolchain_lock_sha256', 'toolchain.lock.json'), ('frozen_lock_sha256', 'frozen.lock.json'))}
+
+
 def write(d, out):
-    rows = []
+    plan_path = os.path.join(d, 'umb', 'plan.tsv')
+    plan = [line.rstrip('\n').split('\t') for line in open(plan_path) if line.strip()]
+    got = {}
+    dup = []
     for line in open(os.path.join(d, 'summary.tsv')):
         u, rc, ok, s, mb, roots = line.rstrip('\n').split('\t')
-        rows.append({'umbrella': u, 'exit': int(rc), 'all_terms_check': int(ok) > 0, 'seconds': float(s),
-                     'peak_mb': int(mb), 'roots': len(roots.split())})
+        if u in got:
+            dup.append(u)
+        got[u] = {'umbrella': u, 'exit': int(rc), 'all_terms_check': int(ok) > 0, 'seconds': float(s),
+                  'peak_mb': int(mb), 'roots': len(roots.split())}
+    rows = []
+    for p in plan:
+        r = got.pop(p[0], None)
+        if r is None:
+            r = {'umbrella': p[0], 'exit': None, 'all_terms_check': False, 'seconds': None, 'peak_mb': None,
+                 'roots': len(p[3].split()), 'result': 'missing'}
+        else:
+            r['result'] = 'pass' if r['exit'] == 0 and r['all_terms_check'] else 'fail'
+        rows.append(r)
+    extra = sorted(got)  # rows for umbrellas not in the plan (bisection never writes summary rows)
     rows.sort(key=lambda r: r['umbrella'])
     digest, n = sources()
     lock = json.load(open(os.path.join(ROOT, 'toolchain.lock.json')))
+    scope = os.environ.get('CHECK_FAST_FILES') or 'all'
+    missing = [r['umbrella'] for r in rows if r['result'] == 'missing']
+    ok = bool(rows) and all(r['result'] == 'pass' for r in rows) and not dup and not extra
     st = {'commit': commit(), 'utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-          'checker_commit': lock['checker']['commit'],
-          'toolchain_lock_sha256': sha(open(os.path.join(ROOT, 'toolchain.lock.json'), 'rb').read()),
-          'frozen_lock_sha256': sha(open(os.path.join(ROOT, 'frozen.lock.json'), 'rb').read()),
-          'sources_sha256': digest, 'files': n, 'umbrellas': rows,
-          'verdict': 'all files check' if rows and all(r['exit'] == 0 and r['all_terms_check'] for r in rows) else 'FAILED'}
+          'checker_commit': lock['checker']['commit'], **locks(),
+          'sources_sha256': digest, 'files': n, 'harness_sha256': harness(),
+          'plan_sha256': sha(open(plan_path, 'rb').read()), 'plan_umbrellas': len(plan),
+          'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,
+          'totals': {'umbrellas': len(rows), 'passed': sum(r['result'] == 'pass' for r in rows),
+                     'failed': sum(r['result'] == 'fail' for r in rows), 'missing': len(missing),
+                     'cpu_seconds': round(sum(r['seconds'] or 0 for r in rows), 1)},
+          'missing': missing, 'duplicate_rows': dup, 'unplanned_rows': extra, 'umbrellas': rows,
+          'verdict': ('all files check' if scope == 'all' else 'listed files check') if ok else 'FAILED'}
     with open(out, 'w') as h:
         h.write(json.dumps(st, indent=1) + '\n')
+    if missing or dup or extra:
+        print('check_stamp: %d planned umbrella(s) have no result row (%s); duplicate rows: %s; unplanned rows: %s'
+              % (len(missing), ' '.join(missing) or '-', ' '.join(dup) or '-', ' '.join(extra) or '-'))
+        sys.exit(1)
 
 
 def verify(f):
     st = json.load(open(f))
     digest, n = sources()
-    same = st['sources_sha256'] == digest
-    print('%s: %s at %s (commit %s, checker %s): %s' % (f, st['verdict'], st['utc'], st['commit'][:12], st['checker_commit'][:8],
-          'sources match this tree' if same else 'sources differ from this tree'))
-    sys.exit(0 if same and st['verdict'] == 'all files check' else 1)
+    diff = []
+    if st['sources_sha256'] != digest:
+        diff.append('sources (%d files stamped, %d here)' % (st['files'], n))
+    diff += [k for k, v in locks().items() if st.get(k) != v]
+    h = harness()
+    diff += ['harness ' + k for k in sorted(set(h) | set(st.get('harness_sha256', {})))
+             if st.get('harness_sha256', {}).get(k) != h.get(k)]
+    print('%s: %s at %s (commit %s, checker %s, %s umbrellas, scope %s): %s' % (
+        f, st['verdict'], st['utc'], st['commit'][:12], st['checker_commit'][:8], st.get('plan_umbrellas', '?'),
+        st.get('scope', '?'), 'this tree is the one checked' if not diff else 'differs from this tree: ' + ', '.join(diff)))
+    sys.exit(0 if not diff and st['verdict'] == 'all files check' else 1)
 
 
 if __name__ == '__main__':

@@ -16,6 +16,8 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+from provenance import stamp  # noqa: E402
 EXPECT = {'uint8_300': 0, 'uint8_200': 1, 'bytes1_tail': 0, 'bytes1_ok': 1,
           'tx_slack': 0, 'tx_ok': 1, 'tx_capacity': 0,
           'att_bits_over': 0, 'att_bits_limit': 1,
@@ -38,7 +40,7 @@ def main():
         rows.append({'case': k, 'accepted': got.get(k), 'expected': want, 'pass': ok})
         print(('pass ' if ok else 'FAIL ') + f'{k}: accepted={got.get(k)} expected={want}')
     out = ROOT / 'benchmarks/evidence/invalid_objects.json'
-    out.write_text(json.dumps({'exit': r.returncode, 'cases': rows, 'failed': bad}, indent=1) + '\n')
+    out.write_text(json.dumps({'exit': r.returncode, 'cases': rows, 'failed': bad, 'provenance': stamp(__file__)}, indent=1) + '\n')
     print(f'{len(rows) - bad}/{len(rows)} invalid-object cases behave as required')
     return 0 if bad == 0 and r.returncode == 0 else 1
 
