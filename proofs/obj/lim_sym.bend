@@ -54,10 +54,13 @@ def u32_word(w): {==}
 
 # The 2^30 literal of the Fulu schemas.
 def pow30() -> {U32.to_nat(1073741824) == TR.capacity(30n) : Nat}:
-  Equal.trans(Nat, U32.to_nat(1073741824), Word.to_nat(32n, pw(30n, 32n)), TR.capacity(30n),
-    Equal.trans(Nat, U32.to_nat(1073741824), U32.to_nat(U32{pw(30n, 32n)}), Word.to_nat(32n, pw(30n, 32n)),
-      Equal.cong(U32, Nat, x => U32.to_nat(x), 1073741824, U32{pw(30n, 32n)}, {==}),
-      u32_word(pw(30n, 32n))),
+  +W = Word.to_nat(Nat.add(30n, 2n), pw(30n, Nat.add(30n, 2n)))
+  Equal.trans(Nat, U32.to_nat(1073741824), W, TR.capacity(30n),
+    Equal.trans(Nat, U32.to_nat(1073741824), Word.to_nat(32n, pw(30n, 32n)), W,
+      Equal.trans(Nat, U32.to_nat(1073741824), U32.to_nat(U32{pw(30n, 32n)}), Word.to_nat(32n, pw(30n, 32n)),
+        Equal.cong(U32, Nat, x => U32.to_nat(x), 1073741824, U32{pw(30n, 32n)}, {==}),
+        u32_word(pw(30n, 32n))),
+      Equal.cong(Nat, Nat, n => Word.to_nat(n, pw(30n, n)), 32n, Nat.add(30n, 2n), {==})),
     pw_nat(30n, 1n))
 
 law add_s:

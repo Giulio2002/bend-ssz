@@ -659,7 +659,16 @@ def wdr_upd(j, L, k, v, h):
 def NMAX() -> U32: 4294967264
 def UMAX() -> U32: 4294967295
 
-def e_umax() -> {Nat.add(31n, U32.to_nat(NMAX())) == U32.to_nat(UMAX()) : Nat}: {==}
+# NMAX + 31 = UMAX as Nats. Both are the same 27 high one bits x under five low bits (0s for NMAX,
+# 1s for UMAX): e_hi proves 31 + [x 00000] = [x 11111] for a variable x, so no 2^32-sized Nat is
+# ever built; the constants are rewritten to their constructor form (x = 27 ones) first.
+def e_hi(+x: Word(27n)) -> {Nat.add(31n, U32.to_nat(U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, x}}}}}})) == U32.to_nat(U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, x}}}}}}) : Nat}: {==}
+def nmax_bits() -> {NMAX() == U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} : U32}: {==}
+def umax_bits() -> {UMAX() == U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} : U32}: {==}
+def e_umax() -> {Nat.add(31n, U32.to_nat(NMAX())) == U32.to_nat(UMAX()) : Nat}:
+  %Equal.sym(U32, NMAX(), U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, nmax_bits()) : {Nat.add(31n, U32.to_nat(_)) == U32.to_nat(UMAX()) : Nat}
+  %Equal.sym(U32, UMAX(), U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, umax_bits()) : {Nat.add(31n, U32.to_nat(U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}})) == U32.to_nat(_) : Nat}
+  e_hi(WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}})
 
 def le_u32n(+a: U32, +b: U32) -> {U32.is_le(a, b) == Nat.is_le(U32.to_nat(a), U32.to_nat(b)) : Bool}:
   %Equal.sym(Cmp, U32.cmp(a, b), Nat.cmp(U32.to_nat(a), U32.to_nat(b)), F.u32__u32_cmp(a, b)) : {Cmp.is_le(_) == Nat.is_le(U32.to_nat(a), U32.to_nat(b)) : Bool}
@@ -718,7 +727,8 @@ def nmax_lt(+n: U32, +hN: {U32.is_le(n, NMAX()) == True{} : Bool})
 
 # 2^(2 + d) <= 2^32 for d < 31.
 def pw2d32(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_le(pw(2n+d), F.spec_common__pow2(32n)) == True{} : Bool}:
-  F.nat__pow2_mono(2n+d, 32n, F.nat__lt_succ_le(d, 30n, hd))
+  F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(32n)) == True{} : Bool}, F.spec_common__pow2(2n+d), pw(2n+d), {==},
+    F.nat__pow2_mono(2n+d, 32n, F.nat__lt_succ_le(d, 30n, hd)))
 
 # Anything within a U32 length is below 2^32.
 def le_n_lt32(+x: Nat, +n: U32, +h: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}:
@@ -740,9 +750,11 @@ def hwNof(+d: Nat, +S: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +h: {Nat.
     -> {Nat.is_le(S, U32.to_nat(NMAX())) == True{} : Bool}:
   +h29 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(F.u32__pow2u(29n), NMAX()), Nat.is_le(U32.to_nat(F.u32__pow2u(29n)), U32.to_nat(NMAX())),
     le_u32n(F.u32__pow2u(29n), NMAX()), {==})
+  +P29 = F.spec_common__pow2(29n)
   F.nat__le_trans(S, pw(2n+d), U32.to_nat(NMAX()), h,
-    F.nat__le_trans(pw(2n+d), pw(29n), U32.to_nat(NMAX()), F.nat__pow2_mono(2n+d, 29n, F.nat__lt_succ_le(d, 27n, hd)),
-      F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(NMAX())) == True{} : Bool}, U32.to_nat(F.u32__pow2u(29n)), pw(29n), F.u32__pow2u_value(29n, {==}), h29)))
+    F.nat__le_trans(pw(2n+d), P29, U32.to_nat(NMAX()),
+      F.logic__subst(Nat, z => {Nat.is_le(z, P29) == True{} : Bool}, F.spec_common__pow2(2n+d), pw(2n+d), {==}, F.nat__pow2_mono(2n+d, 29n, F.nat__lt_succ_le(d, 27n, hd))),
+      F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(NMAX())) == True{} : Bool}, U32.to_nat(F.u32__pow2u(29n)), P29, F.u32__pow2u_value(29n, {==}), h29)))
 
 # n <= m and m <= c as U32 comparisons give n <= c (a list limit m below NMAX bounds n by NMAX).
 def u32le_trans(+n: U32, +m: U32, +c: U32, +h: {U32.is_le(n, m) == True{} : Bool}, +hm: {U32.is_le(m, c) == True{} : Bool})

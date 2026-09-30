@@ -8,6 +8,9 @@ import ../../proofs/nat_order.bend as Order
 
 def uw(+n: Nat, +w: Word(n)) -> Nat: F.u32alg__uw(n, w)
 def sc1(+n: Nat) -> Nat: F.u32alg__sc(n, 1n)
+# sc1 unfolded for a symbolic n: instantiated at 32n, it relates the two spellings of 2^32 without
+# evaluating either.
+def sc1_is(+n: Nat) -> {sc1(n) == F.spec_numeric__scale_binary(n, 1n) : Nat}: {==}
 
 # ---- Nat algebra -------------------------------------------------------------------------
 
@@ -132,8 +135,11 @@ def mul_lt32(+x: U32, +y: U32, +h: {Nat.is_lt(Nat.mul(U32.to_nat(x), U32.to_nat(
         Equal.cong(Nat, Nat, q => Nat.mul(q, tb), ta, ua, F.u32__to_nat_word(a)),
         Equal.cong(Nat, Nat, q => Nat.mul(ua, q), tb, ub, F.u32__to_nat_word(b)))
       +hs = F.logic__subst(Nat, q => {Nat.is_lt(q, sc1(32n)) == True{} : Bool}, Nat.mul(ta, tb), M, prod,
-        F.logic__subst(Nat, q => {Nat.is_lt(Nat.mul(ta, tb), q) == True{} : Bool}, F.spec_common__pow2(32n), F.spec_numeric__scale_binary(32n, 1n), F.u32__pow2_scale(32n), h))
-      +h1 = F.logic__subst(Nat, q => {Nat.is_lt(Nat.add(q, M), sc1(32n)) == True{} : Bool}, 0n, uw(32n, Word.zero(32n)), Equal.sym(Nat, uw(32n, Word.zero(32n)), 0n, F.u32alg__uw_zero(32n)), hs)
+        F.logic__subst(Nat, q => {Nat.is_lt(Nat.mul(ta, tb), q) == True{} : Bool}, F.spec_common__pow2(32n), sc1(32n),
+          Equal.trans(Nat, F.spec_common__pow2(32n), F.spec_numeric__scale_binary(32n, 1n), sc1(32n), F.u32__pow2_scale(32n),
+            Equal.sym(Nat, sc1(32n), F.spec_numeric__scale_binary(32n, 1n), sc1_is(32n))), h))
+      +h0 = F.logic__subst(Nat, q => {Nat.is_lt(q, sc1(32n)) == True{} : Bool}, M, Nat.add(0n, M), {==}, hs)
+      +h1 = F.logic__subst(Nat, q => {Nat.is_lt(Nat.add(q, M), sc1(32n)) == True{} : Bool}, 0n, uw(32n, Word.zero(32n)), Equal.sym(Nat, uw(32n, Word.zero(32n)), 0n, F.u32alg__uw_zero(32n)), h0)
       +ew = Equal.trans(Nat, uw(32n, Word.mul.go(32n, 32n, a, b, Word.zero(32n))), Nat.add(uw(32n, Word.zero(32n)), M), M,
         mul_go_val(32n, 32n, a, b, Word.zero(32n), h1), Equal.cong(Nat, Nat, q => Nat.add(q, M), uw(32n, Word.zero(32n)), 0n, F.u32alg__uw_zero(32n)))
       Equal.trans(Nat, U32.to_nat(U32{Word.mul(32n, a, b)}), uw(32n, Word.mul(32n, a, b)), Nat.mul(ta, tb),
@@ -389,16 +395,22 @@ def div_ok(m, a, b, v, eb, hb):
 # ---- U32.div and U32.mod --------------------------------------------------------------
 
 def div_is(+w: Word(32n), +b: U32, +hz: {U32.is_zero(b) == False{} : Bool}) -> {U32.div(U32{w}, b) == U32{DQ(32n, w, b)} : U32}:
-  %Equal.sym(Bool, U32.is_zero(b), False{}, hz) : {U32.div.if(w, b, _) == U32{DQ(32n, w, b)} : U32}
-  %Equal.sym(Word(32n) & U32, U32.divmod.go(32n, w, b), (DQ(32n, w, b), DR(32n, w, b)), F.logic__pair_eta(Word(32n), U32, U32.divmod.go(32n, w, b))) :
-    {U32.div.fin(_) == U32{DQ(32n, w, b)} : U32}
-  {==}
+  # Base 2.0.33+ opens b before it copies it (U32{+bw} = b), so the proof opens it too.
+  match b:
+    case U32{+bw}:
+      %Equal.sym(Bool, U32.is_zero(U32{bw}), False{}, hz) : {U32.div.if(w, U32{bw}, _) == U32{DQ(32n, w, U32{bw})} : U32}
+      %Equal.sym(Word(32n) & U32, U32.divmod.go(32n, w, U32{bw}), (DQ(32n, w, U32{bw}), DR(32n, w, U32{bw})), F.logic__pair_eta(Word(32n), U32, U32.divmod.go(32n, w, U32{bw}))) :
+        {U32.div.fin(_) == U32{DQ(32n, w, U32{bw})} : U32}
+      {==}
 
 def mod_is(+w: Word(32n), +b: U32, +hz: {U32.is_zero(b) == False{} : Bool}) -> {U32.mod(U32{w}, b) == DR(32n, w, b) : U32}:
-  %Equal.sym(Bool, U32.is_zero(b), False{}, hz) : {U32.mod.if(w, b, _) == DR(32n, w, b) : U32}
-  %Equal.sym(Word(32n) & U32, U32.divmod.go(32n, w, b), (DQ(32n, w, b), DR(32n, w, b)), F.logic__pair_eta(Word(32n), U32, U32.divmod.go(32n, w, b))) :
-    {U32.mod.fin(_) == DR(32n, w, b) : U32}
-  {==}
+  # Base 2.0.33+ opens b before it copies it (U32{+bw} = b), so the proof opens it too.
+  match b:
+    case U32{+bw}:
+      %Equal.sym(Bool, U32.is_zero(U32{bw}), False{}, hz) : {U32.mod.if(w, U32{bw}, _) == DR(32n, w, U32{bw}) : U32}
+      %Equal.sym(Word(32n) & U32, U32.divmod.go(32n, w, U32{bw}), (DQ(32n, w, U32{bw}), DR(32n, w, U32{bw})), F.logic__pair_eta(Word(32n), U32, U32.divmod.go(32n, w, U32{bw}))) :
+        {U32.mod.fin(_) == DR(32n, w, U32{bw}) : U32}
+      {==}
 
 def div_eq(+w: Word(32n), +b: U32,
     +ie: {Nat.add(Nat.mul(uw(32n, DQ(32n, w, b)), U32.to_nat(b)), U32.to_nat(DR(32n, w, b))) == uw(32n, w) : Nat})
