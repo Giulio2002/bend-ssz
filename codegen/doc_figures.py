@@ -163,6 +163,9 @@ def figures():
     f['check_wall'] = f'{wall / 60:.1f}' if wall else f'at least {slow / 60:.1f}'
     f['check_commit'] = st.get('commit', 'unknown')[:8]
     f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
+    dr = sorted(p.name[:-len('_e2e_decrep_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_decrep_generated.bend'))
+    f['decrep_count'] = str(len(dr))
+    f['decrep_names'] = names_list(['`%s`' % n for n in dr])
     f.update(object_law_figures())
     return f
 

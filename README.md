@@ -75,6 +75,7 @@ checked, at the commit you rely on:
 
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
     python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
+    python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
     git clone https://github.com/bendlang/bend T/bend-src && git -C T/bend-src checkout 3ddfb0366cc14622202aaa3808e695412241f23f
     # put Bun 1.4.2 (linux-x64) at T/bun-linux-x64/bun
     python3 tools/verify_pins.py --toolchain T   # checker, Bun and the vendored SHA-256 package match toolchain.lock.json

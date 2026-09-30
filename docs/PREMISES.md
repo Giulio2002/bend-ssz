@@ -17,10 +17,17 @@ for generic forms), and the encode bridges of some names also take storage premi
 `hc`, `hd*`, `hsP`: a field's words tree at depth below 31). The decode bridges (ii)/(iii) fix
 the decoded object's view (its spec value), not its representation.
 
-**Composed theorems.** Where the (i) and (iv) bridges take only the object, or the name is
-fixed-size and its decoder's object is written out (`<Name>_d_some`, the words the input's; its
-`rep` and storage premises are then proved of that object by computation), the pipeline is one
-checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
+**Composed theorems.** There are three routes:
+- The (i) and (iv) bridges take only the object.
+- The name is fixed-size and its decoder's object is written out (`<Name>_d_some`, the words
+  are the input's). Its `rep` and storage premises are then proved of that object by computation.
+- The name is variable-size and its decode bridge describes the accepted object as the codec's
+  `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
+  run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
+  the storage premises) of that object, for every input the codec accepts. This covers
+  <!-- fig:decrep_count -->10<!-- /fig --> names: <!-- fig:decrep_names -->`FuluAttestation`, `FuluAttesterSlashing`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluTransaction`<!-- /fig -->.
+
+In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
 <!-- fig:composed -->182<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.

@@ -97,6 +97,12 @@ consensus-specs v1.6.1 (295 cases, 59 types; decode, re-encode byte for byte, ro
 (5,145, valid and invalid, all 10 families; the 8 zero-length schemas are rejected by
 construction).
 
+The fixtures these runs read are the pinned release files: `tools/verify_fixtures.py` checks every
+committed fixture against `fixtures.manifest.json` (in every full check), and with `--tarballs`
+fetches `general.tar.gz` and `mainnet.tar.gz`, requires their sha256 to be `upstream.lock.json`'s,
+and requires the manifest to be exactly the archives' `ssz_generic` and `fulu/ssz_static` members,
+each with the same sha256.
+
 ## Other test evidence (finite regressions, not laws)
 
 All against the independent oracle `codegen/oracle.py` (written from the specification, sharing

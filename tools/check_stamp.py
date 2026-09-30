@@ -34,7 +34,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HARNESS = ['tools/check.sh', 'tools/check_fast.sh', 'tools/umbrellas.py', 'tools/check_stamp.py',
            'tools/verify_pins.py', 'tools/verify_frozen.py', 'tools/verify_no_escapes.py',
-           'tools/verify_schemas.py', 'tools/test_schemas.py']
+           'tools/verify_schemas.py', 'tools/test_schemas.py', 'tools/verify_fixtures.py']
 
 
 def sha(b):
