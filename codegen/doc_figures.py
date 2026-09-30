@@ -195,10 +195,11 @@ def object_law_figures():
             for m in re.finditer(r'^# ---- (\w+) ----$', p.read_text(), re.M):
                 names.add(re.sub(strip, '', m.group(1)))
         return len(names)
-    coll = [l for k, v in sf.items() if k.startswith(('proofs/obj/coll_api_', 'proofs/obj/coll_seq', 'proofs/obj/coll_bits', 'proofs/obj/coll_bytes')) for l in v]
+    coll = [l for k, v in sf.items() if k.startswith(('proofs/obj/coll_api_', 'proofs/obj/coll_seq', 'proofs/obj/coll_bits', 'proofs/obj/coll_bytes', 'proofs/obj/coll_root')) for l in v]
     f['obj_coll_statements'] = str(len(coll))
     f['obj_coll_count'] = str(sections('proofs/obj/coll_api_*.bend', r'$^'))
     f['obj_coll_readback'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_read_set')}))
+    f['obj_coll_root'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_root_set')}))
     f['obj_coll_view'] = str(len({re.match(r'(\w+?)_api_', l).group(1) for l in coll if l.endswith('_api_view_set')}))
     f['obj_setter_laws'] = str(stm('proofs/obj/prep_setters'))
     f['obj_swap_laws'] = str(stm('proofs/obj/fields_'))

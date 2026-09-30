@@ -95,12 +95,12 @@ def file_statements(path, laws):
 
 
 # the object-mutation laws (codegen/laws.py, codegen/rep_laws.py): every statement of these files
-OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_seq.bend', 'proofs/obj/coll_bits.bend', 'proofs/obj/coll_bytes.bend', 'proofs/obj/prep_setters*.bend']
+OBJECT_LAWS = ['proofs/obj/coll_api_*.bend', 'proofs/obj/coll_seq.bend', 'proofs/obj/coll_bits.bend', 'proofs/obj/coll_bytes.bend', 'proofs/obj/coll_root.bend', 'proofs/obj/prep_setters*.bend']
 
 
 def eq_defs(text):
-    """the defs of a law file whose result is an equality proposition (their signature is the
-    statement), and its `law` blocks, in file order"""
+    """the defs of a law file whose result is an equality proposition or a specification-root relation (RR.roots; their
+    signature is the statement), and its `law` blocks, in file order"""
     out = []
     for b in blocks(text):
         m = re.match(r'law (\S+):', b[0])
@@ -108,7 +108,7 @@ def eq_defs(text):
             out.append(m.group(1))
             continue
         m = DEF.match(b[0])
-        if m and m.group(1) not in out and re.search(r'-> \{.*\}:$', ' '.join(signature(b))):
+        if m and m.group(1) not in out and re.search(r'-> (\{.*\}|RR\.roots\(.*\)):$', ' '.join(signature(b))):
             out.append(m.group(1))
     return out
 

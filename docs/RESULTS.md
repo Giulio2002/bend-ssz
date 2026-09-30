@@ -81,7 +81,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->416<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->425<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->24<!-- /fig --> collections: the packed collections of whole-word
@@ -93,6 +93,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
   a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
   `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
   `view_seq.bend` and `view_bytes.bend` (`codegen/view_laws.py`) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
+  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant): `..._api_root_set`, for <!-- fig:obj_coll_root -->9<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
   An accepted append with room in the storage gives `seq_append`: the view before with the new element's view at the end (`..._api_view_append`; the word lists, the record lists and the byte lists), and `..._api_view_append_grow` when the append reallocates (the word lists: `proofs/obj/words_win.bend`'s `at_cpy_in` says the copy keeps the old words).
   (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 

@@ -296,6 +296,122 @@ VIEWS = {
 }
 
 
+# ---- the root of a list after an accepted set: proofs/obj/coll_root.bend ----
+# per collection with a root law of its view (the word families' *_rs laws: the digest of the object is a specification root
+# of its view): the digest of the object after an accepted set is a specification root of the view with that item replaced
+ROOT_OUT = {}
+ROOTS = {
+    # kind: (module of the rs laws, light module alias, vector rs, list rs, rep, ok, view, count, digest names (vector, list))
+    'b32': dict(mod='proofs/obj/pv_obj.bend', E='PVR', LV='proofs/obj/pv_obj_light.bend', V='PVL', rsv='pv_rs', rsl=None, repv='rep_pv', repl=None,
+                okv='ok_pv', okl=None, view='pview', cnt='chunks', dig_v='wdig', dig_l=None, elt='FuluBytes32_d', elp='types/FuluBytes32_def_generated.bend', vec_only=True, digmod='WO'),
+    'b48': dict(mod='proofs/obj/elems48.bend', E='E48', LV='proofs/obj/elems48_light.bend', V='EL48L', rsv='ev_rs', rsl='el_rs', repv='rep_ev', repl='rep_el',
+                okv='ok_ev', okl='ok_el', view='eview', cnt='k48', dig_v='edig', dig_l='ldig', elt='FuluBytes48_d', elp='types/FuluBytes48_def_generated.bend'),
+}
+
+
+def root_set_law(c, I, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS):
+    R = ROOTS.get(kind)
+    vw = VIEWS.get((kind, c[0]))
+    if not R or not vw or (R.get('vec_only') and c[0] != 'v'):
+        return
+    fam = VL.FAMILIES[kind]
+    isvec = c[0] == 'v'
+    imps = ROOT_OUT.setdefault('imps', {})
+    lines = ROOT_OUT.setdefault('lines', [])
+    path, al, VIEW, cnt, conv = vw
+    for a, pth in (('B', 'src/buffer.bend'), ('D', 'src/digest.bend'), ('O', 'src/obj.bend'), ('S', 'types/schema.bend'), ('F', 'proofs/compact/found.bend'), ('RR', 'spec/root_relation.bend'),
+                   ('SH', 'proofs/obj/schema_shapes.bend'), ('WO', 'proofs/obj/words_obj_light.bend'), ('WW', 'proofs/obj/words_win.bend'), ('VS', 'proofs/obj/value_set.bend'),
+                   ('WR', 'proofs/obj/words_rw.bend'), ('CZ', 'proofs/obj/coll_zeros.bend'), ('CW_' + kind, 'proofs/obj/coll_%s.bend' % kind),
+                   ('VI_' + kind, 'proofs/obj/view_%s.bend' % kind), (R['E'], R['mod']), (al, path), (DA, os.path.relpath(I['file'], ROOT)), (R['elt'], R['elp'])):
+        imps[a] = pth
+    imps['RN_L'] = 'proofs/obj/root_names_light.bend'
+    imps['DK'] = 'proofs/obj/dk.bend'
+    if kind == 'b32':
+        imps['PVL'] = 'proofs/obj/pv_obj_light.bend'
+        imps['FX'] = 'proofs/obj/spec_fixed.bend'
+    ES = fam['MK'](xs)
+    GSo = re.sub(r'(?<![\w.])n(?![\w.])', 'WO.len(o)', GS)
+    GSz = re.sub(r'(?<![\w.])n(?![\w.])', 'WO.len(z)', GS)
+    rep = '%s.%s(o, s)' % (al, R['repv'] if isvec else R['repl'])
+    ok = '{%s.%s(s, depth) == True{} : Bool}' % (al, R['okv'] if isvec else R['okl'])
+    dig = R['dig_v'] if isvec else R['dig_l']
+    P = re.search(r'\(i \* \d+ : U32\)', I['put_true']).group(0)
+    Kn = int(re.search(r'\(i \* (\d+) : U32\)', P).group(1))
+    W = len(xs)
+    BASEi = fam['BASE']('U32.to_nat(i)')
+    XS = '[%s]' % ', '.join(xs)
+    xp = ', '.join('+%s: U32' % x for x in xs)
+    OBJt = lambda t_: 'O.Words{F.array__thaw(U32, %s), n}' % t_
+    TQ = 'WW.tk(%s, d, t, q, 0n)' % XS
+    SETo = SET.replace(OBJ('t'), 'o')    # the set call on the object o
+    # the set result is the written storage, and its view
+    lines.append('def %s_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, '
+                 '+hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool})\n'
+                 '    -> {Pair.fst(O.Words, Bool, %s) == %s : O.Words}:' % (c, xp, GS, P, W, SET, OBJ(TW)))
+    lines.append('  %%Equal.sym(Bool, %s, True{}, hs) : {Pair.fst(O.Words, Bool, %s) == %s : O.Words}' % (GS, PUT, OBJ(TW)))
+    lines.append('  %%Equal.sym(O.Words, %s, %s, CW_%s.%s_write(%s)) : {_ == %s : O.Words}' % (WRITE, OBJ(TW), kind, kind, largs, OBJ(TW)))
+    lines.append('  {==}\n')
+    lines.append('def %s_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, '
+                 '+hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == %s : Nat})\n'
+                 '    -> {%s(Pair.fst(O.Words, Bool, %s)) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}:' % (c, xp, GS, P, W, BASEi, VIEW, SET, VIEW, OBJ('t'), ES))
+    lines.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s(Pair.fst(O.Words, Bool, %s)) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}' % (GS, VIEW, PUT, VIEW, OBJ('t'), ES))
+    lines.append('  %%Equal.sym(O.Words, %s, %s, CW_%s.%s_write(%s)) : {%s(_) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}' % (WRITE, OBJ(TW), kind, kind, largs, VIEW, VIEW, OBJ('t'), ES))
+    lines.append('  VI_%s.view_set(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf)\n' % (kind, cnt, ', '.join(xs)))
+    # the composed law
+    dsig = ('+dU: U32, +seg: U32, ' if isvec else '')
+    esig = ('+edu: {U32.to_nat(dU) == depth : Nat}, ' if isvec else '')
+    eargs = ('dU, seg, ' if isvec else '')
+    DM = R.get('digmod', R['E'])
+    if kind == 'b48':
+        hl_sig = ''
+        unpack = '  (+wf, +ks) = rep\n  (+t, w1) = wf\n  (+d, w2) = w1\n  (+n, w3) = w2\n  (+eo, w4) = w3\n  (+pf, w5) = w4\n  (+hd, +room) = w5'
+        cnt_expr = '%s.%s(n)' % (al, R['cnt'])
+        hlt_line = ('  +hlt = Equal.trans(Bool, Nat.is_lt(U32.to_nat(i), %s.%s(n)), U32.is_lt(i, U32.div(n, %d)), True{}, Equal.sym(Bool, U32.is_lt(i, U32.div(n, %d)), Nat.is_lt(U32.to_nat(i), %s.%s(n)), F.u32__is_lt_nat(i, U32.div(n, %d))), hsn)'
+                    % (al, R['cnt'], Kn, Kn, al, R['cnt'], Kn))
+        room_cnt = cnt_expr
+        tuple_inner = '(%s, (d, (n, ({==}, (WW.tk_perfect(%s, d, t, q, 0n, pf), (hd, room))))))' % (TQ, XS)
+        KSP = '{Nat.is_%s(%s.%s(WO.len(z)), %s) == True{} : Bool}' % ('eq' if isvec else 'le', al, R['cnt'], 'SH.Vector_length(s)' if isvec else 'SH.ListOf_limit(s)')
+    else:   # b32 vectors: the count of chunks is 1 + the last chunk's index
+        hl_sig = '+hlt: {Nat.is_lt(U32.to_nat(i), O.chunks_of(WO.len(o))) == True{} : Bool}, '
+        unpack = '  (+wf, +ks) = rep\n  (+t, w1) = wf\n  (+d, w2) = w1\n  (+n, w3) = w2\n  (+qv, w4) = w3\n  (+eo, w5) = w4\n  (+pf, w6) = w5\n  (+hd, w7) = w6\n  (+en, +room) = w7'
+        cnt_expr = '1n+qv'
+        hlt_line = ('  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), O.chunks_of(WO.len(z))) == True{} : Bool}, o, %s, eo, hlt)\n'
+                    '  +hlt1 = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, O.chunks_of(n), 1n+qv, WO.chunks_q(n, qv, 32n, en, {==}, {==}), hlt0)' % OBJ('t'))
+        room_cnt = '1n+qv'
+        tuple_inner = '(%s, (d, (n, (qv, ({==}, (WW.tk_perfect(%s, d, t, q, 0n, pf), (hd, (en, room))))))))' % (TQ, XS)
+        KSP = '{Nat.is_eq(O.chunks_of(WO.len(z)), SH.Vector_length(s)) == True{} : Bool}'
+    hltname = 'hlt' if kind == 'b48' else 'hlt1'
+    lines.append('def %s_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, %s+i: U32, +q: Nat, %s, +rep: %s, +ok: %s, %s+hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, %s'
+                 '+hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hqe: {q == %s : Nat})\n'
+                 '    -> RR.roots(VS.field_set(%s(o), U32.to_nat(i), %s), s, [D.bytes(%s.%s(hl, Pair.fst(O.Words, Bool, %s), depth))]):' % (
+                     c, dsig, xp, rep, ok, esig, hl_sig, GSo, P, BASEi, VIEW, ES, DM, dig, SETo))
+    lines.append(unpack)
+    lines.append('  +hsn = F.logic__subst(O.Words, z => {%s == True{} : Bool}, o, %s, eo, hs)' % (GSz, OBJ('t')))
+    lines.append(hlt_line)
+    lines.append('  +hr = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, %dn), F.spec_common__pow2(d)) == True{} : Bool}, %s, q, Equal.sym(Nat, q, %s, hqe), VI_%s.idx_room(U32.to_nat(i), %s, F.spec_common__pow2(d), %s, room))' % (W, BASEi, BASEi, kind, room_cnt, hltname))
+    lines.append('  +se = %s_seteq(d, t, n, i, q, %s, hd, pf, hsn, hq, hr)' % (c, ', '.join(xs)))
+    lines.append('  +vs = %s_viewset(d, t, n, i, q, %s, hd, pf, hsn, hq, hr, hqe)' % (c, ', '.join(xs)))
+    lines.append('  +vs2 = F.logic__subst(O.Words, z => {%s(z) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}, Pair.fst(O.Words, Bool, %s), O.Words{F.array__thaw(U32, %s), n}, se, vs)' % (VIEW, VIEW, OBJ('t'), ES, SET, TQ))
+    lines.append('  +ks2 = F.logic__subst(O.Words, z => %s, o, %s, eo, ks)' % (KSP, OBJ('t')))
+    lines.append('  %%Equal.sym(O.Words, o, %s, eo) :\n    RR.roots(VS.field_set(%s(_), U32.to_nat(i), %s), s, [D.bytes(%s.%s(hl, Pair.fst(O.Words, Bool, %s), depth))])' % (OBJ('t'), VIEW, ES, DM, dig, SET.replace(OBJ('t'), '_')))
+    lines.append('  %%Equal.sym(O.Words, Pair.fst(O.Words, Bool, %s), O.Words{F.array__thaw(U32, %s), n}, se) :\n    RR.roots(VS.field_set(%s(%s), U32.to_nat(i), %s), s, [D.bytes(%s.%s(hl, _, depth))])' % (SET, TQ, VIEW, OBJ('t'), ES, DM, dig))
+    lines.append('  %%vs2 :\n    RR.roots(_, s, [D.bytes(%s.%s(hl, O.Words{F.array__thaw(U32, %s), n}, depth))])' % (DM, dig, TQ))
+    lines.append('  %s.%s(hl, ehl, h, O.Words{F.array__thaw(U32, %s), n}, s, depth, %s(%s, ks2), ok, %shdep)\n' % (
+        R['E'], R['rsv'] if isvec else R['rsl'], TQ, eargs, tuple_inner, ('edu, ' if isvec else '')))
+
+
+def root_file():
+    if not ROOT_OUT.get('lines'):
+        return ''
+    imps = ROOT_OUT['imps']
+    head = ['import Base'] + ['import %s as %s' % (rel(pth), a) for a, pth in imps.items()]
+    head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_root)'),
+             '# The root of a collection after an accepted set: the digest of the object after the set is a specification root of the view',
+             '# with that item replaced, through the collection\'s *_rs law (the digest of an object is a specification root of its view,',
+             '# under the representation invariant, which the set keeps).', '']
+    return '\n'.join(head) + '\n'.join(ROOT_OUT['lines'])
+
+
 def view_set_law(w, I, c, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS, imps):
     """the spec view of the collection after an accepted set is the view before with item i replaced by the view
     of the new element (value_set.bend's field_set: the k-th item of a Sequence), through view_laws.py's view_<kind>.bend"""
@@ -386,6 +502,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     w('  {==}')
     nl += 1
     nl += view_set_law(w, I, c, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS, imps)
+    root_set_law(c, I, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS)
     # set, then get another element (its words disjoint from the written ones: after, or before)
     PJ = '(j * %s : U32)' % K
     ATS = ', '.join('WR.at(F.array__slots(U32, t), Nat.add(r, %dn))' % k for k in range(W))
@@ -1669,6 +1786,9 @@ def outputs():
                  '# The collection laws of the public API (C_set, C_append, C_get, C_len), with the guards the',
                  '# runtime computes from the object; see codegen/coll_laws.py for the list of laws.', '']
         outs[OBJ / ('coll_api_%d.bend' % (k // PER_FILE))] = '\n'.join(head) + body
+    rt = root_file()
+    if rt:
+        outs[OBJ / 'coll_root.bend'] = prune_cw(retarget(rt))
     return outs, total
 
 

@@ -55,6 +55,11 @@ def lt_add_succ(+a: Nat, +p: Nat) -> {Nat.is_lt(a, Nat.add(a, 1n+p)) == True{} :
   F.logic__subst(Nat, z => {Nat.is_lt(a, z) == True{} : Bool}, 1n+Nat.add(a, p), Nat.add(a, 1n+p), Equal.sym(Nat, Nat.add(a, 1n+p), 1n+Nat.add(a, p), F.nat__add_succ(a, p)),
     F.nat__le_lt_succ(a, Nat.add(a, p), F.nat__le_add_right(a, p)))
 
+# the block of item i (below the count c) is inside storage of c blocks
+def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}, +h: {Nat.is_le(Nat.mul(c, 12n), P) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.mul(i, 12n), 12n), P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.mul(1n+i, 12n), Nat.add(Nat.mul(i, 12n), 12n), Equal.sym(Nat, Nat.add(Nat.mul(i, 12n), 12n), Nat.mul(1n+i, 12n), blk(i)),
+    F.nat__le_trans(Nat.mul(1n+i, 12n), Nat.mul(c, 12n), P, mono(1n+i, c, F.nat__lt_succ_le_succ(i, c, hlt)), h))
+
 # ---- one element ----
 def el_hit(+d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +J: Nat, +hb: {Nat.is_le(Nat.add(Nat.mul(J, 12n), 12n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
     -> {RN_L.v_b48(EL48.rec48(F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], d, t, Nat.mul(J, 12n), 0n)), Nat.mul(J, 12n))) == RN_L.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}) : S.Value}:

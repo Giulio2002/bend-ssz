@@ -183,6 +183,11 @@ def lt_add_succ(+a: Nat, +p: Nat) -> {Nat.is_lt(a, Nat.add(a, 1n+p)) == True{} :
        BASE('J'), BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'),
        BASE('J'), KN, BASE('i'),
        BASE('J'), KN, BASE('i'), BASE('i'), BASE('i')))
+    w('''# the block of item i (below the count c) is inside storage of c blocks
+def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}, +h: {Nat.is_le(%s, P) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, %s, Nat.add(%s, %s), Equal.sym(Nat, Nat.add(%s, %s), %s, blk(i)),
+    F.nat__le_trans(%s, %s, P, mono(1n+i, c, F.nat__lt_succ_le_succ(i, c, hlt)), h))
+''' % (BASE('c'), BASE('i'), KN, BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'), BASE('1n+i'), BASE('c')))
     Q = BASE('J')
     T2 = 'WW.tk(%s, d, t, %s, 0n)' % (XS, Q)
     W2 = 'F.array__slots(U32, %s)' % T2

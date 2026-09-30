@@ -48,6 +48,11 @@ def lt_add_succ(+a: Nat, +p: Nat) -> {Nat.is_lt(a, Nat.add(a, 1n+p)) == True{} :
   F.logic__subst(Nat, z => {Nat.is_lt(a, z) == True{} : Bool}, 1n+Nat.add(a, p), Nat.add(a, 1n+p), Equal.sym(Nat, Nat.add(a, 1n+p), 1n+Nat.add(a, p), F.nat__add_succ(a, p)),
     F.nat__le_lt_succ(a, Nat.add(a, p), F.nat__le_add_right(a, p)))
 
+# the block of item i (below the count c) is inside storage of c blocks
+def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}, +h: {Nat.is_le(O.e8(c), P) == True{} : Bool}) -> {Nat.is_le(Nat.add(O.e8(i), 8n), P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, O.e8(1n+i), Nat.add(O.e8(i), 8n), Equal.sym(Nat, Nat.add(O.e8(i), 8n), O.e8(1n+i), blk(i)),
+    F.nat__le_trans(O.e8(1n+i), O.e8(c), P, mono(1n+i, c, F.nat__lt_succ_le_succ(i, c, hlt)), h))
+
 # ---- one element ----
 def el_hit(+d: Nat, +t: F.array__Tree<U32>, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +J: Nat, +hb: {Nat.is_le(Nat.add(O.e8(J), 8n), F.spec_common__pow2(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
     -> {S.BytesValue{WS.cb(F.array__slots(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, O.e8(J), 0n)), J)} == S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])} : S.Value}:
