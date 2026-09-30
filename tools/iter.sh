@@ -23,7 +23,10 @@
 # --cache: DEV MODULE CACHE. Uses /srv/ssz-optimization/toolchain-dev-cache (the rigid checker merged with
 # bendlang/bend PR #1209) with BEND_CACHE, so modules an earlier run checked are skipped (the ~110 s
 # BeaconState closure is paid once). A cache TRUSTS earlier results: this is NEVER a gate, never used for a
-# stamp; pins are not verified in this mode and every line of output says so.
+# stamp; pins are not verified in this mode and every line of output says so. Measured (port sources, e2e
+# FuluBeaconState witness): 190 s first run, 9 s when rerun with the cache warm; a different file sharing the
+# closure gains little (BeaconBlock witness 75 s -> 68 s). The dev toolchain is the RIGID Bend: it only
+# accepts the port branch's sources (agent/bend2034-depth), not the 2.0.28-era tree on main.
 # Nothing heavy runs on this machine: only git and rsync.
 set -u
 HOST=${ITER_HOST:-root@build-server.example}
@@ -60,7 +63,7 @@ if [ "${1:-}" = --remote ]; then
   one() {
     f=$1; lg=build/iter/$(echo "$f" | tr '/' '_').log
     tools/check.sh "$f" > "$lg" 2>&1; rc=$?
-    ok=0; grep -qx 'All terms check\.' "$lg" && [ $rc = 0 ] && ok=1
+    ok=0; grep -Eqx 'All terms check\.|ALL PROOFS CHECK' "$lg" && [ $rc = 0 ] && ok=1
     s=$(grep '^CHECK_TIME' "$lg" | tail -1 | awk '{print $2}')
     if [ $ok = 1 ]; then printf 'PASS %6ss  %s\n' "${s:-?}" "$f"
     else
