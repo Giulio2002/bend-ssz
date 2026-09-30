@@ -111,3 +111,17 @@ object API replaced that layer. `tests/new/test_transport.py` tested the JSON tr
 former JS spectest runner, which `tools/spectests.py` no longer has, and `tools/probe_backend.py`
 imported names `tools/spectests.py` no longer defines; both were removed too. The object API is
 tested by the official vectors and the evidence in [RESULTS.md](RESULTS.md).
+
+## Fast iteration
+
+`tools/iter.sh [--gen a,b] [--base REF] [-j N] [--no-regen] [--cache] [files...]` is the dev loop. It
+rsyncs the checkout to a per-user server directory, runs `codegen/regen_all.py --touched` (only the
+generators whose traced inputs changed since their last clean run; stamps in `build/regen_stamps.json`),
+then checks with `tools/check.sh` only the `.bend` files that changed locally, were rewritten by the
+regeneration, or are named, at most `-j` (4) at once, with no localization and no full-check lock. It prints
+PASS/FAIL per file with seconds and the failing location, and pulls the regenerated files back.
+`--cache` uses a dev-only toolchain with a module cache (`/srv/ssz-optimization/toolchain-dev-cache`,
+rigid Bend + bendlang/bend#1209): a cache trusts earlier results, so it is never a gate and never makes a
+stamp. Only the full `tools/check_fast.sh` (with localization) and strictcheck gate a merge; iter.sh results
+are not evidence. `regen_all.py --check` stays the authority on generated files; `--touched` output is
+byte-identical to a full regeneration.
