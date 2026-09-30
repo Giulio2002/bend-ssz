@@ -1,6 +1,7 @@
 import Base
 import ./e2e_blist.bend as BL
 import ./e2e_dz.bend as DZ
+import ./e2e_ulist.bend as UW
 import ../proofs/compact/arith.bend as A
 import ../proofs/compact/found.bend as FD
 import ../proofs/nat_order.bend as Order
@@ -9,7 +10,11 @@ import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader.bend as DC
 import ../proofs/obj/var_bytes_ExecutionPayloadHeader_win.bend as WN
 import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/vcopy.bend as VC
+import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vlist.bend as VLS
+import ../proofs/obj/vspec.bend as VSP
 import ../spec/fulu_schemas.bend as Spec
 import ../src/obj.bend as O
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d

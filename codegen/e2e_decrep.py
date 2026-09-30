@@ -100,7 +100,74 @@ LCH = ('proofs/obj/var_bytes_LightClientHeader_win.bend', 244, 61)
 H28 = '{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool}'
 
 
+def u64_list_facts(L, CQ, eL, hlim, M, i, hy, hrm, lim=131072):
+    """a decoded list of uint64 (L = 8 CQ bytes, eL: that, hlim: CQ within the limit) copied without a mask at word i"""
+    ecq = (f'Equal.trans(Nat, U32.to_nat(U32.shrn({L}, 3n)), VD.s_rng(3n, U32.to_nat({L})), {CQ}, VD.shrk(3n, {L}), '
+           f'Equal.trans(Nat, VD.s_rng(3n, U32.to_nat({L})), VD.s_rng(3n, VSP.x8({CQ})), {CQ}, Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat({L}), VSP.x8({CQ}), {eL}), UW.r8({CQ})))')
+    e8c = (f'Equal.trans(Nat, U32.to_nat({L}), VSP.x8({CQ}), O.e8(U32.to_nat(U32.shrn({L}, 3n))), {eL}, Equal.trans(Nat, VSP.x8({CQ}), O.e8({CQ}), O.e8(U32.to_nat(U32.shrn({L}, 3n))), UW.x8e({CQ}), '
+           f'Equal.cong(Nat, Nat, z => O.e8(z), {CQ}, U32.to_nat(U32.shrn({L}, 3n)), Equal.sym(Nat, U32.to_nat(U32.shrn({L}, 3n)), {CQ}, {ecq}))))')
+    clim = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat({lim})) == True{{}} : Bool}}, {CQ}, U32.to_nat(U32.shrn({L}, 3n)), Equal.sym(Nat, U32.to_nat(U32.shrn({L}, 3n)), {CQ}, {ecq}), {hlim})')
+    MK = f'VY.MK({L}, VLS.DZ({L}), {M})'
+    any_ = lambda k: (f'FD.logic__subst(FD.array__Tree<U32>, z => BL.sdk(O.Words{{FD.array__thaw(U32, z), {L}}}, {k}), {MK}, {M}, DZ.mk_id({L}, VLS.DZ({L}), {M}, {hrm}), '
+                      f'DZ.dec_bytes({L}, {i}, t, {k}, {{==}}, {hy}))')
+    return dict(any_=any_, facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == \w+\.e8\(ucnt\(o\)\)', e8c), (r'Nat\.is_le\(ucnt\(o\), ', clim)])
+
+
+def ia_window(IAC, len_, i, hc, sfx):
+    """the facts of one decoded IndexedAttestation (codec alias IAC) of length len_ at word i, from hc: whole(LL(len_)):
+    (its lets, suffixed by sfx; the words model of its attesting_indices)"""
+    L, CQ = f'{IAC}.LL({len_})', f'{IAC}.CQ({len_})'
+    lets = [f'+eL{sfx} = {IAC}.eLc({len_}, {hc})',
+            f'+hy{sfx} = VC.hyU({L}, 21n, {{==}}, {IAC}.hy({len_}, {hc}))',
+            f'+hrm{sfx} = FD.u32alg__eq_true(U32.and({L}, 3), 0, VC.and3_x8({L}, {CQ}, eL{sfx}))',
+            f'+hlim{sfx} = {IAC}.hcL({len_}, {hc})']
+    M = f'VB.mone(VC.NW({L}), Nat.add(57n, {i}), 0n, {IAC}.DZ({len_}), VC.ZT({IAC}.DZ({len_})), t)'
+    f = u64_list_facts(L, CQ, f'eL{sfx}', f'hlim{sfx}', M, f'Nat.add(57n, {i})', f'hy{sfx}', f'hrm{sfx}')
+    return lets, (lambda e: WordsDec(e, any_=f['any_'], facts=f['facts']))
+
+
+def u64_list_alone(name, codec, K, lim, kw, lf):
+    """a container whose one variable field is a List[uint64, lim] (fixed part K bytes; the list's words from word K/4,
+    its bytes bounded by 2^kw): its checks give the length facts"""
+    a, b, c = f'U32.is_le({K}, n)', f'U32.is_eq(DC.SPO(t), {K})', 'DC.whole(U32.sub(n, DC.SPO(t)))'
+    L, CQ = 'DC.LL(n)', 'DC.CQ(n)'
+    lets = [f'+hc0 = DC.chk_c({a}, {b}, {c}, hchk)',
+            f'+hb0 = DC.chk_b({a}, {b}, {c}, hchk)',
+            f'+hc = FD.logic__subst(U32, z => {{DC.whole(U32.sub(n, z)) == True{{}} : Bool}}, DC.SPO(t), {K}, FD.u32alg__eq_of(DC.SPO(t), {K}, hb0), hc0)',
+            '+eL = DC.eLc(n, hc)',
+            f'+hy = VC.hyU({L}, {kw}n, {{==}}, DC.hy(n, hc))',
+            f'+hrm = FD.u32alg__eq_true(U32.and({L}, 3), 0, VC.and3_x8({L}, {CQ}, eL))',
+            '+hlim = DC.hcL(n, hc)']
+    i = f'{K // 4}n'
+    M = f'VB.mone(VC.NW({L}), {i}, 0n, DC.DZ(n), VC.ZT(DC.DZ(n)), t)'
+    f = u64_list_facts(L, CQ, 'eL', 'hlim', M, i, 'hy', 'hrm', lim)
+
+    def words(j, e):
+        return WordsDec(e, any_=f['any_'], facts=f['facts'])
+    ps = '+t: FD.array__Tree<U32>, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}'
+    return container_file(name, lf, f'proofs/obj/{codec}.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], ps), lets, words, f'proofs/obj/{codec}.bend')
+
+
+def attester_slashing(lf):
+    """two IndexedAttestation windows (words 2 and J(t), lengths L1(t) and L2(t, n))"""
+    def lets(al):
+        IAC, IW = al('proofs/obj/var_codec_IndexedAttestation.bend'), al('proofs/obj/var_codec_IndexedAttestation_win.bend')
+        ks = ['U32.is_le(8, n)', 'U32.is_eq(DC.O0(t), 8)', 'Bool.and(U32.is_le(DC.O0(t), DC.O1(t)), U32.is_le(DC.O1(t), n))',
+              f'{IW}.CHKw(t, 2n, DC.L1(t))', f'{IW}.CHKw(t, DC.J(t), DC.L2(t, n))']
+        out = [f'+hk1 = DC.c5d({", ".join(ks)}, hchk)', f'+hk2 = DC.c5e({", ".join(ks)}, hchk)',
+               '+hw1 = DC.whc(t, 2n, DC.L1(t), hk1)', '+hw2 = DC.whc(t, DC.J(t), DC.L2(t, n), hk2)']
+        l1, w1 = ia_window(IAC, 'DC.L1(t)', '2n', 'hw1', '1')
+        l2, w2 = ia_window(IAC, 'DC.L2(t, n)', 'DC.J(t)', 'hw2', '2')
+        return out + l1 + l2, (lambda j, e: (w1, w2)[j](e))
+    ps = '+t: FD.array__Tree<U32>, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}'
+    return container_file('FuluAttesterSlashing', lf, 'proofs/obj/var_codec_AttesterSlashing.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], ps),
+                          lets, None, 'proofs/obj/var_codec_AttesterSlashing.bend')
+
+
 PROVERS = {
+    'FuluIndexedAttestation': lambda lf: u64_list_alone('FuluIndexedAttestation', 'var_codec_IndexedAttestation', 228, 131072, 21, lf),
+    'FuluDataColumnsByRootIdentifier': lambda lf: u64_list_alone('FuluDataColumnsByRootIdentifier', 'var_codec_DataColumnsByRootIdentifier', 36, 128, 11, lf),
+    'FuluAttesterSlashing': lambda lf: attester_slashing(lf),
     'FuluLightClientBootstrap': lambda lf: nested('FuluLightClientBootstrap', [('proofs/obj/var_bytes_LightClientBootstrap_win.bend', 24820, 6205), LCH, EPH], H28,
                                                    'proofs/obj/var_bytes_LightClientBootstrap.bend'),
     'FuluLightClientOptimisticUpdate': lambda lf: nested('FuluLightClientOptimisticUpdate', [('proofs/obj/var_bytes_LightClientOptimisticUpdate_win.bend', 172, 43), LCH, EPH], H28,
@@ -116,8 +183,8 @@ PROVERS = {
 class WordsDec:
     """a decoded byte storage field: its storage premises come from e2e_dz (any: BL.sdk / LO.wfl at a bound k;
     one: BL.sdk1 / WO.wf1, a nonzero length; limit: its length within the schema's limit)"""
-    def __init__(self, expr, any_=None, one=None, limit=None):
-        self.expr, self.any_, self.one, self.limit = expr, any_, one, limit
+    def __init__(self, expr, any_=None, one=None, limit=None, facts=()):
+        self.expr, self.any_, self.one, self.limit, self.facts = expr, any_, one, limit, list(facts)
         self.n, self.d = 1, 1
 
 
@@ -127,7 +194,7 @@ class WordsFix:
         self.expr, self.n, self.M, self.d, self.pf = expr, n, M, d, pf
 
 
-STORAGE = {('e2e_blist.bend', 'sdk'): 'any', ('list_obj_light.bend', 'wfl'): 'any32',
+STORAGE = {('e2e_blist.bend', 'sdk'): 'any', ('list_obj_light.bend', 'wfl'): 'any32', ('e2e_ulist.bend', 'sd'): 'any31',
            ('e2e_blist.bend', 'sdk1'): 'one', ('words_obj_light.bend', 'wf1'): 'one32'}
 
 
@@ -161,7 +228,7 @@ class DSynth(W.Synth):
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, WordsDec):
                         kind = STORAGE[key]
-                        k = '32n' if kind.endswith('32') else self.subst(mod, args[1], env)
+                        k = kind[-2:] + 'n' if kind[-1].isdigit() else self.subst(mod, args[1], env)
                         f = mdl.any_ if kind.startswith('any') else mdl.one
                         if f is None:
                             raise SystemExit(f'e2e_decrep: no {kind} storage fact')
@@ -177,6 +244,9 @@ class DSynth(W.Synth):
         if isinstance(subj, WordsDec):
             if re.search(r'Nat\.is_le\(U32\.to_nat\(\w+\.len\(o\)\), ', p) and subj.limit:
                 return subj.limit
+            for pat, pr in subj.facts:
+                if re.search(pat, p):
+                    return pr
             return W.R
         return super().eq(p, env)
 
@@ -253,7 +323,9 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
     W.PREFER[(ROOT / 'e2e/e2e_dz.bend').resolve()] = 'DZ'
     W.PREFER[(ROOT / 'proofs/compact/found.bend').resolve()] = 'FD'
     W.PREFER[(ROOT / 'src/obj.bend').resolve()] = 'O'
-    for p_, a_ in (('proofs/compact/arith.bend', 'A'), ('proofs/nat_order.bend', 'Order'), ('proofs/obj/vbuf.bend', 'VB'), ('proofs/obj/vcopy.bend', 'VC')):
+    for p_, a_ in (('proofs/compact/arith.bend', 'A'), ('proofs/nat_order.bend', 'Order'), ('proofs/obj/vbuf.bend', 'VB'), ('proofs/obj/vcopy.bend', 'VC'),
+                   ('proofs/obj/vdepth.bend', 'VD'), ('proofs/obj/vlist.bend', 'VLS'), ('proofs/obj/vspec.bend', 'VSP'), ('e2e/e2e_ulist.bend', 'UW'),
+                   ('proofs/obj/vbytes.bend', 'VY'), ('e2e/e2e_blist.bend', 'BL')):
         W.PREFER[(ROOT / p_).resolve()] = a_
     om, body = body_of(obj_mod, obj_def, obj_subst)
     taken = set(W.PREFER.values())
@@ -265,7 +337,8 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
     W.PREFER.setdefault(om.path, 'WN')
     ctx = W.Ctx()
     for p_ in (dc_path, 'e2e/e2e_dz.bend', 'proofs/compact/found.bend', 'src/obj.bend', 'proofs/compact/arith.bend', 'proofs/nat_order.bend',
-               'proofs/obj/vbuf.bend', 'proofs/obj/vcopy.bend'):
+               'proofs/obj/vbuf.bend', 'proofs/obj/vcopy.bend', 'proofs/obj/vdepth.bend', 'proofs/obj/vlist.bend', 'proofs/obj/vspec.bend',
+               'e2e/e2e_ulist.bend', 'proofs/obj/vbytes.bend', 'e2e/e2e_blist.bend'):
         ctx.alias(ROOT / p_)
     OBJ = ctx.lift(om, body)
     inv = {a: pth for pth, a in W.PREFER.items()}

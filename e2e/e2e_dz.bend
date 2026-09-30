@@ -118,6 +118,11 @@ def mk_at(+L: U32, +dz: Nat, +M: FD.array__Tree<U32>, +pf: {FD.array__perfect(U3
     FD.logic__subst(Nat, z => {Nat.is_lt(VY.KW(L), z) == True{} : Bool}, FD.spec_common__pow2(dz), FD.spec_common__length(U32, FD.array__slots(U32, M)),
       Equal.sym(Nat, FD.spec_common__length(U32, FD.array__slots(U32, M)), FD.spec_common__pow2(dz), FD.array__slots_length(U32, dz, M, pf)), hk))
 
+# a length of whole words: the mask keeps the tree
+def mk_id(+L: U32, +dz: Nat, +M: FD.array__Tree<U32>, +h: {U32.is_eq(VY.RM(L), 0) == True{} : Bool}) -> {VY.MK(L, dz, M) == M : FD.array__Tree<U32>}:
+  %Equal.sym(Bool, U32.is_eq(VY.RM(L), 0), True{}, h) : {VY.mk(_, L, dz, M) == M : FD.array__Tree<U32>}
+  {==}
+
 # the bytes a mask of k bytes clears
 def kb1_1(+w: U32) -> {U32.and(U32.shrn(U32.and(w, 255), 8n), 255) == 0 : U32}:
   %Equal.sym(U32, U32.shrn(U32.and(w, 255), 8n), 0, shz(w, 255, 8n, {==})) : {U32.and(_, 255) == 0 : U32}
