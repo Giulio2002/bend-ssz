@@ -42,8 +42,8 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 | FuluAggregateAndProof | `hs` | `hS` | - |
 | FuluAttestation | `hs` | `hS` | - |
 | FuluAttesterSlashing | `hs1`, `hs2` | `hS` | - |
-| FuluBeaconBlock | `hs34`, `hs44`, `hzb44`, `hs54`, `hzb54`, `hs64`, `hs74`, `hs94`, `hs104`, `hs114`, `hv114`, `ha124`, `hb124`, `hc124`, `hZ` | `hS` | - |
-| FuluBeaconBlockBody | `hs3`, `hs4`, `hzb4`, `hs5`, `hzb5`, `hs6`, `hs7`, `hs9`, `hs10`, `hs11`, `hv11`, `ha12`, `hb12`, `hc12`, `hZ` | `hS` | - |
+| FuluBeaconBlock | `hs34`, `hs44`, `hs54`, `hs64`, `hs74`, `hs94`, `hs104`, `hs114`, `hv114`, `ha124`, `hb124`, `hc124`, `hZ` | `hS` | - |
+| FuluBeaconBlockBody | `hs3`, `hs4`, `hs5`, `hs6`, `hs7`, `hs9`, `hs10`, `hs11`, `hv11`, `ha12`, `hb12`, `hc12`, `hZ` | `hS` | - |
 | FuluBeaconState | `hs5`, `hs6`, `hs7`, `hm7`, `hs9`, `hs11`, `hs12`, `hm12`, `hs13`, `hs14`, `hs15`, `hm15`, `hs16`, `hm16`, `hs21`, `hm21`, `hs22`, `hs23`, `hs24`, `hs27`, `hs34`, `hs35`, `hs36`, `hs37`, `hZ` | `hS` | - |
 | FuluBlob | `hc` | - | - |
 | FuluBlobSidecar | `hcb`, `hcp` | - | - |
@@ -70,7 +70,7 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 | FuluParticipationFlags | `e` | - | `e` |
 | FuluPendingAttestation | `hs` | `hS` | - |
 | FuluSignedAggregateAndProof | `hs` | `hS` | - |
-| FuluSignedBeaconBlock | `hs340`, `hs440`, `hzb440`, `hs540`, `hzb540`, `hs640`, `hs740`, `hs940`, `hs1040`, `hs1140`, `hv1140`, `ha1240`, `hb1240`, `hc1240`, `hZ` | `hS` | - |
+| FuluSignedBeaconBlock | `hs340`, `hs440`, `hs540`, `hs640`, `hs740`, `hs940`, `hs1040`, `hs1140`, `hv1140`, `ha1240`, `hb1240`, `hc1240`, `hZ` | `hS` | - |
 | FuluSyncCommittee | `hc`, `hN` | - | - |
 | FuluTransaction | `hs` | `hS` | - |
 | ProgressiveBitsStruct | `hs` | `hS`, `hPB` | - |
@@ -187,10 +187,13 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 - **Per-object totals `TOT_<Name>`**: ProgressiveTestStruct, ProgressiveComplexTestStruct: the
   fixed part plus the measures of the list fields below 2^31, plus one size measure per unbounded
   list field (word-list length, 4 N of a record list, `EL.LL` of a variable-element list).
-- **Per-part budgets `hzb4`, `hzb5`**: on the block-level attester-slashings and attestations
-  lists of FuluBeaconBlockBody, FuluBeaconBlock and FuluSignedBeaconBlock (the block and signed block repeat the premises of their body): each list's own encode record bounds its bytes by
-  4 * 2^28 (`e2e_bbsl.SZ1`, `e2e_bbatt.SZ8`); the lists' OK laws bound them and nothing in
-  the object does. `hs4` / `hs5` are the same lists' storage premises.
+- **Per-part budgets, derived (no longer premises)**: the attester-slashings and attestations
+  lists of FuluBeaconBlockBody, FuluBeaconBlock and FuluSignedBeaconBlock must encode within
+  4 * 2^28 bytes for their own encode records. This is now proved from `rep`: at most 1 attester
+  slashing of at most 8 + 2 * 2^21 bytes, and at most 8 attestations of at most 236 + 2^17 + 1
+  bytes each (`elz`, `wSZ` and `cap` in `e2e/e2e_bbsl.bend` and `e2e/e2e_bbatt.bend`). The former
+  premises `hzb4` / `hzb5` are gone from the three bridges. `hs4` / `hs5` remain as the same lists'
+  storage premises.
 
 ## 4. Decode premises
 

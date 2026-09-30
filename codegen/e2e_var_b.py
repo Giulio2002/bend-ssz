@@ -7240,13 +7240,13 @@ def _bb_parts():
     P = {}
     P[3] = _ml_part('l16_ProposerSlashing', 'PS3')
     P[4] = {'R': 'AS4.R_1', 'ty': 'Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq', 'L': lambda p_: f'AS4.LN1({p_})',
-            # the list's own encode record (OK) bounds it by 4 * 2^28: a per-part budget (the container's bound is only below 2^31)
-            'mk': lambda p_, s_, r_, hb_, j_: f'AS4.mk_1({p_}, {s_}, {{==}}, ({{==}}, {{==}}), {r_}, hs{j_}, hzb{j_})',
-            'prem': [('hs', lambda p_: f'AS4.sd1({p_})'), ('hzb', lambda p_: f'AS4.SZ1({p_})')],
+            # the list's own encode record (OK) needs it within 4 * 2^28 bytes: derived from rep's limits (e2e_bbsl wSZ, cap)
+            'mk': lambda p_, s_, r_, hb_, j_: f'AS4.mk_1({p_}, {s_}, {{==}}, ({{==}}, {{==}}), {r_}, hs{j_})',
+            'prem': [('hs', lambda p_: f'AS4.sd1({p_})')],
             'imports': ['import ./e2e_bbsl.bend as AS4', 'import ../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d']}
     P[5] = {'R': 'AT5.R_8', 'ty': 'Fulu_list_Attestation_8_d.l8_Attestation_Seq', 'L': lambda p_: f'AT5.LN8({p_})',
-            'mk': lambda p_, s_, r_, hb_, j_: f'AT5.mk_8({p_}, {s_}, {{==}}, {{==}}, {r_}, hs{j_}, hzb{j_})',
-            'prem': [('hs', lambda p_: f'AT5.sd8({p_})'), ('hzb', lambda p_: f'AT5.SZ8({p_})')],
+            'mk': lambda p_, s_, r_, hb_, j_: f'AT5.mk_8({p_}, {s_}, {{==}}, {{==}}, {r_}, hs{j_})',
+            'prem': [('hs', lambda p_: f'AT5.sd8({p_})')],
             'imports': ['import ./e2e_bbatt.bend as AT5', 'import ../types/Fulu_list_Attestation_8_def_generated.bend as Fulu_list_Attestation_8_d']}
     P[6] = _ml_part('l16_Deposit', 'DP6', es=True)
     P[7] = _dl_part('l16_SignedVoluntaryExit', 'SignedVoluntaryExit', 'VE7', 'RV7')
@@ -7383,10 +7383,10 @@ def _qual_rec(t, al):
 VENC_SHAPES['BeaconBlockBody'] = lambda R, X: venc_crec(R, X, 'e2e_rec_BeaconBlockBody', 'RB', [i_ for P_ in _BBP.values() for i_ in P_['imports']],
     'hs3/hs6 the slashings\' and deposits\' storage (e2e_ml sdt), hs4/hs5 the attester slashings\' and attestations\' (e2e_bbsl sd1 / e2e_bbatt sd8), '
     'hs7/hs10 the lists\' trees (sda), hs9 the execution payload\'s (e2e_epr SHS_P), hs11/hv11 the blob commitments\' words and '
-    'their whole-48-byte count (object API validity), ha12..hc12 the requests\' lists, hzb4/hzb5 the attester slashings\' and attestations\' own byte budgets, hZ the encoding below 2^31 bytes')
+    'their whole-48-byte count (object API validity), ha12..hc12 the requests\' lists, hZ the encoding below 2^31 bytes; the attester slashings\' and attestations\' own byte budgets are derived from rep\'s limits')
 VENC_PREMISE['BeaconBlockBody'] = ('rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts\' encode records\' own bounds as premises, each a decoded-object gap '
     'the root law\'s invariant does not give: hs3/hs6 the proposer slashings\' and deposits\' storage (e2e_ml sdt), hs4 the attester slashings\' (e2e_bbsl.sd1), hs5 the attestations\' '
-    '(e2e_bbatt.sd8), hzb4/hzb5 those two lists\' own encode records\' byte budgets (4 * 2^28 each: e2e_bbsl.SZ1, e2e_bbatt.SZ8; the lists\' OK bound them and nothing in the object does), hs7/hs10 the voluntary exits\' and BLS changes\' trees at depth below 31 (sda), hs9 the execution payload\'s (e2e_epr.SHS_P, as its own (i)), '
+    '(e2e_bbatt.sd8; those two lists\' own encode records\' byte budgets, 4 * 2^28 each, are derived from rep\'s limits: e2e_bbsl / e2e_bbatt wSZ, cap), hs7/hs10 the voluntary exits\' and BLS changes\' trees at depth below 31 (sda), hs9 the execution payload\'s (e2e_epr.SHS_P, as its own (i)), '
     'hs11 the blob commitments\' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests\' lists at depth below 31 (sda), and hZ the encoding '
     'below 2^31 bytes (the OKW laws\' container bound; e2e_rec_BeaconBlockBody.SZW, each part\'s byte count a witness; the execution payload\'s and requests\' OKW bounds are derived from it); '
     'hv11: the blob commitments\' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)')
@@ -7414,8 +7414,8 @@ SUPPORT_OUT['e2e_rec_SignedBeaconBlock.bend'] = crec_text('SignedBeaconBlock', _
 VENC_SHAPES['BeaconBlock'] = lambda R, X: venc_crec(R, X, 'e2e_rec_BeaconBlock', 'RK', _BBI + _BKP[4]['imports'], 'the body\'s, as BeaconBlockBody\'s (i)')
 VENC_SHAPES['SignedBeaconBlock'] = lambda R, X: venc_crec(R, X, 'e2e_rec_SignedBeaconBlock', 'RS', _BBI + _BKP[4]['imports'] + _SBP[0]['imports'], 'the body\'s, as BeaconBlockBody\'s (i)')
 VENC_PREMISE['BeaconBlock'] = ('rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) and its body\'s premises as BeaconBlockBody\'s (i) (hs34..hc124, hv114: the body\'s parts\' decoded-object gaps and '
-    'object API validity) with hZ the encoding below 2^31 bytes (the OKW laws\' container bound; e2e_rec_BeaconBlock.SZW, each body part\'s byte count a witness; the body\'s and its parts\' OKW bounds derived from it) and hs34..hc124 including the body\'s attester slashings\' and attestations\' own byte budgets (hzb44, hzb54)')
-VENC_PREMISE['SignedBeaconBlock'] = VENC_PREMISE['BeaconBlock'].replace('RT.rep_BeaconBlock(o, Spec.BeaconBlock())', 'RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock())').replace('hs34..hc124, hv114', 'hs340..hc1240, hv1140').replace('(hzb44, hzb54)', '(hzb440, hzb540)').replace('hs34..hc124 including', 'hs340..hc1240 including').replace('e2e_rec_BeaconBlock.SZW', 'e2e_rec_SignedBeaconBlock.SZW')
+    'object API validity) with hZ the encoding below 2^31 bytes (the OKW laws\' container bound; e2e_rec_BeaconBlock.SZW, each body part\'s byte count a witness; the body\'s and its parts\' OKW bounds derived from it); the body\'s attester slashings\' and attestations\' own byte budgets are derived from rep\'s limits')
+VENC_PREMISE['SignedBeaconBlock'] = VENC_PREMISE['BeaconBlock'].replace('RT.rep_BeaconBlock(o, Spec.BeaconBlock())', 'RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock())').replace('hs34..hc124, hv114', 'hs340..hc1240, hv1140').replace('e2e_rec_BeaconBlock.SZW', 'e2e_rec_SignedBeaconBlock.SZW')
 
 # ---- BeaconBlockBody (ii)/(iii): the window's view (e2e_vbx_BeaconBlockBody) ----
 import e2e_bbdec as _BBD

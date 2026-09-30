@@ -81,14 +81,8 @@ def premise_hs34() -> PS3.sdt(RT.pj_BeaconBlockBody_3(RT.pjb_BeaconBlockBody_bx(
 def premise_hs44() -> AS4.sd1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
 
-def premise_hzb44() -> AS4.SZ1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))):
-  {==}
-
 def premise_hs54() -> AT5.sd8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
-
-def premise_hzb54() -> AT5.SZ8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))):
-  {==}
 
 def premise_hs64() -> DP6.sdt(RT.pj_BeaconBlockBody_6(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
@@ -121,4 +115,4 @@ def premise_hZ() -> RK.SZW(FuluBeaconBlock_d.BeaconBlock_default()):
   (PS3.LLX(RT.pj_BeaconBlockBody_3(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (AS4.LN1(RT.pj_BeaconBlockBody_4(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (AT5.LN8(RT.pj_BeaconBlockBody_5(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (DP6.LLX(RT.pj_BeaconBlockBody_6(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (VE7.WLL(RT.pj_BeaconBlockBody_7(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (RC9.EPL(RT.pj_ExecutionPayload_10(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default()))))), RT.pj_ExecutionPayload_13(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default()))))), RT.pj_ExecutionPayload_14(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))))), (BC10.WLL(RT.pj_BeaconBlockBody_10(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))), (U32.to_nat(WO.len(RT.pj_BeaconBlockBody_11(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default()))))), (Nat.add(Nat.add(Nat.add(12n, DQ0.WLL(RT.pj_ExecutionRequests_0(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))))), DQ1.WLL(RT.pj_ExecutionRequests_1(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))))), DQ2.WLL(RT.pj_ExecutionRequests_2(RT.pj_BeaconBlockBody_12(RT.pjb_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(FuluBeaconBlock_d.BeaconBlock_default())))))), ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))))))))
 
 def FuluBeaconBlock_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconBlock_d.BeaconBlock, B.Buf, FuluBeaconBlock_e.BeaconBlock_encode(FuluBeaconBlock_d.BeaconBlock_default())))} == API.serialize(Spec.BeaconBlock(), RT.v_BeaconBlock(FuluBeaconBlock_d.BeaconBlock_default())) : Maybe<&2, +List<U32>>}:
-  BR.FuluBeaconBlock_e2e_encode(FuluBeaconBlock_d.BeaconBlock_default(), premise_rep(), premise_hs34(), premise_hs44(), premise_hzb44(), premise_hs54(), premise_hzb54(), premise_hs64(), premise_hs74(), premise_hs94(), premise_hs104(), premise_hs114(), premise_hv114(), premise_ha124(), premise_hb124(), premise_hc124(), premise_hZ())
+  BR.FuluBeaconBlock_e2e_encode(FuluBeaconBlock_d.BeaconBlock_default(), premise_rep(), premise_hs34(), premise_hs44(), premise_hs54(), premise_hs64(), premise_hs74(), premise_hs94(), premise_hs104(), premise_hs114(), premise_hv114(), premise_ha124(), premise_hb124(), premise_hc124(), premise_hZ())

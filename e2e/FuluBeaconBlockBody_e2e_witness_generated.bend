@@ -80,14 +80,8 @@ def premise_hs3() -> PS3.sdt(RT.pj_BeaconBlockBody_3(FuluBeaconBlockBody_d.Beaco
 def premise_hs4() -> AS4.sd1(RT.pj_BeaconBlockBody_4(FuluBeaconBlockBody_d.BeaconBlockBody_default())):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
 
-def premise_hzb4() -> AS4.SZ1(RT.pj_BeaconBlockBody_4(FuluBeaconBlockBody_d.BeaconBlockBody_default())):
-  {==}
-
 def premise_hs5() -> AT5.sd8(RT.pj_BeaconBlockBody_5(FuluBeaconBlockBody_d.BeaconBlockBody_default())):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
-
-def premise_hzb5() -> AT5.SZ8(RT.pj_BeaconBlockBody_5(FuluBeaconBlockBody_d.BeaconBlockBody_default())):
-  {==}
 
 def premise_hs6() -> DP6.sdt(RT.pj_BeaconBlockBody_6(FuluBeaconBlockBody_d.BeaconBlockBody_default())):
   (FD.TLeaf{RT.MNone{}}, (0n, (0, ({==}, ({==}, ({==}, ({==}, {==})))))))
@@ -120,4 +114,4 @@ def premise_hZ() -> RB.SZW(FuluBeaconBlockBody_d.BeaconBlockBody_default()):
   (PS3.LLX(RT.pj_BeaconBlockBody_3(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (AS4.LN1(RT.pj_BeaconBlockBody_4(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (AT5.LN8(RT.pj_BeaconBlockBody_5(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (DP6.LLX(RT.pj_BeaconBlockBody_6(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (VE7.WLL(RT.pj_BeaconBlockBody_7(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (RC9.EPL(RT.pj_ExecutionPayload_10(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(FuluBeaconBlockBody_d.BeaconBlockBody_default()))), RT.pj_ExecutionPayload_13(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(FuluBeaconBlockBody_d.BeaconBlockBody_default()))), RT.pj_ExecutionPayload_14(RT.pjb_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(FuluBeaconBlockBody_d.BeaconBlockBody_default())))), (BC10.WLL(RT.pj_BeaconBlockBody_10(FuluBeaconBlockBody_d.BeaconBlockBody_default())), (U32.to_nat(WO.len(RT.pj_BeaconBlockBody_11(FuluBeaconBlockBody_d.BeaconBlockBody_default()))), (Nat.add(Nat.add(Nat.add(12n, DQ0.WLL(RT.pj_ExecutionRequests_0(RT.pj_BeaconBlockBody_12(FuluBeaconBlockBody_d.BeaconBlockBody_default())))), DQ1.WLL(RT.pj_ExecutionRequests_1(RT.pj_BeaconBlockBody_12(FuluBeaconBlockBody_d.BeaconBlockBody_default())))), DQ2.WLL(RT.pj_ExecutionRequests_2(RT.pj_BeaconBlockBody_12(FuluBeaconBlockBody_d.BeaconBlockBody_default())))), ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))))))))
 
 def FuluBeaconBlockBody_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(FuluBeaconBlockBody_d.BeaconBlockBody_default())))} == API.serialize(Spec.BeaconBlockBody(), RT.v_BeaconBlockBody(FuluBeaconBlockBody_d.BeaconBlockBody_default())) : Maybe<&2, +List<U32>>}:
-  BR.FuluBeaconBlockBody_e2e_encode(FuluBeaconBlockBody_d.BeaconBlockBody_default(), premise_rep(), premise_hs3(), premise_hs4(), premise_hzb4(), premise_hs5(), premise_hzb5(), premise_hs6(), premise_hs7(), premise_hs9(), premise_hs10(), premise_hs11(), premise_hv11(), premise_ha12(), premise_hb12(), premise_hc12(), premise_hZ())
+  BR.FuluBeaconBlockBody_e2e_encode(FuluBeaconBlockBody_d.BeaconBlockBody_default(), premise_rep(), premise_hs3(), premise_hs4(), premise_hs5(), premise_hs6(), premise_hs7(), premise_hs9(), premise_hs10(), premise_hs11(), premise_hv11(), premise_ha12(), premise_hb12(), premise_hc12(), premise_hZ())
