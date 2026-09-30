@@ -182,6 +182,18 @@ def vput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos: U32, +P: Nat, +eP: {{U32.to_n
   +h1 = FD.nat__le_trans(Nat.add(k, i), Nat.add(W, Nat.add(k, i)), VB.pw(d), Order.left_below_sum(W, Nat.add(k, i)), h)
   Order.double_monotone(Nat.double(Nat.add(k, i)), Nat.double(VB.pw(d)), Order.double_monotone(Nat.add(k, i), VB.pw(d), h1))
 
+# The pubkeys' word count and word offset as literals, reached by evaluating Nat.is_eq (the checker's
+# machine loops over a unary numeral without recursing) instead of by a conversion, which would recurse
+# once per unit of {SCW}.
+def nwS() -> {{{SCW}n == VC.NW({SCW * 4}) : Nat}}:
+  FD.nat__eq_from_is_eq({SCW}n, VC.NW({SCW * 4}), {{==}})
+
+def qlS() -> {{{SCW}n == VY.QL({SCW * 4}) : Nat}}:
+  FD.nat__eq_from_is_eq({SCW}n, VY.QL({SCW * 4}), {{==}})
+
+def le45() -> {{Nat.is_le(Nat.add({SCG}n, Nat.add(1n, {SCW}n)), {H}n) == {TRUE}}}:
+  {{==}}
+
 # The SyncCommittee's writer at pos1 = 4 P1: the pubkeys' words copied from TS, the aggregate after them.
 def scput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos1: U32, +P1: Nat, +e1: {{U32.to_nat(pos1) == A.quad(P1) : Nat}}, {HDD},
     +pf1: {{FD.array__perfect(U32, dd, D1) == {TRUE}}}, {", ".join(own_p[:2 + SCG])}, {", ".join(own_h[:3])},
@@ -192,16 +204,17 @@ def scput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos1: U32, +P1: Nat, +e1: {{U32.t
   +hbr = FD.nat__le_trans(Nat.add({SCG}n, Nat.add(VC.NW({SCW * 4}), P1)), Nat.add({SCW + SCG}n, P1), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add({SCW + SCG}n, P1)) == {TRUE}}}, Nat.add(Nat.add({SCG}n, VC.NW({SCW * 4})), P1), Nat.add({SCG}n, Nat.add(VC.NW({SCW * 4}), P1)), FD.nat__add_assoc({SCG}n, VC.NW({SCW * 4}), P1), Order.add_right(Nat.add({SCG}n, VC.NW({SCW * 4})), {SCW + SCG}n, P1, {{==}})), hbs)
   # hbw and hz with the pubkeys' word count named (VC.NW / VY.QL of {SCW * 4}, as put_words_any
   # states them), so no conversion compares {SCW}n with an unevaluated Nat.add over it
-  +hbwN = FD.nat__le_trans(Nat.add(VC.NW({SCW * 4}), P1), Nat.add({SCW + SCG}n, P1), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, P1), Nat.add({SCW + SCG}n, P1)) == {TRUE}}}, {SCW}n, VC.NW({SCW * 4}), {{==}}, Order.add_right({SCW}n, {SCW + SCG}n, P1, {{==}})), hbs)
-  +hzN = FD.logic__subst(Nat, z => {{VB.slot(D1, Nat.add(z, P1)) == 0 : U32}}, {SCW}n, VY.QL({SCW * 4}), {{==}}, hz)
+  +hbwN = FD.nat__le_trans(Nat.add(VC.NW({SCW * 4}), P1), Nat.add({SCW + SCG}n, P1), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, P1), Nat.add({SCW + SCG}n, P1)) == {TRUE}}}, {SCW}n, VC.NW({SCW * 4}), nwS(), Order.add_right({SCW}n, {SCW + SCG}n, P1, {{==}})), hbs)
+  +hzN = FD.logic__subst(Nat, z => {{VB.slot(D1, Nat.add(z, P1)) == 0 : U32}}, {SCW}n, VY.QL({SCW * 4}), qlS(), hz)
+  +hrSN = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dS)) == {TRUE}}}, {SCW}n, Nat.add(VC.NW({SCW * 4}), 0n), FD.nat__eq_from_is_eq({SCW}n, Nat.add(VC.NW({SCW * 4}), 0n), {{==}}), hrS)
   +e0 = VF.off_add(pos1, 0, P1, 0n, 2n+dd, e1, {{==}}, hdd, hq4(0n, P1, dd, {SCW}n, hbw))
   +e2 = VF.off_add(pos1, {SCW * 4}, P1, VC.NW({SCW * 4}), 2n+dd, e1, FD.nat__eq_from_is_eq(U32.to_nat({SCW * 4}), A.quad(VC.NW({SCW * 4})), {{==}}), hdd, hq4(VC.NW({SCW * 4}), P1, dd, {SCG}n, hbr))
   %Equal.sym(O.Words & Bool, T.v512_b48_valid({PUB}), ({PUB}, True{{}}),
-      VBE.words_ok_b(dS, TS, {SCW * 4}, {SCW * 4}, {SCW * 4}, {KYS}n, pfS, hdS, {{==}}, {{==}}, {{==}}, {{==}}, hrS, {{==}}, 48, {{==}})) :
+      VBE.words_ok_b(dS, TS, {SCW * 4}, {SCW * 4}, {SCW * 4}, {KYS}n, pfS, hdS, {{==}}, {{==}}, {{==}}, {{==}}, hrSN, {{==}}, 48, {{==}})) :
     {{T.SyncCommittee_pw0(pos1, 0, {AGG}, T.v512_b48_pk(FD.array__thaw(U32, D1), U32.add(pos1, 0), _)) == {SCR} : {STY}}}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D1), U32.add(pos1, 0), {PUB}), (FD.array__thaw(U32, {MON}), {PUB}),
       VBE.put_words_any(dd, dS, D1, TS, U32.add(pos1, 0), P1, {SCW * 4}, {KYS}n, pf1, pfS, hd31, hdS, VF.al_3(U32.add(pos1, 0), P1, e0), VF.al_q(U32.add(pos1, 0), P1, e0),
-        {{==}}, {{==}}, hrS, hbwN, hzN)) :
+        {{==}}, {{==}}, hrSN, hbwN, hzN)) :
     {{T.SyncCommittee_pw0(pos1, 0, {AGG}, T.v512_b48_pk_ok(_)) == {SCR} : {STY}}}
   %Equal.sym(Array<U32>, T.b48_put(FD.array__thaw(U32, {MON}), U32.add(pos1, {SCW * 4}), {AGG}), FD.array__thaw(U32, VF.updv({GL}, dd, {MON}, Nat.add(VC.NW({SCW * 4}), P1))),
       VT.put_b48(dd, {MON}, U32.add(pos1, {SCW * 4}), Nat.add(VC.NW({SCW * 4}), P1), e2, hdd, VB.mone_perfect(VC.NW({SCW * 4}), 0n, P1, dd, D1, TS, pf1), hbr, {", ".join(G)})) :
@@ -366,7 +379,7 @@ def XE({EP}) -> S.Value: XEY({OWA}, YE.XE({C.A}))
     # a conversion between the two spellings would walk NW = {SCW} in unary
     p45 = f'Nat.add(Nat.add(1n, {NWS}), P)'
     hb45 = (f'hb({SCG}n, Nat.add(1n, {NWS}), P, dd, FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({SCG}n, Nat.add(1n, z)), {H}n) == {TRUE}}}, '
-            f'{SCW}n, {NWS}, {{==}}, {{==}}), hHP(N, dd, P, hdst))')
+            f'{SCW}n, {NWS}, nwS(), le45()), hHP(N, dd, P, hdst))')
     hbG = f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({SCG}n, z), VB.pw(dd)) == {TRUE}}}, {p45}, {pg}, {EQG}, {hb45})'
     hbM = (f'FD.nat__le_trans(Nat.add({NWS}, {pk}), Nat.add({SCW + SCG}n, {pk}), VB.pw(dd), Order.add_right({NWS}, {SCW + SCG}n, {pk}, {{==}}), '
            f'{hbw(SCW + SCG, 1)})')

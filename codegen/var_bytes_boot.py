@@ -88,10 +88,15 @@ def mkid(+L: U32, +dz: Nat, +M: FD.array__Tree<U32>, +h: {{U32.is_eq(VY.RM(L), 0
   %Equal.sym(Bool, U32.is_eq(VY.RM(L), 0), True{{}}, h) : {{VY.mk(_, L, dz, M) == M : FD.array__Tree<U32>}}
   {{==}}
 
+# The word count as a literal, reached by evaluating Nat.is_eq (the checker's machine loops over a unary
+# numeral without recursing) instead of by a conversion, which would recurse once per unit of {wW}.
+def nwq_{p}() -> {{VC.NW({ws}) == {wW}n : Nat}}:
+  FD.nat__eq_from_is_eq(VC.NW({ws}), {wW}n, {{==}})
+
 # copy_into_any's words at off = 4 i, as the {wW} words from i (the rewrite keeps both trees unevaluated).
 def cpeq_{p}(+t: FD.array__Tree<U32>, +i: Nat) -> {{{MKT} == {MO} : FD.array__Tree<U32>}}:
   Equal.trans(FD.array__Tree<U32>, {MKT}, {MN}, {MO}, mkid({ws}, {dz}n, {MN}, {{==}}),
-    Equal.cong(Nat, FD.array__Tree<U32>, z => VB.mone(z, i, 0n, {dz}n, VC.ZT({dz}n), t), VC.NW({ws}), {wW}n, {{==}}))
+    Equal.cong(Nat, FD.array__Tree<U32>, z => VB.mone(z, i, 0n, {dz}n, VC.ZT({dz}n), t), VC.NW({ws}), {wW}n, nwq_{p}()))
 
 def cp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},
     +hd31: {{Nat.is_lt(d, 31n) == True{{}} : Bool}}, +e0: {{U32.to_nat(U32.shrn(U32.add(off, 0), 2n)) == i : Nat}}, +h3: {{U32.and(U32.add(off, 0), 3) == 0 : U32}},
@@ -101,7 +106,7 @@ def cp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +pf: {
   # hbw with the word count named (VC.NW({ws}), as copy_into_any states it): each step is a motive
   # over a variable, so no conversion evaluates {wW} in unary
   +hbi = FD.logic__subst(Nat, w => {{Nat.is_le(Nat.add({wW}n, w), VB.pw(d)) == True{{}} : Bool}}, Nat.add(0n, i), i, {{==}}, hbw)
-  +hbN = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, i), VB.pw(d)) == True{{}} : Bool}}, {wW}n, VC.NW({ws}), {{==}}, hbi)
+  +hbN = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, i), VB.pw(d)) == True{{}} : Bool}}, {wW}n, VC.NW({ws}), Equal.sym(Nat, VC.NW({ws}), {wW}n, nwq_{p}()), hbi)
   VY.copy_into_any(d, t, n, U32.add(off, 0), i, {ws}, {dz}n, {kw}n, pf, hd31, {{==}}, h3, e0, hbN, {{==}}, {{==}}, {{==}})
 
 # The {p} reader at off = 4 i: its packed words are a copy of words i .., its record the next words.
@@ -278,7 +283,7 @@ def lcomp(+t: FD.array__Tree<U32>, +i: Nat, {HLW}) -> {{List.length(&2, U32, {CT
   %Equal.sym(Nat, List.length(&2, U32, {CT}), Nat.add(List.length(&2, U32, {WPK}), List.length(&2, U32, [{G}])), VZ.len_sapp({WPK}, [{G}])) : {{_ == {cf["W"]}n : Nat}}
   %Equal.sym(Nat, List.length(&2, U32, {WPK}), FD.spec_common__length(U32, {WPK}), VZ.len_list({WPK})) : {{Nat.add(_, List.length(&2, U32, [{G}])) == {cf["W"]}n : Nat}}
   %Equal.sym(Nat, FD.spec_common__length(U32, {WPK}), {cf["wW"]}n, hlW) : {{Nat.add(_, List.length(&2, U32, [{G}])) == {cf["W"]}n : Nat}}
-  {{==}}
+  FD.nat__eq_from_is_eq(Nat.add({cf["wW"]}n, List.length(&2, U32, [{G}])), {cf["W"]}n, {{==}})
 
 def hF(+t: FD.array__Tree<U32>, +i: Nat, {HLW}) -> {{VS.FSZ({PRE}, {POST}) == {FSN} : Nat}}:
 {HFS}
