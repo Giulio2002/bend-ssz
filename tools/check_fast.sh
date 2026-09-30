@@ -48,7 +48,7 @@ python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FIL
 # (else the checker's exit code, or 1)
 # The umbrellas of the slowest roots (UMB_BIG_RE, matched against the roots in plan.tsv) get a larger heap,
 # UMB_BIG_MEMMAX / UMB_BIG_RAM: at the 12e9 heap the garbage collector thrashes (BeaconState witness 322 s -> ~150-230 s).
-BIG_RE=${UMB_BIG_RE:-e2e/Fulu(BeaconState|BeaconBlock|BeaconBlockBody|SignedBeaconBlock)_e2e_witness_generated}
+BIG_RE=${UMB_BIG_RE:-e2e/Fulu(BeaconState|BeaconBlock|BeaconBlockBody|SignedBeaconBlock)_e2e_witness_generated|e2e/FuluBeaconState_e2e_(comp|decrep)_generated}
 run() {
   local mem=${UMB_MEMMAX:-16G} ram=${UMB_RAM:-12000000000}
   if [ -n "$BIG_RE" ] && awk -F'\t' -v u="$(basename "$1")" -v re="$BIG_RE" '$1 == u && $4 ~ re {f=1} END {exit !f}' "$OUT/umb/plan.tsv"; then
