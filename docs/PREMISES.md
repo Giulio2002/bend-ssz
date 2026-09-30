@@ -30,13 +30,52 @@ the decoded object's view (its spec value), not its representation.
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->182<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->184<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
 section 6). For them the pipeline bytes -> decode -> hash_tree_root (or -> encode) is covered by
 the laws only through that gap; the official vectors (295 ssz_static cases: decode, byte-exact
 re-encode, root) are the evidence for it today.
+
+**The validating serializer.** `X_serialize` is the public encoder: it encodes a valid object and
+refuses an invalid one (`X_valid`, generated with the encoder). For the <!-- fig:ser_count -->98<!-- /fig --> names whose
+object is plain `Data` (the integers, byte vectors, bit vectors, the fixed-size Fulu containers and
+the small test structs), `e2e/<Name>_e2e_ser_generated.bend` (`codegen/serialize_e2e.py`) states, with
+no premise but validity:
+
+- `<Name>_e2e_serialize(o, v: X_valid(o) == True)`: the serializer's bytes are exactly END_TO_END's
+  `serialize` of the object's value (the conclusion of `<Name>_e2e_encode`);
+- `<Name>_e2e_serialize_ok`: `X_serialize(o) == O.encoded(X_encode(o))`;
+- `<Name>_e2e_serialize_refused(o, v: X_valid(o) == False)`: `X_serialize(o) == O.refused()`.
+
+The encode bridge's own premise (none, `e`, or `rp`) is derived from `X_valid(o) == True` (`X_ser_prem`
+in the same file, with the lemmas of `e2e/e2e_valid.bend`): `u8_valid`/`u16_valid` give `rp_u8`/`rp_u16`
+and a container's `Bool.and` of them gives its `rp`; a bit vector's `is_lt(last word, 2^r)` gives the
+last-word shape `e`. The refused laws are vacuous for a name whose `X_valid` is `True` for every object.
+
+For the <!-- fig:ser_lin_count -->72<!-- /fig --> fixed-size packed vectors and byte vectors (`vec_*`, `Blob`, `Cell`), whose serializer
+threads the object (`X_serialize(o)` is a pair of the object and an `O.Encoded`),
+`<Name>_e2e_serialize` takes the bridge's own premises (`rep`, `hc`, ...) and one more,
+`hv: {(o, True) == X_valid(o)}` (the validity pass returned the object unchanged with True), and gives the same
+conclusion (`Some{obytes(ser_out(Pair.snd(X_serialize(o))))} == API.serialize(Spec.X(), view(o))`);
+`<Name>_e2e_serialize_ok` states `X_serialize(o) == (object of X_encode(o), O.encoded(bytes of X_encode(o)))`
+and `<Name>_e2e_serialize_refused` that a failing pass gives `(o, O.refused())`. `hv` is a hypothesis, not derived:
+`O.bools_ok` and the checked writers hand the array back through `Array.get` pairs, so that the returned object is `o`
+is a fact about the array primitives that no lemma states yet. The other threading names (bit lists, progressive
+lists, `Transaction`, the branches, every variable-size container) have serializers through a size pass and per-field
+checked writers and are not covered by these statements yet.
+
+**Why validity does not give `rep` for the other 142 names** (bit lists, packed vectors,
+progressive lists, the variable-size containers). `rep_X`, `hs*`, `hc*`, `sd*` assert that the
+object's word storage is `thaw(T)` of a perfect tree of depth below 31 (`WO.wf1`, `BL.sdb`,
+`E3.at_depth`, ...). `X_valid` (`O.words_ok`, `O.bits_ok`, `O.bools_ok`, the checked writers) only
+checks lengths, capacity and bit or byte ranges: it says nothing about the shape or depth of the
+tree, and no lemma turns an arbitrary `Array<U32>` back into a tree (there is no `thaw(freeze(a)) == a`).
+So `X_valid(o) = True` implies `rep_X` for those names only together with the fact that the object came
+from the API (a decoder or a checked setter), which is a property of how objects are produced, not of the
+predicate. Their serializer statements keep `rep` and the storage premises as explicit hypotheses beside
+validity (see below).
 
 ## Premises per name
 
@@ -249,9 +288,9 @@ table above. They are dropped when the encode laws take dw < 32.
 ## 8. Non-vacuity of the premises
 
 Of the <!-- fig:witness_total -->166<!-- /fig --> names whose encode (i) or root (iv) bridge takes premises
-besides the object, <!-- fig:witness_count -->164<!-- /fig --> have a checked witness
+besides the object, <!-- fig:witness_count -->166<!-- /fig --> have a checked witness
 `e2e/<Name>_e2e_witness_generated.bend` (`codegen/e2e_witness.py`; the list, with the reason for any
-pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->ProgressiveComplexTestStruct, vec_uint256_513<!-- /fig -->). Each witness applies
+pending name, is `e2e/WITNESS.txt`; pending: <!-- fig:witness_pending -->none<!-- /fig -->). Each witness applies
 the bridge to the object API's default object (`<X>_default()`; where the default holds empty boxes in a
 vector of boxed values, `DV()`, the default with valid elements there; a bare `U32` object is `0`). Each
 premise is proved of that object in its own def (`premise_<binder>`, `premise_root_<binder>`), and

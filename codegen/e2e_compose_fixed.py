@@ -279,6 +279,10 @@ def pad_word(eht):
 TREE_OBJ = re.compile(r'O\.Words\{ANode\{(\w+)\.array__thaw\(U32, (\w+)\.segt\(dd, 0n, (\w+)\.wlp\(bs\)\)\), Array\.new\(U32, (\d+)n, 0\)\}, (\d+)\}$')
 
 
+# from this many bytes a size is never compared in unary: the rigid checker's stack gives out between 4096 and 8192
+# levels of a Nat comparison (the facts are split by low bits, or stated on U32 literals)
+SYM = 2048
+
 def build_tree(name, lf, api):
     """a fixed-size vector of 2^b bytes whose decoder builds its words as a tree (AC.segt) beside a zero
     half: the decode bridge's d_some(dd, ed, bs, n, hn, hd, en) gives O.Words{ANode{thaw(segt(dd, 0, wlp(bs))),
@@ -308,7 +312,7 @@ def build_tree(name, lf, api):
         return None, 'a tree-form decoder object this module does not read'
     b = N.bit_length() - 1
     c = b - 5
-    if N > 9000:
+    if N > 17000:
         return None, f'the decoded object\'s rep premise over {N} bytes overflows the checker\'s stack'
     eps, ec = api.sig(em, f'{name}_e2e_encode')
     rps, rc = api.sig(rm, f'{name}_e2e_root')
@@ -353,7 +357,21 @@ def build_tree(name, lf, api):
     EY = ctx.alias(E2E / 'e2e_bytes.bend')
     FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
     ctx.alias(ROOT / 'spec/primitives.bend')
-    base_depth = api.arr_depth
+    base_depth, base_syn, base_big = api.arr_depth, api.LSynth, W.BIG
+
+    class BigSyn(base_syn):
+        # a word array of SYM bytes or more: its two sums compared in halves (e2e_witness's big facts)
+        def eq(self, p, env):
+            subj = env.get('__subj')
+            if isinstance(subj, api.WordsLit) and subj.n >= SYM:
+                if re.search(r'U32\.to_nat\(N\) == Nat\.add\(WS\.e32\(q\), (32n|r)\)', p):
+                    return self.big_nfact(subj.n)
+                ml = re.search(r'^\{U32\.to_nat\(WO\.len\(o\)\) == e(8|16|32)\(cnt\1\(o\)\) : Nat\}$', p)
+                if ml and subj.n % int(ml.group(1)) == 0:
+                    return self.big_lfact(subj.n, env['__e']['o'], int(ml.group(1)))
+            return super().eq(p, env)
+    api.LSynth = BigSyn
+    W.BIG = 10 ** 9      # no symbolic lemma over a decoder's object (its words are the input's)
     if lit:
         tdepth = len(re.match(r'((?:\w+\.TNode\{)*)', mo2.group(2)).group(1).split('TNode{')) - 1
         api.arr_depth = lambda t: tdepth if t.strip().startswith(FDA + '.array__thaw') else base_depth(t)
@@ -365,7 +383,7 @@ def build_tree(name, lf, api):
         text, err = api.build_lit(name, (N, obj0, 'tree-form'), ctx, dm, em, rm, eps, rps,
                                   DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, 'view')
     finally:
-        api.arr_depth = base_depth
+        api.arr_depth, api.LSynth, W.BIG = base_depth, base_syn, base_big
     if text is None:
         return None, err
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
@@ -378,17 +396,22 @@ def build_tree(name, lf, api):
         text = text[:i] + defs + text[i:]
         text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
         text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
-        return text.replace(api.HEADER, HEADER, 1), None
+        return bigK(text, N).replace(api.HEADER, HEADER, 1), None
     S_ = f'{ACA}.segt({D}n, 0n, {LA}.wlp(bs))'
     T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
-    lenpf = f'WT.len32g({OBJ[OBJ.index("{") + 1:OBJ.rindex(",")]}, {c}n, {b}n, {{==}}, {{==}})' if k == 32 else '{==}'
-    term = (f'(({T}, ({D + 1}n, ({N}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {N}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
+    lsyn = W.Synth(ctx)
+    lenpf = lsyn.big_lfact(N, OBJ, k) if k == 32 or (k in (8, 16) and N >= SYM) else '{==}'     # the count, in halves (e2e_witness's big fact)
+    lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()))
+    # the length as 2^b (a U32 the checker computes bitwise) from SYM bytes: its Nat is never compared in unary
+    NW = f'{FDA}.u32__pow2u({b}n)' if N >= SYM else f'{N}'
+    term = (f'(({T}, ({D + 1}n, ({NW}, (WT.QP({c}n), (32n, (oeqt(bs), (pft(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {NW}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
             f'({{==}}, ({{==}}, (WT.eQ({c}n, {D + 1}n, {{==}}), {{==}})))))))))))), ({lenpf}, {{==}}))')
     SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
     ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N}n) == True{{}} : Bool}}'
-    defs = (f'# the decoder\'s tree-form object: its words are the tree segt of the input words, beside a zero half\n'
-            f'def oeqt(+bs: +List<U32>) -> {{{OBJ} == O.Words{{{FDA}.array__thaw(U32, {T}), {N}}} : O.Words}}:\n'
-            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{OBJ} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {N}}} : O.Words}}\n  {{==}}\n\n'
+    lendefs = ''.join(v + '\n\n' for _, v in sorted(lsyn.lemmas.items()) if re.search(r'def \w+\(', v).group(0) not in text)
+    defs = lendefs + (f'# the decoder\'s tree-form object: its words are the tree segt of the input words, beside a zero half\n'
+            f'def oeqt(+bs: +List<U32>) -> {{{OBJ} == O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}} : O.Words}}:\n'
+            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{OBJ} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {NW}}} : O.Words}}\n  {{==}}\n\n'
             f'def pft(+bs: +List<U32>) -> {{{FDA}.array__perfect(U32, {D + 1}n, {T}) == True{{}} : Bool}}:\n'
             f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D}n, {S_}), True{{}}, {LA}.seg_pf({D}n, {LA}.wlp(bs))) :\n'
             f'    {{Bool.and(_, {FDA}.array__perfect(U32, {D}n, {FDA}.array__trep(U32, {D}n, 0))) == True{{}} : Bool}}\n'
@@ -402,13 +425,31 @@ def build_tree(name, lf, api):
     text = text[:i] + defs + text[i:]
     text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
     text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N}, hn, ec))')
-    return text.replace(api.HEADER, HEADER, 1), None
+    return bigK(text, N).replace(api.HEADER, HEADER, 1), None
+
+
+def bigK(text, N):
+    """for a vector of SYM bytes or more, the length is written U32.to_nat(N) (as the decode bridge's lemmas state
+    it), not the literal Nn: the checker would compare the two in unary, deeper than its stack"""
+    if N < SYM:
+        return text
+    return text.replace(f'List.length(&2, U32, bs), {N}n)', f'List.length(&2, U32, bs), U32.to_nat({N}))')
 
 
 def build(name, lf, api):
     r = build_tree(name, lf, api)
     if r is not None:
         return r
+    W = api.W
+    base_big = W.BIG
+    W.BIG = 10 ** 9      # no symbolic lemma over a decoder's object (its words are the input's, not a zero array)
+    try:
+        return build_flat(name, lf, api)
+    finally:
+        W.BIG = base_big
+
+
+def build_flat(name, lf, api):
     W = api.W
     kind = 'accept' if f'{name}_e2e_decode_accept' in lf else 'view'
     dl = lf.get(f'{name}_e2e_decode_{kind}')

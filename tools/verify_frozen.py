@@ -31,7 +31,7 @@ What is frozen, and how it is hashed:
     types (they share the file), so changing one is a deliberate lock update. The statement files
     are codegen/statements.py's statement_files(): the bridges of e2e/manifest.json, the composed
     theorems e2e/*_e2e_comp_generated.bend, the witnesses e2e/*_e2e_witness_generated.bend, the
-    setter compositions e2e/*_e2e_set_generated.bend and the object-mutation laws
+    validating serializer e2e/*_e2e_ser_generated.bend, the setter compositions e2e/*_e2e_set_generated.bend and the object-mutation laws
     (proofs/obj/fields_*, collections_*, prep_setters.bend), found by name, so a new statement file
     fails this check until it is locked (--update).
 
