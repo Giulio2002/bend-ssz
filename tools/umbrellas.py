@@ -135,11 +135,12 @@ def main():
                         if u in marg:
                             marg[u] -= w[m]
         add(seed)
-        while marg and cost < a.target:
+        while marg:
             r = min(marg, key=lambda r: (marg[r], r))
-            if cost + marg[r] > a.target * 1.15 and marg[r] > 0.5:
+            if marg[r] > 0.5 and (cost >= a.target or cost + marg[r] > a.target * 1.15):
                 break
-            add(r)
+            add(r)   # roots whose closure is already inside (marginal cost ~0) ride along even in a full umbrella:
+                     # checking them again in an umbrella of their own (an expensive import, e.g. coll_words at ~400 s) would repeat it
         umbs.append((cost, sorted(members), len(have)))
     umbs.sort(key=lambda u: -u[0])
 

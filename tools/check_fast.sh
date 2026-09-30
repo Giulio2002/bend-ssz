@@ -56,9 +56,18 @@ run() {
   if [ -n "$BIG_RE" ] && awk -F'\t' -v u="$(basename "$1")" -v re="$BIG_RE" '$1 == u && $4 ~ re {f=1} END {exit !f}' "$OUT/umb/plan.tsv"; then
     mem=${UMB_BIG_MEMMAX:-32G}; ram=${UMB_BIG_RAM:-24000000000}
   fi
-  CHECK_MEMMAX=$mem CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
-    BUN_JSC_forceRAMSize=$ram tools/check.sh "$1" > "$2" 2>&1
-  local rc=$?; [ $rc != 0 ] && return $rc
+  local try rc
+  for try in 1 2; do
+    CHECK_MEMMAX=$mem CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} \
+      BUN_JSC_forceRAMSize=$ram tools/check.sh "$1" > "$2" 2>&1
+    rc=$?
+    # "the machine stack overflowed" is nondeterministic under load on the 2.0.28 checker (files that pass alone at any
+    # stack limit died in a full run); such an umbrella is run once more. Only a run that prints "All terms check." passes,
+    # and the first attempt's log is kept as $2.try1
+    grep -q 'machine stack overflowed' "$2" && [ $try = 1 ] && { mv "$2" "$2.try1"; continue; }
+    break
+  done
+  [ $rc != 0 ] && return $rc
   grep -qx 'All terms check\.' "$2" || return 1
 }
 one() {
