@@ -1290,3 +1290,8 @@ def exec_payload_header(lf):
     ps = '+t: FD.array__Tree<U32>, +n: U32, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}'
     return container_file('FuluExecutionPayloadHeader', lf, WIN, 'OBJw', {'t': 't', 'i': '0n', 'len': 'n'}, (['t', 'n'], ps), lets, words,
                           'proofs/obj/var_bytes_ExecutionPayloadHeader.bend')
+
+
+# the provers kept in e2e_decrep_x.py
+from e2e_decrep_x import EXTRA_PROVERS
+PROVERS.update(EXTRA_PROVERS)
