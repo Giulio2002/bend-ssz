@@ -19,7 +19,7 @@ import ./lim_sym.bend as LSY
 # turned into TR.capacity(k) through equations between words (lim_sym
 # pw_nat) and a symbolic product. Like lim_bl.bend this needs a checker
 # that compares two calls of one def rigidly before unfolding them
-# (the pinned rigid-subterms build, aa99b746); stock Bend evaluates them in unary.
+# (the pinned rigid-memo build, c55a7f03); stock Bend evaluates them in unary.
 
 # ---- powers of two ------------------------------------------------------------
 

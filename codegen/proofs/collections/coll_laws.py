@@ -1512,6 +1512,29 @@ def coll_bits(cs):
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom))' % (WB, NBY, WB, NBY, NBY),
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
             n += 1
+            # the spec value: the bits of the list after a roomy append are the bits before and the new bit
+            mlim = re.match(r'U32\.is_le\(\(n \+ 1 : U32\), (\d+)\)$', I['GA'])
+            assert mlim, I['GA']
+            imps['BV2'] = 'proofs/obj/bits_view.bend'
+            imps['BO'] = 'proofs/obj/bitlist_obj_light.bend'
+            OBn = lambda t_: 'O.Bits{F.array__thaw(U32, %s), %s}' % (t_, N1)
+            Xn = 'WR.at(F.array__slots(U32, t), q)'
+            NWn = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(n, 31)))' % Xn
+            T1n = 'F.array__upd(U32, d, t, q, %s)' % NWn
+            JWn = 'U32.shrn(n, 5n)'
+            RHSn = 'List.append(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), n}), [v])'
+            VGn = lambda o: 'BO.bview(%s)' % o
+            L.append('def %s_api_view_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, '
+                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, I['GA'], NBY, N1, JWn))
+            L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (I['GA'], VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
+            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom)) : {%s == %s : +List<Bool>}' % (WB, NBY, WB, NBY, NBY, VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, OBn('t'), Xn, N1, JWn, VGn('O.bit_put(n, v, _)'), RHSn))
+            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, NWn, OBn(T1n), N1, JWn, NWn, VGn('_'), RHSn))
+            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, ha), hg, hq, hk)' % (N1, mlim.group(1)))
+            L.append('')
+            n += 1
             GW = grow_parts(NBY, NBY)
             cw_imps(imps)
             imps['B'] = 'src/buffer.bend'

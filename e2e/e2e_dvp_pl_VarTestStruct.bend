@@ -648,3 +648,21 @@ def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U
     -> {LNQ(V.OBJw(d, t, x, off, len)) == U32.to_nat(len) : Nat}:
   szl_c(U32.is_eq(len, 0), d, t, x, off, len, {==}, eo, hd, hw, hw32, pfw, hchk)
 
+def thfz_am(+T: FD.array__Tree<RT.MB<RT.M_VarTestStruct>>, +N: U32) -> {RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT.am_pl_VarTestStruct(T), N})) == proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT.am_pl_VarTestStruct(T), N} : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
+  Equal.cong(FD.array__Tree<RT.MB<RT.M_VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_Seq, z => proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT.am_pl_VarTestStruct(z), N}, RT.tfz_pl_VarTestStruct(RT.am_pl_VarTestStruct(T)), T, RT.tfzam_pl_VarTestStruct(T))
+
+def thfz_c(+c: Bool, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +ec: {U32.is_eq(len, 0) == c : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(V.RZ(c, d, t, x, off, len))) == V.RZ(c, d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
+  match c:
+    case True{}: thfz_am(FD.array__trep(RT.MB<RT.M_VarTestStruct>, 0n, RT.MNone{}), 0)
+    case False{}:
+      FD.logic__subst(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, z => {RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(z)) == z : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}, proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT.am_pl_VarTestStruct(RVT(U32.to_nat(U32.sub(V.NN(t, x), 1)), 0, V.NN(t, x), B.words_depth(V.NN(t, x)), d, t, x, off, len, FD.array__trep(RT.MB<RT.M_VarTestStruct>, B.words_depth(V.NN(t, x)), RT.MNone{}), XE(d, t, x, off, V.W0(t, x), V.B1(t, x, len)))), V.NN(t, x)}, V.RZ(False{}, d, t, x, off, len),
+        Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, V.RZ(False{}, d, t, x, off, len), proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT.am_pl_VarTestStruct(RVT(U32.to_nat(U32.sub(V.NN(t, x), 1)), 0, V.NN(t, x), B.words_depth(V.NN(t, x)), d, t, x, off, len, FD.array__trep(RT.MB<RT.M_VarTestStruct>, B.words_depth(V.NN(t, x)), RT.MNone{}), XE(d, t, x, off, V.W0(t, x), V.B1(t, x, len)))), V.NN(t, x)}, obj_eq(d, t, x, off, len, ec, hchk, eo, hd, hw, hw32, pfw)), thfz_am(RVT(U32.to_nat(U32.sub(V.NN(t, x), 1)), 0, V.NN(t, x), B.words_depth(V.NN(t, x)), d, t, x, off, len, FD.array__trep(RT.MB<RT.M_VarTestStruct>, B.words_depth(V.NN(t, x)), RT.MNone{}), XE(d, t, x, off, V.W0(t, x), V.B1(t, x, len))), V.NN(t, x)))
+
+def thfz(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}) -> {RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : proglist_VarTestStruct_d.pl_VarTestStruct_Seq}:
+  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {==}, eo, hd, hw, hw32, pfw, hchk)
+

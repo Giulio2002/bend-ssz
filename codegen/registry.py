@@ -129,6 +129,7 @@ GENERATORS = (
     Gen('e2e_dbs', 'proofs/decoded'),
     Gen('e2e_dfl', 'proofs/decoded'),
     Gen('e2e_dvp', 'proofs/decoded'),
+    Gen('e2e_hpl', 'proofs/decoded'),
     Gen('e2e_dvv2', 'proofs/decoded'),
     Gen('e2e_hkv', 'proofs/decoded'),
     Gen('e2e_dbl', 'proofs/decoded'),

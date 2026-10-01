@@ -21,7 +21,7 @@
 set -u
 R=$(cd "$(dirname "$0")/.." && pwd)
 [ $# -ge 1 ] || { echo "usage: tools/check.sh <file.bend> [bend args]" >&2; exit 2; }
-T=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-rigid-aa99b746}
+T=${BEND_TOOLCHAIN:-/srv/ssz-optimization/toolchain-memo-788a6866}
 if [ -x "$T/bin/bend" ] && [ -f "$T/bend2/base.bend" ]; then
   CHK=("$T/bin/bend")
 elif [ -x "$T/bun-linux-x64/bun" ] && [ -f "$T/bend-src/bend2/main.ts" ]; then
