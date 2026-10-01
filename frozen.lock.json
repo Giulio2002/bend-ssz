@@ -921,6 +921,7 @@
     "e2e/l4096_b48_api_witness_generated.bend": "64fd3c4d8e2a47a1da2deeb7bfd668fc05e4c123c8e5d1848689a97304785a48",
     "e2e/l8192_DepositRequest_api_witness_generated.bend": "1bf42c704391eb9334c6e8e7e5ea1af87379d273dda5b8b63aa7171a2e556a05",
     "e2e/l8_Attestation_api_witness_generated.bend": "d61bc9f6706b32ac994dd11601f9ee4176bcf4724d861a4100ccf88b0e605fff",
+    "e2e/progbitlist_e2e_comp_generated.bend": "3d3254962f0c433cad80a406ccba3d97dd2b1346d67aa94c6d5a500be301e88a",
     "e2e/progbitlist_e2e_dec_generated.bend": "f23beb0f2756276a357c69a2e32946186568b434d8e50f0a4cb3a750fa0d8542",
     "e2e/progbitlist_e2e_generated.bend": "0dd99d4ee462fcab9ffc2360dbdd62685263fab84596652848b7bd8ceb4649f6",
     "e2e/progbitlist_e2e_root_generated.bend": "e09d4712e3d022a1c22488a665bff3c0029d015fc664cd2a1c76598692733b89",
