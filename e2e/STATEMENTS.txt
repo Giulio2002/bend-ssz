@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 5012 statements in 1331 files.
+# 5015 statements in 1332 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -11142,6 +11142,47 @@ def mv(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>
 def ProgressiveComplexTestStruct_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.ProgressiveComplexTestStruct(), bs) : Maybe<&2, S.Value>}:
 def ProgressiveComplexTestStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>} -> {API.deserialize(GS.ProgressiveComplexTestStruct(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.ProgressiveComplexTestStruct(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}):
+
+## e2e/ProgressiveComplexTestStruct_e2e_decode_witness_generated.bend
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as W_types_ProgressiveComplexTestStruct_decode_ssz_generated
+import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as W_types_ProgressiveComplexTestStruct_encode_ssz_generated
+import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as W_types_ProgressiveComplexTestStruct_hashtreeroot_generated
+import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_d
+import ../types/list_uint16_123_def_generated.bend as list_uint16_123_d
+import ../types/progbitlist_def_generated.bend as progbitlist_d
+import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d
+import ../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d
+import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+import ../types/proglist_uint64_def_generated.bend as proglist_uint64_d
+import ../types/uint8_def_generated.bend as uint8_d
+def ProgressiveComplexTestStruct_DV() -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct:
+  ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{uint8_d.u8_default(), list_uint16_123_d.l123_u16_default(), progbitlist_d.pbits_default(), proglist_uint64_d.pl_u64_default(), proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{ALeaf{SmallTestStruct_d.SmallTestStruct_default()}, 1}, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{ALeaf{proglist_VarTestStruct_d.pl_VarTestStruct_bx_default()}, 1}, list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{ALeaf{ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default()}, 1}, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{ALeaf{ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default()}, 1}}
+def ProgressiveComplexTestStruct_dw_bs() -> +List<U32>: E.obytes(ProgressiveComplexTestStruct_dw_buf())
+def ProgressiveComplexTestStruct_dw_buf() -> B.Buf: Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, W_types_ProgressiveComplexTestStruct_encode_ssz_generated.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_DV()))
+def ProgressiveComplexTestStruct_dw_dec() -> Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, W_types_ProgressiveComplexTestStruct_decode_ssz_generated.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(ProgressiveComplexTestStruct_dw_n()), 0, ProgressiveComplexTestStruct_dw_bs()), ProgressiveComplexTestStruct_dw_n()))
+def ProgressiveComplexTestStruct_dw_gm(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, d: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct:
+  match m:
+    case Some{x}: x
+    case None{}: d
+def ProgressiveComplexTestStruct_dw_isS(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>) -> Bool:
+  match m:
+    case Some{x}: True{}
+    case None{}: False{}
+def ProgressiveComplexTestStruct_dw_n() -> U32: Pair.snd(B.Buf, U32, B.size(ProgressiveComplexTestStruct_dw_buf()))
+def ProgressiveComplexTestStruct_dw_o() -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct: ProgressiveComplexTestStruct_dw_gm(ProgressiveComplexTestStruct_dw_dec(), ProgressiveComplexTestStruct_DV())
+def ProgressiveComplexTestStruct_e2e_decode_witness() -> {ProgressiveComplexTestStruct_dw_isS(ProgressiveComplexTestStruct_dw_dec()) == True{} : Bool}:
+def ProgressiveComplexTestStruct_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, W_types_ProgressiveComplexTestStruct_encode_ssz_generated.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_dw_o()))) == ProgressiveComplexTestStruct_dw_bs() : +List<U32>}:
+def ProgressiveComplexTestStruct_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, W_src_digest.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & W_src_digest.Digest, W_types_ProgressiveComplexTestStruct_hashtreeroot_generated.ProgressiveComplexTestStruct_hash_tree_root(B.alloc(0), ProgressiveComplexTestStruct_dw_o()))))} == W_e2e_e2e_comp.droot(W_proofs_obj_generic_specs.ProgressiveComplexTestStruct(), ProgressiveComplexTestStruct_dw_bs()) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveComplexTestStruct_e2e_generated.bend
 import ../src/model.bend as API
