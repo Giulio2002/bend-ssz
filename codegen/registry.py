@@ -56,6 +56,7 @@ GENERATORS = (
     Gen('mutation_laws', 'proofs/laws'),
     Gen('mutation_laws_arith', 'proofs/laws'),
     Gen('mutation_laws_offset', 'proofs/laws'),
+    Gen('mutation_laws_validity', 'proofs/laws'),
     Gen('packed_laws', 'proofs/laws'),
     Gen('prog_laws', 'proofs/laws'),
     Gen('root_laws', 'proofs/laws'),
