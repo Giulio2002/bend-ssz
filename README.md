@@ -96,7 +96,7 @@ SHA-256 package, compiler and host) is described in [docs/TRUST.md](docs/TRUST.m
 ## Layout
 
 `src/` runtime, `types/` the generated API per name, `spec/` the frozen specification,
-`proofs/` the checked laws, `e2e/` the bridges to END_TO_END, `codegen/` the generators.
+`proofs/` the checked laws, `e2e/` the bridges to END_TO_END, `codegen/` the generators (by purpose; `codegen/README.md`).
 See [docs/LAYOUT.md](docs/LAYOUT.md).
 
 ## Regenerate and check
