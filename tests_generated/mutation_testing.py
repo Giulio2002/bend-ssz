@@ -147,7 +147,7 @@ class Scratch:
         flag = {'g': '--build', 'x': '--build-generic', 'f': '--build-fuzz'}[kind]
         r = subprocess.run([sys.executable, 'benchmarks/quick.py', flag, str(k)], cwd=self.root, env=self.env,
                            capture_output=True, text=True)
-        return r.returncode == 0, (r.stdout + r.stderr)[-600:]
+        return r.returncode == 0, (r.stdout + r.stderr)[-6000:]
 
     def build_all(self, programs, workers):
         with cf.ThreadPoolExecutor(workers) as ex:
@@ -212,28 +212,36 @@ def main():
             applied[n] = (op, f, s, dn)
             f.write_text(apply(orig[f], s))
         built = sc.build_all(programs, a.workers)
-        bad_programs = [p for p, (ok, _) in built.items() if not ok]
         invalid = set()
-        for p in bad_programs:
-            # which mutants make this program fail to compile: each candidate alone
-            cands = [n for n in applied if applied[n][1].resolve() in cone[p]]
-            for n in cands:
-                for f, t in orig.items():
-                    f.write_text(t)
-                op, f, s, dn = applied[n]
-                f.write_text(apply(orig[f], s))
-                if not sc.build(*p)[0]:
-                    invalid.add(n)
-        if bad_programs:
+        defs = {n: set(re.findall(r'^def (\w+)', applied[n][1].read_text(), re.M)) for n in applied}
+        for attempt in range(8):
+            bad_programs = [p for p, (ok, _) in built.items() if not ok]
+            if not bad_programs:
+                break
+            found = set()
+            for p in bad_programs:
+                # the def the compiler names in its error belongs to the mutated file that defines it
+                for loc in re.findall(r'^Location: (\w+)', built[p][1], re.M):
+                    found |= {n for n in applied if n not in invalid and loc in defs[n]}
+            if not found:
+                # no mapping: each mutant in the program's cone alone
+                for p in bad_programs:
+                    for n in [n for n in applied if applied[n][1].resolve() in cone[p] and n not in invalid]:
+                        for f, t in orig.items():
+                            f.write_text(t)
+                        op, f, s_, dn = applied[n]
+                        f.write_text(apply(orig[f], s_))
+                        if not sc.build(*p)[0]:
+                            found.add(n)
+            invalid |= found
             for f, t in orig.items():
                 f.write_text(t)
             for n in applied:
                 if n not in invalid:
-                    op, f, s, dn = applied[n]
-                    f.write_text(apply(orig[f], s))
-            sc.build_all(programs, a.workers)
-            for n in invalid:   # the files of invalid mutants stay original
-                pass
+                    op, f, s_, dn = applied[n]
+                    f.write_text(apply(orig[f], s_))
+            built = sc.build_all(bad_programs, a.workers)
+            built = {**{p: (True, '') for p in programs if p not in bad_programs}, **built}
         jobs = {}
         with cf.ThreadPoolExecutor(a.workers) as ex:
             for n, (op, f, s, dn) in applied.items():
