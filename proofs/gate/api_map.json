@@ -270,7 +270,8 @@
   "reject_long",
   "decode_tree",
   "decode_input",
-  "serialize_valid"
+  "serialize_valid",
+  "decode_offsets"
  ],
  "map": {
   "boolean": {
@@ -444,6 +445,12 @@
      "file": "serialize_0.bend",
      "law": "boolean_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_boolean.bend",
+     "law": "boolean_decode_build"
+    }
    ]
   },
   "uint8": {
@@ -520,6 +527,12 @@
     {
      "file": "serialize_0.bend",
      "law": "uint8_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint8.bend",
+     "law": "uint8_decode_build"
     }
    ]
   },
@@ -619,6 +632,12 @@
      "file": "serialize_0.bend",
      "law": "uint32_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint32.bend",
+     "law": "uint32_decode_build"
+    }
    ]
   },
   "uint64": {
@@ -716,6 +735,12 @@
     {
      "file": "serialize_0.bend",
      "law": "uint64_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint64.bend",
+     "law": "uint64_decode_build"
     }
    ]
   },
@@ -815,6 +840,12 @@
      "file": "serialize_0.bend",
      "law": "uint256_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint256.bend",
+     "law": "uint256_decode_build"
+    }
    ]
   },
   "Bytes1": {
@@ -891,6 +922,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes1_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes1.bend",
+     "law": "Bytes1_decode_build"
     }
    ]
   },
@@ -990,6 +1027,12 @@
      "file": "serialize_0.bend",
      "law": "Bytes4_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes4.bend",
+     "law": "Bytes4_decode_build"
+    }
    ]
   },
   "Bytes32": {
@@ -1087,6 +1130,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes32_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes32.bend",
+     "law": "Bytes32_decode_build"
     }
    ]
   },
@@ -1186,6 +1235,12 @@
      "file": "serialize_0.bend",
      "law": "Bytes48_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes48.bend",
+     "law": "Bytes48_decode_build"
+    }
    ]
   },
   "Bytes96": {
@@ -1283,6 +1338,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes96_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes96.bend",
+     "law": "Bytes96_decode_build"
     }
    ]
   },
@@ -1382,6 +1443,12 @@
      "file": "serialize_0.bend",
      "law": "Bytes8_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes8.bend",
+     "law": "Bytes8_decode_build"
+    }
    ]
   },
   "Bytes20": {
@@ -1479,6 +1546,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes20_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Bytes20.bend",
+     "law": "Bytes20_decode_build"
     }
    ]
   },
@@ -1578,6 +1651,12 @@
      "file": "serialize_0.bend",
      "law": "Slot_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Slot.bend",
+     "law": "Slot_decode_build"
+    }
    ]
   },
   "Epoch": {
@@ -1675,6 +1754,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Epoch_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Epoch.bend",
+     "law": "Epoch_decode_build"
     }
    ]
   },
@@ -1774,6 +1859,12 @@
      "file": "serialize_0.bend",
      "law": "Gwei_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Gwei.bend",
+     "law": "Gwei_decode_build"
+    }
    ]
   },
   "Hash32": {
@@ -1871,6 +1962,12 @@
     {
      "file": "serialize_0.bend",
      "law": "Hash32_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Hash32.bend",
+     "law": "Hash32_decode_build"
     }
    ]
   },
@@ -1970,6 +2067,12 @@
      "file": "serialize_0.bend",
      "law": "Version_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Version.bend",
+     "law": "Version_decode_build"
+    }
    ]
   },
   "DomainType": {
@@ -2067,6 +2170,12 @@
     {
      "file": "serialize_0.bend",
      "law": "DomainType_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DomainType.bend",
+     "law": "DomainType_decode_build"
     }
    ]
   },
@@ -2166,6 +2275,12 @@
      "file": "serialize_0.bend",
      "law": "BLSSignature_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BLSSignature.bend",
+     "law": "BLSSignature_decode_build"
+    }
    ]
   },
   "FinalityBranch": {
@@ -2239,7 +2354,13 @@
      "law": "FinalityBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_FinalityBranch.bend",
+     "law": "FinalityBranch_decode_build"
+    }
+   ]
   },
   "VersionedHash": {
    "root": [
@@ -2336,6 +2457,12 @@
     {
      "file": "serialize_0.bend",
      "law": "VersionedHash_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_VersionedHash.bend",
+     "law": "VersionedHash_decode_build"
     }
    ]
   },
@@ -2435,6 +2562,12 @@
      "file": "serialize_0.bend",
      "law": "G1Point_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_G1Point.bend",
+     "law": "G1Point_decode_build"
+    }
    ]
   },
   "G2Point": {
@@ -2533,6 +2666,12 @@
      "file": "serialize_0.bend",
      "law": "G2Point_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_G2Point.bend",
+     "law": "G2Point_decode_build"
+    }
    ]
   },
   "Fork": {
@@ -2630,6 +2769,16 @@
     {
      "file": "serialize_0.bend",
      "law": "Fork_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Fork.bend",
+     "law": "Fork_decode_build"
+    },
+    {
+     "file": "offset_laws_Fork.bend",
+     "law": "Fork_decode_fields"
     }
    ]
   },
@@ -2733,6 +2882,16 @@
      "file": "serialize_0.bend",
      "law": "SyncAggregate_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SyncAggregate.bend",
+     "law": "SyncAggregate_decode_build"
+    },
+    {
+     "file": "offset_laws_SyncAggregate.bend",
+     "law": "SyncAggregate_decode_fields"
+    }
    ]
   },
   "SyncAggregatorSelectionData": {
@@ -2830,6 +2989,16 @@
     {
      "file": "serialize_0.bend",
      "law": "SyncAggregatorSelectionData_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_decode_build"
+    },
+    {
+     "file": "offset_laws_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_decode_fields"
     }
    ]
   },
@@ -2929,6 +3098,16 @@
      "file": "serialize_0.bend",
      "law": "PowBlock_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PowBlock.bend",
+     "law": "PowBlock_decode_build"
+    },
+    {
+     "file": "offset_laws_PowBlock.bend",
+     "law": "PowBlock_decode_fields"
+    }
    ]
   },
   "CommitteeIndex": {
@@ -3026,6 +3205,12 @@
     {
      "file": "serialize_0.bend",
      "law": "CommitteeIndex_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CommitteeIndex.bend",
+     "law": "CommitteeIndex_decode_build"
     }
    ]
   },
@@ -3125,6 +3310,12 @@
      "file": "serialize_0.bend",
      "law": "ValidatorIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ValidatorIndex.bend",
+     "law": "ValidatorIndex_decode_build"
+    }
    ]
   },
   "PendingConsolidation": {
@@ -3222,6 +3413,16 @@
     {
      "file": "serialize_0.bend",
      "law": "PendingConsolidation_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PendingConsolidation.bend",
+     "law": "PendingConsolidation_decode_build"
+    },
+    {
+     "file": "offset_laws_PendingConsolidation.bend",
+     "law": "PendingConsolidation_decode_fields"
     }
    ]
   },
@@ -3321,6 +3522,16 @@
      "file": "serialize_0.bend",
      "law": "PendingPartialWithdrawal_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_decode_build"
+    },
+    {
+     "file": "offset_laws_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_decode_fields"
+    }
    ]
   },
   "VoluntaryExit": {
@@ -3418,6 +3629,16 @@
     {
      "file": "serialize_0.bend",
      "law": "VoluntaryExit_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_VoluntaryExit.bend",
+     "law": "VoluntaryExit_decode_build"
+    },
+    {
+     "file": "offset_laws_VoluntaryExit.bend",
+     "law": "VoluntaryExit_decode_fields"
     }
    ]
   },
@@ -3517,6 +3738,16 @@
      "file": "serialize_0.bend",
      "law": "SignedVoluntaryExit_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_decode_build"
+    },
+    {
+     "file": "offset_laws_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_decode_fields"
+    }
    ]
   },
   "Root": {
@@ -3615,6 +3846,12 @@
      "file": "serialize_0.bend",
      "law": "Root_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Root.bend",
+     "law": "Root_decode_build"
+    }
    ]
   },
   "HistoricalSummary": {
@@ -3712,6 +3949,16 @@
     {
      "file": "serialize_0.bend",
      "law": "HistoricalSummary_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_HistoricalSummary.bend",
+     "law": "HistoricalSummary_decode_build"
+    },
+    {
+     "file": "offset_laws_HistoricalSummary.bend",
+     "law": "HistoricalSummary_decode_fields"
     }
    ]
   },
@@ -3815,6 +4062,16 @@
      "file": "serialize_0.bend",
      "law": "SyncCommitteeContribution_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_decode_build"
+    },
+    {
+     "file": "offset_laws_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_decode_fields"
+    }
    ]
   },
   "ContributionAndProof": {
@@ -3888,7 +4145,17 @@
      "law": "ContributionAndProof_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ContributionAndProof.bend",
+     "law": "ContributionAndProof_decode_build"
+    },
+    {
+     "file": "offset_laws_ContributionAndProof.bend",
+     "law": "ContributionAndProof_decode_fields"
+    }
+   ]
   },
   "SignedContributionAndProof": {
    "root": [
@@ -3961,7 +4228,17 @@
      "law": "SignedContributionAndProof_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_decode_build"
+    },
+    {
+     "file": "offset_laws_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_decode_fields"
+    }
+   ]
   },
   "SyncCommitteeMessage": {
    "root": [
@@ -4058,6 +4335,16 @@
     {
      "file": "serialize_0.bend",
      "law": "SyncCommitteeMessage_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_decode_build"
+    },
+    {
+     "file": "offset_laws_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_decode_fields"
     }
    ]
   },
@@ -4157,6 +4444,16 @@
      "file": "serialize_1.bend",
      "law": "Eth1Block_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Eth1Block.bend",
+     "law": "Eth1Block_decode_build"
+    },
+    {
+     "file": "offset_laws_Eth1Block.bend",
+     "law": "Eth1Block_decode_fields"
+    }
    ]
   },
   "BeaconBlockHeader": {
@@ -4254,6 +4551,16 @@
     {
      "file": "serialize_1.bend",
      "law": "BeaconBlockHeader_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_decode_build"
+    },
+    {
+     "file": "offset_laws_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_decode_fields"
     }
    ]
   },
@@ -4357,6 +4664,16 @@
      "file": "serialize_1.bend",
      "law": "SignedBeaconBlockHeader_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_decode_build"
+    },
+    {
+     "file": "offset_laws_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_decode_fields"
+    }
    ]
   },
   "ProposerSlashing": {
@@ -4415,7 +4732,12 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [],
+   "encoded_size": [
+    {
+     "file": "offset_size_ProposerSlashing.bend",
+     "law": "ProposerSlashing_encoded_size"
+    }
+   ],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -4430,7 +4752,17 @@
      "law": "ProposerSlashing_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProposerSlashing.bend",
+     "law": "ProposerSlashing_decode_build"
+    },
+    {
+     "file": "offset_laws_ProposerSlashing.bend",
+     "law": "ProposerSlashing_decode_fields"
+    }
+   ]
   },
   "HistoricalBatch": {
    "root": [
@@ -4498,7 +4830,17 @@
      "law": "HistoricalBatch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_HistoricalBatch.bend",
+     "law": "HistoricalBatch_decode_build"
+    },
+    {
+     "file": "offset_laws_HistoricalBatch.bend",
+     "law": "HistoricalBatch_decode_fields"
+    }
+   ]
   },
   "Eth1Data": {
    "root": [
@@ -4595,6 +4937,16 @@
     {
      "file": "serialize_1.bend",
      "law": "Eth1Data_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Eth1Data.bend",
+     "law": "Eth1Data_decode_build"
+    },
+    {
+     "file": "offset_laws_Eth1Data.bend",
+     "law": "Eth1Data_decode_fields"
     }
    ]
   },
@@ -4694,6 +5046,16 @@
      "file": "serialize_1.bend",
      "law": "Checkpoint_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Checkpoint.bend",
+     "law": "Checkpoint_decode_build"
+    },
+    {
+     "file": "offset_laws_Checkpoint.bend",
+     "law": "Checkpoint_decode_fields"
+    }
    ]
   },
   "AttestationData": {
@@ -4791,6 +5153,16 @@
     {
      "file": "serialize_1.bend",
      "law": "AttestationData_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_AttestationData.bend",
+     "law": "AttestationData_decode_build"
+    },
+    {
+     "file": "offset_laws_AttestationData.bend",
+     "law": "AttestationData_decode_fields"
     }
    ]
   },
@@ -4890,6 +5262,16 @@
      "file": "serialize_1.bend",
      "law": "SingleAttestation_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SingleAttestation.bend",
+     "law": "SingleAttestation_decode_build"
+    },
+    {
+     "file": "offset_laws_SingleAttestation.bend",
+     "law": "SingleAttestation_decode_fields"
+    }
    ]
   },
   "Attestation": {
@@ -4953,7 +5335,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Attestation.bend",
+     "law": "Attestation_decode_build"
+    }
+   ]
   },
   "AggregateAndProof": {
    "root": [
@@ -5016,7 +5404,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_AggregateAndProof.bend",
+     "law": "AggregateAndProof_decode_build"
+    }
+   ]
   },
   "SignedAggregateAndProof": {
    "root": [
@@ -5079,7 +5473,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedAggregateAndProof.bend",
+     "law": "SignedAggregateAndProof_decode_build"
+    }
+   ]
   },
   "PendingAttestation": {
    "root": [
@@ -5142,7 +5542,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PendingAttestation.bend",
+     "law": "PendingAttestation_decode_build"
+    }
+   ]
   },
   "IndexedAttestation": {
    "root": [
@@ -5205,7 +5611,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_IndexedAttestation.bend",
+     "law": "IndexedAttestation_decode_build"
+    }
+   ]
   },
   "AttesterSlashing": {
    "root": [
@@ -5268,7 +5680,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_AttesterSlashing.bend",
+     "law": "AttesterSlashing_decode_build"
+    }
+   ]
   },
   "ForkData": {
    "root": [
@@ -5365,6 +5783,16 @@
     {
      "file": "serialize_1.bend",
      "law": "ForkData_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ForkData.bend",
+     "law": "ForkData_decode_build"
+    },
+    {
+     "file": "offset_laws_ForkData.bend",
+     "law": "ForkData_decode_fields"
     }
    ]
   },
@@ -5464,6 +5892,12 @@
      "file": "serialize_1.bend",
      "law": "ForkDigest_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ForkDigest.bend",
+     "law": "ForkDigest_decode_build"
+    }
    ]
   },
   "Domain": {
@@ -5561,6 +5995,12 @@
     {
      "file": "serialize_1.bend",
      "law": "Domain_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Domain.bend",
+     "law": "Domain_decode_build"
     }
    ]
   },
@@ -5660,6 +6100,16 @@
      "file": "serialize_1.bend",
      "law": "SigningData_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SigningData.bend",
+     "law": "SigningData_decode_build"
+    },
+    {
+     "file": "offset_laws_SigningData.bend",
+     "law": "SigningData_decode_fields"
+    }
    ]
   },
   "BLSPubkey": {
@@ -5757,6 +6207,12 @@
     {
      "file": "serialize_1.bend",
      "law": "BLSPubkey_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BLSPubkey.bend",
+     "law": "BLSPubkey_decode_build"
     }
    ]
   },
@@ -5856,6 +6312,16 @@
      "file": "serialize_1.bend",
      "law": "DepositRequest_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DepositRequest.bend",
+     "law": "DepositRequest_decode_build"
+    },
+    {
+     "file": "offset_laws_DepositRequest.bend",
+     "law": "DepositRequest_decode_fields"
+    }
    ]
   },
   "PendingDeposit": {
@@ -5954,6 +6420,16 @@
      "file": "serialize_1.bend",
      "law": "PendingDeposit_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PendingDeposit.bend",
+     "law": "PendingDeposit_decode_build"
+    },
+    {
+     "file": "offset_laws_PendingDeposit.bend",
+     "law": "PendingDeposit_decode_fields"
+    }
    ]
   },
   "SyncCommittee": {
@@ -6022,7 +6498,17 @@
      "law": "SyncCommittee_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SyncCommittee.bend",
+     "law": "SyncCommittee_decode_build"
+    },
+    {
+     "file": "offset_laws_SyncCommittee.bend",
+     "law": "SyncCommittee_decode_fields"
+    }
+   ]
   },
   "DepositData": {
    "root": [
@@ -6124,6 +6610,16 @@
      "file": "serialize_1.bend",
      "law": "DepositData_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DepositData.bend",
+     "law": "DepositData_decode_build"
+    },
+    {
+     "file": "offset_laws_DepositData.bend",
+     "law": "DepositData_decode_fields"
+    }
    ]
   },
   "Deposit": {
@@ -6182,7 +6678,12 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [],
+   "encoded_size": [
+    {
+     "file": "offset_size_Deposit.bend",
+     "law": "Deposit_encoded_size"
+    }
+   ],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -6197,7 +6698,17 @@
      "law": "Deposit_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Deposit.bend",
+     "law": "Deposit_decode_build"
+    },
+    {
+     "file": "offset_laws_Deposit.bend",
+     "law": "Deposit_decode_fields"
+    }
+   ]
   },
   "DepositMessage": {
    "root": [
@@ -6295,6 +6806,16 @@
      "file": "serialize_1.bend",
      "law": "DepositMessage_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DepositMessage.bend",
+     "law": "DepositMessage_decode_build"
+    },
+    {
+     "file": "offset_laws_DepositMessage.bend",
+     "law": "DepositMessage_decode_fields"
+    }
    ]
   },
   "Validator": {
@@ -6370,6 +6891,16 @@
     {
      "file": "serialize_1.bend",
      "law": "Validator_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Validator.bend",
+     "law": "Validator_decode_build"
+    },
+    {
+     "file": "offset_laws_Validator.bend",
+     "law": "Validator_decode_fields"
     }
    ]
   },
@@ -6469,6 +7000,12 @@
      "file": "serialize_1.bend",
      "law": "NodeID_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_NodeID.bend",
+     "law": "NodeID_decode_build"
+    }
    ]
   },
   "SubnetID": {
@@ -6566,6 +7103,12 @@
     {
      "file": "serialize_1.bend",
      "law": "SubnetID_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SubnetID.bend",
+     "law": "SubnetID_decode_build"
     }
    ]
   },
@@ -6665,6 +7208,12 @@
      "file": "serialize_1.bend",
      "law": "Ether_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Ether.bend",
+     "law": "Ether_decode_build"
+    }
    ]
   },
   "ParticipationFlags": {
@@ -6742,6 +7291,12 @@
      "file": "serialize_1.bend",
      "law": "ParticipationFlags_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ParticipationFlags.bend",
+     "law": "ParticipationFlags_decode_build"
+    }
    ]
   },
   "CurrentSyncCommitteeBranch": {
@@ -6815,7 +7370,13 @@
      "law": "CurrentSyncCommitteeBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_decode_build"
+    }
+   ]
   },
   "NextSyncCommitteeBranch": {
    "root": [
@@ -6888,7 +7449,13 @@
      "law": "NextSyncCommitteeBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_decode_build"
+    }
+   ]
   },
   "Transaction": {
    "root": [
@@ -6951,7 +7518,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Transaction.bend",
+     "law": "Transaction_decode_build"
+    }
+   ]
   },
   "ExecutionAddress": {
    "root": [
@@ -7048,6 +7621,12 @@
     {
      "file": "serialize_1.bend",
      "law": "ExecutionAddress_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ExecutionAddress.bend",
+     "law": "ExecutionAddress_decode_build"
     }
    ]
   },
@@ -7147,6 +7726,16 @@
      "file": "serialize_1.bend",
      "law": "ConsolidationRequest_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_decode_build"
+    },
+    {
+     "file": "offset_laws_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_decode_fields"
+    }
    ]
   },
   "WithdrawalRequest": {
@@ -7245,6 +7834,16 @@
      "file": "serialize_1.bend",
      "law": "WithdrawalRequest_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_decode_build"
+    },
+    {
+     "file": "offset_laws_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_decode_fields"
+    }
    ]
   },
   "ExecutionRequests": {
@@ -7308,7 +7907,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ExecutionRequests.bend",
+     "law": "ExecutionRequests_decode_build"
+    }
+   ]
   },
   "BLSToExecutionChange": {
    "root": [
@@ -7405,6 +8010,16 @@
     {
      "file": "serialize_1.bend",
      "law": "BLSToExecutionChange_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_decode_build"
+    },
+    {
+     "file": "offset_laws_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_decode_fields"
     }
    ]
   },
@@ -7504,6 +8119,16 @@
      "file": "serialize_1.bend",
      "law": "SignedBLSToExecutionChange_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_decode_build"
+    },
+    {
+     "file": "offset_laws_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_decode_fields"
+    }
    ]
   },
   "ExecutionPayloadHeader": {
@@ -7567,7 +8192,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_decode_build"
+    }
+   ]
   },
   "PayloadId": {
    "root": [
@@ -7664,6 +8295,12 @@
     {
      "file": "serialize_1.bend",
      "law": "PayloadId_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_PayloadId.bend",
+     "law": "PayloadId_decode_build"
     }
    ]
   },
@@ -7763,6 +8400,12 @@
      "file": "serialize_1.bend",
      "law": "WithdrawalIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_WithdrawalIndex.bend",
+     "law": "WithdrawalIndex_decode_build"
+    }
    ]
   },
   "Withdrawal": {
@@ -7861,6 +8504,16 @@
      "file": "serialize_1.bend",
      "law": "Withdrawal_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Withdrawal.bend",
+     "law": "Withdrawal_decode_build"
+    },
+    {
+     "file": "offset_laws_Withdrawal.bend",
+     "law": "Withdrawal_decode_fields"
+    }
    ]
   },
   "ExecutionPayload": {
@@ -7924,7 +8577,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ExecutionPayload.bend",
+     "law": "ExecutionPayload_decode_build"
+    }
+   ]
   },
   "BeaconState": {
    "root": [
@@ -7987,7 +8646,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BeaconState.bend",
+     "law": "BeaconState_decode_build"
+    }
+   ]
   },
   "ExecutionBranch": {
    "root": [
@@ -8060,7 +8725,13 @@
      "law": "ExecutionBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ExecutionBranch.bend",
+     "law": "ExecutionBranch_decode_build"
+    }
+   ]
   },
   "LightClientHeader": {
    "root": [
@@ -8123,7 +8794,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_LightClientHeader.bend",
+     "law": "LightClientHeader_decode_build"
+    }
+   ]
   },
   "LightClientOptimisticUpdate": {
    "root": [
@@ -8186,7 +8863,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_LightClientOptimisticUpdate.bend",
+     "law": "LightClientOptimisticUpdate_decode_build"
+    }
+   ]
   },
   "LightClientFinalityUpdate": {
    "root": [
@@ -8249,7 +8932,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_LightClientFinalityUpdate.bend",
+     "law": "LightClientFinalityUpdate_decode_build"
+    }
+   ]
   },
   "LightClientUpdate": {
    "root": [
@@ -8312,7 +9001,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_LightClientUpdate.bend",
+     "law": "LightClientUpdate_decode_build"
+    }
+   ]
   },
   "LightClientBootstrap": {
    "root": [
@@ -8375,7 +9070,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_LightClientBootstrap.bend",
+     "law": "LightClientBootstrap_decode_build"
+    }
+   ]
   },
   "BlobIndex": {
    "root": [
@@ -8472,6 +9173,12 @@
     {
      "file": "serialize_1.bend",
      "law": "BlobIndex_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BlobIndex.bend",
+     "law": "BlobIndex_decode_build"
     }
    ]
   },
@@ -8571,6 +9278,16 @@
      "file": "serialize_1.bend",
      "law": "BlobIdentifier_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BlobIdentifier.bend",
+     "law": "BlobIdentifier_decode_build"
+    },
+    {
+     "file": "offset_laws_BlobIdentifier.bend",
+     "law": "BlobIdentifier_decode_fields"
+    }
    ]
   },
   "KZGCommitment": {
@@ -8669,6 +9386,12 @@
      "file": "serialize_1.bend",
      "law": "KZGCommitment_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_KZGCommitment.bend",
+     "law": "KZGCommitment_decode_build"
+    }
    ]
   },
   "BeaconBlockBody": {
@@ -8732,7 +9455,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_decode_build"
+    }
+   ]
   },
   "BeaconBlock": {
    "root": [
@@ -8795,7 +9524,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BeaconBlock.bend",
+     "law": "BeaconBlock_decode_build"
+    }
+   ]
   },
   "SignedBeaconBlock": {
    "root": [
@@ -8858,7 +9593,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SignedBeaconBlock.bend",
+     "law": "SignedBeaconBlock_decode_build"
+    }
+   ]
   },
   "KZGProof": {
    "root": [
@@ -8956,6 +9697,12 @@
      "file": "serialize_1.bend",
      "law": "KZGProof_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_KZGProof.bend",
+     "law": "KZGProof_decode_build"
+    }
    ]
   },
   "Blob": {
@@ -9029,6 +9776,12 @@
      "file": "mutation_laws_fulu.bend",
      "law": "Blob_serialize_over"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Blob.bend",
+     "law": "Blob_decode_build"
+    }
    ]
   },
   "BlobSidecar": {
@@ -9097,7 +9850,17 @@
      "law": "BlobSidecar_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BlobSidecar.bend",
+     "law": "BlobSidecar_decode_build"
+    },
+    {
+     "file": "offset_laws_BlobSidecar.bend",
+     "law": "BlobSidecar_decode_fields"
+    }
+   ]
   },
   "Cell": {
    "root": [
@@ -9182,6 +9945,12 @@
     {
      "file": "mutation_laws_fulu.bend",
      "law": "Cell_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_Cell.bend",
+     "law": "Cell_decode_build"
     }
    ]
   },
@@ -9281,6 +10050,12 @@
      "file": "serialize_1.bend",
      "law": "CellIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CellIndex.bend",
+     "law": "CellIndex_decode_build"
+    }
    ]
   },
   "CommitmentIndex": {
@@ -9378,6 +10153,12 @@
     {
      "file": "serialize_1.bend",
      "law": "CommitmentIndex_serialize_valid"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CommitmentIndex.bend",
+     "law": "CommitmentIndex_decode_build"
     }
    ]
   },
@@ -9477,6 +10258,12 @@
      "file": "serialize_1.bend",
      "law": "RowIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_RowIndex.bend",
+     "law": "RowIndex_decode_build"
+    }
    ]
   },
   "ColumnIndex": {
@@ -9575,6 +10362,12 @@
      "file": "serialize_2.bend",
      "law": "ColumnIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ColumnIndex.bend",
+     "law": "ColumnIndex_decode_build"
+    }
    ]
   },
   "DataColumnsByRootIdentifier": {
@@ -9638,7 +10431,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DataColumnsByRootIdentifier.bend",
+     "law": "DataColumnsByRootIdentifier_decode_build"
+    }
+   ]
   },
   "MatrixEntry": {
    "root": [
@@ -9711,7 +10510,17 @@
      "law": "MatrixEntry_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_MatrixEntry.bend",
+     "law": "MatrixEntry_decode_build"
+    },
+    {
+     "file": "offset_laws_MatrixEntry.bend",
+     "law": "MatrixEntry_decode_fields"
+    }
+   ]
   },
   "DataColumnSidecar": {
    "root": [
@@ -9774,7 +10583,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_DataColumnSidecar.bend",
+     "law": "DataColumnSidecar_decode_build"
+    }
+   ]
   },
   "CustodyIndex": {
    "root": [
@@ -9872,6 +10687,12 @@
      "file": "serialize_2.bend",
      "law": "CustodyIndex_serialize_valid"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CustodyIndex.bend",
+     "law": "CustodyIndex_decode_build"
+    }
    ]
   },
   "ProgressiveSingleListContainerTestStruct": {
@@ -9935,7 +10756,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveSingleListContainerTestStruct.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_decode_build"
+    }
+   ]
   },
   "ProgressiveComplexTestStruct": {
    "root": [
@@ -9998,7 +10825,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveComplexTestStruct.bend",
+     "law": "ProgressiveComplexTestStruct_decode_build"
+    }
+   ]
   },
   "ProgressiveVarTestStruct": {
    "root": [
@@ -10061,7 +10894,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveVarTestStruct.bend",
+     "law": "ProgressiveVarTestStruct_decode_build"
+    }
+   ]
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "root": [
@@ -10124,7 +10963,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveSingleFieldContainerTestStruct.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_decode_build"
+    }
+   ]
   },
   "proglist_bool": {
    "root": [
@@ -10187,7 +11032,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_bool.bend",
+     "law": "proglist_bool_decode_build"
+    }
+   ]
   },
   "vec_bool_16": {
    "root": [
@@ -10254,7 +11105,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_16.bend",
+     "law": "vec_bool_16_decode_build"
+    }
+   ]
   },
   "vec_bool_1": {
    "root": [
@@ -10321,7 +11178,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_1.bend",
+     "law": "vec_bool_1_decode_build"
+    }
+   ]
   },
   "vec_bool_2": {
    "root": [
@@ -10388,7 +11251,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_2.bend",
+     "law": "vec_bool_2_decode_build"
+    }
+   ]
   },
   "vec_bool_31": {
    "root": [
@@ -10455,7 +11324,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_31.bend",
+     "law": "vec_bool_31_decode_build"
+    }
+   ]
   },
   "vec_bool_3": {
    "root": [
@@ -10522,7 +11397,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_3.bend",
+     "law": "vec_bool_3_decode_build"
+    }
+   ]
   },
   "vec_bool_4": {
    "root": [
@@ -10589,7 +11470,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_4.bend",
+     "law": "vec_bool_4_decode_build"
+    }
+   ]
   },
   "vec_bool_512": {
    "root": [
@@ -10656,7 +11543,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_512.bend",
+     "law": "vec_bool_512_decode_build"
+    }
+   ]
   },
   "vec_bool_513": {
    "root": [
@@ -10723,7 +11616,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_513.bend",
+     "law": "vec_bool_513_decode_build"
+    }
+   ]
   },
   "vec_bool_5": {
    "root": [
@@ -10790,7 +11689,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_5.bend",
+     "law": "vec_bool_5_decode_build"
+    }
+   ]
   },
   "vec_bool_8": {
    "root": [
@@ -10857,7 +11762,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_bool_8.bend",
+     "law": "vec_bool_8_decode_build"
+    }
+   ]
   },
   "proglist_uint128": {
    "root": [
@@ -10920,7 +11831,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint128.bend",
+     "law": "proglist_uint128_decode_build"
+    }
+   ]
   },
   "vec_uint128_16": {
    "root": [
@@ -10993,7 +11910,13 @@
      "law": "vec_uint128_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_16.bend",
+     "law": "vec_uint128_16_decode_build"
+    }
+   ]
   },
   "vec_uint128_1": {
    "root": [
@@ -11066,7 +11989,13 @@
      "law": "vec_uint128_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_1.bend",
+     "law": "vec_uint128_1_decode_build"
+    }
+   ]
   },
   "vec_uint128_2": {
    "root": [
@@ -11139,7 +12068,13 @@
      "law": "vec_uint128_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_2.bend",
+     "law": "vec_uint128_2_decode_build"
+    }
+   ]
   },
   "vec_uint128_31": {
    "root": [
@@ -11212,7 +12147,13 @@
      "law": "vec_uint128_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_31.bend",
+     "law": "vec_uint128_31_decode_build"
+    }
+   ]
   },
   "vec_uint128_3": {
    "root": [
@@ -11285,7 +12226,13 @@
      "law": "vec_uint128_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_3.bend",
+     "law": "vec_uint128_3_decode_build"
+    }
+   ]
   },
   "vec_uint128_4": {
    "root": [
@@ -11358,7 +12305,13 @@
      "law": "vec_uint128_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_4.bend",
+     "law": "vec_uint128_4_decode_build"
+    }
+   ]
   },
   "vec_uint128_512": {
    "root": [
@@ -11426,7 +12379,13 @@
      "law": "vec_uint128_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_512.bend",
+     "law": "vec_uint128_512_decode_build"
+    }
+   ]
   },
   "vec_uint128_513": {
    "root": [
@@ -11494,7 +12453,13 @@
      "law": "vec_uint128_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_513.bend",
+     "law": "vec_uint128_513_decode_build"
+    }
+   ]
   },
   "vec_uint128_5": {
    "root": [
@@ -11567,7 +12532,13 @@
      "law": "vec_uint128_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_5.bend",
+     "law": "vec_uint128_5_decode_build"
+    }
+   ]
   },
   "vec_uint128_8": {
    "root": [
@@ -11640,7 +12611,13 @@
      "law": "vec_uint128_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint128_8.bend",
+     "law": "vec_uint128_8_decode_build"
+    }
+   ]
   },
   "proglist_uint8": {
    "root": [
@@ -11703,7 +12680,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint8.bend",
+     "law": "proglist_uint8_decode_build"
+    }
+   ]
   },
   "vec_uint8_16": {
    "root": [
@@ -11774,6 +12757,12 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_16_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_16.bend",
+     "law": "vec_uint8_16_decode_build"
     }
    ]
   },
@@ -11847,6 +12836,12 @@
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_1_serialize_in"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_1.bend",
+     "law": "vec_uint8_1_decode_build"
+    }
    ]
   },
   "vec_uint8_2": {
@@ -11918,6 +12913,12 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_2_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_2.bend",
+     "law": "vec_uint8_2_decode_build"
     }
    ]
   },
@@ -11991,6 +12992,12 @@
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_31_serialize_in"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_31.bend",
+     "law": "vec_uint8_31_decode_build"
+    }
    ]
   },
   "vec_uint8_3": {
@@ -12062,6 +13069,12 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_3_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_3.bend",
+     "law": "vec_uint8_3_decode_build"
     }
    ]
   },
@@ -12135,6 +13148,12 @@
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_4_serialize_in"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_4.bend",
+     "law": "vec_uint8_4_decode_build"
+    }
    ]
   },
   "vec_uint8_512": {
@@ -12206,6 +13225,12 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_512_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_512.bend",
+     "law": "vec_uint8_512_decode_build"
     }
    ]
   },
@@ -12279,6 +13304,12 @@
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_513_serialize_in"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_513.bend",
+     "law": "vec_uint8_513_decode_build"
+    }
    ]
   },
   "vec_uint8_5": {
@@ -12350,6 +13381,12 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_5_serialize_in"
+    }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_5.bend",
+     "law": "vec_uint8_5_decode_build"
     }
    ]
   },
@@ -12423,6 +13460,12 @@
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_8_serialize_in"
     }
+   ],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint8_8.bend",
+     "law": "vec_uint8_8_decode_build"
+    }
    ]
   },
   "proglist_uint16": {
@@ -12486,7 +13529,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint16.bend",
+     "law": "proglist_uint16_decode_build"
+    }
+   ]
   },
   "vec_uint16_16": {
    "root": [
@@ -12549,7 +13598,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_16.bend",
+     "law": "vec_uint16_16_decode_build"
+    }
+   ]
   },
   "vec_uint16_1": {
    "root": [
@@ -12612,7 +13667,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_1.bend",
+     "law": "vec_uint16_1_decode_build"
+    }
+   ]
   },
   "vec_uint16_2": {
    "root": [
@@ -12675,7 +13736,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_2.bend",
+     "law": "vec_uint16_2_decode_build"
+    }
+   ]
   },
   "vec_uint16_31": {
    "root": [
@@ -12738,7 +13805,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_31.bend",
+     "law": "vec_uint16_31_decode_build"
+    }
+   ]
   },
   "vec_uint16_3": {
    "root": [
@@ -12801,7 +13874,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_3.bend",
+     "law": "vec_uint16_3_decode_build"
+    }
+   ]
   },
   "vec_uint16_4": {
    "root": [
@@ -12864,7 +13943,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_4.bend",
+     "law": "vec_uint16_4_decode_build"
+    }
+   ]
   },
   "vec_uint16_512": {
    "root": [
@@ -12927,7 +14012,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_512.bend",
+     "law": "vec_uint16_512_decode_build"
+    }
+   ]
   },
   "vec_uint16_513": {
    "root": [
@@ -12990,7 +14081,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_513.bend",
+     "law": "vec_uint16_513_decode_build"
+    }
+   ]
   },
   "vec_uint16_5": {
    "root": [
@@ -13053,7 +14150,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_5.bend",
+     "law": "vec_uint16_5_decode_build"
+    }
+   ]
   },
   "vec_uint16_8": {
    "root": [
@@ -13116,7 +14219,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint16_8.bend",
+     "law": "vec_uint16_8_decode_build"
+    }
+   ]
   },
   "proglist_uint256": {
    "root": [
@@ -13179,7 +14288,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint256.bend",
+     "law": "proglist_uint256_decode_build"
+    }
+   ]
   },
   "vec_uint256_16": {
    "root": [
@@ -13252,7 +14367,13 @@
      "law": "vec_uint256_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_16.bend",
+     "law": "vec_uint256_16_decode_build"
+    }
+   ]
   },
   "vec_uint256_1": {
    "root": [
@@ -13325,7 +14446,13 @@
      "law": "vec_uint256_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_1.bend",
+     "law": "vec_uint256_1_decode_build"
+    }
+   ]
   },
   "vec_uint256_2": {
    "root": [
@@ -13398,7 +14525,13 @@
      "law": "vec_uint256_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_2.bend",
+     "law": "vec_uint256_2_decode_build"
+    }
+   ]
   },
   "vec_uint256_31": {
    "root": [
@@ -13471,7 +14604,13 @@
      "law": "vec_uint256_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_31.bend",
+     "law": "vec_uint256_31_decode_build"
+    }
+   ]
   },
   "vec_uint256_3": {
    "root": [
@@ -13544,7 +14683,13 @@
      "law": "vec_uint256_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_3.bend",
+     "law": "vec_uint256_3_decode_build"
+    }
+   ]
   },
   "vec_uint256_4": {
    "root": [
@@ -13617,7 +14762,13 @@
      "law": "vec_uint256_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_4.bend",
+     "law": "vec_uint256_4_decode_build"
+    }
+   ]
   },
   "vec_uint256_512": {
    "root": [
@@ -13685,7 +14836,13 @@
      "law": "vec_uint256_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_512.bend",
+     "law": "vec_uint256_512_decode_build"
+    }
+   ]
   },
   "vec_uint256_513": {
    "root": [
@@ -13753,7 +14910,13 @@
      "law": "vec_uint256_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_513.bend",
+     "law": "vec_uint256_513_decode_build"
+    }
+   ]
   },
   "vec_uint256_5": {
    "root": [
@@ -13826,7 +14989,13 @@
      "law": "vec_uint256_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_5.bend",
+     "law": "vec_uint256_5_decode_build"
+    }
+   ]
   },
   "vec_uint256_8": {
    "root": [
@@ -13899,7 +15068,13 @@
      "law": "vec_uint256_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint256_8.bend",
+     "law": "vec_uint256_8_decode_build"
+    }
+   ]
   },
   "proglist_uint32": {
    "root": [
@@ -13962,7 +15137,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint32.bend",
+     "law": "proglist_uint32_decode_build"
+    }
+   ]
   },
   "vec_uint32_16": {
    "root": [
@@ -14035,7 +15216,13 @@
      "law": "vec_uint32_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_16.bend",
+     "law": "vec_uint32_16_decode_build"
+    }
+   ]
   },
   "vec_uint32_1": {
    "root": [
@@ -14108,7 +15295,13 @@
      "law": "vec_uint32_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_1.bend",
+     "law": "vec_uint32_1_decode_build"
+    }
+   ]
   },
   "vec_uint32_2": {
    "root": [
@@ -14181,7 +15374,13 @@
      "law": "vec_uint32_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_2.bend",
+     "law": "vec_uint32_2_decode_build"
+    }
+   ]
   },
   "vec_uint32_31": {
    "root": [
@@ -14254,7 +15453,13 @@
      "law": "vec_uint32_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_31.bend",
+     "law": "vec_uint32_31_decode_build"
+    }
+   ]
   },
   "vec_uint32_3": {
    "root": [
@@ -14327,7 +15532,13 @@
      "law": "vec_uint32_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_3.bend",
+     "law": "vec_uint32_3_decode_build"
+    }
+   ]
   },
   "vec_uint32_4": {
    "root": [
@@ -14400,7 +15611,13 @@
      "law": "vec_uint32_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_4.bend",
+     "law": "vec_uint32_4_decode_build"
+    }
+   ]
   },
   "vec_uint32_512": {
    "root": [
@@ -14468,7 +15685,13 @@
      "law": "vec_uint32_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_512.bend",
+     "law": "vec_uint32_512_decode_build"
+    }
+   ]
   },
   "vec_uint32_513": {
    "root": [
@@ -14536,7 +15759,13 @@
      "law": "vec_uint32_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_513.bend",
+     "law": "vec_uint32_513_decode_build"
+    }
+   ]
   },
   "vec_uint32_5": {
    "root": [
@@ -14609,7 +15838,13 @@
      "law": "vec_uint32_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_5.bend",
+     "law": "vec_uint32_5_decode_build"
+    }
+   ]
   },
   "vec_uint32_8": {
    "root": [
@@ -14682,7 +15917,13 @@
      "law": "vec_uint32_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint32_8.bend",
+     "law": "vec_uint32_8_decode_build"
+    }
+   ]
   },
   "proglist_uint64": {
    "root": [
@@ -14745,7 +15986,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_proglist_uint64.bend",
+     "law": "proglist_uint64_decode_build"
+    }
+   ]
   },
   "vec_uint64_16": {
    "root": [
@@ -14818,7 +16065,13 @@
      "law": "vec_uint64_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_16.bend",
+     "law": "vec_uint64_16_decode_build"
+    }
+   ]
   },
   "vec_uint64_1": {
    "root": [
@@ -14891,7 +16144,13 @@
      "law": "vec_uint64_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_1.bend",
+     "law": "vec_uint64_1_decode_build"
+    }
+   ]
   },
   "vec_uint64_2": {
    "root": [
@@ -14964,7 +16223,13 @@
      "law": "vec_uint64_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_2.bend",
+     "law": "vec_uint64_2_decode_build"
+    }
+   ]
   },
   "vec_uint64_31": {
    "root": [
@@ -15037,7 +16302,13 @@
      "law": "vec_uint64_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_31.bend",
+     "law": "vec_uint64_31_decode_build"
+    }
+   ]
   },
   "vec_uint64_3": {
    "root": [
@@ -15110,7 +16381,13 @@
      "law": "vec_uint64_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_3.bend",
+     "law": "vec_uint64_3_decode_build"
+    }
+   ]
   },
   "vec_uint64_4": {
    "root": [
@@ -15183,7 +16460,13 @@
      "law": "vec_uint64_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_4.bend",
+     "law": "vec_uint64_4_decode_build"
+    }
+   ]
   },
   "vec_uint64_512": {
    "root": [
@@ -15251,7 +16534,13 @@
      "law": "vec_uint64_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_512.bend",
+     "law": "vec_uint64_512_decode_build"
+    }
+   ]
   },
   "vec_uint64_513": {
    "root": [
@@ -15319,7 +16608,13 @@
      "law": "vec_uint64_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_513.bend",
+     "law": "vec_uint64_513_decode_build"
+    }
+   ]
   },
   "vec_uint64_5": {
    "root": [
@@ -15392,7 +16687,13 @@
      "law": "vec_uint64_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_5.bend",
+     "law": "vec_uint64_5_decode_build"
+    }
+   ]
   },
   "vec_uint64_8": {
    "root": [
@@ -15465,7 +16766,13 @@
      "law": "vec_uint64_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_vec_uint64_8.bend",
+     "law": "vec_uint64_8_decode_build"
+    }
+   ]
   },
   "ProgressiveTestStruct": {
    "root": [
@@ -15528,7 +16835,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveTestStruct.bend",
+     "law": "ProgressiveTestStruct_decode_build"
+    }
+   ]
   },
   "BitsStruct": {
    "root": [
@@ -15591,7 +16904,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_BitsStruct.bend",
+     "law": "BitsStruct_decode_build"
+    }
+   ]
   },
   "ProgressiveBitsStruct": {
    "root": [
@@ -15654,7 +16973,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ProgressiveBitsStruct.bend",
+     "law": "ProgressiveBitsStruct_decode_build"
+    }
+   ]
   },
   "FixedTestStruct": {
    "root": [
@@ -15717,7 +17042,17 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_FixedTestStruct.bend",
+     "law": "FixedTestStruct_decode_build"
+    },
+    {
+     "file": "offset_laws_FixedTestStruct.bend",
+     "law": "FixedTestStruct_decode_fields"
+    }
+   ]
   },
   "SingleFieldTestStruct": {
    "root": [
@@ -15780,7 +17115,17 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SingleFieldTestStruct.bend",
+     "law": "SingleFieldTestStruct_decode_build"
+    },
+    {
+     "file": "offset_laws_SingleFieldTestStruct.bend",
+     "law": "SingleFieldTestStruct_decode_fields"
+    }
+   ]
   },
   "VarTestStruct": {
    "root": [
@@ -15843,7 +17188,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_VarTestStruct.bend",
+     "law": "VarTestStruct_decode_build"
+    }
+   ]
   },
   "ComplexTestStruct": {
    "root": [
@@ -15906,7 +17257,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_ComplexTestStruct.bend",
+     "law": "ComplexTestStruct_decode_build"
+    }
+   ]
   },
   "SmallTestStruct": {
    "root": [
@@ -15969,7 +17326,17 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_SmallTestStruct.bend",
+     "law": "SmallTestStruct_decode_build"
+    },
+    {
+     "file": "offset_laws_SmallTestStruct.bend",
+     "law": "SmallTestStruct_decode_fields"
+    }
+   ]
   },
   "bitlist_15": {
    "root": [
@@ -16032,7 +17399,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_15.bend",
+     "law": "bitlist_15_decode_build"
+    }
+   ]
   },
   "bitlist_16": {
    "root": [
@@ -16095,7 +17468,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_16.bend",
+     "law": "bitlist_16_decode_build"
+    }
+   ]
   },
   "bitlist_17": {
    "root": [
@@ -16158,7 +17537,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_17.bend",
+     "law": "bitlist_17_decode_build"
+    }
+   ]
   },
   "bitlist_1": {
    "root": [
@@ -16221,7 +17606,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_1.bend",
+     "law": "bitlist_1_decode_build"
+    }
+   ]
   },
   "bitlist_2": {
    "root": [
@@ -16284,7 +17675,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_2.bend",
+     "law": "bitlist_2_decode_build"
+    }
+   ]
   },
   "bitlist_31": {
    "root": [
@@ -16347,7 +17744,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_31.bend",
+     "law": "bitlist_31_decode_build"
+    }
+   ]
   },
   "bitlist_32": {
    "root": [
@@ -16410,7 +17813,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_32.bend",
+     "law": "bitlist_32_decode_build"
+    }
+   ]
   },
   "bitlist_33": {
    "root": [
@@ -16473,7 +17882,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_33.bend",
+     "law": "bitlist_33_decode_build"
+    }
+   ]
   },
   "bitlist_3": {
    "root": [
@@ -16536,7 +17951,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_3.bend",
+     "law": "bitlist_3_decode_build"
+    }
+   ]
   },
   "bitlist_4": {
    "root": [
@@ -16599,7 +18020,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_4.bend",
+     "law": "bitlist_4_decode_build"
+    }
+   ]
   },
   "bitlist_511": {
    "root": [
@@ -16662,7 +18089,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_511.bend",
+     "law": "bitlist_511_decode_build"
+    }
+   ]
   },
   "bitlist_512": {
    "root": [
@@ -16725,7 +18158,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_512.bend",
+     "law": "bitlist_512_decode_build"
+    }
+   ]
   },
   "bitlist_513": {
    "root": [
@@ -16788,7 +18227,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_513.bend",
+     "law": "bitlist_513_decode_build"
+    }
+   ]
   },
   "bitlist_5": {
    "root": [
@@ -16851,7 +18296,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_5.bend",
+     "law": "bitlist_5_decode_build"
+    }
+   ]
   },
   "bitlist_6": {
    "root": [
@@ -16914,7 +18365,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_6.bend",
+     "law": "bitlist_6_decode_build"
+    }
+   ]
   },
   "bitlist_7": {
    "root": [
@@ -16977,7 +18434,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_7.bend",
+     "law": "bitlist_7_decode_build"
+    }
+   ]
   },
   "bitlist_8": {
    "root": [
@@ -17040,7 +18503,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_8.bend",
+     "law": "bitlist_8_decode_build"
+    }
+   ]
   },
   "bitlist_9": {
    "root": [
@@ -17103,7 +18572,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitlist_9.bend",
+     "law": "bitlist_9_decode_build"
+    }
+   ]
   },
   "bitvector_15": {
    "root": [
@@ -17170,7 +18645,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_15.bend",
+     "law": "bitvector_15_decode_build"
+    }
+   ]
   },
   "bitvector_16": {
    "root": [
@@ -17233,7 +18714,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_16.bend",
+     "law": "bitvector_16_decode_build"
+    }
+   ]
   },
   "bitvector_17": {
    "root": [
@@ -17300,7 +18787,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_17.bend",
+     "law": "bitvector_17_decode_build"
+    }
+   ]
   },
   "bitvector_1": {
    "root": [
@@ -17367,7 +18860,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_1.bend",
+     "law": "bitvector_1_decode_build"
+    }
+   ]
   },
   "bitvector_2": {
    "root": [
@@ -17434,7 +18933,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_2.bend",
+     "law": "bitvector_2_decode_build"
+    }
+   ]
   },
   "bitvector_31": {
    "root": [
@@ -17501,7 +19006,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_31.bend",
+     "law": "bitvector_31_decode_build"
+    }
+   ]
   },
   "bitvector_32": {
    "root": [
@@ -17594,7 +19105,13 @@
      "law": "bitvector_32_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_32.bend",
+     "law": "bitvector_32_decode_build"
+    }
+   ]
   },
   "bitvector_33": {
    "root": [
@@ -17661,7 +19178,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_33.bend",
+     "law": "bitvector_33_decode_build"
+    }
+   ]
   },
   "bitvector_3": {
    "root": [
@@ -17728,7 +19251,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_3.bend",
+     "law": "bitvector_3_decode_build"
+    }
+   ]
   },
   "bitvector_4": {
    "root": [
@@ -17795,7 +19324,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_4.bend",
+     "law": "bitvector_4_decode_build"
+    }
+   ]
   },
   "bitvector_511": {
    "root": [
@@ -17862,7 +19397,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_511.bend",
+     "law": "bitvector_511_decode_build"
+    }
+   ]
   },
   "bitvector_512": {
    "root": [
@@ -17955,7 +19496,13 @@
      "law": "bitvector_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_512.bend",
+     "law": "bitvector_512_decode_build"
+    }
+   ]
   },
   "bitvector_513": {
    "root": [
@@ -18022,7 +19569,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_513.bend",
+     "law": "bitvector_513_decode_build"
+    }
+   ]
   },
   "bitvector_5": {
    "root": [
@@ -18089,7 +19642,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_5.bend",
+     "law": "bitvector_5_decode_build"
+    }
+   ]
   },
   "bitvector_6": {
    "root": [
@@ -18156,7 +19715,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_6.bend",
+     "law": "bitvector_6_decode_build"
+    }
+   ]
   },
   "bitvector_7": {
    "root": [
@@ -18223,7 +19788,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_7.bend",
+     "law": "bitvector_7_decode_build"
+    }
+   ]
   },
   "bitvector_8": {
    "root": [
@@ -18286,7 +19857,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_8.bend",
+     "law": "bitvector_8_decode_build"
+    }
+   ]
   },
   "bitvector_9": {
    "root": [
@@ -18353,7 +19930,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_bitvector_9.bend",
+     "law": "bitvector_9_decode_build"
+    }
+   ]
   },
   "CompatibleUnionBC": {
    "root": [
@@ -18416,7 +19999,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_decode_build"
+    }
+   ]
   },
   "CompatibleUnionABCA": {
    "root": [
@@ -18479,7 +20068,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_decode_build"
+    }
+   ]
   },
   "CompatibleUnionA": {
    "root": [
@@ -18542,7 +20137,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_decode_build"
+    }
+   ]
   },
   "progbitlist": {
    "root": [
@@ -18605,7 +20206,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_progbitlist.bend",
+     "law": "progbitlist_decode_build"
+    }
+   ]
   },
   "uint128": {
    "root": [
@@ -18698,7 +20305,13 @@
      "law": "uint128_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint128.bend",
+     "law": "uint128_decode_build"
+    }
+   ]
   },
   "uint16": {
    "root": [
@@ -18765,7 +20378,13 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [],
+   "decode_offsets": [
+    {
+     "file": "offset_laws_uint16.bend",
+     "law": "uint16_decode_build"
+    }
+   ]
   }
  }
 }
