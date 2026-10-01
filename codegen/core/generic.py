@@ -26,9 +26,8 @@ import argparse
 import hashlib
 import json
 import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 sys.path.insert(0, str(ROOT / 'tools'))
 
 from codegen.core.schema import SchemaError, Ty  # noqa: E402

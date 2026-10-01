@@ -14,13 +14,12 @@ list's limit conjunct in its head check (HC), the root_types_light mirrors and r
 """
 
 import re
-from pathlib import Path
 
 from codegen.proofs.bridges import e2e_var_c as EVC
 from codegen.proofs.support.light_split import unlight as _unlight
 
-ROOT = Path(__file__).resolve().parents[3]
-GEN = 'codegen/proofs/bridges/e2e_bridge.py (codegen/proofs/bridges/e2e_vlm_vvl.py)'
+from codegen.core.paths import ROOT  # noqa: E402
+GEN = 'e2e_bridge (codegen: e2e_vlm_vvl)'
 
 
 def _src(name):

@@ -1,0 +1,19 @@
+# Lint of the generators: `ruff check codegen` (tools/test_codegen.sh runs it when ruff is installed).
+# Correctness rules only (pyflakes, syntax, the E7 statement checks); the generators' long lines and
+# one-line statements are a house style, not findings.
+line-length = 200
+target-version = "py312"
+extend-exclude = ["vendor", "build", "node_modules"]
+
+[lint]
+select = ["F", "E4", "E7", "E9"]
+ignore = [
+    "E402",   # the repo-root preamble precedes the imports of a script
+    "E701",   # one-line `if x: y` is used throughout
+    "E702",
+    "E731",   # small lambdas as names
+    "E741",   # l, O, I as loop names in the proof text builders
+    "E743",   # `O`: the Bend object-module alias the text builders name their helper after
+    "F541",   # `f'..{{..'` with no placeholder: the f prefix escapes the Bend braces (ruff's fix would change the text)
+    "F841",   # tuple-unpacked names and parse results kept for readability (removing them is a separate cleanup)
+]

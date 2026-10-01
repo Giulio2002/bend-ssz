@@ -34,12 +34,11 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import functools
-import os
 import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from codegen.core.paths import ROOT  # noqa: E402
 SUFFIX = '_light'
 HEAVY_MARK = 'proofs/obj/zero_roots.bend'
 IMP = re.compile(r'^import (\S+?)([A-Za-z0-9_]+)\.bend as (\w+)[ \t]*$', re.M)

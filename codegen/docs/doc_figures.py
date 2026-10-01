@@ -27,9 +27,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[2]))  # the re
 import json
 import re
 import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md', 'docs/BUILD.md', 'docs/TRUST.md']
 FIG = re.compile(r'<!-- fig:([a-z0-9_]+) -->(.*?)<!-- /fig -->', re.S)
 BRIDGE = {'e2e_encode': 'i', 'e2e_decode_accept': 'ii', 'e2e_decode_view': 'ii',

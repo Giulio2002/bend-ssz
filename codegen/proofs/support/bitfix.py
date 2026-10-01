@@ -16,9 +16,8 @@ import json
 import os
 import re
 import subprocess
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from codegen.core.paths import ROOT  # noqa: E402
 STORE = ROOT / 'codegen/bit_residuals.json'
 BEND = os.environ.get('BEND', 'bend')  # the checker `refresh` runs (maintenance only)
 BITS = [f'a{i}' for i in range(32)]

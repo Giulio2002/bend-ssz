@@ -34,7 +34,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 SKIP_DIRS = {'.git', 'build', 'node_modules', '__pycache__'}
 ONE_SHOT = {
     'generate_benchmarks_md': 'renders BENCHMARKS.md from a measurement report given as its argument '

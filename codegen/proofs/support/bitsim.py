@@ -114,6 +114,3 @@ class Lemmas:
             return list(ys), None
         return list(ys), f'{BT}.word32_eq({", ".join(X)}, {", ".join(ys)}, {", ".join(ps)})'
 
-
-def wp(bits):
-    return 'U32{' + ''.join(f'WCon{{{x}, ' for x in bits) + 'WNil{}' + '}' * len(bits) + '}'

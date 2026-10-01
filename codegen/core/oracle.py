@@ -8,8 +8,6 @@ object codec is compared with something that does not share its code.
     from codegen import oracle; v = oracle.parse(ty, data); oracle.root(ty, v)
 """
 import hashlib
-import sys
-from pathlib import Path
 
 from codegen.core.schema import Ty  # noqa: E402
 

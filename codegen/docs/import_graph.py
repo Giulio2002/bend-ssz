@@ -16,11 +16,10 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[2]))  # the repository root: `codegen` is importable when this file runs as a script
 import functools
-import pathlib
 import re
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 IMPORT = re.compile(r'^\s*import\s+(\S+\.bend)\b', re.M)
 
 # The public/measured entry points. Anything these reach is production.

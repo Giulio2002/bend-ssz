@@ -12,6 +12,7 @@ encode_spec: those S3 bytes are the spec encoding of the object's value.
 The sizes are up to 8.8 MB, so the closed bounds (cQ, cS, cD, cH0, cH1) make this a
 big_* file (checked with --big).
 """
+from codegen.core.bendtext import wl  # noqa: E402
 
 X = 'DataColumnSidecar'
 IW = ['i0', 'i1']
@@ -24,10 +25,6 @@ X_ = X
 def VBX_names(n):
     from codegen.proofs.var import var_bytes_x as VBX  # the container's field-name list (spec/fulu_schemas.bend)
     return VBX.spec_names(n)
-
-
-def wl(ws):
-    return '[' + ', '.join(ws) + ']'
 
 
 def text(hdr, pvnode, hnode, inode, DEC_HEAD, SCH):

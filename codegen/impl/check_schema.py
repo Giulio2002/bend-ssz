@@ -22,11 +22,10 @@ import json
 import subprocess
 import sys
 import tempfile
-from pathlib import Path
 
 from codegen.core import schema  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 
 
 def main():

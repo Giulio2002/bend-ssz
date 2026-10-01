@@ -5,6 +5,7 @@ container of one uint8): part of codegen/proofs/laws/sub_laws.py.
 Expressions are small ASTs: ('v', name) | ('c', int) | ('or', a, b) | ('and', a, c)
 | ('mul', a, c) | ('shrn', a, k) | ('shln', a, k) | ('join', j, lo, hi) | ('bsel', k, a).
 """
+from codegen.core.bendtext import wp  # noqa: E402
 from codegen.proofs.support import bitsim as BS
 
 MULK = {256: ('WM.mul256', 8), 65536: ('WM.mul65536', 16), 16777216: ('WM.mul16777216', 24)}
@@ -142,7 +143,7 @@ class Prover:
         # the bit-level proof, every variable a bit pattern
         w = self.lines.append
         env = {v: [f'{v}b{i}' for i in range(32)] for v in vs}
-        pats = {v: BS.wp(env[v]) for v in vs}
+        pats = {v: wp(env[v]) for v in vs}
         L2 = subst(cur, {})
         lb = bits(cur, env)
         rb = bits(rhs, env)
@@ -150,7 +151,7 @@ class Prover:
         qr, pr = self.L.word_eq(rb)
         if ql != qr:
             raise ValueError(f'not equal: {src(cur)} vs {src(rhs)}\n{ql}\n{qr}')
-        Q = BS.wp(ql)
+        Q = wp(ql)
         ls = src(subst_src(cur, pats))
         rs = src(subst_src(rhs, pats))
         w(f'def {name_b}({sig}) -> {{{src(cur)} == {src(rhs)} : U32}}:')

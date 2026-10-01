@@ -26,9 +26,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[2]))  # the repository root: `codegen` is importable when this file runs as a script
 import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 sys.path.insert(0, str(ROOT / 'tools'))
 
 from codegen.core import generic as GN  # noqa: E402

@@ -7,8 +7,8 @@ the offending name and expression; the generator never guesses.
 """
 import ast
 import re
-from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Optional, Tuple
 
 
 

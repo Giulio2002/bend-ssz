@@ -11,7 +11,7 @@ docs/LAYOUT.md ("Modules nothing imports").
 """
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+from codegen.core.paths import ROOT  # noqa: E402
 
 RETIRED = {
     # codegen/proofs/bridges/e2e_bridge.py (entries of codegen/proofs/bridges/e2e_var_c.py): the non-D forms of the encode records;
