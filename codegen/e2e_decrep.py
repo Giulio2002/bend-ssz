@@ -542,49 +542,63 @@ def compat_union_a(lf):
     return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
 
 
+def payload_hooks(al, A):
+    """the leaf hooks of an ExecutionPayload decoded at the window A (its d, t, x, off, n and the window facts' names / expressions:
+    pf, hd31, eo, hw, hwN, hSN (n <= NMAX as a Nat fact), hchk): logs bloom, extra data, transactions, withdrawals' check"""
+    DEP, DFX, DTX = al('e2e/e2e_dep.bend'), al('e2e/e2e_dfx.bend'), al('e2e/e2e_dtx.bend')
+    WP = al('proofs/obj/var_winx_ExecutionPayload.bend')
+    al('proofs/obj/dk.bend')
+    al('proofs/obj/words_spec.bend')
+    al('proofs/obj/vdepth.bend')
+    T4 = f"{A['t']}, {A['x']}, {A['off']}, {A['n']}"
+    W_ = f"({T4}, {A['hchk']})"
+    HWN1 = f"{WP}.hwc1N({A['d']}, {A['t']}, {A['n']}, {A['x']}, {A['off']}, {A['n']}, {A['eo']}, {A['hd31']}, {A['hw']}, {A['hwN']}, {A['pf']}, {DEP}.cc2{W_})"
+
+    def xleaf(fname, fn, args, e):
+        if fname == 'vvl_l1048576_bl1073741824.bend' and fn == 'OBJw':
+            a = ', '.join(args)
+            hx = f'{DEP}.ce1{W_}'
+            return RLDec(e, lambda k: f'{DTX}.sdl({a}, {HWN1}, {hx})', lambda sc: f'{DTX}.rep({a}, {HWN1}, {sc}, {{==}}, {{==}}, {hx})')
+        return None
+
+    def words(j, e):
+        if not (e.startswith('O.Words{') and e.endswith('}')):
+            raise SystemExit(f'e2e_decrep: ExecutionPayload: no model for the word field {e[:160]}')
+        th, ln = W.split_top(e[len('O.Words{'):-1])
+        mct = re.fullmatch(r'FD\.array__thaw\(U32, \w+\.CT\((.*)\)\)', th.strip(), re.S)
+        if not mct:
+            raise SystemExit(f'e2e_decrep: ExecutionPayload: no model for the word field {e[:160]}')
+        ca = [c.strip() for c in W.split_top(mct.group(1))]
+        d_, t_, off, L0 = ca[0], ca[1], ca[2], ca[3]
+        if L0 == '256':   # the logs bloom: 256 bytes at a byte offset
+            q = '{==}'
+            return FxWords(e, {('words_obj_light.bend', 'rep_bv'): lambda s_: f'{DFX}.crbv({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q}, {s_}, {q})',
+                               ('words_obj_light.bend', 'wf1'): lambda _: f'{DFX}.cwf1({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q})',
+                               ('e2e_blist.bend', 'sdk1'): lambda k: f'{DFX}.csdk1({d_}, {t_}, {off}, {k}, 3n, 8n, 7n, {q}, {q}, {q}, {q})'})
+        # the extra data (at most 32 bytes)
+        hy = f"{DEP}.hy0({T4}, {A['hSN']}, {A['hchk']})"
+        dzl = f"{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {DEP}.hl0{W_})"
+        hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
+        return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off}, {L0}, VLS.DZ({L0}), {k}, FD.nat__lt_le_trans(VLS.DZ({L0}), 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=f'{DEP}.hl0{W_}')
+    return words, xleaf, (lambda j: f'{DEP}.ce2{W_}')
+
+
 def execution_payload(lf):
     """ExecutionPayload: its logs bloom (e2e_dfx), extra data (<= 32 bytes, e2e_dz.ct_any), transactions (e2e_dtx: the byte-list list
     library), withdrawals (e2e_drl) and the size premise hZ (e2e_dep, under n < 2^31)"""
     name = 'FuluExecutionPayload'
     HEAVY[name] = H31
     WINDOW.add(name)
-    W_ = '(t, x, off, n, hchk)'
+    A = dict(d='d', t='t', x='x', off='off', n='n', pf='pf', hd31='hd31', eo='eo', hw='hw', hwN='hwN', hchk='hchk')
 
     def lets(al):
-        DEP, DFX, DTX = al('e2e/e2e_dep.bend'), al('e2e/e2e_dfx.bend'), al('e2e/e2e_dtx.bend')
-        HWN1 = f"{al('proofs/obj/var_winx_ExecutionPayload.bend')}.hwc1N(d, t, n, x, off, n, eo, hd31, hw, hwN, pf, {DEP}.cc2(t, x, off, n, hchk))"
-        al('proofs/obj/dk.bend')
-        al('proofs/obj/words_spec.bend')
-        al('proofs/obj/vdepth.bend')
+        DEP = al('e2e/e2e_dep.bend')
+        A['hSN'] = f'{DEP}.u2n(n, VB.NMAX(), hS)'
+        words, xleaf, rlchk = payload_hooks(al, A)
+        return [], words, None, rlchk, xleaf
 
-        def xleaf(fname, fn, args, e):
-            if fname == 'vvl_l1048576_bl1073741824.bend' and fn == 'OBJw':
-                a = ', '.join(args)
-                hx = f'{DEP}.ce1{W_}'
-                return RLDec(e, lambda k: f'{DTX}.sdl({a}, {HWN1}, {hx})', lambda sc: f'{DTX}.rep({a}, {HWN1}, {sc}, {{==}}, {{==}}, {hx})')
-            return None
-
-        def words(j, e):
-            m = re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), 256, 7n\)\), 256\}$', e)
-            if m:   # the logs bloom: 256 bytes at a byte offset
-                d_, t_, off = m.group(1), m.group(2), m.group(3)
-                q = '{==}'
-                return FxWords(e, {('words_obj_light.bend', 'rep_bv'): lambda s_: f'{DFX}.crbv({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q}, {s_}, {q})',
-                                   ('words_obj_light.bend', 'wf1'): lambda _: f'{DFX}.cwf1({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q})',
-                                   ('e2e_blist.bend', 'sdk1'): lambda k: f'{DFX}.csdk1({d_}, {t_}, {off}, {k}, 3n, 8n, 7n, {q}, {q}, {q}, {q})'})
-            m = re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(.*\)), \w+\.DZ\(.*\)\)\), \w+\.L0\(', e) or re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(t, x\)), VLS\.DZ\(.*\)\)\), \w+\.L0\(', e)
-            if m:   # the extra data (at most 32 bytes)
-                d_, t_, off, L0 = m.group(1), m.group(2), m.group(3), m.group(4)
-                hy = f'{DEP}.hy0(t, x, off, n, {DEP}.u2n(n, VB.NMAX(), hS), hchk)'
-                dzl = f'{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {DEP}.hl0(t, x, off, n, hchk))'
-                hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
-                return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off}, {L0}, VLS.DZ({L0}), {k}, FD.nat__lt_le_trans(VLS.DZ({L0}), 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=f'{DEP}.hl0(t, x, off, n, hchk)')
-            raise SystemExit(f'e2e_decrep: ExecutionPayload: no model for the word field {e[:160]}')
-        return [], words, None, (lambda j: f'{DEP}.ce2{W_}'), xleaf
-
-    def gv(nm):
-        return lambda al: f'{al("e2e/e2e_dep.bend")}.{nm}'
     DTXn = 'e2e/e2e_dtx.bend'
+
     def hz_(al):
         W_ = al('proofs/obj/var_winx_ExecutionPayload.bend')
         DEP = al('e2e/e2e_dep.bend')
