@@ -167,6 +167,7 @@ def attester_slashing(lf):
 BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
 BV_CFG = {}   # the decoded bit vectors' room and check facts of the container being synthesized (set by its provider)
+EXTRA_FILES = {}   # path -> text: extra files the providers write (compose merges them into its outputs)
 BUF_K = {}   # names whose dec bridge bounds n by 4 * 2^k (Nat form): the k
 BUF_D = set()   # names whose object's arguments already start with the depth d: only (pf, hd, hn) follow
 BUF_ARGS = set()   # names whose p_* defs take the loaded buffer's depth facts (d, pf, hd, hn) after the object's arguments
@@ -917,6 +918,207 @@ def data_column_sidecar(lf):
     return container_file(name, lf, 'proofs/obj/var_codec_DataColumnSidecar_acc.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, codec, given=given, objexpr='WN.OBJ(t, n)')
 
 
+H27 = '{Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}'
+H29 = '{Nat.is_lt(U32.to_nat(n), VB.pw(29n)) == True{} : Bool}'
+
+
+def buf_ps(h):
+    return ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+            '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +h31: ' + h + ', +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, '
+            '+hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+
+BUF_PS27 = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+            '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +h31: ' + H27 + ', +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, '
+            '+hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+
+HWN_TOP = 'FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hS)'
+PB_TOP = dict(x='0n', off='0', n='n', eo='{==}', hd='hd', hw='hn', hwN=HWN_TOP, pf='pf', hchk='hchk', h31='h31')   # the container decoded at the top of the buffer
+
+
+def pb_child(al, Wc, args, e, flavor='d', B=PB_TOP):
+    """a progressive bit list field (the window reader var_winp_pbits) at the container window Wc's child k, the container at the window B
+    (coordinates, window facts as expressions; h31: its length bound): rep_pbits and the storage premise SDPB (e2e_pbx)"""
+    PBX, DPQ = al('e2e/e2e_pbx.bend'), al('e2e/e2e_dpq.bend')
+    k = int(re.match(r'[\w.]+\.XJ(\d+)\(', args[2]).group(1))
+    Bx, Bo, Bn = B['x'], B['off'], B['n']
+    com = f"d, t, {Bn}, {Bx}, {Bo}, {Bn}, {B['eo']}, {B['hd']}, {B['hw']}, {B['hwN']}, {B['pf']}, {B['hchk']}"
+    last = args[4].rstrip().endswith(f', {Bn})')
+    O_, E_ = f'{Wc}.O{k}(t, {Bx})', (f'{Wc}.O{k + 1}(t, {Bx})' if not last else Bn)
+    lw = f"{DPQ}.lwd({O_}, {E_}, {Bn}, {Wc}.r1{k}(t, {Bx}, {Bo}, {Bn}, {B['hchk']}), {Wc}.r2{k}(t, {Bx}, {Bo}, {Bn}, {B['hchk']}))"
+    if flavor == 'd':   # the child's length below 2^29 (e2e_encpd.SDPB)
+        hlen = f"FD.nat__le_lt_trans(U32.to_nat({args[4]}), U32.to_nat({Bn}), VB.pw(29n), {lw}, {B['h31']})"
+        sfx = 'd'
+    else:               # at most 2^27 - 4 bytes (e2e_encp.SDPB)
+        hlen = f"{DPQ}.hlc(U32.to_nat({args[4]}), U32.to_nat({Bn}), {lw}, {B['h31']})"
+        sfx = ''
+    a = ', '.join(args)
+    facts = f"{Wc}.eoJ{k}D({com}), {B['hd']}, {Wc}.hwJ{k}D({com}), {Wc}.hwJ{k}N({com}), {B['pf']}, {Wc}.itD{k}(t, {Bx}, {Bo}, {Bn}, {B['hchk']})"
+    return BitsDec(e, lambda s_: f'{PBX}.pbv_rep{sfx}({a}, {facts}, {s_}, {hlen})', None, hsp=f'{PBX}.pbv_sdpb{sfx}({a}, {facts}, {hlen})')
+
+
+def u16_child(al, Wc, args, e, limit, fname, B=PB_TOP):
+    """a List[uint16, limit] field at the container window Wc's child k (the bounded list's window reader var_winx_l<limit>_u16): its words'
+    storage (DZ.ct_dec) and the length facts of its representation (twice the element count, within the limit)"""
+    CH, DPA, DZ_ = al('proofs/obj/' + fname), al('e2e/e2e_dpl.bend'), al('e2e/e2e_dz.bend')
+    k = int(re.match(r'[\w.]+\.XJ(\d+)\(', args[2]).group(1))
+    ky = 0
+    while 2 ** ky < 31 + 2 * limit:
+        ky += 1
+    d_, X, F, L = args[0], args[2], args[3], args[4]
+    hcI = f"{Wc}.itD{k}(t, {B['x']}, {B['off']}, {B['n']}, {B['hchk']})"
+    hb = f'{CH}.hB(t, {X}, {F}, {L}, {hcI})'
+    hy = f'VC.hyU({L}, {ky}n, {{==}}, {CH}.hyB({L}, {hb}))'
+    eL = f'{CH}.eLc(t, {X}, {F}, {L}, {hcI})'
+    hl = f'{CH}.hcL(t, {X}, {F}, {L}, {hcI})'
+    ec = f'{DPA}.cnt(1n, {L}, {CH}.CQ({L}), {eL})'
+    cnt = f'U32.to_nat(U32.shrn({L}, 1n))'
+    lenf = (f'Equal.trans(Nat, U32.to_nat({L}), Nat.double({CH}.CQ({L})), Nat.double({cnt}), {eL}, '
+            f'Equal.cong(Nat, Nat, z => Nat.double(z), {CH}.CQ({L}), {cnt}, Equal.sym(Nat, {cnt}, {CH}.CQ({L}), {ec})))')
+    limf = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, {limit}n) == True{{}} : Bool}}, {CH}.CQ({L}), {cnt}, Equal.sym(Nat, {cnt}, {CH}.CQ({L}), {ec}), {hl})'
+    kz = int(re.search(r'def hdzK\(.*?Nat\.is_le\(VLS\.DZ\(len\), (\d+)n\)', (ROOT / 'proofs/obj' / fname).read_text(), re.S).group(1))
+    hwc = f'VD.wd_cover(VC.WZ({L}), 30n, {{==}}, VC.wz30({L}, {hy}))'
+    return WordsDec(e, any_=lambda kk: f'{DZ_}.ct_any({d_}, t, {F}, {L}, VLS.DZ({L}), {kk}, FD.nat__le_lt_trans(VLS.DZ({L}), {kz}n, {kk}, {CH}.hdzK({L}, {hb}), {{==}}), {hy}, {hwc})',
+                    facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == Nat\.double\(\w+\.cnt2\(o\)\)', lenf), (r'Nat\.is_le\(\w+\.cnt2\(o\), ', limf)])
+
+
+def pb_container(name, win, dec, lf_, flavor='d'):
+    """a container whose variable fields are progressive bit lists (and fixed words): the window reader win (var_winx_<Name>) at the top"""
+    BUF_D.add(name)
+    HEAVY[name] = H29 if flavor == 'd' else H27
+
+    def lets(al):
+        Wc = al(win)
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e, flavor)
+            mu = re.fullmatch(r'var_winx_l(\d+)_u16\.bend', fname)
+            if mu and fn == 'OBJw':
+                return u16_child(al, Wc, args, e, int(mu.group(1)), fname, PB_TOP)
+            return None
+        return [], None, None, None, xleaf
+    return container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
+
+
+def _cu_orwrap(x, k, n_arms):
+    """the Or2 selection of arm k of n_arms: Inr^k Inl{x} (the last arm Inr^(n-1) x)"""
+    r = f'Inl{{{x}}}' if k < n_arms - 1 else x
+    for _ in range(k):
+        r = f'Inr{{{r}}}'
+    return r
+
+
+def _cu_arm(name, k, win, apath, supf, lf, C, flavor='o', nA=1):
+    """the premises of the compatible union over its arm k's window (the arm constructed by e2e_cuobj_<name>.arm<k>), under the arm window's
+    own check hA: the arm file e2e/e2e_cu_<name>_<k>.bend (its p_rep / p_hs)"""
+    BUF_ARGS.discard(name)
+    wpath = f'proofs/obj/var_winx_{name}.bend'
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, '
+          '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h1: W.H1(t, x, off, n), +h31: ' + H27 + ', '
+          '+hA: {DC.CHKw(t, W.XJ(t, x), W.FJ(off), W.LJ(n)) == True{} : Bool}')
+
+    def lets(al):
+        Wu, Wa = al(wpath), al(apath)
+        al(supf)
+        com = 'd, t, n, x, off, n, eo, hd, hw, hwN, pf, h1'
+        B = dict(x=f'{Wu}.XJ(t, x)', off=f'{Wu}.FJ(off)', n=f'{Wu}.LJ(n)', eo=f'{Wu}.eoJ({com})', hd='hd', hw=f'{Wu}.hwJ({com})', hwN=f'{Wu}.hwJN({com})', pf='pf', hchk='hA',
+                 h31=f'DPQ_H31')
+        dpq = al('e2e/e2e_dpq.bend')
+        B['h31'] = (f'{dpq}.hlc(U32.to_nat({Wu}.LJ(n)), U32.to_nat(n), {dpq}.lwd(1, n, n, h1, Order.reflexive(U32.to_nat(n))), h31)')
+        al('proofs/nat_order.bend')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                B2 = dict(B)
+                B2['h31'] = B['h31']
+                return pb_child(al, Wa, args, e, flavor, B2)
+            mu = re.fullmatch(r'var_winx_l(\d+)_u16\.bend', fname)
+            if mu and fn == 'OBJw':
+                return u16_child(al, Wa, args, e, int(mu.group(1)), fname, B)
+            return None
+        return [], None, None, None, xleaf
+    fn = f'e2e_cu_{name}_{k}.bend'
+    given = None
+    if apath.endswith('ProgressiveSingleFieldContainerTestStruct.bend'):   # one uint8 field at the arm window's start: its byte is below 256
+        def rep_(al):
+            Wu, Wa = al(f'proofs/obj/var_winx_{name}.bend'), al(apath)
+            DPA, UAa, FXa, VRa = al('e2e/e2e_dpl.bend'), al('proofs/obj/vua.bend'), al('proofs/obj/spec_fixed.bend'), al('proofs/obj/vbrt.bend')
+            core = f'({Wa}.OBJw(d, t, {Wu}.XJ(t, x), {Wu}.FJ(off), {Wu}.LJ(n)), ({{==}}, {DPA}.nthb_lt({UAa}.BYT(t), {Wu}.XJ(t, x), {FXa}.domain_limbs({VRa}.SL(t)))))'
+            return core_wrap(core)
+        n_arms = [None]
+
+        def core_wrap(core):
+            return core
+        given = {'rep': rep_, 'hs': lambda al: '{==}'}
+        given['rep'] = (lambda al, _r=rep_: _cu_orwrap(_r(al), k, nA))
+    txt = container_file(name, lf, supf, f'{name}_arm{k}', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps), lets, None, apath,
+                         objexpr=f'WN.{name}_arm{k}(d, t, x, off, n)', given=given)
+    EXTRA_FILES[ROOT / 'e2e' / fn] = txt
+    return fn
+
+
+def union_provider(name, arms, lf):
+    """a compatible union at a window (the selector byte, then the selected arm's window at x + 1): the arms' premises are proved of the arm
+    constructed over its window (_cu_arm), then selected by the selector chain (the arm's check is K_k's True case, the else of the last arm
+    is absurd). arms: [(selector, constructor, arm window path)] in the module's OB0 .. OB<k> order"""
+    import e2e_compose as C
+    WINDOW.add(name)
+    HEAVY[name] = H27
+    wpath = f'proofs/obj/var_winx_{name}.bend'
+    N = len(arms)
+    imps = ['import Base', 'import ../proofs/compact/found.bend as FD', f'import ../types/{name}_def_generated.bend as {name}_d', f'import ../{wpath} as W']
+    defs = []
+    for k, (sel, ctor, apath) in enumerate(arms):
+        imps.append(f'import ../{apath} as CH{k}')
+        defs.append(f'def {name}_arm{k}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {name}_d.{name}: '
+                    f'{name}_d.{name}_{ctor}{{CH{k}.OBJw(d, t, W.XJ(t, x), W.FJ(off), W.LJ(len))}}')
+    sup = '\n'.join(imps) + '\n\n# GENERATED by codegen/e2e_decrep.py (union_provider). Do not edit.\n# The compatible union\'s arms over their windows.\n\n' + '\n'.join(defs) + '\n'
+    supf = f'e2e/e2e_cuobj_{name}.bend'
+    if not (ROOT / supf).exists() or (ROOT / supf).read_text() != sup:
+        (ROOT / supf).write_text(sup)
+    EXTRA_FILES[ROOT / supf] = sup
+    arm_files = [_cu_arm(name, k, wpath, a[2], supf, lf, C, 'o', N) for k, a in enumerate(arms)]
+    # the selector chain
+    root_l = 'proofs/obj/root_gtypes2_light.bend'
+    cs = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+          f'import ../{root_l} as RTL', f'import ../{wpath} as W', f'import ./{name}_e2e_generated.bend as EB'] + [f'import ./e2e_cu_{name}_{k}.bend as AR{k}' for k in range(N)]
+    cs.append('')
+    cs.append(HEADER)
+    cs.append(f'# the selector chain of {name}: the arm whose selector byte matches, under its window check (K_k\'s True case); an unmatched selector fails the check.')
+    fp = ('+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, '
+          '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h1: W.H1(t, x, off, n), +h31: ' + H27)
+    for prem, ty, fnn in (('hs', f'EB.SU', 'p_hs'), ('rep', f'RTL.rep_{name}', 'p_rep')):
+        for k in reversed(range(N)):
+            nxt = (f'sel_{prem}_{k + 1}(U32.is_eq(s, {arms[k + 1][0]}), s, d, t, x, off, n, pf, hd, eo, hw, hwN, h1, h31, hK)' if k + 1 < N else None)
+            body = (f'    case False{{}}: {nxt}' if nxt else
+                    f'    case False{{}}: Empty.absurd({ty}(W.OB{k}(False{{}}, s, d, t, x, off, n)), FD.logic__false_true(hK))')
+            cs.append(f'def sel_{prem}_{k}(+c: Bool, +s: U32, {fp}, +hK: {{W.K{k}(c, s, t, x, off, n) == True{{}} : Bool}})\n    -> {ty}(W.OB{k}(c, s, d, t, x, off, n)):\n'
+                      f'  match c:\n    case True{{}}: AR{k}.{fnn}(d, t, x, off, n, pf, hd, eo, hw, hwN, h1, h31, hK)\n{body}\n')
+    csf = f'e2e/e2e_cusel_{name}.bend'
+    cstext = '\n'.join(cs)
+    if not (ROOT / csf).exists() or (ROOT / csf).read_text() != cstext:
+        (ROOT / csf).write_text(cstext)
+    EXTRA_FILES[ROOT / csf] = cstext
+
+    def mk(prem):
+        def f(al):
+            CS, Wu, DK_ = al(csf), al(wpath), al('proofs/obj/dk.bend')
+            sel0 = arms[0][0]
+            k0 = f'{Wu}.K0(U32.is_eq({Wu}.BX(t, x), {sel0}), {Wu}.BX(t, x), t, x, off, n)'
+            ha = f'{DK_}.and_l(U32.is_le(1, n), {k0}, hchk)'
+            hk = f'{DK_}.and_r(U32.is_le(1, n), {k0}, hchk)'
+            return (f'{CS}.sel_{prem}_0(U32.is_eq({Wu}.BX(t, x), {sel0}), {Wu}.BX(t, x), d, t, x, off, n, pf, hd31, eo, hw, hwN, {Wu}.le_nat(1, n, {ha}), h31, {hk})')
+        return f
+    given = {'hs': mk('hs'), 'rep': mk('rep')}
+    ps = WIN_PS.format(H31=H27)
+    return container_file(name, lf, wpath, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
+                          lambda al: ([], None, None, None, None), None, wpath, given=given, objexpr='DC.OBJw(d, t, x, off, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -928,6 +1130,10 @@ PROVERS = {
     'FuluLightClientFinalityUpdate': lambda lf: lc_finality(lf),
     'FuluLightClientUpdate': lambda lf: lc_update(lf),
     'FuluDataColumnSidecar': lambda lf: data_column_sidecar(lf),
+    'CompatibleUnionBC': lambda lf: union_provider('CompatibleUnionBC', [(2, 'c0', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c1', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend')], lf),
+    'CompatibleUnionABCA': lambda lf: union_provider('CompatibleUnionABCA', [(1, 'c0', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend'), (2, 'c1', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c2', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend'), (4, 'c3', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend')], lf),
+    'ProgressiveVarTestStruct': lambda lf: pb_container('ProgressiveVarTestStruct', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend', 'proofs/obj/var_codec_ProgressiveVarTestStruct.bend', lf),
+    'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
     'FuluSignedBeaconBlock': lambda lf: beacon_block_body(lf, 'sb'),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
@@ -968,8 +1174,8 @@ class WordsDec:
 
 class BitsDec:
     """a decoded bit list: its rep_bits and storage (sdbv) premises are laws of the name's dec bridge file"""
-    def __init__(self, expr, rep, hs, hsb=None, hsbc=None):
-        self.expr, self.rep, self.hs, self.hsb, self.hsbc = expr, rep, hs, hsb, hsbc
+    def __init__(self, expr, rep, hs, hsb=None, hsbc=None, hsp=None):
+        self.expr, self.rep, self.hs, self.hsb, self.hsbc, self.hsp = expr, rep, hs, hsb, hsbc, hsp
 
 
 class FxWords:
@@ -985,7 +1191,8 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs'}
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
+        ('pbits_obj_light.bend', 'rep_pbits'): 'rep', ('e2e_encp.bend', 'SDPB'): 'hsp', ('e2e_encpd.bend', 'SDPB'): 'hsp'}
 
 
 class WordsFix:
@@ -1037,7 +1244,10 @@ class DSynth(W.Synth):
                 if key in BITS and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, BitsDec):
-                        return getattr(mdl, BITS[key])
+                        v_ = getattr(mdl, BITS[key])
+                        if callable(v_):
+                            return v_(self.subst(mod, args[1], env) if len(args) > 1 else None)
+                        return v_
                 if key in STORAGE and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, WordsDec):
@@ -1292,6 +1502,8 @@ def exec_payload_header(lf):
                           'proofs/obj/var_bytes_ExecutionPayloadHeader.bend')
 
 
-# the provers kept in e2e_decrep_x.py
-from e2e_decrep_x import EXTRA_PROVERS
-PROVERS.update(EXTRA_PROVERS)
+try:   # providers written in codegen/e2e_decrep_x.py (solid3: BlobSidecar, ComplexTestStruct)
+    from e2e_decrep_x import EXTRA_PROVERS
+    PROVERS.update(EXTRA_PROVERS)
+except ImportError:
+    pass
