@@ -123,7 +123,7 @@ each with the same sha256.
 
 All against the independent oracle `codegen/core/oracle.py` (written from the specification, sharing
 no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server at
-<!-- fig:evidence_commit -->1cc79baa<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+<!-- fig:evidence_commit -->5bdc9afa<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
 the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
