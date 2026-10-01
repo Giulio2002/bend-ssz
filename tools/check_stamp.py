@@ -29,6 +29,7 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -104,6 +105,13 @@ def write(d, out):
                  'roots': len(p[3].split()), 'result': 'missing'}
         else:
             r['result'] = 'pass' if r['exit'] == 0 and r['all_terms_check'] else 'fail'
+        # the limits the umbrella actually ran under: the CHECK_STACK line tools/check.sh prints first
+        log = os.path.join(d, p[0].replace('.bend', '.log'))
+        try:
+            m = re.search(r'^CHECK_STACK ulimit_kb=(\d+) jsc_bytes=(\d+)', open(log).readline())
+        except OSError:
+            m = None
+        r['stack'] = [int(m.group(1)), int(m.group(2))] if m else None
         rows.append(r)
     extra = sorted(got)  # rows for umbrellas not in the plan (bisection never writes summary rows)
     rows.sort(key=lambda r: r['umbrella'])
@@ -111,11 +119,14 @@ def write(d, out):
     lock = json.load(open(os.path.join(ROOT, LOCK)))
     scope = os.environ.get('CHECK_FAST_FILES') or 'all'
     missing = [r['umbrella'] for r in rows if r['result'] == 'missing']
-    ok = bool(rows) and all(r['result'] == 'pass' for r in rows) and not dup and not extra
+    stacks = {tuple(r['stack']) if r.get('stack') else None for r in rows}
+    # every umbrella must have run under the same recorded limits (a log with no CHECK_STACK line fails the stamp)
+    stack_ok = len(stacks) == 1 and None not in stacks
+    stack_kb, jsc_bytes = (next(iter(stacks)) if stack_ok else (None, None))
+    ok = bool(rows) and all(r['result'] == 'pass' for r in rows) and not dup and not extra and stack_ok
     st = {'commit': commit(), 'utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
           'checker_commit': lock['checker']['commit'], 'toolchain_lock': LOCK, **locks(),
-          'stack_kb': int(os.environ.get('CHECK_STACK_KB') or 16384),
-          'jsc_stack_bytes': int(os.environ.get('CHECK_JSC_STACK') or 10485760),
+          'stack_kb': stack_kb, 'jsc_stack_bytes': jsc_bytes,
           'sources_sha256': digest, 'files': n, 'harness_sha256': harness(),
           'plan_sha256': sha(open(plan_path, 'rb').read()), 'plan_umbrellas': len(plan),
           'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,

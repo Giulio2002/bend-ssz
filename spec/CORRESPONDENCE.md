@@ -44,8 +44,8 @@ way. It describes the current tree only. The development notes it replaced are k
   127 "should not" be used and that there is at least one option. No reference type is affected.
 - **No `None` in a CompatibleUnion.** A CompatibleUnion option may not be `None`
   (`type_legality.legal`: the options are checked with `legal(options, True{})`, and a `T.Null{}`
-  outside the first option of a plain `Union` is `Empty`). The prose (EIP-7495's
-  `CompatibleUnion`) does not state this; it lists only non-empty option types, and no reference
+  outside the first option of a plain `Union` is `Empty`). The prose (EIP-8016's
+  `CompatibleUnion`; EIP-7495 is the progressive container) does not state this; it lists only non-empty option types, and no reference
   type or official vector uses `None` there.
 - **Duplicate field names** in a container or progressive container are illegal
   (`type_legality.named_fields`, `distinct_names`). The prose has no such rule; a Python container

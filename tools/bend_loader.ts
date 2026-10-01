@@ -1,6 +1,6 @@
 /**
  * Local Bun preload: `import X from './m.bend'` yields the ES module that the
- * pinned Bend 2.0.25 compiler itself emits for m.bend (its load_js/js_lib path,
+ * pinned Bend compiler (benchmarks/toolchain.json) itself emits for m.bend (its load_js/js_lib path,
  * reached through the official `bend <page.html> -o <dir>` bundler).
  * No Bend algorithm is reimplemented here; this file only compiles, caches
  * and re-exports the compiler's output. Compile errors abort the import.
@@ -13,7 +13,7 @@ import {join, relative, resolve} from 'node:path';
 const ROOT = resolve(import.meta.dir, '..');
 const LOCK = JSON.parse(readFileSync(join(ROOT, 'benchmarks/toolchain.json'), 'utf8'));
 // BEND_RUNTIME names the pinned runtime compiler where it is not at the lock's path (the ssz
-// server: /srv/ssz-optimization/toolchain-2.0.28/bend/bin/bend); its Base is <bin>/../bend2/base.bend.
+// server: /srv/ssz-optimization/toolchain-2.0.34/bin/bend); its Base is <bin>/../bend2/base.bend.
 const BEND: string = process.env.BEND_RUNTIME ?? LOCK.bend.path;
 const BASE: string = process.env.BEND_RUNTIME ? join(BEND, '..', '..', 'bend2', 'base.bend') : LOCK.base.path;
 const CACHE = join(ROOT, 'build/bend-loader');

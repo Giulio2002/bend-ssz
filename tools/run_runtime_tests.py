@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Bun tests against the actual compiled Bend modules of the pinned 2.0.25 toolchain.
+"""Run Bun tests against the actual compiled Bend modules of the pinned runtime toolchain (benchmarks/toolchain.json).
 
 Every `.bend` import goes through tools/bend_loader.ts, which returns the ES module
 that the pinned compiler emits. Fails on any test failure, load/compile error,
