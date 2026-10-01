@@ -4,7 +4,7 @@ BitsStruct	composed
 CompatibleUnionA	composed
 CompatibleUnionABCA	composed
 CompatibleUnionBC	composed
-ComplexTestStruct	pending: the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending)
+ComplexTestStruct	composed
 FixedTestStruct	composed
 FuluAggregateAndProof	composed
 FuluAttestation	composed

@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4838 statements in 1272 files.
+# 4840 statements in 1273 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -366,6 +366,23 @@ import ../types/CompatibleUnionBC_encode_ssz_generated.bend as CompatibleUnionBC
 import ../types/CompatibleUnionBC_hashtreeroot_generated.bend as CompatibleUnionBC_h
 def CompatibleUnionBC_e2e_witness() -> {Some{E.obytes(Pair.snd(CompatibleUnionBC_d.CompatibleUnionBC, B.Buf, CompatibleUnionBC_e.CompatibleUnionBC_encode(CompatibleUnionBC_d.CompatibleUnionBC_default())))} == API.serialize(Spec.CompatibleUnionBC(), RT.v_CompatibleUnionBC(CompatibleUnionBC_d.CompatibleUnionBC_default())) : Maybe<&2, +List<U32>>}:
 def CompatibleUnionBC_e2e_witness_root() -> {Some{D.bytes(Pair.snd(CompatibleUnionBC_d.CompatibleUnionBC, D.Digest, Pair.snd(B.Buf, CompatibleUnionBC_d.CompatibleUnionBC & D.Digest, CompatibleUnionBC_h.CompatibleUnionBC_hash_tree_root(B.alloc(0), CompatibleUnionBC_d.CompatibleUnionBC_default()))))} == API.hash_tree_root(Spec.CompatibleUnionBC(), RT.v_CompatibleUnionBC(CompatibleUnionBC_d.CompatibleUnionBC_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/ComplexTestStruct_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/ComplexTestStruct_decode_ssz_generated.bend as ComplexTestStruct_r
+import ../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
+import ../types/ComplexTestStruct_encode_ssz_generated.bend as ComplexTestStruct_e
+import ../types/ComplexTestStruct_hashtreeroot_generated.bend as ComplexTestStruct_h
+def ComplexTestStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ComplexTestStruct_d.ComplexTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>})
+    -> {E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(o))) == bs : +List<U32>}:
+def ComplexTestStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ComplexTestStruct_d.ComplexTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>})
+    -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, o))))} == C.droot(Spec.ComplexTestStruct(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ComplexTestStruct_e2e_dec_generated.bend
 import ../src/model.bend as API

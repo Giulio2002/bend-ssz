@@ -66,6 +66,7 @@
     "e2e/CompatibleUnionBC_e2e_generated.bend": "135a7e8831d980799196de5dfe07061377032f35de07c9596f6d7d31e838a141",
     "e2e/CompatibleUnionBC_e2e_root_generated.bend": "4e24ff8395f9d7c68ab6b32e84271106130ac3ae0f761d8cf982697af60cdfba",
     "e2e/CompatibleUnionBC_e2e_witness_generated.bend": "5ee2b0399fd16bf9a185c17d5e29555a9f2c7ab1e5df29908b1f08e72a7cff78",
+    "e2e/ComplexTestStruct_e2e_comp_generated.bend": "a9ab44e933e43739234eb299d9aede909779310fb79bc75049ca91c03ae269e2",
     "e2e/ComplexTestStruct_e2e_dec_generated.bend": "b15f5a2a03fa01625be2118b4311e5d63eade268b3f9e47516c017c0e73fa595",
     "e2e/ComplexTestStruct_e2e_generated.bend": "c5bce699506611e75692a11beeed25e0737f5115ad9b828b8cb937574749dc6d",
     "e2e/ComplexTestStruct_e2e_root_generated.bend": "5e367bf9b408d700d83cd7e42149b9acba8ae9c9b149cfcc444b922cb43128b1",
