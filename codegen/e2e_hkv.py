@@ -2,10 +2,10 @@
 """e2e/e2e_hkv.bend: the element hooks of a VarTestStruct window for the progressive lists of VarTestStruct (pl_VarTestStruct: e2e_dvp_pl_VarTestStruct.bend),
 in the root_gtypes2_light mirrors (RT = RT2 of e2e_encld.bend). The element at the window (x, off, len) (var_winx_VarTestStruct: W; OBJw) has:
 
-    rep(d, t, x, off, len, WF, hchk, sE, ee)      RT.rep_VarTestStruct_bx(th_bx(fz_bx(wrap(OBJw))), sE)
-    sde(d, t, x, off, len, WF, hchk)              EL.EPB_pl_VarTestStruct(fz_bx(wrap(OBJw)))
-    sz(d, t, x, off, len, WF, hchk)               the encoder's bytes of the element are the window's: length(XA.YE(EL.fbx_pl_VarTestStruct(fz_bx(wrap(OBJw))))) == len
-    canon(d, t, x, off, len, WF, hchk)            th_bx(fz_bx(wrap(OBJw))) == wrap(OBJw)
+    repT(d, t, x, off, len, hchk, WF, sE, ee)     RT.rep_VarTestStruct_bx(th_bx(fz_bx(wrap(OBJw))), sE)
+    sde(d, t, x, off, len, hchk, WF)              EL.EPB_pl_VarTestStruct(fz_bx(wrap(OBJw)))
+    sz(d, t, x, off, len, hchk, WF)               the encoder's bytes of the element are the window's: length(XA.YE(EL.fbx_pl_VarTestStruct(fz_bx(wrap(OBJw))))) == len
+    canon(d, t, x, off, len, hchk, WF)            th_bx(fz_bx(wrap(OBJw))) == wrap(OBJw)
 
 with WF = eo, hd, hw, hw32, pfw (unused here: the element's premises are the window's check alone). The lemmas are VarTestStruct_e2e_decrep_generated.bend's
 p_rep / p_hs at the window (e2e_dvv2.py), the valid-element law of e2e_encld.bend (ef_VarTestStruct) and the encoder's length law (lenEW).
@@ -65,13 +65,13 @@ def text():
        f'  FD.logic__subst({VT}, z => BL.sdk(RT.pj_VarTestStruct_1(z), 31n), {OW}, {TH(OW)}, Equal.sym({VT}, {TH(OW)}, {OW}, thfz(d, t, x, off, len)), el_hs(d, t, x, off, len, hchk))')
     A_('')
     A_('# ---- the hooks ----')
-    A_(f'def rep({WIN}, {WF_SIG}, {HCK}, +sE: S.Schema, +ee: {{sE == {SCH} : S.Schema}})\n'
+    A_(f'def repT({WIN}, {HCK}, {WF_SIG}, +sE: S.Schema, +ee: {{sE == {SCH} : S.Schema}})\n'
        f'    -> RT.rep_VarTestStruct_bx(RT.th_VarTestStruct_bx(RT.MSome{{{FZ}}}), sE):\n'
        f'  ({{==}}, FD.logic__subst(S.Schema, z => RT.rep_VarTestStruct({TH(OW)}, z), {SCH}, sE, Equal.sym(S.Schema, sE, {SCH}, ee), el_rep_th(d, t, x, off, len, hchk)))')
     A_('')
-    A_(f'def sde({WIN}, {WF_SIG}, {HCK}) -> EL.EPB_pl_VarTestStruct(RT.MSome{{{FZ}}}):\n  el_hs_th(d, t, x, off, len, hchk)')
+    A_(f'def sde({WIN}, {HCK}, {WF_SIG}) -> EL.EPB_pl_VarTestStruct(RT.MSome{{{FZ}}}):\n  el_hs_th(d, t, x, off, len, hchk)')
     A_('')
-    A_(f'def canon({WIN}, {WF_SIG}, {HCK}) -> {{RT.th_VarTestStruct_bx(RT.MSome{{{FZ}}}) == O.BSome{{{OW}, O.BNone{{}}}} : O.Boxed<{VT}>}}:\n'
+    A_(f'def canon({WIN}, {HCK}, {WF_SIG}) -> {{RT.th_VarTestStruct_bx(RT.MSome{{{FZ}}}) == O.BSome{{{OW}, O.BNone{{}}}} : O.Boxed<{VT}>}}:\n'
        f'  Equal.cong({VT}, O.Boxed<{VT}>, z => O.BSome{{z, O.BNone{{}}}}, {TH(OW)}, {OW}, thfz(d, t, x, off, len))')
     A_('')
     A_('# ---- the encoder\'s bytes of the element: the window\'s ----')
@@ -107,7 +107,7 @@ def text():
        f'        Equal.cong(Nat, Nat, z => Nat.sub(U32.to_nat(len), z), U32.to_nat(W.O0(t, x)), U32.to_nat(7), e7))),\n'
        f'    FD.nat__sub_add(U32.to_nat(len), U32.to_nat(7), hF))')
     A_('')
-    A_(f'def sz({WIN}, {WF_SIG}, {HCK})\n    -> {{List.length(&2, U32, XA.YE(EL.fbx_pl_VarTestStruct(RT.MSome{{{FZ}}}))) == U32.to_nat(len) : Nat}}:\n'
+    A_(f'def sz({WIN}, {HCK}, {WF_SIG})\n    -> {{List.length(&2, U32, XA.YE(EL.fbx_pl_VarTestStruct(RT.MSome{{{FZ}}}))) == U32.to_nat(len) : Nat}}:\n'
        f'  Equal.trans(Nat, List.length(&2, U32, XA.YE(EL.fbx_pl_VarTestStruct(RT.MSome{{{FZ}}}))), Nat.add(7n, U32.to_nat(W.LJ0(t, x, len))), U32.to_nat(len),\n'
        f'    szo({OW}, okw(d, t, x, off, len, hchk)), ln7(d, t, x, off, len, hchk))')
     return '\n'.join(o) + '\n'
