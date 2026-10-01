@@ -814,6 +814,10 @@
     {
      "file": "serialize_0.bend",
      "law": "uint256_serialize_valid"
+    },
+    {
+     "file": "mutconst_uint256.bend",
+     "law": "uint256_mc_put"
     }
    ]
   },
@@ -891,6 +895,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes1_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes1.bend",
+     "law": "Bytes1_mc_put"
     }
    ]
   },
@@ -989,6 +997,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes4_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes4.bend",
+     "law": "Bytes4_mc_put"
     }
    ]
   },
@@ -1087,6 +1099,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes32_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes32.bend",
+     "law": "Bytes32_mc_put"
     }
    ]
   },
@@ -1185,6 +1201,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes48_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes48.bend",
+     "law": "Bytes48_mc_put"
     }
    ]
   },
@@ -1283,6 +1303,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes96_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes96.bend",
+     "law": "Bytes96_mc_put"
     }
    ]
   },
@@ -1381,6 +1405,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes8_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes8.bend",
+     "law": "Bytes8_mc_put"
     }
    ]
   },
@@ -1479,6 +1507,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Bytes20_serialize_valid"
+    },
+    {
+     "file": "mutconst_Bytes20.bend",
+     "law": "Bytes20_mc_put"
     }
    ]
   },
@@ -1871,6 +1903,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Hash32_serialize_valid"
+    },
+    {
+     "file": "mutconst_Hash32.bend",
+     "law": "Hash32_mc_put"
     }
    ]
   },
@@ -1969,6 +2005,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Version_serialize_valid"
+    },
+    {
+     "file": "mutconst_Version.bend",
+     "law": "Version_mc_put"
     }
    ]
   },
@@ -2067,6 +2107,10 @@
     {
      "file": "serialize_0.bend",
      "law": "DomainType_serialize_valid"
+    },
+    {
+     "file": "mutconst_DomainType.bend",
+     "law": "DomainType_mc_put"
     }
    ]
   },
@@ -2165,6 +2209,10 @@
     {
      "file": "serialize_0.bend",
      "law": "BLSSignature_serialize_valid"
+    },
+    {
+     "file": "mutconst_BLSSignature.bend",
+     "law": "BLSSignature_mc_put"
     }
    ]
   },
@@ -2173,6 +2221,10 @@
     {
      "file": "root_words.bend",
      "law": "FinalityBranch_root_correct"
+    },
+    {
+     "file": "mutconst_FinalityBranch.bend",
+     "law": "FinalityBranch_mc_root"
     }
    ],
    "ok_eval": [
@@ -2239,7 +2291,20 @@
      "law": "FinalityBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_FinalityBranch.bend",
+     "law": "FinalityBranch_mc_poison_v7_b32"
+    },
+    {
+     "file": "mutconst_FinalityBranch.bend",
+     "law": "FinalityBranch_mc_put"
+    },
+    {
+     "file": "mutconst_FinalityBranch.bend",
+     "law": "FinalityBranch_mc_ser"
+    }
+   ]
   },
   "VersionedHash": {
    "root": [
@@ -2336,6 +2401,10 @@
     {
      "file": "serialize_0.bend",
      "law": "VersionedHash_serialize_valid"
+    },
+    {
+     "file": "mutconst_VersionedHash.bend",
+     "law": "VersionedHash_mc_put"
     }
    ]
   },
@@ -2434,6 +2503,10 @@
     {
      "file": "serialize_0.bend",
      "law": "G1Point_serialize_valid"
+    },
+    {
+     "file": "mutconst_G1Point.bend",
+     "law": "G1Point_mc_put"
     }
    ]
   },
@@ -2532,6 +2605,10 @@
     {
      "file": "serialize_0.bend",
      "law": "G2Point_serialize_valid"
+    },
+    {
+     "file": "mutconst_G2Point.bend",
+     "law": "G2Point_mc_put"
     }
    ]
   },
@@ -2732,6 +2809,10 @@
     {
      "file": "serialize_0.bend",
      "law": "SyncAggregate_serialize_valid"
+    },
+    {
+     "file": "mutconst_SyncAggregate.bend",
+     "law": "SyncAggregate_mc_bxpoison_SyncAggregate"
     }
    ]
   },
@@ -3614,6 +3695,10 @@
     {
      "file": "serialize_0.bend",
      "law": "Root_serialize_valid"
+    },
+    {
+     "file": "mutconst_Root.bend",
+     "law": "Root_mc_put"
     }
    ]
   },
@@ -3814,6 +3899,10 @@
     {
      "file": "serialize_0.bend",
      "law": "SyncCommitteeContribution_serialize_valid"
+    },
+    {
+     "file": "mutconst_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_mc_bxpoison_SyncCommitteeContribution"
     }
    ]
   },
@@ -3888,7 +3977,12 @@
      "law": "ContributionAndProof_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ContributionAndProof.bend",
+     "law": "ContributionAndProof_mc_ser"
+    }
+   ]
   },
   "SignedContributionAndProof": {
    "root": [
@@ -3961,7 +4055,12 @@
      "law": "SignedContributionAndProof_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_mc_ser"
+    }
+   ]
   },
   "SyncCommitteeMessage": {
    "root": [
@@ -4356,6 +4455,10 @@
     {
      "file": "serialize_1.bend",
      "law": "SignedBeaconBlockHeader_serialize_valid"
+    },
+    {
+     "file": "mutconst_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_mc_bxpoison_SignedBeaconBlockHeader"
     }
    ]
   },
@@ -4430,7 +4533,16 @@
      "law": "ProposerSlashing_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProposerSlashing.bend",
+     "law": "ProposerSlashing_mc_bxpoison_ProposerSlashing"
+    },
+    {
+     "file": "mutconst_ProposerSlashing.bend",
+     "law": "ProposerSlashing_mc_ser"
+    }
+   ]
   },
   "HistoricalBatch": {
    "root": [
@@ -4953,7 +5065,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_Attestation.bend",
+     "law": "Attestation_mc_bxpoison_Attestation"
+    },
+    {
+     "file": "mutconst_Attestation.bend",
+     "law": "Attestation_mc_bxcount_Attestation"
+    },
+    {
+     "file": "mutconst_Attestation.bend",
+     "law": "Attestation_mc_ser"
+    }
+   ]
   },
   "AggregateAndProof": {
    "root": [
@@ -5016,7 +5141,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_AggregateAndProof.bend",
+     "law": "AggregateAndProof_mc_ser"
+    }
+   ]
   },
   "SignedAggregateAndProof": {
    "root": [
@@ -5079,7 +5209,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_SignedAggregateAndProof.bend",
+     "law": "SignedAggregateAndProof_mc_ser"
+    }
+   ]
   },
   "PendingAttestation": {
    "root": [
@@ -5142,7 +5277,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_PendingAttestation.bend",
+     "law": "PendingAttestation_mc_ser"
+    }
+   ]
   },
   "IndexedAttestation": {
    "root": [
@@ -5205,7 +5345,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_IndexedAttestation.bend",
+     "law": "IndexedAttestation_mc_bxpoison_IndexedAttestation"
+    },
+    {
+     "file": "mutconst_IndexedAttestation.bend",
+     "law": "IndexedAttestation_mc_bxcount_IndexedAttestation"
+    },
+    {
+     "file": "mutconst_IndexedAttestation.bend",
+     "law": "IndexedAttestation_mc_ser"
+    }
+   ]
   },
   "AttesterSlashing": {
    "root": [
@@ -5268,7 +5421,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_AttesterSlashing.bend",
+     "law": "AttesterSlashing_mc_bxpoison_AttesterSlashing"
+    },
+    {
+     "file": "mutconst_AttesterSlashing.bend",
+     "law": "AttesterSlashing_mc_bxcount_AttesterSlashing"
+    },
+    {
+     "file": "mutconst_AttesterSlashing.bend",
+     "law": "AttesterSlashing_mc_ser"
+    }
+   ]
   },
   "ForkData": {
    "root": [
@@ -5463,6 +5629,10 @@
     {
      "file": "serialize_1.bend",
      "law": "ForkDigest_serialize_valid"
+    },
+    {
+     "file": "mutconst_ForkDigest.bend",
+     "law": "ForkDigest_mc_put"
     }
    ]
   },
@@ -5561,6 +5731,10 @@
     {
      "file": "serialize_1.bend",
      "law": "Domain_serialize_valid"
+    },
+    {
+     "file": "mutconst_Domain.bend",
+     "law": "Domain_mc_put"
     }
    ]
   },
@@ -5757,6 +5931,10 @@
     {
      "file": "serialize_1.bend",
      "law": "BLSPubkey_serialize_valid"
+    },
+    {
+     "file": "mutconst_BLSPubkey.bend",
+     "law": "BLSPubkey_mc_put"
     }
    ]
   },
@@ -6123,6 +6301,10 @@
     {
      "file": "serialize_1.bend",
      "law": "DepositData_serialize_valid"
+    },
+    {
+     "file": "mutconst_DepositData.bend",
+     "law": "DepositData_mc_bxpoison_DepositData"
     }
    ]
   },
@@ -6197,7 +6379,16 @@
      "law": "Deposit_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_Deposit.bend",
+     "law": "Deposit_mc_bxpoison_Deposit"
+    },
+    {
+     "file": "mutconst_Deposit.bend",
+     "law": "Deposit_mc_ser"
+    }
+   ]
   },
   "DepositMessage": {
    "root": [
@@ -6468,6 +6659,10 @@
     {
      "file": "serialize_1.bend",
      "law": "NodeID_serialize_valid"
+    },
+    {
+     "file": "mutconst_NodeID.bend",
+     "law": "NodeID_mc_put"
     }
    ]
   },
@@ -6749,6 +6944,10 @@
     {
      "file": "root_words.bend",
      "law": "CurrentSyncCommitteeBranch_root_correct"
+    },
+    {
+     "file": "mutconst_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_mc_root"
     }
    ],
    "ok_eval": [
@@ -6815,13 +7014,30 @@
      "law": "CurrentSyncCommitteeBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_mc_poison_v6_b32"
+    },
+    {
+     "file": "mutconst_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_mc_put"
+    },
+    {
+     "file": "mutconst_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_mc_ser"
+    }
+   ]
   },
   "NextSyncCommitteeBranch": {
    "root": [
     {
      "file": "root_words.bend",
      "law": "NextSyncCommitteeBranch_root_correct"
+    },
+    {
+     "file": "mutconst_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_mc_root"
     }
    ],
    "ok_eval": [
@@ -6888,7 +7104,16 @@
      "law": "NextSyncCommitteeBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_mc_put"
+    },
+    {
+     "file": "mutconst_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_mc_ser"
+    }
+   ]
   },
   "Transaction": {
    "root": [
@@ -6951,7 +7176,24 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_Transaction.bend",
+     "law": "Transaction_mc_bxpoison_bl1073741824"
+    },
+    {
+     "file": "mutconst_Transaction.bend",
+     "law": "Transaction_mc_bxcount_bl1073741824"
+    },
+    {
+     "file": "mutconst_Transaction.bend",
+     "law": "Transaction_mc_poison_bl1073741824"
+    },
+    {
+     "file": "mutconst_Transaction.bend",
+     "law": "Transaction_mc_ser"
+    }
+   ]
   },
   "ExecutionAddress": {
    "root": [
@@ -7048,6 +7290,10 @@
     {
      "file": "serialize_1.bend",
      "law": "ExecutionAddress_serialize_valid"
+    },
+    {
+     "file": "mutconst_ExecutionAddress.bend",
+     "law": "ExecutionAddress_mc_put"
     }
    ]
   },
@@ -7308,7 +7554,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ExecutionRequests.bend",
+     "law": "ExecutionRequests_mc_ser"
+    }
+   ]
   },
   "BLSToExecutionChange": {
    "root": [
@@ -7567,7 +7818,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_mc_bxpoison_ExecutionPayloadHeader"
+    },
+    {
+     "file": "mutconst_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_mc_bxcount_ExecutionPayloadHeader"
+    },
+    {
+     "file": "mutconst_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_mc_ser"
+    }
+   ]
   },
   "PayloadId": {
    "root": [
@@ -7664,6 +7928,10 @@
     {
      "file": "serialize_1.bend",
      "law": "PayloadId_serialize_valid"
+    },
+    {
+     "file": "mutconst_PayloadId.bend",
+     "law": "PayloadId_mc_put"
     }
    ]
   },
@@ -7924,7 +8192,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ExecutionPayload.bend",
+     "law": "ExecutionPayload_mc_bxpoison_ExecutionPayload"
+    },
+    {
+     "file": "mutconst_ExecutionPayload.bend",
+     "law": "ExecutionPayload_mc_bxcount_ExecutionPayload"
+    },
+    {
+     "file": "mutconst_ExecutionPayload.bend",
+     "law": "ExecutionPayload_mc_ser"
+    }
+   ]
   },
   "BeaconState": {
    "root": [
@@ -7994,6 +8275,10 @@
     {
      "file": "root_words.bend",
      "law": "ExecutionBranch_root_correct"
+    },
+    {
+     "file": "mutconst_ExecutionBranch.bend",
+     "law": "ExecutionBranch_mc_root"
     }
    ],
    "ok_eval": [
@@ -8060,7 +8345,20 @@
      "law": "ExecutionBranch_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ExecutionBranch.bend",
+     "law": "ExecutionBranch_mc_poison_v4_b32"
+    },
+    {
+     "file": "mutconst_ExecutionBranch.bend",
+     "law": "ExecutionBranch_mc_put"
+    },
+    {
+     "file": "mutconst_ExecutionBranch.bend",
+     "law": "ExecutionBranch_mc_ser"
+    }
+   ]
   },
   "LightClientHeader": {
    "root": [
@@ -8123,7 +8421,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_LightClientHeader.bend",
+     "law": "LightClientHeader_mc_ser"
+    }
+   ]
   },
   "LightClientOptimisticUpdate": {
    "root": [
@@ -8186,7 +8489,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_LightClientOptimisticUpdate.bend",
+     "law": "LightClientOptimisticUpdate_mc_ser"
+    }
+   ]
   },
   "LightClientFinalityUpdate": {
    "root": [
@@ -8249,7 +8557,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_LightClientFinalityUpdate.bend",
+     "law": "LightClientFinalityUpdate_mc_ser"
+    }
+   ]
   },
   "LightClientUpdate": {
    "root": [
@@ -8668,6 +8981,10 @@
     {
      "file": "serialize_1.bend",
      "law": "KZGCommitment_serialize_valid"
+    },
+    {
+     "file": "mutconst_KZGCommitment.bend",
+     "law": "KZGCommitment_mc_put"
     }
    ]
   },
@@ -8732,7 +9049,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_mc_bxpoison_BeaconBlockBody"
+    },
+    {
+     "file": "mutconst_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_mc_bxcount_BeaconBlockBody"
+    },
+    {
+     "file": "mutconst_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_mc_ser"
+    }
+   ]
   },
   "BeaconBlock": {
    "root": [
@@ -8795,7 +9125,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_BeaconBlock.bend",
+     "law": "BeaconBlock_mc_ser"
+    }
+   ]
   },
   "SignedBeaconBlock": {
    "root": [
@@ -8858,7 +9193,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_SignedBeaconBlock.bend",
+     "law": "SignedBeaconBlock_mc_ser"
+    }
+   ]
   },
   "KZGProof": {
    "root": [
@@ -8955,6 +9295,10 @@
     {
      "file": "serialize_1.bend",
      "law": "KZGProof_serialize_valid"
+    },
+    {
+     "file": "mutconst_KZGProof.bend",
+     "law": "KZGProof_mc_put"
     }
    ]
   },
@@ -8963,6 +9307,10 @@
     {
      "file": "root_types.bend",
      "law": "Blob_root_correct"
+    },
+    {
+     "file": "mutconst_Blob.bend",
+     "law": "Blob_mc_root"
     }
    ],
    "ok_eval": [
@@ -9028,6 +9376,10 @@
     {
      "file": "mutation_laws_fulu.bend",
      "law": "Blob_serialize_over"
+    },
+    {
+     "file": "mutconst_Blob.bend",
+     "law": "Blob_mc_poison_b131072"
     }
    ]
   },
@@ -9108,6 +9460,10 @@
     {
      "file": "root_words.bend",
      "law": "Cell_root_correct"
+    },
+    {
+     "file": "mutconst_Cell.bend",
+     "law": "Cell_mc_root"
     }
    ],
    "ok_eval": [
@@ -9182,6 +9538,10 @@
     {
      "file": "mutation_laws_fulu.bend",
      "law": "Cell_serialize_in"
+    },
+    {
+     "file": "mutconst_Cell.bend",
+     "law": "Cell_mc_poison_b2048"
     }
    ]
   },
@@ -9638,7 +9998,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_DataColumnsByRootIdentifier.bend",
+     "law": "DataColumnsByRootIdentifier_mc_ser"
+    }
+   ]
   },
   "MatrixEntry": {
    "root": [
@@ -9711,7 +10076,12 @@
      "law": "MatrixEntry_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_MatrixEntry.bend",
+     "law": "MatrixEntry_mc_ser"
+    }
+   ]
   },
   "DataColumnSidecar": {
    "root": [
@@ -9774,7 +10144,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_DataColumnSidecar.bend",
+     "law": "DataColumnSidecar_mc_ser"
+    }
+   ]
   },
   "CustodyIndex": {
    "root": [
@@ -9935,7 +10310,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProgressiveSingleListContainerTestStruct.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_mc_ser"
+    }
+   ]
   },
   "ProgressiveComplexTestStruct": {
    "root": [
@@ -9998,7 +10378,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProgressiveComplexTestStruct.bend",
+     "law": "ProgressiveComplexTestStruct_mc_ser"
+    }
+   ]
   },
   "ProgressiveVarTestStruct": {
    "root": [
@@ -10061,7 +10446,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProgressiveVarTestStruct.bend",
+     "law": "ProgressiveVarTestStruct_mc_bxpoison_ProgressiveVarTestStruct"
+    },
+    {
+     "file": "mutconst_ProgressiveVarTestStruct.bend",
+     "law": "ProgressiveVarTestStruct_mc_bxcount_ProgressiveVarTestStruct"
+    },
+    {
+     "file": "mutconst_ProgressiveVarTestStruct.bend",
+     "law": "ProgressiveVarTestStruct_mc_ser"
+    }
+   ]
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "root": [
@@ -10187,13 +10585,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_bool.bend",
+     "law": "proglist_bool_mc_poison_pl_bool"
+    },
+    {
+     "file": "mutconst_proglist_bool.bend",
+     "law": "proglist_bool_mc_ser"
+    }
+   ]
   },
   "vec_bool_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_16.bend",
+     "law": "vec_bool_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -10254,13 +10665,30 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_16.bend",
+     "law": "vec_bool_16_mc_poison_v16_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_16.bend",
+     "law": "vec_bool_16_mc_put"
+    },
+    {
+     "file": "mutconst_vec_bool_16.bend",
+     "law": "vec_bool_16_mc_ser"
+    }
+   ]
   },
   "vec_bool_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_1.bend",
+     "law": "vec_bool_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -10321,13 +10749,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_1.bend",
+     "law": "vec_bool_1_mc_poison_v1_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_1.bend",
+     "law": "vec_bool_1_mc_ser"
+    }
+   ]
   },
   "vec_bool_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_2.bend",
+     "law": "vec_bool_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -10388,13 +10829,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_2.bend",
+     "law": "vec_bool_2_mc_poison_v2_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_2.bend",
+     "law": "vec_bool_2_mc_ser"
+    }
+   ]
   },
   "vec_bool_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_31.bend",
+     "law": "vec_bool_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -10455,13 +10909,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_31.bend",
+     "law": "vec_bool_31_mc_poison_v31_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_31.bend",
+     "law": "vec_bool_31_mc_ser"
+    }
+   ]
   },
   "vec_bool_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_3.bend",
+     "law": "vec_bool_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -10522,13 +10989,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_3.bend",
+     "law": "vec_bool_3_mc_poison_v3_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_3.bend",
+     "law": "vec_bool_3_mc_ser"
+    }
+   ]
   },
   "vec_bool_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_4.bend",
+     "law": "vec_bool_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -10589,13 +11069,30 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_4.bend",
+     "law": "vec_bool_4_mc_poison_v4_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_4.bend",
+     "law": "vec_bool_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_bool_4.bend",
+     "law": "vec_bool_4_mc_ser"
+    }
+   ]
   },
   "vec_bool_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_512.bend",
+     "law": "vec_bool_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -10656,13 +11153,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_512.bend",
+     "law": "vec_bool_512_mc_poison_v512_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_512.bend",
+     "law": "vec_bool_512_mc_ser"
+    }
+   ]
   },
   "vec_bool_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_513.bend",
+     "law": "vec_bool_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -10723,13 +11233,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_513.bend",
+     "law": "vec_bool_513_mc_poison_v513_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_513.bend",
+     "law": "vec_bool_513_mc_ser"
+    }
+   ]
   },
   "vec_bool_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_5.bend",
+     "law": "vec_bool_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -10790,13 +11313,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_5.bend",
+     "law": "vec_bool_5_mc_poison_v5_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_5.bend",
+     "law": "vec_bool_5_mc_ser"
+    }
+   ]
   },
   "vec_bool_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_bool_8.bend",
+     "law": "vec_bool_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -10857,7 +11393,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_bool_8.bend",
+     "law": "vec_bool_8_mc_poison_v8_bool"
+    },
+    {
+     "file": "mutconst_vec_bool_8.bend",
+     "law": "vec_bool_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_bool_8.bend",
+     "law": "vec_bool_8_mc_ser"
+    }
+   ]
   },
   "proglist_uint128": {
    "root": [
@@ -10920,13 +11469,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint128.bend",
+     "law": "proglist_uint128_mc_poison_pl_u128"
+    },
+    {
+     "file": "mutconst_proglist_uint128.bend",
+     "law": "proglist_uint128_mc_ser"
+    }
+   ]
   },
   "vec_uint128_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_16.bend",
+     "law": "vec_uint128_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -10993,13 +11555,30 @@
      "law": "vec_uint128_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_16.bend",
+     "law": "vec_uint128_16_mc_poison_v16_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_16.bend",
+     "law": "vec_uint128_16_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_16.bend",
+     "law": "vec_uint128_16_mc_ser"
+    }
+   ]
   },
   "vec_uint128_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_1.bend",
+     "law": "vec_uint128_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -11066,13 +11645,30 @@
      "law": "vec_uint128_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_1.bend",
+     "law": "vec_uint128_1_mc_poison_v1_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_1.bend",
+     "law": "vec_uint128_1_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_1.bend",
+     "law": "vec_uint128_1_mc_ser"
+    }
+   ]
   },
   "vec_uint128_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_2.bend",
+     "law": "vec_uint128_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -11139,13 +11735,30 @@
      "law": "vec_uint128_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_2.bend",
+     "law": "vec_uint128_2_mc_poison_v2_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_2.bend",
+     "law": "vec_uint128_2_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_2.bend",
+     "law": "vec_uint128_2_mc_ser"
+    }
+   ]
   },
   "vec_uint128_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_31.bend",
+     "law": "vec_uint128_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -11212,13 +11825,26 @@
      "law": "vec_uint128_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_31.bend",
+     "law": "vec_uint128_31_mc_poison_v31_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_31.bend",
+     "law": "vec_uint128_31_mc_ser"
+    }
+   ]
   },
   "vec_uint128_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_3.bend",
+     "law": "vec_uint128_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -11285,13 +11911,30 @@
      "law": "vec_uint128_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_3.bend",
+     "law": "vec_uint128_3_mc_poison_v3_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_3.bend",
+     "law": "vec_uint128_3_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_3.bend",
+     "law": "vec_uint128_3_mc_ser"
+    }
+   ]
   },
   "vec_uint128_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_4.bend",
+     "law": "vec_uint128_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -11358,13 +12001,30 @@
      "law": "vec_uint128_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_4.bend",
+     "law": "vec_uint128_4_mc_poison_v4_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_4.bend",
+     "law": "vec_uint128_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_4.bend",
+     "law": "vec_uint128_4_mc_ser"
+    }
+   ]
   },
   "vec_uint128_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_512.bend",
+     "law": "vec_uint128_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -11426,13 +12086,26 @@
      "law": "vec_uint128_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_512.bend",
+     "law": "vec_uint128_512_mc_poison_v512_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_512.bend",
+     "law": "vec_uint128_512_mc_ser"
+    }
+   ]
   },
   "vec_uint128_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_513.bend",
+     "law": "vec_uint128_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -11494,13 +12167,22 @@
      "law": "vec_uint128_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_513.bend",
+     "law": "vec_uint128_513_mc_poison_v513_u128"
+    }
+   ]
   },
   "vec_uint128_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_5.bend",
+     "law": "vec_uint128_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -11567,13 +12249,30 @@
      "law": "vec_uint128_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_5.bend",
+     "law": "vec_uint128_5_mc_poison_v5_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_5.bend",
+     "law": "vec_uint128_5_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_5.bend",
+     "law": "vec_uint128_5_mc_ser"
+    }
+   ]
   },
   "vec_uint128_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint128_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint128_8.bend",
+     "law": "vec_uint128_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -11640,7 +12339,20 @@
      "law": "vec_uint128_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint128_8.bend",
+     "law": "vec_uint128_8_mc_poison_v8_u128"
+    },
+    {
+     "file": "mutconst_vec_uint128_8.bend",
+     "law": "vec_uint128_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint128_8.bend",
+     "law": "vec_uint128_8_mc_ser"
+    }
+   ]
   },
   "proglist_uint8": {
    "root": [
@@ -11703,13 +12415,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint8.bend",
+     "law": "proglist_uint8_mc_poison_pl_u8"
+    },
+    {
+     "file": "mutconst_proglist_uint8.bend",
+     "law": "proglist_uint8_mc_ser"
+    }
+   ]
   },
   "vec_uint8_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_16.bend",
+     "law": "vec_uint8_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -11774,6 +12499,14 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_16_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_16.bend",
+     "law": "vec_uint8_16_mc_poison_v16_u8"
+    },
+    {
+     "file": "mutconst_vec_uint8_16.bend",
+     "law": "vec_uint8_16_mc_put"
     }
    ]
   },
@@ -11782,6 +12515,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_1.bend",
+     "law": "vec_uint8_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -11846,6 +12583,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_1_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_1.bend",
+     "law": "vec_uint8_1_mc_poison_v1_u8"
     }
    ]
   },
@@ -11854,6 +12595,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_2.bend",
+     "law": "vec_uint8_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -11918,6 +12663,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_2_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_2.bend",
+     "law": "vec_uint8_2_mc_poison_v2_u8"
     }
    ]
   },
@@ -11926,6 +12675,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_31.bend",
+     "law": "vec_uint8_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -11990,6 +12743,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_31_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_31.bend",
+     "law": "vec_uint8_31_mc_poison_v31_u8"
     }
    ]
   },
@@ -11998,6 +12755,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_3.bend",
+     "law": "vec_uint8_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -12062,6 +12823,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_3_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_3.bend",
+     "law": "vec_uint8_3_mc_poison_v3_u8"
     }
    ]
   },
@@ -12070,6 +12835,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_4.bend",
+     "law": "vec_uint8_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -12134,6 +12903,14 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_4_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_4.bend",
+     "law": "vec_uint8_4_mc_poison_v4_u8"
+    },
+    {
+     "file": "mutconst_vec_uint8_4.bend",
+     "law": "vec_uint8_4_mc_put"
     }
    ]
   },
@@ -12142,6 +12919,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_512.bend",
+     "law": "vec_uint8_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -12206,6 +12987,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_512_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_512.bend",
+     "law": "vec_uint8_512_mc_poison_v512_u8"
     }
    ]
   },
@@ -12214,6 +12999,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_513.bend",
+     "law": "vec_uint8_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -12278,6 +13067,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_513_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_513.bend",
+     "law": "vec_uint8_513_mc_poison_v513_u8"
     }
    ]
   },
@@ -12286,6 +13079,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_5.bend",
+     "law": "vec_uint8_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -12350,6 +13147,10 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_5_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_5.bend",
+     "law": "vec_uint8_5_mc_poison_v5_u8"
     }
    ]
   },
@@ -12358,6 +13159,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint8_8.bend",
+     "law": "vec_uint8_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -12422,6 +13227,14 @@
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_8_serialize_in"
+    },
+    {
+     "file": "mutconst_vec_uint8_8.bend",
+     "law": "vec_uint8_8_mc_poison_v8_u8"
+    },
+    {
+     "file": "mutconst_vec_uint8_8.bend",
+     "law": "vec_uint8_8_mc_put"
     }
    ]
   },
@@ -12486,13 +13299,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint16.bend",
+     "law": "proglist_uint16_mc_poison_pl_u16"
+    },
+    {
+     "file": "mutconst_proglist_uint16.bend",
+     "law": "proglist_uint16_mc_ser"
+    }
+   ]
   },
   "vec_uint16_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_16.bend",
+     "law": "vec_uint16_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -12549,13 +13375,30 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_16.bend",
+     "law": "vec_uint16_16_mc_poison_v16_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_16.bend",
+     "law": "vec_uint16_16_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint16_16.bend",
+     "law": "vec_uint16_16_mc_ser"
+    }
+   ]
   },
   "vec_uint16_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_1.bend",
+     "law": "vec_uint16_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -12612,13 +13455,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_1.bend",
+     "law": "vec_uint16_1_mc_poison_v1_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_1.bend",
+     "law": "vec_uint16_1_mc_ser"
+    }
+   ]
   },
   "vec_uint16_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_2.bend",
+     "law": "vec_uint16_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -12675,13 +13531,30 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_2.bend",
+     "law": "vec_uint16_2_mc_poison_v2_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_2.bend",
+     "law": "vec_uint16_2_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint16_2.bend",
+     "law": "vec_uint16_2_mc_ser"
+    }
+   ]
   },
   "vec_uint16_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_31.bend",
+     "law": "vec_uint16_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -12738,13 +13611,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_31.bend",
+     "law": "vec_uint16_31_mc_poison_v31_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_31.bend",
+     "law": "vec_uint16_31_mc_ser"
+    }
+   ]
   },
   "vec_uint16_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_3.bend",
+     "law": "vec_uint16_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -12801,13 +13687,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_3.bend",
+     "law": "vec_uint16_3_mc_poison_v3_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_3.bend",
+     "law": "vec_uint16_3_mc_ser"
+    }
+   ]
   },
   "vec_uint16_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_4.bend",
+     "law": "vec_uint16_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -12864,13 +13763,30 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_4.bend",
+     "law": "vec_uint16_4_mc_poison_v4_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_4.bend",
+     "law": "vec_uint16_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint16_4.bend",
+     "law": "vec_uint16_4_mc_ser"
+    }
+   ]
   },
   "vec_uint16_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_512.bend",
+     "law": "vec_uint16_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -12927,13 +13843,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_512.bend",
+     "law": "vec_uint16_512_mc_poison_v512_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_512.bend",
+     "law": "vec_uint16_512_mc_ser"
+    }
+   ]
   },
   "vec_uint16_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_513.bend",
+     "law": "vec_uint16_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -12990,13 +13919,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_513.bend",
+     "law": "vec_uint16_513_mc_poison_v513_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_513.bend",
+     "law": "vec_uint16_513_mc_ser"
+    }
+   ]
   },
   "vec_uint16_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_5.bend",
+     "law": "vec_uint16_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -13053,13 +13995,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_5.bend",
+     "law": "vec_uint16_5_mc_poison_v5_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_5.bend",
+     "law": "vec_uint16_5_mc_ser"
+    }
+   ]
   },
   "vec_uint16_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint16_8.bend",
+     "law": "vec_uint16_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -13116,7 +14071,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint16_8.bend",
+     "law": "vec_uint16_8_mc_poison_v8_u16"
+    },
+    {
+     "file": "mutconst_vec_uint16_8.bend",
+     "law": "vec_uint16_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint16_8.bend",
+     "law": "vec_uint16_8_mc_ser"
+    }
+   ]
   },
   "proglist_uint256": {
    "root": [
@@ -13179,13 +14147,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint256.bend",
+     "law": "proglist_uint256_mc_poison_pl_u256"
+    },
+    {
+     "file": "mutconst_proglist_uint256.bend",
+     "law": "proglist_uint256_mc_ser"
+    }
+   ]
   },
   "vec_uint256_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_16.bend",
+     "law": "vec_uint256_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -13252,13 +14233,26 @@
      "law": "vec_uint256_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_16.bend",
+     "law": "vec_uint256_16_mc_poison_v16_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_16.bend",
+     "law": "vec_uint256_16_mc_ser"
+    }
+   ]
   },
   "vec_uint256_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_1.bend",
+     "law": "vec_uint256_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -13325,13 +14319,30 @@
      "law": "vec_uint256_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_1.bend",
+     "law": "vec_uint256_1_mc_poison_v1_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_1.bend",
+     "law": "vec_uint256_1_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_1.bend",
+     "law": "vec_uint256_1_mc_ser"
+    }
+   ]
   },
   "vec_uint256_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_2.bend",
+     "law": "vec_uint256_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -13398,13 +14409,30 @@
      "law": "vec_uint256_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_2.bend",
+     "law": "vec_uint256_2_mc_poison_v2_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_2.bend",
+     "law": "vec_uint256_2_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_2.bend",
+     "law": "vec_uint256_2_mc_ser"
+    }
+   ]
   },
   "vec_uint256_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_31.bend",
+     "law": "vec_uint256_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -13471,13 +14499,26 @@
      "law": "vec_uint256_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_31.bend",
+     "law": "vec_uint256_31_mc_poison_v31_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_31.bend",
+     "law": "vec_uint256_31_mc_ser"
+    }
+   ]
   },
   "vec_uint256_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_3.bend",
+     "law": "vec_uint256_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -13544,13 +14585,30 @@
      "law": "vec_uint256_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_3.bend",
+     "law": "vec_uint256_3_mc_poison_v3_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_3.bend",
+     "law": "vec_uint256_3_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_3.bend",
+     "law": "vec_uint256_3_mc_ser"
+    }
+   ]
   },
   "vec_uint256_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_4.bend",
+     "law": "vec_uint256_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -13617,13 +14675,30 @@
      "law": "vec_uint256_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_4.bend",
+     "law": "vec_uint256_4_mc_poison_v4_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_4.bend",
+     "law": "vec_uint256_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_4.bend",
+     "law": "vec_uint256_4_mc_ser"
+    }
+   ]
   },
   "vec_uint256_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_512.bend",
+     "law": "vec_uint256_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -13685,13 +14760,22 @@
      "law": "vec_uint256_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_512.bend",
+     "law": "vec_uint256_512_mc_poison_v512_u256"
+    }
+   ]
   },
   "vec_uint256_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_513.bend",
+     "law": "vec_uint256_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -13753,13 +14837,22 @@
      "law": "vec_uint256_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_513.bend",
+     "law": "vec_uint256_513_mc_poison_v513_u256"
+    }
+   ]
   },
   "vec_uint256_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_5.bend",
+     "law": "vec_uint256_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -13826,13 +14919,30 @@
      "law": "vec_uint256_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_5.bend",
+     "law": "vec_uint256_5_mc_poison_v5_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_5.bend",
+     "law": "vec_uint256_5_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_5.bend",
+     "law": "vec_uint256_5_mc_ser"
+    }
+   ]
   },
   "vec_uint256_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint256_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint256_8.bend",
+     "law": "vec_uint256_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -13899,7 +15009,20 @@
      "law": "vec_uint256_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint256_8.bend",
+     "law": "vec_uint256_8_mc_poison_v8_u256"
+    },
+    {
+     "file": "mutconst_vec_uint256_8.bend",
+     "law": "vec_uint256_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint256_8.bend",
+     "law": "vec_uint256_8_mc_ser"
+    }
+   ]
   },
   "proglist_uint32": {
    "root": [
@@ -13962,13 +15085,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint32.bend",
+     "law": "proglist_uint32_mc_poison_pl_u32"
+    },
+    {
+     "file": "mutconst_proglist_uint32.bend",
+     "law": "proglist_uint32_mc_ser"
+    }
+   ]
   },
   "vec_uint32_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_16.bend",
+     "law": "vec_uint32_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -14035,13 +15171,30 @@
      "law": "vec_uint32_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_16.bend",
+     "law": "vec_uint32_16_mc_poison_v16_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_16.bend",
+     "law": "vec_uint32_16_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_16.bend",
+     "law": "vec_uint32_16_mc_ser"
+    }
+   ]
   },
   "vec_uint32_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_1.bend",
+     "law": "vec_uint32_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -14108,13 +15261,30 @@
      "law": "vec_uint32_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_1.bend",
+     "law": "vec_uint32_1_mc_poison_v1_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_1.bend",
+     "law": "vec_uint32_1_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_1.bend",
+     "law": "vec_uint32_1_mc_ser"
+    }
+   ]
   },
   "vec_uint32_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_2.bend",
+     "law": "vec_uint32_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -14181,13 +15351,30 @@
      "law": "vec_uint32_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_2.bend",
+     "law": "vec_uint32_2_mc_poison_v2_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_2.bend",
+     "law": "vec_uint32_2_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_2.bend",
+     "law": "vec_uint32_2_mc_ser"
+    }
+   ]
   },
   "vec_uint32_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_31.bend",
+     "law": "vec_uint32_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -14254,13 +15441,30 @@
      "law": "vec_uint32_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_31.bend",
+     "law": "vec_uint32_31_mc_poison_v31_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_31.bend",
+     "law": "vec_uint32_31_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_31.bend",
+     "law": "vec_uint32_31_mc_ser"
+    }
+   ]
   },
   "vec_uint32_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_3.bend",
+     "law": "vec_uint32_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -14327,13 +15531,30 @@
      "law": "vec_uint32_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_3.bend",
+     "law": "vec_uint32_3_mc_poison_v3_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_3.bend",
+     "law": "vec_uint32_3_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_3.bend",
+     "law": "vec_uint32_3_mc_ser"
+    }
+   ]
   },
   "vec_uint32_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_4.bend",
+     "law": "vec_uint32_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -14400,13 +15621,30 @@
      "law": "vec_uint32_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_4.bend",
+     "law": "vec_uint32_4_mc_poison_v4_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_4.bend",
+     "law": "vec_uint32_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_4.bend",
+     "law": "vec_uint32_4_mc_ser"
+    }
+   ]
   },
   "vec_uint32_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_512.bend",
+     "law": "vec_uint32_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -14468,13 +15706,26 @@
      "law": "vec_uint32_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_512.bend",
+     "law": "vec_uint32_512_mc_poison_v512_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_512.bend",
+     "law": "vec_uint32_512_mc_ser"
+    }
+   ]
   },
   "vec_uint32_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_513.bend",
+     "law": "vec_uint32_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -14536,13 +15787,26 @@
      "law": "vec_uint32_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_513.bend",
+     "law": "vec_uint32_513_mc_poison_v513_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_513.bend",
+     "law": "vec_uint32_513_mc_ser"
+    }
+   ]
   },
   "vec_uint32_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_5.bend",
+     "law": "vec_uint32_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -14609,13 +15873,30 @@
      "law": "vec_uint32_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_5.bend",
+     "law": "vec_uint32_5_mc_poison_v5_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_5.bend",
+     "law": "vec_uint32_5_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_5.bend",
+     "law": "vec_uint32_5_mc_ser"
+    }
+   ]
   },
   "vec_uint32_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint32_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint32_8.bend",
+     "law": "vec_uint32_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -14682,7 +15963,20 @@
      "law": "vec_uint32_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint32_8.bend",
+     "law": "vec_uint32_8_mc_poison_v8_u32"
+    },
+    {
+     "file": "mutconst_vec_uint32_8.bend",
+     "law": "vec_uint32_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint32_8.bend",
+     "law": "vec_uint32_8_mc_ser"
+    }
+   ]
   },
   "proglist_uint64": {
    "root": [
@@ -14745,13 +16039,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_proglist_uint64.bend",
+     "law": "proglist_uint64_mc_poison_pl_u64"
+    },
+    {
+     "file": "mutconst_proglist_uint64.bend",
+     "law": "proglist_uint64_mc_ser"
+    }
+   ]
   },
   "vec_uint64_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_16_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_16.bend",
+     "law": "vec_uint64_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -14818,13 +16125,30 @@
      "law": "vec_uint64_16_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_16.bend",
+     "law": "vec_uint64_16_mc_poison_v16_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_16.bend",
+     "law": "vec_uint64_16_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_16.bend",
+     "law": "vec_uint64_16_mc_ser"
+    }
+   ]
   },
   "vec_uint64_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_1_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_1.bend",
+     "law": "vec_uint64_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -14891,13 +16215,30 @@
      "law": "vec_uint64_1_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_1.bend",
+     "law": "vec_uint64_1_mc_poison_v1_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_1.bend",
+     "law": "vec_uint64_1_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_1.bend",
+     "law": "vec_uint64_1_mc_ser"
+    }
+   ]
   },
   "vec_uint64_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_2_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_2.bend",
+     "law": "vec_uint64_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -14964,13 +16305,30 @@
      "law": "vec_uint64_2_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_2.bend",
+     "law": "vec_uint64_2_mc_poison_v2_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_2.bend",
+     "law": "vec_uint64_2_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_2.bend",
+     "law": "vec_uint64_2_mc_ser"
+    }
+   ]
   },
   "vec_uint64_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_31_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_31.bend",
+     "law": "vec_uint64_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -15037,13 +16395,30 @@
      "law": "vec_uint64_31_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_31.bend",
+     "law": "vec_uint64_31_mc_poison_v31_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_31.bend",
+     "law": "vec_uint64_31_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_31.bend",
+     "law": "vec_uint64_31_mc_ser"
+    }
+   ]
   },
   "vec_uint64_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_3_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_3.bend",
+     "law": "vec_uint64_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -15110,13 +16485,30 @@
      "law": "vec_uint64_3_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_3.bend",
+     "law": "vec_uint64_3_mc_poison_v3_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_3.bend",
+     "law": "vec_uint64_3_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_3.bend",
+     "law": "vec_uint64_3_mc_ser"
+    }
+   ]
   },
   "vec_uint64_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_4_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_4.bend",
+     "law": "vec_uint64_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -15183,13 +16575,30 @@
      "law": "vec_uint64_4_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_4.bend",
+     "law": "vec_uint64_4_mc_poison_v4_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_4.bend",
+     "law": "vec_uint64_4_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_4.bend",
+     "law": "vec_uint64_4_mc_ser"
+    }
+   ]
   },
   "vec_uint64_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_512_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_512.bend",
+     "law": "vec_uint64_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -15251,13 +16660,26 @@
      "law": "vec_uint64_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_512.bend",
+     "law": "vec_uint64_512_mc_poison_v512_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_512.bend",
+     "law": "vec_uint64_512_mc_ser"
+    }
+   ]
   },
   "vec_uint64_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_513_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_513.bend",
+     "law": "vec_uint64_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -15319,13 +16741,26 @@
      "law": "vec_uint64_513_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_513.bend",
+     "law": "vec_uint64_513_mc_poison_v513_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_513.bend",
+     "law": "vec_uint64_513_mc_ser"
+    }
+   ]
   },
   "vec_uint64_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_5_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_5.bend",
+     "law": "vec_uint64_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -15392,13 +16827,30 @@
      "law": "vec_uint64_5_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_5.bend",
+     "law": "vec_uint64_5_mc_poison_v5_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_5.bend",
+     "law": "vec_uint64_5_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_5.bend",
+     "law": "vec_uint64_5_mc_ser"
+    }
+   ]
   },
   "vec_uint64_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint64_8_root_correct"
+    },
+    {
+     "file": "mutconst_vec_uint64_8.bend",
+     "law": "vec_uint64_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -15465,7 +16917,20 @@
      "law": "vec_uint64_8_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_vec_uint64_8.bend",
+     "law": "vec_uint64_8_mc_poison_v8_u64"
+    },
+    {
+     "file": "mutconst_vec_uint64_8.bend",
+     "law": "vec_uint64_8_mc_put"
+    },
+    {
+     "file": "mutconst_vec_uint64_8.bend",
+     "law": "vec_uint64_8_mc_ser"
+    }
+   ]
   },
   "ProgressiveTestStruct": {
    "root": [
@@ -15528,7 +16993,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProgressiveTestStruct.bend",
+     "law": "ProgressiveTestStruct_mc_ser"
+    }
+   ]
   },
   "BitsStruct": {
    "root": [
@@ -15591,7 +17061,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_BitsStruct.bend",
+     "law": "BitsStruct_mc_ser"
+    }
+   ]
   },
   "ProgressiveBitsStruct": {
    "root": [
@@ -15654,7 +17129,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ProgressiveBitsStruct.bend",
+     "law": "ProgressiveBitsStruct_mc_ser"
+    }
+   ]
   },
   "FixedTestStruct": {
    "root": [
@@ -15843,7 +17323,20 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_VarTestStruct.bend",
+     "law": "VarTestStruct_mc_bxpoison_VarTestStruct"
+    },
+    {
+     "file": "mutconst_VarTestStruct.bend",
+     "law": "VarTestStruct_mc_bxcount_VarTestStruct"
+    },
+    {
+     "file": "mutconst_VarTestStruct.bend",
+     "law": "VarTestStruct_mc_ser"
+    }
+   ]
   },
   "ComplexTestStruct": {
    "root": [
@@ -15906,7 +17399,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_ComplexTestStruct.bend",
+     "law": "ComplexTestStruct_mc_ser"
+    }
+   ]
   },
   "SmallTestStruct": {
    "root": [
@@ -15976,6 +17474,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_15_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_15.bend",
+     "law": "bitlist_15_mc_root"
     }
    ],
    "ok_eval": [
@@ -16032,13 +17534,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_15.bend",
+     "law": "bitlist_15_mc_poison_bits15"
+    },
+    {
+     "file": "mutconst_bitlist_15.bend",
+     "law": "bitlist_15_mc_ser"
+    }
+   ]
   },
   "bitlist_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_16_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_16.bend",
+     "law": "bitlist_16_mc_root"
     }
    ],
    "ok_eval": [
@@ -16095,13 +17610,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_16.bend",
+     "law": "bitlist_16_mc_poison_bits16"
+    },
+    {
+     "file": "mutconst_bitlist_16.bend",
+     "law": "bitlist_16_mc_ser"
+    }
+   ]
   },
   "bitlist_17": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_17_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_17.bend",
+     "law": "bitlist_17_mc_root"
     }
    ],
    "ok_eval": [
@@ -16158,13 +17686,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_17.bend",
+     "law": "bitlist_17_mc_poison_bits17"
+    },
+    {
+     "file": "mutconst_bitlist_17.bend",
+     "law": "bitlist_17_mc_ser"
+    }
+   ]
   },
   "bitlist_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_1_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_1.bend",
+     "law": "bitlist_1_mc_root"
     }
    ],
    "ok_eval": [
@@ -16221,13 +17762,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_1.bend",
+     "law": "bitlist_1_mc_poison_bits1"
+    },
+    {
+     "file": "mutconst_bitlist_1.bend",
+     "law": "bitlist_1_mc_ser"
+    }
+   ]
   },
   "bitlist_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_2_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_2.bend",
+     "law": "bitlist_2_mc_root"
     }
    ],
    "ok_eval": [
@@ -16284,13 +17838,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_2.bend",
+     "law": "bitlist_2_mc_poison_bits2"
+    },
+    {
+     "file": "mutconst_bitlist_2.bend",
+     "law": "bitlist_2_mc_ser"
+    }
+   ]
   },
   "bitlist_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_31_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_31.bend",
+     "law": "bitlist_31_mc_root"
     }
    ],
    "ok_eval": [
@@ -16347,13 +17914,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_31.bend",
+     "law": "bitlist_31_mc_poison_bits31"
+    },
+    {
+     "file": "mutconst_bitlist_31.bend",
+     "law": "bitlist_31_mc_ser"
+    }
+   ]
   },
   "bitlist_32": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_32_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_32.bend",
+     "law": "bitlist_32_mc_root"
     }
    ],
    "ok_eval": [
@@ -16410,13 +17990,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_32.bend",
+     "law": "bitlist_32_mc_poison_bits32"
+    },
+    {
+     "file": "mutconst_bitlist_32.bend",
+     "law": "bitlist_32_mc_ser"
+    }
+   ]
   },
   "bitlist_33": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_33_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_33.bend",
+     "law": "bitlist_33_mc_root"
     }
    ],
    "ok_eval": [
@@ -16473,13 +18066,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_33.bend",
+     "law": "bitlist_33_mc_poison_bits33"
+    },
+    {
+     "file": "mutconst_bitlist_33.bend",
+     "law": "bitlist_33_mc_ser"
+    }
+   ]
   },
   "bitlist_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_3_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_3.bend",
+     "law": "bitlist_3_mc_root"
     }
    ],
    "ok_eval": [
@@ -16536,13 +18142,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_3.bend",
+     "law": "bitlist_3_mc_poison_bits3"
+    },
+    {
+     "file": "mutconst_bitlist_3.bend",
+     "law": "bitlist_3_mc_ser"
+    }
+   ]
   },
   "bitlist_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_4_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_4.bend",
+     "law": "bitlist_4_mc_root"
     }
    ],
    "ok_eval": [
@@ -16599,13 +18218,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_4.bend",
+     "law": "bitlist_4_mc_poison_bits4"
+    },
+    {
+     "file": "mutconst_bitlist_4.bend",
+     "law": "bitlist_4_mc_ser"
+    }
+   ]
   },
   "bitlist_511": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_511_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_511.bend",
+     "law": "bitlist_511_mc_root"
     }
    ],
    "ok_eval": [
@@ -16662,13 +18294,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_511.bend",
+     "law": "bitlist_511_mc_poison_bits511"
+    },
+    {
+     "file": "mutconst_bitlist_511.bend",
+     "law": "bitlist_511_mc_ser"
+    }
+   ]
   },
   "bitlist_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_512_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_512.bend",
+     "law": "bitlist_512_mc_root"
     }
    ],
    "ok_eval": [
@@ -16725,13 +18370,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_512.bend",
+     "law": "bitlist_512_mc_poison_bits512"
+    },
+    {
+     "file": "mutconst_bitlist_512.bend",
+     "law": "bitlist_512_mc_ser"
+    }
+   ]
   },
   "bitlist_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_513_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_513.bend",
+     "law": "bitlist_513_mc_root"
     }
    ],
    "ok_eval": [
@@ -16788,13 +18446,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_513.bend",
+     "law": "bitlist_513_mc_poison_bits513"
+    },
+    {
+     "file": "mutconst_bitlist_513.bend",
+     "law": "bitlist_513_mc_ser"
+    }
+   ]
   },
   "bitlist_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_5_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_5.bend",
+     "law": "bitlist_5_mc_root"
     }
    ],
    "ok_eval": [
@@ -16851,13 +18522,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_5.bend",
+     "law": "bitlist_5_mc_poison_bits5"
+    },
+    {
+     "file": "mutconst_bitlist_5.bend",
+     "law": "bitlist_5_mc_ser"
+    }
+   ]
   },
   "bitlist_6": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_6_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_6.bend",
+     "law": "bitlist_6_mc_root"
     }
    ],
    "ok_eval": [
@@ -16914,13 +18598,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_6.bend",
+     "law": "bitlist_6_mc_poison_bits6"
+    },
+    {
+     "file": "mutconst_bitlist_6.bend",
+     "law": "bitlist_6_mc_ser"
+    }
+   ]
   },
   "bitlist_7": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_7_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_7.bend",
+     "law": "bitlist_7_mc_root"
     }
    ],
    "ok_eval": [
@@ -16977,13 +18674,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_7.bend",
+     "law": "bitlist_7_mc_poison_bits7"
+    },
+    {
+     "file": "mutconst_bitlist_7.bend",
+     "law": "bitlist_7_mc_ser"
+    }
+   ]
   },
   "bitlist_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_8_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_8.bend",
+     "law": "bitlist_8_mc_root"
     }
    ],
    "ok_eval": [
@@ -17040,13 +18750,26 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_8.bend",
+     "law": "bitlist_8_mc_poison_bits8"
+    },
+    {
+     "file": "mutconst_bitlist_8.bend",
+     "law": "bitlist_8_mc_ser"
+    }
+   ]
   },
   "bitlist_9": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_9_root_correct"
+    },
+    {
+     "file": "mutconst_bitlist_9.bend",
+     "law": "bitlist_9_mc_root"
     }
    ],
    "ok_eval": [
@@ -17103,7 +18826,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitlist_9.bend",
+     "law": "bitlist_9_mc_poison_bits9"
+    },
+    {
+     "file": "mutconst_bitlist_9.bend",
+     "law": "bitlist_9_mc_ser"
+    }
+   ]
   },
   "bitvector_15": {
    "root": [
@@ -17170,7 +18902,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_15.bend",
+     "law": "bitvector_15_mc_put"
+    }
+   ]
   },
   "bitvector_16": {
    "root": [
@@ -17233,7 +18970,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_16.bend",
+     "law": "bitvector_16_mc_put"
+    }
+   ]
   },
   "bitvector_17": {
    "root": [
@@ -17300,7 +19042,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_17.bend",
+     "law": "bitvector_17_mc_put"
+    }
+   ]
   },
   "bitvector_1": {
    "root": [
@@ -17367,7 +19114,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_1.bend",
+     "law": "bitvector_1_mc_put"
+    }
+   ]
   },
   "bitvector_2": {
    "root": [
@@ -17434,7 +19186,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_2.bend",
+     "law": "bitvector_2_mc_put"
+    }
+   ]
   },
   "bitvector_31": {
    "root": [
@@ -17501,7 +19258,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_31.bend",
+     "law": "bitvector_31_mc_put"
+    }
+   ]
   },
   "bitvector_32": {
    "root": [
@@ -17594,7 +19356,12 @@
      "law": "bitvector_32_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_32.bend",
+     "law": "bitvector_32_mc_put"
+    }
+   ]
   },
   "bitvector_33": {
    "root": [
@@ -17661,7 +19428,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_33.bend",
+     "law": "bitvector_33_mc_put"
+    }
+   ]
   },
   "bitvector_3": {
    "root": [
@@ -17728,7 +19500,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_3.bend",
+     "law": "bitvector_3_mc_put"
+    }
+   ]
   },
   "bitvector_4": {
    "root": [
@@ -17795,7 +19572,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_4.bend",
+     "law": "bitvector_4_mc_put"
+    }
+   ]
   },
   "bitvector_511": {
    "root": [
@@ -17862,7 +19644,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_511.bend",
+     "law": "bitvector_511_mc_put"
+    }
+   ]
   },
   "bitvector_512": {
    "root": [
@@ -17955,7 +19742,12 @@
      "law": "bitvector_512_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_512.bend",
+     "law": "bitvector_512_mc_put"
+    }
+   ]
   },
   "bitvector_513": {
    "root": [
@@ -18022,7 +19814,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_513.bend",
+     "law": "bitvector_513_mc_put"
+    }
+   ]
   },
   "bitvector_5": {
    "root": [
@@ -18089,7 +19886,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_5.bend",
+     "law": "bitvector_5_mc_put"
+    }
+   ]
   },
   "bitvector_6": {
    "root": [
@@ -18156,7 +19958,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_6.bend",
+     "law": "bitvector_6_mc_put"
+    }
+   ]
   },
   "bitvector_7": {
    "root": [
@@ -18223,7 +20030,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_7.bend",
+     "law": "bitvector_7_mc_put"
+    }
+   ]
   },
   "bitvector_8": {
    "root": [
@@ -18286,7 +20098,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_8.bend",
+     "law": "bitvector_8_mc_put"
+    }
+   ]
   },
   "bitvector_9": {
    "root": [
@@ -18353,7 +20170,12 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_bitvector_9.bend",
+     "law": "bitvector_9_mc_put"
+    }
+   ]
   },
   "CompatibleUnionBC": {
    "root": [
@@ -18416,7 +20238,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_mc_poison_CompatibleUnionBC"
+    },
+    {
+     "file": "mutconst_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_mc_ser"
+    }
+   ]
   },
   "CompatibleUnionABCA": {
    "root": [
@@ -18479,7 +20310,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_mc_poison_CompatibleUnionABCA"
+    },
+    {
+     "file": "mutconst_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_mc_ser"
+    }
+   ]
   },
   "CompatibleUnionA": {
    "root": [
@@ -18542,7 +20382,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_mc_poison_CompatibleUnionA"
+    },
+    {
+     "file": "mutconst_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_mc_ser"
+    }
+   ]
   },
   "progbitlist": {
    "root": [
@@ -18605,7 +20454,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_progbitlist.bend",
+     "law": "progbitlist_mc_poison_pbits"
+    },
+    {
+     "file": "mutconst_progbitlist.bend",
+     "law": "progbitlist_mc_ser"
+    }
+   ]
   },
   "uint128": {
    "root": [
@@ -18698,7 +20556,12 @@
      "law": "uint128_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutconst_uint128.bend",
+     "law": "uint128_mc_put"
+    }
+   ]
   },
   "uint16": {
    "root": [
