@@ -34,7 +34,7 @@ LISTS = {
         X='pl_VarTestStruct', ELTI='../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d', ELT='proglist_VarTestStruct_d.pl_VarTestStruct_Seq',
         LSTI='../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d', LST='proglist_proglist_VarTestStruct_d',
         HK='e2e_hpl_pl_VarTestStruct.bend', ENC='proofs/obj/encx_pl_pl_VarTestStruct.bend', EMI='proofs/obj/encx_pl_VarTestStruct.bend',
-        ESCH='S.ProgressiveList{Spec.VarTestStruct()}', SPECI='../proofs/obj/generic_specs.bend as Spec', LN=None, H31=True),
+        ESCH='S.ProgressiveList{Spec.VarTestStruct()}', SPECI='../proofs/obj/generic_specs.bend as Spec', LN=None, H31=True, THFZ=False),
 }
 
 VLM_SRC = (E2E / 'e2e_vlm_l8_Attestation.bend').read_text()
@@ -167,7 +167,13 @@ def text(c):
        f'  Equal.sym(O.Boxed<{ELT}>, RT.th_{X}_bx(ND_{c}(d, t, x, off, a, b)), V.OBJE(d, t, x, off, a, b), {HK("canon")})')
     A_('')
     # rvF with the element canon: the vlm text, its eqE replaced
-    A_(vl(VD_['rvF_l8_Attestation']))
+    s = vl(VD_['rvF_l8_Attestation'])
+    if H31:   # the element facts of eqE take h31 too: the vlm text's window facts (eo, hd, hw, hw32, pf) get it after pf
+        for a, b in [('+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd', '+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, ' + H31T + ', +dd'),
+                     ('hw32, pf, V.WJ(t, x, i)', 'hw32, pf, h31, V.WJ(t, x, i)'), ('hw32, pf, dd, FD', 'hw32, pf, h31, dd, FD')]:
+            assert s.count(a) == 1, (a, s.count(a))
+            s = s.replace(a, b)
+    A_(s)
     A_('')
     A_('# ---- the elements\' facts at a window ----')
     HEAD = '(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +a: U32, +b: U32, %s' % (WSIG, EEP)
@@ -368,22 +374,23 @@ def text(c):
     A_(f'def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WSIG}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
        f'    -> {{{LNF}(V.OBJw(d, t, x, off, len)) == U32.to_nat(len) : Nat}}:\n'
        f'  szl_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
-    A_('')
-    # the object is canonical: freezing then thawing the mirror gives it back (the element hooks of a list of these lists)
-    A_(f'def thfz_am(+T: FD.array__Tree<RT.MB<RT.M_{X}>>, +N: U32) -> {{RT.th_{c}(RT.fz_{c}({SEQ}{{RT.am_{c}(T), N}})) == {SEQ}{{RT.am_{c}(T), N}} : {SEQ}}}:\n'
-       f'  Equal.cong(FD.array__Tree<RT.MB<RT.M_{X}>>, {SEQ}, z => {SEQ}{{RT.am_{c}(z), N}}, RT.tfz_{c}(RT.am_{c}(T)), T, RT.tfzam_{c}(T))')
-    A_('')
-    A_(f'def thfz_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WSIG}, {HCK})\n'
-       f'    -> {{RT.th_{c}(RT.fz_{c}(V.RZ(c, d, t, x, off, len))) == V.RZ(c, d, t, x, off, len) : {SEQ}}}:\n'
-       f'  match c:\n'
-       f'    case True{{}}: thfz_am(FD.array__trep(RT.MB<RT.M_{X}>, 0n, RT.MNone{{}}), 0)\n'
-       f'    case False{{}}:\n'
-       f'      FD.logic__subst({SEQ}, z => {{RT.th_{c}(RT.fz_{c}(z)) == z : {SEQ}}}, {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, V.RZ(False{{}}, d, t, x, off, len),\n'
-       f'        Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WARG})), thfz_am({RR}, V.NN(t, x)))')
-    A_('')
-    A_(f'def thfz({WINS}, {WSIG}, {HCK}) -> {{RT.th_{c}(RT.fz_{c}(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : {SEQ}}}:\n'
-       f'  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
-    A_('')
+    if P.get('THFZ', True):
+        A_('')
+        # the object is canonical: freezing then thawing the mirror gives it back (the element hooks of a list of these lists)
+        A_(f'def thfz_am(+T: FD.array__Tree<RT.MB<RT.M_{X}>>, +N: U32) -> {{RT.th_{c}(RT.fz_{c}({SEQ}{{RT.am_{c}(T), N}})) == {SEQ}{{RT.am_{c}(T), N}} : {SEQ}}}:\n'
+           f'  Equal.cong(FD.array__Tree<RT.MB<RT.M_{X}>>, {SEQ}, z => {SEQ}{{RT.am_{c}(z), N}}, RT.tfz_{c}(RT.am_{c}(T)), T, RT.tfzam_{c}(T))')
+        A_('')
+        A_(f'def thfz_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WSIG}, {HCK})\n'
+           f'    -> {{RT.th_{c}(RT.fz_{c}(V.RZ(c, d, t, x, off, len))) == V.RZ(c, d, t, x, off, len) : {SEQ}}}:\n'
+           f'  match c:\n'
+           f'    case True{{}}: thfz_am(FD.array__trep(RT.MB<RT.M_{X}>, 0n, RT.MNone{{}}), 0)\n'
+           f'    case False{{}}:\n'
+           f'      FD.logic__subst({SEQ}, z => {{RT.th_{c}(RT.fz_{c}(z)) == z : {SEQ}}}, {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, V.RZ(False{{}}, d, t, x, off, len),\n'
+           f'        Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WARG})), thfz_am({RR}, V.NN(t, x)))')
+        A_('')
+        A_(f'def thfz({WINS}, {WSIG}, {HCK}) -> {{RT.th_{c}(RT.fz_{c}(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : {SEQ}}}:\n'
+           f'  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
+        A_('')
     return '\n'.join(out) + '\n'
 
 
