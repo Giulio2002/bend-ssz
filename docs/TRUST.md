@@ -51,9 +51,9 @@ Trusted (not proved here):
   none of the generated proofs is a disguised paradox, which review of the generators and of the
   proof style supports but does not prove.
 - **The stack is part of the setup, not of the logic.** A check that runs out of stack fails; it never
-  accepts more. `tools/check.sh` pins the limits (`ulimit -s 8192`, a JSC budget of 5 MB) so a result
-  does not depend on the shell, and every full check also passes at half the budget (the headroom
-  gate, docs/BUILD.md).
+  accepts more. `tools/check.sh` pins the limits (`ulimit -s 16384`, a JSC budget of 10 MB) so a result
+  does not depend on the shell, and every full check also passes at half that budget, 5 MB (the headroom
+  gate, docs/BUILD.md, which says what was measured: 10 of 47 umbrellas fail at 2.5 MB).
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to

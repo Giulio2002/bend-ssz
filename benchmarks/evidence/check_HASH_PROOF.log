@@ -1,1 +1,2 @@
+# HISTORICAL: checked on the 2.0.28 + bendlang/bend#1075 build (3ddfb036), before the port to Bend 2.0.34 and the rigid-subterms checker; the current evidence is benchmarks/evidence/check_fast.json
 2026-09-30 03:19:20Z HASH_PROOF.bend commit=15b81eef checker=3ddfb036 exit=0 peak=265MB elapsed=2s all_terms_check=True unsafe=False -> PASS

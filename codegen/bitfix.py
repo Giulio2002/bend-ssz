@@ -67,7 +67,7 @@ def refresh(key, imports, lhs, rhs):
     r = subprocess.run([BEND, probe.name], cwd=probe.parent, capture_output=True, text=True,
                        env={'BEND_NO_TELEMETRY': '1', 'BUN_JSC_forceRAMSize': '3000000000', 'PATH': '/usr/bin:/bin'})
     out = r.stdout + r.stderr
-    if 'All terms check.' in out:
+    if 'ALL PROOFS CHECK' in out:
         l = r_ = [None] * 32
         # the two sides are already the same term
         return {'lhs': 'same', 'rhs': 'same'}
