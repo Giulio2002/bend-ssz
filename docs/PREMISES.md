@@ -30,8 +30,8 @@ the decoded object's view (its spec value), not its representation.
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->230<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
-<!-- fig:pending_count -->10<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
+<!-- fig:composed -->231<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
+<!-- fig:pending_count -->9<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
 `e2e/COMPOSED.txt`, so it cannot drift from it): the decode-side bridges (i)/(iv) of those names take the listed premises
 on the decoded object, which no checked law yet derives from the decoder, or (for a tree-form decoder) the decoder's object
 is not one this module reads.
@@ -41,7 +41,6 @@ is not one this module reads.
 | `CompatibleUnionABCA` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `CompatibleUnionBC` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ComplexTestStruct` | the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending) |
-| `FuluBlobSidecar` | a tree-form decoder object this module does not read |
 | `ProgressiveBitsStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveComplexTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveSingleListContainerTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
