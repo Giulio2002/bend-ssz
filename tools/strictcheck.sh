@@ -23,6 +23,13 @@ for g in $(python3 codegen/regen_all.py --list --paths); do
     fi
   done
 done
+# the generator unit tests (registry, headers, writer, imports, names): a gate must not pass with them failing
+out=$(python3 -m unittest discover codegen/tests -t . 2>&1); rc=$?
+if [ $rc -ne 0 ]; then
+  fail_line "rc=$rc unittest codegen/tests: $(echo "$out" | grep -E '^(FAIL|ERROR)|^Ran|^FAILED' | tr '\n' ' ' | cut -c1-300)"
+else
+  pass=$((pass+1)); [ -n "${VERBOSE:-}" ] && echo "${GREEN}ok${OFF}   ${DIM}unittest codegen/tests${OFF}"
+fi
 # fixture provenance: the committed fixtures and the manifest against the pinned release tarballs (cached)
 if [ -f tools/verify_fixtures.py ]; then
   out=$(python3 tools/verify_fixtures.py --tarballs $TB 2>&1); rc=$?
