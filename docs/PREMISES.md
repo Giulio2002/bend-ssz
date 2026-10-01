@@ -128,12 +128,13 @@ predicate. Their serializer statements keep `rep` and the storage premises as ex
 validity.
 
 **The lock.** `tools/verify_frozen.py` hashes the validity predicates the serializer statements name (`X_valid`
-and the helpers it is built from, in `types/*_encode_ssz_generated.bend`, which otherwise count as the implementation under
+and everything they call, in `types/*_encode_ssz_generated.bend`, which otherwise count as the implementation under
 test), so a weakened or strengthened `valid` changes the lock; the serializer `X_serialize` itself is proved, not
-hashed. The helpers are every def of an encode file named `X_valid`, `X_va<n>` or `X_va_<word>` (`_va_back`, `_va_cap`,
-`_va_one`, `_va_go`, `_va_fin`, `_va_nz`). Its self-test plants a change to `Checkpoint_valid` and `u8_valid` (must trip) and to
-`uint8_serialize` (must not), plants a change in each helper kind reached from a predicate (must trip), and fails if any def of an
-encode file named like a helper is not premise-side, so a future list-bearing serializer statement cannot leave one unlocked.
+hashed. The helpers are found by reachability, not by name: every def of an encode file that a `*_valid` def reaches (through local
+names and imported ones, across the encode files) is hashed, whatever it is called; the encoder entry points `*_encode` and
+`*_serialize` stay the implementation under test. The self-test plants a change to `Checkpoint_valid` and `u8_valid` (must trip), to a
+helper of each kind a predicate may call (`va_cap`, `va_one`, `va_go`, `va_fin`, `va_nz`, `va_back`, `va7`, and the names `chk`, `ok`,
+`va_cap2`, `va_x_y`, `va_Cap`, `va1_z`; each must trip), and to `uint8_serialize` and a def only the encoder calls (must not).
 
 ## Premises per name
 

@@ -1128,6 +1128,55 @@ def coll_words():
 CB = OBJ / 'coll_seq.bend'
 
 
+def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps):
+    """the spec view of a boxed list after an accepted set: the view before with item i replaced by the view of the stored box
+    (proofs/obj/tfz_boxed.bend: freezing the written array is updating the frozen tree; view_seq.bend's induction over the items)"""
+    import boxedview as BV
+    sys.path.insert(0, str(ROOT / 'codegen'))
+    imps['RT'] = 'proofs/obj/root_types_light.bend'
+    imps['TB'] = 'proofs/obj/tfz_boxed.bend'
+    imps['VQ'] = 'proofs/obj/view_seq.bend'
+    imps['VS'] = 'proofs/obj/value_set.bend'
+    imps['S'] = 'types/schema.bend'
+    imps['F'] = 'proofs/compact/found.bend'
+    for cc, T_, MB, tfz, fz in BV.lists():
+        if cc == c:
+            break
+    MB = BV.prefix(MB)
+    TR = 'F.array__Tree<%s>' % MB
+    FZ = 'RT.' + fz
+    AM = 'RT.am_%s(t)' % c
+    XV = 'RT.xv_%s' % c
+    NN = 'F.u32__pow2u(d)'
+    Ji, Zi = 'TA.J(%s, i)' % NN, 'TA.Z(%s, i)' % NN
+    FZW = '%s(%s)' % (FZ, WV)
+    RES = 'VS.field_set(%s(%s), U32.to_nat(i), VQ.vm_%s(%s))' % (XV, SEQ(AM, 'n'), c, FZW)
+    LHS = '%s(Pair.fst(%s, Bool, %s.%s_set(%s, i, v)))' % (XV, T, DA, c, SEQ(AM, 'n'))
+    pre = ('+d: Nat, +t: %s, +n: U32, +i: U32, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, '
+           '+pfT: {F.array__perfect(%s, d, t) == True{} : Bool}, +hs: {%s == True{} : Bool}' % (TR, 'v: ' + VT, MB, GS))
+    ZT = BV.zatype(c, AM, NN, Ji, 'U32.to_nat(i)', WV, Zi, 'd')
+    out.append('def %s_view_go(%s, b: %s)\n    -> {%s == %s : S.Value}:' % (c, pre, ZT, LHS, RES))
+    out.append('  (+e1, r1) = b')
+    out.append('  (+pf1, r2) = r1')
+    out.append('  (+f1, r3) = r2')
+    out.append('  (+f2, r4) = r3')
+    out.append('  (+f3, f4) = r4')
+    out.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s(Pair.fst(%s, Bool, %s.%s_put_in(_, %s, n, i, v))) == %s : S.Value}' % (GS, XV, T, DA, c, AM, RES))
+    out.append('  %%Equal.sym(Array<%s>, Array.set(%s, %s, i, %s), TA.put(%s, %s, %s, %s, %s, %s), TA.set_step(%s, %s, %s, i, %s, f4, f1, f2)) : {%s(%s) == %s : S.Value}'
+               % (EL, EL, AM, WV, EL, AM, NN, Ji, WV, Zi, EL, AM, NN, WV, XV, SEQ('_', 'n'), RES))
+    TFZP = 'RT.tfz_%s(TA.put(%s, %s, %s, %s, %s, %s))' % (c, EL, AM, NN, Ji, WV, Zi)
+    UPD = 'F.array__upd(%s, d, RT.tfz_%s(%s), U32.to_nat(i), %s)' % (MB, c, AM, FZW)
+    out.append('  %%Equal.sym(%s, %s, %s, e1) : {S.Sequence{RT.xi_%s(U32.to_nat(n), F.array__slots(%s, _), 0n)} == %s : S.Value}' % (TR, TFZP, UPD, c, MB, RES))
+    out.append('  F.logic__subst(%s, z => {S.Sequence{RT.xi_%s(U32.to_nat(n), F.array__slots(%s, F.array__upd(%s, d, z, U32.to_nat(i), %s)), 0n)} == VS.field_set(S.Sequence{RT.xi_%s(U32.to_nat(n), F.array__slots(%s, z), 0n)}, U32.to_nat(i), VQ.vm_%s(%s)) : S.Value}, t, RT.tfz_%s(%s), '
+               'Equal.sym(%s, RT.tfz_%s(%s), t, RT.tfzam_%s(t)), TB.view_set_t_%s(U32.to_nat(n), d, t, U32.to_nat(i), %s, hi, pfT))'
+               % (TR, c, MB, MB, FZW, c, MB, c, FZW, c, AM, TR, c, AM, c, c, FZW))
+    out.append('def %s_api_view_set(%s)\n    -> {%s == %s : S.Value}:' % (c, pre, LHS, RES))
+    out.append('  %s_view_go(d, t, n, i, v, hd, hi, pfT, hs, TB.tfzrs_%s(d, %s, %s, %s, U32.to_nat(i), %s, %s, hd, {==}, hi, '
+               'Equal.cong(U32, Nat, m => U32.to_nat(m), %s, i, F.u32__mask_pow2u(i, d, hd, hi)), {==}, TB.amperf_%s(d, t, pfT)))'
+               % (c, c, AM, NN, Ji, WV, Zi, Ji, c))
+    return 1
+
+
 def seq_laws(I, imps):
     """read_set of a boxed list: get(set(o, i, v), i) returns v (and takes it out of its slot, as the
     runtime's get of a boxed element does), for every array; N names the array's size"""
@@ -1237,6 +1286,7 @@ def seq_laws(I, imps):
         out.append('    -> {%s == %s : %s}:' % (LHS, RHS, MT))
         out.append('  %s_other_go(arr, n, d, i, j, v, hs, hm, TA.swap_other(%s, d, arr, i, j, %s, O.BNone{}, hd, hi, hj, ne, pf))' % (c, EL, WV))
         k += 1
+        k += boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps)
     out.append('')
     return '\n'.join(out), k
 

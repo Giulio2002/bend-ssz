@@ -128,26 +128,64 @@ WHOLE = ('spec/', 'vendor/', 'END_TO_END.bend')
 # encoder, decoder and root (pinned by the bridges) and the model API src/model.bend (pinned by
 # END_TO_END's frozen laws).
 SUBJECT = re.compile(r'^(src/model\.bend|types/\w+_(encode_ssz|decode_ssz|hashtreeroot)_generated\.bend)$')
-# The exception to that carve-out: the validity predicates of the generated encoders (X_valid and the
-# helpers it is built from: X_va0 ..., X_va_back, X_va_cap, X_va_one, X_va_go, X_va_fin, X_va_nz: any `_va` or `_va_<word>`
-# def of an encode file; every helper the predicates call is one of them, checked by the self-test). They are not the implementation under test but the
-# premise of the validating-serializer statements (e2e/*_e2e_ser_generated.bend: `X_valid(o) == True`),
-# so a weakened predicate would weaken what those statements say: they are hashed and traversed.
-PREMISE_SIDE = re.compile(r'_(valid|va(\d+|_[a-z]+)?)$')
+# The exception to that carve-out: the validity predicates of the generated encoders and everything they call. They are not the
+# implementation under test but the premise of the validating-serializer statements (e2e/*_e2e_ser_generated.bend:
+# `X_valid(o) == True`), so a weakened predicate would weaken what those statements say. They are found by REACHABILITY, not by name:
+# every def of an encode file reachable (through local names and imported ones, across the encode files) from a def named `*_valid`
+# is hashed and traversed, whatever it is called (premise_reach). Excluded: the encoder entry points `*_encode` and `*_serialize`,
+# which are the implementation under test even if a predicate named one.
+ENTRY = re.compile(r'_(encode|serialize)$')
 _mods = {}
+_prc = {}
 _override = {}  # path -> text, for the planted-change self-test only
 
 
 def boundary(path, name=None):
     # the whole-locked types/ files (types/schema.bend, types/fulu_model.bend, ...) are not
     # traversed; proofs/obj/generic_specs.bend, locked whole too, still is (as before)
-    if SUBJECT.match(path) and path.startswith('types/') and name is not None and PREMISE_SIDE.search(name):
+    if SUBJECT.match(path) and path.startswith('types/') and name is not None and (path, name) in premise_reach():
         return False
     return (path.startswith(WHOLE) or bool(SUBJECT.match(path))
             or (path in _whole_set() and path.startswith(('src/', 'types/'))))
 
 
 _ws = []
+
+
+def reset():
+    _mods.clear()
+    _prc.clear()
+
+
+def premise_reach():
+    """{(file, def)} of the encode files reachable from a `*_valid` def: the validity predicates and the helpers they call"""
+    if 's' in _prc:
+        return _prc['s']
+    import glob
+    files = sorted(set(os.path.relpath(f, ROOT) for f in glob.glob(os.path.join(ROOT, 'types/*_encode_ssz_generated.bend'))) | {k for k in _override if SUBJECT.match(k)})
+    seen, todo = set(), []
+    for f in files:
+        todo += [(f, n) for n in module(f)[1] if n.endswith('_valid')]
+    while todo:
+        p, n = todo.pop()
+        if (p, n) in seen or ENTRY.search(n):
+            continue
+        seen.add((p, n))
+        imps, defs = module(p)
+        text = defs[n]
+        for m in REF.finditer(text):
+            a, rest = m.group(1), m.group(2)
+            if a in imps and SUBJECT.match(imps[a]) and os.path.exists(os.path.join(ROOT, imps[a])):
+                parts = rest.split('.')
+                tdefs = module(imps[a])[1]
+                for k in range(len(parts), 0, -1):
+                    if '.'.join(parts[:k]) in tdefs:
+                        todo.append((imps[a], '.'.join(parts[:k])))
+        for m in LOC.finditer(text):
+            if m.group(1) in defs and m.group(1) != n:
+                todo.append((p, m.group(1)))
+    _prc['s'] = seen
+    return seen
 
 
 def _whole_set():
@@ -257,13 +295,8 @@ PLANTED = [
 
 
 def self_test_helpers():
-    """every def of a generated encode file named like a validity helper is premise-side (so none is left
-    unlocked), and planting a change in a helper a serializer statement's predicate calls changes that statement's hash"""
-    import glob
-    for f in glob.glob(os.path.join(ROOT, 'types/*_encode_ssz_generated.bend')):
-        for m in re.finditer(r'^def (\w+)', open(f).read(), re.M):
-            if re.search(r'_va($|[\d_])', m.group(1)) and not PREMISE_SIDE.search(m.group(1)):
-                sys.exit('verify_frozen: self-test FAILED: %s: %s is a validity helper that PREMISE_SIDE misses' % (f, m.group(1)))
+    """planting a change in any def a predicate calls, whatever its name, changes the statement's hash; a def no predicate reaches
+    (the encoder's own helper) does not"""
     f = 'e2e/FuluCheckpoint_e2e_ser_generated.bend'
     path = 'types/FuluCheckpoint_encode_ssz_generated.bend'
     text = open(os.path.join(ROOT, path)).read()
@@ -273,25 +306,36 @@ def self_test_helpers():
     while j < len(lines) and (not lines[j].strip() or lines[j][0] in ' \t'):
         j += 1
     n = 0
-    for h in ('va_cap', 'va_one', 'va_go', 'va_fin', 'va_nz', 'va_back', 'va7'):
+    for h in ('va_cap', 'va_one', 'va_go', 'va_fin', 'va_nz', 'va_back', 'va7', 'chk', 'ok', 'va_cap2', 'va_x_y', 'va_Cap', 'va1_z'):
         hashes = []
         for body in ('True{}', 'False{}'):
-            _mods.clear()
+            reset()
             _override[path] = '\n'.join(lines[:i] + ['def Checkpoint_valid(o: C.Checkpoint) -> Bool: Checkpoint_%s(o)' % h, '',
                                                      'def Checkpoint_%s(o: C.Checkpoint) -> Bool: %s' % (h, body), ''] + lines[j:])
             hashes.append(statement_defs([f]))
             _override.clear()
-            _mods.clear()
+            reset()
         if hashes[0] == hashes[1]:
             sys.exit('verify_frozen: self-test FAILED: a change in the validity helper Checkpoint_%s does not change the hash of %s' % (h, f))
         n += 1
+    # a def only the encoder calls is the implementation under test: no change of the hash
+    hashes = []
+    for body in ('Nat.add(1n, 1n)', 'Nat.add(2n, 2n)'):
+        reset()
+        _override[path] = '\n'.join(lines[:i] + lines[i:j] + ['def Checkpoint_enc_aux(o: C.Checkpoint) -> Nat: %s' % body, ''] + lines[j:])
+        hashes.append(statement_defs([f]))
+        _override.clear()
+        reset()
+    if hashes[0] != hashes[1]:
+        sys.exit('verify_frozen: self-test FAILED: a def no predicate reaches changed the hash of %s' % f)
+    n += 1
     return n
 
 
 def self_test():
     n_helpers = self_test_helpers()
     for f, path, name, repl, must in PLANTED:
-        _mods.clear()
+        reset()
         _override.clear()
         base = statement_defs([f])
         if name not in module(path)[1]:
@@ -304,10 +348,10 @@ def self_test():
         while j < len(lines) and (not lines[j].strip() or lines[j][0] in ' \t'):
             j += 1
         _override[path] = '\n'.join(lines[:i] + [repl, ''] + lines[j:])
-        _mods.clear()
+        reset()
         got = statement_defs([f])
         _override.clear()
-        _mods.clear()
+        reset()
         if (got != base) != must:
             sys.exit('verify_frozen: self-test FAILED: planting %s.%s %s the hash of %s' % (
                 path, name, 'did not change' if must else 'changed', f))

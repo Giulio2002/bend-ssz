@@ -24,11 +24,20 @@ def seq_specs():
         imps = {m.group(2): m.group(1) for m in re.finditer(r'^import (\S+) as (\w+)', t, re.M)}
         for m in re.finditer(r'^def xv_(\w+)\(o: ([^)]*)\) -> S.Value:', t, re.M):
             c = m.group(1)
-            mx = re.search(r'^def xat_%s\(W: List<&2, ([^>]*)>, \+i: Nat\) -> ([^:]*):\n  match W:\n    case Nil\{\}: (.*)$' % re.escape(c), t, re.M)
+            mx = re.search(r'^def xat_%s\(W: List<&2, (.*)>, \+i: Nat\) -> ([^:]*):\n  match W:\n    case Nil\{\}: (.*)$' % re.escape(c), t, re.M)
             mi = re.search(r'^def xi_%s\(.*?\n    case 1n\+q: S.Items\{(RN\.\w+)\(xat_%s' % (re.escape(c), re.escape(c)), t, re.M | re.S)
+            mb = re.search(r'^def xi_%s\(.*?\n    case 1n\+q: S.Items\{(\w+)\((\w+)\(xat_%s' % (re.escape(c), re.escape(c)), t, re.M | re.S)
+            if mx and mb and mx.group(3) == 'MNone{}':
+                # boxed elements: the tree of their Data mirrors MB<M>; an item's view is the view of the thawed box
+                q = lambda x: re.sub(r'\b(MB|M_\w+|WMr)\b', lambda k: M + '.' + k.group(1), x)
+                E = q(mx.group(2))
+                out[c] = dict(E=E, V='vm_' + c, VDEF='def vm_%s(m: %s) -> S.Value: %s.%s(%s.%s(m))' % (c, E, M, mb.group(1), M, mb.group(2)),
+                              T=m.group(2), M=M, path='./' + fname, imports={})
+                continue
             if not mx or not mi or not mx.group(3).endswith('_default()'):
-                continue   # boxed elements: no Data tree to write into
-            E, V = mx.group(1), mi.group(1)
+                continue   # no Data tree to write into
+            E, V = mx.group(2), mi.group(1)
+            E = mx.group(1)
             al = set(re.findall(r'\b(\w+)\.', E + ' ' + V))
             out[c] = dict(E=E, V=V, T=m.group(2), M=M, path='./' + fname, imports={a: imps[a] for a in sorted(al) if a in imps})
     return out
@@ -160,6 +169,8 @@ def seq_file():
         def XI(k, W, i):
             return '%s.xi_%s(%s, %s, %s)' % (sp['M'], c, k, W, i)
         out.append('# ---- %s ----' % c)
+        if sp.get('VDEF'):
+            out.append(sp['VDEF'] + '\n')
         out.append(XAT_LEMMAS % dict(c=c, E=E, xs=XAT(upd('W'), 'J'), xn=XAT(upd('Nil{}'), 'J'), xu=XAT(upd('W'), 'i'), xw=XAT('W', 'i'),
                                      xu0=XAT(upd('Con{x, t}', '0n', 'e').replace('J', '0n'), '0n'), xw0=XAT('Con{x, t}', '0n')))
         out.append(XI_LEMMAS % dict(c=c, E=E, V=V, a=XI('k', upd('W'), 'i0'), b=XI('k', 'W', 'i0'), xu=XAT(upd('W'), 'i0'), xw=XAT('W', 'i0'), xz=XAT(upd('W'), 'z'),
