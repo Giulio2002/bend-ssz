@@ -29,8 +29,8 @@ first. Report before and after in seconds.
 
 **Proofs that check fast.** Bend's `Nat` is unary: comparing two spellings of a large number makes the checker
 recurse once per unit, and deep recursion overflows the stack, sometimes only under load (the pin, 16384 KB of
-stack and 10 MB for the JavaScript engine, gives about 58,600 levels; 5 MB, the headroom gate, about 28,800; 2.5 MB about 14,100,
-where 10 of 47 umbrellas fail). So:
+stack and 10 MB for the JavaScript engine, gives about 58,600 levels; 5 MB about 28,800, where one umbrella failed on one tree; 2.5 MB about 14,100,
+where 11 of 46 umbrellas fail). So:
 state each big constant once, keep sizes symbolic (a variable, never `Nat.add(0n, 524464)` on a literal start),
 reach large literals through an equality test (`Nat.is_eq`) instead of a conversion, put the small operand first
 in additions (`Nat.add` recurses on its first argument), and prove a bound from a 32-bit equation and an existing

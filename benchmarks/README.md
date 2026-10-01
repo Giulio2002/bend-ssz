@@ -27,3 +27,19 @@ claim is made. results.json values are milliseconds per operation, not throughpu
 
 The subsequent autoresearch score is sequential deserialize time only across
 all five fixtures, with fresh input each sample and protected full acceptance.
+
+## Refreshing the runtime evidence
+
+`benchmarks/evidence/*.json` carry a provenance stamp (`benchmarks/checks/provenance.py`: hashes of `types/*.bend`, `src/*.bend`,
+`benchmarks/objprog/*.bend`, `benchmarks/compact/*.bend`, the vector set and each harness). A change to any of them makes the
+evidence stale: `python3 benchmarks/checks/provenance.py` reports it (exit 1). The runtime toolchain is stock Bend 2.0.34 (the
+runtime sources use its Base); set `BEND_RUNTIME` to its `bin/bend`. Build, then run (from the repository root; on the ssz server):
+
+    export BEND_RUNTIME=<2.0.34>/bin/bend BUN=<bun> EVIDENCE_COMMIT=$(git rev-parse HEAD)
+    python3 benchmarks/quick.py --build all; python3 benchmarks/quick.py --build-generic all; python3 benchmarks/quick.py --build-fuzz all
+    for p in ocache omut oinvalid; do $BEND_RUNTIME benchmarks/compact/$p.bend -o build/compact-$p; done
+    python3 benchmarks/checks/object_conformance.py; python3 benchmarks/checks/generic_object_conformance.py
+    python3 benchmarks/checks/object_mutations.py;  python3 benchmarks/checks/object_cache.py
+    python3 tests_generated/fuzz_objects.py; python3 tests_generated/mutations.py
+    python3 tests_generated/invalid_objects.py; python3 tests_generated/negative_api.py
+    python3 tools/run_runtime_tests.py

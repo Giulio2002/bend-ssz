@@ -85,7 +85,7 @@ checked, at the commit you rely on:
     cp -r T/bend-src/bend2 T/bend2 && (cd T/bend-src && bun build --compile bend2/main.ts --outfile ../bin/bend)   # Bun 1.4.2
     python3 tools/verify_pins.py --toolchain T   # bin/bend, Base, the sources and the vendored SHA-256 package match toolchain.lock.json
     BEND_TOOLCHAIN=T tools/check_fast.sh    # pins ulimit -s 16384 and a 10 MB JSC budget itself; prints "all files check"
-    BEND_TOOLCHAIN=T tools/check_fast.sh --jsc-stack 5242880   # the headroom gate: the same check at half the budget
+    BEND_TOOLCHAIN=T tools/check_fast.sh --jsc-stack 5242880   # informational headroom run (not a gate): the same check at half the budget; see docs/BUILD.md
     # every check is `bend <file> --check-only`, not `--verdict` (the proven kernel): see docs/TRUST.md
 
 `check_fast.sh` repeats the two verifications itself and refuses to run on any mismatch. A change
