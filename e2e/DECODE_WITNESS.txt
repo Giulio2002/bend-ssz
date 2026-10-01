@@ -17,11 +17,11 @@ FuluExecutionPayloadHeader	witnessed
 FuluExecutionPayload	witnessed
 FuluExecutionRequests	witnessed
 FuluIndexedAttestation	witnessed
-FuluLightClientBootstrap	pending: measured: the default encodes to over 25 KB; evaluating the encoder takes about 3 minutes, the decoder over it overflows the stack (6 minutes), bytes_domain and the window check DC.CHK(TT(bs, n), n) hold (185 s and 233 s), but hn (List.length(bs) == to_nat(n)) is a unary Nat comparison of about 25000 and overflows the stack at 180 s; a proof needs a general lemma length(obytes(buf)) == size(buf) (induction over B.emit_go with bytes_in), which does not exist yet
+FuluLightClientBootstrap	witnessed
 FuluLightClientFinalityUpdate	witnessed
 FuluLightClientHeader	witnessed
 FuluLightClientOptimisticUpdate	witnessed
-FuluLightClientUpdate	pending: the default object encodes to over 50 KB (two sync committees and their branches): hn (List.length(bs) == to_nat(n)) compares a unary Nat of that size, deeper than the checker stack (the same failure as the bootstrap); the encoder over the input takes several minutes
+FuluLightClientUpdate	pending: measured: the hypothesis modules check (obl_ok 46 s, bytes_domain 142 s, hS 50 s, window check 173 s) and the composed file checks, but takes 1327 s, over the 600 s budget of one file
 FuluPendingAttestation	witnessed
 FuluSignedAggregateAndProof	witnessed
 FuluSignedBeaconBlock	witnessed

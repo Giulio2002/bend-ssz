@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4998 statements in 1326 files.
+# 5002 statements in 1327 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -6887,6 +6887,25 @@ def mv(m: Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>) -> Maybe<&
 def FuluLightClientBootstrap_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.LightClientBootstrap(), bs) : Maybe<&2, S.Value>}:
 def FuluLightClientBootstrap_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>} -> {API.deserialize(Spec.LightClientBootstrap(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.LightClientBootstrap(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}):
+
+## e2e/FuluLightClientBootstrap_e2e_decode_witness_generated.bend
+import ./FuluLightClientBootstrap_e2e_comp_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_comp_generated
+import ./FuluLightClientBootstrap_e2e_dec_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_dec_generated
+import ./FuluLightClientBootstrap_e2e_dwh_base_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/var_bytes_LightClientBootstrap.bend as W_proofs_obj_var_bytes_LightClientBootstrap
+import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/FuluLightClientBootstrap_decode_ssz_generated.bend as W_types_FuluLightClientBootstrap_decode_ssz_generated
+import ../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
+import ../types/FuluLightClientBootstrap_encode_ssz_generated.bend as W_types_FuluLightClientBootstrap_encode_ssz_generated
+import ../types/FuluLightClientBootstrap_hashtreeroot_generated.bend as W_types_FuluLightClientBootstrap_hashtreeroot_generated
+def FuluLightClientBootstrap_e2e_decode_witness_acc() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, W_types_FuluLightClientBootstrap_decode_ssz_generated.LightClientBootstrap_decode(B.fill_at(B.alloc(Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), 0, E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))) == Some{W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+def FuluLightClientBootstrap_e2e_decode_witness() -> {W_e2e_FuluLightClientBootstrap_e2e_comp_generated.isS(Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, W_types_FuluLightClientBootstrap_decode_ssz_generated.LightClientBootstrap_decode(B.fill_at(B.alloc(Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), 0, E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))))) == True{} : Bool}:
+def FuluLightClientBootstrap_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, B.Buf, W_types_FuluLightClientBootstrap_encode_ssz_generated.LightClientBootstrap_encode(W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))))) == E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()) : +List<U32>}:
+def FuluLightClientBootstrap_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, W_src_digest.Digest, Pair.snd(B.Buf, FuluLightClientBootstrap_d.LightClientBootstrap & W_src_digest.Digest, W_types_FuluLightClientBootstrap_hashtreeroot_generated.LightClientBootstrap_hash_tree_root(B.alloc(0), W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))))))} == W_e2e_e2e_comp.droot(W_spec_fulu_schemas.LightClientBootstrap(), E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluLightClientBootstrap_e2e_generated.bend
 import ../src/model.bend as API
