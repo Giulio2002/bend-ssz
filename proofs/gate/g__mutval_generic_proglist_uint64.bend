@@ -13,3 +13,6 @@ def proglist_uint64__serialize_valid__proglist_uint64_serialize_vin_0() -> {prog
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vin_8() -> {proglist_uint64_e.proglist_uint64_serialize(O.Words{O.out_at(2n), 8}) == (Pair.fst(O.Words, B.Buf, proglist_uint64_e.proglist_uint64_encode(O.Words{O.out_at(2n), 8})), O.encoded(Pair.snd(O.Words, B.Buf, proglist_uint64_e.proglist_uint64_encode(O.Words{O.out_at(2n), 8})))) : O.Words & O.Encoded}:
   PRV.proglist_uint64_serialize_vin_8()
 
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint64_e.pl_u64_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), O.unit_ok(8, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.proglist_uint64_serialize_vsym(ws, n)
+

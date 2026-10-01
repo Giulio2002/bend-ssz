@@ -13,3 +13,6 @@ def vec_bool_1__serialize_valid__vec_bool_1_serialize_vin() -> {vec_bool_1_e.vec
 def vec_bool_1__serialize_valid__vec_bool_1_serialize_vover() -> {vec_bool_1_e.vec_bool_1_serialize(O.Words{O.out_at(1n), 2}) == (O.Words{O.out_at(1n), 2}, O.refused()) : O.Words & O.Encoded}:
   PRV.vec_bool_1_serialize_vover()
 
+def vec_bool_1__serialize_valid__vec_bool_1_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_bool_1_e.v1_bool_valid(O.Words{ws, n}) == O.bools_ok(O.wk_cap(Bool.and(Bool.and(U32.is_le(1, n), Bool.or(False{}, U32.is_le(n, 1))), O.unit_ok(1, n)), n, Array.size(U32, ws))) : O.Words & Bool}:
+  PRV.vec_bool_1_serialize_vsym(ws, n)
+
