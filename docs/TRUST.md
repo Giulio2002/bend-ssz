@@ -126,6 +126,17 @@ Trusted (not proved here):
   `spec/progressive.bend` and the other root specs hash with it. Its byte API, which `src/`
   runs, is proved against that model inside the package. Every official root vector passing
   cross-checks the model.
+- **Two Bend compilers, two roles.** The proofs are checked by the pinned rigid-subterms build (aa99b746: the checker, `bend <file>
+  --check-only`). The runtime evidence (conformance, fuzzing, mutation testing, the Bun tests) runs programs compiled by stock
+  Bend 2.0.34 (to C, and to JS for the Bun tests), `benchmarks/toolchain.json`. They share one Base (c742fae9, byte-identical, both
+  pinned by sha256) and one front end, but they are different binaries doing different jobs: the checker never compiles or runs
+  anything, the stock compiler never decides a proof. That is acceptable because the two evidences answer different questions
+  and neither borrows the other's trust: a proof says what the Bend terms mean under the checker's rules; the runtime evidence
+  says that the code the stock compiler emits for those same sources agrees with an independent oracle. It does NOT mean that
+  what the compiler emits is what the proofs are about: a miscompilation in stock 2.0.34, or a difference between the checker's
+  evaluation and the compiled program's, is covered only by the differential evidence (the official vectors, the fuzzing and the
+  mutation testing, all against `codegen/oracle.py`), never by a proof. The rigid-subterms change is in the checker only; the
+  compiler used for the evidence is unmodified upstream.
 - **Compilation and the host.** Only Bend terms are verified; the Bend compiler, its runtime
   (and any native build) and the machine executing them are outside the proofs.
 
