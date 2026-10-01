@@ -76,3 +76,55 @@ DepositData, SyncAggregate (Fulu) and the generic forms with a literal size pass
 | SyncCommitteeContribution `(o, 161)` | survived | killed: `expected : 161, observed : 160` in `SyncCommitteeContribution_encoded_size` |
 | BLSToExecutionChange `out_at(6n)` | survived | survives (equivalent) |
 | NextSyncCommitteeBranch `_build` offset 1 | survived | survives (equivalent) |
+
+## 5. Constants of the generated encoders and root wrappers (group `constant`, `hashtreeroot-constant`)
+
+Second run: 112 `constant` and 45 `hashtreeroot-constant` proof-side survivors (6 of the 112 were already closed by section 3).
+Why they survived: every locked statement of a name is written at position 0 of a value that the facade quantifies
+over symbolically or checks through its encoding, so (a) the unaligned packing writers (`P_pw1..3`, `P_pwu`, the
+`pos .&. 3` masks) are never reached, (b) the invalid-value marker of a checked writer (`2147483648`) and the
+length constants of the serializer (`ser_done(.., N, ..)`, `out_done(N, ..)`) and its write position (`putk(.., 0, o)`)
+are only visible through a refused result or a nonzero-position write, and (c) `X_hash_tree_root`'s literal hasher
+length and segment feed a callee that, for a leaf, never reads them.
+
+New generator `codegen/proofs/laws/mutation_laws_const.py` writes `proofs/obj/mutconst_<X>.bend` (one module per name, so a
+facade checks only its own laws); api_gate files `<X>_mc_*` in the encode facade (`serialize_valid`), `<X>_mc_root` in the
+root facade. Laws (all by `{==}`; the first three symbolic):
+
+| law | statement | closes |
+|---|---|---|
+| `mc_poison_<P>` | `P_pk(out,pos,(o,False{})) == (out,(o,O.poison()))` | the `2147483648` marker of a checked writer |
+| `mc_bxpoison_<S>` | `S_bx_putk(out,pos,O.BNone{}) == (out,(O.BNone{},O.poison()))` | the same in boxed writers |
+| `mc_bxcount_<S>` | the count `S_bx_putn` reports for a missing element is 0 | `(.., 0)` of `_bx_putn` |
+| `mc_put` | `P_put` at positions 0..3 of a nonzero value equals `O.put_words` of the value's aligned bytes (records: seed words) | shifts, carries, word indices, masks of `_pw*`, `_pwu`, `_put` |
+| `mc_ser` | `X_serialize(w) == (fst(X_encode(w)), encoded(snd(X_encode(w))))` for a witness (seed, or default with one seeded field set, or packed words / bits with nonzero words) | `senc_out`/`enc_out` length constants, the position `0` of `senc_go`/`serialize` |
+| `mc_root` | the wrapper of a `words_root`/`bits_root` name is its root function at `64n`, segment `0` | the segment of the Merkle-branch roots |
+
+`mc_ser` is not generated when the default object would encode to more than 8192 bytes (BeaconState: its law took
+over 430 s), nor for names that already have `serialize_in`.
+
+### Equivalent (no statement can tell them apart; the checker compares by conversion and the changed literal disappears)
+
+* 41 `hashtreeroot-constant`: the wrappers of the leaf names (boolean, uint8/16/32/64, Bytes1, the uint64/uint8 aliases
+  Slot, Epoch, Gwei, ... ParticipationFlags). `u64_root(+hl, h, o, +seg) = (h, O.u64_chunk(o))` (likewise `bool_root`,
+  `u8_root`, `u16_root`, `u32_root`, `b1_root`): `hl` and `seg` are not read, so `root(65n, h, o, 0)` and
+  `root(64n, h, o, 1)` are convertible to `root(64n, h, o, 0)`.
+* 4 `proglist_uint{8,32,64,256}_decode`, `0` to `1`: the offset passed to `pl_*_ok(buf, +off, +len)`, which ignores `off`.
+* 1 `ProgressiveSingleFieldContainerTestStruct_encode`, `out_at(0n)` to `out_at(1n)`: a capacity (2 words for a 1-byte
+  encoding), the class of section 2.
+* `ContributionAndProof_encode` / `SignedContributionAndProof_serialize`, `out_at(7n)` to `out_at(8n)`: capacity; 7 is the
+  least depth holding the 264 bytes.
+
+The 4 Merkle-branch roots (`FinalityBranch`, `CurrentSyncCommitteeBranch`, `NextSyncCommitteeBranch`, `ExecutionBranch`),
+segment `0` to `1`, are not equivalent (the segment selects the scratch region of the returned buffer): `mc_root` kills them.
+
+### Re-run (server, pinned checker, `tools/check.sh` on the facade, mutant applied by exact text in a private hard-linked cone)
+
+| group | survivors | killed (statement mismatch at a `mc_` law) | equivalent |
+|---|---|---|---|
+| constant | 112 | 107 (6 of them already by section 3) | 5: 4 proglist decode offsets, 1 `out_at(0n)` |
+| hashtreeroot-constant | 45 | 4 (`mc_root`, branch segment) | 41 leaf wrappers |
+
+Facade check times with the new laws: 2 to 60 s for the encode facades (vec_uint128_512, 8192-byte `mc_ser`, is the slowest;
+SignedBeaconBlock 35 s, ComplexTestStruct 20 s), 2 to 45 s for the root facades; all 277 facades that import a `mutconst_` module pass on the
+unmutated tree. `tools/verify_frozen.py`: no statement_defs drift.

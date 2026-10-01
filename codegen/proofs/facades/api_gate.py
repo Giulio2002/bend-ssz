@@ -220,6 +220,7 @@ def scan():
     U = set(fulu) | set(gen)
     ent = {}      # (X, kind) -> [(file, law)]
     parsed = {}
+    late = []
     api = re.compile(r'T\.(\w+?)_(decode|encode|ok|hash_tree_root|serialize)\(')
     spc = re.compile(r'Decoding\.(?:decodes|outside_image)\(\w+\.(\w+)\(\)|\{s == \w+\.(\w+)\(\) : S\.Schema\}')
     for f in sorted(OBJ.glob('*.bend')):
@@ -239,6 +240,16 @@ def scan():
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):
                         ent.setdefault((X, kind), []).append((f.name, n))
+            # codegen/proofs/laws/mutation_laws_const.py: proofs/obj/mutconst_<X>.bend holds <X>_mc_<tag> laws, one module
+            # per name (the name is in the file name); the root wrapper's law belongs to the root facade, the others to
+            # the encode facade (serialize_valid)
+            if f.name.startswith('mutconst_') and k == 'def' and f.stem[len('mutconst_'):] in U:
+                X = f.stem[len('mutconst_'):]
+                mc = re.fullmatch(re.escape(X) + r'_mc_(\w+)', n)
+                if mc:
+                    late.append(((X, 'root' if mc.group(1) == 'root' else 'serialize_valid'), (f.name, n)))
+    for key, v in late:      # after every other law: the bridges read the first law of a kind
+        ent.setdefault(key, []).append(v)
     return fulu, gen, ent, parsed
 
 
