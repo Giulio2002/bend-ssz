@@ -96,7 +96,7 @@ environment's limits never change a result. It matters because the checker recur
 conversion: a conversion that compares two unary numerals recurses once per unit. It bears on whether a
 check finishes, never on what it accepts (an overflow is a failure). JSC stops at the smaller of the two
 limits: at `ulimit -s 8192` that is its 5 MB budget (a larger `ulimit -s` alone changes nothing). The depth
-probe `{U32.to_nat(n) == <n>n}` by `{==}` checks up to n ≈ 28,800 there, ≈ 11,100 at half the budget,
+probe `{U32.to_nat(n) == <n>n}` by `{==}` checks up to n ≈ 28,800 there, ≈ 14,100 at half the budget (2,621,440 bytes),
 ≈ 22,700 at `ulimit -s 4096`; the budget scales it (10 MB: ≈ 58,600, 20 MB: ≈ 114,500), for the compiled
 `bin/bend` and for 2.0.28 alike. Near the limit a result can vary from run to run (JIT tiering changes the
 frame sizes), so the proofs are written to stay well below it: large literal facts are reached by
