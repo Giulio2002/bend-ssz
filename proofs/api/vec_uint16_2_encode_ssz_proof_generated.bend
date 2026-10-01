@@ -45,6 +45,9 @@ def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_cap() -> {vec_uint16_2
 def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vin() -> {vec_uint16_2_e.vec_uint16_2_serialize(P3_O.Words{P3_O.out_at(2n), 4}) == (Pair.fst(P3_O.Words, P3_B.Buf, vec_uint16_2_e.vec_uint16_2_encode(P3_O.Words{P3_O.out_at(2n), 4})), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_uint16_2_e.vec_uint16_2_encode(P3_O.Words{P3_O.out_at(2n), 4})))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_uint16_2_serialize_vin()
 
+def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint16_2_e.v2_u16_valid(P3_O.Words{ws, n}) == P3_O.wk_cap(Bool.and(Bool.and(U32.is_le(4, n), Bool.or(False{}, U32.is_le(n, 4))), P3_O.unit_ok(2, n)), n, Array.size(U32, ws)) : P3_O.Words & Bool}:
+  P3_PRV.vec_uint16_2_serialize_vsym(ws, n)
+
 def vec_uint16_2__serialize_valid__vec_uint16_2_mc_poison_v2_u16(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_uint16_2_e.v2_u16_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_uint16_2_mc_poison_v2_u16(out, pos, o)
 

@@ -48,6 +48,9 @@ def vec_bool_4__serialize_valid__vec_bool_4_serialize_vin() -> {vec_bool_4_e.vec
 def vec_bool_4__serialize_valid__vec_bool_4_serialize_vover() -> {vec_bool_4_e.vec_bool_4_serialize(P3_O.Words{P3_O.out_at(2n), 5}) == (P3_O.Words{P3_O.out_at(2n), 5}, P3_O.refused()) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_bool_4_serialize_vover()
 
+def vec_bool_4__serialize_valid__vec_bool_4_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_bool_4_e.v4_bool_valid(P3_O.Words{ws, n}) == P3_O.bools_ok(P3_O.wk_cap(Bool.and(Bool.and(U32.is_le(4, n), Bool.or(False{}, U32.is_le(n, 4))), P3_O.unit_ok(1, n)), n, Array.size(U32, ws))) : P3_O.Words & Bool}:
+  P3_PRV.vec_bool_4_serialize_vsym(ws, n)
+
 def vec_bool_4__serialize_valid__vec_bool_4_mc_poison_v4_bool(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_bool_4_e.v4_bool_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_bool_4_mc_poison_v4_bool(out, pos, o)
 

@@ -52,6 +52,9 @@ def bitlist_4__serialize_valid__bitlist_4_serialize_vin() -> {bitlist_4_e.bitlis
 def bitlist_4__serialize_valid__bitlist_4_serialize_vover() -> {bitlist_4_e.bitlist_4_serialize(P2_O.Bits{P2_O.out_at(1n), 5}) == (P2_O.Bits{P2_O.out_at(1n), 5}, P2_O.refused()) : P2_O.Bits & P2_O.Encoded}:
   P2_PRV.bitlist_4_serialize_vover()
 
+def bitlist_4__serialize_valid__bitlist_4_serialize_vsym(ws: Array<U32>, +k: U32) -> {bitlist_4_e.bits4_valid(P2_O.Bits{ws, k}) == P2_O.bk_cap(Bool.or(False{}, U32.is_le(k, 4)), k, Array.size(U32, ws)) : P2_O.Bits & Bool}:
+  P2_PRV.bitlist_4_serialize_vsym(ws, k)
+
 def bitlist_4__serialize_valid__bitlist_4_mc_poison_bits4(out: Array<U32>, pos: U32, o: P3_O.Bits) -> {bitlist_4_e.bits4_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Bits & U32)}:
   P3_PRV.bitlist_4_mc_poison_bits4(out, pos, o)
 

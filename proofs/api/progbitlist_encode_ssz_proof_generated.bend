@@ -44,6 +44,9 @@ def progbitlist__encode_spec__encode_spec(+dw: Nat, +T: P0_F.array__Tree<U32>, +
 def progbitlist__serialize_valid__progbitlist_serialize_vin() -> {progbitlist_e.progbitlist_serialize(P1_O.Bits{P1_O.out_at(1n), 1}) == (Pair.fst(P1_O.Bits, P1_B.Buf, progbitlist_e.progbitlist_encode(P1_O.Bits{P1_O.out_at(1n), 1})), P1_O.encoded(Pair.snd(P1_O.Bits, P1_B.Buf, progbitlist_e.progbitlist_encode(P1_O.Bits{P1_O.out_at(1n), 1})))) : P1_O.Bits & P1_O.Encoded}:
   P1_PRV.progbitlist_serialize_vin()
 
+def progbitlist__serialize_valid__progbitlist_serialize_vsym(ws: Array<U32>, +k: U32) -> {progbitlist_e.pbits_valid(P1_O.Bits{ws, k}) == P1_O.bk_cap(Bool.or(True{}, U32.is_le(k, 0)), k, Array.size(U32, ws)) : P1_O.Bits & Bool}:
+  P1_PRV.progbitlist_serialize_vsym(ws, k)
+
 def progbitlist__serialize_valid__progbitlist_mc_poison_pbits(out: Array<U32>, pos: U32, o: P2_O.Bits) -> {progbitlist_e.pbits_pk(out, pos, (o, False{})) == (out, (o, P2_O.poison())) : Array<U32> & (P2_O.Bits & U32)}:
   P2_PRV.progbitlist_mc_poison_pbits(out, pos, o)
 

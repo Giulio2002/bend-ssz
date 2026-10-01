@@ -658,6 +658,7 @@
    "files": [
     "spec_codec_FinalityBranch.bend",
     "wordpos_FinalityBranch.bend",
+    "zcapsym_FinalityBranch.bend",
     "capacity_FinalityBranch.bend",
     "mutval_fulu_FinalityBranch.bend",
     "mutconst_FinalityBranch.bend"
@@ -1241,6 +1242,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ContributionAndProof.bend",
+    "zcapsym_ContributionAndProof.bend",
     "capacity_ContributionAndProof.bend",
     "mutconst_ContributionAndProof.bend"
    ]
@@ -1272,6 +1274,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SignedContributionAndProof.bend",
+    "zcapsym_SignedContributionAndProof.bend",
     "capacity_SignedContributionAndProof.bend",
     "mutconst_SignedContributionAndProof.bend"
    ]
@@ -1441,6 +1444,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ProposerSlashing.bend",
+    "zcapsym_ProposerSlashing.bend",
     "offset_size_ProposerSlashing.bend",
     "capacity_ProposerSlashing.bend",
     "mutconst_ProposerSlashing.bend"
@@ -1472,7 +1476,8 @@
    "generated_name": "HistoricalBatch",
    "op": "encode_ssz",
    "files": [
-    "spec_arr_HistoricalBatch.bend"
+    "spec_arr_HistoricalBatch.bend",
+    "zcapsym_HistoricalBatch.bend"
    ]
   },
   "FuluHistoricalBatch_decode_ssz_proof_generated.bend": {
@@ -2042,7 +2047,8 @@
    "generated_name": "SyncCommittee",
    "op": "encode_ssz",
    "files": [
-    "spec_arr_SyncCommittee.bend"
+    "spec_arr_SyncCommittee.bend",
+    "zcapsym_SyncCommittee.bend"
    ]
   },
   "FuluSyncCommittee_decode_ssz_proof_generated.bend": {
@@ -2106,6 +2112,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Deposit.bend",
+    "zcapsym_Deposit.bend",
     "offset_size_Deposit.bend",
     "capacity_Deposit.bend",
     "mutconst_Deposit.bend"
@@ -2333,6 +2340,7 @@
    "files": [
     "spec_codec_CurrentSyncCommitteeBranch.bend",
     "wordpos_CurrentSyncCommitteeBranch.bend",
+    "zcapsym_CurrentSyncCommitteeBranch.bend",
     "capacity_CurrentSyncCommitteeBranch.bend",
     "mutval_fulu_CurrentSyncCommitteeBranch.bend",
     "mutconst_CurrentSyncCommitteeBranch.bend"
@@ -2367,6 +2375,7 @@
    "files": [
     "spec_codec_NextSyncCommitteeBranch.bend",
     "wordpos_NextSyncCommitteeBranch.bend",
+    "zcapsym_NextSyncCommitteeBranch.bend",
     "capacity_NextSyncCommitteeBranch.bend",
     "mutval_fulu_NextSyncCommitteeBranch.bend",
     "mutconst_NextSyncCommitteeBranch.bend"
@@ -2624,6 +2633,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_ExecutionPayloadHeader_enc.bend",
+    "zcapsym_ExecutionPayloadHeader.bend",
     "capacity_ExecutionPayloadHeader.bend",
     "mutconst_ExecutionPayloadHeader.bend"
    ]
@@ -2807,6 +2817,7 @@
    "files": [
     "spec_codec_ExecutionBranch.bend",
     "wordpos_ExecutionBranch.bend",
+    "zcapsym_ExecutionBranch.bend",
     "capacity_ExecutionBranch.bend",
     "mutval_fulu_ExecutionBranch.bend",
     "mutconst_ExecutionBranch.bend"
@@ -2840,6 +2851,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_LightClientHeader_enc.bend",
+    "zcapsym_LightClientHeader.bend",
     "capacity_LightClientHeader.bend",
     "mutconst_LightClientHeader.bend"
    ]
@@ -2869,6 +2881,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_LightClientOptimisticUpdate_enc.bend",
+    "zcapsym_LightClientOptimisticUpdate.bend",
     "capacity_LightClientOptimisticUpdate.bend",
     "mutconst_LightClientOptimisticUpdate.bend"
    ]
@@ -2898,6 +2911,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_LightClientFinalityUpdate_enc.bend",
+    "zcapsym_LightClientFinalityUpdate.bend",
     "capacity_LightClientFinalityUpdate.bend",
     "mutconst_LightClientFinalityUpdate.bend"
    ]
@@ -2924,7 +2938,8 @@
    "generated_name": "LightClientUpdate",
    "op": "encode_ssz",
    "files": [
-    "var_codec_LightClientUpdate_enc.bend"
+    "var_codec_LightClientUpdate_enc.bend",
+    "zcapsym_LightClientUpdate.bend"
    ]
   },
   "FuluLightClientUpdate_decode_ssz_proof_generated.bend": {
@@ -2949,7 +2964,8 @@
    "generated_name": "LightClientBootstrap",
    "op": "encode_ssz",
    "files": [
-    "var_bytes_LightClientBootstrap_enc.bend"
+    "var_bytes_LightClientBootstrap_enc.bend",
+    "zcapsym_LightClientBootstrap.bend"
    ]
   },
   "FuluLightClientBootstrap_decode_ssz_proof_generated.bend": {
@@ -3192,7 +3208,9 @@
    "op": "encode_ssz",
    "files": [
     "spec_arr_Blob.bend",
+    "zcapsym_Blob.bend",
     "mutation_laws_fulu.bend",
+    "mutval_fulu_Blob.bend",
     "mutconst_Blob.bend"
    ]
   },
@@ -3221,7 +3239,8 @@
    "generated_name": "BlobSidecar",
    "op": "encode_ssz",
    "files": [
-    "spec_arr_BlobSidecar.bend"
+    "spec_arr_BlobSidecar.bend",
+    "zcapsym_BlobSidecar.bend"
    ]
   },
   "FuluBlobSidecar_decode_ssz_proof_generated.bend": {
@@ -3249,8 +3268,10 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Cell.bend",
+    "zcapsym_Cell.bend",
     "capacity_Cell.bend",
     "mutation_laws_fulu.bend",
+    "mutval_fulu_Cell.bend",
     "mutconst_Cell.bend"
    ]
   },
@@ -3443,6 +3464,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_MatrixEntry.bend",
+    "zcapsym_MatrixEntry.bend",
     "capacity_MatrixEntry.bend",
     "mutconst_MatrixEntry.bend"
    ]
@@ -3673,6 +3695,7 @@
    "files": [
     "sub_vec_bool_16.bend",
     "wordpos_vec_bool_16.bend",
+    "zcapsym_vec_bool_16.bend",
     "capacity_vec_bool_16.bend",
     "mutval_generic_vec_bool_16.bend",
     "mutconst_vec_bool_16.bend"
@@ -3766,6 +3789,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_bool_31.bend",
+    "zcapsym_vec_bool_31.bend",
     "capacity_vec_bool_31.bend",
     "mutval_generic_vec_bool_31.bend",
     "mutconst_vec_bool_31.bend"
@@ -3860,6 +3884,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_bool_512.bend",
+    "zcapsym_vec_bool_512.bend",
     "capacity_vec_bool_512.bend",
     "mutval_generic_vec_bool_512.bend",
     "mutconst_vec_bool_512.bend"
@@ -3891,6 +3916,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_bool_513.bend",
+    "zcapsym_vec_bool_513.bend",
     "capacity_vec_bool_513.bend",
     "mutval_generic_vec_bool_513.bend",
     "mutconst_vec_bool_513.bend"
@@ -3922,6 +3948,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_bool_5.bend",
+    "zcapsym_vec_bool_5.bend",
     "capacity_vec_bool_5.bend",
     "mutval_generic_vec_bool_5.bend",
     "mutconst_vec_bool_5.bend"
@@ -3954,6 +3981,7 @@
    "files": [
     "sub_vec_bool_8.bend",
     "wordpos_vec_bool_8.bend",
+    "zcapsym_vec_bool_8.bend",
     "capacity_vec_bool_8.bend",
     "mutval_generic_vec_bool_8.bend",
     "mutconst_vec_bool_8.bend"
@@ -4015,6 +4043,7 @@
    "files": [
     "spec_gcodec_vec_uint128_16.bend",
     "wordpos_vec_uint128_16.bend",
+    "zcapsym_vec_uint128_16.bend",
     "capacity_vec_uint128_16.bend",
     "mutval_generic_vec_uint128_16.bend",
     "mutconst_vec_uint128_16.bend"
@@ -4049,6 +4078,7 @@
    "files": [
     "spec_gcodec_vec_uint128_1.bend",
     "wordpos_vec_uint128_1.bend",
+    "zcapsym_vec_uint128_1.bend",
     "capacity_vec_uint128_1.bend",
     "mutval_generic_vec_uint128_1.bend",
     "mutconst_vec_uint128_1.bend"
@@ -4083,6 +4113,7 @@
    "files": [
     "spec_gcodec_vec_uint128_2.bend",
     "wordpos_vec_uint128_2.bend",
+    "zcapsym_vec_uint128_2.bend",
     "capacity_vec_uint128_2.bend",
     "mutval_generic_vec_uint128_2.bend",
     "mutconst_vec_uint128_2.bend"
@@ -4116,6 +4147,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_vec_uint128_31.bend",
+    "zcapsym_vec_uint128_31.bend",
     "capacity_vec_uint128_31.bend",
     "mutval_generic_vec_uint128_31.bend",
     "mutconst_vec_uint128_31.bend"
@@ -4150,6 +4182,7 @@
    "files": [
     "spec_gcodec_vec_uint128_3.bend",
     "wordpos_vec_uint128_3.bend",
+    "zcapsym_vec_uint128_3.bend",
     "capacity_vec_uint128_3.bend",
     "mutval_generic_vec_uint128_3.bend",
     "mutconst_vec_uint128_3.bend"
@@ -4184,6 +4217,7 @@
    "files": [
     "spec_gcodec_vec_uint128_4.bend",
     "wordpos_vec_uint128_4.bend",
+    "zcapsym_vec_uint128_4.bend",
     "capacity_vec_uint128_4.bend",
     "mutval_generic_vec_uint128_4.bend",
     "mutconst_vec_uint128_4.bend"
@@ -4217,6 +4251,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint128_512.bend",
+    "zcapsym_vec_uint128_512.bend",
     "mutval_generic_vec_uint128_512.bend",
     "mutconst_vec_uint128_512.bend"
    ]
@@ -4247,6 +4282,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint128_513.bend",
+    "zcapsym_vec_uint128_513.bend",
     "mutval_generic_vec_uint128_513.bend",
     "mutconst_vec_uint128_513.bend"
    ]
@@ -4278,6 +4314,7 @@
    "files": [
     "spec_gcodec_vec_uint128_5.bend",
     "wordpos_vec_uint128_5.bend",
+    "zcapsym_vec_uint128_5.bend",
     "capacity_vec_uint128_5.bend",
     "mutval_generic_vec_uint128_5.bend",
     "mutconst_vec_uint128_5.bend"
@@ -4312,6 +4349,7 @@
    "files": [
     "spec_gcodec_vec_uint128_8.bend",
     "wordpos_vec_uint128_8.bend",
+    "zcapsym_vec_uint128_8.bend",
     "capacity_vec_uint128_8.bend",
     "mutval_generic_vec_uint128_8.bend",
     "mutconst_vec_uint128_8.bend"
@@ -4374,8 +4412,10 @@
    "files": [
     "sub_vec_uint8_16.bend",
     "wordpos_vec_uint8_16.bend",
+    "zcapsym_vec_uint8_16.bend",
     "capacity_vec_uint8_16.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_16.bend",
     "mutconst_vec_uint8_16.bend"
    ]
   },
@@ -4407,6 +4447,7 @@
     "sub_vec_uint8_1.bend",
     "capacity_vec_uint8_1.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_1.bend",
     "mutconst_vec_uint8_1.bend"
    ]
   },
@@ -4438,6 +4479,7 @@
     "sub_vec_uint8_2.bend",
     "capacity_vec_uint8_2.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_2.bend",
     "mutconst_vec_uint8_2.bend"
    ]
   },
@@ -4467,8 +4509,10 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_31.bend",
+    "zcapsym_vec_uint8_31.bend",
     "capacity_vec_uint8_31.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_31.bend",
     "mutconst_vec_uint8_31.bend"
    ]
   },
@@ -4500,6 +4544,7 @@
     "sub_vec_uint8_3.bend",
     "capacity_vec_uint8_3.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_3.bend",
     "mutconst_vec_uint8_3.bend"
    ]
   },
@@ -4532,6 +4577,7 @@
     "wordpos_vec_uint8_4.bend",
     "capacity_vec_uint8_4.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_4.bend",
     "mutconst_vec_uint8_4.bend"
    ]
   },
@@ -4561,8 +4607,10 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_512.bend",
+    "zcapsym_vec_uint8_512.bend",
     "capacity_vec_uint8_512.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_512.bend",
     "mutconst_vec_uint8_512.bend"
    ]
   },
@@ -4592,8 +4640,10 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_513.bend",
+    "zcapsym_vec_uint8_513.bend",
     "capacity_vec_uint8_513.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_513.bend",
     "mutconst_vec_uint8_513.bend"
    ]
   },
@@ -4623,8 +4673,10 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_5.bend",
+    "zcapsym_vec_uint8_5.bend",
     "capacity_vec_uint8_5.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_5.bend",
     "mutconst_vec_uint8_5.bend"
    ]
   },
@@ -4655,8 +4707,10 @@
    "files": [
     "sub_vec_uint8_8.bend",
     "wordpos_vec_uint8_8.bend",
+    "zcapsym_vec_uint8_8.bend",
     "capacity_vec_uint8_8.bend",
     "mutation_laws_generic.bend",
+    "mutval_generic_vec_uint8_8.bend",
     "mutconst_vec_uint8_8.bend"
    ]
   },
@@ -4715,6 +4769,7 @@
    "files": [
     "sub_vec_uint16_16.bend",
     "wordpos_vec_uint16_16.bend",
+    "zcapsym_vec_uint16_16.bend",
     "capacity_vec_uint16_16.bend",
     "mutval_generic_vec_uint16_16.bend",
     "mutconst_vec_uint16_16.bend"
@@ -4809,6 +4864,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint16_31.bend",
+    "zcapsym_vec_uint16_31.bend",
     "capacity_vec_uint16_31.bend",
     "mutval_generic_vec_uint16_31.bend",
     "mutconst_vec_uint16_31.bend"
@@ -4840,6 +4896,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint16_3.bend",
+    "zcapsym_vec_uint16_3.bend",
     "capacity_vec_uint16_3.bend",
     "mutval_generic_vec_uint16_3.bend",
     "mutconst_vec_uint16_3.bend"
@@ -4872,6 +4929,7 @@
    "files": [
     "sub_vec_uint16_4.bend",
     "wordpos_vec_uint16_4.bend",
+    "zcapsym_vec_uint16_4.bend",
     "capacity_vec_uint16_4.bend",
     "mutval_generic_vec_uint16_4.bend",
     "mutconst_vec_uint16_4.bend"
@@ -4903,6 +4961,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint16_512.bend",
+    "zcapsym_vec_uint16_512.bend",
     "capacity_vec_uint16_512.bend",
     "mutval_generic_vec_uint16_512.bend",
     "mutconst_vec_uint16_512.bend"
@@ -4934,6 +4993,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint16_513.bend",
+    "zcapsym_vec_uint16_513.bend",
     "capacity_vec_uint16_513.bend",
     "mutval_generic_vec_uint16_513.bend",
     "mutconst_vec_uint16_513.bend"
@@ -4965,6 +5025,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint16_5.bend",
+    "zcapsym_vec_uint16_5.bend",
     "capacity_vec_uint16_5.bend",
     "mutval_generic_vec_uint16_5.bend",
     "mutconst_vec_uint16_5.bend"
@@ -4997,6 +5058,7 @@
    "files": [
     "sub_vec_uint16_8.bend",
     "wordpos_vec_uint16_8.bend",
+    "zcapsym_vec_uint16_8.bend",
     "capacity_vec_uint16_8.bend",
     "mutval_generic_vec_uint16_8.bend",
     "mutconst_vec_uint16_8.bend"
@@ -5057,6 +5119,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_vec_uint256_16.bend",
+    "zcapsym_vec_uint256_16.bend",
     "capacity_vec_uint256_16.bend",
     "mutval_generic_vec_uint256_16.bend",
     "mutconst_vec_uint256_16.bend"
@@ -5091,6 +5154,7 @@
    "files": [
     "spec_gcodec_vec_uint256_1.bend",
     "wordpos_vec_uint256_1.bend",
+    "zcapsym_vec_uint256_1.bend",
     "capacity_vec_uint256_1.bend",
     "mutval_generic_vec_uint256_1.bend",
     "mutconst_vec_uint256_1.bend"
@@ -5125,6 +5189,7 @@
    "files": [
     "spec_gcodec_vec_uint256_2.bend",
     "wordpos_vec_uint256_2.bend",
+    "zcapsym_vec_uint256_2.bend",
     "capacity_vec_uint256_2.bend",
     "mutval_generic_vec_uint256_2.bend",
     "mutconst_vec_uint256_2.bend"
@@ -5158,6 +5223,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_vec_uint256_31.bend",
+    "zcapsym_vec_uint256_31.bend",
     "capacity_vec_uint256_31.bend",
     "mutval_generic_vec_uint256_31.bend",
     "mutconst_vec_uint256_31.bend"
@@ -5192,6 +5258,7 @@
    "files": [
     "spec_gcodec_vec_uint256_3.bend",
     "wordpos_vec_uint256_3.bend",
+    "zcapsym_vec_uint256_3.bend",
     "capacity_vec_uint256_3.bend",
     "mutval_generic_vec_uint256_3.bend",
     "mutconst_vec_uint256_3.bend"
@@ -5226,6 +5293,7 @@
    "files": [
     "spec_gcodec_vec_uint256_4.bend",
     "wordpos_vec_uint256_4.bend",
+    "zcapsym_vec_uint256_4.bend",
     "capacity_vec_uint256_4.bend",
     "mutval_generic_vec_uint256_4.bend",
     "mutconst_vec_uint256_4.bend"
@@ -5259,6 +5327,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint256_512.bend",
+    "zcapsym_vec_uint256_512.bend",
     "mutval_generic_vec_uint256_512.bend",
     "mutconst_vec_uint256_512.bend"
    ]
@@ -5289,6 +5358,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint256_513.bend",
+    "zcapsym_vec_uint256_513.bend",
     "mutval_generic_vec_uint256_513.bend",
     "mutconst_vec_uint256_513.bend"
    ]
@@ -5320,6 +5390,7 @@
    "files": [
     "spec_gcodec_vec_uint256_5.bend",
     "wordpos_vec_uint256_5.bend",
+    "zcapsym_vec_uint256_5.bend",
     "capacity_vec_uint256_5.bend",
     "mutval_generic_vec_uint256_5.bend",
     "mutconst_vec_uint256_5.bend"
@@ -5354,6 +5425,7 @@
    "files": [
     "spec_gcodec_vec_uint256_8.bend",
     "wordpos_vec_uint256_8.bend",
+    "zcapsym_vec_uint256_8.bend",
     "capacity_vec_uint256_8.bend",
     "mutval_generic_vec_uint256_8.bend",
     "mutconst_vec_uint256_8.bend"
@@ -5417,6 +5489,7 @@
    "files": [
     "spec_gcodec_vec_uint32_16.bend",
     "wordpos_vec_uint32_16.bend",
+    "zcapsym_vec_uint32_16.bend",
     "capacity_vec_uint32_16.bend",
     "mutval_generic_vec_uint32_16.bend",
     "mutconst_vec_uint32_16.bend"
@@ -5485,6 +5558,7 @@
    "files": [
     "spec_gcodec_vec_uint32_2.bend",
     "wordpos_vec_uint32_2.bend",
+    "zcapsym_vec_uint32_2.bend",
     "capacity_vec_uint32_2.bend",
     "mutval_generic_vec_uint32_2.bend",
     "mutconst_vec_uint32_2.bend"
@@ -5519,6 +5593,7 @@
    "files": [
     "spec_gcodec_vec_uint32_31.bend",
     "wordpos_vec_uint32_31.bend",
+    "zcapsym_vec_uint32_31.bend",
     "capacity_vec_uint32_31.bend",
     "mutval_generic_vec_uint32_31.bend",
     "mutconst_vec_uint32_31.bend"
@@ -5553,6 +5628,7 @@
    "files": [
     "spec_gcodec_vec_uint32_3.bend",
     "wordpos_vec_uint32_3.bend",
+    "zcapsym_vec_uint32_3.bend",
     "capacity_vec_uint32_3.bend",
     "mutval_generic_vec_uint32_3.bend",
     "mutconst_vec_uint32_3.bend"
@@ -5587,6 +5663,7 @@
    "files": [
     "spec_gcodec_vec_uint32_4.bend",
     "wordpos_vec_uint32_4.bend",
+    "zcapsym_vec_uint32_4.bend",
     "capacity_vec_uint32_4.bend",
     "mutval_generic_vec_uint32_4.bend",
     "mutconst_vec_uint32_4.bend"
@@ -5620,6 +5697,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint32_512.bend",
+    "zcapsym_vec_uint32_512.bend",
     "capacity_vec_uint32_512.bend",
     "mutval_generic_vec_uint32_512.bend",
     "mutconst_vec_uint32_512.bend"
@@ -5651,6 +5729,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint32_513.bend",
+    "zcapsym_vec_uint32_513.bend",
     "capacity_vec_uint32_513.bend",
     "mutval_generic_vec_uint32_513.bend",
     "mutconst_vec_uint32_513.bend"
@@ -5683,6 +5762,7 @@
    "files": [
     "spec_gcodec_vec_uint32_5.bend",
     "wordpos_vec_uint32_5.bend",
+    "zcapsym_vec_uint32_5.bend",
     "capacity_vec_uint32_5.bend",
     "mutval_generic_vec_uint32_5.bend",
     "mutconst_vec_uint32_5.bend"
@@ -5717,6 +5797,7 @@
    "files": [
     "spec_gcodec_vec_uint32_8.bend",
     "wordpos_vec_uint32_8.bend",
+    "zcapsym_vec_uint32_8.bend",
     "capacity_vec_uint32_8.bend",
     "mutval_generic_vec_uint32_8.bend",
     "mutconst_vec_uint32_8.bend"
@@ -5780,6 +5861,7 @@
    "files": [
     "spec_gcodec_vec_uint64_16.bend",
     "wordpos_vec_uint64_16.bend",
+    "zcapsym_vec_uint64_16.bend",
     "capacity_vec_uint64_16.bend",
     "mutval_generic_vec_uint64_16.bend",
     "mutconst_vec_uint64_16.bend"
@@ -5814,6 +5896,7 @@
    "files": [
     "spec_gcodec_vec_uint64_1.bend",
     "wordpos_vec_uint64_1.bend",
+    "zcapsym_vec_uint64_1.bend",
     "capacity_vec_uint64_1.bend",
     "mutval_generic_vec_uint64_1.bend",
     "mutconst_vec_uint64_1.bend"
@@ -5848,6 +5931,7 @@
    "files": [
     "spec_gcodec_vec_uint64_2.bend",
     "wordpos_vec_uint64_2.bend",
+    "zcapsym_vec_uint64_2.bend",
     "capacity_vec_uint64_2.bend",
     "mutval_generic_vec_uint64_2.bend",
     "mutconst_vec_uint64_2.bend"
@@ -5882,6 +5966,7 @@
    "files": [
     "spec_gcodec_vec_uint64_31.bend",
     "wordpos_vec_uint64_31.bend",
+    "zcapsym_vec_uint64_31.bend",
     "capacity_vec_uint64_31.bend",
     "mutval_generic_vec_uint64_31.bend",
     "mutconst_vec_uint64_31.bend"
@@ -5916,6 +6001,7 @@
    "files": [
     "spec_gcodec_vec_uint64_3.bend",
     "wordpos_vec_uint64_3.bend",
+    "zcapsym_vec_uint64_3.bend",
     "capacity_vec_uint64_3.bend",
     "mutval_generic_vec_uint64_3.bend",
     "mutconst_vec_uint64_3.bend"
@@ -5950,6 +6036,7 @@
    "files": [
     "spec_gcodec_vec_uint64_4.bend",
     "wordpos_vec_uint64_4.bend",
+    "zcapsym_vec_uint64_4.bend",
     "capacity_vec_uint64_4.bend",
     "mutval_generic_vec_uint64_4.bend",
     "mutconst_vec_uint64_4.bend"
@@ -5983,6 +6070,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint64_512.bend",
+    "zcapsym_vec_uint64_512.bend",
     "capacity_vec_uint64_512.bend",
     "mutval_generic_vec_uint64_512.bend",
     "mutconst_vec_uint64_512.bend"
@@ -6014,6 +6102,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint64_513.bend",
+    "zcapsym_vec_uint64_513.bend",
     "mutval_generic_vec_uint64_513.bend",
     "mutconst_vec_uint64_513.bend"
    ]
@@ -6045,6 +6134,7 @@
    "files": [
     "spec_gcodec_vec_uint64_5.bend",
     "wordpos_vec_uint64_5.bend",
+    "zcapsym_vec_uint64_5.bend",
     "capacity_vec_uint64_5.bend",
     "mutval_generic_vec_uint64_5.bend",
     "mutconst_vec_uint64_5.bend"
@@ -6079,6 +6169,7 @@
    "files": [
     "spec_gcodec_vec_uint64_8.bend",
     "wordpos_vec_uint64_8.bend",
+    "zcapsym_vec_uint64_8.bend",
     "capacity_vec_uint64_8.bend",
     "mutval_generic_vec_uint64_8.bend",
     "mutconst_vec_uint64_8.bend"
@@ -6139,6 +6230,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BitsStruct_enc.bend",
+    "zcapsym_BitsStruct.bend",
     "capacity_BitsStruct.bend",
     "mutconst_BitsStruct.bend"
    ]

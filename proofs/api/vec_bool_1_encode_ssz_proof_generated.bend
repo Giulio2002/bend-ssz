@@ -42,6 +42,9 @@ def vec_bool_1__serialize_valid__vec_bool_1_serialize_vin() -> {vec_bool_1_e.vec
 def vec_bool_1__serialize_valid__vec_bool_1_serialize_vover() -> {vec_bool_1_e.vec_bool_1_serialize(P2_O.Words{P2_O.out_at(1n), 2}) == (P2_O.Words{P2_O.out_at(1n), 2}, P2_O.refused()) : P2_O.Words & P2_O.Encoded}:
   P2_PRV.vec_bool_1_serialize_vover()
 
+def vec_bool_1__serialize_valid__vec_bool_1_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_bool_1_e.v1_bool_valid(P2_O.Words{ws, n}) == P2_O.bools_ok(P2_O.wk_cap(Bool.and(Bool.and(U32.is_le(1, n), Bool.or(False{}, U32.is_le(n, 1))), P2_O.unit_ok(1, n)), n, Array.size(U32, ws))) : P2_O.Words & Bool}:
+  P2_PRV.vec_bool_1_serialize_vsym(ws, n)
+
 def vec_bool_1__serialize_valid__vec_bool_1_mc_poison_v1_bool(out: Array<U32>, pos: U32, o: P3_O.Words) -> {vec_bool_1_e.v1_bool_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Words & U32)}:
   P3_PRV.vec_bool_1_mc_poison_v1_bool(out, pos, o)
 
