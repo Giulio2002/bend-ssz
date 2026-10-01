@@ -4,7 +4,8 @@ Trusted (not proved here):
 
 - **The checker.** Bend main 01875127 (after the v2.0.34 release; its Base is byte-identical to
   v2.0.34's) plus two commits on the fork branch Giulio2002/bend `rigid-subterms`, 45663e0a and
-  aa99b746, compiled with Bun 1.4.2 into a release layout (`bin/bend` + `bend2/base.bend`).
+  aa99b746, compiled with Bun 1.4.2 into a release layout (`bin/bend` + `bend2/base.bend`). The lock pins no separate Bun: the
+  compiled `bin/bend` embeds the Bun runtime, so its sha256 pins that runtime too.
   `toolchain.lock.json` pins the commit and the sha256 of `bin/bend`, `bend2/base.bend` and the
   sources it was built from (`bend2/main.ts`, `bend.ts`, `comp.ts`); `tools/check.sh` and
   `tools/check_fast.sh` refuse to run on any other bytes (`tools/verify_pins.py`). This is **not
@@ -104,8 +105,8 @@ Trusted (not proved here):
   of those encoders (`X_valid` and its helpers, the premise of the validating-serializer statements), which are
   hashed. So a change to a src/ def
   cannot weaken or empty a premise without changing the lock. `tools/verify_frozen.py` checks
-  all of this (after planting seven changes: five that must trip the lock, among them a weakened
-  `Checkpoint_valid` and `u8_valid`, and two that must not, the encoder and the serializer, which the proofs pin down), and that
+  all of this (after planting the changes listed in its `PLANTED`, and printing how many: some must trip the lock, among them a weakened
+  `Checkpoint_valid` and `u8_valid`, and some must not, the encoder and the serializer, which the proofs pin down), and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `bend-collections@1.0.0.0` = `0xd9a2fae439ac7ff9e21e0853948f94fe`

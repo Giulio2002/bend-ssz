@@ -1,12 +1,12 @@
 {
-  "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py): stock upstream Bend 2.0.28 (2026-09-25), release bend-2.0.28-linux-x64.tar.gz from github.com/bendlang/bend; base.bend is byte-identical on every platform and to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
+  "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py, benchmarks/checks/*): stock upstream Bend 2.0.34 (release bend-2.0.34-linux-x64.tar.gz from github.com/bendlang/bend). The runtime sources (src/digest.bend, src/sha256.bend) use the 2.0.34 Base API after the port, so the 2.0.28 build no longer compiles them. Set BEND_RUNTIME to the binary (the paths below are the maintainer's laptop; every evidence file records the sha256 of the binary and Base it actually used). base.bend is the 2.0.34 release's, byte-identical to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
   "bend": {
     "path": "/Users/monkeair/.bend/bin/bend",
-    "sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf"
+    "sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934"
   },
   "base": {
     "path": "/Users/monkeair/.bend/bend2/base.bend",
-    "sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
+    "sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
   },
-  "version": "2.0.28"
+  "version": "2.0.34"
 }

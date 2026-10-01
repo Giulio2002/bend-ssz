@@ -127,7 +127,7 @@ UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES CHECK_STACK_KB=16384 CHECK_JSC_STACK=$JSC \
+CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES \
   python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
 # a full run records its stamp in the tree: benchmarks/evidence/check_fast.json (at the pinned stack),
 # benchmarks/evidence/check_fast_jsc<BYTES>.json (a headroom run at another JSC budget)
