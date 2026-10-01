@@ -1002,7 +1002,15 @@ def pb_container(name, win, dec, lf_, flavor='d'):
     return container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
 
 
-def _cu_arm(name, k, win, apath, supf, lf, C, flavor='o'):
+def _cu_orwrap(x, k, n_arms):
+    """the Or2 selection of arm k of n_arms: Inr^k Inl{x} (the last arm Inr^(n-1) x)"""
+    r = f'Inl{{{x}}}' if k < n_arms - 1 else x
+    for _ in range(k):
+        r = f'Inr{{{r}}}'
+    return r
+
+
+def _cu_arm(name, k, win, apath, supf, lf, C, flavor='o', nA=1):
     """the premises of the compatible union over its arm k's window (the arm constructed by e2e_cuobj_<name>.arm<k>), under the arm window's
     own check hA: the arm file e2e/e2e_cu_<name>_<k>.bend (its p_rep / p_hs)"""
     BUF_ARGS.discard(name)
@@ -1033,8 +1041,21 @@ def _cu_arm(name, k, win, apath, supf, lf, C, flavor='o'):
             return None
         return [], None, None, None, xleaf
     fn = f'e2e_cu_{name}_{k}.bend'
+    given = None
+    if apath.endswith('ProgressiveSingleFieldContainerTestStruct.bend'):   # one uint8 field at the arm window's start: its byte is below 256
+        def rep_(al):
+            Wu, Wa = al(f'proofs/obj/var_winx_{name}.bend'), al(apath)
+            DPA, UAa, FXa, VRa = al('e2e/e2e_dpl.bend'), al('proofs/obj/vua.bend'), al('proofs/obj/spec_fixed.bend'), al('proofs/obj/vbrt.bend')
+            core = f'({Wa}.OBJw(d, t, {Wu}.XJ(t, x), {Wu}.FJ(off), {Wu}.LJ(n)), ({{==}}, {DPA}.nthb_lt({UAa}.BYT(t), {Wu}.XJ(t, x), {FXa}.domain_limbs({VRa}.SL(t)))))'
+            return core_wrap(core)
+        n_arms = [None]
+
+        def core_wrap(core):
+            return core
+        given = {'rep': rep_, 'hs': lambda al: '{==}'}
+        given['rep'] = (lambda al, _r=rep_: _cu_orwrap(_r(al), k, nA))
     txt = container_file(name, lf, supf, f'{name}_arm{k}', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps), lets, None, apath,
-                         objexpr=f'WN.{name}_arm{k}(d, t, x, off, n)')
+                         objexpr=f'WN.{name}_arm{k}(d, t, x, off, n)', given=given)
     EXTRA_FILES[ROOT / 'e2e' / fn] = txt
     return fn
 
@@ -1059,7 +1080,7 @@ def union_provider(name, arms, lf):
     if not (ROOT / supf).exists() or (ROOT / supf).read_text() != sup:
         (ROOT / supf).write_text(sup)
     EXTRA_FILES[ROOT / supf] = sup
-    arm_files = [_cu_arm(name, k, wpath, a[2], supf, lf, C) for k, a in enumerate(arms)]
+    arm_files = [_cu_arm(name, k, wpath, a[2], supf, lf, C, 'o', N) for k, a in enumerate(arms)]
     # the selector chain
     root_l = 'proofs/obj/root_gtypes2_light.bend'
     cs = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
@@ -1110,6 +1131,7 @@ PROVERS = {
     'FuluLightClientUpdate': lambda lf: lc_update(lf),
     'FuluDataColumnSidecar': lambda lf: data_column_sidecar(lf),
     'CompatibleUnionBC': lambda lf: union_provider('CompatibleUnionBC', [(2, 'c0', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c1', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend')], lf),
+    'CompatibleUnionABCA': lambda lf: union_provider('CompatibleUnionABCA', [(1, 'c0', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend'), (2, 'c1', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c2', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend'), (4, 'c3', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend')], lf),
     'ProgressiveVarTestStruct': lambda lf: pb_container('ProgressiveVarTestStruct', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend', 'proofs/obj/var_codec_ProgressiveVarTestStruct.bend', lf),
     'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
