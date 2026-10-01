@@ -521,12 +521,34 @@ def bits_struct(lf):
     return container_file(name, lf, 'proofs/obj/var_codec_BitsStruct.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None, 'proofs/obj/var_codec_BitsStruct.bend')
 
 
+def compat_union_a(lf):
+    """CompatibleUnionA: selector 1, the union's one arm a ProgressiveSingleFieldContainerTestStruct (a uint8): the decoder's object is
+    the arm's constructor on both sides of its selector test (W.OB0), so the object is c0{child} whatever the test gives"""
+    name = 'CompatibleUnionA'
+    BUF_D.add(name)
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+    imports = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+               'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/spec_fixed.bend as FX',
+               'import ../proofs/obj/root_gtypes2_light.bend as RT', 'import ../types/CompatibleUnionA_def_generated.bend as CUA',
+               f'import ../proofs/obj/var_codec_{name}.bend as DC', f'import ../proofs/obj/var_winx_{name}.bend as W',
+               'import ../proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend as CH', 'import ./e2e_dpl.bend as DP']
+    defs = ('def ob0(+c: Bool, +s: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32)\n'
+            '    -> {W.OB0(c, s, d, t, x, off, len) == CUA.CompatibleUnionA_c0{CH.OBJw(d, t, W.XJ(t, x), W.FJ(off), W.LJ(len))} : CUA.CompatibleUnionA}:\n'
+            '  match c:\n    case True{}: {==}\n    case False{}: {==}\n\n'
+            f'def p_rep({ps})\n    -> RT.rep_{name}(DC.OBJ(d, t, n)):\n'
+            '  (CH.OBJw(d, t, W.XJ(t, 0n), W.FJ(0), W.LJ(n)), (ob0(U32.is_eq(W.BX(t, 0n), 1), W.BX(t, 0n), d, t, 0n, 0, n), '
+            'DP.nthb_lt(UA.BYT(t), W.XJ(t, 0n), FX.domain_limbs(VR.SL(t)))))\n')
+    return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
 PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
+    'CompatibleUnionA': lambda lf: compat_union_a(lf),
     'BitsStruct': lambda lf: bits_struct(lf),
     'VarTestStruct': lambda lf: list_u16_container('VarTestStruct', 'var_codec_VarTestStruct', 'proofs/obj/var_winx_VarTestStruct.bend', 'proofs/obj/var_winx_l1024_u16.bend', 1024, 12, lf),
     'proglist_bool': lambda lf: prog_bool('proglist_bool', 'var_plist_proglist_bool_top'),

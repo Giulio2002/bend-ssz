@@ -1796,7 +1796,7 @@ def rel(p):
 def outputs():
     cs = collections()
     outs, total = dict(coll_words()), 0
-    if (OBJ / 'tarray.bend').exists():   # the array-list laws need tarray.bend (rigid-checker only, branch agent/solid3-rigid)
+    if True:   # the array-list laws (proofs/obj/tarray.bend)
         bt, bn = coll_seq(cs)
         outs[CB] = bt
         total += bn

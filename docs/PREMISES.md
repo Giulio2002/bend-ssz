@@ -25,20 +25,19 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
   run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->41<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
+  <!-- fig:decrep_count -->42<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `CompatibleUnionA`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluTransaction`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->222<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
-<!-- fig:pending_count -->18<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
+<!-- fig:composed -->223<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
+<!-- fig:pending_count -->17<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
 `e2e/COMPOSED.txt`, so it cannot drift from it): the decode-side bridges (i)/(iv) of those names take the listed premises
 on the decoded object, which no checked law yet derives from the decoder, or (for a tree-form decoder) the decoder's object
 is not one this module reads.
 <!-- fig:pending_table -->
 | Name | Why there is no composed theorem |
 |---|---|
-| `CompatibleUnionA` | the (i)/(iv) bridges take rep (decoded-object laws pending) |
 | `CompatibleUnionABCA` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `CompatibleUnionBC` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ComplexTestStruct` | the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending) |
@@ -349,16 +348,6 @@ table above. They are dropped when the encode laws take dw < 32.
   can exceed them); ProgressiveBitsStruct's 1281-bit vector premise; and the `unit_ok` premises of
   FuluDataColumnSidecar and of the block body's commitments (each list a whole number of elements),
   object API validity not yet proved of decoded objects (section 1).
-
-### Laws that wait for the checker port
-
-The read-back laws of the <!-- fig:rigid_count -->17<!-- /fig --> collections stored as an array of elements (Data elements, or boxed
-Type-kind containers) need `proofs/obj/tarray.bend`, which only the rigid checker of the Bend port accepts. They are not in this
-tree's gate: they live in `proofs/obj/coll_seq.bend` and `tarray.bend` on the out-of-tree branch `agent/solid3-rigid`, and
-`codegen/coll_laws.py` emits them only where `tarray.bend` exists. Until the port lands, the statements `read_set`, `read_append`
-(and, for the boxed lists, `other_set`) of these collections are not checked here, and nothing in this repository's "checks"
-claim covers them (the `_api_set_length` and `_api_append_length` laws of the same collections are in `coll_api_*.bend`). The
-collections: <!-- fig:rigid_collections -->`l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l2048_Eth1Data`, `l1099511627776_Validator`, `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`, `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`, `l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`<!-- /fig -->.
 
 ## 7. Word-storage bridges
 

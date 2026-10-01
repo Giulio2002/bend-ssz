@@ -188,8 +188,7 @@ def figures():
 
 
 def pending_figures():
-    """the names without a composed theorem, each with the reason e2e/COMPOSED.txt gives (codegen/e2e_compose.py), and the
-    collections whose read-back laws are on the rigid-checker branch (codegen/coll_laws.py's kind 'seq')"""
+    """the names without a composed theorem, each with the reason e2e/COMPOSED.txt gives (codegen/e2e_compose.py)"""
     rows = ['| Name | Why there is no composed theorem |', '|---|---|']
     for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines():
         if l.startswith('#') or not l.strip():
@@ -198,11 +197,6 @@ def pending_figures():
         if st != 'composed':
             rows.append('| `%s` | %s |' % (n, st.replace('pending: ', '', 1).replace('|', '\\|')))
     f = {'pending_count': str(len(rows) - 2), 'pending_table': '\n' + '\n'.join(rows) + '\n'}
-    sys.path.insert(0, str(ROOT / 'codegen'))
-    import coll_laws as CL
-    seq = [c for c in CL.collections() if CL.info(c)['kind'] == 'seq']
-    f['rigid_count'] = str(len(seq))
-    f['rigid_collections'] = ', '.join('`%s`' % c for c in seq)
     return f
 
 
