@@ -79,7 +79,7 @@ Trusted (not proved here):
   (`tools/generate_bit_decoding.py`, which also writes `src/bit_decoding.bend` and
   `proofs/bit_decoding.bend`) and `spec/fulu_schemas.bend` (`tools/generate_fulu_schema_proofs.py`,
   a transcription of `schemas/fulu_mainnet.json`). They are frozen like every spec file (their
-  bytes are in `frozen.lock.json`), and `codegen/tool_generators.py --check` reruns the three
+  bytes are in `frozen.lock.json`), and `codegen/impl/tool_generators.py --check` reruns the three
   scripts and requires the committed bytes, so the script is a record of how the text was
   produced, not a way to change it. What they are reviewed as is the text they contain.
   **Independence of the bit packing.** `spec/bit_packing.bend` and `src/bit_packing.bend` come

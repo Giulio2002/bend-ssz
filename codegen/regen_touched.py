@@ -42,7 +42,7 @@ ROOT = RA.ROOT
 STAMPS = ROOT / 'build' / 'regen_stamps.json'
 CHANGED = ROOT / 'build' / 'regen_changed.txt'
 TRACE_DIR = ROOT / 'codegen' / 'regen_trace'
-OPAQUE = {'tool_generators': ('tools/', 'codegen/tool_generators.py', 'codegen/regen_all.py')}
+OPAQUE = {'tool_generators': ('tools/', 'codegen/impl/tool_generators.py', 'codegen/regen_all.py', 'codegen/registry.py')}
 state = {'stamps': {}, 'changed': set()}
 
 

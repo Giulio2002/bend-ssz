@@ -96,7 +96,7 @@ SHA-256 package, compiler and host) is described in [docs/TRUST.md](docs/TRUST.m
 ## Layout
 
 `src/` runtime, `types/` the generated API per name, `spec/` the frozen specification,
-`proofs/` the checked laws, `e2e/` the bridges to END_TO_END, `codegen/` the generators.
+`proofs/` the checked laws, `e2e/` the bridges to END_TO_END, `codegen/` the generators (by purpose; `codegen/README.md`).
 See [docs/LAYOUT.md](docs/LAYOUT.md).
 
 ## Regenerate and check
@@ -104,7 +104,7 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
     python3 codegen/regen_all.py            # regenerate every generated file (idempotent)
     python3 codegen/regen_all.py --check    # fail if any generated file is stale
     tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
-                                            # (last recorded run: <!-- fig:check_wall -->7.5<!-- /fig --> min wall at 20 jobs);
+                                            # (last recorded run: <!-- fig:check_wall -->8.3<!-- /fig --> min wall at 20 jobs);
                                             # on failure it bisects and prints the failing files
     tools/check.sh <file.bend>              # one file
 

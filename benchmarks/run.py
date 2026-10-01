@@ -183,8 +183,8 @@ def build(log):
     OUT.mkdir(parents=True, exist_ok=True)
     INPUTS.mkdir(parents=True, exist_ok=True)
     global GROUPS
-    sh([PY3, 'codegen/check_schema.py'])
-    sh([PY3, 'codegen/generate.py'])
+    sh([PY3, 'codegen/impl/check_schema.py'])
+    sh([PY3, 'codegen/impl/generate.py'])
     GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
     sh([sys.executable, 'tools/generate_missing_go_types.py'])
     sh([sys.executable, 'tools/generate_bench_go.py'])

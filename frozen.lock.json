@@ -1,7 +1,7 @@
 {
   "files": {
     "memory_bench/law-statements.json": "f761638032510154b94354285e1541a9aedf7e6ab79779883d652b8c65973f07",
-    "proofs/obj/generic_specs.bend": "604db58388c1e285f597cf4d3aa5effd37e877c2cfb1f1101d18bc7ac4e1a2d9",
+    "proofs/obj/generic_specs.bend": "15529b0c57a7c74a0bf3880116245c0ab635d06a19e4ce5518cad08521d32381",
     "schemas/fulu_mainnet.json": "db721d1b25e10f8658bf5eb19f2bf5feb6a435f463000753cf41ce08230dc5e3",
     "spec/bit_decode.bend": "fdfdfbb4b3b72191b86ffa62288f30b07205bfebbbf959341950d5101c075ad9",
     "spec/bit_decoding.bend": "ab1c5e5cbc7992543ee2667c3c2c21fa2610435cc92533602e750d1a70626bb1",

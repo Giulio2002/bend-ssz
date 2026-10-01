@@ -5,7 +5,7 @@
     python3 codegen/regen_all.py            # write mode
     python3 codegen/regen_all.py --check    # stale check (CI)
 
-`regen_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/generate.py`
+`regen_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/impl/generate.py`
 first, then every law generator in import order, then `api_gate.py`, `api_facade.py` and
 `e2e_bridge.py`, and repeats until a pass writes nothing (the facades and gates record their
 imports, so one law change can take two passes). `--check` runs every generator's `--check`
@@ -13,7 +13,7 @@ and fails on any stale file. Requirements: Python 3.12 with `requirements.txt`.
 
 The early proof layer (`proofs/*.bend`: compatibility, identity, root relation, codec and bit
 packing proofs), a few `spec/` and `types/` files and benchmark scaffolding were written by the 68
-`tools/generate_*.py`. `codegen/tool_generators.py --check` (one of the generators `regen_all.py
+`tools/generate_*.py`. `codegen/impl/tool_generators.py --check` (one of the generators `regen_all.py
 --check` runs) reruns the 62 reproducible ones in a scratch copy of the tree and fails if any
 writes nothing, exits nonzero, or writes a file that differs from the committed one. The other
 six are listed in its `ONE_SHOT` table with the reason: a Markdown renderer that needs a benchmark
@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->unknown<!-- /fig -->):
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->d5bf4c0c<!-- /fig -->):
 <!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->6,227<!-- /fig --> files,
-<!-- fig:check_cpu -->3,653<!-- /fig --> CPU seconds, <!-- fig:check_wall -->7.5<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->372<!-- /fig --> s. A
+<!-- fig:check_cpu -->3,881<!-- /fig --> CPU seconds, <!-- fig:check_wall -->8.3<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->450<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves

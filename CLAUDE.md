@@ -12,6 +12,8 @@ first. Report before and after in seconds.
 **The loop, cheapest first:**
 1. Regenerate only what you changed: `python3 codegen/regen_all.py --only <generator>[,<generator>]`. The full
    `regen_all.py` repeats up to 16 fixpoint passes (e2e_compose alone is 120 s per pass); never use it in the loop.
+   The generators live in `codegen/<purpose>/<name>.py` (layout and conventions: `codegen/README.md`; a new
+   generator must be added to `codegen/registry.py`; `tools/test_codegen.sh` runs the unit tests, ruff and `--check`).
 2. Check the single file you touched, on the server: `tools/check.sh <file.bend>` (about 1 to 3 minutes). No lock.
 3. Only when the single files pass, run one full check for the batch of fixes:
    `flock /srv/ssz-optimization/agents/.fullcheck.lock tools/check_fast.sh --jobs 12 --no-localize --out <dir>`.
