@@ -106,6 +106,19 @@ composed root statement of a mutated list for the boxed lists and the record lis
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
+Design note, the composed root of a mutated list of records or of boxed containers. The 11 lists with a root view (`xv_<c>`: `l8192_DepositRequest`,
+`l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`,
+`l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`) already have the list-root law `rs_<c>` (`proofs/obj/root_types.bend`: the digest `xd_<c>` of an object
+is a specification root of its view under `rep_<c>`, the element schema's `ok` and `eqs`) and the view-after-set law `..._api_view_set`. What is missing is the invariant
+of the written list: `rep_<c>(set(o, i, v), s)` from `rep_<c>(o, s)`, which needs (a) an `ereps_set` lemma, generated per list from `view_seq.bend`'s
+`<c>_xat_same` / `<c>_xat_other` (the element representations over the slots of the updated tree: the new element's, the old ones elsewhere; one induction on the count, deciding
+`J == i0`), (b) the written array as the array of the updated tree (`amset_<c>` for the boxed lists; the record lists store the elements directly) and the new element's
+representation as a premise (`rep_X(v, sE)`; for a boxed list `th_bx(fz_bx(wrap v))` is `wrap v` only given the element's own freeze/thaw law, which the container setters of
+`proofs/obj/prep_setters.bend` already assume as `rv`), and (c) the composition of `rs_<c>` with the view law, as `coll_root.bend` does for the word families. The other record
+lists (`Eth1Data`, `Validator`, `HistoricalSummary`, the `Pending*` lists) have no `xv_` view or `rs_` law, so the root statement of a mutated one first needs that list-root law
+(the generated digest of those lists is not covered by an `rs_` law at all). The encode of a mutated list is the same gap as the container setters': the encode bridge's storage premises
+of the written object, stated per element.
+
 ## Conformance (official vectors, through the generated object API)
 
 `benchmarks/evidence/object_conformance.json`: every `mainnet/fulu/ssz_static` case of
