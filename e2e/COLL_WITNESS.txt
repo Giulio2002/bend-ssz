@@ -26,16 +26,22 @@ l16777216_b32	15 witnessed
 l16_Deposit	7 witnessed
 l16_ProposerSlashing	7 witnessed
 l16_SignedBLSToExecutionChange	11 witnessed
+  pending l16_SignedBLSToExecutionChange_api_root_set: the representation premise RTL.rep_l16_SignedBLSToExecutionChange(o, s) is not read
 l16_SignedVoluntaryExit	11 witnessed
+  pending l16_SignedVoluntaryExit_api_root_set: the representation premise RTL.rep_l16_SignedVoluntaryExit(o, s) is not read
 l16_Withdrawal	11 witnessed
+  pending l16_Withdrawal_api_root_set: the representation premise RTL.rep_l16_Withdrawal(o, s) is not read
 l16_WithdrawalRequest	11 witnessed
+  pending l16_WithdrawalRequest_api_root_set: the representation premise RTL.rep_l16_WithdrawalRequest(o, s) is not read
 l1_AttesterSlashing	7 witnessed
 l2048_Eth1Data	11 witnessed
 l262144_PendingConsolidation	11 witnessed
 l2_ConsolidationRequest	11 witnessed
+  pending l2_ConsolidationRequest_api_root_set: the representation premise RTL.rep_l2_ConsolidationRequest(o, s) is not read
 l4096_b2048	8 witnessed
 l4096_b48	16 witnessed
 l8192_DepositRequest	11 witnessed
+  pending l8192_DepositRequest_api_root_set: the representation premise RTL.rep_l8192_DepositRequest(o, s) is not read
 l8_Attestation	7 witnessed
 v17_b32	10 witnessed
 v33_b32	10 witnessed

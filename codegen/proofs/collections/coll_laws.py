@@ -276,6 +276,7 @@ def laws(I, imps):
         if I['data']:
             n += data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c)
             n += seq_view_law(w, I, DA, T, EL, GS, c, imps)
+            seq_root_law(I, DA, T, EL, GS, c)
     elif I['kind'] == 'words' and I.get('put_true'):
         n += words_readback(w, I, q, DA, T, ET, GS, GG, imps) or cells_readback(w, I, q, DA, GS, GG, imps)
     w('')
@@ -599,6 +600,93 @@ def u64_vec_root_set(c, kind, DA, SET, OBJ, lines, imps, VIEW, ES, xp, xs, GSo, 
     lines.append('  %%Equal.sym(O.Words, Pair.fst(O.Words, Bool, %s), %s, se) :\n    RR.roots(%s, s, [%s])' % (SETn, OTQ, FS(OW), DIG('_')))
     lines.append('  %%vs2 :\n    RR.roots(_, s, [%s])' % DIG(OTQ))
     lines.append('  PK.v8_rs(hl, ehl, %s, s, depth, ((%s, (d, (n, (qc, (r, ({==}, (WW.tk_perfect([%s], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2)))))))))))), ks2), ok, hdep)\n' % (OTQ, TQ, ', '.join(xs)))
+
+
+NTH_EX = """# an index below the length of a list has an item
+def nth_ex_step(-A: Data, +x: A, +r: List<&2, A>, +j: Nat, +ih: DK.Ex(A, y => {F.spec_common__nth(A, r, j) == Some{y} : Maybe<&2, A>}))
+    -> DK.Ex(A, y => {F.spec_common__nth(A, Con{x, r}, 1n+j) == Some{y} : Maybe<&2, A>}):
+  (+y, +e) = ih
+  (y, e)
+
+def nth_ex(-A: Data, +xs: List<&2, A>, +i: Nat, +h: {Nat.is_lt(i, F.spec_common__length(A, xs)) == True{} : Bool})
+    -> DK.Ex(A, y => {F.spec_common__nth(A, xs, i) == Some{y} : Maybe<&2, A>}):
+  match xs i:
+    case Nil{} _: Empty.absurd(DK.Ex(A, y => {F.spec_common__nth(A, Nil{}, i) == Some{y} : Maybe<&2, A>}), F.nat__lt_zero_absurd(i, h))
+    case Con{+x, +r} 0n: (x, {==})
+    case Con{+x, +r} 1n+ +j: nth_ex_step(A, x, r, j, nth_ex(A, r, j, h))"""
+
+
+def seq_root_law(I, DA, T, EL, GS, c):
+    """the root of a list of records after an accepted set: its digest xd_<c> is a specification root of the view with that item replaced.
+    The written list represents (rep_<c>: its storage is the updated tree, no element invariant), so rs_<c> (root_types.bend) applies; the view is view_seq.bend's"""
+    sp = viewseq.seq_specs().get(c)
+    rt = (OBJ / 'root_types.bend').read_text()
+    mrs = re.search(r'^def rs_%s\((.*)\)\n    -> ' % re.escape(c), rt, re.M)
+    if not sp or not mrs or sp['M'] != 'RTL':
+        return
+    params = split_top(mrs.group(1))
+    byname = {re.match(r'[+-]?(\w+):', q_).group(1): q_ for q_ in params}
+    if set(byname) != {'hl', 'ehl', 'h', 'o', 's', 'rep', 'ok', 'eq'}:
+        return
+    imps = ROOT_OUT.setdefault('imps', {})
+    lines = ROOT_OUT.setdefault('lines', [])
+    for a, pth in (('F', 'proofs/compact/found.bend'), ('VS', 'proofs/obj/value_set.bend'), ('S', 'types/schema.bend'), ('SH', 'proofs/obj/schema_shapes.bend'), ('P', 'types/primitive.bend'),
+                   ('RR', 'spec/root_relation.bend'), ('D', 'src/digest.bend'), ('B', 'src/buffer.bend'), ('DK', 'proofs/obj/dk.bend'), ('RN', 'proofs/obj/root_names_light.bend'),
+                   ('VQ', 'proofs/obj/view_seq.bend'), ('RTH', 'proofs/obj/root_types.bend'), ('RTL', 'proofs/obj/root_types_light.bend'), (DA, os.path.relpath(I['file'], ROOT))):
+        imps[a] = pth
+    for a_, p_ in sp['imports'].items():
+        imps[a_] = os.path.normpath(os.path.join('proofs/obj', p_))
+    if not ROOT_OUT.get('nth_ex'):
+        ROOT_OUT['nth_ex'] = True
+        lines.append(NTH_EX)
+    M = 'RTL'
+    TH = 'F.array__thaw(%s, t)' % EL
+    SEQ = lambda a: '%s.%s{%s, n}' % (DA, I['T'], a)
+    OW = SEQ(TH)
+    UPD = 'F.array__upd(%s, d, t, U32.to_nat(i), v)' % EL
+    N2 = SEQ('F.array__thaw(%s, %s)' % (EL, UPD))
+    GSo = re.sub(r'(?<![\w.])n(?![\w.])', '%s.xlen_o_%s(o)' % (M, c), re.sub(r'(?<![\w.])arr(?![\w.])', 'o', GS))
+    GSw = lambda z: re.sub(r'(?<![\w.])n(?![\w.])', 'n', re.sub(r'(?<![\w.])arr(?![\w.])', TH, GS))
+    SETo = lambda o_: '%s.%s_set(%s, i, v)' % (DA, c, o_)
+    FST = lambda x: 'Pair.fst(%s, Bool, %s)' % (T, x)
+    FS = lambda xv: 'VS.field_set(%s.xv_%s(%s), U32.to_nat(i), %s(v))' % (M, c, xv, sp['V'])
+    ok = byname['ok'].replace('ok_%s(' % c, 'RTH.ok_%s(' % c)
+    eq = byname['eq']
+    DIG = lambda ob: 'D.bytes(RTH.xd_%s(hl, %s))' % (c, ob)
+    CONCL = 'RR.roots(%s, s, [%s])' % (FS('o'), DIG(FST(SETo('o'))))
+    LIM = 'SH.ListOf_limit(s)'
+    # the written list is the list with the updated tree
+    lines.append('def %s_root_sq(+d: Nat, +t: F.array__Tree<%s>, +n: U32, +i: U32, +v: %s, +x: %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, '
+                 '+hx: {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(i)) == Some{x} : Maybe<&2, %s>}, +pf: {F.array__perfect(%s, d, t) == True{} : Bool}, +hsn: {%s == True{} : Bool})\n'
+                 '    -> {%s == %s : %s}:' % (c, EL, EL, EL, EL, EL, EL, EL, GSw(0), FST(SETo(OW)), N2, T))
+    lines.append('  %%Equal.sym(Bool, %s, True{}, hsn) : {%s == %s : %s}' % (GSw(0), FST('%s.%s_put_in(_, %s, n, i, v)' % (DA, c, TH)), N2, T))
+    lines.append('  %%Equal.sym(Array<%s>, Array.set(%s, %s, i, v), F.array__thaw(%s, %s), F.array__set(%s, d, t, i, v, x, hd, hi, hx, pf)) : {%s == %s : %s}' % (EL, EL, TH, EL, UPD, EL, SEQ('_'), N2, T))
+    lines.append('  {==}\n')
+    PARAMS = ('+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: %s, +s: S.Schema, +rep: %s.rep_%s(o, s), +ok: %s, +eq: %s, +i: U32, +v: %s, +hs: {%s == True{} : Bool}'
+              % (T, M, c, ok[ok.index(':') + 2:], eq[eq.index(':') + 2:], EL, GSo))
+    lines.append('def %s_root_go(%s, +t: F.array__Tree<%s>, +d: Nat, +n: U32, +eo: {o == %s : %s}, +pf: {F.array__perfect(%s, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                 '+hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(%s.xlen_o_%s(o)), %s) == True{} : Bool}, '
+                 '+hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {%s == True{} : Bool}, '
+                 '+ex: DK.Ex(%s, x => {F.spec_common__nth(%s, F.array__slots(%s, t), U32.to_nat(i)) == Some{x} : Maybe<&2, %s>}))\n'
+                 '    -> %s:' % (c, PARAMS, EL, OW, T, EL, M, c, LIM, GSw(0), EL, EL, EL, EL, CONCL))
+    lines.append('  (+x, +hx) = ex')
+    lines.append('  +sq = %s_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)' % c)
+    lines.append('  +vs = VQ.%s_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)' % c)
+    lines.append('  +vs2 = F.logic__subst(%s, z => {%s.xv_%s(z) == VS.field_set(%s.xv_%s(%s), U32.to_nat(i), %s(v)) : S.Value}, %s, %s, {==}, vs)' % (T, M, c, M, c, OW, sp['V'], N2, N2))
+    lines.append('  +hv2 = F.logic__subst(%s, z => {Nat.is_le(U32.to_nat(%s.xlen_o_%s(z)), %s) == True{} : Bool}, o, %s, eo, hv)' % (T, M, c, LIM, OW))
+    lines.append('  %%Equal.sym(%s, o, %s, eo) :\n    RR.roots(VS.field_set(%s.xv_%s(_), U32.to_nat(i), %s(v)), s, [%s])' % (T, OW, M, c, sp['V'], DIG(FST(SETo('_')))))
+    lines.append('  %%Equal.sym(%s, %s, %s, sq) :\n    RR.roots(%s, s, [%s])' % (T, FST(SETo(OW)), N2, FS(OW), DIG('_')))
+    lines.append('  %%vs2 :\n    RR.roots(_, s, [%s])' % DIG(N2))
+    lines.append('  RTH.rs_%s(hl, ehl, h, %s, s, ((%s, (d, (n, ({==}, (F.array__upd_perfect(%s, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)\n' % (c, N2, 'F.array__upd(%s, d, t, U32.to_nat(i), v)' % EL, EL))
+    lines.append('def %s_api_root_set(%s)\n    -> %s:' % (c, PARAMS, CONCL))
+    lines.append('  (+wf, +hv) = rep')
+    for ln in ['(+t, w1) = wf', '(+d, w2) = w1', '(+n, w3) = w2', '(+eo, w4) = w3', '(+pf, w5) = w4', '(+hd, +hn) = w5']:
+        lines.append('  ' + ln)
+    lines.append('  +hsn = F.logic__subst(%s, z => {%s == True{} : Bool}, o, %s, eo, hs)' % (T, GSo.replace('(o)', '(z)'), OW))
+    lines.append('  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)')
+    lines.append('  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)')
+    lines.append('  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(%s, F.array__slots(%s, t)), Equal.sym(Nat, F.spec_common__length(%s, F.array__slots(%s, t)), F.spec_common__pow2(d), F.array__slots_length(%s, d, t, pf)), hi)' % (EL, EL, EL, EL, EL))
+    lines.append('  %s_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(%s, F.array__slots(%s, t), U32.to_nat(i), hil))\n' % (c, EL, EL))
 
 
 def root_file():
