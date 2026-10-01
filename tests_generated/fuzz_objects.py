@@ -68,7 +68,7 @@ for _n, _t in GENERIC_TY.items():
         TY[_n] = _t
         PROGRAM[_n] = (f"build/obj-x{GENERIC_INDEX[_n]['group']}", GENERIC_INDEX[_n]['index'], 'generic')
 FUZZ_OPS = json.loads((ROOT / 'types/obj_fuzz_ops.json').read_text())
-TMP = ROOT / 'build/fuzz'
+TMP = ROOT / ('build/fuzz' + os.environ.get('SSZ_TMP_SUFFIX', ''))
 TMP.mkdir(parents=True, exist_ok=True)
 
 # A generated value stays small: lists get a few elements, so a case is a

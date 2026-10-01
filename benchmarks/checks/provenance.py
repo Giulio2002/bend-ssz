@@ -56,6 +56,7 @@ EVIDENCE = {
     'benchmarks/evidence/invalid_objects.json': 'tests_generated/invalid_objects.py',
     'benchmarks/evidence/negative_api.json': 'tests_generated/negative_api.py',
     'benchmarks/evidence/runtime_tests.json': 'tools/run_runtime_tests.py',
+    'benchmarks/evidence/mutation_testing.json': 'tests_generated/mutation_testing.py',
 }
 # files a harness depends on beyond COMMON_HARNESS (the Bun tests and their loader)
 EXTRA_HARNESS = {'tools/run_runtime_tests.py': ('tools/bend_loader.ts', 'tests/*.test.ts', 'tests/**/*.test.ts')}
@@ -156,6 +157,8 @@ def runtime_bend():
 
 def stamp(script):
     """The provenance of a result produced by `script` (the harness's __file__)."""
+    if os.environ.get('EVIDENCE_NO_STAMP'):   # a run in a scratch copy (mutation testing): its result is not evidence
+        return {'skipped': 'EVIDENCE_NO_STAMP'}
     commit, dirty, tree = git_state()
     bend = Path(runtime_bend())
     base = bend.resolve().parents[1] / 'bend2/base.bend'
