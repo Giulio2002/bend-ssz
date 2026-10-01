@@ -452,6 +452,257 @@ def build_tree(name, lf, api):
     return bigK(text, N).replace(api.HEADER, HEADER, 1), None
 
 
+REC_OBJ = re.compile(r'^([\w.]+)\{(.*)\}$', re.S)
+WORDS_T = re.compile(r'^(\w+)\.Words\{ANode\{(\w+)\.array__thaw\(U32, (\w+)\.segt\(dd, (.*), (\w+)\.wlp\(bs\)\)\), Array\.new\(U32, (\d+)n, 0\)\}, (\d+)\}$', re.S)
+
+
+def build_tree_rec(name, lf, api):
+    """a fixed-size record of byte-vector fields (Vector[Bytes32, 2^c]) whose decoder builds each field's words as a tree
+    (AC.segt dd at its own start) beside a zero half: d_some(dd, ed, ..) gives Rec{Words{ANode{thaw(segt(dd, s_i, wlp)),
+    Array.new(dd, 0)}, 2^b}, ..}. Each field's rep_pv is proved at its tree TNode{segt, trep} (perfect by the halves of
+    L.seg_pf), its sizes as U32 powers of two (e2e_wit), its depth-(dd+1) storage by the same tree."""
+    W = api.W
+    dl, el, rl = lf.get(f'{name}_e2e_decode_view'), lf.get(f'{name}_e2e_encode'), lf.get(f'{name}_e2e_root')
+    if not (dl and el and rl):
+        return None
+    dm, em, rm = W.Mod.get(dl), W.Mod.get(el), W.Mod.get(rl)
+    if 'd_some' not in dm.defs or 'd_none' not in dm.defs:
+        return None
+    sps, sc = api.sig(dm, 'd_some')
+    if [b for _, b, _ in sps] != ['dd', 'ed', 'bs', 'n', 'hn', 'hd', 'en']:
+        return None
+    ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
+    mdd = re.match(r'\{dd == (\d+)n : Nat\}$', sps[1][2])
+    mr = REC_OBJ.match(ms.group(2)) if ms else None
+    if not mdd or not mr or '.Words{' in mr.group(1):
+        return None
+    flds = [f.strip() for f in W.split_top(mr.group(2))]
+    mws = [WORDS_T.match(f) for f in flds]
+    if not all(mws):
+        return None
+    D = int(mdd.group(1))
+    N = int(mws[0].group(7))
+    if any(int(m_.group(6)) != D or int(m_.group(7)) != N for m_ in mws) or N & (N - 1):
+        return None
+    b = N.bit_length() - 1
+    c = b - 5
+    eps, ec = api.sig(em, f'{name}_e2e_encode')
+    rps, rc = api.sig(rm, f'{name}_e2e_root')
+    k = len(flds)
+    if [x for _, x, _ in eps] != ['o', 'rep'] + [f'hc{i}' for i in range(k)] or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
+        return None
+    if not all('rep_pv' in t for _, x, t in [eps[1], rps[2]]):
+        pass
+    obj0 = ms.group(2).replace('segt(dd, ', f'segt({D}n, ').replace('pow2(dd)', f'pow2({D}n)')
+    W.PREFER.clear()
+    W.PREFER[dm.path] = 'DB'
+    W.PREFER.setdefault(em.path, 'EB')
+    W.PREFER.setdefault(rm.path, 'RB')
+    W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
+    W.PREFER[(ROOT / 'types/schema.bend').resolve()] = 'S'
+    W.PREFER[(ROOT / 'src/buffer.bend').resolve()] = 'B'
+    W.PREFER[(ROOT / 'src/model.bend').resolve()] = 'API'
+    W.PREFER[(E2E / 'e2e_wit.bend').resolve()] = 'WT'
+    taken = set(W.PREFER.values())
+    for m_ in (em, rm, dm):
+        for a_, pth in m_.imports.items():
+            if pth not in W.PREFER and a_ not in taken:
+                W.PREFER[pth] = a_
+                taken.add(a_)
+    ctx = W.Ctx()
+    for p_ in (dm.path, em.path, rm.path, (E2E / 'e2e_comp.bend').resolve(), (E2E / 'e2e_wit.bend').resolve()):
+        ctx.alias(p_)
+    DB, EB, RB = W.PREFER[dm.path], W.PREFER[em.path], W.PREFER[rm.path]
+    enc, rt = api.some_lhs(ec, 'serialize'), api.some_lhs(rc, 'hash_tree_root')
+    X, SPEC, V = ctx.lift(em, enc[0]), ctx.lift(em, enc[1]), ctx.lift(em, enc[2])
+    R = ctx.lift(rm, rt[0])
+    dps, dc = api.sig(dm, f'{name}_e2e_decode_view')
+    mo = re.match(r'\{(\w+)\((.*)\) == (API\.deserialize\(.*\)) : Maybe<&2, S\.Value>\}$', dc, re.S)
+    MV, DEC, DES = mo.group(1), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3))
+    MT = ctx.lift(dm, re.search(r'Pair\.snd\(B\.Buf, (Maybe<&1, [\w.]+>)', dc).group(1))
+    hyps = [(m_, b_, ctx.lift(dm, t)) for m_, b_, t in dps if b_ not in ('bs', 'n')]
+    args = ', '.join(b_ for _, b_, _ in dps)
+    accT = f'{{{DES} == Some{{{V}}} : Maybe<&2, S.Value>}}'
+    acc_body = (f'  Equal.trans(Maybe<&2, S.Value>, {DES}, {DB}.{MV}({DEC}), Some{{{V}}},\n'
+                f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
+                f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
+    OT = MT[len('Maybe<&1, '):-1]
+    OBJ = ctx.lift(dm, obj0)
+    EY = ctx.alias(E2E / 'e2e_bytes.bend')
+    FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    SHA, XWA = ctx.alias(ROOT / 'proofs/obj/schema_shapes.bend'), ctx.alias(E2E / 'e2e_fixdw.bend')
+    DFX = ctx.alias(E2E / 'e2e_dfx.bend')
+    ctx.alias(ROOT / 'spec/primitives.bend')
+    LA = ctx.alias(dm.imports[mws[0].group(5)])
+    ACA = ctx.alias(dm.imports[mws[0].group(3)])
+    NW = f'{FDA}.u32__pow2u({b}n)'
+    flds_l = [ctx.lift(dm, f.replace('segt(dd, ', f'segt({D}n, ').replace('pow2(dd)', f'pow2({D}n)')) for f in flds]
+    starts = [m_.group(4).replace('pow2(dd)', f'pow2({D}n)') for m_ in mws]
+    # the schemas of the fields as rep_<Name> states them
+    rep_t = ctx.lift(em, eps[1][2])
+    SCH = re.search(r'rep_\w+\(o, (.*)\)$', rep_t, re.S).group(1)
+    schs = [f'{SHA}.Chain_head({SHA}.Container_fields({SCH}))']
+    for _ in range(1, k):
+        schs.append(f'{SHA}.Chain_head({SHA}.Chain_tail({SHA}.Container_fields({SCH})))' if len(schs) == 1 else None)
+    defs = ''
+    TT = []
+    over_rep = []
+    for i in range(k):
+        S_ = f'{ACA}.segt({D}n, {ctx.lift(dm, starts[i])}, {LA}.wlp(bs))'
+        T = f'{FDA}.TNode{{{S_}, {FDA}.array__trep(U32, {D}n, 0)}}'
+        TT.append(T)
+        halves = 'spl' if i == 0 else 'spr'
+        whole = f'{ACA}.segt({D + 1}n, 0n, {LA}.wlp(bs))'
+        defs += (f'def oeq{i}(+bs: +List<U32>) -> {{{flds_l[i]} == O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}} : O.Words}}:\n'
+                 f'  %{FDA}.array__new(U32, {D}n, 0) : {{{flds_l[i]} == O.Words{{ANode{{{FDA}.array__thaw(U32, {S_}), _}}, {NW}}} : O.Words}}\n  {{==}}\n\n'
+                 f'def pf{i}(+bs: +List<U32>) -> {{{FDA}.array__perfect(U32, {D + 1}n, {T}) == True{{}} : Bool}}:\n'
+                 f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D}n, {S_}), True{{}}, {XWA}.{halves}({D}n, {whole}, {LA}.seg_pf({D + 1}n, {LA}.wlp(bs)))) :\n'
+                 f'    {{Bool.and(_, {FDA}.array__perfect(U32, {D}n, {FDA}.array__trep(U32, {D}n, 0))) == True{{}} : Bool}}\n'
+                 f'  {FDA}.array__trep_perfect(U32, {D}n, 0)\n\n'
+                 f'def hc{i}(+bs: +List<U32>) -> {{E3.at_depth({flds_l[i]}, {D + 1}n) == True{{}} : Bool}}:\n'
+                 f'  {FDA}.logic__subst(O.Words, z => {{E3.at_depth(z, {D + 1}n) == True{{}} : Bool}}, O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}}, {flds_l[i]}, Equal.sym(O.Words, {flds_l[i]}, O.Words{{{FDA}.array__thaw(U32, {T}), {NW}}}, oeq{i}(bs)),\n'
+                 f'    {FDA}.logic__subst({FDA}.array__Tree<U32>, z => {{{FDA}.array__perfect(U32, {D + 1}n, z) == True{{}} : Bool}}, {T}, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})),\n'
+                 f'      Equal.sym({FDA}.array__Tree<U32>, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T})), {T}, {FDA}.array__freeze_thaw(U32, {T})), pf{i}(bs)))\n\n')
+        sch = schs[i] if schs[i] else f'{SHA}.Chain_head({SHA}.Chain_tail({SHA}.Chain_tail({SHA}.Container_fields({SCH}))))'
+        nk = f'{XWA}.nk({c}n, {{==}}, {FDA}.u32__pow2u({c}n), {{==}}, {SHA}.Vector_length({sch}), {{==}})'
+        wfv = (f'({T}, ({D + 1}n, ({NW}, (WT.QP({c}n), (oeq{i}(bs), (pf{i}(bs), ({{==}}, (WT.eN({c}n, {b}n, {{==}}, {NW}, {FDA}.u32__pow2u_value({b}n, {{==}})), '
+               f'WT.eQ({c}n, {D + 1}n, {{==}})))))))))')
+        over_rep.append(f'({wfv}, {DFX}.fchk({c}n, {b}n, {{==}}, {{==}}, {{==}}, {sch}, {nk}))')
+    rep = '({==}, (' + over_rep[0] + ', ' + over_rep[1] + '))' if k == 2 else None
+    if rep is None:
+        return None
+    over = {'rep': rep}
+    for i in range(k):
+        over[f'hc{i}'] = f'hc{i}(bs)'
+    ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), {N * k}n) == True{{}} : Bool}}'
+    base_depth = api.arr_depth
+    api.arr_depth = lambda t: D + 1 if t.strip().startswith('ANode{') else base_depth(t)
+    try:
+        text, err = api.build_lit(name, (N * k, obj0, 'tree-form record'), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, 'view', over=over)
+    finally:
+        api.arr_depth = base_depth
+    if text is None:
+        return None, err
+    SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
+    dsome = (f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
+             f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
+             f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), {N * k}, hn, ec))\n\n')
+    i = text.index('\ndef ') + 1
+    text = text[:i] + defs + dsome + text[i:]
+    text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
+    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), {N * k}, hn, ec))')
+    return bigK(text, N * k).replace(api.HEADER, HEADER, 1), None
+
+
+def build_sync(name, lf, api):
+    """SyncCommittee: a sparse depth-13 store of 512 public keys (the decoder's left spine over segt(2 + dd), then the
+    half holding the last 2048 words) and the aggregate key as a record of words. The rep is proved at the tree
+    TNode{sp(12, segt(1+dd)), TNode{segt(dd, ..), trep}} (e2e_dpl.sp_pf: the spine of a perfect tree is perfect)."""
+    W = api.W
+    dl, el, rl = lf.get(f'{name}_e2e_decode_view'), lf.get(f'{name}_e2e_encode'), lf.get(f'{name}_e2e_root')
+    if not (dl and el and rl) or name != 'FuluSyncCommittee':
+        return None
+    dm, em, rm = W.Mod.get(dl), W.Mod.get(el), W.Mod.get(rl)
+    sps, sc = api.sig(dm, 'd_some')
+    ms = re.match(r'\{(.*) == Some\{(.*)\} : (Maybe<&1, [\w.]+>)\}$', sc, re.S)
+    D = 11
+    obj0 = ms.group(2).replace('segt(dd, ', f'segt({D}n, ').replace('segt(1n+dd, ', f'segt({D + 1}n, ').replace('segt(2n+dd, ', f'segt({D + 2}n, ')
+    obj0 = obj0.replace('pow2(dd)', f'pow2({D}n)').replace('pow2(1n+dd)', f'pow2({D + 1}n)')
+    eps, ec = api.sig(em, f'{name}_e2e_encode')
+    rps, rc = api.sig(rm, f'{name}_e2e_root')
+    if [x for _, x, _ in eps] != ['o', 'rep', 'hc', 'hN'] or [x for _, x, _ in rps] != ['h', 'o', 'rep']:
+        return None
+    W.PREFER.clear()
+    W.PREFER[dm.path] = 'DB'
+    W.PREFER.setdefault(em.path, 'EB')
+    W.PREFER.setdefault(rm.path, 'RB')
+    W.PREFER[(E2E / 'e2e_comp.bend').resolve()] = 'C'
+    W.PREFER[(ROOT / 'types/schema.bend').resolve()] = 'S'
+    W.PREFER[(ROOT / 'src/buffer.bend').resolve()] = 'B'
+    W.PREFER[(ROOT / 'src/model.bend').resolve()] = 'API'
+    W.PREFER[(E2E / 'e2e_wit.bend').resolve()] = 'WT'
+    taken = set(W.PREFER.values())
+    for m_ in (em, rm, dm):
+        for a_, pth in m_.imports.items():
+            if pth not in W.PREFER and a_ not in taken:
+                W.PREFER[pth] = a_
+                taken.add(a_)
+    ctx = W.Ctx()
+    for p_ in (dm.path, em.path, rm.path, (E2E / 'e2e_comp.bend').resolve(), (E2E / 'e2e_wit.bend').resolve()):
+        ctx.alias(p_)
+    DB, EB, RB = W.PREFER[dm.path], W.PREFER[em.path], W.PREFER[rm.path]
+    enc, rt = api.some_lhs(ec, 'serialize'), api.some_lhs(rc, 'hash_tree_root')
+    X, SPEC, V = ctx.lift(em, enc[0]), ctx.lift(em, enc[1]), ctx.lift(em, enc[2])
+    R = ctx.lift(rm, rt[0])
+    dps, dc = api.sig(dm, f'{name}_e2e_decode_view')
+    mo = re.match(r'\{(\w+)\((.*)\) == (API\.deserialize\(.*\)) : Maybe<&2, S\.Value>\}$', dc, re.S)
+    MV, DEC, DES = mo.group(1), ctx.lift(dm, mo.group(2)), ctx.lift(dm, mo.group(3))
+    MT = ctx.lift(dm, re.search(r'Pair\.snd\(B\.Buf, (Maybe<&1, [\w.]+>)', dc).group(1))
+    hyps = [(m_, b_, ctx.lift(dm, t)) for m_, b_, t in dps if b_ not in ('bs', 'n')]
+    args = ', '.join(b_ for _, b_, _ in dps)
+    accT = f'{{{DES} == Some{{{V}}} : Maybe<&2, S.Value>}}'
+    acc_body = (f'  Equal.trans(Maybe<&2, S.Value>, {DES}, {DB}.{MV}({DEC}), Some{{{V}}},\n'
+                f'    Equal.sym(Maybe<&2, S.Value>, {DB}.{MV}({DEC}), {DES}, {DB}.{name}_e2e_decode_view({args})),\n'
+                f'    Equal.cong({MT}, Maybe<&2, S.Value>, z => {DB}.{MV}(z), {DEC}, Some{{o}}, dec))')
+    OT = MT[len('Maybe<&1, '):-1]
+    OBJ = ctx.lift(dm, obj0)
+    EY = ctx.alias(E2E / 'e2e_bytes.bend')
+    FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    SHA, XWA = ctx.alias(ROOT / 'proofs/obj/schema_shapes.bend'), ctx.alias(E2E / 'e2e_fixdw.bend')
+    DP = ctx.alias(E2E / 'e2e_dpl.bend')
+    E48 = ctx.alias(ROOT / 'proofs/obj/elems48_light.bend')
+    ctx.alias(ROOT / 'spec/primitives.bend')
+    LA = ctx.alias(dm.imports['L'])
+    ACA = ctx.alias(dm.imports['AC'])
+    flds = [f.strip() for f in W.split_top(REC_OBJ.match(ctx.lift(dm, ms.group(2).replace('dd', 'DD_')) if False else OBJ).group(2))]
+    F0, F1 = flds[0], flds[1]
+    wlp = f'{LA}.wlp(bs)'
+    S13 = f'{ACA}.segt({D + 2}n, 0n, {wlp})'
+    S12 = f'{ACA}.segt({D + 1}n, 0n, {wlp})'
+    S11 = f'{ACA}.segt({D}n, Nat.add({FDA}.spec_common__pow2({D + 1}n), 0n), {wlp})'
+    TRP = f'{FDA}.array__trep(U32, {D}n, 0)'
+    T0 = f'{FDA}.TNode{{{DP}.sp({D + 1}n, {S12}), {FDA}.TNode{{{S11}, {TRP}}}}}'
+    TW = f'O.Words{{{FDA}.array__thaw(U32, {T0}), 24576}}'
+    OA = re.match(r'(\w+)\.Words\{', F0).group(1)
+    TW = f'{OA}.Words{{{FDA}.array__thaw(U32, {T0}), 24576}}'
+    defs = (f'def oeq0(+bs: +List<U32>) -> {{{F0} == {TW} : {OA}.Words}}:\n'
+            f'  %{FDA}.array__new(U32, {D}n, 0) : {{{F0} == {OA}.Words{{ANode{{{FDA}.array__thaw(U32, {DP}.sp({D + 1}n, {S12})), ANode{{{FDA}.array__thaw(U32, {S11}), _}}}}, 24576}} : {OA}.Words}}\n  {{==}}\n\n'
+            f'def pf0(+bs: +List<U32>) -> {{{FDA}.array__perfect(U32, {D + 2}n, {T0}) == True{{}} : Bool}}:\n'
+            f'  +pw = {LA}.seg_pf({D + 2}n, {wlp})\n'
+            f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D + 1}n, {DP}.sp({D + 1}n, {S12})), True{{}}, {DP}.sp_pf({D + 1}n, {S12}, {XWA}.spl({D + 1}n, {S13}, pw))) :\n'
+            f'    {{Bool.and(_, {FDA}.array__perfect(U32, {D + 1}n, {FDA}.TNode{{{S11}, {TRP}}})) == True{{}} : Bool}}\n'
+            f'  %Equal.sym(Bool, {FDA}.array__perfect(U32, {D}n, {S11}), True{{}}, {XWA}.spl({D}n, E3.hi({S13}), {XWA}.spr({D + 1}n, {S13}, pw))) :\n'
+            f'    {{Bool.and(True{{}}, Bool.and(_, {FDA}.array__perfect(U32, {D}n, {TRP}))) == True{{}} : Bool}}\n'
+            f'  {FDA}.array__trep_perfect(U32, {D}n, 0)\n\n'
+            f'def hc0(+bs: +List<U32>) -> {{E3.at_depth({F0}, {D + 2}n) == True{{}} : Bool}}:\n'
+            f'  {FDA}.logic__subst({OA}.Words, z => {{E3.at_depth(z, {D + 2}n) == True{{}} : Bool}}, {TW}, {F0}, Equal.sym({OA}.Words, {F0}, {TW}, oeq0(bs)),\n'
+            f'    {FDA}.logic__subst({FDA}.array__Tree<U32>, z => {{{FDA}.array__perfect(U32, {D + 2}n, z) == True{{}} : Bool}}, {T0}, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T0})),\n'
+            f'      Equal.sym({FDA}.array__Tree<U32>, {FDA}.array__freeze(U32, {FDA}.array__thaw(U32, {T0})), {T0}, {FDA}.array__freeze_thaw(U32, {T0})), pf0(bs)))\n\n')
+    sch = f'{SHA}.Chain_head({SHA}.Container_fields({SPEC}))'
+    wfe = f'({T0}, ({D + 2}n, (24576, (oeq0(bs), (pf0(bs), ({{==}}, {{==}}))))))'
+    kchk = (f'{FDA}.logic__subst(Nat, z => {{Nat.is_eq({E48}.k48(24576), z) == True{{}} : Bool}}, 512n, {SHA}.Vector_length({sch}), '
+            f'Equal.sym(Nat, {SHA}.Vector_length({sch}), 512n, {{==}}), {{==}})')
+    over = {'rep': f'({F1}, ({{==}}, ({wfe}, {kchk})))', 'hc': 'hc0(bs)', 'hN': '{==}'}
+    ecT = f'{{Nat.is_eq(List.length(&2, U32, bs), 24624n) == True{{}} : Bool}}'
+    base_depth = api.arr_depth
+    api.arr_depth = lambda t: D + 2 if t.strip().startswith('ANode{') else base_depth(t)
+    try:
+        text, err = api.build_lit(name, (24624, obj0, 'sparse tree'), ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, MT, OT, accT, acc_body, hyps, 'view', over=over)
+    finally:
+        api.arr_depth = base_depth
+    if text is None:
+        return None, err
+    SPA = re.search(r'import \.\./spec/primitives\.bend as (\w+)', text).group(1)
+    dsome = (f'def dsome(+bs: +List<U32>, +n: U32, +hn: {{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}}, +hd: {{{SPA}.bytes_domain(bs) == True{{}} : Bool}}, +ec: {ecT})\n'
+             f'    -> {{{DEC} == Some{{{OBJ}}} : {MT}}}:\n'
+             f'  {DB}.d_some({D}n, {{==}}, bs, n, hn, hd, {EY}.u32_len(n, List.length(&2, U32, bs), 24624, hn, ec))\n\n')
+    i = text.index('\ndef ') + 1
+    text = text[:i] + defs + dsome + text[i:]
+    text = text.replace(f'{DB}.{name}_d_some(bs, n, hn, hd, ec)', 'dsome(bs, n, hn, hd, ec)')
+    text = text.replace(f'{DB}.{name}_d_none(bs, n, hn, ec)', f'{DB}.d_none(bs, n, {EY}.ueq_false(n, List.length(&2, U32, bs), 24624, hn, ec))')
+    return bigK(text, 24624).replace(api.HEADER, HEADER, 1), None
+
+
 def bigK(text, N):
     """for a vector of SYM bytes or more, the length is written U32.to_nat(N) (as the decode bridge's lemmas state
     it), not the literal Nn: the checker would compare the two in unary, deeper than its stack"""
@@ -461,6 +712,12 @@ def bigK(text, N):
 
 
 def build(name, lf, api):
+    r = build_sync(name, lf, api)
+    if r is not None:
+        return r
+    r = build_tree_rec(name, lf, api)
+    if r is not None:
+        return r
     r = build_tree(name, lf, api)
     if r is not None:
         return r

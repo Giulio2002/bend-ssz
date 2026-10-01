@@ -3315,6 +3315,7 @@ def outputs():
     if (OBJ / 'var_winx_BitsStruct.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bswh.bend'] = BVG.bswh_text(OBJ)
+        out[OUT / 'e2e_bswr.bend'] = BVG.bswr_text(OBJ)
         out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
         out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
         out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)

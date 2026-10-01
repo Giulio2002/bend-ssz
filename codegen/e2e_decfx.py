@@ -16,7 +16,7 @@ W = lambda N, dz: f'O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, y, {N}, {dz})), {
 PB = 'FD.u32__pow2u(b)'
 SIG = '+d: Nat, +t: FD.array__Tree<U32>, +y: Nat'
 
-TEXT = f"""import Base
+TEXT0 = f"""import Base
 import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../proofs/compact/found.bend as FD
@@ -36,6 +36,13 @@ import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/spec_fixed.bend as FX
 import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
+import ../proofs/obj/root_gnames_light.bend as RN
+import ../proofs/obj/vfx_bv1.bend as VFB1
+import ../proofs/obj/vfx_bv2.bend as VFB2
+import ../proofs/obj/vfx_bv8.bend as VFB8
+import ../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../types/bitvector_8_def_generated.bend as bitvector_8_d
 import ../proofs/nat_order.bend as Order
 import ../proofs/compact/arith.bend as A
 import ../proofs/power_division.bend as PD
@@ -312,6 +319,63 @@ def rp4(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {{FD.array__perfect(U32,
     +hc: {{VFB4.CHKv(VFB4.BX(t, y)) == True{{}} : Bool}}) -> ST.rp_bv4(VFB4.OBJ(d, t, y)):
   rp4v(UR.RWN(t, y), FD.logic__subst(U32, z => {{VFB4.CHKv(z) == True{{}} : Bool}}, VFB4.BX(t, y), O.keep(1, UR.RWN(t, y)), Equal.sym(U32, O.keep(1, UR.RWN(t, y)), VFB4.BX(t, y), bkeep(d, t, y, pf, hb)), hc))
 """
+
+
+
+def rpblock(K):
+    """rp of a decoded Bitvector<K> (K = 1, 2, 8; vfx_bv<K>.OBJ = keep(1, word)): its last word has no bit set past K (the
+    decoder's check, K < 8; a byte holds all eight bits for K = 8)"""
+    VF, RPN, BT = f'VFB{K}', f'RN.rp_bv{K}', f'bitvector_{K}_d.Bitvector{K}'
+    Z = 32 - K
+
+    def W(n):   # the low byte with n free bits, the rest of the byte False, the rest of the word zero
+        s_ = 'Word.zero(24n)'
+        for j in reversed(range(8)):
+            s_ = f'WCon{{{"a%d" % j if j < n else "False{}"}, {s_}}}'
+        return f'U32{{{s_}}}'
+
+    def EQ(n):
+        return f'{W(n)} == U32{{WSp.join({K}n, {Z}n, WSp.take({K}n, 32n, PD.bits({W(n)})), Word.zero({Z}n))}} : U32'
+    out = []
+    args = lambda n: ', '.join(f'+a{j}: Bool' for j in range(n))
+    names = lambda n: ', '.join(f'a{j}' for j in range(n))
+    out.append(f'def rp{K}w{K - 1}({args(K)}) -> {{{EQ(K)}}}: {{==}}\n')
+    for j in range(K, 8):
+        n = j + 1
+        hp = f'+h: {{{VF}.CHKv({W(n)}) == True{{}} : Bool}}'
+        prev_args = names(j) + (', h' if j > K else '')
+        out.append(f'def rp{K}w{j}({args(n)}, {hp}) -> {{{EQ(n)}}}:\n  match a{j}:\n'
+                   f'    case True{{}}: Empty.absurd({{{EQ(n)}}}, FD.logic__false_true(h))\n    case False{{}}: rp{K}w{j - 1}({prev_args})\n')
+    if K == 8:
+        out = [f'def rp8w7({args(8)}) -> {{{EQ(8)}}}: {{==}}\n']
+    top = 7
+    hasH = K < 8
+    chk = f'FD.logic__subst(U32, z => {{{VF}.CHKv(z) == True{{}} : Bool}}, O.keep(1, w), U32{{HV.LOW8(ww)}}, HV.lb8(ww), h)' if hasH else ''
+    call = f'rp{K}w{top}(a0, a1, a2, a3, a4, a5, a6, a7' + (f', {chk})' if hasH else ')')
+    out.append(f'def rp{K}v(+w: U32' + (f', +h: {{{VF}.CHKv(O.keep(1, w)) == True{{}} : Bool}}' if hasH else '') + f') -> {RPN}({BT}{{O.keep(1, w)}}):\n'
+               f'  match w:\n    case U32{{+ww}}:\n      match ww:\n        case WCon{{+a0, WCon{{+a1, WCon{{+a2, WCon{{+a3, WCon{{+a4, WCon{{+a5, WCon{{+a6, WCon{{+a7, +r}}}}}}}}}}}}}}}}:\n'
+               f'          FD.logic__subst(U32, z => {RPN}({BT}{{z}}), U32{{HV.LOW8(ww)}}, O.keep(1, w), Equal.sym(U32, O.keep(1, w), U32{{HV.LOW8(ww)}}, HV.lb8(ww)), {call})\n')
+    if K == 8:
+        out.append(f'def rp8(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> {RPN}({VF}.OBJ(d, t, y)):\n  rp8v(UR.RWN(t, y))\n')
+        return f'# ---- Bitvector8: the decoded byte satisfies the root laws\' rp ----\n' + '\n'.join(out)
+    out.append(f'def bkeep{K}(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hb: {{Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{{}} : Bool}})\n'
+               f'    -> {{O.keep(1, UR.RWN(t, y)) == {VF}.BX(t, y) : U32}}:\n'
+               f'  +e1 = UR.rwn_bytes(d, t, y, pf, hb)\n'
+               f'  +e2 = Equal.cong(+List<U32>, +List<U32>, z => VS.bt(1n, z), FX.limbs([UR.RWN(t, y)]), VS.bt(4n, VS.bdr(y, UA.BYT(t))), e1)\n'
+               f'  +e3 = Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bdr(y, UA.BYT(t))), [{VF}.BX(t, y)],\n'
+               f'    Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bt(4n, VS.bdr(y, UA.BYT(t)))), VS.bt(1n, VS.bdr(y, UA.BYT(t))), e2, VS.bt_bt(1n, 3n, VS.bdr(y, UA.BYT(t)))),\n'
+               f'    {VF}.wx1(d, t, y, pf, FD.nat__le_trans(Nat.add(y, 1n), Nat.add(y, 4n), A.quad(VB.pw(d)), Order.add_left(y, 1n, 4n, {{==}}), hb)))\n'
+               f'  Equal.cong(+List<U32>, U32, z => VBL.nthb(z, 0n), [O.keep(1, UR.RWN(t, y))], [{VF}.BX(t, y)], e3)\n')
+    sig = f'+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hb: {{Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{{}} : Bool}}'
+    if hasH:
+        out.append(f'def rp{K}({sig},\n    +hc: {{{VF}.CHKv({VF}.BX(t, y)) == True{{}} : Bool}}) -> {RPN}({VF}.OBJ(d, t, y)):\n'
+                   f'  rp{K}v(UR.RWN(t, y), FD.logic__subst(U32, z => {{{VF}.CHKv(z) == True{{}} : Bool}}, {VF}.BX(t, y), O.keep(1, UR.RWN(t, y)), Equal.sym(U32, O.keep(1, UR.RWN(t, y)), {VF}.BX(t, y), bkeep{K}(d, t, y, pf, hb)), hc))\n')
+    else:
+        out.append(f'def rp{K}({sig}) -> {RPN}({VF}.OBJ(d, t, y)):\n  rp{K}v(UR.RWN(t, y))\n')
+    return f'# ---- Bitvector{K}: the decoded field satisfies the root laws\' rp (its bits past {K} are zero) ----\n' + '\n'.join(out)
+
+
+TEXT = TEXT0 + '\n' + '\n'.join(rpblock(k) for k in (1, 2, 8))
 
 
 def main():

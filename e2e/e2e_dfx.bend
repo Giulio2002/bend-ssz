@@ -18,6 +18,13 @@ import ../proofs/obj/vua_win.bend as UW
 import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/spec_fixed.bend as FX
 import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
+import ../proofs/obj/root_gnames_light.bend as RN
+import ../proofs/obj/vfx_bv1.bend as VFB1
+import ../proofs/obj/vfx_bv2.bend as VFB2
+import ../proofs/obj/vfx_bv8.bend as VFB8
+import ../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../types/bitvector_8_def_generated.bend as bitvector_8_d
 import ../proofs/nat_order.bend as Order
 import ../proofs/compact/arith.bend as A
 import ../proofs/power_division.bend as PD
@@ -293,3 +300,127 @@ def rp4v(+w: U32, +h: {VFB4.CHKv(O.keep(1, w)) == True{} : Bool}) -> ST.rp_bv4(F
 def rp4(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{} : Bool},
     +hc: {VFB4.CHKv(VFB4.BX(t, y)) == True{} : Bool}) -> ST.rp_bv4(VFB4.OBJ(d, t, y)):
   rp4v(UR.RWN(t, y), FD.logic__subst(U32, z => {VFB4.CHKv(z) == True{} : Bool}, VFB4.BX(t, y), O.keep(1, UR.RWN(t, y)), Equal.sym(U32, O.keep(1, UR.RWN(t, y)), VFB4.BX(t, y), bkeep(d, t, y, pf, hb)), hc))
+
+# ---- Bitvector1: the decoded field satisfies the root laws' rp (its bits past 1 are zero) ----
+def rp1w0(+a0: Bool) -> {U32{WCon{a0, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}: {==}
+
+def rp1w1(+a0: Bool, +a1: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a1:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w0(a0)
+
+def rp1w2(+a0: Bool, +a1: Bool, +a2: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a2:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w1(a0, a1, h)
+
+def rp1w3(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a3:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w2(a0, a1, a2, h)
+
+def rp1w4(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a4:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w3(a0, a1, a2, a3, h)
+
+def rp1w5(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a5:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w4(a0, a1, a2, a3, a4, h)
+
+def rp1w6(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a6:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w5(a0, a1, a2, a3, a4, a5, h)
+
+def rp1w7(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +h: {VFB1.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}:
+  match a7:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}} == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}})), Word.zero(31n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp1w6(a0, a1, a2, a3, a4, a5, a6, h)
+
+def rp1v(+w: U32, +h: {VFB1.CHKv(O.keep(1, w)) == True{} : Bool}) -> RN.rp_bv1(bitvector_1_d.Bitvector1{O.keep(1, w)}):
+  match w:
+    case U32{+ww}:
+      match ww:
+        case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, +r}}}}}}}}:
+          FD.logic__subst(U32, z => RN.rp_bv1(bitvector_1_d.Bitvector1{z}), U32{HV.LOW8(ww)}, O.keep(1, w), Equal.sym(U32, O.keep(1, w), U32{HV.LOW8(ww)}, HV.lb8(ww)), rp1w7(a0, a1, a2, a3, a4, a5, a6, a7, FD.logic__subst(U32, z => {VFB1.CHKv(z) == True{} : Bool}, O.keep(1, w), U32{HV.LOW8(ww)}, HV.lb8(ww), h)))
+
+def bkeep1(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {O.keep(1, UR.RWN(t, y)) == VFB1.BX(t, y) : U32}:
+  +e1 = UR.rwn_bytes(d, t, y, pf, hb)
+  +e2 = Equal.cong(+List<U32>, +List<U32>, z => VS.bt(1n, z), FX.limbs([UR.RWN(t, y)]), VS.bt(4n, VS.bdr(y, UA.BYT(t))), e1)
+  +e3 = Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bdr(y, UA.BYT(t))), [VFB1.BX(t, y)],
+    Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bt(4n, VS.bdr(y, UA.BYT(t)))), VS.bt(1n, VS.bdr(y, UA.BYT(t))), e2, VS.bt_bt(1n, 3n, VS.bdr(y, UA.BYT(t)))),
+    VFB1.wx1(d, t, y, pf, FD.nat__le_trans(Nat.add(y, 1n), Nat.add(y, 4n), A.quad(VB.pw(d)), Order.add_left(y, 1n, 4n, {==}), hb)))
+  Equal.cong(+List<U32>, U32, z => VBL.nthb(z, 0n), [O.keep(1, UR.RWN(t, y))], [VFB1.BX(t, y)], e3)
+
+def rp1(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{} : Bool},
+    +hc: {VFB1.CHKv(VFB1.BX(t, y)) == True{} : Bool}) -> RN.rp_bv1(VFB1.OBJ(d, t, y)):
+  rp1v(UR.RWN(t, y), FD.logic__subst(U32, z => {VFB1.CHKv(z) == True{} : Bool}, VFB1.BX(t, y), O.keep(1, UR.RWN(t, y)), Equal.sym(U32, O.keep(1, UR.RWN(t, y)), VFB1.BX(t, y), bkeep1(d, t, y, pf, hb)), hc))
+
+# ---- Bitvector2: the decoded field satisfies the root laws' rp (its bits past 2 are zero) ----
+def rp2w1(+a0: Bool, +a1: Bool) -> {U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}: {==}
+
+def rp2w2(+a0: Bool, +a1: Bool, +a2: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a2:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w1(a0, a1)
+
+def rp2w3(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a3:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w2(a0, a1, a2, h)
+
+def rp2w4(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a4:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{False{}, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w3(a0, a1, a2, a3, h)
+
+def rp2w5(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a5:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{False{}, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w4(a0, a1, a2, a3, a4, h)
+
+def rp2w6(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a6:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{False{}, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w5(a0, a1, a2, a3, a4, a5, h)
+
+def rp2w7(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +h: {VFB2.CHKv(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}}) == True{} : Bool}) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}:
+  match a7:
+    case True{}: Empty.absurd({U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}} == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}})), Word.zero(30n))} : U32}, FD.logic__false_true(h))
+    case False{}: rp2w6(a0, a1, a2, a3, a4, a5, a6, h)
+
+def rp2v(+w: U32, +h: {VFB2.CHKv(O.keep(1, w)) == True{} : Bool}) -> RN.rp_bv2(bitvector_2_d.Bitvector2{O.keep(1, w)}):
+  match w:
+    case U32{+ww}:
+      match ww:
+        case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, +r}}}}}}}}:
+          FD.logic__subst(U32, z => RN.rp_bv2(bitvector_2_d.Bitvector2{z}), U32{HV.LOW8(ww)}, O.keep(1, w), Equal.sym(U32, O.keep(1, w), U32{HV.LOW8(ww)}, HV.lb8(ww)), rp2w7(a0, a1, a2, a3, a4, a5, a6, a7, FD.logic__subst(U32, z => {VFB2.CHKv(z) == True{} : Bool}, O.keep(1, w), U32{HV.LOW8(ww)}, HV.lb8(ww), h)))
+
+def bkeep2(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {O.keep(1, UR.RWN(t, y)) == VFB2.BX(t, y) : U32}:
+  +e1 = UR.rwn_bytes(d, t, y, pf, hb)
+  +e2 = Equal.cong(+List<U32>, +List<U32>, z => VS.bt(1n, z), FX.limbs([UR.RWN(t, y)]), VS.bt(4n, VS.bdr(y, UA.BYT(t))), e1)
+  +e3 = Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bdr(y, UA.BYT(t))), [VFB2.BX(t, y)],
+    Equal.trans(+List<U32>, VS.bt(1n, FX.limbs([UR.RWN(t, y)])), VS.bt(1n, VS.bt(4n, VS.bdr(y, UA.BYT(t)))), VS.bt(1n, VS.bdr(y, UA.BYT(t))), e2, VS.bt_bt(1n, 3n, VS.bdr(y, UA.BYT(t)))),
+    VFB2.wx1(d, t, y, pf, FD.nat__le_trans(Nat.add(y, 1n), Nat.add(y, 4n), A.quad(VB.pw(d)), Order.add_left(y, 1n, 4n, {==}), hb)))
+  Equal.cong(+List<U32>, U32, z => VBL.nthb(z, 0n), [O.keep(1, UR.RWN(t, y))], [VFB2.BX(t, y)], e3)
+
+def rp2(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(y, 4n), A.quad(VB.pw(d))) == True{} : Bool},
+    +hc: {VFB2.CHKv(VFB2.BX(t, y)) == True{} : Bool}) -> RN.rp_bv2(VFB2.OBJ(d, t, y)):
+  rp2v(UR.RWN(t, y), FD.logic__subst(U32, z => {VFB2.CHKv(z) == True{} : Bool}, VFB2.BX(t, y), O.keep(1, UR.RWN(t, y)), Equal.sym(U32, O.keep(1, UR.RWN(t, y)), VFB2.BX(t, y), bkeep2(d, t, y, pf, hb)), hc))
+
+# ---- Bitvector8: the decoded byte satisfies the root laws' rp ----
+def rp8w7(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool) -> {U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}} == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, Word.zero(24n)}}}}}}}}})), Word.zero(24n))} : U32}: {==}
+
+def rp8v(+w: U32) -> RN.rp_bv8(bitvector_8_d.Bitvector8{O.keep(1, w)}):
+  match w:
+    case U32{+ww}:
+      match ww:
+        case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, +r}}}}}}}}:
+          FD.logic__subst(U32, z => RN.rp_bv8(bitvector_8_d.Bitvector8{z}), U32{HV.LOW8(ww)}, O.keep(1, w), Equal.sym(U32, O.keep(1, w), U32{HV.LOW8(ww)}, HV.lb8(ww)), rp8w7(a0, a1, a2, a3, a4, a5, a6, a7))
+
+def rp8(+d: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> RN.rp_bv8(VFB8.OBJ(d, t, y)):
+  rp8v(UR.RWN(t, y))
