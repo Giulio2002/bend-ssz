@@ -3,30 +3,31 @@
 Trusted (not proved here):
 
 - **The checker.** Bend main 01875127 (after the v2.0.34 release; its Base is byte-identical to
-  v2.0.34's) plus two commits on the fork branch Giulio2002/bend `rigid-subterms`, 45663e0a and
-  aa99b746, compiled with Bun 1.4.2 into a release layout (`bin/bend` + `bend2/base.bend`). The lock pins no separate Bun: the
+  v2.0.34's) plus one commit on the fork branch Giulio2002/bend `rigid-memo`, c55a7f03 (variant B),
+  compiled with Bun into a release layout (`bin/bend` + `bend2/base.bend`). The lock pins no separate Bun: the
   compiled `bin/bend` embeds the Bun runtime, so its sha256 pins that runtime too.
   `toolchain.lock.json` pins the commit and the sha256 of `bin/bend`, `bend2/base.bend` and the
   sources it was built from (`bend2/main.ts`, `bend.ts`, `comp.ts`); `tools/check.sh` and
   `tools/check_fast.sh` refuse to run on any other bytes (`tools/verify_pins.py`). This is **not
-  a Bend release and not upstream code**: 45663e0a was the head of bendlang/bend#1210 ("A copy met
-  after an unfold converts before either copy unfolds"), and that pull request was **closed
-  without being merged on 2026-09-30**; aa99b746 was added to the fork branch afterwards and was
-  **never submitted upstream**. The trust story is the same as with the #1075 build
+  a Bend release and not upstream code**: c55a7f03 is the second form of the change that was the
+  head of bendlang/bend#1210 (45663e0a, "A copy met after an unfold converts before either copy
+  unfolds"; that pull request was **closed without being merged on 2026-09-30**); c55a7f03 itself
+  was **never submitted upstream**. The trust story is the same as with the #1075 build
   pinned before it: every result here rests on upstream Bend plus a conversion change that
-  upstream did not merge, so a reader must trust those two commits (about 70 lines of
-  `bend2/bend.ts`) on their own review. What they do: stock Bend compares the two sides of a
-  conversion with every def rigid (nothing unfolds) once, at the top; 45663e0a asks the same
-  rigid question again at each pair of calls of one def before the full pass unfolds them,
-  remembers the cell pairs those walks compared, and no longer lets a rigid evaluation fill a
-  shared cell; aa99b746 keeps that memo off the full pass's recursion, so a conversion recurses as
-  deep as on stock 2.0.34 (45663e0a had halved it). Rigid equality implies definitional equality
-  (the rigid book knows no def, so it only equates what the full book also equates), so the change
-  can only answer "equal" earlier, never differently; a "not equal" from it falls through to the
+  upstream did not merge, so a reader must trust that commit (+27/-45 lines of
+  `bend2/bend.ts` against 01875127) on their own review. What it does: stock Bend compares the two sides of a
+  conversion with every def rigid (nothing unfolds) once, at the top; c55a7f03 asks the same
+  rigid question again (`compare_call`) at the arguments of each pair of calls of one def before the
+  full pass unfolds them, marks a rigid pair found unequal on the cell (`Var.u`) so no failing walk repeats,
+  and no longer lets a rigid whnf fill a shared cell. The retry adds no stack frame per level, so a
+  conversion recurses as deep as on stock 2.0.34 (45663e0a had halved it, and the earlier pin aa99b746
+  of the branch `rigid-subterms`, two commits, is replaced by this smaller one). Rigid equality implies
+  definitional equality (the rigid book knows no def, so it only equates what the full book also equates),
+  so the change can only answer "equal" earlier, never differently; a "not equal" from it falls through to the
   unchanged comparison. Without it, a conversion whose sides meet only after a def unfolds
   evaluates closed limits (2^30 bytes and above) in unary and overflows, e.g. every bridge from a
   Fulu schema def to its closed limit (`lim_sym`'s `tx_schema` overflows on stock 2.0.34 and
-  checks here). Every "checks" claim in this repository means "checks under aa99b746".
+  checks here). Every "checks" claim in this repository means "checks under c55a7f03".
   `tools/check_fast.sh` accepts an umbrella only on the exact line `ALL PROOFS CHECK` with exit 0
   (a def that relies on unsafe or foreign code makes this checker print `SOME PROOFS FAIL`,
   "Error: N defs rely on unsafe or foreign code", exit 1). On this checker that report walks the
@@ -39,7 +40,7 @@ Trusted (not proved here):
   run on every invocation, and `--probe` runs each positive one through the pinned checker, which
   reports all 19 as relying on unsafe or foreign code. Soundness of the result rests on this checker.
 - **The checker's logic has `Type : Type`.** The pinned checker accepts `def tt() -> Type: Type`
-  and `tt2(Type)` for `def tt2(T: Type) -> Type: T` (probe run on the ssz server with aa99b746,
+  and `tt2(Type)` for `def tt2(T: Type) -> Type: T` (probe run on the ssz server with the earlier pin aa99b746,
   2026-09-30: "ALL PROOFS CHECK"). A type theory with `Type : Type` is inconsistent in principle (Girard's
   paradox, in Hurkens' short form): some closed term of any type, `Empty` included, exists. The
   checker's other restrictions make the naive encodings fail (an independent probe found that
@@ -62,11 +63,11 @@ Trusted (not proved here):
   BendTT (`bend2/safe.ts`) and re-check it with the kernel proved in Lean (`bend2/bendtt.lean`,
   whose claims are that no checked def has type `Empty` and that live code halts); a definition
   bend2 accepts and the kernel rejects is reported as a mismatch. That would take bend.ts, the
-  rigid-subterms change included, out of the trusted base, and it would bear on the `Type : Type`
+  rigid-memo change included, out of the trusted base, and it would bear on the `Type : Type`
   question above through the kernel's own logic. This repository does not run it: the kernel is
   built separately with Lean v4.34.0, which `toolchain.lock.json` does not pin, and its cost on a
   full check (about 5,700 files) has not been measured. So "checks" means "accepted by bend2's
-  checker at aa99b746 under `--check-only`", not the kernel's verdict.
+  checker at c55a7f03 under `--check-only`", not the kernel's verdict.
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of

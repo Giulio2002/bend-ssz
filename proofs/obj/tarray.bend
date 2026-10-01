@@ -7,7 +7,7 @@ import ../compact/found.bend as F
 # that was there). No premise on the array's shape or on the index is needed: both swaps of a
 # write-then-read walk the same path, which depends only on the size and the index.
 #
-# This file is the only one that unfolds Base's Array.swap.go / Array.size (checker aa99b746's
+# This file is the only one that unfolds Base's Array.swap.go / Array.size (checker c55a7f03's
 # Base: swap.go(a, n, i, v, z), z the caller's bit test).
 
 # the size Array.size computes (2^depth along the left spine)

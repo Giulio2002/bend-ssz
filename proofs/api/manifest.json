@@ -744,6 +744,7 @@
    "files": [
     "spec_codec_SyncAggregate.bend",
     "codec_1.bend",
+    "mutation_laws_fulu.bend",
     "serialize_0.bend"
    ]
   },
@@ -1085,6 +1086,7 @@
    "files": [
     "spec_codec_SyncCommitteeContribution.bend",
     "codec_2.bend",
+    "mutation_laws_fulu.bend",
     "serialize_0.bend"
    ]
   },
@@ -1265,6 +1267,7 @@
    "files": [
     "spec_codec_SignedBeaconBlockHeader.bend",
     "codec_3.bend",
+    "mutation_laws_fulu.bend",
     "serialize_1.bend"
    ]
   },
@@ -1871,6 +1874,7 @@
    "files": [
     "spec_codec_DepositData.bend",
     "codec_4.bend",
+    "mutation_laws_fulu.bend",
     "serialize_1.bend"
    ]
   },
@@ -2883,7 +2887,8 @@
    "generated_name": "Blob",
    "op": "encode_ssz",
    "files": [
-    "spec_arr_Blob.bend"
+    "spec_arr_Blob.bend",
+    "mutation_laws_fulu.bend"
    ]
   },
   "FuluBlob_decode_ssz_proof_generated.bend": {
@@ -2935,7 +2940,8 @@
    "generated_name": "Cell",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_Cell.bend"
+    "spec_codec_Cell.bend",
+    "mutation_laws_fulu.bend"
    ]
   },
   "FuluCell_decode_ssz_proof_generated.bend": {
@@ -3913,7 +3919,8 @@
    "generated_name": "vec_uint8_16",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_16.bend"
+    "sub_vec_uint8_16.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_16_decode_ssz_proof_generated.bend": {
@@ -3939,7 +3946,8 @@
    "generated_name": "vec_uint8_1",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_1.bend"
+    "sub_vec_uint8_1.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_1_decode_ssz_proof_generated.bend": {
@@ -3965,7 +3973,8 @@
    "generated_name": "vec_uint8_2",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_2.bend"
+    "sub_vec_uint8_2.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_2_decode_ssz_proof_generated.bend": {
@@ -3991,7 +4000,8 @@
    "generated_name": "vec_uint8_31",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_31.bend"
+    "sub_vec_uint8_31.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_31_decode_ssz_proof_generated.bend": {
@@ -4017,7 +4027,8 @@
    "generated_name": "vec_uint8_3",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_3.bend"
+    "sub_vec_uint8_3.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_3_decode_ssz_proof_generated.bend": {
@@ -4043,7 +4054,8 @@
    "generated_name": "vec_uint8_4",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_4.bend"
+    "sub_vec_uint8_4.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_4_decode_ssz_proof_generated.bend": {
@@ -4069,7 +4081,8 @@
    "generated_name": "vec_uint8_512",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_512.bend"
+    "sub_vec_uint8_512.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_512_decode_ssz_proof_generated.bend": {
@@ -4095,7 +4108,8 @@
    "generated_name": "vec_uint8_513",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_513.bend"
+    "sub_vec_uint8_513.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_513_decode_ssz_proof_generated.bend": {
@@ -4121,7 +4135,8 @@
    "generated_name": "vec_uint8_5",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_5.bend"
+    "sub_vec_uint8_5.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_5_decode_ssz_proof_generated.bend": {
@@ -4147,7 +4162,8 @@
    "generated_name": "vec_uint8_8",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint8_8.bend"
+    "sub_vec_uint8_8.bend",
+    "mutation_laws_generic.bend"
    ]
   },
   "vec_uint8_8_decode_ssz_proof_generated.bend": {
