@@ -151,6 +151,7 @@
     "e2e/FuluBlobIndex_e2e_dec_generated.bend": "9796c0b2bc10437643e2d23d7ad09216fa14723220685c890938d612685e1ccd",
     "e2e/FuluBlobIndex_e2e_generated.bend": "37c8ec455c4ff787f5a84d6d68e1d51caf8ee020b22f74369010ce1b8ba8cd57",
     "e2e/FuluBlobIndex_e2e_ser_generated.bend": "d64010e714a51579ee7e907a846d6d6e8332d3757b423fd039bc4c9d52bd7e52",
+    "e2e/FuluBlobSidecar_e2e_comp_generated.bend": "d8c1dcab19a952ddd6b65b73a23b5aba88964cec6759906f378a7f423f6c0985",
     "e2e/FuluBlobSidecar_e2e_dec_generated.bend": "ffeae5d4c1c348d0686476b76e32a1acafca77c4cfecf68069465a6170d764a9",
     "e2e/FuluBlobSidecar_e2e_generated.bend": "42a75b48ed1307eeb91e49e33547bb17747c7ce201260ff8a5662be19002dcfc",
     "e2e/FuluBlobSidecar_e2e_set_generated.bend": "2ed2d30cac428cb8c9c83fb7ddcb23bedcfb412e12b457986a62d400ed62e6bc",

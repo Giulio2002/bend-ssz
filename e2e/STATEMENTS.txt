@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4828 statements in 1267 files.
+# 4830 statements in 1268 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -2292,6 +2292,22 @@ def FuluBlobIndex_e2e_serialize_refused(+o: O.U64, +v: {W_types_uint64_encode_ss
 def FuluBlobIndex_e2e_serialize(+o: O.U64, +v: {W_types_uint64_encode_ssz_generated.u64_valid(o) == True{} : Bool}) -> {Some{E.obytes(O.ser_out(W_types_FuluBlobIndex_encode_ssz_generated.BlobIndex_serialize(o)))} == API.serialize(W_spec_fulu_schemas.BlobIndex(), W_proofs_obj_root_names_light.v_u64(o)) : Maybe<&2, +List<U32>>}:
 def FuluBlobIndex_e2e_valid_default() -> {W_types_uint64_encode_ssz_generated.u64_valid(uint64_d.u64_default()) == True{} : Bool}:
 def FuluBlobIndex_e2e_valid_total(+o: O.U64) -> {W_types_uint64_encode_ssz_generated.u64_valid(o) == True{} : Bool}:
+
+## e2e/FuluBlobSidecar_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as M0_WO_SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
+import ../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
+import ../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
+import ../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
+def FuluBlobSidecar_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluBlobSidecar_d.BlobSidecar, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {M0_WO_SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>})
+    -> {E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(o))) == bs : +List<U32>}:
+def FuluBlobSidecar_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluBlobSidecar_d.BlobSidecar, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {M0_WO_SP.bytes_domain(bs) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>})
+    -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, o))))} == C.droot(Spec.BlobSidecar(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluBlobSidecar_e2e_dec_generated.bend
 import ../src/model.bend as API
