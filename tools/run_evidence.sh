@@ -8,7 +8,7 @@
 # copies the evidence files back. Nothing runs on the machine this is started from. The programs a harness runs are
 # hashed into its evidence file, together with the cache key each was built under.
 #
-#   tools/run_evidence.sh                      # all steps (about 6 minutes without `mutt`, about 40 more with it)
+#   tools/run_evidence.sh                      # all steps (about 12 minutes; STEPS=mutt reruns the whole mutation harness, about 100 minutes, and mutstamp only re-stamps its stored result)
 #   STEPS='build fuzz' tools/run_evidence.sh   # some steps: build buildg buildf buildc conf gconf mut cache fuzz tmut inval neg rt
 #
 # Environment: EV_HOST (root@build-server.example), EV_DIR (/srv/ssz-optimization/agents/port-rigid/evidence),
@@ -26,7 +26,7 @@ rsync -a --delete --exclude=.git --exclude=build --exclude=__pycache__ --exclude
 ssh "$H" "cd $D && export EVIDENCE_COMMIT=$(git rev-parse HEAD) EVIDENCE_DIRTY=0 EVIDENCE_TREE=$(git rev-parse 'HEAD^{tree}') BEND_RUNTIME=$BEND BEND_NO_TELEMETRY=1 BUN=$BUN
   mkdir -p build evlogs; : > evlogs/STATUS
   run() { n=\$1; shift; ( time nice -n 10 timeout 14400 \"\$@\" ) > evlogs/\$n.log 2>&1; echo \"\$n exit \$?\" >> evlogs/STATUS; }
-  for s in \${STEPS:-${STEPS:-build buildg buildf buildc conf gconf mut cache fuzz tmut inval neg rt mutt}}; do
+  for s in \${STEPS:-${STEPS:-build buildg buildf buildc conf gconf mut cache fuzz tmut inval neg rt mutstamp}}; do
     case \$s in
       build) run build $PY benchmarks/quick.py --build all;;
       buildg) run buildg $PY benchmarks/quick.py --build-generic all;;
@@ -41,6 +41,7 @@ ssh "$H" "cd $D && export EVIDENCE_COMMIT=$(git rev-parse HEAD) EVIDENCE_DIRTY=0
       inval) run inval $PY tests_generated/invalid_objects.py;;
       neg) run neg $PY tests_generated/negative_api.py;;
       rt) run rt $PY tools/run_runtime_tests.py;;
+      mutstamp) run mutstamp $PY tests_generated/mutation_testing.py --restamp benchmarks/evidence/mutation_testing.json;;
       mutt) rsync -a --delete ./ ${D}-scratch/; run mutt $PY tests_generated/mutation_testing.py --scratch ${D}-scratch;;
     esac
   done; echo finished >> evlogs/STATUS; cat evlogs/STATUS"

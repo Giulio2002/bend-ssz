@@ -367,7 +367,7 @@ def deep_proof(S, a):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--scratch', required=True, help='a COPY of the tree with its build/ (never the real tree)')
+    ap.add_argument('--scratch', required=False, help='a COPY of the tree with its build/ (never the real tree)')
     ap.add_argument('--per-type', type=int, default=5)
     ap.add_argument('--seed', type=int, default=20261001)
     ap.add_argument('--types', default=None)
@@ -375,12 +375,22 @@ def main():
     ap.add_argument('--no-proofs', action='store_true')
     ap.add_argument('--proof-wide', type=int, default=0, help='proof side only, wide: this many mutants per name and operation')
     ap.add_argument('--proof-jobs', type=int, default=12)
+    ap.add_argument('--restamp', default=None, help='recompute the provenance of this result file for the tree this script is in (after the programs of this tree are built); runs nothing')
     ap.add_argument('--deep-timeout', type=int, default=900)
     ap.add_argument('--deep-from', default=None, help='deep proof stage for the survivors of this --proof-wide report: the facade passed, so re-check the proving-law files (the facade\'s P<k>_PRV imports) where the mutated definitions are unfolded')
     ap.add_argument('--from-survivors', default=None, help='runtime stage for the proof-side survivors of this --proof-wide report: exactly those mutants run through conformance and fuzzing')
     ap.add_argument('--proof-names', type=int, default=8)
     ap.add_argument('--out', default=str(ROOT / 'benchmarks/evidence/mutation_testing.json'))
     a = ap.parse_args()
+    if a.restamp:
+        f = pathlib.Path(a.restamp)
+        d = json.loads(f.read_text())
+        d['provenance'] = stamp(__file__)
+        f.write_text(json.dumps(d, indent=1) + '\n')
+        print(f'restamped {f}: commit {d["provenance"].get("git", d["provenance"]).get("commit") if isinstance(d["provenance"], dict) else "?"}')
+        return
+    if not a.scratch:
+        raise SystemExit('mutation_testing: --scratch is required')
     S = pathlib.Path(a.scratch).resolve()
     if S == ROOT:
         raise SystemExit('mutation_testing: --scratch must be a copy, not the real tree')
