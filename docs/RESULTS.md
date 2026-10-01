@@ -30,7 +30,7 @@
 | `reject_long` | 73 |
 | `decode_tree` | 118 |
 | `decode_input` | 126 |
-| `serialize_valid` | 230 |
+| `serialize_valid` | 235 |
 | `decode_offsets` | 240 |
 <!-- /fig -->
 - End-to-end bridges (`e2e/manifest.json`): <!-- fig:bridged_i -->240<!-- /fig --> names have the encode bridge (i),

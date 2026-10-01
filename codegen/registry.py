@@ -55,6 +55,7 @@ GENERATORS = (
     Gen('fix_reject_pad', 'proofs/laws'),
     Gen('mutation_laws', 'proofs/laws'),
     Gen('mutation_laws_cap', 'proofs/laws'),
+    Gen('mutation_laws_capsym', 'proofs/laws'),
     Gen('mutation_laws_const', 'proofs/laws'),
     Gen('mutation_laws_arith', 'proofs/laws'),
     Gen('mutation_laws_offset', 'proofs/laws'),
