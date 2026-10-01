@@ -28,6 +28,12 @@ import ../../types/Fulu_vec_bytevec_48_512_def_generated.bend as v512_b48_c
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/Fulu_vec_bytevec_32_33_def_generated.bend as v33_b32_c
 import ../../types/FuluCurrentSyncCommitteeBranch_def_generated.bend as v6_b32_c
+import ./blist_obj_light.bend as BLI
+import ../../types/Fulu_list_bytevec_32_16777216_def_generated.bend as l16777216_b32_c
+import ./blist_obj.bend as BLO
+import ./list_obj_light.bend as LO
+import ../../spec/limits.bend as Lim
+import ./words_spec.bend as WS
 import ../../types/Fulu_vec_bytevec_32_65536_def_generated.bend as v65536_b32_c
 import ../../types/FuluExecutionBranch_def_generated.bend as v4_b32_c
 import ../../types/Fulu_list_bytevec_48_4096_def_generated.bend as l4096_b48_c
@@ -228,6 +234,88 @@ def v6_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Word
   %vs2 :
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
+
+def l16777216_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
+  %Equal.sym(O.Words, FuluBytes32_d.Bytes32_into_words(O.Words{F.array__thaw(U32, t), n}, (i * 32 : U32), FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n}, CW_b32.b32_write(d, t, n, (i * 32 : U32), q, hd, pf, hq, hr, x0, x1, x2, x3, x4, x5, x6, x7)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
+  {==}
+
+def l16777216_b32_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == O.e8(U32.to_nat(i)) : Nat})
+    -> {BLI.hview(Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))) == VS.field_set(BLI.hview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {BLI.hview(Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))) == VS.field_set(BLI.hview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  %Equal.sym(O.Words, FuluBytes32_d.Bytes32_into_words(O.Words{F.array__thaw(U32, t), n}, (i * 32 : U32), FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n}, CW_b32.b32_write(d, t, n, (i * 32 : U32), q, hd, pf, hq, hr, x0, x1, x2, x3, x4, x5, x6, x7)) : {BLI.hview(_) == VS.field_set(BLI.hview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}
+  VI_b32.view_set(U32.to_nat(U32.shrn(n, 5n)), d, t, x0, x1, x2, x3, x4, x5, x6, x7, U32.to_nat(i), q, hqe, hr, pf)
+
+# the storage facts of a list of 32-byte items (wfl): its tree, depth, size, the object's equation, the tree's perfection, the depth bound, and the room of its chunks
+def wfl_core(-o: O.Words, +wf: LO.wfl(o))
+    -> DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, d => DK.Ex(U32, N => DK.P2({o == O.Words{F.array__thaw(U32, t), N} : O.Words}, DK.P2({F.array__perfect(U32, d, t) == True{} : Bool}, DK.P2({Nat.is_lt(d, 32n) == True{} : Bool}, {Nat.is_le(O.e8(O.chunks_of(N)), F.spec_common__pow2(d)) == True{} : Bool})))))):
+  match wf:
+    case Inl{w}:
+      (+t, w1) = w
+      (+dw, w2) = w1
+      (+N, w3) = w2
+      (+eo, w4) = w3
+      (+pf, w5) = w4
+      (+hd, +h0) = w5
+      (t, (dw, (N, (eo, (pf, (hd, F.logic__subst(Nat, z => {Nat.is_le(O.e8(Nat.div(Nat.add(z, 31n), 32n)), F.spec_common__pow2(dw)) == True{} : Bool}, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, h0), F.nat__zero_le(F.spec_common__pow2(dw)))))))))
+    case Inr{w}:
+      (+t, w1) = w
+      (+dw, w2) = w1
+      (+N, w3) = w2
+      (+q, w4) = w3
+      (+r, w5) = w4
+      (+eo, w6) = w5
+      (+pf, w7) = w6
+      (+hd, w8) = w7
+      (+hN, w9) = w8
+      (+h1, w10) = w9
+      (+h32, w11) = w10
+      (+hroom, +tail) = w11
+      (t, (dw, (N, (eo, (pf, (hd, F.logic__subst(Nat, z => {Nat.is_le(O.e8(z), F.spec_common__pow2(dw)) == True{} : Bool}, 1n+q, O.chunks_of(N), Equal.sym(Nat, O.chunks_of(N), 1n+q, WO.chunks_q(N, q, r, hN, h1, h32)), hroom)))))))
+
+def l16777216_b32_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +eN: {U32.to_nat(WO.len(o)) == WS.e32(BLI.cnth(o)) : Nat}, +hv: {Nat.is_le(BLI.cnth(o), SH.ListOf_limit(s)) == True{} : Bool}, +core: DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, d => DK.Ex(U32, N => DK.P2({o == O.Words{F.array__thaw(U32, t), N} : O.Words}, DK.P2({F.array__perfect(U32, d, t) == True{} : Bool}, DK.P2({Nat.is_lt(d, 32n) == True{} : Bool}, {Nat.is_le(O.e8(O.chunks_of(N)), F.spec_common__pow2(d)) == True{} : Bool})))))), +ok: {BLO.ok_lh(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), O.chunks_of(WO.len(o))) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hqe: {q == O.e8(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(BLI.hview(o), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), s, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(o, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))]):
+  (+t, c1) = core
+  (+d, c2) = c1
+  (+n, c3) = c2
+  (+eo, c4) = c3
+  (+pf, c5) = c4
+  (+hd, +room) = c5
+  +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 32))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), O.chunks_of(WO.len(z))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+  +hr = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 8n), F.spec_common__pow2(d)) == True{} : Bool}, O.e8(U32.to_nat(i)), q, Equal.sym(Nat, q, O.e8(U32.to_nat(i)), hqe), VI_b32.idx_room(U32.to_nat(i), O.chunks_of(n), F.spec_common__pow2(d), hlt0, room))
+  +se = l16777216_b32_seteq(d, t, n, i, q, x0, x1, x2, x3, x4, x5, x6, x7, hd, pf, hsn, hq, hr)
+  +vs = l16777216_b32_viewset(d, t, n, i, q, x0, x1, x2, x3, x4, x5, x6, x7, hd, pf, hsn, hq, hr, hqe)
+  +vs2 = F.logic__subst(O.Words, z => {BLI.hview(z) == VS.field_set(BLI.hview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}) : S.Value}, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, se, vs)
+  +eNN = BLO.eq_nh(o, t, n, eo, eN)
+  +hvN = BLO.lenh(o, t, n, SH.ListOf_limit(s), eo, hv)
+  +lm = Lim.minimal(SH.ListOf_limit(s), depth)
+  +c0 = DK.and_l(SH.is_ListOf(s), Bool.and(SH.is_ByteVector(SH.ListOf_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth))), ok)
+  +k1 = DK.and_r(SH.is_ListOf(s), Bool.and(SH.is_ByteVector(SH.ListOf_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth))), ok)
+  +c1 = DK.and_l(SH.is_ByteVector(SH.ListOf_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth)), k1)
+  +k2 = DK.and_r(SH.is_ByteVector(SH.ListOf_element(s)), Bool.and(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth)), k1)
+  +c2 = DK.and_l(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth), k2)
+  +c3 = DK.and_r(Nat.is_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n), Lim.minimal(SH.ListOf_limit(s), depth), k2)
+  %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, c0)) :
+    RR.roots(VS.field_set(BLI.hview(o), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), _, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(o, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))])
+  %Equal.sym(S.Schema, SH.ListOf_element(s), S.ByteVector{SH.ByteVector_length(SH.ListOf_element(s))}, SH.ByteVector_shape(SH.ListOf_element(s), c1)) :
+    RR.roots(VS.field_set(BLI.hview(o), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(o, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))])
+  %Equal.sym(Nat, SH.ByteVector_length(SH.ListOf_element(s)), 32n, WS.nat_eq(SH.ByteVector_length(SH.ListOf_element(s)), 32n, c2)) :
+    RR.roots(VS.field_set(BLI.hview(o), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), S.ListOf{S.ByteVector{_}, SH.ListOf_limit(s)}, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(o, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))])
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+    RR.roots(VS.field_set(BLI.hview(_), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), S.ListOf{S.ByteVector{32n}, SH.ListOf_limit(s)}, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(_, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))])
+  %Equal.sym(O.Words, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, se) :
+    RR.roots(VS.field_set(BLI.hview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), S.ListOf{S.ByteVector{32n}, SH.ListOf_limit(s)}, [D.bytes(BLO.bdig(hl, _, depth, 5n))])
+  %vs2 :
+    RR.roots(_, S.ListOf{S.ByteVector{32n}, SH.ListOf_limit(s)}, [D.bytes(BLO.bdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth, 5n))])
+  BLO.lh_core(hl, ehl, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), n, SH.ListOf_limit(s), depth, eNN, hvN, c3, hdep)
+
+def l16777216_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +rep: BLI.rep_lh(o, s), +ok: {BLO.ok_lh(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), O.chunks_of(WO.len(o))) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hqe: {q == O.e8(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(BLI.hview(o), U32.to_nat(i), S.BytesValue{FX.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}), s, [D.bytes(BLO.bdig(hl, Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(o, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), depth, 5n))]):
+  (+wf, +ks) = rep
+  (+eN, +hv) = ks
+  l16777216_b32_root_go(hl, ehl, o, s, depth, i, q, x0, x1, x2, x3, x4, x5, x6, x7, eN, hv, wfl_core(o, wf), ok, hdep, hlt, hs, hq, hqe)
 
 def v65536_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v65536_b32_c.v65536_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:

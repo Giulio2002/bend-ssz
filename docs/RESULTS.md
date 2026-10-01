@@ -82,7 +82,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/proofs/collections/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->481<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->482<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->41<!-- /fig --> collections: the packed collections of whole-word
@@ -95,14 +95,14 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
   a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
   `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
   `view_seq.bend` (which also covers the boxed lists, over the frozen mirror trees of `root_types_light.bend`), `view_bytes.bend` and, for the list of 2048-byte cells, `view_cells.bend` (`codegen/proofs/collections/view_laws.py`, `codegen/proofs/collections/viewcells.py`: the same induction, with a cell's bytes the limbs of its 512-word window, `proofs/obj/words_list.bend`; it needs `hcap`, the blocks below the count inside the storage) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
-  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant): `..._api_root_set`, for <!-- fig:obj_coll_root -->9<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
+  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant; for the list of Bytes32, `blist_obj.bend`'s `lh_core` on the written tree, with the size facts of the object and the room of its chunks from its `wfl` invariant): `..._api_root_set`, for <!-- fig:obj_coll_root -->10<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
   The spec-value append law of the bit lists (`..._api_view_append` with room, `..._api_view_append_grow` when the storage is reallocated, `proofs/obj/bits_view.bend`: `view_snoc`, `view_snoc_grow`; the grow law takes `hcov`, that the new bit's word index is within the words copied) and of the boxed lists (`..._api_view_append`, `proofs/obj/tfz_boxed.bend`) is in `coll_bits.bend` and `coll_seq.bend`. An accepted append with room in the storage gives `seq_append`: the view before with the new element's view at the end (`..._api_view_append`; the word lists, the record lists and the byte lists), and `..._api_view_append_grow` when the append reallocates (the word lists: `proofs/obj/words_win.bend`'s `at_cpy_in` says the copy keeps the old words).
   (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed root and encode statement of a mutated list for the boxed lists, the Bytes32 list, the u64 collections and the record lists; and
+composed root statement of a mutated list for the boxed lists, the u64 collections and the record lists, and the composed encode statement of a mutated list; and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 

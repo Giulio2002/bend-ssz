@@ -19,6 +19,7 @@ l134217728_PendingDeposit	11 witnessed
 l134217728_PendingPartialWithdrawal	11 witnessed
 l16777216_HistoricalSummary	11 witnessed
 l16777216_b32	15 witnessed
+  pending l16777216_b32_api_root_set: the representation premise BLI.rep_lh(o, s) is not read
 l16_Deposit	7 witnessed
 l16_ProposerSlashing	7 witnessed
 l16_SignedBLSToExecutionChange	11 witnessed
