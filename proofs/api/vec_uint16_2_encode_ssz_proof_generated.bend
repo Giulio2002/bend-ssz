@@ -21,6 +21,9 @@ import ../../src/obj.bend as P2_O
 import ../obj/zcapsym_vec_uint16_2.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
+import ../compact/found.bend as P3_F
+import ../obj/arr_copy.bend as P3_AC
+import ../obj/zcmpeq_lib.bend as P3_ZL
 import ../obj/zcmpeq_vec_uint16_2.bend as P3_PRV
 import ../../src/buffer.bend as P4_B
 import ../../src/obj.bend as P4_O
@@ -48,20 +51,11 @@ def vec_uint16_2__encode_eval__vec_uint16_2_arith_putw() -> {vec_uint16_2_e.v2_u
 def vec_uint16_2__encode_eval__vec_uint16_2_encode_capsym(o: P2_O.Words) -> {vec_uint16_2_e.vec_uint16_2_encode(o) == vec_uint16_2_e.vec_uint16_2_enc_out(vec_uint16_2_e.v2_u16_put(P2_O.out_at(0n), 0, o)) : P2_O.Words & P2_B.Buf}:
   P2_PRV.vec_uint16_2_encode_capsym(o)
 
-def vec_uint16_2__encode_eval__vec_uint16_2_cmp_a0(+x0: U32) -> {vec_uint16_2_e.v2_u16_put(P3_O.out_at(1n), 0, P3_O.Words{Array.set(U32, P3_O.out_at(0n), 0, x0), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_O.out_at(1n), 0, Array.set(U32, P3_O.out_at(0n), 0, x0), 4) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint16_2_cmp_a0(x0)
+def vec_uint16_2__encode_eval__vec_uint16_2_cmp_all(+pos: U32, +Q: Nat, +ds: Nat, +dd: Nat, +S: P3_F.array__Tree<U32>, +D: P3_F.array__Tree<U32>, +e3: {(pos .&. 3 : U32) == 0 : U32}, +eq: {U32.to_nat(U32.shrn(pos, 2n)) == Q : Nat}, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hA: {Nat.is_le(Nat.add(1n, 0n), P3_F.spec_common__pow2(ds)) == True{} : Bool}, +hB: {Nat.is_le(Nat.add(1n, Q), P3_F.spec_common__pow2(dd)) == True{} : Bool}, +ps: {P3_F.array__perfect(U32, ds, S) == True{} : Bool}, +pd: {P3_F.array__perfect(U32, dd, D) == True{} : Bool}) -> {vec_uint16_2_e.v2_u16_put(P3_F.array__thaw(U32, D), pos, P3_O.Words{P3_F.array__thaw(U32, S), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_F.array__thaw(U32, D), pos, P3_F.array__thaw(U32, S), 4) : Array<U32> & P3_O.Words}:
+  P3_PRV.vec_uint16_2_cmp_all(pos, Q, ds, dd, S, D, e3, eq, hs, hdd, hA, hB, ps, pd)
 
-def vec_uint16_2__encode_eval__vec_uint16_2_cmp_a1(+x0: U32) -> {vec_uint16_2_e.v2_u16_put(P3_O.out_at(1n), 4, P3_O.Words{Array.set(U32, P3_O.out_at(0n), 0, x0), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_O.out_at(1n), 4, Array.set(U32, P3_O.out_at(0n), 0, x0), 4) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint16_2_cmp_a1(x0)
-
-def vec_uint16_2__encode_eval__vec_uint16_2_cmp_u5(+x0: U32) -> {vec_uint16_2_e.v2_u16_put(P3_O.out_at(1n), 5, P3_O.Words{Array.set(U32, P3_O.out_at(0n), 0, x0), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_O.out_at(1n), 5, Array.set(U32, P3_O.out_at(0n), 0, x0), 4) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint16_2_cmp_u5(x0)
-
-def vec_uint16_2__encode_eval__vec_uint16_2_cmp_u6(+x0: U32) -> {vec_uint16_2_e.v2_u16_put(P3_O.out_at(1n), 6, P3_O.Words{Array.set(U32, P3_O.out_at(0n), 0, x0), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_O.out_at(1n), 6, Array.set(U32, P3_O.out_at(0n), 0, x0), 4) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint16_2_cmp_u6(x0)
-
-def vec_uint16_2__encode_eval__vec_uint16_2_cmp_u7(+x0: U32) -> {vec_uint16_2_e.v2_u16_put(P3_O.out_at(1n), 7, P3_O.Words{Array.set(U32, P3_O.out_at(0n), 0, x0), 4}) == vec_uint16_2_e.v2_u16_pw(False{}, P3_O.out_at(1n), 7, Array.set(U32, P3_O.out_at(0n), 0, x0), 4) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint16_2_cmp_u7(x0)
+def vec_uint16_2__encode_eval__vec_uint16_2_cmp_unal(out: Array<U32>, ws: Array<U32>, +pos: U32, +n: U32, +eu: {U32.is_eq((pos .&. 3 : U32), 0) == False{} : Bool}) -> {vec_uint16_2_e.v2_u16_put(out, pos, P3_O.Words{ws, n}) == vec_uint16_2_e.v2_u16_pw(False{}, out, pos, ws, n) : Array<U32> & P3_O.Words}:
+  P3_PRV.vec_uint16_2_cmp_unal(out, ws, pos, n, eu)
 
 def vec_uint16_2__encode_spec__vec_uint16_2_spec_encode(+x0: U32) -> P0_Decoding.decodes(P0_Spec.vec_uint16_2(), P0_SF.limbs([x0]), P0_S.Sequence{P0_SP2.vu16([x0], P0_S.EmptyItems{})}):
   P0_PRV.vec_uint16_2_spec_encode(x0)
