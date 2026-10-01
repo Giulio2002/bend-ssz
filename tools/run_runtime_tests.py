@@ -65,6 +65,15 @@ def main(argv):
         problems.append('not every test file ran')
     if re.search(r'bend loader: |error: ', output):
         problems.append('compile or load error reported')
+    if not sys.argv[1:]:
+        # a full run leaves its evidence, stamped like the others (benchmarks/checks/provenance.py)
+        sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
+        from provenance import stamp
+        bun_version = subprocess.run([BUN, '--version'], capture_output=True, text=True).stdout.strip()
+        out = {'counts': counts, 'files': files, 'pass': not problems, 'problems': problems,
+               'bun': {'version': bun_version, 'sha256': hashlib.sha256(Path(BUN).read_bytes()).hexdigest()},
+               'provenance': stamp(__file__)}
+        (ROOT / 'benchmarks/evidence/runtime_tests.json').write_text(json.dumps(out, indent=1) + '\n')
     if problems:
         print('run_runtime_tests: FAILED: ' + '; '.join(problems), file=sys.stderr)
         return 1
