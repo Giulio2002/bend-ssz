@@ -230,7 +230,7 @@ def classify(rec):
     if rec['operator'] == 'valid' or re.search(r'(^|_)(valid|ok|ok_at|ok_len|c\d+)($|_)', d):
         return 'validity-check'
     if re.search(r'out_at\(|alloc|cap', text):
-        return 'capacity'
+        return 'capacity-1' if rec['operator'] == 'const-1' else 'capacity'
     if re.search(r'(^|_)(size|bx_size|len|sz)($|_)', d) or d.endswith('_size'):
         return 'reported-size'
     if rec['in'] == 'decode' and re.search(r'(rd\d*|_at|off|read|build)', d):
