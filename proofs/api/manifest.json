@@ -129,6 +129,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_uint256.bend",
+    "wordpos_uint256.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -160,6 +161,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_small.bend",
+    "wordpos_Bytes1.bend",
     "serialize_0.bend"
    ]
   },
@@ -188,6 +190,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes4.bend",
+    "wordpos_Bytes4.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -219,6 +222,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes32.bend",
+    "wordpos_Bytes32.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -230,6 +234,7 @@
    "files": [
     "fixrej_f0.bend",
     "spec_codec_Bytes32.bend",
+    "wordpos_Bytes32.bend",
     "spec_unique_Bytes32.bend",
     "codec_0.bend",
     "spec_repr_Bytes32.bend",
@@ -250,6 +255,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes48.bend",
+    "wordpos_Bytes48.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -261,6 +267,7 @@
    "files": [
     "fixrej_f0.bend",
     "spec_codec_Bytes48.bend",
+    "wordpos_Bytes48.bend",
     "spec_unique_Bytes48.bend",
     "codec_0.bend",
     "spec_repr_Bytes48.bend",
@@ -281,6 +288,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes96.bend",
+    "wordpos_Bytes96.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -312,6 +320,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes8.bend",
+    "wordpos_Bytes8.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -323,6 +332,7 @@
    "files": [
     "fixrej_f0.bend",
     "spec_codec_Bytes8.bend",
+    "wordpos_Bytes8.bend",
     "spec_unique_Bytes8.bend",
     "codec_0.bend",
     "spec_repr_Bytes8.bend",
@@ -343,6 +353,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Bytes20.bend",
+    "wordpos_Bytes20.bend",
     "codec_0.bend",
     "serialize_0.bend"
    ]
@@ -354,6 +365,7 @@
    "files": [
     "fixrej_f0.bend",
     "spec_codec_Bytes20.bend",
+    "wordpos_Bytes20.bend",
     "spec_unique_Bytes20.bend",
     "codec_0.bend",
     "spec_repr_Bytes20.bend",
@@ -467,6 +479,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Hash32.bend",
+    "wordpos_Hash32.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -498,6 +511,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Version.bend",
+    "wordpos_Version.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -529,6 +543,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_DomainType.bend",
+    "wordpos_DomainType.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -560,6 +575,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_BLSSignature.bend",
+    "wordpos_BLSSignature.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -590,7 +606,8 @@
    "generated_name": "FinalityBranch",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_FinalityBranch.bend"
+    "spec_codec_FinalityBranch.bend",
+    "wordpos_FinalityBranch.bend"
    ]
   },
   "FuluFinalityBranch_decode_ssz_proof_generated.bend": {
@@ -619,6 +636,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_VersionedHash.bend",
+    "wordpos_VersionedHash.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -650,6 +668,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_G1Point.bend",
+    "wordpos_G1Point.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -681,6 +700,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_G2Point.bend",
+    "wordpos_G2Point.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -712,6 +732,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Fork.bend",
+    "wordpos_Fork.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -743,6 +764,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SyncAggregate.bend",
+    "wordpos_SyncAggregate.bend",
     "codec_1.bend",
     "mutation_laws_fulu.bend",
     "serialize_0.bend"
@@ -775,6 +797,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SyncAggregatorSelectionData.bend",
+    "wordpos_SyncAggregatorSelectionData.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -806,6 +829,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_PowBlock.bend",
+    "wordpos_PowBlock.bend",
     "codec_1.bend",
     "serialize_0.bend"
    ]
@@ -899,6 +923,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_PendingConsolidation.bend",
+    "wordpos_PendingConsolidation.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -930,6 +955,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_PendingPartialWithdrawal.bend",
+    "wordpos_PendingPartialWithdrawal.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -961,6 +987,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_VoluntaryExit.bend",
+    "wordpos_VoluntaryExit.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -992,6 +1019,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SignedVoluntaryExit.bend",
+    "wordpos_SignedVoluntaryExit.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -1023,6 +1051,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Root.bend",
+    "wordpos_Root.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -1054,6 +1083,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_HistoricalSummary.bend",
+    "wordpos_HistoricalSummary.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -1085,6 +1115,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SyncCommitteeContribution.bend",
+    "wordpos_SyncCommitteeContribution.bend",
     "codec_2.bend",
     "mutation_laws_fulu.bend",
     "serialize_0.bend"
@@ -1173,6 +1204,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SyncCommitteeMessage.bend",
+    "wordpos_SyncCommitteeMessage.bend",
     "codec_2.bend",
     "serialize_0.bend"
    ]
@@ -1204,6 +1236,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Eth1Block.bend",
+    "wordpos_Eth1Block.bend",
     "codec_2.bend",
     "serialize_1.bend"
    ]
@@ -1235,6 +1268,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_BeaconBlockHeader.bend",
+    "wordpos_BeaconBlockHeader.bend",
     "codec_2.bend",
     "serialize_1.bend"
    ]
@@ -1266,6 +1300,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SignedBeaconBlockHeader.bend",
+    "wordpos_SignedBeaconBlockHeader.bend",
     "codec_3.bend",
     "mutation_laws_fulu.bend",
     "serialize_1.bend"
@@ -1352,6 +1387,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Eth1Data.bend",
+    "wordpos_Eth1Data.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1383,6 +1419,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Checkpoint.bend",
+    "wordpos_Checkpoint.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1414,6 +1451,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_AttestationData.bend",
+    "wordpos_AttestationData.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1445,6 +1483,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SingleAttestation.bend",
+    "wordpos_SingleAttestation.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1630,6 +1669,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ForkData.bend",
+    "wordpos_ForkData.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1661,6 +1701,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ForkDigest.bend",
+    "wordpos_ForkDigest.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1692,6 +1733,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Domain.bend",
+    "wordpos_Domain.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1723,6 +1765,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SigningData.bend",
+    "wordpos_SigningData.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1754,6 +1797,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_BLSPubkey.bend",
+    "wordpos_BLSPubkey.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1785,6 +1829,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_DepositRequest.bend",
+    "wordpos_DepositRequest.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1816,6 +1861,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_PendingDeposit.bend",
+    "wordpos_PendingDeposit.bend",
     "codec_3.bend",
     "serialize_1.bend"
    ]
@@ -1873,6 +1919,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_DepositData.bend",
+    "wordpos_DepositData.bend",
     "codec_4.bend",
     "mutation_laws_fulu.bend",
     "serialize_1.bend"
@@ -1933,6 +1980,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_DepositMessage.bend",
+    "wordpos_DepositMessage.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -1991,6 +2039,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_NodeID.bend",
+    "wordpos_NodeID.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2111,7 +2160,8 @@
    "generated_name": "CurrentSyncCommitteeBranch",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_CurrentSyncCommitteeBranch.bend"
+    "spec_codec_CurrentSyncCommitteeBranch.bend",
+    "wordpos_CurrentSyncCommitteeBranch.bend"
    ]
   },
   "FuluCurrentSyncCommitteeBranch_decode_ssz_proof_generated.bend": {
@@ -2139,7 +2189,8 @@
    "generated_name": "NextSyncCommitteeBranch",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_NextSyncCommitteeBranch.bend"
+    "spec_codec_NextSyncCommitteeBranch.bend",
+    "wordpos_NextSyncCommitteeBranch.bend"
    ]
   },
   "FuluNextSyncCommitteeBranch_decode_ssz_proof_generated.bend": {
@@ -2192,6 +2243,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ExecutionAddress.bend",
+    "wordpos_ExecutionAddress.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2223,6 +2275,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ConsolidationRequest.bend",
+    "wordpos_ConsolidationRequest.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2254,6 +2307,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_WithdrawalRequest.bend",
+    "wordpos_WithdrawalRequest.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2309,6 +2363,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_BLSToExecutionChange.bend",
+    "wordpos_BLSToExecutionChange.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2340,6 +2395,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SignedBLSToExecutionChange.bend",
+    "wordpos_SignedBLSToExecutionChange.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2397,6 +2453,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_PayloadId.bend",
+    "wordpos_PayloadId.bend",
     "codec_4.bend",
     "serialize_1.bend"
    ]
@@ -2459,6 +2516,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_Withdrawal.bend",
+    "wordpos_Withdrawal.bend",
     "codec_5.bend",
     "serialize_1.bend"
    ]
@@ -2537,7 +2595,8 @@
    "generated_name": "ExecutionBranch",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_ExecutionBranch.bend"
+    "spec_codec_ExecutionBranch.bend",
+    "wordpos_ExecutionBranch.bend"
    ]
   },
   "FuluExecutionBranch_decode_ssz_proof_generated.bend": {
@@ -2723,6 +2782,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_BlobIdentifier.bend",
+    "wordpos_BlobIdentifier.bend",
     "codec_5.bend",
     "serialize_1.bend"
    ]
@@ -2754,6 +2814,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_KZGCommitment.bend",
+    "wordpos_KZGCommitment.bend",
     "codec_5.bend",
     "serialize_1.bend"
    ]
@@ -2857,6 +2918,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_KZGProof.bend",
+    "wordpos_KZGProof.bend",
     "codec_5.bend",
     "serialize_1.bend"
    ]
@@ -3332,7 +3394,8 @@
    "generated_name": "vec_bool_16",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_bool_16.bend"
+    "sub_vec_bool_16.bend",
+    "wordpos_vec_bool_16.bend"
    ]
   },
   "vec_bool_16_decode_ssz_proof_generated.bend": {
@@ -3462,7 +3525,8 @@
    "generated_name": "vec_bool_4",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_bool_4.bend"
+    "sub_vec_bool_4.bend",
+    "wordpos_vec_bool_4.bend"
    ]
   },
   "vec_bool_4_decode_ssz_proof_generated.bend": {
@@ -3566,7 +3630,8 @@
    "generated_name": "vec_bool_8",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_bool_8.bend"
+    "sub_vec_bool_8.bend",
+    "wordpos_vec_bool_8.bend"
    ]
   },
   "vec_bool_8_decode_ssz_proof_generated.bend": {
@@ -3618,7 +3683,8 @@
    "generated_name": "vec_uint128_16",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_16.bend"
+    "spec_gcodec_vec_uint128_16.bend",
+    "wordpos_vec_uint128_16.bend"
    ]
   },
   "vec_uint128_16_decode_ssz_proof_generated.bend": {
@@ -3646,7 +3712,8 @@
    "generated_name": "vec_uint128_1",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_1.bend"
+    "spec_gcodec_vec_uint128_1.bend",
+    "wordpos_vec_uint128_1.bend"
    ]
   },
   "vec_uint128_1_decode_ssz_proof_generated.bend": {
@@ -3674,7 +3741,8 @@
    "generated_name": "vec_uint128_2",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_2.bend"
+    "spec_gcodec_vec_uint128_2.bend",
+    "wordpos_vec_uint128_2.bend"
    ]
   },
   "vec_uint128_2_decode_ssz_proof_generated.bend": {
@@ -3730,7 +3798,8 @@
    "generated_name": "vec_uint128_3",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_3.bend"
+    "spec_gcodec_vec_uint128_3.bend",
+    "wordpos_vec_uint128_3.bend"
    ]
   },
   "vec_uint128_3_decode_ssz_proof_generated.bend": {
@@ -3758,7 +3827,8 @@
    "generated_name": "vec_uint128_4",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_4.bend"
+    "spec_gcodec_vec_uint128_4.bend",
+    "wordpos_vec_uint128_4.bend"
    ]
   },
   "vec_uint128_4_decode_ssz_proof_generated.bend": {
@@ -3838,7 +3908,8 @@
    "generated_name": "vec_uint128_5",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_5.bend"
+    "spec_gcodec_vec_uint128_5.bend",
+    "wordpos_vec_uint128_5.bend"
    ]
   },
   "vec_uint128_5_decode_ssz_proof_generated.bend": {
@@ -3866,7 +3937,8 @@
    "generated_name": "vec_uint128_8",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint128_8.bend"
+    "spec_gcodec_vec_uint128_8.bend",
+    "wordpos_vec_uint128_8.bend"
    ]
   },
   "vec_uint128_8_decode_ssz_proof_generated.bend": {
@@ -3920,6 +3992,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_16.bend",
+    "wordpos_vec_uint8_16.bend",
     "mutation_laws_generic.bend"
    ]
   },
@@ -4055,6 +4128,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_4.bend",
+    "wordpos_vec_uint8_4.bend",
     "mutation_laws_generic.bend"
    ]
   },
@@ -4163,6 +4237,7 @@
    "op": "encode_ssz",
    "files": [
     "sub_vec_uint8_8.bend",
+    "wordpos_vec_uint8_8.bend",
     "mutation_laws_generic.bend"
    ]
   },
@@ -4214,7 +4289,8 @@
    "generated_name": "vec_uint16_16",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint16_16.bend"
+    "sub_vec_uint16_16.bend",
+    "wordpos_vec_uint16_16.bend"
    ]
   },
   "vec_uint16_16_decode_ssz_proof_generated.bend": {
@@ -4266,7 +4342,8 @@
    "generated_name": "vec_uint16_2",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint16_2.bend"
+    "sub_vec_uint16_2.bend",
+    "wordpos_vec_uint16_2.bend"
    ]
   },
   "vec_uint16_2_decode_ssz_proof_generated.bend": {
@@ -4344,7 +4421,8 @@
    "generated_name": "vec_uint16_4",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint16_4.bend"
+    "sub_vec_uint16_4.bend",
+    "wordpos_vec_uint16_4.bend"
    ]
   },
   "vec_uint16_4_decode_ssz_proof_generated.bend": {
@@ -4448,7 +4526,8 @@
    "generated_name": "vec_uint16_8",
    "op": "encode_ssz",
    "files": [
-    "sub_vec_uint16_8.bend"
+    "sub_vec_uint16_8.bend",
+    "wordpos_vec_uint16_8.bend"
    ]
   },
   "vec_uint16_8_decode_ssz_proof_generated.bend": {
@@ -4528,7 +4607,8 @@
    "generated_name": "vec_uint256_1",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_1.bend"
+    "spec_gcodec_vec_uint256_1.bend",
+    "wordpos_vec_uint256_1.bend"
    ]
   },
   "vec_uint256_1_decode_ssz_proof_generated.bend": {
@@ -4556,7 +4636,8 @@
    "generated_name": "vec_uint256_2",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_2.bend"
+    "spec_gcodec_vec_uint256_2.bend",
+    "wordpos_vec_uint256_2.bend"
    ]
   },
   "vec_uint256_2_decode_ssz_proof_generated.bend": {
@@ -4612,7 +4693,8 @@
    "generated_name": "vec_uint256_3",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_3.bend"
+    "spec_gcodec_vec_uint256_3.bend",
+    "wordpos_vec_uint256_3.bend"
    ]
   },
   "vec_uint256_3_decode_ssz_proof_generated.bend": {
@@ -4640,7 +4722,8 @@
    "generated_name": "vec_uint256_4",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_4.bend"
+    "spec_gcodec_vec_uint256_4.bend",
+    "wordpos_vec_uint256_4.bend"
    ]
   },
   "vec_uint256_4_decode_ssz_proof_generated.bend": {
@@ -4720,7 +4803,8 @@
    "generated_name": "vec_uint256_5",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_5.bend"
+    "spec_gcodec_vec_uint256_5.bend",
+    "wordpos_vec_uint256_5.bend"
    ]
   },
   "vec_uint256_5_decode_ssz_proof_generated.bend": {
@@ -4748,7 +4832,8 @@
    "generated_name": "vec_uint256_8",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint256_8.bend"
+    "spec_gcodec_vec_uint256_8.bend",
+    "wordpos_vec_uint256_8.bend"
    ]
   },
   "vec_uint256_8_decode_ssz_proof_generated.bend": {
@@ -4802,7 +4887,8 @@
    "generated_name": "vec_uint32_16",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_16.bend"
+    "spec_gcodec_vec_uint32_16.bend",
+    "wordpos_vec_uint32_16.bend"
    ]
   },
   "vec_uint32_16_decode_ssz_proof_generated.bend": {
@@ -4830,7 +4916,8 @@
    "generated_name": "vec_uint32_1",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_1.bend"
+    "spec_gcodec_vec_uint32_1.bend",
+    "wordpos_vec_uint32_1.bend"
    ]
   },
   "vec_uint32_1_decode_ssz_proof_generated.bend": {
@@ -4858,7 +4945,8 @@
    "generated_name": "vec_uint32_2",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_2.bend"
+    "spec_gcodec_vec_uint32_2.bend",
+    "wordpos_vec_uint32_2.bend"
    ]
   },
   "vec_uint32_2_decode_ssz_proof_generated.bend": {
@@ -4886,7 +4974,8 @@
    "generated_name": "vec_uint32_31",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_31.bend"
+    "spec_gcodec_vec_uint32_31.bend",
+    "wordpos_vec_uint32_31.bend"
    ]
   },
   "vec_uint32_31_decode_ssz_proof_generated.bend": {
@@ -4914,7 +5003,8 @@
    "generated_name": "vec_uint32_3",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_3.bend"
+    "spec_gcodec_vec_uint32_3.bend",
+    "wordpos_vec_uint32_3.bend"
    ]
   },
   "vec_uint32_3_decode_ssz_proof_generated.bend": {
@@ -4942,7 +5032,8 @@
    "generated_name": "vec_uint32_4",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_4.bend"
+    "spec_gcodec_vec_uint32_4.bend",
+    "wordpos_vec_uint32_4.bend"
    ]
   },
   "vec_uint32_4_decode_ssz_proof_generated.bend": {
@@ -5022,7 +5113,8 @@
    "generated_name": "vec_uint32_5",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_5.bend"
+    "spec_gcodec_vec_uint32_5.bend",
+    "wordpos_vec_uint32_5.bend"
    ]
   },
   "vec_uint32_5_decode_ssz_proof_generated.bend": {
@@ -5050,7 +5142,8 @@
    "generated_name": "vec_uint32_8",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint32_8.bend"
+    "spec_gcodec_vec_uint32_8.bend",
+    "wordpos_vec_uint32_8.bend"
    ]
   },
   "vec_uint32_8_decode_ssz_proof_generated.bend": {
@@ -5104,7 +5197,8 @@
    "generated_name": "vec_uint64_16",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_16.bend"
+    "spec_gcodec_vec_uint64_16.bend",
+    "wordpos_vec_uint64_16.bend"
    ]
   },
   "vec_uint64_16_decode_ssz_proof_generated.bend": {
@@ -5132,7 +5226,8 @@
    "generated_name": "vec_uint64_1",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_1.bend"
+    "spec_gcodec_vec_uint64_1.bend",
+    "wordpos_vec_uint64_1.bend"
    ]
   },
   "vec_uint64_1_decode_ssz_proof_generated.bend": {
@@ -5160,7 +5255,8 @@
    "generated_name": "vec_uint64_2",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_2.bend"
+    "spec_gcodec_vec_uint64_2.bend",
+    "wordpos_vec_uint64_2.bend"
    ]
   },
   "vec_uint64_2_decode_ssz_proof_generated.bend": {
@@ -5188,7 +5284,8 @@
    "generated_name": "vec_uint64_31",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_31.bend"
+    "spec_gcodec_vec_uint64_31.bend",
+    "wordpos_vec_uint64_31.bend"
    ]
   },
   "vec_uint64_31_decode_ssz_proof_generated.bend": {
@@ -5216,7 +5313,8 @@
    "generated_name": "vec_uint64_3",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_3.bend"
+    "spec_gcodec_vec_uint64_3.bend",
+    "wordpos_vec_uint64_3.bend"
    ]
   },
   "vec_uint64_3_decode_ssz_proof_generated.bend": {
@@ -5244,7 +5342,8 @@
    "generated_name": "vec_uint64_4",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_4.bend"
+    "spec_gcodec_vec_uint64_4.bend",
+    "wordpos_vec_uint64_4.bend"
    ]
   },
   "vec_uint64_4_decode_ssz_proof_generated.bend": {
@@ -5324,7 +5423,8 @@
    "generated_name": "vec_uint64_5",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_5.bend"
+    "spec_gcodec_vec_uint64_5.bend",
+    "wordpos_vec_uint64_5.bend"
    ]
   },
   "vec_uint64_5_decode_ssz_proof_generated.bend": {
@@ -5352,7 +5452,8 @@
    "generated_name": "vec_uint64_8",
    "op": "encode_ssz",
    "files": [
-    "spec_gcodec_vec_uint64_8.bend"
+    "spec_gcodec_vec_uint64_8.bend",
+    "wordpos_vec_uint64_8.bend"
    ]
   },
   "vec_uint64_8_decode_ssz_proof_generated.bend": {
@@ -5455,7 +5556,8 @@
    "generated_name": "FixedTestStruct",
    "op": "encode_ssz",
    "files": [
-    "sub_FixedTestStruct.bend"
+    "sub_FixedTestStruct.bend",
+    "wordpos_FixedTestStruct.bend"
    ]
   },
   "FixedTestStruct_decode_ssz_proof_generated.bend": {
@@ -5557,7 +5659,8 @@
    "generated_name": "SmallTestStruct",
    "op": "encode_ssz",
    "files": [
-    "sub_SmallTestStruct.bend"
+    "sub_SmallTestStruct.bend",
+    "wordpos_SmallTestStruct.bend"
    ]
   },
   "SmallTestStruct_decode_ssz_proof_generated.bend": {
@@ -6051,7 +6154,8 @@
    "generated_name": "bitvector_15",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_15.bend"
+    "sub_bitvector_15.bend",
+    "wordpos_bitvector_15.bend"
    ]
   },
   "bitvector_15_decode_ssz_proof_generated.bend": {
@@ -6077,7 +6181,8 @@
    "generated_name": "bitvector_16",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_16.bend"
+    "sub_bitvector_16.bend",
+    "wordpos_bitvector_16.bend"
    ]
   },
   "bitvector_16_decode_ssz_proof_generated.bend": {
@@ -6103,7 +6208,8 @@
    "generated_name": "bitvector_17",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_17.bend"
+    "sub_bitvector_17.bend",
+    "wordpos_bitvector_17.bend"
    ]
   },
   "bitvector_17_decode_ssz_proof_generated.bend": {
@@ -6129,7 +6235,8 @@
    "generated_name": "bitvector_1",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_1.bend"
+    "sub_bitvector_1.bend",
+    "wordpos_bitvector_1.bend"
    ]
   },
   "bitvector_1_decode_ssz_proof_generated.bend": {
@@ -6155,7 +6262,8 @@
    "generated_name": "bitvector_2",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_2.bend"
+    "sub_bitvector_2.bend",
+    "wordpos_bitvector_2.bend"
    ]
   },
   "bitvector_2_decode_ssz_proof_generated.bend": {
@@ -6181,7 +6289,8 @@
    "generated_name": "bitvector_31",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_31.bend"
+    "sub_bitvector_31.bend",
+    "wordpos_bitvector_31.bend"
    ]
   },
   "bitvector_31_decode_ssz_proof_generated.bend": {
@@ -6208,6 +6317,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_bitvector_32.bend",
+    "wordpos_bitvector_32.bend",
     "gcodec_0.bend"
    ]
   },
@@ -6237,7 +6347,8 @@
    "generated_name": "bitvector_33",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_33.bend"
+    "sub_bitvector_33.bend",
+    "wordpos_bitvector_33.bend"
    ]
   },
   "bitvector_33_decode_ssz_proof_generated.bend": {
@@ -6263,7 +6374,8 @@
    "generated_name": "bitvector_3",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_3.bend"
+    "sub_bitvector_3.bend",
+    "wordpos_bitvector_3.bend"
    ]
   },
   "bitvector_3_decode_ssz_proof_generated.bend": {
@@ -6289,7 +6401,8 @@
    "generated_name": "bitvector_4",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_4.bend"
+    "sub_bitvector_4.bend",
+    "wordpos_bitvector_4.bend"
    ]
   },
   "bitvector_4_decode_ssz_proof_generated.bend": {
@@ -6315,7 +6428,8 @@
    "generated_name": "bitvector_511",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_511.bend"
+    "sub_bitvector_511.bend",
+    "wordpos_bitvector_511.bend"
    ]
   },
   "bitvector_511_decode_ssz_proof_generated.bend": {
@@ -6342,6 +6456,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_bitvector_512.bend",
+    "wordpos_bitvector_512.bend",
     "gcodec_0.bend"
    ]
   },
@@ -6371,7 +6486,8 @@
    "generated_name": "bitvector_513",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_513.bend"
+    "sub_bitvector_513.bend",
+    "wordpos_bitvector_513.bend"
    ]
   },
   "bitvector_513_decode_ssz_proof_generated.bend": {
@@ -6397,7 +6513,8 @@
    "generated_name": "bitvector_5",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_5.bend"
+    "sub_bitvector_5.bend",
+    "wordpos_bitvector_5.bend"
    ]
   },
   "bitvector_5_decode_ssz_proof_generated.bend": {
@@ -6423,7 +6540,8 @@
    "generated_name": "bitvector_6",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_6.bend"
+    "sub_bitvector_6.bend",
+    "wordpos_bitvector_6.bend"
    ]
   },
   "bitvector_6_decode_ssz_proof_generated.bend": {
@@ -6449,7 +6567,8 @@
    "generated_name": "bitvector_7",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_7.bend"
+    "sub_bitvector_7.bend",
+    "wordpos_bitvector_7.bend"
    ]
   },
   "bitvector_7_decode_ssz_proof_generated.bend": {
@@ -6475,7 +6594,8 @@
    "generated_name": "bitvector_8",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_8.bend"
+    "sub_bitvector_8.bend",
+    "wordpos_bitvector_8.bend"
    ]
   },
   "bitvector_8_decode_ssz_proof_generated.bend": {
@@ -6501,7 +6621,8 @@
    "generated_name": "bitvector_9",
    "op": "encode_ssz",
    "files": [
-    "sub_bitvector_9.bend"
+    "sub_bitvector_9.bend",
+    "wordpos_bitvector_9.bend"
    ]
   },
   "bitvector_9_decode_ssz_proof_generated.bend": {
@@ -6629,6 +6750,7 @@
    "op": "encode_ssz",
    "files": [
     "spec_gcodec_uint128.bend",
+    "wordpos_uint128.bend",
     "gcodec_0.bend"
    ]
   },

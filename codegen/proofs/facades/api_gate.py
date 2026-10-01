@@ -56,12 +56,12 @@ CORE = KINDS[:9]
 LAW_FORMS = {
     'root': [r'<X>_root_correct'],
     'ok_eval': [r'ok_eval', r'<X>_ok_eval'],
-    'decode_accept': [r'decode_accept', r'<X>_spec_decode', r'<X>_spec_decode_[01]'],
+    'decode_accept': [r'decode_accept', r'<X>_spec_decode', r'<X>_spec_decode_[01]', r'<X>_arith_dec'],
     'decode_spec': [r'decode_spec', r'<X>_spec_decoded', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode', r'<X>_spec_value'],
     'decode_unique': [r'decode_unique', r'<X>_spec_unique', r'<X>_spec_unique_[01]'],
     'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside', r'<X>_decode_reject'],
     'decode_none': [r'decode_none', r'<X>_spec_reject', r'<X>_spec_reject_(bool|pad)', r'<X>_spec_decode_reject'],
-    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes'],
+    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
     'roundtrip': [r'<X>(_[tf])?_roundtrip'],
     'encoded_size': [r'<X>(_[tf])?_encoded_size'],
@@ -95,7 +95,8 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'decode_reject':
         return re.match(rf'Decoding\.outside_image\({spec}, ', concl) is not None
     if kind == 'encode_eval':
-        return concl.startswith('{' + enc) or concl.startswith('{B.emit(' + enc) or re.match(r'\{\w+\.emitted\([^,]+, ' + re.escape(enc), concl) is not None
+        return (concl.startswith('{' + enc) or concl.startswith('{B.emit(' + enc) or re.match(r'\{\w+\.emitted\([^,]+, ' + re.escape(enc), concl) is not None
+                or re.match(r'\{T\.\w+_(?:pw[123]|put)\(', concl) is not None)
     if kind == 'roundtrip':
         return concl.startswith('{' + dec + enc) and 'Some{' in concl
     if kind == 'encoded_size':
@@ -232,6 +233,9 @@ def scan():
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
+            ma = re.match(r'(\w+?)_arith_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
+            if ma:
+                xs.add(ma.group(1))
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
                 # (a readable name can hold '_': bitlist_33, proglist_bool; SHAPE then keeps only X's own)
                 xs |= {X for X in U if f'_{X}_' in f'_{f.stem}_'}

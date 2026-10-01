@@ -766,6 +766,18 @@
     {
      "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_bytes"
+    },
+    {
+     "file": "wordpos_uint256.bend",
+     "law": "uint256_arith_pw1"
+    },
+    {
+     "file": "wordpos_uint256.bend",
+     "law": "uint256_arith_pw2"
+    },
+    {
+     "file": "wordpos_uint256.bend",
+     "law": "uint256_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -868,6 +880,18 @@
     {
      "file": "spec_small.bend",
      "law": "Bytes1_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes1.bend",
+     "law": "Bytes1_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes1.bend",
+     "law": "Bytes1_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes1.bend",
+     "law": "Bytes1_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -941,6 +965,18 @@
     {
      "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes4.bend",
+     "law": "Bytes4_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes4.bend",
+     "law": "Bytes4_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes4.bend",
+     "law": "Bytes4_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1009,6 +1045,10 @@
     {
      "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_decode"
+    },
+    {
+     "file": "wordpos_Bytes32.bend",
+     "law": "Bytes32_arith_dec"
     }
    ],
    "decode_spec": [
@@ -1039,6 +1079,18 @@
     {
      "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes32.bend",
+     "law": "Bytes32_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes32.bend",
+     "law": "Bytes32_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes32.bend",
+     "law": "Bytes32_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1107,6 +1159,10 @@
     {
      "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_decode"
+    },
+    {
+     "file": "wordpos_Bytes48.bend",
+     "law": "Bytes48_arith_dec"
     }
    ],
    "decode_spec": [
@@ -1137,6 +1193,18 @@
     {
      "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes48.bend",
+     "law": "Bytes48_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes48.bend",
+     "law": "Bytes48_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes48.bend",
+     "law": "Bytes48_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1235,6 +1303,18 @@
     {
      "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes96.bend",
+     "law": "Bytes96_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes96.bend",
+     "law": "Bytes96_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes96.bend",
+     "law": "Bytes96_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1303,6 +1383,10 @@
     {
      "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_decode"
+    },
+    {
+     "file": "wordpos_Bytes8.bend",
+     "law": "Bytes8_arith_dec"
     }
    ],
    "decode_spec": [
@@ -1333,6 +1417,18 @@
     {
      "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes8.bend",
+     "law": "Bytes8_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes8.bend",
+     "law": "Bytes8_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes8.bend",
+     "law": "Bytes8_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1401,6 +1497,10 @@
     {
      "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_decode"
+    },
+    {
+     "file": "wordpos_Bytes20.bend",
+     "law": "Bytes20_arith_dec"
     }
    ],
    "decode_spec": [
@@ -1431,6 +1531,18 @@
     {
      "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_bytes"
+    },
+    {
+     "file": "wordpos_Bytes20.bend",
+     "law": "Bytes20_arith_pw1"
+    },
+    {
+     "file": "wordpos_Bytes20.bend",
+     "law": "Bytes20_arith_pw2"
+    },
+    {
+     "file": "wordpos_Bytes20.bend",
+     "law": "Bytes20_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1823,6 +1935,18 @@
     {
      "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_bytes"
+    },
+    {
+     "file": "wordpos_Hash32.bend",
+     "law": "Hash32_arith_pw1"
+    },
+    {
+     "file": "wordpos_Hash32.bend",
+     "law": "Hash32_arith_pw2"
+    },
+    {
+     "file": "wordpos_Hash32.bend",
+     "law": "Hash32_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -1921,6 +2045,18 @@
     {
      "file": "spec_codec_Version.bend",
      "law": "Version_spec_bytes"
+    },
+    {
+     "file": "wordpos_Version.bend",
+     "law": "Version_arith_pw1"
+    },
+    {
+     "file": "wordpos_Version.bend",
+     "law": "Version_arith_pw2"
+    },
+    {
+     "file": "wordpos_Version.bend",
+     "law": "Version_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2019,6 +2155,18 @@
     {
      "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_bytes"
+    },
+    {
+     "file": "wordpos_DomainType.bend",
+     "law": "DomainType_arith_pw1"
+    },
+    {
+     "file": "wordpos_DomainType.bend",
+     "law": "DomainType_arith_pw2"
+    },
+    {
+     "file": "wordpos_DomainType.bend",
+     "law": "DomainType_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2117,6 +2265,18 @@
     {
      "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_bytes"
+    },
+    {
+     "file": "wordpos_BLSSignature.bend",
+     "law": "BLSSignature_arith_pw1"
+    },
+    {
+     "file": "wordpos_BLSSignature.bend",
+     "law": "BLSSignature_arith_pw2"
+    },
+    {
+     "file": "wordpos_BLSSignature.bend",
+     "law": "BLSSignature_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2215,6 +2375,10 @@
     {
      "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_bytes"
+    },
+    {
+     "file": "wordpos_FinalityBranch.bend",
+     "law": "FinalityBranch_arith_putw"
     }
    ],
    "encode_spec": [
@@ -2288,6 +2452,18 @@
     {
      "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_bytes"
+    },
+    {
+     "file": "wordpos_VersionedHash.bend",
+     "law": "VersionedHash_arith_pw1"
+    },
+    {
+     "file": "wordpos_VersionedHash.bend",
+     "law": "VersionedHash_arith_pw2"
+    },
+    {
+     "file": "wordpos_VersionedHash.bend",
+     "law": "VersionedHash_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2386,6 +2562,18 @@
     {
      "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_bytes"
+    },
+    {
+     "file": "wordpos_G1Point.bend",
+     "law": "G1Point_arith_pw1"
+    },
+    {
+     "file": "wordpos_G1Point.bend",
+     "law": "G1Point_arith_pw2"
+    },
+    {
+     "file": "wordpos_G1Point.bend",
+     "law": "G1Point_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2484,6 +2672,18 @@
     {
      "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_bytes"
+    },
+    {
+     "file": "wordpos_G2Point.bend",
+     "law": "G2Point_arith_pw1"
+    },
+    {
+     "file": "wordpos_G2Point.bend",
+     "law": "G2Point_arith_pw2"
+    },
+    {
+     "file": "wordpos_G2Point.bend",
+     "law": "G2Point_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -2582,6 +2782,10 @@
     {
      "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_bytes"
+    },
+    {
+     "file": "wordpos_Fork.bend",
+     "law": "Fork_arith_put"
     }
    ],
    "encode_spec": [
@@ -2680,6 +2884,10 @@
     {
      "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_bytes"
+    },
+    {
+     "file": "wordpos_SyncAggregate.bend",
+     "law": "SyncAggregate_arith_put"
     }
    ],
    "encode_spec": [
@@ -2782,6 +2990,10 @@
     {
      "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_bytes"
+    },
+    {
+     "file": "wordpos_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_arith_put"
     }
    ],
    "encode_spec": [
@@ -2880,6 +3092,10 @@
     {
      "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_bytes"
+    },
+    {
+     "file": "wordpos_PowBlock.bend",
+     "law": "PowBlock_arith_put"
     }
    ],
    "encode_spec": [
@@ -3174,6 +3390,10 @@
     {
      "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_bytes"
+    },
+    {
+     "file": "wordpos_PendingConsolidation.bend",
+     "law": "PendingConsolidation_arith_put"
     }
    ],
    "encode_spec": [
@@ -3272,6 +3492,10 @@
     {
      "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_bytes"
+    },
+    {
+     "file": "wordpos_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_arith_put"
     }
    ],
    "encode_spec": [
@@ -3370,6 +3594,10 @@
     {
      "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_bytes"
+    },
+    {
+     "file": "wordpos_VoluntaryExit.bend",
+     "law": "VoluntaryExit_arith_put"
     }
    ],
    "encode_spec": [
@@ -3468,6 +3696,10 @@
     {
      "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_bytes"
+    },
+    {
+     "file": "wordpos_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_arith_put"
     }
    ],
    "encode_spec": [
@@ -3566,6 +3798,18 @@
     {
      "file": "spec_codec_Root.bend",
      "law": "Root_spec_bytes"
+    },
+    {
+     "file": "wordpos_Root.bend",
+     "law": "Root_arith_pw1"
+    },
+    {
+     "file": "wordpos_Root.bend",
+     "law": "Root_arith_pw2"
+    },
+    {
+     "file": "wordpos_Root.bend",
+     "law": "Root_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -3664,6 +3908,10 @@
     {
      "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_bytes"
+    },
+    {
+     "file": "wordpos_HistoricalSummary.bend",
+     "law": "HistoricalSummary_arith_put"
     }
    ],
    "encode_spec": [
@@ -3762,6 +4010,10 @@
     {
      "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_bytes"
+    },
+    {
+     "file": "wordpos_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_arith_put"
     }
    ],
    "encode_spec": [
@@ -4010,6 +4262,10 @@
     {
      "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_bytes"
+    },
+    {
+     "file": "wordpos_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_arith_put"
     }
    ],
    "encode_spec": [
@@ -4108,6 +4364,10 @@
     {
      "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_bytes"
+    },
+    {
+     "file": "wordpos_Eth1Block.bend",
+     "law": "Eth1Block_arith_put"
     }
    ],
    "encode_spec": [
@@ -4206,6 +4466,10 @@
     {
      "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_bytes"
+    },
+    {
+     "file": "wordpos_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_arith_put"
     }
    ],
    "encode_spec": [
@@ -4304,6 +4568,10 @@
     {
      "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_bytes"
+    },
+    {
+     "file": "wordpos_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_arith_put"
     }
    ],
    "encode_spec": [
@@ -4547,6 +4815,10 @@
     {
      "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_bytes"
+    },
+    {
+     "file": "wordpos_Eth1Data.bend",
+     "law": "Eth1Data_arith_put"
     }
    ],
    "encode_spec": [
@@ -4645,6 +4917,10 @@
     {
      "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_bytes"
+    },
+    {
+     "file": "wordpos_Checkpoint.bend",
+     "law": "Checkpoint_arith_put"
     }
    ],
    "encode_spec": [
@@ -4743,6 +5019,10 @@
     {
      "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_bytes"
+    },
+    {
+     "file": "wordpos_AttestationData.bend",
+     "law": "AttestationData_arith_put"
     }
    ],
    "encode_spec": [
@@ -4841,6 +5121,10 @@
     {
      "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_bytes"
+    },
+    {
+     "file": "wordpos_SingleAttestation.bend",
+     "law": "SingleAttestation_arith_put"
     }
    ],
    "encode_spec": [
@@ -5317,6 +5601,10 @@
     {
      "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_bytes"
+    },
+    {
+     "file": "wordpos_ForkData.bend",
+     "law": "ForkData_arith_put"
     }
    ],
    "encode_spec": [
@@ -5415,6 +5703,18 @@
     {
      "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_bytes"
+    },
+    {
+     "file": "wordpos_ForkDigest.bend",
+     "law": "ForkDigest_arith_pw1"
+    },
+    {
+     "file": "wordpos_ForkDigest.bend",
+     "law": "ForkDigest_arith_pw2"
+    },
+    {
+     "file": "wordpos_ForkDigest.bend",
+     "law": "ForkDigest_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -5513,6 +5813,18 @@
     {
      "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_bytes"
+    },
+    {
+     "file": "wordpos_Domain.bend",
+     "law": "Domain_arith_pw1"
+    },
+    {
+     "file": "wordpos_Domain.bend",
+     "law": "Domain_arith_pw2"
+    },
+    {
+     "file": "wordpos_Domain.bend",
+     "law": "Domain_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -5611,6 +5923,10 @@
     {
      "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_bytes"
+    },
+    {
+     "file": "wordpos_SigningData.bend",
+     "law": "SigningData_arith_put"
     }
    ],
    "encode_spec": [
@@ -5709,6 +6025,18 @@
     {
      "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_bytes"
+    },
+    {
+     "file": "wordpos_BLSPubkey.bend",
+     "law": "BLSPubkey_arith_pw1"
+    },
+    {
+     "file": "wordpos_BLSPubkey.bend",
+     "law": "BLSPubkey_arith_pw2"
+    },
+    {
+     "file": "wordpos_BLSPubkey.bend",
+     "law": "BLSPubkey_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -5807,6 +6135,10 @@
     {
      "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_bytes"
+    },
+    {
+     "file": "wordpos_DepositRequest.bend",
+     "law": "DepositRequest_arith_put"
     }
    ],
    "encode_spec": [
@@ -5905,6 +6237,10 @@
     {
      "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_bytes"
+    },
+    {
+     "file": "wordpos_PendingDeposit.bend",
+     "law": "PendingDeposit_arith_put"
     }
    ],
    "encode_spec": [
@@ -6071,6 +6407,10 @@
     {
      "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_bytes"
+    },
+    {
+     "file": "wordpos_DepositData.bend",
+     "law": "DepositData_arith_put"
     }
    ],
    "encode_spec": [
@@ -6246,6 +6586,10 @@
     {
      "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_bytes"
+    },
+    {
+     "file": "wordpos_DepositMessage.bend",
+     "law": "DepositMessage_arith_put"
     }
    ],
    "encode_spec": [
@@ -6420,6 +6764,18 @@
     {
      "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_bytes"
+    },
+    {
+     "file": "wordpos_NodeID.bend",
+     "law": "NodeID_arith_pw1"
+    },
+    {
+     "file": "wordpos_NodeID.bend",
+     "law": "NodeID_arith_pw2"
+    },
+    {
+     "file": "wordpos_NodeID.bend",
+     "law": "NodeID_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -6791,6 +7147,10 @@
     {
      "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_bytes"
+    },
+    {
+     "file": "wordpos_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_arith_putw"
     }
    ],
    "encode_spec": [
@@ -6864,6 +7224,10 @@
     {
      "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_bytes"
+    },
+    {
+     "file": "wordpos_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_arith_putw"
     }
    ],
    "encode_spec": [
@@ -7000,6 +7364,18 @@
     {
      "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_bytes"
+    },
+    {
+     "file": "wordpos_ExecutionAddress.bend",
+     "law": "ExecutionAddress_arith_pw1"
+    },
+    {
+     "file": "wordpos_ExecutionAddress.bend",
+     "law": "ExecutionAddress_arith_pw2"
+    },
+    {
+     "file": "wordpos_ExecutionAddress.bend",
+     "law": "ExecutionAddress_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -7098,6 +7474,10 @@
     {
      "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_bytes"
+    },
+    {
+     "file": "wordpos_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_arith_put"
     }
    ],
    "encode_spec": [
@@ -7196,6 +7576,10 @@
     {
      "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_bytes"
+    },
+    {
+     "file": "wordpos_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_arith_put"
     }
    ],
    "encode_spec": [
@@ -7357,6 +7741,10 @@
     {
      "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_bytes"
+    },
+    {
+     "file": "wordpos_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_arith_put"
     }
    ],
    "encode_spec": [
@@ -7455,6 +7843,10 @@
     {
      "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_bytes"
+    },
+    {
+     "file": "wordpos_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_arith_put"
     }
    ],
    "encode_spec": [
@@ -7616,6 +8008,18 @@
     {
      "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_bytes"
+    },
+    {
+     "file": "wordpos_PayloadId.bend",
+     "law": "PayloadId_arith_pw1"
+    },
+    {
+     "file": "wordpos_PayloadId.bend",
+     "law": "PayloadId_arith_pw2"
+    },
+    {
+     "file": "wordpos_PayloadId.bend",
+     "law": "PayloadId_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -7812,6 +8216,10 @@
     {
      "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_bytes"
+    },
+    {
+     "file": "wordpos_Withdrawal.bend",
+     "law": "Withdrawal_arith_put"
     }
    ],
    "encode_spec": [
@@ -8036,6 +8444,10 @@
     {
      "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_bytes"
+    },
+    {
+     "file": "wordpos_ExecutionBranch.bend",
+     "law": "ExecutionBranch_arith_putw"
     }
    ],
    "encode_spec": [
@@ -8522,6 +8934,10 @@
     {
      "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_bytes"
+    },
+    {
+     "file": "wordpos_BlobIdentifier.bend",
+     "law": "BlobIdentifier_arith_put"
     }
    ],
    "encode_spec": [
@@ -8620,6 +9036,18 @@
     {
      "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_bytes"
+    },
+    {
+     "file": "wordpos_KZGCommitment.bend",
+     "law": "KZGCommitment_arith_pw1"
+    },
+    {
+     "file": "wordpos_KZGCommitment.bend",
+     "law": "KZGCommitment_arith_pw2"
+    },
+    {
+     "file": "wordpos_KZGCommitment.bend",
+     "law": "KZGCommitment_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -8907,6 +9335,18 @@
     {
      "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_bytes"
+    },
+    {
+     "file": "wordpos_KZGProof.bend",
+     "law": "KZGProof_arith_pw1"
+    },
+    {
+     "file": "wordpos_KZGProof.bend",
+     "law": "KZGProof_arith_pw2"
+    },
+    {
+     "file": "wordpos_KZGProof.bend",
+     "law": "KZGProof_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -10240,6 +10680,10 @@
     {
      "file": "sub_vec_bool_16.bend",
      "law": "vec_bool_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_bool_16.bend",
+     "law": "vec_bool_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -10575,6 +11019,10 @@
     {
      "file": "sub_vec_bool_4.bend",
      "law": "vec_bool_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_bool_4.bend",
+     "law": "vec_bool_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -10843,6 +11291,10 @@
     {
      "file": "sub_vec_bool_8.bend",
      "law": "vec_bool_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_bool_8.bend",
+     "law": "vec_bool_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -10969,6 +11421,10 @@
     {
      "file": "spec_gcodec_vec_uint128_16.bend",
      "law": "vec_uint128_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_16.bend",
+     "law": "vec_uint128_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11042,6 +11498,10 @@
     {
      "file": "spec_gcodec_vec_uint128_1.bend",
      "law": "vec_uint128_1_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_1.bend",
+     "law": "vec_uint128_1_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11115,6 +11575,10 @@
     {
      "file": "spec_gcodec_vec_uint128_2.bend",
      "law": "vec_uint128_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_2.bend",
+     "law": "vec_uint128_2_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11261,6 +11725,10 @@
     {
      "file": "spec_gcodec_vec_uint128_3.bend",
      "law": "vec_uint128_3_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_3.bend",
+     "law": "vec_uint128_3_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11334,6 +11802,10 @@
     {
      "file": "spec_gcodec_vec_uint128_4.bend",
      "law": "vec_uint128_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_4.bend",
+     "law": "vec_uint128_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11543,6 +12015,10 @@
     {
      "file": "spec_gcodec_vec_uint128_5.bend",
      "law": "vec_uint128_5_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_5.bend",
+     "law": "vec_uint128_5_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11616,6 +12092,10 @@
     {
      "file": "spec_gcodec_vec_uint128_8.bend",
      "law": "vec_uint128_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint128_8.bend",
+     "law": "vec_uint128_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -11752,6 +12232,10 @@
     {
      "file": "sub_vec_uint8_16.bend",
      "law": "vec_uint8_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint8_16.bend",
+     "law": "vec_uint8_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -12112,6 +12596,10 @@
     {
      "file": "sub_vec_uint8_4.bend",
      "law": "vec_uint8_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint8_4.bend",
+     "law": "vec_uint8_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -12400,6 +12888,10 @@
     {
      "file": "sub_vec_uint8_8.bend",
      "law": "vec_uint8_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint8_8.bend",
+     "law": "vec_uint8_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -12535,6 +13027,10 @@
     {
      "file": "sub_vec_uint16_16.bend",
      "law": "vec_uint16_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint16_16.bend",
+     "law": "vec_uint16_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -12661,6 +13157,10 @@
     {
      "file": "sub_vec_uint16_2.bend",
      "law": "vec_uint16_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint16_2.bend",
+     "law": "vec_uint16_2_arith_putw"
     }
    ],
    "encode_spec": [
@@ -12850,6 +13350,10 @@
     {
      "file": "sub_vec_uint16_4.bend",
      "law": "vec_uint16_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint16_4.bend",
+     "law": "vec_uint16_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13102,6 +13606,10 @@
     {
      "file": "sub_vec_uint16_8.bend",
      "law": "vec_uint16_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint16_8.bend",
+     "law": "vec_uint16_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13301,6 +13809,10 @@
     {
      "file": "spec_gcodec_vec_uint256_1.bend",
      "law": "vec_uint256_1_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_1.bend",
+     "law": "vec_uint256_1_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13374,6 +13886,10 @@
     {
      "file": "spec_gcodec_vec_uint256_2.bend",
      "law": "vec_uint256_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_2.bend",
+     "law": "vec_uint256_2_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13520,6 +14036,10 @@
     {
      "file": "spec_gcodec_vec_uint256_3.bend",
      "law": "vec_uint256_3_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_3.bend",
+     "law": "vec_uint256_3_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13593,6 +14113,10 @@
     {
      "file": "spec_gcodec_vec_uint256_4.bend",
      "law": "vec_uint256_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_4.bend",
+     "law": "vec_uint256_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13802,6 +14326,10 @@
     {
      "file": "spec_gcodec_vec_uint256_5.bend",
      "law": "vec_uint256_5_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_5.bend",
+     "law": "vec_uint256_5_arith_putw"
     }
    ],
    "encode_spec": [
@@ -13875,6 +14403,10 @@
     {
      "file": "spec_gcodec_vec_uint256_8.bend",
      "law": "vec_uint256_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint256_8.bend",
+     "law": "vec_uint256_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14011,6 +14543,10 @@
     {
      "file": "spec_gcodec_vec_uint32_16.bend",
      "law": "vec_uint32_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_16.bend",
+     "law": "vec_uint32_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14084,6 +14620,10 @@
     {
      "file": "spec_gcodec_vec_uint32_1.bend",
      "law": "vec_uint32_1_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_1.bend",
+     "law": "vec_uint32_1_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14157,6 +14697,10 @@
     {
      "file": "spec_gcodec_vec_uint32_2.bend",
      "law": "vec_uint32_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_2.bend",
+     "law": "vec_uint32_2_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14230,6 +14774,10 @@
     {
      "file": "spec_gcodec_vec_uint32_31.bend",
      "law": "vec_uint32_31_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_31.bend",
+     "law": "vec_uint32_31_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14303,6 +14851,10 @@
     {
      "file": "spec_gcodec_vec_uint32_3.bend",
      "law": "vec_uint32_3_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_3.bend",
+     "law": "vec_uint32_3_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14376,6 +14928,10 @@
     {
      "file": "spec_gcodec_vec_uint32_4.bend",
      "law": "vec_uint32_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_4.bend",
+     "law": "vec_uint32_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14585,6 +15141,10 @@
     {
      "file": "spec_gcodec_vec_uint32_5.bend",
      "law": "vec_uint32_5_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_5.bend",
+     "law": "vec_uint32_5_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14658,6 +15218,10 @@
     {
      "file": "spec_gcodec_vec_uint32_8.bend",
      "law": "vec_uint32_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint32_8.bend",
+     "law": "vec_uint32_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14794,6 +15358,10 @@
     {
      "file": "spec_gcodec_vec_uint64_16.bend",
      "law": "vec_uint64_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_16.bend",
+     "law": "vec_uint64_16_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14867,6 +15435,10 @@
     {
      "file": "spec_gcodec_vec_uint64_1.bend",
      "law": "vec_uint64_1_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_1.bend",
+     "law": "vec_uint64_1_arith_putw"
     }
    ],
    "encode_spec": [
@@ -14940,6 +15512,10 @@
     {
      "file": "spec_gcodec_vec_uint64_2.bend",
      "law": "vec_uint64_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_2.bend",
+     "law": "vec_uint64_2_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15013,6 +15589,10 @@
     {
      "file": "spec_gcodec_vec_uint64_31.bend",
      "law": "vec_uint64_31_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_31.bend",
+     "law": "vec_uint64_31_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15086,6 +15666,10 @@
     {
      "file": "spec_gcodec_vec_uint64_3.bend",
      "law": "vec_uint64_3_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_3.bend",
+     "law": "vec_uint64_3_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15159,6 +15743,10 @@
     {
      "file": "spec_gcodec_vec_uint64_4.bend",
      "law": "vec_uint64_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_4.bend",
+     "law": "vec_uint64_4_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15368,6 +15956,10 @@
     {
      "file": "spec_gcodec_vec_uint64_5.bend",
      "law": "vec_uint64_5_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_5.bend",
+     "law": "vec_uint64_5_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15441,6 +16033,10 @@
     {
      "file": "spec_gcodec_vec_uint64_8.bend",
      "law": "vec_uint64_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_vec_uint64_8.bend",
+     "law": "vec_uint64_8_arith_putw"
     }
    ],
    "encode_spec": [
@@ -15703,6 +16299,10 @@
     {
      "file": "sub_FixedTestStruct.bend",
      "law": "FixedTestStruct_spec_bytes"
+    },
+    {
+     "file": "wordpos_FixedTestStruct.bend",
+     "law": "FixedTestStruct_arith_put"
     }
    ],
    "encode_spec": [
@@ -15955,6 +16555,10 @@
     {
      "file": "sub_SmallTestStruct.bend",
      "law": "SmallTestStruct_spec_bytes"
+    },
+    {
+     "file": "wordpos_SmallTestStruct.bend",
+     "law": "SmallTestStruct_arith_put"
     }
    ],
    "encode_spec": [
@@ -17156,6 +17760,18 @@
     {
      "file": "sub_bitvector_15.bend",
      "law": "bitvector_15_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_15.bend",
+     "law": "bitvector_15_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_15.bend",
+     "law": "bitvector_15_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_15.bend",
+     "law": "bitvector_15_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17219,6 +17835,18 @@
     {
      "file": "sub_bitvector_16.bend",
      "law": "bitvector_16_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_16.bend",
+     "law": "bitvector_16_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_16.bend",
+     "law": "bitvector_16_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_16.bend",
+     "law": "bitvector_16_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17286,6 +17914,18 @@
     {
      "file": "sub_bitvector_17.bend",
      "law": "bitvector_17_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_17.bend",
+     "law": "bitvector_17_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_17.bend",
+     "law": "bitvector_17_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_17.bend",
+     "law": "bitvector_17_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17353,6 +17993,18 @@
     {
      "file": "sub_bitvector_1.bend",
      "law": "bitvector_1_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_1.bend",
+     "law": "bitvector_1_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_1.bend",
+     "law": "bitvector_1_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_1.bend",
+     "law": "bitvector_1_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17420,6 +18072,18 @@
     {
      "file": "sub_bitvector_2.bend",
      "law": "bitvector_2_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_2.bend",
+     "law": "bitvector_2_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_2.bend",
+     "law": "bitvector_2_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_2.bend",
+     "law": "bitvector_2_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17487,6 +18151,18 @@
     {
      "file": "sub_bitvector_31.bend",
      "law": "bitvector_31_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_31.bend",
+     "law": "bitvector_31_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_31.bend",
+     "law": "bitvector_31_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_31.bend",
+     "law": "bitvector_31_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17550,6 +18226,18 @@
     {
      "file": "spec_gcodec_bitvector_32.bend",
      "law": "bitvector_32_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_32.bend",
+     "law": "bitvector_32_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_32.bend",
+     "law": "bitvector_32_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_32.bend",
+     "law": "bitvector_32_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17647,6 +18335,18 @@
     {
      "file": "sub_bitvector_33.bend",
      "law": "bitvector_33_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_33.bend",
+     "law": "bitvector_33_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_33.bend",
+     "law": "bitvector_33_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_33.bend",
+     "law": "bitvector_33_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17714,6 +18414,18 @@
     {
      "file": "sub_bitvector_3.bend",
      "law": "bitvector_3_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_3.bend",
+     "law": "bitvector_3_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_3.bend",
+     "law": "bitvector_3_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_3.bend",
+     "law": "bitvector_3_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17781,6 +18493,18 @@
     {
      "file": "sub_bitvector_4.bend",
      "law": "bitvector_4_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_4.bend",
+     "law": "bitvector_4_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_4.bend",
+     "law": "bitvector_4_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_4.bend",
+     "law": "bitvector_4_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17848,6 +18572,18 @@
     {
      "file": "sub_bitvector_511.bend",
      "law": "bitvector_511_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_511.bend",
+     "law": "bitvector_511_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_511.bend",
+     "law": "bitvector_511_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_511.bend",
+     "law": "bitvector_511_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -17911,6 +18647,18 @@
     {
      "file": "spec_gcodec_bitvector_512.bend",
      "law": "bitvector_512_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_512.bend",
+     "law": "bitvector_512_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_512.bend",
+     "law": "bitvector_512_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_512.bend",
+     "law": "bitvector_512_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18008,6 +18756,18 @@
     {
      "file": "sub_bitvector_513.bend",
      "law": "bitvector_513_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_513.bend",
+     "law": "bitvector_513_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_513.bend",
+     "law": "bitvector_513_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_513.bend",
+     "law": "bitvector_513_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18075,6 +18835,18 @@
     {
      "file": "sub_bitvector_5.bend",
      "law": "bitvector_5_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_5.bend",
+     "law": "bitvector_5_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_5.bend",
+     "law": "bitvector_5_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_5.bend",
+     "law": "bitvector_5_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18142,6 +18914,18 @@
     {
      "file": "sub_bitvector_6.bend",
      "law": "bitvector_6_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_6.bend",
+     "law": "bitvector_6_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_6.bend",
+     "law": "bitvector_6_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_6.bend",
+     "law": "bitvector_6_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18209,6 +18993,18 @@
     {
      "file": "sub_bitvector_7.bend",
      "law": "bitvector_7_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_7.bend",
+     "law": "bitvector_7_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_7.bend",
+     "law": "bitvector_7_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_7.bend",
+     "law": "bitvector_7_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18272,6 +19068,18 @@
     {
      "file": "sub_bitvector_8.bend",
      "law": "bitvector_8_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_8.bend",
+     "law": "bitvector_8_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_8.bend",
+     "law": "bitvector_8_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_8.bend",
+     "law": "bitvector_8_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18339,6 +19147,18 @@
     {
      "file": "sub_bitvector_9.bend",
      "law": "bitvector_9_spec_bytes"
+    },
+    {
+     "file": "wordpos_bitvector_9.bend",
+     "law": "bitvector_9_arith_pw1"
+    },
+    {
+     "file": "wordpos_bitvector_9.bend",
+     "law": "bitvector_9_arith_pw2"
+    },
+    {
+     "file": "wordpos_bitvector_9.bend",
+     "law": "bitvector_9_arith_pw3"
     }
    ],
    "encode_spec": [
@@ -18654,6 +19474,18 @@
     {
      "file": "spec_gcodec_uint128.bend",
      "law": "uint128_spec_bytes"
+    },
+    {
+     "file": "wordpos_uint128.bend",
+     "law": "uint128_arith_pw1"
+    },
+    {
+     "file": "wordpos_uint128.bend",
+     "law": "uint128_arith_pw2"
+    },
+    {
+     "file": "wordpos_uint128.bend",
+     "law": "uint128_arith_pw3"
     }
    ],
    "encode_spec": [
