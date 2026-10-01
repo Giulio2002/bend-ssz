@@ -137,42 +137,48 @@ no hash_tree_root sites, shared rounds) is superseded for the same reason.
 touch each other's result. The runtime stage builds rounds in which no mutant lies in the import cone of another's
 type (12 rounds for 606 mutants); the proof batch needs no such care.
 
-**Round 1 (main 1b456376-era laws), draw seed 20261002.** 2637 mutants over 720 facade proofs: 2031 killed (1899 on
-a statement mismatch, 122 on a stack overflow, which is a tooling accident and not a detection, 10 other), 606
-survived: validity-check 160, constant 112, capacity 108, offset 86, arithmetic 48, hashtreeroot-constant 45,
-comparison 42, reported-size 5. The proving-law files (`proofs/obj`, the facade's `P<k>_PRV` imports) also pass
-with every survivor applied (0 of 606 fail): the facade only names the generated definitions, and no locked
-statement pins them. Four fixers closed groups by adding proof laws.
+**Preconditions (each is a past failure).** (1) `python3 codegen/regen_all.py --check` must report every generator up to
+date on the tree under test: round 2 once ran on a main whose facades were stale (no facade imported the new laws), which
+inflated its survivors; the harness now refuses to start otherwise. (2) A runtime stage needs its unmutated baseline to
+pass (see above). (3) The evidence file is stamped only from a run on the final tree.
 
-**Replay on main cdae9e94** (all four fixer branches merged): the 606 round-1 survivors again, by file, def,
-operator, before, after and line text: 333 now fail the checker, **273 still survive**.
+**Rounds.** Replay = the earlier non-excluded survivors checked again on the new main (by file, def, operator, before,
+after and line text); fresh = a new seed over every name and operation (up to 4 mutants each).
 
-**Round 2 on main cdae9e94**, seed 20261003, with the constant -1 operator and without the classes below: 2832
-mutants, 2596 killed, **236 survived** (validity-check 125, hashtreeroot-constant 63, offset 24, reported-size 7,
-arithmetic 7, capacity-1 4, constant 4, capacity 2).
+| round | main | draw | mutants | killed | survived | gaps after exclusions |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | pre-law | seed 20261002 | 2637 | 2031 (1899 mismatch, 122 stack overflow, 10 other) | 606 | 606 |
+| 2 (stale facades, invalid) | cdae9e94 | replay 606 + seed 20261003 | 3438 | 2929 | 509 | not used |
+| 3 | df8dbcf9 | replay 722 + seed 20261004 | 3494 | 3154 | 340 | 46 |
+| 4 | 80cef74d | replay 565 + seed 20261005 | 3342 | 3270 | 72 | **9** (+41 open) |
 
-**Excluded classes** (`tests_generated/mutation_exclusions.json`, rules and reasons in
-`tests_generated/mutation_equivalence.py`; never drawn, never reported): 258 of the 398 distinct survivors of the
-replay and round 2:
+A stack overflow is a tooling accident, not a detection. The proving-law files (`proofs/obj`) also pass with every round-1
+survivor applied: the facades only named the generated definitions, and no locked statement pinned them. Four rounds of
+proof laws (validity, offsets and reported sizes, constants and root constants, capacity and comparison, collections)
+closed the rest. The `out_at(d) -> out_at(d+1)` mutants were once excluded as harmless; the capacity laws kill them, so
+they are drawn again.
 
-| class | n | proof-level reason |
+**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (open, below), 21 proof-equivalent, 9 gaps, 1 of the proglist_bool
+case below. The 9 gaps (proof-level reading):
+
+| cause | mutants | reading |
 | --- | --- | --- |
-| argument never read | 107 | the mutated constant is a direct argument of a call whose callee never mentions that parameter: hl and seg of the hash_tree_root leaf wrappers (`X_root(64n, h, o, 0)`), the len argument of the fixed-size field readers, the offset of the proglist decoders |
-| flag read only by `O.is_poisoned` | 26 | `(o, 0)` -> `(o, 1)`: `is_poisoned(fl) = 2^31 <= fl` is False for both |
-| `words_ok` / `bits_ok` | 21 | the accepted set {n : lo <= n <= hi, unit divides n} (or all n >= lo when big) is unchanged by the mutated lo, hi or unit, on every n that can differ |
-| vec_bool decoders | 9 | `ok_n` has one caller passing the literal N, so `is_eq(N, 0)` and its mutants evaluate alike, and the True{} branch of `ok_nz` is never taken |
-| `out_at(d)` -> `out_at(d+1)` | 52 | not proved: the extra zero words leave the Buf's byte length (a separate field) unchanged; no statement pins the array size; class from round 1 |
-| aligned-or-slow path | 42 | not proved: `pos .&. 3 == 0` -> always unaligned; both paths write the same words; class from round 1 |
-| uncoverable | 1 | Transaction upper bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes |
+| reported-size | 4: `HistoricalBatch_size` 524288 -> 524287, `SyncCommittee_size` 24624 -> 24625 and 24623, `LightClientBootstrap` 24820 -> 24821 | gap: no law ties the reported size of these types to the encoded length |
+| offset | 3: `CompatibleUnionA_decode` and `CompatibleUnionABCA_decode`, the union arm's `read(buf, off + 1, len - 1)` | gap: the arm's offset and length after the selector byte are not pinned |
+| arithmetic | 1: `MatrixEntry_encode`, `b48_put(out, pos + 2048, ...)` `+` -> `-` | gap: one field offset of an encoder |
+| validity | 1: `proglist_bool_decode`, `pl_bool_ok_len`, `case False{}: (buf, False{})` -> `True{}` | equivalent by an arithmetic lemma that no law states: the test `is_eq(len, len/1*1)` is always True for unit 1, so the branch is dead if `U32.div(x, 1) = x`; the checker does not fold it, so the lemma must be proved or the case stays open |
 
-The two "not proved" classes are excluded by decision, not by proof; they are listed so that the exclusion is
-visible. **Not excluded: 140 survivors, all gaps** (validity-check 109, reported-size 9, arithmetic 8, write-start and
-length constants of `serialize`/`encode` 9 (`putk(out, 0 -> 1, o)`, `out_done(4 -> 5, ...)`), capacity -1 4, offset 1): `X_valid(o) = True{}` forced to `False{}` on fixed-size types (39: no law says the
-validity of an in-range object is True), the bounds of `words_ok` and `bits_ok` and of the bitvector top word off
-by one, the reported sizes (`_size`, `_bx_size`), packing shifts and `ser_done` sizes, `out_at(d-1)`
-(under-allocation) and the decode entry's start offset of `Bytes8_build`.
+**Excluded** (`tests_generated/mutation_exclusions.json`; rules and reasons in `tests_generated/mutation_equivalence.py`): only
+what has a proof-level reason, never "the tests pass": an argument the callee never reads (hl and seg of the hash_tree_root
+leaf wrappers, the len argument of the fixed-size field readers, the proglist decode offsets), a flag read only by
+`O.is_poisoned` (`(o, 0)` -> `(o, 1)`), `words_ok` / `bits_ok` changes that leave the accepted set unchanged, and the
+vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte
+object). **Open, not equivalent:** the aligned-or-slow path test `pos .&. 3 == 0`. `is_ge` was killed by the comparison laws;
+`is_lt` and `is_le` (42 mutants per round, 84 in the earlier draws) agree with the original only at sampled positions: for a
+symbolic index the checker does not fold the terms, so the equivalence is unproved. They are not drawn and are listed here
+so that the exclusion is visible.
 
-**Runtime of the batch:** 2832 mutants in 2241 s at 12 jobs on the ssz server; the replay of 606 about 20 minutes.
+**Runtime of a round:** the fresh draw of about 2800 mutants takes 2750 s at 12 jobs on the ssz server; a replay of 565 mutants about 1000 s.
 Result: `benchmarks/evidence/mutation_testing.json`.
 
 ## Conformance (official vectors, through the generated object API)

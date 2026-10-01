@@ -58,14 +58,15 @@ Trusted (not proved here):
   (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
 - **Mutation testing shows what the statements do not pin, and only the proofs count.** The mutation evidence
-  (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated
-  runtime code must make the pinned checker reject a proof. Conformance and fuzz results are triage, never
-  evidence; the first runtime counts were invalid (a crashing harness counts as a kill), so every runtime-stage
-  result needs its unmutated baseline passing. After four rounds of proof laws, 140 survivors of the replay and of
-  one new draw are gaps (validity of fixed-size types, bounds off by one, reported sizes, packing constants,
-  under-allocation); 258 are excluded: 163 with a proof-level reason (an argument the callee never reads, a flag
-  read only by `is_poisoned`, an accepted set that does not change), two classes by decision (`out_at(d+1)`, the
-  aligned-or-slow path) and one uncoverable. A proof stack overflow is not counted as detection.
+  (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated runtime code must
+  make the pinned checker reject a proof; conformance and fuzz are optional triage and classify nothing. The first runtime
+  counts were invalid (a crashing harness counts as a kill) and one round ran on stale generated files, so the harness now
+  requires `regen_all --check` clean and, for any runtime stage, an unmutated baseline that passes. Four rounds of proof laws
+  took the replay from 606 survivors to 9 gaps on main 80cef74d (reported sizes of three types, the offsets of two union
+  arms, one encoder field offset, one arithmetic-lemma case). What is excluded is excluded by a proof-level reason (an argument
+  the callee never reads, a flag read only by `is_poisoned`, an accepted set that does not change, one uncoverable bound);
+  the aligned-or-slow path test is listed as OPEN (unproved), not as equivalent. A proof stack overflow is not counted as
+  detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to
