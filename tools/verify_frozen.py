@@ -132,10 +132,11 @@ SUBJECT = re.compile(r'^(src/model\.bend|types/\w+_(encode_ssz|decode_ssz|hashtr
 # implementation under test but the premise of the validating-serializer statements (e2e/*_e2e_ser_generated.bend:
 # `X_valid(o) == True`), so a weakened predicate would weaken what those statements say. They are found by REACHABILITY, not by name:
 # every def of an encode file reachable (through local names and imported ones, across the encode files) from a def named `*_valid`
-# is hashed and traversed, whatever it is called (premise_reach). Excluded: the encoder entry points `*_encode` and `*_serialize`,
-# which are the implementation under test even if a predicate named one.
-ENTRY = re.compile(r'_(encode|serialize)$')
+# is hashed and traversed, whatever it is called (premise_reach), including a helper that carries the suffix `_encode` or
+# `_serialize`. What stays excluded is what no predicate reaches: the encoder entry points `X_encode` and `X_serialize` and the defs
+# only the encoder calls, which are the implementation under test.
 _mods = {}
+_laws = {}   # path -> names of its `law` blocks (a def of such a name is the law's proof)
 _prc = {}
 _override = {}  # path -> text, for the planted-change self-test only
 
@@ -154,6 +155,7 @@ _ws = []
 
 def reset():
     _mods.clear()
+    _laws.clear()
     _prc.clear()
 
 
@@ -168,7 +170,7 @@ def premise_reach():
         todo += [(f, n) for n in module(f)[1] if n.endswith('_valid')]
     while todo:
         p, n = todo.pop()
-        if (p, n) in seen or ENTRY.search(n):
+        if (p, n) in seen:
             continue
         seen.add((p, n))
         imps, defs = module(p)
@@ -197,9 +199,12 @@ def _whole_set():
 def module(path):
     """(imports {alias: path}, defs {name: block text}) of a .bend file (comments dropped)"""
     if path not in _mods:
-        imps, defs = {}, {}
+        imps, defs, lw = {}, {}, set()
         text = _override[path] if path in _override else open(os.path.join(ROOT, path)).read()
         for b in blocks(text):
+            ml = re.match(r'law ([A-Za-z_][\w.]*)', b[0])
+            if ml:
+                lw.add(ml.group(1))
             m = re.match(r'import (\S+) as (\w+)', b[0])
             if m:
                 imps[m.group(2)] = os.path.normpath(os.path.join(os.path.dirname(path), m.group(1)))
@@ -208,6 +213,7 @@ def module(path):
             if m:
                 defs[m.group(1)] = '\n'.join(b)
         _mods[path] = (imps, defs)
+        _laws[path] = lw
     return _mods[path]
 
 
@@ -258,9 +264,9 @@ def statement_defs(only=None):
             if name not in tdefs:
                 continue
             seen.add((tgt, name))
-            head = tdefs[name].split('\n')[0]
-            if head.startswith('def ') and '->' not in head:
-                continue  # the proof of a law (untyped binders): its statement is the law block
+            if name in _laws.get(tgt, ()) and tdefs[name].startswith('def '):
+                continue  # the proof of a law: its statement is the law block. Decided by the `law` block of that name, not by the
+                #           shape of the head: a def with no `->` or a signature wrapped onto a second line is a helper and is traversed
             todo.append((tgt, tdefs[name], set()))
     per = {path: ['\0statements\0' + t] for path, t in stmts.items()}
     for tgt, name in sorted(seen):
@@ -295,40 +301,85 @@ PLANTED = [
 
 
 def self_test_helpers():
-    """planting a change in any def a predicate calls, whatever its name, changes the statement's hash; a def no predicate reaches
-    (the encoder's own helper) does not"""
+    """planting a change in any def a predicate calls, whatever its name or the shape of the call, changes the statement's hash
+    (it must trip); a def no predicate reaches (the encoder entry point, the encoder's own helper) does not"""
     f = 'e2e/FuluCheckpoint_e2e_ser_generated.bend'
     path = 'types/FuluCheckpoint_encode_ssz_generated.bend'
+    other = 'types/FuluFork_encode_ssz_generated.bend'
     text = open(os.path.join(ROOT, path)).read()
     lines = text.split('\n')
     i = [k for k, l in enumerate(lines) if l.startswith('def Checkpoint_valid')][0]
     j = i + 1
     while j < len(lines) and (not lines[j].strip() or lines[j][0] in ' \t'):
         j += 1
+    otext = open(os.path.join(ROOT, other)).read()
+    C = 'o: C.Checkpoint'
+    OBJ = 'FuluCheckpoint_d.Checkpoint'
+    # (shape, the `valid` def, helper defs of the same file, helper defs of another file); {B} is the leaf's body
+    shapes = [(f'one level {h}', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_{h}(o)', [f'def Checkpoint_{h}({C}) -> Bool: {{B}}'], [])
+              for h in ('va_cap', 'va_one', 'va_go', 'va_fin', 'va_nz', 'va_back', 'va7', 'chk', 'ok', 'va_cap2', 'va_x_y', 'va_Cap', 'va1_z')]
+    shapes += [
+        ('chain of three', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_a1(o)',
+         [f'def Checkpoint_a1({C}) -> Bool: Checkpoint_a2(o)', f'def Checkpoint_a2({C}) -> Bool: Checkpoint_a3(o)',
+          f'def Checkpoint_a3({C}) -> Bool: {{B}}'], []),
+        ('cross-file', f'def Checkpoint_valid({C}) -> Bool: XF.Fork_xhelp(o)', [], [f'def Fork_xhelp({C}) -> Bool: {{B}}']),
+        ('chain across files', f'def Checkpoint_valid({C}) -> Bool: XF.Fork_x1(o)', [],
+         [f'def Fork_x1({C}) -> Bool: Fork_x2(o)', f'def Fork_x2({C}) -> Bool: {{B}}']),
+        ('match arm', f'def Checkpoint_valid(o: {OBJ}) -> Bool:\n  match o:\n    case {OBJ[:-10]}Checkpoint{{+epoch, +root}}: Checkpoint_arm(o)',
+         [f'def Checkpoint_arm({C}) -> Bool: {{B}}'], []),
+        ('lambda', f'def Checkpoint_valid({C}) -> Bool: (z => Checkpoint_lam(z))(o)', [f'def Checkpoint_lam({C}) -> Bool: {{B}}'], []),
+        ('function value', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_apply(Checkpoint_fv, o)',
+         [f'def Checkpoint_apply(f, {C}) -> Bool: f(o)', f'def Checkpoint_fv({C}) -> Bool: {{B}}'], []),
+        ('arrowless helper over a typed callee', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_nar(o)',
+         [f'def Checkpoint_nar({C}): Checkpoint_leaf(o)', f'def Checkpoint_leaf({C}) -> Bool: {{B}}'], []),
+        ('wrapped signature over a typed callee', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_wrap(o, 0n)',
+         [f'def Checkpoint_wrap({C},\n    k: Nat)\n    -> Bool: Checkpoint_leaf(o)', f'def Checkpoint_leaf({C}) -> Bool: {{B}}'], []),
+        ('helper named _encode', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_aux_encode(o)', [f'def Checkpoint_aux_encode({C}) -> Bool: {{B}}'], []),
+        ('helper named _serialize', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_aux_serialize(o)', [f'def Checkpoint_aux_serialize({C}) -> Bool: {{B}}'], []),
+        ('helper named _encode behind a chain', f'def Checkpoint_valid({C}) -> Bool: Checkpoint_b1(o)',
+         [f'def Checkpoint_b1({C}) -> Bool: Checkpoint_b2_serialize(o)', f'def Checkpoint_b2_serialize({C}) -> Bool: Checkpoint_b3_encode(o)',
+          f'def Checkpoint_b3_encode({C}) -> Bool: {{B}}'], []),
+    ]
     n = 0
-    for h in ('va_cap', 'va_one', 'va_go', 'va_fin', 'va_nz', 'va_back', 'va7', 'chk', 'ok', 'va_cap2', 'va_x_y', 'va_Cap', 'va1_z'):
+    for shape, valid, helpers, ohelpers in shapes:
         hashes = []
         for body in ('True{}', 'False{}'):
             reset()
-            _override[path] = '\n'.join(lines[:i] + ['def Checkpoint_valid(o: C.Checkpoint) -> Bool: Checkpoint_%s(o)' % h, '',
-                                                     'def Checkpoint_%s(o: C.Checkpoint) -> Bool: %s' % (h, body), ''] + lines[j:])
+            head = list(lines[:i])
+            if ohelpers:
+                head.insert(1, 'import ./FuluFork_encode_ssz_generated.bend as XF')
+                _override[other] = otext.rstrip('\n') + '\n\n' + '\n\n'.join(h.replace('{B}', body) for h in ohelpers) + '\n'
+            _override[path] = '\n'.join(head + [valid.replace('{B}', body), ''] + [h.replace('{B}', body) for h in helpers[::-1]] + [''] + lines[j:])
             hashes.append(statement_defs([f]))
             _override.clear()
             reset()
         if hashes[0] == hashes[1]:
-            sys.exit('verify_frozen: self-test FAILED: a change in the validity helper Checkpoint_%s does not change the hash of %s' % (h, f))
+            sys.exit('verify_frozen: self-test FAILED: a change in a def the validity predicate calls (%s) does not change the hash of %s' % (shape, f))
         n += 1
-    # a def only the encoder calls is the implementation under test: no change of the hash
-    hashes = []
-    for body in ('Nat.add(1n, 1n)', 'Nat.add(2n, 2n)'):
-        reset()
-        _override[path] = '\n'.join(lines[:i] + lines[i:j] + ['def Checkpoint_enc_aux(o: C.Checkpoint) -> Nat: %s' % body, ''] + lines[j:])
-        hashes.append(statement_defs([f]))
-        _override.clear()
-        reset()
-    if hashes[0] != hashes[1]:
-        sys.exit('verify_frozen: self-test FAILED: a def no predicate reaches changed the hash of %s' % f)
-    n += 1
+    # what no predicate reaches is the implementation under test: no change of the hash. The encoder entry point (with a helper of
+    # the same suffix that only it calls) and a def only the encoder calls
+    for shape, extra in (('a def only the encoder calls', ['def Checkpoint_enc_aux(%s) -> Nat: {B}' % C]),
+                         ('the encoder entry point', ['def Checkpoint_encode(%s) -> Nat: {B}' % C]),
+                         ('a helper only the serializer calls', ['def Checkpoint_ser_aux_encode(%s) -> Nat: {B}' % C])):
+        hashes = []
+        for body in ('Nat.add(1n, 1n)', 'Nat.add(2n, 2n)'):
+            reset()
+            keep = lines[:i] + lines[i:j]
+            if shape == 'the encoder entry point':
+                keep = [l for l in keep]      # the file's own Checkpoint_encode is replaced below
+                k0 = [k for k, l in enumerate(keep) if l.startswith('def Checkpoint_encode(')]
+                if k0:
+                    e = k0[0] + 1
+                    while e < len(keep) and (not keep[e].strip() or keep[e][0] in ' \t'):
+                        e += 1
+                    keep = keep[:k0[0]] + keep[e:]
+            _override[path] = '\n'.join(keep + [x.replace('{B}', body) for x in extra] + [''] + lines[j:])
+            hashes.append(statement_defs([f]))
+            _override.clear()
+            reset()
+        if hashes[0] != hashes[1]:
+            sys.exit('verify_frozen: self-test FAILED: %s changed the hash of %s' % (shape, f))
+        n += 1
     return n
 
 
