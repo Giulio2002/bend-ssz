@@ -918,6 +918,7 @@ def data_column_sidecar(lf):
     return container_file(name, lf, 'proofs/obj/var_codec_DataColumnSidecar_acc.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, codec, given=given, objexpr='WN.OBJ(t, n)')
 
 
+PB_WINLIB = {'ProgressiveVarTestStruct'}   # names whose window-level element laws (e2e_dpe_<name>) are written too
 H27 = '{Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}'
 H29 = '{Nat.is_lt(U32.to_nat(n), VB.pw(29n)) == True{} : Bool}'
 
@@ -999,7 +1000,39 @@ def pb_container(name, win, dec, lf_, flavor='d'):
                 return u16_child(al, Wc, args, e, int(mu.group(1)), fname, PB_TOP)
             return None
         return [], None, None, None, xleaf
-    return container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
+    top = container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
+    if name in PB_WINLIB:
+        pb_window(name, win, dec, lf_, flavor)
+    return top
+
+
+H29W = '{Nat.is_lt(U32.to_nat(n), VB.pw(29n)) == True{} : Bool}'
+
+
+def pb_window(name, win, dec, lf, flavor='d'):
+    """the premises of a progressive-bit-list container read at ANY byte window (d, t, x, off, n), the container's own window check hchk:
+    e2e/e2e_dpe_<name>.bend (p_rep, p_hs), the element laws of a list of such containers"""
+    h = H29W if flavor == 'd' else H27
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, '
+          '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h31: ' + h + ', '
+          '+hchk: {WN.CHKw(t, x, off, n) == True{} : Bool}')
+
+    def lets(al):
+        Wc = al(win)
+        B = dict(x='x', off='off', n='n', eo='eo', hd='hd', hw='hw', hwN='hwN', pf='pf', hchk='hchk', h31='h31')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e, flavor, B)
+            mu = re.fullmatch(r'var_winx_l(\d+)_u16\.bend', fname)
+            if mu and fn == 'OBJw':
+                return u16_child(al, Wc, args, e, int(mu.group(1)), fname, B)
+            return None
+        return [], None, None, None, xleaf
+    txt = container_file(name, lf, win, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps), lets, None, dec,
+                         objexpr='WN.OBJw(d, t, x, off, n)')
+    EXTRA_FILES[ROOT / 'e2e' / f'e2e_dpe_{name}.bend'] = txt
 
 
 def _cu_orwrap(x, k, n_arms):
