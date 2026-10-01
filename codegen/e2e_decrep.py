@@ -861,6 +861,62 @@ def lc_update(lf):
                           lets, None, top, objexpr='DC.OBJw(d, t, x, off, n)')
 
 
+def data_column_sidecar(lf):
+    """DataColumnSidecar: three lists of whole units (cells of 2048 bytes, commitments and proofs of 48) copied by VB.mone from words 89,
+    Q1(t), Q2(t) (e2e_dcs: sdd, wfe, units, count), the signed header and the inclusion proof (fixed)"""
+    name = 'FuluDataColumnSidecar'
+    BUF_ARGS.add(name)
+    codec = 'proofs/obj/var_codec_DataColumnSidecar.bend'
+
+    def lets(al):
+        DC_ = al(codec)
+        LIB = al('e2e/e2e_dcs.bend')
+        al('proofs/obj/dk.bend')
+        al('proofs/obj/var_codec_DataColumnSidecar_acc.bend')
+        n_ = 'n'
+        ks = [(f'{DC_}.CA(n)', f'{DC_}.K1(t, n)'), (f'{DC_}.CB(t)', f'{DC_}.K2(t, n)'), (f'{DC_}.CC(t, n)', f'{DC_}.K3(t, n)'),
+              (f'{DC_}.CD(t, n)', f'{DC_}.K4(t, n)'), (f'{DC_}.CE(t)', f'{DC_}.K5(t, n)'), (f'{DC_}.CF(t)', f'{DC_}.CG(t, n)')]
+        out = []
+        prev = 'hchk'
+        names = ['ha', 'hb', 'hc', 'hdd', 'he', 'hf']
+        for k, (a, b) in enumerate(ks):
+            out.append(f'+{names[k]} = DK.and_l({a}, {b}, {prev})')
+            out.append(f'+r{k + 1} = DK.and_r({a}, {b}, {prev})')
+            prev = f'r{k + 1}'
+        out.append(f'+hg = {prev}')
+        # hf / hg: CF and CG are the last pair
+        hy = [f'{DC_}.hy{k}(t, n, hb, hc, hdd, he, hf, hg, hS)' for k in range(3)]
+
+        def words(j, e):
+            th, ln = W.split_top(e[len('O.Words{'):-1])
+            mm = re.fullmatch(r'FD\.array__thaw\(U32, VB\.mone\((.*)\)\)', th.strip(), re.S)
+            ma = [c.strip() for c in W.split_top(mm.group(1))]
+            q, L = ma[1], ln.strip()
+            M = ['C0(t)', 'C1(t)', 'C2(t, n)'][j]
+            eL = [f'{DC_}.eL0(t, he)', f'{DC_}.eL1(t, hf)', f'{DC_}.eL2(t, n, hg)'][j]
+            whole = ['he', 'hf', 'hg'][j]
+            if j == 0:
+                wfe = f'{LIB}.wfecL(t, {q}, {L}, {DC_}.{M}, {{==}}, {eL}, {hy[0]})'
+                key, unit, v, ee = ('cells_light.bend', 'rep_el'), '2048', f'{DC_}.v2048()', 2048
+            else:
+                wfe = f'{LIB}.wfe48L(t, {q}, {L}, {DC_}.{M}, {{==}}, {eL}, {hy[j]})'
+                key, unit, v, ee = ('elems48_light.bend', 'rep_el'), '48', f'{DC_}.v48()', 48
+            cnt = f'{LIB}.cntL({L}, {unit}, 4096, {v}, {{==}}, {{==}}, {{==}}, {whole})'
+            return FxWords(e, {key: lambda s_: f'({wfe}, {cnt})',
+                               ('e2e_ve_DataColumnSidecar.bend', 'sdd'): lambda k: f'{LIB}.sddL(t, {q}, {L}, {hy[j]})'})
+        return out, words, None, None, None
+
+    def hv(j):
+        def f(al):
+            DC_, LIB = al(codec), al('e2e/e2e_dcs.bend')
+            unit, v = ('2048', f'{DC_}.v2048()') if j == 0 else ('48', f'{DC_}.v48()')
+            L = [f'{DC_}.L0(t)', f'{DC_}.L1(t)', f'{DC_}.L2(t, n)'][j]
+            return f"{LIB}.mod0({L}, {unit}, 4096, {v}, {{==}}, {{==}}, {{==}}, {['he', 'hf', 'hg'][j]})"
+        return f
+    given = {'hv0': hv(0), 'hv1': hv(1), 'hv2': hv(2)}
+    return container_file(name, lf, 'proofs/obj/var_codec_DataColumnSidecar_acc.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, codec, given=given, objexpr='WN.OBJ(t, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -871,6 +927,7 @@ PROVERS = {
     'FuluBeaconBlockBody': lambda lf: beacon_block_body(lf),
     'FuluLightClientFinalityUpdate': lambda lf: lc_finality(lf),
     'FuluLightClientUpdate': lambda lf: lc_update(lf),
+    'FuluDataColumnSidecar': lambda lf: data_column_sidecar(lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
     'FuluSignedBeaconBlock': lambda lf: beacon_block_body(lf, 'sb'),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),

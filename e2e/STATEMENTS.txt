@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4824 statements in 1265 files.
+# 4828 statements in 1267 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -3671,6 +3671,23 @@ def FuluCustodyIndex_e2e_serialize(+o: O.U64, +v: {W_types_uint64_encode_ssz_gen
 def FuluCustodyIndex_e2e_valid_default() -> {W_types_uint64_encode_ssz_generated.u64_valid(uint64_d.u64_default()) == True{} : Bool}:
 def FuluCustodyIndex_e2e_valid_total(+o: O.U64) -> {W_types_uint64_encode_ssz_generated.u64_valid(o) == True{} : Bool}:
 
+## e2e/FuluDataColumnSidecar_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluDataColumnSidecar_decode_ssz_generated.bend as FuluDataColumnSidecar_r
+import ../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
+import ../types/FuluDataColumnSidecar_encode_ssz_generated.bend as FuluDataColumnSidecar_e
+import ../types/FuluDataColumnSidecar_hashtreeroot_generated.bend as FuluDataColumnSidecar_h
+def FuluDataColumnSidecar_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluDataColumnSidecar_d.DataColumnSidecar, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>})
+    -> {E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(o))) == bs : +List<U32>}:
+def FuluDataColumnSidecar_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluDataColumnSidecar_d.DataColumnSidecar, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>})
+    -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(h, o))))} == C.droot(Spec.DataColumnSidecar(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/FuluDataColumnSidecar_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -6458,7 +6475,6 @@ import ./e2e_comp.bend as C
 import ./e2e_support.bend as E
 import ../proofs/compact/arith.bend as A
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/vbuf.bend as VB
 import ../spec/fulu_schemas.bend as Spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
@@ -6467,9 +6483,9 @@ import ../types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend as FuluL
 import ../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
 import ../types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend as FuluLightClientFinalityUpdate_e
 import ../types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend as FuluLightClientFinalityUpdate_h
-def FuluLightClientFinalityUpdate_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>})
+def FuluLightClientFinalityUpdate_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>})
     -> {E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(o))) == bs : +List<U32>}:
-def FuluLightClientFinalityUpdate_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>})
+def FuluLightClientFinalityUpdate_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>})
     -> {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, o))))} == C.droot(Spec.LightClientFinalityUpdate(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluLightClientFinalityUpdate_e2e_dec_generated.bend
@@ -6855,6 +6871,23 @@ def FuluLightClientOptimisticUpdate_e2e_witness() -> {Some{E.obytes(Pair.snd(Ful
 def FuluLightClientOptimisticUpdate_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(NE())))} == API.serialize(Spec.LightClientOptimisticUpdate(), RT.v_LightClientOptimisticUpdate(NE())) : Maybe<&2, +List<U32>>}:
 def FuluLightClientOptimisticUpdate_e2e_witness_root() -> {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(B.alloc(0), FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default()))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), RT.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default())) : Maybe<&2, +List<U32>>}:
 def FuluLightClientOptimisticUpdate_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(B.alloc(0), NE()))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), RT.v_LightClientOptimisticUpdate(NE())) : Maybe<&2, +List<U32>>}:
+
+## e2e/FuluLightClientUpdate_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/fulu_schemas.bend as Spec
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/FuluLightClientUpdate_decode_ssz_generated.bend as FuluLightClientUpdate_r
+import ../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
+import ../types/FuluLightClientUpdate_hashtreeroot_generated.bend as FuluLightClientUpdate_h
+def FuluLightClientUpdate_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: FuluLightClientUpdate_d.LightClientUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>})
+    -> {E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(o))) == bs : +List<U32>}:
+def FuluLightClientUpdate_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: FuluLightClientUpdate_d.LightClientUpdate, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>})
+    -> {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, o))))} == C.droot(Spec.LightClientUpdate(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/FuluLightClientUpdate_e2e_dec_generated.bend
 import ../src/model.bend as API

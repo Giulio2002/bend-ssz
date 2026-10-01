@@ -25,13 +25,13 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/e2e_decrep.py`,
   run by `codegen/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->47<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `CompatibleUnionA`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconBlock`, `FuluBeaconBlockBody`, `FuluBeaconState`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayload`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientFinalityUpdate`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluSignedBeaconBlock`, `FuluTransaction`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
+  <!-- fig:decrep_count -->49<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `CompatibleUnionA`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconBlock`, `FuluBeaconBlockBody`, `FuluBeaconState`, `FuluDataColumnSidecar`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayload`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientFinalityUpdate`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluLightClientUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluSignedBeaconBlock`, `FuluTransaction`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->228<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
-<!-- fig:pending_count -->12<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
+<!-- fig:composed -->230<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
+<!-- fig:pending_count -->10<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
 `e2e/COMPOSED.txt`, so it cannot drift from it): the decode-side bridges (i)/(iv) of those names take the listed premises
 on the decoded object, which no checked law yet derives from the decoder, or (for a tree-form decoder) the decoder's object
 is not one this module reads.
@@ -42,8 +42,6 @@ is not one this module reads.
 | `CompatibleUnionBC` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ComplexTestStruct` | the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending) |
 | `FuluBlobSidecar` | a tree-form decoder object this module does not read |
-| `FuluDataColumnSidecar` | the (i)/(iv) bridges take hd0, hd1, hd2, hsP, hv0, hv1, hv2, rep (decoded-object laws pending) |
-| `FuluLightClientUpdate` | the (i)/(iv) bridges take h1, h2, h4, hA, hF, rep (decoded-object laws pending) |
 | `ProgressiveBitsStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveComplexTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveSingleListContainerTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
