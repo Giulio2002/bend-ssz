@@ -6,10 +6,12 @@
 # explains the soundness argument). Same pinned checker and cgroup limits as tools/check.sh, but
 # each umbrella gets a larger heap: UMB_MEMMAX (default 16G), UMB_RAM (JSC forceRAMSize, default
 # 12e9; the 8e9 of single files makes a big umbrella collect constantly), UMB_TIMEOUT (default
-# 1200 s). The stack is tools/check.sh's pin (ulimit -s 8192, JSC budget 5242880 bytes);
-# --jsc-stack BYTES runs every umbrella with another JSC budget: the headroom gate is a full run at
-# half the budget (--jsc-stack 2621440), so that no conversion runs near the limit, where results
-# vary from run to run. A run at another budget writes its stamp to
+# 1200 s). The stack is tools/check.sh's pin (ulimit -s 16384, JSC budget 10485760 bytes: a 2x margin over 5 MB, at which every umbrella passes);
+# --jsc-stack BYTES runs every umbrella with another JSC budget (exported to the umbrellas: each log starts
+# with a CHECK_STACK line that records the limits it ran under). The headroom gate is a full run at
+# half the pinned budget (--jsc-stack 5242880): the proofs pass there, so the pin is a 2x margin. At 2.5 MB
+# 10 of 47 umbrellas fail; the headroom runs of the first port branch that were labelled "half budget"
+# (2621440) never reached the umbrellas (JSC was not exported) and were ordinary 5 MB runs. A run at another budget writes its stamp to
 # benchmarks/evidence/check_fast_jsc<BYTES>.json instead of check_fast.json.
 #
 # Failures are localized: each failed umbrella is bisected into sub-umbrellas (still import-only,
@@ -28,7 +30,7 @@
 # CHECK_TARBALLS=DIR, the gate run) also against the pinned release tarballs, and the stamp then has fixtures_tarballs_verified: true.
 # Run from the repository root.
 set -u
-J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=5242880; TARB=${CHECK_TARBALLS:-}
+J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=10485760; TARB=${CHECK_TARBALLS:-}
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -118,19 +120,19 @@ localize() {
   bisect "${u%.bend}_" "$OUT/${u%.bend}.log" "${rs[@]}"
 }
 UP=$(python3 -c 'import os, sys; print(os.path.relpath(".", sys.argv[1]))' "$OUT/umb")
-export OUT UP BIG_RE
+export OUT UP BIG_RE JSC
 export -f run one umb bisect localize
 # tools/umb_pool.py: at most J at once, and only while the running umbrellas' expected memory fits (UMB_BUDGET_MB, default 170000)
 UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan.tsv" -- bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES CHECK_STACK_KB=8192 CHECK_JSC_STACK=$JSC \
+CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES CHECK_STACK_KB=16384 CHECK_JSC_STACK=$JSC \
   python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
 # a full run records its stamp in the tree: benchmarks/evidence/check_fast.json (at the pinned stack),
 # benchmarks/evidence/check_fast_jsc<BYTES>.json (a headroom run at another JSC budget)
 EVF=benchmarks/evidence/check_fast.json
-[ "$JSC" != 5242880 ] && EVF=benchmarks/evidence/check_fast_jsc$JSC.json
+[ "$JSC" != 10485760 ] && EVF=benchmarks/evidence/check_fast_jsc$JSC.json
 [ -z "$FILES" ] && cp "$OUT/stamp.json" "$EVF"
 bad=$(awk -F'\t' '$2 != 0 || $3 == 0 {print $1}' "$OUT/summary.tsv")
 # every planned umbrella must have exactly one result row: one whose run died before writing it

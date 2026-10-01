@@ -13,8 +13,8 @@ import ./lim_sym.bend as LSY
 # byte-list fact is proved at every depth d for 2^(5+d) bytes
 # (proofs/obj/lim_sym.bend) and instantiated at d = 25; containers split their
 # conjunction with and_t so only that conjunct needs the lemma. Needs a
-# checker that compares syntactically identical terms without normalizing
-# them (bendlang/bend#1075); stock Bend 2.0.28 evaluates them in unary.
+# checker that compares two calls of one def rigidly before unfolding them
+# (the pinned rigid-subterms build, aa99b746); stock Bend evaluates them in unary.
 
 law and_t:
   for +a: Bool

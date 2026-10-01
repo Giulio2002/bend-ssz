@@ -114,8 +114,8 @@ def write(d, out):
     ok = bool(rows) and all(r['result'] == 'pass' for r in rows) and not dup and not extra
     st = {'commit': commit(), 'utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
           'checker_commit': lock['checker']['commit'], 'toolchain_lock': LOCK, **locks(),
-          'stack_kb': int(os.environ.get('CHECK_STACK_KB') or 8192),
-          'jsc_stack_bytes': int(os.environ.get('CHECK_JSC_STACK') or 5242880),
+          'stack_kb': int(os.environ.get('CHECK_STACK_KB') or 16384),
+          'jsc_stack_bytes': int(os.environ.get('CHECK_JSC_STACK') or 10485760),
           'sources_sha256': digest, 'files': n, 'harness_sha256': harness(),
           'plan_sha256': sha(open(plan_path, 'rb').read()), 'plan_umbrellas': len(plan),
           'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,
@@ -149,7 +149,7 @@ def verify(f):
     # (a check_fast_jsc<BYTES>.json stamp)
     import re
     mj = re.search(r'_jsc(\d+)\.json$', f)
-    want = (8192, int(mj.group(1)) if mj else 5242880)
+    want = (16384, int(mj.group(1)) if mj else 10485760)
     if (st.get('stack_kb'), st.get('jsc_stack_bytes')) != want:
         diff.append('stack (stamped %s KB / %s bytes, expected %s KB / %s bytes)' % (st.get('stack_kb'), st.get('jsc_stack_bytes'), *want))
     h = harness()
