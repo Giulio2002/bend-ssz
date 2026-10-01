@@ -84,8 +84,8 @@ def import_cone(entry):
     return sorted(seen)
 
 
-def group_key(b, k, prefix='g'):
-    entry = ROOT / f'benchmarks/objprog/{prefix}{k}.bend'
+def group_key(b, k, prefix='g', entry=None):
+    entry = entry or ROOT / f'benchmarks/objprog/{prefix}{k}.bend'
     h = hashlib.sha256()
     h.update(Path(b.BEND).read_bytes())
     # Base is part of every program's cone; a toolchain change replaces it too
@@ -125,6 +125,9 @@ def main():
     p.add_argument('--build-fuzz', default=None,
                    help='"all" or comma separated fuzz program numbers: build (cached) and link them as '
                         'build/fuzz-f<k> for tests_generated/fuzz_objects.py, then exit')
+    p.add_argument('--build-compact', action='store_true',
+                   help='build (cached, keyed like the others) every benchmarks/compact/*.bend and link it as '
+                        'build/compact-<name> for the evidence checks (the files with a main), then exit')
     p.add_argument('--build', default=None,
                    help='"all" or comma separated group numbers: build (cached) and link them as build/obj-g<k> '
                         'for the conformance checks, then exit without measuring')
@@ -143,6 +146,23 @@ def main():
         # 1. generate
         b.sh([b.PY3, 'codegen/generate.py'])
         b.GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
+        if a.build_compact:
+            for entry in sorted((ROOT / 'benchmarks/compact').glob('*.bend')):
+                n = entry.stem
+                if not re.search(r'^(def|law) main\b', entry.read_text(), re.M):
+                    continue   # a library the programs import (objio.bend), not a program
+                key = group_key(b, n, 'c', entry)
+                exe = CACHE / f'c-{n}-{key}'
+                link = ROOT / 'build' / f'compact-{n}'
+                link.unlink(missing_ok=True)
+                if not exe.exists():
+                    tmp = CACHE / f'c-{n}-{key}.tmp'
+                    b.capped_compile(str(entry.relative_to(ROOT)), tmp, print)
+                    tmp.rename(exe)
+                link.symlink_to(exe)
+                print(f'build/compact-{n} -> {exe.relative_to(ROOT)}')
+            report['status'] = 'built'
+            return
         if a.build or a.build_generic or a.build_fuzz:
             link_name = 'obj-{prefix}{k}'
             if a.build_fuzz:

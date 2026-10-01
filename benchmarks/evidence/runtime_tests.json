@@ -1,68 +1,27 @@
 {
- "results": [
-  {
-   "case": "Validator.effective_balance := n, slashed := true",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "Validator.effective_balance read-after-write",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "Deposit.proof[0] := const",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "Deposit.proof[33] rejected, value unchanged",
-   "accepted": false,
-   "expected_accepted": false,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "ExecutionPayloadHeader.extra_data append (len 18/32)",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "IndexedAttestation.attesting_indices append",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "IndexedAttestation.attesting_indices[0] := n",
-   "accepted": true,
-   "expected_accepted": true,
-   "bytes_equal": true,
-   "pass": true
-  },
-  {
-   "case": "IndexedAttestation.attesting_indices[len] rejected, value unchanged",
-   "accepted": false,
-   "expected_accepted": false,
-   "bytes_equal": true,
-   "pass": true
-  }
+ "counts": {
+  "passed": 3,
+  "failed": 0,
+  "errors": 0,
+  "assertions": 2694,
+  "tests": 3,
+  "files": 2
+ },
+ "files": [
+  "./tests/layout.test.ts",
+  "./tests/sha256.test.ts"
  ],
  "pass": true,
+ "problems": [],
+ "bun": {
+  "version": "1.4.2",
+  "sha256": "a83d263767d839e4d2649ca8e35d07159c7afc99afdc96d731ced29e056dda0c"
+ },
  "provenance": {
   "git_commit": "1cc79baa8878d55b4913d59cc6addfef0bd3bdf7",
   "git_dirty": false,
   "git_tree": "ee87ed31d2bccf49bb13bae88fdb741be2aa3d24",
-  "utc": "2026-10-01T04:33:11Z",
+  "utc": "2026-10-01T04:33:39Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -427,12 +386,15 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "tests_generated/mutations.py": "cb5b7f63f8b24f453c19ca3a3ffde0dffcc93644d70630422603c66d1b8e7690",
+   "tools/run_runtime_tests.py": "91d7d3a4fe43ec183732b2379836afebeb4557f56ea3ffb0f3f14ebb30996131",
    "benchmarks/checks/provenance.py": "7714d62680212bb97195708130ea152ca31c30cc3500db860949e6c54e4d28d0",
    "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183",
    "codegen/schema.py": "2c355881ca82c65b111b94ed1d1247900c7aea8fcd0cd5041f98e248d59c800b",
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
-   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
+   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7",
+   "tools/bend_loader.ts": "85fe067809eb900af52fb42af79449e0ee3c861e258f65f1677abe24bb8bb8b3",
+   "tests/*.test.ts": "0034d4fec739960e44163f71546614dcef3d58bdb2c12d99630229a68f676d26",
+   "tests/**/*.test.ts": "0034d4fec739960e44163f71546614dcef3d58bdb2c12d99630229a68f676d26"
   }
  }
 }
