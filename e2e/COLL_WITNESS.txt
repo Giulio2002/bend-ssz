@@ -42,6 +42,7 @@ v33_b32	10 witnessed
 v4_b32	10 witnessed
 v512_b48	10 witnessed
 v64_u64	9 witnessed
+  pending v64_u64_api_root_set: the representation premise PK_L.rep_v8(o, s) is not read
 v65536_b32	9 witnessed
   pending v65536_b32_api_root_set: the object holds 65536 elements: its premises compare Nat numbers of that size in unary (the length 65536, e32 of 65535, pow2 of 19), deeper than the rigid checker's stack; the vectors up to 512 elements are witnessed
 v6_b32	10 witnessed
@@ -49,6 +50,7 @@ v7_b32	10 witnessed
 v8192_b32	9 witnessed
   pending v8192_b32_api_root_set: the object holds 8192 elements: its premises compare Nat numbers of that size in unary (the length 8192, e32 of 8191, pow2 of 16), deeper than the rigid checker's stack; the vectors up to 512 elements are witnessed
 v8192_u64	9 witnessed
+  pending v8192_u64_api_root_set: the representation premise PK_L.rep_v8(o, s) is not read
 BitsStruct (setters)	10 witnessed
 ComplexTestStruct (setters)	0 witnessed
   pending ComplexTestStruct: e2e_witness: nonempty default list vec_VarTestStruct_2_d.v2_VarTestStruct_default

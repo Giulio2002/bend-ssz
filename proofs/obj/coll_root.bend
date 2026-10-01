@@ -43,6 +43,10 @@ import ./blist_obj.bend as BLO
 import ../../spec/limits.bend as Lim
 import ../../types/Fulu_list_uint64_1099511627776_def_generated.bend as l1099511627776_u64_c
 import ../../types/Fulu_vec_bytevec_32_65536_def_generated.bend as v65536_b32_c
+import ./packed_obj_light.bend as PK_L
+import ../../types/Fulu_vec_uint64_8192_def_generated.bend as v8192_u64_c
+import ./packed_obj.bend as PK
+import ../../types/Fulu_vec_uint64_64_def_generated.bend as v64_u64_c
 import ../../types/FuluExecutionBranch_def_generated.bend as v4_b32_c
 import ../../types/Fulu_list_bytevec_48_4096_def_generated.bend as l4096_b48_c
 import ../../types/Fulu_vec_bytevec_32_17_def_generated.bend as v17_b32_c
@@ -498,6 +502,106 @@ def v65536_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.
   %vs2 :
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
+
+def v8192_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def v8192_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {PK_L.vview8(Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {PK_L.vview8(Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {PK_L.vview8(_) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_it8(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def v8192_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: PK_L.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(PK_L.vview8(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+qc, w4) = w3
+  (+r, w5) = w4
+  (+eo, w6) = w5
+  (+pf, w7) = w6
+  (+hd, w8) = w7
+  (+enq, w9) = w8
+  (+h1, w10) = w9
+  (+h32, w11) = w10
+  (+room, +slack) = w11
+  (+eN, +hv) = ks
+  +eNN = UL.eq_n(o, t, n, eo, eN)
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+  +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+  +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+  +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+  +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+  +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+  +se = v8192_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+  +vs = v8192_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+  +vs2 = F.logic__subst(O.Words, z => {PK_L.vview8(z) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+  +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+  +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+  +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == PK_L.e8(PK_L.cnt8(z)) : Nat}, {Nat.is_eq(PK_L.cnt8(z), SH.Vector_length(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+    RR.roots(VS.field_set(PK_L.vview8(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(_, i, O.U64{x0, x1})), depth))])
+  %Equal.sym(O.Words, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+    RR.roots(VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, _, depth))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+  PK.v8_rs(hl, ehl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, ((WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2)))))))))))), ks2), ok, hdep)
+
+def v64_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def v64_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {PK_L.vview8(Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {PK_L.vview8(Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {PK_L.vview8(_) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_it8(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def v64_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: PK_L.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(PK_L.vview8(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+qc, w4) = w3
+  (+r, w5) = w4
+  (+eo, w6) = w5
+  (+pf, w7) = w6
+  (+hd, w8) = w7
+  (+enq, w9) = w8
+  (+h1, w10) = w9
+  (+h32, w11) = w10
+  (+room, +slack) = w11
+  (+eN, +hv) = ks
+  +eNN = UL.eq_n(o, t, n, eo, eN)
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+  +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+  +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+  +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+  +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+  +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+  +se = v64_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+  +vs = v64_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+  +vs2 = F.logic__subst(O.Words, z => {PK_L.vview8(z) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+  +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+  +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+  +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == PK_L.e8(PK_L.cnt8(z)) : Nat}, {Nat.is_eq(PK_L.cnt8(z), SH.Vector_length(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+    RR.roots(VS.field_set(PK_L.vview8(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(_, i, O.U64{x0, x1})), depth))])
+  %Equal.sym(O.Words, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+    RR.roots(VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, _, depth))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+  PK.v8_rs(hl, ehl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, ((WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2)))))))))))), ks2), ok, hdep)
 
 def v4_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v4_b32_c.v4_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:

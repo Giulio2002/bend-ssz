@@ -383,7 +383,7 @@ field's default (so a setter that does nothing cannot satisfy the conclusion, wh
 at the field); for a composite field (a container, a list) it is the field's own value, which is the one case a no-op setter would pass. `rep`, `rv`, `hg` are proved by the same
 synthesis as the bridge witnesses.
 
-What is not witnessed (<!-- fig:collw_pending -->18<!-- /fig --> statements, each with its reason in `e2e/COLL_WITNESS.txt`):
+What is not witnessed (<!-- fig:collw_pending -->20<!-- /fig --> statements, each with its reason in `e2e/COLL_WITNESS.txt`):
 the `append_rejected` statements of the lists whose limit exceeds the U32 range (2^40: `_u8`, `_u64`, `Validator`) have the
 premise `{True == False}`: the list can never be full in a U32 length, so the statement is vacuous by design (the accepted direction of the same premise structure, an append while the length is below the limit, is witnessed by its `_flag`, `append_length`,
 `read_append` and `view_append` siblings); `root_set` of the two vectors of 8192 and 65536 chunks, whose `rep` and size premises compare Nat
