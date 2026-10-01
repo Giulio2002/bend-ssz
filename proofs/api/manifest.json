@@ -140,7 +140,8 @@
     "wordpos_uint256.bend",
     "codec_0.bend",
     "mutval_fulu_uint256.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_uint256.bend"
    ]
   },
   "uint256_decode_ssz_proof_generated.bend": {
@@ -173,7 +174,8 @@
     "spec_small.bend",
     "wordpos_Bytes1.bend",
     "mutval_fulu_Bytes1.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes1.bend"
    ]
   },
   "FuluBytes1_decode_ssz_proof_generated.bend": {
@@ -205,7 +207,8 @@
     "wordpos_Bytes4.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes4.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes4.bend"
    ]
   },
   "FuluBytes4_decode_ssz_proof_generated.bend": {
@@ -239,7 +242,8 @@
     "wordpos_Bytes32.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes32.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes32.bend"
    ]
   },
   "FuluBytes32_decode_ssz_proof_generated.bend": {
@@ -274,7 +278,8 @@
     "wordpos_Bytes48.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes48.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes48.bend"
    ]
   },
   "FuluBytes48_decode_ssz_proof_generated.bend": {
@@ -309,7 +314,8 @@
     "wordpos_Bytes96.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes96.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes96.bend"
    ]
   },
   "FuluBytes96_decode_ssz_proof_generated.bend": {
@@ -343,7 +349,8 @@
     "wordpos_Bytes8.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes8.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes8.bend"
    ]
   },
   "FuluBytes8_decode_ssz_proof_generated.bend": {
@@ -378,7 +385,8 @@
     "wordpos_Bytes20.bend",
     "codec_0.bend",
     "mutval_fulu_Bytes20.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Bytes20.bend"
    ]
   },
   "FuluBytes20_decode_ssz_proof_generated.bend": {
@@ -512,7 +520,8 @@
     "wordpos_Hash32.bend",
     "codec_1.bend",
     "mutval_fulu_Hash32.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Hash32.bend"
    ]
   },
   "FuluHash32_decode_ssz_proof_generated.bend": {
@@ -546,7 +555,8 @@
     "wordpos_Version.bend",
     "codec_1.bend",
     "mutval_fulu_Version.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Version.bend"
    ]
   },
   "FuluVersion_decode_ssz_proof_generated.bend": {
@@ -580,7 +590,8 @@
     "wordpos_DomainType.bend",
     "codec_1.bend",
     "mutval_fulu_DomainType.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_DomainType.bend"
    ]
   },
   "FuluDomainType_decode_ssz_proof_generated.bend": {
@@ -614,7 +625,8 @@
     "wordpos_BLSSignature.bend",
     "codec_1.bend",
     "mutval_fulu_BLSSignature.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_BLSSignature.bend"
    ]
   },
   "FuluBLSSignature_decode_ssz_proof_generated.bend": {
@@ -647,7 +659,8 @@
     "spec_codec_FinalityBranch.bend",
     "wordpos_FinalityBranch.bend",
     "capacity_FinalityBranch.bend",
-    "mutval_fulu_FinalityBranch.bend"
+    "mutval_fulu_FinalityBranch.bend",
+    "mutconst_FinalityBranch.bend"
    ]
   },
   "FuluFinalityBranch_decode_ssz_proof_generated.bend": {
@@ -668,7 +681,8 @@
    "generated_name": "FinalityBranch",
    "op": "hashtreeroot",
    "files": [
-    "root_words.bend"
+    "root_words.bend",
+    "mutconst_FinalityBranch.bend"
    ]
   },
   "FuluVersionedHash_encode_ssz_proof_generated.bend": {
@@ -680,7 +694,8 @@
     "wordpos_VersionedHash.bend",
     "codec_1.bend",
     "mutval_fulu_VersionedHash.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_VersionedHash.bend"
    ]
   },
   "FuluVersionedHash_decode_ssz_proof_generated.bend": {
@@ -714,7 +729,8 @@
     "wordpos_G1Point.bend",
     "codec_1.bend",
     "mutval_fulu_G1Point.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_G1Point.bend"
    ]
   },
   "FuluG1Point_decode_ssz_proof_generated.bend": {
@@ -748,7 +764,8 @@
     "wordpos_G2Point.bend",
     "codec_1.bend",
     "mutval_fulu_G2Point.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_G2Point.bend"
    ]
   },
   "FuluG2Point_decode_ssz_proof_generated.bend": {
@@ -817,7 +834,8 @@
     "codec_1.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_SyncAggregate.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_SyncAggregate.bend"
    ]
   },
   "FuluSyncAggregate_decode_ssz_proof_generated.bend": {
@@ -1121,7 +1139,8 @@
     "wordpos_Root.bend",
     "codec_2.bend",
     "mutval_fulu_Root.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_Root.bend"
    ]
   },
   "FuluRoot_decode_ssz_proof_generated.bend": {
@@ -1190,7 +1209,8 @@
     "codec_2.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_SyncCommitteeContribution.bend",
-    "serialize_0.bend"
+    "serialize_0.bend",
+    "mutconst_SyncCommitteeContribution.bend"
    ]
   },
   "FuluSyncCommitteeContribution_decode_ssz_proof_generated.bend": {
@@ -1221,7 +1241,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_ContributionAndProof.bend",
-    "capacity_ContributionAndProof.bend"
+    "capacity_ContributionAndProof.bend",
+    "mutconst_ContributionAndProof.bend"
    ]
   },
   "FuluContributionAndProof_decode_ssz_proof_generated.bend": {
@@ -1251,7 +1272,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_SignedContributionAndProof.bend",
-    "capacity_SignedContributionAndProof.bend"
+    "capacity_SignedContributionAndProof.bend",
+    "mutconst_SignedContributionAndProof.bend"
    ]
   },
   "FuluSignedContributionAndProof_decode_ssz_proof_generated.bend": {
@@ -1387,7 +1409,8 @@
     "codec_3.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_SignedBeaconBlockHeader.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_SignedBeaconBlockHeader.bend"
    ]
   },
   "FuluSignedBeaconBlockHeader_decode_ssz_proof_generated.bend": {
@@ -1419,7 +1442,8 @@
    "files": [
     "spec_codec_ProposerSlashing.bend",
     "offset_size_ProposerSlashing.bend",
-    "capacity_ProposerSlashing.bend"
+    "capacity_ProposerSlashing.bend",
+    "mutconst_ProposerSlashing.bend"
    ]
   },
   "FuluProposerSlashing_decode_ssz_proof_generated.bend": {
@@ -1611,7 +1635,8 @@
    "generated_name": "Attestation",
    "op": "encode_ssz",
    "files": [
-    "var_bitc_enc_Attestation.bend"
+    "var_bitc_enc_Attestation.bend",
+    "mutconst_Attestation.bend"
    ]
   },
   "FuluAttestation_decode_ssz_proof_generated.bend": {
@@ -1638,7 +1663,8 @@
    "generated_name": "AggregateAndProof",
    "op": "encode_ssz",
    "files": [
-    "var_codec_AggregateAndProof_enc.bend"
+    "var_codec_AggregateAndProof_enc.bend",
+    "mutconst_AggregateAndProof.bend"
    ]
   },
   "FuluAggregateAndProof_decode_ssz_proof_generated.bend": {
@@ -1664,7 +1690,8 @@
    "generated_name": "SignedAggregateAndProof",
    "op": "encode_ssz",
    "files": [
-    "var_codec_SignedAggregateAndProof_enc.bend"
+    "var_codec_SignedAggregateAndProof_enc.bend",
+    "mutconst_SignedAggregateAndProof.bend"
    ]
   },
   "FuluSignedAggregateAndProof_decode_ssz_proof_generated.bend": {
@@ -1690,7 +1717,8 @@
    "generated_name": "PendingAttestation",
    "op": "encode_ssz",
    "files": [
-    "var_bitc_enc_PendingAttestation.bend"
+    "var_bitc_enc_PendingAttestation.bend",
+    "mutconst_PendingAttestation.bend"
    ]
   },
   "FuluPendingAttestation_decode_ssz_proof_generated.bend": {
@@ -1717,7 +1745,8 @@
    "generated_name": "IndexedAttestation",
    "op": "encode_ssz",
    "files": [
-    "var_codec_IndexedAttestation_enc.bend"
+    "var_codec_IndexedAttestation_enc.bend",
+    "mutconst_IndexedAttestation.bend"
    ]
   },
   "FuluIndexedAttestation_decode_ssz_proof_generated.bend": {
@@ -1744,7 +1773,8 @@
    "generated_name": "AttesterSlashing",
    "op": "encode_ssz",
    "files": [
-    "var_codec_AttesterSlashing_enc.bend"
+    "var_codec_AttesterSlashing_enc.bend",
+    "mutconst_AttesterSlashing.bend"
    ]
   },
   "FuluAttesterSlashing_decode_ssz_proof_generated.bend": {
@@ -1809,7 +1839,8 @@
     "wordpos_ForkDigest.bend",
     "codec_3.bend",
     "mutval_fulu_ForkDigest.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_ForkDigest.bend"
    ]
   },
   "FuluForkDigest_decode_ssz_proof_generated.bend": {
@@ -1843,7 +1874,8 @@
     "wordpos_Domain.bend",
     "codec_3.bend",
     "mutval_fulu_Domain.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_Domain.bend"
    ]
   },
   "FuluDomain_decode_ssz_proof_generated.bend": {
@@ -1911,7 +1943,8 @@
     "wordpos_BLSPubkey.bend",
     "codec_3.bend",
     "mutval_fulu_BLSPubkey.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_BLSPubkey.bend"
    ]
   },
   "FuluBLSPubkey_decode_ssz_proof_generated.bend": {
@@ -2041,7 +2074,8 @@
     "codec_4.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_DepositData.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_DepositData.bend"
    ]
   },
   "FuluDepositData_decode_ssz_proof_generated.bend": {
@@ -2073,7 +2107,8 @@
    "files": [
     "spec_codec_Deposit.bend",
     "offset_size_Deposit.bend",
-    "capacity_Deposit.bend"
+    "capacity_Deposit.bend",
+    "mutconst_Deposit.bend"
    ]
   },
   "FuluDeposit_decode_ssz_proof_generated.bend": {
@@ -2169,7 +2204,8 @@
     "wordpos_NodeID.bend",
     "codec_4.bend",
     "mutval_fulu_NodeID.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_NodeID.bend"
    ]
   },
   "FuluNodeID_decode_ssz_proof_generated.bend": {
@@ -2298,7 +2334,8 @@
     "spec_codec_CurrentSyncCommitteeBranch.bend",
     "wordpos_CurrentSyncCommitteeBranch.bend",
     "capacity_CurrentSyncCommitteeBranch.bend",
-    "mutval_fulu_CurrentSyncCommitteeBranch.bend"
+    "mutval_fulu_CurrentSyncCommitteeBranch.bend",
+    "mutconst_CurrentSyncCommitteeBranch.bend"
    ]
   },
   "FuluCurrentSyncCommitteeBranch_decode_ssz_proof_generated.bend": {
@@ -2319,7 +2356,8 @@
    "generated_name": "CurrentSyncCommitteeBranch",
    "op": "hashtreeroot",
    "files": [
-    "root_words.bend"
+    "root_words.bend",
+    "mutconst_CurrentSyncCommitteeBranch.bend"
    ]
   },
   "FuluNextSyncCommitteeBranch_encode_ssz_proof_generated.bend": {
@@ -2330,7 +2368,8 @@
     "spec_codec_NextSyncCommitteeBranch.bend",
     "wordpos_NextSyncCommitteeBranch.bend",
     "capacity_NextSyncCommitteeBranch.bend",
-    "mutval_fulu_NextSyncCommitteeBranch.bend"
+    "mutval_fulu_NextSyncCommitteeBranch.bend",
+    "mutconst_NextSyncCommitteeBranch.bend"
    ]
   },
   "FuluNextSyncCommitteeBranch_decode_ssz_proof_generated.bend": {
@@ -2351,7 +2390,8 @@
    "generated_name": "NextSyncCommitteeBranch",
    "op": "hashtreeroot",
    "files": [
-    "root_words.bend"
+    "root_words.bend",
+    "mutconst_NextSyncCommitteeBranch.bend"
    ]
   },
   "FuluTransaction_encode_ssz_proof_generated.bend": {
@@ -2360,7 +2400,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_Transaction_enc.bend",
-    "mutval_fulu_Transaction.bend"
+    "mutval_fulu_Transaction.bend",
+    "mutconst_Transaction.bend"
    ]
   },
   "FuluTransaction_decode_ssz_proof_generated.bend": {
@@ -2389,7 +2430,8 @@
     "wordpos_ExecutionAddress.bend",
     "codec_4.bend",
     "mutval_fulu_ExecutionAddress.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_ExecutionAddress.bend"
    ]
   },
   "FuluExecutionAddress_decode_ssz_proof_generated.bend": {
@@ -2487,7 +2529,8 @@
    "generated_name": "ExecutionRequests",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ExecutionRequests_enc.bend"
+    "var_codec_ExecutionRequests_enc.bend",
+    "mutconst_ExecutionRequests.bend"
    ]
   },
   "FuluExecutionRequests_decode_ssz_proof_generated.bend": {
@@ -2581,7 +2624,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_ExecutionPayloadHeader_enc.bend",
-    "capacity_ExecutionPayloadHeader.bend"
+    "capacity_ExecutionPayloadHeader.bend",
+    "mutconst_ExecutionPayloadHeader.bend"
    ]
   },
   "FuluExecutionPayloadHeader_decode_ssz_proof_generated.bend": {
@@ -2612,7 +2656,8 @@
     "wordpos_PayloadId.bend",
     "codec_4.bend",
     "mutval_fulu_PayloadId.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_PayloadId.bend"
    ]
   },
   "FuluPayloadId_decode_ssz_proof_generated.bend": {
@@ -2709,7 +2754,8 @@
    "generated_name": "ExecutionPayload",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ExecutionPayload_enc.bend"
+    "var_codec_ExecutionPayload_enc.bend",
+    "mutconst_ExecutionPayload.bend"
    ]
   },
   "FuluExecutionPayload_decode_ssz_proof_generated.bend": {
@@ -2762,7 +2808,8 @@
     "spec_codec_ExecutionBranch.bend",
     "wordpos_ExecutionBranch.bend",
     "capacity_ExecutionBranch.bend",
-    "mutval_fulu_ExecutionBranch.bend"
+    "mutval_fulu_ExecutionBranch.bend",
+    "mutconst_ExecutionBranch.bend"
    ]
   },
   "FuluExecutionBranch_decode_ssz_proof_generated.bend": {
@@ -2783,7 +2830,8 @@
    "generated_name": "ExecutionBranch",
    "op": "hashtreeroot",
    "files": [
-    "root_words.bend"
+    "root_words.bend",
+    "mutconst_ExecutionBranch.bend"
    ]
   },
   "FuluLightClientHeader_encode_ssz_proof_generated.bend": {
@@ -2792,7 +2840,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_LightClientHeader_enc.bend",
-    "capacity_LightClientHeader.bend"
+    "capacity_LightClientHeader.bend",
+    "mutconst_LightClientHeader.bend"
    ]
   },
   "FuluLightClientHeader_decode_ssz_proof_generated.bend": {
@@ -2820,7 +2869,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bytes_LightClientOptimisticUpdate_enc.bend",
-    "capacity_LightClientOptimisticUpdate.bend"
+    "capacity_LightClientOptimisticUpdate.bend",
+    "mutconst_LightClientOptimisticUpdate.bend"
    ]
   },
   "FuluLightClientOptimisticUpdate_decode_ssz_proof_generated.bend": {
@@ -2848,7 +2898,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_LightClientFinalityUpdate_enc.bend",
-    "capacity_LightClientFinalityUpdate.bend"
+    "capacity_LightClientFinalityUpdate.bend",
+    "mutconst_LightClientFinalityUpdate.bend"
    ]
   },
   "FuluLightClientFinalityUpdate_decode_ssz_proof_generated.bend": {
@@ -2996,7 +3047,8 @@
     "wordpos_KZGCommitment.bend",
     "codec_5.bend",
     "mutval_fulu_KZGCommitment.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_KZGCommitment.bend"
    ]
   },
   "FuluKZGCommitment_decode_ssz_proof_generated.bend": {
@@ -3026,7 +3078,8 @@
    "generated_name": "BeaconBlockBody",
    "op": "encode_ssz",
    "files": [
-    "var_codec_BeaconBlockBody_enc.bend"
+    "var_codec_BeaconBlockBody_enc.bend",
+    "mutconst_BeaconBlockBody.bend"
    ]
   },
   "FuluBeaconBlockBody_decode_ssz_proof_generated.bend": {
@@ -3051,7 +3104,8 @@
    "generated_name": "BeaconBlock",
    "op": "encode_ssz",
    "files": [
-    "var_codec_BeaconBlock_enc.bend"
+    "var_codec_BeaconBlock_enc.bend",
+    "mutconst_BeaconBlock.bend"
    ]
   },
   "FuluBeaconBlock_decode_ssz_proof_generated.bend": {
@@ -3076,7 +3130,8 @@
    "generated_name": "SignedBeaconBlock",
    "op": "encode_ssz",
    "files": [
-    "var_codec_SignedBeaconBlock_enc.bend"
+    "var_codec_SignedBeaconBlock_enc.bend",
+    "mutconst_SignedBeaconBlock.bend"
    ]
   },
   "FuluSignedBeaconBlock_decode_ssz_proof_generated.bend": {
@@ -3105,7 +3160,8 @@
     "wordpos_KZGProof.bend",
     "codec_5.bend",
     "mutval_fulu_KZGProof.bend",
-    "serialize_1.bend"
+    "serialize_1.bend",
+    "mutconst_KZGProof.bend"
    ]
   },
   "FuluKZGProof_decode_ssz_proof_generated.bend": {
@@ -3136,7 +3192,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_arr_Blob.bend",
-    "mutation_laws_fulu.bend"
+    "mutation_laws_fulu.bend",
+    "mutconst_Blob.bend"
    ]
   },
   "FuluBlob_decode_ssz_proof_generated.bend": {
@@ -3155,7 +3212,8 @@
    "generated_name": "Blob",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "mutconst_Blob.bend"
    ]
   },
   "FuluBlobSidecar_encode_ssz_proof_generated.bend": {
@@ -3192,7 +3250,8 @@
    "files": [
     "spec_codec_Cell.bend",
     "capacity_Cell.bend",
-    "mutation_laws_fulu.bend"
+    "mutation_laws_fulu.bend",
+    "mutconst_Cell.bend"
    ]
   },
   "FuluCell_decode_ssz_proof_generated.bend": {
@@ -3214,7 +3273,8 @@
    "op": "hashtreeroot",
    "files": [
     "root_types.bend",
-    "root_words.bend"
+    "root_words.bend",
+    "mutconst_Cell.bend"
    ]
   },
   "FuluCellIndex_encode_ssz_proof_generated.bend": {
@@ -3354,7 +3414,8 @@
    "generated_name": "DataColumnsByRootIdentifier",
    "op": "encode_ssz",
    "files": [
-    "var_codec_DataColumnsByRootIdentifier_enc.bend"
+    "var_codec_DataColumnsByRootIdentifier_enc.bend",
+    "mutconst_DataColumnsByRootIdentifier.bend"
    ]
   },
   "FuluDataColumnsByRootIdentifier_decode_ssz_proof_generated.bend": {
@@ -3382,7 +3443,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_codec_MatrixEntry.bend",
-    "capacity_MatrixEntry.bend"
+    "capacity_MatrixEntry.bend",
+    "mutconst_MatrixEntry.bend"
    ]
   },
   "FuluMatrixEntry_decode_ssz_proof_generated.bend": {
@@ -3411,7 +3473,8 @@
    "generated_name": "DataColumnSidecar",
    "op": "encode_ssz",
    "files": [
-    "var_codec_DataColumnSidecar_enc.bend"
+    "var_codec_DataColumnSidecar_enc.bend",
+    "mutconst_DataColumnSidecar.bend"
    ]
   },
   "FuluDataColumnSidecar_decode_ssz_proof_generated.bend": {
@@ -3472,7 +3535,8 @@
    "generated_name": "ProgressiveSingleListContainerTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ProgressiveSingleListContainerTestStruct_enc.bend"
+    "var_codec_ProgressiveSingleListContainerTestStruct_enc.bend",
+    "mutconst_ProgressiveSingleListContainerTestStruct.bend"
    ]
   },
   "ProgressiveSingleListContainerTestStruct_decode_ssz_proof_generated.bend": {
@@ -3498,7 +3562,8 @@
    "generated_name": "ProgressiveComplexTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ProgressiveComplexTestStruct_enc.bend"
+    "var_codec_ProgressiveComplexTestStruct_enc.bend",
+    "mutconst_ProgressiveComplexTestStruct.bend"
    ]
   },
   "ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend": {
@@ -3524,7 +3589,8 @@
    "generated_name": "ProgressiveVarTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ProgressiveVarTestStruct_enc.bend"
+    "var_codec_ProgressiveVarTestStruct_enc.bend",
+    "mutconst_ProgressiveVarTestStruct.bend"
    ]
   },
   "ProgressiveVarTestStruct_decode_ssz_proof_generated.bend": {
@@ -3578,7 +3644,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_bool_enc.bend",
-    "mutval_generic_proglist_bool.bend"
+    "mutval_generic_proglist_bool.bend",
+    "mutconst_proglist_bool.bend"
    ]
   },
   "proglist_bool_decode_ssz_proof_generated.bend": {
@@ -3607,7 +3674,8 @@
     "sub_vec_bool_16.bend",
     "wordpos_vec_bool_16.bend",
     "capacity_vec_bool_16.bend",
-    "mutval_generic_vec_bool_16.bend"
+    "mutval_generic_vec_bool_16.bend",
+    "mutconst_vec_bool_16.bend"
    ]
   },
   "vec_bool_16_decode_ssz_proof_generated.bend": {
@@ -3626,7 +3694,8 @@
    "generated_name": "vec_bool_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_16.bend"
    ]
   },
   "vec_bool_1_encode_ssz_proof_generated.bend": {
@@ -3636,7 +3705,8 @@
    "files": [
     "sub_vec_bool_1.bend",
     "capacity_vec_bool_1.bend",
-    "mutval_generic_vec_bool_1.bend"
+    "mutval_generic_vec_bool_1.bend",
+    "mutconst_vec_bool_1.bend"
    ]
   },
   "vec_bool_1_decode_ssz_proof_generated.bend": {
@@ -3655,7 +3725,8 @@
    "generated_name": "vec_bool_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_1.bend"
    ]
   },
   "vec_bool_2_encode_ssz_proof_generated.bend": {
@@ -3665,7 +3736,8 @@
    "files": [
     "sub_vec_bool_2.bend",
     "capacity_vec_bool_2.bend",
-    "mutval_generic_vec_bool_2.bend"
+    "mutval_generic_vec_bool_2.bend",
+    "mutconst_vec_bool_2.bend"
    ]
   },
   "vec_bool_2_decode_ssz_proof_generated.bend": {
@@ -3684,7 +3756,8 @@
    "generated_name": "vec_bool_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_2.bend"
    ]
   },
   "vec_bool_31_encode_ssz_proof_generated.bend": {
@@ -3694,7 +3767,8 @@
    "files": [
     "sub_vec_bool_31.bend",
     "capacity_vec_bool_31.bend",
-    "mutval_generic_vec_bool_31.bend"
+    "mutval_generic_vec_bool_31.bend",
+    "mutconst_vec_bool_31.bend"
    ]
   },
   "vec_bool_31_decode_ssz_proof_generated.bend": {
@@ -3713,7 +3787,8 @@
    "generated_name": "vec_bool_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_31.bend"
    ]
   },
   "vec_bool_3_encode_ssz_proof_generated.bend": {
@@ -3723,7 +3798,8 @@
    "files": [
     "sub_vec_bool_3.bend",
     "capacity_vec_bool_3.bend",
-    "mutval_generic_vec_bool_3.bend"
+    "mutval_generic_vec_bool_3.bend",
+    "mutconst_vec_bool_3.bend"
    ]
   },
   "vec_bool_3_decode_ssz_proof_generated.bend": {
@@ -3742,7 +3818,8 @@
    "generated_name": "vec_bool_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_3.bend"
    ]
   },
   "vec_bool_4_encode_ssz_proof_generated.bend": {
@@ -3753,7 +3830,8 @@
     "sub_vec_bool_4.bend",
     "wordpos_vec_bool_4.bend",
     "capacity_vec_bool_4.bend",
-    "mutval_generic_vec_bool_4.bend"
+    "mutval_generic_vec_bool_4.bend",
+    "mutconst_vec_bool_4.bend"
    ]
   },
   "vec_bool_4_decode_ssz_proof_generated.bend": {
@@ -3772,7 +3850,8 @@
    "generated_name": "vec_bool_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_4.bend"
    ]
   },
   "vec_bool_512_encode_ssz_proof_generated.bend": {
@@ -3782,7 +3861,8 @@
    "files": [
     "sub_vec_bool_512.bend",
     "capacity_vec_bool_512.bend",
-    "mutval_generic_vec_bool_512.bend"
+    "mutval_generic_vec_bool_512.bend",
+    "mutconst_vec_bool_512.bend"
    ]
   },
   "vec_bool_512_decode_ssz_proof_generated.bend": {
@@ -3801,7 +3881,8 @@
    "generated_name": "vec_bool_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_512.bend"
    ]
   },
   "vec_bool_513_encode_ssz_proof_generated.bend": {
@@ -3811,7 +3892,8 @@
    "files": [
     "sub_vec_bool_513.bend",
     "capacity_vec_bool_513.bend",
-    "mutval_generic_vec_bool_513.bend"
+    "mutval_generic_vec_bool_513.bend",
+    "mutconst_vec_bool_513.bend"
    ]
   },
   "vec_bool_513_decode_ssz_proof_generated.bend": {
@@ -3830,7 +3912,8 @@
    "generated_name": "vec_bool_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_513.bend"
    ]
   },
   "vec_bool_5_encode_ssz_proof_generated.bend": {
@@ -3840,7 +3923,8 @@
    "files": [
     "sub_vec_bool_5.bend",
     "capacity_vec_bool_5.bend",
-    "mutval_generic_vec_bool_5.bend"
+    "mutval_generic_vec_bool_5.bend",
+    "mutconst_vec_bool_5.bend"
    ]
   },
   "vec_bool_5_decode_ssz_proof_generated.bend": {
@@ -3859,7 +3943,8 @@
    "generated_name": "vec_bool_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_5.bend"
    ]
   },
   "vec_bool_8_encode_ssz_proof_generated.bend": {
@@ -3870,7 +3955,8 @@
     "sub_vec_bool_8.bend",
     "wordpos_vec_bool_8.bend",
     "capacity_vec_bool_8.bend",
-    "mutval_generic_vec_bool_8.bend"
+    "mutval_generic_vec_bool_8.bend",
+    "mutconst_vec_bool_8.bend"
    ]
   },
   "vec_bool_8_decode_ssz_proof_generated.bend": {
@@ -3889,7 +3975,8 @@
    "generated_name": "vec_bool_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_bool_8.bend"
    ]
   },
   "proglist_uint128_encode_ssz_proof_generated.bend": {
@@ -3898,7 +3985,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint128_enc.bend",
-    "mutval_generic_proglist_uint128.bend"
+    "mutval_generic_proglist_uint128.bend",
+    "mutconst_proglist_uint128.bend"
    ]
   },
   "proglist_uint128_decode_ssz_proof_generated.bend": {
@@ -3928,7 +4016,8 @@
     "spec_gcodec_vec_uint128_16.bend",
     "wordpos_vec_uint128_16.bend",
     "capacity_vec_uint128_16.bend",
-    "mutval_generic_vec_uint128_16.bend"
+    "mutval_generic_vec_uint128_16.bend",
+    "mutconst_vec_uint128_16.bend"
    ]
   },
   "vec_uint128_16_decode_ssz_proof_generated.bend": {
@@ -3949,7 +4038,8 @@
    "generated_name": "vec_uint128_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_16.bend"
    ]
   },
   "vec_uint128_1_encode_ssz_proof_generated.bend": {
@@ -3960,7 +4050,8 @@
     "spec_gcodec_vec_uint128_1.bend",
     "wordpos_vec_uint128_1.bend",
     "capacity_vec_uint128_1.bend",
-    "mutval_generic_vec_uint128_1.bend"
+    "mutval_generic_vec_uint128_1.bend",
+    "mutconst_vec_uint128_1.bend"
    ]
   },
   "vec_uint128_1_decode_ssz_proof_generated.bend": {
@@ -3981,7 +4072,8 @@
    "generated_name": "vec_uint128_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_1.bend"
    ]
   },
   "vec_uint128_2_encode_ssz_proof_generated.bend": {
@@ -3992,7 +4084,8 @@
     "spec_gcodec_vec_uint128_2.bend",
     "wordpos_vec_uint128_2.bend",
     "capacity_vec_uint128_2.bend",
-    "mutval_generic_vec_uint128_2.bend"
+    "mutval_generic_vec_uint128_2.bend",
+    "mutconst_vec_uint128_2.bend"
    ]
   },
   "vec_uint128_2_decode_ssz_proof_generated.bend": {
@@ -4013,7 +4106,8 @@
    "generated_name": "vec_uint128_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_2.bend"
    ]
   },
   "vec_uint128_31_encode_ssz_proof_generated.bend": {
@@ -4023,7 +4117,8 @@
    "files": [
     "spec_gcodec_vec_uint128_31.bend",
     "capacity_vec_uint128_31.bend",
-    "mutval_generic_vec_uint128_31.bend"
+    "mutval_generic_vec_uint128_31.bend",
+    "mutconst_vec_uint128_31.bend"
    ]
   },
   "vec_uint128_31_decode_ssz_proof_generated.bend": {
@@ -4044,7 +4139,8 @@
    "generated_name": "vec_uint128_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_31.bend"
    ]
   },
   "vec_uint128_3_encode_ssz_proof_generated.bend": {
@@ -4055,7 +4151,8 @@
     "spec_gcodec_vec_uint128_3.bend",
     "wordpos_vec_uint128_3.bend",
     "capacity_vec_uint128_3.bend",
-    "mutval_generic_vec_uint128_3.bend"
+    "mutval_generic_vec_uint128_3.bend",
+    "mutconst_vec_uint128_3.bend"
    ]
   },
   "vec_uint128_3_decode_ssz_proof_generated.bend": {
@@ -4076,7 +4173,8 @@
    "generated_name": "vec_uint128_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_3.bend"
    ]
   },
   "vec_uint128_4_encode_ssz_proof_generated.bend": {
@@ -4087,7 +4185,8 @@
     "spec_gcodec_vec_uint128_4.bend",
     "wordpos_vec_uint128_4.bend",
     "capacity_vec_uint128_4.bend",
-    "mutval_generic_vec_uint128_4.bend"
+    "mutval_generic_vec_uint128_4.bend",
+    "mutconst_vec_uint128_4.bend"
    ]
   },
   "vec_uint128_4_decode_ssz_proof_generated.bend": {
@@ -4108,7 +4207,8 @@
    "generated_name": "vec_uint128_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_4.bend"
    ]
   },
   "vec_uint128_512_encode_ssz_proof_generated.bend": {
@@ -4117,7 +4217,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint128_512.bend",
-    "mutval_generic_vec_uint128_512.bend"
+    "mutval_generic_vec_uint128_512.bend",
+    "mutconst_vec_uint128_512.bend"
    ]
   },
   "vec_uint128_512_decode_ssz_proof_generated.bend": {
@@ -4136,7 +4237,8 @@
    "generated_name": "vec_uint128_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_512.bend"
    ]
   },
   "vec_uint128_513_encode_ssz_proof_generated.bend": {
@@ -4145,7 +4247,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint128_513.bend",
-    "mutval_generic_vec_uint128_513.bend"
+    "mutval_generic_vec_uint128_513.bend",
+    "mutconst_vec_uint128_513.bend"
    ]
   },
   "vec_uint128_513_decode_ssz_proof_generated.bend": {
@@ -4164,7 +4267,8 @@
    "generated_name": "vec_uint128_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_513.bend"
    ]
   },
   "vec_uint128_5_encode_ssz_proof_generated.bend": {
@@ -4175,7 +4279,8 @@
     "spec_gcodec_vec_uint128_5.bend",
     "wordpos_vec_uint128_5.bend",
     "capacity_vec_uint128_5.bend",
-    "mutval_generic_vec_uint128_5.bend"
+    "mutval_generic_vec_uint128_5.bend",
+    "mutconst_vec_uint128_5.bend"
    ]
   },
   "vec_uint128_5_decode_ssz_proof_generated.bend": {
@@ -4196,7 +4301,8 @@
    "generated_name": "vec_uint128_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_5.bend"
    ]
   },
   "vec_uint128_8_encode_ssz_proof_generated.bend": {
@@ -4207,7 +4313,8 @@
     "spec_gcodec_vec_uint128_8.bend",
     "wordpos_vec_uint128_8.bend",
     "capacity_vec_uint128_8.bend",
-    "mutval_generic_vec_uint128_8.bend"
+    "mutval_generic_vec_uint128_8.bend",
+    "mutconst_vec_uint128_8.bend"
    ]
   },
   "vec_uint128_8_decode_ssz_proof_generated.bend": {
@@ -4228,7 +4335,8 @@
    "generated_name": "vec_uint128_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint128_8.bend"
    ]
   },
   "proglist_uint8_encode_ssz_proof_generated.bend": {
@@ -4237,7 +4345,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint8_enc.bend",
-    "mutval_generic_proglist_uint8.bend"
+    "mutval_generic_proglist_uint8.bend",
+    "mutconst_proglist_uint8.bend"
    ]
   },
   "proglist_uint8_decode_ssz_proof_generated.bend": {
@@ -4266,7 +4375,8 @@
     "sub_vec_uint8_16.bend",
     "wordpos_vec_uint8_16.bend",
     "capacity_vec_uint8_16.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_16.bend"
    ]
   },
   "vec_uint8_16_decode_ssz_proof_generated.bend": {
@@ -4285,7 +4395,8 @@
    "generated_name": "vec_uint8_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_16.bend"
    ]
   },
   "vec_uint8_1_encode_ssz_proof_generated.bend": {
@@ -4295,7 +4406,8 @@
    "files": [
     "sub_vec_uint8_1.bend",
     "capacity_vec_uint8_1.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_1.bend"
    ]
   },
   "vec_uint8_1_decode_ssz_proof_generated.bend": {
@@ -4314,7 +4426,8 @@
    "generated_name": "vec_uint8_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_1.bend"
    ]
   },
   "vec_uint8_2_encode_ssz_proof_generated.bend": {
@@ -4324,7 +4437,8 @@
    "files": [
     "sub_vec_uint8_2.bend",
     "capacity_vec_uint8_2.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_2.bend"
    ]
   },
   "vec_uint8_2_decode_ssz_proof_generated.bend": {
@@ -4343,7 +4457,8 @@
    "generated_name": "vec_uint8_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_2.bend"
    ]
   },
   "vec_uint8_31_encode_ssz_proof_generated.bend": {
@@ -4353,7 +4468,8 @@
    "files": [
     "sub_vec_uint8_31.bend",
     "capacity_vec_uint8_31.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_31.bend"
    ]
   },
   "vec_uint8_31_decode_ssz_proof_generated.bend": {
@@ -4372,7 +4488,8 @@
    "generated_name": "vec_uint8_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_31.bend"
    ]
   },
   "vec_uint8_3_encode_ssz_proof_generated.bend": {
@@ -4382,7 +4499,8 @@
    "files": [
     "sub_vec_uint8_3.bend",
     "capacity_vec_uint8_3.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_3.bend"
    ]
   },
   "vec_uint8_3_decode_ssz_proof_generated.bend": {
@@ -4401,7 +4519,8 @@
    "generated_name": "vec_uint8_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_3.bend"
    ]
   },
   "vec_uint8_4_encode_ssz_proof_generated.bend": {
@@ -4412,7 +4531,8 @@
     "sub_vec_uint8_4.bend",
     "wordpos_vec_uint8_4.bend",
     "capacity_vec_uint8_4.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_4.bend"
    ]
   },
   "vec_uint8_4_decode_ssz_proof_generated.bend": {
@@ -4431,7 +4551,8 @@
    "generated_name": "vec_uint8_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_4.bend"
    ]
   },
   "vec_uint8_512_encode_ssz_proof_generated.bend": {
@@ -4441,7 +4562,8 @@
    "files": [
     "sub_vec_uint8_512.bend",
     "capacity_vec_uint8_512.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_512.bend"
    ]
   },
   "vec_uint8_512_decode_ssz_proof_generated.bend": {
@@ -4460,7 +4582,8 @@
    "generated_name": "vec_uint8_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_512.bend"
    ]
   },
   "vec_uint8_513_encode_ssz_proof_generated.bend": {
@@ -4470,7 +4593,8 @@
    "files": [
     "sub_vec_uint8_513.bend",
     "capacity_vec_uint8_513.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_513.bend"
    ]
   },
   "vec_uint8_513_decode_ssz_proof_generated.bend": {
@@ -4489,7 +4613,8 @@
    "generated_name": "vec_uint8_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_513.bend"
    ]
   },
   "vec_uint8_5_encode_ssz_proof_generated.bend": {
@@ -4499,7 +4624,8 @@
    "files": [
     "sub_vec_uint8_5.bend",
     "capacity_vec_uint8_5.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_5.bend"
    ]
   },
   "vec_uint8_5_decode_ssz_proof_generated.bend": {
@@ -4518,7 +4644,8 @@
    "generated_name": "vec_uint8_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_5.bend"
    ]
   },
   "vec_uint8_8_encode_ssz_proof_generated.bend": {
@@ -4529,7 +4656,8 @@
     "sub_vec_uint8_8.bend",
     "wordpos_vec_uint8_8.bend",
     "capacity_vec_uint8_8.bend",
-    "mutation_laws_generic.bend"
+    "mutation_laws_generic.bend",
+    "mutconst_vec_uint8_8.bend"
    ]
   },
   "vec_uint8_8_decode_ssz_proof_generated.bend": {
@@ -4548,7 +4676,8 @@
    "generated_name": "vec_uint8_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint8_8.bend"
    ]
   },
   "proglist_uint16_encode_ssz_proof_generated.bend": {
@@ -4557,7 +4686,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint16_enc.bend",
-    "mutval_generic_proglist_uint16.bend"
+    "mutval_generic_proglist_uint16.bend",
+    "mutconst_proglist_uint16.bend"
    ]
   },
   "proglist_uint16_decode_ssz_proof_generated.bend": {
@@ -4586,7 +4716,8 @@
     "sub_vec_uint16_16.bend",
     "wordpos_vec_uint16_16.bend",
     "capacity_vec_uint16_16.bend",
-    "mutval_generic_vec_uint16_16.bend"
+    "mutval_generic_vec_uint16_16.bend",
+    "mutconst_vec_uint16_16.bend"
    ]
   },
   "vec_uint16_16_decode_ssz_proof_generated.bend": {
@@ -4605,7 +4736,8 @@
    "generated_name": "vec_uint16_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_16.bend"
    ]
   },
   "vec_uint16_1_encode_ssz_proof_generated.bend": {
@@ -4615,7 +4747,8 @@
    "files": [
     "sub_vec_uint16_1.bend",
     "capacity_vec_uint16_1.bend",
-    "mutval_generic_vec_uint16_1.bend"
+    "mutval_generic_vec_uint16_1.bend",
+    "mutconst_vec_uint16_1.bend"
    ]
   },
   "vec_uint16_1_decode_ssz_proof_generated.bend": {
@@ -4634,7 +4767,8 @@
    "generated_name": "vec_uint16_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_1.bend"
    ]
   },
   "vec_uint16_2_encode_ssz_proof_generated.bend": {
@@ -4645,7 +4779,8 @@
     "sub_vec_uint16_2.bend",
     "wordpos_vec_uint16_2.bend",
     "capacity_vec_uint16_2.bend",
-    "mutval_generic_vec_uint16_2.bend"
+    "mutval_generic_vec_uint16_2.bend",
+    "mutconst_vec_uint16_2.bend"
    ]
   },
   "vec_uint16_2_decode_ssz_proof_generated.bend": {
@@ -4664,7 +4799,8 @@
    "generated_name": "vec_uint16_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_2.bend"
    ]
   },
   "vec_uint16_31_encode_ssz_proof_generated.bend": {
@@ -4674,7 +4810,8 @@
    "files": [
     "sub_vec_uint16_31.bend",
     "capacity_vec_uint16_31.bend",
-    "mutval_generic_vec_uint16_31.bend"
+    "mutval_generic_vec_uint16_31.bend",
+    "mutconst_vec_uint16_31.bend"
    ]
   },
   "vec_uint16_31_decode_ssz_proof_generated.bend": {
@@ -4693,7 +4830,8 @@
    "generated_name": "vec_uint16_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_31.bend"
    ]
   },
   "vec_uint16_3_encode_ssz_proof_generated.bend": {
@@ -4703,7 +4841,8 @@
    "files": [
     "sub_vec_uint16_3.bend",
     "capacity_vec_uint16_3.bend",
-    "mutval_generic_vec_uint16_3.bend"
+    "mutval_generic_vec_uint16_3.bend",
+    "mutconst_vec_uint16_3.bend"
    ]
   },
   "vec_uint16_3_decode_ssz_proof_generated.bend": {
@@ -4722,7 +4861,8 @@
    "generated_name": "vec_uint16_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_3.bend"
    ]
   },
   "vec_uint16_4_encode_ssz_proof_generated.bend": {
@@ -4733,7 +4873,8 @@
     "sub_vec_uint16_4.bend",
     "wordpos_vec_uint16_4.bend",
     "capacity_vec_uint16_4.bend",
-    "mutval_generic_vec_uint16_4.bend"
+    "mutval_generic_vec_uint16_4.bend",
+    "mutconst_vec_uint16_4.bend"
    ]
   },
   "vec_uint16_4_decode_ssz_proof_generated.bend": {
@@ -4752,7 +4893,8 @@
    "generated_name": "vec_uint16_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_4.bend"
    ]
   },
   "vec_uint16_512_encode_ssz_proof_generated.bend": {
@@ -4762,7 +4904,8 @@
    "files": [
     "sub_vec_uint16_512.bend",
     "capacity_vec_uint16_512.bend",
-    "mutval_generic_vec_uint16_512.bend"
+    "mutval_generic_vec_uint16_512.bend",
+    "mutconst_vec_uint16_512.bend"
    ]
   },
   "vec_uint16_512_decode_ssz_proof_generated.bend": {
@@ -4781,7 +4924,8 @@
    "generated_name": "vec_uint16_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_512.bend"
    ]
   },
   "vec_uint16_513_encode_ssz_proof_generated.bend": {
@@ -4791,7 +4935,8 @@
    "files": [
     "sub_vec_uint16_513.bend",
     "capacity_vec_uint16_513.bend",
-    "mutval_generic_vec_uint16_513.bend"
+    "mutval_generic_vec_uint16_513.bend",
+    "mutconst_vec_uint16_513.bend"
    ]
   },
   "vec_uint16_513_decode_ssz_proof_generated.bend": {
@@ -4810,7 +4955,8 @@
    "generated_name": "vec_uint16_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_513.bend"
    ]
   },
   "vec_uint16_5_encode_ssz_proof_generated.bend": {
@@ -4820,7 +4966,8 @@
    "files": [
     "sub_vec_uint16_5.bend",
     "capacity_vec_uint16_5.bend",
-    "mutval_generic_vec_uint16_5.bend"
+    "mutval_generic_vec_uint16_5.bend",
+    "mutconst_vec_uint16_5.bend"
    ]
   },
   "vec_uint16_5_decode_ssz_proof_generated.bend": {
@@ -4839,7 +4986,8 @@
    "generated_name": "vec_uint16_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_5.bend"
    ]
   },
   "vec_uint16_8_encode_ssz_proof_generated.bend": {
@@ -4850,7 +4998,8 @@
     "sub_vec_uint16_8.bend",
     "wordpos_vec_uint16_8.bend",
     "capacity_vec_uint16_8.bend",
-    "mutval_generic_vec_uint16_8.bend"
+    "mutval_generic_vec_uint16_8.bend",
+    "mutconst_vec_uint16_8.bend"
    ]
   },
   "vec_uint16_8_decode_ssz_proof_generated.bend": {
@@ -4869,7 +5018,8 @@
    "generated_name": "vec_uint16_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint16_8.bend"
    ]
   },
   "proglist_uint256_encode_ssz_proof_generated.bend": {
@@ -4878,7 +5028,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint256_enc.bend",
-    "mutval_generic_proglist_uint256.bend"
+    "mutval_generic_proglist_uint256.bend",
+    "mutconst_proglist_uint256.bend"
    ]
   },
   "proglist_uint256_decode_ssz_proof_generated.bend": {
@@ -4907,7 +5058,8 @@
    "files": [
     "spec_gcodec_vec_uint256_16.bend",
     "capacity_vec_uint256_16.bend",
-    "mutval_generic_vec_uint256_16.bend"
+    "mutval_generic_vec_uint256_16.bend",
+    "mutconst_vec_uint256_16.bend"
    ]
   },
   "vec_uint256_16_decode_ssz_proof_generated.bend": {
@@ -4928,7 +5080,8 @@
    "generated_name": "vec_uint256_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_16.bend"
    ]
   },
   "vec_uint256_1_encode_ssz_proof_generated.bend": {
@@ -4939,7 +5092,8 @@
     "spec_gcodec_vec_uint256_1.bend",
     "wordpos_vec_uint256_1.bend",
     "capacity_vec_uint256_1.bend",
-    "mutval_generic_vec_uint256_1.bend"
+    "mutval_generic_vec_uint256_1.bend",
+    "mutconst_vec_uint256_1.bend"
    ]
   },
   "vec_uint256_1_decode_ssz_proof_generated.bend": {
@@ -4960,7 +5114,8 @@
    "generated_name": "vec_uint256_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_1.bend"
    ]
   },
   "vec_uint256_2_encode_ssz_proof_generated.bend": {
@@ -4971,7 +5126,8 @@
     "spec_gcodec_vec_uint256_2.bend",
     "wordpos_vec_uint256_2.bend",
     "capacity_vec_uint256_2.bend",
-    "mutval_generic_vec_uint256_2.bend"
+    "mutval_generic_vec_uint256_2.bend",
+    "mutconst_vec_uint256_2.bend"
    ]
   },
   "vec_uint256_2_decode_ssz_proof_generated.bend": {
@@ -4992,7 +5148,8 @@
    "generated_name": "vec_uint256_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_2.bend"
    ]
   },
   "vec_uint256_31_encode_ssz_proof_generated.bend": {
@@ -5002,7 +5159,8 @@
    "files": [
     "spec_gcodec_vec_uint256_31.bend",
     "capacity_vec_uint256_31.bend",
-    "mutval_generic_vec_uint256_31.bend"
+    "mutval_generic_vec_uint256_31.bend",
+    "mutconst_vec_uint256_31.bend"
    ]
   },
   "vec_uint256_31_decode_ssz_proof_generated.bend": {
@@ -5023,7 +5181,8 @@
    "generated_name": "vec_uint256_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_31.bend"
    ]
   },
   "vec_uint256_3_encode_ssz_proof_generated.bend": {
@@ -5034,7 +5193,8 @@
     "spec_gcodec_vec_uint256_3.bend",
     "wordpos_vec_uint256_3.bend",
     "capacity_vec_uint256_3.bend",
-    "mutval_generic_vec_uint256_3.bend"
+    "mutval_generic_vec_uint256_3.bend",
+    "mutconst_vec_uint256_3.bend"
    ]
   },
   "vec_uint256_3_decode_ssz_proof_generated.bend": {
@@ -5055,7 +5215,8 @@
    "generated_name": "vec_uint256_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_3.bend"
    ]
   },
   "vec_uint256_4_encode_ssz_proof_generated.bend": {
@@ -5066,7 +5227,8 @@
     "spec_gcodec_vec_uint256_4.bend",
     "wordpos_vec_uint256_4.bend",
     "capacity_vec_uint256_4.bend",
-    "mutval_generic_vec_uint256_4.bend"
+    "mutval_generic_vec_uint256_4.bend",
+    "mutconst_vec_uint256_4.bend"
    ]
   },
   "vec_uint256_4_decode_ssz_proof_generated.bend": {
@@ -5087,7 +5249,8 @@
    "generated_name": "vec_uint256_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_4.bend"
    ]
   },
   "vec_uint256_512_encode_ssz_proof_generated.bend": {
@@ -5096,7 +5259,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint256_512.bend",
-    "mutval_generic_vec_uint256_512.bend"
+    "mutval_generic_vec_uint256_512.bend",
+    "mutconst_vec_uint256_512.bend"
    ]
   },
   "vec_uint256_512_decode_ssz_proof_generated.bend": {
@@ -5115,7 +5279,8 @@
    "generated_name": "vec_uint256_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_512.bend"
    ]
   },
   "vec_uint256_513_encode_ssz_proof_generated.bend": {
@@ -5124,7 +5289,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint256_513.bend",
-    "mutval_generic_vec_uint256_513.bend"
+    "mutval_generic_vec_uint256_513.bend",
+    "mutconst_vec_uint256_513.bend"
    ]
   },
   "vec_uint256_513_decode_ssz_proof_generated.bend": {
@@ -5143,7 +5309,8 @@
    "generated_name": "vec_uint256_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_513.bend"
    ]
   },
   "vec_uint256_5_encode_ssz_proof_generated.bend": {
@@ -5154,7 +5321,8 @@
     "spec_gcodec_vec_uint256_5.bend",
     "wordpos_vec_uint256_5.bend",
     "capacity_vec_uint256_5.bend",
-    "mutval_generic_vec_uint256_5.bend"
+    "mutval_generic_vec_uint256_5.bend",
+    "mutconst_vec_uint256_5.bend"
    ]
   },
   "vec_uint256_5_decode_ssz_proof_generated.bend": {
@@ -5175,7 +5343,8 @@
    "generated_name": "vec_uint256_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_5.bend"
    ]
   },
   "vec_uint256_8_encode_ssz_proof_generated.bend": {
@@ -5186,7 +5355,8 @@
     "spec_gcodec_vec_uint256_8.bend",
     "wordpos_vec_uint256_8.bend",
     "capacity_vec_uint256_8.bend",
-    "mutval_generic_vec_uint256_8.bend"
+    "mutval_generic_vec_uint256_8.bend",
+    "mutconst_vec_uint256_8.bend"
    ]
   },
   "vec_uint256_8_decode_ssz_proof_generated.bend": {
@@ -5207,7 +5377,8 @@
    "generated_name": "vec_uint256_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint256_8.bend"
    ]
   },
   "proglist_uint32_encode_ssz_proof_generated.bend": {
@@ -5216,7 +5387,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint32_enc.bend",
-    "mutval_generic_proglist_uint32.bend"
+    "mutval_generic_proglist_uint32.bend",
+    "mutconst_proglist_uint32.bend"
    ]
   },
   "proglist_uint32_decode_ssz_proof_generated.bend": {
@@ -5246,7 +5418,8 @@
     "spec_gcodec_vec_uint32_16.bend",
     "wordpos_vec_uint32_16.bend",
     "capacity_vec_uint32_16.bend",
-    "mutval_generic_vec_uint32_16.bend"
+    "mutval_generic_vec_uint32_16.bend",
+    "mutconst_vec_uint32_16.bend"
    ]
   },
   "vec_uint32_16_decode_ssz_proof_generated.bend": {
@@ -5267,7 +5440,8 @@
    "generated_name": "vec_uint32_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_16.bend"
    ]
   },
   "vec_uint32_1_encode_ssz_proof_generated.bend": {
@@ -5278,7 +5452,8 @@
     "spec_gcodec_vec_uint32_1.bend",
     "wordpos_vec_uint32_1.bend",
     "capacity_vec_uint32_1.bend",
-    "mutval_generic_vec_uint32_1.bend"
+    "mutval_generic_vec_uint32_1.bend",
+    "mutconst_vec_uint32_1.bend"
    ]
   },
   "vec_uint32_1_decode_ssz_proof_generated.bend": {
@@ -5299,7 +5474,8 @@
    "generated_name": "vec_uint32_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_1.bend"
    ]
   },
   "vec_uint32_2_encode_ssz_proof_generated.bend": {
@@ -5310,7 +5486,8 @@
     "spec_gcodec_vec_uint32_2.bend",
     "wordpos_vec_uint32_2.bend",
     "capacity_vec_uint32_2.bend",
-    "mutval_generic_vec_uint32_2.bend"
+    "mutval_generic_vec_uint32_2.bend",
+    "mutconst_vec_uint32_2.bend"
    ]
   },
   "vec_uint32_2_decode_ssz_proof_generated.bend": {
@@ -5331,7 +5508,8 @@
    "generated_name": "vec_uint32_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_2.bend"
    ]
   },
   "vec_uint32_31_encode_ssz_proof_generated.bend": {
@@ -5342,7 +5520,8 @@
     "spec_gcodec_vec_uint32_31.bend",
     "wordpos_vec_uint32_31.bend",
     "capacity_vec_uint32_31.bend",
-    "mutval_generic_vec_uint32_31.bend"
+    "mutval_generic_vec_uint32_31.bend",
+    "mutconst_vec_uint32_31.bend"
    ]
   },
   "vec_uint32_31_decode_ssz_proof_generated.bend": {
@@ -5363,7 +5542,8 @@
    "generated_name": "vec_uint32_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_31.bend"
    ]
   },
   "vec_uint32_3_encode_ssz_proof_generated.bend": {
@@ -5374,7 +5554,8 @@
     "spec_gcodec_vec_uint32_3.bend",
     "wordpos_vec_uint32_3.bend",
     "capacity_vec_uint32_3.bend",
-    "mutval_generic_vec_uint32_3.bend"
+    "mutval_generic_vec_uint32_3.bend",
+    "mutconst_vec_uint32_3.bend"
    ]
   },
   "vec_uint32_3_decode_ssz_proof_generated.bend": {
@@ -5395,7 +5576,8 @@
    "generated_name": "vec_uint32_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_3.bend"
    ]
   },
   "vec_uint32_4_encode_ssz_proof_generated.bend": {
@@ -5406,7 +5588,8 @@
     "spec_gcodec_vec_uint32_4.bend",
     "wordpos_vec_uint32_4.bend",
     "capacity_vec_uint32_4.bend",
-    "mutval_generic_vec_uint32_4.bend"
+    "mutval_generic_vec_uint32_4.bend",
+    "mutconst_vec_uint32_4.bend"
    ]
   },
   "vec_uint32_4_decode_ssz_proof_generated.bend": {
@@ -5427,7 +5610,8 @@
    "generated_name": "vec_uint32_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_4.bend"
    ]
   },
   "vec_uint32_512_encode_ssz_proof_generated.bend": {
@@ -5437,7 +5621,8 @@
    "files": [
     "spec_garr_vec_uint32_512.bend",
     "capacity_vec_uint32_512.bend",
-    "mutval_generic_vec_uint32_512.bend"
+    "mutval_generic_vec_uint32_512.bend",
+    "mutconst_vec_uint32_512.bend"
    ]
   },
   "vec_uint32_512_decode_ssz_proof_generated.bend": {
@@ -5456,7 +5641,8 @@
    "generated_name": "vec_uint32_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_512.bend"
    ]
   },
   "vec_uint32_513_encode_ssz_proof_generated.bend": {
@@ -5466,7 +5652,8 @@
    "files": [
     "spec_garr_vec_uint32_513.bend",
     "capacity_vec_uint32_513.bend",
-    "mutval_generic_vec_uint32_513.bend"
+    "mutval_generic_vec_uint32_513.bend",
+    "mutconst_vec_uint32_513.bend"
    ]
   },
   "vec_uint32_513_decode_ssz_proof_generated.bend": {
@@ -5485,7 +5672,8 @@
    "generated_name": "vec_uint32_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_513.bend"
    ]
   },
   "vec_uint32_5_encode_ssz_proof_generated.bend": {
@@ -5496,7 +5684,8 @@
     "spec_gcodec_vec_uint32_5.bend",
     "wordpos_vec_uint32_5.bend",
     "capacity_vec_uint32_5.bend",
-    "mutval_generic_vec_uint32_5.bend"
+    "mutval_generic_vec_uint32_5.bend",
+    "mutconst_vec_uint32_5.bend"
    ]
   },
   "vec_uint32_5_decode_ssz_proof_generated.bend": {
@@ -5517,7 +5706,8 @@
    "generated_name": "vec_uint32_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_5.bend"
    ]
   },
   "vec_uint32_8_encode_ssz_proof_generated.bend": {
@@ -5528,7 +5718,8 @@
     "spec_gcodec_vec_uint32_8.bend",
     "wordpos_vec_uint32_8.bend",
     "capacity_vec_uint32_8.bend",
-    "mutval_generic_vec_uint32_8.bend"
+    "mutval_generic_vec_uint32_8.bend",
+    "mutconst_vec_uint32_8.bend"
    ]
   },
   "vec_uint32_8_decode_ssz_proof_generated.bend": {
@@ -5549,7 +5740,8 @@
    "generated_name": "vec_uint32_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint32_8.bend"
    ]
   },
   "proglist_uint64_encode_ssz_proof_generated.bend": {
@@ -5558,7 +5750,8 @@
    "op": "encode_ssz",
    "files": [
     "var_plist_proglist_uint64_enc.bend",
-    "mutval_generic_proglist_uint64.bend"
+    "mutval_generic_proglist_uint64.bend",
+    "mutconst_proglist_uint64.bend"
    ]
   },
   "proglist_uint64_decode_ssz_proof_generated.bend": {
@@ -5588,7 +5781,8 @@
     "spec_gcodec_vec_uint64_16.bend",
     "wordpos_vec_uint64_16.bend",
     "capacity_vec_uint64_16.bend",
-    "mutval_generic_vec_uint64_16.bend"
+    "mutval_generic_vec_uint64_16.bend",
+    "mutconst_vec_uint64_16.bend"
    ]
   },
   "vec_uint64_16_decode_ssz_proof_generated.bend": {
@@ -5609,7 +5803,8 @@
    "generated_name": "vec_uint64_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_16.bend"
    ]
   },
   "vec_uint64_1_encode_ssz_proof_generated.bend": {
@@ -5620,7 +5815,8 @@
     "spec_gcodec_vec_uint64_1.bend",
     "wordpos_vec_uint64_1.bend",
     "capacity_vec_uint64_1.bend",
-    "mutval_generic_vec_uint64_1.bend"
+    "mutval_generic_vec_uint64_1.bend",
+    "mutconst_vec_uint64_1.bend"
    ]
   },
   "vec_uint64_1_decode_ssz_proof_generated.bend": {
@@ -5641,7 +5837,8 @@
    "generated_name": "vec_uint64_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_1.bend"
    ]
   },
   "vec_uint64_2_encode_ssz_proof_generated.bend": {
@@ -5652,7 +5849,8 @@
     "spec_gcodec_vec_uint64_2.bend",
     "wordpos_vec_uint64_2.bend",
     "capacity_vec_uint64_2.bend",
-    "mutval_generic_vec_uint64_2.bend"
+    "mutval_generic_vec_uint64_2.bend",
+    "mutconst_vec_uint64_2.bend"
    ]
   },
   "vec_uint64_2_decode_ssz_proof_generated.bend": {
@@ -5673,7 +5871,8 @@
    "generated_name": "vec_uint64_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_2.bend"
    ]
   },
   "vec_uint64_31_encode_ssz_proof_generated.bend": {
@@ -5684,7 +5883,8 @@
     "spec_gcodec_vec_uint64_31.bend",
     "wordpos_vec_uint64_31.bend",
     "capacity_vec_uint64_31.bend",
-    "mutval_generic_vec_uint64_31.bend"
+    "mutval_generic_vec_uint64_31.bend",
+    "mutconst_vec_uint64_31.bend"
    ]
   },
   "vec_uint64_31_decode_ssz_proof_generated.bend": {
@@ -5705,7 +5905,8 @@
    "generated_name": "vec_uint64_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_31.bend"
    ]
   },
   "vec_uint64_3_encode_ssz_proof_generated.bend": {
@@ -5716,7 +5917,8 @@
     "spec_gcodec_vec_uint64_3.bend",
     "wordpos_vec_uint64_3.bend",
     "capacity_vec_uint64_3.bend",
-    "mutval_generic_vec_uint64_3.bend"
+    "mutval_generic_vec_uint64_3.bend",
+    "mutconst_vec_uint64_3.bend"
    ]
   },
   "vec_uint64_3_decode_ssz_proof_generated.bend": {
@@ -5737,7 +5939,8 @@
    "generated_name": "vec_uint64_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_3.bend"
    ]
   },
   "vec_uint64_4_encode_ssz_proof_generated.bend": {
@@ -5748,7 +5951,8 @@
     "spec_gcodec_vec_uint64_4.bend",
     "wordpos_vec_uint64_4.bend",
     "capacity_vec_uint64_4.bend",
-    "mutval_generic_vec_uint64_4.bend"
+    "mutval_generic_vec_uint64_4.bend",
+    "mutconst_vec_uint64_4.bend"
    ]
   },
   "vec_uint64_4_decode_ssz_proof_generated.bend": {
@@ -5769,7 +5973,8 @@
    "generated_name": "vec_uint64_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_4.bend"
    ]
   },
   "vec_uint64_512_encode_ssz_proof_generated.bend": {
@@ -5779,7 +5984,8 @@
    "files": [
     "spec_garr_vec_uint64_512.bend",
     "capacity_vec_uint64_512.bend",
-    "mutval_generic_vec_uint64_512.bend"
+    "mutval_generic_vec_uint64_512.bend",
+    "mutconst_vec_uint64_512.bend"
    ]
   },
   "vec_uint64_512_decode_ssz_proof_generated.bend": {
@@ -5798,7 +6004,8 @@
    "generated_name": "vec_uint64_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_512.bend"
    ]
   },
   "vec_uint64_513_encode_ssz_proof_generated.bend": {
@@ -5807,7 +6014,8 @@
    "op": "encode_ssz",
    "files": [
     "spec_garr_vec_uint64_513.bend",
-    "mutval_generic_vec_uint64_513.bend"
+    "mutval_generic_vec_uint64_513.bend",
+    "mutconst_vec_uint64_513.bend"
    ]
   },
   "vec_uint64_513_decode_ssz_proof_generated.bend": {
@@ -5826,7 +6034,8 @@
    "generated_name": "vec_uint64_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_513.bend"
    ]
   },
   "vec_uint64_5_encode_ssz_proof_generated.bend": {
@@ -5837,7 +6046,8 @@
     "spec_gcodec_vec_uint64_5.bend",
     "wordpos_vec_uint64_5.bend",
     "capacity_vec_uint64_5.bend",
-    "mutval_generic_vec_uint64_5.bend"
+    "mutval_generic_vec_uint64_5.bend",
+    "mutconst_vec_uint64_5.bend"
    ]
   },
   "vec_uint64_5_decode_ssz_proof_generated.bend": {
@@ -5858,7 +6068,8 @@
    "generated_name": "vec_uint64_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_5.bend"
    ]
   },
   "vec_uint64_8_encode_ssz_proof_generated.bend": {
@@ -5869,7 +6080,8 @@
     "spec_gcodec_vec_uint64_8.bend",
     "wordpos_vec_uint64_8.bend",
     "capacity_vec_uint64_8.bend",
-    "mutval_generic_vec_uint64_8.bend"
+    "mutval_generic_vec_uint64_8.bend",
+    "mutconst_vec_uint64_8.bend"
    ]
   },
   "vec_uint64_8_decode_ssz_proof_generated.bend": {
@@ -5890,7 +6102,8 @@
    "generated_name": "vec_uint64_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_vec_uint64_8.bend"
    ]
   },
   "ProgressiveTestStruct_encode_ssz_proof_generated.bend": {
@@ -5898,7 +6111,8 @@
    "generated_name": "ProgressiveTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ProgressiveTestStruct_enc.bend"
+    "var_codec_ProgressiveTestStruct_enc.bend",
+    "mutconst_ProgressiveTestStruct.bend"
    ]
   },
   "ProgressiveTestStruct_decode_ssz_proof_generated.bend": {
@@ -5925,7 +6139,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BitsStruct_enc.bend",
-    "capacity_BitsStruct.bend"
+    "capacity_BitsStruct.bend",
+    "mutconst_BitsStruct.bend"
    ]
   },
   "BitsStruct_decode_ssz_proof_generated.bend": {
@@ -5951,7 +6166,8 @@
    "generated_name": "ProgressiveBitsStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ProgressiveBitsStruct_enc.bend"
+    "var_codec_ProgressiveBitsStruct_enc.bend",
+    "mutconst_ProgressiveBitsStruct.bend"
    ]
   },
   "ProgressiveBitsStruct_decode_ssz_proof_generated.bend": {
@@ -6032,7 +6248,8 @@
    "generated_name": "VarTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_VarTestStruct_enc.bend"
+    "var_codec_VarTestStruct_enc.bend",
+    "mutconst_VarTestStruct.bend"
    ]
   },
   "VarTestStruct_decode_ssz_proof_generated.bend": {
@@ -6058,7 +6275,8 @@
    "generated_name": "ComplexTestStruct",
    "op": "encode_ssz",
    "files": [
-    "var_codec_ComplexTestStruct_enc.bend"
+    "var_codec_ComplexTestStruct_enc.bend",
+    "mutconst_ComplexTestStruct.bend"
    ]
   },
   "ComplexTestStruct_decode_ssz_proof_generated.bend": {
@@ -6114,7 +6332,8 @@
    "files": [
     "var_bits_enc_bitlist_15.bend",
     "capacity_bitlist_15.bend",
-    "mutval_generic_bitlist_15.bend"
+    "mutval_generic_bitlist_15.bend",
+    "mutconst_bitlist_15.bend"
    ]
   },
   "bitlist_15_decode_ssz_proof_generated.bend": {
@@ -6133,7 +6352,8 @@
    "generated_name": "bitlist_15",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_15.bend"
    ]
   },
   "bitlist_16_encode_ssz_proof_generated.bend": {
@@ -6143,7 +6363,8 @@
    "files": [
     "var_bits_enc_bitlist_16.bend",
     "capacity_bitlist_16.bend",
-    "mutval_generic_bitlist_16.bend"
+    "mutval_generic_bitlist_16.bend",
+    "mutconst_bitlist_16.bend"
    ]
   },
   "bitlist_16_decode_ssz_proof_generated.bend": {
@@ -6162,7 +6383,8 @@
    "generated_name": "bitlist_16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_16.bend"
    ]
   },
   "bitlist_17_encode_ssz_proof_generated.bend": {
@@ -6172,7 +6394,8 @@
    "files": [
     "var_bits_enc_bitlist_17.bend",
     "capacity_bitlist_17.bend",
-    "mutval_generic_bitlist_17.bend"
+    "mutval_generic_bitlist_17.bend",
+    "mutconst_bitlist_17.bend"
    ]
   },
   "bitlist_17_decode_ssz_proof_generated.bend": {
@@ -6191,7 +6414,8 @@
    "generated_name": "bitlist_17",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_17.bend"
    ]
   },
   "bitlist_1_encode_ssz_proof_generated.bend": {
@@ -6201,7 +6425,8 @@
    "files": [
     "var_bits_enc_bitlist_1.bend",
     "capacity_bitlist_1.bend",
-    "mutval_generic_bitlist_1.bend"
+    "mutval_generic_bitlist_1.bend",
+    "mutconst_bitlist_1.bend"
    ]
   },
   "bitlist_1_decode_ssz_proof_generated.bend": {
@@ -6220,7 +6445,8 @@
    "generated_name": "bitlist_1",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_1.bend"
    ]
   },
   "bitlist_2_encode_ssz_proof_generated.bend": {
@@ -6230,7 +6456,8 @@
    "files": [
     "var_bits_enc_bitlist_2.bend",
     "capacity_bitlist_2.bend",
-    "mutval_generic_bitlist_2.bend"
+    "mutval_generic_bitlist_2.bend",
+    "mutconst_bitlist_2.bend"
    ]
   },
   "bitlist_2_decode_ssz_proof_generated.bend": {
@@ -6249,7 +6476,8 @@
    "generated_name": "bitlist_2",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_2.bend"
    ]
   },
   "bitlist_31_encode_ssz_proof_generated.bend": {
@@ -6259,7 +6487,8 @@
    "files": [
     "var_bits_enc_bitlist_31.bend",
     "capacity_bitlist_31.bend",
-    "mutval_generic_bitlist_31.bend"
+    "mutval_generic_bitlist_31.bend",
+    "mutconst_bitlist_31.bend"
    ]
   },
   "bitlist_31_decode_ssz_proof_generated.bend": {
@@ -6278,7 +6507,8 @@
    "generated_name": "bitlist_31",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_31.bend"
    ]
   },
   "bitlist_32_encode_ssz_proof_generated.bend": {
@@ -6287,7 +6517,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bits_enc_bitlist_32.bend",
-    "mutval_generic_bitlist_32.bend"
+    "mutval_generic_bitlist_32.bend",
+    "mutconst_bitlist_32.bend"
    ]
   },
   "bitlist_32_decode_ssz_proof_generated.bend": {
@@ -6306,7 +6537,8 @@
    "generated_name": "bitlist_32",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_32.bend"
    ]
   },
   "bitlist_33_encode_ssz_proof_generated.bend": {
@@ -6315,7 +6547,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bits_enc_bitlist_33.bend",
-    "mutval_generic_bitlist_33.bend"
+    "mutval_generic_bitlist_33.bend",
+    "mutconst_bitlist_33.bend"
    ]
   },
   "bitlist_33_decode_ssz_proof_generated.bend": {
@@ -6334,7 +6567,8 @@
    "generated_name": "bitlist_33",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_33.bend"
    ]
   },
   "bitlist_3_encode_ssz_proof_generated.bend": {
@@ -6344,7 +6578,8 @@
    "files": [
     "var_bits_enc_bitlist_3.bend",
     "capacity_bitlist_3.bend",
-    "mutval_generic_bitlist_3.bend"
+    "mutval_generic_bitlist_3.bend",
+    "mutconst_bitlist_3.bend"
    ]
   },
   "bitlist_3_decode_ssz_proof_generated.bend": {
@@ -6363,7 +6598,8 @@
    "generated_name": "bitlist_3",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_3.bend"
    ]
   },
   "bitlist_4_encode_ssz_proof_generated.bend": {
@@ -6373,7 +6609,8 @@
    "files": [
     "var_bits_enc_bitlist_4.bend",
     "capacity_bitlist_4.bend",
-    "mutval_generic_bitlist_4.bend"
+    "mutval_generic_bitlist_4.bend",
+    "mutconst_bitlist_4.bend"
    ]
   },
   "bitlist_4_decode_ssz_proof_generated.bend": {
@@ -6392,7 +6629,8 @@
    "generated_name": "bitlist_4",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_4.bend"
    ]
   },
   "bitlist_511_encode_ssz_proof_generated.bend": {
@@ -6401,7 +6639,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bits_enc_bitlist_511.bend",
-    "mutval_generic_bitlist_511.bend"
+    "mutval_generic_bitlist_511.bend",
+    "mutconst_bitlist_511.bend"
    ]
   },
   "bitlist_511_decode_ssz_proof_generated.bend": {
@@ -6420,7 +6659,8 @@
    "generated_name": "bitlist_511",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_511.bend"
    ]
   },
   "bitlist_512_encode_ssz_proof_generated.bend": {
@@ -6429,7 +6669,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bits_enc_bitlist_512.bend",
-    "mutval_generic_bitlist_512.bend"
+    "mutval_generic_bitlist_512.bend",
+    "mutconst_bitlist_512.bend"
    ]
   },
   "bitlist_512_decode_ssz_proof_generated.bend": {
@@ -6448,7 +6689,8 @@
    "generated_name": "bitlist_512",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_512.bend"
    ]
   },
   "bitlist_513_encode_ssz_proof_generated.bend": {
@@ -6457,7 +6699,8 @@
    "op": "encode_ssz",
    "files": [
     "var_bits_enc_bitlist_513.bend",
-    "mutval_generic_bitlist_513.bend"
+    "mutval_generic_bitlist_513.bend",
+    "mutconst_bitlist_513.bend"
    ]
   },
   "bitlist_513_decode_ssz_proof_generated.bend": {
@@ -6476,7 +6719,8 @@
    "generated_name": "bitlist_513",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_513.bend"
    ]
   },
   "bitlist_5_encode_ssz_proof_generated.bend": {
@@ -6486,7 +6730,8 @@
    "files": [
     "var_bits_enc_bitlist_5.bend",
     "capacity_bitlist_5.bend",
-    "mutval_generic_bitlist_5.bend"
+    "mutval_generic_bitlist_5.bend",
+    "mutconst_bitlist_5.bend"
    ]
   },
   "bitlist_5_decode_ssz_proof_generated.bend": {
@@ -6505,7 +6750,8 @@
    "generated_name": "bitlist_5",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_5.bend"
    ]
   },
   "bitlist_6_encode_ssz_proof_generated.bend": {
@@ -6515,7 +6761,8 @@
    "files": [
     "var_bits_enc_bitlist_6.bend",
     "capacity_bitlist_6.bend",
-    "mutval_generic_bitlist_6.bend"
+    "mutval_generic_bitlist_6.bend",
+    "mutconst_bitlist_6.bend"
    ]
   },
   "bitlist_6_decode_ssz_proof_generated.bend": {
@@ -6534,7 +6781,8 @@
    "generated_name": "bitlist_6",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_6.bend"
    ]
   },
   "bitlist_7_encode_ssz_proof_generated.bend": {
@@ -6544,7 +6792,8 @@
    "files": [
     "var_bits_enc_bitlist_7.bend",
     "capacity_bitlist_7.bend",
-    "mutval_generic_bitlist_7.bend"
+    "mutval_generic_bitlist_7.bend",
+    "mutconst_bitlist_7.bend"
    ]
   },
   "bitlist_7_decode_ssz_proof_generated.bend": {
@@ -6563,7 +6812,8 @@
    "generated_name": "bitlist_7",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_7.bend"
    ]
   },
   "bitlist_8_encode_ssz_proof_generated.bend": {
@@ -6573,7 +6823,8 @@
    "files": [
     "var_bits_enc_bitlist_8.bend",
     "capacity_bitlist_8.bend",
-    "mutval_generic_bitlist_8.bend"
+    "mutval_generic_bitlist_8.bend",
+    "mutconst_bitlist_8.bend"
    ]
   },
   "bitlist_8_decode_ssz_proof_generated.bend": {
@@ -6592,7 +6843,8 @@
    "generated_name": "bitlist_8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_8.bend"
    ]
   },
   "bitlist_9_encode_ssz_proof_generated.bend": {
@@ -6602,7 +6854,8 @@
    "files": [
     "var_bits_enc_bitlist_9.bend",
     "capacity_bitlist_9.bend",
-    "mutval_generic_bitlist_9.bend"
+    "mutval_generic_bitlist_9.bend",
+    "mutconst_bitlist_9.bend"
    ]
   },
   "bitlist_9_decode_ssz_proof_generated.bend": {
@@ -6621,7 +6874,8 @@
    "generated_name": "bitlist_9",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "mutconst_bitlist_9.bend"
    ]
   },
   "bitvector_15_encode_ssz_proof_generated.bend": {
@@ -6631,7 +6885,8 @@
    "files": [
     "sub_bitvector_15.bend",
     "wordpos_bitvector_15.bend",
-    "mutval_generic_bitvector_15.bend"
+    "mutval_generic_bitvector_15.bend",
+    "mutconst_bitvector_15.bend"
    ]
   },
   "bitvector_15_decode_ssz_proof_generated.bend": {
@@ -6660,7 +6915,8 @@
    "files": [
     "sub_bitvector_16.bend",
     "wordpos_bitvector_16.bend",
-    "mutval_generic_bitvector_16.bend"
+    "mutval_generic_bitvector_16.bend",
+    "mutconst_bitvector_16.bend"
    ]
   },
   "bitvector_16_decode_ssz_proof_generated.bend": {
@@ -6689,7 +6945,8 @@
    "files": [
     "sub_bitvector_17.bend",
     "wordpos_bitvector_17.bend",
-    "mutval_generic_bitvector_17.bend"
+    "mutval_generic_bitvector_17.bend",
+    "mutconst_bitvector_17.bend"
    ]
   },
   "bitvector_17_decode_ssz_proof_generated.bend": {
@@ -6718,7 +6975,8 @@
    "files": [
     "sub_bitvector_1.bend",
     "wordpos_bitvector_1.bend",
-    "mutval_generic_bitvector_1.bend"
+    "mutval_generic_bitvector_1.bend",
+    "mutconst_bitvector_1.bend"
    ]
   },
   "bitvector_1_decode_ssz_proof_generated.bend": {
@@ -6747,7 +7005,8 @@
    "files": [
     "sub_bitvector_2.bend",
     "wordpos_bitvector_2.bend",
-    "mutval_generic_bitvector_2.bend"
+    "mutval_generic_bitvector_2.bend",
+    "mutconst_bitvector_2.bend"
    ]
   },
   "bitvector_2_decode_ssz_proof_generated.bend": {
@@ -6776,7 +7035,8 @@
    "files": [
     "sub_bitvector_31.bend",
     "wordpos_bitvector_31.bend",
-    "mutval_generic_bitvector_31.bend"
+    "mutval_generic_bitvector_31.bend",
+    "mutconst_bitvector_31.bend"
    ]
   },
   "bitvector_31_decode_ssz_proof_generated.bend": {
@@ -6806,7 +7066,8 @@
     "spec_gcodec_bitvector_32.bend",
     "wordpos_bitvector_32.bend",
     "gcodec_0.bend",
-    "mutval_generic_bitvector_32.bend"
+    "mutval_generic_bitvector_32.bend",
+    "mutconst_bitvector_32.bend"
    ]
   },
   "bitvector_32_decode_ssz_proof_generated.bend": {
@@ -6838,7 +7099,8 @@
    "files": [
     "sub_bitvector_33.bend",
     "wordpos_bitvector_33.bend",
-    "mutval_generic_bitvector_33.bend"
+    "mutval_generic_bitvector_33.bend",
+    "mutconst_bitvector_33.bend"
    ]
   },
   "bitvector_33_decode_ssz_proof_generated.bend": {
@@ -6867,7 +7129,8 @@
    "files": [
     "sub_bitvector_3.bend",
     "wordpos_bitvector_3.bend",
-    "mutval_generic_bitvector_3.bend"
+    "mutval_generic_bitvector_3.bend",
+    "mutconst_bitvector_3.bend"
    ]
   },
   "bitvector_3_decode_ssz_proof_generated.bend": {
@@ -6896,7 +7159,8 @@
    "files": [
     "sub_bitvector_4.bend",
     "wordpos_bitvector_4.bend",
-    "mutval_generic_bitvector_4.bend"
+    "mutval_generic_bitvector_4.bend",
+    "mutconst_bitvector_4.bend"
    ]
   },
   "bitvector_4_decode_ssz_proof_generated.bend": {
@@ -6925,7 +7189,8 @@
    "files": [
     "sub_bitvector_511.bend",
     "wordpos_bitvector_511.bend",
-    "mutval_generic_bitvector_511.bend"
+    "mutval_generic_bitvector_511.bend",
+    "mutconst_bitvector_511.bend"
    ]
   },
   "bitvector_511_decode_ssz_proof_generated.bend": {
@@ -6955,7 +7220,8 @@
     "spec_gcodec_bitvector_512.bend",
     "wordpos_bitvector_512.bend",
     "gcodec_0.bend",
-    "mutval_generic_bitvector_512.bend"
+    "mutval_generic_bitvector_512.bend",
+    "mutconst_bitvector_512.bend"
    ]
   },
   "bitvector_512_decode_ssz_proof_generated.bend": {
@@ -6987,7 +7253,8 @@
    "files": [
     "sub_bitvector_513.bend",
     "wordpos_bitvector_513.bend",
-    "mutval_generic_bitvector_513.bend"
+    "mutval_generic_bitvector_513.bend",
+    "mutconst_bitvector_513.bend"
    ]
   },
   "bitvector_513_decode_ssz_proof_generated.bend": {
@@ -7016,7 +7283,8 @@
    "files": [
     "sub_bitvector_5.bend",
     "wordpos_bitvector_5.bend",
-    "mutval_generic_bitvector_5.bend"
+    "mutval_generic_bitvector_5.bend",
+    "mutconst_bitvector_5.bend"
    ]
   },
   "bitvector_5_decode_ssz_proof_generated.bend": {
@@ -7045,7 +7313,8 @@
    "files": [
     "sub_bitvector_6.bend",
     "wordpos_bitvector_6.bend",
-    "mutval_generic_bitvector_6.bend"
+    "mutval_generic_bitvector_6.bend",
+    "mutconst_bitvector_6.bend"
    ]
   },
   "bitvector_6_decode_ssz_proof_generated.bend": {
@@ -7074,7 +7343,8 @@
    "files": [
     "sub_bitvector_7.bend",
     "wordpos_bitvector_7.bend",
-    "mutval_generic_bitvector_7.bend"
+    "mutval_generic_bitvector_7.bend",
+    "mutconst_bitvector_7.bend"
    ]
   },
   "bitvector_7_decode_ssz_proof_generated.bend": {
@@ -7103,7 +7373,8 @@
    "files": [
     "sub_bitvector_8.bend",
     "wordpos_bitvector_8.bend",
-    "mutval_generic_bitvector_8.bend"
+    "mutval_generic_bitvector_8.bend",
+    "mutconst_bitvector_8.bend"
    ]
   },
   "bitvector_8_decode_ssz_proof_generated.bend": {
@@ -7132,7 +7403,8 @@
    "files": [
     "sub_bitvector_9.bend",
     "wordpos_bitvector_9.bend",
-    "mutval_generic_bitvector_9.bend"
+    "mutval_generic_bitvector_9.bend",
+    "mutconst_bitvector_9.bend"
    ]
   },
   "bitvector_9_decode_ssz_proof_generated.bend": {
@@ -7159,7 +7431,8 @@
    "generated_name": "CompatibleUnionBC",
    "op": "encode_ssz",
    "files": [
-    "var_codec_CompatibleUnionBC_enc.bend"
+    "var_codec_CompatibleUnionBC_enc.bend",
+    "mutconst_CompatibleUnionBC.bend"
    ]
   },
   "CompatibleUnionBC_decode_ssz_proof_generated.bend": {
@@ -7185,7 +7458,8 @@
    "generated_name": "CompatibleUnionABCA",
    "op": "encode_ssz",
    "files": [
-    "var_codec_CompatibleUnionABCA_enc.bend"
+    "var_codec_CompatibleUnionABCA_enc.bend",
+    "mutconst_CompatibleUnionABCA.bend"
    ]
   },
   "CompatibleUnionABCA_decode_ssz_proof_generated.bend": {
@@ -7212,7 +7486,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_CompatibleUnionA_enc.bend",
-    "capacity_CompatibleUnionA.bend"
+    "capacity_CompatibleUnionA.bend",
+    "mutconst_CompatibleUnionA.bend"
    ]
   },
   "CompatibleUnionA_decode_ssz_proof_generated.bend": {
@@ -7239,7 +7514,8 @@
    "op": "encode_ssz",
    "files": [
     "var_pbits_progbitlist_enc.bend",
-    "mutval_generic_progbitlist.bend"
+    "mutval_generic_progbitlist.bend",
+    "mutconst_progbitlist.bend"
    ]
   },
   "progbitlist_decode_ssz_proof_generated.bend": {
@@ -7269,7 +7545,8 @@
     "spec_gcodec_uint128.bend",
     "wordpos_uint128.bend",
     "gcodec_0.bend",
-    "mutval_generic_uint128.bend"
+    "mutval_generic_uint128.bend",
+    "mutconst_uint128.bend"
    ]
   },
   "uint128_decode_ssz_proof_generated.bend": {
