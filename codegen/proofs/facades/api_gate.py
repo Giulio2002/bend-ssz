@@ -64,12 +64,12 @@ LAW_FORMS = {
     'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
     'roundtrip': [r'<X>(_[tf])?_roundtrip'],
-    'encoded_size': [r'<X>(_[tf])?_encoded_size'],
+    'encoded_size': [r'<X>(_[tf])?_encoded_size', r'<X>_encode_capsym'],
     'reject_short': [r'<X>(_[tf])?_reject_short'],
     'reject_long': [r'<X>(_[tf])?_reject_long'],
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
-    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over)'],
+    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
     'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
 }
 
