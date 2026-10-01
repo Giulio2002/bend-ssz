@@ -53,6 +53,7 @@ GENERATORS = (
     Gen('fix_reject', 'proofs/laws'),
     Gen('fix_reject_chk', 'proofs/laws'),
     Gen('fix_reject_pad', 'proofs/laws'),
+    Gen('mutation_laws', 'proofs/laws'),
     Gen('packed_laws', 'proofs/laws'),
     Gen('prog_laws', 'proofs/laws'),
     Gen('root_laws', 'proofs/laws'),

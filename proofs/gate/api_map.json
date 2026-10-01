@@ -2698,6 +2698,10 @@
     {
      "file": "codec_1.bend",
      "law": "SyncAggregate_encoded_size"
+    },
+    {
+     "file": "mutation_laws_fulu.bend",
+     "law": "SyncAggregate_encoded_size"
     }
    ],
    "reject_short": [
@@ -3776,6 +3780,10 @@
     {
      "file": "codec_2.bend",
      "law": "SyncCommitteeContribution_encoded_size"
+    },
+    {
+     "file": "mutation_laws_fulu.bend",
+     "law": "SyncCommitteeContribution_encoded_size"
     }
    ],
    "reject_short": [
@@ -4313,6 +4321,10 @@
    "encoded_size": [
     {
      "file": "codec_3.bend",
+     "law": "SignedBeaconBlockHeader_encoded_size"
+    },
+    {
+     "file": "mutation_laws_fulu.bend",
      "law": "SignedBeaconBlockHeader_encoded_size"
     }
    ],
@@ -6076,6 +6088,10 @@
    "encoded_size": [
     {
      "file": "codec_4.bend",
+     "law": "DepositData_encoded_size"
+    },
+    {
+     "file": "mutation_laws_fulu.bend",
      "law": "DepositData_encoded_size"
     }
    ],
@@ -9008,7 +9024,12 @@
      "law": "Blob_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_fulu.bend",
+     "law": "Blob_serialize_over"
+    }
+   ]
   },
   "BlobSidecar": {
    "root": [
@@ -9153,7 +9174,16 @@
      "law": "Cell_spec_input"
     }
    ],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_fulu.bend",
+     "law": "Cell_serialize_over"
+    },
+    {
+     "file": "mutation_laws_fulu.bend",
+     "law": "Cell_serialize_in"
+    }
+   ]
   },
   "CellIndex": {
    "root": [
@@ -11736,7 +11766,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_16_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_16_serialize_in"
+    }
+   ]
   },
   "vec_uint8_1": {
    "root": [
@@ -11799,7 +11838,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_1_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_1_serialize_in"
+    }
+   ]
   },
   "vec_uint8_2": {
    "root": [
@@ -11862,7 +11910,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_2_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_2_serialize_in"
+    }
+   ]
   },
   "vec_uint8_31": {
    "root": [
@@ -11925,7 +11982,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_31_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_31_serialize_in"
+    }
+   ]
   },
   "vec_uint8_3": {
    "root": [
@@ -11988,7 +12054,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_3_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_3_serialize_in"
+    }
+   ]
   },
   "vec_uint8_4": {
    "root": [
@@ -12051,7 +12126,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_4_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_4_serialize_in"
+    }
+   ]
   },
   "vec_uint8_512": {
    "root": [
@@ -12114,7 +12198,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_512_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_512_serialize_in"
+    }
+   ]
   },
   "vec_uint8_513": {
    "root": [
@@ -12177,7 +12270,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_513_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_513_serialize_in"
+    }
+   ]
   },
   "vec_uint8_5": {
    "root": [
@@ -12240,7 +12342,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_5_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_5_serialize_in"
+    }
+   ]
   },
   "vec_uint8_8": {
    "root": [
@@ -12303,7 +12414,16 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": []
+   "serialize_valid": [
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_8_serialize_over"
+    },
+    {
+     "file": "mutation_laws_generic.bend",
+     "law": "vec_uint8_8_serialize_in"
+    }
+   ]
   },
   "proglist_uint16": {
    "root": [
