@@ -7,7 +7,7 @@ other harnesses feed corrupted INPUT to correct code; this one corrupts the CODE
 
 Runtime side. For every Fulu name and every generic name, MUTANTS_PER_TYPE (default 5) mutants are drawn, seeded
 and deterministic, from the sites of types/<Name>_{decode_ssz,encode_ssz,hashtreeroot}_generated.bend (the code the
-object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; -1 on out_at(d) is an under-allocated buffer; +1 on out_at(d) and the alignment test `pos .&. 3 == 0` are not drawn: round 1 classed them), a comparison flipped
+object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; out_at(d) +1 is an over-allocated buffer, -1 an under-allocated one; the alignment test `pos .&. 3 == 0` is not drawn: its equivalence is open, see docs/RESULTS.md), a comparison flipped
 (is_eq -> is_lt, is_lt -> is_le, is_le -> is_lt), an addition turned into a subtraction, a validity result
 forced (True{} -> False{}, False{} -> True{}), the two children of a hash_tree_root node swapped
 (D.node(h, a, b) -> D.node(h, b, a); only the root files have them). The sites are drawn round-robin over the operators. The mutants
@@ -93,9 +93,7 @@ def sites(text, keep_classed=False):
     out = []
     for i, line in code_lines(text):
         for m in re.finditer(r'(?<![\w.])(\d+)(n?)(?![\w.])', line):
-            in_out_at = re.search(r'out_at\(' + re.escape(m.group(0)) + r'\)', line[max(0, m.start() - 7):m.end() + 1])
-            if keep_classed or not in_out_at:   # out_at(d) +1 only adds zero words: round 1 classes it (all killed by conformance, no proof pins it)
-                out.append((i, m.start(), 'const+1', m.group(0), str(int(m.group(1)) + 1) + m.group(2)))
+            out.append((i, m.start(), 'const+1', m.group(0), str(int(m.group(1)) + 1) + m.group(2)))
             if int(m.group(1)) >= 1:   # one too small: an under-allocated buffer, a limit or size one short
                 out.append((i, m.start(), 'const-1', m.group(0), str(int(m.group(1)) - 1) + m.group(2)))
         for a, b in CMP.items():

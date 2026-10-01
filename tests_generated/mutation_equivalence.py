@@ -14,9 +14,10 @@ equal. This file states which survivors are equivalent and why, by rules that re
     before and after the change of lo, hi or unit, checked on every n that can differ;
   - vec_bool decoders: ok_n has one caller passing the literal N, so is_eq(N, 0) and its mutants evaluate alike and the
     True{} branch of ok_nz is never taken;
-  - classes of round 1 that are not redrawn: out_at(d) -> out_at(d+1) (the Buf's byte length is a separate field) and
-    the aligned-or-slow path test `pos .&. 3 == 0` (both paths write the same words: NOT proved here), and the one
-    uncoverable bound (Transaction, 2^30 -> 2^30+1, needs an object of 2^30+1 bytes).
+  - the aligned-or-slow path test `pos .&. 3 == 0` is OPEN, not equivalent: both paths agree at sampled positions only
+    (the checker does not fold symbolic index terms); it is not drawn, and listed separately;
+  - the one uncoverable bound (Transaction, 2^30 -> 2^30+1, needs an object of 2^30+1 bytes).
+    (out_at(d) -> out_at(d+1) was once excluded as harmless; the capacity laws killed it, so it is drawn again.)
 
 With --write it rewrites tests_generated/mutation_exclusions.json (what the draws skip) from the reports.
 Run from the repository root.
@@ -143,13 +144,10 @@ def classify_survivor(x):
     r = proof_equiv(x)
     if r:
         return 'proof-equivalent', r
-    line = pathlib.Path(x['file']).read_text().split('\n')[x['line'] - 1]
-    if x['operator'] == 'const+1' and line[:x['col']].endswith('out_at('):
-        return 'capacity+1', ('out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf\'s byte length n is a separate '
-                              'field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)')
     if x['cause'] == 'comparison':
-        return 'aligned-or-slow path', ('is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same '
-                                        'words (not proved here; class from round 1, not redrawn)')
+        return 'open (unproved): aligned-or-slow path', ('is_eq(pos .&. 3, 0) -> is_lt/is_le: always the unaligned path (or aligned only when pos&3 == 0 is '
+                                        'false); both paths agree at the sampled positions, NOT proved for a symbolic index (the checker does not fold '
+                                        'symbolic index terms): open, not equivalent')
     if x['file'].endswith('FuluTransaction_encode_ssz_generated.bend') and x['before'] == '1073741824':
         return 'uncoverable', ('the bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes (Transaction): not constructible, '
                                'no law can be checked against it')
