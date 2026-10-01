@@ -29,7 +29,7 @@
 | `reject_short` | 73 |
 | `reject_long` | 73 |
 | `decode_tree` | 118 |
-| `decode_input` | 126 |
+| `decode_input` | 152 |
 | `serialize_valid` | 235 |
 | `decode_offsets` | 240 |
 <!-- /fig -->

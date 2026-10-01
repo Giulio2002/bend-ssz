@@ -373,6 +373,10 @@
     {
      "file": "sub_boolean.bend",
      "law": "boolean_spec_bytes"
+    },
+    {
+     "file": "zcapsym_boolean.bend",
+     "law": "boolean_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -439,7 +443,16 @@
      "law": "boolean_spec_decode_1_tree"
     }
    ],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_boolean.bend",
+     "law": "boolean_ms_build"
+    },
+    {
+     "file": "mutsmall_boolean.bend",
+     "law": "boolean_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_fulu_boolean.bend",
@@ -508,6 +521,10 @@
     {
      "file": "spec_small.bend",
      "law": "uint8_spec_bytes"
+    },
+    {
+     "file": "zcapsym_uint8.bend",
+     "law": "uint8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -526,7 +543,16 @@
      "law": "uint8_spec_decode_tree"
     }
    ],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_uint8.bend",
+     "law": "uint8_ms_build"
+    },
+    {
+     "file": "mutsmall_uint8.bend",
+     "law": "uint8_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_fulu_uint8.bend",
@@ -591,6 +617,10 @@
     {
      "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_bytes"
+    },
+    {
+     "file": "zcapsym_uint32.bend",
+     "law": "uint32_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -633,6 +663,14 @@
     {
      "file": "spec_input_uint32.bend",
      "law": "uint32_spec_input"
+    },
+    {
+     "file": "mutsmall_uint32.bend",
+     "law": "uint32_ms_build"
+    },
+    {
+     "file": "mutsmall_uint32.bend",
+     "law": "uint32_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -699,6 +737,10 @@
     {
      "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_bytes"
+    },
+    {
+     "file": "zcapsym_uint64.bend",
+     "law": "uint64_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -741,6 +783,14 @@
     {
      "file": "spec_input_uint64.bend",
      "law": "uint64_spec_input"
+    },
+    {
+     "file": "mutsmall_uint64.bend",
+     "law": "uint64_ms_build"
+    },
+    {
+     "file": "mutsmall_uint64.bend",
+     "law": "uint64_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -819,6 +869,10 @@
     {
      "file": "wordpos_uint256.bend",
      "law": "uint256_arith_pw3"
+    },
+    {
+     "file": "zcapsym_uint256.bend",
+     "law": "uint256_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -861,6 +915,14 @@
     {
      "file": "spec_input_uint256.bend",
      "law": "uint256_spec_input"
+    },
+    {
+     "file": "mutsmall_uint256.bend",
+     "law": "uint256_ms_build"
+    },
+    {
+     "file": "mutsmall_uint256.bend",
+     "law": "uint256_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -947,6 +1009,10 @@
     {
      "file": "wordpos_Bytes1.bend",
      "law": "Bytes1_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes1.bend",
+     "law": "Bytes1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -965,7 +1031,16 @@
      "law": "Bytes1_spec_decode_tree"
     }
    ],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_Bytes1.bend",
+     "law": "Bytes1_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes1.bend",
+     "law": "Bytes1_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_fulu_Bytes1.bend",
@@ -1046,6 +1121,10 @@
     {
      "file": "wordpos_Bytes4.bend",
      "law": "Bytes4_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes4.bend",
+     "law": "Bytes4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1088,6 +1167,14 @@
     {
      "file": "spec_input_Bytes4.bend",
      "law": "Bytes4_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes4.bend",
+     "law": "Bytes4_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes4.bend",
+     "law": "Bytes4_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1174,6 +1261,10 @@
     {
      "file": "wordpos_Bytes32.bend",
      "law": "Bytes32_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes32.bend",
+     "law": "Bytes32_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1216,6 +1307,14 @@
     {
      "file": "spec_input_Bytes32.bend",
      "law": "Bytes32_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes32.bend",
+     "law": "Bytes32_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes32.bend",
+     "law": "Bytes32_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1302,6 +1401,10 @@
     {
      "file": "wordpos_Bytes48.bend",
      "law": "Bytes48_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes48.bend",
+     "law": "Bytes48_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1344,6 +1447,14 @@
     {
      "file": "spec_input_Bytes48.bend",
      "law": "Bytes48_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes48.bend",
+     "law": "Bytes48_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes48.bend",
+     "law": "Bytes48_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1426,6 +1537,10 @@
     {
      "file": "wordpos_Bytes96.bend",
      "law": "Bytes96_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes96.bend",
+     "law": "Bytes96_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1468,6 +1583,14 @@
     {
      "file": "spec_input_Bytes96.bend",
      "law": "Bytes96_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes96.bend",
+     "law": "Bytes96_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes96.bend",
+     "law": "Bytes96_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1554,6 +1677,10 @@
     {
      "file": "wordpos_Bytes8.bend",
      "law": "Bytes8_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes8.bend",
+     "law": "Bytes8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1596,6 +1723,14 @@
     {
      "file": "spec_input_Bytes8.bend",
      "law": "Bytes8_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes8.bend",
+     "law": "Bytes8_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes8.bend",
+     "law": "Bytes8_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1682,6 +1817,10 @@
     {
      "file": "wordpos_Bytes20.bend",
      "law": "Bytes20_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Bytes20.bend",
+     "law": "Bytes20_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1724,6 +1863,14 @@
     {
      "file": "spec_input_Bytes20.bend",
      "law": "Bytes20_spec_input"
+    },
+    {
+     "file": "mutsmall_Bytes20.bend",
+     "law": "Bytes20_ms_build"
+    },
+    {
+     "file": "mutsmall_Bytes20.bend",
+     "law": "Bytes20_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1794,6 +1941,10 @@
     {
      "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Slot.bend",
+     "law": "Slot_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1836,6 +1987,14 @@
     {
      "file": "spec_input_Slot.bend",
      "law": "Slot_spec_input"
+    },
+    {
+     "file": "mutsmall_Slot.bend",
+     "law": "Slot_ms_build"
+    },
+    {
+     "file": "mutsmall_Slot.bend",
+     "law": "Slot_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -1902,6 +2061,10 @@
     {
      "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Epoch.bend",
+     "law": "Epoch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -1944,6 +2107,14 @@
     {
      "file": "spec_input_Epoch.bend",
      "law": "Epoch_spec_input"
+    },
+    {
+     "file": "mutsmall_Epoch.bend",
+     "law": "Epoch_ms_build"
+    },
+    {
+     "file": "mutsmall_Epoch.bend",
+     "law": "Epoch_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2010,6 +2181,10 @@
     {
      "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Gwei.bend",
+     "law": "Gwei_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2052,6 +2227,14 @@
     {
      "file": "spec_input_Gwei.bend",
      "law": "Gwei_spec_input"
+    },
+    {
+     "file": "mutsmall_Gwei.bend",
+     "law": "Gwei_ms_build"
+    },
+    {
+     "file": "mutsmall_Gwei.bend",
+     "law": "Gwei_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2130,6 +2313,10 @@
     {
      "file": "wordpos_Hash32.bend",
      "law": "Hash32_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Hash32.bend",
+     "law": "Hash32_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2172,6 +2359,14 @@
     {
      "file": "spec_input_Hash32.bend",
      "law": "Hash32_spec_input"
+    },
+    {
+     "file": "mutsmall_Hash32.bend",
+     "law": "Hash32_ms_build"
+    },
+    {
+     "file": "mutsmall_Hash32.bend",
+     "law": "Hash32_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2254,6 +2449,10 @@
     {
      "file": "wordpos_Version.bend",
      "law": "Version_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Version.bend",
+     "law": "Version_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2296,6 +2495,14 @@
     {
      "file": "spec_input_Version.bend",
      "law": "Version_spec_input"
+    },
+    {
+     "file": "mutsmall_Version.bend",
+     "law": "Version_ms_build"
+    },
+    {
+     "file": "mutsmall_Version.bend",
+     "law": "Version_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2378,6 +2585,10 @@
     {
      "file": "wordpos_DomainType.bend",
      "law": "DomainType_arith_pw3"
+    },
+    {
+     "file": "zcapsym_DomainType.bend",
+     "law": "DomainType_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2420,6 +2631,14 @@
     {
      "file": "spec_input_DomainType.bend",
      "law": "DomainType_spec_input"
+    },
+    {
+     "file": "mutsmall_DomainType.bend",
+     "law": "DomainType_ms_build"
+    },
+    {
+     "file": "mutsmall_DomainType.bend",
+     "law": "DomainType_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2502,6 +2721,10 @@
     {
      "file": "wordpos_BLSSignature.bend",
      "law": "BLSSignature_arith_pw3"
+    },
+    {
+     "file": "zcapsym_BLSSignature.bend",
+     "law": "BLSSignature_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2544,6 +2767,14 @@
     {
      "file": "spec_input_BLSSignature.bend",
      "law": "BLSSignature_spec_input"
+    },
+    {
+     "file": "mutsmall_BLSSignature.bend",
+     "law": "BLSSignature_ms_build"
+    },
+    {
+     "file": "mutsmall_BLSSignature.bend",
+     "law": "BLSSignature_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2626,6 +2857,38 @@
     {
      "file": "zcapsym_FinalityBranch.bend",
      "law": "FinalityBranch_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_a72"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_FinalityBranch.bend",
+     "law": "FinalityBranch_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -2678,6 +2941,18 @@
     {
      "file": "mutconst_FinalityBranch.bend",
      "law": "FinalityBranch_mc_ser"
+    },
+    {
+     "file": "mutsmall_FinalityBranch.bend",
+     "law": "FinalityBranch_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_FinalityBranch.bend",
+     "law": "FinalityBranch_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_FinalityBranch.bend",
+     "law": "FinalityBranch_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -2746,6 +3021,10 @@
     {
      "file": "wordpos_VersionedHash.bend",
      "law": "VersionedHash_arith_pw3"
+    },
+    {
+     "file": "zcapsym_VersionedHash.bend",
+     "law": "VersionedHash_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2788,6 +3067,14 @@
     {
      "file": "spec_input_VersionedHash.bend",
      "law": "VersionedHash_spec_input"
+    },
+    {
+     "file": "mutsmall_VersionedHash.bend",
+     "law": "VersionedHash_ms_build"
+    },
+    {
+     "file": "mutsmall_VersionedHash.bend",
+     "law": "VersionedHash_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2870,6 +3157,10 @@
     {
      "file": "wordpos_G1Point.bend",
      "law": "G1Point_arith_pw3"
+    },
+    {
+     "file": "zcapsym_G1Point.bend",
+     "law": "G1Point_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2912,6 +3203,14 @@
     {
      "file": "spec_input_G1Point.bend",
      "law": "G1Point_spec_input"
+    },
+    {
+     "file": "mutsmall_G1Point.bend",
+     "law": "G1Point_ms_build"
+    },
+    {
+     "file": "mutsmall_G1Point.bend",
+     "law": "G1Point_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -2994,6 +3293,10 @@
     {
      "file": "wordpos_G2Point.bend",
      "law": "G2Point_arith_pw3"
+    },
+    {
+     "file": "zcapsym_G2Point.bend",
+     "law": "G2Point_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3036,6 +3339,14 @@
     {
      "file": "spec_input_G2Point.bend",
      "law": "G2Point_spec_input"
+    },
+    {
+     "file": "mutsmall_G2Point.bend",
+     "law": "G2Point_ms_build"
+    },
+    {
+     "file": "mutsmall_G2Point.bend",
+     "law": "G2Point_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3110,6 +3421,10 @@
     {
      "file": "wordpos_Fork.bend",
      "law": "Fork_arith_put"
+    },
+    {
+     "file": "zcapsym_Fork.bend",
+     "law": "Fork_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3152,6 +3467,14 @@
     {
      "file": "spec_input_Fork.bend",
      "law": "Fork_spec_input"
+    },
+    {
+     "file": "mutsmall_Fork.bend",
+     "law": "Fork_ms_build"
+    },
+    {
+     "file": "mutsmall_Fork.bend",
+     "law": "Fork_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3226,6 +3549,10 @@
     {
      "file": "wordpos_SyncAggregate.bend",
      "law": "SyncAggregate_arith_put"
+    },
+    {
+     "file": "zcapsym_SyncAggregate.bend",
+     "law": "SyncAggregate_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3272,6 +3599,14 @@
     {
      "file": "spec_input_SyncAggregate.bend",
      "law": "SyncAggregate_spec_input"
+    },
+    {
+     "file": "mutsmall_SyncAggregate.bend",
+     "law": "SyncAggregate_ms_build"
+    },
+    {
+     "file": "mutsmall_SyncAggregate.bend",
+     "law": "SyncAggregate_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3350,6 +3685,10 @@
     {
      "file": "wordpos_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_arith_put"
+    },
+    {
+     "file": "zcapsym_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3392,6 +3731,14 @@
     {
      "file": "spec_input_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_input"
+    },
+    {
+     "file": "mutsmall_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_ms_build"
+    },
+    {
+     "file": "mutsmall_SyncAggregatorSelectionData.bend",
+     "law": "SyncAggregatorSelectionData_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3466,6 +3813,10 @@
     {
      "file": "wordpos_PowBlock.bend",
      "law": "PowBlock_arith_put"
+    },
+    {
+     "file": "zcapsym_PowBlock.bend",
+     "law": "PowBlock_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3508,6 +3859,14 @@
     {
      "file": "spec_input_PowBlock.bend",
      "law": "PowBlock_spec_input"
+    },
+    {
+     "file": "mutsmall_PowBlock.bend",
+     "law": "PowBlock_ms_build"
+    },
+    {
+     "file": "mutsmall_PowBlock.bend",
+     "law": "PowBlock_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3578,6 +3937,10 @@
     {
      "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_CommitteeIndex.bend",
+     "law": "CommitteeIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3620,6 +3983,14 @@
     {
      "file": "spec_input_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_CommitteeIndex.bend",
+     "law": "CommitteeIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_CommitteeIndex.bend",
+     "law": "CommitteeIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3686,6 +4057,10 @@
     {
      "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ValidatorIndex.bend",
+     "law": "ValidatorIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3728,6 +4103,14 @@
     {
      "file": "spec_input_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_ValidatorIndex.bend",
+     "law": "ValidatorIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_ValidatorIndex.bend",
+     "law": "ValidatorIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3798,6 +4181,10 @@
     {
      "file": "wordpos_PendingConsolidation.bend",
      "law": "PendingConsolidation_arith_put"
+    },
+    {
+     "file": "zcapsym_PendingConsolidation.bend",
+     "law": "PendingConsolidation_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3840,6 +4227,14 @@
     {
      "file": "spec_input_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_input"
+    },
+    {
+     "file": "mutsmall_PendingConsolidation.bend",
+     "law": "PendingConsolidation_ms_build"
+    },
+    {
+     "file": "mutsmall_PendingConsolidation.bend",
+     "law": "PendingConsolidation_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -3914,6 +4309,10 @@
     {
      "file": "wordpos_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_arith_put"
+    },
+    {
+     "file": "zcapsym_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -3956,6 +4355,14 @@
     {
      "file": "spec_input_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_input"
+    },
+    {
+     "file": "mutsmall_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_ms_build"
+    },
+    {
+     "file": "mutsmall_PendingPartialWithdrawal.bend",
+     "law": "PendingPartialWithdrawal_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4030,6 +4437,10 @@
     {
      "file": "wordpos_VoluntaryExit.bend",
      "law": "VoluntaryExit_arith_put"
+    },
+    {
+     "file": "zcapsym_VoluntaryExit.bend",
+     "law": "VoluntaryExit_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4072,6 +4483,14 @@
     {
      "file": "spec_input_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_input"
+    },
+    {
+     "file": "mutsmall_VoluntaryExit.bend",
+     "law": "VoluntaryExit_ms_build"
+    },
+    {
+     "file": "mutsmall_VoluntaryExit.bend",
+     "law": "VoluntaryExit_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4146,6 +4565,10 @@
     {
      "file": "wordpos_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_arith_put"
+    },
+    {
+     "file": "zcapsym_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4188,6 +4611,14 @@
     {
      "file": "spec_input_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_input"
+    },
+    {
+     "file": "mutsmall_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_ms_build"
+    },
+    {
+     "file": "mutsmall_SignedVoluntaryExit.bend",
+     "law": "SignedVoluntaryExit_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4270,6 +4701,10 @@
     {
      "file": "wordpos_Root.bend",
      "law": "Root_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Root.bend",
+     "law": "Root_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4312,6 +4747,14 @@
     {
      "file": "spec_input_Root.bend",
      "law": "Root_spec_input"
+    },
+    {
+     "file": "mutsmall_Root.bend",
+     "law": "Root_ms_build"
+    },
+    {
+     "file": "mutsmall_Root.bend",
+     "law": "Root_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4386,6 +4829,10 @@
     {
      "file": "wordpos_HistoricalSummary.bend",
      "law": "HistoricalSummary_arith_put"
+    },
+    {
+     "file": "zcapsym_HistoricalSummary.bend",
+     "law": "HistoricalSummary_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4428,6 +4875,14 @@
     {
      "file": "spec_input_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_input"
+    },
+    {
+     "file": "mutsmall_HistoricalSummary.bend",
+     "law": "HistoricalSummary_ms_build"
+    },
+    {
+     "file": "mutsmall_HistoricalSummary.bend",
+     "law": "HistoricalSummary_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4502,6 +4957,10 @@
     {
      "file": "wordpos_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_arith_put"
+    },
+    {
+     "file": "zcapsym_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4548,6 +5007,14 @@
     {
      "file": "spec_input_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_input"
+    },
+    {
+     "file": "mutsmall_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_ms_build"
+    },
+    {
+     "file": "mutsmall_SyncCommitteeContribution.bend",
+     "law": "SyncCommitteeContribution_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4662,6 +5129,22 @@
     {
      "file": "mutconst_ContributionAndProof.bend",
      "law": "ContributionAndProof_mc_ser"
+    },
+    {
+     "file": "mutsmall_ContributionAndProof.bend",
+     "law": "ContributionAndProof_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_ContributionAndProof.bend",
+     "law": "ContributionAndProof_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_ContributionAndProof.bend",
+     "law": "ContributionAndProof_ms_encout"
+    },
+    {
+     "file": "mutsmall_ContributionAndProof.bend",
+     "law": "ContributionAndProof_ms_size"
     }
    ],
    "decode_offsets": [
@@ -4762,6 +5245,22 @@
     {
      "file": "mutconst_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_mc_ser"
+    },
+    {
+     "file": "mutsmall_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_ms_encout"
+    },
+    {
+     "file": "mutsmall_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_ms_size"
     }
    ],
    "decode_offsets": [
@@ -4826,6 +5325,10 @@
     {
      "file": "wordpos_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_arith_put"
+    },
+    {
+     "file": "zcapsym_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4868,6 +5371,14 @@
     {
      "file": "spec_input_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_input"
+    },
+    {
+     "file": "mutsmall_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_ms_build"
+    },
+    {
+     "file": "mutsmall_SyncCommitteeMessage.bend",
+     "law": "SyncCommitteeMessage_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -4942,6 +5453,10 @@
     {
      "file": "wordpos_Eth1Block.bend",
      "law": "Eth1Block_arith_put"
+    },
+    {
+     "file": "zcapsym_Eth1Block.bend",
+     "law": "Eth1Block_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4984,6 +5499,14 @@
     {
      "file": "spec_input_Eth1Block.bend",
      "law": "Eth1Block_spec_input"
+    },
+    {
+     "file": "mutsmall_Eth1Block.bend",
+     "law": "Eth1Block_ms_build"
+    },
+    {
+     "file": "mutsmall_Eth1Block.bend",
+     "law": "Eth1Block_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5058,6 +5581,10 @@
     {
      "file": "wordpos_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_arith_put"
+    },
+    {
+     "file": "zcapsym_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5100,6 +5627,14 @@
     {
      "file": "spec_input_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_input"
+    },
+    {
+     "file": "mutsmall_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_ms_build"
+    },
+    {
+     "file": "mutsmall_BeaconBlockHeader.bend",
+     "law": "BeaconBlockHeader_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5174,6 +5709,10 @@
     {
      "file": "wordpos_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_arith_put"
+    },
+    {
+     "file": "zcapsym_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5220,6 +5759,14 @@
     {
      "file": "spec_input_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_input"
+    },
+    {
+     "file": "mutsmall_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_ms_build"
+    },
+    {
+     "file": "mutsmall_SignedBeaconBlockHeader.bend",
+     "law": "SignedBeaconBlockHeader_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5343,6 +5890,26 @@
     {
      "file": "mutconst_ProposerSlashing.bend",
      "law": "ProposerSlashing_mc_ser"
+    },
+    {
+     "file": "mutsmall_ProposerSlashing.bend",
+     "law": "ProposerSlashing_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_ProposerSlashing.bend",
+     "law": "ProposerSlashing_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_ProposerSlashing.bend",
+     "law": "ProposerSlashing_ms_encout"
+    },
+    {
+     "file": "mutsmall_ProposerSlashing.bend",
+     "law": "ProposerSlashing_ms_size"
+    },
+    {
+     "file": "mutsmall_ProposerSlashing.bend",
+     "law": "ProposerSlashing_ms_bxsize_ProposerSlashing"
     }
    ],
    "decode_offsets": [
@@ -5430,6 +5997,18 @@
     {
      "file": "zcapsym_HistoricalBatch.bend",
      "law": "HistoricalBatch_serialize_capsym"
+    },
+    {
+     "file": "mutsmall_HistoricalBatch.bend",
+     "law": "HistoricalBatch_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_HistoricalBatch.bend",
+     "law": "HistoricalBatch_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_HistoricalBatch.bend",
+     "law": "HistoricalBatch_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -5494,6 +6073,10 @@
     {
      "file": "wordpos_Eth1Data.bend",
      "law": "Eth1Data_arith_put"
+    },
+    {
+     "file": "zcapsym_Eth1Data.bend",
+     "law": "Eth1Data_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5536,6 +6119,14 @@
     {
      "file": "spec_input_Eth1Data.bend",
      "law": "Eth1Data_spec_input"
+    },
+    {
+     "file": "mutsmall_Eth1Data.bend",
+     "law": "Eth1Data_ms_build"
+    },
+    {
+     "file": "mutsmall_Eth1Data.bend",
+     "law": "Eth1Data_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5610,6 +6201,10 @@
     {
      "file": "wordpos_Checkpoint.bend",
      "law": "Checkpoint_arith_put"
+    },
+    {
+     "file": "zcapsym_Checkpoint.bend",
+     "law": "Checkpoint_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5652,6 +6247,14 @@
     {
      "file": "spec_input_Checkpoint.bend",
      "law": "Checkpoint_spec_input"
+    },
+    {
+     "file": "mutsmall_Checkpoint.bend",
+     "law": "Checkpoint_ms_build"
+    },
+    {
+     "file": "mutsmall_Checkpoint.bend",
+     "law": "Checkpoint_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5726,6 +6329,10 @@
     {
      "file": "wordpos_AttestationData.bend",
      "law": "AttestationData_arith_put"
+    },
+    {
+     "file": "zcapsym_AttestationData.bend",
+     "law": "AttestationData_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5768,6 +6375,14 @@
     {
      "file": "spec_input_AttestationData.bend",
      "law": "AttestationData_spec_input"
+    },
+    {
+     "file": "mutsmall_AttestationData.bend",
+     "law": "AttestationData_ms_build"
+    },
+    {
+     "file": "mutsmall_AttestationData.bend",
+     "law": "AttestationData_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5842,6 +6457,10 @@
     {
      "file": "wordpos_SingleAttestation.bend",
      "law": "SingleAttestation_arith_put"
+    },
+    {
+     "file": "zcapsym_SingleAttestation.bend",
+     "law": "SingleAttestation_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5884,6 +6503,14 @@
     {
      "file": "spec_input_SingleAttestation.bend",
      "law": "SingleAttestation_spec_input"
+    },
+    {
+     "file": "mutsmall_SingleAttestation.bend",
+     "law": "SingleAttestation_ms_build"
+    },
+    {
+     "file": "mutsmall_SingleAttestation.bend",
+     "law": "SingleAttestation_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -5980,6 +6607,14 @@
     {
      "file": "mutconst_Attestation.bend",
      "law": "Attestation_mc_ser"
+    },
+    {
+     "file": "mutsmall_Attestation.bend",
+     "law": "Attestation_ms_size"
+    },
+    {
+     "file": "mutsmall_Attestation.bend",
+     "law": "Attestation_ms_bxsize_Attestation"
     }
    ],
    "decode_offsets": [
@@ -6054,6 +6689,10 @@
     {
      "file": "mutconst_AggregateAndProof.bend",
      "law": "AggregateAndProof_mc_ser"
+    },
+    {
+     "file": "mutsmall_AggregateAndProof.bend",
+     "law": "AggregateAndProof_ms_size"
     }
    ],
    "decode_offsets": [
@@ -6128,6 +6767,10 @@
     {
      "file": "mutconst_SignedAggregateAndProof.bend",
      "law": "SignedAggregateAndProof_mc_ser"
+    },
+    {
+     "file": "mutsmall_SignedAggregateAndProof.bend",
+     "law": "SignedAggregateAndProof_ms_size"
     }
    ],
    "decode_offsets": [
@@ -6202,6 +6845,10 @@
     {
      "file": "mutconst_PendingAttestation.bend",
      "law": "PendingAttestation_mc_ser"
+    },
+    {
+     "file": "mutsmall_PendingAttestation.bend",
+     "law": "PendingAttestation_ms_size"
     }
    ],
    "decode_offsets": [
@@ -6284,6 +6931,14 @@
     {
      "file": "mutconst_IndexedAttestation.bend",
      "law": "IndexedAttestation_mc_ser"
+    },
+    {
+     "file": "mutsmall_IndexedAttestation.bend",
+     "law": "IndexedAttestation_ms_size"
+    },
+    {
+     "file": "mutsmall_IndexedAttestation.bend",
+     "law": "IndexedAttestation_ms_bxsize_IndexedAttestation"
     }
    ],
    "decode_offsets": [
@@ -6366,6 +7021,14 @@
     {
      "file": "mutconst_AttesterSlashing.bend",
      "law": "AttesterSlashing_mc_ser"
+    },
+    {
+     "file": "mutsmall_AttesterSlashing.bend",
+     "law": "AttesterSlashing_ms_size"
+    },
+    {
+     "file": "mutsmall_AttesterSlashing.bend",
+     "law": "AttesterSlashing_ms_bxsize_AttesterSlashing"
     }
    ],
    "decode_offsets": [
@@ -6426,6 +7089,10 @@
     {
      "file": "wordpos_ForkData.bend",
      "law": "ForkData_arith_put"
+    },
+    {
+     "file": "zcapsym_ForkData.bend",
+     "law": "ForkData_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -6468,6 +7135,14 @@
     {
      "file": "spec_input_ForkData.bend",
      "law": "ForkData_spec_input"
+    },
+    {
+     "file": "mutsmall_ForkData.bend",
+     "law": "ForkData_ms_build"
+    },
+    {
+     "file": "mutsmall_ForkData.bend",
+     "law": "ForkData_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -6550,6 +7225,10 @@
     {
      "file": "wordpos_ForkDigest.bend",
      "law": "ForkDigest_arith_pw3"
+    },
+    {
+     "file": "zcapsym_ForkDigest.bend",
+     "law": "ForkDigest_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -6592,6 +7271,14 @@
     {
      "file": "spec_input_ForkDigest.bend",
      "law": "ForkDigest_spec_input"
+    },
+    {
+     "file": "mutsmall_ForkDigest.bend",
+     "law": "ForkDigest_ms_build"
+    },
+    {
+     "file": "mutsmall_ForkDigest.bend",
+     "law": "ForkDigest_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -6674,6 +7361,10 @@
     {
      "file": "wordpos_Domain.bend",
      "law": "Domain_arith_pw3"
+    },
+    {
+     "file": "zcapsym_Domain.bend",
+     "law": "Domain_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -6716,6 +7407,14 @@
     {
      "file": "spec_input_Domain.bend",
      "law": "Domain_spec_input"
+    },
+    {
+     "file": "mutsmall_Domain.bend",
+     "law": "Domain_ms_build"
+    },
+    {
+     "file": "mutsmall_Domain.bend",
+     "law": "Domain_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -6790,6 +7489,10 @@
     {
      "file": "wordpos_SigningData.bend",
      "law": "SigningData_arith_put"
+    },
+    {
+     "file": "zcapsym_SigningData.bend",
+     "law": "SigningData_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -6832,6 +7535,14 @@
     {
      "file": "spec_input_SigningData.bend",
      "law": "SigningData_spec_input"
+    },
+    {
+     "file": "mutsmall_SigningData.bend",
+     "law": "SigningData_ms_build"
+    },
+    {
+     "file": "mutsmall_SigningData.bend",
+     "law": "SigningData_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -6914,6 +7625,10 @@
     {
      "file": "wordpos_BLSPubkey.bend",
      "law": "BLSPubkey_arith_pw3"
+    },
+    {
+     "file": "zcapsym_BLSPubkey.bend",
+     "law": "BLSPubkey_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -6956,6 +7671,14 @@
     {
      "file": "spec_input_BLSPubkey.bend",
      "law": "BLSPubkey_spec_input"
+    },
+    {
+     "file": "mutsmall_BLSPubkey.bend",
+     "law": "BLSPubkey_ms_build"
+    },
+    {
+     "file": "mutsmall_BLSPubkey.bend",
+     "law": "BLSPubkey_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7030,6 +7753,10 @@
     {
      "file": "wordpos_DepositRequest.bend",
      "law": "DepositRequest_arith_put"
+    },
+    {
+     "file": "zcapsym_DepositRequest.bend",
+     "law": "DepositRequest_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7072,6 +7799,14 @@
     {
      "file": "spec_input_DepositRequest.bend",
      "law": "DepositRequest_spec_input"
+    },
+    {
+     "file": "mutsmall_DepositRequest.bend",
+     "law": "DepositRequest_ms_build"
+    },
+    {
+     "file": "mutsmall_DepositRequest.bend",
+     "law": "DepositRequest_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7146,6 +7881,10 @@
     {
      "file": "wordpos_PendingDeposit.bend",
      "law": "PendingDeposit_arith_put"
+    },
+    {
+     "file": "zcapsym_PendingDeposit.bend",
+     "law": "PendingDeposit_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7188,6 +7927,14 @@
     {
      "file": "spec_input_PendingDeposit.bend",
      "law": "PendingDeposit_spec_input"
+    },
+    {
+     "file": "mutsmall_PendingDeposit.bend",
+     "law": "PendingDeposit_ms_build"
+    },
+    {
+     "file": "mutsmall_PendingDeposit.bend",
+     "law": "PendingDeposit_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7285,6 +8032,18 @@
     {
      "file": "zcapsym_SyncCommittee.bend",
      "law": "SyncCommittee_serialize_capsym"
+    },
+    {
+     "file": "mutsmall_SyncCommittee.bend",
+     "law": "SyncCommittee_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_SyncCommittee.bend",
+     "law": "SyncCommittee_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_SyncCommittee.bend",
+     "law": "SyncCommittee_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -7349,6 +8108,10 @@
     {
      "file": "wordpos_DepositData.bend",
      "law": "DepositData_arith_put"
+    },
+    {
+     "file": "zcapsym_DepositData.bend",
+     "law": "DepositData_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7395,6 +8158,14 @@
     {
      "file": "spec_input_DepositData.bend",
      "law": "DepositData_spec_input"
+    },
+    {
+     "file": "mutsmall_DepositData.bend",
+     "law": "DepositData_ms_build"
+    },
+    {
+     "file": "mutsmall_DepositData.bend",
+     "law": "DepositData_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7518,6 +8289,26 @@
     {
      "file": "mutconst_Deposit.bend",
      "law": "Deposit_mc_ser"
+    },
+    {
+     "file": "mutsmall_Deposit.bend",
+     "law": "Deposit_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_Deposit.bend",
+     "law": "Deposit_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_Deposit.bend",
+     "law": "Deposit_ms_encout"
+    },
+    {
+     "file": "mutsmall_Deposit.bend",
+     "law": "Deposit_ms_size"
+    },
+    {
+     "file": "mutsmall_Deposit.bend",
+     "law": "Deposit_ms_bxsize_Deposit"
     }
    ],
    "decode_offsets": [
@@ -7582,6 +8373,10 @@
     {
      "file": "wordpos_DepositMessage.bend",
      "law": "DepositMessage_arith_put"
+    },
+    {
+     "file": "zcapsym_DepositMessage.bend",
+     "law": "DepositMessage_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7624,6 +8419,14 @@
     {
      "file": "spec_input_DepositMessage.bend",
      "law": "DepositMessage_spec_input"
+    },
+    {
+     "file": "mutsmall_DepositMessage.bend",
+     "law": "DepositMessage_ms_build"
+    },
+    {
+     "file": "mutsmall_DepositMessage.bend",
+     "law": "DepositMessage_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7702,6 +8505,10 @@
     {
      "file": "spec_rec_Validator.bend",
      "law": "Validator_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Validator.bend",
+     "law": "Validator_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7715,7 +8522,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_Validator.bend",
+     "law": "Validator_ms_build"
+    },
+    {
+     "file": "mutsmall_Validator.bend",
+     "law": "Validator_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_fulu_Validator.bend",
@@ -7796,6 +8612,10 @@
     {
      "file": "wordpos_NodeID.bend",
      "law": "NodeID_arith_pw3"
+    },
+    {
+     "file": "zcapsym_NodeID.bend",
+     "law": "NodeID_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7838,6 +8658,14 @@
     {
      "file": "spec_input_NodeID.bend",
      "law": "NodeID_spec_input"
+    },
+    {
+     "file": "mutsmall_NodeID.bend",
+     "law": "NodeID_ms_build"
+    },
+    {
+     "file": "mutsmall_NodeID.bend",
+     "law": "NodeID_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -7908,6 +8736,10 @@
     {
      "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_bytes"
+    },
+    {
+     "file": "zcapsym_SubnetID.bend",
+     "law": "SubnetID_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7950,6 +8782,14 @@
     {
      "file": "spec_input_SubnetID.bend",
      "law": "SubnetID_spec_input"
+    },
+    {
+     "file": "mutsmall_SubnetID.bend",
+     "law": "SubnetID_ms_build"
+    },
+    {
+     "file": "mutsmall_SubnetID.bend",
+     "law": "SubnetID_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -8016,6 +8856,10 @@
     {
      "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Ether.bend",
+     "law": "Ether_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8058,6 +8902,14 @@
     {
      "file": "spec_input_Ether.bend",
      "law": "Ether_spec_input"
+    },
+    {
+     "file": "mutsmall_Ether.bend",
+     "law": "Ether_ms_build"
+    },
+    {
+     "file": "mutsmall_Ether.bend",
+     "law": "Ether_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -8128,6 +8980,10 @@
     {
      "file": "spec_small.bend",
      "law": "ParticipationFlags_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ParticipationFlags.bend",
+     "law": "ParticipationFlags_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8146,7 +9002,16 @@
      "law": "ParticipationFlags_spec_decode_tree"
     }
    ],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_ParticipationFlags.bend",
+     "law": "ParticipationFlags_ms_build"
+    },
+    {
+     "file": "mutsmall_ParticipationFlags.bend",
+     "law": "ParticipationFlags_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_fulu_ParticipationFlags.bend",
@@ -8223,6 +9088,38 @@
     {
      "file": "zcapsym_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_a80"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -8275,6 +9172,18 @@
     {
      "file": "mutconst_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_mc_ser"
+    },
+    {
+     "file": "mutsmall_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -8343,6 +9252,38 @@
     {
      "file": "zcapsym_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_a80"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -8391,6 +9332,18 @@
     {
      "file": "mutconst_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_mc_ser"
+    },
+    {
+     "file": "mutsmall_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -8489,6 +9442,10 @@
     {
      "file": "mutconst_Transaction.bend",
      "law": "Transaction_mc_ser"
+    },
+    {
+     "file": "mutsmall_Transaction.bend",
+     "law": "Transaction_ms_bxsize_bl1073741824"
     }
    ],
    "decode_offsets": [
@@ -8557,6 +9514,10 @@
     {
      "file": "wordpos_ExecutionAddress.bend",
      "law": "ExecutionAddress_arith_pw3"
+    },
+    {
+     "file": "zcapsym_ExecutionAddress.bend",
+     "law": "ExecutionAddress_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8599,6 +9560,14 @@
     {
      "file": "spec_input_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_input"
+    },
+    {
+     "file": "mutsmall_ExecutionAddress.bend",
+     "law": "ExecutionAddress_ms_build"
+    },
+    {
+     "file": "mutsmall_ExecutionAddress.bend",
+     "law": "ExecutionAddress_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -8673,6 +9642,10 @@
     {
      "file": "wordpos_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_arith_put"
+    },
+    {
+     "file": "zcapsym_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8715,6 +9688,14 @@
     {
      "file": "spec_input_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_input"
+    },
+    {
+     "file": "mutsmall_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_ms_build"
+    },
+    {
+     "file": "mutsmall_ConsolidationRequest.bend",
+     "law": "ConsolidationRequest_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -8789,6 +9770,10 @@
     {
      "file": "wordpos_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_arith_put"
+    },
+    {
+     "file": "zcapsym_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8831,6 +9816,14 @@
     {
      "file": "spec_input_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_input"
+    },
+    {
+     "file": "mutsmall_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_ms_build"
+    },
+    {
+     "file": "mutsmall_WithdrawalRequest.bend",
+     "law": "WithdrawalRequest_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -8919,6 +9912,10 @@
     {
      "file": "mutconst_ExecutionRequests.bend",
      "law": "ExecutionRequests_mc_ser"
+    },
+    {
+     "file": "mutsmall_ExecutionRequests.bend",
+     "law": "ExecutionRequests_ms_size"
     }
    ],
    "decode_offsets": [
@@ -8979,6 +9976,10 @@
     {
      "file": "wordpos_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_arith_put"
+    },
+    {
+     "file": "zcapsym_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9021,6 +10022,14 @@
     {
      "file": "spec_input_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_input"
+    },
+    {
+     "file": "mutsmall_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_ms_build"
+    },
+    {
+     "file": "mutsmall_BLSToExecutionChange.bend",
+     "law": "BLSToExecutionChange_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -9095,6 +10104,10 @@
     {
      "file": "wordpos_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_arith_put"
+    },
+    {
+     "file": "zcapsym_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9137,6 +10150,14 @@
     {
      "file": "spec_input_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_input"
+    },
+    {
+     "file": "mutsmall_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_ms_build"
+    },
+    {
+     "file": "mutsmall_SignedBLSToExecutionChange.bend",
+     "law": "SignedBLSToExecutionChange_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -9245,6 +10266,18 @@
     {
      "file": "mutconst_ExecutionPayloadHeader.bend",
      "law": "ExecutionPayloadHeader_mc_ser"
+    },
+    {
+     "file": "mutsmall_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_ms_size"
+    },
+    {
+     "file": "mutsmall_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_ms_bxsize_ExecutionPayloadHeader"
     }
    ],
    "decode_offsets": [
@@ -9313,6 +10346,10 @@
     {
      "file": "wordpos_PayloadId.bend",
      "law": "PayloadId_arith_pw3"
+    },
+    {
+     "file": "zcapsym_PayloadId.bend",
+     "law": "PayloadId_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9355,6 +10392,14 @@
     {
      "file": "spec_input_PayloadId.bend",
      "law": "PayloadId_spec_input"
+    },
+    {
+     "file": "mutsmall_PayloadId.bend",
+     "law": "PayloadId_ms_build"
+    },
+    {
+     "file": "mutsmall_PayloadId.bend",
+     "law": "PayloadId_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -9425,6 +10470,10 @@
     {
      "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_WithdrawalIndex.bend",
+     "law": "WithdrawalIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9467,6 +10516,14 @@
     {
      "file": "spec_input_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_WithdrawalIndex.bend",
+     "law": "WithdrawalIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_WithdrawalIndex.bend",
+     "law": "WithdrawalIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -9537,6 +10594,10 @@
     {
      "file": "wordpos_Withdrawal.bend",
      "law": "Withdrawal_arith_put"
+    },
+    {
+     "file": "zcapsym_Withdrawal.bend",
+     "law": "Withdrawal_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9579,6 +10640,14 @@
     {
      "file": "spec_input_Withdrawal.bend",
      "law": "Withdrawal_spec_input"
+    },
+    {
+     "file": "mutsmall_Withdrawal.bend",
+     "law": "Withdrawal_ms_build"
+    },
+    {
+     "file": "mutsmall_Withdrawal.bend",
+     "law": "Withdrawal_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -9675,6 +10744,14 @@
     {
      "file": "mutconst_ExecutionPayload.bend",
      "law": "ExecutionPayload_mc_ser"
+    },
+    {
+     "file": "mutsmall_ExecutionPayload.bend",
+     "law": "ExecutionPayload_ms_size"
+    },
+    {
+     "file": "mutsmall_ExecutionPayload.bend",
+     "law": "ExecutionPayload_ms_bxsize_ExecutionPayload"
     }
    ],
    "decode_offsets": [
@@ -9812,6 +10889,38 @@
     {
      "file": "zcapsym_ExecutionBranch.bend",
      "law": "ExecutionBranch_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_a32"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_ExecutionBranch.bend",
+     "law": "ExecutionBranch_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -9864,6 +10973,18 @@
     {
      "file": "mutconst_ExecutionBranch.bend",
      "law": "ExecutionBranch_mc_ser"
+    },
+    {
+     "file": "mutsmall_ExecutionBranch.bend",
+     "law": "ExecutionBranch_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_ExecutionBranch.bend",
+     "law": "ExecutionBranch_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_ExecutionBranch.bend",
+     "law": "ExecutionBranch_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -9950,6 +11071,14 @@
     {
      "file": "mutconst_LightClientHeader.bend",
      "law": "LightClientHeader_mc_ser"
+    },
+    {
+     "file": "mutsmall_LightClientHeader.bend",
+     "law": "LightClientHeader_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_LightClientHeader.bend",
+     "law": "LightClientHeader_ms_size"
     }
    ],
    "decode_offsets": [
@@ -10036,6 +11165,14 @@
     {
      "file": "mutconst_LightClientOptimisticUpdate.bend",
      "law": "LightClientOptimisticUpdate_mc_ser"
+    },
+    {
+     "file": "mutsmall_LightClientOptimisticUpdate.bend",
+     "law": "LightClientOptimisticUpdate_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_LightClientOptimisticUpdate.bend",
+     "law": "LightClientOptimisticUpdate_ms_size"
     }
    ],
    "decode_offsets": [
@@ -10122,6 +11259,14 @@
     {
      "file": "mutconst_LightClientFinalityUpdate.bend",
      "law": "LightClientFinalityUpdate_mc_ser"
+    },
+    {
+     "file": "mutsmall_LightClientFinalityUpdate.bend",
+     "law": "LightClientFinalityUpdate_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_LightClientFinalityUpdate.bend",
+     "law": "LightClientFinalityUpdate_ms_size"
     }
    ],
    "decode_offsets": [
@@ -10200,6 +11345,10 @@
     {
      "file": "zcapsym_LightClientUpdate.bend",
      "law": "LightClientUpdate_serialize_capsym"
+    },
+    {
+     "file": "mutsmall_LightClientUpdate.bend",
+     "law": "LightClientUpdate_ms_serdepth"
     }
    ],
    "decode_offsets": [
@@ -10278,6 +11427,10 @@
     {
      "file": "zcapsym_LightClientBootstrap.bend",
      "law": "LightClientBootstrap_serialize_capsym"
+    },
+    {
+     "file": "mutsmall_LightClientBootstrap.bend",
+     "law": "LightClientBootstrap_ms_serdepth"
     }
    ],
    "decode_offsets": [
@@ -10334,6 +11487,10 @@
     {
      "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_BlobIndex.bend",
+     "law": "BlobIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10376,6 +11533,14 @@
     {
      "file": "spec_input_BlobIndex.bend",
      "law": "BlobIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_BlobIndex.bend",
+     "law": "BlobIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_BlobIndex.bend",
+     "law": "BlobIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -10446,6 +11611,10 @@
     {
      "file": "wordpos_BlobIdentifier.bend",
      "law": "BlobIdentifier_arith_put"
+    },
+    {
+     "file": "zcapsym_BlobIdentifier.bend",
+     "law": "BlobIdentifier_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10488,6 +11657,14 @@
     {
      "file": "spec_input_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_input"
+    },
+    {
+     "file": "mutsmall_BlobIdentifier.bend",
+     "law": "BlobIdentifier_ms_build"
+    },
+    {
+     "file": "mutsmall_BlobIdentifier.bend",
+     "law": "BlobIdentifier_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -10570,6 +11747,10 @@
     {
      "file": "wordpos_KZGCommitment.bend",
      "law": "KZGCommitment_arith_pw3"
+    },
+    {
+     "file": "zcapsym_KZGCommitment.bend",
+     "law": "KZGCommitment_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10612,6 +11793,14 @@
     {
      "file": "spec_input_KZGCommitment.bend",
      "law": "KZGCommitment_spec_input"
+    },
+    {
+     "file": "mutsmall_KZGCommitment.bend",
+     "law": "KZGCommitment_ms_build"
+    },
+    {
+     "file": "mutsmall_KZGCommitment.bend",
+     "law": "KZGCommitment_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -10708,6 +11897,14 @@
     {
      "file": "mutconst_BeaconBlockBody.bend",
      "law": "BeaconBlockBody_mc_ser"
+    },
+    {
+     "file": "mutsmall_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_ms_size"
+    },
+    {
+     "file": "mutsmall_BeaconBlockBody.bend",
+     "law": "BeaconBlockBody_ms_bxsize_BeaconBlockBody"
     }
    ],
    "decode_offsets": [
@@ -10782,6 +11979,10 @@
     {
      "file": "mutconst_BeaconBlock.bend",
      "law": "BeaconBlock_mc_ser"
+    },
+    {
+     "file": "mutsmall_BeaconBlock.bend",
+     "law": "BeaconBlock_ms_size"
     }
    ],
    "decode_offsets": [
@@ -10856,6 +12057,10 @@
     {
      "file": "mutconst_SignedBeaconBlock.bend",
      "law": "SignedBeaconBlock_mc_ser"
+    },
+    {
+     "file": "mutsmall_SignedBeaconBlock.bend",
+     "law": "SignedBeaconBlock_ms_size"
     }
    ],
    "decode_offsets": [
@@ -10924,6 +12129,10 @@
     {
      "file": "wordpos_KZGProof.bend",
      "law": "KZGProof_arith_pw3"
+    },
+    {
+     "file": "zcapsym_KZGProof.bend",
+     "law": "KZGProof_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10966,6 +12175,14 @@
     {
      "file": "spec_input_KZGProof.bend",
      "law": "KZGProof_spec_input"
+    },
+    {
+     "file": "mutsmall_KZGProof.bend",
+     "law": "KZGProof_ms_build"
+    },
+    {
+     "file": "mutsmall_KZGProof.bend",
+     "law": "KZGProof_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -11079,6 +12296,18 @@
     {
      "file": "mutconst_Blob.bend",
      "law": "Blob_mc_poison_b131072"
+    },
+    {
+     "file": "mutsmall_Blob.bend",
+     "law": "Blob_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_Blob.bend",
+     "law": "Blob_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_Blob.bend",
+     "law": "Blob_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -11162,6 +12391,18 @@
     {
      "file": "zcapsym_BlobSidecar.bend",
      "law": "BlobSidecar_serialize_capsym"
+    },
+    {
+     "file": "mutsmall_BlobSidecar.bend",
+     "law": "BlobSidecar_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_BlobSidecar.bend",
+     "law": "BlobSidecar_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_BlobSidecar.bend",
+     "law": "BlobSidecar_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -11282,6 +12523,18 @@
     {
      "file": "mutconst_Cell.bend",
      "law": "Cell_mc_poison_b2048"
+    },
+    {
+     "file": "mutsmall_Cell.bend",
+     "law": "Cell_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_Cell.bend",
+     "law": "Cell_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_Cell.bend",
+     "law": "Cell_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -11338,6 +12591,10 @@
     {
      "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_CellIndex.bend",
+     "law": "CellIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11380,6 +12637,14 @@
     {
      "file": "spec_input_CellIndex.bend",
      "law": "CellIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_CellIndex.bend",
+     "law": "CellIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_CellIndex.bend",
+     "law": "CellIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -11446,6 +12711,10 @@
     {
      "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_CommitmentIndex.bend",
+     "law": "CommitmentIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11488,6 +12757,14 @@
     {
      "file": "spec_input_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_CommitmentIndex.bend",
+     "law": "CommitmentIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_CommitmentIndex.bend",
+     "law": "CommitmentIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -11554,6 +12831,10 @@
     {
      "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_RowIndex.bend",
+     "law": "RowIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11596,6 +12877,14 @@
     {
      "file": "spec_input_RowIndex.bend",
      "law": "RowIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_RowIndex.bend",
+     "law": "RowIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_RowIndex.bend",
+     "law": "RowIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -11662,6 +12951,10 @@
     {
      "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ColumnIndex.bend",
+     "law": "ColumnIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11704,6 +12997,14 @@
     {
      "file": "spec_input_ColumnIndex.bend",
      "law": "ColumnIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_ColumnIndex.bend",
+     "law": "ColumnIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_ColumnIndex.bend",
+     "law": "ColumnIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -11788,6 +13089,10 @@
     {
      "file": "mutconst_DataColumnsByRootIdentifier.bend",
      "law": "DataColumnsByRootIdentifier_mc_ser"
+    },
+    {
+     "file": "mutsmall_DataColumnsByRootIdentifier.bend",
+     "law": "DataColumnsByRootIdentifier_ms_size"
     }
    ],
    "decode_offsets": [
@@ -11884,6 +13189,22 @@
     {
      "file": "mutconst_MatrixEntry.bend",
      "law": "MatrixEntry_mc_ser"
+    },
+    {
+     "file": "mutsmall_MatrixEntry.bend",
+     "law": "MatrixEntry_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_MatrixEntry.bend",
+     "law": "MatrixEntry_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_MatrixEntry.bend",
+     "law": "MatrixEntry_ms_encout"
+    },
+    {
+     "file": "mutsmall_MatrixEntry.bend",
+     "law": "MatrixEntry_ms_size"
     }
    ],
    "decode_offsets": [
@@ -11962,6 +13283,10 @@
     {
      "file": "mutconst_DataColumnSidecar.bend",
      "law": "DataColumnSidecar_mc_ser"
+    },
+    {
+     "file": "mutsmall_DataColumnSidecar.bend",
+     "law": "DataColumnSidecar_ms_size"
     }
    ],
    "decode_offsets": [
@@ -12018,6 +13343,10 @@
     {
      "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_bytes"
+    },
+    {
+     "file": "zcapsym_CustodyIndex.bend",
+     "law": "CustodyIndex_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12060,6 +13389,14 @@
     {
      "file": "spec_input_CustodyIndex.bend",
      "law": "CustodyIndex_spec_input"
+    },
+    {
+     "file": "mutsmall_CustodyIndex.bend",
+     "law": "CustodyIndex_ms_build"
+    },
+    {
+     "file": "mutsmall_CustodyIndex.bend",
+     "law": "CustodyIndex_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -12300,6 +13637,10 @@
     {
      "file": "mutconst_ProgressiveVarTestStruct.bend",
      "law": "ProgressiveVarTestStruct_mc_ser"
+    },
+    {
+     "file": "mutsmall_ProgressiveVarTestStruct.bend",
+     "law": "ProgressiveVarTestStruct_ms_bxsize_ProgressiveVarTestStruct"
     }
    ],
    "decode_offsets": [
@@ -12356,6 +13697,10 @@
     {
      "file": "sub_ProgressiveSingleFieldContainerTestStruct.bend",
      "law": "ProgressiveSingleFieldContainerTestStruct_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ProgressiveSingleFieldContainerTestStruct.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12369,7 +13714,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_ProgressiveSingleFieldContainerTestStruct.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_ms_build"
+    },
+    {
+     "file": "mutsmall_ProgressiveSingleFieldContainerTestStruct.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_ms_dec"
+    }
+   ],
    "serialize_valid": [],
    "decode_offsets": [
     {
@@ -12577,6 +13931,18 @@
     {
      "file": "mutconst_vec_bool_16.bend",
      "law": "vec_bool_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_16.bend",
+     "law": "vec_bool_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_16.bend",
+     "law": "vec_bool_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_16.bend",
+     "law": "vec_bool_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -12641,6 +14007,10 @@
     {
      "file": "sub_vec_bool_1.bend",
      "law": "vec_bool_1_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_1.bend",
+     "law": "vec_bool_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12673,12 +14043,28 @@
      "law": "vec_bool_1_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_bool_1.bend",
+     "law": "vec_bool_1_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_bool_1.bend",
      "law": "vec_bool_1_mc_poison_v1_bool"
     },
     {
      "file": "mutconst_vec_bool_1.bend",
      "law": "vec_bool_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_1.bend",
+     "law": "vec_bool_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_1.bend",
+     "law": "vec_bool_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_1.bend",
+     "law": "vec_bool_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -12743,6 +14129,10 @@
     {
      "file": "sub_vec_bool_2.bend",
      "law": "vec_bool_2_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_2.bend",
+     "law": "vec_bool_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12775,12 +14165,28 @@
      "law": "vec_bool_2_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_bool_2.bend",
+     "law": "vec_bool_2_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_bool_2.bend",
      "law": "vec_bool_2_mc_poison_v2_bool"
     },
     {
      "file": "mutconst_vec_bool_2.bend",
      "law": "vec_bool_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_2.bend",
+     "law": "vec_bool_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_2.bend",
+     "law": "vec_bool_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_2.bend",
+     "law": "vec_bool_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -12891,6 +14297,18 @@
     {
      "file": "mutconst_vec_bool_31.bend",
      "law": "vec_bool_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_31.bend",
+     "law": "vec_bool_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_31.bend",
+     "law": "vec_bool_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_31.bend",
+     "law": "vec_bool_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -12955,6 +14373,10 @@
     {
      "file": "sub_vec_bool_3.bend",
      "law": "vec_bool_3_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_3.bend",
+     "law": "vec_bool_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12987,12 +14409,28 @@
      "law": "vec_bool_3_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_bool_3.bend",
+     "law": "vec_bool_3_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_bool_3.bend",
      "law": "vec_bool_3_mc_poison_v3_bool"
     },
     {
      "file": "mutconst_vec_bool_3.bend",
      "law": "vec_bool_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_3.bend",
+     "law": "vec_bool_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_3.bend",
+     "law": "vec_bool_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_3.bend",
+     "law": "vec_bool_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13061,6 +14499,10 @@
     {
      "file": "wordpos_vec_bool_4.bend",
      "law": "vec_bool_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_bool_4.bend",
+     "law": "vec_bool_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13093,6 +14535,10 @@
      "law": "vec_bool_4_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_bool_4.bend",
+     "law": "vec_bool_4_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_bool_4.bend",
      "law": "vec_bool_4_mc_poison_v4_bool"
     },
@@ -13103,6 +14549,18 @@
     {
      "file": "mutconst_vec_bool_4.bend",
      "law": "vec_bool_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_4.bend",
+     "law": "vec_bool_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_4.bend",
+     "law": "vec_bool_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_4.bend",
+     "law": "vec_bool_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13213,6 +14671,18 @@
     {
      "file": "mutconst_vec_bool_512.bend",
      "law": "vec_bool_512_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_512.bend",
+     "law": "vec_bool_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_512.bend",
+     "law": "vec_bool_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_512.bend",
+     "law": "vec_bool_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13323,6 +14793,18 @@
     {
      "file": "mutconst_vec_bool_513.bend",
      "law": "vec_bool_513_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_513.bend",
+     "law": "vec_bool_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_513.bend",
+     "law": "vec_bool_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_513.bend",
+     "law": "vec_bool_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13433,6 +14915,18 @@
     {
      "file": "mutconst_vec_bool_5.bend",
      "law": "vec_bool_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_5.bend",
+     "law": "vec_bool_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_5.bend",
+     "law": "vec_bool_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_5.bend",
+     "law": "vec_bool_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13551,6 +15045,18 @@
     {
      "file": "mutconst_vec_bool_8.bend",
      "law": "vec_bool_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_bool_8.bend",
+     "law": "vec_bool_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_bool_8.bend",
+     "law": "vec_bool_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_bool_8.bend",
+     "law": "vec_bool_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13709,6 +15215,38 @@
     {
      "file": "zcapsym_vec_uint128_16.bend",
      "law": "vec_uint128_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_a64"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_16.bend",
+     "law": "vec_uint128_16_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -13761,6 +15299,18 @@
     {
      "file": "mutconst_vec_uint128_16.bend",
      "law": "vec_uint128_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_16.bend",
+     "law": "vec_uint128_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_16.bend",
+     "law": "vec_uint128_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_16.bend",
+     "law": "vec_uint128_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13829,6 +15379,38 @@
     {
      "file": "zcapsym_vec_uint128_1.bend",
      "law": "vec_uint128_1_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_a4"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_1.bend",
+     "law": "vec_uint128_1_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -13881,6 +15463,18 @@
     {
      "file": "mutconst_vec_uint128_1.bend",
      "law": "vec_uint128_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_1.bend",
+     "law": "vec_uint128_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_1.bend",
+     "law": "vec_uint128_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_1.bend",
+     "law": "vec_uint128_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -13949,6 +15543,38 @@
     {
      "file": "zcapsym_vec_uint128_2.bend",
      "law": "vec_uint128_2_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_a8"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_2.bend",
+     "law": "vec_uint128_2_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14001,6 +15627,18 @@
     {
      "file": "mutconst_vec_uint128_2.bend",
      "law": "vec_uint128_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_2.bend",
+     "law": "vec_uint128_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_2.bend",
+     "law": "vec_uint128_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_2.bend",
+     "law": "vec_uint128_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14113,6 +15751,18 @@
     {
      "file": "mutconst_vec_uint128_31.bend",
      "law": "vec_uint128_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_31.bend",
+     "law": "vec_uint128_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_31.bend",
+     "law": "vec_uint128_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_31.bend",
+     "law": "vec_uint128_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14181,6 +15831,38 @@
     {
      "file": "zcapsym_vec_uint128_3.bend",
      "law": "vec_uint128_3_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_a20"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_3.bend",
+     "law": "vec_uint128_3_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14233,6 +15915,18 @@
     {
      "file": "mutconst_vec_uint128_3.bend",
      "law": "vec_uint128_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_3.bend",
+     "law": "vec_uint128_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_3.bend",
+     "law": "vec_uint128_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_3.bend",
+     "law": "vec_uint128_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14301,6 +15995,38 @@
     {
      "file": "zcapsym_vec_uint128_4.bend",
      "law": "vec_uint128_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_a16"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_4.bend",
+     "law": "vec_uint128_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14353,6 +16079,18 @@
     {
      "file": "mutconst_vec_uint128_4.bend",
      "law": "vec_uint128_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_4.bend",
+     "law": "vec_uint128_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_4.bend",
+     "law": "vec_uint128_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_4.bend",
+     "law": "vec_uint128_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14452,6 +16190,18 @@
     {
      "file": "mutconst_vec_uint128_512.bend",
      "law": "vec_uint128_512_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_512.bend",
+     "law": "vec_uint128_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_512.bend",
+     "law": "vec_uint128_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_512.bend",
+     "law": "vec_uint128_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14547,6 +16297,18 @@
     {
      "file": "mutconst_vec_uint128_513.bend",
      "law": "vec_uint128_513_mc_poison_v513_u128"
+    },
+    {
+     "file": "mutsmall_vec_uint128_513.bend",
+     "law": "vec_uint128_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_513.bend",
+     "law": "vec_uint128_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_513.bend",
+     "law": "vec_uint128_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14615,6 +16377,38 @@
     {
      "file": "zcapsym_vec_uint128_5.bend",
      "law": "vec_uint128_5_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_a44"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_5.bend",
+     "law": "vec_uint128_5_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14667,6 +16461,18 @@
     {
      "file": "mutconst_vec_uint128_5.bend",
      "law": "vec_uint128_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_5.bend",
+     "law": "vec_uint128_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_5.bend",
+     "law": "vec_uint128_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_5.bend",
+     "law": "vec_uint128_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14735,6 +16541,38 @@
     {
      "file": "zcapsym_vec_uint128_8.bend",
      "law": "vec_uint128_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_a32"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint128_8.bend",
+     "law": "vec_uint128_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14787,6 +16625,18 @@
     {
      "file": "mutconst_vec_uint128_8.bend",
      "law": "vec_uint128_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint128_8.bend",
+     "law": "vec_uint128_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint128_8.bend",
+     "law": "vec_uint128_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint128_8.bend",
+     "law": "vec_uint128_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -14945,6 +16795,38 @@
     {
      "file": "zcapsym_vec_uint8_16.bend",
      "law": "vec_uint8_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_a4"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_16.bend",
+     "law": "vec_uint8_16_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -14987,6 +16869,18 @@
     {
      "file": "mutconst_vec_uint8_16.bend",
      "law": "vec_uint8_16_mc_put"
+    },
+    {
+     "file": "mutsmall_vec_uint8_16.bend",
+     "law": "vec_uint8_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_16.bend",
+     "law": "vec_uint8_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_16.bend",
+     "law": "vec_uint8_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15047,6 +16941,10 @@
     {
      "file": "sub_vec_uint8_1.bend",
      "law": "vec_uint8_1_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_1.bend",
+     "law": "vec_uint8_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15079,8 +16977,24 @@
      "law": "vec_uint8_1_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint8_1.bend",
+     "law": "vec_uint8_1_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint8_1.bend",
      "law": "vec_uint8_1_mc_poison_v1_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_1.bend",
+     "law": "vec_uint8_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_1.bend",
+     "law": "vec_uint8_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_1.bend",
+     "law": "vec_uint8_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15141,6 +17055,10 @@
     {
      "file": "sub_vec_uint8_2.bend",
      "law": "vec_uint8_2_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_2.bend",
+     "law": "vec_uint8_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15173,8 +17091,24 @@
      "law": "vec_uint8_2_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint8_2.bend",
+     "law": "vec_uint8_2_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint8_2.bend",
      "law": "vec_uint8_2_mc_poison_v2_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_2.bend",
+     "law": "vec_uint8_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_2.bend",
+     "law": "vec_uint8_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_2.bend",
+     "law": "vec_uint8_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15277,6 +17211,18 @@
     {
      "file": "mutconst_vec_uint8_31.bend",
      "law": "vec_uint8_31_mc_poison_v31_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_31.bend",
+     "law": "vec_uint8_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_31.bend",
+     "law": "vec_uint8_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_31.bend",
+     "law": "vec_uint8_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15337,6 +17283,10 @@
     {
      "file": "sub_vec_uint8_3.bend",
      "law": "vec_uint8_3_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_3.bend",
+     "law": "vec_uint8_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15369,8 +17319,24 @@
      "law": "vec_uint8_3_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint8_3.bend",
+     "law": "vec_uint8_3_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint8_3.bend",
      "law": "vec_uint8_3_mc_poison_v3_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_3.bend",
+     "law": "vec_uint8_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_3.bend",
+     "law": "vec_uint8_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_3.bend",
+     "law": "vec_uint8_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15435,6 +17401,30 @@
     {
      "file": "wordpos_vec_uint8_4.bend",
      "law": "vec_uint8_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint8_4.bend",
+     "law": "vec_uint8_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_4.bend",
+     "law": "vec_uint8_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_4.bend",
+     "law": "vec_uint8_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_4.bend",
+     "law": "vec_uint8_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_4.bend",
+     "law": "vec_uint8_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_4.bend",
+     "law": "vec_uint8_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -15467,12 +17457,28 @@
      "law": "vec_uint8_4_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint8_4.bend",
+     "law": "vec_uint8_4_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint8_4.bend",
      "law": "vec_uint8_4_mc_poison_v4_u8"
     },
     {
      "file": "mutconst_vec_uint8_4.bend",
      "law": "vec_uint8_4_mc_put"
+    },
+    {
+     "file": "mutsmall_vec_uint8_4.bend",
+     "law": "vec_uint8_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_4.bend",
+     "law": "vec_uint8_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_4.bend",
+     "law": "vec_uint8_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15575,6 +17581,18 @@
     {
      "file": "mutconst_vec_uint8_512.bend",
      "law": "vec_uint8_512_mc_poison_v512_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_512.bend",
+     "law": "vec_uint8_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_512.bend",
+     "law": "vec_uint8_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_512.bend",
+     "law": "vec_uint8_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15677,6 +17695,18 @@
     {
      "file": "mutconst_vec_uint8_513.bend",
      "law": "vec_uint8_513_mc_poison_v513_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_513.bend",
+     "law": "vec_uint8_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_513.bend",
+     "law": "vec_uint8_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_513.bend",
+     "law": "vec_uint8_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15779,6 +17809,18 @@
     {
      "file": "mutconst_vec_uint8_5.bend",
      "law": "vec_uint8_5_mc_poison_v5_u8"
+    },
+    {
+     "file": "mutsmall_vec_uint8_5.bend",
+     "law": "vec_uint8_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_5.bend",
+     "law": "vec_uint8_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_5.bend",
+     "law": "vec_uint8_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -15847,6 +17889,30 @@
     {
      "file": "zcapsym_vec_uint8_8.bend",
      "law": "vec_uint8_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint8_8.bend",
+     "law": "vec_uint8_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -15889,6 +17955,18 @@
     {
      "file": "mutconst_vec_uint8_8.bend",
      "law": "vec_uint8_8_mc_put"
+    },
+    {
+     "file": "mutsmall_vec_uint8_8.bend",
+     "law": "vec_uint8_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint8_8.bend",
+     "law": "vec_uint8_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint8_8.bend",
+     "law": "vec_uint8_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16047,6 +18125,38 @@
     {
      "file": "zcapsym_vec_uint16_16.bend",
      "law": "vec_uint16_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_a8"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_16.bend",
+     "law": "vec_uint16_16_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -16089,6 +18199,18 @@
     {
      "file": "mutconst_vec_uint16_16.bend",
      "law": "vec_uint16_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_16.bend",
+     "law": "vec_uint16_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_16.bend",
+     "law": "vec_uint16_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_16.bend",
+     "law": "vec_uint16_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16149,6 +18271,10 @@
     {
      "file": "sub_vec_uint16_1.bend",
      "law": "vec_uint16_1_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_1.bend",
+     "law": "vec_uint16_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16177,12 +18303,28 @@
      "law": "vec_uint16_1_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint16_1.bend",
+     "law": "vec_uint16_1_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint16_1.bend",
      "law": "vec_uint16_1_mc_poison_v1_u16"
     },
     {
      "file": "mutconst_vec_uint16_1.bend",
      "law": "vec_uint16_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_1.bend",
+     "law": "vec_uint16_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_1.bend",
+     "law": "vec_uint16_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_1.bend",
+     "law": "vec_uint16_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16247,6 +18389,30 @@
     {
      "file": "wordpos_vec_uint16_2.bend",
      "law": "vec_uint16_2_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint16_2.bend",
+     "law": "vec_uint16_2_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_2.bend",
+     "law": "vec_uint16_2_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_2.bend",
+     "law": "vec_uint16_2_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_2.bend",
+     "law": "vec_uint16_2_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_2.bend",
+     "law": "vec_uint16_2_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_2.bend",
+     "law": "vec_uint16_2_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -16275,6 +18441,10 @@
      "law": "vec_uint16_2_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint16_2.bend",
+     "law": "vec_uint16_2_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint16_2.bend",
      "law": "vec_uint16_2_mc_poison_v2_u16"
     },
@@ -16285,6 +18455,18 @@
     {
      "file": "mutconst_vec_uint16_2.bend",
      "law": "vec_uint16_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_2.bend",
+     "law": "vec_uint16_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_2.bend",
+     "law": "vec_uint16_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_2.bend",
+     "law": "vec_uint16_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16387,6 +18569,18 @@
     {
      "file": "mutconst_vec_uint16_31.bend",
      "law": "vec_uint16_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_31.bend",
+     "law": "vec_uint16_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_31.bend",
+     "law": "vec_uint16_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_31.bend",
+     "law": "vec_uint16_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16489,6 +18683,18 @@
     {
      "file": "mutconst_vec_uint16_3.bend",
      "law": "vec_uint16_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_3.bend",
+     "law": "vec_uint16_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_3.bend",
+     "law": "vec_uint16_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_3.bend",
+     "law": "vec_uint16_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16557,6 +18763,30 @@
     {
      "file": "zcapsym_vec_uint16_4.bend",
      "law": "vec_uint16_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_4.bend",
+     "law": "vec_uint16_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -16599,6 +18829,18 @@
     {
      "file": "mutconst_vec_uint16_4.bend",
      "law": "vec_uint16_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_4.bend",
+     "law": "vec_uint16_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_4.bend",
+     "law": "vec_uint16_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_4.bend",
+     "law": "vec_uint16_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16701,6 +18943,18 @@
     {
      "file": "mutconst_vec_uint16_512.bend",
      "law": "vec_uint16_512_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_512.bend",
+     "law": "vec_uint16_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_512.bend",
+     "law": "vec_uint16_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_512.bend",
+     "law": "vec_uint16_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16803,6 +19057,18 @@
     {
      "file": "mutconst_vec_uint16_513.bend",
      "law": "vec_uint16_513_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_513.bend",
+     "law": "vec_uint16_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_513.bend",
+     "law": "vec_uint16_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_513.bend",
+     "law": "vec_uint16_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16905,6 +19171,18 @@
     {
      "file": "mutconst_vec_uint16_5.bend",
      "law": "vec_uint16_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_5.bend",
+     "law": "vec_uint16_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_5.bend",
+     "law": "vec_uint16_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_5.bend",
+     "law": "vec_uint16_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -16973,6 +19251,38 @@
     {
      "file": "zcapsym_vec_uint16_8.bend",
      "law": "vec_uint16_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_a4"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint16_8.bend",
+     "law": "vec_uint16_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -17015,6 +19325,18 @@
     {
      "file": "mutconst_vec_uint16_8.bend",
      "law": "vec_uint16_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint16_8.bend",
+     "law": "vec_uint16_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint16_8.bend",
+     "law": "vec_uint16_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint16_8.bend",
+     "law": "vec_uint16_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17217,6 +19539,18 @@
     {
      "file": "mutconst_vec_uint256_16.bend",
      "law": "vec_uint256_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_16.bend",
+     "law": "vec_uint256_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_16.bend",
+     "law": "vec_uint256_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_16.bend",
+     "law": "vec_uint256_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17285,6 +19619,38 @@
     {
      "file": "zcapsym_vec_uint256_1.bend",
      "law": "vec_uint256_1_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_a8"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_1.bend",
+     "law": "vec_uint256_1_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -17337,6 +19703,18 @@
     {
      "file": "mutconst_vec_uint256_1.bend",
      "law": "vec_uint256_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_1.bend",
+     "law": "vec_uint256_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_1.bend",
+     "law": "vec_uint256_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_1.bend",
+     "law": "vec_uint256_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17405,6 +19783,38 @@
     {
      "file": "zcapsym_vec_uint256_2.bend",
      "law": "vec_uint256_2_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_a16"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_2.bend",
+     "law": "vec_uint256_2_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -17457,6 +19867,18 @@
     {
      "file": "mutconst_vec_uint256_2.bend",
      "law": "vec_uint256_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_2.bend",
+     "law": "vec_uint256_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_2.bend",
+     "law": "vec_uint256_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_2.bend",
+     "law": "vec_uint256_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17569,6 +19991,18 @@
     {
      "file": "mutconst_vec_uint256_31.bend",
      "law": "vec_uint256_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_31.bend",
+     "law": "vec_uint256_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_31.bend",
+     "law": "vec_uint256_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_31.bend",
+     "law": "vec_uint256_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17637,6 +20071,38 @@
     {
      "file": "zcapsym_vec_uint256_3.bend",
      "law": "vec_uint256_3_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_a40"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_3.bend",
+     "law": "vec_uint256_3_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -17689,6 +20155,18 @@
     {
      "file": "mutconst_vec_uint256_3.bend",
      "law": "vec_uint256_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_3.bend",
+     "law": "vec_uint256_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_3.bend",
+     "law": "vec_uint256_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_3.bend",
+     "law": "vec_uint256_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17757,6 +20235,38 @@
     {
      "file": "zcapsym_vec_uint256_4.bend",
      "law": "vec_uint256_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_a32"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_4.bend",
+     "law": "vec_uint256_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -17809,6 +20319,18 @@
     {
      "file": "mutconst_vec_uint256_4.bend",
      "law": "vec_uint256_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_4.bend",
+     "law": "vec_uint256_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_4.bend",
+     "law": "vec_uint256_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_4.bend",
+     "law": "vec_uint256_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17904,6 +20426,18 @@
     {
      "file": "mutconst_vec_uint256_512.bend",
      "law": "vec_uint256_512_mc_poison_v512_u256"
+    },
+    {
+     "file": "mutsmall_vec_uint256_512.bend",
+     "law": "vec_uint256_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_512.bend",
+     "law": "vec_uint256_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_512.bend",
+     "law": "vec_uint256_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -17999,6 +20533,18 @@
     {
      "file": "mutconst_vec_uint256_513.bend",
      "law": "vec_uint256_513_mc_poison_v513_u256"
+    },
+    {
+     "file": "mutsmall_vec_uint256_513.bend",
+     "law": "vec_uint256_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_513.bend",
+     "law": "vec_uint256_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_513.bend",
+     "law": "vec_uint256_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18067,6 +20613,38 @@
     {
      "file": "zcapsym_vec_uint256_5.bend",
      "law": "vec_uint256_5_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_a88"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_5.bend",
+     "law": "vec_uint256_5_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18119,6 +20697,18 @@
     {
      "file": "mutconst_vec_uint256_5.bend",
      "law": "vec_uint256_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_5.bend",
+     "law": "vec_uint256_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_5.bend",
+     "law": "vec_uint256_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_5.bend",
+     "law": "vec_uint256_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18187,6 +20777,38 @@
     {
      "file": "zcapsym_vec_uint256_8.bend",
      "law": "vec_uint256_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_a64"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint256_8.bend",
+     "law": "vec_uint256_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18239,6 +20861,18 @@
     {
      "file": "mutconst_vec_uint256_8.bend",
      "law": "vec_uint256_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint256_8.bend",
+     "law": "vec_uint256_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint256_8.bend",
+     "law": "vec_uint256_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint256_8.bend",
+     "law": "vec_uint256_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18397,6 +21031,38 @@
     {
      "file": "zcapsym_vec_uint32_16.bend",
      "law": "vec_uint32_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_a16"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_16.bend",
+     "law": "vec_uint32_16_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18449,6 +21115,18 @@
     {
      "file": "mutconst_vec_uint32_16.bend",
      "law": "vec_uint32_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_16.bend",
+     "law": "vec_uint32_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_16.bend",
+     "law": "vec_uint32_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_16.bend",
+     "law": "vec_uint32_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18513,6 +21191,30 @@
     {
      "file": "wordpos_vec_uint32_1.bend",
      "law": "vec_uint32_1_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_1.bend",
+     "law": "vec_uint32_1_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_1.bend",
+     "law": "vec_uint32_1_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_1.bend",
+     "law": "vec_uint32_1_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_1.bend",
+     "law": "vec_uint32_1_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_1.bend",
+     "law": "vec_uint32_1_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_1.bend",
+     "law": "vec_uint32_1_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18551,6 +21253,10 @@
      "law": "vec_uint32_1_serialize_vsym"
     },
     {
+     "file": "zcapsym_vec_uint32_1.bend",
+     "law": "vec_uint32_1_serialize_capsym"
+    },
+    {
      "file": "mutconst_vec_uint32_1.bend",
      "law": "vec_uint32_1_mc_poison_v1_u32"
     },
@@ -18561,6 +21267,18 @@
     {
      "file": "mutconst_vec_uint32_1.bend",
      "law": "vec_uint32_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_1.bend",
+     "law": "vec_uint32_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_1.bend",
+     "law": "vec_uint32_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_1.bend",
+     "law": "vec_uint32_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18629,6 +21347,30 @@
     {
      "file": "zcapsym_vec_uint32_2.bend",
      "law": "vec_uint32_2_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_2.bend",
+     "law": "vec_uint32_2_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18681,6 +21423,18 @@
     {
      "file": "mutconst_vec_uint32_2.bend",
      "law": "vec_uint32_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_2.bend",
+     "law": "vec_uint32_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_2.bend",
+     "law": "vec_uint32_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_2.bend",
+     "law": "vec_uint32_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18749,6 +21503,38 @@
     {
      "file": "zcapsym_vec_uint32_31.bend",
      "law": "vec_uint32_31_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_a33"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_31.bend",
+     "law": "vec_uint32_31_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18801,6 +21587,18 @@
     {
      "file": "mutconst_vec_uint32_31.bend",
      "law": "vec_uint32_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_31.bend",
+     "law": "vec_uint32_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_31.bend",
+     "law": "vec_uint32_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_31.bend",
+     "law": "vec_uint32_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18869,6 +21667,38 @@
     {
      "file": "zcapsym_vec_uint32_3.bend",
      "law": "vec_uint32_3_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_a5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_3.bend",
+     "law": "vec_uint32_3_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -18921,6 +21751,18 @@
     {
      "file": "mutconst_vec_uint32_3.bend",
      "law": "vec_uint32_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_3.bend",
+     "law": "vec_uint32_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_3.bend",
+     "law": "vec_uint32_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_3.bend",
+     "law": "vec_uint32_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -18989,6 +21831,38 @@
     {
      "file": "zcapsym_vec_uint32_4.bend",
      "law": "vec_uint32_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_a4"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_4.bend",
+     "law": "vec_uint32_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19041,6 +21915,18 @@
     {
      "file": "mutconst_vec_uint32_4.bend",
      "law": "vec_uint32_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_4.bend",
+     "law": "vec_uint32_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_4.bend",
+     "law": "vec_uint32_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_4.bend",
+     "law": "vec_uint32_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19148,6 +22034,18 @@
     {
      "file": "mutconst_vec_uint32_512.bend",
      "law": "vec_uint32_512_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_512.bend",
+     "law": "vec_uint32_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_512.bend",
+     "law": "vec_uint32_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_512.bend",
+     "law": "vec_uint32_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19255,6 +22153,18 @@
     {
      "file": "mutconst_vec_uint32_513.bend",
      "law": "vec_uint32_513_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_513.bend",
+     "law": "vec_uint32_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_513.bend",
+     "law": "vec_uint32_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_513.bend",
+     "law": "vec_uint32_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19323,6 +22233,38 @@
     {
      "file": "zcapsym_vec_uint32_5.bend",
      "law": "vec_uint32_5_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_a11"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_5.bend",
+     "law": "vec_uint32_5_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19375,6 +22317,18 @@
     {
      "file": "mutconst_vec_uint32_5.bend",
      "law": "vec_uint32_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_5.bend",
+     "law": "vec_uint32_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_5.bend",
+     "law": "vec_uint32_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_5.bend",
+     "law": "vec_uint32_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19443,6 +22397,38 @@
     {
      "file": "zcapsym_vec_uint32_8.bend",
      "law": "vec_uint32_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_a8"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint32_8.bend",
+     "law": "vec_uint32_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19495,6 +22481,18 @@
     {
      "file": "mutconst_vec_uint32_8.bend",
      "law": "vec_uint32_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint32_8.bend",
+     "law": "vec_uint32_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint32_8.bend",
+     "law": "vec_uint32_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint32_8.bend",
+     "law": "vec_uint32_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19653,6 +22651,38 @@
     {
      "file": "zcapsym_vec_uint64_16.bend",
      "law": "vec_uint64_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_a32"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_16.bend",
+     "law": "vec_uint64_16_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19705,6 +22735,18 @@
     {
      "file": "mutconst_vec_uint64_16.bend",
      "law": "vec_uint64_16_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_16.bend",
+     "law": "vec_uint64_16_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_16.bend",
+     "law": "vec_uint64_16_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_16.bend",
+     "law": "vec_uint64_16_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19773,6 +22815,30 @@
     {
      "file": "zcapsym_vec_uint64_1.bend",
      "law": "vec_uint64_1_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_1.bend",
+     "law": "vec_uint64_1_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19825,6 +22891,18 @@
     {
      "file": "mutconst_vec_uint64_1.bend",
      "law": "vec_uint64_1_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_1.bend",
+     "law": "vec_uint64_1_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_1.bend",
+     "law": "vec_uint64_1_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_1.bend",
+     "law": "vec_uint64_1_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -19893,6 +22971,38 @@
     {
      "file": "zcapsym_vec_uint64_2.bend",
      "law": "vec_uint64_2_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_a4"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_2.bend",
+     "law": "vec_uint64_2_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -19945,6 +23055,18 @@
     {
      "file": "mutconst_vec_uint64_2.bend",
      "law": "vec_uint64_2_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_2.bend",
+     "law": "vec_uint64_2_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_2.bend",
+     "law": "vec_uint64_2_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_2.bend",
+     "law": "vec_uint64_2_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20013,6 +23135,38 @@
     {
      "file": "zcapsym_vec_uint64_31.bend",
      "law": "vec_uint64_31_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_a66"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_31.bend",
+     "law": "vec_uint64_31_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -20065,6 +23219,18 @@
     {
      "file": "mutconst_vec_uint64_31.bend",
      "law": "vec_uint64_31_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_31.bend",
+     "law": "vec_uint64_31_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_31.bend",
+     "law": "vec_uint64_31_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_31.bend",
+     "law": "vec_uint64_31_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20133,6 +23299,38 @@
     {
      "file": "zcapsym_vec_uint64_3.bend",
      "law": "vec_uint64_3_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_a10"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_3.bend",
+     "law": "vec_uint64_3_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -20185,6 +23383,18 @@
     {
      "file": "mutconst_vec_uint64_3.bend",
      "law": "vec_uint64_3_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_3.bend",
+     "law": "vec_uint64_3_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_3.bend",
+     "law": "vec_uint64_3_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_3.bend",
+     "law": "vec_uint64_3_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20253,6 +23463,38 @@
     {
      "file": "zcapsym_vec_uint64_4.bend",
      "law": "vec_uint64_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_a8"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_4.bend",
+     "law": "vec_uint64_4_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -20305,6 +23547,18 @@
     {
      "file": "mutconst_vec_uint64_4.bend",
      "law": "vec_uint64_4_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_4.bend",
+     "law": "vec_uint64_4_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_4.bend",
+     "law": "vec_uint64_4_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_4.bend",
+     "law": "vec_uint64_4_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20412,6 +23666,18 @@
     {
      "file": "mutconst_vec_uint64_512.bend",
      "law": "vec_uint64_512_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_512.bend",
+     "law": "vec_uint64_512_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_512.bend",
+     "law": "vec_uint64_512_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_512.bend",
+     "law": "vec_uint64_512_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20511,6 +23777,18 @@
     {
      "file": "mutconst_vec_uint64_513.bend",
      "law": "vec_uint64_513_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_513.bend",
+     "law": "vec_uint64_513_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_513.bend",
+     "law": "vec_uint64_513_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_513.bend",
+     "law": "vec_uint64_513_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20579,6 +23857,38 @@
     {
      "file": "zcapsym_vec_uint64_5.bend",
      "law": "vec_uint64_5_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_a22"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_5.bend",
+     "law": "vec_uint64_5_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -20631,6 +23941,18 @@
     {
      "file": "mutconst_vec_uint64_5.bend",
      "law": "vec_uint64_5_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_5.bend",
+     "law": "vec_uint64_5_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_5.bend",
+     "law": "vec_uint64_5_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_5.bend",
+     "law": "vec_uint64_5_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -20699,6 +24021,38 @@
     {
      "file": "zcapsym_vec_uint64_8.bend",
      "law": "vec_uint64_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_a0"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_a1"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_a2"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_a3"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_a16"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_u5"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_u6"
+    },
+    {
+     "file": "zcmpeq_vec_uint64_8.bend",
+     "law": "vec_uint64_8_cmp_u7"
     }
    ],
    "encode_spec": [
@@ -20751,6 +24105,18 @@
     {
      "file": "mutconst_vec_uint64_8.bend",
      "law": "vec_uint64_8_mc_ser"
+    },
+    {
+     "file": "mutsmall_vec_uint64_8.bend",
+     "law": "vec_uint64_8_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_vec_uint64_8.bend",
+     "law": "vec_uint64_8_ms_senc_out"
+    },
+    {
+     "file": "mutsmall_vec_uint64_8.bend",
+     "law": "vec_uint64_8_ms_encout"
     }
    ],
    "decode_offsets": [
@@ -21045,6 +24411,10 @@
     {
      "file": "wordpos_FixedTestStruct.bend",
      "law": "FixedTestStruct_arith_put"
+    },
+    {
+     "file": "zcapsym_FixedTestStruct.bend",
+     "law": "FixedTestStruct_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21058,7 +24428,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_FixedTestStruct.bend",
+     "law": "FixedTestStruct_ms_build"
+    },
+    {
+     "file": "mutsmall_FixedTestStruct.bend",
+     "law": "FixedTestStruct_ms_dec"
+    }
+   ],
    "serialize_valid": [],
    "decode_offsets": [
     {
@@ -21118,6 +24497,10 @@
     {
      "file": "sub_SingleFieldTestStruct.bend",
      "law": "SingleFieldTestStruct_spec_bytes"
+    },
+    {
+     "file": "zcapsym_SingleFieldTestStruct.bend",
+     "law": "SingleFieldTestStruct_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21131,7 +24514,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_SingleFieldTestStruct.bend",
+     "law": "SingleFieldTestStruct_ms_build"
+    },
+    {
+     "file": "mutsmall_SingleFieldTestStruct.bend",
+     "law": "SingleFieldTestStruct_ms_dec"
+    }
+   ],
    "serialize_valid": [],
    "decode_offsets": [
     {
@@ -21217,6 +24609,10 @@
     {
      "file": "mutconst_VarTestStruct.bend",
      "law": "VarTestStruct_mc_ser"
+    },
+    {
+     "file": "mutsmall_VarTestStruct.bend",
+     "law": "VarTestStruct_ms_bxsize_VarTestStruct"
     }
    ],
    "decode_offsets": [
@@ -21351,6 +24747,10 @@
     {
      "file": "wordpos_SmallTestStruct.bend",
      "law": "SmallTestStruct_arith_put"
+    },
+    {
+     "file": "zcapsym_SmallTestStruct.bend",
+     "law": "SmallTestStruct_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21364,7 +24764,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_SmallTestStruct.bend",
+     "law": "SmallTestStruct_ms_build"
+    },
+    {
+     "file": "mutsmall_SmallTestStruct.bend",
+     "law": "SmallTestStruct_ms_dec"
+    }
+   ],
    "serialize_valid": [],
    "decode_offsets": [
     {
@@ -21428,6 +24837,10 @@
     {
      "file": "var_bits_enc_bitlist_15.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_15.bend",
+     "law": "bitlist_15_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21458,6 +24871,10 @@
     {
      "file": "mutval_generic_bitlist_15.bend",
      "law": "bitlist_15_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_15.bend",
+     "law": "bitlist_15_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_15.bend",
@@ -21526,6 +24943,10 @@
     {
      "file": "var_bits_enc_bitlist_16.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_16.bend",
+     "law": "bitlist_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21556,6 +24977,10 @@
     {
      "file": "mutval_generic_bitlist_16.bend",
      "law": "bitlist_16_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_16.bend",
+     "law": "bitlist_16_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_16.bend",
@@ -21624,6 +25049,10 @@
     {
      "file": "var_bits_enc_bitlist_17.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_17.bend",
+     "law": "bitlist_17_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21654,6 +25083,10 @@
     {
      "file": "mutval_generic_bitlist_17.bend",
      "law": "bitlist_17_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_17.bend",
+     "law": "bitlist_17_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_17.bend",
@@ -21722,6 +25155,10 @@
     {
      "file": "var_bits_enc_bitlist_1.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_1.bend",
+     "law": "bitlist_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21752,6 +25189,10 @@
     {
      "file": "mutval_generic_bitlist_1.bend",
      "law": "bitlist_1_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_1.bend",
+     "law": "bitlist_1_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_1.bend",
@@ -21820,6 +25261,10 @@
     {
      "file": "var_bits_enc_bitlist_2.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_2.bend",
+     "law": "bitlist_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21850,6 +25295,10 @@
     {
      "file": "mutval_generic_bitlist_2.bend",
      "law": "bitlist_2_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_2.bend",
+     "law": "bitlist_2_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_2.bend",
@@ -21918,6 +25367,10 @@
     {
      "file": "var_bits_enc_bitlist_31.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_31.bend",
+     "law": "bitlist_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -21948,6 +25401,10 @@
     {
      "file": "mutval_generic_bitlist_31.bend",
      "law": "bitlist_31_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_31.bend",
+     "law": "bitlist_31_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_31.bend",
@@ -22204,6 +25661,10 @@
     {
      "file": "var_bits_enc_bitlist_3.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_3.bend",
+     "law": "bitlist_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -22234,6 +25695,10 @@
     {
      "file": "mutval_generic_bitlist_3.bend",
      "law": "bitlist_3_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_3.bend",
+     "law": "bitlist_3_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_3.bend",
@@ -22302,6 +25767,10 @@
     {
      "file": "var_bits_enc_bitlist_4.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_4.bend",
+     "law": "bitlist_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -22332,6 +25801,10 @@
     {
      "file": "mutval_generic_bitlist_4.bend",
      "law": "bitlist_4_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_4.bend",
+     "law": "bitlist_4_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_4.bend",
@@ -22682,6 +26155,10 @@
     {
      "file": "var_bits_enc_bitlist_5.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_5.bend",
+     "law": "bitlist_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -22712,6 +26189,10 @@
     {
      "file": "mutval_generic_bitlist_5.bend",
      "law": "bitlist_5_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_5.bend",
+     "law": "bitlist_5_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_5.bend",
@@ -22780,6 +26261,10 @@
     {
      "file": "var_bits_enc_bitlist_6.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_6.bend",
+     "law": "bitlist_6_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -22810,6 +26295,10 @@
     {
      "file": "mutval_generic_bitlist_6.bend",
      "law": "bitlist_6_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_6.bend",
+     "law": "bitlist_6_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_6.bend",
@@ -22878,6 +26367,10 @@
     {
      "file": "var_bits_enc_bitlist_7.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_7.bend",
+     "law": "bitlist_7_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -22908,6 +26401,10 @@
     {
      "file": "mutval_generic_bitlist_7.bend",
      "law": "bitlist_7_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_7.bend",
+     "law": "bitlist_7_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_7.bend",
@@ -22976,6 +26473,10 @@
     {
      "file": "var_bits_enc_bitlist_8.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_8.bend",
+     "law": "bitlist_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23006,6 +26507,10 @@
     {
      "file": "mutval_generic_bitlist_8.bend",
      "law": "bitlist_8_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_8.bend",
+     "law": "bitlist_8_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_8.bend",
@@ -23074,6 +26579,10 @@
     {
      "file": "var_bits_enc_bitlist_9.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_bitlist_9.bend",
+     "law": "bitlist_9_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23104,6 +26613,10 @@
     {
      "file": "mutval_generic_bitlist_9.bend",
      "law": "bitlist_9_serialize_vsym"
+    },
+    {
+     "file": "zcapsym_bitlist_9.bend",
+     "law": "bitlist_9_serialize_capsym"
     },
     {
      "file": "mutconst_bitlist_9.bend",
@@ -23184,6 +26697,10 @@
     {
      "file": "wordpos_bitvector_15.bend",
      "law": "bitvector_15_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_15.bend",
+     "law": "bitvector_15_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23197,7 +26714,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_15.bend",
+     "law": "bitvector_15_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_15.bend",
+     "law": "bitvector_15_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_15.bend",
@@ -23274,6 +26800,10 @@
     {
      "file": "wordpos_bitvector_16.bend",
      "law": "bitvector_16_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_16.bend",
+     "law": "bitvector_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23287,7 +26817,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_16.bend",
+     "law": "bitvector_16_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_16.bend",
+     "law": "bitvector_16_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_16.bend",
@@ -23368,6 +26907,10 @@
     {
      "file": "wordpos_bitvector_17.bend",
      "law": "bitvector_17_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_17.bend",
+     "law": "bitvector_17_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23381,7 +26924,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_17.bend",
+     "law": "bitvector_17_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_17.bend",
+     "law": "bitvector_17_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_17.bend",
@@ -23462,6 +27014,10 @@
     {
      "file": "wordpos_bitvector_1.bend",
      "law": "bitvector_1_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_1.bend",
+     "law": "bitvector_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23475,7 +27031,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_1.bend",
+     "law": "bitvector_1_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_1.bend",
+     "law": "bitvector_1_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_1.bend",
@@ -23556,6 +27121,10 @@
     {
      "file": "wordpos_bitvector_2.bend",
      "law": "bitvector_2_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_2.bend",
+     "law": "bitvector_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23569,7 +27138,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_2.bend",
+     "law": "bitvector_2_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_2.bend",
+     "law": "bitvector_2_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_2.bend",
@@ -23650,6 +27228,10 @@
     {
      "file": "wordpos_bitvector_31.bend",
      "law": "bitvector_31_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_31.bend",
+     "law": "bitvector_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23663,7 +27245,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_31.bend",
+     "law": "bitvector_31_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_31.bend",
+     "law": "bitvector_31_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_31.bend",
@@ -23740,6 +27331,10 @@
     {
      "file": "wordpos_bitvector_32.bend",
      "law": "bitvector_32_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_32.bend",
+     "law": "bitvector_32_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23782,6 +27377,14 @@
     {
      "file": "spec_ginput_bitvector_32.bend",
      "law": "bitvector_32_spec_input"
+    },
+    {
+     "file": "mutsmall_bitvector_32.bend",
+     "law": "bitvector_32_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_32.bend",
+     "law": "bitvector_32_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -23864,6 +27467,10 @@
     {
      "file": "wordpos_bitvector_33.bend",
      "law": "bitvector_33_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_33.bend",
+     "law": "bitvector_33_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23877,7 +27484,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_33.bend",
+     "law": "bitvector_33_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_33.bend",
+     "law": "bitvector_33_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_33.bend",
@@ -23958,6 +27574,10 @@
     {
      "file": "wordpos_bitvector_3.bend",
      "law": "bitvector_3_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_3.bend",
+     "law": "bitvector_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -23971,7 +27591,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_3.bend",
+     "law": "bitvector_3_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_3.bend",
+     "law": "bitvector_3_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_3.bend",
@@ -24052,6 +27681,10 @@
     {
      "file": "wordpos_bitvector_4.bend",
      "law": "bitvector_4_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_4.bend",
+     "law": "bitvector_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24065,7 +27698,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_4.bend",
+     "law": "bitvector_4_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_4.bend",
+     "law": "bitvector_4_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_4.bend",
@@ -24146,6 +27788,10 @@
     {
      "file": "wordpos_bitvector_511.bend",
      "law": "bitvector_511_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_511.bend",
+     "law": "bitvector_511_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24159,7 +27805,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_511.bend",
+     "law": "bitvector_511_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_511.bend",
+     "law": "bitvector_511_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_511.bend",
@@ -24236,6 +27891,10 @@
     {
      "file": "wordpos_bitvector_512.bend",
      "law": "bitvector_512_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_512.bend",
+     "law": "bitvector_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24278,6 +27937,14 @@
     {
      "file": "spec_ginput_bitvector_512.bend",
      "law": "bitvector_512_spec_input"
+    },
+    {
+     "file": "mutsmall_bitvector_512.bend",
+     "law": "bitvector_512_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_512.bend",
+     "law": "bitvector_512_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -24360,6 +28027,10 @@
     {
      "file": "wordpos_bitvector_513.bend",
      "law": "bitvector_513_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_513.bend",
+     "law": "bitvector_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24373,7 +28044,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_513.bend",
+     "law": "bitvector_513_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_513.bend",
+     "law": "bitvector_513_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_513.bend",
@@ -24454,6 +28134,10 @@
     {
      "file": "wordpos_bitvector_5.bend",
      "law": "bitvector_5_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_5.bend",
+     "law": "bitvector_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24467,7 +28151,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_5.bend",
+     "law": "bitvector_5_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_5.bend",
+     "law": "bitvector_5_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_5.bend",
@@ -24548,6 +28241,10 @@
     {
      "file": "wordpos_bitvector_6.bend",
      "law": "bitvector_6_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_6.bend",
+     "law": "bitvector_6_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24561,7 +28258,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_6.bend",
+     "law": "bitvector_6_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_6.bend",
+     "law": "bitvector_6_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_6.bend",
@@ -24642,6 +28348,10 @@
     {
      "file": "wordpos_bitvector_7.bend",
      "law": "bitvector_7_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_7.bend",
+     "law": "bitvector_7_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24655,7 +28365,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_7.bend",
+     "law": "bitvector_7_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_7.bend",
+     "law": "bitvector_7_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_7.bend",
@@ -24732,6 +28451,10 @@
     {
      "file": "wordpos_bitvector_8.bend",
      "law": "bitvector_8_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_8.bend",
+     "law": "bitvector_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24745,7 +28468,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_8.bend",
+     "law": "bitvector_8_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_8.bend",
+     "law": "bitvector_8_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_8.bend",
@@ -24826,6 +28558,10 @@
     {
      "file": "wordpos_bitvector_9.bend",
      "law": "bitvector_9_arith_pw3"
+    },
+    {
+     "file": "zcapsym_bitvector_9.bend",
+     "law": "bitvector_9_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -24839,7 +28575,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_bitvector_9.bend",
+     "law": "bitvector_9_ms_build"
+    },
+    {
+     "file": "mutsmall_bitvector_9.bend",
+     "law": "bitvector_9_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_bitvector_9.bend",
@@ -25060,6 +28805,10 @@
     {
      "file": "var_codec_CompatibleUnionA_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -25078,6 +28827,10 @@
     {
      "file": "capacity_CompatibleUnionA.bend",
      "law": "CompatibleUnionA_serialize_cap"
+    },
+    {
+     "file": "zcapsym_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_serialize_capsym"
     },
     {
      "file": "mutconst_CompatibleUnionA.bend",
@@ -25240,6 +28993,10 @@
     {
      "file": "wordpos_uint128.bend",
      "law": "uint128_arith_pw3"
+    },
+    {
+     "file": "zcapsym_uint128.bend",
+     "law": "uint128_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -25282,6 +29039,14 @@
     {
      "file": "spec_ginput_uint128.bend",
      "law": "uint128_spec_input"
+    },
+    {
+     "file": "mutsmall_uint128.bend",
+     "law": "uint128_ms_build"
+    },
+    {
+     "file": "mutsmall_uint128.bend",
+     "law": "uint128_ms_dec"
     }
    ],
    "serialize_valid": [
@@ -25352,6 +29117,10 @@
     {
      "file": "sub_uint16.bend",
      "law": "uint16_spec_bytes"
+    },
+    {
+     "file": "zcapsym_uint16.bend",
+     "law": "uint16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -25365,7 +29134,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_uint16.bend",
+     "law": "uint16_ms_build"
+    },
+    {
+     "file": "mutsmall_uint16.bend",
+     "law": "uint16_ms_dec"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutval_generic_uint16.bend",
