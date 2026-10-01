@@ -1,11 +1,15 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_blist.bend as BL_e
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
+import ../types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend as FuluLightClientOptimisticUpdate_e
 import ../types/FuluLightClientOptimisticUpdate_hashtreeroot_generated.bend as FuluLightClientOptimisticUpdate_h
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ./FuluLightClientOptimisticUpdate_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluLightClientOptimisticUpdate_e2e_root_generated.bend as R
@@ -32,6 +36,35 @@ def FuluLightClientOptimisticUpdate_e2e_set_attested_header_root(h: B.Buf, o: Fu
   %FuluLightClientOptimisticUpdate_e2e_set_attested_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w)))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientOptimisticUpdate_e2e_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w), PS.LightClientOptimisticUpdate_set_attested_header_rep(o, Spec.LightClientOptimisticUpdate(), w, r, rv))
 
+def FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs49(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(w))), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs50(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(w))), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs54(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientHeader_2(w), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(_, w))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_e2e_set_attested_header_encode(o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +rv: RT_L.rep_LightClientHeader(w, SH.Chain_head(SH.Container_fields(Spec.LightClientOptimisticUpdate()))), +hs49: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(w))), 31n), +hs50: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(w))), 31n), +hs54: BL_e.sdpv(RT_L.pj_LightClientHeader_2(w), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 0n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientOptimisticUpdate_e2e_set_attested_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientOptimisticUpdate_e2e_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(o, w), PS.LightClientOptimisticUpdate_set_attested_header_rep(o, Spec.LightClientOptimisticUpdate(), w, r, rv), FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs49(o, w, r, hs49), FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs50(o, w, r, hs50), FuluLightClientOptimisticUpdate_set_attested_header_hs0_hs54(o, w, r, hs54))
+
 def FuluLightClientOptimisticUpdate_e2e_set_sync_aggregate_view(o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)
     -> {RT_L.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w)) == VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 1n, RT_L.v_SyncAggregate_bx(w)) : S.Value}:
   match o:
@@ -42,6 +75,35 @@ def FuluLightClientOptimisticUpdate_e2e_set_sync_aggregate_root(h: B.Buf, o: Ful
   %FuluLightClientOptimisticUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w)))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientOptimisticUpdate_e2e_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w), PS.LightClientOptimisticUpdate_set_sync_aggregate_rep(o, Spec.LightClientOptimisticUpdate(), w, r, rv))
 
+def FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs49(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs50(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs54(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(o)), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(_, w))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_e2e_set_sync_aggregate_encode(o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +rv: RT_L.rep_SyncAggregate_bx(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientOptimisticUpdate())))), +hs49: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n), +hs50: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n), +hs54: BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(o)), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 1n, RT_L.v_SyncAggregate_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientOptimisticUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientOptimisticUpdate_e2e_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(o, w), PS.LightClientOptimisticUpdate_set_sync_aggregate_rep(o, Spec.LightClientOptimisticUpdate(), w, r, rv), FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs49(o, w, r, hs49), FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs50(o, w, r, hs50), FuluLightClientOptimisticUpdate_set_sync_aggregate_hs0_hs54(o, w, r, hs54))
+
 def FuluLightClientOptimisticUpdate_e2e_set_signature_slot_view(o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, +w: O.U64)
     -> {RT_L.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w)) == VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 2n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -51,3 +113,32 @@ def FuluLightClientOptimisticUpdate_e2e_set_signature_slot_root(h: B.Buf, o: Ful
     -> {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 2n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientOptimisticUpdate_e2e_set_signature_slot_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & D.Digest, FuluLightClientOptimisticUpdate_h.LightClientOptimisticUpdate_hash_tree_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientOptimisticUpdate_e2e_root(h, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w), PS.LightClientOptimisticUpdate_set_signature_slot_rep(o, Spec.LightClientOptimisticUpdate(), w, r))
+
+def FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs49(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.U64, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs50(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.U64, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w))))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(_, w))))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs54(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, -w: O.U64, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(o)), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w))), 31n):
+  (+x2, e0) = r
+  (+eo, c0) = e0
+  (+q0, +q1) = c0
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT_L.pj_LightClientOptimisticUpdate_0(o), RT_L.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(_, w))), 31n)
+  h
+
+def FuluLightClientOptimisticUpdate_e2e_set_signature_slot_encode(o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, +w: O.U64, +r: RT_L.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()), +hs49: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n), +hs50: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(RT_L.pj_LightClientOptimisticUpdate_0(o)))), 31n), +hs54: BL_e.sdpv(RT_L.pj_LightClientHeader_2(RT_L.pj_LightClientOptimisticUpdate_0(o)), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), VS.field_set(RT_L.v_LightClientOptimisticUpdate(o), 2n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientOptimisticUpdate_e2e_set_signature_slot_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, B.Buf, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientOptimisticUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientOptimisticUpdate_e2e_encode(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_signature_slot(o, w), PS.LightClientOptimisticUpdate_set_signature_slot_rep(o, Spec.LightClientOptimisticUpdate(), w, r), FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs49(o, w, r, hs49), FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs50(o, w, r, hs50), FuluLightClientOptimisticUpdate_set_signature_slot_hs0_hs54(o, w, r, hs54))

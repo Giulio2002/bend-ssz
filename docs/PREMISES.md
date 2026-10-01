@@ -426,9 +426,10 @@ object is the old view with that field's value replaced (`proofs/obj/value_set.b
 changed value (<!-- fig:set_root_count -->315<!-- /fig --> statements): with no further premise where the root bridge
 takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters.bend`
 (a setter keeps `rep`, given the new value's own invariant for fields that have one). The same for
-the encoding (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the encode bridge takes only the object or
-`rep`; elsewhere it also needs storage premises (`hs*`, `hc*`, section 1) of the changed object,
-and no law states that a setter keeps them. Where the root bridge takes `rp_*` (a generic Data
+the encoding (<!-- fig:set_encode_count -->208<!-- /fig --> statements) where the encode bridge takes only the object or
+`rep`, or storage premises (`hs*`, `hc*`, section 1) each about one projection of the object: the premises of the fields the setter
+leaves are moved to the new object by the setter law's decomposition of the object (the equation `o == X{..}` of its `rep`), the premise of the changed field
+is a premise of the new value. A premise not about one projection (the union names) or a range-checked setter has no encode composition. Where the root bridge takes `rp_*` (a generic Data
 container's range invariants), the set file proves that the setter keeps it. A range-checked setter
 (generic `uint8` / `uint16` fields) is stated under its guard, with the new value's range invariant
 (`rp_u8` / `rp_u16`) as a premise of the root and encode compositions.

@@ -77,7 +77,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
   <!-- fig:set_containers -->71<!-- /fig --> containers (Fulu and generic, BeaconState included):
   <!-- fig:set_view_count -->315<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
   (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->315<!-- /fig -->
-  statements) and the encode bridge (<!-- fig:set_encode_count -->114<!-- /fig --> statements) where the
+  statements) and the encode bridge (<!-- fig:set_encode_count -->208<!-- /fig --> statements) where the
   bridge's premises allow;
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
@@ -103,7 +103,7 @@ The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of the bit lists, of a byte list whose append reallocates the storage, and of the boxed lists; the root view of the record lists that have none; the
 composed root and encode statement of a mutated list for the boxed lists, the Bytes32 list, the u64 collections and the record lists; and
-setter-then-encode where the encode bridge takes storage premises.
+setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
 ## Conformance (official vectors, through the generated object API)

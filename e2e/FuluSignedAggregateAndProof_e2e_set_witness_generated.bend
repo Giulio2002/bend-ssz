@@ -1,5 +1,7 @@
 import Base
 import ./FuluSignedAggregateAndProof_e2e_set_generated.bend as SET
+import ./e2e_bitv.bend as BTV
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT_L
@@ -17,6 +19,7 @@ import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
 import ../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../types/FuluSignedAggregateAndProof_encode_ssz_generated.bend as FuluSignedAggregateAndProof_e
 import ../types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend as FuluSignedAggregateAndProof_h
 import ../types/Fulu_bitlist_131072_def_generated.bend as Fulu_bitlist_131072_d
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
@@ -39,5 +42,17 @@ def FuluSignedAggregateAndProof_e2e_set_message_root_rv() -> RT_L.rep_AggregateA
 def FuluSignedAggregateAndProof_e2e_set_message_root_witness() -> {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(B.alloc(0), FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_default())))))} == API.hash_tree_root(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default()), 0n, RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluSignedAggregateAndProof_e2e_set_message_root(B.alloc(0), FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_default(), FuluSignedAggregateAndProof_e2e_set_message_root_r(), FuluSignedAggregateAndProof_e2e_set_message_root_rv())
 
+def FuluSignedAggregateAndProof_e2e_set_message_encode_hs() -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_default())))):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluSignedAggregateAndProof_e2e_set_message_encode_witness() -> {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_default()))))} == API.serialize(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default()), 0n, RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluSignedAggregateAndProof_e2e_set_message_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_default(), FuluSignedAggregateAndProof_e2e_set_message_root_r(), FuluSignedAggregateAndProof_e2e_set_message_root_rv(), FuluSignedAggregateAndProof_e2e_set_message_encode_hs())
+
 def FuluSignedAggregateAndProof_e2e_set_signature_root_witness() -> {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(B.alloc(0), FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default()), 1n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluSignedAggregateAndProof_e2e_set_signature_root(B.alloc(0), FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluSignedAggregateAndProof_e2e_set_message_root_r())
+
+def FuluSignedAggregateAndProof_e2e_set_signature_encode_hs() -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default()))))):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluSignedAggregateAndProof_e2e_set_signature_encode_witness() -> {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default()), 1n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluSignedAggregateAndProof_e2e_set_signature_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluSignedAggregateAndProof_e2e_set_message_root_r(), FuluSignedAggregateAndProof_e2e_set_signature_encode_hs())

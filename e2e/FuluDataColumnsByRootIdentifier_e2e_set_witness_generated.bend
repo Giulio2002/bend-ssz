@@ -1,5 +1,7 @@
 import Base
 import ./FuluDataColumnsByRootIdentifier_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_ulist.bend as U
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT_L
@@ -14,6 +16,7 @@ import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
+import ../types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_e
 import ../types/FuluDataColumnsByRootIdentifier_hashtreeroot_generated.bend as FuluDataColumnsByRootIdentifier_h
 import ../types/Fulu_list_uint64_128_def_generated.bend as Fulu_list_uint64_128_d
 
@@ -31,8 +34,20 @@ def FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_r() -> RT_L.rep_Data
 def FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, D.Digest, Pair.snd(B.Buf, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & D.Digest, FuluDataColumnsByRootIdentifier_h.DataColumnsByRootIdentifier_hash_tree_root(B.alloc(0), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_block_root(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.DataColumnsByRootIdentifier(), VS.field_set(RT_L.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default()), 0n, RN.v_b32(FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnsByRootIdentifier_e2e_set_block_root_root(B.alloc(0), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0}, FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_r())
 
+def FuluDataColumnsByRootIdentifier_e2e_set_block_root_encode_hs() -> U.sd(RT_L.pj_DataColumnsByRootIdentifier_1(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default())):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluDataColumnsByRootIdentifier_e2e_set_block_root_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, B.Buf, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_encode(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_block_root(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.DataColumnsByRootIdentifier(), VS.field_set(RT_L.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default()), 0n, RN.v_b32(FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnsByRootIdentifier_e2e_set_block_root_encode(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), FuluBytes32_d.Bytes32{1, 0, 0, 0, 0, 0, 0, 0}, FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_r(), FuluDataColumnsByRootIdentifier_e2e_set_block_root_encode_hs())
+
 def FuluDataColumnsByRootIdentifier_e2e_set_columns_root_rv() -> UL.rep_ul(Fulu_list_uint64_128_d.l128_u64_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.DataColumnsByRootIdentifier())))):
   (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==}))
 
 def FuluDataColumnsByRootIdentifier_e2e_set_columns_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, D.Digest, Pair.snd(B.Buf, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & D.Digest, FuluDataColumnsByRootIdentifier_h.DataColumnsByRootIdentifier_hash_tree_root(B.alloc(0), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_columns(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), Fulu_list_uint64_128_d.l128_u64_default())))))} == API.hash_tree_root(Spec.DataColumnsByRootIdentifier(), VS.field_set(RT_L.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default()), 1n, UL.uview(Fulu_list_uint64_128_d.l128_u64_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnsByRootIdentifier_e2e_set_columns_root(B.alloc(0), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), Fulu_list_uint64_128_d.l128_u64_default(), FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_r(), FuluDataColumnsByRootIdentifier_e2e_set_columns_root_rv())
+
+def FuluDataColumnsByRootIdentifier_e2e_set_columns_encode_hs() -> U.sd(Fulu_list_uint64_128_d.l128_u64_default()):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluDataColumnsByRootIdentifier_e2e_set_columns_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, B.Buf, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_encode(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_columns(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), Fulu_list_uint64_128_d.l128_u64_default()))))} == API.serialize(Spec.DataColumnsByRootIdentifier(), VS.field_set(RT_L.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default()), 1n, UL.uview(Fulu_list_uint64_128_d.l128_u64_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnsByRootIdentifier_e2e_set_columns_encode(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), Fulu_list_uint64_128_d.l128_u64_default(), FuluDataColumnsByRootIdentifier_e2e_set_block_root_root_r(), FuluDataColumnsByRootIdentifier_e2e_set_columns_root_rv(), FuluDataColumnsByRootIdentifier_e2e_set_columns_encode_hs())

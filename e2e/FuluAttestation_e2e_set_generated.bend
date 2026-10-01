@@ -2,12 +2,16 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ./e2e_bitv.bend as BTV
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
 import ../types/FuluAttestation_hashtreeroot_generated.bend as FuluAttestation_h
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ./FuluAttestation_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluAttestation_e2e_root_generated.bend as R
@@ -34,6 +38,20 @@ def FuluAttestation_e2e_set_aggregation_bits_root(h: B.Buf, o: FuluAttestation_d
   %FuluAttestation_e2e_set_aggregation_bits_view(o, w) : {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_aggregation_bits(o, w)))))} == API.hash_tree_root(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
   R.FuluAttestation_e2e_root(h, FuluAttestation_d.Attestation_set_aggregation_bits(o, w), PS.Attestation_set_aggregation_bits_rep(o, Spec.Attestation(), w, r, rv))
 
+def FuluAttestation_set_aggregation_bits_hs0_hs(-o: FuluAttestation_d.Attestation, -w: O.Bits, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +h: BTV.sdbv(w))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_aggregation_bits(o, w))):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluAttestation_d.Attestation, o, FuluAttestation_d.Attestation{RT_L.pj_Attestation_0(o), x1, x2, x3}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_aggregation_bits(_, w)))
+  h
+
+def FuluAttestation_e2e_set_aggregation_bits_encode(o: FuluAttestation_d.Attestation, w: O.Bits, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Container_fields(Spec.Attestation()))), +hs: BTV.sdbv(w))
+    -> {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_aggregation_bits(o, w))))} == API.serialize(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 0n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %FuluAttestation_e2e_set_aggregation_bits_view(o, w) : {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_aggregation_bits(o, w))))} == API.serialize(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAttestation_e2e_encode(FuluAttestation_d.Attestation_set_aggregation_bits(o, w), PS.Attestation_set_aggregation_bits_rep(o, Spec.Attestation(), w, r, rv), FuluAttestation_set_aggregation_bits_hs0_hs(o, w, r, hs))
+
 def FuluAttestation_e2e_set_data_view(o: FuluAttestation_d.Attestation, +w: FuluAttestationData_d.AttestationData)
     -> {RT_L.v_Attestation(FuluAttestation_d.Attestation_set_data(o, w)) == VS.field_set(RT_L.v_Attestation(o), 1n, RN.v_AttestationData(w)) : S.Value}:
   match o:
@@ -43,6 +61,20 @@ def FuluAttestation_e2e_set_data_root(h: B.Buf, o: FuluAttestation_d.Attestation
     -> {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_data(o, w)))))} == API.hash_tree_root(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 1n, RN.v_AttestationData(w))) : Maybe<&2, +List<U32>>}:
   %FuluAttestation_e2e_set_data_view(o, w) : {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_data(o, w)))))} == API.hash_tree_root(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
   R.FuluAttestation_e2e_root(h, FuluAttestation_d.Attestation_set_data(o, w), PS.Attestation_set_data_rep(o, Spec.Attestation(), w, r))
+
+def FuluAttestation_set_data_hs0_hs(-o: FuluAttestation_d.Attestation, -w: FuluAttestationData_d.AttestationData, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +h: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_data(o, w))):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluAttestation_d.Attestation, o, FuluAttestation_d.Attestation{RT_L.pj_Attestation_0(o), x1, x2, x3}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_data(_, w)))
+  h
+
+def FuluAttestation_e2e_set_data_encode(o: FuluAttestation_d.Attestation, +w: FuluAttestationData_d.AttestationData, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_data(o, w))))} == API.serialize(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 1n, RN.v_AttestationData(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAttestation_e2e_set_data_view(o, w) : {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_data(o, w))))} == API.serialize(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAttestation_e2e_encode(FuluAttestation_d.Attestation_set_data(o, w), PS.Attestation_set_data_rep(o, Spec.Attestation(), w, r), FuluAttestation_set_data_hs0_hs(o, w, r, hs))
 
 def FuluAttestation_e2e_set_signature_view(o: FuluAttestation_d.Attestation, +w: FuluBytes96_d.Bytes96)
     -> {RT_L.v_Attestation(FuluAttestation_d.Attestation_set_signature(o, w)) == VS.field_set(RT_L.v_Attestation(o), 2n, RN.v_b96(w)) : S.Value}:
@@ -54,6 +86,20 @@ def FuluAttestation_e2e_set_signature_root(h: B.Buf, o: FuluAttestation_d.Attest
   %FuluAttestation_e2e_set_signature_view(o, w) : {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_signature(o, w)))))} == API.hash_tree_root(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
   R.FuluAttestation_e2e_root(h, FuluAttestation_d.Attestation_set_signature(o, w), PS.Attestation_set_signature_rep(o, Spec.Attestation(), w, r))
 
+def FuluAttestation_set_signature_hs0_hs(-o: FuluAttestation_d.Attestation, -w: FuluBytes96_d.Bytes96, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +h: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_signature(o, w))):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluAttestation_d.Attestation, o, FuluAttestation_d.Attestation{RT_L.pj_Attestation_0(o), x1, x2, x3}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_signature(_, w)))
+  h
+
+def FuluAttestation_e2e_set_signature_encode(o: FuluAttestation_d.Attestation, +w: FuluBytes96_d.Bytes96, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_signature(o, w))))} == API.serialize(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 2n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAttestation_e2e_set_signature_view(o, w) : {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_signature(o, w))))} == API.serialize(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAttestation_e2e_encode(FuluAttestation_d.Attestation_set_signature(o, w), PS.Attestation_set_signature_rep(o, Spec.Attestation(), w, r), FuluAttestation_set_signature_hs0_hs(o, w, r, hs))
+
 def FuluAttestation_e2e_set_committee_bits_view(o: FuluAttestation_d.Attestation, +w: Fulu_bitvector_64_d.Bitvector64)
     -> {RT_L.v_Attestation(FuluAttestation_d.Attestation_set_committee_bits(o, w)) == VS.field_set(RT_L.v_Attestation(o), 3n, RN.v_bv64(w)) : S.Value}:
   match o:
@@ -63,3 +109,17 @@ def FuluAttestation_e2e_set_committee_bits_root(h: B.Buf, o: FuluAttestation_d.A
     -> {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_committee_bits(o, w)))))} == API.hash_tree_root(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 3n, RN.v_bv64(w))) : Maybe<&2, +List<U32>>}:
   %FuluAttestation_e2e_set_committee_bits_view(o, w) : {Some{D.bytes(Pair.snd(FuluAttestation_d.Attestation, D.Digest, Pair.snd(B.Buf, FuluAttestation_d.Attestation & D.Digest, FuluAttestation_h.Attestation_hash_tree_root(h, FuluAttestation_d.Attestation_set_committee_bits(o, w)))))} == API.hash_tree_root(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
   R.FuluAttestation_e2e_root(h, FuluAttestation_d.Attestation_set_committee_bits(o, w), PS.Attestation_set_committee_bits_rep(o, Spec.Attestation(), w, r))
+
+def FuluAttestation_set_committee_bits_hs0_hs(-o: FuluAttestation_d.Attestation, -w: Fulu_bitvector_64_d.Bitvector64, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +h: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_committee_bits(o, w))):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluAttestation_d.Attestation, o, FuluAttestation_d.Attestation{RT_L.pj_Attestation_0(o), x1, x2, x3}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(FuluAttestation_d.Attestation_set_committee_bits(_, w)))
+  h
+
+def FuluAttestation_e2e_set_committee_bits_encode(o: FuluAttestation_d.Attestation, +w: Fulu_bitvector_64_d.Bitvector64, +r: RT_L.rep_Attestation(o, Spec.Attestation()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(o)))
+    -> {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_committee_bits(o, w))))} == API.serialize(Spec.Attestation(), VS.field_set(RT_L.v_Attestation(o), 3n, RN.v_bv64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAttestation_e2e_set_committee_bits_view(o, w) : {Some{E.obytes(Pair.snd(FuluAttestation_d.Attestation, B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_committee_bits(o, w))))} == API.serialize(Spec.Attestation(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAttestation_e2e_encode(FuluAttestation_d.Attestation_set_committee_bits(o, w), PS.Attestation_set_committee_bits_rep(o, Spec.Attestation(), w, r), FuluAttestation_set_committee_bits_hs0_hs(o, w, r, hs))

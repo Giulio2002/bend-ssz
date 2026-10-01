@@ -2,11 +2,15 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../types/FuluDepositData_def_generated.bend as FuluDepositData_d
 import ../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+import ../types/FuluDeposit_encode_ssz_generated.bend as FuluDeposit_e
 import ../types/FuluDeposit_hashtreeroot_generated.bend as FuluDeposit_h
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
+import ./FuluDeposit_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -31,6 +35,18 @@ def FuluDeposit_e2e_set_proof_root(h: B.Buf, o: FuluDeposit_d.Deposit, w: O.Word
   %FuluDeposit_e2e_set_proof_view(o, w) : {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(h, FuluDeposit_d.Deposit_set_proof(o, w)))))} == API.hash_tree_root(Spec.Deposit(), _) : Maybe<&2, +List<U32>>}
   R.FuluDeposit_e2e_root(h, FuluDeposit_d.Deposit_set_proof(o, w), PS.Deposit_set_proof_rep(o, Spec.Deposit(), w, r, rv))
 
+def FuluDeposit_set_proof_hs0_hc(-o: FuluDeposit_d.Deposit, -w: O.Words, +r: M0_L.rep_Deposit(o, Spec.Deposit()), +h: {E3.at_depth(w, 9n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_Deposit_0(FuluDeposit_d.Deposit_set_proof(o, w)), 9n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluDeposit_d.Deposit, o, FuluDeposit_d.Deposit{M0_L.pj_Deposit_0(o), M0_L.pj_Deposit_1(o)}, eo) : {E3.at_depth(M0_L.pj_Deposit_0(FuluDeposit_d.Deposit_set_proof(_, w)), 9n) == True{} : Bool}
+  h
+
+def FuluDeposit_e2e_set_proof_encode(o: FuluDeposit_d.Deposit, w: O.Words, +r: M0_L.rep_Deposit(o, Spec.Deposit()), +rv: PV.rep_pv(w, M0_SH.Chain_head(M0_SH.Container_fields(Spec.Deposit()))), +hc: {E3.at_depth(w, 9n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_proof(o, w))))} == API.serialize(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(o), 0n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluDeposit_e2e_set_proof_view(o, w) : {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_proof(o, w))))} == API.serialize(Spec.Deposit(), _) : Maybe<&2, +List<U32>>}
+  N.FuluDeposit_e2e_encode(FuluDeposit_d.Deposit_set_proof(o, w), PS.Deposit_set_proof_rep(o, Spec.Deposit(), w, r, rv), FuluDeposit_set_proof_hs0_hc(o, w, r, hc))
+
 def FuluDeposit_e2e_set_data_view(o: FuluDeposit_d.Deposit, w: O.Boxed<FuluDepositData_d.DepositData>)
     -> {M0_L.v_Deposit(FuluDeposit_d.Deposit_set_data(o, w)) == VS.field_set(M0_L.v_Deposit(o), 1n, M0_L.v_DepositData_bx(w)) : S.Value}:
   match o:
@@ -40,3 +56,15 @@ def FuluDeposit_e2e_set_data_root(h: B.Buf, o: FuluDeposit_d.Deposit, w: O.Boxed
     -> {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(h, FuluDeposit_d.Deposit_set_data(o, w)))))} == API.hash_tree_root(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(o), 1n, M0_L.v_DepositData_bx(w))) : Maybe<&2, +List<U32>>}:
   %FuluDeposit_e2e_set_data_view(o, w) : {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(h, FuluDeposit_d.Deposit_set_data(o, w)))))} == API.hash_tree_root(Spec.Deposit(), _) : Maybe<&2, +List<U32>>}
   R.FuluDeposit_e2e_root(h, FuluDeposit_d.Deposit_set_data(o, w), PS.Deposit_set_data_rep(o, Spec.Deposit(), w, r, rv))
+
+def FuluDeposit_set_data_hs0_hc(-o: FuluDeposit_d.Deposit, -w: O.Boxed<FuluDepositData_d.DepositData>, +r: M0_L.rep_Deposit(o, Spec.Deposit()), +h: {E3.at_depth(M0_L.pj_Deposit_0(o), 9n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_Deposit_0(FuluDeposit_d.Deposit_set_data(o, w)), 9n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluDeposit_d.Deposit, o, FuluDeposit_d.Deposit{M0_L.pj_Deposit_0(o), M0_L.pj_Deposit_1(o)}, eo) : {E3.at_depth(M0_L.pj_Deposit_0(FuluDeposit_d.Deposit_set_data(_, w)), 9n) == True{} : Bool}
+  h
+
+def FuluDeposit_e2e_set_data_encode(o: FuluDeposit_d.Deposit, w: O.Boxed<FuluDepositData_d.DepositData>, +r: M0_L.rep_Deposit(o, Spec.Deposit()), +rv: M0_L.rep_DepositData_bx(w, M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.Deposit())))), +hc: {E3.at_depth(M0_L.pj_Deposit_0(o), 9n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_data(o, w))))} == API.serialize(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(o), 1n, M0_L.v_DepositData_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluDeposit_e2e_set_data_view(o, w) : {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_data(o, w))))} == API.serialize(Spec.Deposit(), _) : Maybe<&2, +List<U32>>}
+  N.FuluDeposit_e2e_encode(FuluDeposit_d.Deposit_set_data(o, w), PS.Deposit_set_data_rep(o, Spec.Deposit(), w, r, rv), FuluDeposit_set_data_hs0_hc(o, w, r, hc))

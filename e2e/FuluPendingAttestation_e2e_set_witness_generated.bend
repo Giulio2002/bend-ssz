@@ -1,5 +1,7 @@
 import Base
 import ./FuluPendingAttestation_e2e_set_generated.bend as SET
+import ./e2e_bitv.bend as BTV
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/root_names_light.bend as RN
@@ -15,6 +17,7 @@ import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
 import ../types/FuluPendingAttestation_def_generated.bend as FuluPendingAttestation_d
+import ../types/FuluPendingAttestation_encode_ssz_generated.bend as FuluPendingAttestation_e
 import ../types/FuluPendingAttestation_hashtreeroot_generated.bend as FuluPendingAttestation_h
 import ../types/Fulu_bitlist_2048_def_generated.bend as Fulu_bitlist_2048_d
 import ../types/schema.bend as S
@@ -37,11 +40,29 @@ def FuluPendingAttestation_e2e_set_aggregation_bits_root_rv() -> BO.rep_bits(Ful
 def FuluPendingAttestation_e2e_set_aggregation_bits_root_witness() -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_set_aggregation_bits(FuluPendingAttestation_d.PendingAttestation_default(), Fulu_bitlist_2048_d.bits2048_default())))))} == API.hash_tree_root(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 0n, S.BitsValue{BO.bview(Fulu_bitlist_2048_d.bits2048_default())})) : Maybe<&2, +List<U32>>}:
   SET.FuluPendingAttestation_e2e_set_aggregation_bits_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_default(), Fulu_bitlist_2048_d.bits2048_default(), FuluPendingAttestation_e2e_set_aggregation_bits_root_r(), FuluPendingAttestation_e2e_set_aggregation_bits_root_rv())
 
+def FuluPendingAttestation_e2e_set_aggregation_bits_encode_hs() -> BTV.sdbv(Fulu_bitlist_2048_d.bits2048_default()):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluPendingAttestation_e2e_set_aggregation_bits_encode_witness() -> {Some{E.obytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_aggregation_bits(FuluPendingAttestation_d.PendingAttestation_default(), Fulu_bitlist_2048_d.bits2048_default()))))} == API.serialize(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 0n, S.BitsValue{BO.bview(Fulu_bitlist_2048_d.bits2048_default())})) : Maybe<&2, +List<U32>>}:
+  SET.FuluPendingAttestation_e2e_set_aggregation_bits_encode(FuluPendingAttestation_d.PendingAttestation_default(), Fulu_bitlist_2048_d.bits2048_default(), FuluPendingAttestation_e2e_set_aggregation_bits_root_r(), FuluPendingAttestation_e2e_set_aggregation_bits_root_rv(), FuluPendingAttestation_e2e_set_aggregation_bits_encode_hs())
+
 def FuluPendingAttestation_e2e_set_data_root_witness() -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_default())))))} == API.hash_tree_root(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 1n, RN.v_AttestationData(FuluAttestationData_d.AttestationData_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluPendingAttestation_e2e_set_data_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_default(), FuluPendingAttestation_e2e_set_aggregation_bits_root_r())
+
+def FuluPendingAttestation_e2e_set_data_encode_hs() -> BTV.sdbv(RT_L.pj_PendingAttestation_0(FuluPendingAttestation_d.PendingAttestation_default())):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluPendingAttestation_e2e_set_data_encode_witness() -> {Some{E.obytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_default()))))} == API.serialize(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 1n, RN.v_AttestationData(FuluAttestationData_d.AttestationData_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluPendingAttestation_e2e_set_data_encode(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_default(), FuluPendingAttestation_e2e_set_aggregation_bits_root_r(), FuluPendingAttestation_e2e_set_data_encode_hs())
 
 def FuluPendingAttestation_e2e_set_inclusion_delay_root_witness() -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_set_inclusion_delay(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 2n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluPendingAttestation_e2e_set_inclusion_delay_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}, FuluPendingAttestation_e2e_set_aggregation_bits_root_r())
 
+def FuluPendingAttestation_e2e_set_inclusion_delay_encode_witness() -> {Some{E.obytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_inclusion_delay(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}))))} == API.serialize(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 2n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluPendingAttestation_e2e_set_inclusion_delay_encode(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}, FuluPendingAttestation_e2e_set_aggregation_bits_root_r(), FuluPendingAttestation_e2e_set_data_encode_hs())
+
 def FuluPendingAttestation_e2e_set_proposer_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, D.Digest, Pair.snd(B.Buf, FuluPendingAttestation_d.PendingAttestation & D.Digest, FuluPendingAttestation_h.PendingAttestation_hash_tree_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_set_proposer_index(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 3n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluPendingAttestation_e2e_set_proposer_index_root(B.alloc(0), FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}, FuluPendingAttestation_e2e_set_aggregation_bits_root_r())
+
+def FuluPendingAttestation_e2e_set_proposer_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_proposer_index(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}))))} == API.serialize(Spec.PendingAttestation(), VS.field_set(RT_L.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation_default()), 3n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluPendingAttestation_e2e_set_proposer_index_encode(FuluPendingAttestation_d.PendingAttestation_default(), O.U64{1, 0}, FuluPendingAttestation_e2e_set_aggregation_bits_root_r(), FuluPendingAttestation_e2e_set_data_encode_hs())
