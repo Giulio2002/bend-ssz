@@ -136,7 +136,8 @@ def build_stmt(ctx, mod, name, txt):
         re.search(r'\{U32\.is_le\(\(\(U32\.div\(n, \d+\)\) \+ 1 : U32\), (\d+)\) == False\{\}', alltext)
     if re.search(r'\{True\{\} == False\{\}', alltext):
         return None, ('the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never '
-                      'full and the rejection statement is vacuous by design')
+                      'full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) '
+                      'is witnessed by the append_flag, append_length, read_append and view_append statements of this collection')
     cap = int(mc.group(1)) if mc else None
     if cap is not None and cap >= 2 ** 32:
         return None, (f'the premise is_le(n + 1, {cap}) == False cannot hold: the limit exceeds U32, so the list is never full '
@@ -149,7 +150,7 @@ def build_stmt(ctx, mod, name, txt):
     else:
         env['i'], env['j'] = '0', '1'
     for k in range(12):
-        env[f'x{k}'] = '0'
+        env[f'x{k}'] = '1'   # the stored words are zero: the value written differs from them
     env['m'] = '0n'
     env.update(rs_env)
     if 'tv' in have:
@@ -169,7 +170,7 @@ def build_stmt(ctx, mod, name, txt):
     for n, t, _ in pl:
         if n in ('v', 'x', 'y') and n not in env:
             if t in ('U32',):
-                env[n] = '256' if re.search(r'U32\.is_le\(v, 255\)\)? == False', alltext) else '0'
+                env[n] = '256' if re.search(r'U32\.is_le\(v, 255\)\)? == False', alltext) else '1'   # a value different from the stored zero
             elif t == 'Bool':
                 env[n] = 'True{}'
             else:
@@ -247,6 +248,28 @@ def field_names(tmod, tname):
     return names
 
 
+def distinct_value(ctx, wexpr):
+    """a value of the field's type different from its default (written as a constant), or None: the default of a scalar
+    (0, False, O.u64_zero(), a constructor of numerals) with its first numeral raised to 1"""
+    m = re.match(r'^(\w+)\.(\w+)\(\)$', wexpr)
+    if not m or m.group(1) not in ctx.used:
+        return None
+    mod = W.Mod.get(ctx.used[m.group(1)])
+    if m.group(2) not in mod.defs:
+        return None
+    body = mod.signature(m.group(2))[2].strip()
+    if body == '0':
+        return '1'
+    if body == 'False{}':
+        return 'True{}'
+    if body == 'O.u64_zero()':
+        return f'{ctx.alias(ROOT / "src/obj.bend")}.U64{{1, 0}}'
+    mc = re.match(r'^([\w.]+)\{((?:\s*\d+\s*,?)+)\}$', body)
+    if mc:
+        return ctx.lift(mod, mc.group(1)) + '{' + re.sub(r'\d+', '1', mc.group(2), count=1) + '}'
+    return None
+
+
 def build_set_file(path):
     """e2e/<Name>_e2e_set_witness_generated.bend: each setter composition with premises (rep of the object, the new value's
     invariant, the value guard) applied to the default object with the value its own field holds (set to itself)"""
@@ -302,6 +325,9 @@ def build_set_file(path):
             skipped.append((d, 'the field is not in the default model'))
             continue
         wexpr, wmodel = obj.fields[k]
+        nv = distinct_value(ctx, wexpr) if isinstance(wmodel, W.Leaf) else None
+        if nv is not None:
+            wexpr, wmodel = nv, W.Leaf(nv)
         env = {'o': obj, 'w': wmodel}
         args = []
         try:

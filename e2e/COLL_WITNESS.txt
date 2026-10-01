@@ -9,9 +9,9 @@ bl1073741824	5 witnessed
 bl32	5 witnessed
 l1048576_bl1073741824	7 witnessed
 l1099511627776_Validator	10 witnessed
-  pending l1099511627776_Validator_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design
+  pending l1099511627776_Validator_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
 l1099511627776_u64	14 witnessed
-  pending l1099511627776_u64_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design
+  pending l1099511627776_u64_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
 l1099511627776_u8	5 witnessed
 l128_u64	15 witnessed
 l131072_u64	15 witnessed

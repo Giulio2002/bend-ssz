@@ -34,20 +34,20 @@ def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
   {==}
 
-def ProgressiveVarTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(uint8_d.u8_default(), 255) == True{} : Bool}:
+def ProgressiveVarTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(1, 255) == True{} : Bool}:
   {==}
 
-def ProgressiveVarTestStruct_e2e_set_f_A_view_witness() -> {RT_L.v_ProgressiveVarTestStruct(Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_default()))) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()), 0n, RN.v_u8(uint8_d.u8_default())) : S.Value}:
-  SET.ProgressiveVarTestStruct_e2e_set_f_A_view(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_default(), ProgressiveVarTestStruct_e2e_set_f_A_view_hg())
+def ProgressiveVarTestStruct_e2e_set_f_A_view_witness() -> {RT_L.v_ProgressiveVarTestStruct(Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 1))) == VS.field_set(RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()), 0n, RN.v_u8(1)) : S.Value}:
+  SET.ProgressiveVarTestStruct_e2e_set_f_A_view(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 1, ProgressiveVarTestStruct_e2e_set_f_A_view_hg())
 
 def ProgressiveVarTestStruct_e2e_set_f_A_root_r() -> RT_L.rep_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), Spec.ProgressiveVarTestStruct()):
   (uint8_d.u8_default(), ({==}, ({==}, ((Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==})), Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}))))
 
-def ProgressiveVarTestStruct_e2e_set_f_A_root_rv() -> RN.rp_u8(uint8_d.u8_default()):
+def ProgressiveVarTestStruct_e2e_set_f_A_root_rv() -> RN.rp_u8(1):
   {==}
 
-def ProgressiveVarTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_default()))))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), VS.field_set(RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()), 0n, RN.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.ProgressiveVarTestStruct_e2e_set_f_A_root(B.alloc(0), ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_default(), ProgressiveVarTestStruct_e2e_set_f_A_view_hg(), ProgressiveVarTestStruct_e2e_set_f_A_root_r(), ProgressiveVarTestStruct_e2e_set_f_A_root_rv())
+def ProgressiveVarTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest, ProgressiveVarTestStruct_h.ProgressiveVarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 1))))))} == API.hash_tree_root(Spec.ProgressiveVarTestStruct(), VS.field_set(RT_L.v_ProgressiveVarTestStruct(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()), 0n, RN.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.ProgressiveVarTestStruct_e2e_set_f_A_root(B.alloc(0), ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 1, ProgressiveVarTestStruct_e2e_set_f_A_view_hg(), ProgressiveVarTestStruct_e2e_set_f_A_root_r(), ProgressiveVarTestStruct_e2e_set_f_A_root_rv())
 
 def ProgressiveVarTestStruct_e2e_set_f_B_root_rv() -> BLI.rep_l2(list_uint16_123_d.l123_u16_default(), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(Spec.ProgressiveVarTestStruct())))):
   (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==}))

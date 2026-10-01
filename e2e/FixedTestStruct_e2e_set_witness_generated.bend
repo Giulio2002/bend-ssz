@@ -21,32 +21,32 @@ import ../types/uint8_def_generated.bend as uint8_d
 # FixedTestStruct: every setter composition with premises applied to the default object (the new value is the field's own
 # value), each premise proved of it.
 
-def FixedTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(uint8_d.u8_default(), 255) == True{} : Bool}:
+def FixedTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(1, 255) == True{} : Bool}:
   {==}
 
-def FixedTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_FixedTestStruct(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default()))) == VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default())) : S.Value}:
-  SET.FixedTestStruct_e2e_set_f_A_view(FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default(), FixedTestStruct_e2e_set_f_A_view_hg())
+def FixedTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_FixedTestStruct(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), 1))) == VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(1)) : S.Value}:
+  SET.FixedTestStruct_e2e_set_f_A_view(FixedTestStruct_d.FixedTestStruct_default(), 1, FixedTestStruct_e2e_set_f_A_view_hg())
 
 def FixedTestStruct_e2e_set_f_A_root_rp() -> M0_L.rp_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()):
   {==}
 
-def FixedTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u8(uint8_d.u8_default()):
+def FixedTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u8(1):
   {==}
 
-def FixedTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default())))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_A_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default(), FixedTestStruct_e2e_set_f_A_view_hg(), FixedTestStruct_e2e_set_f_A_root_rp(), FixedTestStruct_e2e_set_f_A_root_rv())
+def FixedTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), 1)))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_A_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), 1, FixedTestStruct_e2e_set_f_A_view_hg(), FixedTestStruct_e2e_set_f_A_root_rp(), FixedTestStruct_e2e_set_f_A_root_rv())
 
-def FixedTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default()))))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_A_encode(FixedTestStruct_d.FixedTestStruct_default(), uint8_d.u8_default(), FixedTestStruct_e2e_set_f_A_view_hg(), FixedTestStruct_e2e_set_f_A_root_rp(), FixedTestStruct_e2e_set_f_A_root_rv())
+def FixedTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(Pair.fst(FixedTestStruct_d.FixedTestStruct, Bool, FixedTestStruct_d.FixedTestStruct_set_f_A(FixedTestStruct_d.FixedTestStruct_default(), 1))))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 0n, M0_L.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_A_encode(FixedTestStruct_d.FixedTestStruct_default(), 1, FixedTestStruct_e2e_set_f_A_view_hg(), FixedTestStruct_e2e_set_f_A_root_rp(), FixedTestStruct_e2e_set_f_A_root_rv())
 
-def FixedTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_set_f_B(FixedTestStruct_d.FixedTestStruct_default(), uint64_d.u64_default()))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 1n, M0_L.v_u64(uint64_d.u64_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_B_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), uint64_d.u64_default(), FixedTestStruct_e2e_set_f_A_root_rp())
+def FixedTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_set_f_B(FixedTestStruct_d.FixedTestStruct_default(), O.U64{1, 0}))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 1n, M0_L.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_B_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), O.U64{1, 0}, FixedTestStruct_e2e_set_f_A_root_rp())
 
-def FixedTestStruct_e2e_set_f_B_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_B(FixedTestStruct_d.FixedTestStruct_default(), uint64_d.u64_default())))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 1n, M0_L.v_u64(uint64_d.u64_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_B_encode(FixedTestStruct_d.FixedTestStruct_default(), uint64_d.u64_default(), FixedTestStruct_e2e_set_f_A_root_rp())
+def FixedTestStruct_e2e_set_f_B_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_B(FixedTestStruct_d.FixedTestStruct_default(), O.U64{1, 0})))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 1n, M0_L.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_B_encode(FixedTestStruct_d.FixedTestStruct_default(), O.U64{1, 0}, FixedTestStruct_e2e_set_f_A_root_rp())
 
-def FixedTestStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_set_f_C(FixedTestStruct_d.FixedTestStruct_default(), uint32_d.u32_default()))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 2n, M0_L.v_u32(uint32_d.u32_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_C_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), uint32_d.u32_default(), FixedTestStruct_e2e_set_f_A_root_rp())
+def FixedTestStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.FixedTestStruct_hash_tree_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_set_f_C(FixedTestStruct_d.FixedTestStruct_default(), 1))))} == API.hash_tree_root(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 2n, M0_L.v_u32(1))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_C_root(B.alloc(0), FixedTestStruct_d.FixedTestStruct_default(), 1, FixedTestStruct_e2e_set_f_A_root_rp())
 
-def FixedTestStruct_e2e_set_f_C_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_C(FixedTestStruct_d.FixedTestStruct_default(), uint32_d.u32_default())))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 2n, M0_L.v_u32(uint32_d.u32_default()))) : Maybe<&2, +List<U32>>}:
-  SET.FixedTestStruct_e2e_set_f_C_encode(FixedTestStruct_d.FixedTestStruct_default(), uint32_d.u32_default(), FixedTestStruct_e2e_set_f_A_root_rp())
+def FixedTestStruct_e2e_set_f_C_encode_witness() -> {Some{E.obytes(FixedTestStruct_e.FixedTestStruct_encode(FixedTestStruct_d.FixedTestStruct_set_f_C(FixedTestStruct_d.FixedTestStruct_default(), 1)))} == API.serialize(Spec.FixedTestStruct(), VS.field_set(M0_L.v_FixedTestStruct(FixedTestStruct_d.FixedTestStruct_default()), 2n, M0_L.v_u32(1))) : Maybe<&2, +List<U32>>}:
+  SET.FixedTestStruct_e2e_set_f_C_encode(FixedTestStruct_d.FixedTestStruct_default(), 1, FixedTestStruct_e2e_set_f_A_root_rp())
