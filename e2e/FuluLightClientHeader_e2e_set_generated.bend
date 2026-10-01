@@ -1,11 +1,15 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_blist.bend as BL_e
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
 import ../types/FuluLightClientHeader_hashtreeroot_generated.bend as FuluLightClientHeader_h
+import ./FuluLightClientHeader_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -33,6 +37,35 @@ def FuluLightClientHeader_e2e_set_beacon_root(h: B.Buf, o: FuluLightClientHeader
   %FuluLightClientHeader_e2e_set_beacon_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(h, FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w)))))} == API.hash_tree_root(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientHeader_e2e_root(h, FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w), PS.LightClientHeader_set_beacon_rep(o, Spec.LightClientHeader(), w, r))
 
+def FuluLightClientHeader_set_beacon_hs1_hs43(-o: FuluLightClientHeader_d.LightClientHeader, -w: FuluBeaconBlockHeader_d.BeaconBlockHeader, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_beacon(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_beacon_hs1_hs44(-o: FuluLightClientHeader_d.LightClientHeader, -w: FuluBeaconBlockHeader_d.BeaconBlockHeader, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_beacon(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_beacon_hs2_hs48(-o: FuluLightClientHeader_d.LightClientHeader, -w: FuluBeaconBlockHeader_d.BeaconBlockHeader, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdpv(RT_L.pj_LightClientHeader_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w)), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_beacon(_, w)), 31n)
+  h
+
+def FuluLightClientHeader_e2e_set_beacon_encode(o: FuluLightClientHeader_d.LightClientHeader, +w: FuluBeaconBlockHeader_d.BeaconBlockHeader, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +hs43: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n), +hs44: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n), +hs48: BL_e.sdpv(RT_L.pj_LightClientHeader_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(o), 0n, RN.v_BeaconBlockHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientHeader_e2e_set_beacon_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w))))} == API.serialize(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientHeader_e2e_encode(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w), PS.LightClientHeader_set_beacon_rep(o, Spec.LightClientHeader(), w, r), FuluLightClientHeader_set_beacon_hs1_hs43(o, w, r, hs43), FuluLightClientHeader_set_beacon_hs1_hs44(o, w, r, hs44), FuluLightClientHeader_set_beacon_hs2_hs48(o, w, r, hs48))
+
 def FuluLightClientHeader_e2e_set_execution_view(o: FuluLightClientHeader_d.LightClientHeader, w: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>)
     -> {RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w)) == VS.field_set(RT_L.v_LightClientHeader(o), 1n, RT_L.v_ExecutionPayloadHeader_bx(w)) : S.Value}:
   match o:
@@ -43,6 +76,35 @@ def FuluLightClientHeader_e2e_set_execution_root(h: B.Buf, o: FuluLightClientHea
   %FuluLightClientHeader_e2e_set_execution_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(h, FuluLightClientHeader_d.LightClientHeader_set_execution(o, w)))))} == API.hash_tree_root(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientHeader_e2e_root(h, FuluLightClientHeader_d.LightClientHeader_set_execution(o, w), PS.LightClientHeader_set_execution_rep(o, Spec.LightClientHeader(), w, r, rv))
 
+def FuluLightClientHeader_set_execution_hs1_hs43(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(w)), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_execution_hs1_hs44(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(w)), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_execution_hs2_hs48(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdpv(RT_L.pj_LightClientHeader_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w)), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_execution(_, w)), 31n)
+  h
+
+def FuluLightClientHeader_e2e_set_execution_encode(o: FuluLightClientHeader_d.LightClientHeader, w: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +rv: RT_L.rep_ExecutionPayloadHeader_bx(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientHeader())))), +hs43: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(w)), 31n), +hs44: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(w)), 31n), +hs48: BL_e.sdpv(RT_L.pj_LightClientHeader_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(o), 1n, RT_L.v_ExecutionPayloadHeader_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientHeader_e2e_set_execution_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w))))} == API.serialize(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientHeader_e2e_encode(FuluLightClientHeader_d.LightClientHeader_set_execution(o, w), PS.LightClientHeader_set_execution_rep(o, Spec.LightClientHeader(), w, r, rv), FuluLightClientHeader_set_execution_hs1_hs43(o, w, r, hs43), FuluLightClientHeader_set_execution_hs1_hs44(o, w, r, hs44), FuluLightClientHeader_set_execution_hs2_hs48(o, w, r, hs48))
+
 def FuluLightClientHeader_e2e_set_execution_branch_view(o: FuluLightClientHeader_d.LightClientHeader, w: O.Words)
     -> {RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)) == VS.field_set(RT_L.v_LightClientHeader(o), 2n, PV.pview(w)) : S.Value}:
   match o:
@@ -52,3 +114,32 @@ def FuluLightClientHeader_e2e_set_execution_branch_root(h: B.Buf, o: FuluLightCl
     -> {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(h, FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)))))} == API.hash_tree_root(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(o), 2n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientHeader_e2e_set_execution_branch_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(h, FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)))))} == API.hash_tree_root(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientHeader_e2e_root(h, FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w), PS.LightClientHeader_set_execution_branch_rep(o, Spec.LightClientHeader(), w, r, rv))
+
+def FuluLightClientHeader_set_execution_branch_hs1_hs43(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Words, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_execution_branch_hs1_hs44(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Words, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)))), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(_, w)))), 31n)
+  h
+
+def FuluLightClientHeader_set_execution_branch_hs2_hs48(-o: FuluLightClientHeader_d.LightClientHeader, -w: O.Words, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +h: BL_e.sdpv(w, 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w)), 31n):
+  (+x0, e0) = r
+  (+eo, c0) = e0
+  (+q1, +q2) = c0
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT_L.pj_LightClientHeader_1(o), RT_L.pj_LightClientHeader_2(o)}, eo) : BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(_, w)), 31n)
+  h
+
+def FuluLightClientHeader_e2e_set_execution_branch_encode(o: FuluLightClientHeader_d.LightClientHeader, w: O.Words, +r: RT_L.rep_LightClientHeader(o, Spec.LightClientHeader()), +rv: PV.rep_pv(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientHeader()))))), +hs43: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n), +hs44: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(o))), 31n), +hs48: BL_e.sdpv(w, 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(o), 2n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientHeader_e2e_set_execution_branch_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w))))} == API.serialize(Spec.LightClientHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientHeader_e2e_encode(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(o, w), PS.LightClientHeader_set_execution_branch_rep(o, Spec.LightClientHeader(), w, r, rv), FuluLightClientHeader_set_execution_branch_hs1_hs43(o, w, r, hs43), FuluLightClientHeader_set_execution_branch_hs1_hs44(o, w, r, hs44), FuluLightClientHeader_set_execution_branch_hs2_hs48(o, w, r, hs48))

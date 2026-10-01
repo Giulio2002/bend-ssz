@@ -145,6 +145,7 @@ def tfzsp_{c}(+d: Nat, a: Array<{T}>, pf: TA.tperf({T}, d, a)) -> {SPT('a', 'd')
     SLU = 'F.array__slots(%s, F.array__upd(%s, d, t, J, e))' % (MB, MB)
     FT = lambda x: 'F.array__freeze(%s, F.array__thaw(%s, %s))' % (MB, MB, x)
     UPD = 'F.array__upd(%s, d, t, J, e)' % MB
+    UPDC = 'F.array__upd(%s, d, t, c, e)' % MB
     out.append(f"""def view_set_t_{c}(+c: Nat, +d: Nat, +t: {TR}, +J: Nat, +e: {MB}, +hJ: {{Nat.is_lt(J, {P_}(d)) == True{{}} : Bool}}, +pf: {{F.array__perfect({MB}, d, t) == True{{}} : Bool}})
     -> {{S.Sequence{{RT.xi_{c}(c, {SLU}, 0n)}} == VS.field_set(S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, t), 0n)}}, J, {VQ}.vm_{c}(e)) : S.Value}}:
   %Equal.sym({TR}, {UPD}, {FT(UPD)}, Equal.sym({TR}, {FT(UPD)}, {UPD}, F.array__freeze_thaw({MB}, {UPD}))) :
@@ -152,6 +153,14 @@ def tfzsp_{c}(+d: Nat, a: Array<{T}>, pf: TA.tperf({T}, d, a)) -> {SPT('a', 'd')
   %Equal.sym({TR}, t, {FT('t')}, Equal.sym({TR}, {FT('t')}, t, F.array__freeze_thaw({MB}, t))) :
     {{S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, {FT(UPD)}), 0n)}} == VS.field_set(S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, _), 0n)}}, J, {VQ}.vm_{c}(e)) : S.Value}}
   {VQ}.{c}_view_set(c, d, t, J, e, hJ, pf)
+
+def view_app_t_{c}(+c: Nat, +c2: Nat, +d: Nat, +t: {TR}, +e: {MB}, +hJ: {{Nat.is_lt(c, {P_}(d)) == True{{}} : Bool}}, +hc2: {{c2 == 1n+c : Nat}}, +pf: {{F.array__perfect({MB}, d, t) == True{{}} : Bool}})
+    -> {{S.Sequence{{RT.xi_{c}(c2, F.array__slots({MB}, {UPDC}), 0n)}} == VS.seq_append(S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, t), 0n)}}, {VQ}.vm_{c}(e)) : S.Value}}:
+  %Equal.sym({TR}, {UPDC}, {FT(UPDC)}, Equal.sym({TR}, {FT(UPDC)}, {UPDC}, F.array__freeze_thaw({MB}, {UPDC}))) :
+    {{S.Sequence{{RT.xi_{c}(c2, F.array__slots({MB}, _), 0n)}} == VS.seq_append(S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, t), 0n)}}, {VQ}.vm_{c}(e)) : S.Value}}
+  %Equal.sym({TR}, t, {FT('t')}, Equal.sym({TR}, {FT('t')}, t, F.array__freeze_thaw({MB}, t))) :
+    {{S.Sequence{{RT.xi_{c}(c2, F.array__slots({MB}, {FT(UPDC)}), 0n)}} == VS.seq_append(S.Sequence{{RT.xi_{c}(c, F.array__slots({MB}, _), 0n)}}, {VQ}.vm_{c}(e)) : S.Value}}
+  {VQ}.{c}_view_app(c, c2, d, t, e, hJ, hc2, pf)
 """)
     return '\n'.join(out)
 

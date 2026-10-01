@@ -1,12 +1,18 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_blist.bend as BL_e
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_e48w.bend as EW
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
 import ../types/FuluLightClientUpdate_hashtreeroot_generated.bend as FuluLightClientUpdate_h
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
 import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ./e2e_mwd.bend as MW
+import ./FuluLightClientUpdate_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -34,6 +40,71 @@ def FuluLightClientUpdate_e2e_set_attested_header_root(h: B.Buf, o: FuluLightCli
   %FuluLightClientUpdate_e2e_set_attested_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w), PS.LightClientUpdate_set_attested_header_rep(o, Spec.LightClientUpdate(), w, r, rv))
 
+def FuluLightClientUpdate_set_attested_header_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(w))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(_, w)))
+  h
+
+def FuluLightClientUpdate_set_attested_header_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_attested_header_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_attested_header_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(_, w)))
+  h
+
+def FuluLightClientUpdate_set_attested_header_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_attested_header_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: RT_L.rep_LightClientHeader(w, SH.Chain_head(SH.Container_fields(Spec.LightClientUpdate()))), +hA: MW.SHS_L(w), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 0n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_attested_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(o, w), PS.LightClientUpdate_set_attested_header_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_attested_header_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_attested_header_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_attested_header_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_attested_header_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_attested_header_hs4_h4(o, w, r, h4))
+
 def FuluLightClientUpdate_e2e_set_next_sync_committee_view(o: FuluLightClientUpdate_d.LightClientUpdate, w: FuluSyncCommittee_d.SyncCommittee)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 1n, RT_L.v_SyncCommittee(w)) : S.Value}:
   match o:
@@ -43,6 +114,71 @@ def FuluLightClientUpdate_e2e_set_next_sync_committee_root(h: B.Buf, o: FuluLigh
     -> {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 1n, RT_L.v_SyncCommittee(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientUpdate_e2e_set_next_sync_committee_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w), PS.LightClientUpdate_set_next_sync_committee_rep(o, Spec.LightClientUpdate(), w, r, rv))
+
+def FuluLightClientUpdate_set_next_sync_committee_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(_, w)))
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(w), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(_, w)))
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_next_sync_committee_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: FuluSyncCommittee_d.SyncCommittee, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: RT_L.rep_SyncCommittee(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientUpdate())))), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(w), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 1n, RT_L.v_SyncCommittee(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_next_sync_committee_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(o, w), PS.LightClientUpdate_set_next_sync_committee_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_next_sync_committee_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_next_sync_committee_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_next_sync_committee_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_next_sync_committee_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_next_sync_committee_hs4_h4(o, w, r, h4))
 
 def FuluLightClientUpdate_e2e_set_next_sync_committee_branch_view(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Words)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 2n, PV.pview(w)) : S.Value}:
@@ -54,6 +190,71 @@ def FuluLightClientUpdate_e2e_set_next_sync_committee_branch_root(h: B.Buf, o: F
   %FuluLightClientUpdate_e2e_set_next_sync_committee_branch_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w), PS.LightClientUpdate_set_next_sync_committee_branch_rep(o, Spec.LightClientUpdate(), w, r, rv))
 
+def FuluLightClientUpdate_set_next_sync_committee_branch_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(_, w)))
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_branch_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_branch_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(w, 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_branch_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(_, w)))
+  h
+
+def FuluLightClientUpdate_set_next_sync_committee_branch_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_next_sync_committee_branch_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: PV.rep_pv(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientUpdate()))))), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(w, 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 2n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_next_sync_committee_branch_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(o, w), PS.LightClientUpdate_set_next_sync_committee_branch_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_next_sync_committee_branch_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_next_sync_committee_branch_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_next_sync_committee_branch_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_next_sync_committee_branch_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_next_sync_committee_branch_hs4_h4(o, w, r, h4))
+
 def FuluLightClientUpdate_e2e_set_finalized_header_view(o: FuluLightClientUpdate_d.LightClientUpdate, w: FuluLightClientHeader_d.LightClientHeader)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 3n, RT_L.v_LightClientHeader(w)) : S.Value}:
   match o:
@@ -63,6 +264,71 @@ def FuluLightClientUpdate_e2e_set_finalized_header_root(h: B.Buf, o: FuluLightCl
     -> {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 3n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientUpdate_e2e_set_finalized_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w), PS.LightClientUpdate_set_finalized_header_rep(o, Spec.LightClientUpdate(), w, r, rv))
+
+def FuluLightClientUpdate_set_finalized_header_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(_, w)))
+  h
+
+def FuluLightClientUpdate_set_finalized_header_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_finalized_header_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_finalized_header_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(w))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(_, w)))
+  h
+
+def FuluLightClientUpdate_set_finalized_header_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_finalized_header_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: RT_L.rep_LightClientHeader(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientUpdate())))))), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(w), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 3n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_finalized_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(o, w), PS.LightClientUpdate_set_finalized_header_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_finalized_header_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_finalized_header_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_finalized_header_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_finalized_header_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_finalized_header_hs4_h4(o, w, r, h4))
 
 def FuluLightClientUpdate_e2e_set_finality_branch_view(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Words)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 4n, PV.pview(w)) : S.Value}:
@@ -74,6 +340,71 @@ def FuluLightClientUpdate_e2e_set_finality_branch_root(h: B.Buf, o: FuluLightCli
   %FuluLightClientUpdate_e2e_set_finality_branch_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w), PS.LightClientUpdate_set_finality_branch_rep(o, Spec.LightClientUpdate(), w, r, rv))
 
+def FuluLightClientUpdate_set_finality_branch_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(_, w)))
+  h
+
+def FuluLightClientUpdate_set_finality_branch_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_finality_branch_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_finality_branch_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(_, w)))
+  h
+
+def FuluLightClientUpdate_set_finality_branch_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(w, 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_finality_branch_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Words, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: PV.rep_pv(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientUpdate()))))))), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(w, 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 4n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_finality_branch_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(o, w), PS.LightClientUpdate_set_finality_branch_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_finality_branch_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_finality_branch_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_finality_branch_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_finality_branch_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_finality_branch_hs4_h4(o, w, r, h4))
+
 def FuluLightClientUpdate_e2e_set_sync_aggregate_view(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 5n, RT_L.v_SyncAggregate_bx(w)) : S.Value}:
   match o:
@@ -84,6 +415,71 @@ def FuluLightClientUpdate_e2e_set_sync_aggregate_root(h: B.Buf, o: FuluLightClie
   %FuluLightClientUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w), PS.LightClientUpdate_set_sync_aggregate_rep(o, Spec.LightClientUpdate(), w, r, rv))
 
+def FuluLightClientUpdate_set_sync_aggregate_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(_, w)))
+  h
+
+def FuluLightClientUpdate_set_sync_aggregate_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_sync_aggregate_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_sync_aggregate_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(_, w)))
+  h
+
+def FuluLightClientUpdate_set_sync_aggregate_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_sync_aggregate_encode(o: FuluLightClientUpdate_d.LightClientUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +rv: RT_L.rep_SyncAggregate_bx(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientUpdate())))))))), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 5n, RT_L.v_SyncAggregate_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_sync_aggregate(o, w), PS.LightClientUpdate_set_sync_aggregate_rep(o, Spec.LightClientUpdate(), w, r, rv), FuluLightClientUpdate_set_sync_aggregate_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_sync_aggregate_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_sync_aggregate_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_sync_aggregate_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_sync_aggregate_hs4_h4(o, w, r, h4))
+
 def FuluLightClientUpdate_e2e_set_signature_slot_view(o: FuluLightClientUpdate_d.LightClientUpdate, +w: O.U64)
     -> {RT_L.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w)) == VS.field_set(RT_L.v_LightClientUpdate(o), 6n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -93,3 +489,68 @@ def FuluLightClientUpdate_e2e_set_signature_slot_root(h: B.Buf, o: FuluLightClie
     -> {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 6n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientUpdate_e2e_set_signature_slot_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientUpdate_d.LightClientUpdate & D.Digest, FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientUpdate_e2e_root(h, FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w), PS.LightClientUpdate_set_signature_slot_rep(o, Spec.LightClientUpdate(), w, r))
+
+def FuluLightClientUpdate_set_signature_slot_hs0_hA(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_0(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(_, w)))
+  h
+
+def FuluLightClientUpdate_set_signature_slot_hs1_h1(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n))
+    -> EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w))), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(_, w))), 31n)
+  h
+
+def FuluLightClientUpdate_set_signature_slot_hs2_h2(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_2(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_set_signature_slot_hs3_hF(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w))):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : MW.SHS_L(RT_L.pj_LightClientUpdate_3(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(_, w)))
+  h
+
+def FuluLightClientUpdate_set_signature_slot_hs4_h4(-o: FuluLightClientUpdate_d.LightClientUpdate, -w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w)), 31n):
+  (+x6, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, +q5) = c4
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT_L.pj_LightClientUpdate_0(o), RT_L.pj_LightClientUpdate_1(o), RT_L.pj_LightClientUpdate_2(o), RT_L.pj_LightClientUpdate_3(o), RT_L.pj_LightClientUpdate_4(o), RT_L.pj_LightClientUpdate_5(o), x6}, eo) : BL_e.sdpv(RT_L.pj_LightClientUpdate_4(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(_, w)), 31n)
+  h
+
+def FuluLightClientUpdate_e2e_set_signature_slot_encode(o: FuluLightClientUpdate_d.LightClientUpdate, +w: O.U64, +r: RT_L.rep_LightClientUpdate(o, Spec.LightClientUpdate()), +hA: MW.SHS_L(RT_L.pj_LightClientUpdate_0(o)), +h1: EW.sdsc(RT_L.pj_SyncCommittee_0(RT_L.pj_LightClientUpdate_1(o)), 31n), +h2: BL_e.sdpv(RT_L.pj_LightClientUpdate_2(o), 31n), +hF: MW.SHS_L(RT_L.pj_LightClientUpdate_3(o)), +h4: BL_e.sdpv(RT_L.pj_LightClientUpdate_4(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientUpdate(), VS.field_set(RT_L.v_LightClientUpdate(o), 6n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientUpdate_e2e_set_signature_slot_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, B.Buf, FuluLightClientUpdate_e.LightClientUpdate_encode(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientUpdate_e2e_encode(FuluLightClientUpdate_d.LightClientUpdate_set_signature_slot(o, w), PS.LightClientUpdate_set_signature_slot_rep(o, Spec.LightClientUpdate(), w, r), FuluLightClientUpdate_set_signature_slot_hs0_hA(o, w, r, hA), FuluLightClientUpdate_set_signature_slot_hs1_h1(o, w, r, h1), FuluLightClientUpdate_set_signature_slot_hs2_h2(o, w, r, h2), FuluLightClientUpdate_set_signature_slot_hs3_hF(o, w, r, hF), FuluLightClientUpdate_set_signature_slot_hs4_h4(o, w, r, h4))

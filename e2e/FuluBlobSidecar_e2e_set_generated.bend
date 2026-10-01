@@ -2,12 +2,16 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
+import ../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
 import ../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
+import ./FuluBlobSidecar_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -34,6 +38,33 @@ def FuluBlobSidecar_e2e_set_index_root(h: B.Buf, o: FuluBlobSidecar_d.BlobSideca
   %FuluBlobSidecar_e2e_set_index_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_index(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_index(o, w), PS.BlobSidecar_set_index_rep(o, Spec.BlobSidecar(), w, r))
 
+def FuluBlobSidecar_set_index_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.U64, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_index(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_index(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_index_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.U64, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_index(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_index(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_index_encode(o: FuluBlobSidecar_d.BlobSidecar, +w: O.U64, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +hcb: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool}, +hcp: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_index(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 0n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_index_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_index(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_index(o, w), PS.BlobSidecar_set_index_rep(o, Spec.BlobSidecar(), w, r), FuluBlobSidecar_set_index_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_index_hs5_hcp(o, w, r, hcp))
+
 def FuluBlobSidecar_e2e_set_blob_view(o: FuluBlobSidecar_d.BlobSidecar, w: O.Words)
     -> {M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w)) == VS.field_set(M0_L.v_BlobSidecar(o), 1n, S.BytesValue{WO.wview(w)}) : S.Value}:
   match o:
@@ -43,6 +74,33 @@ def FuluBlobSidecar_e2e_set_blob_root(h: B.Buf, o: FuluBlobSidecar_d.BlobSidecar
     -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_blob(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 1n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
   %FuluBlobSidecar_e2e_set_blob_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_blob(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_blob(o, w), PS.BlobSidecar_set_blob_rep(o, Spec.BlobSidecar(), w, r, rv))
+
+def FuluBlobSidecar_set_blob_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(w, 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_blob(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_blob_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_blob(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_blob_encode(o: FuluBlobSidecar_d.BlobSidecar, w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +rv: WO.rep_bv(w, M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar())))), +hcb: {E3.at_depth(w, 16n) == True{} : Bool}, +hcp: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 1n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_blob_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_blob(o, w), PS.BlobSidecar_set_blob_rep(o, Spec.BlobSidecar(), w, r, rv), FuluBlobSidecar_set_blob_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_blob_hs5_hcp(o, w, r, hcp))
 
 def FuluBlobSidecar_e2e_set_kzg_commitment_view(o: FuluBlobSidecar_d.BlobSidecar, +w: FuluBytes48_d.Bytes48)
     -> {M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w)) == VS.field_set(M0_L.v_BlobSidecar(o), 2n, RN.v_b48(w)) : S.Value}:
@@ -54,6 +112,33 @@ def FuluBlobSidecar_e2e_set_kzg_commitment_root(h: B.Buf, o: FuluBlobSidecar_d.B
   %FuluBlobSidecar_e2e_set_kzg_commitment_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w), PS.BlobSidecar_set_kzg_commitment_rep(o, Spec.BlobSidecar(), w, r))
 
+def FuluBlobSidecar_set_kzg_commitment_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_kzg_commitment_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_kzg_commitment_encode(o: FuluBlobSidecar_d.BlobSidecar, +w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +hcb: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool}, +hcp: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 2n, RN.v_b48(w))) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_kzg_commitment_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(o, w), PS.BlobSidecar_set_kzg_commitment_rep(o, Spec.BlobSidecar(), w, r), FuluBlobSidecar_set_kzg_commitment_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_kzg_commitment_hs5_hcp(o, w, r, hcp))
+
 def FuluBlobSidecar_e2e_set_kzg_proof_view(o: FuluBlobSidecar_d.BlobSidecar, +w: FuluBytes48_d.Bytes48)
     -> {M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w)) == VS.field_set(M0_L.v_BlobSidecar(o), 3n, RN.v_b48(w)) : S.Value}:
   match o:
@@ -63,6 +148,33 @@ def FuluBlobSidecar_e2e_set_kzg_proof_root(h: B.Buf, o: FuluBlobSidecar_d.BlobSi
     -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 3n, RN.v_b48(w))) : Maybe<&2, +List<U32>>}:
   %FuluBlobSidecar_e2e_set_kzg_proof_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w), PS.BlobSidecar_set_kzg_proof_rep(o, Spec.BlobSidecar(), w, r))
+
+def FuluBlobSidecar_set_kzg_proof_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_kzg_proof_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_kzg_proof_encode(o: FuluBlobSidecar_d.BlobSidecar, +w: FuluBytes48_d.Bytes48, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +hcb: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool}, +hcp: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 3n, RN.v_b48(w))) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_kzg_proof_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(o, w), PS.BlobSidecar_set_kzg_proof_rep(o, Spec.BlobSidecar(), w, r), FuluBlobSidecar_set_kzg_proof_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_kzg_proof_hs5_hcp(o, w, r, hcp))
 
 def FuluBlobSidecar_e2e_set_signed_block_header_view(o: FuluBlobSidecar_d.BlobSidecar, w: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>)
     -> {M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w)) == VS.field_set(M0_L.v_BlobSidecar(o), 4n, M0_L.v_SignedBeaconBlockHeader_bx(w)) : S.Value}:
@@ -74,6 +186,33 @@ def FuluBlobSidecar_e2e_set_signed_block_header_root(h: B.Buf, o: FuluBlobSideca
   %FuluBlobSidecar_e2e_set_signed_block_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w), PS.BlobSidecar_set_signed_block_header_rep(o, Spec.BlobSidecar(), w, r, rv))
 
+def FuluBlobSidecar_set_signed_block_header_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_signed_block_header_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_signed_block_header_encode(o: FuluBlobSidecar_d.BlobSidecar, w: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +rv: M0_L.rep_SignedBeaconBlockHeader_bx(w, M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar()))))))), +hcb: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool}, +hcp: {E3.at_depth(M0_L.pj_BlobSidecar_5(o), 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 4n, M0_L.v_SignedBeaconBlockHeader_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_signed_block_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(o, w), PS.BlobSidecar_set_signed_block_header_rep(o, Spec.BlobSidecar(), w, r, rv), FuluBlobSidecar_set_signed_block_header_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_signed_block_header_hs5_hcp(o, w, r, hcp))
+
 def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_view(o: FuluBlobSidecar_d.BlobSidecar, w: O.Words)
     -> {M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w)) == VS.field_set(M0_L.v_BlobSidecar(o), 5n, PV.pview(w)) : S.Value}:
   match o:
@@ -83,3 +222,30 @@ def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root(h: B.Buf, o: Ful
     -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 5n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
   %FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_view(o, w) : {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w)))))} == API.hash_tree_root(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
   R.FuluBlobSidecar_e2e_root(h, FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w), PS.BlobSidecar_set_kzg_commitment_inclusion_proof_rep(o, Spec.BlobSidecar(), w, r, rv))
+
+def FuluBlobSidecar_set_kzg_commitment_inclusion_proof_hs1_hcb(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w)), 16n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(_, w)), 16n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_set_kzg_commitment_inclusion_proof_hs5_hcp(-o: FuluBlobSidecar_d.BlobSidecar, -w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +h: {E3.at_depth(w, 8n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w)), 8n) == True{} : Bool}:
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, c0) = e2
+  (+q1, c1) = c0
+  (+q4, +q5) = c1
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, M0_L.pj_BlobSidecar_1(o), x2, x3, M0_L.pj_BlobSidecar_4(o), M0_L.pj_BlobSidecar_5(o)}, eo) : {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(_, w)), 8n) == True{} : Bool}
+  h
+
+def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_encode(o: FuluBlobSidecar_d.BlobSidecar, w: O.Words, +r: M0_L.rep_BlobSidecar(o, Spec.BlobSidecar()), +rv: PV.rep_pv(w, M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar())))))))), +hcb: {E3.at_depth(M0_L.pj_BlobSidecar_1(o), 16n) == True{} : Bool}, +hcp: {E3.at_depth(w, 8n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(o), 5n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_view(o, w) : {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w))))} == API.serialize(Spec.BlobSidecar(), _) : Maybe<&2, +List<U32>>}
+  N.FuluBlobSidecar_e2e_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(o, w), PS.BlobSidecar_set_kzg_commitment_inclusion_proof_rep(o, Spec.BlobSidecar(), w, r, rv), FuluBlobSidecar_set_kzg_commitment_inclusion_proof_hs1_hcb(o, w, r, hcb), FuluBlobSidecar_set_kzg_commitment_inclusion_proof_hs5_hcp(o, w, r, hcp))

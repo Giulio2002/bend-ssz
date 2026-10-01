@@ -1,11 +1,15 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_bitv.bend as BTV
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../types/FuluSignedAggregateAndProof_encode_ssz_generated.bend as FuluSignedAggregateAndProof_e
 import ../types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend as FuluSignedAggregateAndProof_h
+import ./FuluSignedAggregateAndProof_e2e_generated.bend as N
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluSignedAggregateAndProof_e2e_root_generated.bend as R
 import ../proofs/obj/root_names_light.bend as RN
@@ -31,6 +35,18 @@ def FuluSignedAggregateAndProof_e2e_set_message_root(h: B.Buf, o: FuluSignedAggr
   %FuluSignedAggregateAndProof_e2e_set_message_view(o, w) : {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(h, FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w)))))} == API.hash_tree_root(Spec.SignedAggregateAndProof(), _) : Maybe<&2, +List<U32>>}
   R.FuluSignedAggregateAndProof_e2e_root(h, FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w), PS.SignedAggregateAndProof_set_message_rep(o, Spec.SignedAggregateAndProof(), w, r, rv))
 
+def FuluSignedAggregateAndProof_set_message_hs0_hs(-o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, -w: FuluAggregateAndProof_d.AggregateAndProof, +r: RT_L.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()), +h: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(w)))))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w)))))):
+  (+x1, e0) = r
+  (+eo, +q0) = e0
+  %Equal.sym(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, o, FuluSignedAggregateAndProof_d.SignedAggregateAndProof{RT_L.pj_SignedAggregateAndProof_0(o), x1}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(_, w))))))
+  h
+
+def FuluSignedAggregateAndProof_e2e_set_message_encode(o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, w: FuluAggregateAndProof_d.AggregateAndProof, +r: RT_L.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()), +rv: RT_L.rep_AggregateAndProof(w, SH.Chain_head(SH.Container_fields(Spec.SignedAggregateAndProof()))), +hs: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(w)))))
+    -> {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w))))} == API.serialize(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(o), 0n, RT_L.v_AggregateAndProof(w))) : Maybe<&2, +List<U32>>}:
+  %FuluSignedAggregateAndProof_e2e_set_message_view(o, w) : {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w))))} == API.serialize(Spec.SignedAggregateAndProof(), _) : Maybe<&2, +List<U32>>}
+  N.FuluSignedAggregateAndProof_e2e_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(o, w), PS.SignedAggregateAndProof_set_message_rep(o, Spec.SignedAggregateAndProof(), w, r, rv), FuluSignedAggregateAndProof_set_message_hs0_hs(o, w, r, hs))
+
 def FuluSignedAggregateAndProof_e2e_set_signature_view(o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +w: FuluBytes96_d.Bytes96)
     -> {RT_L.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w)) == VS.field_set(RT_L.v_SignedAggregateAndProof(o), 1n, RN.v_b96(w)) : S.Value}:
   match o:
@@ -40,3 +56,15 @@ def FuluSignedAggregateAndProof_e2e_set_signature_root(h: B.Buf, o: FuluSignedAg
     -> {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(h, FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w)))))} == API.hash_tree_root(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(o), 1n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
   %FuluSignedAggregateAndProof_e2e_set_signature_view(o, w) : {Some{D.bytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedAggregateAndProof_d.SignedAggregateAndProof & D.Digest, FuluSignedAggregateAndProof_h.SignedAggregateAndProof_hash_tree_root(h, FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w)))))} == API.hash_tree_root(Spec.SignedAggregateAndProof(), _) : Maybe<&2, +List<U32>>}
   R.FuluSignedAggregateAndProof_e2e_root(h, FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w), PS.SignedAggregateAndProof_set_signature_rep(o, Spec.SignedAggregateAndProof(), w, r))
+
+def FuluSignedAggregateAndProof_set_signature_hs0_hs(-o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, -w: FuluBytes96_d.Bytes96, +r: RT_L.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()), +h: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(o))))))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w)))))):
+  (+x1, e0) = r
+  (+eo, +q0) = e0
+  %Equal.sym(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, o, FuluSignedAggregateAndProof_d.SignedAggregateAndProof{RT_L.pj_SignedAggregateAndProof_0(o), x1}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(_, w))))))
+  h
+
+def FuluSignedAggregateAndProof_e2e_set_signature_encode(o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +w: FuluBytes96_d.Bytes96, +r: RT_L.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(RT_L.pj_SignedAggregateAndProof_0(o))))))
+    -> {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w))))} == API.serialize(Spec.SignedAggregateAndProof(), VS.field_set(RT_L.v_SignedAggregateAndProof(o), 1n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
+  %FuluSignedAggregateAndProof_e2e_set_signature_view(o, w) : {Some{E.obytes(Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, B.Buf, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w))))} == API.serialize(Spec.SignedAggregateAndProof(), _) : Maybe<&2, +List<U32>>}
+  N.FuluSignedAggregateAndProof_e2e_encode(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_signature(o, w), PS.SignedAggregateAndProof_set_signature_rep(o, Spec.SignedAggregateAndProof(), w, r), FuluSignedAggregateAndProof_set_signature_hs0_hs(o, w, r, hs))

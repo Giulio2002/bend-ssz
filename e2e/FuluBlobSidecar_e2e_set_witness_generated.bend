@@ -1,5 +1,7 @@
 import Base
 import ./FuluBlobSidecar_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ./e2e_wit.bend as WT
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -17,6 +19,7 @@ import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
+import ../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
 import ../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
 import ../types/FuluBlob_def_generated.bend as FuluBlob_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -54,17 +57,38 @@ def FuluBlobSidecar_e2e_set_index_root_r() -> M0_L.rep_BlobSidecar(FuluBlobSidec
 def FuluBlobSidecar_e2e_set_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_index(FuluBlobSidecar_d.BlobSidecar_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_index_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), O.U64{1, 0}, FuluBlobSidecar_e2e_set_index_root_r())
 
+def FuluBlobSidecar_e2e_set_index_encode_hcb() -> {E3.at_depth(M0_L.pj_BlobSidecar_1(FuluBlobSidecar_d.BlobSidecar_default()), 16n) == True{} : Bool}:
+  {==}
+
+def FuluBlobSidecar_e2e_set_index_encode_hcp() -> {E3.at_depth(M0_L.pj_BlobSidecar_5(FuluBlobSidecar_d.BlobSidecar_default()), 8n) == True{} : Bool}:
+  {==}
+
+def FuluBlobSidecar_e2e_set_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_index(FuluBlobSidecar_d.BlobSidecar_default(), O.U64{1, 0}))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_index_encode(FuluBlobSidecar_d.BlobSidecar_default(), O.U64{1, 0}, FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_index_encode_hcb(), FuluBlobSidecar_e2e_set_index_encode_hcp())
+
 def FuluBlobSidecar_e2e_set_blob_root_rv() -> WO.rep_bv(FuluBlob_d.b131072_default(), M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar())))):
   big2()
 
 def FuluBlobSidecar_e2e_set_blob_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_blob(FuluBlobSidecar_d.BlobSidecar_default(), FuluBlob_d.b131072_default())))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 1n, S.BytesValue{WO.wview(FuluBlob_d.b131072_default())})) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_blob_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), FuluBlob_d.b131072_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_blob_root_rv())
 
+def FuluBlobSidecar_e2e_set_blob_encode_hcb() -> {E3.at_depth(FuluBlob_d.b131072_default(), 16n) == True{} : Bool}:
+  {==}
+
+def FuluBlobSidecar_e2e_set_blob_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_blob(FuluBlobSidecar_d.BlobSidecar_default(), FuluBlob_d.b131072_default()))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 1n, S.BytesValue{WO.wview(FuluBlob_d.b131072_default())})) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_blob_encode(FuluBlobSidecar_d.BlobSidecar_default(), FuluBlob_d.b131072_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_blob_root_rv(), FuluBlobSidecar_e2e_set_blob_encode_hcb(), FuluBlobSidecar_e2e_set_index_encode_hcp())
+
 def FuluBlobSidecar_e2e_set_kzg_commitment_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 2n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_kzg_commitment_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluBlobSidecar_e2e_set_index_root_r())
 
+def FuluBlobSidecar_e2e_set_kzg_commitment_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 2n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_kzg_commitment_encode(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_index_encode_hcb(), FuluBlobSidecar_e2e_set_index_encode_hcp())
+
 def FuluBlobSidecar_e2e_set_kzg_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 3n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_kzg_proof_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluBlobSidecar_e2e_set_index_root_r())
+
+def FuluBlobSidecar_e2e_set_kzg_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_proof(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 3n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_kzg_proof_encode(FuluBlobSidecar_d.BlobSidecar_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_index_encode_hcb(), FuluBlobSidecar_e2e_set_index_encode_hcp())
 
 def FuluBlobSidecar_e2e_set_signed_block_header_root_rv() -> M0_L.rep_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar()))))))):
   (FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==})
@@ -72,8 +96,17 @@ def FuluBlobSidecar_e2e_set_signed_block_header_root_rv() -> M0_L.rep_SignedBeac
 def FuluBlobSidecar_e2e_set_signed_block_header_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(FuluBlobSidecar_d.BlobSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default())))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 4n, M0_L.v_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_signed_block_header_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_signed_block_header_root_rv())
 
+def FuluBlobSidecar_e2e_set_signed_block_header_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_signed_block_header(FuluBlobSidecar_d.BlobSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 4n, M0_L.v_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_signed_block_header_encode(FuluBlobSidecar_d.BlobSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_signed_block_header_root_rv(), FuluBlobSidecar_e2e_set_index_encode_hcb(), FuluBlobSidecar_e2e_set_index_encode_hcp())
+
 def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root_rv() -> PV.rep_pv(Fulu_vec_bytevec_32_17_d.v17_b32_default(), M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.BlobSidecar())))))))):
   ((FD.array__trep(U32, 8n, 0), (8n, (544, (16n, (WZ544(), (FD.array__trep_perfect(U32, 8n, 0), ({==}, ({==}, {==})))))))), {==})
 
 def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, D.Digest, Pair.snd(B.Buf, FuluBlobSidecar_d.BlobSidecar & D.Digest, FuluBlobSidecar_h.BlobSidecar_hash_tree_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(FuluBlobSidecar_d.BlobSidecar_default(), Fulu_vec_bytevec_32_17_d.v17_b32_default())))))} == API.hash_tree_root(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 5n, PV.pview(Fulu_vec_bytevec_32_17_d.v17_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root(B.alloc(0), FuluBlobSidecar_d.BlobSidecar_default(), Fulu_vec_bytevec_32_17_d.v17_b32_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root_rv())
+
+def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_encode_hcp() -> {E3.at_depth(Fulu_vec_bytevec_32_17_d.v17_b32_default(), 8n) == True{} : Bool}:
+  {==}
+
+def FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluBlobSidecar_d.BlobSidecar, B.Buf, FuluBlobSidecar_e.BlobSidecar_encode(FuluBlobSidecar_d.BlobSidecar_set_kzg_commitment_inclusion_proof(FuluBlobSidecar_d.BlobSidecar_default(), Fulu_vec_bytevec_32_17_d.v17_b32_default()))))} == API.serialize(Spec.BlobSidecar(), VS.field_set(M0_L.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar_default()), 5n, PV.pview(Fulu_vec_bytevec_32_17_d.v17_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_encode(FuluBlobSidecar_d.BlobSidecar_default(), Fulu_vec_bytevec_32_17_d.v17_b32_default(), FuluBlobSidecar_e2e_set_index_root_r(), FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_root_rv(), FuluBlobSidecar_e2e_set_index_encode_hcb(), FuluBlobSidecar_e2e_set_kzg_commitment_inclusion_proof_encode_hcp())

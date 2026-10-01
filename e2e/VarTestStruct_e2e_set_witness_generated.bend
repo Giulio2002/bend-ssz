@@ -1,5 +1,7 @@
 import Base
 import ./VarTestStruct_e2e_set_generated.bend as SET
+import ./e2e_blist.bend as BL_e
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/blist_obj_light.bend as BLI
 import ../proofs/obj/generic_specs.bend as Spec
@@ -14,6 +16,7 @@ import ../src/digest.bend as D
 import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
 import ../types/VarTestStruct_hashtreeroot_generated.bend as VarTestStruct_h
 import ../types/list_uint16_1024_def_generated.bend as list_uint16_1024_d
 import ../types/schema.bend as S
@@ -48,6 +51,12 @@ def VarTestStruct_e2e_set_f_B_root_rv() -> BLI.rep_l2(list_uint16_1024_d.l1024_u
 
 def VarTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default())))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 1n, PB.vview2(list_uint16_1024_d.l1024_u16_default()))) : Maybe<&2, +List<U32>>}:
   SET.VarTestStruct_e2e_set_f_B_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_B_root_rv())
+
+def VarTestStruct_e2e_set_f_B_encode_hs() -> BL_e.sdk(list_uint16_1024_d.l1024_u16_default(), 31n):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def VarTestStruct_e2e_set_f_B_encode_witness() -> {Some{E.obytes(Pair.snd(VarTestStruct_d.VarTestStruct, B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default()))))} == API.serialize(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 1n, PB.vview2(list_uint16_1024_d.l1024_u16_default()))) : Maybe<&2, +List<U32>>}:
+  SET.VarTestStruct_e2e_set_f_B_encode(VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_B_root_rv(), VarTestStruct_e2e_set_f_B_encode_hs())
 
 def VarTestStruct_e2e_set_f_C_view_hg() -> {U32.is_le(1, 255) == True{} : Bool}:
   {==}

@@ -1,12 +1,16 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_blist.bend as BL_e
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../types/FuluExecutionPayloadHeader_encode_ssz_generated.bend as FuluExecutionPayloadHeader_e
 import ../types/FuluExecutionPayloadHeader_hashtreeroot_generated.bend as FuluExecutionPayloadHeader_h
 import ../proofs/obj/list_obj_light.bend as LO
+import ./FuluExecutionPayloadHeader_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluExecutionPayloadHeader_e2e_root_generated.bend as R
@@ -42,6 +46,55 @@ def FuluExecutionPayloadHeader_e2e_set_parent_hash_root(h: B.Buf, o: FuluExecuti
   %FuluExecutionPayloadHeader_e2e_set_parent_hash_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w), PS.ExecutionPayloadHeader_set_parent_hash_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_parent_hash_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_parent_hash_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_parent_hash_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 0n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_parent_hash_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_parent_hash(o, w), PS.ExecutionPayloadHeader_set_parent_hash_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_parent_hash_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_parent_hash_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_fee_recipient_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes20_d.Bytes20)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 1n, RN.v_b20(w)) : S.Value}:
   match o:
@@ -58,6 +111,55 @@ def FuluExecutionPayloadHeader_e2e_set_fee_recipient_root(h: B.Buf, o: FuluExecu
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 1n, RN.v_b20(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_fee_recipient_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w), PS.ExecutionPayloadHeader_set_fee_recipient_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_fee_recipient_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes20_d.Bytes20, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_fee_recipient_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes20_d.Bytes20, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_fee_recipient_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes20_d.Bytes20, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 1n, RN.v_b20(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_fee_recipient_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_fee_recipient(o, w), PS.ExecutionPayloadHeader_set_fee_recipient_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_fee_recipient_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_fee_recipient_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_state_root_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 2n, RN.v_b32(w)) : S.Value}:
@@ -76,6 +178,55 @@ def FuluExecutionPayloadHeader_e2e_set_state_root_root(h: B.Buf, o: FuluExecutio
   %FuluExecutionPayloadHeader_e2e_set_state_root_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w), PS.ExecutionPayloadHeader_set_state_root_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_state_root_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_state_root_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_state_root_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 2n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_state_root_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_state_root(o, w), PS.ExecutionPayloadHeader_set_state_root_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_state_root_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_state_root_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_receipts_root_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 3n, RN.v_b32(w)) : S.Value}:
   match o:
@@ -92,6 +243,55 @@ def FuluExecutionPayloadHeader_e2e_set_receipts_root_root(h: B.Buf, o: FuluExecu
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 3n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_receipts_root_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w), PS.ExecutionPayloadHeader_set_receipts_root_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_receipts_root_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_receipts_root_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_receipts_root_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 3n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_receipts_root_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_receipts_root(o, w), PS.ExecutionPayloadHeader_set_receipts_root_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_receipts_root_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_receipts_root_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_logs_bloom_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, w: O.Words)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 4n, S.BytesValue{WO.wview(w)}) : S.Value}:
@@ -110,6 +310,55 @@ def FuluExecutionPayloadHeader_e2e_set_logs_bloom_root(h: B.Buf, o: FuluExecutio
   %FuluExecutionPayloadHeader_e2e_set_logs_bloom_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w), PS.ExecutionPayloadHeader_set_logs_bloom_rep(o, Spec.ExecutionPayloadHeader(), w, r, rv))
 
+def FuluExecutionPayloadHeader_set_logs_bloom_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(w, 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_logs_bloom_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_logs_bloom_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +rv: WO.rep_bv(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ExecutionPayloadHeader()))))))), +hs35: BL_e.sdk1(w, 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 4n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_logs_bloom_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_logs_bloom(o, w), PS.ExecutionPayloadHeader_set_logs_bloom_rep(o, Spec.ExecutionPayloadHeader(), w, r, rv), FuluExecutionPayloadHeader_set_logs_bloom_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_logs_bloom_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_prev_randao_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 5n, RN.v_b32(w)) : S.Value}:
   match o:
@@ -126,6 +375,55 @@ def FuluExecutionPayloadHeader_e2e_set_prev_randao_root(h: B.Buf, o: FuluExecuti
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 5n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_prev_randao_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w), PS.ExecutionPayloadHeader_set_prev_randao_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_prev_randao_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_prev_randao_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_prev_randao_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 5n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_prev_randao_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_prev_randao(o, w), PS.ExecutionPayloadHeader_set_prev_randao_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_prev_randao_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_prev_randao_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_block_number_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 6n, RN.v_u64(w)) : S.Value}:
@@ -144,6 +442,55 @@ def FuluExecutionPayloadHeader_e2e_set_block_number_root(h: B.Buf, o: FuluExecut
   %FuluExecutionPayloadHeader_e2e_set_block_number_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w), PS.ExecutionPayloadHeader_set_block_number_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_block_number_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_block_number_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_block_number_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 6n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_block_number_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_number(o, w), PS.ExecutionPayloadHeader_set_block_number_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_block_number_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_block_number_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_gas_limit_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 7n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -160,6 +507,55 @@ def FuluExecutionPayloadHeader_e2e_set_gas_limit_root(h: B.Buf, o: FuluExecution
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 7n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_gas_limit_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w), PS.ExecutionPayloadHeader_set_gas_limit_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_gas_limit_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_gas_limit_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_gas_limit_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 7n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_gas_limit_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_limit(o, w), PS.ExecutionPayloadHeader_set_gas_limit_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_gas_limit_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_gas_limit_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_gas_used_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 8n, RN.v_u64(w)) : S.Value}:
@@ -178,6 +574,55 @@ def FuluExecutionPayloadHeader_e2e_set_gas_used_root(h: B.Buf, o: FuluExecutionP
   %FuluExecutionPayloadHeader_e2e_set_gas_used_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w), PS.ExecutionPayloadHeader_set_gas_used_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_gas_used_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_gas_used_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_gas_used_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 8n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_gas_used_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_gas_used(o, w), PS.ExecutionPayloadHeader_set_gas_used_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_gas_used_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_gas_used_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_timestamp_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 9n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -194,6 +639,55 @@ def FuluExecutionPayloadHeader_e2e_set_timestamp_root(h: B.Buf, o: FuluExecution
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 9n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_timestamp_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w), PS.ExecutionPayloadHeader_set_timestamp_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_timestamp_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_timestamp_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_timestamp_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 9n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_timestamp_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_timestamp(o, w), PS.ExecutionPayloadHeader_set_timestamp_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_timestamp_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_timestamp_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_extra_data_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, w: O.Words)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 10n, S.BytesValue{WO.wview(w)}) : S.Value}:
@@ -212,6 +706,55 @@ def FuluExecutionPayloadHeader_e2e_set_extra_data_root(h: B.Buf, o: FuluExecutio
   %FuluExecutionPayloadHeader_e2e_set_extra_data_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w), PS.ExecutionPayloadHeader_set_extra_data_rep(o, Spec.ExecutionPayloadHeader(), w, r, rv))
 
+def FuluExecutionPayloadHeader_set_extra_data_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_extra_data_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(w, 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_extra_data_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, w: O.Words, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +rv: LO.rep_bl(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ExecutionPayloadHeader()))))))))))))), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(w, 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 10n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_extra_data_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_extra_data(o, w), PS.ExecutionPayloadHeader_set_extra_data_rep(o, Spec.ExecutionPayloadHeader(), w, r, rv), FuluExecutionPayloadHeader_set_extra_data_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_extra_data_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_base_fee_per_gas_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: uint256_d.Uint256)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 11n, RN.v_u256(w)) : S.Value}:
   match o:
@@ -228,6 +771,55 @@ def FuluExecutionPayloadHeader_e2e_set_base_fee_per_gas_root(h: B.Buf, o: FuluEx
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 11n, RN.v_u256(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_base_fee_per_gas_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w), PS.ExecutionPayloadHeader_set_base_fee_per_gas_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_base_fee_per_gas_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: uint256_d.Uint256, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_base_fee_per_gas_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: uint256_d.Uint256, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_base_fee_per_gas_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: uint256_d.Uint256, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 11n, RN.v_u256(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_base_fee_per_gas_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_base_fee_per_gas(o, w), PS.ExecutionPayloadHeader_set_base_fee_per_gas_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_base_fee_per_gas_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_base_fee_per_gas_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_block_hash_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 12n, RN.v_b32(w)) : S.Value}:
@@ -246,6 +838,55 @@ def FuluExecutionPayloadHeader_e2e_set_block_hash_root(h: B.Buf, o: FuluExecutio
   %FuluExecutionPayloadHeader_e2e_set_block_hash_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w), PS.ExecutionPayloadHeader_set_block_hash_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_block_hash_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_block_hash_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_block_hash_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 12n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_block_hash_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_block_hash(o, w), PS.ExecutionPayloadHeader_set_block_hash_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_block_hash_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_block_hash_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_transactions_root_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 13n, RN.v_b32(w)) : S.Value}:
   match o:
@@ -262,6 +903,55 @@ def FuluExecutionPayloadHeader_e2e_set_transactions_root_root(h: B.Buf, o: FuluE
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 13n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_transactions_root_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w), PS.ExecutionPayloadHeader_set_transactions_root_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_transactions_root_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_transactions_root_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_transactions_root_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 13n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_transactions_root_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_transactions_root(o, w), PS.ExecutionPayloadHeader_set_transactions_root_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_transactions_root_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_transactions_root_hs10_hs36(o, w, r, hs36))
 
 def FuluExecutionPayloadHeader_e2e_set_withdrawals_root_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 14n, RN.v_b32(w)) : S.Value}:
@@ -280,6 +970,55 @@ def FuluExecutionPayloadHeader_e2e_set_withdrawals_root_root(h: B.Buf, o: FuluEx
   %FuluExecutionPayloadHeader_e2e_set_withdrawals_root_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w), PS.ExecutionPayloadHeader_set_withdrawals_root_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_withdrawals_root_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_withdrawals_root_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_withdrawals_root_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: FuluBytes32_d.Bytes32, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 14n, RN.v_b32(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_withdrawals_root_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_withdrawals_root(o, w), PS.ExecutionPayloadHeader_set_withdrawals_root_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_withdrawals_root_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_withdrawals_root_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_blob_gas_used_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 15n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -297,6 +1036,55 @@ def FuluExecutionPayloadHeader_e2e_set_blob_gas_used_root(h: B.Buf, o: FuluExecu
   %FuluExecutionPayloadHeader_e2e_set_blob_gas_used_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w), PS.ExecutionPayloadHeader_set_blob_gas_used_rep(o, Spec.ExecutionPayloadHeader(), w, r))
 
+def FuluExecutionPayloadHeader_set_blob_gas_used_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_blob_gas_used_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_blob_gas_used_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 15n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_blob_gas_used_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_blob_gas_used(o, w), PS.ExecutionPayloadHeader_set_blob_gas_used_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_blob_gas_used_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_blob_gas_used_hs10_hs36(o, w, r, hs36))
+
 def FuluExecutionPayloadHeader_e2e_set_excess_blob_gas_view(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64)
     -> {RT_L.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w)) == VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 16n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -313,3 +1101,52 @@ def FuluExecutionPayloadHeader_e2e_set_excess_blob_gas_root(h: B.Buf, o: FuluExe
     -> {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 16n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionPayloadHeader_e2e_set_excess_blob_gas_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, D.Digest, Pair.snd(B.Buf, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest, FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w)))))} == API.hash_tree_root(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionPayloadHeader_e2e_root(h, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w), PS.ExecutionPayloadHeader_set_excess_blob_gas_rep(o, Spec.ExecutionPayloadHeader(), w, r))
+
+def FuluExecutionPayloadHeader_set_excess_blob_gas_hs4_hs35(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n))
+    -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_set_excess_blob_gas_hs10_hs36(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, -w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +h: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w)), 31n):
+  (+x0, e0) = r
+  (+x1, e1) = e0
+  (+x2, e2) = e1
+  (+x3, e3) = e2
+  (+x5, e4) = e3
+  (+x6, e5) = e4
+  (+x7, e6) = e5
+  (+x8, e7) = e6
+  (+x9, e8) = e7
+  (+x11, e9) = e8
+  (+x12, e10) = e9
+  (+x13, e11) = e10
+  (+x14, e12) = e11
+  (+x15, e13) = e12
+  (+x16, e14) = e13
+  (+eo, c0) = e14
+  (+q4, +q10) = c0
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT_L.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT_L.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(_, w)), 31n)
+  h
+
+def FuluExecutionPayloadHeader_e2e_set_excess_blob_gas_encode(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +w: O.U64, +r: RT_L.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()), +hs35: BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(o), 31n), +hs36: BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), VS.field_set(RT_L.v_ExecutionPayloadHeader(o), 16n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionPayloadHeader_e2e_set_excess_blob_gas_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, B.Buf, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w))))} == API.serialize(Spec.ExecutionPayloadHeader(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionPayloadHeader_e2e_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_set_excess_blob_gas(o, w), PS.ExecutionPayloadHeader_set_excess_blob_gas_rep(o, Spec.ExecutionPayloadHeader(), w, r), FuluExecutionPayloadHeader_set_excess_blob_gas_hs4_hs35(o, w, r, hs35), FuluExecutionPayloadHeader_set_excess_blob_gas_hs10_hs36(o, w, r, hs36))

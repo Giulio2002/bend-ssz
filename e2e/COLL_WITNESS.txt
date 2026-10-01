@@ -45,54 +45,54 @@ v7_b32	10 witnessed
 v8192_b32	9 witnessed
   pending v8192_b32_api_root_set: the object holds 8192 elements: its premises compare Nat numbers of that size in unary (the length 8192, e32 of 8191, pow2 of 16), deeper than the rigid checker's stack; the vectors up to 512 elements are witnessed
 v8192_u64	9 witnessed
-BitsStruct (setters)	5 witnessed
+BitsStruct (setters)	10 witnessed
 ComplexTestStruct (setters)	0 witnessed
   pending ComplexTestStruct: e2e_witness: nonempty default list vec_VarTestStruct_2_d.v2_VarTestStruct_default
 FixedTestStruct (setters)	7 witnessed
   pending FixedTestStruct_e2e_set_f_A_rejected: a guard statement over a raw object, not a composition
-FuluAggregateAndProof (setters)	3 witnessed
+FuluAggregateAndProof (setters)	6 witnessed
 FuluAttestationData (setters)	0 witnessed
-FuluAttestation (setters)	4 witnessed
-FuluAttesterSlashing (setters)	2 witnessed
+FuluAttestation (setters)	8 witnessed
+FuluAttesterSlashing (setters)	4 witnessed
 FuluBLSToExecutionChange (setters)	0 witnessed
 FuluBeaconBlockBody (setters)	13 witnessed
 FuluBeaconBlockHeader (setters)	0 witnessed
 FuluBeaconBlock (setters)	5 witnessed
 FuluBeaconState (setters)	38 witnessed
 FuluBlobIdentifier (setters)	0 witnessed
-FuluBlobSidecar (setters)	6 witnessed
+FuluBlobSidecar (setters)	12 witnessed
 FuluCheckpoint (setters)	0 witnessed
 FuluConsolidationRequest (setters)	0 witnessed
 FuluContributionAndProof (setters)	6 witnessed
-FuluDataColumnSidecar (setters)	6 witnessed
-FuluDataColumnsByRootIdentifier (setters)	2 witnessed
+FuluDataColumnSidecar (setters)	12 witnessed
+FuluDataColumnsByRootIdentifier (setters)	4 witnessed
 FuluDepositData (setters)	0 witnessed
 FuluDepositMessage (setters)	0 witnessed
 FuluDepositRequest (setters)	0 witnessed
-FuluDeposit (setters)	2 witnessed
+FuluDeposit (setters)	4 witnessed
 FuluEth1Block (setters)	0 witnessed
 FuluEth1Data (setters)	0 witnessed
-FuluExecutionPayloadHeader (setters)	17 witnessed
+FuluExecutionPayloadHeader (setters)	34 witnessed
 FuluExecutionPayload (setters)	17 witnessed
-FuluExecutionRequests (setters)	3 witnessed
+FuluExecutionRequests (setters)	6 witnessed
 FuluForkData (setters)	0 witnessed
 FuluFork (setters)	0 witnessed
-FuluHistoricalBatch (setters)	2 witnessed
+FuluHistoricalBatch (setters)	4 witnessed
 FuluHistoricalSummary (setters)	0 witnessed
-FuluIndexedAttestation (setters)	3 witnessed
-FuluLightClientBootstrap (setters)	3 witnessed
-FuluLightClientFinalityUpdate (setters)	5 witnessed
-FuluLightClientHeader (setters)	3 witnessed
-FuluLightClientOptimisticUpdate (setters)	3 witnessed
-FuluLightClientUpdate (setters)	7 witnessed
-FuluMatrixEntry (setters)	4 witnessed
-FuluPendingAttestation (setters)	4 witnessed
+FuluIndexedAttestation (setters)	6 witnessed
+FuluLightClientBootstrap (setters)	6 witnessed
+FuluLightClientFinalityUpdate (setters)	10 witnessed
+FuluLightClientHeader (setters)	6 witnessed
+FuluLightClientOptimisticUpdate (setters)	6 witnessed
+FuluLightClientUpdate (setters)	14 witnessed
+FuluMatrixEntry (setters)	8 witnessed
+FuluPendingAttestation (setters)	8 witnessed
 FuluPendingConsolidation (setters)	0 witnessed
 FuluPendingDeposit (setters)	0 witnessed
 FuluPendingPartialWithdrawal (setters)	0 witnessed
 FuluPowBlock (setters)	0 witnessed
 FuluProposerSlashing (setters)	4 witnessed
-FuluSignedAggregateAndProof (setters)	2 witnessed
+FuluSignedAggregateAndProof (setters)	4 witnessed
 FuluSignedBLSToExecutionChange (setters)	0 witnessed
 FuluSignedBeaconBlockHeader (setters)	0 witnessed
 FuluSignedBeaconBlock (setters)	2 witnessed
@@ -104,7 +104,7 @@ FuluSyncAggregate (setters)	0 witnessed
 FuluSyncAggregatorSelectionData (setters)	0 witnessed
 FuluSyncCommitteeContribution (setters)	0 witnessed
 FuluSyncCommitteeMessage (setters)	0 witnessed
-FuluSyncCommittee (setters)	2 witnessed
+FuluSyncCommittee (setters)	4 witnessed
 FuluValidator (setters)	0 witnessed
 FuluVoluntaryExit (setters)	0 witnessed
 FuluWithdrawalRequest (setters)	0 witnessed
@@ -123,6 +123,6 @@ SingleFieldTestStruct (setters)	3 witnessed
 SmallTestStruct (setters)	6 witnessed
   pending SmallTestStruct_e2e_set_f_A_rejected: a guard statement over a raw object, not a composition
   pending SmallTestStruct_e2e_set_f_B_rejected: a guard statement over a raw object, not a composition
-VarTestStruct (setters)	5 witnessed
+VarTestStruct (setters)	6 witnessed
   pending VarTestStruct_e2e_set_f_A_rejected: a guard statement over a raw object, not a composition
   pending VarTestStruct_e2e_set_f_C_rejected: a guard statement over a raw object, not a composition

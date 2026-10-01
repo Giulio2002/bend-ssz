@@ -109,7 +109,8 @@ def setter_laws():
             assert mm, concl
             names = [b[1] for b in binders]
             assert names[:4] == ['o', 's', 'v', 'r'] and names[4:] in ([], ['rv']), (x, f, names)
-            d.setdefault(x, {})[f] = (binders, mm.group(2), li[mm.group(1)])
+            bm = re.search(r'^def %s_set_%s_rep\(.*\):\n((?:  .*\n)+)' % (re.escape(x), re.escape(f)), lf.read_text()[m.end():], re.M)
+            d.setdefault(x, {})[f] = (binders, mm.group(2), li[mm.group(1)], bm.group(1).rstrip('\n').split('\n') if bm else None)
         out.append((lf, d))
     return out
 
@@ -187,6 +188,19 @@ def fields_of(deftext, x):
     return out
 
 
+def field_types(deftext, x):
+    """[(field name, type text)] of the record type x in order, the group records (x_g<k>) expanded"""
+    m = re.search(r'^type %s is \w+:\n  %s\{(.*)\}$' % (x, x), deftext, re.M)
+    out = []
+    for fd in split_params(m.group(1)):
+        n, t = [a.strip() for a in fd.split(':', 1)]
+        if re.fullmatch(r'%s_g\d+' % x, t):
+            out += field_types(deftext, t)
+        else:
+            out.append((n, t))
+    return out
+
+
 def containers():
     """[(name, type, def file)]: the names whose def file has field setters for its own record type"""
     out = []
@@ -227,6 +241,22 @@ def rename(text, ren):
 def rel(p):
     r = os.path.relpath(ROOT / p, E2E)
     return r if r.startswith('.') else './' + r
+
+
+def translate_premises(ps, x, k):
+    """the encode bridge's storage premises (+hs..: P(o)): [(name, template with ZZZ for the projection, m, the projection text)], or None
+    when a premise is not about exactly one projection A.pj_<x>_<m>(o) of o"""
+    out = []
+    for p in ps:
+        mm = re.match(r'([+-]?)(\w+): (.*)$', p, re.S)
+        mode, name, t = mm.groups()
+        pjs = re.findall(r'(?<![\w.])\w+\.pj_%s_(\d+)\(o\)' % re.escape(x), t)
+        if not pjs or len(VAR_O.findall(t)) != len(pjs) or len(set(pjs)) != 1:
+            return None
+        m = int(pjs[0])
+        pj = re.search(r'(?<![\w.])\w+\.pj_%s_%d\(o\)' % (re.escape(x), m), t).group(0)
+        out.append((name, t.replace(pj, 'ZZZ'), m, pj))
+    return out
 
 
 def build(n, x, deff, laws, man):
@@ -374,14 +404,14 @@ def build(n, x, deff, laws, man):
             if pn in (['h', 'o'], ['o']) and not checked:
                 extra, rargs = [], ''
             elif pn in (['h', 'o', 'rep'], ['o', 'rep']) and law and not checked:
-                binders, lsetx, _ = law
+                binders, lsetx, _, _b = law
                 extra = []
                 for mode, b, t in binders[3:]:
                     extra.append('%s%s: %s' % (mode, b, re.sub(r'(?<![\w.])v(?![\w.])', 'w', rename(VAR_S.sub(spec, t), lren))))
                 largs = ', '.join(spec if b[1] == 's' else ('w' if b[1] == 'v' else b[1]) for b in binders)
                 rargs = ', PS.%s_set_%s_rep(%s)' % (x, f, largs)
             elif pn in (['h', 'o', 'rep'], ['o', 'rep']) and checked and lw.get(f + '_go'):
-                binders, lsetx, _ = lw[f + '_go']
+                binders, lsetx, _, _b = lw[f + '_go']
                 hyps = [(b, re.sub(r'(?<![\w.])v(?![\w.])', 'w', rename(VAR_S.sub(spec, t), lren))) for mode, b, t in binders[3:]]
                 extra = ['+hg: {%s == True{} : Bool}' % checked] + ['+%s: %s' % h for h in hyps]
                 rname = '%s_set_%s_rep' % (n, f)
@@ -403,6 +433,32 @@ def build(n, x, deff, laws, man):
                 else:
                     extra = ['+rp: %s' % rpt]
                     rargs = ', %s(o, w, rp)' % rpl
+            elif kind == 'encode' and pn[:2] == ['o', 'rep'] and len(pn) > 2 and law and not checked and translate_premises(ps[2:], x, k) is not None:
+                binders, lsetx, _, _b = law
+                extra = []
+                for mode, b, t in binders[3:]:
+                    extra.append('%s%s: %s' % (mode, b, re.sub(r'(?<![\w.])v(?![\w.])', 'w', rename(VAR_S.sub(spec, t), lren))))
+                largs = ', '.join(spec if b[1] == 's' else ('w' if b[1] == 'v' else b[1]) for b in binders)
+                rargs = ', PS.%s_set_%s_rep(%s)' % (x, f, largs)
+                tp = translate_premises(ps[2:], x, k)
+                _bd = law[3]
+                ei = [q for q, l_ in enumerate(_bd) if re.match(r'\s*%Equal\.sym\(\S+, o, .*, eo\) :', l_)][0]
+                ctor = re.match(r'\s*%Equal\.sym\((\S+), o, (.*), eo\) :', _bd[ei])
+                pre_lines = [re.sub(r'^\s*', '  ', l_) for l_ in _bd[:ei]]
+                reps = rename(VAR_S.sub(spec, law[0][3][2]), lren)
+                for pname, tmpl, pm, pj_old in tp:
+                    # the premise: of the new value w for the touched field, of the old projection for another; moved to the new object: the
+                    # setter law's own equation of o with its constructor (from the rep) makes the projection of the new object that of the old
+                    src = 'w' if pm == k else pj_old
+                    pj_new = pj_old.replace('(o)', '(%s)' % obj_after)
+                    pj_pat = pj_old.replace('(o)', '(%s)' % obj_after.replace('(o, w)', '(_, w)'))
+                    cv = '%s_set_%s_hs%d_%s' % (n, f, pm, pname)
+                    defs.append('def %s(-o: %s, -w: %s, +r: %s, +h: %s)\n    -> %s:\n%s\n  %%Equal.sym(%s, o, %s, eo) : %s\n  h' % (
+                        cv, otype, wt, reps, tmpl.replace('ZZZ', src), tmpl.replace('ZZZ', pj_new), '\n'.join(
+                            [re.sub(r'\(\+(\w+), (\w+)\) = r\b', lambda m_: '(+%s, %s) = r' % (m_.group(1), m_.group(2)), l_) for l_ in pre_lines]),
+                        rename(ctor.group(1), lren), rename(ctor.group(2), lren), tmpl.replace('ZZZ', pj_pat)))
+                    extra.append('+%s: %s' % (pname, tmpl.replace('ZZZ', src)))
+                    rargs += ', %s(o, w, r, %s)' % (cv, pname)
             else:
                 continue
             lhs, rhs = cc[1:-1].split(' == API.', 1)

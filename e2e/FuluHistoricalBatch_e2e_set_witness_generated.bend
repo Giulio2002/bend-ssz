@@ -1,5 +1,7 @@
 import Base
 import ./FuluHistoricalBatch_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ./e2e_wit.bend as WT
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -12,6 +14,7 @@ import ../src/digest.bend as D
 import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
+import ../types/FuluHistoricalBatch_encode_ssz_generated.bend as FuluHistoricalBatch_e
 import ../types/FuluHistoricalBatch_hashtreeroot_generated.bend as FuluHistoricalBatch_h
 import ../types/Fulu_vec_bytevec_32_8192_def_generated.bend as Fulu_vec_bytevec_32_8192_d
 
@@ -47,8 +50,23 @@ def FuluHistoricalBatch_e2e_set_block_roots_root_rv() -> PV.rep_pv(Fulu_vec_byte
 def FuluHistoricalBatch_e2e_set_block_roots_root_witness() -> {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(B.alloc(0), FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default())))))} == API.hash_tree_root(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_default()), 0n, PV.pview(Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluHistoricalBatch_e2e_set_block_roots_root(B.alloc(0), FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), FuluHistoricalBatch_e2e_set_block_roots_root_r(), FuluHistoricalBatch_e2e_set_block_roots_root_rv())
 
+def FuluHistoricalBatch_e2e_set_block_roots_encode_hc0() -> {E3.at_depth(Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), 17n) == True{} : Bool}:
+  {==}
+
+def FuluHistoricalBatch_e2e_set_block_roots_encode_hc1() -> {E3.at_depth(M0_L.pj_HistoricalBatch_1(FuluHistoricalBatch_d.HistoricalBatch_default()), 17n) == True{} : Bool}:
+  {==}
+
+def FuluHistoricalBatch_e2e_set_block_roots_encode_witness() -> {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))))} == API.serialize(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_default()), 0n, PV.pview(Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluHistoricalBatch_e2e_set_block_roots_encode(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), FuluHistoricalBatch_e2e_set_block_roots_root_r(), FuluHistoricalBatch_e2e_set_block_roots_root_rv(), FuluHistoricalBatch_e2e_set_block_roots_encode_hc0(), FuluHistoricalBatch_e2e_set_block_roots_encode_hc1())
+
 def FuluHistoricalBatch_e2e_set_state_roots_root_rv() -> PV.rep_pv(Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.HistoricalBatch())))):
   big4()
 
 def FuluHistoricalBatch_e2e_set_state_roots_root_witness() -> {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(B.alloc(0), FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default())))))} == API.hash_tree_root(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_default()), 1n, PV.pview(Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluHistoricalBatch_e2e_set_state_roots_root(B.alloc(0), FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), FuluHistoricalBatch_e2e_set_block_roots_root_r(), FuluHistoricalBatch_e2e_set_state_roots_root_rv())
+
+def FuluHistoricalBatch_e2e_set_state_roots_encode_hc0() -> {E3.at_depth(M0_L.pj_HistoricalBatch_0(FuluHistoricalBatch_d.HistoricalBatch_default()), 17n) == True{} : Bool}:
+  {==}
+
+def FuluHistoricalBatch_e2e_set_state_roots_encode_witness() -> {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))))} == API.serialize(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_default()), 1n, PV.pview(Fulu_vec_bytevec_32_8192_d.v8192_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluHistoricalBatch_e2e_set_state_roots_encode(FuluHistoricalBatch_d.HistoricalBatch_default(), Fulu_vec_bytevec_32_8192_d.v8192_b32_default(), FuluHistoricalBatch_e2e_set_block_roots_root_r(), FuluHistoricalBatch_e2e_set_state_roots_root_rv(), FuluHistoricalBatch_e2e_set_state_roots_encode_hc0(), FuluHistoricalBatch_e2e_set_block_roots_encode_hc0())
