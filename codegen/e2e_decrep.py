@@ -636,6 +636,7 @@ def body_ctx(al, B):
     T4 = f'{Bx}, {Bo}, {Bn}'
     COM = f"d, t, {Bn}, {Bx}, {Bo}, {Bn}, {B['eo']}, {B['hd31']}, {B['hw']}, {B['hwN']}, {B['pf']}, {B['hchk']}"
     hc = lambda j: f"{WB}.itD{j}(t, {Bx}, {Bo}, {Bn}, {B['hchk']})"
+    cwf = lambda j: f"{WB}.eoJ{j}D({COM}), {B['hd31']}, {WB}.hwJ{j}D({COM}), {WB}.hwJ{j}_32({COM}), {B['pf']}"   # a child window's facts (the attestation lists' libraries take them)
     A = dict(d='d', t='t', x=f'{WB}.XJ5(t, {Bx})', off=f'{WB}.FJ5({Bo}, t, {Bx})', n=f'{WB}.LJ5(t, {Bx})', pf=B['pf'], hd31=B['hd31'],
              eo=f'{WB}.eoJ5D({COM})', hw=f'{WB}.hwJ5D({COM})', hwN=f'{WB}.hwJ5N({COM})', hchk=hc(5),
              hSN=f"{DBB}.pay_hSN(t, {Bx}, {Bo}, {Bn}, {B['hS']}, {B['hchk']})")
@@ -660,7 +661,8 @@ def body_ctx(al, B):
         if fname in names:
             j = names[fname]
             L = al(BODY_ST[j])
-            return RLDec(e, lambda k: f'{L}.sdl({a}, {hc(j)})', lambda sc: f'{L}.rep({a}, {sc}, {{==}}, {{==}}, {hc(j)})')
+            wf = (cwf(j) + ', ') if j in (1, 2) else ''
+            return RLDec(e, lambda k: f'{L}.sdl({a}, {wf}{hc(j)})', lambda sc: f'{L}.rep({a}, {wf}{sc}, {{==}}, {{==}}, {hc(j)})')
         if fname in ('var_winx_l16_SignedVoluntaryExit.bend', 'var_winx_l16_SignedBLSToExecutionChange.bend'):
             j = 4 if 'Voluntary' in fname else 6
             L = al(BODY_DR[j])
@@ -681,14 +683,14 @@ def body_ctx(al, B):
     # the size premise: the nine window lengths against the lists' libraries (e2e_dbl_* / e2e_dvl_* szl, e2e_drq, e2e_dep.szr)
     DRQ, DTX, WP = al('e2e/e2e_drq.bend'), al('e2e/e2e_dtx.bend'), al('proofs/obj/var_winx_ExecutionPayload.bend')
     L = {j: al(BODY_ST[j]) for j in BODY_ST}
-    w = lambda j: f'd, t, {WB}.XJ{j}(t, {Bx}), {WB}.FJ{j}({Bo}, t, {Bx}), {WB}.LJ{j}(t, {Bx}), {hc(j)}'
+    w = lambda j: f'd, t, {WB}.XJ{j}(t, {Bx}), {WB}.FJ{j}({Bo}, t, {Bx}), {WB}.LJ{j}(t, {Bx}), ' + ((cwf(j) + ', ') if j in (1, 2) else '') + hc(j)
     T5 = f'{WB}.XJ5(t, {Bx}), {WB}.FJ5({Bo}, t, {Bx}), {WB}.LJ5(t, {Bx})'
-    hwn1 = (f"{WP}.hwc1N(d, t, {WB}.LJ5(t, {Bx}), {T5}, {WB}.LJ5(t, {Bx}), {WB}.eoJ5D({COM}), {B['hd31']}, {WB}.hwJ5D({COM}), {WB}.hwJ5N({COM}), {B['pf']}, "
+    hwn1 = (f"{WP}.hwc1N(d, t, {WB}.LJ5(t, {Bx}), {T5}, {WB}.eoJ5D({COM}), {B['hd31']}, {WB}.hwJ5D({COM}), {WB}.hwJ5N({COM}), {B['pf']}, "
             f"{DEP}.cc2(t, {WB}.XJ5(t, {Bx}), {WB}.FJ5({Bo}, t, {Bx}), {WB}.LJ5(t, {Bx}), {hc(5)}))")
     etx = (f'{DTX}.txl(d, t, {WP}.X1(t, {WB}.XJ5(t, {Bx})), {WP}.F1({WB}.FJ5({Bo}, t, {Bx}), t, {WB}.XJ5(t, {Bx})), {WP}.L1(t, {WB}.XJ5(t, {Bx})), {hwn1}, '
            f'{DEP}.ce1(t, {WB}.XJ5(t, {Bx}), {WB}.FJ5({Bo}, t, {Bx}), {WB}.LJ5(t, {Bx}), {hc(5)}))')
-    szeq = (f'{L[0]}.szl({w(0)}), {L[1]}.szl({w(1)}), {L[2]}.szl({w(2)}), {L[3]}.szl({w(3)}), {DRQ}.eq_VE({w(4)}), {DEP}.szr(d, t, {T5}, {etx}, {hc(5)}), '
-            f'{DRQ}.eq_BC({w(6)}), {{==}}, {DRQ}.rq(d, t, {X8}, {F8}, {L8}, {hc(8)})')
+    szeq = (f'{L[0]}.szl({w(0)}), {L[1]}.szl({w(1)}), {L[2]}.szl({w(2)}), {L[3]}.szl({w(3)}), {DRQ}.eq_l16_SignedVoluntaryExit({w(4)}), {DEP}.szr(d, t, {T5}, {etx}, {hc(5)}), '
+            f'{DRQ}.eq_l16_SignedBLSToExecutionChange({w(6)}), {{==}}, {DRQ}.rq(d, t, {X8}, {F8}, {L8}, {hc(8)})')
     return dict(lets=out, words=words, rlchk=rlchk, xleaf=xleaf, hs9=hs9, hv11=hv11, szeq=szeq)
 
 
