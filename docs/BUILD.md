@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->eb0ae858<!-- /fig -->):
-<!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->6,227<!-- /fig --> files,
-<!-- fig:check_cpu -->3,762<!-- /fig --> CPU seconds, <!-- fig:check_wall -->7.8<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->385<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->f4661854<!-- /fig -->):
+<!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->6,240<!-- /fig --> files,
+<!-- fig:check_cpu -->4,481<!-- /fig --> CPU seconds, <!-- fig:check_wall -->9.1<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->491<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
