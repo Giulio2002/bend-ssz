@@ -76,6 +76,15 @@ def locks(lock=LOCK):
             for k, f in (('toolchain_lock_sha256', lock), ('frozen_lock_sha256', 'frozen.lock.json'))}
 
 
+def fixtures_record(d):
+    """tools/check_fast.sh --tarballs DIR runs tools/verify_fixtures.py --tarballs DIR --record DIR/fixtures.json; the stamp
+    says whether the fixtures were checked against the pinned release tarballs in this run, and which tarballs"""
+    f = os.path.join(d, 'fixtures.json')
+    if os.path.exists(f):
+        return json.load(open(f))
+    return {'fixtures_tarballs_verified': False}
+
+
 def write(d, out):
     plan_path = os.path.join(d, 'umb', 'plan.tsv')
     plan = [line.rstrip('\n').split('\t') for line in open(plan_path) if line.strip()]
@@ -115,6 +124,7 @@ def write(d, out):
                      'cpu_seconds': round(sum(r['seconds'] or 0 for r in rows), 1),
                      'slowest_umbrella_seconds': max([r['seconds'] or 0 for r in rows] or [0]),
                      'wall_seconds': int(os.environ['CHECK_FAST_WALL']) if os.environ.get('CHECK_FAST_WALL') else None},
+          **fixtures_record(d),
           'missing': missing, 'duplicate_rows': dup, 'unplanned_rows': extra, 'umbrellas': rows,
           'verdict': ('all files check' if scope == 'all' else 'listed files check') if ok else 'FAILED'}
     with open(out, 'w') as h:

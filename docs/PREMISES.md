@@ -30,7 +30,41 @@ the decoded object's view (its spec value), not its representation.
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/e2e_compose.py`), for
-<!-- fig:composed -->214<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status.
+<!-- fig:composed -->214<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
+<!-- fig:pending_count -->26<!-- /fig --> names without one, with the reason `codegen/e2e_compose.py` records for each (generated from
+`e2e/COMPOSED.txt`, so it cannot drift from it): the decode-side bridges (i)/(iv) of those names take the listed premises
+on the decoded object, which no checked law yet derives from the decoder, or (for a tree-form decoder) the decoder's object
+is not one this module reads.
+<!-- fig:pending_table -->
+| Name | Why there is no composed theorem |
+|---|---|
+| `BitsStruct` | the (i)/(iv) bridges take hs0, hs3, rep (decoded-object laws pending) |
+| `CompatibleUnionA` | the (i)/(iv) bridges take rep (decoded-object laws pending) |
+| `CompatibleUnionABCA` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `CompatibleUnionBC` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `ComplexTestStruct` | the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending) |
+| `FuluBeaconBlock` | the (i)/(iv) bridges take hZ, ha124, hb124, hc124, hs104, hs114, hs34, hs44, hs54, hs64, hs74, hs94, hv114, rep (decoded-object laws pending) |
+| `FuluBeaconBlockBody` | the (i)/(iv) bridges take hZ, ha12, hb12, hc12, hs10, hs11, hs3, hs4, hs5, hs6, hs7, hs9, hv11, rep (decoded-object laws pending) |
+| `FuluBlobSidecar` | a tree-form decoder object this module does not read |
+| `FuluCurrentSyncCommitteeBranch` | the (i)/(iv) bridges take cap, dw, hd, pf, t (decoded-object laws pending) |
+| `FuluDataColumnSidecar` | the (i)/(iv) bridges take hd0, hd1, hd2, hsP, hv0, hv1, hv2, rep (decoded-object laws pending) |
+| `FuluExecutionBranch` | the (i)/(iv) bridges take cap, dw, hd, pf, t (decoded-object laws pending) |
+| `FuluExecutionPayload` | the (i)/(iv) bridges take hB, hL, hT, hW, hZ, rep (decoded-object laws pending) |
+| `FuluFinalityBranch` | the (i)/(iv) bridges take cap, dw, hd, pf, t (decoded-object laws pending) |
+| `FuluHistoricalBatch` | a tree-form decoder object this module does not read |
+| `FuluLightClientFinalityUpdate` | the (i)/(iv) bridges take hA, hB, hF, rep (decoded-object laws pending) |
+| `FuluLightClientUpdate` | the (i)/(iv) bridges take h1, h2, h4, hA, hF, rep (decoded-object laws pending) |
+| `FuluNextSyncCommitteeBranch` | the (i)/(iv) bridges take cap, dw, hd, pf, t (decoded-object laws pending) |
+| `FuluSignedBeaconBlock` | the (i)/(iv) bridges take hZ, ha1240, hb1240, hc1240, hs1040, hs1140, hs340, hs440, hs540, hs640, hs740, hs940, hv1140, rep (decoded-object laws pending) |
+| `FuluSyncCommittee` | a tree-form decoder object this module does not read |
+| `ProgressiveBitsStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `ProgressiveComplexTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `ProgressiveSingleListContainerTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `ProgressiveTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `ProgressiveVarTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `VarTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
+| `progbitlist` | the (i)/(iv) bridges take hK, hs, rep (decoded-object laws pending) |
+<!-- /fig -->
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
 satisfies `rep_X` or the storage premises, except `decoded_hv` (the bit-list word invariant,
@@ -101,7 +135,10 @@ validity.
 **The lock.** `tools/verify_frozen.py` hashes the validity predicates the serializer statements name (`X_valid`
 and the helpers it is built from, in `types/*_encode_ssz_generated.bend`, which otherwise count as the implementation under
 test), so a weakened or strengthened `valid` changes the lock; the serializer `X_serialize` itself is proved, not
-hashed. Its self-test plants a change to `Checkpoint_valid` and `u8_valid` (must trip) and to `uint8_serialize` (must not).
+hashed. The helpers are every def of an encode file named `X_valid`, `X_va<n>` or `X_va_<word>` (`_va_back`, `_va_cap`,
+`_va_one`, `_va_go`, `_va_fin`, `_va_nz`). Its self-test plants a change to `Checkpoint_valid` and `u8_valid` (must trip) and to
+`uint8_serialize` (must not), plants a change in each helper kind reached from a predicate (must trip), and fails if any def of an
+encode file named like a helper is not premise-side, so a future list-bearing serializer statement cannot leave one unlocked.
 
 ## Premises per name
 
@@ -316,6 +353,16 @@ table above. They are dropped when the encode laws take dw < 32.
   can exceed them); ProgressiveBitsStruct's 1281-bit vector premise; and the `unit_ok` premises of
   FuluDataColumnSidecar and of the block body's commitments (each list a whole number of elements),
   object API validity not yet proved of decoded objects (section 1).
+
+### Laws that wait for the checker port
+
+The read-back laws of the <!-- fig:rigid_count -->17<!-- /fig --> collections stored as an array of elements (Data elements, or boxed
+Type-kind containers) need `proofs/obj/tarray.bend`, which only the rigid checker of the Bend port accepts. They are not in this
+tree's gate: they live in `proofs/obj/coll_seq.bend` and `tarray.bend` on the out-of-tree branch `agent/solid3-rigid`, and
+`codegen/coll_laws.py` emits them only where `tarray.bend` exists. Until the port lands, the statements `read_set`, `read_append`
+(and, for the boxed lists, `other_set`) of these collections are not checked here, and nothing in this repository's "checks"
+claim covers them (the `_api_set_length` and `_api_append_length` laws of the same collections are in `coll_api_*.bend`). The
+collections: <!-- fig:rigid_collections -->`l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l2048_Eth1Data`, `l1099511627776_Validator`, `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`, `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`, `l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`<!-- /fig -->.
 
 ## 7. Word-storage bridges
 

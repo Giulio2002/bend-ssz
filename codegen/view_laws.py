@@ -131,6 +131,96 @@ FAMILIES = {
 }
 
 
+def gaps(w, BASE, KN):
+    w('''def gap_before(+i: Nat, +J: Nat, +h: {Nat.is_lt(i, J) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), %s) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, %s) == True{} : Bool}, %s, Nat.add(%s, %s), Equal.sym(Nat, Nat.add(%s, %s), %s, blk(i)),
+    mono(1n+i, J, F.nat__lt_succ_le_succ(i, J, h)))
+
+# the word m of block i is past the run of block J, when J is before i
+def gap_after(+i: Nat, +J: Nat, +m: Nat, +h: {Nat.is_lt(J, i) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), Nat.add(%s, m)) == True{} : Bool}:
+  F.nat__le_trans(Nat.add(%s, %s), %s, Nat.add(%s, m), gap_before(J, i, h), F.nat__le_add_right(%s, m))
+
+def ne_lt(+a: Nat, +b: Nat, +h: {Nat.is_lt(a, b) == True{} : Bool}) -> {Nat.is_eq(b, a) == False{} : Bool}:
+  WR.neq_sym(a, b, F.nat__is_eq_lt(a, b, h))
+
+def lt_add_succ(+a: Nat, +p: Nat) -> {Nat.is_lt(a, Nat.add(a, 1n+p)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(a, z) == True{} : Bool}, 1n+Nat.add(a, p), Nat.add(a, 1n+p), Equal.sym(Nat, Nat.add(a, 1n+p), 1n+Nat.add(a, p), F.nat__add_succ(a, p)),
+    F.nat__le_lt_succ(a, Nat.add(a, p), F.nat__le_add_right(a, p)))
+''' % (BASE('i'), KN, BASE('J'),
+       BASE('J'), BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'),
+       BASE('J'), KN, BASE('i'),
+       BASE('J'), KN, BASE('i'), BASE('i'), BASE('i')))
+    w('''# the block of item i (below the count c) is inside storage of c blocks
+def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}, +h: {Nat.is_le(%s, P) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, %s, Nat.add(%s, %s), Equal.sym(Nat, Nat.add(%s, %s), %s, blk(i)),
+    F.nat__le_trans(%s, %s, P, mono(1n+i, c, F.nat__lt_succ_le_succ(i, c, hlt)), h))
+''' % (BASE('c'), BASE('i'), KN, BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'), BASE('1n+i'), BASE('c')))
+
+
+def items_region(w, sub, BASE, ITEMS, EL, XS, XA, MKX, Q, W1, W2):
+    w(sub('''# ---- the items ----
+# from block i0 on, all after block J: the same items
+def items_same(+k: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +i0: Nat, +J: Nat, +hlt: {Nat.is_lt(J, i0) == True{} : Bool}, @HB@, @PF@)
+    -> {%s == %s : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %%Equal.sym(S.Value, %s, %s, el_same(d, t, @XA@, i0, J, ne_lt(J, i0, hlt), @EA@)) :
+        {S.Items{_, %s} == S.Items{%s, %s} : S.Value}
+      %%Equal.sym(S.Value, %s, %s, items_same(q, d, t, @XA@, 1n+i0, J, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)), @RA@)) :
+        {S.Items{%s, _} == S.Items{%s, %s} : S.Value}
+      {==}
+''' % (ITEMS('k', W2, 'i0'), ITEMS('k', W1, 'i0'),
+       EL(W2, 'i0'), EL(W1, 'i0'), ITEMS('q', W2, '1n+i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'),
+       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), EL(W1, 'i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'))))
+    w(sub('''# the run written at block J = i0 + r: the items are the old items with item r replaced
+def items_set(+k: Nat, +r: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +i0: Nat, +J: Nat, +hJ: {J == Nat.add(i0, r) : Nat}, @HB@, @PF@)
+    -> {%s == VS.items_set(%s, r, @MKX@) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %%Equal.sym(S.Value, %s, @MKX@, F.logic__subst(Nat, z => {%s == @MKX@ : S.Value}, J, i0, eJ, el_hit(d, t, @XA@, J, hb, pf))) :
+        {S.Items{_, %s} == S.Items{@MKX@, %s} : S.Value}
+      %%Equal.sym(S.Value, %s, %s, items_same(q, d, t, @XA@, 1n+i0, J, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)), @RA@)) :
+        {S.Items{@MKX@, _} == S.Items{@MKX@, %s} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %%Equal.sym(S.Value, %s, %s, el_same(d, t, @XA@, i0, J, F.nat__is_eq_lt(i0, J, hlt), @EA@)) :
+        {S.Items{_, %s} == S.Items{%s, VS.items_set(%s, p, @MKX@)} : S.Value}
+      %%Equal.sym(S.Value, %s, VS.items_set(%s, p, @MKX@), items_set(q, p, d, t, @XA@, 1n+i0, J, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), @RA@)) :
+        {S.Items{%s, _} == S.Items{%s, VS.items_set(%s, p, @MKX@)} : S.Value}
+      {==}
+''' % (ITEMS('k', W2, 'i0'), ITEMS('k', W1, 'i0'),
+       EL(W2, 'i0'), EL(W2, 'z'), ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'),
+       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), ITEMS('q', W1, '1n+i0'),
+       EL(W2, 'i0'), EL(W1, 'i0'), ITEMS('q', W2, '1n+i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'),
+       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), EL(W1, 'i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'))))
+    TQ = 'WW.tk(%s, d, t, q, 0n)' % XS
+    w(sub('''# the view of the storage after the run is written at word q = %s: the view before, with item J replaced.
+# `c` is the element count the view reads.
+def view_set(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +J: Nat, +q: Nat, +hq: {q == %s : Nat},
+    +hb: {Nat.is_le(Nat.add(q, @K@), F.spec_common__pow2(d)) == True{} : Bool}, @PFV@)
+    -> {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}:
+  %%Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, %s)), %s, F.array__freeze_thaw(U32, %s)) :
+    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
+  %%Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
+    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
+  %%Equal.sym(Nat, q, %s, hq) :
+    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, %s, VS.items_set(%s, J, @MKX@),
+    items_set(c, J, d, t, @XA@, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, @K@), F.spec_common__pow2(d)) == True{} : Bool}, q, %s, hq, hb), @PA@))
+''' % (BASE('J'), BASE('J'),
+       ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, %s)))' % TQ, '0n'), ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t)))', '0n'),
+       TQ, TQ, TQ,
+       ITEMS('c', 'F.array__slots(U32, _)', '0n'), ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t)))', '0n'),
+       ITEMS('c', W2.replace(Q, 'q') if False else 'F.array__slots(U32, %s)' % TQ, '0n'), ITEMS('c', 'F.array__slots(U32, _)', '0n'),
+       BASE('J'),
+       ITEMS('c', 'F.array__slots(U32, WW.tk(%s, d, t, _, 0n))' % XS, '0n'), ITEMS('c', W1, '0n'),
+       ITEMS('c', W2, '0n'), ITEMS('c', W1, '0n'), BASE('J'))))
+
+
 def family(name, sp):
     K = sp['K']
     BASE, MK, EL, ITEMS = sp['BASE'], sp['MK'], sp['EL'], sp['ITEMS']
@@ -165,29 +255,7 @@ def family(name, sp):
         w('  %%Equal.sym(U32, %s, y%d, h%d) : {%s == %s : S.Value}' % (atom('W', 'i', m), m, m, MK(cur), MK(ys)))
     w('  {==}\n')
     w(sp['arith']())
-    w('''def gap_before(+i: Nat, +J: Nat, +h: {Nat.is_lt(i, J) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), %s) == True{} : Bool}:
-  F.logic__subst(Nat, z => {Nat.is_le(z, %s) == True{} : Bool}, %s, Nat.add(%s, %s), Equal.sym(Nat, Nat.add(%s, %s), %s, blk(i)),
-    mono(1n+i, J, F.nat__lt_succ_le_succ(i, J, h)))
-
-# the word m of block i is past the run of block J, when J is before i
-def gap_after(+i: Nat, +J: Nat, +m: Nat, +h: {Nat.is_lt(J, i) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), Nat.add(%s, m)) == True{} : Bool}:
-  F.nat__le_trans(Nat.add(%s, %s), %s, Nat.add(%s, m), gap_before(J, i, h), F.nat__le_add_right(%s, m))
-
-def ne_lt(+a: Nat, +b: Nat, +h: {Nat.is_lt(a, b) == True{} : Bool}) -> {Nat.is_eq(b, a) == False{} : Bool}:
-  WR.neq_sym(a, b, F.nat__is_eq_lt(a, b, h))
-
-def lt_add_succ(+a: Nat, +p: Nat) -> {Nat.is_lt(a, Nat.add(a, 1n+p)) == True{} : Bool}:
-  F.logic__subst(Nat, z => {Nat.is_lt(a, z) == True{} : Bool}, 1n+Nat.add(a, p), Nat.add(a, 1n+p), Equal.sym(Nat, Nat.add(a, 1n+p), 1n+Nat.add(a, p), F.nat__add_succ(a, p)),
-    F.nat__le_lt_succ(a, Nat.add(a, p), F.nat__le_add_right(a, p)))
-''' % (BASE('i'), KN, BASE('J'),
-       BASE('J'), BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'),
-       BASE('J'), KN, BASE('i'),
-       BASE('J'), KN, BASE('i'), BASE('i'), BASE('i')))
-    w('''# the block of item i (below the count c) is inside storage of c blocks
-def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}, +h: {Nat.is_le(%s, P) == True{} : Bool}) -> {Nat.is_le(Nat.add(%s, %s), P) == True{} : Bool}:
-  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, %s, Nat.add(%s, %s), Equal.sym(Nat, Nat.add(%s, %s), %s, blk(i)),
-    F.nat__le_trans(%s, %s, P, mono(1n+i, c, F.nat__lt_succ_le_succ(i, c, hlt)), h))
-''' % (BASE('c'), BASE('i'), KN, BASE('1n+i'), BASE('i'), KN, BASE('i'), KN, BASE('1n+i'), BASE('1n+i'), BASE('c')))
+    gaps(w, BASE, KN)
     Q = BASE('J')
     T2 = 'WW.tk(%s, d, t, %s, 0n)' % (XS, Q)
     W2 = 'F.array__slots(U32, %s)' % T2
@@ -197,7 +265,7 @@ def idx_room(+i: Nat, +c: Nat, +P: Nat, +hlt: {Nat.is_lt(i, c) == True{} : Bool}
     HB = '+hb: {Nat.is_le(Nat.add(%s, %s), F.spec_common__pow2(d)) == True{} : Bool}' % (Q, KN)
     PF = '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}'
     MKX = MK(xs)
-    SUBS = {'@XP@': XP, '@HB@': HB, '@PF@': PF, '@W2@': W2, '@W1@': W1, '@XA@': XA, '@XS@': XS, '@MKX@': MKX, '@K@': KN}
+    SUBS = {'@RA@': 'hb, pf', '@EA@': 'hb, pf', '@PA@': 'pf', '@PFV@': PF, '@XP@': XP, '@HB@': HB, '@PF@': PF, '@W2@': W2, '@W1@': W1, '@XA@': XA, '@XS@': XS, '@MKX@': MKX, '@K@': KN}
 
     def sub(t):
         for k, v in SUBS.items():
@@ -226,67 +294,8 @@ def el_hit(+d: Nat, +t: F.array__Tree<U32>, @XP@, +J: Nat, @HB@, @PF@)
     -> {%s == %s : S.Value}:
   el_same_go(Nat.is_lt(i, J), d, t, @XA@, i, J, {==}, ne, hb, pf)
 ''' % (EL(W2, 'i'), EL(W1, 'i'))))
-    w(sub('''# ---- the items ----
-# from block i0 on, all after block J: the same items
-def items_same(+k: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +i0: Nat, +J: Nat, +hlt: {Nat.is_lt(J, i0) == True{} : Bool}, @HB@, @PF@)
-    -> {%s == %s : S.Value}:
-  match k:
-    case 0n: {==}
-    case 1n+q:
-      %%Equal.sym(S.Value, %s, %s, el_same(d, t, @XA@, i0, J, ne_lt(J, i0, hlt), hb, pf)) :
-        {S.Items{_, %s} == S.Items{%s, %s} : S.Value}
-      %%Equal.sym(S.Value, %s, %s, items_same(q, d, t, @XA@, 1n+i0, J, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)), hb, pf)) :
-        {S.Items{%s, _} == S.Items{%s, %s} : S.Value}
-      {==}
-''' % (ITEMS('k', W2, 'i0'), ITEMS('k', W1, 'i0'),
-       EL(W2, 'i0'), EL(W1, 'i0'), ITEMS('q', W2, '1n+i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'),
-       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), EL(W1, 'i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'))))
-    w(sub('''# the run written at block J = i0 + r: the items are the old items with item r replaced
-def items_set(+k: Nat, +r: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +i0: Nat, +J: Nat, +hJ: {J == Nat.add(i0, r) : Nat}, @HB@, @PF@)
-    -> {%s == VS.items_set(%s, r, @MKX@) : S.Value}:
-  match k r:
-    case 0n _: {==}
-    case 1n+q 0n:
-      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
-      %%Equal.sym(S.Value, %s, @MKX@, F.logic__subst(Nat, z => {%s == @MKX@ : S.Value}, J, i0, eJ, el_hit(d, t, @XA@, J, hb, pf))) :
-        {S.Items{_, %s} == S.Items{@MKX@, %s} : S.Value}
-      %%Equal.sym(S.Value, %s, %s, items_same(q, d, t, @XA@, 1n+i0, J, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)), hb, pf)) :
-        {S.Items{@MKX@, _} == S.Items{@MKX@, %s} : S.Value}
-      {==}
-    case 1n+q 1n+p:
-      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
-      %%Equal.sym(S.Value, %s, %s, el_same(d, t, @XA@, i0, J, F.nat__is_eq_lt(i0, J, hlt), hb, pf)) :
-        {S.Items{_, %s} == S.Items{%s, VS.items_set(%s, p, @MKX@)} : S.Value}
-      %%Equal.sym(S.Value, %s, VS.items_set(%s, p, @MKX@), items_set(q, p, d, t, @XA@, 1n+i0, J, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hb, pf)) :
-        {S.Items{%s, _} == S.Items{%s, VS.items_set(%s, p, @MKX@)} : S.Value}
-      {==}
-''' % (ITEMS('k', W2, 'i0'), ITEMS('k', W1, 'i0'),
-       EL(W2, 'i0'), EL(W2, 'z'), ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'),
-       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), ITEMS('q', W1, '1n+i0'),
-       EL(W2, 'i0'), EL(W1, 'i0'), ITEMS('q', W2, '1n+i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'),
-       ITEMS('q', W2, '1n+i0'), ITEMS('q', W1, '1n+i0'), EL(W1, 'i0'), EL(W1, 'i0'), ITEMS('q', W1, '1n+i0'))))
+    items_region(w, sub, BASE, ITEMS, EL, XS, XA, MKX, Q, W1, W2)
     TQ = 'WW.tk(%s, d, t, q, 0n)' % XS
-    w(sub('''# the view of the storage after the run is written at word q = %s: the view before, with item J replaced.
-# `c` is the element count the view reads.
-def view_set(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +J: Nat, +q: Nat, +hq: {q == %s : Nat},
-    +hb: {Nat.is_le(Nat.add(q, @K@), F.spec_common__pow2(d)) == True{} : Bool}, @PF@)
-    -> {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}:
-  %%Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, %s)), %s, F.array__freeze_thaw(U32, %s)) :
-    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
-  %%Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
-    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
-  %%Equal.sym(Nat, q, %s, hq) :
-    {S.Sequence{%s} == VS.field_set(S.Sequence{%s}, J, @MKX@) : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, %s, VS.items_set(%s, J, @MKX@),
-    items_set(c, J, d, t, @XA@, 0n, J, {==}, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, @K@), F.spec_common__pow2(d)) == True{} : Bool}, q, %s, hq, hb), pf))
-''' % (BASE('J'), BASE('J'),
-       ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, %s)))' % TQ, '0n'), ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t)))', '0n'),
-       TQ, TQ, TQ,
-       ITEMS('c', 'F.array__slots(U32, _)', '0n'), ITEMS('c', 'F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t)))', '0n'),
-       ITEMS('c', W2.replace(Q, 'q') if False else 'F.array__slots(U32, %s)' % TQ, '0n'), ITEMS('c', 'F.array__slots(U32, _)', '0n'),
-       BASE('J'),
-       ITEMS('c', 'F.array__slots(U32, WW.tk(%s, d, t, _, 0n))' % XS, '0n'), ITEMS('c', W1, '0n'),
-       ITEMS('c', W2, '0n'), ITEMS('c', W1, '0n'), BASE('J'))))
     w(sub('''# the run written at block J = i0 + k, one past the k blocks' items: the items are the old items and the new one
 def items_app(+k: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +i0: Nat, +J: Nat, +hJ: {J == Nat.add(i0, k) : Nat}, @HB@, @PF@)
     -> {%s == VS.items_snoc(%s, @MKX@) : S.Value}:
@@ -474,6 +483,8 @@ def view_app_grow_%s(%s)
 
 def outputs():
     outs = {OBJ / ('view_%s.bend' % n): family(n, sp) for n, sp in FAMILIES.items()}
+    import viewcells
+    outs[OBJ / 'view_cells.bend'] = viewcells.cells_file()
     outs[OBJ / 'view_seq.bend'] = viewseq.seq_file()
     outs[OBJ / 'view_bytes.bend'] = viewbytes.bytes_file()
     return outs

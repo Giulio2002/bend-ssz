@@ -709,7 +709,42 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
       '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hm: {Nat.is_le(m, %s) == True{} : Bool}, %s)' % (c, KW, hr))
     w('    -> {WR.at(F.array__slots(U32, %s), m) == WR.at(F.array__slots(U32, tv), m) : U32}:' % R)
     w('  CR.cell_word(d, t, tv, %s, %s, %s, q, m, hm, hr, {==}, pf, F.array__trep_perfect(U32, %s, 0))' % (DZ, Z, KW, DZ))
-    return 2
+    # the spec view after an accepted set: the view before with the cell replaced (view_cells.bend), for the 2048-byte cells
+    if K != '2048':
+        return 2
+    imps['CL'] = 'proofs/obj/cells_light.bend'
+    imps['VC'] = 'proofs/obj/view_cells.bend'
+    imps['VS'] = 'proofs/obj/value_set.bend'
+    imps['S'] = 'types/schema.bend'
+    imps['WL'] = 'proofs/obj/words_list.bend'
+    imps['WW'] = 'proofs/obj/words_win.bend'
+    imps['WO'] = 'proofs/obj/words_obj_light.bend'
+    EB = 'O.e8(Nat.mul(%s, 64n))'
+    XL = 'WL.alist(%s, F.array__slots(U32, tv), 0n)' % WN
+    RESV = 'VS.field_set(CL.eview(%s), U32.to_nat(i), S.BytesValue{WO.wview(%s)})' % (O0, V)
+    VEW = lambda x: 'CL.eview(%s)' % x
+    hqe = '+hqe: {q == %s : Nat}' % (EB % 'U32.to_nat(i)')
+    hcap = '+hcap: {Nat.is_le(%s, %s) == True{} : Bool}' % (EB % 'CL.kc(n)', P)
+    w('def %s_api_view_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +dv: Nat, +tv: F.array__Tree<U32>, '
+      '+hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hdv: {Nat.is_lt(dv, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, '
+      '+pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(%s, F.spec_common__pow2(dv)) == True{} : Bool}, '
+      '+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, %s, %s, %s)' % (c, WN, GS, BASE, hr, hqe, hcap))
+    w('    -> {%s == %s : S.Value}:' % (VEW('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, %s))' % (DA, c, O0, V)), RESV))
+    w('  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s : S.Value}' % (GS, VEW('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RESV))
+    BL = lambda x: '%s.%s_blit(O.bl_fin(%s, %s))' % (DA, c, K, x)
+    w('  %%Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, tv), 0), (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n)), '
+      'WR.get_thaw(dv, tv, 0, 0n, hdv, {==}, F.nat__lt_le_trans(0n, %s, F.spec_common__pow2(dv), {==}, hv), pfv)) : {%s == %s : S.Value}'
+      % (WN, VEW(BL('O.bl_go(%s, 0, %s, %s, _)' % (KEXP, BASE, O0))), RESV))
+    w('  %%Equal.sym(O.Words & Array<U32>, O.bl_go(%s, 0, %s, %s, (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n))), (%s, F.array__thaw(U32, tv)), '
+      'CR.blc(%s, 0, 0n, %s, q, dv, tv, d, t, n, hdv, hd, {==}, hq, hv, %s, pfv, pf)) : {%s == %s : S.Value}'
+      % (KEXP, BASE, O0, O1, KW, BASE, HR, VEW(BL('_')), RESV))
+    TKX = 'WW.tk(%s, d, t, q, 0n)' % XL
+    w('  %%Equal.sym(F.array__Tree<U32>, %s, %s, CR.bcp_tk(%s, 0n, q, d, tv, t)) : {%s == %s : S.Value}' % (BT, TKX, KW, VEW('O.Words{F.array__thaw(U32, _), n}'), RESV))
+    w('  F.logic__subst(+List<U32>, z => {%s == VS.field_set(%s, U32.to_nat(i), S.BytesValue{z}) : S.Value}, FX.limbs(%s), WO.wview(%s), Equal.sym(+List<U32>, WO.wview(%s), FX.limbs(%s), VC.val_view(dv, tv, hv, pfv)),'
+      % (VEW('O.Words{F.array__thaw(U32, %s), n}' % TKX), VEW(O0), XL, V, V, XL))
+    w('    VC.view_set(CL.kc(n), d, t, %s, WL.alist_len(%s, F.array__slots(U32, tv), 0n), U32.to_nat(i), q, hqe, hr, pf, hcap))' % (XL, WN))
+    imps['FX'] = 'proofs/obj/spec_fixed.bend'
+    return 3
 
 
 def grow_parts(nstore, want):

@@ -27,7 +27,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md', 'docs/BUILD.md']
+DOCS = ['README.md', 'docs/RESULTS.md', 'docs/PREMISES.md', 'docs/BUILD.md', 'docs/TRUST.md']
 FIG = re.compile(r'<!-- fig:([a-z0-9_]+) -->(.*?)<!-- /fig -->', re.S)
 BRIDGE = {'e2e_encode': 'i', 'e2e_decode_accept': 'ii', 'e2e_decode_view': 'ii',
           'e2e_decode_reject': 'iii', 'e2e_root': 'iv'}
@@ -175,6 +175,26 @@ def figures():
     f['decrep_count'] = str(len(dr))
     f['decrep_names'] = names_list(['`%s`' % n for n in dr])
     f.update(object_law_figures())
+    f.update(pending_figures())
+    return f
+
+
+def pending_figures():
+    """the names without a composed theorem, each with the reason e2e/COMPOSED.txt gives (codegen/e2e_compose.py), and the
+    collections whose read-back laws are on the rigid-checker branch (codegen/coll_laws.py's kind 'seq')"""
+    rows = ['| Name | Why there is no composed theorem |', '|---|---|']
+    for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines():
+        if l.startswith('#') or not l.strip():
+            continue
+        n, st = l.split('\t', 1)
+        if st != 'composed':
+            rows.append('| `%s` | %s |' % (n, st.replace('pending: ', '', 1).replace('|', '\\|')))
+    f = {'pending_count': str(len(rows) - 2), 'pending_table': '\n' + '\n'.join(rows) + '\n'}
+    sys.path.insert(0, str(ROOT / 'codegen'))
+    import coll_laws as CL
+    seq = [c for c in CL.collections() if CL.info(c)['kind'] == 'seq']
+    f['rigid_count'] = str(len(seq))
+    f['rigid_collections'] = ', '.join('`%s`' % c for c in seq)
     return f
 
 

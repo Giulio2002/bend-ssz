@@ -25,7 +25,7 @@ writes nothing.
 
 Every `.bend` file outside `tools/` and `vendor/` must check. There is one full check:
 
-    tools/check_fast.sh [--jobs 20] [--target S] [--out DIR] [--files LIST]  # all files; logs under build/check_fast
+    tools/check_fast.sh [--jobs 20] [--target S] [--out DIR] [--files LIST] [--tarballs DIR]  # all files; logs under build/check_fast
     tools/check.sh <file.bend>                                                # one file
 
 Bend has no module cache: checking a file checks every definition of every module in its import
@@ -107,6 +107,17 @@ spelled as the code it unfolds from. The headroom gate is a full check at half t
 
 Umbrellas get a larger heap (`UMB_MEMMAX`, default 16 GB; `UMB_TIMEOUT`, default 1200 s).
 Target per file: 60 s and 8 GB (e2e files 45 s).
+
+**No retry on a stack overflow.** An umbrella passes only on exit 0 with the exact line `ALL PROOFS CHECK`; "the machine stack
+overflowed" is a failure, never retried. (The 2.0.28 build had a one-time retry for a nondeterministic overflow under load; the
+rigid-subterms checker removed the cause instead: conversions are kept shallow in the proofs, `tools/check.sh` pins the stack
+(`ulimit -s 8192`, JSC budget 5242880 bytes), and the headroom gate `tools/check_fast.sh --jsc-stack 2621440` must also pass.)
+
+**The gate run.** `tools/check_fast.sh --tarballs DIR` (or `CHECK_TARBALLS=DIR`) also checks the fixture manifest against the pinned
+upstream release archives (`tools/verify_fixtures.py --tarballs DIR`, archives cached in DIR) and records it in the stamp:
+`fixtures_tarballs_verified: true`, the tarball and manifest hashes. A run without it (the offline check of the committed
+fixtures against `fixtures.manifest.json`) stamps `false`. `tools/strictcheck.sh DIR [TARBALL_DIR]`, run on the server, runs every
+generator's `--check` and the same fixture check.
 
 ## Tests
 

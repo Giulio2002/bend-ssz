@@ -3,6 +3,7 @@
 
     python3 tools/verify_fixtures.py                     # the committed files against fixtures.manifest.json
     python3 tools/verify_fixtures.py --tarballs [DIR]    # and the manifest against the pinned release tarballs
+    python3 tools/verify_fixtures.py --tarballs DIR --record FILE.json   # and write the result for the check stamp
 
 Two links, each checked by sha256:
 
@@ -121,6 +122,12 @@ def main():
     if bad:
         print('verify_fixtures: MISMATCH:\n  ' + '\n  '.join(bad[:40]))
         sys.exit(1)
+    if tb and '--record' in sys.argv:
+        lock = json.loads((ROOT / 'upstream.lock.json').read_text())
+        rec = {'fixtures_tarballs_verified': True,
+               'fixtures_tarball_sha256': {lock[k]['url'].rsplit('/', 1)[1]: lock[k]['sha256'] for k in SCOPES},
+               'fixtures_manifest_sha256': sha_file(ROOT / 'fixtures.manifest.json'), 'fixtures': len(manifest)}
+        Path(sys.argv[sys.argv.index('--record') + 1]).write_text(json.dumps(rec, indent=1) + '\n')
     print('verify_fixtures: %d fixture files match fixtures.manifest.json%s' % (
         len(manifest), '; the manifest matches the pinned general.tar.gz and mainnet.tar.gz, members and scope' if tb else ''))
 
