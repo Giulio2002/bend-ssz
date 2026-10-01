@@ -31,7 +31,7 @@ import ./var_plist_zeros.bend as Z
 # BIG (checkq --big): a progressive list has no length limit, so the list storage
 # is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with
 # Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to
-# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.
+# 2^26 leaves: stock Bend normalizes them; the pinned rigid-memo checker compares the identical calls rigidly.
 
 # n <= NMAX: 31 + n <= UMAX (the decoder's list storage has depth at most 30, whatever the tree's depth).
 def hyN(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool}:

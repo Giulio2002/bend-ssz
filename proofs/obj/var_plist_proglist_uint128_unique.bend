@@ -12,7 +12,7 @@ import ../../proofs/decode_unique.bend as DCO
 # BIG (checkq --big): a progressive list has no length limit, so the list storage
 # is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with
 # Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to
-# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.
+# 2^26 leaves: stock Bend normalizes them; the pinned rigid-memo checker compares the identical calls rigidly.
 # Every spec value of an accepted buffer's bytes is the decoded value.
 law decode_unique:
   for +d: Nat
