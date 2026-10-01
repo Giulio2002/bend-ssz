@@ -46,7 +46,7 @@ cases = [c for c in json.load(open('cases.json')) if '/ssz_generic/' in c]
 only = None
 if '--only' in sys.argv:
     only = sys.argv[sys.argv.index('--only') + 1]
-tmp = pathlib.Path('build/performance/inputs')
+tmp = pathlib.Path('build/performance/inputs' + os.environ.get('SSZ_TMP_SUFFIX', ''))
 tmp.mkdir(parents=True, exist_ok=True)
 flags = ['--threads', '1', '--gpu', 'off']
 

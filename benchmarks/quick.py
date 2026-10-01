@@ -144,7 +144,8 @@ def main():
               'samples_per_side': a.samples, 'calibration_target_seconds': a.target}
     try:
         # 1. generate
-        b.sh([b.PY3, 'codegen/impl/generate.py'])
+        if not os.environ.get('QUICK_NO_GENERATE'):   # mutation testing builds mutated generated files as they are
+            b.sh([b.PY3, 'codegen/impl/generate.py'])
         b.GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
         if a.build_compact:
             for entry in sorted((ROOT / 'benchmarks/compact').glob('*.bend')):

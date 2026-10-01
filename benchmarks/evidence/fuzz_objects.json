@@ -414,7 +414,7 @@
   "DataColumnSidecar": 6,
   "CustodyIndex": 0
  },
- "elapsed_s": 173.5,
+ "elapsed_s": 150.8,
  "command": "/srv/ssz-optimization/agents/rename-venv/bin/python tests_generated/fuzz_objects.py --seed 20260921 --valid 8 --invalid 8 --history 10 --histories 6",
  "toolchain": {
   "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py, benchmarks/checks/*): stock upstream Bend 2.0.34 (release bend-2.0.34-linux-x64.tar.gz from github.com/bendlang/bend). The runtime sources (src/digest.bend, src/sha256.bend) use the 2.0.34 Base API after the port, so the 2.0.28 build no longer compiles them. Set BEND_RUNTIME to the binary (the paths below are the maintainer's laptop; every evidence file records the sha256 of the binary and Base it actually used). base.bend is the 2.0.34 release's, byte-identical to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
@@ -438,10 +438,10 @@
  "findings": [],
  "findings_total": 0,
  "provenance": {
-  "git_commit": "5bdc9afa4401bcdf1b5a06f1803a4f045ff7123d",
+  "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
   "git_dirty": false,
-  "git_tree": "f18f04f1cdbff370be1e58d3d868241e06661509",
-  "utc": "2026-10-01T11:41:43Z",
+  "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
+  "utc": "2026-10-01T23:37:57Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -806,8 +806,8 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "tests_generated/fuzz_objects.py": "afa393741031e7288f6f9b25df449304548c8c587797fbe29152abe98ede7669",
-   "benchmarks/checks/provenance.py": "3dc8f4f3fc47c0c88accabcdcb3cee4cbe2c7e1c53280b462241a0146f394fba",
+   "tests_generated/fuzz_objects.py": "1ec09c808002ed5da504ba03ece73ea19f33747c0d5c7e5a2cbb37756b38318d",
+   "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
    "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
    "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",

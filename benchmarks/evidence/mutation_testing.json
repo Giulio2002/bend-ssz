@@ -1,45 +1,184 @@
 {
- "cases": 5145,
- "passed": 5145,
- "api": "generated typed object API (types/generic_obj*.bend)",
- "tally": {
-  "basic_progressive_list invalid pass": 567,
-  "basic_progressive_list valid pass": 320,
-  "basic_vector invalid pass": 957,
-  "basic_vector valid pass": 200,
-  "bitlist invalid pass": 44,
-  "bitlist valid pass": 450,
-  "bitvector invalid pass": 31,
-  "bitvector valid pass": 54,
-  "boolean invalid pass": 4,
-  "boolean valid pass": 2,
-  "compatible_unions invalid pass": 311,
-  "compatible_unions valid pass": 210,
-  "containers invalid pass": 238,
-  "containers valid pass": 463,
-  "progressive_bitlist invalid pass": 3,
-  "progressive_bitlist valid pass": 700,
-  "progressive_containers invalid pass": 264,
-  "progressive_containers valid pass": 261,
-  "uints invalid pass": 18,
-  "uints valid pass": 48
+ "evidence": "proof-side mutation testing on main 80cef74d; conformance and fuzz are triage only (docs/RESULTS.md)",
+ "precondition": "regen_all --check: every generator up to date on the tree under test",
+ "replay": {
+  "mutants": 565,
+  "killed": 518,
+  "survived": 47
  },
- "unsupported_schemas": {
-  "bitvector_0": "schema: a zero-length bit vector is not an SSZ type",
-  "vec_bool_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint128_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint16_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint256_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint32_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint64_0": "schema: a zero-length vector is not an SSZ type",
-  "vec_uint8_0": "schema: a zero-length vector is not an SSZ type"
+ "fresh_round": {
+  "seed": 20261005,
+  "proof_per_file": 4,
+  "mutants": 2777,
+  "killed": 2752,
+  "survived": 25,
+  "by_cause": {
+   "offset": 17,
+   "reported-size": 1,
+   "arithmetic": 1,
+   "validity-check": 5,
+   "constant": 1
+  }
  },
- "failures": [],
+ "survivor_classes_this_round": {
+  "open (unproved): aligned-or-slow path": 41,
+  "gap": 10,
+  "proof-equivalent": 21
+ },
+ "gaps": {
+  "total": 9,
+  "by_cause": {
+   "reported-size": 4,
+   "arithmetic": 1,
+   "offset": 3,
+   "validity-check": 1
+  }
+ },
+ "open_unproved": {
+  "aligned_or_slow_path": "is_lt / is_le of pos .&. 3 == 0: equivalent only at sampled positions, not drawn"
+ },
+ "excluded_entries": {
+  "file": "tests_generated/mutation_exclusions.json",
+  "by_class": {
+   "open (unproved): aligned-or-slow path": 42,
+   "proof-equivalent": 218,
+   "uncoverable": 1
+  }
+ },
+ "gap_list": [
+  {
+   "type": "HistoricalBatch",
+   "file": "types/FuluHistoricalBatch_encode_ssz_generated.bend",
+   "line": 12,
+   "col": 119,
+   "operator": "const-1",
+   "before": "524288",
+   "after": "524287",
+   "def": "HistoricalBatch_size",
+   "in": "encode",
+   "cause": "reported-size",
+   "checked": "proofs/api/FuluHistoricalBatch_encode_ssz_proof_generated.bend",
+   "text": "def HistoricalBatch_size(o: FuluHistoricalBatch_d.HistoricalBatch) -> FuluHistoricalBatch_d.HistoricalBatch & U32: (o, 524288)"
+  },
+  {
+   "type": "SyncCommittee",
+   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
+   "line": 14,
+   "col": 109,
+   "operator": "const+1",
+   "before": "24624",
+   "after": "24625",
+   "def": "SyncCommittee_size",
+   "in": "encode",
+   "cause": "reported-size",
+   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
+   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+  },
+  {
+   "type": "LightClientBootstrap",
+   "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
+   "line": 22,
+   "col": 201,
+   "operator": "const+1",
+   "before": "24820",
+   "after": "24821",
+   "def": "LightClientBootstrap_size",
+   "in": "encode",
+   "cause": "reported-size",
+   "checked": "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend",
+   "text": "case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_sz0(current_sync_committee, current_sync_committee_branch, 248"
+  },
+  {
+   "type": "MatrixEntry",
+   "file": "types/FuluMatrixEntry_encode_ssz_generated.bend",
+   "line": 20,
+   "col": 68,
+   "operator": "addsub",
+   "before": " + ",
+   "after": " - ",
+   "def": "MatrixEntry_pw0",
+   "in": "encode",
+   "cause": "arithmetic",
+   "checked": "proofs/api/FuluMatrixEntry_encode_ssz_proof_generated.bend",
+   "text": "(uint64_e.u64_put(uint64_e.u64_put(FuluBytes48_e.b48_put(out, (pos + 2048 : U32), kzg_proof), (pos + 2096 : U32), column_index), (pos + 2104 : U32), row_index), (FuluMatrixEntry_d.MatrixEntry{cell, kz"
+  },
+  {
+   "type": "CompatibleUnionA",
+   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
+   "line": 36,
+   "col": 142,
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "def": "CompatibleUnionA_rd0",
+   "in": "decode",
+   "cause": "offset",
+   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
+  },
+  {
+   "type": "CompatibleUnionABCA",
+   "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend",
+   "line": 67,
+   "col": 142,
+   "operator": "addsub",
+   "before": " + ",
+   "after": " - ",
+   "def": "CompatibleUnionABCA_rd3",
+   "in": "decode",
+   "cause": "offset",
+   "checked": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+   "text": "case False{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
+  },
+  {
+   "type": "SyncCommittee",
+   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
+   "line": 14,
+   "col": 109,
+   "operator": "const-1",
+   "before": "24624",
+   "after": "24623",
+   "def": "SyncCommittee_size",
+   "in": "encode",
+   "cause": "reported-size",
+   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
+   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+  },
+  {
+   "type": "CompatibleUnionA",
+   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
+   "line": 36,
+   "col": 159,
+   "operator": "const-1",
+   "before": "1",
+   "after": "0",
+   "def": "CompatibleUnionA_rd0",
+   "in": "decode",
+   "cause": "offset",
+   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
+  },
+  {
+   "type": "proglist_bool",
+   "file": "types/proglist_bool_decode_ssz_generated.bend",
+   "line": 30,
+   "col": 24,
+   "operator": "valid",
+   "before": "False{}",
+   "after": "True{}",
+   "def": "pl_bool_ok_len",
+   "in": "decode",
+   "cause": "validity-check",
+   "checked": "proofs/api/proglist_bool_decode_ssz_proof_generated.bend",
+   "text": "case False{}: (buf, False{})"
+  }
+ ],
+ "history": "docs/RESULTS.md table: rounds 1-4",
  "provenance": {
   "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
   "git_dirty": false,
   "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
-  "utc": "2026-10-01T23:34:17Z",
+  "utc": "2026-10-01T23:38:42Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -394,7 +533,10 @@
     "expected_key": "df578b742bd2e199857e"
    }
   },
-  "argv": [],
+  "argv": [
+   "--restamp",
+   "benchmarks/evidence/mutation_testing.json"
+  ],
   "sources_sha256": {
    "types/*.bend": "5986e63da4fe6fc5de235e2e31a62e385fdb60f95b245d611b0f2884e51ded63",
    "src/*.bend": "dfba9a73df93a3dfc883c6de5c16be56b3c44f3f421d6866cebfec10f0ec7a4b",
@@ -404,7 +546,7 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "benchmarks/checks/generic_object_conformance.py": "7db11c82793358e3d0e14ef84c7028697bf22361276c00c9e7da63ae31cbe707",
+   "tests_generated/mutation_testing.py": "4b075c7243be7ad19482ff30b2c2fbdc3d557bb340ff619e0ff161872496c5e5",
    "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
    "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
    "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
