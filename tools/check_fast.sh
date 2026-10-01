@@ -6,7 +6,7 @@
 # explains the soundness argument). Same pinned checker and cgroup limits as tools/check.sh, but
 # each umbrella gets a larger heap: UMB_MEMMAX (default 16G), UMB_RAM (JSC forceRAMSize, default
 # 12e9; the 8e9 of single files makes a big umbrella collect constantly), UMB_TIMEOUT (default
-# 1200 s). The stack is tools/check.sh's pin (ulimit -s 16384, JSC budget 10485760 bytes: a 2x margin over 5 MB, at which every umbrella passes);
+# 1200 s). The stack is tools/check.sh's pin (ulimit -s 16384, JSC budget 10485760 bytes, twice JSC's 5 MB default);
 # --jsc-stack BYTES runs every umbrella with another JSC budget (exported to the umbrellas: each log starts
 # with a CHECK_STACK line that records the limits it ran under). The headroom run is a full run at
 # half the pinned budget (--jsc-stack 5242880); it is informational, not a gate: it passed on f4c3d9ea and failed

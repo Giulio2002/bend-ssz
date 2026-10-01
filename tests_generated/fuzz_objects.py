@@ -126,7 +126,7 @@ def gen(t, rng, mode='random', depth=0):
     raise SystemExit('cannot generate kind ' + k)
 
 
-VALUE_MODES = ['random', 'random', 'zero', 'max', 'empty', 'short']
+VALUE_MODES = ['random', 'random', 'zero', 'max', 'empty', 'short', 'random', 'full']
 
 
 def bounds(t, v, base=0):
@@ -415,10 +415,10 @@ def run(name, data):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--seed', type=int, default=20260921)
-    ap.add_argument('--valid', type=int, default=6, help='valid values per type (VALUE_MODES, in order)')
-    ap.add_argument('--invalid', type=int, default=6, help='random corruptions per valid value')
-    ap.add_argument('--boundary-values', type=int, default=2, help='valid values per type that get every boundary corruption')
-    ap.add_argument('--boundaries', type=int, default=16, help='boundaries sampled per value (8 above 50 kB)')
+    ap.add_argument('--valid', type=int, default=8, help='valid values per type (VALUE_MODES, in order)')
+    ap.add_argument('--invalid', type=int, default=8, help='random corruptions per valid value')
+    ap.add_argument('--boundary-values', type=int, default=3, help='valid values per type that get every boundary corruption')
+    ap.add_argument('--boundaries', type=int, default=32, help='boundaries sampled per value (a quarter above 50 kB)')
     ap.add_argument('--only', default=None)
     ap.add_argument('--history', type=int, default=10)
     ap.add_argument('--histories', type=int, default=6)
@@ -460,7 +460,7 @@ def main():
                                  'stdout': r.stdout[-200:], 'stderr': r.stderr[-200:]})
             todo = [(m, 'invalid') for m in (mutate(data, rng) for _ in range(args.invalid))]
             if vi < args.boundary_values:
-                limit = args.boundaries if len(data) <= 50000 else max(4, args.boundaries // 2)
+                limit = args.boundaries if len(data) <= 50000 else max(4, args.boundaries // 4)
                 todo += [(m, 'boundary') for m in boundary_mutations(data, bounds(t, value), limit, rng)]
             for (bad, kind), cls in todo:
                 if time.monotonic() - started > args.budget:

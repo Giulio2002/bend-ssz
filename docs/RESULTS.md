@@ -121,12 +121,13 @@ each with the same sha256.
 ## Other test evidence (finite regressions, not laws)
 
 All against the independent oracle `codegen/oracle.py` (written from the specification, sharing
-no code with the generated runtime) unless noted; last run 2026-09-30 on the ssz server at
-ed83adea, all passing.
+no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-09-30<!-- /fig --> on the ssz server at
+<!-- fig:evidence_commit -->ed83adea<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
 |---|---|---|
-| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | 109 types, seed 20260921: 327 valid values, 1,962 corrupted encodings (10 mutation kinds), 768 mutation-history steps through the object setters; 0 mismatches |
+| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->109<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->0<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->327<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->1,962<!-- /fig --> random and <!-- fig:fuzz_boundary -->0<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->10<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->768<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->1<!-- /fig --> minutes |
 | `object_mutations.json` | `benchmarks/checks/object_mutations.py` | malformed variants of every ssz_static case (5,455 inputs); the verdict of each comes from the oracle; 0 disagreements |
 | `object_mutation_tests.json` | `tests_generated/mutations.py` | 8 field/element updates through the object API against the oracle's re-encoding, rejections leave the value unchanged |
 | `invalid_objects.json` | `tests_generated/invalid_objects.py` | 14 cases: representable but invalid objects (built with raw constructors) are refused by the checked encoder, each with a valid control |

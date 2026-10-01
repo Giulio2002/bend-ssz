@@ -127,7 +127,7 @@ def main():
                         'build/fuzz-f<k> for tests_generated/fuzz_objects.py, then exit')
     p.add_argument('--build-compact', action='store_true',
                    help='build (cached, keyed like the others) every benchmarks/compact/*.bend and link it as '
-                        'build/compact-<name> for the evidence checks, then exit')
+                        'build/compact-<name> for the evidence checks (the files with a main), then exit')
     p.add_argument('--build', default=None,
                    help='"all" or comma separated group numbers: build (cached) and link them as build/obj-g<k> '
                         'for the conformance checks, then exit without measuring')
@@ -149,6 +149,8 @@ def main():
         if a.build_compact:
             for entry in sorted((ROOT / 'benchmarks/compact').glob('*.bend')):
                 n = entry.stem
+                if not re.search(r'^(def|law) main\b', entry.read_text(), re.M):
+                    continue   # a library the programs import (objio.bend), not a program
                 key = group_key(b, n, 'c', entry)
                 exe = CACHE / f'c-{n}-{key}'
                 link = ROOT / 'build' / f'compact-{n}'

@@ -34,8 +34,8 @@ where 11 of 46 umbrellas fail). So:
 state each big constant once, keep sizes symbolic (a variable, never `Nat.add(0n, 524464)` on a literal start),
 reach large literals through an equality test (`Nat.is_eq`) instead of a conversion, put the small operand first
 in additions (`Nat.add` recurses on its first argument), and prove a bound from a 32-bit equation and an existing
-lemma instead of evaluating the limit. Keep every conversion far below the limit; the gate runs the full check at
-the pinned budget and at half of it, so nothing sits near the edge.
+lemma instead of evaluating the limit. Keep every conversion far below the limit: the gate is the full check at the pinned budget (docs/BUILD.md); the run at
+half the budget is informational and does not always pass, so shallow proofs are what keep a result stable.
 
 **Never trade soundness for speed.** These shortcuts change how you iterate, not what counts as checked. The final
 gate stays the full check with localization, every pinned tool, no cache, and strictcheck.

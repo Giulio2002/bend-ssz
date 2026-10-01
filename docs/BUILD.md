@@ -87,8 +87,8 @@ the one that was checked. Each check runs under the limits it was measured with:
 |---|---|
 | memory | 12 GB (hard; `MemoryMax`), no swap |
 | CPU | 2 cores, `nice 10` |
-| wall time | 600 s |
-| parallel checks | 10 |
+| wall time | 600 s per file, 1200 s per umbrella (`UMB_TIMEOUT`); the umbrellas of the slowest roots get 32 GB (`UMB_BIG_MEMMAX`) |
+| parallel checks | `CHECK_JOBS` umbrellas (default 20; the gate runs used 12), admitted by `tools/umb_pool.py` while their expected memory fits |
 | stack | `ulimit -s 16384` and a JavaScriptCore budget of 10,485,760 bytes (`BUN_JSC_maxPerThreadStackUsage`; JSC's own default is 5 MB) |
 
 The stack is pinned by `tools/check.sh` itself (`CHECK_STACK_KB`, `CHECK_JSC_STACK`), so a shell's or an
@@ -137,9 +137,9 @@ Python unit test:
 boundaries; `tests/layout.test.ts` checks `src/layout.bend` against `spec/layout_decoding.bend`.
 `run_runtime_tests.py` compiles each imported module with the runtime compiler pinned in
 `benchmarks/toolchain.json` (`BEND_RUNTIME` names it where it is not at the lock's path; on the
-ssz server `/srv/ssz-optimization/toolchain-2.0.28/bend/bin/bend`) and fails on any failure,
+ssz server `/srv/ssz-optimization/toolchain-2.0.34/bin/bend`) and fails on any failure,
 compile error or empty run; with no arguments it runs every `tests/**/*.test.ts`. Last run
-2026-09-30 on the ssz server: 3/3 tests, 2,694 assertions. The thirteen older Bun tests of the
+<!-- fig:evidence_date -->2026-09-30<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
 list-model layer (`tests/new/`, with their helpers `tools/primitive_backend.ts` and
 `tools/generic_transport.ts`) were removed on 2026-09-30: each imported `types/fulu*.bend`,
 which the runtime compiler cannot compile as an entry (above), so none of them had run since the
