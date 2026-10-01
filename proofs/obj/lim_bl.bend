@@ -14,7 +14,7 @@ import ./lim_sym.bend as LSY
 # (proofs/obj/lim_sym.bend) and instantiated at d = 25; containers split their
 # conjunction with and_t so only that conjunct needs the lemma. Needs a
 # checker that compares two calls of one def rigidly before unfolding them
-# (the pinned rigid-subterms build, aa99b746); stock Bend evaluates them in unary.
+# (the pinned rigid-memo build, c55a7f03); stock Bend evaluates them in unary.
 
 law and_t:
   for +a: Bool

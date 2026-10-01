@@ -302,7 +302,7 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/ob
 BIG_NOTE = ['# BIG (checkq --big): a progressive list has no length limit, so the list storage',
             '# is B.zeros(u) at every depth u; var_plist_zeros.bend identifies it with',
             '# Array.new(U32, to_nat(u), 0) case by case, comparing closed Array.new trees of up to',
-            '# 2^26 leaves: stock Bend normalizes them; the pinned rigid-subterms checker compares the identical calls rigidly.']
+            '# 2^26 leaves: stock Bend normalizes them; the pinned rigid-memo checker compares the identical calls rigidly.']
 
 
 def zeros_text():
