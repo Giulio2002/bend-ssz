@@ -401,6 +401,28 @@ numbers of that size in unary (deeper than the rigid checker's stack; the vector
 witnessed); nine guard statements over a raw object (`_flag`, `_rejected`, `_go` of a setter over a bit vector) are not compositions and have
 no premise besides a guard; the `ComplexTestStruct` setter whose default list is non-empty.  The files check on the rigid checker (`tools/check.sh`).
 
+### Non-vacuity of the composed decode theorems
+
+Every composed theorem (`<Name>_e2e_decode_encode`, `<Name>_e2e_decode_root`, `e2e/<Name>_e2e_comp_generated.bend`) assumes
+`decode(bs) == Some{o}`; its other hypotheses (`hn`, `hd`, `hS`) are facts about the input. The decoded-object premises are derived, but
+nothing in those statements shows that a real input is accepted, so a composed theorem could hold vacuously. For the variable-size names,
+`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/decode_witness.py`, <!-- fig:dw_files -->46<!-- /fig --> files) takes the real
+input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n0` its size), and states, public and locked:
+
+- `<Name>_e2e_decode_witness`: `isS(X_decode(fill_at(alloc(n0), 0, bs0), n0)) == True`, the decoder accepts `bs0`, evaluated by the checker;
+- `<Name>_e2e_decode_witness_encode` and `<Name>_e2e_decode_witness_root`: the composed decode;encode and decode;root theorems applied at
+  `(bs0, n0, o0)`, `o0` the object the decoder returned, with every hypothesis (`hn`, `hd`, `hS`, `dec`) proved by computation. So each composed
+  theorem is instantiated at an accepted input of its own name: its premises are not unsatisfiable together.
+
+The default object is the smallest input available (every list empty, every fixed-size part zero); a non-empty input is not witnessed. Not
+witnessed (<!-- fig:dw_pending -->3<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
+the default encoding is too large for the checker to evaluate the encoder and the decoder over it. FuluBeaconState's is 2.7 MB (the fixed-size parts:
+`block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), the light-client bootstrap and update hold sync committees and branches (tens
+of KB; the run overflows the stack or does not finish in the budget). For these the evidence is the acceptance witness of their
+variable-size substructures that are witnessed here (`FuluLightClientHeader`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, the
+attestation and slashing containers, ...), the composed theorems of the substructures' own names, and the 295 official vectors; no
+composed theorem of these three is instantiated at a concrete accepted input.
+
 ## 9. Objects changed through the API
 
 `e2e/<Name>_e2e_set_generated.bend` states, for every field setter, that the view of the changed
