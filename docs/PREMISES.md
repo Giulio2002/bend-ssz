@@ -411,11 +411,11 @@ evaluate the encoder and the window check over it; a witness would need a symbol
 architecture. For it the evidence is the acceptance witness of its variable-size substructures that are witnessed here, the composed theorems of the
 substructures' own names, and the 295 official vectors; its composed theorem is not instantiated at a concrete accepted input.
 
-The light-client bootstrap (25 KB) is witnessed (the light-client update, 50 KB, is not yet: its composed file takes 1327 s, over the 600 s budget of one file; its hypothesis modules each check) in a different shape, because the checker compares the unary Nat of the byte count:
+The light-client bootstrap (25 KB) is witnessed (the light-client update, 50 KB, is not yet: with all three theorems in one file it took 1327 s, over the 600 s budget of one file; the four costly hypotheses together take 193 s in one module, and the three theorem files built over that module, in `decode_witness.py` as BIG + SPLIT, are not yet checked) in a different shape, because the checker compares the unary Nat of the byte count:
 `hn` (`List.length(bs) == to_nat(n)`) is proved, not computed, by `obl_buf` (`e2e/e2e_obytes_len_generated.bend`, `codegen/proofs/witnesses/obytes_len.py`),
 the symbolic length lemma `List.length(E.obytes(buf)) == to_nat(size(buf))` (induction over `B.emit_go`, the word count a Nat variable), whose side conditions are
-one Bool over the size, `obl_ok`. The costly hypotheses (`obl_ok`, `hd`, `hS`, `DC.CHK`) are each stated and evaluated once in their own module
-(`e2e/<Name>_e2e_dwh_{base,hc,hd,hs,hk}_generated.bend`), and the witness file applies `d_acc` and the composed theorems with those proofs; its types name the
+one Bool over the size, `obl_ok`. The costly hypotheses (`obl_ok`, `hS`, `hd`, `DC.CHK`) are proved together by one evaluation of the input in one module
+(`e2e/<Name>_e2e_dwh_{base,all}_generated.bend`, extracted by lemmas symbolic in `bs`, `n`), and the witness file applies `d_acc` and the composed theorems with those proofs; its types name the
 input as `E.obytes(<Name>_dwh_buf())`, never through a thunk (the checker unfolds a thunk by evaluating it).
 
 ## 9. Objects changed through the API
