@@ -1442,6 +1442,26 @@ def coll_bits(cs):
         emit('read_set', 'n', 'i', '', 'Pair.fst(O.Bits, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0),
              [('%%Equal.sym(Bool, %s, True{}, hg)' % GS, 'Pair.fst(O.Bits, Bool, %s.%s_put_at(_, %s, i, v))' % (DA, c, O0))])
         n += 1
+        # the spec value: the bit-list view after the write is the view before with bit i replaced
+        imps['BV2'] = 'proofs/obj/bits_view.bend'
+        imps['BO'] = 'proofs/obj/bitlist_obj_light.bend'
+        VG = lambda o: 'BO.bview(%s)' % o
+        X_ = 'WR.at(F.array__slots(U32, t), q)'
+        NEWW_ = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(i, 31)))' % X_
+        T1_ = 'F.array__upd(U32, d, t, q, %s)' % NEWW_
+        OB_ = lambda t_: 'O.Bits{F.array__thaw(U32, %s), n}' % t_
+        RHS_ = 'BV2.lset(%s, U32.to_nat(i), v)' % VG(O0)
+        L.append('def %s_api_view_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                 '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hg: {U32.is_lt(i, n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 5n)) == q : Nat}, '
+                 '+hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % c)
+        L.append('    -> {%s == %s : +List<Bool>}:' % (VG('Pair.fst(O.Bits, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0)), RHS_))
+        L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s : +List<Bool>}' % (GS, VG('Pair.fst(O.Bits, Bool, %s.%s_put_at(_, %s, i, v))' % (DA, c, O0)), RHS_))
+        L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, U32.shrn(i, 5n)), (%s, %s), WR.bword_thaw(d, t, n, U32.shrn(i, 5n), q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}'
+                 % (OB_('t'), OB_('t'), X_, VG('O.bit_put(i, v, _)'), RHS_))
+        L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, U32.shrn(i, 5n), %s), %s, WR.bsetw_thaw(d, t, n, U32.shrn(i, 5n), q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}'
+                 % (OB_('t'), NEWW_, OB_(T1_), NEWW_, VG('_'), RHS_))
+        L.append('  BV2.view_set(d, t, n, i, q, v, pf, hg, hq, hk)')
+        L.append('')
         # set bit i, then read bit j: in another word, or another bit of the same word
         OBJ = lambda t_: 'O.Bits{F.array__thaw(U32, %s), n}' % t_
         NEWW = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(i, 31)))' % X
