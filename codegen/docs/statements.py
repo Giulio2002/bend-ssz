@@ -135,6 +135,8 @@ def statement_files():
     for pat in ('*_api_witness_generated.bend', '*_api_root_witness_generated.bend', '*_e2e_set_witness_generated.bend'):
         for p in sorted((ROOT / 'e2e').glob(pat)):
             out['e2e/' + p.name] = re.findall(r'^def (\w+_witness)\(', p.read_text(), re.M)
+    for p in sorted((ROOT / 'e2e').glob('*_e2e_decode_witness_generated.bend')):
+        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_decode_witness\w*)\(', p.read_text(), re.M)
     for p in sorted((ROOT / 'e2e').glob('*_e2e_set_generated.bend')):
         out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_set_\w+)\(', p.read_text(), re.M)
     for g in OBJECT_LAWS:

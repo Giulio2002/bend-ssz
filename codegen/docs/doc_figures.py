@@ -153,6 +153,10 @@ def figures():
     wpend = [r[0] for r in wrows if r[1] != 'witnessed']
     f['witness_pending'] = names_list(wpend) if wpend else 'none'
     f['witness_nonempty'] = str(sum(1 for n in wit if 'def NE()' in (ROOT / f'e2e/{n}_e2e_witness_generated.bend').read_text()))
+    dwr = [l.split('\t') for l in (ROOT / 'e2e/DECODE_WITNESS.txt').read_text().splitlines() if l and not l.startswith('#')]
+    f['dw_files'] = str(sum(1 for r in dwr if r[1] == 'witnessed'))
+    f['dw_pending'] = str(sum(1 for r in dwr if r[1] != 'witnessed'))
+    f['dw_pending_names'] = names_list([r[0] for r in dwr if r[1] != 'witnessed']) if any(r[1] != 'witnessed' for r in dwr) else 'none'
     capi = sorted((ROOT / 'e2e').glob('*_api_witness_generated.bend'))
     croot = sorted((ROOT / 'e2e').glob('*_api_root_witness_generated.bend'))
     cset = sorted((ROOT / 'e2e').glob('*_e2e_set_witness_generated.bend'))

@@ -119,11 +119,17 @@ GENERATORS = (
     Gen('e2e_bridge', 'proofs/bridges', stage='last', after=('api_facade',), heavy=2),
     Gen('e2e_vlm_gen', 'proofs/bridges'),
     # codegen/proofs/witnesses/
+    Gen('decode_witness', 'proofs/witnesses'),
     Gen('coll_witness', 'proofs/witnesses'),
     Gen('e2e_witness', 'proofs/witnesses', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/composed/
     Gen('e2e_compose', 'proofs/composed', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/decoded/
+    Gen('e2e_dbs', 'proofs/decoded'),
+    Gen('e2e_dfl', 'proofs/decoded'),
+    Gen('e2e_dvp', 'proofs/decoded'),
+    Gen('e2e_dvv2', 'proofs/decoded'),
+    Gen('e2e_hkv', 'proofs/decoded'),
     Gen('e2e_dbl', 'proofs/decoded'),
     Gen('e2e_decbb', 'proofs/decoded'),
     Gen('e2e_decbits', 'proofs/decoded'),

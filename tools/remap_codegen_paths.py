@@ -69,11 +69,12 @@ def map_imports(t):
     return re.sub(r"__import__\('([A-Za-z0-9_]+)'\)", lambda m: f"__import__('{pkg(m.group(1))}.{m.group(1)}', fromlist=['_'])" if m.group(1) in STEM_DIR else m.group(0), t)
 
 
-def rewrite(t, py, depth=None):
+def rewrite(t, py, depth=None, strip_syspath=True):
     if py:
         t = map_imports(t)
         t = re.sub(r"^sys\.path\.insert\(0, str\(ROOT / 'codegen'\)\)\n", '', t, flags=re.M)
-        t = re.sub(r"^sys\.path\.insert\(0, str\(Path\(__file__\)\.resolve\(\)\.parent\)\)\n", '', t, flags=re.M)
+        if strip_syspath:   # inside codegen/ only: the preamble replaces it (tools/ scripts keep theirs)
+            t = re.sub(r"^sys\.path\.insert\(0, str\(Path\(__file__\)\.resolve\(\)\.parent\)\)\n", '', t, flags=re.M)
         if depth is not None:
             t = t.replace('Path(__file__).resolve().parents[1]', f'Path(__file__).resolve().parents[{depth + 1}]')
     t = map_paths(t)
@@ -109,7 +110,7 @@ def main(argv):
     for f in argv:
         p = Path(f)
         t0 = p.read_text()
-        t = rewrite(t0, p.suffix == '.py')
+        t = rewrite(t0, p.suffix == '.py', strip_syspath='codegen' in p.resolve().relative_to(ROOT).parts[:1])
         if t != t0:
             p.write_text(t)
             print('rewrote', f)

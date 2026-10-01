@@ -3232,6 +3232,8 @@ def outputs():
         out[OUT / 'e2e_bswr.bend'] = BVG.bswr_text(OBJ)
         out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
         out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
+        out[OUT / 'e2e_pbx.bend'] = BVG.pbx_text()
+        out[OUT / 'e2e_pbl.bend'] = BVG.pbl_text(OBJ)
         out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)
         out[OUT / 'e2e_wxah.bend'] = BVG.wxah_text(OBJ)
         out[OUT / 'e2e_wxar.bend'] = BVG.wxar_text(OBJ)
@@ -3345,7 +3347,7 @@ def main():
     # theorems (*_e2e_comp_generated.bend) to codegen/proofs/composed/e2e_compose.py, the setter compositions
     # (*_e2e_set_generated.bend) to codegen/proofs/collections/e2e_setters.py, the validating serializer (*_e2e_ser_generated.bend)
     # to codegen/proofs/collections/serialize_e2e.py
-    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend', '_e2e_decrep_generated.bend', '_e2e_set_generated.bend', '_e2e_ser_generated.bend', '_e2e_uintdom_generated.bend', '_api_witness_generated.bend', '_api_root_witness_generated.bend', '_e2e_set_witness_generated.bend'))] if OUT.exists() else []
+    mine = [q for q in OUT.glob('*_generated.bend') if not q.name.endswith(('_e2e_witness_generated.bend', '_e2e_comp_generated.bend', '_e2e_decrep_generated.bend', '_e2e_set_generated.bend', '_e2e_ser_generated.bend', '_e2e_uintdom_generated.bend', '_api_witness_generated.bend', '_api_root_witness_generated.bend', '_e2e_set_witness_generated.bend', '_e2e_decode_witness_generated.bend'))] if OUT.exists() else []
     out = RR.rewire_out(out)
     from codegen.core import retired  # modules nothing imports: not written (codegen/core/retired.py)
     out = retired.drop(out)

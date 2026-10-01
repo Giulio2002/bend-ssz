@@ -710,6 +710,9 @@ def bigK(text, N):
 
 
 def build(name, lf, api):
+    if name == 'FuluBlobSidecar':   # the premises of its tree-form decoder object are e2e_dbs_BlobSidecar.bend's (codegen/proofs/decoded/e2e_dbs.py)
+        from codegen.proofs.composed import e2e_compose_blob
+        return e2e_compose_blob.text(HEADER), None
     r = build_sync(name, lf, api)
     if r is not None:
         return r

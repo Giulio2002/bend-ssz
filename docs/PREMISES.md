@@ -25,29 +25,22 @@ the decoded object's view (its spec value), not its representation.
   `DC.OBJ(d, t, n)`. Then `e2e/<Name>_e2e_decrep_generated.bend` (`codegen/proofs/composed/e2e_decrep.py`,
   run by `codegen/proofs/composed/e2e_compose.py`) proves each premise of the encode and root bridges (`rep` and
   the storage premises) of that object, for every input the codec accepts. This covers
-  <!-- fig:decrep_count -->49<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `CompatibleUnionA`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconBlock`, `FuluBeaconBlockBody`, `FuluBeaconState`, `FuluDataColumnSidecar`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayload`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientFinalityUpdate`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluLightClientUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluSignedBeaconBlock`, `FuluTransaction`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
+  <!-- fig:decrep_count -->55<!-- /fig --> names: <!-- fig:decrep_names -->`BitsStruct`, `CompatibleUnionA`, `CompatibleUnionABCA`, `CompatibleUnionBC`, `ComplexTestStruct`, `FuluAggregateAndProof`, `FuluAttestation`, `FuluAttesterSlashing`, `FuluBeaconBlock`, `FuluBeaconBlockBody`, `FuluBeaconState`, `FuluDataColumnSidecar`, `FuluDataColumnsByRootIdentifier`, `FuluExecutionPayload`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, `FuluIndexedAttestation`, `FuluLightClientBootstrap`, `FuluLightClientFinalityUpdate`, `FuluLightClientHeader`, `FuluLightClientOptimisticUpdate`, `FuluLightClientUpdate`, `FuluPendingAttestation`, `FuluSignedAggregateAndProof`, `FuluSignedBeaconBlock`, `FuluTransaction`, `ProgressiveSingleListContainerTestStruct`, `ProgressiveVarTestStruct`, `VarTestStruct`, `bitlist_1`, `bitlist_15`, `bitlist_16`, `bitlist_17`, `bitlist_2`, `bitlist_3`, `bitlist_31`, `bitlist_32`, `bitlist_33`, `bitlist_4`, `bitlist_5`, `bitlist_511`, `bitlist_512`, `bitlist_513`, `bitlist_6`, `bitlist_7`, `bitlist_8`, `bitlist_9`, `progbitlist`, `proglist_bool`, `proglist_uint128`, `proglist_uint16`, `proglist_uint256`, `proglist_uint32`, `proglist_uint64`, `proglist_uint8`<!-- /fig -->.
 
 In each route the pipeline is one checked statement: `<Name>_e2e_decode_encode` (a decoded object re-encodes to exactly the input
 bytes) and `<Name>_e2e_decode_root` (its root is the spec root of the value END_TO_END's deserialize
 gives, `e2e_comp.droot`), in `e2e/<Name>_e2e_comp_generated.bend` (`codegen/proofs/composed/e2e_compose.py`), for
-<!-- fig:composed -->230<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
-<!-- fig:pending_count -->10<!-- /fig --> names without one, with the reason `codegen/proofs/composed/e2e_compose.py` records for each (generated from
+<!-- fig:composed -->237<!-- /fig --> names. `e2e/COMPOSED.txt` lists every name with its status. The
+<!-- fig:pending_count -->3<!-- /fig --> names without one, with the reason `codegen/proofs/composed/e2e_compose.py` records for each (generated from
 `e2e/COMPOSED.txt`, so it cannot drift from it): the decode-side bridges (i)/(iv) of those names take the listed premises
 on the decoded object, which no checked law yet derives from the decoder, or (for a tree-form decoder) the decoder's object
 is not one this module reads.
 <!-- fig:pending_table -->
 | Name | Why there is no composed theorem |
 |---|---|
-| `CompatibleUnionABCA` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
-| `CompatibleUnionBC` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
-| `ComplexTestStruct` | the (i)/(iv) bridges take hsB, hsD, hsE, hsF, hsG, rep (decoded-object laws pending) |
-| `FuluBlobSidecar` | a tree-form decoder object this module does not read |
 | `ProgressiveBitsStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveComplexTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
-| `ProgressiveSingleListContainerTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
 | `ProgressiveTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
-| `ProgressiveVarTestStruct` | the (i)/(iv) bridges take hs, rep (decoded-object laws pending) |
-| `progbitlist` | the (i)/(iv) bridges take hK, hs, rep (decoded-object laws pending) |
 <!-- /fig -->
 
 **Open:** for the other names no checked law yet states that the object the decoder returns
@@ -400,6 +393,28 @@ premise `{True == False}`: the list can never be full in a U32 length, so the st
 numbers of that size in unary (deeper than the rigid checker's stack; the vectors up to 512 elements and the 4096-element list are
 witnessed); nine guard statements over a raw object (`_flag`, `_rejected`, `_go` of a setter over a bit vector) are not compositions and have
 no premise besides a guard; the `ComplexTestStruct` setter whose default list is non-empty.  The files check on the rigid checker (`tools/check.sh`).
+
+### Non-vacuity of the composed decode theorems
+
+Every composed theorem (`<Name>_e2e_decode_encode`, `<Name>_e2e_decode_root`, `e2e/<Name>_e2e_comp_generated.bend`) assumes
+`decode(bs) == Some{o}`; its other hypotheses (`hn`, `hd`, `hS`) are facts about the input. The decoded-object premises are derived, but
+nothing in those statements shows that a real input is accepted, so a composed theorem could hold vacuously. For the variable-size names,
+`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->52<!-- /fig --> files) takes the real
+input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n0` its size), and states, public and locked:
+
+- `<Name>_e2e_decode_witness`: `isS(X_decode(fill_at(alloc(n0), 0, bs0), n0)) == True`, the decoder accepts `bs0`, evaluated by the checker;
+- `<Name>_e2e_decode_witness_encode` and `<Name>_e2e_decode_witness_root`: the composed decode;encode and decode;root theorems applied at
+  `(bs0, n0, o0)`, `o0` the object the decoder returned, with every hypothesis (`hn`, `hd`, `hS`, `dec`) proved by computation. So each composed
+  theorem is instantiated at an accepted input of its own name: its premises are not unsatisfiable together.
+
+The default object is the smallest input available (every list empty, every fixed-size part zero), except that a default holding empty boxes where a vector needs values (ComplexTestStruct's `vec_VarTestStruct_2` field: its default elements are `BNone`, not a legal decoded shape, and the decoder rejects the encoding of such an object) is replaced by `DV()`, the default with valid elements there, as in the bridge witnesses; a non-empty input is not witnessed. Not
+witnessed (<!-- fig:dw_pending -->3<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
+the default encoding is too large for the checker to evaluate the encoder and the decoder over it. FuluBeaconState's is 2.7 MB (the fixed-size parts:
+`block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), the light-client bootstrap and update hold sync committees and branches (tens
+of KB; the run overflows the stack or does not finish in the budget). For these the evidence is the acceptance witness of their
+variable-size substructures that are witnessed here (`FuluLightClientHeader`, `FuluExecutionPayloadHeader`, `FuluExecutionRequests`, the
+attestation and slashing containers, ...), the composed theorems of the substructures' own names, and the 295 official vectors; no
+composed theorem of these three is instantiated at a concrete accepted input.
 
 ## 9. Objects changed through the API
 

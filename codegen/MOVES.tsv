@@ -157,3 +157,11 @@ codegen/vrl.bend.in	codegen/templates/vrl.bend.in
 codegen/vrlb_list.bend.in	codegen/templates/vrlb_list.bend.in
 codegen/vvle_list.bend.in	codegen/templates/vvle_list.bend.in
 codegen/word_mul.bend.in	codegen/templates/word_mul.bend.in
+codegen/decode_witness.py	codegen/proofs/witnesses/decode_witness.py
+codegen/e2e_compose_blob.py	codegen/proofs/composed/e2e_compose_blob.py
+codegen/e2e_decrep_x.py	codegen/proofs/composed/e2e_decrep_x.py
+codegen/e2e_dbs.py	codegen/proofs/decoded/e2e_dbs.py
+codegen/e2e_dfl.py	codegen/proofs/decoded/e2e_dfl.py
+codegen/e2e_dvp.py	codegen/proofs/decoded/e2e_dvp.py
+codegen/e2e_dvv2.py	codegen/proofs/decoded/e2e_dvv2.py
+codegen/e2e_hkv.py	codegen/proofs/decoded/e2e_hkv.py
