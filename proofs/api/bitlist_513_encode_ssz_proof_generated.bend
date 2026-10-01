@@ -45,6 +45,9 @@ def bitlist_513__serialize_valid__bitlist_513_serialize_vin() -> {bitlist_513_e.
 def bitlist_513__serialize_valid__bitlist_513_serialize_vover() -> {bitlist_513_e.bitlist_513_serialize(P1_O.Bits{P1_O.out_at(5n), 514}) == (P1_O.Bits{P1_O.out_at(5n), 514}, P1_O.refused()) : P1_O.Bits & P1_O.Encoded}:
   P1_PRV.bitlist_513_serialize_vover()
 
+def bitlist_513__serialize_valid__bitlist_513_serialize_vsym(ws: Array<U32>, +k: U32) -> {bitlist_513_e.bits513_valid(P1_O.Bits{ws, k}) == P1_O.bk_cap(Bool.or(False{}, U32.is_le(k, 513)), k, Array.size(U32, ws)) : P1_O.Bits & Bool}:
+  P1_PRV.bitlist_513_serialize_vsym(ws, k)
+
 def bitlist_513__serialize_valid__bitlist_513_mc_poison_bits513(out: Array<U32>, pos: U32, o: P2_O.Bits) -> {bitlist_513_e.bits513_pk(out, pos, (o, False{})) == (out, (o, P2_O.poison())) : Array<U32> & (P2_O.Bits & U32)}:
   P2_PRV.bitlist_513_mc_poison_bits513(out, pos, o)
 

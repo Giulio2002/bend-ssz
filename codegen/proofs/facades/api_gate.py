@@ -61,7 +61,7 @@ LAW_FORMS = {
     'decode_unique': [r'decode_unique', r'<X>_spec_unique', r'<X>_spec_unique_[01]'],
     'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside', r'<X>_decode_reject'],
     'decode_none': [r'decode_none', r'<X>_spec_reject', r'<X>_spec_reject_(bool|pad)', r'<X>_spec_decode_reject'],
-    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym'],
+    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym', r'<X>_cmp_[au]\d+'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
     'roundtrip': [r'<X>(_[tf])?_roundtrip'],
     'encoded_size': [r'<X>(_[tf])?_encoded_size'],
@@ -239,7 +239,7 @@ def scan():
                 xs.add(n[:-len('_ok_eval')])
             if n.endswith('_serialize_vsym'):     # codegen/proofs/laws/mutation_laws_validity.py: the statement names the validity pass
                 xs.add(n[:-len('_serialize_vsym')])
-            ma = re.match(r'(\w+?)_arith_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
+            ma = re.match(r'(\w+?)_(?:arith|cmp)_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name

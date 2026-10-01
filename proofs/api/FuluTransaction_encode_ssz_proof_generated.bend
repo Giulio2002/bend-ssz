@@ -51,6 +51,9 @@ def FuluTransaction__serialize_valid__Transaction_serialize_vin_0() -> {FuluTran
 def FuluTransaction__serialize_valid__Transaction_serialize_vin_1() -> {FuluTransaction_e.Transaction_serialize(P1_O.Words{P1_O.out_at(1n), 1}) == (Pair.fst(P1_O.Words, P1_B.Buf, FuluTransaction_e.Transaction_encode(P1_O.Words{P1_O.out_at(1n), 1})), P1_O.encoded(Pair.snd(P1_O.Words, P1_B.Buf, FuluTransaction_e.Transaction_encode(P1_O.Words{P1_O.out_at(1n), 1})))) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.Transaction_serialize_vin_1()
 
+def FuluTransaction__serialize_valid__Transaction_serialize_vsym(ws: Array<U32>, +n: U32) -> {FuluTransaction_e.bl1073741824_valid(P1_O.Words{ws, n}) == P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(False{}, U32.is_le(n, 1073741824))), P1_O.unit_ok(1, n)), n, Array.size(U32, ws)) : P1_O.Words & Bool}:
+  P1_PRV.Transaction_serialize_vsym(ws, n)
+
 def FuluTransaction__serialize_valid__Transaction_mc_bxpoison_bl1073741824(out: Array<U32>, pos: U32) -> {FuluTransaction_e.bl1073741824_bx_putk(out, pos, P2_O.BNone{}) == (out, (P2_O.BNone{}, P2_O.poison())) : Array<U32> & (P2_O.Boxed<P2_O.Words> & U32)}:
   P2_PRV.Transaction_mc_bxpoison_bl1073741824(out, pos)
 
