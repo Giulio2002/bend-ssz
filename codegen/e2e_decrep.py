@@ -542,12 +542,67 @@ def compat_union_a(lf):
     return '\n'.join(imports) + '\n\n' + HEADER + '\n\n' + defs
 
 
+def execution_payload(lf):
+    """ExecutionPayload: its logs bloom (e2e_dfx), extra data (<= 32 bytes, e2e_dz.ct_any), transactions (e2e_dtx: the byte-list list
+    library), withdrawals (e2e_drl) and the size premise hZ (e2e_dep, under n < 2^31)"""
+    name = 'FuluExecutionPayload'
+    HEAVY[name] = H31
+    WINDOW.add(name)
+    W_ = '(t, x, off, n, hchk)'
+
+    def lets(al):
+        DEP, DFX, DTX = al('e2e/e2e_dep.bend'), al('e2e/e2e_dfx.bend'), al('e2e/e2e_dtx.bend')
+        HWN1 = f"{al('proofs/obj/var_winx_ExecutionPayload.bend')}.hwc1N(d, t, n, x, off, n, eo, hd31, hw, hwN, pf, {DEP}.cc2(t, x, off, n, hchk))"
+        al('proofs/obj/dk.bend')
+        al('proofs/obj/words_spec.bend')
+        al('proofs/obj/vdepth.bend')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'vvl_l1048576_bl1073741824.bend' and fn == 'OBJw':
+                a = ', '.join(args)
+                hx = f'{DEP}.ce1{W_}'
+                return RLDec(e, lambda k: f'{DTX}.sdl({a}, {HWN1}, {hx})', lambda sc: f'{DTX}.rep({a}, {HWN1}, {sc}, {{==}}, {{==}}, {hx})')
+            return None
+
+        def words(j, e):
+            m = re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), 256, 7n\)\), 256\}$', e)
+            if m:   # the logs bloom: 256 bytes at a byte offset
+                d_, t_, off = m.group(1), m.group(2), m.group(3)
+                q = '{==}'
+                return FxWords(e, {('words_obj_light.bend', 'rep_bv'): lambda s_: f'{DFX}.crbv({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q}, {s_}, {q})',
+                                   ('words_obj_light.bend', 'wf1'): lambda _: f'{DFX}.cwf1({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q})',
+                                   ('e2e_blist.bend', 'sdk1'): lambda k: f'{DFX}.csdk1({d_}, {t_}, {off}, {k}, 3n, 8n, 7n, {q}, {q}, {q}, {q})'})
+            m = re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(.*\)), \w+\.DZ\(.*\)\)\), \w+\.L0\(', e) or re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(t, x\)), VLS\.DZ\(.*\)\)\), \w+\.L0\(', e)
+            if m:   # the extra data (at most 32 bytes)
+                d_, t_, off, L0 = m.group(1), m.group(2), m.group(3), m.group(4)
+                hy = f'{DEP}.hy0(t, x, off, n, hS, hchk)'
+                dzl = f'{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {DEP}.hl0(t, x, off, n, hchk))'
+                hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
+                return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off}, {L0}, VLS.DZ({L0}), {k}, FD.nat__lt_le_trans(VLS.DZ({L0}), 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=f'{DEP}.hl0(t, x, off, n, hchk)')
+            raise SystemExit(f'e2e_decrep: ExecutionPayload: no model for the word field {e[:160]}')
+        return [], words, None, (lambda j: f'{DEP}.ce2{W_}'), xleaf
+
+    def gv(nm):
+        return lambda al: f'{al("e2e/e2e_dep.bend")}.{nm}'
+    DTXn = 'e2e/e2e_dtx.bend'
+    def hz_(al):
+        W_ = al('proofs/obj/var_winx_ExecutionPayload.bend')
+        DEP = al('e2e/e2e_dep.bend')
+        hwn1 = f'{W_}.hwc1N(d, t, n, x, off, n, eo, hd31, hw, hwN, pf, {DEP}.cc2(t, x, off, n, hchk))'
+        return (f'{DEP}.hz(d, t, x, off, n, {al(DTXn)}.txl(d, t, {W_}.X1(t, x), {W_}.F1(off, t, x), {W_}.L1(t, x), {hwn1}, {DEP}.ce1(t, x, off, n, hchk)), h31, hchk)')
+    given = {'hZ': hz_}
+    ps = f'+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd31: {{Nat.is_lt(d, 31n) == True{{}} : Bool}}, +eo: {{U32.to_nat(off) == x : Nat}}, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +hwN: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, +h31: {H31}, +hS: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}}, +hchk: {{DC.CHKw(t, x, off, n) == True{{}} : Bool}}'
+    return container_file(name, lf, 'proofs/obj/var_winx_ExecutionPayload.bend', 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
+                          lets, None, 'proofs/obj/var_winx_ExecutionPayload.bend', given=given, objexpr='DC.OBJw(d, t, x, off, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
 PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
+    'FuluExecutionPayload': lambda lf: execution_payload(lf),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
     'BitsStruct': lambda lf: bits_struct(lf),
     'VarTestStruct': lambda lf: list_u16_container('VarTestStruct', 'var_codec_VarTestStruct', 'proofs/obj/var_winx_VarTestStruct.bend', 'proofs/obj/var_winx_l1024_u16.bend', 1024, 12, lf),
@@ -642,9 +697,11 @@ class DSynth(W.Synth):
                 mdl0 = self.arg_model(args[0], env) if args else None
                 if isinstance(mdl0, FxWords) and key in mdl0.proofs:
                     return mdl0.proofs[key](self.subst(mod, args[1], env) if len(args) > 1 else None)
-                if (name.startswith('sda_') or name.startswith('rep_')) and len(args) == 2:
+                if (name.startswith('sda_') or name.startswith('rep_') or name == 'sdt') and (len(args) == 2 or (name == 'sdt' and len(args) == 1)):
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, RLDec):
+                        if name == 'sdt':
+                            return mdl.sda('31n')
                         a1 = self.subst(mod, args[1], env)
                         return mdl.sda(a1) if name.startswith('sda_') else mdl.rep(a1)
                 if key in BITS and args:

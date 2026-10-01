@@ -310,6 +310,7 @@
     "e2e/FuluExecutionPayloadHeader_e2e_set_generated.bend": "b853c805592f715dfc8a751a0f9e98a853cb5732466ba47a7d88a234eb7b1799",
     "e2e/FuluExecutionPayloadHeader_e2e_set_witness_generated.bend": "ad5c5adc22f8f40c0843de4f21790896d81e7dd6bbf044f51720e5a93f80012d",
     "e2e/FuluExecutionPayloadHeader_e2e_witness_generated.bend": "fb72b666959c44ba9ffa1142b943288e20cd70c0e133617b426e568cf5bec52d",
+    "e2e/FuluExecutionPayload_e2e_comp_generated.bend": "829e799fd67331de898f58b129a9ac17f81554c09945afb06e4834f79c3bc0c5",
     "e2e/FuluExecutionPayload_e2e_dec_generated.bend": "3f0bfe06d4a3fcb1378dad5540daeacf55397af1d57a4683656521fe2afe6d7d",
     "e2e/FuluExecutionPayload_e2e_generated.bend": "60ff4b5de1bc50b199dd71e9020241876477b8046e52ef7b9ee89bdfb3dab913",
     "e2e/FuluExecutionPayload_e2e_root_generated.bend": "4fb2ad899135729890c323cafee39722c1a624113c8fb67cdbda68145e9a53a4",
