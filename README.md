@@ -78,10 +78,15 @@ checked, at the commit you rely on:
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
     python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
     python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
-    git clone https://github.com/bendlang/bend T/bend-src && git -C T/bend-src checkout 3ddfb0366cc14622202aaa3808e695412241f23f
-    # put Bun 1.4.2 (linux-x64) at T/bun-linux-x64/bun
-    python3 tools/verify_pins.py --toolchain T   # checker, Bun and the vendored SHA-256 package match toolchain.lock.json
-    BEND_TOOLCHAIN=T tools/check_fast.sh    # prints "all files check"
+    # the checker: Bend main 01875127 + two commits of the fork Giulio2002/bend, branch rigid-subterms
+    # (aa99b746; its upstream PR bendlang/bend#1210 was closed unmerged, see docs/TRUST.md), built as a release
+    # layout (bin/bend + bend2/base.bend); the recipe is in toolchain.lock.json and docs/BUILD.md
+    git clone https://github.com/Giulio2002/bend T/bend-src && git -C T/bend-src checkout aa99b746e4e9d5d4ba309414e673650b095fdff0
+    cp -r T/bend-src/bend2 T/bend2 && (cd T/bend-src && bun build --compile bend2/main.ts --outfile ../bin/bend)   # Bun 1.4.2
+    python3 tools/verify_pins.py --toolchain T   # bin/bend, Base, the sources and the vendored SHA-256 package match toolchain.lock.json
+    BEND_TOOLCHAIN=T tools/check_fast.sh    # pins ulimit -s 16384 and a 10 MB JSC budget itself; prints "all files check"
+    BEND_TOOLCHAIN=T tools/check_fast.sh --jsc-stack 5242880   # the headroom gate: the same check at half the budget
+    # every check is `bend <file> --check-only`, not `--verdict` (the proven kernel): see docs/TRUST.md
 
 `check_fast.sh` repeats the two verifications itself and refuses to run on any mismatch. A change
 to a frozen statement shows up as a change to `frozen.lock.json` (`git log -p frozen.lock.json`);
@@ -99,7 +104,7 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
     python3 codegen/regen_all.py            # regenerate every generated file (idempotent)
     python3 codegen/regen_all.py --check    # fail if any generated file is stale
     tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
-                                            # (last recorded run: <!-- fig:check_wall -->5.5<!-- /fig --> min wall at 20 jobs);
+                                            # (last recorded run: <!-- fig:check_wall -->5.8<!-- /fig --> min wall at 20 jobs);
                                             # on failure it bisects and prints the failing files
     tools/check.sh <file.bend>              # one file
 

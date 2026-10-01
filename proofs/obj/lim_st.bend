@@ -18,8 +18,8 @@ import ./lim_sym.bend as LSY
 # field's depth; the schema literal's limit (a U32 literal, or 2^30 * 1024) is
 # turned into TR.capacity(k) through equations between words (lim_sym
 # pw_nat) and a symbolic product. Like lim_bl.bend this needs a checker
-# that compares syntactically identical terms without normalizing them
-# (bendlang/bend#1075); stock Bend 2.0.28 evaluates them in unary.
+# that compares two calls of one def rigidly before unfolding them
+# (the pinned rigid-subterms build, aa99b746); stock Bend evaluates them in unary.
 
 # ---- powers of two ------------------------------------------------------------
 

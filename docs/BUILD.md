@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->56740543<!-- /fig -->):
-<!-- fig:check_umbrellas -->47<!-- /fig --> umbrellas over <!-- fig:check_files -->6,008<!-- /fig --> files,
-<!-- fig:check_cpu -->2,969<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.5<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->300<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->f4c3d9ea<!-- /fig -->):
+<!-- fig:check_umbrellas -->46<!-- /fig --> umbrellas over <!-- fig:check_files -->6,107<!-- /fig --> files,
+<!-- fig:check_cpu -->2,811<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.8<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->309<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -89,21 +89,25 @@ the one that was checked. Each check runs under the limits it was measured with:
 | CPU | 2 cores, `nice 10` |
 | wall time | 600 s |
 | parallel checks | 10 |
-| stack | `ulimit -s 8192` and a JavaScriptCore budget of 5,242,880 bytes (`BUN_JSC_maxPerThreadStackUsage`, JSC's default) |
+| stack | `ulimit -s 16384` and a JavaScriptCore budget of 10,485,760 bytes (`BUN_JSC_maxPerThreadStackUsage`; JSC's own default is 5 MB) |
 
 The stack is pinned by `tools/check.sh` itself (`CHECK_STACK_KB`, `CHECK_JSC_STACK`), so a shell's or an
 environment's limits never change a result. It matters because the checker recurses once per level of a
 conversion: a conversion that compares two unary numerals recurses once per unit. It bears on whether a
 check finishes, never on what it accepts (an overflow is a failure). JSC stops at the smaller of the two
-limits: at `ulimit -s 8192` that is its 5 MB budget (a larger `ulimit -s` alone changes nothing). The depth
-probe `{U32.to_nat(n) == <n>n}` by `{==}` checks up to n ≈ 28,800 there, ≈ 14,100 at half the budget (2,621,440 bytes),
-≈ 22,700 at `ulimit -s 4096`; the budget scales it (10 MB: ≈ 58,600, 20 MB: ≈ 114,500), for the compiled
-`bin/bend` and for 2.0.28 alike. Near the limit a result can vary from run to run (JIT tiering changes the
+limits, and JSC caps itself at its budget whatever `ulimit -s` says (a larger `ulimit -s` alone changes nothing; the budget must be raised too). The depth
+probe `{U32.to_nat(n) == <n>n}` by `{==}` checks up to n ≈ 14,100 at 2.5 MB, ≈ 28,800 at 5 MB (JSC's default),
+≈ 58,600 at the pinned 10 MB, ≈ 114,500 at 20 MB, for the compiled `bin/bend` and for 2.0.28 alike. Near the limit a result can vary from run to run (JIT tiering changes the
 frame sizes), so the proofs are written to stay well below it: large literal facts are reached by
 evaluating `Nat.is_eq` (the checker's machine loops over a numeral without recursing), literal sums are
 written small-first (`Nat.add` recurses on its first argument), and a term that a rewrite must find is
-spelled as the code it unfolds from. The headroom gate is a full check at half the JSC budget,
-`tools/check_fast.sh --jsc-stack 2621440`, whose stamp is `benchmarks/evidence/check_fast_jsc2621440.json`.
+spelled as the code it unfolds from. What is verified: every umbrella passes at 5 MB, and the pin is 10 MB, so the pin is
+a 2x margin; at 2.5 MB 10 of the 47 umbrellas fail (and a single file, `e2e/vec_uint256_512_e2e_comp_generated.bend`,
+overflowed in 9 of 40 runs, 8 at a time, at 5 MB). The headroom gate is a full check at 5 MB,
+`tools/check_fast.sh --jsc-stack 5242880`, whose stamp is `benchmarks/evidence/check_fast_jsc5242880.json`; each
+umbrella log starts with a `CHECK_STACK` line recording the limits it ran under. (The first port branch's "half budget"
+runs, `check_fast_jsc2621440.json`, were mislabelled: `check_fast.sh` did not export the budget to the umbrellas, so they
+ran at the default 5 MB.)
 
 Umbrellas get a larger heap (`UMB_MEMMAX`, default 16 GB; `UMB_TIMEOUT`, default 1200 s).
 Target per file: 60 s and 8 GB (e2e files 45 s).
@@ -111,7 +115,7 @@ Target per file: 60 s and 8 GB (e2e files 45 s).
 **No retry on a stack overflow.** An umbrella passes only on exit 0 with the exact line `ALL PROOFS CHECK`; "the machine stack
 overflowed" is a failure, never retried. (The 2.0.28 build had a one-time retry for a nondeterministic overflow under load; the
 rigid-subterms checker removed the cause instead: conversions are kept shallow in the proofs, `tools/check.sh` pins the stack
-(`ulimit -s 8192`, JSC budget 5242880 bytes), and the headroom gate `tools/check_fast.sh --jsc-stack 2621440` must also pass.)
+(`ulimit -s 16384`, JSC budget 10485760 bytes), and the headroom gate `tools/check_fast.sh --jsc-stack 5242880` must also pass.)
 
 **The gate run.** `tools/check_fast.sh --tarballs DIR` (or `CHECK_TARBALLS=DIR`) also checks the fixture manifest against the pinned
 upstream release archives (`tools/verify_fixtures.py --tarballs DIR`, archives cached in DIR) and records it in the stamp:

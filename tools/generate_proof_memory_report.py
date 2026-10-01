@@ -38,7 +38,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BEND = Path(os.environ.get("BEND_BIN", "/Users/monkeair/.bend/bin/bend"))
+BEND = Path(os.environ.get("BEND_BIN") or Path.home() / ".bend/bin/bend")
 REPORT = ROOT / "build" / "proof-memory.json"
 WATCHDOG_STOP = 7_000_000_000
 DEFAULT_STOP = 6_000_000_000
@@ -121,14 +121,14 @@ def check(path: Path, stop_bytes: int, timeout: float) -> dict:
     # transient proof bodies), which decides where a fix has to go.
     trace_path = logs / (log_path.name + ".trace.json")
     trace_path.write_text(json.dumps(trace) + "\n")
-    ok = killed is None and code == 0 and "All terms check." in output
+    ok = killed is None and code == 0 and "ALL PROOFS CHECK" in output
     return {
         "file": str(path),
         "status": killed or ("pass" if ok else "fail"),
         "exit_code": code,
         "peak_footprint_bytes": peak,
         "elapsed_seconds": round(elapsed, 2),
-        "all_terms_check": "All terms check." in output,
+        "all_terms_check": "ALL PROOFS CHECK" in output,
         "output_tail": output[-4000:],
         "output_log": str(log_path),
         "at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
