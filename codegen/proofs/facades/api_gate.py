@@ -69,7 +69,7 @@ LAW_FORMS = {
     'reject_long': [r'<X>(_[tf])?_reject_long'],
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
-    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
+    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
     'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
 }
 
@@ -103,7 +103,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(')
+        return concl.startswith(f'{{T.{X}_serialize(') or re.match(r'\{T\.\w+_valid\(', concl) is not None
     if kind == 'decode_offsets':
         return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
     return False
@@ -237,6 +237,8 @@ def scan():
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
+            if n.endswith('_serialize_vsym'):     # codegen/proofs/laws/mutation_laws_validity.py: the statement names the validity pass
+                xs.add(n[:-len('_serialize_vsym')])
             ma = re.match(r'(\w+?)_arith_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))

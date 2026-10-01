@@ -10,3 +10,6 @@ import ../obj/mutval_generic_vec_uint16_1.bend as PRV
 def vec_uint16_1__serialize_valid__vec_uint16_1_serialize_vin() -> {vec_uint16_1_e.vec_uint16_1_serialize(O.Words{O.out_at(1n), 2}) == (Pair.fst(O.Words, B.Buf, vec_uint16_1_e.vec_uint16_1_encode(O.Words{O.out_at(1n), 2})), O.encoded(Pair.snd(O.Words, B.Buf, vec_uint16_1_e.vec_uint16_1_encode(O.Words{O.out_at(1n), 2})))) : O.Words & O.Encoded}:
   PRV.vec_uint16_1_serialize_vin()
 
+def vec_uint16_1__serialize_valid__vec_uint16_1_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint16_1_e.v1_u16_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(2, n), Bool.or(False{}, U32.is_le(n, 2))), O.unit_ok(2, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.vec_uint16_1_serialize_vsym(ws, n)
+

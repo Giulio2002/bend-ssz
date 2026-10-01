@@ -13,3 +13,6 @@ def Transaction__serialize_valid__Transaction_serialize_vin_0() -> {FuluTransact
 def Transaction__serialize_valid__Transaction_serialize_vin_1() -> {FuluTransaction_e.Transaction_serialize(O.Words{O.out_at(1n), 1}) == (Pair.fst(O.Words, B.Buf, FuluTransaction_e.Transaction_encode(O.Words{O.out_at(1n), 1})), O.encoded(Pair.snd(O.Words, B.Buf, FuluTransaction_e.Transaction_encode(O.Words{O.out_at(1n), 1})))) : O.Words & O.Encoded}:
   PRV.Transaction_serialize_vin_1()
 
+def Transaction__serialize_valid__Transaction_serialize_vsym(ws: Array<U32>, +n: U32) -> {FuluTransaction_e.bl1073741824_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(False{}, U32.is_le(n, 1073741824))), O.unit_ok(1, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.Transaction_serialize_vsym(ws, n)
+

@@ -10,3 +10,6 @@ import ../obj/mutval_generic_vec_uint256_5.bend as PRV
 def vec_uint256_5__serialize_valid__vec_uint256_5_serialize_vin() -> {vec_uint256_5_e.vec_uint256_5_serialize(O.Words{O.out_at(6n), 160}) == (Pair.fst(O.Words, B.Buf, vec_uint256_5_e.vec_uint256_5_encode(O.Words{O.out_at(6n), 160})), O.encoded(Pair.snd(O.Words, B.Buf, vec_uint256_5_e.vec_uint256_5_encode(O.Words{O.out_at(6n), 160})))) : O.Words & O.Encoded}:
   PRV.vec_uint256_5_serialize_vin()
 
+def vec_uint256_5__serialize_valid__vec_uint256_5_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint256_5_e.v5_u256_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(160, n), Bool.or(False{}, U32.is_le(n, 160))), O.unit_ok(32, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.vec_uint256_5_serialize_vsym(ws, n)
+
