@@ -23,7 +23,9 @@ E2E = ROOT / 'e2e'
 
 LISTS = {
     'l8_Attestation': dict(X='Attestation', LIM=8, DEPTH=3, LST='Fulu_list_Attestation_8_d', HK='e2e_hk_Attestation.bend', BB='e2e_bbatt.bend',
-                           ENC='proofs/obj/encx_l8_Attestation.bend', LN='LN8', VM='e2e_vlm_l8_Attestation.bend', VH='e2e_vhl8.bend'),
+                           ENC='proofs/obj/encx_l8_Attestation.bend', LN='LN8', SD='sd8', VM='e2e_vlm_l8_Attestation.bend', VH='e2e_vhl8.bend'),
+    'l1_AttesterSlashing': dict(X='AttesterSlashing', LIM=1, DEPTH=0, LST='Fulu_list_AttesterSlashing_1_d', HK='e2e_hk_AttesterSlashing.bend', BB='e2e_bbsl.bend',
+                                ENC='proofs/obj/encx_l1_AttesterSlashing.bend', LN='LN1', SD='sd1', VM='e2e_vlm_l1_AttesterSlashing.bend', VH=None),
 }
 
 DTX = (E2E / 'e2e_dtx.bend').read_text()
@@ -73,6 +75,20 @@ def unwrap_nr(t):
     return t
 
 
+def unwrap_sdk(t, X):
+    """BL.sdk(RT.pjb_..._bx(RT.th_..._bx(A)), 31n) -> BBA.SDE(A)"""
+    key = 'BL.sdk(RT.pjb_%s_bx(RT.th_%s_bx(' % (X, X)
+    while key in t:
+        i = t.index(key)
+        p0 = i + len('BL.sdk')
+        pth = i + len(key) - 1
+        cth = close_paren(t, pth)
+        c0 = close_paren(t, p0)
+        assert t[cth + 1:c0] == '), 31n' or t[cth + 1:c0].replace(' ', '') == '),31n', t[cth:c0 + 1]
+        t = t[:i] + 'BBA.SDE(' + t[pth + 1:cth] + ')' + t[c0 + 1:]
+    return t
+
+
 WF_SIG = ('+eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},\n'
           '    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},\n'
           '    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}')
@@ -91,13 +107,17 @@ def text(c):
         t = t.replace('Fulu_list_bytelist_1073741824_1048576_d', P['LST'])
         t = t.replace('l1048576_bl1073741824', c).replace('bl1073741824_bx', X + '_bx')
         t = t.replace('RT.MB<RT.WMr>', 'RT.MB<RT.M_%s>' % X).replace('O.Boxed<O.Words>', 'O.Boxed<Fulu%s_d.%s>' % (X, X))
-        t = t.replace('1048576', str(LIM)).replace('20n', '%dn' % DEP).replace('hL20', 'hLn').replace('nn20', 'nnL')
+        t = t.replace('1048576', str(LIM))
+        t = re.sub(r'\b20n', '%dn' % DEP, t)
+        t = t.replace('hL20', 'hLn').replace('nn20', 'nnL')
         t = t.replace('+es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat}', '+es: {sE == Spec.%s() : S.Schema}' % X)
         t = t.replace('+ee: {SH.ByteList_limit(SH.ListOf_element(s)) == U32.to_nat(1073741824) : Nat}', '+ee: {SH.ListOf_element(s) == Spec.%s() : S.Schema}' % X)
         t = t.replace(HWN_SIG, WF_SIG)
         t = re.sub(r'\bhwN\b', WF_ARG, t)
-        t = t.replace('TX.SUMN', 'SUMN').replace('TX.TXL', 'LNM')
+        t = t.replace('TX.SUMN', 'SUMN').replace('TX.TXL', 'LNM').replace('TX.sdt', 'BBA.%s' % P['SD'])
         t = unwrap_nr(t)
+        t = unwrap_sdk(t, X)
+        t = t.replace('TX.SDKS', 'BBA.SDKS')
         assert 'TX.' not in t and 'WMr' not in t and 'bl1073741824' not in t, t[:200]
         return t
 
@@ -109,9 +129,11 @@ def text(c):
             '../proofs/obj/vbuf.bend as VB', '../proofs/obj/vcopy.bend as VC', '../proofs/obj/vu32.bend as VU', '../proofs/obj/schema_shapes.bend as SH',
             '../proofs/obj/root_types_light.bend as RT', '../proofs/obj/vvl_%s.bend as V' % c, '../proofs/obj/var_winx_%s.bend as YW' % X,
             '../proofs/obj/view_seq.bend as VQ', '../proofs/obj/words_rw.bend as WR', '../proofs/obj/vvlu.bend as VVU', '../proofs/obj/vdepth.bend as VD',
-            './e2e_hk_%s.bend as E' % X, './%s as BBA' % P['BB'], './%s as VM' % P['VM'], './%s as VH' % P['VH'], '../%s as W8' % P['ENC'],
+            './e2e_hk_%s.bend as E' % X, './%s as BBA' % P['BB'], './%s as VM' % P['VM'], '../%s as W8' % P['ENC'],
             '../proofs/obj/encx_%s_iface.bend as EM' % X, '../proofs/obj/vsum_dummy.bend as VSD']
     imps = [i for i in imps if 'vsum_dummy' not in i]
+    if P['VH']:
+        imps.append('./%s as VH' % P['VH'])
     for i in imps:
         A_('import ' + i)
     A_('')
@@ -169,6 +191,13 @@ def text(c):
     for n in ['i1_val', 'cnt0', 'rv_ereps']:
         A_(tr(D[n]).replace('el_rep_th(d, t, x, off, len, %s, s, a, hEE, sE, es)' % WF_ARG, 'el_rep_th(d, t, x, off, len, %s, s, a, hEE, sE, es)' % WF_ARG))
         A_('')
+    if not P['VH']:
+        A_('# ---- the elements\' storage (the encode premise\'s SDKS), over the writes ----')
+        A_('def el_sdk_th%s)\n    -> BBA.SDE(XE(d, t, x, off, a, b)):\n  E.sde(d, t, %s, V.el_c(t, x, off, len, a, b, hEE))' % (HEAD, SUB))
+        A_('')
+        for n in ['sdks_after', 'sdks_snoc', 'sdks_step', 'rv_sdks']:
+            A_(tr(D[n]))
+            A_('')
     A_('# ---- the elements\' byte counts add up to the window (the offsets telescope) ----')
     for n in ['sumn_after', 'sumn_snoc', 'NXk', 'him2', 'i2_val', 'nxk']:
         A_(tr(D[n]))
@@ -212,8 +241,15 @@ def text(c):
     A_('')
     A_(tr(D['rep']))
     A_('')
-    A_('# ---- the encode premise: e2e_vhl8.vh ----')
-    A_('def sdl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)\n    -> BBA.sd8(V.OBJw(d, t, x, off, len)):\n  VH.vh(d, t, x, off, len, eo, hd, hw, hw32, pfw, hchk)' % WF_SIG)
+    A_('# ---- the encode premise ----')
+    if P['VH']:
+        A_('def sdl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool})\n    -> BBA.%s(V.OBJw(d, t, x, off, len)):\n  VH.vh(d, t, x, off, len, eo, hd, hw, hw32, pfw, hchk)' % (WF_SIG, P['SD']))
+    else:
+        s = tr(D['sdl_c'])
+        s = s.replace('obj_eq(d, t, x, off, len, ec, hchk)', 'obj_eq(d, t, x, off, len, ec, hchk, %s)' % WF_ARG)
+        A_(s)
+        A_('')
+        A_('def sdl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool})\n    -> BBA.%s(V.OBJw(d, t, x, off, len)):\n  sdl_c(U32.is_eq(len, 0), d, t, x, off, len, {==}, %s, hchk)' % (WF_SIG, P['SD'], WF_ARG))
     A_('')
     A_('# ---- the list\'s encoded byte count: four per element and the element bytes, which tile the window ----')
     A_('def blsum(k: Nat, +W: List<&2, RT.MB<RT.M_%s>>, +i: Nat) -> {W8.BL(k, BBA.LM(W), i) == SUMN(k, W, i) : Nat}:\n'
@@ -249,7 +285,7 @@ def text(c):
     s = s[:r] + ('Equal.trans(Nat, W8.LL(BBA.CV(%s), V.NN(t, x)), Nat.add(A.quad(U32.to_nat(V.NN(t, x))), SUMN(U32.to_nat(V.NN(t, x)), FD.array__slots(RT.MB<RT.M_%s>, %s), 0n)), U32.to_nat(len), lnT(%s, V.NN(t, x)),\n          %s)' % (R, X, R, R, rs)) + s[rc + 1:]
     A_(s)
     A_('')
-    A_('def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)\n'
+    A_('def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool})\n'
        '    -> {BBA.%s(V.OBJw(d, t, x, off, len)) == U32.to_nat(len) : Nat}:\n'
        '  szl_c(U32.is_eq(len, 0), d, t, x, off, len, {==}, %s, hchk)' % (WF_SIG, P['LN'], WF_ARG))
     return '\n'.join(out) + '\n'
