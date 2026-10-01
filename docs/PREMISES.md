@@ -397,7 +397,7 @@ no premise besides a guard; the `ComplexTestStruct` setter whose default list is
 Every composed theorem (`<Name>_e2e_decode_encode`, `<Name>_e2e_decode_root`, `e2e/<Name>_e2e_comp_generated.bend`) assumes
 `decode(bs) == Some{o}`; its other hypotheses (`hn`, `hd`, `hS`) are facts about the input. The decoded-object premises are derived, but
 nothing in those statements shows that a real input is accepted, so a composed theorem could hold vacuously. For the variable-size names,
-`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->52<!-- /fig --> files) takes the real
+`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->54<!-- /fig --> files) takes the real
 input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n0` its size), and states, public and locked:
 
 - `<Name>_e2e_decode_witness`: `isS(X_decode(fill_at(alloc(n0), 0, bs0), n0)) == True`, the decoder accepts `bs0`, evaluated by the checker;
