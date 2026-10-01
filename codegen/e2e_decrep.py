@@ -1119,6 +1119,25 @@ def union_provider(name, arms, lf):
                           lambda al: ([], None, None, None, None), None, wpath, given=given, objexpr='DC.OBJw(d, t, x, off, n)')
 
 
+def prog_bits(lf):
+    """the progressive bit list alone (var_pbits_progbitlist: the aligned copy, masked, delimiter cleared): rep_pbits, the room hK and the storage
+    premise sdbc (e2e_pbl), under n + 4 <= 2^27 (h31)"""
+    name = 'progbitlist'
+    BUF_ARGS.add(name)
+    BUF_K[name] = 27
+    HEAVY[name] = H27
+    ps = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +h31: ' + H27 + ', +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, '
+          '+hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+    def lets(al):
+        PBL = al('e2e/e2e_pbl.bend')
+        return [], None, (lambda e: BitsDec(e, lambda s_: f'{PBL}.pbl_rep(d, t, n, pf, hd, {s_}, hn, h31, hchk)', None, hsbc=f'{PBL}.pbl_sdbc(d, t, n, pf, hd, hn, h31, hchk)'))
+    given = {'hK': lambda al: f"{al('e2e/e2e_pbl.bend')}.pbl_hk(d, t, n, pf, hd, hn, h31, hchk)"}
+    return container_file(name, lf, 'proofs/obj/var_pbits_progbitlist.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], ps), lets, None,
+                          'proofs/obj/var_pbits_progbitlist.bend', given=given)
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -1132,6 +1151,7 @@ PROVERS = {
     'FuluDataColumnSidecar': lambda lf: data_column_sidecar(lf),
     'CompatibleUnionBC': lambda lf: union_provider('CompatibleUnionBC', [(2, 'c0', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c1', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend')], lf),
     'CompatibleUnionABCA': lambda lf: union_provider('CompatibleUnionABCA', [(1, 'c0', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend'), (2, 'c1', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c2', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend'), (4, 'c3', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend')], lf),
+    'progbitlist': lambda lf: prog_bits(lf),
     'ProgressiveVarTestStruct': lambda lf: pb_container('ProgressiveVarTestStruct', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend', 'proofs/obj/var_codec_ProgressiveVarTestStruct.bend', lf),
     'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
