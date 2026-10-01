@@ -3,7 +3,7 @@
 build/compact-omut (benchmarks/compact/omut.bend) decodes a real fixture,
 applies updates through the generated object API and re-encodes. The expected
 bytes are computed here from the same fixture with the independent oracle
-(codegen/oracle.py), which shares no code with the Bend runtime. Rejection
+(codegen/core/oracle.py), which shares no code with the Bend runtime. Rejection
 cases must report STATUS=0 and leave the value byte-for-byte unchanged.
 
     /opt/homebrew/bin/python3 tests_generated/mutations.py
@@ -21,9 +21,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
 from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
-sys.path.insert(0, str(ROOT / 'codegen'))
-import oracle  # noqa: E402
-import schema  # noqa: E402
+sys.path.insert(0, str(ROOT))
+from codegen.core import oracle  # noqa: E402
+from codegen.core import schema  # noqa: E402
 
 TY = schema.load('codegen/fulu.yaml')
 CASES = [c for c in json.load(open('cases.json')) if '/ssz_static/' in c]

@@ -2,7 +2,7 @@
 
 The object programs (benchmarks/objprog/g*.bend) decode into the typed object,
 then encode and hash it. The expected verdict of each mutated input comes from
-the independent Python SSZ oracle codegen/oracle.py (written from the
+the independent Python SSZ oracle codegen/core/oracle.py (written from the
 specification, sharing no code with the generator's output), not from an
 assumption that a mutation must be invalid: appending a byte to a variable-size
 value can be legal. For inputs the reference calls valid, the object's fresh
@@ -19,10 +19,10 @@ import sys
 
 import snappy
 
-sys.path.insert(0, 'codegen')
-import oracle  # noqa: E402
+sys.path.insert(0, '.')
+from codegen.core import oracle  # noqa: E402
 from provenance import stamp  # noqa: E402
-import schema  # noqa: E402
+from codegen.core import schema  # noqa: E402
 
 TY = dict(schema.load('codegen/fulu.yaml').items())
 

@@ -27,8 +27,8 @@ import sys
 import json
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / 'codegen'))
-import runtime_refs as RR  # noqa: E402
+sys.path.insert(0, str(ROOT))
+from codegen.impl import runtime_refs as RR  # noqa: E402
 os.chdir(ROOT)
 BEND = os.environ.get('BEND_RUNTIME') or json.loads((ROOT / 'benchmarks/toolchain.json').read_text())['bend']['path']
 sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
