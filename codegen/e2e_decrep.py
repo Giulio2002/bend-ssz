@@ -575,7 +575,7 @@ def execution_payload(lf):
             m = re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(.*\)), \w+\.DZ\(.*\)\)\), \w+\.L0\(', e) or re.search(r'\w+\.CT\(([^,]+), ([^,]+), (.*), (\w+\.L0\(t, x\)), VLS\.DZ\(.*\)\)\), \w+\.L0\(', e)
             if m:   # the extra data (at most 32 bytes)
                 d_, t_, off, L0 = m.group(1), m.group(2), m.group(3), m.group(4)
-                hy = f'{DEP}.hy0(t, x, off, n, hS, hchk)'
+                hy = f'{DEP}.hy0(t, x, off, n, {DEP}.u2n(n, VB.NMAX(), hS), hchk)'
                 dzl = f'{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {DEP}.hl0(t, x, off, n, hchk))'
                 hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
                 return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off}, {L0}, VLS.DZ({L0}), {k}, FD.nat__lt_le_trans(VLS.DZ({L0}), 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=f'{DEP}.hl0(t, x, off, n, hchk)')
