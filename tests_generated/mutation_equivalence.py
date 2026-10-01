@@ -143,7 +143,8 @@ def classify_survivor(x):
     r = proof_equiv(x)
     if r:
         return 'proof-equivalent', r
-    if x['cause'] == 'capacity' and x['operator'] == 'const+1':
+    line = pathlib.Path(x['file']).read_text().split('\n')[x['line'] - 1]
+    if x['operator'] == 'const+1' and line[:x['col']].endswith('out_at('):
         return 'capacity+1', ('out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf\'s byte length n is a separate '
                               'field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)')
     if x['cause'] == 'comparison':

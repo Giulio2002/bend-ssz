@@ -772,16 +772,6 @@
    "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
   },
   {
-   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
-   "def": "SyncCommittee_serialize",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def SyncCommittee_serialize(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & O.Encoded: SyncCommittee_senc_out(SyncCommittee_putk(O.out_at(13n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
    "file": "types/FuluValidatorIndex_encode_ssz_generated.bend",
    "def": "ValidatorIndex_encode",
    "operator": "const+1",
@@ -842,22 +832,22 @@
    "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
   },
   {
+   "file": "types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend",
+   "def": "ProgressiveSingleFieldContainerTestStruct_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def ProgressiveSingleFieldContainerTestStruct_encode(+o: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> B.Buf: O.out_done(1, ProgressiveSingleFieldContainerT",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
    "file": "types/SingleFieldTestStruct_encode_ssz_generated.bend",
    "def": "SingleFieldTestStruct_encode",
    "operator": "const+1",
    "before": "0n",
    "after": "1n",
    "text": "def SingleFieldTestStruct_encode(+o: SingleFieldTestStruct_d.SingleFieldTestStruct) -> B.Buf: O.out_done(1, SingleFieldTestStruct_put(O.out_at(0n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
-   "file": "types/SmallTestStruct_encode_ssz_generated.bend",
-   "def": "SmallTestStruct_encode",
-   "operator": "const+1",
-   "before": "4",
-   "after": "5",
-   "text": "def SmallTestStruct_encode(+o: SmallTestStruct_d.SmallTestStruct) -> B.Buf: O.out_done(4, SmallTestStruct_put(O.out_at(0n), 0, o))",
    "class": "capacity+1",
    "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
   },
@@ -948,46 +938,6 @@
    "before": "12n",
    "after": "13n",
    "text": "def vec_uint256_512_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint256_512_senc_out(v512_u256_putk(O.out_at(12n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
-   "file": "types/vec_uint256_513_encode_ssz_generated.bend",
-   "def": "vec_uint256_513_serialize",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def vec_uint256_513_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint256_513_senc_out(v513_u256_putk(O.out_at(13n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
-   "file": "types/vec_uint8_1_encode_ssz_generated.bend",
-   "def": "vec_uint8_1_serialize",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def vec_uint8_1_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_1_senc_out(v1_u8_putk(O.out_at(0n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
-   "file": "types/vec_uint8_2_encode_ssz_generated.bend",
-   "def": "vec_uint8_2_serialize",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def vec_uint8_2_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_2_senc_out(v2_u8_putk(O.out_at(0n), 0, o))",
-   "class": "capacity+1",
-   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
-  },
-  {
-   "file": "types/vec_uint8_5_encode_ssz_generated.bend",
-   "def": "vec_uint8_5_serialize",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def vec_uint8_5_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_5_senc_out(v5_u8_putk(O.out_at(1n), 0, o))",
    "class": "capacity+1",
    "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
   },
