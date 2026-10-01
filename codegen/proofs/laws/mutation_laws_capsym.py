@@ -10,7 +10,7 @@ buffer is the encoder's; computing it costs 74 s at 2^13 words and 406 s at 2^15
 HistoricalBatch (2^17).
 
 proofs/obj/zcapsym_<X>.bend (one module per name) holds, for every name whose serializer or encoder allocates with
-`O.out_at(d)`, d >= 1:
+`O.out_at(d)` (an encoder that reports its size inline, `O.out_done(N, P_put(O.out_at(d), 0, o))`, is stated the same way):
 
   <X>_serialize_capsym(o)   : {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(dn), 0, o)) : ..}
   <X>_encode_capsym(o)      : {T.X_encode(o)    == T.X_enc_out(T.P_put(O.out_at(dn), 0, o)) : ..}
@@ -40,6 +40,7 @@ from codegen.proofs.collections.laws import qual  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_senc_(?:out|put))\((\w+)_putk\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
 ENC = re.compile(r'^def (\w+)_encode\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_enc_(?:out|put))\((\w+_putn?)\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
+INL = re.compile(r'^def (\w+)_encode\((\+?o: [\w.]+)\) -> B\.Buf: O\.out_done\((\d+), (\w+_put)\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
 MISMATCH = []
 
 
@@ -72,18 +73,23 @@ def name_laws(runtime):
     out = {}
     for m in SER.finditer(text):
         X, ty, ret, wrap, P, d = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), int(m.group(6))
-        if d < 1:
-            continue
         dd = schema_depth(text, wrap, r'ser_done\(O\.is_poisoned\(fl\), (\d+),', X, d)
         out.setdefault(X, []).append(
             f'def {X}_serialize_capsym(o: {qual(ty)}) -> {{T.{X}_serialize(o) == T.{wrap}(T.{P}_putk(O.out_at({dd}n), 0, o)) : {ret_type(ret)}}}:\n  {{==}}')
     for m in ENC.finditer(text):
         X, ty, ret, wrap, put, d = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), int(m.group(6))
-        if d < 1:
-            continue
         dd = schema_depth(text, wrap, r'out_done\((\d+),', X, d)
         out.setdefault(X, []).append(
             f'def {X}_encode_capsym(o: {qual(ty)}) -> {{T.{X}_encode(o) == T.{wrap}(T.{put}(O.out_at({dd}n), 0, o)) : {ret_type(ret)}}}:\n  {{==}}')
+    for m in INL.finditer(text):
+        X, par, N, put, d = m.group(1), m.group(2), int(m.group(3)), m.group(4), int(m.group(5))
+        dd = depth(N)
+        if dd != d:
+            MISMATCH.append((X, 'encode', d, dd))
+            dd = d
+        pty = par.split(': ')[1]
+        out.setdefault(X, []).append(
+            f'def {X}_encode_capsym({par.split(": ")[0]}: {qual(pty)}) -> {{T.{X}_encode(o) == O.out_done({N}, T.{put}(O.out_at({dd}n), 0, o)) : B.Buf}}:\n  {{==}}')
     return out
 
 

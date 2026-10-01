@@ -170,6 +170,7 @@ codegen/obytes_len.py	codegen/proofs/witnesses/obytes_len.py
 codegen/mutation_laws.py	codegen/proofs/laws/mutation_laws.py
 codegen/mutation_laws_cap.py	codegen/proofs/laws/mutation_laws_cap.py
 codegen/mutation_laws_capsym.py	codegen/proofs/laws/mutation_laws_capsym.py
+codegen/cmp_laws.py	codegen/proofs/laws/cmp_laws.py
 codegen/mutation_laws_const.py	codegen/proofs/laws/mutation_laws_const.py
 codegen/mutation_laws_small.py	codegen/proofs/laws/mutation_laws_small.py
 codegen/mutation_laws_arith.py	codegen/proofs/laws/mutation_laws_arith.py
