@@ -22,7 +22,8 @@
     "spec_unique_small.bend",
     "sub_unique_boolean.bend",
     "codec_0.bend",
-    "spec_repr_small.bend"
+    "spec_repr_small.bend",
+    "offset_laws_boolean.bend"
    ]
   },
   "boolean_hashtreeroot_proof_generated.bend": {
@@ -50,7 +51,8 @@
     "fixrej_f0.bend",
     "spec_small.bend",
     "spec_unique_small.bend",
-    "spec_repr_small.bend"
+    "spec_repr_small.bend",
+    "offset_laws_uint8.bend"
    ]
   },
   "uint8_hashtreeroot_proof_generated.bend": {
@@ -81,7 +83,8 @@
     "spec_unique_uint32.bend",
     "codec_0.bend",
     "spec_repr_uint32.bend",
-    "spec_input_uint32.bend"
+    "spec_input_uint32.bend",
+    "offset_laws_uint32.bend"
    ]
   },
   "uint32_hashtreeroot_proof_generated.bend": {
@@ -112,7 +115,8 @@
     "spec_unique_uint64.bend",
     "codec_0.bend",
     "spec_repr_uint64.bend",
-    "spec_input_uint64.bend"
+    "spec_input_uint64.bend",
+    "offset_laws_uint64.bend"
    ]
   },
   "uint64_hashtreeroot_proof_generated.bend": {
@@ -144,7 +148,8 @@
     "spec_unique_uint256.bend",
     "codec_0.bend",
     "spec_repr_uint256.bend",
-    "spec_input_uint256.bend"
+    "spec_input_uint256.bend",
+    "offset_laws_uint256.bend"
    ]
   },
   "uint256_hashtreeroot_proof_generated.bend": {
@@ -173,7 +178,8 @@
     "fixrej_f0.bend",
     "spec_small.bend",
     "spec_unique_small.bend",
-    "spec_repr_small.bend"
+    "spec_repr_small.bend",
+    "offset_laws_Bytes1.bend"
    ]
   },
   "FuluBytes1_hashtreeroot_proof_generated.bend": {
@@ -205,7 +211,8 @@
     "spec_unique_Bytes4.bend",
     "codec_0.bend",
     "spec_repr_Bytes4.bend",
-    "spec_input_Bytes4.bend"
+    "spec_input_Bytes4.bend",
+    "offset_laws_Bytes4.bend"
    ]
   },
   "FuluBytes4_hashtreeroot_proof_generated.bend": {
@@ -238,7 +245,8 @@
     "spec_unique_Bytes32.bend",
     "codec_0.bend",
     "spec_repr_Bytes32.bend",
-    "spec_input_Bytes32.bend"
+    "spec_input_Bytes32.bend",
+    "offset_laws_Bytes32.bend"
    ]
   },
   "FuluBytes32_hashtreeroot_proof_generated.bend": {
@@ -271,7 +279,8 @@
     "spec_unique_Bytes48.bend",
     "codec_0.bend",
     "spec_repr_Bytes48.bend",
-    "spec_input_Bytes48.bend"
+    "spec_input_Bytes48.bend",
+    "offset_laws_Bytes48.bend"
    ]
   },
   "FuluBytes48_hashtreeroot_proof_generated.bend": {
@@ -303,7 +312,8 @@
     "spec_unique_Bytes96.bend",
     "codec_0.bend",
     "spec_repr_Bytes96.bend",
-    "spec_input_Bytes96.bend"
+    "spec_input_Bytes96.bend",
+    "offset_laws_Bytes96.bend"
    ]
   },
   "FuluBytes96_hashtreeroot_proof_generated.bend": {
@@ -336,7 +346,8 @@
     "spec_unique_Bytes8.bend",
     "codec_0.bend",
     "spec_repr_Bytes8.bend",
-    "spec_input_Bytes8.bend"
+    "spec_input_Bytes8.bend",
+    "offset_laws_Bytes8.bend"
    ]
   },
   "FuluBytes8_hashtreeroot_proof_generated.bend": {
@@ -369,7 +380,8 @@
     "spec_unique_Bytes20.bend",
     "codec_0.bend",
     "spec_repr_Bytes20.bend",
-    "spec_input_Bytes20.bend"
+    "spec_input_Bytes20.bend",
+    "offset_laws_Bytes20.bend"
    ]
   },
   "FuluBytes20_hashtreeroot_proof_generated.bend": {
@@ -400,7 +412,8 @@
     "spec_unique_Slot.bend",
     "codec_0.bend",
     "spec_repr_Slot.bend",
-    "spec_input_Slot.bend"
+    "spec_input_Slot.bend",
+    "offset_laws_Slot.bend"
    ]
   },
   "FuluSlot_hashtreeroot_proof_generated.bend": {
@@ -431,7 +444,8 @@
     "spec_unique_Epoch.bend",
     "codec_0.bend",
     "spec_repr_Epoch.bend",
-    "spec_input_Epoch.bend"
+    "spec_input_Epoch.bend",
+    "offset_laws_Epoch.bend"
    ]
   },
   "FuluEpoch_hashtreeroot_proof_generated.bend": {
@@ -462,7 +476,8 @@
     "spec_unique_Gwei.bend",
     "codec_1.bend",
     "spec_repr_Gwei.bend",
-    "spec_input_Gwei.bend"
+    "spec_input_Gwei.bend",
+    "offset_laws_Gwei.bend"
    ]
   },
   "FuluGwei_hashtreeroot_proof_generated.bend": {
@@ -494,7 +509,8 @@
     "spec_unique_Hash32.bend",
     "codec_1.bend",
     "spec_repr_Hash32.bend",
-    "spec_input_Hash32.bend"
+    "spec_input_Hash32.bend",
+    "offset_laws_Hash32.bend"
    ]
   },
   "FuluHash32_hashtreeroot_proof_generated.bend": {
@@ -526,7 +542,8 @@
     "spec_unique_Version.bend",
     "codec_1.bend",
     "spec_repr_Version.bend",
-    "spec_input_Version.bend"
+    "spec_input_Version.bend",
+    "offset_laws_Version.bend"
    ]
   },
   "FuluVersion_hashtreeroot_proof_generated.bend": {
@@ -558,7 +575,8 @@
     "spec_unique_DomainType.bend",
     "codec_1.bend",
     "spec_repr_DomainType.bend",
-    "spec_input_DomainType.bend"
+    "spec_input_DomainType.bend",
+    "offset_laws_DomainType.bend"
    ]
   },
   "FuluDomainType_hashtreeroot_proof_generated.bend": {
@@ -590,7 +608,8 @@
     "spec_unique_BLSSignature.bend",
     "codec_1.bend",
     "spec_repr_BLSSignature.bend",
-    "spec_input_BLSSignature.bend"
+    "spec_input_BLSSignature.bend",
+    "offset_laws_BLSSignature.bend"
    ]
   },
   "FuluBLSSignature_hashtreeroot_proof_generated.bend": {
@@ -619,7 +638,8 @@
     "spec_codec_FinalityBranch.bend",
     "spec_unique_FinalityBranch.bend",
     "spec_repr_FinalityBranch.bend",
-    "spec_input_FinalityBranch.bend"
+    "spec_input_FinalityBranch.bend",
+    "offset_laws_FinalityBranch.bend"
    ]
   },
   "FuluFinalityBranch_hashtreeroot_proof_generated.bend": {
@@ -651,7 +671,8 @@
     "spec_unique_VersionedHash.bend",
     "codec_1.bend",
     "spec_repr_VersionedHash.bend",
-    "spec_input_VersionedHash.bend"
+    "spec_input_VersionedHash.bend",
+    "offset_laws_VersionedHash.bend"
    ]
   },
   "FuluVersionedHash_hashtreeroot_proof_generated.bend": {
@@ -683,7 +704,8 @@
     "spec_unique_G1Point.bend",
     "codec_1.bend",
     "spec_repr_G1Point.bend",
-    "spec_input_G1Point.bend"
+    "spec_input_G1Point.bend",
+    "offset_laws_G1Point.bend"
    ]
   },
   "FuluG1Point_hashtreeroot_proof_generated.bend": {
@@ -715,7 +737,8 @@
     "spec_unique_G2Point.bend",
     "codec_1.bend",
     "spec_repr_G2Point.bend",
-    "spec_input_G2Point.bend"
+    "spec_input_G2Point.bend",
+    "offset_laws_G2Point.bend"
    ]
   },
   "FuluG2Point_hashtreeroot_proof_generated.bend": {
@@ -747,7 +770,8 @@
     "spec_unique_Fork.bend",
     "codec_1.bend",
     "spec_repr_Fork.bend",
-    "spec_input_Fork.bend"
+    "spec_input_Fork.bend",
+    "offset_laws_Fork.bend"
    ]
   },
   "FuluFork_hashtreeroot_proof_generated.bend": {
@@ -780,7 +804,8 @@
     "spec_unique_SyncAggregate.bend",
     "codec_1.bend",
     "spec_repr_SyncAggregate.bend",
-    "spec_input_SyncAggregate.bend"
+    "spec_input_SyncAggregate.bend",
+    "offset_laws_SyncAggregate.bend"
    ]
   },
   "FuluSyncAggregate_hashtreeroot_proof_generated.bend": {
@@ -812,7 +837,8 @@
     "spec_unique_SyncAggregatorSelectionData.bend",
     "codec_1.bend",
     "spec_repr_SyncAggregatorSelectionData.bend",
-    "spec_input_SyncAggregatorSelectionData.bend"
+    "spec_input_SyncAggregatorSelectionData.bend",
+    "offset_laws_SyncAggregatorSelectionData.bend"
    ]
   },
   "FuluSyncAggregatorSelectionData_hashtreeroot_proof_generated.bend": {
@@ -844,7 +870,8 @@
     "spec_unique_PowBlock.bend",
     "codec_1.bend",
     "spec_repr_PowBlock.bend",
-    "spec_input_PowBlock.bend"
+    "spec_input_PowBlock.bend",
+    "offset_laws_PowBlock.bend"
    ]
   },
   "FuluPowBlock_hashtreeroot_proof_generated.bend": {
@@ -875,7 +902,8 @@
     "spec_unique_CommitteeIndex.bend",
     "codec_2.bend",
     "spec_repr_CommitteeIndex.bend",
-    "spec_input_CommitteeIndex.bend"
+    "spec_input_CommitteeIndex.bend",
+    "offset_laws_CommitteeIndex.bend"
    ]
   },
   "FuluCommitteeIndex_hashtreeroot_proof_generated.bend": {
@@ -906,7 +934,8 @@
     "spec_unique_ValidatorIndex.bend",
     "codec_2.bend",
     "spec_repr_ValidatorIndex.bend",
-    "spec_input_ValidatorIndex.bend"
+    "spec_input_ValidatorIndex.bend",
+    "offset_laws_ValidatorIndex.bend"
    ]
   },
   "FuluValidatorIndex_hashtreeroot_proof_generated.bend": {
@@ -938,7 +967,8 @@
     "spec_unique_PendingConsolidation.bend",
     "codec_2.bend",
     "spec_repr_PendingConsolidation.bend",
-    "spec_input_PendingConsolidation.bend"
+    "spec_input_PendingConsolidation.bend",
+    "offset_laws_PendingConsolidation.bend"
    ]
   },
   "FuluPendingConsolidation_hashtreeroot_proof_generated.bend": {
@@ -970,7 +1000,8 @@
     "spec_unique_PendingPartialWithdrawal.bend",
     "codec_2.bend",
     "spec_repr_PendingPartialWithdrawal.bend",
-    "spec_input_PendingPartialWithdrawal.bend"
+    "spec_input_PendingPartialWithdrawal.bend",
+    "offset_laws_PendingPartialWithdrawal.bend"
    ]
   },
   "FuluPendingPartialWithdrawal_hashtreeroot_proof_generated.bend": {
@@ -1002,7 +1033,8 @@
     "spec_unique_VoluntaryExit.bend",
     "codec_2.bend",
     "spec_repr_VoluntaryExit.bend",
-    "spec_input_VoluntaryExit.bend"
+    "spec_input_VoluntaryExit.bend",
+    "offset_laws_VoluntaryExit.bend"
    ]
   },
   "FuluVoluntaryExit_hashtreeroot_proof_generated.bend": {
@@ -1034,7 +1066,8 @@
     "spec_unique_SignedVoluntaryExit.bend",
     "codec_2.bend",
     "spec_repr_SignedVoluntaryExit.bend",
-    "spec_input_SignedVoluntaryExit.bend"
+    "spec_input_SignedVoluntaryExit.bend",
+    "offset_laws_SignedVoluntaryExit.bend"
    ]
   },
   "FuluSignedVoluntaryExit_hashtreeroot_proof_generated.bend": {
@@ -1066,7 +1099,8 @@
     "spec_unique_Root.bend",
     "codec_2.bend",
     "spec_repr_Root.bend",
-    "spec_input_Root.bend"
+    "spec_input_Root.bend",
+    "offset_laws_Root.bend"
    ]
   },
   "FuluRoot_hashtreeroot_proof_generated.bend": {
@@ -1098,7 +1132,8 @@
     "spec_unique_HistoricalSummary.bend",
     "codec_2.bend",
     "spec_repr_HistoricalSummary.bend",
-    "spec_input_HistoricalSummary.bend"
+    "spec_input_HistoricalSummary.bend",
+    "offset_laws_HistoricalSummary.bend"
    ]
   },
   "FuluHistoricalSummary_hashtreeroot_proof_generated.bend": {
@@ -1131,7 +1166,8 @@
     "spec_unique_SyncCommitteeContribution.bend",
     "codec_2.bend",
     "spec_repr_SyncCommitteeContribution.bend",
-    "spec_input_SyncCommitteeContribution.bend"
+    "spec_input_SyncCommitteeContribution.bend",
+    "offset_laws_SyncCommitteeContribution.bend"
    ]
   },
   "FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend": {
@@ -1159,7 +1195,8 @@
     "spec_codec_ContributionAndProof.bend",
     "spec_unique_ContributionAndProof.bend",
     "spec_repr_ContributionAndProof.bend",
-    "spec_input_ContributionAndProof.bend"
+    "spec_input_ContributionAndProof.bend",
+    "offset_laws_ContributionAndProof.bend"
    ]
   },
   "FuluContributionAndProof_hashtreeroot_proof_generated.bend": {
@@ -1187,7 +1224,8 @@
     "spec_codec_SignedContributionAndProof.bend",
     "spec_unique_SignedContributionAndProof.bend",
     "spec_repr_SignedContributionAndProof.bend",
-    "spec_input_SignedContributionAndProof.bend"
+    "spec_input_SignedContributionAndProof.bend",
+    "offset_laws_SignedContributionAndProof.bend"
    ]
   },
   "FuluSignedContributionAndProof_hashtreeroot_proof_generated.bend": {
@@ -1219,7 +1257,8 @@
     "spec_unique_SyncCommitteeMessage.bend",
     "codec_2.bend",
     "spec_repr_SyncCommitteeMessage.bend",
-    "spec_input_SyncCommitteeMessage.bend"
+    "spec_input_SyncCommitteeMessage.bend",
+    "offset_laws_SyncCommitteeMessage.bend"
    ]
   },
   "FuluSyncCommitteeMessage_hashtreeroot_proof_generated.bend": {
@@ -1251,7 +1290,8 @@
     "spec_unique_Eth1Block.bend",
     "codec_2.bend",
     "spec_repr_Eth1Block.bend",
-    "spec_input_Eth1Block.bend"
+    "spec_input_Eth1Block.bend",
+    "offset_laws_Eth1Block.bend"
    ]
   },
   "FuluEth1Block_hashtreeroot_proof_generated.bend": {
@@ -1283,7 +1323,8 @@
     "spec_unique_BeaconBlockHeader.bend",
     "codec_2.bend",
     "spec_repr_BeaconBlockHeader.bend",
-    "spec_input_BeaconBlockHeader.bend"
+    "spec_input_BeaconBlockHeader.bend",
+    "offset_laws_BeaconBlockHeader.bend"
    ]
   },
   "FuluBeaconBlockHeader_hashtreeroot_proof_generated.bend": {
@@ -1316,7 +1357,8 @@
     "spec_unique_SignedBeaconBlockHeader.bend",
     "codec_3.bend",
     "spec_repr_SignedBeaconBlockHeader.bend",
-    "spec_input_SignedBeaconBlockHeader.bend"
+    "spec_input_SignedBeaconBlockHeader.bend",
+    "offset_laws_SignedBeaconBlockHeader.bend"
    ]
   },
   "FuluSignedBeaconBlockHeader_hashtreeroot_proof_generated.bend": {
@@ -1332,7 +1374,8 @@
    "generated_name": "ProposerSlashing",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_ProposerSlashing.bend"
+    "spec_codec_ProposerSlashing.bend",
+    "offset_size_ProposerSlashing.bend"
    ]
   },
   "FuluProposerSlashing_decode_ssz_proof_generated.bend": {
@@ -1344,7 +1387,8 @@
     "spec_codec_ProposerSlashing.bend",
     "spec_unique_ProposerSlashing.bend",
     "spec_repr_ProposerSlashing.bend",
-    "spec_input_ProposerSlashing.bend"
+    "spec_input_ProposerSlashing.bend",
+    "offset_laws_ProposerSlashing.bend"
    ]
   },
   "FuluProposerSlashing_hashtreeroot_proof_generated.bend": {
@@ -1370,7 +1414,8 @@
    "files": [
     "fixrej_HistoricalBatch.bend",
     "spec_arr_HistoricalBatch.bend",
-    "spec_arr_unique_HistoricalBatch.bend"
+    "spec_arr_unique_HistoricalBatch.bend",
+    "offset_laws_HistoricalBatch.bend"
    ]
   },
   "FuluHistoricalBatch_hashtreeroot_proof_generated.bend": {
@@ -1402,7 +1447,8 @@
     "spec_unique_Eth1Data.bend",
     "codec_3.bend",
     "spec_repr_Eth1Data.bend",
-    "spec_input_Eth1Data.bend"
+    "spec_input_Eth1Data.bend",
+    "offset_laws_Eth1Data.bend"
    ]
   },
   "FuluEth1Data_hashtreeroot_proof_generated.bend": {
@@ -1434,7 +1480,8 @@
     "spec_unique_Checkpoint.bend",
     "codec_3.bend",
     "spec_repr_Checkpoint.bend",
-    "spec_input_Checkpoint.bend"
+    "spec_input_Checkpoint.bend",
+    "offset_laws_Checkpoint.bend"
    ]
   },
   "FuluCheckpoint_hashtreeroot_proof_generated.bend": {
@@ -1466,7 +1513,8 @@
     "spec_unique_AttestationData.bend",
     "codec_3.bend",
     "spec_repr_AttestationData.bend",
-    "spec_input_AttestationData.bend"
+    "spec_input_AttestationData.bend",
+    "offset_laws_AttestationData.bend"
    ]
   },
   "FuluAttestationData_hashtreeroot_proof_generated.bend": {
@@ -1498,7 +1546,8 @@
     "spec_unique_SingleAttestation.bend",
     "codec_3.bend",
     "spec_repr_SingleAttestation.bend",
-    "spec_input_SingleAttestation.bend"
+    "spec_input_SingleAttestation.bend",
+    "offset_laws_SingleAttestation.bend"
    ]
   },
   "FuluSingleAttestation_hashtreeroot_proof_generated.bend": {
@@ -1524,7 +1573,8 @@
    "files": [
     "var_bitc_Attestation.bend",
     "var_bitc_Attestation_unique.bend",
-    "var_bitc_Attestation_rej.bend"
+    "var_bitc_Attestation_rej.bend",
+    "offset_laws_Attestation.bend"
    ]
   },
   "FuluAttestation_hashtreeroot_proof_generated.bend": {
@@ -1549,7 +1599,8 @@
    "op": "decode_ssz",
    "files": [
     "var_win_AggregateAndProof_top.bend",
-    "var_win_AggregateAndProof_unique.bend"
+    "var_win_AggregateAndProof_unique.bend",
+    "offset_laws_AggregateAndProof.bend"
    ]
   },
   "FuluAggregateAndProof_hashtreeroot_proof_generated.bend": {
@@ -1574,7 +1625,8 @@
    "op": "decode_ssz",
    "files": [
     "var_win_SignedAggregateAndProof_top.bend",
-    "var_win_SignedAggregateAndProof_unique.bend"
+    "var_win_SignedAggregateAndProof_unique.bend",
+    "offset_laws_SignedAggregateAndProof.bend"
    ]
   },
   "FuluSignedAggregateAndProof_hashtreeroot_proof_generated.bend": {
@@ -1600,7 +1652,8 @@
    "files": [
     "var_bitc_PendingAttestation.bend",
     "var_bitc_PendingAttestation_unique.bend",
-    "var_bitc_PendingAttestation_rej.bend"
+    "var_bitc_PendingAttestation_rej.bend",
+    "offset_laws_PendingAttestation.bend"
    ]
   },
   "FuluPendingAttestation_hashtreeroot_proof_generated.bend": {
@@ -1626,7 +1679,8 @@
    "files": [
     "var_codec_IndexedAttestation.bend",
     "var_codec_IndexedAttestation_unique.bend",
-    "var_codec_IndexedAttestation_rej.bend"
+    "var_codec_IndexedAttestation_rej.bend",
+    "offset_laws_IndexedAttestation.bend"
    ]
   },
   "FuluIndexedAttestation_hashtreeroot_proof_generated.bend": {
@@ -1652,7 +1706,8 @@
    "files": [
     "var_codec_AttesterSlashing.bend",
     "var_codec_AttesterSlashing_unique.bend",
-    "var_codec_AttesterSlashing_rej.bend"
+    "var_codec_AttesterSlashing_rej.bend",
+    "offset_laws_AttesterSlashing.bend"
    ]
   },
   "FuluAttesterSlashing_hashtreeroot_proof_generated.bend": {
@@ -1684,7 +1739,8 @@
     "spec_unique_ForkData.bend",
     "codec_3.bend",
     "spec_repr_ForkData.bend",
-    "spec_input_ForkData.bend"
+    "spec_input_ForkData.bend",
+    "offset_laws_ForkData.bend"
    ]
   },
   "FuluForkData_hashtreeroot_proof_generated.bend": {
@@ -1716,7 +1772,8 @@
     "spec_unique_ForkDigest.bend",
     "codec_3.bend",
     "spec_repr_ForkDigest.bend",
-    "spec_input_ForkDigest.bend"
+    "spec_input_ForkDigest.bend",
+    "offset_laws_ForkDigest.bend"
    ]
   },
   "FuluForkDigest_hashtreeroot_proof_generated.bend": {
@@ -1748,7 +1805,8 @@
     "spec_unique_Domain.bend",
     "codec_3.bend",
     "spec_repr_Domain.bend",
-    "spec_input_Domain.bend"
+    "spec_input_Domain.bend",
+    "offset_laws_Domain.bend"
    ]
   },
   "FuluDomain_hashtreeroot_proof_generated.bend": {
@@ -1780,7 +1838,8 @@
     "spec_unique_SigningData.bend",
     "codec_3.bend",
     "spec_repr_SigningData.bend",
-    "spec_input_SigningData.bend"
+    "spec_input_SigningData.bend",
+    "offset_laws_SigningData.bend"
    ]
   },
   "FuluSigningData_hashtreeroot_proof_generated.bend": {
@@ -1812,7 +1871,8 @@
     "spec_unique_BLSPubkey.bend",
     "codec_3.bend",
     "spec_repr_BLSPubkey.bend",
-    "spec_input_BLSPubkey.bend"
+    "spec_input_BLSPubkey.bend",
+    "offset_laws_BLSPubkey.bend"
    ]
   },
   "FuluBLSPubkey_hashtreeroot_proof_generated.bend": {
@@ -1844,7 +1904,8 @@
     "spec_unique_DepositRequest.bend",
     "codec_3.bend",
     "spec_repr_DepositRequest.bend",
-    "spec_input_DepositRequest.bend"
+    "spec_input_DepositRequest.bend",
+    "offset_laws_DepositRequest.bend"
    ]
   },
   "FuluDepositRequest_hashtreeroot_proof_generated.bend": {
@@ -1876,7 +1937,8 @@
     "spec_unique_PendingDeposit.bend",
     "codec_3.bend",
     "spec_repr_PendingDeposit.bend",
-    "spec_input_PendingDeposit.bend"
+    "spec_input_PendingDeposit.bend",
+    "offset_laws_PendingDeposit.bend"
    ]
   },
   "FuluPendingDeposit_hashtreeroot_proof_generated.bend": {
@@ -1902,7 +1964,8 @@
    "files": [
     "fixrej_SyncCommittee.bend",
     "spec_arr_SyncCommittee.bend",
-    "spec_arr_unique_SyncCommittee.bend"
+    "spec_arr_unique_SyncCommittee.bend",
+    "offset_laws_SyncCommittee.bend"
    ]
   },
   "FuluSyncCommittee_hashtreeroot_proof_generated.bend": {
@@ -1935,7 +1998,8 @@
     "spec_unique_DepositData.bend",
     "codec_4.bend",
     "spec_repr_DepositData.bend",
-    "spec_input_DepositData.bend"
+    "spec_input_DepositData.bend",
+    "offset_laws_DepositData.bend"
    ]
   },
   "FuluDepositData_hashtreeroot_proof_generated.bend": {
@@ -1951,7 +2015,8 @@
    "generated_name": "Deposit",
    "op": "encode_ssz",
    "files": [
-    "spec_codec_Deposit.bend"
+    "spec_codec_Deposit.bend",
+    "offset_size_Deposit.bend"
    ]
   },
   "FuluDeposit_decode_ssz_proof_generated.bend": {
@@ -1963,7 +2028,8 @@
     "spec_codec_Deposit.bend",
     "spec_unique_Deposit.bend",
     "spec_repr_Deposit.bend",
-    "spec_input_Deposit.bend"
+    "spec_input_Deposit.bend",
+    "offset_laws_Deposit.bend"
    ]
   },
   "FuluDeposit_hashtreeroot_proof_generated.bend": {
@@ -1995,7 +2061,8 @@
     "spec_unique_DepositMessage.bend",
     "codec_4.bend",
     "spec_repr_DepositMessage.bend",
-    "spec_input_DepositMessage.bend"
+    "spec_input_DepositMessage.bend",
+    "offset_laws_DepositMessage.bend"
    ]
   },
   "FuluDepositMessage_hashtreeroot_proof_generated.bend": {
@@ -2022,7 +2089,8 @@
    "files": [
     "fixchk_Validator.bend",
     "spec_rec_Validator.bend",
-    "spec_rec_unique_Validator.bend"
+    "spec_rec_unique_Validator.bend",
+    "offset_laws_Validator.bend"
    ]
   },
   "FuluValidator_hashtreeroot_proof_generated.bend": {
@@ -2054,7 +2122,8 @@
     "spec_unique_NodeID.bend",
     "codec_4.bend",
     "spec_repr_NodeID.bend",
-    "spec_input_NodeID.bend"
+    "spec_input_NodeID.bend",
+    "offset_laws_NodeID.bend"
    ]
   },
   "FuluNodeID_hashtreeroot_proof_generated.bend": {
@@ -2085,7 +2154,8 @@
     "spec_unique_SubnetID.bend",
     "codec_4.bend",
     "spec_repr_SubnetID.bend",
-    "spec_input_SubnetID.bend"
+    "spec_input_SubnetID.bend",
+    "offset_laws_SubnetID.bend"
    ]
   },
   "FuluSubnetID_hashtreeroot_proof_generated.bend": {
@@ -2116,7 +2186,8 @@
     "spec_unique_Ether.bend",
     "codec_4.bend",
     "spec_repr_Ether.bend",
-    "spec_input_Ether.bend"
+    "spec_input_Ether.bend",
+    "offset_laws_Ether.bend"
    ]
   },
   "FuluEther_hashtreeroot_proof_generated.bend": {
@@ -2144,7 +2215,8 @@
     "fixrej_f3.bend",
     "spec_small.bend",
     "spec_unique_small.bend",
-    "spec_repr_small.bend"
+    "spec_repr_small.bend",
+    "offset_laws_ParticipationFlags.bend"
    ]
   },
   "FuluParticipationFlags_hashtreeroot_proof_generated.bend": {
@@ -2173,7 +2245,8 @@
     "spec_codec_CurrentSyncCommitteeBranch.bend",
     "spec_unique_CurrentSyncCommitteeBranch.bend",
     "spec_repr_CurrentSyncCommitteeBranch.bend",
-    "spec_input_CurrentSyncCommitteeBranch.bend"
+    "spec_input_CurrentSyncCommitteeBranch.bend",
+    "offset_laws_CurrentSyncCommitteeBranch.bend"
    ]
   },
   "FuluCurrentSyncCommitteeBranch_hashtreeroot_proof_generated.bend": {
@@ -2202,7 +2275,8 @@
     "spec_codec_NextSyncCommitteeBranch.bend",
     "spec_unique_NextSyncCommitteeBranch.bend",
     "spec_repr_NextSyncCommitteeBranch.bend",
-    "spec_input_NextSyncCommitteeBranch.bend"
+    "spec_input_NextSyncCommitteeBranch.bend",
+    "offset_laws_NextSyncCommitteeBranch.bend"
    ]
   },
   "FuluNextSyncCommitteeBranch_hashtreeroot_proof_generated.bend": {
@@ -2226,7 +2300,8 @@
    "generated_name": "Transaction",
    "op": "decode_ssz",
    "files": [
-    "var_codec_Transaction.bend"
+    "var_codec_Transaction.bend",
+    "offset_laws_Transaction.bend"
    ]
   },
   "FuluTransaction_hashtreeroot_proof_generated.bend": {
@@ -2258,7 +2333,8 @@
     "spec_unique_ExecutionAddress.bend",
     "codec_4.bend",
     "spec_repr_ExecutionAddress.bend",
-    "spec_input_ExecutionAddress.bend"
+    "spec_input_ExecutionAddress.bend",
+    "offset_laws_ExecutionAddress.bend"
    ]
   },
   "FuluExecutionAddress_hashtreeroot_proof_generated.bend": {
@@ -2290,7 +2366,8 @@
     "spec_unique_ConsolidationRequest.bend",
     "codec_4.bend",
     "spec_repr_ConsolidationRequest.bend",
-    "spec_input_ConsolidationRequest.bend"
+    "spec_input_ConsolidationRequest.bend",
+    "offset_laws_ConsolidationRequest.bend"
    ]
   },
   "FuluConsolidationRequest_hashtreeroot_proof_generated.bend": {
@@ -2322,7 +2399,8 @@
     "spec_unique_WithdrawalRequest.bend",
     "codec_4.bend",
     "spec_repr_WithdrawalRequest.bend",
-    "spec_input_WithdrawalRequest.bend"
+    "spec_input_WithdrawalRequest.bend",
+    "offset_laws_WithdrawalRequest.bend"
    ]
   },
   "FuluWithdrawalRequest_hashtreeroot_proof_generated.bend": {
@@ -2346,7 +2424,8 @@
    "generated_name": "ExecutionRequests",
    "op": "decode_ssz",
    "files": [
-    "var_codec_ExecutionRequests.bend"
+    "var_codec_ExecutionRequests.bend",
+    "offset_laws_ExecutionRequests.bend"
    ]
   },
   "FuluExecutionRequests_hashtreeroot_proof_generated.bend": {
@@ -2378,7 +2457,8 @@
     "spec_unique_BLSToExecutionChange.bend",
     "codec_4.bend",
     "spec_repr_BLSToExecutionChange.bend",
-    "spec_input_BLSToExecutionChange.bend"
+    "spec_input_BLSToExecutionChange.bend",
+    "offset_laws_BLSToExecutionChange.bend"
    ]
   },
   "FuluBLSToExecutionChange_hashtreeroot_proof_generated.bend": {
@@ -2410,7 +2490,8 @@
     "spec_unique_SignedBLSToExecutionChange.bend",
     "codec_4.bend",
     "spec_repr_SignedBLSToExecutionChange.bend",
-    "spec_input_SignedBLSToExecutionChange.bend"
+    "spec_input_SignedBLSToExecutionChange.bend",
+    "offset_laws_SignedBLSToExecutionChange.bend"
    ]
   },
   "FuluSignedBLSToExecutionChange_hashtreeroot_proof_generated.bend": {
@@ -2436,7 +2517,8 @@
    "files": [
     "var_bytes_ExecutionPayloadHeader.bend",
     "var_bytes_ExecutionPayloadHeader_unique.bend",
-    "var_bytes_ExecutionPayloadHeader_rej.bend"
+    "var_bytes_ExecutionPayloadHeader_rej.bend",
+    "offset_laws_ExecutionPayloadHeader.bend"
    ]
   },
   "FuluExecutionPayloadHeader_hashtreeroot_proof_generated.bend": {
@@ -2468,7 +2550,8 @@
     "spec_unique_PayloadId.bend",
     "codec_4.bend",
     "spec_repr_PayloadId.bend",
-    "spec_input_PayloadId.bend"
+    "spec_input_PayloadId.bend",
+    "offset_laws_PayloadId.bend"
    ]
   },
   "FuluPayloadId_hashtreeroot_proof_generated.bend": {
@@ -2499,7 +2582,8 @@
     "spec_unique_WithdrawalIndex.bend",
     "codec_4.bend",
     "spec_repr_WithdrawalIndex.bend",
-    "spec_input_WithdrawalIndex.bend"
+    "spec_input_WithdrawalIndex.bend",
+    "offset_laws_WithdrawalIndex.bend"
    ]
   },
   "FuluWithdrawalIndex_hashtreeroot_proof_generated.bend": {
@@ -2531,7 +2615,8 @@
     "spec_unique_Withdrawal.bend",
     "codec_5.bend",
     "spec_repr_Withdrawal.bend",
-    "spec_input_Withdrawal.bend"
+    "spec_input_Withdrawal.bend",
+    "offset_laws_Withdrawal.bend"
    ]
   },
   "FuluWithdrawal_hashtreeroot_proof_generated.bend": {
@@ -2555,7 +2640,8 @@
    "generated_name": "ExecutionPayload",
    "op": "decode_ssz",
    "files": [
-    "var_codec_ExecutionPayload.bend"
+    "var_codec_ExecutionPayload.bend",
+    "offset_laws_ExecutionPayload.bend"
    ]
   },
   "FuluExecutionPayload_hashtreeroot_proof_generated.bend": {
@@ -2579,7 +2665,8 @@
    "generated_name": "BeaconState",
    "op": "decode_ssz",
    "files": [
-    "var_codec_BeaconState.bend"
+    "var_codec_BeaconState.bend",
+    "offset_laws_BeaconState.bend"
    ]
   },
   "FuluBeaconState_hashtreeroot_proof_generated.bend": {
@@ -2608,7 +2695,8 @@
     "spec_codec_ExecutionBranch.bend",
     "spec_unique_ExecutionBranch.bend",
     "spec_repr_ExecutionBranch.bend",
-    "spec_input_ExecutionBranch.bend"
+    "spec_input_ExecutionBranch.bend",
+    "offset_laws_ExecutionBranch.bend"
    ]
   },
   "FuluExecutionBranch_hashtreeroot_proof_generated.bend": {
@@ -2634,7 +2722,8 @@
    "files": [
     "var_bytes_LightClientHeader.bend",
     "var_bytes_LightClientHeader_unique.bend",
-    "var_bytes_LightClientHeader_rej.bend"
+    "var_bytes_LightClientHeader_rej.bend",
+    "offset_laws_LightClientHeader.bend"
    ]
   },
   "FuluLightClientHeader_hashtreeroot_proof_generated.bend": {
@@ -2660,7 +2749,8 @@
    "files": [
     "var_bytes_LightClientOptimisticUpdate.bend",
     "var_bytes_LightClientOptimisticUpdate_unique.bend",
-    "var_bytes_LightClientOptimisticUpdate_rej.bend"
+    "var_bytes_LightClientOptimisticUpdate_rej.bend",
+    "offset_laws_LightClientOptimisticUpdate.bend"
    ]
   },
   "FuluLightClientOptimisticUpdate_hashtreeroot_proof_generated.bend": {
@@ -2684,7 +2774,8 @@
    "generated_name": "LightClientFinalityUpdate",
    "op": "decode_ssz",
    "files": [
-    "var_bytesx_LightClientFinalityUpdate_dec.bend"
+    "var_bytesx_LightClientFinalityUpdate_dec.bend",
+    "offset_laws_LightClientFinalityUpdate.bend"
    ]
   },
   "FuluLightClientFinalityUpdate_hashtreeroot_proof_generated.bend": {
@@ -2708,7 +2799,8 @@
    "generated_name": "LightClientUpdate",
    "op": "decode_ssz",
    "files": [
-    "var_codec_LightClientUpdate.bend"
+    "var_codec_LightClientUpdate.bend",
+    "offset_laws_LightClientUpdate.bend"
    ]
   },
   "FuluLightClientUpdate_hashtreeroot_proof_generated.bend": {
@@ -2734,7 +2826,8 @@
    "files": [
     "var_bytes_LightClientBootstrap.bend",
     "var_bytes_LightClientBootstrap_unique.bend",
-    "var_bytes_LightClientBootstrap_rej.bend"
+    "var_bytes_LightClientBootstrap_rej.bend",
+    "offset_laws_LightClientBootstrap.bend"
    ]
   },
   "FuluLightClientBootstrap_hashtreeroot_proof_generated.bend": {
@@ -2765,7 +2858,8 @@
     "spec_unique_BlobIndex.bend",
     "codec_5.bend",
     "spec_repr_BlobIndex.bend",
-    "spec_input_BlobIndex.bend"
+    "spec_input_BlobIndex.bend",
+    "offset_laws_BlobIndex.bend"
    ]
   },
   "FuluBlobIndex_hashtreeroot_proof_generated.bend": {
@@ -2797,7 +2891,8 @@
     "spec_unique_BlobIdentifier.bend",
     "codec_5.bend",
     "spec_repr_BlobIdentifier.bend",
-    "spec_input_BlobIdentifier.bend"
+    "spec_input_BlobIdentifier.bend",
+    "offset_laws_BlobIdentifier.bend"
    ]
   },
   "FuluBlobIdentifier_hashtreeroot_proof_generated.bend": {
@@ -2829,7 +2924,8 @@
     "spec_unique_KZGCommitment.bend",
     "codec_5.bend",
     "spec_repr_KZGCommitment.bend",
-    "spec_input_KZGCommitment.bend"
+    "spec_input_KZGCommitment.bend",
+    "offset_laws_KZGCommitment.bend"
    ]
   },
   "FuluKZGCommitment_hashtreeroot_proof_generated.bend": {
@@ -2853,7 +2949,8 @@
    "generated_name": "BeaconBlockBody",
    "op": "decode_ssz",
    "files": [
-    "var_codec_BeaconBlockBody.bend"
+    "var_codec_BeaconBlockBody.bend",
+    "offset_laws_BeaconBlockBody.bend"
    ]
   },
   "FuluBeaconBlockBody_hashtreeroot_proof_generated.bend": {
@@ -2877,7 +2974,8 @@
    "generated_name": "BeaconBlock",
    "op": "decode_ssz",
    "files": [
-    "var_codec_BeaconBlock.bend"
+    "var_codec_BeaconBlock.bend",
+    "offset_laws_BeaconBlock.bend"
    ]
   },
   "FuluBeaconBlock_hashtreeroot_proof_generated.bend": {
@@ -2901,7 +2999,8 @@
    "generated_name": "SignedBeaconBlock",
    "op": "decode_ssz",
    "files": [
-    "var_codec_SignedBeaconBlock.bend"
+    "var_codec_SignedBeaconBlock.bend",
+    "offset_laws_SignedBeaconBlock.bend"
    ]
   },
   "FuluSignedBeaconBlock_hashtreeroot_proof_generated.bend": {
@@ -2933,7 +3032,8 @@
     "spec_unique_KZGProof.bend",
     "codec_5.bend",
     "spec_repr_KZGProof.bend",
-    "spec_input_KZGProof.bend"
+    "spec_input_KZGProof.bend",
+    "offset_laws_KZGProof.bend"
    ]
   },
   "FuluKZGProof_hashtreeroot_proof_generated.bend": {
@@ -2960,7 +3060,8 @@
    "files": [
     "fixrej_Blob.bend",
     "spec_arr_Blob.bend",
-    "spec_arr_unique_Blob.bend"
+    "spec_arr_unique_Blob.bend",
+    "offset_laws_Blob.bend"
    ]
   },
   "FuluBlob_hashtreeroot_proof_generated.bend": {
@@ -2986,7 +3087,8 @@
    "files": [
     "fixrej_BlobSidecar.bend",
     "spec_arr_BlobSidecar.bend",
-    "spec_arr_unique_BlobSidecar.bend"
+    "spec_arr_unique_BlobSidecar.bend",
+    "offset_laws_BlobSidecar.bend"
    ]
   },
   "FuluBlobSidecar_hashtreeroot_proof_generated.bend": {
@@ -3015,7 +3117,8 @@
     "spec_codec_Cell.bend",
     "spec_unique_Cell.bend",
     "spec_repr_Cell.bend",
-    "spec_input_Cell.bend"
+    "spec_input_Cell.bend",
+    "offset_laws_Cell.bend"
    ]
   },
   "FuluCell_hashtreeroot_proof_generated.bend": {
@@ -3047,7 +3150,8 @@
     "spec_unique_CellIndex.bend",
     "codec_5.bend",
     "spec_repr_CellIndex.bend",
-    "spec_input_CellIndex.bend"
+    "spec_input_CellIndex.bend",
+    "offset_laws_CellIndex.bend"
    ]
   },
   "FuluCellIndex_hashtreeroot_proof_generated.bend": {
@@ -3078,7 +3182,8 @@
     "spec_unique_CommitmentIndex.bend",
     "codec_5.bend",
     "spec_repr_CommitmentIndex.bend",
-    "spec_input_CommitmentIndex.bend"
+    "spec_input_CommitmentIndex.bend",
+    "offset_laws_CommitmentIndex.bend"
    ]
   },
   "FuluCommitmentIndex_hashtreeroot_proof_generated.bend": {
@@ -3109,7 +3214,8 @@
     "spec_unique_RowIndex.bend",
     "codec_5.bend",
     "spec_repr_RowIndex.bend",
-    "spec_input_RowIndex.bend"
+    "spec_input_RowIndex.bend",
+    "offset_laws_RowIndex.bend"
    ]
   },
   "FuluRowIndex_hashtreeroot_proof_generated.bend": {
@@ -3140,7 +3246,8 @@
     "spec_unique_ColumnIndex.bend",
     "codec_5.bend",
     "spec_repr_ColumnIndex.bend",
-    "spec_input_ColumnIndex.bend"
+    "spec_input_ColumnIndex.bend",
+    "offset_laws_ColumnIndex.bend"
    ]
   },
   "FuluColumnIndex_hashtreeroot_proof_generated.bend": {
@@ -3166,7 +3273,8 @@
    "files": [
     "var_codec_DataColumnsByRootIdentifier.bend",
     "var_codec_DataColumnsByRootIdentifier_unique.bend",
-    "var_codec_DataColumnsByRootIdentifier_rej.bend"
+    "var_codec_DataColumnsByRootIdentifier_rej.bend",
+    "offset_laws_DataColumnsByRootIdentifier.bend"
    ]
   },
   "FuluDataColumnsByRootIdentifier_hashtreeroot_proof_generated.bend": {
@@ -3194,7 +3302,8 @@
     "spec_codec_MatrixEntry.bend",
     "spec_unique_MatrixEntry.bend",
     "spec_repr_MatrixEntry.bend",
-    "spec_input_MatrixEntry.bend"
+    "spec_input_MatrixEntry.bend",
+    "offset_laws_MatrixEntry.bend"
    ]
   },
   "FuluMatrixEntry_hashtreeroot_proof_generated.bend": {
@@ -3221,7 +3330,8 @@
     "var_codec_DataColumnSidecar.bend",
     "var_codec_DataColumnSidecar_acc.bend",
     "var_codec_DataColumnSidecar_unique.bend",
-    "var_codec_DataColumnSidecar_rej.bend"
+    "var_codec_DataColumnSidecar_rej.bend",
+    "offset_laws_DataColumnSidecar.bend"
    ]
   },
   "FuluDataColumnSidecar_hashtreeroot_proof_generated.bend": {
@@ -3252,7 +3362,8 @@
     "spec_unique_CustodyIndex.bend",
     "codec_5.bend",
     "spec_repr_CustodyIndex.bend",
-    "spec_input_CustodyIndex.bend"
+    "spec_input_CustodyIndex.bend",
+    "offset_laws_CustodyIndex.bend"
    ]
   },
   "FuluCustodyIndex_hashtreeroot_proof_generated.bend": {
@@ -3277,7 +3388,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ProgressiveSingleListContainerTestStruct.bend",
-    "var_codec_ProgressiveSingleListContainerTestStruct_unique.bend"
+    "var_codec_ProgressiveSingleListContainerTestStruct_unique.bend",
+    "offset_laws_ProgressiveSingleListContainerTestStruct.bend"
    ]
   },
   "ProgressiveSingleListContainerTestStruct_hashtreeroot_proof_generated.bend": {
@@ -3302,7 +3414,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ProgressiveComplexTestStruct.bend",
-    "var_codec_ProgressiveComplexTestStruct_unique.bend"
+    "var_codec_ProgressiveComplexTestStruct_unique.bend",
+    "offset_laws_ProgressiveComplexTestStruct.bend"
    ]
   },
   "ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend": {
@@ -3327,7 +3440,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ProgressiveVarTestStruct.bend",
-    "var_codec_ProgressiveVarTestStruct_unique.bend"
+    "var_codec_ProgressiveVarTestStruct_unique.bend",
+    "offset_laws_ProgressiveVarTestStruct.bend"
    ]
   },
   "ProgressiveVarTestStruct_hashtreeroot_proof_generated.bend": {
@@ -3353,7 +3467,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_ProgressiveSingleFieldContainerTestStruct.bend",
-    "sub_unique_ProgressiveSingleFieldContainerTestStruct.bend"
+    "sub_unique_ProgressiveSingleFieldContainerTestStruct.bend",
+    "offset_laws_ProgressiveSingleFieldContainerTestStruct.bend"
    ]
   },
   "ProgressiveSingleFieldContainerTestStruct_hashtreeroot_proof_generated.bend": {
@@ -3378,7 +3493,8 @@
    "op": "decode_ssz",
    "files": [
     "var_plist_proglist_bool_top.bend",
-    "var_plist_proglist_bool_top_unique.bend"
+    "var_plist_proglist_bool_top_unique.bend",
+    "offset_laws_proglist_bool.bend"
    ]
   },
   "proglist_bool_hashtreeroot_proof_generated.bend": {
@@ -3405,7 +3521,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_16.bend",
-    "sub_unique_vec_bool_16.bend"
+    "sub_unique_vec_bool_16.bend",
+    "offset_laws_vec_bool_16.bend"
    ]
   },
   "vec_bool_16_hashtreeroot_proof_generated.bend": {
@@ -3431,7 +3548,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_1.bend",
-    "sub_unique_vec_bool_1.bend"
+    "sub_unique_vec_bool_1.bend",
+    "offset_laws_vec_bool_1.bend"
    ]
   },
   "vec_bool_1_hashtreeroot_proof_generated.bend": {
@@ -3457,7 +3575,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_2.bend",
-    "sub_unique_vec_bool_2.bend"
+    "sub_unique_vec_bool_2.bend",
+    "offset_laws_vec_bool_2.bend"
    ]
   },
   "vec_bool_2_hashtreeroot_proof_generated.bend": {
@@ -3483,7 +3602,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_31.bend",
-    "sub_unique_vec_bool_31.bend"
+    "sub_unique_vec_bool_31.bend",
+    "offset_laws_vec_bool_31.bend"
    ]
   },
   "vec_bool_31_hashtreeroot_proof_generated.bend": {
@@ -3509,7 +3629,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_3.bend",
-    "sub_unique_vec_bool_3.bend"
+    "sub_unique_vec_bool_3.bend",
+    "offset_laws_vec_bool_3.bend"
    ]
   },
   "vec_bool_3_hashtreeroot_proof_generated.bend": {
@@ -3536,7 +3657,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_4.bend",
-    "sub_unique_vec_bool_4.bend"
+    "sub_unique_vec_bool_4.bend",
+    "offset_laws_vec_bool_4.bend"
    ]
   },
   "vec_bool_4_hashtreeroot_proof_generated.bend": {
@@ -3562,7 +3684,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_512.bend",
-    "sub_unique_vec_bool_512.bend"
+    "sub_unique_vec_bool_512.bend",
+    "offset_laws_vec_bool_512.bend"
    ]
   },
   "vec_bool_512_hashtreeroot_proof_generated.bend": {
@@ -3588,7 +3711,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_513.bend",
-    "sub_unique_vec_bool_513.bend"
+    "sub_unique_vec_bool_513.bend",
+    "offset_laws_vec_bool_513.bend"
    ]
   },
   "vec_bool_513_hashtreeroot_proof_generated.bend": {
@@ -3614,7 +3738,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_5.bend",
-    "sub_unique_vec_bool_5.bend"
+    "sub_unique_vec_bool_5.bend",
+    "offset_laws_vec_bool_5.bend"
    ]
   },
   "vec_bool_5_hashtreeroot_proof_generated.bend": {
@@ -3641,7 +3766,8 @@
    "files": [
     "fixchk_boolg.bend",
     "sub_vec_bool_8.bend",
-    "sub_unique_vec_bool_8.bend"
+    "sub_unique_vec_bool_8.bend",
+    "offset_laws_vec_bool_8.bend"
    ]
   },
   "vec_bool_8_hashtreeroot_proof_generated.bend": {
@@ -3667,7 +3793,8 @@
    "files": [
     "var_plist_proglist_uint128.bend",
     "var_plist_proglist_uint128_unique.bend",
-    "var_plist_proglist_uint128_rej.bend"
+    "var_plist_proglist_uint128_rej.bend",
+    "offset_laws_proglist_uint128.bend"
    ]
   },
   "proglist_uint128_hashtreeroot_proof_generated.bend": {
@@ -3696,7 +3823,8 @@
     "spec_gcodec_vec_uint128_16.bend",
     "spec_gunique_vec_uint128_16.bend",
     "spec_grepr_vec_uint128_16.bend",
-    "spec_ginput_vec_uint128_16.bend"
+    "spec_ginput_vec_uint128_16.bend",
+    "offset_laws_vec_uint128_16.bend"
    ]
   },
   "vec_uint128_16_hashtreeroot_proof_generated.bend": {
@@ -3725,7 +3853,8 @@
     "spec_gcodec_vec_uint128_1.bend",
     "spec_gunique_vec_uint128_1.bend",
     "spec_grepr_vec_uint128_1.bend",
-    "spec_ginput_vec_uint128_1.bend"
+    "spec_ginput_vec_uint128_1.bend",
+    "offset_laws_vec_uint128_1.bend"
    ]
   },
   "vec_uint128_1_hashtreeroot_proof_generated.bend": {
@@ -3754,7 +3883,8 @@
     "spec_gcodec_vec_uint128_2.bend",
     "spec_gunique_vec_uint128_2.bend",
     "spec_grepr_vec_uint128_2.bend",
-    "spec_ginput_vec_uint128_2.bend"
+    "spec_ginput_vec_uint128_2.bend",
+    "offset_laws_vec_uint128_2.bend"
    ]
   },
   "vec_uint128_2_hashtreeroot_proof_generated.bend": {
@@ -3782,7 +3912,8 @@
     "spec_gcodec_vec_uint128_31.bend",
     "spec_gunique_vec_uint128_31.bend",
     "spec_grepr_vec_uint128_31.bend",
-    "spec_ginput_vec_uint128_31.bend"
+    "spec_ginput_vec_uint128_31.bend",
+    "offset_laws_vec_uint128_31.bend"
    ]
   },
   "vec_uint128_31_hashtreeroot_proof_generated.bend": {
@@ -3811,7 +3942,8 @@
     "spec_gcodec_vec_uint128_3.bend",
     "spec_gunique_vec_uint128_3.bend",
     "spec_grepr_vec_uint128_3.bend",
-    "spec_ginput_vec_uint128_3.bend"
+    "spec_ginput_vec_uint128_3.bend",
+    "offset_laws_vec_uint128_3.bend"
    ]
   },
   "vec_uint128_3_hashtreeroot_proof_generated.bend": {
@@ -3840,7 +3972,8 @@
     "spec_gcodec_vec_uint128_4.bend",
     "spec_gunique_vec_uint128_4.bend",
     "spec_grepr_vec_uint128_4.bend",
-    "spec_ginput_vec_uint128_4.bend"
+    "spec_ginput_vec_uint128_4.bend",
+    "offset_laws_vec_uint128_4.bend"
    ]
   },
   "vec_uint128_4_hashtreeroot_proof_generated.bend": {
@@ -3866,7 +3999,8 @@
    "files": [
     "fixrej_vec_uint128_512.bend",
     "spec_garr_vec_uint128_512.bend",
-    "spec_garr_unique_vec_uint128_512.bend"
+    "spec_garr_unique_vec_uint128_512.bend",
+    "offset_laws_vec_uint128_512.bend"
    ]
   },
   "vec_uint128_512_hashtreeroot_proof_generated.bend": {
@@ -3892,7 +4026,8 @@
    "files": [
     "fixrej_vec_uint128_513.bend",
     "spec_garr_vec_uint128_513.bend",
-    "spec_garr_unique_vec_uint128_513.bend"
+    "spec_garr_unique_vec_uint128_513.bend",
+    "offset_laws_vec_uint128_513.bend"
    ]
   },
   "vec_uint128_513_hashtreeroot_proof_generated.bend": {
@@ -3921,7 +4056,8 @@
     "spec_gcodec_vec_uint128_5.bend",
     "spec_gunique_vec_uint128_5.bend",
     "spec_grepr_vec_uint128_5.bend",
-    "spec_ginput_vec_uint128_5.bend"
+    "spec_ginput_vec_uint128_5.bend",
+    "offset_laws_vec_uint128_5.bend"
    ]
   },
   "vec_uint128_5_hashtreeroot_proof_generated.bend": {
@@ -3950,7 +4086,8 @@
     "spec_gcodec_vec_uint128_8.bend",
     "spec_gunique_vec_uint128_8.bend",
     "spec_grepr_vec_uint128_8.bend",
-    "spec_ginput_vec_uint128_8.bend"
+    "spec_ginput_vec_uint128_8.bend",
+    "offset_laws_vec_uint128_8.bend"
    ]
   },
   "vec_uint128_8_hashtreeroot_proof_generated.bend": {
@@ -3975,7 +4112,8 @@
    "op": "decode_ssz",
    "files": [
     "var_plist_proglist_uint8_top.bend",
-    "var_plist_proglist_uint8_top_unique.bend"
+    "var_plist_proglist_uint8_top_unique.bend",
+    "offset_laws_proglist_uint8.bend"
    ]
   },
   "proglist_uint8_hashtreeroot_proof_generated.bend": {
@@ -4003,7 +4141,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_16.bend",
-    "sub_unique_vec_uint8_16.bend"
+    "sub_unique_vec_uint8_16.bend",
+    "offset_laws_vec_uint8_16.bend"
    ]
   },
   "vec_uint8_16_hashtreeroot_proof_generated.bend": {
@@ -4030,7 +4169,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_1.bend",
-    "sub_unique_vec_uint8_1.bend"
+    "sub_unique_vec_uint8_1.bend",
+    "offset_laws_vec_uint8_1.bend"
    ]
   },
   "vec_uint8_1_hashtreeroot_proof_generated.bend": {
@@ -4057,7 +4197,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_2.bend",
-    "sub_unique_vec_uint8_2.bend"
+    "sub_unique_vec_uint8_2.bend",
+    "offset_laws_vec_uint8_2.bend"
    ]
   },
   "vec_uint8_2_hashtreeroot_proof_generated.bend": {
@@ -4084,7 +4225,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_31.bend",
-    "sub_unique_vec_uint8_31.bend"
+    "sub_unique_vec_uint8_31.bend",
+    "offset_laws_vec_uint8_31.bend"
    ]
   },
   "vec_uint8_31_hashtreeroot_proof_generated.bend": {
@@ -4111,7 +4253,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_3.bend",
-    "sub_unique_vec_uint8_3.bend"
+    "sub_unique_vec_uint8_3.bend",
+    "offset_laws_vec_uint8_3.bend"
    ]
   },
   "vec_uint8_3_hashtreeroot_proof_generated.bend": {
@@ -4139,7 +4282,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_4.bend",
-    "sub_unique_vec_uint8_4.bend"
+    "sub_unique_vec_uint8_4.bend",
+    "offset_laws_vec_uint8_4.bend"
    ]
   },
   "vec_uint8_4_hashtreeroot_proof_generated.bend": {
@@ -4166,7 +4310,8 @@
    "files": [
     "fixrej_g0.bend",
     "sub_vec_uint8_512.bend",
-    "sub_unique_vec_uint8_512.bend"
+    "sub_unique_vec_uint8_512.bend",
+    "offset_laws_vec_uint8_512.bend"
    ]
   },
   "vec_uint8_512_hashtreeroot_proof_generated.bend": {
@@ -4193,7 +4338,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint8_513.bend",
-    "sub_unique_vec_uint8_513.bend"
+    "sub_unique_vec_uint8_513.bend",
+    "offset_laws_vec_uint8_513.bend"
    ]
   },
   "vec_uint8_513_hashtreeroot_proof_generated.bend": {
@@ -4220,7 +4366,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint8_5.bend",
-    "sub_unique_vec_uint8_5.bend"
+    "sub_unique_vec_uint8_5.bend",
+    "offset_laws_vec_uint8_5.bend"
    ]
   },
   "vec_uint8_5_hashtreeroot_proof_generated.bend": {
@@ -4248,7 +4395,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint8_8.bend",
-    "sub_unique_vec_uint8_8.bend"
+    "sub_unique_vec_uint8_8.bend",
+    "offset_laws_vec_uint8_8.bend"
    ]
   },
   "vec_uint8_8_hashtreeroot_proof_generated.bend": {
@@ -4273,7 +4421,8 @@
    "op": "decode_ssz",
    "files": [
     "var_plist_proglist_uint16_top.bend",
-    "var_plist_proglist_uint16_top_unique.bend"
+    "var_plist_proglist_uint16_top_unique.bend",
+    "offset_laws_proglist_uint16.bend"
    ]
   },
   "proglist_uint16_hashtreeroot_proof_generated.bend": {
@@ -4300,7 +4449,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_16.bend",
-    "sub_unique_vec_uint16_16.bend"
+    "sub_unique_vec_uint16_16.bend",
+    "offset_laws_vec_uint16_16.bend"
    ]
   },
   "vec_uint16_16_hashtreeroot_proof_generated.bend": {
@@ -4326,7 +4476,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_1.bend",
-    "sub_unique_vec_uint16_1.bend"
+    "sub_unique_vec_uint16_1.bend",
+    "offset_laws_vec_uint16_1.bend"
    ]
   },
   "vec_uint16_1_hashtreeroot_proof_generated.bend": {
@@ -4353,7 +4504,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_2.bend",
-    "sub_unique_vec_uint16_2.bend"
+    "sub_unique_vec_uint16_2.bend",
+    "offset_laws_vec_uint16_2.bend"
    ]
   },
   "vec_uint16_2_hashtreeroot_proof_generated.bend": {
@@ -4379,7 +4531,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_31.bend",
-    "sub_unique_vec_uint16_31.bend"
+    "sub_unique_vec_uint16_31.bend",
+    "offset_laws_vec_uint16_31.bend"
    ]
   },
   "vec_uint16_31_hashtreeroot_proof_generated.bend": {
@@ -4405,7 +4558,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_3.bend",
-    "sub_unique_vec_uint16_3.bend"
+    "sub_unique_vec_uint16_3.bend",
+    "offset_laws_vec_uint16_3.bend"
    ]
   },
   "vec_uint16_3_hashtreeroot_proof_generated.bend": {
@@ -4432,7 +4586,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_4.bend",
-    "sub_unique_vec_uint16_4.bend"
+    "sub_unique_vec_uint16_4.bend",
+    "offset_laws_vec_uint16_4.bend"
    ]
   },
   "vec_uint16_4_hashtreeroot_proof_generated.bend": {
@@ -4458,7 +4613,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_512.bend",
-    "sub_unique_vec_uint16_512.bend"
+    "sub_unique_vec_uint16_512.bend",
+    "offset_laws_vec_uint16_512.bend"
    ]
   },
   "vec_uint16_512_hashtreeroot_proof_generated.bend": {
@@ -4484,7 +4640,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_513.bend",
-    "sub_unique_vec_uint16_513.bend"
+    "sub_unique_vec_uint16_513.bend",
+    "offset_laws_vec_uint16_513.bend"
    ]
   },
   "vec_uint16_513_hashtreeroot_proof_generated.bend": {
@@ -4510,7 +4667,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_5.bend",
-    "sub_unique_vec_uint16_5.bend"
+    "sub_unique_vec_uint16_5.bend",
+    "offset_laws_vec_uint16_5.bend"
    ]
   },
   "vec_uint16_5_hashtreeroot_proof_generated.bend": {
@@ -4537,7 +4695,8 @@
    "files": [
     "fixrej_g1.bend",
     "sub_vec_uint16_8.bend",
-    "sub_unique_vec_uint16_8.bend"
+    "sub_unique_vec_uint16_8.bend",
+    "offset_laws_vec_uint16_8.bend"
    ]
   },
   "vec_uint16_8_hashtreeroot_proof_generated.bend": {
@@ -4563,7 +4722,8 @@
    "files": [
     "var_plist_proglist_uint256.bend",
     "var_plist_proglist_uint256_unique.bend",
-    "var_plist_proglist_uint256_rej.bend"
+    "var_plist_proglist_uint256_rej.bend",
+    "offset_laws_proglist_uint256.bend"
    ]
   },
   "proglist_uint256_hashtreeroot_proof_generated.bend": {
@@ -4591,7 +4751,8 @@
     "spec_gcodec_vec_uint256_16.bend",
     "spec_gunique_vec_uint256_16.bend",
     "spec_grepr_vec_uint256_16.bend",
-    "spec_ginput_vec_uint256_16.bend"
+    "spec_ginput_vec_uint256_16.bend",
+    "offset_laws_vec_uint256_16.bend"
    ]
   },
   "vec_uint256_16_hashtreeroot_proof_generated.bend": {
@@ -4620,7 +4781,8 @@
     "spec_gcodec_vec_uint256_1.bend",
     "spec_gunique_vec_uint256_1.bend",
     "spec_grepr_vec_uint256_1.bend",
-    "spec_ginput_vec_uint256_1.bend"
+    "spec_ginput_vec_uint256_1.bend",
+    "offset_laws_vec_uint256_1.bend"
    ]
   },
   "vec_uint256_1_hashtreeroot_proof_generated.bend": {
@@ -4649,7 +4811,8 @@
     "spec_gcodec_vec_uint256_2.bend",
     "spec_gunique_vec_uint256_2.bend",
     "spec_grepr_vec_uint256_2.bend",
-    "spec_ginput_vec_uint256_2.bend"
+    "spec_ginput_vec_uint256_2.bend",
+    "offset_laws_vec_uint256_2.bend"
    ]
   },
   "vec_uint256_2_hashtreeroot_proof_generated.bend": {
@@ -4677,7 +4840,8 @@
     "spec_gcodec_vec_uint256_31.bend",
     "spec_gunique_vec_uint256_31.bend",
     "spec_grepr_vec_uint256_31.bend",
-    "spec_ginput_vec_uint256_31.bend"
+    "spec_ginput_vec_uint256_31.bend",
+    "offset_laws_vec_uint256_31.bend"
    ]
   },
   "vec_uint256_31_hashtreeroot_proof_generated.bend": {
@@ -4706,7 +4870,8 @@
     "spec_gcodec_vec_uint256_3.bend",
     "spec_gunique_vec_uint256_3.bend",
     "spec_grepr_vec_uint256_3.bend",
-    "spec_ginput_vec_uint256_3.bend"
+    "spec_ginput_vec_uint256_3.bend",
+    "offset_laws_vec_uint256_3.bend"
    ]
   },
   "vec_uint256_3_hashtreeroot_proof_generated.bend": {
@@ -4735,7 +4900,8 @@
     "spec_gcodec_vec_uint256_4.bend",
     "spec_gunique_vec_uint256_4.bend",
     "spec_grepr_vec_uint256_4.bend",
-    "spec_ginput_vec_uint256_4.bend"
+    "spec_ginput_vec_uint256_4.bend",
+    "offset_laws_vec_uint256_4.bend"
    ]
   },
   "vec_uint256_4_hashtreeroot_proof_generated.bend": {
@@ -4761,7 +4927,8 @@
    "files": [
     "fixrej_vec_uint256_512.bend",
     "spec_garr_vec_uint256_512.bend",
-    "spec_garr_unique_vec_uint256_512.bend"
+    "spec_garr_unique_vec_uint256_512.bend",
+    "offset_laws_vec_uint256_512.bend"
    ]
   },
   "vec_uint256_512_hashtreeroot_proof_generated.bend": {
@@ -4787,7 +4954,8 @@
    "files": [
     "fixrej_vec_uint256_513.bend",
     "spec_garr_vec_uint256_513.bend",
-    "spec_garr_unique_vec_uint256_513.bend"
+    "spec_garr_unique_vec_uint256_513.bend",
+    "offset_laws_vec_uint256_513.bend"
    ]
   },
   "vec_uint256_513_hashtreeroot_proof_generated.bend": {
@@ -4816,7 +4984,8 @@
     "spec_gcodec_vec_uint256_5.bend",
     "spec_gunique_vec_uint256_5.bend",
     "spec_grepr_vec_uint256_5.bend",
-    "spec_ginput_vec_uint256_5.bend"
+    "spec_ginput_vec_uint256_5.bend",
+    "offset_laws_vec_uint256_5.bend"
    ]
   },
   "vec_uint256_5_hashtreeroot_proof_generated.bend": {
@@ -4845,7 +5014,8 @@
     "spec_gcodec_vec_uint256_8.bend",
     "spec_gunique_vec_uint256_8.bend",
     "spec_grepr_vec_uint256_8.bend",
-    "spec_ginput_vec_uint256_8.bend"
+    "spec_ginput_vec_uint256_8.bend",
+    "offset_laws_vec_uint256_8.bend"
    ]
   },
   "vec_uint256_8_hashtreeroot_proof_generated.bend": {
@@ -4871,7 +5041,8 @@
    "files": [
     "var_plist_proglist_uint32.bend",
     "var_plist_proglist_uint32_unique.bend",
-    "var_plist_proglist_uint32_rej.bend"
+    "var_plist_proglist_uint32_rej.bend",
+    "offset_laws_proglist_uint32.bend"
    ]
   },
   "proglist_uint32_hashtreeroot_proof_generated.bend": {
@@ -4900,7 +5071,8 @@
     "spec_gcodec_vec_uint32_16.bend",
     "spec_gunique_vec_uint32_16.bend",
     "spec_grepr_vec_uint32_16.bend",
-    "spec_ginput_vec_uint32_16.bend"
+    "spec_ginput_vec_uint32_16.bend",
+    "offset_laws_vec_uint32_16.bend"
    ]
   },
   "vec_uint32_16_hashtreeroot_proof_generated.bend": {
@@ -4929,7 +5101,8 @@
     "spec_gcodec_vec_uint32_1.bend",
     "spec_gunique_vec_uint32_1.bend",
     "spec_grepr_vec_uint32_1.bend",
-    "spec_ginput_vec_uint32_1.bend"
+    "spec_ginput_vec_uint32_1.bend",
+    "offset_laws_vec_uint32_1.bend"
    ]
   },
   "vec_uint32_1_hashtreeroot_proof_generated.bend": {
@@ -4958,7 +5131,8 @@
     "spec_gcodec_vec_uint32_2.bend",
     "spec_gunique_vec_uint32_2.bend",
     "spec_grepr_vec_uint32_2.bend",
-    "spec_ginput_vec_uint32_2.bend"
+    "spec_ginput_vec_uint32_2.bend",
+    "offset_laws_vec_uint32_2.bend"
    ]
   },
   "vec_uint32_2_hashtreeroot_proof_generated.bend": {
@@ -4987,7 +5161,8 @@
     "spec_gcodec_vec_uint32_31.bend",
     "spec_gunique_vec_uint32_31.bend",
     "spec_grepr_vec_uint32_31.bend",
-    "spec_ginput_vec_uint32_31.bend"
+    "spec_ginput_vec_uint32_31.bend",
+    "offset_laws_vec_uint32_31.bend"
    ]
   },
   "vec_uint32_31_hashtreeroot_proof_generated.bend": {
@@ -5016,7 +5191,8 @@
     "spec_gcodec_vec_uint32_3.bend",
     "spec_gunique_vec_uint32_3.bend",
     "spec_grepr_vec_uint32_3.bend",
-    "spec_ginput_vec_uint32_3.bend"
+    "spec_ginput_vec_uint32_3.bend",
+    "offset_laws_vec_uint32_3.bend"
    ]
   },
   "vec_uint32_3_hashtreeroot_proof_generated.bend": {
@@ -5045,7 +5221,8 @@
     "spec_gcodec_vec_uint32_4.bend",
     "spec_gunique_vec_uint32_4.bend",
     "spec_grepr_vec_uint32_4.bend",
-    "spec_ginput_vec_uint32_4.bend"
+    "spec_ginput_vec_uint32_4.bend",
+    "offset_laws_vec_uint32_4.bend"
    ]
   },
   "vec_uint32_4_hashtreeroot_proof_generated.bend": {
@@ -5071,7 +5248,8 @@
    "files": [
     "fixrej_g2.bend",
     "spec_garr_vec_uint32_512.bend",
-    "spec_garr_unique_vec_uint32_512.bend"
+    "spec_garr_unique_vec_uint32_512.bend",
+    "offset_laws_vec_uint32_512.bend"
    ]
   },
   "vec_uint32_512_hashtreeroot_proof_generated.bend": {
@@ -5097,7 +5275,8 @@
    "files": [
     "fixrej_g2.bend",
     "spec_garr_vec_uint32_513.bend",
-    "spec_garr_unique_vec_uint32_513.bend"
+    "spec_garr_unique_vec_uint32_513.bend",
+    "offset_laws_vec_uint32_513.bend"
    ]
   },
   "vec_uint32_513_hashtreeroot_proof_generated.bend": {
@@ -5126,7 +5305,8 @@
     "spec_gcodec_vec_uint32_5.bend",
     "spec_gunique_vec_uint32_5.bend",
     "spec_grepr_vec_uint32_5.bend",
-    "spec_ginput_vec_uint32_5.bend"
+    "spec_ginput_vec_uint32_5.bend",
+    "offset_laws_vec_uint32_5.bend"
    ]
   },
   "vec_uint32_5_hashtreeroot_proof_generated.bend": {
@@ -5155,7 +5335,8 @@
     "spec_gcodec_vec_uint32_8.bend",
     "spec_gunique_vec_uint32_8.bend",
     "spec_grepr_vec_uint32_8.bend",
-    "spec_ginput_vec_uint32_8.bend"
+    "spec_ginput_vec_uint32_8.bend",
+    "offset_laws_vec_uint32_8.bend"
    ]
   },
   "vec_uint32_8_hashtreeroot_proof_generated.bend": {
@@ -5181,7 +5362,8 @@
    "files": [
     "var_plist_proglist_uint64.bend",
     "var_plist_proglist_uint64_unique.bend",
-    "var_plist_proglist_uint64_rej.bend"
+    "var_plist_proglist_uint64_rej.bend",
+    "offset_laws_proglist_uint64.bend"
    ]
   },
   "proglist_uint64_hashtreeroot_proof_generated.bend": {
@@ -5210,7 +5392,8 @@
     "spec_gcodec_vec_uint64_16.bend",
     "spec_gunique_vec_uint64_16.bend",
     "spec_grepr_vec_uint64_16.bend",
-    "spec_ginput_vec_uint64_16.bend"
+    "spec_ginput_vec_uint64_16.bend",
+    "offset_laws_vec_uint64_16.bend"
    ]
   },
   "vec_uint64_16_hashtreeroot_proof_generated.bend": {
@@ -5239,7 +5422,8 @@
     "spec_gcodec_vec_uint64_1.bend",
     "spec_gunique_vec_uint64_1.bend",
     "spec_grepr_vec_uint64_1.bend",
-    "spec_ginput_vec_uint64_1.bend"
+    "spec_ginput_vec_uint64_1.bend",
+    "offset_laws_vec_uint64_1.bend"
    ]
   },
   "vec_uint64_1_hashtreeroot_proof_generated.bend": {
@@ -5268,7 +5452,8 @@
     "spec_gcodec_vec_uint64_2.bend",
     "spec_gunique_vec_uint64_2.bend",
     "spec_grepr_vec_uint64_2.bend",
-    "spec_ginput_vec_uint64_2.bend"
+    "spec_ginput_vec_uint64_2.bend",
+    "offset_laws_vec_uint64_2.bend"
    ]
   },
   "vec_uint64_2_hashtreeroot_proof_generated.bend": {
@@ -5297,7 +5482,8 @@
     "spec_gcodec_vec_uint64_31.bend",
     "spec_gunique_vec_uint64_31.bend",
     "spec_grepr_vec_uint64_31.bend",
-    "spec_ginput_vec_uint64_31.bend"
+    "spec_ginput_vec_uint64_31.bend",
+    "offset_laws_vec_uint64_31.bend"
    ]
   },
   "vec_uint64_31_hashtreeroot_proof_generated.bend": {
@@ -5326,7 +5512,8 @@
     "spec_gcodec_vec_uint64_3.bend",
     "spec_gunique_vec_uint64_3.bend",
     "spec_grepr_vec_uint64_3.bend",
-    "spec_ginput_vec_uint64_3.bend"
+    "spec_ginput_vec_uint64_3.bend",
+    "offset_laws_vec_uint64_3.bend"
    ]
   },
   "vec_uint64_3_hashtreeroot_proof_generated.bend": {
@@ -5355,7 +5542,8 @@
     "spec_gcodec_vec_uint64_4.bend",
     "spec_gunique_vec_uint64_4.bend",
     "spec_grepr_vec_uint64_4.bend",
-    "spec_ginput_vec_uint64_4.bend"
+    "spec_ginput_vec_uint64_4.bend",
+    "offset_laws_vec_uint64_4.bend"
    ]
   },
   "vec_uint64_4_hashtreeroot_proof_generated.bend": {
@@ -5381,7 +5569,8 @@
    "files": [
     "fixrej_g3.bend",
     "spec_garr_vec_uint64_512.bend",
-    "spec_garr_unique_vec_uint64_512.bend"
+    "spec_garr_unique_vec_uint64_512.bend",
+    "offset_laws_vec_uint64_512.bend"
    ]
   },
   "vec_uint64_512_hashtreeroot_proof_generated.bend": {
@@ -5407,7 +5596,8 @@
    "files": [
     "fixrej_g3.bend",
     "spec_garr_vec_uint64_513.bend",
-    "spec_garr_unique_vec_uint64_513.bend"
+    "spec_garr_unique_vec_uint64_513.bend",
+    "offset_laws_vec_uint64_513.bend"
    ]
   },
   "vec_uint64_513_hashtreeroot_proof_generated.bend": {
@@ -5436,7 +5626,8 @@
     "spec_gcodec_vec_uint64_5.bend",
     "spec_gunique_vec_uint64_5.bend",
     "spec_grepr_vec_uint64_5.bend",
-    "spec_ginput_vec_uint64_5.bend"
+    "spec_ginput_vec_uint64_5.bend",
+    "offset_laws_vec_uint64_5.bend"
    ]
   },
   "vec_uint64_5_hashtreeroot_proof_generated.bend": {
@@ -5465,7 +5656,8 @@
     "spec_gcodec_vec_uint64_8.bend",
     "spec_gunique_vec_uint64_8.bend",
     "spec_grepr_vec_uint64_8.bend",
-    "spec_ginput_vec_uint64_8.bend"
+    "spec_ginput_vec_uint64_8.bend",
+    "offset_laws_vec_uint64_8.bend"
    ]
   },
   "vec_uint64_8_hashtreeroot_proof_generated.bend": {
@@ -5490,7 +5682,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ProgressiveTestStruct.bend",
-    "var_codec_ProgressiveTestStruct_unique.bend"
+    "var_codec_ProgressiveTestStruct_unique.bend",
+    "offset_laws_ProgressiveTestStruct.bend"
    ]
   },
   "ProgressiveTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5515,7 +5708,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_BitsStruct.bend",
-    "var_codec_BitsStruct_unique.bend"
+    "var_codec_BitsStruct_unique.bend",
+    "offset_laws_BitsStruct.bend"
    ]
   },
   "BitsStruct_hashtreeroot_proof_generated.bend": {
@@ -5540,7 +5734,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ProgressiveBitsStruct.bend",
-    "var_codec_ProgressiveBitsStruct_unique.bend"
+    "var_codec_ProgressiveBitsStruct_unique.bend",
+    "offset_laws_ProgressiveBitsStruct.bend"
    ]
   },
   "ProgressiveBitsStruct_hashtreeroot_proof_generated.bend": {
@@ -5567,7 +5762,8 @@
    "files": [
     "fixrej_g3.bend",
     "sub_FixedTestStruct.bend",
-    "sub_unique_FixedTestStruct.bend"
+    "sub_unique_FixedTestStruct.bend",
+    "offset_laws_FixedTestStruct.bend"
    ]
   },
   "FixedTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5593,7 +5789,8 @@
    "files": [
     "fixrej_g3.bend",
     "sub_SingleFieldTestStruct.bend",
-    "sub_unique_SingleFieldTestStruct.bend"
+    "sub_unique_SingleFieldTestStruct.bend",
+    "offset_laws_SingleFieldTestStruct.bend"
    ]
   },
   "SingleFieldTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5618,7 +5815,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_VarTestStruct.bend",
-    "var_codec_VarTestStruct_unique.bend"
+    "var_codec_VarTestStruct_unique.bend",
+    "offset_laws_VarTestStruct.bend"
    ]
   },
   "VarTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5643,7 +5841,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ComplexTestStruct.bend",
-    "var_codec_ComplexTestStruct_unique.bend"
+    "var_codec_ComplexTestStruct_unique.bend",
+    "offset_laws_ComplexTestStruct.bend"
    ]
   },
   "ComplexTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5670,7 +5869,8 @@
    "files": [
     "fixrej_g3.bend",
     "sub_SmallTestStruct.bend",
-    "sub_unique_SmallTestStruct.bend"
+    "sub_unique_SmallTestStruct.bend",
+    "offset_laws_SmallTestStruct.bend"
    ]
   },
   "SmallTestStruct_hashtreeroot_proof_generated.bend": {
@@ -5696,7 +5896,8 @@
    "files": [
     "var_bits_bitlist_15.bend",
     "var_bits_bitlist_15_unique.bend",
-    "var_bits_bitlist_15_rej.bend"
+    "var_bits_bitlist_15_rej.bend",
+    "offset_laws_bitlist_15.bend"
    ]
   },
   "bitlist_15_hashtreeroot_proof_generated.bend": {
@@ -5722,7 +5923,8 @@
    "files": [
     "var_bits_bitlist_16.bend",
     "var_bits_bitlist_16_unique.bend",
-    "var_bits_bitlist_16_rej.bend"
+    "var_bits_bitlist_16_rej.bend",
+    "offset_laws_bitlist_16.bend"
    ]
   },
   "bitlist_16_hashtreeroot_proof_generated.bend": {
@@ -5748,7 +5950,8 @@
    "files": [
     "var_bits_bitlist_17.bend",
     "var_bits_bitlist_17_unique.bend",
-    "var_bits_bitlist_17_rej.bend"
+    "var_bits_bitlist_17_rej.bend",
+    "offset_laws_bitlist_17.bend"
    ]
   },
   "bitlist_17_hashtreeroot_proof_generated.bend": {
@@ -5774,7 +5977,8 @@
    "files": [
     "var_bits_bitlist_1.bend",
     "var_bits_bitlist_1_unique.bend",
-    "var_bits_bitlist_1_rej.bend"
+    "var_bits_bitlist_1_rej.bend",
+    "offset_laws_bitlist_1.bend"
    ]
   },
   "bitlist_1_hashtreeroot_proof_generated.bend": {
@@ -5800,7 +6004,8 @@
    "files": [
     "var_bits_bitlist_2.bend",
     "var_bits_bitlist_2_unique.bend",
-    "var_bits_bitlist_2_rej.bend"
+    "var_bits_bitlist_2_rej.bend",
+    "offset_laws_bitlist_2.bend"
    ]
   },
   "bitlist_2_hashtreeroot_proof_generated.bend": {
@@ -5826,7 +6031,8 @@
    "files": [
     "var_bits_bitlist_31.bend",
     "var_bits_bitlist_31_unique.bend",
-    "var_bits_bitlist_31_rej.bend"
+    "var_bits_bitlist_31_rej.bend",
+    "offset_laws_bitlist_31.bend"
    ]
   },
   "bitlist_31_hashtreeroot_proof_generated.bend": {
@@ -5852,7 +6058,8 @@
    "files": [
     "var_bits_bitlist_32.bend",
     "var_bits_bitlist_32_unique.bend",
-    "var_bits_bitlist_32_rej.bend"
+    "var_bits_bitlist_32_rej.bend",
+    "offset_laws_bitlist_32.bend"
    ]
   },
   "bitlist_32_hashtreeroot_proof_generated.bend": {
@@ -5878,7 +6085,8 @@
    "files": [
     "var_bits_bitlist_33.bend",
     "var_bits_bitlist_33_unique.bend",
-    "var_bits_bitlist_33_rej.bend"
+    "var_bits_bitlist_33_rej.bend",
+    "offset_laws_bitlist_33.bend"
    ]
   },
   "bitlist_33_hashtreeroot_proof_generated.bend": {
@@ -5904,7 +6112,8 @@
    "files": [
     "var_bits_bitlist_3.bend",
     "var_bits_bitlist_3_unique.bend",
-    "var_bits_bitlist_3_rej.bend"
+    "var_bits_bitlist_3_rej.bend",
+    "offset_laws_bitlist_3.bend"
    ]
   },
   "bitlist_3_hashtreeroot_proof_generated.bend": {
@@ -5930,7 +6139,8 @@
    "files": [
     "var_bits_bitlist_4.bend",
     "var_bits_bitlist_4_unique.bend",
-    "var_bits_bitlist_4_rej.bend"
+    "var_bits_bitlist_4_rej.bend",
+    "offset_laws_bitlist_4.bend"
    ]
   },
   "bitlist_4_hashtreeroot_proof_generated.bend": {
@@ -5956,7 +6166,8 @@
    "files": [
     "var_bits_bitlist_511.bend",
     "var_bits_bitlist_511_unique.bend",
-    "var_bits_bitlist_511_rej.bend"
+    "var_bits_bitlist_511_rej.bend",
+    "offset_laws_bitlist_511.bend"
    ]
   },
   "bitlist_511_hashtreeroot_proof_generated.bend": {
@@ -5982,7 +6193,8 @@
    "files": [
     "var_bits_bitlist_512.bend",
     "var_bits_bitlist_512_unique.bend",
-    "var_bits_bitlist_512_rej.bend"
+    "var_bits_bitlist_512_rej.bend",
+    "offset_laws_bitlist_512.bend"
    ]
   },
   "bitlist_512_hashtreeroot_proof_generated.bend": {
@@ -6008,7 +6220,8 @@
    "files": [
     "var_bits_bitlist_513.bend",
     "var_bits_bitlist_513_unique.bend",
-    "var_bits_bitlist_513_rej.bend"
+    "var_bits_bitlist_513_rej.bend",
+    "offset_laws_bitlist_513.bend"
    ]
   },
   "bitlist_513_hashtreeroot_proof_generated.bend": {
@@ -6034,7 +6247,8 @@
    "files": [
     "var_bits_bitlist_5.bend",
     "var_bits_bitlist_5_unique.bend",
-    "var_bits_bitlist_5_rej.bend"
+    "var_bits_bitlist_5_rej.bend",
+    "offset_laws_bitlist_5.bend"
    ]
   },
   "bitlist_5_hashtreeroot_proof_generated.bend": {
@@ -6060,7 +6274,8 @@
    "files": [
     "var_bits_bitlist_6.bend",
     "var_bits_bitlist_6_unique.bend",
-    "var_bits_bitlist_6_rej.bend"
+    "var_bits_bitlist_6_rej.bend",
+    "offset_laws_bitlist_6.bend"
    ]
   },
   "bitlist_6_hashtreeroot_proof_generated.bend": {
@@ -6086,7 +6301,8 @@
    "files": [
     "var_bits_bitlist_7.bend",
     "var_bits_bitlist_7_unique.bend",
-    "var_bits_bitlist_7_rej.bend"
+    "var_bits_bitlist_7_rej.bend",
+    "offset_laws_bitlist_7.bend"
    ]
   },
   "bitlist_7_hashtreeroot_proof_generated.bend": {
@@ -6112,7 +6328,8 @@
    "files": [
     "var_bits_bitlist_8.bend",
     "var_bits_bitlist_8_unique.bend",
-    "var_bits_bitlist_8_rej.bend"
+    "var_bits_bitlist_8_rej.bend",
+    "offset_laws_bitlist_8.bend"
    ]
   },
   "bitlist_8_hashtreeroot_proof_generated.bend": {
@@ -6138,7 +6355,8 @@
    "files": [
     "var_bits_bitlist_9.bend",
     "var_bits_bitlist_9_unique.bend",
-    "var_bits_bitlist_9_rej.bend"
+    "var_bits_bitlist_9_rej.bend",
+    "offset_laws_bitlist_9.bend"
    ]
   },
   "bitlist_9_hashtreeroot_proof_generated.bend": {
@@ -6165,7 +6383,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_15.bend",
-    "sub_unique_bitvector_15.bend"
+    "sub_unique_bitvector_15.bend",
+    "offset_laws_bitvector_15.bend"
    ]
   },
   "bitvector_15_hashtreeroot_proof_generated.bend": {
@@ -6192,7 +6411,8 @@
    "files": [
     "fixrej_g3.bend",
     "sub_bitvector_16.bend",
-    "sub_unique_bitvector_16.bend"
+    "sub_unique_bitvector_16.bend",
+    "offset_laws_bitvector_16.bend"
    ]
   },
   "bitvector_16_hashtreeroot_proof_generated.bend": {
@@ -6219,7 +6439,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_17.bend",
-    "sub_unique_bitvector_17.bend"
+    "sub_unique_bitvector_17.bend",
+    "offset_laws_bitvector_17.bend"
    ]
   },
   "bitvector_17_hashtreeroot_proof_generated.bend": {
@@ -6246,7 +6467,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_1.bend",
-    "sub_unique_bitvector_1.bend"
+    "sub_unique_bitvector_1.bend",
+    "offset_laws_bitvector_1.bend"
    ]
   },
   "bitvector_1_hashtreeroot_proof_generated.bend": {
@@ -6273,7 +6495,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_2.bend",
-    "sub_unique_bitvector_2.bend"
+    "sub_unique_bitvector_2.bend",
+    "offset_laws_bitvector_2.bend"
    ]
   },
   "bitvector_2_hashtreeroot_proof_generated.bend": {
@@ -6300,7 +6523,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_31.bend",
-    "sub_unique_bitvector_31.bend"
+    "sub_unique_bitvector_31.bend",
+    "offset_laws_bitvector_31.bend"
    ]
   },
   "bitvector_31_hashtreeroot_proof_generated.bend": {
@@ -6331,7 +6555,8 @@
     "spec_gunique_bitvector_32.bend",
     "gcodec_0.bend",
     "spec_grepr_bitvector_32.bend",
-    "spec_ginput_bitvector_32.bend"
+    "spec_ginput_bitvector_32.bend",
+    "offset_laws_bitvector_32.bend"
    ]
   },
   "bitvector_32_hashtreeroot_proof_generated.bend": {
@@ -6358,7 +6583,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_33.bend",
-    "sub_unique_bitvector_33.bend"
+    "sub_unique_bitvector_33.bend",
+    "offset_laws_bitvector_33.bend"
    ]
   },
   "bitvector_33_hashtreeroot_proof_generated.bend": {
@@ -6385,7 +6611,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_3.bend",
-    "sub_unique_bitvector_3.bend"
+    "sub_unique_bitvector_3.bend",
+    "offset_laws_bitvector_3.bend"
    ]
   },
   "bitvector_3_hashtreeroot_proof_generated.bend": {
@@ -6412,7 +6639,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_4.bend",
-    "sub_unique_bitvector_4.bend"
+    "sub_unique_bitvector_4.bend",
+    "offset_laws_bitvector_4.bend"
    ]
   },
   "bitvector_4_hashtreeroot_proof_generated.bend": {
@@ -6439,7 +6667,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_511.bend",
-    "sub_unique_bitvector_511.bend"
+    "sub_unique_bitvector_511.bend",
+    "offset_laws_bitvector_511.bend"
    ]
   },
   "bitvector_511_hashtreeroot_proof_generated.bend": {
@@ -6470,7 +6699,8 @@
     "spec_gunique_bitvector_512.bend",
     "gcodec_0.bend",
     "spec_grepr_bitvector_512.bend",
-    "spec_ginput_bitvector_512.bend"
+    "spec_ginput_bitvector_512.bend",
+    "offset_laws_bitvector_512.bend"
    ]
   },
   "bitvector_512_hashtreeroot_proof_generated.bend": {
@@ -6497,7 +6727,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_513.bend",
-    "sub_unique_bitvector_513.bend"
+    "sub_unique_bitvector_513.bend",
+    "offset_laws_bitvector_513.bend"
    ]
   },
   "bitvector_513_hashtreeroot_proof_generated.bend": {
@@ -6524,7 +6755,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_5.bend",
-    "sub_unique_bitvector_5.bend"
+    "sub_unique_bitvector_5.bend",
+    "offset_laws_bitvector_5.bend"
    ]
   },
   "bitvector_5_hashtreeroot_proof_generated.bend": {
@@ -6551,7 +6783,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_6.bend",
-    "sub_unique_bitvector_6.bend"
+    "sub_unique_bitvector_6.bend",
+    "offset_laws_bitvector_6.bend"
    ]
   },
   "bitvector_6_hashtreeroot_proof_generated.bend": {
@@ -6578,7 +6811,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_7.bend",
-    "sub_unique_bitvector_7.bend"
+    "sub_unique_bitvector_7.bend",
+    "offset_laws_bitvector_7.bend"
    ]
   },
   "bitvector_7_hashtreeroot_proof_generated.bend": {
@@ -6605,7 +6839,8 @@
    "files": [
     "fixrej_g3.bend",
     "sub_bitvector_8.bend",
-    "sub_unique_bitvector_8.bend"
+    "sub_unique_bitvector_8.bend",
+    "offset_laws_bitvector_8.bend"
    ]
   },
   "bitvector_8_hashtreeroot_proof_generated.bend": {
@@ -6632,7 +6867,8 @@
    "files": [
     "fixchk_pad.bend",
     "sub_bitvector_9.bend",
-    "sub_unique_bitvector_9.bend"
+    "sub_unique_bitvector_9.bend",
+    "offset_laws_bitvector_9.bend"
    ]
   },
   "bitvector_9_hashtreeroot_proof_generated.bend": {
@@ -6657,7 +6893,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_CompatibleUnionBC.bend",
-    "var_codec_CompatibleUnionBC_unique.bend"
+    "var_codec_CompatibleUnionBC_unique.bend",
+    "offset_laws_CompatibleUnionBC.bend"
    ]
   },
   "CompatibleUnionBC_hashtreeroot_proof_generated.bend": {
@@ -6682,7 +6919,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_CompatibleUnionABCA.bend",
-    "var_codec_CompatibleUnionABCA_unique.bend"
+    "var_codec_CompatibleUnionABCA_unique.bend",
+    "offset_laws_CompatibleUnionABCA.bend"
    ]
   },
   "CompatibleUnionABCA_hashtreeroot_proof_generated.bend": {
@@ -6707,7 +6945,8 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_CompatibleUnionA.bend",
-    "var_codec_CompatibleUnionA_unique.bend"
+    "var_codec_CompatibleUnionA_unique.bend",
+    "offset_laws_CompatibleUnionA.bend"
    ]
   },
   "CompatibleUnionA_hashtreeroot_proof_generated.bend": {
@@ -6733,7 +6972,8 @@
    "files": [
     "var_pbits_progbitlist.bend",
     "var_pbits_progbitlist_unique.bend",
-    "var_pbits_progbitlist_rej.bend"
+    "var_pbits_progbitlist_rej.bend",
+    "offset_laws_progbitlist.bend"
    ]
   },
   "progbitlist_hashtreeroot_proof_generated.bend": {
@@ -6764,7 +7004,8 @@
     "spec_gunique_uint128.bend",
     "gcodec_0.bend",
     "spec_grepr_uint128.bend",
-    "spec_ginput_uint128.bend"
+    "spec_ginput_uint128.bend",
+    "offset_laws_uint128.bend"
    ]
   },
   "uint128_hashtreeroot_proof_generated.bend": {
@@ -6790,7 +7031,8 @@
    "files": [
     "fixrej_g4.bend",
     "sub_uint16.bend",
-    "sub_unique_uint16.bend"
+    "sub_unique_uint16.bend",
+    "offset_laws_uint16.bend"
    ]
   },
   "uint16_hashtreeroot_proof_generated.bend": {

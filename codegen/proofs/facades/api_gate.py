@@ -49,7 +49,7 @@ OUT = ROOT / 'proofs/gate'
 
 KINDS = ['root', 'ok_eval', 'decode_accept', 'decode_spec', 'decode_unique', 'decode_reject', 'decode_none',
          'encode_eval', 'encode_spec', 'roundtrip', 'encoded_size', 'reject_short', 'reject_long',
-         'decode_tree', 'decode_input', 'serialize_valid']
+         'decode_tree', 'decode_input', 'serialize_valid', 'decode_offsets']
 CORE = KINDS[:9]
 
 # law-name forms per kind (<X> the name; bare names are the per-name modules' laws)
@@ -70,6 +70,7 @@ LAW_FORMS = {
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
     'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in'],
+    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
 }
 
 
@@ -100,9 +101,11 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'roundtrip':
         return concl.startswith('{' + dec + enc) and 'Some{' in concl
     if kind == 'encoded_size':
-        return enc in concl
+        return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
         return concl.startswith(f'{{T.{X}_serialize(')
+    if kind == 'decode_offsets':
+        return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
     return False
 
 
@@ -221,7 +224,7 @@ def scan():
     U = set(fulu) | set(gen)
     ent = {}      # (X, kind) -> [(file, law)]
     parsed = {}
-    api = re.compile(r'T\.(\w+?)_(decode|encode|ok|hash_tree_root|serialize)\(')
+    api = re.compile(r'T\.(\w+?)_(decode|encode|ok|hash_tree_root|serialize|bx_size)\(')
     spc = re.compile(r'Decoding\.(?:decodes|outside_image)\(\w+\.(\w+)\(\)|\{s == \w+\.(\w+)\(\) : S\.Schema\}')
     for f in sorted(OBJ.glob('*.bend')):
         bl = blocks(f.read_text())
