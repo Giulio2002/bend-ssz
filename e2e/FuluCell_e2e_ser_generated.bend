@@ -1,12 +1,17 @@
 import Base
+import ./FuluCell_e2e_comp_generated.bend as W_e2e_FuluCell_e2e_comp_generated
+import ./FuluCell_e2e_dec_generated.bend as W_e2e_FuluCell_e2e_dec_generated
 import ./FuluCell_e2e_generated.bend as W_e2e_FuluCell_e2e_generated
 import ./e2e_support.bend as E
 import ./e2e_tree.bend as W_e2e_e2e_tree
+import ../proofs/compact/found.bend as FD
 import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
 import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
+import ../spec/primitives.bend as W_spec_primitives
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O
+import ../types/FuluCell_decode_ssz_generated.bend as W_types_FuluCell_decode_ssz_generated
 import ../types/FuluCell_def_generated.bend as FuluCell_d
 import ../types/FuluCell_encode_ssz_generated.bend as W_types_FuluCell_encode_ssz_generated
 import ../types/schema.bend as S
@@ -36,3 +41,18 @@ def FuluCell_e2e_serialize(o: O.Words, +rep: W_proofs_obj_words_obj_light.rep_bv
 
 def FuluCell_e2e_valid_default() -> {(FuluCell_d.b2048_default(), True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(FuluCell_d.b2048_default()) : O.Words & Bool}:
   {==}
+
+def FuluCell_hvo(+bs: +List<U32>) -> {(O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}) : O.Words & Bool}:
+  {==}
+
+def FuluCell_e2e_decoded_hv(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {W_spec_primitives.bytes_domain(bs) == True{} : Bool},
+    dec: {Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_FuluCell_decode_ssz_generated.Cell_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>},
+    +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 2048n) == c : Bool})
+    -> {(o, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}:
+  match c:
+    case True{}:
+      FD.logic__subst(O.Words, z => {(z, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(z) : O.Words & Bool}, O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}, o,
+        Equal.sym(O.Words, o, O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}, Equal.cong(Maybe<&1, O.Words>, O.Words, z => W_e2e_FuluCell_e2e_comp_generated.gm(z, O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}), Some{o}, Some{O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}}, Equal.trans(Maybe<&1, O.Words>, Some{o}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_FuluCell_decode_ssz_generated.Cell_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{O.Words{W_e2e_FuluCell_e2e_comp_generated.ARR0(bs), 2048}}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_FuluCell_decode_ssz_generated.Cell_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, dec), W_e2e_FuluCell_e2e_comp_generated.dsome(bs, n, hn, hd, ec)))),
+        FuluCell_hvo(bs))
+    case False{}:
+      Empty.absurd({(o, True{}) == W_types_FuluCell_encode_ssz_generated.b2048_valid(o) : O.Words & Bool}, FD.logic__false_true(Equal.cong(Maybe<&1, O.Words>, Bool, z => W_e2e_FuluCell_e2e_comp_generated.isS(z), None{}, Some{o}, Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_FuluCell_decode_ssz_generated.Cell_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_FuluCell_decode_ssz_generated.Cell_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), None{}, W_e2e_FuluCell_e2e_dec_generated.FuluCell_d_none(bs, n, hn, ec)), dec))))

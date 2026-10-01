@@ -1,11 +1,19 @@
 import Base
+import ./e2e_bytes.bend as W_e2e_e2e_bytes
+import ./e2e_load.bend as W_e2e_e2e_load
 import ./e2e_support.bend as E
+import ./vec_uint128_512_e2e_comp_generated.bend as W_e2e_vec_uint128_512_e2e_comp_generated
+import ./vec_uint128_512_e2e_dec_generated.bend as W_e2e_vec_uint128_512_e2e_dec_generated
 import ./vec_uint128_512_e2e_generated.bend as W_e2e_vec_uint128_512_e2e_generated
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/arr_copy.bend as W_proofs_obj_arr_copy
 import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
 import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../spec/primitives.bend as W_spec_primitives
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O
+import ../types/vec_uint128_512_decode_ssz_generated.bend as W_types_vec_uint128_512_decode_ssz_generated
 import ../types/vec_uint128_512_def_generated.bend as vec_uint128_512_d
 import ../types/vec_uint128_512_encode_ssz_generated.bend as W_types_vec_uint128_512_encode_ssz_generated
 
@@ -34,3 +42,18 @@ def vec_uint128_512_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_obj_ligh
 
 def vec_uint128_512_e2e_valid_default() -> {(vec_uint128_512_d.v512_u128_default(), True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(vec_uint128_512_d.v512_u128_default()) : O.Words & Bool}:
   {==}
+
+def vec_uint128_512_hvo(+bs: +List<U32>) -> {(O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}) : O.Words & Bool}:
+  {==}
+
+def vec_uint128_512_e2e_decoded_hv(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {W_spec_primitives.bytes_domain(bs) == True{} : Bool},
+    dec: {Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint128_512_decode_ssz_generated.vec_uint128_512_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>},
+    +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), U32.to_nat(8192)) == c : Bool})
+    -> {(o, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(o) : O.Words & Bool}:
+  match c:
+    case True{}:
+      FD.logic__subst(O.Words, z => {(z, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(z) : O.Words & Bool}, O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}, o,
+        Equal.sym(O.Words, o, O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}, Equal.cong(Maybe<&1, O.Words>, O.Words, z => W_e2e_vec_uint128_512_e2e_comp_generated.gm(z, O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}), Some{o}, Some{O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}}, Equal.trans(Maybe<&1, O.Words>, Some{o}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint128_512_decode_ssz_generated.vec_uint128_512_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{O.Words{ANode{FD.array__thaw(U32, W_proofs_obj_arr_copy.segt(11n, 0n, W_e2e_e2e_load.wlp(bs))), Array.new(U32, 11n, 0)}, 8192}}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint128_512_decode_ssz_generated.vec_uint128_512_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, dec), W_e2e_vec_uint128_512_e2e_comp_generated.dsome(bs, n, hn, hd, ec)))),
+        vec_uint128_512_hvo(bs))
+    case False{}:
+      Empty.absurd({(o, True{}) == W_types_vec_uint128_512_encode_ssz_generated.v512_u128_valid(o) : O.Words & Bool}, FD.logic__false_true(Equal.cong(Maybe<&1, O.Words>, Bool, z => W_e2e_vec_uint128_512_e2e_comp_generated.isS(z), None{}, Some{o}, Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint128_512_decode_ssz_generated.vec_uint128_512_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint128_512_decode_ssz_generated.vec_uint128_512_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), None{}, W_e2e_vec_uint128_512_e2e_dec_generated.d_none(bs, n, W_e2e_e2e_bytes.ueq_false(n, List.length(&2, U32, bs), 8192, hn, ec))), dec))))

@@ -171,6 +171,63 @@ def default_for(ctx, bmod, otype, n2):
         raise
 
 
+def decoded_hv(ctx, n2, tmod, VAL, R):
+    """<Name>_e2e_decoded_hv: what the decoder returns for accepted bytes satisfies `hv` (the validity pass returns the object
+    unchanged with True), for the names whose composed decode (e2e/<Name>_e2e_comp_generated.bend) writes the decoded object
+    out and whose validity pass reads no word (no `bools_ok`): the pass is computed of the written-out object. The proof is the
+    composed file's own `ge` (decoded object re-encodes to the input) with the conclusion replaced."""
+    cp = E2E / f'{n2}_e2e_comp_generated.bend'
+    if not cp.exists():
+        return None
+    vb = tmod.defs.get(VAL.rpartition('.')[2], '')
+    if 'bools_ok' in vb:
+        return None
+    cm = W.Mod.get(cp)
+    ge = cm.defs.get('ge')
+    if not ge:
+        return None
+    mh = re.match(r'def ge\((.*?)\)\s*->\s*\{E\.obytes', ge, re.S)
+    mt = re.search(r'case True\{\}:\n\s+%Equal\.sym\(O\.Words, o, ', ge)
+    mf = re.search(r'case False\{\}:\n\s+Empty\.absurd\(', ge)
+    if not (mh and mt and mf):
+        return None
+    sym, _ = paren_arg(ge, mt.end() - 1 - len('Equal.sym') + len('Equal.sym'))
+    args = W.split_top(sym)
+    OBJ, PROOF = args[0] if False else None, None
+    # the arguments of Equal.sym(O.Words, o, OBJ, PROOF)
+    i0 = ge.index('Equal.sym(', mt.start())
+    inner, _ = paren_arg(ge, i0 + len('Equal.sym'))
+    sa = W.split_top(inner)
+    OBJ, PROOF = sa[2], sa[3]
+    j0 = ge.index('Empty.absurd(', mf.start())
+    inner2, _ = paren_arg(ge, j0 + len('Empty.absurd'))
+    ab = W.split_top(inner2)
+    ABS = ab[1]
+    if not re.search(r'\d', OBJ):
+        return None
+    mlen = re.search(r'Nat\.is_eq\(List\.length\(&2, U32, bs\), (.*?)\) == c : Bool', mh.group(1))
+    if not mlen or int(re.findall(r'\d+', mlen.group(1))[-1]) > 8192:
+        return None     # the validity pass over a larger tree is walked word by word: deeper than the checkers' stacks
+    lf_ = lambda e: ctx.lift(cm, e)
+    for al in set(re.findall(r'(?<![\w.])([A-Za-z_]\w*)\.', OBJ + PROOF + ABS)):
+        if al in cm.imports:
+            ctx.alias(cm.imports[al])
+    OA = ctx.alias(ROOT / 'src/obj.bend')
+    FDA = ctx.alias(ROOT / 'proofs/compact/found.bend')
+    ctx.alias(cp)
+    OBJl, PROOFl, ABSl = lf_(OBJ), lf_(PROOF), lf_(ABS)
+    hdr = lf_(mh.group(1)).replace(', dec:', ',\n    dec:', 1)
+    hvo = f'def {n2}_hvo(+bs: +List<U32>) -> {{({OBJl}, True{{}}) == {VAL}({OBJl}) : {OA}.Words & Bool}}:\n  {{==}}\n\n'
+    goal = f'{{(o, True{{}}) == {VAL}(o) : {OA}.Words & Bool}}'
+    return (hvo + f'def {n2}_e2e_decoded_hv({hdr})\n    -> {goal}:\n'
+            f'  match c:\n    case True{{}}:\n'
+            f'      {FDA}.logic__subst({OA}.Words, z => {{(z, True{{}}) == {VAL}(z) : {OA}.Words & Bool}}, {OBJl}, o,\n'
+            f'        Equal.sym({OA}.Words, o, {OBJl}, {PROOFl}),\n'
+            f'        {n2}_hvo(bs))\n'
+            f'    case False{{}}:\n'
+            f'      Empty.absurd({goal}, {ABSl})')
+
+
 def build_linear(n, tfile, P, k, lf):
     """the linear (object-threading) serializer of a fixed-size name: given `X_valid(o) == (o, True)`, it is the
     encoder's object and END_TO_END's bytes"""
@@ -219,9 +276,13 @@ def build_linear(n, tfile, P, k, lf):
     dmod, dcall = default_for(ctx, bmod, ps[0].split(':', 1)[1], n2)
     DEF = ctx.lift(dmod, dcall) if dmod is not None else dcall
     vdef = f'def {n2}_e2e_valid_default() -> {{({DEF}, True{{}}) == {VAL}({DEF}) : {R} & Bool}}:\n  {{==}}'
+    extra_defs = [vdef]
+    dh = decoded_hv(ctx, n2, tmod, VAL, R)
+    if dh:
+        extra_defs.append(dh)
     return W.imports_text(ctx) + '\n\n' + HEADER + '\n' + \
         f'# {n2}: given that the validity pass returns the object with True, the checked serializer is the encoder,\n' \
-        f'# and its bytes are END_TO_END\'s serialize of the object\'s value.\n\n' + '\n\n'.join([l1, ok, refused, main, vdef]) + '\n'
+        f'# and its bytes are END_TO_END\'s serialize of the object\'s value.\n\n' + '\n\n'.join([l1, ok, refused, main] + extra_defs) + '\n'
 
 
 def valid_body(tmod, vname):

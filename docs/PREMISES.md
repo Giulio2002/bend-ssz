@@ -71,9 +71,13 @@ stray bit into the output and differ from the spec), not about the spec's domain
 `valid_of_prem` iff above: refusal exactly when the last word is not `join(n low bits, zeros)`. (2) *The packed and
 byte vectors* (`vec_*`, `Blob`, `Cell`, <!-- fig:ser_lin_count -->72<!-- /fig --> names): the serializer threads the object (`X_serialize(o)` is an object and an
 `O.Encoded`), so their `_e2e_serialize` takes the bridge's own premises (`rep`, `hc`, ...) and `hv: {(o, True) ==
-X_valid(o)}` (the validity pass returned the object unchanged with True); `hv` is a hypothesis, not derived,
+X_valid(o)}` (the validity pass returned the object unchanged with True); `hv` is a hypothesis, not derived for an arbitrary object,
 because `O.bools_ok` and `O.words_ok` hand the array back through `Array.get` pairs and no lemma states that they
-return it unchanged. `<Name>_e2e_valid_default` states `hv` of the default object. Refusal is not tied to the spec's
+return it unchanged. `<Name>_e2e_valid_default` states `hv` of the default object, and for <!-- fig:ser_decoded_hv -->58<!-- /fig --> of them `<Name>_e2e_decoded_hv(bs, n, o, hn, hd, dec, c, ec)` states it
+of every object the decoder returns (`dec: decode(bytes) == Some{o}`): the composed decode writes that object out, the validity pass of
+the written-out object is computed, and the proof is the composed file's own `ge` with the conclusion replaced. Not stated: the ten
+boolean vectors (their pass reads the object's words, so `hv` of a decoded object needs that the decoder rejected bytes other than 0 and 1) and
+the vectors above 8192 bytes (the pass over a tree that size is walked word by word, deeper than the checkers' stacks). Refusal is not tied to the spec's
 domain for them: the view `vview*` of a words object is meaningful only under `rep` (a perfect tree), and `X_valid` checks
 lengths, capacity and byte ranges, not the tree (the next paragraph). (3) *The 70 names without serializer statements*:
 the 18 bit lists, `progbitlist`, the 7 progressive lists, BitsStruct, CompatibleUnionA/ABCA/BC, ComplexTestStruct,

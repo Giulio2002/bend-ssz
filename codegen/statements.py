@@ -129,7 +129,7 @@ def statement_files():
                                             f'{n}_e2e_witness_root_nonempty', f'{n}_e2e_witness_size', f'{n}_e2e_witness_size_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
     for p in sorted((ROOT / 'e2e').glob('*_e2e_ser_generated.bend')):
         n = p.name[:-len('_e2e_ser_generated.bend')]
-        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_(?:serialize\w*|valid_\w+))\(', p.read_text(), re.M)
+        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_(?:serialize\w*|valid_\w+|decoded_hv))\(', p.read_text(), re.M)
     for pat in ('*_api_witness_generated.bend', '*_api_root_witness_generated.bend', '*_e2e_set_witness_generated.bend'):
         for p in sorted((ROOT / 'e2e').glob(pat)):
             out['e2e/' + p.name] = re.findall(r'^def (\w+_witness)\(', p.read_text(), re.M)

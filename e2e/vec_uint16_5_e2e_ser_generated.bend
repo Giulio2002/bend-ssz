@@ -1,12 +1,19 @@
 import Base
+import ./e2e_load.bend as W_e2e_e2e_load
+import ./e2e_mask.bend as W_e2e_e2e_mask
 import ./e2e_support.bend as E
 import ./e2e_tree.bend as W_e2e_e2e_tree
+import ./vec_uint16_5_e2e_comp_generated.bend as W_e2e_vec_uint16_5_e2e_comp_generated
+import ./vec_uint16_5_e2e_dec_generated.bend as W_e2e_vec_uint16_5_e2e_dec_generated
 import ./vec_uint16_5_e2e_generated.bend as W_e2e_vec_uint16_5_e2e_generated
+import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
 import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../spec/primitives.bend as W_spec_primitives
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O
+import ../types/vec_uint16_5_decode_ssz_generated.bend as W_types_vec_uint16_5_decode_ssz_generated
 import ../types/vec_uint16_5_def_generated.bend as vec_uint16_5_d
 import ../types/vec_uint16_5_encode_ssz_generated.bend as W_types_vec_uint16_5_encode_ssz_generated
 
@@ -35,3 +42,18 @@ def vec_uint16_5_e2e_serialize(o: O.Words, +rep: W_proofs_obj_packed_bytes_light
 
 def vec_uint16_5_e2e_valid_default() -> {(vec_uint16_5_d.v5_u16_default(), True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(vec_uint16_5_d.v5_u16_default()) : O.Words & Bool}:
   {==}
+
+def vec_uint16_5_hvo(+bs: +List<U32>) -> {(O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}) : O.Words & Bool}:
+  {==}
+
+def vec_uint16_5_e2e_decoded_hv(+bs: +List<U32>, +n: U32, -o: O.Words, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {W_spec_primitives.bytes_domain(bs) == True{} : Bool},
+    dec: {Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint16_5_decode_ssz_generated.vec_uint16_5_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Words>},
+    +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 10n) == c : Bool})
+    -> {(o, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(o) : O.Words & Bool}:
+  match c:
+    case True{}:
+      FD.logic__subst(O.Words, z => {(z, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(z) : O.Words & Bool}, O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}, o,
+        Equal.sym(O.Words, o, O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}, Equal.cong(Maybe<&1, O.Words>, O.Words, z => W_e2e_vec_uint16_5_e2e_comp_generated.gm(z, O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}), Some{o}, Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}}, Equal.trans(Maybe<&1, O.Words>, Some{o}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint16_5_decode_ssz_generated.vec_uint16_5_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 0n)}, ALeaf{FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 1n)}}, ANode{ALeaf{W_e2e_e2e_mask.cf16(FD.flat__nthc(W_e2e_e2e_load.wlp(bs), 2n))}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 10}}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint16_5_decode_ssz_generated.vec_uint16_5_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, dec), W_e2e_vec_uint16_5_e2e_comp_generated.dsome(bs, n, hn, hd, ec)))),
+        vec_uint16_5_hvo(bs))
+    case False{}:
+      Empty.absurd({(o, True{}) == W_types_vec_uint16_5_encode_ssz_generated.v5_u16_valid(o) : O.Words & Bool}, FD.logic__false_true(Equal.cong(Maybe<&1, O.Words>, Bool, z => W_e2e_vec_uint16_5_e2e_comp_generated.isS(z), None{}, Some{o}, Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint16_5_decode_ssz_generated.vec_uint16_5_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(W_src_buffer.Buf, Maybe<&1, O.Words>, W_types_vec_uint16_5_decode_ssz_generated.vec_uint16_5_decode(W_src_buffer.fill_at(W_src_buffer.alloc(n), 0, bs), n)), None{}, W_e2e_vec_uint16_5_e2e_dec_generated.vec_uint16_5_d_none(bs, n, hn, ec)), dec))))

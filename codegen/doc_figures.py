@@ -161,6 +161,7 @@ def figures():
     serf = list((ROOT / 'e2e').glob('*_e2e_ser_generated.bend'))
     sert = [q.read_text() for q in serf]
     f['ser_files'] = str(len(serf))
+    f['ser_decoded_hv'] = str(sum(1 for t in sert if '_e2e_decoded_hv(' in t))
     f['ser_total'] = str(sum(1 for t in sert if '_e2e_valid_total(' in t))
     f['ser_prem'] = str(sum(1 for t in sert if '_e2e_valid_of_prem(' in t))
     f['ser_domain'] = str(sum(1 for t in sert if '_e2e_serialize_domain(' in t))
