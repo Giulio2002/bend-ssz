@@ -57,13 +57,15 @@ Trusted (not proved here):
   does not depend on the shell. The gate is the full check at the pin; the 5 MB "headroom" run is informational
   (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
-- **Mutation testing shows what the statements do not pin.** `tests_generated/mutation_testing.py` mutates the
-  generated runtime code and re-checks the one facade proof (and, for survivors, the proving-law files): in round 1
-  606 of 2637 mutants passed every proof check (validity checks, reported sizes, hash_tree_root wrapper constants,
-  offsets and packing constants of encode and decode, capacities). The runtime conformance and fuzz harnesses
-  killed all 606 (see docs/RESULTS.md for the contamination caveat and the independent re-run), so the generated
-  code is tested at those sites but not proved at them. A kill by stack overflow is not counted as detection
-  evidence.
+- **Mutation testing shows what the statements do not pin, and only the proofs count.** The mutation evidence
+  (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated
+  runtime code must make the pinned checker reject a proof. Conformance and fuzz results are triage, never
+  evidence; the first runtime counts were invalid (a crashing harness counts as a kill), so every runtime-stage
+  result needs its unmutated baseline passing. After four rounds of proof laws, 135 survivors of the replay and of
+  one new draw are gaps (validity of fixed-size types, bounds off by one, reported sizes, packing constants,
+  under-allocation); 263 are excluded: 163 with a proof-level reason (an argument the callee never reads, a flag
+  read only by `is_poisoned`, an accepted set that does not change), two classes by decision (`out_at(d+1)`, the
+  aligned-or-slow path) and one uncoverable. A proof stack overflow is not counted as detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to

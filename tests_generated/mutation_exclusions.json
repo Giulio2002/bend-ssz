@@ -1,0 +1,2635 @@
+{
+ "note": "mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py)",
+ "entries": [
+  {
+   "file": "types/FuluCurrentSyncCommitteeBranch_encode_ssz_generated.bend",
+   "def": "v6_b32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v6_b32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluExecutionBranch_encode_ssz_generated.bend",
+   "def": "v4_b32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_b32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluFinalityBranch_encode_ssz_generated.bend",
+   "def": "v7_b32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v7_b32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_bool_16_encode_ssz_generated.bend",
+   "def": "v16_bool_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_bool_4_encode_ssz_generated.bend",
+   "def": "v4_bool_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_bool_8_encode_ssz_generated.bend",
+   "def": "v8_bool_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_16_encode_ssz_generated.bend",
+   "def": "v16_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_1_encode_ssz_generated.bend",
+   "def": "v1_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v1_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_2_encode_ssz_generated.bend",
+   "def": "v2_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v2_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_3_encode_ssz_generated.bend",
+   "def": "v3_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v3_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_4_encode_ssz_generated.bend",
+   "def": "v4_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_5_encode_ssz_generated.bend",
+   "def": "v5_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v5_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint128_8_encode_ssz_generated.bend",
+   "def": "v8_u128_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint16_16_encode_ssz_generated.bend",
+   "def": "v16_u16_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint16_2_encode_ssz_generated.bend",
+   "def": "v2_u16_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v2_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint16_4_encode_ssz_generated.bend",
+   "def": "v4_u16_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint16_8_encode_ssz_generated.bend",
+   "def": "v8_u16_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_1_encode_ssz_generated.bend",
+   "def": "v1_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v1_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_2_encode_ssz_generated.bend",
+   "def": "v2_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v2_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_3_encode_ssz_generated.bend",
+   "def": "v3_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v3_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_4_encode_ssz_generated.bend",
+   "def": "v4_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_5_encode_ssz_generated.bend",
+   "def": "v5_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v5_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_8_encode_ssz_generated.bend",
+   "def": "v8_u256_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_16_encode_ssz_generated.bend",
+   "def": "v16_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_1_encode_ssz_generated.bend",
+   "def": "v1_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v1_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_2_encode_ssz_generated.bend",
+   "def": "v2_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v2_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_31_encode_ssz_generated.bend",
+   "def": "v31_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v31_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_3_encode_ssz_generated.bend",
+   "def": "v3_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v3_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_4_encode_ssz_generated.bend",
+   "def": "v4_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_5_encode_ssz_generated.bend",
+   "def": "v5_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v5_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint32_8_encode_ssz_generated.bend",
+   "def": "v8_u32_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_16_encode_ssz_generated.bend",
+   "def": "v16_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_1_encode_ssz_generated.bend",
+   "def": "v1_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v1_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_2_encode_ssz_generated.bend",
+   "def": "v2_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v2_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_31_encode_ssz_generated.bend",
+   "def": "v31_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v31_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_3_encode_ssz_generated.bend",
+   "def": "v3_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v3_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_4_encode_ssz_generated.bend",
+   "def": "v4_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_5_encode_ssz_generated.bend",
+   "def": "v5_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v5_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint64_8_encode_ssz_generated.bend",
+   "def": "v8_u64_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_16_encode_ssz_generated.bend",
+   "def": "v16_u8_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v16_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_4_encode_ssz_generated.bend",
+   "def": "v4_u8_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v4_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_8_encode_ssz_generated.bend",
+   "def": "v8_u8_put",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "case O.Words{ws, +n}: v8_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)",
+   "class": "aligned-or-slow path",
+   "reason": "is_eq(pos .&. 3, 0) -> is_lt: always takes the unaligned path; both paths write the same words (not proved here; class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBLSPubkey_encode_ssz_generated.bend",
+   "def": "BLSPubkey_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def BLSPubkey_encode(+o: FuluBytes48_d.Bytes48) -> B.Buf: O.out_done(48, FuluBytes48_e.b48_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBLSSignature_encode_ssz_generated.bend",
+   "def": "BLSSignature_encode",
+   "operator": "const+1",
+   "before": "5n",
+   "after": "6n",
+   "text": "def BLSSignature_encode(+o: FuluBytes96_d.Bytes96) -> B.Buf: O.out_done(96, FuluBytes96_e.b96_put(O.out_at(5n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBLSToExecutionChange_encode_ssz_generated.bend",
+   "def": "BLSToExecutionChange_encode",
+   "operator": "const+1",
+   "before": "5n",
+   "after": "6n",
+   "text": "def BLSToExecutionChange_encode(+o: FuluBLSToExecutionChange_d.BLSToExecutionChange) -> B.Buf: O.out_done(76, BLSToExecutionChange_put(O.out_at(5n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBlobIndex_encode_ssz_generated.bend",
+   "def": "BlobIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def BlobIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBlobSidecar_encode_ssz_generated.bend",
+   "def": "BlobSidecar_serialize",
+   "operator": "const+1",
+   "before": "16n",
+   "after": "17n",
+   "text": "def BlobSidecar_serialize(o: FuluBlobSidecar_d.BlobSidecar) -> FuluBlobSidecar_d.BlobSidecar & O.Encoded: BlobSidecar_senc_out(BlobSidecar_putk(O.out_at(16n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBlob_encode_ssz_generated.bend",
+   "def": "Blob_serialize",
+   "operator": "const+1",
+   "before": "15n",
+   "after": "16n",
+   "text": "def Blob_serialize(o: O.Words) -> O.Words & O.Encoded: Blob_senc_out(b131072_putk(O.out_at(15n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluBytes20_encode_ssz_generated.bend",
+   "def": "Bytes20_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def Bytes20_encode(+o: FuluBytes20_d.Bytes20) -> B.Buf: O.out_done(20, b20_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluCellIndex_encode_ssz_generated.bend",
+   "def": "CellIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def CellIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluColumnIndex_encode_ssz_generated.bend",
+   "def": "ColumnIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def ColumnIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluCommitmentIndex_encode_ssz_generated.bend",
+   "def": "CommitmentIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def CommitmentIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluCommitteeIndex_encode_ssz_generated.bend",
+   "def": "CommitteeIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def CommitteeIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluConsolidationRequest_encode_ssz_generated.bend",
+   "def": "ConsolidationRequest_encode",
+   "operator": "const+1",
+   "before": "5n",
+   "after": "6n",
+   "text": "def ConsolidationRequest_encode(+o: FuluConsolidationRequest_d.ConsolidationRequest) -> B.Buf: O.out_done(116, ConsolidationRequest_put(O.out_at(5n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluCustodyIndex_encode_ssz_generated.bend",
+   "def": "CustodyIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def CustodyIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluDomainType_encode_ssz_generated.bend",
+   "def": "DomainType_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def DomainType_encode(+o: FuluBytes4_d.Bytes4) -> B.Buf: O.out_done(4, FuluBytes4_e.b4_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluDomain_encode_ssz_generated.bend",
+   "def": "Domain_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def Domain_encode(+o: FuluBytes32_d.Bytes32) -> B.Buf: O.out_done(32, FuluBytes32_e.b32_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluEpoch_encode_ssz_generated.bend",
+   "def": "Epoch_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def Epoch_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluEther_encode_ssz_generated.bend",
+   "def": "Ether_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def Ether_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluExecutionAddress_encode_ssz_generated.bend",
+   "def": "ExecutionAddress_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def ExecutionAddress_encode(+o: FuluBytes20_d.Bytes20) -> B.Buf: O.out_done(20, FuluBytes20_e.b20_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluForkDigest_encode_ssz_generated.bend",
+   "def": "ForkDigest_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def ForkDigest_encode(+o: FuluBytes4_d.Bytes4) -> B.Buf: O.out_done(4, FuluBytes4_e.b4_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluG1Point_encode_ssz_generated.bend",
+   "def": "G1Point_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def G1Point_encode(+o: FuluBytes48_d.Bytes48) -> B.Buf: O.out_done(48, FuluBytes48_e.b48_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluG2Point_encode_ssz_generated.bend",
+   "def": "G2Point_encode",
+   "operator": "const+1",
+   "before": "5n",
+   "after": "6n",
+   "text": "def G2Point_encode(+o: FuluBytes96_d.Bytes96) -> B.Buf: O.out_done(96, FuluBytes96_e.b96_put(O.out_at(5n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluGwei_encode_ssz_generated.bend",
+   "def": "Gwei_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def Gwei_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluHash32_encode_ssz_generated.bend",
+   "def": "Hash32_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def Hash32_encode(+o: FuluBytes32_d.Bytes32) -> B.Buf: O.out_done(32, FuluBytes32_e.b32_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluHistoricalBatch_encode_ssz_generated.bend",
+   "def": "HistoricalBatch_serialize",
+   "operator": "const+1",
+   "before": "17n",
+   "after": "18n",
+   "text": "def HistoricalBatch_serialize(o: FuluHistoricalBatch_d.HistoricalBatch) -> FuluHistoricalBatch_d.HistoricalBatch & O.Encoded: HistoricalBatch_senc_out(HistoricalBatch_putk(O.out_at(17n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluHistoricalSummary_encode_ssz_generated.bend",
+   "def": "HistoricalSummary_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def HistoricalSummary_encode(+o: FuluHistoricalSummary_d.HistoricalSummary) -> B.Buf: O.out_done(64, HistoricalSummary_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluKZGCommitment_encode_ssz_generated.bend",
+   "def": "KZGCommitment_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def KZGCommitment_encode(+o: FuluBytes48_d.Bytes48) -> B.Buf: O.out_done(48, FuluBytes48_e.b48_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluKZGProof_encode_ssz_generated.bend",
+   "def": "KZGProof_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def KZGProof_encode(+o: FuluBytes48_d.Bytes48) -> B.Buf: O.out_done(48, FuluBytes48_e.b48_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluNodeID_encode_ssz_generated.bend",
+   "def": "NodeID_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def NodeID_encode(+o: uint256_d.Uint256) -> B.Buf: O.out_done(32, uint256_e.u256_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluParticipationFlags_encode_ssz_generated.bend",
+   "def": "ParticipationFlags_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def ParticipationFlags_encode(+o: U32) -> B.Buf: O.out_done(1, uint8_e.u8_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluPayloadId_encode_ssz_generated.bend",
+   "def": "PayloadId_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def PayloadId_encode(+o: FuluBytes8_d.Bytes8) -> B.Buf: O.out_done(8, FuluBytes8_e.b8_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluRoot_encode_ssz_generated.bend",
+   "def": "Root_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def Root_encode(+o: FuluBytes32_d.Bytes32) -> B.Buf: O.out_done(32, FuluBytes32_e.b32_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluRowIndex_encode_ssz_generated.bend",
+   "def": "RowIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def RowIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluSignedBLSToExecutionChange_encode_ssz_generated.bend",
+   "def": "SignedBLSToExecutionChange_encode",
+   "operator": "const+1",
+   "before": "6n",
+   "after": "7n",
+   "text": "def SignedBLSToExecutionChange_encode(+o: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> B.Buf: O.out_done(172, SignedBLSToExecutionChange_put(O.out_at(6n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluSlot_encode_ssz_generated.bend",
+   "def": "Slot_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def Slot_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluSubnetID_encode_ssz_generated.bend",
+   "def": "SubnetID_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def SubnetID_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
+   "def": "SyncCommittee_serialize",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def SyncCommittee_serialize(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & O.Encoded: SyncCommittee_senc_out(SyncCommittee_putk(O.out_at(13n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluValidatorIndex_encode_ssz_generated.bend",
+   "def": "ValidatorIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def ValidatorIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluValidator_encode_ssz_generated.bend",
+   "def": "Validator_encode",
+   "operator": "const+1",
+   "before": "5n",
+   "after": "6n",
+   "text": "def Validator_encode(+o: FuluValidator_d.Validator) -> B.Buf: O.out_done(121, Validator_put(O.out_at(5n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluVersion_encode_ssz_generated.bend",
+   "def": "Version_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def Version_encode(+o: FuluBytes4_d.Bytes4) -> B.Buf: O.out_done(4, FuluBytes4_e.b4_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluVersionedHash_encode_ssz_generated.bend",
+   "def": "VersionedHash_encode",
+   "operator": "const+1",
+   "before": "3n",
+   "after": "4n",
+   "text": "def VersionedHash_encode(+o: FuluBytes32_d.Bytes32) -> B.Buf: O.out_done(32, FuluBytes32_e.b32_put(O.out_at(3n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluVoluntaryExit_encode_ssz_generated.bend",
+   "def": "VoluntaryExit_encode",
+   "operator": "const+1",
+   "before": "2n",
+   "after": "3n",
+   "text": "def VoluntaryExit_encode(+o: FuluVoluntaryExit_d.VoluntaryExit) -> B.Buf: O.out_done(16, VoluntaryExit_put(O.out_at(2n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/FuluWithdrawalIndex_encode_ssz_generated.bend",
+   "def": "WithdrawalIndex_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def WithdrawalIndex_encode(+o: O.U64) -> B.Buf: O.out_done(8, uint64_e.u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/SingleFieldTestStruct_encode_ssz_generated.bend",
+   "def": "SingleFieldTestStruct_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def SingleFieldTestStruct_encode(+o: SingleFieldTestStruct_d.SingleFieldTestStruct) -> B.Buf: O.out_done(1, SingleFieldTestStruct_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/SmallTestStruct_encode_ssz_generated.bend",
+   "def": "SmallTestStruct_encode",
+   "operator": "const+1",
+   "before": "4",
+   "after": "5",
+   "text": "def SmallTestStruct_encode(+o: SmallTestStruct_d.SmallTestStruct) -> B.Buf: O.out_done(4, SmallTestStruct_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/bitvector_4_encode_ssz_generated.bend",
+   "def": "bitvector_4_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def bitvector_4_encode(+o: Fulu_bitvector_4_d.Bitvector4) -> B.Buf: O.out_done(1, Fulu_bitvector_4_e.bv4_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/bitvector_512_encode_ssz_generated.bend",
+   "def": "bitvector_512_encode",
+   "operator": "const+1",
+   "before": "4n",
+   "after": "5n",
+   "text": "def bitvector_512_encode(+o: Fulu_bitvector_512_d.Bitvector512) -> B.Buf: O.out_done(64, Fulu_bitvector_512_e.bv512_put(O.out_at(4n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/boolean_encode_ssz_generated.bend",
+   "def": "boolean_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def boolean_encode(+o: Bool) -> B.Buf: O.out_done(1, bool_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/uint128_encode_ssz_generated.bend",
+   "def": "uint128_encode",
+   "operator": "const+1",
+   "before": "2n",
+   "after": "3n",
+   "text": "def uint128_encode(+o: uint128_d.Uint128) -> B.Buf: O.out_done(16, u128_put(O.out_at(2n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/uint16_encode_ssz_generated.bend",
+   "def": "uint16_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/uint32_encode_ssz_generated.bend",
+   "def": "uint32_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def uint32_encode(+o: U32) -> B.Buf: O.out_done(4, u32_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/uint64_encode_ssz_generated.bend",
+   "def": "uint64_encode",
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "text": "def uint64_encode(+o: O.U64) -> B.Buf: O.out_done(8, u64_put(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/uint8_encode_ssz_generated.bend",
+   "def": "uint8_encode",
+   "operator": "const+1",
+   "before": "0n",
+   "after": "1n",
+   "text": "def uint8_encode(+o: U32) -> B.Buf: O.out_done(1, u8_put(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_512_encode_ssz_generated.bend",
+   "def": "vec_uint256_512_serialize",
+   "operator": "const+1",
+   "before": "12n",
+   "after": "13n",
+   "text": "def vec_uint256_512_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint256_512_senc_out(v512_u256_putk(O.out_at(12n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint256_513_encode_ssz_generated.bend",
+   "def": "vec_uint256_513_serialize",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def vec_uint256_513_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint256_513_senc_out(v513_u256_putk(O.out_at(13n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_1_encode_ssz_generated.bend",
+   "def": "vec_uint8_1_serialize",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def vec_uint8_1_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_1_senc_out(v1_u8_putk(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_2_encode_ssz_generated.bend",
+   "def": "vec_uint8_2_serialize",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def vec_uint8_2_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_2_senc_out(v2_u8_putk(O.out_at(0n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/vec_uint8_5_encode_ssz_generated.bend",
+   "def": "vec_uint8_5_serialize",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def vec_uint8_5_serialize(o: O.Words) -> O.Words & O.Encoded: vec_uint8_5_senc_out(v5_u8_putk(O.out_at(1n), 0, o))",
+   "class": "capacity+1",
+   "reason": "out_at(d) -> out_at(d+1) allocates 2^(d+1) words instead of 2^d; the Buf's byte length n is a separate field, so the encoded bytes are the same; no statement pins the array size (class from round 1, not redrawn)"
+  },
+  {
+   "file": "types/ComplexTestStruct_decode_ssz_generated.bend",
+   "def": "ComplexTestStruct_rd5",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "ComplexTestStruct_rd6(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, uint8_r.u8_read(buf, (off + 6 : U32), 1))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
+  },
+  {
+   "file": "types/FixedTestStruct_decode_ssz_generated.bend",
+   "def": "FixedTestStruct_read",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "def FixedTestStruct_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FixedTestStruct_d.FixedTestStruct: FixedTestStruct_rd0(off, len, uint8_r.u8_read(buf, (off + 0 : U32), 1))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluAttestationData_decode_ssz_generated.bend",
+   "def": "AttestationData_read",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "def AttestationData_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluAttestationData_d.AttestationData: AttestationData_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBLSToExecutionChange_decode_ssz_generated.bend",
+   "def": "BLSToExecutionChange_rd1",
+   "operator": "const-1",
+   "before": "20",
+   "after": "19",
+   "text": "BLSToExecutionChange_rd2(off, len, validator_index, from_bls_pubkey, FuluBytes20_r.b20_read(buf, (off + 56 : U32), 20))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBeaconBlockBody_decode_ssz_generated.bend",
+   "def": "BeaconBlockBody_g0_rd4",
+   "operator": "const-1",
+   "before": "96",
+   "after": "95",
+   "text": "BeaconBlockBody_g0_rd5(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBeaconBlockHeader_decode_ssz_generated.bend",
+   "def": "BeaconBlockHeader_read",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "def BeaconBlockHeader_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader: BeaconBlockHeader_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBeaconBlock_decode_ssz_generated.bend",
+   "def": "BeaconBlock_rd0",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "BeaconBlock_rd1(off, len, o_body, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+   "def": "BeaconState_g2_rd2",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "BeaconState_g2_rd3(off, len, vend, o_current_epoch_participation, o_inactivity_scores, current_epoch_participation, Fulu_bitvector_4_r.bv4_read(buf, (off + 2687256 : U32), 1))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: Fulu_bitvector_4_r.bv4_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBlobIndex_hashtreeroot_generated.bend",
+   "def": "BlobIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBlobIndex_hashtreeroot_generated.bend",
+   "def": "BlobIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluBlobIndex_hashtreeroot_generated.bend",
+   "def": "BlobIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBlobSidecar_decode_ssz_generated.bend",
+   "def": "BlobSidecar_rd1",
+   "operator": "const+1",
+   "before": "48",
+   "after": "49",
+   "text": "BlobSidecar_rd2(off, len, index, blob, FuluBytes48_r.b48_read(buf, (off + 131080 : U32), 48))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluBlob_encode_ssz_generated.bend",
+   "def": "b131072_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+   "def": "Bytes1_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: b1_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+   "def": "Bytes1_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: b1_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+   "def": "Bytes1_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: b1_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
+   "def": "CellIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
+   "def": "CellIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
+   "def": "CellIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCell_encode_ssz_generated.bend",
+   "def": "b2048_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/FuluCheckpoint_decode_ssz_generated.bend",
+   "def": "Checkpoint_rd0",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "Checkpoint_rd1(off, len, epoch, FuluBytes32_r.b32_read(buf, (off + 8 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluCheckpoint_decode_ssz_generated.bend",
+   "def": "Checkpoint_read",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "def Checkpoint_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluCheckpoint_d.Checkpoint: Checkpoint_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluColumnIndex_hashtreeroot_generated.bend",
+   "def": "ColumnIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluColumnIndex_hashtreeroot_generated.bend",
+   "def": "ColumnIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluColumnIndex_hashtreeroot_generated.bend",
+   "def": "ColumnIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
+   "def": "CommitmentIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
+   "def": "CommitmentIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
+   "def": "CommitmentIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
+   "def": "CommitteeIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
+   "def": "CommitteeIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
+   "def": "CommitteeIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluConsolidationRequest_decode_ssz_generated.bend",
+   "def": "ConsolidationRequest_read",
+   "operator": "const+1",
+   "before": "20",
+   "after": "21",
+   "text": "def ConsolidationRequest_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluConsolidationRequest_d.ConsolidationRequest: ConsolidationRequest_rd0(off, len, FuluBytes20_r.b20_read(buf, (off + 0 : U3",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluCustodyIndex_hashtreeroot_generated.bend",
+   "def": "CustodyIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCustodyIndex_hashtreeroot_generated.bend",
+   "def": "CustodyIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluCustodyIndex_hashtreeroot_generated.bend",
+   "def": "CustodyIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluDataColumnSidecar_decode_ssz_generated.bend",
+   "def": "DataColumnSidecar_rd2",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "DataColumnSidecar_rd3(off, len, o_column, o_kzg_commitments, o_kzg_proofs, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluDepositMessage_decode_ssz_generated.bend",
+   "def": "DepositMessage_rd0",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "DepositMessage_rd1(off, len, pubkey, FuluBytes32_r.b32_read(buf, (off + 48 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluEpoch_hashtreeroot_generated.bend",
+   "def": "Epoch_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluEpoch_hashtreeroot_generated.bend",
+   "def": "Epoch_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluEpoch_hashtreeroot_generated.bend",
+   "def": "Epoch_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluEth1Block_decode_ssz_generated.bend",
+   "def": "Eth1Block_rd1",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "Eth1Block_rd2(off, len, timestamp, deposit_root, uint64_r.u64_read(buf, (off + 40 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluEth1Data_decode_ssz_generated.bend",
+   "def": "Eth1Data_rd1",
+   "operator": "const-1",
+   "before": "32",
+   "after": "31",
+   "text": "Eth1Data_rd2(off, len, deposit_root, deposit_count, FuluBytes32_r.b32_read(buf, (off + 40 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluEth1Data_decode_ssz_generated.bend",
+   "def": "Eth1Data_read",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "def Eth1Data_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluEth1Data_d.Eth1Data: Eth1Data_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluEther_hashtreeroot_generated.bend",
+   "def": "Ether_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluEther_hashtreeroot_generated.bend",
+   "def": "Ether_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluEther_hashtreeroot_generated.bend",
+   "def": "Ether_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluExecutionPayloadHeader_decode_ssz_generated.bend",
+   "def": "ExecutionPayloadHeader_g0_rd2",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "ExecutionPayloadHeader_g0_rd3(off, len, vend, parent_hash, fee_recipient, state_root, FuluBytes32_r.b32_read(buf, (off + 84 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+   "def": "ExecutionPayload_g0_rd3",
+   "operator": "const+1",
+   "before": "256",
+   "after": "257",
+   "text": "ExecutionPayload_g0_rd4(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, Fulu_bytevec_256_r.b256_read(buf, (off + 116 : U32), 256))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: Fulu_bytevec_256_r.b256_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+   "def": "ExecutionPayload_g0_rd6",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "ExecutionPayload_g0_rd7(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, uint64_r.u64_read(buf, (off + 412 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluForkData_decode_ssz_generated.bend",
+   "def": "ForkData_read",
+   "operator": "const+1",
+   "before": "4",
+   "after": "5",
+   "text": "def ForkData_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluForkData_d.ForkData: ForkData_rd0(off, len, FuluBytes4_r.b4_read(buf, (off + 0 : U32), 4))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes4_r.b4_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluFork_decode_ssz_generated.bend",
+   "def": "Fork_read",
+   "operator": "const-1",
+   "before": "4",
+   "after": "3",
+   "text": "def Fork_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluFork_d.Fork: Fork_rd0(off, len, FuluBytes4_r.b4_read(buf, (off + 0 : U32), 4))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes4_r.b4_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluGwei_hashtreeroot_generated.bend",
+   "def": "Gwei_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluGwei_hashtreeroot_generated.bend",
+   "def": "Gwei_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluGwei_hashtreeroot_generated.bend",
+   "def": "Gwei_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluHistoricalSummary_decode_ssz_generated.bend",
+   "def": "HistoricalSummary_read",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "def HistoricalSummary_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluHistoricalSummary_d.HistoricalSummary: HistoricalSummary_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluIndexedAttestation_decode_ssz_generated.bend",
+   "def": "IndexedAttestation_rd2",
+   "operator": "const+1",
+   "before": "96",
+   "after": "97",
+   "text": "IndexedAttestation_rd3(off, len, o_attesting_indices, attesting_indices, data, FuluBytes96_r.b96_read(buf, (off + 132 : U32), 96))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluMatrixEntry_decode_ssz_generated.bend",
+   "def": "MatrixEntry_rd2",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (off + 2104 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
+   "def": "ParticipationFlags_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_h.u8_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
+   "def": "ParticipationFlags_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_h.u8_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
+   "def": "ParticipationFlags_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_h.u8_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluPendingAttestation_decode_ssz_generated.bend",
+   "def": "PendingAttestation_rd2",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "PendingAttestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, uint64_r.u64_read(buf, (off + 132 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPendingConsolidation_decode_ssz_generated.bend",
+   "def": "PendingConsolidation_read",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "def PendingConsolidation_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPendingConsolidation_d.PendingConsolidation: PendingConsolidation_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPendingDeposit_decode_ssz_generated.bend",
+   "def": "PendingDeposit_rd1",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "PendingDeposit_rd2(off, len, pubkey, withdrawal_credentials, uint64_r.u64_read(buf, (off + 80 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPendingDeposit_decode_ssz_generated.bend",
+   "def": "PendingDeposit_rd3",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "PendingDeposit_rd4(off, len, pubkey, withdrawal_credentials, amount, signature, uint64_r.u64_read(buf, (off + 184 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPendingPartialWithdrawal_decode_ssz_generated.bend",
+   "def": "PendingPartialWithdrawal_read",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "def PendingPartialWithdrawal_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal: PendingPartialWithdrawal_rd0(off, len, uint64_r.u64_read(buf, (o",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPowBlock_decode_ssz_generated.bend",
+   "def": "PowBlock_rd1",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "PowBlock_rd2(off, len, block_hash, parent_hash, uint256_r.u256_read(buf, (off + 64 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint256_r.u256_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluPowBlock_decode_ssz_generated.bend",
+   "def": "PowBlock_read",
+   "operator": "const+1",
+   "before": "32",
+   "after": "33",
+   "text": "def PowBlock_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPowBlock_d.PowBlock: PowBlock_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
+   "def": "RowIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
+   "def": "RowIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
+   "def": "RowIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSignedBLSToExecutionChange_decode_ssz_generated.bend",
+   "def": "SignedBLSToExecutionChange_rd0",
+   "operator": "const-1",
+   "before": "96",
+   "after": "95",
+   "text": "SignedBLSToExecutionChange_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 76 : U32), 96))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluSingleAttestation_decode_ssz_generated.bend",
+   "def": "SingleAttestation_read",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "def SingleAttestation_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluSingleAttestation_d.SingleAttestation: SingleAttestation_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluSlot_hashtreeroot_generated.bend",
+   "def": "Slot_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluSlot_hashtreeroot_generated.bend",
+   "def": "Slot_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSlot_hashtreeroot_generated.bend",
+   "def": "Slot_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSubnetID_hashtreeroot_generated.bend",
+   "def": "SubnetID_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluSubnetID_hashtreeroot_generated.bend",
+   "def": "SubnetID_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSubnetID_hashtreeroot_generated.bend",
+   "def": "SubnetID_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSyncCommitteeContribution_decode_ssz_generated.bend",
+   "def": "SyncCommitteeContribution_rd1",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "SyncCommitteeContribution_rd2(off, len, slot, beacon_block_root, uint64_r.u64_read(buf, (off + 40 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluSyncCommittee_decode_ssz_generated.bend",
+   "def": "SyncCommittee_rd0",
+   "operator": "const+1",
+   "before": "48",
+   "after": "49",
+   "text": "SyncCommittee_rd1(off, len, pubkeys, FuluBytes48_r.b48_read(buf, (off + 24576 : U32), 48))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
+   "def": "ValidatorIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
+   "def": "ValidatorIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
+   "def": "ValidatorIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluValidator_decode_ssz_generated.bend",
+   "def": "Validator_rd3",
+   "operator": "const-1",
+   "before": "8",
+   "after": "7",
+   "text": "Validator_rd4(off, len, pubkey, withdrawal_credentials, effective_balance, slashed, uint64_r.u64_read(buf, (off + 89 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluWithdrawalIndex_hashtreeroot_generated.bend",
+   "def": "WithdrawalIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluWithdrawalIndex_hashtreeroot_generated.bend",
+   "def": "WithdrawalIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/FuluWithdrawalIndex_hashtreeroot_generated.bend",
+   "def": "WithdrawalIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluWithdrawalRequest_decode_ssz_generated.bend",
+   "def": "WithdrawalRequest_rd0",
+   "operator": "const+1",
+   "before": "48",
+   "after": "49",
+   "text": "WithdrawalRequest_rd1(off, len, source_address, FuluBytes48_r.b48_read(buf, (off + 20 : U32), 48))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
+  },
+  {
+   "file": "types/FuluWithdrawal_decode_ssz_generated.bend",
+   "def": "Withdrawal_rd2",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "Withdrawal_rd3(off, len, index, validator_index, address, uint64_r.u64_read(buf, (off + 36 : U32), 8))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
+  },
+  {
+   "file": "types/ProgressiveComplexTestStruct_decode_ssz_generated.bend",
+   "def": "ProgressiveComplexTestStruct_rd6",
+   "operator": "const-1",
+   "before": "1",
+   "after": "0",
+   "text": "ProgressiveComplexTestStruct_rd7(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, o_f_G, o_f_H, uint8_r.u8_read(buf, (off + 0 : U32), 1))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
+  },
+  {
+   "file": "types/boolean_hashtreeroot_generated.bend",
+   "def": "boolean_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: bool_root ignores its parameter seg"
+  },
+  {
+   "file": "types/boolean_hashtreeroot_generated.bend",
+   "def": "boolean_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: bool_root ignores its parameter hl"
+  },
+  {
+   "file": "types/boolean_hashtreeroot_generated.bend",
+   "def": "boolean_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: bool_root ignores its parameter hl"
+  },
+  {
+   "file": "types/progbitlist_encode_ssz_generated.bend",
+   "def": "pbits_valid",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def pbits_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 0, True{})",
+   "class": "proof-equivalent",
+   "reason": "bits_ok: limit is only read under Bool.or(big, ..) and big is True{}"
+  },
+  {
+   "file": "types/proglist_bool_encode_ssz_generated.bend",
+   "def": "pl_bool_valid",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, True{}, 1))",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/proglist_uint128_encode_ssz_generated.bend",
+   "def": "pl_u128_valid",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 16)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/proglist_uint256_decode_ssz_generated.bend",
+   "def": "proglist_uint256_decode",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "proglist_uint256_built(size, pl_u256_ok(buf, 0, size))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: pl_u256_ok ignores its parameter off"
+  },
+  {
+   "file": "types/proglist_uint32_decode_ssz_generated.bend",
+   "def": "proglist_uint32_decode",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "proglist_uint32_built(size, pl_u32_ok(buf, 0, size))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: pl_u32_ok ignores its parameter off"
+  },
+  {
+   "file": "types/proglist_uint32_encode_ssz_generated.bend",
+   "def": "pl_u32_valid",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def pl_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/proglist_uint64_decode_ssz_generated.bend",
+   "def": "proglist_uint64_decode",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "proglist_uint64_built(size, pl_u64_ok(buf, 0, size))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: pl_u64_ok ignores its parameter off"
+  },
+  {
+   "file": "types/proglist_uint8_decode_ssz_generated.bend",
+   "def": "proglist_uint8_decode",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "proglist_uint8_built(size, pl_u8_ok(buf, 0, size))",
+   "class": "proof-equivalent",
+   "reason": "argument never read: pl_u8_ok ignores its parameter off"
+  },
+  {
+   "file": "types/uint16_hashtreeroot_generated.bend",
+   "def": "uint16_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u16_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint16_hashtreeroot_generated.bend",
+   "def": "uint16_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u16_root ignores its parameter seg"
+  },
+  {
+   "file": "types/uint16_hashtreeroot_generated.bend",
+   "def": "uint16_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u16_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint32_hashtreeroot_generated.bend",
+   "def": "uint32_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u32_root ignores its parameter seg"
+  },
+  {
+   "file": "types/uint32_hashtreeroot_generated.bend",
+   "def": "uint32_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u32_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint32_hashtreeroot_generated.bend",
+   "def": "uint32_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u32_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint64_hashtreeroot_generated.bend",
+   "def": "uint64_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u64_root ignores its parameter seg"
+  },
+  {
+   "file": "types/uint64_hashtreeroot_generated.bend",
+   "def": "uint64_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint64_hashtreeroot_generated.bend",
+   "def": "uint64_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint8_hashtreeroot_generated.bend",
+   "def": "uint8_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u8_root ignores its parameter seg"
+  },
+  {
+   "file": "types/uint8_hashtreeroot_generated.bend",
+   "def": "uint8_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u8_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint8_hashtreeroot_generated.bend",
+   "def": "uint8_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "class": "proof-equivalent",
+   "reason": "argument never read: u8_root ignores its parameter hl"
+  },
+  {
+   "file": "types/vec_bool_16_decode_ssz_generated.bend",
+   "def": "v16_bool_ok_nz",
+   "operator": "valid",
+   "before": "True{}",
+   "after": "False{}",
+   "text": "case True{}: (buf, True{})",
+   "class": "proof-equivalent",
+   "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 16 != 0: it is never reached"
+  },
+  {
+   "file": "types/vec_bool_16_decode_ssz_generated.bend",
+   "def": "v16_bool_ok_n",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "v16_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller, ok_at, passing the literal n = 16: is_eq(16, 0) and is_lt(16, 0) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_bool_16_encode_ssz_generated.bend",
+   "def": "v16_bool_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_bool_2_encode_ssz_generated.bend",
+   "def": "v2_bool_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_bool_31_decode_ssz_generated.bend",
+   "def": "v31_bool_ok_nz",
+   "operator": "valid",
+   "before": "True{}",
+   "after": "False{}",
+   "text": "case True{}: (buf, True{})",
+   "class": "proof-equivalent",
+   "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 31 != 0: it is never reached"
+  },
+  {
+   "file": "types/vec_bool_31_decode_ssz_generated.bend",
+   "def": "v31_bool_ok_n",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "v31_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller, ok_at, passing the literal n = 31: is_eq(31, 0) and is_lt(31, 0) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_bool_31_encode_ssz_generated.bend",
+   "def": "v31_bool_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_bool_3_decode_ssz_generated.bend",
+   "def": "v3_bool_ok_n",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "v3_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller, ok_at, passing the literal n = 3: is_eq(3, 0) and is_lt(3, 0) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_bool_3_decode_ssz_generated.bend",
+   "def": "v3_bool_ok_n",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "v3_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller passing the literal n = 3: is_eq(3, 0) and is_eq(3, 1) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_bool_4_encode_ssz_generated.bend",
+   "def": "v4_bool_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_bool_4_encode_ssz_generated.bend",
+   "def": "v4_bool_valid",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "def v4_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 4, 4, False{}, 1))",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_bool_512_encode_ssz_generated.bend",
+   "def": "v512_bool_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_bool_512_encode_ssz_generated.bend",
+   "def": "v512_bool_valid",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "def v512_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 512, 512, False{}, 1))",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_bool_513_decode_ssz_generated.bend",
+   "def": "v513_bool_ok_n",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "v513_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller, ok_at, passing the literal n = 513: is_eq(513, 0) and is_lt(513, 0) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_bool_5_decode_ssz_generated.bend",
+   "def": "v5_bool_ok_nz",
+   "operator": "valid",
+   "before": "True{}",
+   "after": "False{}",
+   "text": "case True{}: (buf, True{})",
+   "class": "proof-equivalent",
+   "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 5 != 0: it is never reached"
+  },
+  {
+   "file": "types/vec_bool_8_decode_ssz_generated.bend",
+   "def": "v8_bool_ok_n",
+   "operator": "cmp",
+   "before": "U32.is_eq(",
+   "after": "U32.is_lt(",
+   "text": "v8_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "class": "proof-equivalent",
+   "reason": "ok_n has one caller, ok_at, passing the literal n = 8: is_eq(8, 0) and is_lt(8, 0) both evaluate to False{}"
+  },
+  {
+   "file": "types/vec_uint128_31_encode_ssz_generated.bend",
+   "def": "v31_u128_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint128_512_encode_ssz_generated.bend",
+   "def": "v512_u128_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint128_512_encode_ssz_generated.bend",
+   "def": "v512_u128_valid",
+   "operator": "const-1",
+   "before": "8192",
+   "after": "8191",
+   "text": "def v512_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8192, 8192, False{}, 16)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint128_513_encode_ssz_generated.bend",
+   "def": "v513_u128_valid",
+   "operator": "const+1",
+   "before": "8208",
+   "after": "8209",
+   "text": "def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint128_513_encode_ssz_generated.bend",
+   "def": "v513_u128_valid",
+   "operator": "const-1",
+   "before": "8208",
+   "after": "8207",
+   "text": "def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_1_encode_ssz_generated.bend",
+   "def": "v1_u16_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint16_1_encode_ssz_generated.bend",
+   "def": "v1_u16_valid",
+   "operator": "const-1",
+   "before": "2",
+   "after": "1",
+   "text": "def v1_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2, 2, False{}, 2)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_2_encode_ssz_generated.bend",
+   "def": "v2_u16_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint16_2_encode_ssz_generated.bend",
+   "def": "v2_u16_valid",
+   "operator": "const-1",
+   "before": "2",
+   "after": "1",
+   "text": "def v2_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 2)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_3_encode_ssz_generated.bend",
+   "def": "v3_u16_valid",
+   "operator": "const+1",
+   "before": "2",
+   "after": "3",
+   "text": "def v3_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 6, 6, False{}, 2)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_4_encode_ssz_generated.bend",
+   "def": "v4_u16_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint16_513_encode_ssz_generated.bend",
+   "def": "v513_u16_valid",
+   "operator": "const+1",
+   "before": "2",
+   "after": "3",
+   "text": "def v513_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1026, 1026, False{}, 2)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_5_encode_ssz_generated.bend",
+   "def": "v5_u16_valid",
+   "operator": "const-1",
+   "before": "10",
+   "after": "9",
+   "text": "def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 10, 10, False{}, 2)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint256_16_encode_ssz_generated.bend",
+   "def": "v16_u256_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint256_31_encode_ssz_generated.bend",
+   "def": "v31_u256_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint256_31_encode_ssz_generated.bend",
+   "def": "v31_u256_valid",
+   "operator": "const-1",
+   "before": "992",
+   "after": "991",
+   "text": "def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint256_512_encode_ssz_generated.bend",
+   "def": "v512_u256_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint256_513_encode_ssz_generated.bend",
+   "def": "v513_u256_valid",
+   "operator": "const+1",
+   "before": "16416",
+   "after": "16417",
+   "text": "def v513_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16416, 16416, False{}, 32)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint32_1_encode_ssz_generated.bend",
+   "def": "v1_u32_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint32_3_encode_ssz_generated.bend",
+   "def": "v3_u32_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint32_512_encode_ssz_generated.bend",
+   "def": "v512_u32_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint32_512_encode_ssz_generated.bend",
+   "def": "v512_u32_valid",
+   "operator": "const+1",
+   "before": "2048",
+   "after": "2049",
+   "text": "def v512_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2048, 2048, False{}, 4)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint32_513_encode_ssz_generated.bend",
+   "def": "v513_u32_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint32_513_encode_ssz_generated.bend",
+   "def": "v513_u32_valid",
+   "operator": "const-1",
+   "before": "4",
+   "after": "3",
+   "text": "def v513_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2052, 2052, False{}, 4)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint32_5_encode_ssz_generated.bend",
+   "def": "v5_u32_valid",
+   "operator": "const+1",
+   "before": "4",
+   "after": "5",
+   "text": "def v5_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 20, 20, False{}, 4)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint64_1_encode_ssz_generated.bend",
+   "def": "v1_u64_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint64_513_encode_ssz_generated.bend",
+   "def": "v513_u64_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint64_513_encode_ssz_generated.bend",
+   "def": "v513_u64_valid",
+   "operator": "const+1",
+   "before": "8",
+   "after": "9",
+   "text": "def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4104, 4104, False{}, 8)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint64_5_encode_ssz_generated.bend",
+   "def": "v5_u64_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint8_2_encode_ssz_generated.bend",
+   "def": "v2_u8_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint8_31_encode_ssz_generated.bend",
+   "def": "v31_u8_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint8_512_encode_ssz_generated.bend",
+   "def": "v512_u8_valid",
+   "operator": "const+1",
+   "before": "1",
+   "after": "2",
+   "text": "def v512_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 512, 512, False{}, 1)",
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint8_513_encode_ssz_generated.bend",
+   "def": "v513_u8_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/vec_uint8_5_encode_ssz_generated.bend",
+   "def": "v5_u8_pk_ok",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "(out, (o, 0))",
+   "class": "proof-equivalent",
+   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+  },
+  {
+   "file": "types/FuluTransaction_encode_ssz_generated.bend",
+   "def": "bl1073741824_valid",
+   "operator": "const+1",
+   "before": "1073741824",
+   "after": "1073741825",
+   "text": "def bl1073741824_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1073741824, False{}, 1)",
+   "class": "uncoverable",
+   "reason": "the bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes (Transaction): not constructible, no law can be checked against it"
+  }
+ ]
+}
