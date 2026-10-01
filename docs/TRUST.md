@@ -103,7 +103,8 @@ Trusted (not proved here):
   implementation under test is left out: the generated per-name encoder, decoder and root
   (`types/*_{encode_ssz,decode_ssz,hashtreeroot}_generated.bend`, which the bridges pin down) and
   the model API `src/model.bend` (which END_TO_END's laws pin down); but not the validity predicates
-  of those encoders (`X_valid` and every def it reaches, whatever the def is called, whatever the shape of the call - a chain, another
+  of those encoders (`X_valid` and every def it reaches, wherever it lives - another encode file, `src/model.bend`, `src/obj.bend`, through an alias or a
+  chain across files - whatever the def is called, whatever the shape of the call - a chain, another
   file, a match arm, a lambda, a function value, a helper with no `->` or a wrapped signature, a helper that carries the suffix
   `_encode` or `_serialize` - the premise of the validating-serializer statements), which are
   hashed; a law's proof is told from a helper by the `law` block of its name, not by the shape of its head. So a change to a src/ def

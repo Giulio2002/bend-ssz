@@ -144,7 +144,7 @@ _override = {}  # path -> text, for the planted-change self-test only
 def boundary(path, name=None):
     # the whole-locked types/ files (types/schema.bend, types/fulu_model.bend, ...) are not
     # traversed; proofs/obj/generic_specs.bend, locked whole too, still is (as before)
-    if SUBJECT.match(path) and path.startswith('types/') and name is not None and (path, name) in premise_reach():
+    if SUBJECT.match(path) and name is not None and (path, name) in premise_reach():
         return False
     return (path.startswith(WHOLE) or bool(SUBJECT.match(path))
             or (path in _whole_set() and path.startswith(('src/', 'types/'))))
@@ -160,7 +160,9 @@ def reset():
 
 
 def premise_reach():
-    """{(file, def)} of the encode files reachable from a `*_valid` def: the validity predicates and the helpers they call"""
+    """{(file, def)} reachable from a `*_valid` def of an encode file, wherever it lives (another encode file, src/model.bend, src/obj.bend, ...;
+    not what is locked whole): the validity predicates and every helper they call. boundary() lets the ones in the implementation-under-test
+    files (SUBJECT) through; the others are hashed anyway"""
     if 's' in _prc:
         return _prc['s']
     import glob
@@ -177,7 +179,7 @@ def premise_reach():
         text = defs[n]
         for m in REF.finditer(text):
             a, rest = m.group(1), m.group(2)
-            if a in imps and SUBJECT.match(imps[a]) and os.path.exists(os.path.join(ROOT, imps[a])):
+            if a in imps and not imps[a].startswith(WHOLE) and imps[a] not in _whole_set() and os.path.exists(os.path.join(ROOT, imps[a])):
                 parts = rest.split('.')
                 tdefs = module(imps[a])[1]
                 for k in range(len(parts), 0, -1):
@@ -340,8 +342,17 @@ def self_test_helpers():
          [f'def Checkpoint_b1({C}) -> Bool: Checkpoint_b2_serialize(o)', f'def Checkpoint_b2_serialize({C}) -> Bool: Checkpoint_b3_encode(o)',
           f'def Checkpoint_b3_encode({C}) -> Bool: {{B}}'], []),
     ]
+    shapes += [
+        ('helper in src/model.bend through an alias', f'def Checkpoint_valid({C}) -> Bool: MD.vf_helper(o)', [], [],
+         {'src/model.bend': ([], ['def vf_helper(%s) -> Bool: {B}' % C])}),
+        ('chain valid -> src/obj.bend -> src/model.bend', f'def Checkpoint_valid({C}) -> Bool: O.vf_h1(o)', [], [],
+         {'src/obj.bend': (['import ./model.bend as MD'], ['def vf_h1(%s) -> Bool: MD.vf_h2(o)' % C]),
+          'src/model.bend': ([], ['def vf_h2(%s) -> Bool: {B}' % C])}),
+    ]
     n = 0
-    for shape, valid, helpers, ohelpers in shapes:
+    for sh in shapes:
+        shape, valid, helpers, ohelpers = sh[:4]
+        extra = sh[4] if len(sh) > 4 else {}
         hashes = []
         for body in ('True{}', 'False{}'):
             reset()
@@ -349,6 +360,13 @@ def self_test_helpers():
             if ohelpers:
                 head.insert(1, 'import ./FuluFork_encode_ssz_generated.bend as XF')
                 _override[other] = otext.rstrip('\n') + '\n\n' + '\n\n'.join(h.replace('{B}', body) for h in ohelpers) + '\n'
+            if extra:
+                head.insert(1, 'import ../src/model.bend as MD')
+            for xf, (ximps, xdefs) in extra.items():
+                xt = open(os.path.join(ROOT, xf)).read().split('\n')
+                k = max(q for q, l in enumerate(xt) if l.startswith('import ')) + 1
+                xt = xt[:k] + ximps + xt[k:]
+                _override[xf] = '\n'.join(xt).rstrip('\n') + '\n\n' + '\n\n'.join(h.replace('{B}', body) for h in xdefs) + '\n'
             _override[path] = '\n'.join(head + [valid.replace('{B}', body), ''] + [h.replace('{B}', body) for h in helpers[::-1]] + [''] + lines[j:])
             hashes.append(statement_defs([f]))
             _override.clear()
