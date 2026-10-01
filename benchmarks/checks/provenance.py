@@ -202,13 +202,13 @@ def main():
             pass   # no .git or the commit is not here: the hashes above still bind the evidence to this tree
         # the programs it ran: built from this tree's sources by the compiler it records
         rt = prov.get('runtime', {})
-        for name, e in prov.get('executables', {}).items():
-            if e['cache_entry'] is None:
+        for name, x in prov.get('executables', {}).items():
+            if x['cache_entry'] is None:
                 diff.append(f'{name}: not a cache link (benchmarks/quick.py builds the programs)')
                 continue
             bend = _bend_for(rt)
-            want_key = program_key(ROOT / e['source'], bend, _base_for(rt)) if bend else None
-            if e['cache_entry'].rsplit('-', 1)[-1] != e['expected_key'] or (want_key and want_key != e['expected_key']):
+            want_key = program_key(ROOT / x['source'], bend, _base_for(rt)) if bend else None
+            if x['cache_entry'].rsplit('-', 1)[-1] != x['expected_key'] or (want_key and want_key != x['expected_key']):
                 diff.append(f'{name}: built from other sources than this tree')
         print(f"{e}: commit {prov['git_commit']} at {prov['utc']}: "
               + ('sources and harness match this tree' if not diff else 'differs from this tree: ' + ', '.join(diff)))

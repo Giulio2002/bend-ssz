@@ -1,42 +1,27 @@
 {
- "tally": {
-  "truncated invalid agree": 261,
-  "extended invalid agree": 266,
-  "offset_ffffffff valid agree": 240,
-  "flip_first valid agree": 240,
-  "word0_plus1 valid agree": 240,
-  "word1_plus1 valid agree": 280,
-  "word2_plus1 invalid agree": 20,
-  "word3_plus1 valid agree": 290,
-  "word4_plus1 valid agree": 270,
-  "word5_plus1 valid agree": 275,
-  "word6_plus1 valid agree": 270,
-  "word7_plus1 valid agree": 270,
-  "word8_plus1 valid agree": 265,
-  "word9_plus1 valid agree": 263,
-  "word10_plus1 valid agree": 253,
-  "word11_plus1 valid agree": 248,
-  "word12_plus1 valid agree": 243,
-  "word13_plus1 valid agree": 243,
-  "word14_plus1 valid agree": 243,
-  "word15_plus1 valid agree": 242,
-  "truncated valid agree": 34,
-  "offset_ffffffff invalid agree": 55,
-  "flip_first invalid agree": 55,
-  "word0_plus1 invalid agree": 55,
-  "word2_plus1 valid agree": 275,
-  "word1_plus1 invalid agree": 15,
-  "word3_plus1 invalid agree": 5,
-  "word4_plus1 invalid agree": 5,
-  "word8_plus1 invalid agree": 5,
-  "extended valid agree": 29
+ "counts": {
+  "passed": 3,
+  "failed": 0,
+  "errors": 0,
+  "assertions": 2694,
+  "tests": 3,
+  "files": 2
  },
- "disagreements": [],
+ "files": [
+  "./tests/layout.test.ts",
+  "./tests/sha256.test.ts"
+ ],
+ "pass": true,
+ "problems": [],
+ "bun": {
+  "version": "1.4.2",
+  "sha256": "a83d263767d839e4d2649ca8e35d07159c7afc99afdc96d731ced29e056dda0c"
+ },
  "provenance": {
   "git_commit": "0669e662efafb0a8be1e61d6fc322381d761d573",
   "git_dirty": false,
   "git_tree": "e18c8e2b562caa6485dc512c8c4a6ea921295bc7",
-  "utc": "2026-10-01T04:22:38Z",
+  "utc": "2026-10-01T04:26:51Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -401,12 +386,15 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "benchmarks/checks/object_mutations.py": "a145c54a3fd00955f6bffc377a1ae4318228673051e9350457cfe64ab441efdc",
+   "tools/run_runtime_tests.py": "91d7d3a4fe43ec183732b2379836afebeb4557f56ea3ffb0f3f14ebb30996131",
    "benchmarks/checks/provenance.py": "c467c58c3fb26ab2221f147d6791ca1c8033da1bbdb481897219937f12eea0f0",
    "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183",
    "codegen/schema.py": "2c355881ca82c65b111b94ed1d1247900c7aea8fcd0cd5041f98e248d59c800b",
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
-   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
+   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7",
+   "tools/bend_loader.ts": "85fe067809eb900af52fb42af79449e0ee3c861e258f65f1677abe24bb8bb8b3",
+   "tests/*.test.ts": "0034d4fec739960e44163f71546614dcef3d58bdb2c12d99630229a68f676d26",
+   "tests/**/*.test.ts": "0034d4fec739960e44163f71546614dcef3d58bdb2c12d99630229a68f676d26"
   }
  }
 }

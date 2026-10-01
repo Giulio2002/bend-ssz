@@ -54,7 +54,7 @@ Trusted (not proved here):
 - **The stack is part of the setup, not of the logic.** A check that runs out of stack fails; it never
   accepts more. `tools/check.sh` pins the limits (`ulimit -s 16384`, a JSC budget of 10 MB) so a result
   does not depend on the shell. The gate is the full check at the pin; the 5 MB "headroom" run is informational
-  (it passed on one tree and failed an umbrella on the next; at 2.5 MB 11 of 46 umbrellas fail; the failure rate is not monotone
+  (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
