@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 5004 statements in 1328 files.
+# 5005 statements in 1328 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -10935,6 +10935,33 @@ def ProgressiveBitsStruct_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.l
 def ProgressiveBitsStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>} -> {API.deserialize(GS.ProgressiveBitsStruct(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.ProgressiveBitsStruct(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}):
 
+## e2e/ProgressiveBitsStruct_e2e_decode_witness_generated.bend
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/ProgressiveBitsStruct_decode_ssz_generated.bend as W_types_ProgressiveBitsStruct_decode_ssz_generated
+import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_encode_ssz_generated.bend as W_types_ProgressiveBitsStruct_encode_ssz_generated
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as W_types_ProgressiveBitsStruct_hashtreeroot_generated
+def ProgressiveBitsStruct_dw_bs() -> +List<U32>: E.obytes(ProgressiveBitsStruct_dw_buf())
+def ProgressiveBitsStruct_dw_buf() -> B.Buf: Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, W_types_ProgressiveBitsStruct_encode_ssz_generated.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default()))
+def ProgressiveBitsStruct_dw_dec() -> Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, W_types_ProgressiveBitsStruct_decode_ssz_generated.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(ProgressiveBitsStruct_dw_n()), 0, ProgressiveBitsStruct_dw_bs()), ProgressiveBitsStruct_dw_n()))
+def ProgressiveBitsStruct_dw_gm(m: Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, d: ProgressiveBitsStruct_d.ProgressiveBitsStruct) -> ProgressiveBitsStruct_d.ProgressiveBitsStruct:
+  match m:
+    case Some{x}: x
+    case None{}: d
+def ProgressiveBitsStruct_dw_isS(m: Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>) -> Bool:
+  match m:
+    case Some{x}: True{}
+    case None{}: False{}
+def ProgressiveBitsStruct_dw_n() -> U32: Pair.snd(B.Buf, U32, B.size(ProgressiveBitsStruct_dw_buf()))
+def ProgressiveBitsStruct_dw_o() -> ProgressiveBitsStruct_d.ProgressiveBitsStruct: ProgressiveBitsStruct_dw_gm(ProgressiveBitsStruct_dw_dec(), ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())
+def ProgressiveBitsStruct_e2e_decode_witness() -> {ProgressiveBitsStruct_dw_isS(ProgressiveBitsStruct_dw_dec()) == True{} : Bool}:
+def ProgressiveBitsStruct_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, W_types_ProgressiveBitsStruct_encode_ssz_generated.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_dw_o()))) == ProgressiveBitsStruct_dw_bs() : +List<U32>}:
+def ProgressiveBitsStruct_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, W_src_digest.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & W_src_digest.Digest, W_types_ProgressiveBitsStruct_hashtreeroot_generated.ProgressiveBitsStruct_hash_tree_root(B.alloc(0), ProgressiveBitsStruct_dw_o()))))} == W_e2e_e2e_comp.droot(W_proofs_obj_generic_specs.ProgressiveBitsStruct(), ProgressiveBitsStruct_dw_bs()) : Maybe<&2, +List<U32>>}:
+
 ## e2e/ProgressiveBitsStruct_e2e_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -11463,23 +11490,6 @@ import ../types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.be
 import ../types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend as ProgressiveSingleListContainerTestStruct_h
 def ProgressiveSingleListContainerTestStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) : Maybe<&2, +List<U32>>}:
 def ProgressiveSingleListContainerTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest, ProgressiveSingleListContainerTestStruct_h.ProgressiveSingleListContainerTestStruct_hash_tree_root(B.alloc(0), ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default()))))} == API.hash_tree_root(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) : Maybe<&2, +List<U32>>}:
-
-## e2e/ProgressiveTestStruct_e2e_comp_generated.bend
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/vbuf.bend as VB
-import ../spec/primitives.bend as SP
-import ../src/buffer.bend as B
-import ../src/digest.bend as D
-import ../types/ProgressiveTestStruct_decode_ssz_generated.bend as ProgressiveTestStruct_r
-import ../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
-import ../types/ProgressiveTestStruct_encode_ssz_generated.bend as ProgressiveTestStruct_e
-import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as ProgressiveTestStruct_h
-def ProgressiveTestStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ProgressiveTestStruct_d.ProgressiveTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(1n, U32.to_nat(n)), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>})
-    -> {E.obytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, B.Buf, ProgressiveTestStruct_e.ProgressiveTestStruct_encode(o))) == bs : +List<U32>}:
-def ProgressiveTestStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ProgressiveTestStruct_d.ProgressiveTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(1n, U32.to_nat(n)), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>})
-    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, o))))} == C.droot(Spec.ProgressiveTestStruct(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveTestStruct_e2e_dec_generated.bend
 import ../src/model.bend as API

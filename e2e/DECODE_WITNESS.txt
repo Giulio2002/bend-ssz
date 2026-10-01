@@ -26,6 +26,7 @@ FuluPendingAttestation	witnessed
 FuluSignedAggregateAndProof	witnessed
 FuluSignedBeaconBlock	witnessed
 FuluTransaction	witnessed
+ProgressiveBitsStruct	witnessed
 ProgressiveSingleListContainerTestStruct	witnessed
 ProgressiveVarTestStruct	witnessed
 VarTestStruct	witnessed
