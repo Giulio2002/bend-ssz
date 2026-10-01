@@ -1138,6 +1138,51 @@ def prog_bits(lf):
                           'proofs/obj/var_pbits_progbitlist.bend', given=given)
 
 
+def prog_bits_struct(lf):
+    """ProgressiveBitsStruct: four bounded bit lists (rep_bits and the storage premise SDB from e2e_pbsr / e2e_pbsw), four progressive bit lists
+    (pb_child, flavor 'o', under n + 4 <= 2^27) and four bit vectors"""
+    name = 'ProgressiveBitsStruct'
+    win = 'proofs/obj/var_winx_ProgressiveBitsStruct.bend'
+    BUF_D.add(name)
+    HEAVY[name] = H27
+
+    def lets(al):
+        Wc = al(win)
+        PSR, PSW, PSV = al('e2e/e2e_pbsr.bend'), al('e2e/e2e_pbsw.bend'), al('e2e/e2e_pbsv.bend')
+        HVK = al('e2e/e2e_hvk.bend')
+        al('e2e/e2e_dfx.bend')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e, 'o')
+            m = re.fullmatch(r'var_winx_g_bits(\d+)\.bend', fname)
+            if m and fn == 'OBJw':
+                k = int(re.match(r'[\w.]+\.XJ(\d+)\(', args[2]).group(1))
+                B = PB_TOP
+                com = f"d, t, n, 0n, 0, n, {B['eo']}, {B['hd']}, {B['hw']}, {B['hwN']}, {B['pf']}, {B['hchk']}"
+                a = ', '.join(args)
+                facts = (f"{Wc}.eoJ{k}D({com}), hd, {Wc}.hwJ{k}D({com}), {HVK}.hwN32({args[2]}, {args[4]}, {Wc}.hwJ{k}N({com})), pf, "
+                         f"{Wc}.itD{k}(t, 0n, 0, n, hchk)")
+                P = f'b{m.group(1)}'
+                return BitsDec(e, f'{PSR}.{P}_bw_rep({a}, {facts})', f'{PSW}.{P}_bw_hv({a}, {facts})')
+            m = re.fullmatch(r'vfx_bv(1280|1281)\.bend', fname)
+            if m and fn == 'OBJ':
+                Y, wd = args[2], '81' if m.group(1) == '1280' else '249'
+                hw = f"{PSV}.rmw(d, n, hn, {Wc}.hFc(t, 0n, 0, n, hchk), Nat.add({Y}, {int(m.group(1)) // 8 + (1 if m.group(1) == '1281' else 0)}n), {{==}})"
+                if m.group(1) == '1280':
+                    return FxWords(e, {('wbits_obj_light.bend', 'rep_bvb'): lambda _: f'{PSV}.rep80(d, t, {wd}, {Y}, {{==}})',
+                                       ('e2e_pbs.bend', 'SDW'): lambda _: f'{PSV}.sdw80(d, t, {Y})'})
+                hc = f'{Wc}.it10(t, 0n, 0, n, hchk)'
+                return FxWords(e, {('wbits_obj_light.bend', 'rep_bvb'): lambda _: f'{PSV}.rep81(d, t, {wd}, {Y}, {{==}}, pf, {hw}, {hc})',
+                                   ('e2e_pbs.bend', 'SDW81'): lambda _: f'{PSV}.sdw81(d, t, {wd}, {Y}, {{==}}, pf, {hw}, {hc})'})
+            return None
+        BV_CFG['p257'] = lambda Y: (f"{PSV}.rp257(d, t, {Y}, pf, {PSV}.rmw(d, n, hn, {Wc}.hFc(t, 0n, 0, n, hchk), Nat.add(Nat.add(32n, {Y}), 4n), {{==}}), "
+                                    f"{Wc}.it9(t, 0n, 0, n, hchk))")
+        return [], None, None, None, xleaf
+    return container_file(name, lf, 'proofs/obj/var_codec_ProgressiveBitsStruct.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(H27)), lets, None,
+                          'proofs/obj/var_codec_ProgressiveBitsStruct.bend')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -1152,6 +1197,7 @@ PROVERS = {
     'CompatibleUnionBC': lambda lf: union_provider('CompatibleUnionBC', [(2, 'c0', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c1', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend')], lf),
     'CompatibleUnionABCA': lambda lf: union_provider('CompatibleUnionABCA', [(1, 'c0', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend'), (2, 'c1', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c2', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend'), (4, 'c3', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend')], lf),
     'progbitlist': lambda lf: prog_bits(lf),
+    'ProgressiveBitsStruct': lambda lf: prog_bits_struct(lf),
     'ProgressiveVarTestStruct': lambda lf: pb_container('ProgressiveVarTestStruct', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend', 'proofs/obj/var_codec_ProgressiveVarTestStruct.bend', lf),
     'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
@@ -1211,7 +1257,7 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_pbs.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
         ('pbits_obj_light.bend', 'rep_pbits'): 'rep', ('e2e_encp.bend', 'SDPB'): 'hsp', ('e2e_encpd.bend', 'SDPB'): 'hsp'}
 
 
@@ -1281,7 +1327,7 @@ class DSynth(W.Synth):
 
     def eq(self, p, env):
         subj = env.get('__subj')
-        mbv = re.match(r'\{last_bv(1|2|8)\(o\) == ', p.strip())
+        mbv = re.match(r'\{last_bv(1|2|8|257)\(o\) == ', p.strip())
         if mbv and BV_CFG and env.get('__e', {}).get('o'):   # a decoded Bitvector<K> field: its bits past K are zero (e2e_dfx.rp<K>)
             K_ = int(mbv.group(1))
             e = env['__e']['o'].strip()
@@ -1290,6 +1336,8 @@ class DSynth(W.Synth):
             if pth is not None and pth.name == f'vfx_bv{K_}.bend':
                 DFXA = self.ctx.alias(ROOT / 'e2e/e2e_dfx.bend')
                 Y = mo.group(3)
+                if K_ == 257:
+                    return BV_CFG['p257'](Y)
                 if K_ == 8:
                     return f'{DFXA}.rp8(d, {mo.group(2)}, {Y})'
                 return f'{DFXA}.rp{K_}(d, {mo.group(2)}, {Y}, pf, {BV_CFG["room"](Y)}, {BV_CFG["hc"][K_]})'
