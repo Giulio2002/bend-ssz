@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4766 statements in 1258 files.
+# 4768 statements in 1259 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -199,6 +199,23 @@ import ../types/CompatibleUnionABCA_encode_ssz_generated.bend as CompatibleUnion
 import ../types/CompatibleUnionABCA_hashtreeroot_generated.bend as CompatibleUnionABCA_h
 def CompatibleUnionABCA_e2e_witness() -> {Some{E.obytes(Pair.snd(CompatibleUnionABCA_d.CompatibleUnionABCA, B.Buf, CompatibleUnionABCA_e.CompatibleUnionABCA_encode(CompatibleUnionABCA_d.CompatibleUnionABCA_default())))} == API.serialize(Spec.CompatibleUnionABCA(), RT.v_CompatibleUnionABCA(CompatibleUnionABCA_d.CompatibleUnionABCA_default())) : Maybe<&2, +List<U32>>}:
 def CompatibleUnionABCA_e2e_witness_root() -> {Some{D.bytes(Pair.snd(CompatibleUnionABCA_d.CompatibleUnionABCA, D.Digest, Pair.snd(B.Buf, CompatibleUnionABCA_d.CompatibleUnionABCA & D.Digest, CompatibleUnionABCA_h.CompatibleUnionABCA_hash_tree_root(B.alloc(0), CompatibleUnionABCA_d.CompatibleUnionABCA_default()))))} == API.hash_tree_root(Spec.CompatibleUnionABCA(), RT.v_CompatibleUnionABCA(CompatibleUnionABCA_d.CompatibleUnionABCA_default())) : Maybe<&2, +List<U32>>}:
+
+## e2e/CompatibleUnionA_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/CompatibleUnionA_decode_ssz_generated.bend as CompatibleUnionA_r
+import ../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
+import ../types/CompatibleUnionA_encode_ssz_generated.bend as CompatibleUnionA_e
+import ../types/CompatibleUnionA_hashtreeroot_generated.bend as CompatibleUnionA_h
+def CompatibleUnionA_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: CompatibleUnionA_d.CompatibleUnionA, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>})
+    -> {E.obytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, B.Buf, CompatibleUnionA_e.CompatibleUnionA_encode(o))) == bs : +List<U32>}:
+def CompatibleUnionA_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: CompatibleUnionA_d.CompatibleUnionA, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>})
+    -> {Some{D.bytes(Pair.snd(CompatibleUnionA_d.CompatibleUnionA, D.Digest, Pair.snd(B.Buf, CompatibleUnionA_d.CompatibleUnionA & D.Digest, CompatibleUnionA_h.CompatibleUnionA_hash_tree_root(h, o))))} == C.droot(Spec.CompatibleUnionA(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/CompatibleUnionA_e2e_dec_generated.bend
 import ../src/model.bend as API
