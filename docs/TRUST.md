@@ -54,7 +54,7 @@ Trusted (not proved here):
 - **The stack is part of the setup, not of the logic.** A check that runs out of stack fails; it never
   accepts more. `tools/check.sh` pins the limits (`ulimit -s 16384`, a JSC budget of 10 MB) so a result
   does not depend on the shell. The gate is the full check at the pin; the 5 MB "headroom" run is informational
-  (it passed on one tree and failed an umbrella on the next; at 2.5 MB 11 of 46 umbrellas fail; the failure rate is not monotone
+  (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
@@ -103,11 +103,14 @@ Trusted (not proved here):
   implementation under test is left out: the generated per-name encoder, decoder and root
   (`types/*_{encode_ssz,decode_ssz,hashtreeroot}_generated.bend`, which the bridges pin down) and
   the model API `src/model.bend` (which END_TO_END's laws pin down); but not the validity predicates
-  of those encoders (`X_valid` and its helpers, the premise of the validating-serializer statements), which are
-  hashed. So a change to a src/ def
+  of those encoders (`X_valid` and every def it reaches, whatever the def is called, whatever the shape of the call - a chain, another
+  file, a match arm, a lambda, a function value, a helper with no `->` or a wrapped signature, a helper that carries the suffix
+  `_encode` or `_serialize` - the premise of the validating-serializer statements), which are
+  hashed; a law's proof is told from a helper by the `law` block of its name, not by the shape of its head. So a change to a src/ def
   cannot weaken or empty a premise without changing the lock. `tools/verify_frozen.py` checks
   all of this (after planting the changes listed in its `PLANTED`, and printing how many: some must trip the lock, among them a weakened
-  `Checkpoint_valid` and `u8_valid`, and some must not, the encoder and the serializer, which the proofs pin down), and that
+  `Checkpoint_valid` and `u8_valid` and a change planted in each shape of helper above, and some must not: the encoder entry point, a def only
+  the encoder calls and the serializer, which the proofs pin down), and that
   `memory_bench/law-statements.json` holds END_TO_END's laws verbatim. `tools/check_fast.sh`
   runs it first, so a full check never passes on changed statements.
 - **SHA-256.** The BendHub package `bend-collections@1.0.0.0` = `0xd9a2fae439ac7ff9e21e0853948f94fe`

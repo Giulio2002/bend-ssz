@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->240c3161<!-- /fig -->):
-<!-- fig:check_umbrellas -->46<!-- /fig --> umbrellas over <!-- fig:check_files -->6,113<!-- /fig --> files,
-<!-- fig:check_cpu -->2,794<!-- /fig --> CPU seconds, <!-- fig:check_wall -->5.9<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->320<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->9e953238<!-- /fig -->):
+<!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->6,125<!-- /fig --> files,
+<!-- fig:check_cpu -->3,021<!-- /fig --> CPU seconds, <!-- fig:check_wall -->6.7<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->304<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -87,8 +87,8 @@ the one that was checked. Each check runs under the limits it was measured with:
 |---|---|
 | memory | 12 GB (hard; `MemoryMax`), no swap |
 | CPU | 2 cores, `nice 10` |
-| wall time | 600 s |
-| parallel checks | 10 |
+| wall time | 600 s per file, 1200 s per umbrella (`UMB_TIMEOUT`); the umbrellas of the slowest roots get 32 GB (`UMB_BIG_MEMMAX`) |
+| parallel checks | `CHECK_JOBS` umbrellas (default 20; the gate runs used 12), admitted by `tools/umb_pool.py` while their expected memory fits |
 | stack | `ulimit -s 16384` and a JavaScriptCore budget of 10,485,760 bytes (`BUN_JSC_maxPerThreadStackUsage`; JSC's own default is 5 MB) |
 
 The stack is pinned by `tools/check.sh` itself (`CHECK_STACK_KB`, `CHECK_JSC_STACK`), so a shell's or an
@@ -104,7 +104,7 @@ written small-first (`Nat.add` recurses on its first argument), and a term that 
 spelled as the code it unfolds from. What the gate is: the full check at the pin (10 MB), which passes, and the
 `e2e/vec_uint256_512_e2e_comp_generated.bend` flake test at the pin (40 runs, 8 at a time: 40/40). What is only informational:
 the headroom run, a full check at 5 MB (`tools/check_fast.sh --jsc-stack 5242880`, stamp
-`benchmarks/evidence/check_fast_jsc5242880.json`). It shows how shallow the proofs are, not that a result is stable: observed history of the 5 MB run: 46 of 46 on f4c3d9ea, 45 of 46 on d73efc07 (umbrella 022, the FuluDataColumnSidecar decoder group, "the machine stack overflowed"); of the 2.5 MB run: 11 of 46 umbrellas fail (000, 007, 014, 016, 019, 020, 021, 022, 024, 038, 045; `benchmarks/evidence/check_fast_jsc2621440_FAILED.log`). The failure rate is not monotone in the budget: that same file overflowed in 9 of 40 runs (8 at a time) at 5 MB
+`benchmarks/evidence/check_fast_jsc5242880.json`). It shows how shallow the proofs are, not that a result is stable: observed history of the 5 MB run: 46 of 46 on f4c3d9ea, 45 of 46 on d73efc07 (umbrella 022, the FuluDataColumnSidecar decoder group, "the machine stack overflowed"); of the 2.5 MB run: 13 of 46 umbrellas fail (000, 007, 014, 015, 016, 019, 020, 021, 022, 028, 035, 044, 045; `benchmarks/evidence/check_fast_jsc2621440.json` (a real run on the current tree: the stamp's `umbrellas` list has each umbrella's result and the stack it ran under; an earlier run of the same kind on another tree failed 11 other umbrellas, so the failing set varies)). The failure rate is not monotone in the budget: that same file overflowed in 9 of 40 runs (8 at a time) at 5 MB
 and in 0 of 8 at 2.5 MB, so a passing 5 MB run is one sample of a process that fails some of the time. What gives
 reliability is the pin, 10 MB, where the same flake test is 40/40. Each
 umbrella log starts with a `CHECK_STACK` line recording the limits it ran under. (The first port branch's "half budget"
@@ -137,9 +137,9 @@ Python unit test:
 boundaries; `tests/layout.test.ts` checks `src/layout.bend` against `spec/layout_decoding.bend`.
 `run_runtime_tests.py` compiles each imported module with the runtime compiler pinned in
 `benchmarks/toolchain.json` (`BEND_RUNTIME` names it where it is not at the lock's path; on the
-ssz server `/srv/ssz-optimization/toolchain-2.0.28/bend/bin/bend`) and fails on any failure,
+ssz server `/srv/ssz-optimization/toolchain-2.0.34/bin/bend`) and fails on any failure,
 compile error or empty run; with no arguments it runs every `tests/**/*.test.ts`. Last run
-2026-09-30 on the ssz server: 3/3 tests, 2,694 assertions. The thirteen older Bun tests of the
+<!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
 list-model layer (`tests/new/`, with their helpers `tools/primitive_backend.ts` and
 `tools/generic_transport.ts`) were removed on 2026-09-30: each imported `types/fulu*.bend`,
 which the runtime compiler cannot compile as an entry (above), so none of them had run since the

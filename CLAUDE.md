@@ -30,12 +30,12 @@ first. Report before and after in seconds.
 **Proofs that check fast.** Bend's `Nat` is unary: comparing two spellings of a large number makes the checker
 recurse once per unit, and deep recursion overflows the stack, sometimes only under load (the pin, 16384 KB of
 stack and 10 MB for the JavaScript engine, gives about 58,600 levels; 5 MB about 28,800, where one umbrella failed on one tree; 2.5 MB about 14,100,
-where 11 of 46 umbrellas fail). So:
+where 13 of 46 umbrellas fail). So:
 state each big constant once, keep sizes symbolic (a variable, never `Nat.add(0n, 524464)` on a literal start),
 reach large literals through an equality test (`Nat.is_eq`) instead of a conversion, put the small operand first
 in additions (`Nat.add` recurses on its first argument), and prove a bound from a 32-bit equation and an existing
-lemma instead of evaluating the limit. Keep every conversion far below the limit; the gate runs the full check at
-the pinned budget and at half of it, so nothing sits near the edge.
+lemma instead of evaluating the limit. Keep every conversion far below the limit: the gate is the full check at the pinned budget (docs/BUILD.md); the run at
+half the budget is informational and does not always pass, so shallow proofs are what keep a result stable.
 
 **Never trade soundness for speed.** These shortcuts change how you iterate, not what counts as checked. The final
 gate stays the full check with localization, every pinned tool, no cache, and strictcheck.

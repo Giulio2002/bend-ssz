@@ -182,6 +182,26 @@ def figures():
     wall = tot.get('wall_seconds')
     f['check_wall'] = f'{wall / 60:.1f}' if wall else f'at least {slow / 60:.1f}'
     f['check_commit'] = st.get('commit', 'unknown')[:8]
+    # the runtime evidence (benchmarks/evidence/*.json, tests_generated/ and benchmarks/checks/)
+    ev = json.loads((ROOT / 'benchmarks/evidence/fuzz_objects.json').read_text())
+    prov = ev['provenance']
+    f['evidence_commit'] = prov['git_commit'][:8]
+    f['evidence_date'] = prov['utc'][:10]
+    c, fam = ev['counts'], ev['by_family']
+    f['fuzz_types'] = str(ev['types'])
+    f['fuzz_fulu'] = str(fam['fulu']['types'])
+    f['fuzz_generic'] = str(fam['generic']['types'])
+    f['fuzz_valid'] = f"{c['valid']:,}"
+    f['fuzz_random'] = f"{c['invalid']:,}"
+    f['fuzz_boundary'] = f"{c['boundary']:,}"
+    f['fuzz_kinds'] = str(len(ev['mutation_kinds']))
+    f['fuzz_history'] = f"{c['history']:,}"
+    f['fuzz_setter_types'] = str(len(ev['types_with_setters']))
+    f['fuzz_mismatches'] = str(ev['findings_total'])
+    f['fuzz_elapsed'] = f"{ev['elapsed_s'] / 60:.0f}"
+    rt = json.loads((ROOT / 'benchmarks/evidence/runtime_tests.json').read_text())
+    f['rt_tests'] = str(rt['counts']['tests'])
+    f['rt_assertions'] = f"{rt['counts']['assertions']:,}"
     f['composed'] = str(sum(1 for l in (ROOT / 'e2e/COMPOSED.txt').read_text().splitlines() if l.endswith('\tcomposed')))
     dr = sorted(p.name[:-len('_e2e_decrep_generated.bend')] for p in (ROOT / 'e2e').glob('*_e2e_decrep_generated.bend'))
     f['decrep_count'] = str(len(dr))
