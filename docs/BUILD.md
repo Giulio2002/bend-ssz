@@ -5,7 +5,7 @@
     python3 codegen/regen_all.py            # write mode
     python3 codegen/regen_all.py --check    # stale check (CI)
 
-`regen_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/generate.py`
+`regen_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/impl/generate.py`
 first, then every law generator in import order, then `api_gate.py`, `api_facade.py` and
 `e2e_bridge.py`, and repeats until a pass writes nothing (the facades and gates record their
 imports, so one law change can take two passes). `--check` runs every generator's `--check`
@@ -13,7 +13,7 @@ and fails on any stale file. Requirements: Python 3.12 with `requirements.txt`.
 
 The early proof layer (`proofs/*.bend`: compatibility, identity, root relation, codec and bit
 packing proofs), a few `spec/` and `types/` files and benchmark scaffolding were written by the 68
-`tools/generate_*.py`. `codegen/tool_generators.py --check` (one of the generators `regen_all.py
+`tools/generate_*.py`. `codegen/impl/tool_generators.py --check` (one of the generators `regen_all.py
 --check` runs) reruns the 62 reproducible ones in a scratch copy of the tree and fails if any
 writes nothing, exits nonzero, or writes a file that differs from the committed one. The other
 six are listed in its `ONE_SHOT` table with the reason: a Markdown renderer that needs a benchmark

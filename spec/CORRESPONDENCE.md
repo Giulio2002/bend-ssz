@@ -91,7 +91,7 @@ definition, and no statement depends on them.
 - **Generic classes.** The 131 generic names are the forms of the official `ssz_generic` suite
   that are SSZ types. Their schemas come from the suite's README (`test_formats/ssz_generic`,
   vendored), read by the frozen `tools/test_schemas.py` (type declarations only, no reference SSZ
-  code), and are written to `proofs/obj/generic_specs.bend` by `codegen/root_laws_generic.py`, so
+  code), and are written to `proofs/obj/generic_specs.bend` by `codegen/proofs/laws/root_laws_generic.py`, so
   that file is generator output, not an independent transcription; it is hash-frozen. What makes
   it trustworthy is the cross-check: `tools/verify_schemas.py` resolves every one of the 5,145
   ssz_generic cases of `cases.json` to its schema with `tools/test_schemas.py` (144 schemas), and
@@ -100,7 +100,7 @@ definition, and no statement depends on them.
   (parsed independently; the classes' field names `A`, `B`, .. appear as `f_A`, `f_B`, ..), with
   no schema there that has no case. Every case also has its fixture files.
 - Both checks run in `tools/check_fast.sh` before anything is checked, and in
-  `codegen/check_schema.py --check` (so in `regen_all.py --check`).
+  `codegen/impl/check_schema.py --check` (so in `regen_all.py --check`).
 
 ## Outside the transcription
 

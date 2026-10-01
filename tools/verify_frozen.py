@@ -29,7 +29,7 @@ What is frozen, and how it is hashed:
     encoder as the negative case) are run first on every invocation. The getters and setters in
     types/*_def_generated.bend that the object-mutation laws are about are hashed with the object
     types (they share the file), so changing one is a deliberate lock update. The statement files
-    are codegen/statements.py's statement_files(): the bridges of e2e/manifest.json, the composed
+    are codegen/docs/statements.py's statement_files(): the bridges of e2e/manifest.json, the composed
     theorems e2e/*_e2e_comp_generated.bend, the witnesses e2e/*_e2e_witness_generated.bend, the
     validating serializer e2e/*_e2e_ser_generated.bend, the setter compositions e2e/*_e2e_set_generated.bend and the object-mutation laws
     (proofs/obj/coll_*, prep_setters*.bend and the swap laws of fields_*), found by name, so a new statement file
@@ -222,7 +222,7 @@ LOC = re.compile(r'(?<![\w.])([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)')
 
 
 def statement_defs(only=None):
-    """{file: sha256} over every definition that a statement (codegen/statements.py
+    """{file: sha256} over every definition that a statement (codegen/docs/statements.py
     statement_files()) reaches: its file-local defs and the imported defs they name, transitively,
     on the premise side and the conclusion side alike, in proofs/ and e2e/ and in src/ and types/
     (the buffer, digest and object helpers a statement names, B.fill_at, B.alloc, D.bytes, O.e8,
@@ -230,8 +230,8 @@ def statement_defs(only=None):
     is locked whole (spec/, vendor/, END_TO_END.bend, whole_files()) and the implementation under
     test (SUBJECT). A change to any hashed def changes what a statement says. `only` restricts
     the statement files (the self-test)."""
-    sys.path.insert(0, os.path.join(ROOT, 'codegen'))
-    import statements as ST
+    sys.path.insert(0, ROOT)
+    from codegen.docs import statements as ST
     sf = ST.statement_files()
     if only is not None:
         sf = {f: sf[f] for f in only}
