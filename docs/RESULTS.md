@@ -122,17 +122,27 @@ each with the same sha256.
 ## Other test evidence (finite regressions, not laws)
 
 All against the independent oracle `codegen/oracle.py` (written from the specification, sharing
-no code with the generated runtime) unless noted; last run 2026-09-30 on the ssz server at
-ed83adea, all passing.
+no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server at
+<!-- fig:evidence_commit -->1cc79baa<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
 |---|---|---|
-| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | 109 types, seed 20260921: 327 valid values, 1,962 corrupted encodings (10 mutation kinds), 768 mutation-history steps through the object setters; 0 mismatches |
+| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->240<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->131<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->1,920<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->15,360<!-- /fig --> random and <!-- fig:fuzz_boundary -->34,228<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->16<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->3,840<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->3<!-- /fig --> minutes |
 | `object_mutations.json` | `benchmarks/checks/object_mutations.py` | malformed variants of every ssz_static case (5,455 inputs); the verdict of each comes from the oracle; 0 disagreements |
 | `object_mutation_tests.json` | `tests_generated/mutations.py` | 8 field/element updates through the object API against the oracle's re-encoding, rejections leave the value unchanged |
 | `invalid_objects.json` | `tests_generated/invalid_objects.py` | 14 cases: representable but invalid objects (built with raw constructors) are refused by the checked encoder, each with a valid control |
 | `negative_api.json` | `tests_generated/negative_api.py` | 7 programs: appending to vectors, use after move, duplication and a stale collection must not compile (for the stated reason), a positive control must |
 | `object_cache.json` | `benchmarks/checks/object_cache.py` | cached validator-list roots under 7 modes and 100 seeded histories equal the uncached root and the oracle's |
+
+`tests_generated/mutations.py` stays the eight hand-written update checks; the schema-driven corruption tests are the
+field-boundary corruptions of `fuzz_objects.py` (`bounds` walks the schema and the value: every field start, offset slot,
+offset target and collection element), counted separately above. The whole runtime evidence suite (`tools/run_evidence.sh`:
+builds, eight harnesses, the Bun tests) takes about 6 minutes on the ssz server with warm program caches (the first build of
+all programs adds about 15); `fuzz_objects.py` alone takes about 3 minutes. 45 of the 109 Fulu names have no setters in the generated API
+(the basic types and aliases, `ProposerSlashing`, `AttesterSlashing`): `fuzz_objects.json` lists them, and their values get
+valid, corrupted and boundary cases but no mutation histories; the 131 generic names have no fuzz programs, so they get the
+same valid, corrupted and boundary cases only.
 
 Every evidence file carries a provenance stamp: commit, time, runtime toolchain hashes, the
 arguments, the sha256 of the tested sources (the whole `types/*.bend`, including the dispatch
