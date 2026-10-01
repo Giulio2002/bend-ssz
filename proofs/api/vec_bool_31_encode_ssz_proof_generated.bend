@@ -15,7 +15,7 @@ import ../obj/sub_pack.bend as P0_SP2
 import ../obj/sub_vec_bool_31.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_vec_bool_31.bend as P1_PRV
+import ../obj/zcapsym_vec_bool_31.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_vec_bool_31.bend as P2_PRV
@@ -33,23 +33,23 @@ import ../obj/mutconst_vec_bool_31.bend as P4_PRV
 def vec_bool_31__encode_eval__vec_bool_31_spec_bytes(+y0: U32, +y1: U32, +y2: U32, +y3: U32, +y4: U32, +y5: U32, +y6: U32, +y7: U32, +q0: U32, +q1: U32, +q2: U32, +q3: U32, +q4: U32, +q5: U32, +q6: U32, +q7: U32) -> {P0_SF.emitted(P0_O.Words, vec_bool_31_e.vec_bool_31_encode(P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{y4}, ALeaf{y5}}, ANode{ALeaf{y6}, ALeaf{y7}}}}, ANode{ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}, ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}}}, 31}), 8) == (P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{y4}, ALeaf{y5}}, ANode{ALeaf{y6}, ALeaf{y7}}}}, ANode{ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}, ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}}}, 31}, List.append(&2, U32, P0_SF.limbs([y0, y1, y2, y3, y4, y5, y6]), [P0_B.byte_sel(0, y7), P0_B.byte_sel(1, y7), P0_B.byte_sel(2, y7)])) : P0_O.Words & +List<U32>}:
   P0_PRV.vec_bool_31_spec_bytes(y0, y1, y2, y3, y4, y5, y6, y7, q0, q1, q2, q3, q4, q5, q6, q7)
 
+def vec_bool_31__encode_eval__vec_bool_31_encode_capsym(o: P1_O.Words) -> {vec_bool_31_e.vec_bool_31_encode(o) == vec_bool_31_e.vec_bool_31_enc_out(vec_bool_31_e.v31_bool_put(P1_O.out_at(3n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.vec_bool_31_encode_capsym(o)
+
 def vec_bool_31__encode_spec__vec_bool_31_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hb: {P0_SP2.lf(List.append(&2, U32, P0_SF.limbs([x0, x1, x2, x3, x4, x5, x6]), [P0_B.byte_sel(0, x7), P0_B.byte_sel(1, x7), P0_B.byte_sel(2, x7)]), True{}) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.vec_bool_31(), List.append(&2, U32, P0_SF.limbs([x0, x1, x2, x3, x4, x5, x6]), [P0_B.byte_sel(0, x7), P0_B.byte_sel(1, x7), P0_B.byte_sel(2, x7)]), P0_S.Sequence{P0_SP2.vbool(List.append(&2, U32, P0_SF.limbs([x0, x1, x2, x3, x4, x5, x6]), [P0_B.byte_sel(0, x7), P0_B.byte_sel(1, x7), P0_B.byte_sel(2, x7)]))}):
   P0_PRV.vec_bool_31_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, hb)
 
-def vec_bool_31__encoded_size__vec_bool_31_encode_capsym(o: P1_O.Words) -> {vec_bool_31_e.vec_bool_31_encode(o) == vec_bool_31_e.vec_bool_31_enc_out(vec_bool_31_e.v31_bool_put(P1_O.out_at(3n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.vec_bool_31_encode_capsym(o)
-
 def vec_bool_31__serialize_valid__vec_bool_31_serialize_cap() -> {vec_bool_31_e.vec_bool_31_serialize(vec_bool_31_d.v31_bool_default()) == (vec_bool_31_d.v31_bool_default(), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_bool_31_e.vec_bool_31_encode(vec_bool_31_d.v31_bool_default())))) : P2_O.Words & P2_O.Encoded}:
   P2_PRV.vec_bool_31_serialize_cap()
-
-def vec_bool_31__serialize_valid__vec_bool_31_serialize_capsym(o: P1_O.Words) -> {vec_bool_31_e.vec_bool_31_serialize(o) == vec_bool_31_e.vec_bool_31_senc_out(vec_bool_31_e.v31_bool_putk(P1_O.out_at(3n), 0, o)) : P1_O.Words & P1_O.Encoded}:
-  P1_PRV.vec_bool_31_serialize_capsym(o)
 
 def vec_bool_31__serialize_valid__vec_bool_31_serialize_vin() -> {vec_bool_31_e.vec_bool_31_serialize(P3_O.Words{P3_O.out_at(4n), 31}) == (Pair.fst(P3_O.Words, P3_B.Buf, vec_bool_31_e.vec_bool_31_encode(P3_O.Words{P3_O.out_at(4n), 31})), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_bool_31_e.vec_bool_31_encode(P3_O.Words{P3_O.out_at(4n), 31})))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_bool_31_serialize_vin()
 
 def vec_bool_31__serialize_valid__vec_bool_31_serialize_vover() -> {vec_bool_31_e.vec_bool_31_serialize(P3_O.Words{P3_O.out_at(4n), 32}) == (P3_O.Words{P3_O.out_at(4n), 32}, P3_O.refused()) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_bool_31_serialize_vover()
+
+def vec_bool_31__serialize_valid__vec_bool_31_serialize_capsym(o: P1_O.Words) -> {vec_bool_31_e.vec_bool_31_serialize(o) == vec_bool_31_e.vec_bool_31_senc_out(vec_bool_31_e.v31_bool_putk(P1_O.out_at(3n), 0, o)) : P1_O.Words & P1_O.Encoded}:
+  P1_PRV.vec_bool_31_serialize_capsym(o)
 
 def vec_bool_31__serialize_valid__vec_bool_31_mc_poison_v31_bool(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_bool_31_e.v31_bool_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_bool_31_mc_poison_v31_bool(out, pos, o)

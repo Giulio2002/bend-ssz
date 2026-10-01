@@ -2622,6 +2622,10 @@
     {
      "file": "wordpos_FinalityBranch.bend",
      "law": "FinalityBranch_arith_putw"
+    },
+    {
+     "file": "zcapsym_FinalityBranch.bend",
+     "law": "FinalityBranch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -2631,12 +2635,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_FinalityBranch.bend",
-     "law": "FinalityBranch_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -2657,12 +2656,12 @@
      "law": "FinalityBranch_serialize_cap"
     },
     {
-     "file": "capsym_FinalityBranch.bend",
-     "law": "FinalityBranch_serialize_capsym"
-    },
-    {
      "file": "mutval_fulu_FinalityBranch.bend",
      "law": "FinalityBranch_serialize_vin"
+    },
+    {
+     "file": "zcapsym_FinalityBranch.bend",
+     "law": "FinalityBranch_serialize_capsym"
     },
     {
      "file": "mutconst_FinalityBranch.bend",
@@ -4619,6 +4618,10 @@
     {
      "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ContributionAndProof.bend",
+     "law": "ContributionAndProof_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4628,12 +4631,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_ContributionAndProof.bend",
-     "law": "ContributionAndProof_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -4654,7 +4652,7 @@
      "law": "ContributionAndProof_serialize_cap"
     },
     {
-     "file": "capsym_ContributionAndProof.bend",
+     "file": "zcapsym_ContributionAndProof.bend",
      "law": "ContributionAndProof_serialize_capsym"
     },
     {
@@ -4720,6 +4718,10 @@
     {
      "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_bytes"
+    },
+    {
+     "file": "zcapsym_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -4729,12 +4731,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_SignedContributionAndProof.bend",
-     "law": "SignedContributionAndProof_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -4755,7 +4752,7 @@
      "law": "SignedContributionAndProof_serialize_cap"
     },
     {
-     "file": "capsym_SignedContributionAndProof.bend",
+     "file": "zcapsym_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_serialize_capsym"
     },
     {
@@ -5293,6 +5290,10 @@
     {
      "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_bytes"
+    },
+    {
+     "file": "zcapsym_ProposerSlashing.bend",
+     "law": "ProposerSlashing_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5303,10 +5304,6 @@
    ],
    "roundtrip": [],
    "encoded_size": [
-    {
-     "file": "capsym_ProposerSlashing.bend",
-     "law": "ProposerSlashing_encode_capsym"
-    },
     {
      "file": "offset_size_ProposerSlashing.bend",
      "law": "ProposerSlashing_encoded_size"
@@ -5332,7 +5329,7 @@
      "law": "ProposerSlashing_serialize_cap"
     },
     {
-     "file": "capsym_ProposerSlashing.bend",
+     "file": "zcapsym_ProposerSlashing.bend",
      "law": "ProposerSlashing_serialize_capsym"
     },
     {
@@ -5402,6 +5399,10 @@
     {
      "file": "spec_arr_HistoricalBatch.bend",
      "law": "HistoricalBatch_spec_bytes"
+    },
+    {
+     "file": "zcapsym_HistoricalBatch.bend",
+     "law": "HistoricalBatch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -5411,12 +5412,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_HistoricalBatch.bend",
-     "law": "HistoricalBatch_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -5428,7 +5424,7 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_HistoricalBatch.bend",
+     "file": "zcapsym_HistoricalBatch.bend",
      "law": "HistoricalBatch_serialize_capsym"
     }
    ],
@@ -7258,6 +7254,10 @@
     {
      "file": "spec_arr_SyncCommittee.bend",
      "law": "SyncCommittee_spec_bytes"
+    },
+    {
+     "file": "zcapsym_SyncCommittee.bend",
+     "law": "SyncCommittee_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7267,12 +7267,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_SyncCommittee.bend",
-     "law": "SyncCommittee_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -7284,7 +7279,7 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_SyncCommittee.bend",
+     "file": "zcapsym_SyncCommittee.bend",
      "law": "SyncCommittee_serialize_capsym"
     }
    ],
@@ -7470,6 +7465,10 @@
     {
      "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Deposit.bend",
+     "law": "Deposit_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -7480,10 +7479,6 @@
    ],
    "roundtrip": [],
    "encoded_size": [
-    {
-     "file": "capsym_Deposit.bend",
-     "law": "Deposit_encode_capsym"
-    },
     {
      "file": "offset_size_Deposit.bend",
      "law": "Deposit_encoded_size"
@@ -7509,7 +7504,7 @@
      "law": "Deposit_serialize_cap"
     },
     {
-     "file": "capsym_Deposit.bend",
+     "file": "zcapsym_Deposit.bend",
      "law": "Deposit_serialize_capsym"
     },
     {
@@ -8220,6 +8215,10 @@
     {
      "file": "wordpos_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_arith_putw"
+    },
+    {
+     "file": "zcapsym_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8229,12 +8228,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -8255,12 +8249,12 @@
      "law": "CurrentSyncCommitteeBranch_serialize_cap"
     },
     {
-     "file": "capsym_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_serialize_capsym"
-    },
-    {
      "file": "mutval_fulu_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_serialize_vin"
+    },
+    {
+     "file": "zcapsym_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_serialize_capsym"
     },
     {
      "file": "mutconst_CurrentSyncCommitteeBranch.bend",
@@ -8337,6 +8331,10 @@
     {
      "file": "wordpos_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_arith_putw"
+    },
+    {
+     "file": "zcapsym_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -8346,12 +8344,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -8372,12 +8365,12 @@
      "law": "NextSyncCommitteeBranch_serialize_cap"
     },
     {
-     "file": "capsym_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_serialize_capsym"
-    },
-    {
      "file": "mutval_fulu_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_serialize_vin"
+    },
+    {
+     "file": "zcapsym_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_serialize_capsym"
     },
     {
      "file": "mutconst_NextSyncCommitteeBranch.bend",
@@ -9198,6 +9191,10 @@
     {
      "file": "var_bytes_ExecutionPayloadHeader_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_ExecutionPayloadHeader.bend",
+     "law": "ExecutionPayloadHeader_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9207,12 +9204,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_ExecutionPayloadHeader.bend",
-     "law": "ExecutionPayloadHeader_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -9223,7 +9215,7 @@
      "law": "ExecutionPayloadHeader_serialize_cap"
     },
     {
-     "file": "capsym_ExecutionPayloadHeader.bend",
+     "file": "zcapsym_ExecutionPayloadHeader.bend",
      "law": "ExecutionPayloadHeader_serialize_capsym"
     },
     {
@@ -9800,6 +9792,10 @@
     {
      "file": "wordpos_ExecutionBranch.bend",
      "law": "ExecutionBranch_arith_putw"
+    },
+    {
+     "file": "zcapsym_ExecutionBranch.bend",
+     "law": "ExecutionBranch_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9809,12 +9805,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_ExecutionBranch.bend",
-     "law": "ExecutionBranch_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -9835,12 +9826,12 @@
      "law": "ExecutionBranch_serialize_cap"
     },
     {
-     "file": "capsym_ExecutionBranch.bend",
-     "law": "ExecutionBranch_serialize_capsym"
-    },
-    {
      "file": "mutval_fulu_ExecutionBranch.bend",
      "law": "ExecutionBranch_serialize_vin"
+    },
+    {
+     "file": "zcapsym_ExecutionBranch.bend",
+     "law": "ExecutionBranch_serialize_capsym"
     },
     {
      "file": "mutconst_ExecutionBranch.bend",
@@ -9909,6 +9900,10 @@
     {
      "file": "var_bytes_LightClientHeader_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_LightClientHeader.bend",
+     "law": "LightClientHeader_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -9918,12 +9913,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_LightClientHeader.bend",
-     "law": "LightClientHeader_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -9934,7 +9924,7 @@
      "law": "LightClientHeader_serialize_cap"
     },
     {
-     "file": "capsym_LightClientHeader.bend",
+     "file": "zcapsym_LightClientHeader.bend",
      "law": "LightClientHeader_serialize_capsym"
     },
     {
@@ -9996,6 +9986,10 @@
     {
      "file": "var_bytes_LightClientOptimisticUpdate_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_LightClientOptimisticUpdate.bend",
+     "law": "LightClientOptimisticUpdate_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10005,12 +9999,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_LightClientOptimisticUpdate.bend",
-     "law": "LightClientOptimisticUpdate_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -10021,7 +10010,7 @@
      "law": "LightClientOptimisticUpdate_serialize_cap"
     },
     {
-     "file": "capsym_LightClientOptimisticUpdate.bend",
+     "file": "zcapsym_LightClientOptimisticUpdate.bend",
      "law": "LightClientOptimisticUpdate_serialize_capsym"
     },
     {
@@ -10083,6 +10072,10 @@
     {
      "file": "var_codec_LightClientFinalityUpdate_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_LightClientFinalityUpdate.bend",
+     "law": "LightClientFinalityUpdate_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10092,12 +10085,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_LightClientFinalityUpdate.bend",
-     "law": "LightClientFinalityUpdate_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -10108,7 +10096,7 @@
      "law": "LightClientFinalityUpdate_serialize_cap"
     },
     {
-     "file": "capsym_LightClientFinalityUpdate.bend",
+     "file": "zcapsym_LightClientFinalityUpdate.bend",
      "law": "LightClientFinalityUpdate_serialize_capsym"
     },
     {
@@ -10170,6 +10158,10 @@
     {
      "file": "var_codec_LightClientUpdate_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_LightClientUpdate.bend",
+     "law": "LightClientUpdate_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10179,19 +10171,14 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_LightClientUpdate.bend",
-     "law": "LightClientUpdate_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
     {
-     "file": "capsym_LightClientUpdate.bend",
+     "file": "zcapsym_LightClientUpdate.bend",
      "law": "LightClientUpdate_serialize_capsym"
     }
    ],
@@ -10249,6 +10236,10 @@
     {
      "file": "var_bytes_LightClientBootstrap_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_LightClientBootstrap.bend",
+     "law": "LightClientBootstrap_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -10258,19 +10249,14 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_LightClientBootstrap.bend",
-     "law": "LightClientBootstrap_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
     {
-     "file": "capsym_LightClientBootstrap.bend",
+     "file": "zcapsym_LightClientBootstrap.bend",
      "law": "LightClientBootstrap_serialize_capsym"
     }
    ],
@@ -11034,6 +11020,10 @@
     {
      "file": "spec_arr_Blob.bend",
      "law": "Blob_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Blob.bend",
+     "law": "Blob_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11043,12 +11033,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_Blob.bend",
-     "law": "Blob_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -11060,12 +11045,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_Blob.bend",
-     "law": "Blob_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_fulu.bend",
      "law": "Blob_serialize_over"
+    },
+    {
+     "file": "zcapsym_Blob.bend",
+     "law": "Blob_serialize_capsym"
     },
     {
      "file": "mutconst_Blob.bend",
@@ -11126,6 +11111,10 @@
     {
      "file": "spec_arr_BlobSidecar.bend",
      "law": "BlobSidecar_spec_bytes"
+    },
+    {
+     "file": "zcapsym_BlobSidecar.bend",
+     "law": "BlobSidecar_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11135,12 +11124,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_BlobSidecar.bend",
-     "law": "BlobSidecar_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -11152,7 +11136,7 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_BlobSidecar.bend",
+     "file": "zcapsym_BlobSidecar.bend",
      "law": "BlobSidecar_serialize_capsym"
     }
    ],
@@ -11222,6 +11206,10 @@
     {
      "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_bytes"
+    },
+    {
+     "file": "zcapsym_Cell.bend",
+     "law": "Cell_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11231,12 +11219,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_Cell.bend",
-     "law": "Cell_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -11257,16 +11240,16 @@
      "law": "Cell_serialize_cap"
     },
     {
-     "file": "capsym_Cell.bend",
-     "law": "Cell_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_fulu.bend",
      "law": "Cell_serialize_over"
     },
     {
      "file": "mutation_laws_fulu.bend",
      "law": "Cell_serialize_in"
+    },
+    {
+     "file": "zcapsym_Cell.bend",
+     "law": "Cell_serialize_capsym"
     },
     {
      "file": "mutconst_Cell.bend",
@@ -11833,6 +11816,10 @@
     {
      "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_bytes"
+    },
+    {
+     "file": "zcapsym_MatrixEntry.bend",
+     "law": "MatrixEntry_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -11842,12 +11829,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_MatrixEntry.bend",
-     "law": "MatrixEntry_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -11868,7 +11850,7 @@
      "law": "MatrixEntry_serialize_cap"
     },
     {
-     "file": "capsym_MatrixEntry.bend",
+     "file": "zcapsym_MatrixEntry.bend",
      "law": "MatrixEntry_serialize_capsym"
     },
     {
@@ -12513,6 +12495,10 @@
     {
      "file": "wordpos_vec_bool_16.bend",
      "law": "vec_bool_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_bool_16.bend",
+     "law": "vec_bool_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12522,12 +12508,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_16.bend",
-     "law": "vec_bool_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -12538,16 +12519,16 @@
      "law": "vec_bool_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_16.bend",
-     "law": "vec_bool_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_16.bend",
      "law": "vec_bool_16_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_16.bend",
      "law": "vec_bool_16_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_16.bend",
+     "law": "vec_bool_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_16.bend",
@@ -12820,6 +12801,10 @@
     {
      "file": "sub_vec_bool_31.bend",
      "law": "vec_bool_31_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_31.bend",
+     "law": "vec_bool_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -12829,12 +12814,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_31.bend",
-     "law": "vec_bool_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -12845,16 +12825,16 @@
      "law": "vec_bool_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_31.bend",
-     "law": "vec_bool_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_31.bend",
      "law": "vec_bool_31_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_31.bend",
      "law": "vec_bool_31_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_31.bend",
+     "law": "vec_bool_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_31.bend",
@@ -13131,6 +13111,10 @@
     {
      "file": "sub_vec_bool_512.bend",
      "law": "vec_bool_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_512.bend",
+     "law": "vec_bool_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13140,12 +13124,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_512.bend",
-     "law": "vec_bool_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -13156,16 +13135,16 @@
      "law": "vec_bool_512_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_512.bend",
-     "law": "vec_bool_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_512.bend",
      "law": "vec_bool_512_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_512.bend",
      "law": "vec_bool_512_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_512.bend",
+     "law": "vec_bool_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_512.bend",
@@ -13238,6 +13217,10 @@
     {
      "file": "sub_vec_bool_513.bend",
      "law": "vec_bool_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_513.bend",
+     "law": "vec_bool_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13247,12 +13230,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_513.bend",
-     "law": "vec_bool_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -13263,16 +13241,16 @@
      "law": "vec_bool_513_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_513.bend",
-     "law": "vec_bool_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_513.bend",
      "law": "vec_bool_513_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_513.bend",
      "law": "vec_bool_513_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_513.bend",
+     "law": "vec_bool_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_513.bend",
@@ -13345,6 +13323,10 @@
     {
      "file": "sub_vec_bool_5.bend",
      "law": "vec_bool_5_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_bool_5.bend",
+     "law": "vec_bool_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13354,12 +13336,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_5.bend",
-     "law": "vec_bool_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -13370,16 +13347,16 @@
      "law": "vec_bool_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_5.bend",
-     "law": "vec_bool_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_5.bend",
      "law": "vec_bool_5_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_5.bend",
      "law": "vec_bool_5_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_5.bend",
+     "law": "vec_bool_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_5.bend",
@@ -13456,6 +13433,10 @@
     {
      "file": "wordpos_vec_bool_8.bend",
      "law": "vec_bool_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_bool_8.bend",
+     "law": "vec_bool_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13465,12 +13446,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_bool_8.bend",
-     "law": "vec_bool_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -13481,16 +13457,16 @@
      "law": "vec_bool_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_bool_8.bend",
-     "law": "vec_bool_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_bool_8.bend",
      "law": "vec_bool_8_serialize_vin"
     },
     {
      "file": "mutval_generic_vec_bool_8.bend",
      "law": "vec_bool_8_serialize_vover"
+    },
+    {
+     "file": "zcapsym_vec_bool_8.bend",
+     "law": "vec_bool_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_bool_8.bend",
@@ -13653,6 +13629,10 @@
     {
      "file": "wordpos_vec_uint128_16.bend",
      "law": "vec_uint128_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_16.bend",
+     "law": "vec_uint128_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13662,12 +13642,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_16.bend",
-     "law": "vec_uint128_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -13688,12 +13663,12 @@
      "law": "vec_uint128_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_16.bend",
-     "law": "vec_uint128_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_16.bend",
      "law": "vec_uint128_16_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_16.bend",
+     "law": "vec_uint128_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_16.bend",
@@ -13770,6 +13745,10 @@
     {
      "file": "wordpos_vec_uint128_1.bend",
      "law": "vec_uint128_1_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_1.bend",
+     "law": "vec_uint128_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13779,12 +13758,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_1.bend",
-     "law": "vec_uint128_1_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -13805,12 +13779,12 @@
      "law": "vec_uint128_1_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_1.bend",
-     "law": "vec_uint128_1_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_1.bend",
      "law": "vec_uint128_1_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_1.bend",
+     "law": "vec_uint128_1_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_1.bend",
@@ -13887,6 +13861,10 @@
     {
      "file": "wordpos_vec_uint128_2.bend",
      "law": "vec_uint128_2_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_2.bend",
+     "law": "vec_uint128_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -13896,12 +13874,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_2.bend",
-     "law": "vec_uint128_2_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -13922,12 +13895,12 @@
      "law": "vec_uint128_2_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_2.bend",
-     "law": "vec_uint128_2_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_2.bend",
      "law": "vec_uint128_2_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_2.bend",
+     "law": "vec_uint128_2_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_2.bend",
@@ -14000,6 +13973,10 @@
     {
      "file": "spec_gcodec_vec_uint128_31.bend",
      "law": "vec_uint128_31_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint128_31.bend",
+     "law": "vec_uint128_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14009,12 +13986,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_31.bend",
-     "law": "vec_uint128_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -14035,12 +14007,12 @@
      "law": "vec_uint128_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_31.bend",
-     "law": "vec_uint128_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_31.bend",
      "law": "vec_uint128_31_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_31.bend",
+     "law": "vec_uint128_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_31.bend",
@@ -14113,6 +14085,10 @@
     {
      "file": "wordpos_vec_uint128_3.bend",
      "law": "vec_uint128_3_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_3.bend",
+     "law": "vec_uint128_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14122,12 +14098,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_3.bend",
-     "law": "vec_uint128_3_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -14148,12 +14119,12 @@
      "law": "vec_uint128_3_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_3.bend",
-     "law": "vec_uint128_3_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_3.bend",
      "law": "vec_uint128_3_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_3.bend",
+     "law": "vec_uint128_3_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_3.bend",
@@ -14230,6 +14201,10 @@
     {
      "file": "wordpos_vec_uint128_4.bend",
      "law": "vec_uint128_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_4.bend",
+     "law": "vec_uint128_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14239,12 +14214,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_4.bend",
-     "law": "vec_uint128_4_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -14265,12 +14235,12 @@
      "law": "vec_uint128_4_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_4.bend",
-     "law": "vec_uint128_4_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_4.bend",
      "law": "vec_uint128_4_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_4.bend",
+     "law": "vec_uint128_4_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_4.bend",
@@ -14343,6 +14313,10 @@
     {
      "file": "spec_garr_vec_uint128_512.bend",
      "law": "vec_uint128_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint128_512.bend",
+     "law": "vec_uint128_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14352,12 +14326,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_512.bend",
-     "law": "vec_uint128_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -14369,12 +14338,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_vec_uint128_512.bend",
-     "law": "vec_uint128_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_512.bend",
      "law": "vec_uint128_512_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_512.bend",
+     "law": "vec_uint128_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_512.bend",
@@ -14443,6 +14412,10 @@
     {
      "file": "spec_garr_vec_uint128_513.bend",
      "law": "vec_uint128_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint128_513.bend",
+     "law": "vec_uint128_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14452,12 +14425,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_513.bend",
-     "law": "vec_uint128_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -14469,12 +14437,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_vec_uint128_513.bend",
-     "law": "vec_uint128_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_513.bend",
      "law": "vec_uint128_513_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_513.bend",
+     "law": "vec_uint128_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_513.bend",
@@ -14543,6 +14511,10 @@
     {
      "file": "wordpos_vec_uint128_5.bend",
      "law": "vec_uint128_5_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_5.bend",
+     "law": "vec_uint128_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14552,12 +14524,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_5.bend",
-     "law": "vec_uint128_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -14578,12 +14545,12 @@
      "law": "vec_uint128_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_5.bend",
-     "law": "vec_uint128_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_5.bend",
      "law": "vec_uint128_5_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_5.bend",
+     "law": "vec_uint128_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_5.bend",
@@ -14660,6 +14627,10 @@
     {
      "file": "wordpos_vec_uint128_8.bend",
      "law": "vec_uint128_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint128_8.bend",
+     "law": "vec_uint128_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14669,12 +14640,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint128_8.bend",
-     "law": "vec_uint128_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -14695,12 +14661,12 @@
      "law": "vec_uint128_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint128_8.bend",
-     "law": "vec_uint128_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint128_8.bend",
      "law": "vec_uint128_8_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint128_8.bend",
+     "law": "vec_uint128_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint128_8.bend",
@@ -14863,6 +14829,10 @@
     {
      "file": "wordpos_vec_uint8_16.bend",
      "law": "vec_uint8_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint8_16.bend",
+     "law": "vec_uint8_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -14872,12 +14842,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_16.bend",
-     "law": "vec_uint8_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -14888,16 +14853,16 @@
      "law": "vec_uint8_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_16.bend",
-     "law": "vec_uint8_16_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_16_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_16_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_16.bend",
+     "law": "vec_uint8_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_16.bend",
@@ -15146,6 +15111,10 @@
     {
      "file": "sub_vec_uint8_31.bend",
      "law": "vec_uint8_31_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_31.bend",
+     "law": "vec_uint8_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15155,12 +15124,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_31.bend",
-     "law": "vec_uint8_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15171,16 +15135,16 @@
      "law": "vec_uint8_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_31.bend",
-     "law": "vec_uint8_31_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_31_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_31_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_31.bend",
+     "law": "vec_uint8_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_31.bend",
@@ -15433,6 +15397,10 @@
     {
      "file": "sub_vec_uint8_512.bend",
      "law": "vec_uint8_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_512.bend",
+     "law": "vec_uint8_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15442,12 +15410,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_512.bend",
-     "law": "vec_uint8_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15458,16 +15421,16 @@
      "law": "vec_uint8_512_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_512.bend",
-     "law": "vec_uint8_512_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_512_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_512_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_512.bend",
+     "law": "vec_uint8_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_512.bend",
@@ -15532,6 +15495,10 @@
     {
      "file": "sub_vec_uint8_513.bend",
      "law": "vec_uint8_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_513.bend",
+     "law": "vec_uint8_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15541,12 +15508,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_513.bend",
-     "law": "vec_uint8_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15557,16 +15519,16 @@
      "law": "vec_uint8_513_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_513.bend",
-     "law": "vec_uint8_513_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_513_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_513_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_513.bend",
+     "law": "vec_uint8_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_513.bend",
@@ -15631,6 +15593,10 @@
     {
      "file": "sub_vec_uint8_5.bend",
      "law": "vec_uint8_5_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint8_5.bend",
+     "law": "vec_uint8_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15640,12 +15606,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_5.bend",
-     "law": "vec_uint8_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15656,16 +15617,16 @@
      "law": "vec_uint8_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_5.bend",
-     "law": "vec_uint8_5_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_5_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_5_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_5.bend",
+     "law": "vec_uint8_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_5.bend",
@@ -15734,6 +15695,10 @@
     {
      "file": "wordpos_vec_uint8_8.bend",
      "law": "vec_uint8_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint8_8.bend",
+     "law": "vec_uint8_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15743,12 +15708,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint8_8.bend",
-     "law": "vec_uint8_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15759,16 +15719,16 @@
      "law": "vec_uint8_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint8_8.bend",
-     "law": "vec_uint8_8_serialize_capsym"
-    },
-    {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_8_serialize_over"
     },
     {
      "file": "mutation_laws_generic.bend",
      "law": "vec_uint8_8_serialize_in"
+    },
+    {
+     "file": "zcapsym_vec_uint8_8.bend",
+     "law": "vec_uint8_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint8_8.bend",
@@ -15927,6 +15887,10 @@
     {
      "file": "wordpos_vec_uint16_16.bend",
      "law": "vec_uint16_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint16_16.bend",
+     "law": "vec_uint16_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -15936,12 +15900,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_16.bend",
-     "law": "vec_uint16_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -15952,12 +15911,12 @@
      "law": "vec_uint16_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_16.bend",
-     "law": "vec_uint16_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_16.bend",
      "law": "vec_uint16_16_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_16.bend",
+     "law": "vec_uint16_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_16.bend",
@@ -16218,6 +16177,10 @@
     {
      "file": "sub_vec_uint16_31.bend",
      "law": "vec_uint16_31_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_31.bend",
+     "law": "vec_uint16_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16227,12 +16190,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_31.bend",
-     "law": "vec_uint16_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16243,12 +16201,12 @@
      "law": "vec_uint16_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_31.bend",
-     "law": "vec_uint16_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_31.bend",
      "law": "vec_uint16_31_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_31.bend",
+     "law": "vec_uint16_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_31.bend",
@@ -16317,6 +16275,10 @@
     {
      "file": "sub_vec_uint16_3.bend",
      "law": "vec_uint16_3_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_3.bend",
+     "law": "vec_uint16_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16326,12 +16288,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_3.bend",
-     "law": "vec_uint16_3_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16342,12 +16299,12 @@
      "law": "vec_uint16_3_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_3.bend",
-     "law": "vec_uint16_3_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_3.bend",
      "law": "vec_uint16_3_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_3.bend",
+     "law": "vec_uint16_3_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_3.bend",
@@ -16420,6 +16377,10 @@
     {
      "file": "wordpos_vec_uint16_4.bend",
      "law": "vec_uint16_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint16_4.bend",
+     "law": "vec_uint16_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16429,12 +16390,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_4.bend",
-     "law": "vec_uint16_4_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16445,12 +16401,12 @@
      "law": "vec_uint16_4_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_4.bend",
-     "law": "vec_uint16_4_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_4.bend",
      "law": "vec_uint16_4_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_4.bend",
+     "law": "vec_uint16_4_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_4.bend",
@@ -16523,6 +16479,10 @@
     {
      "file": "sub_vec_uint16_512.bend",
      "law": "vec_uint16_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_512.bend",
+     "law": "vec_uint16_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16532,12 +16492,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_512.bend",
-     "law": "vec_uint16_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16548,12 +16503,12 @@
      "law": "vec_uint16_512_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_512.bend",
-     "law": "vec_uint16_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_512.bend",
      "law": "vec_uint16_512_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_512.bend",
+     "law": "vec_uint16_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_512.bend",
@@ -16622,6 +16577,10 @@
     {
      "file": "sub_vec_uint16_513.bend",
      "law": "vec_uint16_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_513.bend",
+     "law": "vec_uint16_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16631,12 +16590,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_513.bend",
-     "law": "vec_uint16_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16647,12 +16601,12 @@
      "law": "vec_uint16_513_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_513.bend",
-     "law": "vec_uint16_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_513.bend",
      "law": "vec_uint16_513_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_513.bend",
+     "law": "vec_uint16_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_513.bend",
@@ -16721,6 +16675,10 @@
     {
      "file": "sub_vec_uint16_5.bend",
      "law": "vec_uint16_5_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint16_5.bend",
+     "law": "vec_uint16_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16730,12 +16688,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_5.bend",
-     "law": "vec_uint16_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16746,12 +16699,12 @@
      "law": "vec_uint16_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_5.bend",
-     "law": "vec_uint16_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_5.bend",
      "law": "vec_uint16_5_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_5.bend",
+     "law": "vec_uint16_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_5.bend",
@@ -16824,6 +16777,10 @@
     {
      "file": "wordpos_vec_uint16_8.bend",
      "law": "vec_uint16_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint16_8.bend",
+     "law": "vec_uint16_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -16833,12 +16790,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint16_8.bend",
-     "law": "vec_uint16_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -16849,12 +16801,12 @@
      "law": "vec_uint16_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint16_8.bend",
-     "law": "vec_uint16_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint16_8.bend",
      "law": "vec_uint16_8_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint16_8.bend",
+     "law": "vec_uint16_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint16_8.bend",
@@ -17013,6 +16965,10 @@
     {
      "file": "spec_gcodec_vec_uint256_16.bend",
      "law": "vec_uint256_16_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint256_16.bend",
+     "law": "vec_uint256_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17022,12 +16978,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_16.bend",
-     "law": "vec_uint256_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17048,12 +16999,12 @@
      "law": "vec_uint256_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_16.bend",
-     "law": "vec_uint256_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_16.bend",
      "law": "vec_uint256_16_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_16.bend",
+     "law": "vec_uint256_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_16.bend",
@@ -17126,6 +17077,10 @@
     {
      "file": "wordpos_vec_uint256_1.bend",
      "law": "vec_uint256_1_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_1.bend",
+     "law": "vec_uint256_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17135,12 +17090,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_1.bend",
-     "law": "vec_uint256_1_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17161,12 +17111,12 @@
      "law": "vec_uint256_1_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_1.bend",
-     "law": "vec_uint256_1_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_1.bend",
      "law": "vec_uint256_1_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_1.bend",
+     "law": "vec_uint256_1_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_1.bend",
@@ -17243,6 +17193,10 @@
     {
      "file": "wordpos_vec_uint256_2.bend",
      "law": "vec_uint256_2_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_2.bend",
+     "law": "vec_uint256_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17252,12 +17206,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_2.bend",
-     "law": "vec_uint256_2_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17278,12 +17227,12 @@
      "law": "vec_uint256_2_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_2.bend",
-     "law": "vec_uint256_2_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_2.bend",
      "law": "vec_uint256_2_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_2.bend",
+     "law": "vec_uint256_2_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_2.bend",
@@ -17356,6 +17305,10 @@
     {
      "file": "spec_gcodec_vec_uint256_31.bend",
      "law": "vec_uint256_31_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint256_31.bend",
+     "law": "vec_uint256_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17365,12 +17318,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_31.bend",
-     "law": "vec_uint256_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17391,12 +17339,12 @@
      "law": "vec_uint256_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_31.bend",
-     "law": "vec_uint256_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_31.bend",
      "law": "vec_uint256_31_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_31.bend",
+     "law": "vec_uint256_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_31.bend",
@@ -17469,6 +17417,10 @@
     {
      "file": "wordpos_vec_uint256_3.bend",
      "law": "vec_uint256_3_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_3.bend",
+     "law": "vec_uint256_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17478,12 +17430,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_3.bend",
-     "law": "vec_uint256_3_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17504,12 +17451,12 @@
      "law": "vec_uint256_3_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_3.bend",
-     "law": "vec_uint256_3_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_3.bend",
      "law": "vec_uint256_3_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_3.bend",
+     "law": "vec_uint256_3_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_3.bend",
@@ -17586,6 +17533,10 @@
     {
      "file": "wordpos_vec_uint256_4.bend",
      "law": "vec_uint256_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_4.bend",
+     "law": "vec_uint256_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17595,12 +17546,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_4.bend",
-     "law": "vec_uint256_4_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17621,12 +17567,12 @@
      "law": "vec_uint256_4_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_4.bend",
-     "law": "vec_uint256_4_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_4.bend",
      "law": "vec_uint256_4_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_4.bend",
+     "law": "vec_uint256_4_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_4.bend",
@@ -17699,6 +17645,10 @@
     {
      "file": "spec_garr_vec_uint256_512.bend",
      "law": "vec_uint256_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint256_512.bend",
+     "law": "vec_uint256_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17708,12 +17658,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_512.bend",
-     "law": "vec_uint256_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -17725,12 +17670,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_vec_uint256_512.bend",
-     "law": "vec_uint256_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_512.bend",
      "law": "vec_uint256_512_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_512.bend",
+     "law": "vec_uint256_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_512.bend",
@@ -17795,6 +17740,10 @@
     {
      "file": "spec_garr_vec_uint256_513.bend",
      "law": "vec_uint256_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint256_513.bend",
+     "law": "vec_uint256_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17804,12 +17753,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_513.bend",
-     "law": "vec_uint256_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -17821,12 +17765,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_vec_uint256_513.bend",
-     "law": "vec_uint256_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_513.bend",
      "law": "vec_uint256_513_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_513.bend",
+     "law": "vec_uint256_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_513.bend",
@@ -17895,6 +17839,10 @@
     {
      "file": "wordpos_vec_uint256_5.bend",
      "law": "vec_uint256_5_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_5.bend",
+     "law": "vec_uint256_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -17904,12 +17852,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_5.bend",
-     "law": "vec_uint256_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -17930,12 +17873,12 @@
      "law": "vec_uint256_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_5.bend",
-     "law": "vec_uint256_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_5.bend",
      "law": "vec_uint256_5_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_5.bend",
+     "law": "vec_uint256_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_5.bend",
@@ -18012,6 +17955,10 @@
     {
      "file": "wordpos_vec_uint256_8.bend",
      "law": "vec_uint256_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint256_8.bend",
+     "law": "vec_uint256_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18021,12 +17968,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint256_8.bend",
-     "law": "vec_uint256_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18047,12 +17989,12 @@
      "law": "vec_uint256_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint256_8.bend",
-     "law": "vec_uint256_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint256_8.bend",
      "law": "vec_uint256_8_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint256_8.bend",
+     "law": "vec_uint256_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint256_8.bend",
@@ -18215,6 +18157,10 @@
     {
      "file": "wordpos_vec_uint32_16.bend",
      "law": "vec_uint32_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_16.bend",
+     "law": "vec_uint32_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18224,12 +18170,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_16.bend",
-     "law": "vec_uint32_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18250,12 +18191,12 @@
      "law": "vec_uint32_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_16.bend",
-     "law": "vec_uint32_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_16.bend",
      "law": "vec_uint32_16_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_16.bend",
+     "law": "vec_uint32_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_16.bend",
@@ -18440,6 +18381,10 @@
     {
      "file": "wordpos_vec_uint32_2.bend",
      "law": "vec_uint32_2_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_2.bend",
+     "law": "vec_uint32_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18449,12 +18394,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_2.bend",
-     "law": "vec_uint32_2_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18475,12 +18415,12 @@
      "law": "vec_uint32_2_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_2.bend",
-     "law": "vec_uint32_2_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_2.bend",
      "law": "vec_uint32_2_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_2.bend",
+     "law": "vec_uint32_2_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_2.bend",
@@ -18557,6 +18497,10 @@
     {
      "file": "wordpos_vec_uint32_31.bend",
      "law": "vec_uint32_31_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_31.bend",
+     "law": "vec_uint32_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18566,12 +18510,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_31.bend",
-     "law": "vec_uint32_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18592,12 +18531,12 @@
      "law": "vec_uint32_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_31.bend",
-     "law": "vec_uint32_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_31.bend",
      "law": "vec_uint32_31_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_31.bend",
+     "law": "vec_uint32_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_31.bend",
@@ -18674,6 +18613,10 @@
     {
      "file": "wordpos_vec_uint32_3.bend",
      "law": "vec_uint32_3_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_3.bend",
+     "law": "vec_uint32_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18683,12 +18626,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_3.bend",
-     "law": "vec_uint32_3_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18709,12 +18647,12 @@
      "law": "vec_uint32_3_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_3.bend",
-     "law": "vec_uint32_3_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_3.bend",
      "law": "vec_uint32_3_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_3.bend",
+     "law": "vec_uint32_3_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_3.bend",
@@ -18791,6 +18729,10 @@
     {
      "file": "wordpos_vec_uint32_4.bend",
      "law": "vec_uint32_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_4.bend",
+     "law": "vec_uint32_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18800,12 +18742,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_4.bend",
-     "law": "vec_uint32_4_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -18826,12 +18763,12 @@
      "law": "vec_uint32_4_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_4.bend",
-     "law": "vec_uint32_4_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_4.bend",
      "law": "vec_uint32_4_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_4.bend",
+     "law": "vec_uint32_4_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_4.bend",
@@ -18904,6 +18841,10 @@
     {
      "file": "spec_garr_vec_uint32_512.bend",
      "law": "vec_uint32_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint32_512.bend",
+     "law": "vec_uint32_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -18913,12 +18854,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_512.bend",
-     "law": "vec_uint32_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -18934,12 +18870,12 @@
      "law": "vec_uint32_512_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_512.bend",
-     "law": "vec_uint32_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_512.bend",
      "law": "vec_uint32_512_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_512.bend",
+     "law": "vec_uint32_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_512.bend",
@@ -19008,6 +18944,10 @@
     {
      "file": "spec_garr_vec_uint32_513.bend",
      "law": "vec_uint32_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint32_513.bend",
+     "law": "vec_uint32_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19017,12 +18957,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_513.bend",
-     "law": "vec_uint32_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -19038,12 +18973,12 @@
      "law": "vec_uint32_513_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_513.bend",
-     "law": "vec_uint32_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_513.bend",
      "law": "vec_uint32_513_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_513.bend",
+     "law": "vec_uint32_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_513.bend",
@@ -19116,6 +19051,10 @@
     {
      "file": "wordpos_vec_uint32_5.bend",
      "law": "vec_uint32_5_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_5.bend",
+     "law": "vec_uint32_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19125,12 +19064,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_5.bend",
-     "law": "vec_uint32_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19151,12 +19085,12 @@
      "law": "vec_uint32_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_5.bend",
-     "law": "vec_uint32_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_5.bend",
      "law": "vec_uint32_5_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_5.bend",
+     "law": "vec_uint32_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_5.bend",
@@ -19233,6 +19167,10 @@
     {
      "file": "wordpos_vec_uint32_8.bend",
      "law": "vec_uint32_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint32_8.bend",
+     "law": "vec_uint32_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19242,12 +19180,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint32_8.bend",
-     "law": "vec_uint32_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19268,12 +19201,12 @@
      "law": "vec_uint32_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint32_8.bend",
-     "law": "vec_uint32_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint32_8.bend",
      "law": "vec_uint32_8_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint32_8.bend",
+     "law": "vec_uint32_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint32_8.bend",
@@ -19436,6 +19369,10 @@
     {
      "file": "wordpos_vec_uint64_16.bend",
      "law": "vec_uint64_16_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_16.bend",
+     "law": "vec_uint64_16_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19445,12 +19382,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_16.bend",
-     "law": "vec_uint64_16_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19471,12 +19403,12 @@
      "law": "vec_uint64_16_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_16.bend",
-     "law": "vec_uint64_16_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_16.bend",
      "law": "vec_uint64_16_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_16.bend",
+     "law": "vec_uint64_16_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_16.bend",
@@ -19553,6 +19485,10 @@
     {
      "file": "wordpos_vec_uint64_1.bend",
      "law": "vec_uint64_1_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_1.bend",
+     "law": "vec_uint64_1_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19562,12 +19498,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_1.bend",
-     "law": "vec_uint64_1_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19588,12 +19519,12 @@
      "law": "vec_uint64_1_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_1.bend",
-     "law": "vec_uint64_1_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_1.bend",
      "law": "vec_uint64_1_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_1.bend",
+     "law": "vec_uint64_1_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_1.bend",
@@ -19670,6 +19601,10 @@
     {
      "file": "wordpos_vec_uint64_2.bend",
      "law": "vec_uint64_2_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_2.bend",
+     "law": "vec_uint64_2_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19679,12 +19614,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_2.bend",
-     "law": "vec_uint64_2_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19705,12 +19635,12 @@
      "law": "vec_uint64_2_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_2.bend",
-     "law": "vec_uint64_2_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_2.bend",
      "law": "vec_uint64_2_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_2.bend",
+     "law": "vec_uint64_2_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_2.bend",
@@ -19787,6 +19717,10 @@
     {
      "file": "wordpos_vec_uint64_31.bend",
      "law": "vec_uint64_31_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_31.bend",
+     "law": "vec_uint64_31_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19796,12 +19730,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_31.bend",
-     "law": "vec_uint64_31_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19822,12 +19751,12 @@
      "law": "vec_uint64_31_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_31.bend",
-     "law": "vec_uint64_31_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_31.bend",
      "law": "vec_uint64_31_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_31.bend",
+     "law": "vec_uint64_31_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_31.bend",
@@ -19904,6 +19833,10 @@
     {
      "file": "wordpos_vec_uint64_3.bend",
      "law": "vec_uint64_3_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_3.bend",
+     "law": "vec_uint64_3_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -19913,12 +19846,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_3.bend",
-     "law": "vec_uint64_3_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -19939,12 +19867,12 @@
      "law": "vec_uint64_3_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_3.bend",
-     "law": "vec_uint64_3_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_3.bend",
      "law": "vec_uint64_3_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_3.bend",
+     "law": "vec_uint64_3_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_3.bend",
@@ -20021,6 +19949,10 @@
     {
      "file": "wordpos_vec_uint64_4.bend",
      "law": "vec_uint64_4_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_4.bend",
+     "law": "vec_uint64_4_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20030,12 +19962,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_4.bend",
-     "law": "vec_uint64_4_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -20056,12 +19983,12 @@
      "law": "vec_uint64_4_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_4.bend",
-     "law": "vec_uint64_4_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_4.bend",
      "law": "vec_uint64_4_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_4.bend",
+     "law": "vec_uint64_4_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_4.bend",
@@ -20134,6 +20061,10 @@
     {
      "file": "spec_garr_vec_uint64_512.bend",
      "law": "vec_uint64_512_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint64_512.bend",
+     "law": "vec_uint64_512_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20143,12 +20074,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_512.bend",
-     "law": "vec_uint64_512_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -20164,12 +20090,12 @@
      "law": "vec_uint64_512_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_512.bend",
-     "law": "vec_uint64_512_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_512.bend",
      "law": "vec_uint64_512_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_512.bend",
+     "law": "vec_uint64_512_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_512.bend",
@@ -20238,6 +20164,10 @@
     {
      "file": "spec_garr_vec_uint64_513.bend",
      "law": "vec_uint64_513_spec_bytes"
+    },
+    {
+     "file": "zcapsym_vec_uint64_513.bend",
+     "law": "vec_uint64_513_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20247,12 +20177,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_513.bend",
-     "law": "vec_uint64_513_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -20264,12 +20189,12 @@
    ],
    "serialize_valid": [
     {
-     "file": "capsym_vec_uint64_513.bend",
-     "law": "vec_uint64_513_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_513.bend",
      "law": "vec_uint64_513_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_513.bend",
+     "law": "vec_uint64_513_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_513.bend",
@@ -20342,6 +20267,10 @@
     {
      "file": "wordpos_vec_uint64_5.bend",
      "law": "vec_uint64_5_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_5.bend",
+     "law": "vec_uint64_5_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20351,12 +20280,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_5.bend",
-     "law": "vec_uint64_5_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -20377,12 +20301,12 @@
      "law": "vec_uint64_5_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_5.bend",
-     "law": "vec_uint64_5_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_5.bend",
      "law": "vec_uint64_5_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_5.bend",
+     "law": "vec_uint64_5_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_5.bend",
@@ -20459,6 +20383,10 @@
     {
      "file": "wordpos_vec_uint64_8.bend",
      "law": "vec_uint64_8_arith_putw"
+    },
+    {
+     "file": "zcapsym_vec_uint64_8.bend",
+     "law": "vec_uint64_8_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20468,12 +20396,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_vec_uint64_8.bend",
-     "law": "vec_uint64_8_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -20494,12 +20417,12 @@
      "law": "vec_uint64_8_serialize_cap"
     },
     {
-     "file": "capsym_vec_uint64_8.bend",
-     "law": "vec_uint64_8_serialize_capsym"
-    },
-    {
      "file": "mutval_generic_vec_uint64_8.bend",
      "law": "vec_uint64_8_serialize_vin"
+    },
+    {
+     "file": "zcapsym_vec_uint64_8.bend",
+     "law": "vec_uint64_8_serialize_capsym"
     },
     {
      "file": "mutconst_vec_uint64_8.bend",
@@ -20642,6 +20565,10 @@
     {
      "file": "var_codec_BitsStruct_enc.bend",
      "law": "encode_eval"
+    },
+    {
+     "file": "zcapsym_BitsStruct.bend",
+     "law": "BitsStruct_encode_capsym"
     }
    ],
    "encode_spec": [
@@ -20651,12 +20578,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "capsym_BitsStruct.bend",
-     "law": "BitsStruct_encode_capsym"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
@@ -20667,7 +20589,7 @@
      "law": "BitsStruct_serialize_cap"
     },
     {
-     "file": "capsym_BitsStruct.bend",
+     "file": "zcapsym_BitsStruct.bend",
      "law": "BitsStruct_serialize_capsym"
     },
     {

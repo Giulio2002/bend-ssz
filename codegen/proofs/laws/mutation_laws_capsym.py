@@ -9,7 +9,7 @@ small silently overwrites its own head. mutation_laws_cap.py states, for the def
 buffer is the encoder's; computing it costs 74 s at 2^13 words and 406 s at 2^15 (Blob), and does not finish for
 HistoricalBatch (2^17).
 
-proofs/obj/capsym_<X>.bend (one module per name) holds, for every name whose serializer or encoder allocates with
+proofs/obj/zcapsym_<X>.bend (one module per name) holds, for every name whose serializer or encoder allocates with
 `O.out_at(d)`, d >= 1:
 
   <X>_serialize_capsym(o)   : {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(dn), 0, o)) : ..}
@@ -22,7 +22,10 @@ encoded size (ceil(N / 4) words, N the literal size the definition itself report
 array in the stuck term and so the statement's value; no write loop is evaluated, so the cost is independent of the
 size of the name (1 s for Blob).
 
-Named so that api_gate files them under serialize_valid and encode_eval: they land in the name's encode facade.
+Named so that api_gate files them under serialize_valid and encode_eval: they land in the name's encode facade. The
+module is zcapsym_ so that it sorts after every other proving file of encode_eval: a facade's first proving import must stay
+the name's own spec/encx file (e2e_var_b/e2e_var_c read it as P0). Consequence: a facade that holds a heavy statement
+before this law (LightClientBootstrap_encode) still evaluates it first on a mutant.
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -104,10 +107,10 @@ def main():
             if X in seen:
                 continue
             seen.add(X)
-            out[ROOT / f'proofs/obj/capsym_{X}.bend'] = module(tmod, X, ls)
+            out[ROOT / f'proofs/obj/zcapsym_{X}.bend'] = module(tmod, X, ls)
             n += len(ls)
         cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('capsym_*.bend') if q not in out)
+    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('zcapsym_*.bend') if q not in out)
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         return writer.check(out, 'stale capsym laws: ', 'capsym laws are current', orphans)

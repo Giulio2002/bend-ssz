@@ -16,7 +16,7 @@ import ../../src/obj.bend as P1_O
 import ../obj/wordpos_vec_uint64_8.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
-import ../obj/capsym_vec_uint64_8.bend as P2_PRV
+import ../obj/zcapsym_vec_uint64_8.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
 import ../obj/capacity_vec_uint64_8.bend as P3_PRV
@@ -37,20 +37,20 @@ def vec_uint64_8__encode_eval__vec_uint64_8_spec_bytes(+x0: U32, +x1: U32, +x2: 
 def vec_uint64_8__encode_eval__vec_uint64_8_arith_putw() -> {vec_uint64_8_e.v8_u64_put(P1_O.out_at(7n), 12, P1_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P1_O.out_at(4n), 0, 2477111237), 1, 2496199852), 2, 2515255955), 3, 2525988858), 4, 2545077473), 5, 2564133576), 6, 2583222191), 7, 2610732438), 8, 2629821181), 9, 2648877028), 10, 2659577291), 11, 2678698674), 12, 2697787545), 13, 2716843392), 14, 2744353511), 15, 2763442382), 64}) == (Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P1_O.out_at(7n), 3, 2477111237), 4, 2496199852), 5, 2515255955), 6, 2525988858), 7, 2545077473), 8, 2564133576), 9, 2583222191), 10, 2610732438), 11, 2629821181), 12, 2648877028), 13, 2659577291), 14, 2678698674), 15, 2697787545), 16, 2716843392), 17, 2744353511), 18, 2763442382), P1_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P1_O.out_at(4n), 0, 2477111237), 1, 2496199852), 2, 2515255955), 3, 2525988858), 4, 2545077473), 5, 2564133576), 6, 2583222191), 7, 2610732438), 8, 2629821181), 9, 2648877028), 10, 2659577291), 11, 2678698674), 12, 2697787545), 13, 2716843392), 14, 2744353511), 15, 2763442382), 64}) : Array<U32> & P1_O.Words}:
   P1_PRV.vec_uint64_8_arith_putw()
 
+def vec_uint64_8__encode_eval__vec_uint64_8_encode_capsym(o: P2_O.Words) -> {vec_uint64_8_e.vec_uint64_8_encode(o) == vec_uint64_8_e.vec_uint64_8_enc_out(vec_uint64_8_e.v8_u64_put(P2_O.out_at(4n), 0, o)) : P2_O.Words & P2_B.Buf}:
+  P2_PRV.vec_uint64_8_encode_capsym(o)
+
 def vec_uint64_8__encode_spec__vec_uint64_8_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32) -> P0_Decoding.decodes(P0_Spec.vec_uint64_8(), P0_F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]), P0_S.Sequence{P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x4, x5, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x6, x7, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x10, x11, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x12, x13, 0, 0, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x14, x15, 0, 0, 0, 0, 0, 0}}, P0_S.EmptyItems{}}}}}}}}}}):
   P0_PRV.vec_uint64_8_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15)
-
-def vec_uint64_8__encoded_size__vec_uint64_8_encode_capsym(o: P2_O.Words) -> {vec_uint64_8_e.vec_uint64_8_encode(o) == vec_uint64_8_e.vec_uint64_8_enc_out(vec_uint64_8_e.v8_u64_put(P2_O.out_at(4n), 0, o)) : P2_O.Words & P2_B.Buf}:
-  P2_PRV.vec_uint64_8_encode_capsym(o)
 
 def vec_uint64_8__serialize_valid__vec_uint64_8_serialize_cap() -> {vec_uint64_8_e.vec_uint64_8_serialize(vec_uint64_8_d.v8_u64_default()) == (vec_uint64_8_d.v8_u64_default(), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_uint64_8_e.vec_uint64_8_encode(vec_uint64_8_d.v8_u64_default())))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_uint64_8_serialize_cap()
 
-def vec_uint64_8__serialize_valid__vec_uint64_8_serialize_capsym(o: P2_O.Words) -> {vec_uint64_8_e.vec_uint64_8_serialize(o) == vec_uint64_8_e.vec_uint64_8_senc_out(vec_uint64_8_e.v8_u64_putk(P2_O.out_at(4n), 0, o)) : P2_O.Words & P2_O.Encoded}:
-  P2_PRV.vec_uint64_8_serialize_capsym(o)
-
 def vec_uint64_8__serialize_valid__vec_uint64_8_serialize_vin() -> {vec_uint64_8_e.vec_uint64_8_serialize(P4_O.Words{P4_O.out_at(5n), 64}) == (Pair.fst(P4_O.Words, P4_B.Buf, vec_uint64_8_e.vec_uint64_8_encode(P4_O.Words{P4_O.out_at(5n), 64})), P4_O.encoded(Pair.snd(P4_O.Words, P4_B.Buf, vec_uint64_8_e.vec_uint64_8_encode(P4_O.Words{P4_O.out_at(5n), 64})))) : P4_O.Words & P4_O.Encoded}:
   P4_PRV.vec_uint64_8_serialize_vin()
+
+def vec_uint64_8__serialize_valid__vec_uint64_8_serialize_capsym(o: P2_O.Words) -> {vec_uint64_8_e.vec_uint64_8_serialize(o) == vec_uint64_8_e.vec_uint64_8_senc_out(vec_uint64_8_e.v8_u64_putk(P2_O.out_at(4n), 0, o)) : P2_O.Words & P2_O.Encoded}:
+  P2_PRV.vec_uint64_8_serialize_capsym(o)
 
 def vec_uint64_8__serialize_valid__vec_uint64_8_mc_poison_v8_u64(out: Array<U32>, pos: U32, o: P5_O.Words) -> {vec_uint64_8_e.v8_u64_pk(out, pos, (o, False{})) == (out, (o, P5_O.poison())) : Array<U32> & (P5_O.Words & U32)}:
   P5_PRV.vec_uint64_8_mc_poison_v8_u64(out, pos, o)

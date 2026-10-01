@@ -19,7 +19,7 @@ import ../obj/arr_vec.bend as P0_AV
 import ../obj/spec_arr_Blob.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_Blob.bend as P1_PRV
+import ../obj/zcapsym_Blob.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/mutation_laws_fulu.bend as P2_PRV
@@ -34,17 +34,17 @@ import ../obj/mutconst_Blob.bend as P3_PRV
 def FuluBlob__encode_eval__Blob_spec_bytes(+l: P0_F.array__Tree<U32>, +r: P0_F.array__Tree<U32>, +pl: {P0_F.array__perfect(U32, 15n, l) == True{} : Bool}, +pr: {P0_F.array__perfect(U32, 15n, r) == True{} : Bool}, +k: U32, +ek: {k == 32768 : U32}) -> {P0_SF.emitted(P0_O.Words, FuluBlob_e.Blob_encode(P0_O.Words{ANode{P0_F.array__thaw(U32, l), P0_F.array__thaw(U32, r)}, 131072}), k) == (P0_O.Words{ANode{P0_F.array__thaw(U32, l), P0_F.array__thaw(U32, r)}, 131072}, P0_SF.limbs(P0_F.array__slots(U32, l))) : P0_O.Words & +List<U32>}:
   P0_PRV.Blob_spec_bytes(l, r, pl, pr, k, ek)
 
+def FuluBlob__encode_eval__Blob_encode_capsym(o: P1_O.Words) -> {FuluBlob_e.Blob_encode(o) == FuluBlob_e.Blob_enc_out(FuluBlob_e.b131072_put(P1_O.out_at(15n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.Blob_encode_capsym(o)
+
 def FuluBlob__encode_spec__Blob_spec_encode(+t: P0_F.array__Tree<U32>, +pt: {P0_F.array__perfect(U32, 15n, t) == True{} : Bool}, +s: P0_S.Schema, +es: {s == P0_Spec.Blob() : P0_S.Schema}) -> P0_Decoding.decodes(s, P0_SF.limbs(P0_F.array__slots(U32, t)), P0_S.BytesValue{P0_SF.limbs(P0_F.array__slots(U32, t))}):
   P0_PRV.Blob_spec_encode(t, pt, s, es)
 
-def FuluBlob__encoded_size__Blob_encode_capsym(o: P1_O.Words) -> {FuluBlob_e.Blob_encode(o) == FuluBlob_e.Blob_enc_out(FuluBlob_e.b131072_put(P1_O.out_at(15n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.Blob_encode_capsym(o)
+def FuluBlob__serialize_valid__Blob_serialize_over() -> {FuluBlob_e.Blob_serialize(P2_O.Words{P2_O.out_at(16n), 131073}) == (P2_O.Words{P2_O.out_at(16n), 131073}, P2_O.refused()) : P2_O.Words & P2_O.Encoded}:
+  P2_PRV.Blob_serialize_over()
 
 def FuluBlob__serialize_valid__Blob_serialize_capsym(o: P1_O.Words) -> {FuluBlob_e.Blob_serialize(o) == FuluBlob_e.Blob_senc_out(FuluBlob_e.b131072_putk(P1_O.out_at(15n), 0, o)) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.Blob_serialize_capsym(o)
-
-def FuluBlob__serialize_valid__Blob_serialize_over() -> {FuluBlob_e.Blob_serialize(P2_O.Words{P2_O.out_at(16n), 131073}) == (P2_O.Words{P2_O.out_at(16n), 131073}, P2_O.refused()) : P2_O.Words & P2_O.Encoded}:
-  P2_PRV.Blob_serialize_over()
 
 def FuluBlob__serialize_valid__Blob_mc_poison_b131072(out: Array<U32>, pos: U32, o: P3_O.Words) -> {FuluBlob_e.b131072_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Words & U32)}:
   P3_PRV.Blob_mc_poison_b131072(out, pos, o)

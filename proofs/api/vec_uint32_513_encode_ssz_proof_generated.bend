@@ -22,7 +22,7 @@ import ../obj/arr_enc.bend as P0_AN
 import ../obj/spec_garr_vec_uint32_513.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_vec_uint32_513.bend as P1_PRV
+import ../obj/zcapsym_vec_uint32_513.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_vec_uint32_513.bend as P2_PRV
@@ -40,20 +40,20 @@ import ../obj/mutconst_vec_uint32_513.bend as P4_PRV
 def vec_uint32_513__encode_eval__vec_uint32_513_spec_bytes(+y0: U32, +r0: P0_F.array__Tree<U32>, +r1: P0_F.array__Tree<U32>, +r2: P0_F.array__Tree<U32>, +r3: P0_F.array__Tree<U32>, +r4: P0_F.array__Tree<U32>, +r5: P0_F.array__Tree<U32>, +r6: P0_F.array__Tree<U32>, +r7: P0_F.array__Tree<U32>, +r8: P0_F.array__Tree<U32>, +pr0: {P0_F.array__perfect(U32, 0n, r0) == True{} : Bool}, +pr1: {P0_F.array__perfect(U32, 1n, r1) == True{} : Bool}, +pr2: {P0_F.array__perfect(U32, 2n, r2) == True{} : Bool}, +pr3: {P0_F.array__perfect(U32, 3n, r3) == True{} : Bool}, +pr4: {P0_F.array__perfect(U32, 4n, r4) == True{} : Bool}, +pr5: {P0_F.array__perfect(U32, 5n, r5) == True{} : Bool}, +pr6: {P0_F.array__perfect(U32, 6n, r6) == True{} : Bool}, +pr7: {P0_F.array__perfect(U32, 7n, r7) == True{} : Bool}, +pr8: {P0_F.array__perfect(U32, 8n, r8) == True{} : Bool}, +h0: U32, +u0: P0_F.array__Tree<U32>, +u1: P0_F.array__Tree<U32>, +u2: P0_F.array__Tree<U32>, +u3: P0_F.array__Tree<U32>, +u4: P0_F.array__Tree<U32>, +u5: P0_F.array__Tree<U32>, +u6: P0_F.array__Tree<U32>, +u7: P0_F.array__Tree<U32>, +u8: P0_F.array__Tree<U32>, +pu0: {P0_F.array__perfect(U32, 0n, u0) == True{} : Bool}, +pu1: {P0_F.array__perfect(U32, 1n, u1) == True{} : Bool}, +pu2: {P0_F.array__perfect(U32, 2n, u2) == True{} : Bool}, +pu3: {P0_F.array__perfect(U32, 3n, u3) == True{} : Bool}, +pu4: {P0_F.array__perfect(U32, 4n, u4) == True{} : Bool}, +pu5: {P0_F.array__perfect(U32, 5n, u5) == True{} : Bool}, +pu6: {P0_F.array__perfect(U32, 6n, u6) == True{} : Bool}, +pu7: {P0_F.array__perfect(U32, 7n, u7) == True{} : Bool}, +pu8: {P0_F.array__perfect(U32, 8n, u8) == True{} : Bool}, +k: U32, +ek: {k == 513 : U32}) -> {P0_SF.emitted(P0_O.Words, vec_uint32_513_e.vec_uint32_513_encode(P0_O.Words{P0_F.array__thaw(U32, P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TLeaf{y0}, r0}, r1}, r2}, r3}, r4}, r5}, r6}, r7}, r8}, P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TLeaf{h0}, u0}, u1}, u2}, u3}, u4}, u5}, u6}, u7}, u8}}), 2052}), k) == (P0_O.Words{P0_F.array__thaw(U32, P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TLeaf{y0}, r0}, r1}, r2}, r3}, r4}, r5}, r6}, r7}, r8}, P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TLeaf{h0}, u0}, u1}, u2}, u3}, u4}, u5}, u6}, u7}, u8}}), 2052}, P0_SF.limbs(P0_F.spec_common__append(U32, P0_F.array__slots(U32, P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TNode{P0_F.TLeaf{y0}, r0}, r1}, r2}, r3}, r4}, r5}, r6}, r7}, r8}), [h0]))) : P0_O.Words & +List<U32>}:
   P0_PRV.vec_uint32_513_spec_bytes(y0, r0, r1, r2, r3, r4, r5, r6, r7, r8, pr0, pr1, pr2, pr3, pr4, pr5, pr6, pr7, pr8, h0, u0, u1, u2, u3, u4, u5, u6, u7, u8, pu0, pu1, pu2, pu3, pu4, pu5, pu6, pu7, pu8, k, ek)
 
+def vec_uint32_513__encode_eval__vec_uint32_513_encode_capsym(o: P1_O.Words) -> {vec_uint32_513_e.vec_uint32_513_encode(o) == vec_uint32_513_e.vec_uint32_513_enc_out(vec_uint32_513_e.v513_u32_put(P1_O.out_at(10n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.vec_uint32_513_encode_capsym(o)
+
 def vec_uint32_513__encode_spec__vec_uint32_513_spec_encode(+t: P0_F.array__Tree<U32>, +pt: {P0_F.array__perfect(U32, 9n, t) == True{} : Bool}, +g0: U32, +s: P0_S.Schema, +es: {s == P0_Spec.vec_uint32_513() : P0_S.Schema}) -> P0_Decoding.decodes(s, P0_SF.limbs(P0_F.spec_common__append(U32, P0_F.array__slots(U32, t), [g0])), P0_S.Sequence{P0_AV.chu1(P0_F.spec_common__append(U32, P0_F.array__slots(U32, t), [g0]))}):
   P0_PRV.vec_uint32_513_spec_encode(t, pt, g0, s, es)
-
-def vec_uint32_513__encoded_size__vec_uint32_513_encode_capsym(o: P1_O.Words) -> {vec_uint32_513_e.vec_uint32_513_encode(o) == vec_uint32_513_e.vec_uint32_513_enc_out(vec_uint32_513_e.v513_u32_put(P1_O.out_at(10n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.vec_uint32_513_encode_capsym(o)
 
 def vec_uint32_513__serialize_valid__vec_uint32_513_serialize_cap() -> {vec_uint32_513_e.vec_uint32_513_serialize(vec_uint32_513_d.v513_u32_default()) == (vec_uint32_513_d.v513_u32_default(), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_uint32_513_e.vec_uint32_513_encode(vec_uint32_513_d.v513_u32_default())))) : P2_O.Words & P2_O.Encoded}:
   P2_PRV.vec_uint32_513_serialize_cap()
 
-def vec_uint32_513__serialize_valid__vec_uint32_513_serialize_capsym(o: P1_O.Words) -> {vec_uint32_513_e.vec_uint32_513_serialize(o) == vec_uint32_513_e.vec_uint32_513_senc_out(vec_uint32_513_e.v513_u32_putk(P1_O.out_at(10n), 0, o)) : P1_O.Words & P1_O.Encoded}:
-  P1_PRV.vec_uint32_513_serialize_capsym(o)
-
 def vec_uint32_513__serialize_valid__vec_uint32_513_serialize_vin() -> {vec_uint32_513_e.vec_uint32_513_serialize(P3_O.Words{P3_O.out_at(10n), 2052}) == (Pair.fst(P3_O.Words, P3_B.Buf, vec_uint32_513_e.vec_uint32_513_encode(P3_O.Words{P3_O.out_at(10n), 2052})), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_uint32_513_e.vec_uint32_513_encode(P3_O.Words{P3_O.out_at(10n), 2052})))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_uint32_513_serialize_vin()
+
+def vec_uint32_513__serialize_valid__vec_uint32_513_serialize_capsym(o: P1_O.Words) -> {vec_uint32_513_e.vec_uint32_513_serialize(o) == vec_uint32_513_e.vec_uint32_513_senc_out(vec_uint32_513_e.v513_u32_putk(P1_O.out_at(10n), 0, o)) : P1_O.Words & P1_O.Encoded}:
+  P1_PRV.vec_uint32_513_serialize_capsym(o)
 
 def vec_uint32_513__serialize_valid__vec_uint32_513_mc_poison_v513_u32(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_uint32_513_e.v513_u32_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_uint32_513_mc_poison_v513_u32(out, pos, o)

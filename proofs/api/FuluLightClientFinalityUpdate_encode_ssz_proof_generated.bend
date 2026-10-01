@@ -42,7 +42,7 @@ import ../obj/encx_LightClientFinalityUpdate_iface.bend as P0_CI
 import ../obj/var_codec_LightClientFinalityUpdate_enc.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_LightClientFinalityUpdate.bend as P1_PRV
+import ../obj/zcapsym_LightClientFinalityUpdate.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_LightClientFinalityUpdate.bend as P2_PRV
@@ -57,11 +57,11 @@ import ../obj/mutconst_LightClientFinalityUpdate.bend as P3_PRV
 def FuluLightClientFinalityUpdate__encode_eval__encode_eval(+m: P0_CI.MW, +hok: {P0_CI.OK(m) == True{} : Bool}) -> {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(P0_CI.TH(m)) == (P0_CI.TH(m), P0_B.Buf{P0_FD.array__thaw(U32, P0_PRV.OUTE(m)), P0_PRV.SZSM(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & P0_B.Buf}:
   P0_PRV.encode_eval(m, hok)
 
+def FuluLightClientFinalityUpdate__encode_eval__LightClientFinalityUpdate_encode_capsym(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate) -> {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(o) == FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_enc_put(FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_putn(P1_O.out_at(10n), 0, o)) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & P1_B.Buf}:
+  P1_PRV.LightClientFinalityUpdate_encode_capsym(o)
+
 def FuluLightClientFinalityUpdate__encode_spec__encode_spec(+m: P0_CI.MW, +hok: {P0_CI.OK(m) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.LightClientFinalityUpdate(), P0_VS.bt(U32.to_nat(P0_PRV.SZSM(m)), P0_FX.limbs(P0_FD.array__slots(U32, P0_PRV.OUTE(m)))), P0_CI.VAL(m)):
   P0_PRV.encode_spec(m, hok)
-
-def FuluLightClientFinalityUpdate__encoded_size__LightClientFinalityUpdate_encode_capsym(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate) -> {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(o) == FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_enc_put(FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_putn(P1_O.out_at(10n), 0, o)) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & P1_B.Buf}:
-  P1_PRV.LightClientFinalityUpdate_encode_capsym(o)
 
 def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_cap() -> {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default()) == (FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), P2_O.encoded(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, P2_B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default())))) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & P2_O.Encoded}:
   P2_PRV.LightClientFinalityUpdate_serialize_cap()

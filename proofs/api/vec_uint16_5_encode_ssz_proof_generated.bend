@@ -15,7 +15,7 @@ import ../obj/sub_pack.bend as P0_SP2
 import ../obj/sub_vec_uint16_5.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_vec_uint16_5.bend as P1_PRV
+import ../obj/zcapsym_vec_uint16_5.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_vec_uint16_5.bend as P2_PRV
@@ -33,20 +33,20 @@ import ../obj/mutconst_vec_uint16_5.bend as P4_PRV
 def vec_uint16_5__encode_eval__vec_uint16_5_spec_bytes(+y0: U32, +y1: U32, +y2: U32, +q0: U32, +q1: U32, +q2: U32, +q3: U32, +q4: U32, +q5: U32, +q6: U32, +q7: U32, +q8: U32, +q9: U32, +q10: U32, +q11: U32, +q12: U32) -> {P0_SF.emitted(P0_O.Words, vec_uint16_5_e.vec_uint16_5_encode(P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{q0}}}, ANode{ANode{ALeaf{q1}, ALeaf{q2}}, ANode{ALeaf{q3}, ALeaf{q4}}}}, ANode{ANode{ANode{ALeaf{q5}, ALeaf{q6}}, ANode{ALeaf{q7}, ALeaf{q8}}}, ANode{ANode{ALeaf{q9}, ALeaf{q10}}, ANode{ALeaf{q11}, ALeaf{q12}}}}}, 10}), 3) == (P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{q0}}}, ANode{ANode{ALeaf{q1}, ALeaf{q2}}, ANode{ALeaf{q3}, ALeaf{q4}}}}, ANode{ANode{ANode{ALeaf{q5}, ALeaf{q6}}, ANode{ALeaf{q7}, ALeaf{q8}}}, ANode{ANode{ALeaf{q9}, ALeaf{q10}}, ANode{ALeaf{q11}, ALeaf{q12}}}}}, 10}, List.append(&2, U32, P0_SF.limbs([y0, y1]), [P0_B.byte_sel(0, y2), P0_B.byte_sel(1, y2)])) : P0_O.Words & +List<U32>}:
   P0_PRV.vec_uint16_5_spec_bytes(y0, y1, y2, q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12)
 
+def vec_uint16_5__encode_eval__vec_uint16_5_encode_capsym(o: P1_O.Words) -> {vec_uint16_5_e.vec_uint16_5_encode(o) == vec_uint16_5_e.vec_uint16_5_enc_out(vec_uint16_5_e.v5_u16_put(P1_O.out_at(2n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.vec_uint16_5_encode_capsym(o)
+
 def vec_uint16_5__encode_spec__vec_uint16_5_spec_encode(+x0: U32, +x1: U32, +x2: U32) -> P0_Decoding.decodes(P0_Spec.vec_uint16_5(), List.append(&2, U32, P0_SF.limbs([x0, x1]), [P0_B.byte_sel(0, x2), P0_B.byte_sel(1, x2)]), P0_S.Sequence{P0_SP2.vu16([x0, x1], P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{P0_SP2.lo16(x2), 0, 0, 0, 0, 0, 0, 0}}, P0_S.EmptyItems{}})}):
   P0_PRV.vec_uint16_5_spec_encode(x0, x1, x2)
-
-def vec_uint16_5__encoded_size__vec_uint16_5_encode_capsym(o: P1_O.Words) -> {vec_uint16_5_e.vec_uint16_5_encode(o) == vec_uint16_5_e.vec_uint16_5_enc_out(vec_uint16_5_e.v5_u16_put(P1_O.out_at(2n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.vec_uint16_5_encode_capsym(o)
 
 def vec_uint16_5__serialize_valid__vec_uint16_5_serialize_cap() -> {vec_uint16_5_e.vec_uint16_5_serialize(vec_uint16_5_d.v5_u16_default()) == (vec_uint16_5_d.v5_u16_default(), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_uint16_5_e.vec_uint16_5_encode(vec_uint16_5_d.v5_u16_default())))) : P2_O.Words & P2_O.Encoded}:
   P2_PRV.vec_uint16_5_serialize_cap()
 
-def vec_uint16_5__serialize_valid__vec_uint16_5_serialize_capsym(o: P1_O.Words) -> {vec_uint16_5_e.vec_uint16_5_serialize(o) == vec_uint16_5_e.vec_uint16_5_senc_out(vec_uint16_5_e.v5_u16_putk(P1_O.out_at(2n), 0, o)) : P1_O.Words & P1_O.Encoded}:
-  P1_PRV.vec_uint16_5_serialize_capsym(o)
-
 def vec_uint16_5__serialize_valid__vec_uint16_5_serialize_vin() -> {vec_uint16_5_e.vec_uint16_5_serialize(P3_O.Words{P3_O.out_at(2n), 10}) == (Pair.fst(P3_O.Words, P3_B.Buf, vec_uint16_5_e.vec_uint16_5_encode(P3_O.Words{P3_O.out_at(2n), 10})), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_uint16_5_e.vec_uint16_5_encode(P3_O.Words{P3_O.out_at(2n), 10})))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_uint16_5_serialize_vin()
+
+def vec_uint16_5__serialize_valid__vec_uint16_5_serialize_capsym(o: P1_O.Words) -> {vec_uint16_5_e.vec_uint16_5_serialize(o) == vec_uint16_5_e.vec_uint16_5_senc_out(vec_uint16_5_e.v5_u16_putk(P1_O.out_at(2n), 0, o)) : P1_O.Words & P1_O.Encoded}:
+  P1_PRV.vec_uint16_5_serialize_capsym(o)
 
 def vec_uint16_5__serialize_valid__vec_uint16_5_mc_poison_v5_u16(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_uint16_5_e.v5_u16_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_uint16_5_mc_poison_v5_u16(out, pos, o)

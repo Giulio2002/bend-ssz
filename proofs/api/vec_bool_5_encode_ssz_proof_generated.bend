@@ -15,7 +15,7 @@ import ../obj/sub_pack.bend as P0_SP2
 import ../obj/sub_vec_bool_5.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_vec_bool_5.bend as P1_PRV
+import ../obj/zcapsym_vec_bool_5.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_vec_bool_5.bend as P2_PRV
@@ -33,23 +33,23 @@ import ../obj/mutconst_vec_bool_5.bend as P4_PRV
 def vec_bool_5__encode_eval__vec_bool_5_spec_bytes(+y0: U32, +y1: U32, +q0: U32, +q1: U32, +q2: U32, +q3: U32, +q4: U32, +q5: U32, +q6: U32, +q7: U32, +q8: U32, +q9: U32, +q10: U32, +q11: U32, +q12: U32, +q13: U32) -> {P0_SF.emitted(P0_O.Words, vec_bool_5_e.vec_bool_5_encode(P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{q0}, ALeaf{q1}}}, ANode{ANode{ALeaf{q2}, ALeaf{q3}}, ANode{ALeaf{q4}, ALeaf{q5}}}}, ANode{ANode{ANode{ALeaf{q6}, ALeaf{q7}}, ANode{ALeaf{q8}, ALeaf{q9}}}, ANode{ANode{ALeaf{q10}, ALeaf{q11}}, ANode{ALeaf{q12}, ALeaf{q13}}}}}, 5}), 2) == (P0_O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{q0}, ALeaf{q1}}}, ANode{ANode{ALeaf{q2}, ALeaf{q3}}, ANode{ALeaf{q4}, ALeaf{q5}}}}, ANode{ANode{ANode{ALeaf{q6}, ALeaf{q7}}, ANode{ALeaf{q8}, ALeaf{q9}}}, ANode{ANode{ALeaf{q10}, ALeaf{q11}}, ANode{ALeaf{q12}, ALeaf{q13}}}}}, 5}, List.append(&2, U32, P0_SF.limbs([y0]), [P0_B.byte_sel(0, y1)])) : P0_O.Words & +List<U32>}:
   P0_PRV.vec_bool_5_spec_bytes(y0, y1, q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13)
 
+def vec_bool_5__encode_eval__vec_bool_5_encode_capsym(o: P1_O.Words) -> {vec_bool_5_e.vec_bool_5_encode(o) == vec_bool_5_e.vec_bool_5_enc_out(vec_bool_5_e.v5_bool_put(P1_O.out_at(1n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.vec_bool_5_encode_capsym(o)
+
 def vec_bool_5__encode_spec__vec_bool_5_spec_encode(+x0: U32, +x1: U32, +hb: {P0_SP2.lf(List.append(&2, U32, P0_SF.limbs([x0]), [P0_B.byte_sel(0, x1)]), True{}) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.vec_bool_5(), List.append(&2, U32, P0_SF.limbs([x0]), [P0_B.byte_sel(0, x1)]), P0_S.Sequence{P0_SP2.vbool(List.append(&2, U32, P0_SF.limbs([x0]), [P0_B.byte_sel(0, x1)]))}):
   P0_PRV.vec_bool_5_spec_encode(x0, x1, hb)
 
-def vec_bool_5__encoded_size__vec_bool_5_encode_capsym(o: P1_O.Words) -> {vec_bool_5_e.vec_bool_5_encode(o) == vec_bool_5_e.vec_bool_5_enc_out(vec_bool_5_e.v5_bool_put(P1_O.out_at(1n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.vec_bool_5_encode_capsym(o)
-
 def vec_bool_5__serialize_valid__vec_bool_5_serialize_cap() -> {vec_bool_5_e.vec_bool_5_serialize(vec_bool_5_d.v5_bool_default()) == (vec_bool_5_d.v5_bool_default(), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_bool_5_e.vec_bool_5_encode(vec_bool_5_d.v5_bool_default())))) : P2_O.Words & P2_O.Encoded}:
   P2_PRV.vec_bool_5_serialize_cap()
-
-def vec_bool_5__serialize_valid__vec_bool_5_serialize_capsym(o: P1_O.Words) -> {vec_bool_5_e.vec_bool_5_serialize(o) == vec_bool_5_e.vec_bool_5_senc_out(vec_bool_5_e.v5_bool_putk(P1_O.out_at(1n), 0, o)) : P1_O.Words & P1_O.Encoded}:
-  P1_PRV.vec_bool_5_serialize_capsym(o)
 
 def vec_bool_5__serialize_valid__vec_bool_5_serialize_vin() -> {vec_bool_5_e.vec_bool_5_serialize(P3_O.Words{P3_O.out_at(2n), 5}) == (Pair.fst(P3_O.Words, P3_B.Buf, vec_bool_5_e.vec_bool_5_encode(P3_O.Words{P3_O.out_at(2n), 5})), P3_O.encoded(Pair.snd(P3_O.Words, P3_B.Buf, vec_bool_5_e.vec_bool_5_encode(P3_O.Words{P3_O.out_at(2n), 5})))) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_bool_5_serialize_vin()
 
 def vec_bool_5__serialize_valid__vec_bool_5_serialize_vover() -> {vec_bool_5_e.vec_bool_5_serialize(P3_O.Words{P3_O.out_at(2n), 6}) == (P3_O.Words{P3_O.out_at(2n), 6}, P3_O.refused()) : P3_O.Words & P3_O.Encoded}:
   P3_PRV.vec_bool_5_serialize_vover()
+
+def vec_bool_5__serialize_valid__vec_bool_5_serialize_capsym(o: P1_O.Words) -> {vec_bool_5_e.vec_bool_5_serialize(o) == vec_bool_5_e.vec_bool_5_senc_out(vec_bool_5_e.v5_bool_putk(P1_O.out_at(1n), 0, o)) : P1_O.Words & P1_O.Encoded}:
+  P1_PRV.vec_bool_5_serialize_capsym(o)
 
 def vec_bool_5__serialize_valid__vec_bool_5_mc_poison_v5_bool(out: Array<U32>, pos: U32, o: P4_O.Words) -> {vec_bool_5_e.v5_bool_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.vec_bool_5_mc_poison_v5_bool(out, pos, o)

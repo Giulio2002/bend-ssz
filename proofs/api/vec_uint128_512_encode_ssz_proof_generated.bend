@@ -19,7 +19,7 @@ import ../obj/arr_vec.bend as P0_AV
 import ../obj/spec_garr_vec_uint128_512.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_vec_uint128_512.bend as P1_PRV
+import ../obj/zcapsym_vec_uint128_512.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/mutval_generic_vec_uint128_512.bend as P2_PRV
@@ -34,17 +34,17 @@ import ../obj/mutconst_vec_uint128_512.bend as P3_PRV
 def vec_uint128_512__encode_eval__vec_uint128_512_spec_bytes(+l: P0_F.array__Tree<U32>, +r: P0_F.array__Tree<U32>, +pl: {P0_F.array__perfect(U32, 11n, l) == True{} : Bool}, +pr: {P0_F.array__perfect(U32, 11n, r) == True{} : Bool}) -> {P0_SF.emitted(P0_O.Words, vec_uint128_512_e.vec_uint128_512_encode(P0_O.Words{ANode{P0_F.array__thaw(U32, l), P0_F.array__thaw(U32, r)}, 8192}), 2048) == (P0_O.Words{ANode{P0_F.array__thaw(U32, l), P0_F.array__thaw(U32, r)}, 8192}, P0_SF.limbs(P0_F.array__slots(U32, l))) : P0_O.Words & +List<U32>}:
   P0_PRV.vec_uint128_512_spec_bytes(l, r, pl, pr)
 
+def vec_uint128_512__encode_eval__vec_uint128_512_encode_capsym(o: P1_O.Words) -> {vec_uint128_512_e.vec_uint128_512_encode(o) == vec_uint128_512_e.vec_uint128_512_enc_out(vec_uint128_512_e.v512_u128_put(P1_O.out_at(11n), 0, o)) : P1_O.Words & P1_B.Buf}:
+  P1_PRV.vec_uint128_512_encode_capsym(o)
+
 def vec_uint128_512__encode_spec__vec_uint128_512_spec_encode(+t: P0_F.array__Tree<U32>, +pt: {P0_F.array__perfect(U32, 11n, t) == True{} : Bool}, +s: P0_S.Schema, +es: {s == P0_Spec.vec_uint128_512() : P0_S.Schema}) -> P0_Decoding.decodes(s, P0_SF.limbs(P0_F.array__slots(U32, t)), P0_S.Sequence{P0_AV.chu4(P0_F.array__slots(U32, t))}):
   P0_PRV.vec_uint128_512_spec_encode(t, pt, s, es)
 
-def vec_uint128_512__encoded_size__vec_uint128_512_encode_capsym(o: P1_O.Words) -> {vec_uint128_512_e.vec_uint128_512_encode(o) == vec_uint128_512_e.vec_uint128_512_enc_out(vec_uint128_512_e.v512_u128_put(P1_O.out_at(11n), 0, o)) : P1_O.Words & P1_B.Buf}:
-  P1_PRV.vec_uint128_512_encode_capsym(o)
+def vec_uint128_512__serialize_valid__vec_uint128_512_serialize_vin() -> {vec_uint128_512_e.vec_uint128_512_serialize(P2_O.Words{P2_O.out_at(12n), 8192}) == (Pair.fst(P2_O.Words, P2_B.Buf, vec_uint128_512_e.vec_uint128_512_encode(P2_O.Words{P2_O.out_at(12n), 8192})), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_uint128_512_e.vec_uint128_512_encode(P2_O.Words{P2_O.out_at(12n), 8192})))) : P2_O.Words & P2_O.Encoded}:
+  P2_PRV.vec_uint128_512_serialize_vin()
 
 def vec_uint128_512__serialize_valid__vec_uint128_512_serialize_capsym(o: P1_O.Words) -> {vec_uint128_512_e.vec_uint128_512_serialize(o) == vec_uint128_512_e.vec_uint128_512_senc_out(vec_uint128_512_e.v512_u128_putk(P1_O.out_at(11n), 0, o)) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.vec_uint128_512_serialize_capsym(o)
-
-def vec_uint128_512__serialize_valid__vec_uint128_512_serialize_vin() -> {vec_uint128_512_e.vec_uint128_512_serialize(P2_O.Words{P2_O.out_at(12n), 8192}) == (Pair.fst(P2_O.Words, P2_B.Buf, vec_uint128_512_e.vec_uint128_512_encode(P2_O.Words{P2_O.out_at(12n), 8192})), P2_O.encoded(Pair.snd(P2_O.Words, P2_B.Buf, vec_uint128_512_e.vec_uint128_512_encode(P2_O.Words{P2_O.out_at(12n), 8192})))) : P2_O.Words & P2_O.Encoded}:
-  P2_PRV.vec_uint128_512_serialize_vin()
 
 def vec_uint128_512__serialize_valid__vec_uint128_512_mc_poison_v512_u128(out: Array<U32>, pos: U32, o: P3_O.Words) -> {vec_uint128_512_e.v512_u128_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Words & U32)}:
   P3_PRV.vec_uint128_512_mc_poison_v512_u128(out, pos, o)

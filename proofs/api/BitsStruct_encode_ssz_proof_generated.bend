@@ -42,7 +42,7 @@ import ../obj/encx_BitsStruct_iface.bend as P0_CI
 import ../obj/var_codec_BitsStruct_enc.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
-import ../obj/capsym_BitsStruct.bend as P1_PRV
+import ../obj/zcapsym_BitsStruct.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O
 import ../obj/capacity_BitsStruct.bend as P2_PRV
@@ -57,11 +57,11 @@ import ../obj/mutconst_BitsStruct.bend as P3_PRV
 def BitsStruct__encode_eval__encode_eval(+m: P0_CI.MW, +hok: {P0_CI.OK(m) == True{} : Bool}) -> {BitsStruct_e.BitsStruct_encode(P0_CI.TH(m)) == (P0_CI.TH(m), P0_B.Buf{P0_FD.array__thaw(U32, P0_PRV.OUTE(m)), P0_PRV.SZSM(m)}) : BitsStruct_d.BitsStruct & P0_B.Buf}:
   P0_PRV.encode_eval(m, hok)
 
+def BitsStruct__encode_eval__BitsStruct_encode_capsym(o: BitsStruct_d.BitsStruct) -> {BitsStruct_e.BitsStruct_encode(o) == BitsStruct_e.BitsStruct_enc_put(BitsStruct_e.BitsStruct_putn(P1_O.out_at(2n), 0, o)) : BitsStruct_d.BitsStruct & P1_B.Buf}:
+  P1_PRV.BitsStruct_encode_capsym(o)
+
 def BitsStruct__encode_spec__encode_spec(+m: P0_CI.MW, +hok: {P0_CI.OK(m) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.BitsStruct(), P0_VS.bt(U32.to_nat(P0_PRV.SZSM(m)), P0_FX.limbs(P0_FD.array__slots(U32, P0_PRV.OUTE(m)))), P0_CI.VAL(m)):
   P0_PRV.encode_spec(m, hok)
-
-def BitsStruct__encoded_size__BitsStruct_encode_capsym(o: BitsStruct_d.BitsStruct) -> {BitsStruct_e.BitsStruct_encode(o) == BitsStruct_e.BitsStruct_enc_put(BitsStruct_e.BitsStruct_putn(P1_O.out_at(2n), 0, o)) : BitsStruct_d.BitsStruct & P1_B.Buf}:
-  P1_PRV.BitsStruct_encode_capsym(o)
 
 def BitsStruct__serialize_valid__BitsStruct_serialize_cap() -> {BitsStruct_e.BitsStruct_serialize(BitsStruct_d.BitsStruct_default()) == (BitsStruct_d.BitsStruct_default(), P2_O.encoded(Pair.snd(BitsStruct_d.BitsStruct, P2_B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_default())))) : BitsStruct_d.BitsStruct & P2_O.Encoded}:
   P2_PRV.BitsStruct_serialize_cap()
