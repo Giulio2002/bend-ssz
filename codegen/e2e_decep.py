@@ -18,7 +18,7 @@ A_ = 't, x, off, n'
 O = lambda i: f'W.O{i}(t, x)' if i < NW else 'n'
 L = lambda i: f'W.L{i}(t, x)' if i < NW - 1 else f'W.L{NW - 1}(t, x, n)'
 TN = lambda x: f'U32.to_nat({x})'
-HS = '+hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}'
+HS = '+hS: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 H31 = '+h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}'
 HC = '+hchk: {W.CHKw(t, x, off, n) == True{} : Bool}'
 TP = '+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32'
@@ -108,7 +108,7 @@ def qmul(n, k):
               f'  FD.nat__le_trans({TN(L(i))}, {TN(O(i + 1))}, U32.to_nat(n), FD.logic__subst(Nat, z => {{Nat.is_le({TN(L(i))}, z) == True{{}} : Bool}}, Nat.add({TN(O(i))}, {TN(L(i))}), {TN(O(i + 1))}, lsum{i}(t, x, off, n, hchk), A.le_skip({TN(O(i))}, {TN(L(i))})), {topi})\n'
               f'def hy{i}({TP}, {HS}, {HC}) -> {{Nat.is_le(VC.YL({L(i)}), U32.to_nat(VB.UMAX())) == True{{}} : Bool}}:\n'
               f'  VC.hyW({TN(O(i))}, {L(i)}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {TN(O(i + 1))}, Nat.add({TN(O(i))}, {TN(L(i))}), Equal.sym(Nat, Nat.add({TN(O(i))}, {TN(L(i))}), {TN(O(i + 1))}, lsum{i}(t, x, off, n, hchk)),\n'
-              f'    FD.nat__le_trans({TN(O(i + 1))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {topi}, u2n(n, VB.NMAX(), hS))))\n'
+              f'    FD.nat__le_trans({TN(O(i + 1))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {topi}, hS)))\n'
               f'def hm{i}({TP}, {H31}, {HC}) -> {{Nat.is_lt({TN(L(i))}, VB.pw(31n)) == True{{}} : Bool}}:\n'
               f'  FD.nat__le_lt_trans({TN(L(i))}, U32.to_nat(n), VB.pw(31n), lwn{i}(t, x, off, n, hchk), h31)\n')
     t += (f'\ndef hl0({TP}, {HC}) -> {{Nat.is_le({TN(L(0))}, 32n) == True{{}} : Bool}}: C0.hB(t, W.X0(t, x), W.F0(off, t, x), {L(0)}, ce0(t, x, off, n, hchk))\n')
