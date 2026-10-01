@@ -3319,6 +3319,7 @@ def outputs():
         out[OUT / 'e2e_pbsw.bend'] = BVG.pbsw_text(OBJ)
         out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
         out[OUT / 'e2e_pbx.bend'] = BVG.pbx_text()
+        out[OUT / 'e2e_pbl.bend'] = BVG.pbl_text(OBJ)
         out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)
         out[OUT / 'e2e_wxah.bend'] = BVG.wxah_text(OBJ)
         out[OUT / 'e2e_wxar.bend'] = BVG.wxar_text(OBJ)

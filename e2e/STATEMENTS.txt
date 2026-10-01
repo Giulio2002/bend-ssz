@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4840 statements in 1273 files.
+# 4842 statements in 1274 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -14590,6 +14590,25 @@ def l8_Attestation_api_append_flag_witness() -> {Pair.snd(Fulu_list_Attestation_
 def l8_Attestation_api_append_rejected_witness() -> {Fulu_list_Attestation_8_d.l8_Attestation_append(Fulu_list_Attestation_8_d.l8_Attestation_Seq{Fulu_list_Attestation_8_d.l8_Attestation_fill(6n), 8}, FuluAttestation_d.Attestation_default()) == (Fulu_list_Attestation_8_d.l8_Attestation_Seq{Fulu_list_Attestation_8_d.l8_Attestation_fill(6n), 8}, False{}) : Fulu_list_Attestation_8_d.l8_Attestation_Seq & Bool}:
 def l8_Attestation_api_set_length_witness() -> {Pair.snd(Fulu_list_Attestation_8_d.l8_Attestation_Seq, U32, Fulu_list_Attestation_8_d.l8_Attestation_len(Pair.fst(Fulu_list_Attestation_8_d.l8_Attestation_Seq, Bool, Fulu_list_Attestation_8_d.l8_Attestation_set(Fulu_list_Attestation_8_d.l8_Attestation_Seq{Fulu_list_Attestation_8_d.l8_Attestation_fill(6n), 4}, 0, FuluAttestation_d.Attestation_default())))) == 4 : U32}:
 def l8_Attestation_api_append_length_witness() -> {Pair.snd(Fulu_list_Attestation_8_d.l8_Attestation_Seq, U32, Fulu_list_Attestation_8_d.l8_Attestation_len(Pair.fst(Fulu_list_Attestation_8_d.l8_Attestation_Seq, Bool, Fulu_list_Attestation_8_d.l8_Attestation_append(Fulu_list_Attestation_8_d.l8_Attestation_Seq{Fulu_list_Attestation_8_d.l8_Attestation_fill(6n), 0}, FuluAttestation_d.Attestation_default())))) == (0 + 1 : U32) : U32}:
+
+## e2e/progbitlist_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/compact/arith.bend as A
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../src/obj.bend as O
+import ../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
+import ../types/progbitlist_encode_ssz_generated.bend as progbitlist_e
+import ../types/progbitlist_hashtreeroot_generated.bend as progbitlist_h
+def progbitlist_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, progbitlist_r.progbitlist_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {E.obytes(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(o))) == bs : +List<U32>}:
+def progbitlist_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: O.Bits, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(27n))) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, O.Bits>, progbitlist_r.progbitlist_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.Bits>})
+    -> {Some{D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, progbitlist_h.progbitlist_hash_tree_root(h, o))))} == C.droot(Spec.progbitlist(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/progbitlist_e2e_dec_generated.bend
 import ../src/model.bend as API

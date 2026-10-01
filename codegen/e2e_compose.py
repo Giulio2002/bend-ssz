@@ -212,7 +212,7 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     if name in DR.BUF_K:   # the dec bridge's size bound is Nat-form n <= 4 * 2^k (e2e_cap.cap_*): the buffer's depth facts from it
         BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
         kn = f'{DR.BUF_K[name]}n'
-        xa = (f', {DB}.pfe(bs, n), {FDA}.nat__lt_trans({BA}.capacity(n), 29n, 31n, {CA}.cap_lt(n, {kn}, {{==}}, hS), {{==}}), '
+        xa = ((f', {BA}.capacity(n)' if name in DR.BUF_ARGS else '') + f', {DB}.pfe(bs, n), {FDA}.nat__lt_trans({BA}.capacity(n), 29n, 31n, {CA}.cap_lt(n, {kn}, {{==}}, hS), {{==}}), '
               f'{CA}.cap_q(n, {kn}, {{==}}, hS)')
     hv_ = ''
     if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly: the encode laws' own size premise hZ (docs/PREMISES.md section 3), not the API's NMAX
