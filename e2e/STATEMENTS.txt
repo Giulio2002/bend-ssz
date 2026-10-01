@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 5000 statements in 1326 files.
+# 5002 statements in 1327 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -10892,6 +10892,25 @@ def FuluWithdrawal_e2e_set_amount_root(h: B.Buf, +o: FuluWithdrawal_d.Withdrawal
     -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluWithdrawal_h.Withdrawal_hash_tree_root(h, FuluWithdrawal_d.Withdrawal_set_amount(o, w))))} == API.hash_tree_root(Spec.Withdrawal(), VS.field_set(M1_L.v_Withdrawal(o), 3n, M1_L.v_u64(w))) : Maybe<&2, +List<U32>>}:
 def FuluWithdrawal_e2e_set_amount_encode(+o: FuluWithdrawal_d.Withdrawal, +w: O.U64)
     -> {Some{E.obytes(FuluWithdrawal_e.Withdrawal_encode(FuluWithdrawal_d.Withdrawal_set_amount(o, w)))} == API.serialize(Spec.Withdrawal(), VS.field_set(M1_L.v_Withdrawal(o), 3n, M1_L.v_u64(w))) : Maybe<&2, +List<U32>>}:
+
+## e2e/ProgressiveBitsStruct_e2e_comp_generated.bend
+import ./ProgressiveBitsStruct_e2e_dec_generated.bend as DB
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/var_codec_ProgressiveBitsStruct.bend as DC
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/ProgressiveBitsStruct_decode_ssz_generated.bend as ProgressiveBitsStruct_r
+import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_encode_ssz_generated.bend as ProgressiveBitsStruct_e
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as ProgressiveBitsStruct_h
+def ProgressiveBitsStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>})
+    -> {E.obytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(o))) == bs : +List<U32>}:
+def ProgressiveBitsStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>})
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, o))))} == C.droot(Spec.ProgressiveBitsStruct(), bs) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveBitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
