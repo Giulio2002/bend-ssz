@@ -83,7 +83,7 @@ def build_stmt(ctx, mod, name, txt):
     tyof = {n: t for n, t, _ in pl}
     have = set(tyof)
     FD = ctx.alias(ROOT / 'proofs/compact/found.bend')
-    dd = 3 if 'hfull' in have and '== False' in tyof['hfull'] else (10 if 'tv' in have else DEPTH)   # a growth: too small a tree; a word list: room for the value's words
+    dd = 3 if 'hfull' in have and '== False' in tyof['hfull'] else (12 if 'tv' in have else DEPTH)   # a growth: too small a tree; a word list: room for the value's words
     if 'dv' in have:
         env['dv'] = '9n'
     env['d'] = f'{dd}n'
