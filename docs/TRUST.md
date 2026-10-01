@@ -61,9 +61,9 @@ Trusted (not proved here):
   (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated
   runtime code must make the pinned checker reject a proof. Conformance and fuzz results are triage, never
   evidence; the first runtime counts were invalid (a crashing harness counts as a kill), so every runtime-stage
-  result needs its unmutated baseline passing. After four rounds of proof laws, 135 survivors of the replay and of
+  result needs its unmutated baseline passing. After four rounds of proof laws, 140 survivors of the replay and of
   one new draw are gaps (validity of fixed-size types, bounds off by one, reported sizes, packing constants,
-  under-allocation); 263 are excluded: 163 with a proof-level reason (an argument the callee never reads, a flag
+  under-allocation); 258 are excluded: 163 with a proof-level reason (an argument the callee never reads, a flag
   read only by `is_poisoned`, an accepted set that does not change), two classes by decision (`out_at(d+1)`, the
   aligned-or-slow path) and one uncoverable. A proof stack overflow is not counted as detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose

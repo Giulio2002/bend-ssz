@@ -152,7 +152,7 @@ mutants, 2596 killed, **236 survived** (validity-check 125, hashtreeroot-constan
 arithmetic 7, capacity-1 4, constant 4, capacity 2).
 
 **Excluded classes** (`tests_generated/mutation_exclusions.json`, rules and reasons in
-`tests_generated/mutation_equivalence.py`; never drawn, never reported): 263 of the 398 distinct survivors of the
+`tests_generated/mutation_equivalence.py`; never drawn, never reported): 258 of the 398 distinct survivors of the
 replay and round 2:
 
 | class | n | proof-level reason |
@@ -161,13 +161,13 @@ replay and round 2:
 | flag read only by `O.is_poisoned` | 26 | `(o, 0)` -> `(o, 1)`: `is_poisoned(fl) = 2^31 <= fl` is False for both |
 | `words_ok` / `bits_ok` | 21 | the accepted set {n : lo <= n <= hi, unit divides n} (or all n >= lo when big) is unchanged by the mutated lo, hi or unit, on every n that can differ |
 | vec_bool decoders | 9 | `ok_n` has one caller passing the literal N, so `is_eq(N, 0)` and its mutants evaluate alike, and the True{} branch of `ok_nz` is never taken |
-| `out_at(d)` -> `out_at(d+1)` | 57 | not proved: the extra zero words leave the Buf's byte length (a separate field) unchanged; no statement pins the array size; class from round 1 |
+| `out_at(d)` -> `out_at(d+1)` | 52 | not proved: the extra zero words leave the Buf's byte length (a separate field) unchanged; no statement pins the array size; class from round 1 |
 | aligned-or-slow path | 42 | not proved: `pos .&. 3 == 0` -> always unaligned; both paths write the same words; class from round 1 |
 | uncoverable | 1 | Transaction upper bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes |
 
 The two "not proved" classes are excluded by decision, not by proof; they are listed so that the exclusion is
-visible. **Not excluded: 135 survivors, all gaps** (validity-check 109, reported-size 9, arithmetic 8, constant 4,
-capacity -1 4, offset 1): `X_valid(o) = True{}` forced to `False{}` on fixed-size types (39: no law says the
+visible. **Not excluded: 140 survivors, all gaps** (validity-check 109, reported-size 9, arithmetic 8, write-start and
+length constants of `serialize`/`encode` 9 (`putk(out, 0 -> 1, o)`, `out_done(4 -> 5, ...)`), capacity -1 4, offset 1): `X_valid(o) = True{}` forced to `False{}` on fixed-size types (39: no law says the
 validity of an in-range object is True), the bounds of `words_ok` and `bits_ok` and of the bitvector top word off
 by one, the reported sizes (`_size`, `_bx_size`), packing shifts and `ser_done` sizes, `out_at(d-1)`
 (under-allocation) and the decode entry's start offset of `Bytes8_build`.
