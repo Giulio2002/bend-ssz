@@ -2,9 +2,13 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
+import ./e2e_bsenc.bend as BSE
 import ../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 import ../types/BitsStruct_hashtreeroot_generated.bend as BitsStruct_h
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./BitsStruct_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters_g2.bend as PS
 import ./BitsStruct_e2e_root_generated.bend as R
@@ -34,6 +38,37 @@ def BitsStruct_e2e_set_f_A_root(h: B.Buf, o: BitsStruct_d.BitsStruct, w: O.Bits,
   %BitsStruct_e2e_set_f_A_view(o, w) : {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_A(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
   R.BitsStruct_e2e_root(h, BitsStruct_d.BitsStruct_set_f_A(o, w), PS.BitsStruct_set_f_A_rep(o, Spec.BitsStruct(), w, r, rv))
 
+def BitsStruct_set_f_A_hs0_hs0(-o: BitsStruct_d.BitsStruct, -w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(w, 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_A(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_A(_, w)), 31n)
+  h
+
+def BitsStruct_set_f_A_hs3_hs3(-o: BitsStruct_d.BitsStruct, -w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_A(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_A(_, w)), 31n)
+  h
+
+def BitsStruct_e2e_set_f_A_encode(o: BitsStruct_d.BitsStruct, w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Container_fields(Spec.BitsStruct()))), +hs0: BSE.SDB(w, 31n), +hs3: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_A(o, w))))} == API.serialize(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 0n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %BitsStruct_e2e_set_f_A_view(o, w) : {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_A(o, w))))} == API.serialize(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
+  N.BitsStruct_e2e_encode(BitsStruct_d.BitsStruct_set_f_A(o, w), PS.BitsStruct_set_f_A_rep(o, Spec.BitsStruct(), w, r, rv), BitsStruct_set_f_A_hs0_hs0(o, w, r, hs0), BitsStruct_set_f_A_hs3_hs3(o, w, r, hs3))
+
 def BitsStruct_e2e_set_f_B_view(o: BitsStruct_d.BitsStruct, +w: bitvector_2_d.Bitvector2)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_B(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 1n, RN.v_bv2(w)) : S.Value}:
   match o:
@@ -43,6 +78,37 @@ def BitsStruct_e2e_set_f_B_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvec
     -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 1n, RN.v_bv2(w))) : Maybe<&2, +List<U32>>}:
   %BitsStruct_e2e_set_f_B_view(o, w) : {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
   R.BitsStruct_e2e_root(h, BitsStruct_d.BitsStruct_set_f_B(o, w), PS.BitsStruct_set_f_B_rep(o, Spec.BitsStruct(), w, r, rv))
+
+def BitsStruct_set_f_B_hs0_hs0(-o: BitsStruct_d.BitsStruct, -w: bitvector_2_d.Bitvector2, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_B(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_B(_, w)), 31n)
+  h
+
+def BitsStruct_set_f_B_hs3_hs3(-o: BitsStruct_d.BitsStruct, -w: bitvector_2_d.Bitvector2, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_B(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_B(_, w)), 31n)
+  h
+
+def BitsStruct_e2e_set_f_B_encode(o: BitsStruct_d.BitsStruct, +w: bitvector_2_d.Bitvector2, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv2(w), +hs0: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n), +hs3: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(o, w))))} == API.serialize(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 1n, RN.v_bv2(w))) : Maybe<&2, +List<U32>>}:
+  %BitsStruct_e2e_set_f_B_view(o, w) : {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(o, w))))} == API.serialize(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
+  N.BitsStruct_e2e_encode(BitsStruct_d.BitsStruct_set_f_B(o, w), PS.BitsStruct_set_f_B_rep(o, Spec.BitsStruct(), w, r, rv), BitsStruct_set_f_B_hs0_hs0(o, w, r, hs0), BitsStruct_set_f_B_hs3_hs3(o, w, r, hs3))
 
 def BitsStruct_e2e_set_f_C_view(o: BitsStruct_d.BitsStruct, +w: bitvector_1_d.Bitvector1)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_C(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 2n, RN.v_bv1(w)) : S.Value}:
@@ -54,6 +120,37 @@ def BitsStruct_e2e_set_f_C_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvec
   %BitsStruct_e2e_set_f_C_view(o, w) : {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_C(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
   R.BitsStruct_e2e_root(h, BitsStruct_d.BitsStruct_set_f_C(o, w), PS.BitsStruct_set_f_C_rep(o, Spec.BitsStruct(), w, r, rv))
 
+def BitsStruct_set_f_C_hs0_hs0(-o: BitsStruct_d.BitsStruct, -w: bitvector_1_d.Bitvector1, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_C(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_C(_, w)), 31n)
+  h
+
+def BitsStruct_set_f_C_hs3_hs3(-o: BitsStruct_d.BitsStruct, -w: bitvector_1_d.Bitvector1, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_C(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_C(_, w)), 31n)
+  h
+
+def BitsStruct_e2e_set_f_C_encode(o: BitsStruct_d.BitsStruct, +w: bitvector_1_d.Bitvector1, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv1(w), +hs0: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n), +hs3: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_C(o, w))))} == API.serialize(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 2n, RN.v_bv1(w))) : Maybe<&2, +List<U32>>}:
+  %BitsStruct_e2e_set_f_C_view(o, w) : {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_C(o, w))))} == API.serialize(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
+  N.BitsStruct_e2e_encode(BitsStruct_d.BitsStruct_set_f_C(o, w), PS.BitsStruct_set_f_C_rep(o, Spec.BitsStruct(), w, r, rv), BitsStruct_set_f_C_hs0_hs0(o, w, r, hs0), BitsStruct_set_f_C_hs3_hs3(o, w, r, hs3))
+
 def BitsStruct_e2e_set_f_D_view(o: BitsStruct_d.BitsStruct, w: O.Bits)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_D(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 3n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:
@@ -64,6 +161,37 @@ def BitsStruct_e2e_set_f_D_root(h: B.Buf, o: BitsStruct_d.BitsStruct, w: O.Bits,
   %BitsStruct_e2e_set_f_D_view(o, w) : {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
   R.BitsStruct_e2e_root(h, BitsStruct_d.BitsStruct_set_f_D(o, w), PS.BitsStruct_set_f_D_rep(o, Spec.BitsStruct(), w, r, rv))
 
+def BitsStruct_set_f_D_hs0_hs0(-o: BitsStruct_d.BitsStruct, -w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_D(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_D(_, w)), 31n)
+  h
+
+def BitsStruct_set_f_D_hs3_hs3(-o: BitsStruct_d.BitsStruct, -w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(w, 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_D(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_D(_, w)), 31n)
+  h
+
+def BitsStruct_e2e_set_f_D_encode(o: BitsStruct_d.BitsStruct, w: O.Bits, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: BO.rep_bits(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BitsStruct())))))), +hs0: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n), +hs3: BSE.SDB(w, 31n))
+    -> {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_D(o, w))))} == API.serialize(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 3n, S.BitsValue{BO.bview(w)})) : Maybe<&2, +List<U32>>}:
+  %BitsStruct_e2e_set_f_D_view(o, w) : {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_D(o, w))))} == API.serialize(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
+  N.BitsStruct_e2e_encode(BitsStruct_d.BitsStruct_set_f_D(o, w), PS.BitsStruct_set_f_D_rep(o, Spec.BitsStruct(), w, r, rv), BitsStruct_set_f_D_hs0_hs0(o, w, r, hs0), BitsStruct_set_f_D_hs3_hs3(o, w, r, hs3))
+
 def BitsStruct_e2e_set_f_E_view(o: BitsStruct_d.BitsStruct, +w: bitvector_8_d.Bitvector8)
     -> {RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_BitsStruct(o), 4n, RN.v_bv8(w)) : S.Value}:
   match o:
@@ -73,3 +201,34 @@ def BitsStruct_e2e_set_f_E_root(h: B.Buf, o: BitsStruct_d.BitsStruct, +w: bitvec
     -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 4n, RN.v_bv8(w))) : Maybe<&2, +List<U32>>}:
   %BitsStruct_e2e_set_f_E_view(o, w) : {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(h, BitsStruct_d.BitsStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
   R.BitsStruct_e2e_root(h, BitsStruct_d.BitsStruct_set_f_E(o, w), PS.BitsStruct_set_f_E_rep(o, Spec.BitsStruct(), w, r, rv))
+
+def BitsStruct_set_f_E_hs0_hs0(-o: BitsStruct_d.BitsStruct, -w: bitvector_8_d.Bitvector8, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_E(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_0(BitsStruct_d.BitsStruct_set_f_E(_, w)), 31n)
+  h
+
+def BitsStruct_set_f_E_hs3_hs3(-o: BitsStruct_d.BitsStruct, -w: bitvector_8_d.Bitvector8, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +h: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_E(o, w)), 31n):
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x4, e2) = e1
+  (+eo, c0) = e2
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, +q4) = c3
+  %Equal.sym(BitsStruct_d.BitsStruct, o, BitsStruct_d.BitsStruct{RT_L.pj_BitsStruct_0(o), x1, x2, RT_L.pj_BitsStruct_3(o), x4}, eo) : BSE.SDB(RT_L.pj_BitsStruct_3(BitsStruct_d.BitsStruct_set_f_E(_, w)), 31n)
+  h
+
+def BitsStruct_e2e_set_f_E_encode(o: BitsStruct_d.BitsStruct, +w: bitvector_8_d.Bitvector8, +r: RT_L.rep_BitsStruct(o, Spec.BitsStruct()), +rv: RN.rp_bv8(w), +hs0: BSE.SDB(RT_L.pj_BitsStruct_0(o), 31n), +hs3: BSE.SDB(RT_L.pj_BitsStruct_3(o), 31n))
+    -> {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(o, w))))} == API.serialize(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(o), 4n, RN.v_bv8(w))) : Maybe<&2, +List<U32>>}:
+  %BitsStruct_e2e_set_f_E_view(o, w) : {Some{E.obytes(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(o, w))))} == API.serialize(Spec.BitsStruct(), _) : Maybe<&2, +List<U32>>}
+  N.BitsStruct_e2e_encode(BitsStruct_d.BitsStruct_set_f_E(o, w), PS.BitsStruct_set_f_E_rep(o, Spec.BitsStruct(), w, r, rv), BitsStruct_set_f_E_hs0_hs0(o, w, r, hs0), BitsStruct_set_f_E_hs3_hs3(o, w, r, hs3))

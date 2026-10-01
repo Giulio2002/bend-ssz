@@ -2,11 +2,15 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
+import ../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_e
 import ../types/FuluMatrixEntry_hashtreeroot_generated.bend as FuluMatrixEntry_h
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
+import ./FuluMatrixEntry_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluBlob_e2e_root_generated.bend as R
@@ -32,6 +36,20 @@ def FuluMatrixEntry_e2e_set_cell_root(h: B.Buf, o: FuluMatrixEntry_d.MatrixEntry
   %FuluMatrixEntry_e2e_set_cell_view(o, w) : {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_cell(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
   R.FuluMatrixEntry_e2e_root(h, FuluMatrixEntry_d.MatrixEntry_set_cell(o, w), PS.MatrixEntry_set_cell_rep(o, Spec.MatrixEntry(), w, r, rv))
 
+def FuluMatrixEntry_set_cell_hs0_hc(-o: FuluMatrixEntry_d.MatrixEntry, -w: O.Words, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +h: {E3.at_depth(w, 10n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_cell(o, w)), 10n) == True{} : Bool}:
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluMatrixEntry_d.MatrixEntry, o, FuluMatrixEntry_d.MatrixEntry{M0_L.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_cell(_, w)), 10n) == True{} : Bool}
+  h
+
+def FuluMatrixEntry_e2e_set_cell_encode(o: FuluMatrixEntry_d.MatrixEntry, w: O.Words, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +rv: WO.rep_bv(w, M0_SH.Chain_head(M0_SH.Container_fields(Spec.MatrixEntry()))), +hc: {E3.at_depth(w, 10n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_cell(o, w))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 0n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %FuluMatrixEntry_e2e_set_cell_view(o, w) : {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_cell(o, w))))} == API.serialize(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
+  N.FuluMatrixEntry_e2e_encode(FuluMatrixEntry_d.MatrixEntry_set_cell(o, w), PS.MatrixEntry_set_cell_rep(o, Spec.MatrixEntry(), w, r, rv), FuluMatrixEntry_set_cell_hs0_hc(o, w, r, hc))
+
 def FuluMatrixEntry_e2e_set_kzg_proof_view(o: FuluMatrixEntry_d.MatrixEntry, +w: FuluBytes48_d.Bytes48)
     -> {M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w)) == VS.field_set(M0_L.v_MatrixEntry(o), 1n, RN.v_b48(w)) : S.Value}:
   match o:
@@ -41,6 +59,20 @@ def FuluMatrixEntry_e2e_set_kzg_proof_root(h: B.Buf, o: FuluMatrixEntry_d.Matrix
     -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 1n, RN.v_b48(w))) : Maybe<&2, +List<U32>>}:
   %FuluMatrixEntry_e2e_set_kzg_proof_view(o, w) : {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
   R.FuluMatrixEntry_e2e_root(h, FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w), PS.MatrixEntry_set_kzg_proof_rep(o, Spec.MatrixEntry(), w, r))
+
+def FuluMatrixEntry_set_kzg_proof_hs0_hc(-o: FuluMatrixEntry_d.MatrixEntry, -w: FuluBytes48_d.Bytes48, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +h: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w)), 10n) == True{} : Bool}:
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluMatrixEntry_d.MatrixEntry, o, FuluMatrixEntry_d.MatrixEntry{M0_L.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(_, w)), 10n) == True{} : Bool}
+  h
+
+def FuluMatrixEntry_e2e_set_kzg_proof_encode(o: FuluMatrixEntry_d.MatrixEntry, +w: FuluBytes48_d.Bytes48, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +hc: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 1n, RN.v_b48(w))) : Maybe<&2, +List<U32>>}:
+  %FuluMatrixEntry_e2e_set_kzg_proof_view(o, w) : {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w))))} == API.serialize(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
+  N.FuluMatrixEntry_e2e_encode(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(o, w), PS.MatrixEntry_set_kzg_proof_rep(o, Spec.MatrixEntry(), w, r), FuluMatrixEntry_set_kzg_proof_hs0_hc(o, w, r, hc))
 
 def FuluMatrixEntry_e2e_set_column_index_view(o: FuluMatrixEntry_d.MatrixEntry, +w: O.U64)
     -> {M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w)) == VS.field_set(M0_L.v_MatrixEntry(o), 2n, RN.v_u64(w)) : S.Value}:
@@ -52,6 +84,20 @@ def FuluMatrixEntry_e2e_set_column_index_root(h: B.Buf, o: FuluMatrixEntry_d.Mat
   %FuluMatrixEntry_e2e_set_column_index_view(o, w) : {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
   R.FuluMatrixEntry_e2e_root(h, FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w), PS.MatrixEntry_set_column_index_rep(o, Spec.MatrixEntry(), w, r))
 
+def FuluMatrixEntry_set_column_index_hs0_hc(-o: FuluMatrixEntry_d.MatrixEntry, -w: O.U64, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +h: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w)), 10n) == True{} : Bool}:
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluMatrixEntry_d.MatrixEntry, o, FuluMatrixEntry_d.MatrixEntry{M0_L.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_column_index(_, w)), 10n) == True{} : Bool}
+  h
+
+def FuluMatrixEntry_e2e_set_column_index_encode(o: FuluMatrixEntry_d.MatrixEntry, +w: O.U64, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +hc: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 2n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluMatrixEntry_e2e_set_column_index_view(o, w) : {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w))))} == API.serialize(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
+  N.FuluMatrixEntry_e2e_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(o, w), PS.MatrixEntry_set_column_index_rep(o, Spec.MatrixEntry(), w, r), FuluMatrixEntry_set_column_index_hs0_hc(o, w, r, hc))
+
 def FuluMatrixEntry_e2e_set_row_index_view(o: FuluMatrixEntry_d.MatrixEntry, +w: O.U64)
     -> {M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w)) == VS.field_set(M0_L.v_MatrixEntry(o), 3n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -61,3 +107,17 @@ def FuluMatrixEntry_e2e_set_row_index_root(h: B.Buf, o: FuluMatrixEntry_d.Matrix
     -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 3n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluMatrixEntry_e2e_set_row_index_view(o, w) : {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(h, FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w)))))} == API.hash_tree_root(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
   R.FuluMatrixEntry_e2e_root(h, FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w), PS.MatrixEntry_set_row_index_rep(o, Spec.MatrixEntry(), w, r))
+
+def FuluMatrixEntry_set_row_index_hs0_hc(-o: FuluMatrixEntry_d.MatrixEntry, -w: O.U64, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +h: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w)), 10n) == True{} : Bool}:
+  (+x1, e0) = r
+  (+x2, e1) = e0
+  (+x3, e2) = e1
+  (+eo, +q0) = e2
+  %Equal.sym(FuluMatrixEntry_d.MatrixEntry, o, FuluMatrixEntry_d.MatrixEntry{M0_L.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_set_row_index(_, w)), 10n) == True{} : Bool}
+  h
+
+def FuluMatrixEntry_e2e_set_row_index_encode(o: FuluMatrixEntry_d.MatrixEntry, +w: O.U64, +r: M0_L.rep_MatrixEntry(o, Spec.MatrixEntry()), +hc: {E3.at_depth(M0_L.pj_MatrixEntry_0(o), 10n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(o), 3n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluMatrixEntry_e2e_set_row_index_view(o, w) : {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w))))} == API.serialize(Spec.MatrixEntry(), _) : Maybe<&2, +List<U32>>}
+  N.FuluMatrixEntry_e2e_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(o, w), PS.MatrixEntry_set_row_index_rep(o, Spec.MatrixEntry(), w, r), FuluMatrixEntry_set_row_index_hs0_hc(o, w, r, hc))

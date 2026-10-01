@@ -10,3 +10,6 @@ import ../../types/vec_uint32_512_encode_ssz_generated.bend as vec_uint32_512_e
 # ---- vec_uint32_512: 2048 bytes is accepted ----
 def vec_uint32_512_serialize_vin() -> {vec_uint32_512_e.vec_uint32_512_serialize(O.Words{O.out_at(10n), 2048}) == (Pair.fst(O.Words, B.Buf, vec_uint32_512_e.vec_uint32_512_encode(O.Words{O.out_at(10n), 2048})), O.encoded(Pair.snd(O.Words, B.Buf, vec_uint32_512_e.vec_uint32_512_encode(O.Words{O.out_at(10n), 2048})))) : O.Words & O.Encoded}:
   {==}
+# ---- vec_uint32_512: the validity pass is the schema's range, unit and storage check ----
+def vec_uint32_512_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint32_512_e.v512_u32_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(2048, n), Bool.or(False{}, U32.is_le(n, 2048))), O.unit_ok(4, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  {==}

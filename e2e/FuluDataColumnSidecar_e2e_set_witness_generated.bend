@@ -1,5 +1,8 @@
 import Base
 import ./FuluDataColumnSidecar_e2e_set_generated.bend as SET
+import ./e2e_blist.bend as BL_e
+import ./e2e_support.bend as E
+import ./e2e_ve_DataColumnSidecar.bend as VEV
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/cells_light.bend as CE
 import ../proofs/obj/elems48_light.bend as E48
@@ -8,6 +11,7 @@ import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/value_set.bend as VS
+import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
@@ -18,6 +22,7 @@ import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeade
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
+import ../types/FuluDataColumnSidecar_encode_ssz_generated.bend as FuluDataColumnSidecar_e
 import ../types/FuluDataColumnSidecar_hashtreeroot_generated.bend as FuluDataColumnSidecar_h
 import ../types/FuluExecutionBranch_def_generated.bend as FuluExecutionBranch_d
 import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
@@ -43,11 +48,44 @@ def FuluDataColumnSidecar_e2e_set_index_root_r() -> RT_L.rep_DataColumnSidecar(F
 def FuluDataColumnSidecar_e2e_set_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_index_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.U64{1, 0}, FuluDataColumnSidecar_e2e_set_index_root_r())
 
+def FuluDataColumnSidecar_e2e_set_index_encode_hd0() -> VEV.sdd(RT_L.pj_DataColumnSidecar_1(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 31n):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), {==})))))
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hd1() -> VEV.sdd(RT_L.pj_DataColumnSidecar_2(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 31n):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), {==})))))
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hd2() -> VEV.sdd(RT_L.pj_DataColumnSidecar_3(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 31n):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), {==})))))
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hv0() -> {O.unit_ok(2048, WO.len(RT_L.pj_DataColumnSidecar_1(FuluDataColumnSidecar_d.DataColumnSidecar_default()))) == True{} : Bool}:
+  {==}
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hv1() -> {O.unit_ok(48, WO.len(RT_L.pj_DataColumnSidecar_2(FuluDataColumnSidecar_d.DataColumnSidecar_default()))) == True{} : Bool}:
+  {==}
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hv2() -> {O.unit_ok(48, WO.len(RT_L.pj_DataColumnSidecar_3(FuluDataColumnSidecar_d.DataColumnSidecar_default()))) == True{} : Bool}:
+  {==}
+
+def FuluDataColumnSidecar_e2e_set_index_encode_hsP() -> BL_e.sdpv(RT_L.pj_DataColumnSidecar_5(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluDataColumnSidecar_e2e_set_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.U64{1, 0}))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_index_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.U64{1, 0}, FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_index_encode_hd0(), FuluDataColumnSidecar_e2e_set_index_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hd2(), FuluDataColumnSidecar_e2e_set_index_encode_hv0(), FuluDataColumnSidecar_e2e_set_index_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hv2(), FuluDataColumnSidecar_e2e_set_index_encode_hsP())
+
 def FuluDataColumnSidecar_e2e_set_column_root_rv() -> CE.rep_el(Fulu_list_bytevec_2048_4096_d.l4096_b2048_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar())))):
   ((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==})
 
 def FuluDataColumnSidecar_e2e_set_column_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_column(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_2048_4096_d.l4096_b2048_default())))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 1n, CE.eview(Fulu_list_bytevec_2048_4096_d.l4096_b2048_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_column_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_2048_4096_d.l4096_b2048_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_column_root_rv())
+
+def FuluDataColumnSidecar_e2e_set_column_encode_hd0() -> VEV.sdd(Fulu_list_bytevec_2048_4096_d.l4096_b2048_default(), 31n):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), {==})))))
+
+def FuluDataColumnSidecar_e2e_set_column_encode_hv0() -> {O.unit_ok(2048, WO.len(Fulu_list_bytevec_2048_4096_d.l4096_b2048_default())) == True{} : Bool}:
+  {==}
+
+def FuluDataColumnSidecar_e2e_set_column_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_column(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_2048_4096_d.l4096_b2048_default()))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 1n, CE.eview(Fulu_list_bytevec_2048_4096_d.l4096_b2048_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_column_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_2048_4096_d.l4096_b2048_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_column_root_rv(), FuluDataColumnSidecar_e2e_set_column_encode_hd0(), FuluDataColumnSidecar_e2e_set_index_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hd2(), FuluDataColumnSidecar_e2e_set_column_encode_hv0(), FuluDataColumnSidecar_e2e_set_index_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hv2(), FuluDataColumnSidecar_e2e_set_index_encode_hsP())
 
 def FuluDataColumnSidecar_e2e_set_kzg_commitments_root_rv() -> E48.rep_el(Fulu_list_bytevec_48_4096_d.l4096_b48_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar()))))):
   ((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==})
@@ -55,11 +93,23 @@ def FuluDataColumnSidecar_e2e_set_kzg_commitments_root_rv() -> E48.rep_el(Fulu_l
 def FuluDataColumnSidecar_e2e_set_kzg_commitments_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default())))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 2n, E48.eview(Fulu_list_bytevec_48_4096_d.l4096_b48_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_kzg_commitments_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_commitments_root_rv())
 
+def FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hd1() -> VEV.sdd(Fulu_list_bytevec_48_4096_d.l4096_b48_default(), 31n):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), {==})))))
+
+def FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hv1() -> {O.unit_ok(48, WO.len(Fulu_list_bytevec_48_4096_d.l4096_b48_default())) == True{} : Bool}:
+  {==}
+
+def FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default()))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 2n, E48.eview(Fulu_list_bytevec_48_4096_d.l4096_b48_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_kzg_commitments_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_commitments_root_rv(), FuluDataColumnSidecar_e2e_set_index_encode_hd0(), FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hd2(), FuluDataColumnSidecar_e2e_set_index_encode_hv0(), FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hv2(), FuluDataColumnSidecar_e2e_set_index_encode_hsP())
+
 def FuluDataColumnSidecar_e2e_set_kzg_proofs_root_rv() -> E48.rep_el(Fulu_list_bytevec_48_4096_d.l4096_b48_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar())))))):
   ((FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==})))))), {==})
 
 def FuluDataColumnSidecar_e2e_set_kzg_proofs_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_proofs(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default())))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 3n, E48.eview(Fulu_list_bytevec_48_4096_d.l4096_b48_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_kzg_proofs_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_proofs_root_rv())
+
+def FuluDataColumnSidecar_e2e_set_kzg_proofs_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_proofs(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default()))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 3n, E48.eview(Fulu_list_bytevec_48_4096_d.l4096_b48_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_kzg_proofs_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), Fulu_list_bytevec_48_4096_d.l4096_b48_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_proofs_root_rv(), FuluDataColumnSidecar_e2e_set_index_encode_hd0(), FuluDataColumnSidecar_e2e_set_index_encode_hd1(), FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hv0(), FuluDataColumnSidecar_e2e_set_index_encode_hv1(), FuluDataColumnSidecar_e2e_set_kzg_commitments_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hsP())
 
 def FuluDataColumnSidecar_e2e_set_signed_block_header_root_rv() -> RT_L.rep_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar()))))))):
   (FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_default(), {==})
@@ -67,8 +117,17 @@ def FuluDataColumnSidecar_e2e_set_signed_block_header_root_rv() -> RT_L.rep_Sign
 def FuluDataColumnSidecar_e2e_set_signed_block_header_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_signed_block_header(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default())))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 4n, RT_L.v_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_signed_block_header_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_signed_block_header_root_rv())
 
+def FuluDataColumnSidecar_e2e_set_signed_block_header_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_signed_block_header(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 4n, RT_L.v_SignedBeaconBlockHeader_bx(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_signed_block_header_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_signed_block_header_root_rv(), FuluDataColumnSidecar_e2e_set_index_encode_hd0(), FuluDataColumnSidecar_e2e_set_index_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hd2(), FuluDataColumnSidecar_e2e_set_index_encode_hv0(), FuluDataColumnSidecar_e2e_set_index_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hv2(), FuluDataColumnSidecar_e2e_set_index_encode_hsP())
+
 def FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_root_rv() -> PV.rep_pv(FuluExecutionBranch_d.v4_b32_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.DataColumnSidecar())))))))):
   ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})
 
 def FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, D.Digest, Pair.snd(B.Buf, FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest, FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments_inclusion_proof(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluExecutionBranch_d.v4_b32_default())))))} == API.hash_tree_root(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 5n, PV.pview(FuluExecutionBranch_d.v4_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_root(B.alloc(0), FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluExecutionBranch_d.v4_b32_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_root_rv())
+
+def FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_encode_hsP() -> BL_e.sdpv(FuluExecutionBranch_d.v4_b32_default(), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments_inclusion_proof(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluExecutionBranch_d.v4_b32_default()))))} == API.serialize(Spec.DataColumnSidecar(), VS.field_set(RT_L.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar_default()), 5n, PV.pview(FuluExecutionBranch_d.v4_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_encode(FuluDataColumnSidecar_d.DataColumnSidecar_default(), FuluExecutionBranch_d.v4_b32_default(), FuluDataColumnSidecar_e2e_set_index_root_r(), FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_root_rv(), FuluDataColumnSidecar_e2e_set_index_encode_hd0(), FuluDataColumnSidecar_e2e_set_index_encode_hd1(), FuluDataColumnSidecar_e2e_set_index_encode_hd2(), FuluDataColumnSidecar_e2e_set_index_encode_hv0(), FuluDataColumnSidecar_e2e_set_index_encode_hv1(), FuluDataColumnSidecar_e2e_set_index_encode_hv2(), FuluDataColumnSidecar_e2e_set_kzg_commitments_inclusion_proof_encode_hsP())

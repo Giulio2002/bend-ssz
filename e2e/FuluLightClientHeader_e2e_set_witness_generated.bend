@@ -1,5 +1,7 @@
 import Base
 import ./FuluLightClientHeader_e2e_set_generated.bend as SET
+import ./e2e_blist.bend as BL_e
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_names_light.bend as RN
@@ -18,6 +20,7 @@ import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluExecutionBranch_def_generated.bend as FuluExecutionBranch_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
 import ../types/FuluLightClientHeader_hashtreeroot_generated.bend as FuluLightClientHeader_h
 import ../types/Fulu_bytelist_32_def_generated.bend as Fulu_bytelist_32_d
 import ../types/Fulu_bytevec_256_def_generated.bend as Fulu_bytevec_256_d
@@ -46,14 +49,41 @@ def FuluLightClientHeader_e2e_set_beacon_root_r() -> RT_L.rep_LightClientHeader(
 def FuluLightClientHeader_e2e_set_beacon_root_witness() -> {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_set_beacon(FuluLightClientHeader_d.LightClientHeader_default(), FuluBeaconBlockHeader_d.BeaconBlockHeader_default())))))} == API.hash_tree_root(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 0n, RN.v_BeaconBlockHeader(FuluBeaconBlockHeader_d.BeaconBlockHeader_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluLightClientHeader_e2e_set_beacon_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_default(), FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), FuluLightClientHeader_e2e_set_beacon_root_r())
 
+def FuluLightClientHeader_e2e_set_beacon_encode_hs43() -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_default()))), 31n):
+  (FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def FuluLightClientHeader_e2e_set_beacon_encode_hs44() -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(RT_L.pj_LightClientHeader_1(FuluLightClientHeader_d.LightClientHeader_default()))), 31n):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluLightClientHeader_e2e_set_beacon_encode_hs48() -> BL_e.sdpv(RT_L.pj_LightClientHeader_2(FuluLightClientHeader_d.LightClientHeader_default()), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluLightClientHeader_e2e_set_beacon_encode_witness() -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_beacon(FuluLightClientHeader_d.LightClientHeader_default(), FuluBeaconBlockHeader_d.BeaconBlockHeader_default()))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 0n, RN.v_BeaconBlockHeader(FuluBeaconBlockHeader_d.BeaconBlockHeader_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluLightClientHeader_e2e_set_beacon_encode(FuluLightClientHeader_d.LightClientHeader_default(), FuluBeaconBlockHeader_d.BeaconBlockHeader_default(), FuluLightClientHeader_e2e_set_beacon_root_r(), FuluLightClientHeader_e2e_set_beacon_encode_hs43(), FuluLightClientHeader_e2e_set_beacon_encode_hs44(), FuluLightClientHeader_e2e_set_beacon_encode_hs48())
+
 def FuluLightClientHeader_e2e_set_execution_root_rv() -> RT_L.rep_ExecutionPayloadHeader_bx(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientHeader())))):
   ({==}, (FuluBytes32_d.b32_default(), (FuluBytes20_d.b20_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), (uint256_d.u256_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (FuluBytes32_d.b32_default(), (uint64_d.u64_default(), (uint64_d.u64_default(), ({==}, (((FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==})))))))))))), {==}), (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, {==})))))))))))))))))))
 
 def FuluLightClientHeader_e2e_set_execution_root_witness() -> {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default())))))} == API.hash_tree_root(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 1n, RT_L.v_ExecutionPayloadHeader_bx(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluLightClientHeader_e2e_set_execution_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default(), FuluLightClientHeader_e2e_set_beacon_root_r(), FuluLightClientHeader_e2e_set_execution_root_rv())
 
+def FuluLightClientHeader_e2e_set_execution_encode_hs43() -> BL_e.sdk1(RT_L.pj_ExecutionPayloadHeader_4(RT_L.pjb_ExecutionPayloadHeader_bx(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default())), 31n):
+  (FD.array__trep(U32, 7n, 0), (7n, (256, (7n, (32n, (WZ256(), (FD.array__trep_perfect(U32, 7n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
+
+def FuluLightClientHeader_e2e_set_execution_encode_hs44() -> BL_e.sdk(RT_L.pj_ExecutionPayloadHeader_10(RT_L.pjb_ExecutionPayloadHeader_bx(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default())), 31n):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluLightClientHeader_e2e_set_execution_encode_witness() -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default()))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 1n, RT_L.v_ExecutionPayloadHeader_bx(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluLightClientHeader_e2e_set_execution_encode(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default(), FuluLightClientHeader_e2e_set_beacon_root_r(), FuluLightClientHeader_e2e_set_execution_root_rv(), FuluLightClientHeader_e2e_set_execution_encode_hs43(), FuluLightClientHeader_e2e_set_execution_encode_hs44(), FuluLightClientHeader_e2e_set_beacon_encode_hs48())
+
 def FuluLightClientHeader_e2e_set_execution_branch_root_rv() -> PV.rep_pv(FuluExecutionBranch_d.v4_b32_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientHeader()))))):
   ((FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==})))))))), {==})
 
 def FuluLightClientHeader_e2e_set_execution_branch_root_witness() -> {Some{D.bytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, D.Digest, Pair.snd(B.Buf, FuluLightClientHeader_d.LightClientHeader & D.Digest, FuluLightClientHeader_h.LightClientHeader_hash_tree_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_set_execution_branch(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionBranch_d.v4_b32_default())))))} == API.hash_tree_root(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 2n, PV.pview(FuluExecutionBranch_d.v4_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluLightClientHeader_e2e_set_execution_branch_root(B.alloc(0), FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionBranch_d.v4_b32_default(), FuluLightClientHeader_e2e_set_beacon_root_r(), FuluLightClientHeader_e2e_set_execution_branch_root_rv())
+
+def FuluLightClientHeader_e2e_set_execution_branch_encode_hs48() -> BL_e.sdpv(FuluExecutionBranch_d.v4_b32_default(), 31n):
+  (FD.array__trep(U32, 6n, 0), (6n, (128, (3n, (WZ128(), (FD.array__trep_perfect(U32, 6n, 0), ({==}, ({==}, {==}))))))))
+
+def FuluLightClientHeader_e2e_set_execution_branch_encode_witness() -> {Some{E.obytes(Pair.snd(FuluLightClientHeader_d.LightClientHeader, B.Buf, FuluLightClientHeader_e.LightClientHeader_encode(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionBranch_d.v4_b32_default()))))} == API.serialize(Spec.LightClientHeader(), VS.field_set(RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_default()), 2n, PV.pview(FuluExecutionBranch_d.v4_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluLightClientHeader_e2e_set_execution_branch_encode(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionBranch_d.v4_b32_default(), FuluLightClientHeader_e2e_set_beacon_root_r(), FuluLightClientHeader_e2e_set_execution_branch_root_rv(), FuluLightClientHeader_e2e_set_beacon_encode_hs43(), FuluLightClientHeader_e2e_set_beacon_encode_hs44(), FuluLightClientHeader_e2e_set_execution_branch_encode_hs48())

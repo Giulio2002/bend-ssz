@@ -1,5 +1,7 @@
 import Base
 import ./FuluExecutionRequests_e2e_set_generated.bend as SET
+import ./e2e_rl_ExecutionRequests.bend as RLV
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/schema_shapes.bend as SH
@@ -12,6 +14,7 @@ import ../src/obj.bend as O
 import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
 import ../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
 import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
+import ../types/FuluExecutionRequests_encode_ssz_generated.bend as FuluExecutionRequests_e
 import ../types/FuluExecutionRequests_hashtreeroot_generated.bend as FuluExecutionRequests_h
 import ../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
 import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
@@ -31,14 +34,41 @@ def FuluExecutionRequests_e2e_set_deposits_root_rv() -> RT_L.rep_l8192_DepositRe
 def FuluExecutionRequests_e2e_set_deposits_root_witness() -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_set_deposits(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default())))))} == API.hash_tree_root(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 0n, RT_L.xv_l8192_DepositRequest(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluExecutionRequests_e2e_set_deposits_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_deposits_root_rv())
 
+def FuluExecutionRequests_e2e_set_deposits_encode_hs0() -> RLV.sda_l8192_DepositRequest(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default(), 31n):
+  (FD.TLeaf{FuluDepositRequest_d.DepositRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_deposits_encode_hs1() -> RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_default()), 31n):
+  (FD.TLeaf{FuluWithdrawalRequest_d.WithdrawalRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_deposits_encode_hs2() -> RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_default()), 31n):
+  (FD.TLeaf{FuluConsolidationRequest_d.ConsolidationRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_deposits_encode_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_deposits(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default()))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 0n, RT_L.xv_l8192_DepositRequest(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluExecutionRequests_e2e_set_deposits_encode(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_deposits_root_rv(), FuluExecutionRequests_e2e_set_deposits_encode_hs0(), FuluExecutionRequests_e2e_set_deposits_encode_hs1(), FuluExecutionRequests_e2e_set_deposits_encode_hs2())
+
 def FuluExecutionRequests_e2e_set_withdrawals_root_rv() -> RT_L.rep_l16_WithdrawalRequest(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ExecutionRequests())))):
   ((FD.TLeaf{FuluWithdrawalRequest_d.WithdrawalRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==})))))), {==})
 
 def FuluExecutionRequests_e2e_set_withdrawals_root_witness() -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default())))))} == API.hash_tree_root(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 1n, RT_L.xv_l16_WithdrawalRequest(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluExecutionRequests_e2e_set_withdrawals_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_withdrawals_root_rv())
 
+def FuluExecutionRequests_e2e_set_withdrawals_encode_hs0() -> RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_default()), 31n):
+  (FD.TLeaf{FuluDepositRequest_d.DepositRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_withdrawals_encode_hs1() -> RLV.sda_l16_WithdrawalRequest(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default(), 31n):
+  (FD.TLeaf{FuluWithdrawalRequest_d.WithdrawalRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_withdrawals_encode_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default()))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 1n, RT_L.xv_l16_WithdrawalRequest(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluExecutionRequests_e2e_set_withdrawals_encode(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_withdrawals_root_rv(), FuluExecutionRequests_e2e_set_withdrawals_encode_hs0(), FuluExecutionRequests_e2e_set_withdrawals_encode_hs1(), FuluExecutionRequests_e2e_set_deposits_encode_hs2())
+
 def FuluExecutionRequests_e2e_set_consolidations_root_rv() -> RT_L.rep_l2_ConsolidationRequest(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ExecutionRequests()))))):
   ((FD.TLeaf{FuluConsolidationRequest_d.ConsolidationRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==})))))), {==})
 
 def FuluExecutionRequests_e2e_set_consolidations_root_witness() -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default())))))} == API.hash_tree_root(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 2n, RT_L.xv_l2_ConsolidationRequest(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluExecutionRequests_e2e_set_consolidations_root(B.alloc(0), FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_consolidations_root_rv())
+
+def FuluExecutionRequests_e2e_set_consolidations_encode_hs2() -> RLV.sda_l2_ConsolidationRequest(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default(), 31n):
+  (FD.TLeaf{FuluConsolidationRequest_d.ConsolidationRequest_default()}, (0n, (0, ({==}, ({==}, ({==}, {==}))))))
+
+def FuluExecutionRequests_e2e_set_consolidations_encode_witness() -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default()))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_default()), 2n, RT_L.xv_l2_ConsolidationRequest(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluExecutionRequests_e2e_set_consolidations_encode(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_default(), FuluExecutionRequests_e2e_set_deposits_root_r(), FuluExecutionRequests_e2e_set_consolidations_root_rv(), FuluExecutionRequests_e2e_set_withdrawals_encode_hs0(), FuluExecutionRequests_e2e_set_deposits_encode_hs1(), FuluExecutionRequests_e2e_set_consolidations_encode_hs2())

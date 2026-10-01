@@ -35,3 +35,29 @@ beyond it; Blob keeps the older `_in`/`_over` of mutation_laws.py for the byte v
 * 1 not coverable (the 160th): `Transaction`, `bl1073741824_valid` upper bound `1073741824 -> 1073741825`: a counterexample needs an
   object of 2^30 + 1 bytes, that is 2^28 words of storage; no concrete term of that size can be checked. It is a bound on
   a constant, shared with the decoder's, that the end-to-end size laws already use at 2^30.
+
+## Round 2
+
+Round 2 (main cdae9e94) listed 152 distinct validity-check survivors (118 in `mt_r2_remaining.json`, more in the wide run).
+Result of re-running every one of them, each on its own facade file in a private tree (`tools/check.sh`):
+
+* **Cause of 99 of them: stale generated files on main.** The laws of round 1 were merged, but `proofs/gate/api_map.json`
+  and the facades `proofs/api/*_ssz_proof_generated.bend` had not been regenerated after the merge (`regen_all.py --check`
+  reported api_gate, api_facade and doc_figures stale), so no facade imported a `mutval_` law. Regenerating them killed
+  99 of 152 (all the `valid -> False{}` mutants of fixed-size types, the bit-vector top-word bounds, the bit-list limits).
+  This is also the case for the decode facades' `decode_offsets` entries on that tree.
+* **`X_serialize_vsym(ws, n)` (new, 87 + generic names):** the validity pass of a words or bits name, on any storage `ws` and any
+  length `n`, equals the schema's check written out: `O.wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))),
+  O.unit_ok(unit, n)), n, Array.size(U32, ws))` (wrapped in `O.bools_ok` for boolean collections), and
+  `O.bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))` for bit lists. (lo, hi, big, unit) come from the schema
+  (the generator stops on a disagreement). It is symbolic (about 1 s per name), so it reaches what the concrete edge laws
+  cannot: Blob's 131072 bytes (both bounds, the unit `1 -> 0`), Transaction's 2^30 limit, and every constant of the larger
+  vectors. The concrete `vin` laws are capped at 4096 again (the 16 KB vectors took a minute each to check).
+  api_gate: the law-name form `<X>_serialize_vsym`, a SHAPE alternative (`{T.<P>_valid(...)`), and the name read from the law's
+  name (its statement names the validity pass, not `X_serialize`).
+* Final: 124 of 152 killed. 28 survive and are equivalent at proof level:
+  * 16 `pk_ok` flag `0 -> 1` (`(out, (o, 0))`): the flag is read only by `is_poisoned` (bit 31).
+  * 9 vector-of-boolean decoders: `ok_n`'s `n == 0` test (`is_eq -> is_lt`, `0 -> 1`) and `ok_nz`'s `True{}` branch: `ok_n` is called
+    with the vector's literal length (at least 2 here), so the branch is never taken.
+  * 3 `hi` of a progressive list (`words_ok(o, 0, 0, True{}, u)`, `0 -> 1`) and of a progressive bit list: with the unbounded
+    flag `True{}`, `Bool.or(True{}, _)` never reads `hi`.

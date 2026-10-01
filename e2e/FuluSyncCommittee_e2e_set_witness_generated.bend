@@ -1,11 +1,14 @@
 import Base
 import ./FuluSyncCommittee_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
 import ../proofs/obj/value_set.bend as VS
+import ../proofs/obj/words_obj_light.bend as WO
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -13,6 +16,7 @@ import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../types/FuluSyncCommittee_encode_ssz_generated.bend as FuluSyncCommittee_e
 import ../types/FuluSyncCommittee_hashtreeroot_generated.bend as FuluSyncCommittee_h
 import ../types/Fulu_vec_bytevec_48_512_def_generated.bend as Fulu_vec_bytevec_48_512_d
 
@@ -45,5 +49,23 @@ def FuluSyncCommittee_e2e_set_pubkeys_root_rv() -> E48.rep_ev(Fulu_vec_bytevec_4
 def FuluSyncCommittee_e2e_set_pubkeys_root_witness() -> {Some{D.bytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, D.Digest, Pair.snd(B.Buf, FuluSyncCommittee_d.SyncCommittee & D.Digest, FuluSyncCommittee_h.SyncCommittee_hash_tree_root(B.alloc(0), FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), Fulu_vec_bytevec_48_512_d.v512_b48_default())))))} == API.hash_tree_root(Spec.SyncCommittee(), VS.field_set(M0_L.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee_default()), 0n, E48.eview(Fulu_vec_bytevec_48_512_d.v512_b48_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluSyncCommittee_e2e_set_pubkeys_root(B.alloc(0), FuluSyncCommittee_d.SyncCommittee_default(), Fulu_vec_bytevec_48_512_d.v512_b48_default(), FuluSyncCommittee_e2e_set_pubkeys_root_r(), FuluSyncCommittee_e2e_set_pubkeys_root_rv())
 
+def FuluSyncCommittee_e2e_set_pubkeys_encode_hc() -> {E3.at_depth(Fulu_vec_bytevec_48_512_d.v512_b48_default(), 13n) == True{} : Bool}:
+  {==}
+
+def FuluSyncCommittee_e2e_set_pubkeys_encode_hN() -> {WO.len(Fulu_vec_bytevec_48_512_d.v512_b48_default()) == 24576 : U32}:
+  {==}
+
+def FuluSyncCommittee_e2e_set_pubkeys_encode_witness() -> {Some{E.obytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, B.Buf, FuluSyncCommittee_e.SyncCommittee_encode(FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), Fulu_vec_bytevec_48_512_d.v512_b48_default()))))} == API.serialize(Spec.SyncCommittee(), VS.field_set(M0_L.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee_default()), 0n, E48.eview(Fulu_vec_bytevec_48_512_d.v512_b48_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluSyncCommittee_e2e_set_pubkeys_encode(FuluSyncCommittee_d.SyncCommittee_default(), Fulu_vec_bytevec_48_512_d.v512_b48_default(), FuluSyncCommittee_e2e_set_pubkeys_root_r(), FuluSyncCommittee_e2e_set_pubkeys_root_rv(), FuluSyncCommittee_e2e_set_pubkeys_encode_hc(), FuluSyncCommittee_e2e_set_pubkeys_encode_hN())
+
 def FuluSyncCommittee_e2e_set_aggregate_pubkey_root_witness() -> {Some{D.bytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, D.Digest, Pair.snd(B.Buf, FuluSyncCommittee_d.SyncCommittee & D.Digest, FuluSyncCommittee_h.SyncCommittee_hash_tree_root(B.alloc(0), FuluSyncCommittee_d.SyncCommittee_set_aggregate_pubkey(FuluSyncCommittee_d.SyncCommittee_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.SyncCommittee(), VS.field_set(M0_L.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee_default()), 1n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluSyncCommittee_e2e_set_aggregate_pubkey_root(B.alloc(0), FuluSyncCommittee_d.SyncCommittee_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluSyncCommittee_e2e_set_pubkeys_root_r())
+
+def FuluSyncCommittee_e2e_set_aggregate_pubkey_encode_hc() -> {E3.at_depth(M0_L.pj_SyncCommittee_0(FuluSyncCommittee_d.SyncCommittee_default()), 13n) == True{} : Bool}:
+  {==}
+
+def FuluSyncCommittee_e2e_set_aggregate_pubkey_encode_hN() -> {WO.len(M0_L.pj_SyncCommittee_0(FuluSyncCommittee_d.SyncCommittee_default())) == 24576 : U32}:
+  {==}
+
+def FuluSyncCommittee_e2e_set_aggregate_pubkey_encode_witness() -> {Some{E.obytes(Pair.snd(FuluSyncCommittee_d.SyncCommittee, B.Buf, FuluSyncCommittee_e.SyncCommittee_encode(FuluSyncCommittee_d.SyncCommittee_set_aggregate_pubkey(FuluSyncCommittee_d.SyncCommittee_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.SyncCommittee(), VS.field_set(M0_L.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee_default()), 1n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluSyncCommittee_e2e_set_aggregate_pubkey_encode(FuluSyncCommittee_d.SyncCommittee_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluSyncCommittee_e2e_set_pubkeys_root_r(), FuluSyncCommittee_e2e_set_aggregate_pubkey_encode_hc(), FuluSyncCommittee_e2e_set_aggregate_pubkey_encode_hN())

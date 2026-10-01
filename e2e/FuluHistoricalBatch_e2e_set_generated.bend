@@ -2,10 +2,14 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
+import ../types/FuluHistoricalBatch_encode_ssz_generated.bend as FuluHistoricalBatch_e
 import ../types/FuluHistoricalBatch_hashtreeroot_generated.bend as FuluHistoricalBatch_h
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
+import ./FuluHistoricalBatch_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -30,6 +34,25 @@ def FuluHistoricalBatch_e2e_set_block_roots_root(h: B.Buf, o: FuluHistoricalBatc
   %FuluHistoricalBatch_e2e_set_block_roots_view(o, w) : {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(h, FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w)))))} == API.hash_tree_root(Spec.HistoricalBatch(), _) : Maybe<&2, +List<U32>>}
   R.FuluHistoricalBatch_e2e_root(h, FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w), PS.HistoricalBatch_set_block_roots_rep(o, Spec.HistoricalBatch(), w, r, rv))
 
+def FuluHistoricalBatch_set_block_roots_hs0_hc0(-o: FuluHistoricalBatch_d.HistoricalBatch, -w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +h: {E3.at_depth(w, 17n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_HistoricalBatch_0(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w)), 17n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluHistoricalBatch_d.HistoricalBatch, o, FuluHistoricalBatch_d.HistoricalBatch{M0_L.pj_HistoricalBatch_0(o), M0_L.pj_HistoricalBatch_1(o)}, eo) : {E3.at_depth(M0_L.pj_HistoricalBatch_0(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(_, w)), 17n) == True{} : Bool}
+  h
+
+def FuluHistoricalBatch_set_block_roots_hs1_hc1(-o: FuluHistoricalBatch_d.HistoricalBatch, -w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +h: {E3.at_depth(M0_L.pj_HistoricalBatch_1(o), 17n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_HistoricalBatch_1(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w)), 17n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluHistoricalBatch_d.HistoricalBatch, o, FuluHistoricalBatch_d.HistoricalBatch{M0_L.pj_HistoricalBatch_0(o), M0_L.pj_HistoricalBatch_1(o)}, eo) : {E3.at_depth(M0_L.pj_HistoricalBatch_1(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(_, w)), 17n) == True{} : Bool}
+  h
+
+def FuluHistoricalBatch_e2e_set_block_roots_encode(o: FuluHistoricalBatch_d.HistoricalBatch, w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +rv: PV.rep_pv(w, M0_SH.Chain_head(M0_SH.Container_fields(Spec.HistoricalBatch()))), +hc0: {E3.at_depth(w, 17n) == True{} : Bool}, +hc1: {E3.at_depth(M0_L.pj_HistoricalBatch_1(o), 17n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w))))} == API.serialize(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(o), 0n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluHistoricalBatch_e2e_set_block_roots_view(o, w) : {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w))))} == API.serialize(Spec.HistoricalBatch(), _) : Maybe<&2, +List<U32>>}
+  N.FuluHistoricalBatch_e2e_encode(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w), PS.HistoricalBatch_set_block_roots_rep(o, Spec.HistoricalBatch(), w, r, rv), FuluHistoricalBatch_set_block_roots_hs0_hc0(o, w, r, hc0), FuluHistoricalBatch_set_block_roots_hs1_hc1(o, w, r, hc1))
+
 def FuluHistoricalBatch_e2e_set_state_roots_view(o: FuluHistoricalBatch_d.HistoricalBatch, w: O.Words)
     -> {M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w)) == VS.field_set(M0_L.v_HistoricalBatch(o), 1n, PV.pview(w)) : S.Value}:
   match o:
@@ -39,3 +62,22 @@ def FuluHistoricalBatch_e2e_set_state_roots_root(h: B.Buf, o: FuluHistoricalBatc
     -> {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(h, FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w)))))} == API.hash_tree_root(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(o), 1n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
   %FuluHistoricalBatch_e2e_set_state_roots_view(o, w) : {Some{D.bytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, D.Digest, Pair.snd(B.Buf, FuluHistoricalBatch_d.HistoricalBatch & D.Digest, FuluHistoricalBatch_h.HistoricalBatch_hash_tree_root(h, FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w)))))} == API.hash_tree_root(Spec.HistoricalBatch(), _) : Maybe<&2, +List<U32>>}
   R.FuluHistoricalBatch_e2e_root(h, FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w), PS.HistoricalBatch_set_state_roots_rep(o, Spec.HistoricalBatch(), w, r, rv))
+
+def FuluHistoricalBatch_set_state_roots_hs0_hc0(-o: FuluHistoricalBatch_d.HistoricalBatch, -w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +h: {E3.at_depth(M0_L.pj_HistoricalBatch_0(o), 17n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_HistoricalBatch_0(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w)), 17n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluHistoricalBatch_d.HistoricalBatch, o, FuluHistoricalBatch_d.HistoricalBatch{M0_L.pj_HistoricalBatch_0(o), M0_L.pj_HistoricalBatch_1(o)}, eo) : {E3.at_depth(M0_L.pj_HistoricalBatch_0(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(_, w)), 17n) == True{} : Bool}
+  h
+
+def FuluHistoricalBatch_set_state_roots_hs1_hc1(-o: FuluHistoricalBatch_d.HistoricalBatch, -w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +h: {E3.at_depth(w, 17n) == True{} : Bool})
+    -> {E3.at_depth(M0_L.pj_HistoricalBatch_1(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w)), 17n) == True{} : Bool}:
+  (+eo, c0) = r
+  (+q0, +q1) = c0
+  %Equal.sym(FuluHistoricalBatch_d.HistoricalBatch, o, FuluHistoricalBatch_d.HistoricalBatch{M0_L.pj_HistoricalBatch_0(o), M0_L.pj_HistoricalBatch_1(o)}, eo) : {E3.at_depth(M0_L.pj_HistoricalBatch_1(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(_, w)), 17n) == True{} : Bool}
+  h
+
+def FuluHistoricalBatch_e2e_set_state_roots_encode(o: FuluHistoricalBatch_d.HistoricalBatch, w: O.Words, +r: M0_L.rep_HistoricalBatch(o, Spec.HistoricalBatch()), +rv: PV.rep_pv(w, M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.HistoricalBatch())))), +hc0: {E3.at_depth(M0_L.pj_HistoricalBatch_0(o), 17n) == True{} : Bool}, +hc1: {E3.at_depth(w, 17n) == True{} : Bool})
+    -> {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w))))} == API.serialize(Spec.HistoricalBatch(), VS.field_set(M0_L.v_HistoricalBatch(o), 1n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluHistoricalBatch_e2e_set_state_roots_view(o, w) : {Some{E.obytes(Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, B.Buf, FuluHistoricalBatch_e.HistoricalBatch_encode(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w))))} == API.serialize(Spec.HistoricalBatch(), _) : Maybe<&2, +List<U32>>}
+  N.FuluHistoricalBatch_e2e_encode(FuluHistoricalBatch_d.HistoricalBatch_set_state_roots(o, w), PS.HistoricalBatch_set_state_roots_rep(o, Spec.HistoricalBatch(), w, r, rv), FuluHistoricalBatch_set_state_roots_hs0_hc0(o, w, r, hc0), FuluHistoricalBatch_set_state_roots_hs1_hc1(o, w, r, hc1))

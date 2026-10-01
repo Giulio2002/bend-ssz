@@ -10,3 +10,6 @@ import ../../types/progbitlist_encode_ssz_generated.bend as progbitlist_e
 # ---- progbitlist: 1 bits is accepted ----
 def progbitlist_serialize_vin() -> {progbitlist_e.progbitlist_serialize(O.Bits{O.out_at(1n), 1}) == (Pair.fst(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(O.Bits{O.out_at(1n), 1})), O.encoded(Pair.snd(O.Bits, B.Buf, progbitlist_e.progbitlist_encode(O.Bits{O.out_at(1n), 1})))) : O.Bits & O.Encoded}:
   {==}
+# ---- progbitlist: the validity pass is the schema's limit and storage check ----
+def progbitlist_serialize_vsym(ws: Array<U32>, +k: U32) -> {progbitlist_e.pbits_valid(O.Bits{ws, k}) == O.bk_cap(Bool.or(True{}, U32.is_le(k, 0)), k, Array.size(U32, ws)) : O.Bits & Bool}:
+  {==}

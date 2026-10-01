@@ -10,3 +10,6 @@ import ../obj/mutval_fulu_CurrentSyncCommitteeBranch.bend as PRV
 def CurrentSyncCommitteeBranch__serialize_valid__CurrentSyncCommitteeBranch_serialize_vin() -> {FuluCurrentSyncCommitteeBranch_e.CurrentSyncCommitteeBranch_serialize(O.Words{O.out_at(6n), 192}) == (Pair.fst(O.Words, B.Buf, FuluCurrentSyncCommitteeBranch_e.CurrentSyncCommitteeBranch_encode(O.Words{O.out_at(6n), 192})), O.encoded(Pair.snd(O.Words, B.Buf, FuluCurrentSyncCommitteeBranch_e.CurrentSyncCommitteeBranch_encode(O.Words{O.out_at(6n), 192})))) : O.Words & O.Encoded}:
   PRV.CurrentSyncCommitteeBranch_serialize_vin()
 
+def CurrentSyncCommitteeBranch__serialize_valid__CurrentSyncCommitteeBranch_serialize_vsym(ws: Array<U32>, +n: U32) -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(192, n), Bool.or(False{}, U32.is_le(n, 192))), O.unit_ok(32, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.CurrentSyncCommitteeBranch_serialize_vsym(ws, n)
+

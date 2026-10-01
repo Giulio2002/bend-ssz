@@ -1,5 +1,7 @@
 import Base
 import ./FuluAggregateAndProof_e2e_set_generated.bend as SET
+import ./e2e_bitv.bend as BTV
+import ./e2e_support.bend as E
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT_L
@@ -11,6 +13,7 @@ import ../src/digest.bend as D
 import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
+import ../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggregateAndProof_e
 import ../types/FuluAggregateAndProof_hashtreeroot_generated.bend as FuluAggregateAndProof_h
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
@@ -35,11 +38,26 @@ def FuluAggregateAndProof_e2e_set_aggregator_index_root_r() -> RT_L.rep_Aggregat
 def FuluAggregateAndProof_e2e_set_aggregator_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluAggregateAndProof_e2e_set_aggregator_index_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_default(), O.U64{1, 0}, FuluAggregateAndProof_e2e_set_aggregator_index_root_r())
 
+def FuluAggregateAndProof_e2e_set_aggregator_index_encode_hs() -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_default())))):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluAggregateAndProof_e2e_set_aggregator_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), O.U64{1, 0}))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 0n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluAggregateAndProof_e2e_set_aggregator_index_encode(FuluAggregateAndProof_d.AggregateAndProof_default(), O.U64{1, 0}, FuluAggregateAndProof_e2e_set_aggregator_index_root_r(), FuluAggregateAndProof_e2e_set_aggregator_index_encode_hs())
+
 def FuluAggregateAndProof_e2e_set_aggregate_root_rv() -> RT_L.rep_Attestation_bx(FuluAttestation_d.Attestation_bx_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.AggregateAndProof())))):
   ({==}, (FuluAttestationData_d.AttestationData_default(), (FuluBytes96_d.b96_default(), (Fulu_bitvector_64_d.bv64_default(), ({==}, (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==})))))))
 
 def FuluAggregateAndProof_e2e_set_aggregate_root_witness() -> {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_default())))))} == API.hash_tree_root(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 1n, RT_L.v_Attestation_bx(FuluAttestation_d.Attestation_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluAggregateAndProof_e2e_set_aggregate_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_default(), FuluAggregateAndProof_e2e_set_aggregator_index_root_r(), FuluAggregateAndProof_e2e_set_aggregate_root_rv())
 
+def FuluAggregateAndProof_e2e_set_aggregate_encode_hs() -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(FuluAttestation_d.Attestation_bx_default()))):
+  (FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, ({==}, {==})))))))
+
+def FuluAggregateAndProof_e2e_set_aggregate_encode_witness() -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_default()))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 1n, RT_L.v_Attestation_bx(FuluAttestation_d.Attestation_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluAggregateAndProof_e2e_set_aggregate_encode(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_default(), FuluAggregateAndProof_e2e_set_aggregator_index_root_r(), FuluAggregateAndProof_e2e_set_aggregate_root_rv(), FuluAggregateAndProof_e2e_set_aggregate_encode_hs())
+
 def FuluAggregateAndProof_e2e_set_selection_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 2n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluAggregateAndProof_e2e_set_selection_proof_root(B.alloc(0), FuluAggregateAndProof_d.AggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluAggregateAndProof_e2e_set_aggregator_index_root_r())
+
+def FuluAggregateAndProof_e2e_set_selection_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_default()), 2n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluAggregateAndProof_e2e_set_selection_proof_encode(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluAggregateAndProof_e2e_set_aggregator_index_root_r(), FuluAggregateAndProof_e2e_set_aggregator_index_encode_hs())

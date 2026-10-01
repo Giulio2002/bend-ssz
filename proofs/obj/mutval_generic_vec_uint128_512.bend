@@ -7,6 +7,6 @@ import ../../types/vec_uint128_512_encode_ssz_generated.bend as vec_uint128_512_
 # Laws that pin the validity checks of the encoders (found by mutation testing; docs/MUTATION_VALIDITY.md).
 # Each is by computation. One file per name: a facade imports (and re-checks) only its own.
 
-# ---- vec_uint128_512: 8192 bytes is accepted ----
-def vec_uint128_512_serialize_vin() -> {vec_uint128_512_e.vec_uint128_512_serialize(O.Words{O.out_at(12n), 8192}) == (Pair.fst(O.Words, B.Buf, vec_uint128_512_e.vec_uint128_512_encode(O.Words{O.out_at(12n), 8192})), O.encoded(Pair.snd(O.Words, B.Buf, vec_uint128_512_e.vec_uint128_512_encode(O.Words{O.out_at(12n), 8192})))) : O.Words & O.Encoded}:
+# ---- vec_uint128_512: the validity pass is the schema's range, unit and storage check ----
+def vec_uint128_512_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint128_512_e.v512_u128_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(8192, n), Bool.or(False{}, U32.is_le(n, 8192))), O.unit_ok(16, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
   {==}

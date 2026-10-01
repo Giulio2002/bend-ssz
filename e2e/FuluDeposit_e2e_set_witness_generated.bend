@@ -1,5 +1,7 @@
 import Base
 import ./FuluDeposit_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_types_light.bend as M0_L
@@ -16,6 +18,7 @@ import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluDepositData_def_generated.bend as FuluDepositData_d
 import ../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+import ../types/FuluDeposit_encode_ssz_generated.bend as FuluDeposit_e
 import ../types/FuluDeposit_hashtreeroot_generated.bend as FuluDeposit_h
 import ../types/Fulu_vec_bytevec_32_33_def_generated.bend as Fulu_vec_bytevec_32_33_d
 import ../types/uint64_def_generated.bend as uint64_d
@@ -37,8 +40,20 @@ def FuluDeposit_e2e_set_proof_root_rv() -> PV.rep_pv(Fulu_vec_bytevec_32_33_d.v3
 def FuluDeposit_e2e_set_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(B.alloc(0), FuluDeposit_d.Deposit_set_proof(FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default())))))} == API.hash_tree_root(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(FuluDeposit_d.Deposit_default()), 0n, PV.pview(Fulu_vec_bytevec_32_33_d.v33_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDeposit_e2e_set_proof_root(B.alloc(0), FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default(), FuluDeposit_e2e_set_proof_root_r(), FuluDeposit_e2e_set_proof_root_rv())
 
+def FuluDeposit_e2e_set_proof_encode_hc() -> {E3.at_depth(Fulu_vec_bytevec_32_33_d.v33_b32_default(), 9n) == True{} : Bool}:
+  {==}
+
+def FuluDeposit_e2e_set_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_proof(FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default()))))} == API.serialize(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(FuluDeposit_d.Deposit_default()), 0n, PV.pview(Fulu_vec_bytevec_32_33_d.v33_b32_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDeposit_e2e_set_proof_encode(FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default(), FuluDeposit_e2e_set_proof_root_r(), FuluDeposit_e2e_set_proof_root_rv(), FuluDeposit_e2e_set_proof_encode_hc())
+
 def FuluDeposit_e2e_set_data_root_rv() -> M0_L.rep_DepositData_bx(FuluDepositData_d.DepositData_bx_default(), M0_SH.Chain_head(M0_SH.Chain_tail(M0_SH.Container_fields(Spec.Deposit())))):
   (FuluDepositData_d.DepositData_default(), {==})
 
 def FuluDeposit_e2e_set_data_root_witness() -> {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(B.alloc(0), FuluDeposit_d.Deposit_set_data(FuluDeposit_d.Deposit_default(), FuluDepositData_d.DepositData_bx_default())))))} == API.hash_tree_root(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(FuluDeposit_d.Deposit_default()), 1n, M0_L.v_DepositData_bx(FuluDepositData_d.DepositData_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDeposit_e2e_set_data_root(B.alloc(0), FuluDeposit_d.Deposit_default(), FuluDepositData_d.DepositData_bx_default(), FuluDeposit_e2e_set_proof_root_r(), FuluDeposit_e2e_set_data_root_rv())
+
+def FuluDeposit_e2e_set_data_encode_hc() -> {E3.at_depth(M0_L.pj_Deposit_0(FuluDeposit_d.Deposit_default()), 9n) == True{} : Bool}:
+  {==}
+
+def FuluDeposit_e2e_set_data_encode_witness() -> {Some{E.obytes(Pair.snd(FuluDeposit_d.Deposit, B.Buf, FuluDeposit_e.Deposit_encode(FuluDeposit_d.Deposit_set_data(FuluDeposit_d.Deposit_default(), FuluDepositData_d.DepositData_bx_default()))))} == API.serialize(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(FuluDeposit_d.Deposit_default()), 1n, M0_L.v_DepositData_bx(FuluDepositData_d.DepositData_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluDeposit_e2e_set_data_encode(FuluDeposit_d.Deposit_default(), FuluDepositData_d.DepositData_bx_default(), FuluDeposit_e2e_set_proof_root_r(), FuluDeposit_e2e_set_data_root_rv(), FuluDeposit_e2e_set_data_encode_hc())
