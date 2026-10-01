@@ -636,6 +636,7 @@
     "e2e/FuluWithdrawal_e2e_set_generated.bend": "93c05f05dd1510b2a31716a026bcdfc87bbfe035c36d845bb2a9d78268b6564d",
     "e2e/ProgressiveBitsStruct_e2e_comp_generated.bend": "7f800ab7c385e15bb35b5624a2ad9696e04d2757c6250477d1c3e1ccc711328b",
     "e2e/ProgressiveBitsStruct_e2e_dec_generated.bend": "fe30e043041e29d891314f5439c6d69b7add80a7a7afe8472469a84697380c12",
+    "e2e/ProgressiveBitsStruct_e2e_decode_witness_generated.bend": "63875f7d328084b1ea5edf2c7aa3791f91bb997de2e6c6db7dad26ad44429023",
     "e2e/ProgressiveBitsStruct_e2e_generated.bend": "da360841a6d15be5312beaa1060bd481038fb0cdd3574a25430a77944b26c55b",
     "e2e/ProgressiveBitsStruct_e2e_root_generated.bend": "8ad0f5f0eb11ee60daea8b45f0678e1da2840ddbea071993b2905033f8b030f9",
     "e2e/ProgressiveBitsStruct_e2e_set_generated.bend": "81732d22ab93870f415ef09328886b38a19558208cda5882f9388b2cba3e6477",
