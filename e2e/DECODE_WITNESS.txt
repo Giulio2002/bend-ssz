@@ -28,6 +28,7 @@ FuluSignedBeaconBlock	witnessed
 FuluTransaction	witnessed
 ProgressiveBitsStruct	witnessed
 ProgressiveSingleListContainerTestStruct	witnessed
+ProgressiveTestStruct	witnessed
 ProgressiveVarTestStruct	witnessed
 VarTestStruct	witnessed
 bitlist_15	witnessed
