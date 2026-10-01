@@ -8,6 +8,7 @@ import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
+import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API

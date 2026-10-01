@@ -6,6 +6,7 @@ import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/value_set.bend as VS
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

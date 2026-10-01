@@ -5,6 +5,7 @@ import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_types_light.bend as M0_L
 import ../proofs/obj/schema_shapes.bend as M0_SH
 import ../proofs/obj/value_set.bend as VS
+import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -28,10 +29,10 @@ def WZ1056() -> {O.words_new(1056) == O.Words{FD.array__thaw(U32, FD.array__trep
   {==}
 
 def FuluDeposit_e2e_set_proof_root_r() -> M0_L.rep_Deposit(FuluDeposit_d.Deposit_default(), Spec.Deposit()):
-  ({==}, (((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, ({==}, {==})))))))), {==}), (FuluDepositData_d.DepositData_default(), {==})))
+  ({==}, (((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(1056), Nat.add(W_proofs_obj_words_spec.e32(32n), 32n), {==}), {==})))))))), {==}), (FuluDepositData_d.DepositData_default(), {==})))
 
 def FuluDeposit_e2e_set_proof_root_rv() -> PV.rep_pv(Fulu_vec_bytevec_32_33_d.v33_b32_default(), M0_SH.Chain_head(M0_SH.Container_fields(Spec.Deposit()))):
-  ((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, ({==}, {==})))))))), {==})
+  ((FD.array__trep(U32, 9n, 0), (9n, (1056, (32n, (WZ1056(), (FD.array__trep_perfect(U32, 9n, 0), ({==}, (FD.nat__eq_from_is_eq(U32.to_nat(1056), Nat.add(W_proofs_obj_words_spec.e32(32n), 32n), {==}), {==})))))))), {==})
 
 def FuluDeposit_e2e_set_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluDeposit_d.Deposit, D.Digest, Pair.snd(B.Buf, FuluDeposit_d.Deposit & D.Digest, FuluDeposit_h.Deposit_hash_tree_root(B.alloc(0), FuluDeposit_d.Deposit_set_proof(FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default())))))} == API.hash_tree_root(Spec.Deposit(), VS.field_set(M0_L.v_Deposit(FuluDeposit_d.Deposit_default()), 0n, PV.pview(Fulu_vec_bytevec_32_33_d.v33_b32_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluDeposit_e2e_set_proof_root(B.alloc(0), FuluDeposit_d.Deposit_default(), Fulu_vec_bytevec_32_33_d.v33_b32_default(), FuluDeposit_e2e_set_proof_root_r(), FuluDeposit_e2e_set_proof_root_rv())

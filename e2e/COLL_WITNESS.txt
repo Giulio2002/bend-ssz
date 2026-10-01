@@ -29,7 +29,7 @@ l1_AttesterSlashing	7 witnessed
 l2048_Eth1Data	11 witnessed
 l262144_PendingConsolidation	11 witnessed
 l2_ConsolidationRequest	11 witnessed
-l4096_b2048	7 witnessed
+l4096_b2048	8 witnessed
 l4096_b48	16 witnessed
 l8192_DepositRequest	11 witnessed
 l8_Attestation	7 witnessed
