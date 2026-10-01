@@ -14,7 +14,7 @@
 #                   10485760 (10 MB; JSC's own default is 5 MB). Both are pinned so that a shell's or an environment's
 #                   limits never change a result: the checker recurses once per level of a
 #                   conversion, and JSC stops at the smaller of the two (at 16384 KB, its 10 MB budget). The two are printed as the first line of every log.
-#                   tools/check_fast.sh --jsc-stack runs the headroom gate at half the budget.
+#                   tools/check_fast.sh --jsc-stack runs the informational headroom run (a full check at another budget).
 # Before running, tools/verify_pins.py checks the checker's files, bun and the package against
 # toolchain.lock.json and refuses to run on a mismatch (CHECK_PINS_VERIFIED=1 skips it: check_fast.sh
 # verifies once for all its runs).

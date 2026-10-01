@@ -37,17 +37,17 @@ def BitsStruct_e2e_set_f_A_root_rv() -> BO.rep_bits(bitlist_5_d.bits5_default(),
 def BitsStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_A(BitsStruct_d.BitsStruct_default(), bitlist_5_d.bits5_default())))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 0n, S.BitsValue{BO.bview(bitlist_5_d.bits5_default())})) : Maybe<&2, +List<U32>>}:
   SET.BitsStruct_e2e_set_f_A_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitlist_5_d.bits5_default(), BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_A_root_rv())
 
-def BitsStruct_e2e_set_f_B_root_rv() -> RN.rp_bv2(bitvector_2_d.bv2_default()):
+def BitsStruct_e2e_set_f_B_root_rv() -> RN.rp_bv2(bitvector_2_d.Bitvector2{1}):
   {==}
 
-def BitsStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_default())))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 1n, RN.v_bv2(bitvector_2_d.bv2_default()))) : Maybe<&2, +List<U32>>}:
-  SET.BitsStruct_e2e_set_f_B_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_default(), BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_B_root_rv())
+def BitsStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.Bitvector2{1})))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 1n, RN.v_bv2(bitvector_2_d.Bitvector2{1}))) : Maybe<&2, +List<U32>>}:
+  SET.BitsStruct_e2e_set_f_B_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_2_d.Bitvector2{1}, BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_B_root_rv())
 
-def BitsStruct_e2e_set_f_C_root_rv() -> RN.rp_bv1(bitvector_1_d.bv1_default()):
+def BitsStruct_e2e_set_f_C_root_rv() -> RN.rp_bv1(bitvector_1_d.Bitvector1{1}):
   {==}
 
-def BitsStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_default(), bitvector_1_d.bv1_default())))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 2n, RN.v_bv1(bitvector_1_d.bv1_default()))) : Maybe<&2, +List<U32>>}:
-  SET.BitsStruct_e2e_set_f_C_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_1_d.bv1_default(), BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_C_root_rv())
+def BitsStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_default(), bitvector_1_d.Bitvector1{1})))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 2n, RN.v_bv1(bitvector_1_d.Bitvector1{1}))) : Maybe<&2, +List<U32>>}:
+  SET.BitsStruct_e2e_set_f_C_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_1_d.Bitvector1{1}, BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_C_root_rv())
 
 def BitsStruct_e2e_set_f_D_root_rv() -> BO.rep_bits(bitlist_6_d.bits6_default(), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.BitsStruct())))))):
   (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (BZ3_0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==}))
@@ -55,8 +55,8 @@ def BitsStruct_e2e_set_f_D_root_rv() -> BO.rep_bits(bitlist_6_d.bits6_default(),
 def BitsStruct_e2e_set_f_D_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_D(BitsStruct_d.BitsStruct_default(), bitlist_6_d.bits6_default())))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 3n, S.BitsValue{BO.bview(bitlist_6_d.bits6_default())})) : Maybe<&2, +List<U32>>}:
   SET.BitsStruct_e2e_set_f_D_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitlist_6_d.bits6_default(), BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_D_root_rv())
 
-def BitsStruct_e2e_set_f_E_root_rv() -> RN.rp_bv8(bitvector_8_d.bv8_default()):
+def BitsStruct_e2e_set_f_E_root_rv() -> RN.rp_bv8(bitvector_8_d.Bitvector8{1}):
   {==}
 
-def BitsStruct_e2e_set_f_E_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_default(), bitvector_8_d.bv8_default())))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 4n, RN.v_bv8(bitvector_8_d.bv8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.BitsStruct_e2e_set_f_E_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_8_d.bv8_default(), BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_E_root_rv())
+def BitsStruct_e2e_set_f_E_root_witness() -> {Some{D.bytes(Pair.snd(BitsStruct_d.BitsStruct, D.Digest, Pair.snd(B.Buf, BitsStruct_d.BitsStruct & D.Digest, BitsStruct_h.BitsStruct_hash_tree_root(B.alloc(0), BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_default(), bitvector_8_d.Bitvector8{1})))))} == API.hash_tree_root(Spec.BitsStruct(), VS.field_set(RT_L.v_BitsStruct(BitsStruct_d.BitsStruct_default()), 4n, RN.v_bv8(bitvector_8_d.Bitvector8{1}))) : Maybe<&2, +List<U32>>}:
+  SET.BitsStruct_e2e_set_f_E_root(B.alloc(0), BitsStruct_d.BitsStruct_default(), bitvector_8_d.Bitvector8{1}, BitsStruct_e2e_set_f_A_root_r(), BitsStruct_e2e_set_f_E_root_rv())

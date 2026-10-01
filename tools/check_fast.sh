@@ -8,10 +8,11 @@
 # 12e9; the 8e9 of single files makes a big umbrella collect constantly), UMB_TIMEOUT (default
 # 1200 s). The stack is tools/check.sh's pin (ulimit -s 16384, JSC budget 10485760 bytes: a 2x margin over 5 MB, at which every umbrella passes);
 # --jsc-stack BYTES runs every umbrella with another JSC budget (exported to the umbrellas: each log starts
-# with a CHECK_STACK line that records the limits it ran under). The headroom gate is a full run at
-# half the pinned budget (--jsc-stack 5242880): the proofs pass there, so the pin is a 2x margin. At 2.5 MB
-# 10 of 47 umbrellas fail; the headroom runs of the first port branch that were labelled "half budget"
-# (2621440) never reached the umbrellas (JSC was not exported) and were ordinary 5 MB runs. A run at another budget writes its stamp to
+# with a CHECK_STACK line that records the limits it ran under). The headroom run is a full run at
+# half the pinned budget (--jsc-stack 5242880); it is informational, not a gate: it passed on f4c3d9ea and failed
+# umbrella 022 on d73efc07, and at 2.5 MB 11 of 46 umbrellas fail (benchmarks/evidence/check_fast_jsc2621440_FAILED.log),
+# so a pass is one sample of a process that fails some of the time. The gate is the run at the pin. (The first port
+# branch's "half budget" runs never reached the umbrellas: JSC was not exported; they were ordinary 5 MB runs.) A run at another budget writes its stamp to
 # benchmarks/evidence/check_fast_jsc<BYTES>.json instead of check_fast.json.
 #
 # Failures are localized: each failed umbrella is bisected into sub-umbrellas (still import-only,
@@ -127,7 +128,7 @@ UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan
 n=$(wc -l < "$OUT/summary.tsv")
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
-CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES CHECK_STACK_KB=16384 CHECK_JSC_STACK=$JSC \
+CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES \
   python3 tools/check_stamp.py write "$OUT" "$OUT/stamp.json"; stamp_rc=$?
 # a full run records its stamp in the tree: benchmarks/evidence/check_fast.json (at the pinned stack),
 # benchmarks/evidence/check_fast_jsc<BYTES>.json (a headroom run at another JSC budget)

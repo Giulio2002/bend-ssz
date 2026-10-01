@@ -19,20 +19,20 @@ import ../types/uint8_def_generated.bend as uint8_d
 # SingleFieldTestStruct: every setter composition with premises applied to the default object (the new value is the field's own
 # value), each premise proved of it.
 
-def SingleFieldTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(uint8_d.u8_default(), 255) == True{} : Bool}:
+def SingleFieldTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(1, 255) == True{} : Bool}:
   {==}
 
-def SingleFieldTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_SingleFieldTestStruct(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default()))) == VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default())) : S.Value}:
-  SET.SingleFieldTestStruct_e2e_set_f_A_view(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default(), SingleFieldTestStruct_e2e_set_f_A_view_hg())
+def SingleFieldTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_SingleFieldTestStruct(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1))) == VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(1)) : S.Value}:
+  SET.SingleFieldTestStruct_e2e_set_f_A_view(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1, SingleFieldTestStruct_e2e_set_f_A_view_hg())
 
 def SingleFieldTestStruct_e2e_set_f_A_root_rp() -> M0_L.rp_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()):
   {==}
 
-def SingleFieldTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u8(uint8_d.u8_default()):
+def SingleFieldTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u8(1):
   {==}
 
-def SingleFieldTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.SingleFieldTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default())))))} == API.hash_tree_root(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SingleFieldTestStruct_e2e_set_f_A_root(B.alloc(0), SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default(), SingleFieldTestStruct_e2e_set_f_A_view_hg(), SingleFieldTestStruct_e2e_set_f_A_root_rp(), SingleFieldTestStruct_e2e_set_f_A_root_rv())
+def SingleFieldTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.SingleFieldTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1)))))} == API.hash_tree_root(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.SingleFieldTestStruct_e2e_set_f_A_root(B.alloc(0), SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1, SingleFieldTestStruct_e2e_set_f_A_view_hg(), SingleFieldTestStruct_e2e_set_f_A_root_rp(), SingleFieldTestStruct_e2e_set_f_A_root_rv())
 
-def SingleFieldTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(SingleFieldTestStruct_e.SingleFieldTestStruct_encode(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default()))))} == API.serialize(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SingleFieldTestStruct_e2e_set_f_A_encode(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), uint8_d.u8_default(), SingleFieldTestStruct_e2e_set_f_A_view_hg(), SingleFieldTestStruct_e2e_set_f_A_root_rp(), SingleFieldTestStruct_e2e_set_f_A_root_rv())
+def SingleFieldTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(SingleFieldTestStruct_e.SingleFieldTestStruct_encode(Pair.fst(SingleFieldTestStruct_d.SingleFieldTestStruct, Bool, SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1))))} == API.serialize(Spec.SingleFieldTestStruct(), VS.field_set(M0_L.v_SingleFieldTestStruct(SingleFieldTestStruct_d.SingleFieldTestStruct_default()), 0n, M0_L.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.SingleFieldTestStruct_e2e_set_f_A_encode(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 1, SingleFieldTestStruct_e2e_set_f_A_view_hg(), SingleFieldTestStruct_e2e_set_f_A_root_rp(), SingleFieldTestStruct_e2e_set_f_A_root_rv())

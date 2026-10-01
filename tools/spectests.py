@@ -4,7 +4,7 @@
 Every official case (cases.json: 295 ssz_static + 5,145 ssz_generic) is run by
 the native C program of the generated object API that holds its type
 (benchmarks/objprog/g<k>.bend for the Fulu names, x<k>.bend for the generic
-schemas; both are compiled fresh by the pinned Bend 2.0.25, keyed on the bytes
+schemas; both are compiled fresh by the pinned Bend (benchmarks/toolchain.json), keyed on the bytes
 of their whole import cone, before any case runs). The expected outputs are
 never given to the program:
 

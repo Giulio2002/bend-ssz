@@ -6,10 +6,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
     "- expected : a defined name",
-    "- observed : ../../types/Fulu_vec_bytevec_32_33_def_generated.v33_b32_append",
-    "Context:"
+    "- observed : Fulu_vec_bytevec_32_33_d.v33_b32_append"
    ]
   },
   {
@@ -18,10 +18,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
     "- expected : a defined name",
-    "- observed : ../../types/FuluBytes32_def_generated.b32_append",
-    "Context:"
+    "- observed : FuluBytes32_d.b32_append"
    ]
   },
   {
@@ -30,10 +30,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
-    "- expected : ../../src/obj.Bits",
-    "- observed : ../../src/obj.Words",
-    "Context:"
+    "- expected : O.Bits",
+    "- observed : O.Words"
    ]
   },
   {
@@ -42,10 +42,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
     "- expected : a",
-    "- observed : a (consumed more than once)",
-    "Location: twice"
+    "- observed : a (consumed more than once)"
    ]
   },
   {
@@ -54,10 +54,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
     "- expected : s",
-    "- observed : s (consumed more than once)",
-    "Location: clone"
+    "- observed : s (consumed more than once)"
    ]
   },
   {
@@ -66,10 +66,10 @@
    "compiled": false,
    "pass": true,
    "message": [
+    "SOME PROOFS FAIL",
     "Error:",
     "- expected : idx",
-    "- observed : idx (consumed more than once)",
-    "Context:"
+    "- observed : idx (consumed more than once)"
    ]
   },
   {
@@ -78,23 +78,24 @@
    "compiled": true,
    "pass": true,
    "message": [
-    "All terms check."
+    "ALL PROOFS CHECK",
+    "Use --verdict for mathematical validity."
    ]
   }
  ],
  "pass": true,
  "provenance": {
-  "git_commit": "ed83adea44d0c089a1b182337f30dc14eb3006d5",
+  "git_commit": "4f8fc3b3c13ae8cf943b8110de94e1cd7876f21c",
   "git_dirty": null,
-  "utc": "2026-09-30T02:44:04Z",
+  "utc": "2026-10-01T02:56:54Z",
   "runtime": {
-   "bend_sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf",
-   "base_sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
+   "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
+   "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
   },
   "argv": [],
   "sources_sha256": {
    "types/*.bend": "46cd0d306d221075f57c1093a6b317753828617fcec95e6fa4826342271f7207",
-   "src/*.bend": "cbb61e030f6b3fa8b3a705cb4f265b4173c890e1c783fbb2acfc9f77921ae7c9",
+   "src/*.bend": "dfba9a73df93a3dfc883c6de5c16be56b3c44f3f421d6866cebfec10f0ec7a4b",
    "benchmarks/objprog/*.bend": "9860a2ecf89602f10f6a9e1fba1bd60be0ed07cff676e775b9eab66b686aa38e",
    "benchmarks/compact/*.bend": "a8a2cb947594a27ab7d48867d661b666fd2f457ef2fbceb302322b7351f67e6e",
    "cases.json": "046028487a69b7661ede94092dcaafdbc8fa9056d8b730cc33e19a07b6d866bf",

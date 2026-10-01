@@ -19,29 +19,29 @@ import ../types/uint16_def_generated.bend as uint16_d
 # SmallTestStruct: every setter composition with premises applied to the default object (the new value is the field's own
 # value), each premise proved of it.
 
-def SmallTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(uint16_d.u16_default(), 65535) == True{} : Bool}:
+def SmallTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(1, 65535) == True{} : Bool}:
   {==}
 
-def SmallTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default()))) == VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(uint16_d.u16_default())) : S.Value}:
-  SET.SmallTestStruct_e2e_set_f_A_view(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg())
+def SmallTestStruct_e2e_set_f_A_view_witness() -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), 1))) == VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(1)) : S.Value}:
+  SET.SmallTestStruct_e2e_set_f_A_view(SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg())
 
 def SmallTestStruct_e2e_set_f_A_root_rp() -> M0_L.rp_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()):
   ({==}, {==})
 
-def SmallTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u16(uint16_d.u16_default()):
+def SmallTestStruct_e2e_set_f_A_root_rv() -> M0_L.rp_u16(1):
   {==}
 
-def SmallTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default())))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(uint16_d.u16_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SmallTestStruct_e2e_set_f_A_root(B.alloc(0), SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
+def SmallTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), 1)))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(1))) : Maybe<&2, +List<U32>>}:
+  SET.SmallTestStruct_e2e_set_f_A_root(B.alloc(0), SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
 
-def SmallTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default()))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(uint16_d.u16_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SmallTestStruct_e2e_set_f_A_encode(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
+def SmallTestStruct_e2e_set_f_A_encode_witness() -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_A(SmallTestStruct_d.SmallTestStruct_default(), 1))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 0n, M0_L.v_u16(1))) : Maybe<&2, +List<U32>>}:
+  SET.SmallTestStruct_e2e_set_f_A_encode(SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
 
-def SmallTestStruct_e2e_set_f_B_view_witness() -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default()))) == VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(uint16_d.u16_default())) : S.Value}:
-  SET.SmallTestStruct_e2e_set_f_B_view(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg())
+def SmallTestStruct_e2e_set_f_B_view_witness() -> {M0_L.v_SmallTestStruct(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), 1))) == VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(1)) : S.Value}:
+  SET.SmallTestStruct_e2e_set_f_B_view(SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg())
 
-def SmallTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default())))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(uint16_d.u16_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SmallTestStruct_e2e_set_f_B_root(B.alloc(0), SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
+def SmallTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.SmallTestStruct_hash_tree_root(B.alloc(0), Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), 1)))))} == API.hash_tree_root(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(1))) : Maybe<&2, +List<U32>>}:
+  SET.SmallTestStruct_e2e_set_f_B_root(B.alloc(0), SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
 
-def SmallTestStruct_e2e_set_f_B_encode_witness() -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default()))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(uint16_d.u16_default()))) : Maybe<&2, +List<U32>>}:
-  SET.SmallTestStruct_e2e_set_f_B_encode(SmallTestStruct_d.SmallTestStruct_default(), uint16_d.u16_default(), SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
+def SmallTestStruct_e2e_set_f_B_encode_witness() -> {Some{E.obytes(SmallTestStruct_e.SmallTestStruct_encode(Pair.fst(SmallTestStruct_d.SmallTestStruct, Bool, SmallTestStruct_d.SmallTestStruct_set_f_B(SmallTestStruct_d.SmallTestStruct_default(), 1))))} == API.serialize(Spec.SmallTestStruct(), VS.field_set(M0_L.v_SmallTestStruct(SmallTestStruct_d.SmallTestStruct_default()), 1n, M0_L.v_u16(1))) : Maybe<&2, +List<U32>>}:
+  SET.SmallTestStruct_e2e_set_f_B_encode(SmallTestStruct_d.SmallTestStruct_default(), 1, SmallTestStruct_e2e_set_f_A_view_hg(), SmallTestStruct_e2e_set_f_A_root_rp(), SmallTestStruct_e2e_set_f_A_root_rv())
