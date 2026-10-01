@@ -917,6 +917,43 @@ def data_column_sidecar(lf):
     return container_file(name, lf, 'proofs/obj/var_codec_DataColumnSidecar_acc.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, codec, given=given, objexpr='WN.OBJ(t, n)')
 
 
+H27 = '{Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}'
+BUF_PS27 = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+            '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +h31: ' + H27 + ', +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, '
+            '+hchk: {DC.CHK(t, n) == True{} : Bool}')
+
+
+def pb_child(al, Wc, args, e):
+    """a progressive bit list field (the window reader var_winp_pbits) at the container window Wc's child k, the container decoded at the top
+    (x = 0, off = 0, length n) with the buffer's depth facts: rep_pbits and the storage premise SDPB (e2e_pbx, under h31: n + 4 <= 2^27)"""
+    PBX, DPQ = al('e2e/e2e_pbx.bend'), al('e2e/e2e_dpq.bend')
+    k = int(re.match(r'[\w.]+\.XJ(\d+)\(', args[2]).group(1))
+    hwn = 'FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hS)'
+    com = f'd, t, n, 0n, 0, n, {{==}}, hd, hn, {hwn}, pf, hchk'
+    last = args[4].rstrip().endswith(', n)')
+    O_, E_ = f'{Wc}.O{k}(t, 0n)', (f'{Wc}.O{k + 1}(t, 0n)' if not last else 'n')
+    hlen = (f'{DPQ}.hlc(U32.to_nat({args[4]}), U32.to_nat(n), {DPQ}.lwd({O_}, {E_}, n, {Wc}.r1{k}(t, 0n, 0, n, hchk), {Wc}.r2{k}(t, 0n, 0, n, hchk)), h31)')
+    a = ', '.join(args)
+    facts = f'{Wc}.eoJ{k}D({com}), hd, {Wc}.hwJ{k}D({com}), {Wc}.hwJ{k}N({com}), pf, {Wc}.itD{k}(t, 0n, 0, n, hchk)'
+    return BitsDec(e, lambda s_: f'{PBX}.pbv_rep({a}, {facts}, {s_}, {hlen})', None, hsp=f'{PBX}.pbv_sdpb({a}, {facts}, {hlen})')
+
+
+def pb_container(name, win, dec, lf_):
+    """a container whose variable fields are progressive bit lists (and fixed words): the window reader win (var_winx_<Name>) at the top"""
+    BUF_D.add(name)
+    HEAVY[name] = H27
+
+    def lets(al):
+        Wc = al(win)
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e)
+            return None
+        return [], None, None, None, xleaf
+    return container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], BUF_PS27), lets, None, dec)
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -928,6 +965,7 @@ PROVERS = {
     'FuluLightClientFinalityUpdate': lambda lf: lc_finality(lf),
     'FuluLightClientUpdate': lambda lf: lc_update(lf),
     'FuluDataColumnSidecar': lambda lf: data_column_sidecar(lf),
+    'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
     'FuluSignedBeaconBlock': lambda lf: beacon_block_body(lf, 'sb'),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
@@ -968,8 +1006,8 @@ class WordsDec:
 
 class BitsDec:
     """a decoded bit list: its rep_bits and storage (sdbv) premises are laws of the name's dec bridge file"""
-    def __init__(self, expr, rep, hs, hsb=None, hsbc=None):
-        self.expr, self.rep, self.hs, self.hsb, self.hsbc = expr, rep, hs, hsb, hsbc
+    def __init__(self, expr, rep, hs, hsb=None, hsbc=None, hsp=None):
+        self.expr, self.rep, self.hs, self.hsb, self.hsbc, self.hsp = expr, rep, hs, hsb, hsbc, hsp
 
 
 class FxWords:
@@ -985,7 +1023,8 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs'}
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
+        ('pbits_obj_light.bend', 'rep_pbits'): 'rep', ('e2e_encp.bend', 'SDPB'): 'hsp'}
 
 
 class WordsFix:
@@ -1037,7 +1076,10 @@ class DSynth(W.Synth):
                 if key in BITS and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, BitsDec):
-                        return getattr(mdl, BITS[key])
+                        v_ = getattr(mdl, BITS[key])
+                        if callable(v_):
+                            return v_(self.subst(mod, args[1], env) if len(args) > 1 else None)
+                        return v_
                 if key in STORAGE and args:
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, WordsDec):
