@@ -3320,6 +3320,7 @@ def outputs():
         out[OUT / 'e2e_pbsh.bend'] = BVG.pbsh_text()
         out[OUT / 'e2e_gph.bend'] = BVG.gph_text(OBJ)
         out[OUT / 'e2e_wxah.bend'] = BVG.wxah_text(OBJ)
+        out[OUT / 'e2e_wxar.bend'] = BVG.wxar_text(OBJ)
         out[OUT / 'e2e_vhl8.bend'] = BVG.vhl8_text()
         for _X in ('BeaconBlockBody', 'BeaconBlock', 'SignedBeaconBlock'):
             out[OUT / f'e2e_vhb_{_X}.bend'] = BVG.vhb_text(_X)
