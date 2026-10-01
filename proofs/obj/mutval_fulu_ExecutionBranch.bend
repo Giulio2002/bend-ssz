@@ -10,3 +10,6 @@ import ../../types/FuluExecutionBranch_encode_ssz_generated.bend as FuluExecutio
 # ---- ExecutionBranch: 128 bytes is accepted ----
 def ExecutionBranch_serialize_vin() -> {FuluExecutionBranch_e.ExecutionBranch_serialize(O.Words{O.out_at(6n), 128}) == (Pair.fst(O.Words, B.Buf, FuluExecutionBranch_e.ExecutionBranch_encode(O.Words{O.out_at(6n), 128})), O.encoded(Pair.snd(O.Words, B.Buf, FuluExecutionBranch_e.ExecutionBranch_encode(O.Words{O.out_at(6n), 128})))) : O.Words & O.Encoded}:
   {==}
+# ---- ExecutionBranch: the validity pass is the schema's range, unit and storage check ----
+def ExecutionBranch_serialize_vsym(ws: Array<U32>, +n: U32) -> {FuluExecutionBranch_e.v4_b32_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(128, n), Bool.or(False{}, U32.is_le(n, 128))), O.unit_ok(32, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  {==}

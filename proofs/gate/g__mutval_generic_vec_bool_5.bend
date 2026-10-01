@@ -13,3 +13,6 @@ def vec_bool_5__serialize_valid__vec_bool_5_serialize_vin() -> {vec_bool_5_e.vec
 def vec_bool_5__serialize_valid__vec_bool_5_serialize_vover() -> {vec_bool_5_e.vec_bool_5_serialize(O.Words{O.out_at(2n), 6}) == (O.Words{O.out_at(2n), 6}, O.refused()) : O.Words & O.Encoded}:
   PRV.vec_bool_5_serialize_vover()
 
+def vec_bool_5__serialize_valid__vec_bool_5_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_bool_5_e.v5_bool_valid(O.Words{ws, n}) == O.bools_ok(O.wk_cap(Bool.and(Bool.and(U32.is_le(5, n), Bool.or(False{}, U32.is_le(n, 5))), O.unit_ok(1, n)), n, Array.size(U32, ws))) : O.Words & Bool}:
+  PRV.vec_bool_5_serialize_vsym(ws, n)
+

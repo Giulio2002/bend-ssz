@@ -13,3 +13,6 @@ def proglist_bool__serialize_valid__proglist_bool_serialize_vin_0() -> {proglist
 def proglist_bool__serialize_valid__proglist_bool_serialize_vin_1() -> {proglist_bool_e.proglist_bool_serialize(O.Words{O.out_at(1n), 1}) == (Pair.fst(O.Words, B.Buf, proglist_bool_e.proglist_bool_encode(O.Words{O.out_at(1n), 1})), O.encoded(Pair.snd(O.Words, B.Buf, proglist_bool_e.proglist_bool_encode(O.Words{O.out_at(1n), 1})))) : O.Words & O.Encoded}:
   PRV.proglist_bool_serialize_vin_1()
 
+def proglist_bool__serialize_valid__proglist_bool_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_bool_e.pl_bool_valid(O.Words{ws, n}) == O.bools_ok(O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), O.unit_ok(1, n)), n, Array.size(U32, ws))) : O.Words & Bool}:
+  PRV.proglist_bool_serialize_vsym(ws, n)
+

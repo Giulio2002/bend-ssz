@@ -13,3 +13,6 @@ def proglist_uint256_serialize_vin_0() -> {proglist_uint256_e.proglist_uint256_s
 # ---- proglist_uint256: 32 bytes is accepted ----
 def proglist_uint256_serialize_vin_32() -> {proglist_uint256_e.proglist_uint256_serialize(O.Words{O.out_at(4n), 32}) == (Pair.fst(O.Words, B.Buf, proglist_uint256_e.proglist_uint256_encode(O.Words{O.out_at(4n), 32})), O.encoded(Pair.snd(O.Words, B.Buf, proglist_uint256_e.proglist_uint256_encode(O.Words{O.out_at(4n), 32})))) : O.Words & O.Encoded}:
   {==}
+# ---- proglist_uint256: the validity pass is the schema's range, unit and storage check ----
+def proglist_uint256_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint256_e.pl_u256_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), O.unit_ok(32, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  {==}

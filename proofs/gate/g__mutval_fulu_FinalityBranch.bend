@@ -10,3 +10,6 @@ import ../obj/mutval_fulu_FinalityBranch.bend as PRV
 def FinalityBranch__serialize_valid__FinalityBranch_serialize_vin() -> {FuluFinalityBranch_e.FinalityBranch_serialize(O.Words{O.out_at(6n), 224}) == (Pair.fst(O.Words, B.Buf, FuluFinalityBranch_e.FinalityBranch_encode(O.Words{O.out_at(6n), 224})), O.encoded(Pair.snd(O.Words, B.Buf, FuluFinalityBranch_e.FinalityBranch_encode(O.Words{O.out_at(6n), 224})))) : O.Words & O.Encoded}:
   PRV.FinalityBranch_serialize_vin()
 
+def FinalityBranch__serialize_valid__FinalityBranch_serialize_vsym(ws: Array<U32>, +n: U32) -> {FuluFinalityBranch_e.v7_b32_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(224, n), Bool.or(False{}, U32.is_le(n, 224))), O.unit_ok(32, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  PRV.FinalityBranch_serialize_vsym(ws, n)
+

@@ -19,6 +19,10 @@ imports and re-checks only its own),
                                 the vector's exact length, 0 and one element for a list, the limit for a bit list) is its
                                 encoding. Fails when the lower bound, the unit, the poison flag or the bits-past-the-end
                                 rule is wrong.
+  <X>_serialize_vsym(ws, n)     a words or bits name: the validity pass on ANY storage `ws` and ANY length `n` is the
+                                schema's check written out (`O.wk_cap` / `O.bk_cap` of the range, the unit and the
+                                storage's size). Symbolic, so it reaches what the concrete edges cannot (Blob's 131072
+                                bytes, a list limit of 2^30) and every constant of the check, equivalent or not.
   <X>_serialize_vover()         the serializer of an object one past the limit is refused. Fails when the upper bound or the
                                 unbounded flag is wrong.
 
@@ -41,7 +45,7 @@ from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
 
-IN_MAX = 16500  # bytes or bits an edge law computes whole (16416 bytes, vec_uint256_513, is the largest vector but Blob)
+IN_MAX = 4096  # bytes or bits an edge law computes whole (the symbolic `vsym` law covers the larger constants)
 DATA = re.compile(r'^def (\w+)_serialize\(\+o: ([\w.]+)\) -> O\.Encoded: \1_ser_pick\((\w+)_valid\(o\), o\)$', re.M)
 SER = re.compile(r'^def (\w+)_serialize\(o: (O\.Words|O\.Bits)\) -> [^\n]*: ([^\n]*)$', re.M)
 WORDS = re.compile(r'^O\.words_ok\(o, (\d+), (\d+), (True|False)\{\}, (\d+)\)$')
@@ -189,10 +193,81 @@ def edge_laws(text, sink):
     return cnt
 
 
+def expected_words(t):
+    """(lo, hi, big, unit, bools) of the schema's words collection, or None"""
+    k = t.kind
+    if k == 'bytes':
+        return (t.size, t.size, False, 1, False)
+    if k == 'bytelist':
+        return (0, t.size, False, 1, False)
+    if k == 'vector':
+        e = t.elem
+        if e.kind == 'uint':
+            return (t.size * e.size, t.size * e.size, False, e.size, False)
+        if e.kind == 'bool':
+            return (t.size, t.size, False, 1, True)
+        if e.kind == 'bytes':
+            return (t.size * e.size, t.size * e.size, False, e.size, False)
+    if k == 'plist':
+        e = t.elem
+        if e.kind == 'uint':
+            return (0, 0, True, e.size, False)
+        if e.kind == 'bool':
+            return (0, 0, True, 1, True)
+    return None
+
+
+def symbolic_laws(runtime, text, sink):
+    """`<X>_serialize_vsym`: the validity pass of a words or bits name, on any storage and any length, is the
+    check written out from the schema (`O.wk_cap` / `O.bk_cap` of the range, the unit and the storage's size)"""
+    sch = schemas(runtime)
+    w = sink.w
+    cnt = 0
+    for X, R, body in SER.findall(text):
+        m = re.search(r'\b(\w+?)_(?:putk|size)\(', body)
+        t = sch.get(X)
+        if not m or t is None:
+            continue
+        P = m.group(1)
+        vm = re.search(rf'^def {P}_valid\(o: {re.escape(R)}\) -> [^\n:]*: ([^\n]*)$', text, re.M)
+        if not vm:
+            continue
+        v = vm.group(1)
+        sink.X = X
+        if R == 'O.Words':
+            ex = expected_words(t)
+            lo, hi, big, unit, bools = ex
+            gen = f'O.words_ok(o, {lo}, {hi}, {"True" if big else "False"}{{}}, {unit})'
+            gen = f'O.bools_ok({gen})' if bools else gen
+            if v != gen:
+                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `{v}`, the schema says `{gen}`')
+            ok = f'Bool.and(Bool.and(U32.is_le({lo}, n), Bool.or({"True" if big else "False"}{{}}, U32.is_le(n, {hi}))), O.unit_ok({unit}, n))'
+            wk = f'O.wk_cap({ok}, n, Array.size(U32, ws))'
+            wk = f'O.bools_ok({wk})' if bools else wk
+            w(f'# ---- {X}: the validity pass is the schema\'s range, unit and storage check ----')
+            w(f'def {X}_serialize_vsym(ws: Array<U32>, +n: U32) -> {{T.{P}_valid(O.Words{{ws, n}}) == {wk} : O.Words & Bool}}:')
+            w('  {==}')
+            cnt += 1
+        else:
+            if t.kind not in ('bitlist', 'pbits'):
+                continue
+            big = t.kind == 'pbits'
+            lim = 0 if big else t.size
+            gen = f'O.bits_ok(o, {lim}, {"True" if big else "False"}{{}})'
+            if v != gen:
+                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `{v}`, the schema says `{gen}`')
+            bk = f'O.bk_cap(Bool.or({"True" if big else "False"}{{}}, U32.is_le(k, {lim})), k, Array.size(U32, ws))'
+            w(f'# ---- {X}: the validity pass is the schema\'s limit and storage check ----')
+            w(f'def {X}_serialize_vsym(ws: Array<U32>, +k: U32) -> {{T.{P}_valid(O.Bits{{ws, k}}) == {bk} : O.Bits & Bool}}:')
+            w('  {==}')
+            cnt += 1
+    return cnt
+
+
 def module(runtime, tmod):
     text = RR.mono_text(runtime)
     sink = Sink()
-    n = domain_laws(runtime, text, sink) + edge_laws(text, sink)
+    n = domain_laws(runtime, text, sink) + edge_laws(text, sink) + symbolic_laws(runtime, text, sink)
     head = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
             writer.header('mutation_laws_validity'),
             '# Laws that pin the validity checks of the encoders (found by mutation testing; docs/MUTATION_VALIDITY.md).',

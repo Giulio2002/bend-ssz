@@ -128,3 +128,27 @@ segment `0` to `1`, are not equivalent (the segment selects the scratch region o
 Facade check times with the new laws: 2 to 60 s for the encode facades (vec_uint128_512, 8192-byte `mc_ser`, is the slowest;
 SignedBeaconBlock 35 s, ComplexTestStruct 20 s), 2 to 45 s for the root facades; all 277 facades that import a `mutconst_` module pass on the
 unmutated tree. `tools/verify_frozen.py`: no statement_defs drift.
+
+## 6. Round 2: write start, serializer depth, length constants, reported sizes, read offsets (small groups)
+
+Generator `codegen/proofs/laws/mutation_laws_small.py` writes `proofs/obj/mutsmall_<X>.bend` (api_gate files `<X>_ms_*`
+in the encode facade; `_ms_dec` / `_ms_build` in the decode facade). The mutations of `capacity-1` (an under-allocated
+`out_at(d-1)`, which is a real fault: the writer runs past the array) and `capacity` `0 -> 1` (the write start of `putk`) were
+not caught because the earlier witnesses were all-zero or too large to compute (Blob, HistoricalBatch, SyncCommittee,
+vec_uint256_512). The new laws are symbolic wherever the object is large:
+
+| law | statement | closes |
+|---|---|---|
+| `ms_serdepth` | `X_serialize(o) == X_senc_(out/put)(P_putk(O.out_at(Kn), 0, o))`, symbolic in o; K is the least depth for the schema size (the generator stops if the generated file disagrees; variable names use the schema's greatest size) | write start 0, depth K-1 (and K+1) |
+| `ms_senc_out` / `ms_encout` | `X_senc_out((out,(o,0))) == (o, encoded(Buf{out,N}))`, `X_enc_out((out,o)) == (o, Buf{out,N})`, symbolic | the reported length N |
+| `ms_size` | the size pass of the default object equals the schema's least encoded size | `X_size` constants |
+| `ms_bxsize_<S>` | `S_bx_size(O.BNone{})` reports 0 | the `0` of a missing boxed element |
+| `ms_build`, `ms_dec` | the record readers return the seed at offset 0 (input array with slack, two seeds so every masked word is nonzero) | `X_build` offset, `read32(buf, off + 4)` |
+
+`mc_put` (mutation_laws_const) now also writes at byte 8 (an aligned position past word 0) into an array with slack:
+the shifts `shrn(pos, 2n)` and the index `q + 4` were invisible at positions 0 to 3 (and a wrapped index landed on a
+written word when the array had exactly 8 words).
+
+Re-run, 27 survivors (21 of the audit's constant / reported-size / arithmetic / offset groups, 6 mislabelled `capacity`
+and `capacity-1` ones): 27 killed, 0 equivalent, 0 blocked. Slowest facade check with the new laws: 100 to 160 s
+(vec_uint256_512, vec_uint128_513: the existing `mc_ser`, 8192-byte witnesses, under load).
