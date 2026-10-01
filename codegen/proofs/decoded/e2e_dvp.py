@@ -78,11 +78,10 @@ def text(c):
     P = LISTS[c]
     H31 = P.get('H31', False)
     H31E = P.get('H31E', 31)   # the window facts' bound: len < 2^H31E (the encode premise needs < 2^31)
-    HWN = P.get('HWN', False)   # the facts also carry x + len <= NMAX
+    HWN = P.get('HWN', False)   # the window fact hw32 (x + len < 2^32) is x + len <= NMAX (the window libraries of the progressive bit lists take it)
     H31T = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(%dn)) == True{} : Bool}' % H31E
-    HWNT = '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
-    WSIG = WF_SIG + (', ' + HWNT if HWN else '') + (', ' + H31T if H31 else '')
-    WARG = WF_ARG + (', hwN' if HWN else '') + (', h31' if H31 else '')
+    WSIG = WF_SIG + (', ' + H31T if H31 else '')
+    WARG = WF_ARG + (', h31' if H31 else '')
     H31U = 'h31' if H31E == 31 else 'lt31(len, h31)'   # the encode premise's bound from the window facts'
     H31S = '' if H31 else ', ' + H31T   # a separate h31 argument after the window facts
     H31A = '' if H31 else ', h31'
@@ -164,15 +163,14 @@ def text(c):
         A_('')
         if H31E != 31:
             A_('# the list window below 2^%d is below 2^31, the encode premise\'s bound' % H31E)
-            A_('def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(%dn)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}:\n'
-               '  FD.nat__lt_trans(U32.to_nat(len), VB.pw(30n), VB.pw(31n), FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(%dn), VB.pw(30n), h, FD.nat__pow2_mono(%dn, 30n, {==})), FD.nat__pow2_lt_succ(30n))' % (H31E, H31E, H31E))
+            assert H31E == 29
+            A_('def bbq() -> {VB.pw(31n) == A.quad(VB.pw(29n)) : Nat}:\n'
+               '  %Equal.sym(Nat, 31n, 2n+29n, {==}) : {VB.pw(_) == A.quad(VB.pw(29n)) : Nat}\n'
+               '  {==}\n\n'
+               'def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}:\n'
+               '  FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(len), z) == True{} : Bool}, A.quad(VB.pw(29n)), VB.pw(31n), Equal.sym(Nat, VB.pw(31n), A.quad(VB.pw(29n)), bbq()),\n'
+               '    FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(29n), A.quad(VB.pw(29n)), h, A.quad_ge(VB.pw(29n))))')
             A_('')
-    if HWN:
-        A_('def hwabN(+x: Nat, +len: U32, +a: U32, +b: U32, +hab: {Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{} : Bool}, +hb: {Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{} : Bool},\n'
-           '    +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool})\n'
-           '    -> {Nat.is_le(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
-           '  FD.nat__le_trans(Nat.add(Nat.add(U32.to_nat(a), x), U32.to_nat(U32.sub(b, a))), Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()), V.hwabX(x, len, a, b, hab, hb), hwN)')
-        A_('')
     SUB = ('Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a)')
     EEP = '+hEE: {V.EE(True{}, t, x, off, len, a, b) == True{} : Bool}'
 
@@ -182,7 +180,7 @@ def text(c):
         sub = f'Nat.add(U32.to_nat({s}), x), U32.add(off, {s}), U32.sub({e}, {s})'
         return (f'E.{f}(d, t, {sub}, V.el_c(t, x, off, len, {s}, {e}, {hh}), '
                 f'V.eocD(d, x, off, len, {s}, FD.nat__le_trans(U32.to_nat({s}), U32.to_nat({e}), U32.to_nat(len), {ab}, {bb_}), eo, hd, hw, hw32), hd, '
-                f'V.hwab(d, x, len, {s}, {e}, {ab}, {bb_}, hw), V.hwab32(x, len, {s}, {e}, {ab}, {bb_}, hw32), pfw' + (f', hwabN(x, len, {s}, {e}, {ab}, {bb_}, hwN)' if HWN else '') + (f', h31ab(len, {s}, {e}, {ab}, {bb_}, h31)' if H31 else '') + f'{extra})')
+                f'V.hwab(d, x, len, {s}, {e}, {ab}, {bb_}, hw), V.hwab32(x, len, {s}, {e}, {ab}, {bb_}, hw32), pfw' + (f', h31ab(len, {s}, {e}, {ab}, {bb_}, h31)' if H31 else '') + f'{extra})')
     for n in ['ND_l8_Attestation', 'NV_l8_Attestation', 'FT_l8_Attestation', 'pfFT_l8_Attestation', 'fillam_l8_Attestation', 'hx_at_l8_Attestation']:
         A_(vl(VD_[n]))
         A_('')
@@ -193,8 +191,8 @@ def text(c):
     # rvF with the element canon: the vlm text, its eqE replaced
     s = vl(VD_['rvF_l8_Attestation'])
     if H31:   # the element facts of eqE take the extra window facts too: the vlm text's window facts (eo, hd, hw, hw32, pf) get them after pf
-        ex_sig = (', ' + HWNT if HWN else '') + ', ' + H31T
-        ex_arg = (', hwN' if HWN else '') + ', h31'
+        ex_sig = ', ' + H31T
+        ex_arg = ', h31'
         for a, b in [('+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd', '+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}' + ex_sig + ', +dd'),
                      ('hw32, pf, V.WJ(t, x, i)', 'hw32, pf' + ex_arg + ', V.WJ(t, x, i)'), ('hw32, pf, dd, FD', 'hw32, pf' + ex_arg + ', dd, FD')]:
             assert s.count(a) == 1, (a, s.count(a))
@@ -417,7 +415,10 @@ def text(c):
         A_(f'def thfz({WINS}, {WSIG}, {HCK}) -> {{RT.th_{c}(RT.fz_{c}(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : {SEQ}}}:\n'
            f'  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
         A_('')
-    return '\n'.join(out) + '\n'
+    res = '\n'.join(out) + '\n'
+    if HWN:
+        res = res.replace('Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n))', 'Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()))')
+    return res
 
 
 def main():

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """e2e/e2e_hkp.bend: the element hooks of a ProgressiveVarTestStruct window for the progressive lists of ProgressiveVarTestStruct
 (pl_ProgressiveVarTestStruct: e2e_dvp_pl_ProgressiveVarTestStruct.bend), in the root_gtypes2_light mirrors (RT = RT2 of e2e_encld.bend). The element at
-the window (x, off, len) (var_winx_ProgressiveVarTestStruct: WN; OBJw) has, with WF = eo, hd, hw, hw32, pfw, hwN, h31 (hwN: x + len <= NMAX;
+the window (x, off, len) (var_winx_ProgressiveVarTestStruct: WN; OBJw) has, with WF = eo, hd, hw, hw32, pfw, h31 (hw32 here is x + len <= NMAX, the decoder's hwN;
 h31: len < 2^29, the decoder's own bound of e2e_dpe_ProgressiveVarTestStruct.bend; e2e_dvp.py's lists derive both for each element):
 
     repT(d, t, x, off, len, hchk, WF, sE, ee)     RT.rep_ProgressiveVarTestStruct_bx(th_bx(MSome{fz(OBJw)}), sE)
@@ -26,9 +26,8 @@ ROOT = Path(__file__).resolve().parents[3]
 E2E = ROOT / 'e2e'
 WIN = DV2.WIN
 H31T = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}'
-HWNT = '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
-WF_SIG = DV2.WF_SIG + ', ' + HWNT + ', ' + H31T
-WF_ARG = DV2.WF_ARG + ', hwN, h31'
+WF_SIG = DV2.WF_SIG.replace('Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n))', 'Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()))') + ', ' + H31T
+WF_ARG = DV2.WF_ARG + ', h31'
 
 
 def text():
@@ -49,7 +48,7 @@ def text():
     FZ = f'RT.fz_ProgressiveVarTestStruct({OW})'
     TH = f'RT.th_ProgressiveVarTestStruct({FZ})'
     HCK = '+hchk: {WN.CHKw(t, x, off, len) == True{} : Bool}'
-    DW = 'd, t, x, off, len, pfw, hd, eo, hw, hwN, h31, hchk'
+    DW = 'd, t, x, off, len, pfw, hd, eo, hw, hw32, h31, hchk'
     X0 = 'FX_u8.OBJ(d, t, Nat.add(x, U32.to_nat(0)))'
     CT0 = 'UCT.CT(d, t, WN.FJ0(off, t, x), WN.LJ0(t, x), VLS.DZ(WN.LJ0(t, x)))'
     CT1 = 'UCT.CT(d, t, WN.FJ1(off, t, x), WN.LJ1(t, x, len), VLS.DZ(WN.LJ1(t, x, len)))'
