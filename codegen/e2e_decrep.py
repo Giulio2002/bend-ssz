@@ -610,6 +610,97 @@ def execution_payload(lf):
                           lets, None, 'proofs/obj/var_winx_ExecutionPayload.bend', given=given, objexpr='DC.OBJw(d, t, x, off, n)')
 
 
+def beacon_block_body(lf):
+    """BeaconBlockBody: nine variable windows (var_winx_BeaconBlockBody J0..J8): the proposer slashings, attester slashings, attestations,
+    deposits (the lists' libraries e2e_dbl_* / e2e_dvl_*: sdl, rep, szl), voluntary exits and BLS changes (e2e_drl_*), the payload (nested
+    ExecutionPayload window: payload_hooks), the KZG commitments (e2e_dkz) and the requests (nested ExecutionRequests window)"""
+    name = 'FuluBeaconBlockBody'
+    HEAVY[name] = H31
+    WINDOW.add(name)
+    BBP = 'proofs/obj/var_winx_BeaconBlockBody.bend'
+    COM = 'd, t, n, x, off, n, eo, hd31, hw, hwN, pf, hchk'
+    ST = {0: 'e2e/e2e_dbl_l16_ProposerSlashing.bend', 1: 'e2e/e2e_dvl_l1_AttesterSlashing.bend', 2: 'e2e/e2e_dvl_l8_Attestation.bend', 3: 'e2e/e2e_dbl_l16_Deposit.bend'}
+    DR = {4: 'e2e/e2e_drl_l16_SignedVoluntaryExit.bend', 6: 'e2e/e2e_drl_l16_SignedBLSToExecutionChange.bend'}
+
+    def lets(al):
+        WB, DBB, DEP, DKZ = al(BBP), al('e2e/e2e_dbb.bend'), al('e2e/e2e_dep.bend'), al('e2e/e2e_dkz.bend')
+        al('proofs/obj/dk.bend')
+        EW = al('proofs/obj/var_winx_ExecutionRequests.bend')
+        A = dict(d='d', t='t', x=f'{WB}.XJ5(t, x)', off=f'{WB}.FJ5(off, t, x)', n=f'{WB}.LJ5(t, x)', pf='pf', hd31='hd31',
+                 eo=f'{WB}.eoJ5D({COM})', hw=f'{WB}.hwJ5D({COM})', hwN=f'{WB}.hwJ5N({COM})', hchk=f'{WB}.itD5(t, x, off, n, hchk)',
+                 hSN=f'{DBB}.pay_hSN(t, x, off, n, hS, hchk)')
+        words, pxleaf, prlchk = payload_hooks(al, A)
+        hc = lambda j: f'{WB}.itD{j}(t, x, off, n, hchk)'
+        # the requests window: its checks (the ExecutionRequests window's CHKw at (X8, F8, L8))
+        X8, F8, L8 = f'{WB}.XJ8(t, x)', f'{WB}.FJ8(off, t, x)', f'{WB}.LJ8(t, x, n)'
+        a8 = f't, {X8}, {F8}, {L8}'
+        C = lambda nm: f'{EW}.{nm}(t, {X8})' if nm == 'CB' else (f'{EW}.{nm}(t, {X8}, {L8})' if nm in ('CC', 'CD') else f'{EW}.{nm}({a8})')
+        out = [f'+k1 = DK.and_r({EW}.CA({L8}), {EW}.K1({a8}), {hc(8)})',
+               f'+k2 = DK.and_r({C("CB")}, {EW}.K2({a8}), k1)',
+               f'+k3 = DK.and_r({C("CC")}, {EW}.K3({a8}), k2)',
+               f'+k4 = DK.and_r({C("CD")}, {EW}.K4({a8}), k3)',
+               f'+hE = DK.and_l({C("CE")}, {EW}.K5({a8}), k4)',
+               f'+k5 = DK.and_r({C("CE")}, {EW}.K5({a8}), k4)',
+               f'+hF = DK.and_l({C("CF")}, {C("CG")}, k5)',
+               f'+hG = DK.and_r({C("CF")}, {C("CG")}, k5)']
+
+        def xleaf(fname, fn, args, e):
+            if fn != 'OBJw':
+                return None
+            mj = re.match(rf'{re.escape(WB.split(".")[0])}\.XJ(\d)\(', args[2]) if len(args) > 2 else None
+            a = ', '.join(args)
+            if fname in ('var_winx_l16_ProposerSlashing.bend', 'vvl_l1_AttesterSlashing.bend', 'vvl_l8_Attestation.bend', 'var_winx_l16_Deposit.bend'):
+                j = {'var_winx_l16_ProposerSlashing.bend': 0, 'vvl_l1_AttesterSlashing.bend': 1, 'vvl_l8_Attestation.bend': 2, 'var_winx_l16_Deposit.bend': 3}[fname]
+                L = al(ST[j])
+                return RLDec(e, lambda k: f'{L}.sdl({a}, {hc(j)})', lambda sc: f'{L}.rep({a}, {sc}, {{==}}, {{==}}, {hc(j)})')
+            if fname in ('var_winx_l16_SignedVoluntaryExit.bend', 'var_winx_l16_SignedBLSToExecutionChange.bend'):
+                j = 4 if 'Voluntary' in fname else 6
+                L = al(DR[j])
+                return RLDec(e, lambda k: f'{L}.sdl({a}, {k}, {{==}}, {hc(j)})', lambda sc: f'{L}.rep({a}, {sc}, {{==}}, {hc(j)})')
+            if fname == 'var_winx_l4096_b48.bend':
+                q = '{==}'
+                h7 = hc(7)
+                E48 = al('proofs/obj/elems48_light.bend')
+                return FxWords(e, {('elems48_light.bend', 'rep_el'): lambda s_: f'({DKZ}.wfK({a}, {h7}), {DKZ}.cnK({args[1]}, {args[2]}, {args[3]}, {args[4]}, {h7}))',
+                                   ('e2e_bl48.bend', 'sdk48'): lambda k: f'{DKZ}.skK({a}, {h7})'})
+            return pxleaf(fname, fn, args, e)
+
+        def rlchk(j):
+            return prlchk(0) if j == 0 else ('hE', 'hF', 'hG')[j - 1]
+        return out, words, None, rlchk, xleaf
+
+    def hs9_(al):
+        PAY = al('e2e/FuluExecutionPayload_e2e_decrep_generated.bend')
+        WB, DBB = al(BBP), al('e2e/e2e_dbb.bend')
+        args = (f'd, t, {WB}.XJ5(t, x), {WB}.FJ5(off, t, x), {WB}.LJ5(t, x), pf, hd31, {WB}.eoJ5D({COM}), {WB}.hwJ5D({COM}), {WB}.hwJ5N({COM}), '
+                f'{DBB}.pay_h31(t, x, off, n, h31, hchk), {DBB}.pay_hS(t, x, off, n, hS, hchk), {WB}.itD5(t, x, off, n, hchk)')
+        return f'({PAY}.p_hL({args}), ({PAY}.p_hB({args}), ({PAY}.p_hT({args}), {PAY}.p_hW({args}))))'
+
+    def hv11_(al):
+        WB, DKZ = al(BBP), al('e2e/e2e_dkz.bend')
+        return f'{DKZ}.hvK(t, {WB}.XJ7(t, x), {WB}.FJ7(off, t, x), {WB}.LJ7(t, x), {WB}.itD7(t, x, off, n, hchk))'
+
+    def hz_(al):
+        WB, DBB, DEP, DRQ = al(BBP), al('e2e/e2e_dbb.bend'), al('e2e/e2e_dep.bend'), al('e2e/e2e_drq.bend')
+        DTX, WP = al('e2e/e2e_dtx.bend'), al('proofs/obj/var_winx_ExecutionPayload.bend')
+        L = {j: al(ST[j]) for j in ST}
+        w = lambda j: f'd, t, {WB}.XJ{j}(t, x), {WB}.FJ{j}(off, t, x), {WB}.LJ{j}(t, x), {WB}.itD{j}(t, x, off, n, hchk)'
+        T5 = f'{WB}.XJ5(t, x), {WB}.FJ5(off, t, x), {WB}.LJ5(t, x)'
+        hwn1 = f'{WP}.hwc1N(d, t, {WB}.LJ5(t, x), {T5}, {WB}.LJ5(t, x), {WB}.eoJ5D({COM}), hd31, {WB}.hwJ5D({COM}), {WB}.hwJ5N({COM}), pf, {DEP}.cc2(t, {WB}.XJ5(t, x), {WB}.FJ5(off, t, x), {WB}.LJ5(t, x), {WB}.itD5(t, x, off, n, hchk)))'
+        c5 = f'{WB}.itD5(t, x, off, n, hchk)'
+        etx = f'{DTX}.txl(d, t, {WP}.X1(t, {WB}.XJ5(t, x)), {WP}.F1({WB}.FJ5(off, t, x), t, {WB}.XJ5(t, x)), {WP}.L1(t, {WB}.XJ5(t, x)), {hwn1}, {DEP}.ce1(t, {WB}.XJ5(t, x), {WB}.FJ5(off, t, x), {WB}.LJ5(t, x), {c5}))'
+        return (f'{DBB}.szw(d, t, x, off, n, {L[0]}.szl({w(0)}), {L[1]}.szl({w(1)}), {L[2]}.szl({w(2)}), {L[3]}.szl({w(3)}), '
+                f'{DRQ}.eq_VE({w(4)}), {DEP}.szr(d, t, {T5}, {etx}, {c5}), {DRQ}.eq_BC({w(6)}), {{==}}, '
+                f'{DRQ}.rq(d, t, {WB}.XJ8(t, x), {WB}.FJ8(off, t, x), {WB}.LJ8(t, x, n), {WB}.itD8(t, x, off, n, hchk)), h31, hchk)')
+    given = {'hs9': hs9_, 'hv11': hv11_, 'hZ': hz_}
+    ps = (f'+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd31: {{Nat.is_lt(d, 31n) == True{{}} : Bool}}, '
+          f'+eo: {{U32.to_nat(off) == x : Nat}}, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{{}} : Bool}}, '
+          f'+hwN: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, +h31: {H31}, +hS: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}}, '
+          f'+hchk: {{DC.CHKw(t, x, off, n) == True{{}} : Bool}}')
+    return container_file(name, lf, BBP, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
+                          lets, None, BBP, given=given, objexpr='DC.OBJw(d, t, x, off, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -617,6 +708,7 @@ PROVERS = {
     **{f'bitlist_{k}': (lambda lf, k=k: bit_standalone(f'bitlist_{k}', lf)) for k in (1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 31, 32, 33, 511, 512, 513)},
     'FuluBeaconState': lambda lf: beacon_state(lf),
     'FuluExecutionPayload': lambda lf: execution_payload(lf),
+    'FuluBeaconBlockBody': lambda lf: beacon_block_body(lf),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
     'BitsStruct': lambda lf: bits_struct(lf),
     'VarTestStruct': lambda lf: list_u16_container('VarTestStruct', 'var_codec_VarTestStruct', 'proofs/obj/var_winx_VarTestStruct.bend', 'proofs/obj/var_winx_l1024_u16.bend', 1024, 12, lf),
@@ -641,6 +733,9 @@ PROVERS = {
 
 
 # ---------------------------------------------------------------- decoded objects' premises, synthesized
+
+SDT1 = ('sdt', 'sd1', 'sd8')   # the one-argument storage premises of the boxed-record lists' libraries (e2e_dbl_*, e2e_dvl_*)
+
 
 class WordsDec:
     """a decoded byte storage field: its storage premises come from e2e_dz (any: BL.sdk / LO.wfl at a bound k;
@@ -711,10 +806,10 @@ class DSynth(W.Synth):
                 mdl0 = self.arg_model(args[0], env) if args else None
                 if isinstance(mdl0, FxWords) and key in mdl0.proofs:
                     return mdl0.proofs[key](self.subst(mod, args[1], env) if len(args) > 1 else None)
-                if (name.startswith('sda_') or name.startswith('rep_') or name == 'sdt') and (len(args) == 2 or (name == 'sdt' and len(args) == 1)):
+                if (name.startswith('sda_') or name.startswith('rep_') or name in SDT1) and (len(args) == 2 or (name in SDT1 and len(args) == 1)):
                     mdl = self.arg_model(args[0], env)
                     if isinstance(mdl, RLDec):
-                        if name == 'sdt':
+                        if name in SDT1:
                             return mdl.sda('31n')
                         a1 = self.subst(mod, args[1], env)
                         return mdl.sda(a1) if name.startswith('sda_') else mdl.rep(a1)

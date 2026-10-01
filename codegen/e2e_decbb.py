@@ -77,6 +77,16 @@ def u2n(+a: U32, +b: U32, +h: {U32.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(
               f'def hy{i}({TP}, {HS}, {HC}) -> {{Nat.is_le(VC.YL({L(i)}), U32.to_nat(VB.UMAX())) == True{{}} : Bool}}:\n'
               f'  VC.hyW({TN(O(i))}, {L(i)}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {TN(O(i + 1))}, Nat.add({TN(O(i))}, {TN(L(i))}), Equal.sym(Nat, Nat.add({TN(O(i))}, {TN(L(i))}), {TN(O(i + 1))}, lsum{i}(t, x, off, n, hchk)),\n'
               f'    FD.nat__le_trans({TN(O(i + 1))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {topi}, u2n(n, VB.NMAX(), hS))))\n')
+    # the payload window (field 5) as an ExecutionPayload window of its own: its length below 2^31 and below NMAX (Nat and U32 forms)
+    t += (f'\n# the nested payload window\'s length facts\n'
+          f'def n2u(+a: U32, +b: U32, +h: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{{}} : Bool}}) -> {{U32.is_le(a, b) == True{{}} : Bool}}:\n'
+          f'  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(a), U32.to_nat(b)), U32.is_le(a, b), Equal.sym(Bool, U32.is_le(a, b), Nat.is_le(U32.to_nat(a), U32.to_nat(b)), VB.le_u32n(a, b)), h)\n'
+          f'def pay_h31({TP}, {H31}, {HC}) -> {{Nat.is_lt({TN(L(5))}, VB.pw(31n)) == True{{}} : Bool}}:\n'
+          f'  FD.nat__le_lt_trans({TN(L(5))}, U32.to_nat(n), VB.pw(31n), lwn5(t, x, off, n, hchk), h31)\n'
+          f'def pay_hSN({TP}, {HS}, {HC}) -> {{Nat.is_le({TN(L(5))}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+          f'  FD.nat__le_trans({TN(L(5))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn5(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))\n'
+          f'def pay_hS({TP}, {HS}, {HC}) -> {{U32.is_le({L(5)}, VB.NMAX()) == True{{}} : Bool}}:\n'
+          f'  n2u({L(5)}, VB.NMAX(), pay_hSN(t, x, off, n, hS, hchk))\n')
     # the size: 396 + L_0 + ... + L_8 = n, then SZW
     lens = [TN(L(i)) for i in range(NW)]
     lines = []
@@ -92,11 +102,12 @@ def u2n(+a: U32, +b: U32, +h: {U32.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(
     t += (f'\n# the fixed part and the windows add up to n\n'
           f'def tot({TP}, {HC}) -> {{{sz(lens, F0)} == U32.to_nat(n) : Nat}}:\n' + '\n'.join(lines) + '\n')
     # SZW: the witnesses are the windows' lengths; the equalities are hypotheses
-    eqs = [f'+e{FIELD[i]}: {{{lens[i]} == {sub_o(parts[i])} : Nat}}' for i in range(NW)]
+    FLIP = (3, 4, 5, 6, 9, 12)   # the lists' libraries state {sum == length}; the byte-list windows' {length == sum}
+    eqs = [(f'+e{FIELD[i]}: {{{sub_o(parts[i])} == {lens[i]} : Nat}}' if FIELD[i] in FLIP else f'+e{FIELD[i]}: {{{lens[i]} == {sub_o(parts[i])} : Nat}}') for i in range(NW)]
     SZ = sz([f'U32.to_nat({L(i)})' for i in range(NW)], F0)
     tup = ''
     comps = [L(i) for i in range(NW)]
-    comps = [lens[i] for i in range(NW)] + [f'e{FIELD[i]}' for i in range(NW)]
+    comps = [lens[i] for i in range(NW)] + [(f'Equal.sym(Nat, {sub_o(parts[i])}, {lens[i]}, e{FIELD[i]})' if FIELD[i] in FLIP else f'e{FIELD[i]}') for i in range(NW)]
     bound = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(n), {SZ}, Equal.sym(Nat, {SZ}, U32.to_nat(n), tot(t, x, off, n, hchk)), h31)')
     r = bound
     for c in reversed(comps):
