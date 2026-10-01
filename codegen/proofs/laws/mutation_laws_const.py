@@ -48,6 +48,22 @@ SER_MAX = 8192          # bytes: a `_mc_ser` witness is computed through its enc
 PATTERN = (0x9E3779B1, 0x85EBCA6B, 0xC2B2AE35, 0x27D4EB2F)   # nonzero words of a witness
 
 
+POS = (0, 1, 2, 3, 8)   # byte positions of the unaligned-packing law: every residue mod 4, and an aligned one past word 0
+
+
+def nest(items):
+    return items[0] if len(items) == 1 else f'({items[0]}, {nest(items[1:])})'
+
+
+def nest_t(t, n=len(POS)):
+    return t if n == 1 else f'{t} & ({nest_t(t, n - 1)})'
+
+
+def z_of(N):
+    """the output array of the put law: room for every position, with slack (a wrapped index must not land on a written word)"""
+    return f'O.out_at({depth_for_words(((max(POS) + N + 3) >> 2) + 2) + 1}n)'
+
+
 def split_sig(blk):
     """(params [str], ret, body) of one definition block, or None"""
     m = re.match(r'def (\w+)\(', blk)
@@ -237,13 +253,12 @@ def build_name_laws(tx, X, idx, files, syms):
             cnt = len(re.findall(r'\d+', tx.blk[f'{P}_default'].split(':', 1)[1].split('{', 1)[1]))
             vals = [PATTERN[i % 4] for i in range(cnt)]
             w = f'T.{R}{{{", ".join(map(str, vals))}}}'
-            k = depth_for_words(((3 + N + 3) >> 2) + 2)
-            Z = f'O.out_at({k}n)'
+            Z = z_of(N)
             E = f'T.{P}_put(O.out_at({K}n), 0, {w})'
             ref = lambda p: f'Pair.fst(Array<U32>, O.Words, O.put_words({Z}, {p}, O.Words{{{E}, {N}}}))'   # noqa: E731
             laws.append(('put',
-                         f'def {X}_mc_put()\n    -> {{(T.{P}_put({Z}, 0, {w}), (T.{P}_put({Z}, 1, {w}), (T.{P}_put({Z}, 2, {w}), T.{P}_put({Z}, 3, {w})))) == '
-                         f'({ref(0)}, ({ref(1)}, ({ref(2)}, {ref(3)}))) : Array<U32> & (Array<U32> & (Array<U32> & Array<U32>))}}:\n  {{==}}'))
+                         f'def {X}_mc_put()\n    -> {{{nest([f"T.{P}_put({Z}, {p}, {w})" for p in POS])} == '
+                         f'{nest([ref(p) for p in POS])} : {nest_t("Array<U32>")}}}:\n  {{==}}'))
     mw2 = re.search(r'\b(\w+)_enc_out\((\w+)_put\(O\.out_at\((\d+)n\), 0, o\)\)', ebody)
     if mw2 and R == 'O.Words':
         P = mw2.group(2)
@@ -253,12 +268,11 @@ def build_name_laws(tx, X, idx, files, syms):
         if nb and f'{P}_pw' in pb:
             N = int(nb.group(1))
             w = words_witness(N)
-            k = depth_for_words(((3 + N + 3) >> 2) + 2)
-            Z = f'O.out_at({k}n)'
-            one = f'Array<U32> & O.Words'
+            Z = z_of(N)
+            one = 'Array<U32> & O.Words'
             laws.append(('put',
-                         f'def {X}_mc_put()\n    -> {{(T.{P}_put({Z}, 0, {w}), (T.{P}_put({Z}, 1, {w}), (T.{P}_put({Z}, 2, {w}), T.{P}_put({Z}, 3, {w})))) == '
-                         f'(O.put_words({Z}, 0, {w}), (O.put_words({Z}, 1, {w}), (O.put_words({Z}, 2, {w}), O.put_words({Z}, 3, {w})))) : ({one}) & (({one}) & (({one}) & ({one})))}}:\n  {{==}}'))
+                         f'def {X}_mc_put()\n    -> {{{nest([f"T.{P}_put({Z}, {p}, {w})" for p in POS])} == '
+                         f'{nest([f"O.put_words({Z}, {p}, {w})" for p in POS])} : {nest_t("(" + one + ")")}}}:\n  {{==}}'))
     # ---- the serializer against the encoder ---------------------------------------------------
     ser = tx.get(f'{X}_serialize')
     if ser and eret.endswith(' & B.Buf') and ser[1].endswith(' & O.Encoded'):

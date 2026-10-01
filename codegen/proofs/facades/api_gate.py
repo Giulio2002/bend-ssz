@@ -250,11 +250,12 @@ def scan():
             # codegen/proofs/laws/mutation_laws_const.py: proofs/obj/mutconst_<X>.bend holds <X>_mc_<tag> laws, one module
             # per name (the name is in the file name); the root wrapper's law belongs to the root facade, the others to
             # the encode facade (serialize_valid)
-            if f.name.startswith('mutconst_') and k == 'def' and f.stem[len('mutconst_'):] in U:
-                X = f.stem[len('mutconst_'):]
-                mc = re.fullmatch(re.escape(X) + r'_mc_(\w+)', n)
+            pre = re.match(r'(mutconst|mutsmall)_', f.name)      # mutation_laws_const.py / mutation_laws_small.py
+            if pre and k == 'def' and f.stem[len(pre.group(0)):] in U:
+                X = f.stem[len(pre.group(0)):]
+                mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
-                    late.append(((X, 'root' if mc.group(1) == 'root' else 'serialize_valid'), (f.name, n)))
+                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1) in ('dec', 'build') else 'serialize_valid'), (f.name, n)))
     for key, v in late:      # after every other law: the bridges read the first law of a kind
         ent.setdefault(key, []).append(v)
     return fulu, gen, ent, parsed
