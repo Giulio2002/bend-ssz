@@ -902,7 +902,7 @@
     "e2e/l2048_Eth1Data_api_witness_generated.bend": "6fb548d9c342c446f3fa2254b975661db1dd34b1fd92bb65606870195fa4a263",
     "e2e/l262144_PendingConsolidation_api_witness_generated.bend": "8bd7620cfb87a99687aa3dd49ebb3f8198b70a5c0b3a057e42a0710b3c5a8562",
     "e2e/l2_ConsolidationRequest_api_witness_generated.bend": "0d439557af483b8c2f47f1b34be519c4aa4a78276ff5fff9752fc0d87cd395f1",
-    "e2e/l4096_b2048_api_witness_generated.bend": "00d2693152f627637910f2db95f33557c335a566982a27be046ab5b61ce8d11d",
+    "e2e/l4096_b2048_api_witness_generated.bend": "4da9057e1c3e18f4d6a793ad8dfcb3cab4734822091f5e41ddffb310a167abc9",
     "e2e/l4096_b48_api_root_witness_generated.bend": "96e37f0f5fcf0da6f26ab0db59c29c8fb699fb87ef6f7a683becf8e9524e7943",
     "e2e/l4096_b48_api_witness_generated.bend": "499c8471923daa8a3d3de887ffc90c1bb9fc5d30e55b70e100ca7f721270ce47",
     "e2e/l8192_DepositRequest_api_witness_generated.bend": "1bf42c704391eb9334c6e8e7e5ea1af87379d273dda5b8b63aa7171a2e556a05",
