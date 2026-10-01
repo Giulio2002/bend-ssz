@@ -306,6 +306,101 @@ def l2_ConsolidationRequest_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tr
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l2_ConsolidationRequest(1n+c, F.spec_common__update(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), c, e), 0n), VS.items_snoc(RTL.xi_l2_ConsolidationRequest(c, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n), RN.v_ConsolidationRequest(e)),
     l2_ConsolidationRequest_xi_app(c, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t)), Equal.sym(Nat, F.spec_common__length(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t)), F.spec_common__pow2(d), F.array__slots_length(FuluConsolidationRequest_d.ConsolidationRequest, d, t, pf)), hJ)))
 
+# ---- l1048576_bl1073741824 ----
+def vm_l1048576_bl1073741824(m: RTL.MB<RTL.WMr>) -> S.Value: RTL.v_bl1073741824_bx(RTL.th_bl1073741824_bx(m))
+
+def l1048576_bl1073741824_xat_same(+W: List<&2, RTL.MB<RTL.WMr>>, +J: Nat, +e: RTL.MB<RTL.WMr>, +h: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.WMr>, W)) == True{} : Bool})
+    -> {RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), J) == e : RTL.MB<RTL.WMr>}:
+  match W J:
+    case Nil{} _: Empty.absurd({RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, Nil{}, J, e), J) == e : RTL.MB<RTL.WMr>}, F.nat__lt_zero_absurd(J, h))
+    case Con{x, t} 0n: {==}
+    case Con{x, t} 1n+p: l1048576_bl1073741824_xat_same(t, p, e, h)
+
+def l1048576_bl1073741824_xat_other(+W: List<&2, RTL.MB<RTL.WMr>>, +J: Nat, +i: Nat, +e: RTL.MB<RTL.WMr>, +ne: {Nat.is_eq(J, i) == False{} : Bool})
+    -> {RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i) == RTL.xat_l1048576_bl1073741824(W, i) : RTL.MB<RTL.WMr>}:
+  match W J i:
+    case Nil{} _ _: {==}
+    case Con{x, t} 0n 0n: Empty.absurd({RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, Con{x, t}, 0n, e), 0n) == RTL.xat_l1048576_bl1073741824(Con{x, t}, 0n) : RTL.MB<RTL.WMr>}, F.logic__false_true(Equal.sym(Bool, True{}, False{}, ne)))
+    case Con{x, t} 0n 1n+b: {==}
+    case Con{x, t} 1n+a 0n: {==}
+    case Con{x, t} 1n+a 1n+b: l1048576_bl1073741824_xat_other(t, a, b, e, ne)
+
+def l1048576_bl1073741824_xi_same(+k: Nat, +W: List<&2, RTL.MB<RTL.WMr>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.WMr>, +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> {RTL.xi_l1048576_bl1073741824(k, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0) == RTL.xi_l1048576_bl1073741824(k, W, i0) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(RTL.MB<RTL.WMr>, RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0), RTL.xat_l1048576_bl1073741824(W, i0), l1048576_bl1073741824_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))) :
+        {S.Items{vm_l1048576_bl1073741824(_), RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0)} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0), l1048576_bl1073741824_xi_same(q, W, 1n+i0, J, e, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), _} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0)} : S.Value}
+      {==}
+
+# the written element is item r of the items from i0 (J = i0 + r, below the list's length)
+def l1048576_bl1073741824_xi_set(+k: Nat, +r: Nat, +W: List<&2, RTL.MB<RTL.WMr>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.WMr>, +hJ: {J == Nat.add(i0, r) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.WMr>, W)) == True{} : Bool})
+    -> {RTL.xi_l1048576_bl1073741824(k, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0) == VS.items_set(RTL.xi_l1048576_bl1073741824(k, W, i0), r, vm_l1048576_bl1073741824(e)) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.WMr>, RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), z) == e : RTL.MB<RTL.WMr>}, J, i0, eJ, l1048576_bl1073741824_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l1048576_bl1073741824(_), RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0)} == S.Items{vm_l1048576_bl1073741824(e), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0), l1048576_bl1073741824_xi_same(q, W, 1n+i0, J, e, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l1048576_bl1073741824(e), _} == S.Items{vm_l1048576_bl1073741824(e), RTL.xi_l1048576_bl1073741824(q, W, 1n+i0)} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.WMr>, RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0), RTL.xat_l1048576_bl1073741824(W, i0), l1048576_bl1073741824_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l1048576_bl1073741824(_), RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0)} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), VS.items_set(RTL.xi_l1048576_bl1073741824(q, W, 1n+i0), p, vm_l1048576_bl1073741824(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1048576_bl1073741824(q, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0), VS.items_set(RTL.xi_l1048576_bl1073741824(q, W, 1n+i0), p, vm_l1048576_bl1073741824(e)), l1048576_bl1073741824_xi_set(q, p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), _} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), VS.items_set(RTL.xi_l1048576_bl1073741824(q, W, 1n+i0), p, vm_l1048576_bl1073741824(e))} : S.Value}
+      {==}
+
+# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def l1048576_bl1073741824_xi_app(+k: Nat, +W: List<&2, RTL.MB<RTL.WMr>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.WMr>, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.WMr>, W)) == True{} : Bool})
+    -> {RTL.xi_l1048576_bl1073741824(1n+k, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0) == VS.items_snoc(RTL.xi_l1048576_bl1073741824(k, W, i0), vm_l1048576_bl1073741824(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.WMr>, RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), z) == e : RTL.MB<RTL.WMr>}, J, i0, eJ, l1048576_bl1073741824_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l1048576_bl1073741824(_), S.EmptyItems{}} == S.Items{vm_l1048576_bl1073741824(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.WMr>, RTL.xat_l1048576_bl1073741824(F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), i0), RTL.xat_l1048576_bl1073741824(W, i0), l1048576_bl1073741824_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l1048576_bl1073741824(_), RTL.xi_l1048576_bl1073741824(1n+p, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0)} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), VS.items_snoc(RTL.xi_l1048576_bl1073741824(p, W, 1n+i0), vm_l1048576_bl1073741824(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1048576_bl1073741824(1n+p, F.spec_common__update(RTL.MB<RTL.WMr>, W, J, e), 1n+i0), VS.items_snoc(RTL.xi_l1048576_bl1073741824(p, W, 1n+i0), vm_l1048576_bl1073741824(e)), l1048576_bl1073741824_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), _} == S.Items{vm_l1048576_bl1073741824(RTL.xat_l1048576_bl1073741824(W, i0)), VS.items_snoc(RTL.xi_l1048576_bl1073741824(p, W, 1n+i0), vm_l1048576_bl1073741824(e))} : S.Value}
+      {==}
+
+def l1048576_bl1073741824_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.WMr>>, +J: Nat, +e: RTL.MB<RTL.WMr>, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(RTL.MB<RTL.WMr>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e)))), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t))), 0n)}, J, vm_l1048576_bl1073741824(e)) : S.Value}:
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.WMr>>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e))), F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e), F.array__freeze_thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e))) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, _), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t))), 0n)}, J, vm_l1048576_bl1073741824(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.WMr>>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.WMr>, t)) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e)), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, _), 0n)}, J, vm_l1048576_bl1073741824(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.WMr>>, F.array__slots(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, J, e)), F.spec_common__update(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t), J, e), F.array__upd_slots(RTL.MB<RTL.WMr>, d, t, J, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(c, _, 0n)} == VS.field_set(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, t), 0n)}, J, vm_l1048576_bl1073741824(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l1048576_bl1073741824(c, F.spec_common__update(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t), J, e), 0n), VS.items_set(RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, t), 0n), J, vm_l1048576_bl1073741824(e)),
+    l1048576_bl1073741824_xi_set(c, J, F.array__slots(RTL.MB<RTL.WMr>, t), 0n, J, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.WMr>, d, t, pf)), hJ)))
+
+def l1048576_bl1073741824_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.WMr>>, +e: RTL.MB<RTL.WMr>, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(RTL.MB<RTL.WMr>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l1048576_bl1073741824(c2, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t))), 0n)}, vm_l1048576_bl1073741824(e)) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(_, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t))), 0n)}, vm_l1048576_bl1073741824(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.WMr>>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e))), F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e), F.array__freeze_thaw(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e))) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(1n+c, F.array__slots(RTL.MB<RTL.WMr>, _), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t))), 0n)}, vm_l1048576_bl1073741824(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.WMr>>, F.array__freeze(RTL.MB<RTL.WMr>, F.array__thaw(RTL.MB<RTL.WMr>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.WMr>, t)) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(1n+c, F.array__slots(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e)), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, _), 0n)}, vm_l1048576_bl1073741824(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.WMr>>, F.array__slots(RTL.MB<RTL.WMr>, F.array__upd(RTL.MB<RTL.WMr>, d, t, c, e)), F.spec_common__update(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t), c, e), F.array__upd_slots(RTL.MB<RTL.WMr>, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l1048576_bl1073741824(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, t), 0n)}, vm_l1048576_bl1073741824(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l1048576_bl1073741824(1n+c, F.spec_common__update(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t), c, e), 0n), VS.items_snoc(RTL.xi_l1048576_bl1073741824(c, F.array__slots(RTL.MB<RTL.WMr>, t), 0n), vm_l1048576_bl1073741824(e)),
+    l1048576_bl1073741824_xi_app(c, F.array__slots(RTL.MB<RTL.WMr>, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.WMr>, F.array__slots(RTL.MB<RTL.WMr>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.WMr>, d, t, pf)), hJ)))
+
 # ---- l16_Withdrawal ----
 def l16_Withdrawal_xat_same(+W: List<&2, FuluWithdrawal_d.Withdrawal>, +J: Nat, +e: FuluWithdrawal_d.Withdrawal, +h: {Nat.is_lt(J, F.spec_common__length(FuluWithdrawal_d.Withdrawal, W)) == True{} : Bool})
     -> {RTL.xat_l16_Withdrawal(F.spec_common__update(FuluWithdrawal_d.Withdrawal, W, J, e), J) == e : FuluWithdrawal_d.Withdrawal}:
@@ -398,6 +493,386 @@ def l16_Withdrawal_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<FuluWi
     {S.Sequence{RTL.xi_l16_Withdrawal(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Withdrawal(c, F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n)}, RN.v_Withdrawal(e)) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l16_Withdrawal(1n+c, F.spec_common__update(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t), c, e), 0n), VS.items_snoc(RTL.xi_l16_Withdrawal(c, F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n), RN.v_Withdrawal(e)),
     l16_Withdrawal_xi_app(c, F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t)), Equal.sym(Nat, F.spec_common__length(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t)), F.spec_common__pow2(d), F.array__slots_length(FuluWithdrawal_d.Withdrawal, d, t, pf)), hJ)))
+
+# ---- l16_ProposerSlashing ----
+def vm_l16_ProposerSlashing(m: RTL.MB<RTL.M_ProposerSlashing>) -> S.Value: RTL.v_ProposerSlashing_bx(RTL.th_ProposerSlashing_bx(m))
+
+def l16_ProposerSlashing_xat_same(+W: List<&2, RTL.MB<RTL.M_ProposerSlashing>>, +J: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +h: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, W)) == True{} : Bool})
+    -> {RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), J) == e : RTL.MB<RTL.M_ProposerSlashing>}:
+  match W J:
+    case Nil{} _: Empty.absurd({RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, Nil{}, J, e), J) == e : RTL.MB<RTL.M_ProposerSlashing>}, F.nat__lt_zero_absurd(J, h))
+    case Con{x, t} 0n: {==}
+    case Con{x, t} 1n+p: l16_ProposerSlashing_xat_same(t, p, e, h)
+
+def l16_ProposerSlashing_xat_other(+W: List<&2, RTL.MB<RTL.M_ProposerSlashing>>, +J: Nat, +i: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +ne: {Nat.is_eq(J, i) == False{} : Bool})
+    -> {RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i) == RTL.xat_l16_ProposerSlashing(W, i) : RTL.MB<RTL.M_ProposerSlashing>}:
+  match W J i:
+    case Nil{} _ _: {==}
+    case Con{x, t} 0n 0n: Empty.absurd({RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, Con{x, t}, 0n, e), 0n) == RTL.xat_l16_ProposerSlashing(Con{x, t}, 0n) : RTL.MB<RTL.M_ProposerSlashing>}, F.logic__false_true(Equal.sym(Bool, True{}, False{}, ne)))
+    case Con{x, t} 0n 1n+b: {==}
+    case Con{x, t} 1n+a 0n: {==}
+    case Con{x, t} 1n+a 1n+b: l16_ProposerSlashing_xat_other(t, a, b, e, ne)
+
+def l16_ProposerSlashing_xi_same(+k: Nat, +W: List<&2, RTL.MB<RTL.M_ProposerSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> {RTL.xi_l16_ProposerSlashing(k, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0) == RTL.xi_l16_ProposerSlashing(k, W, i0) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(RTL.MB<RTL.M_ProposerSlashing>, RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0), RTL.xat_l16_ProposerSlashing(W, i0), l16_ProposerSlashing_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))) :
+        {S.Items{vm_l16_ProposerSlashing(_), RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0), l16_ProposerSlashing_xi_same(q, W, 1n+i0, J, e, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), _} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0)} : S.Value}
+      {==}
+
+# the written element is item r of the items from i0 (J = i0 + r, below the list's length)
+def l16_ProposerSlashing_xi_set(+k: Nat, +r: Nat, +W: List<&2, RTL.MB<RTL.M_ProposerSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +hJ: {J == Nat.add(i0, r) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, W)) == True{} : Bool})
+    -> {RTL.xi_l16_ProposerSlashing(k, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0) == VS.items_set(RTL.xi_l16_ProposerSlashing(k, W, i0), r, vm_l16_ProposerSlashing(e)) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_ProposerSlashing>, RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), z) == e : RTL.MB<RTL.M_ProposerSlashing>}, J, i0, eJ, l16_ProposerSlashing_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l16_ProposerSlashing(_), RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l16_ProposerSlashing(e), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0), l16_ProposerSlashing_xi_same(q, W, 1n+i0, J, e, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l16_ProposerSlashing(e), _} == S.Items{vm_l16_ProposerSlashing(e), RTL.xi_l16_ProposerSlashing(q, W, 1n+i0)} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_ProposerSlashing>, RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0), RTL.xat_l16_ProposerSlashing(W, i0), l16_ProposerSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l16_ProposerSlashing(_), RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), VS.items_set(RTL.xi_l16_ProposerSlashing(q, W, 1n+i0), p, vm_l16_ProposerSlashing(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_ProposerSlashing(q, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0), VS.items_set(RTL.xi_l16_ProposerSlashing(q, W, 1n+i0), p, vm_l16_ProposerSlashing(e)), l16_ProposerSlashing_xi_set(q, p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), _} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), VS.items_set(RTL.xi_l16_ProposerSlashing(q, W, 1n+i0), p, vm_l16_ProposerSlashing(e))} : S.Value}
+      {==}
+
+# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def l16_ProposerSlashing_xi_app(+k: Nat, +W: List<&2, RTL.MB<RTL.M_ProposerSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, W)) == True{} : Bool})
+    -> {RTL.xi_l16_ProposerSlashing(1n+k, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0) == VS.items_snoc(RTL.xi_l16_ProposerSlashing(k, W, i0), vm_l16_ProposerSlashing(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_ProposerSlashing>, RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), z) == e : RTL.MB<RTL.M_ProposerSlashing>}, J, i0, eJ, l16_ProposerSlashing_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l16_ProposerSlashing(_), S.EmptyItems{}} == S.Items{vm_l16_ProposerSlashing(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_ProposerSlashing>, RTL.xat_l16_ProposerSlashing(F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), i0), RTL.xat_l16_ProposerSlashing(W, i0), l16_ProposerSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l16_ProposerSlashing(_), RTL.xi_l16_ProposerSlashing(1n+p, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), VS.items_snoc(RTL.xi_l16_ProposerSlashing(p, W, 1n+i0), vm_l16_ProposerSlashing(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_ProposerSlashing(1n+p, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, W, J, e), 1n+i0), VS.items_snoc(RTL.xi_l16_ProposerSlashing(p, W, 1n+i0), vm_l16_ProposerSlashing(e)), l16_ProposerSlashing_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), _} == S.Items{vm_l16_ProposerSlashing(RTL.xat_l16_ProposerSlashing(W, i0)), VS.items_snoc(RTL.xi_l16_ProposerSlashing(p, W, 1n+i0), vm_l16_ProposerSlashing(e))} : S.Value}
+      {==}
+
+def l16_ProposerSlashing_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, +J: Nat, +e: RTL.MB<RTL.M_ProposerSlashing>, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(RTL.MB<RTL.M_ProposerSlashing>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e)))), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t))), 0n)}, J, vm_l16_ProposerSlashing(e)) : S.Value}:
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e))), F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e), F.array__freeze_thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e))) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, _), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t))), 0n)}, J, vm_l16_ProposerSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_ProposerSlashing>, t)) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e)), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, _), 0n)}, J, vm_l16_ProposerSlashing(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_ProposerSlashing>>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e)), F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), J, e), F.array__upd_slots(RTL.MB<RTL.M_ProposerSlashing>, d, t, J, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(c, _, 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n)}, J, vm_l16_ProposerSlashing(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l16_ProposerSlashing(c, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), J, e), 0n), VS.items_set(RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n), J, vm_l16_ProposerSlashing(e)),
+    l16_ProposerSlashing_xi_set(c, J, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n, J, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_ProposerSlashing>, d, t, pf)), hJ)))
+
+def l16_ProposerSlashing_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, +e: RTL.MB<RTL.M_ProposerSlashing>, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(RTL.MB<RTL.M_ProposerSlashing>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l16_ProposerSlashing(c2, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t))), 0n)}, vm_l16_ProposerSlashing(e)) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(_, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t))), 0n)}, vm_l16_ProposerSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e))), F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e), F.array__freeze_thaw(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e))) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(1n+c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, _), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t))), 0n)}, vm_l16_ProposerSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_ProposerSlashing>>, F.array__freeze(RTL.MB<RTL.M_ProposerSlashing>, F.array__thaw(RTL.MB<RTL.M_ProposerSlashing>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_ProposerSlashing>, t)) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(1n+c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e)), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, _), 0n)}, vm_l16_ProposerSlashing(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_ProposerSlashing>>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, F.array__upd(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e)), F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), c, e), F.array__upd_slots(RTL.MB<RTL.M_ProposerSlashing>, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l16_ProposerSlashing(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n)}, vm_l16_ProposerSlashing(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l16_ProposerSlashing(1n+c, F.spec_common__update(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), c, e), 0n), VS.items_snoc(RTL.xi_l16_ProposerSlashing(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n), vm_l16_ProposerSlashing(e)),
+    l16_ProposerSlashing_xi_app(c, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_ProposerSlashing>, F.array__slots(RTL.MB<RTL.M_ProposerSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_ProposerSlashing>, d, t, pf)), hJ)))
+
+# ---- l1_AttesterSlashing ----
+def vm_l1_AttesterSlashing(m: RTL.MB<RTL.M_AttesterSlashing>) -> S.Value: RTL.v_AttesterSlashing_bx(RTL.th_AttesterSlashing_bx(m))
+
+def l1_AttesterSlashing_xat_same(+W: List<&2, RTL.MB<RTL.M_AttesterSlashing>>, +J: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +h: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, W)) == True{} : Bool})
+    -> {RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), J) == e : RTL.MB<RTL.M_AttesterSlashing>}:
+  match W J:
+    case Nil{} _: Empty.absurd({RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, Nil{}, J, e), J) == e : RTL.MB<RTL.M_AttesterSlashing>}, F.nat__lt_zero_absurd(J, h))
+    case Con{x, t} 0n: {==}
+    case Con{x, t} 1n+p: l1_AttesterSlashing_xat_same(t, p, e, h)
+
+def l1_AttesterSlashing_xat_other(+W: List<&2, RTL.MB<RTL.M_AttesterSlashing>>, +J: Nat, +i: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +ne: {Nat.is_eq(J, i) == False{} : Bool})
+    -> {RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i) == RTL.xat_l1_AttesterSlashing(W, i) : RTL.MB<RTL.M_AttesterSlashing>}:
+  match W J i:
+    case Nil{} _ _: {==}
+    case Con{x, t} 0n 0n: Empty.absurd({RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, Con{x, t}, 0n, e), 0n) == RTL.xat_l1_AttesterSlashing(Con{x, t}, 0n) : RTL.MB<RTL.M_AttesterSlashing>}, F.logic__false_true(Equal.sym(Bool, True{}, False{}, ne)))
+    case Con{x, t} 0n 1n+b: {==}
+    case Con{x, t} 1n+a 0n: {==}
+    case Con{x, t} 1n+a 1n+b: l1_AttesterSlashing_xat_other(t, a, b, e, ne)
+
+def l1_AttesterSlashing_xi_same(+k: Nat, +W: List<&2, RTL.MB<RTL.M_AttesterSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> {RTL.xi_l1_AttesterSlashing(k, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0) == RTL.xi_l1_AttesterSlashing(k, W, i0) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(RTL.MB<RTL.M_AttesterSlashing>, RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0), RTL.xat_l1_AttesterSlashing(W, i0), l1_AttesterSlashing_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))) :
+        {S.Items{vm_l1_AttesterSlashing(_), RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0), l1_AttesterSlashing_xi_same(q, W, 1n+i0, J, e, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), _} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0)} : S.Value}
+      {==}
+
+# the written element is item r of the items from i0 (J = i0 + r, below the list's length)
+def l1_AttesterSlashing_xi_set(+k: Nat, +r: Nat, +W: List<&2, RTL.MB<RTL.M_AttesterSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +hJ: {J == Nat.add(i0, r) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, W)) == True{} : Bool})
+    -> {RTL.xi_l1_AttesterSlashing(k, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0) == VS.items_set(RTL.xi_l1_AttesterSlashing(k, W, i0), r, vm_l1_AttesterSlashing(e)) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_AttesterSlashing>, RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), z) == e : RTL.MB<RTL.M_AttesterSlashing>}, J, i0, eJ, l1_AttesterSlashing_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l1_AttesterSlashing(_), RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l1_AttesterSlashing(e), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0), l1_AttesterSlashing_xi_same(q, W, 1n+i0, J, e, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l1_AttesterSlashing(e), _} == S.Items{vm_l1_AttesterSlashing(e), RTL.xi_l1_AttesterSlashing(q, W, 1n+i0)} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_AttesterSlashing>, RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0), RTL.xat_l1_AttesterSlashing(W, i0), l1_AttesterSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l1_AttesterSlashing(_), RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), VS.items_set(RTL.xi_l1_AttesterSlashing(q, W, 1n+i0), p, vm_l1_AttesterSlashing(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1_AttesterSlashing(q, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0), VS.items_set(RTL.xi_l1_AttesterSlashing(q, W, 1n+i0), p, vm_l1_AttesterSlashing(e)), l1_AttesterSlashing_xi_set(q, p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), _} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), VS.items_set(RTL.xi_l1_AttesterSlashing(q, W, 1n+i0), p, vm_l1_AttesterSlashing(e))} : S.Value}
+      {==}
+
+# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def l1_AttesterSlashing_xi_app(+k: Nat, +W: List<&2, RTL.MB<RTL.M_AttesterSlashing>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, W)) == True{} : Bool})
+    -> {RTL.xi_l1_AttesterSlashing(1n+k, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0) == VS.items_snoc(RTL.xi_l1_AttesterSlashing(k, W, i0), vm_l1_AttesterSlashing(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_AttesterSlashing>, RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), z) == e : RTL.MB<RTL.M_AttesterSlashing>}, J, i0, eJ, l1_AttesterSlashing_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l1_AttesterSlashing(_), S.EmptyItems{}} == S.Items{vm_l1_AttesterSlashing(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_AttesterSlashing>, RTL.xat_l1_AttesterSlashing(F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), i0), RTL.xat_l1_AttesterSlashing(W, i0), l1_AttesterSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l1_AttesterSlashing(_), RTL.xi_l1_AttesterSlashing(1n+p, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0)} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), VS.items_snoc(RTL.xi_l1_AttesterSlashing(p, W, 1n+i0), vm_l1_AttesterSlashing(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l1_AttesterSlashing(1n+p, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, W, J, e), 1n+i0), VS.items_snoc(RTL.xi_l1_AttesterSlashing(p, W, 1n+i0), vm_l1_AttesterSlashing(e)), l1_AttesterSlashing_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), _} == S.Items{vm_l1_AttesterSlashing(RTL.xat_l1_AttesterSlashing(W, i0)), VS.items_snoc(RTL.xi_l1_AttesterSlashing(p, W, 1n+i0), vm_l1_AttesterSlashing(e))} : S.Value}
+      {==}
+
+def l1_AttesterSlashing_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, +J: Nat, +e: RTL.MB<RTL.M_AttesterSlashing>, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(RTL.MB<RTL.M_AttesterSlashing>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e)))), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t))), 0n)}, J, vm_l1_AttesterSlashing(e)) : S.Value}:
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e))), F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e), F.array__freeze_thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e))) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, _), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t))), 0n)}, J, vm_l1_AttesterSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_AttesterSlashing>, t)) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e)), 0n)} == VS.field_set(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, _), 0n)}, J, vm_l1_AttesterSlashing(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_AttesterSlashing>>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e)), F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), J, e), F.array__upd_slots(RTL.MB<RTL.M_AttesterSlashing>, d, t, J, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(c, _, 0n)} == VS.field_set(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n)}, J, vm_l1_AttesterSlashing(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l1_AttesterSlashing(c, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), J, e), 0n), VS.items_set(RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n), J, vm_l1_AttesterSlashing(e)),
+    l1_AttesterSlashing_xi_set(c, J, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n, J, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_AttesterSlashing>, d, t, pf)), hJ)))
+
+def l1_AttesterSlashing_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, +e: RTL.MB<RTL.M_AttesterSlashing>, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(RTL.MB<RTL.M_AttesterSlashing>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l1_AttesterSlashing(c2, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t))), 0n)}, vm_l1_AttesterSlashing(e)) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(_, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t))), 0n)}, vm_l1_AttesterSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e))), F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e), F.array__freeze_thaw(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e))) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(1n+c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, _), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t))), 0n)}, vm_l1_AttesterSlashing(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_AttesterSlashing>>, F.array__freeze(RTL.MB<RTL.M_AttesterSlashing>, F.array__thaw(RTL.MB<RTL.M_AttesterSlashing>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_AttesterSlashing>, t)) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(1n+c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e)), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, _), 0n)}, vm_l1_AttesterSlashing(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_AttesterSlashing>>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, F.array__upd(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e)), F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), c, e), F.array__upd_slots(RTL.MB<RTL.M_AttesterSlashing>, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l1_AttesterSlashing(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n)}, vm_l1_AttesterSlashing(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l1_AttesterSlashing(1n+c, F.spec_common__update(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), c, e), 0n), VS.items_snoc(RTL.xi_l1_AttesterSlashing(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n), vm_l1_AttesterSlashing(e)),
+    l1_AttesterSlashing_xi_app(c, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_AttesterSlashing>, F.array__slots(RTL.MB<RTL.M_AttesterSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_AttesterSlashing>, d, t, pf)), hJ)))
+
+# ---- l8_Attestation ----
+def vm_l8_Attestation(m: RTL.MB<RTL.M_Attestation>) -> S.Value: RTL.v_Attestation_bx(RTL.th_Attestation_bx(m))
+
+def l8_Attestation_xat_same(+W: List<&2, RTL.MB<RTL.M_Attestation>>, +J: Nat, +e: RTL.MB<RTL.M_Attestation>, +h: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Attestation>, W)) == True{} : Bool})
+    -> {RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), J) == e : RTL.MB<RTL.M_Attestation>}:
+  match W J:
+    case Nil{} _: Empty.absurd({RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, Nil{}, J, e), J) == e : RTL.MB<RTL.M_Attestation>}, F.nat__lt_zero_absurd(J, h))
+    case Con{x, t} 0n: {==}
+    case Con{x, t} 1n+p: l8_Attestation_xat_same(t, p, e, h)
+
+def l8_Attestation_xat_other(+W: List<&2, RTL.MB<RTL.M_Attestation>>, +J: Nat, +i: Nat, +e: RTL.MB<RTL.M_Attestation>, +ne: {Nat.is_eq(J, i) == False{} : Bool})
+    -> {RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i) == RTL.xat_l8_Attestation(W, i) : RTL.MB<RTL.M_Attestation>}:
+  match W J i:
+    case Nil{} _ _: {==}
+    case Con{x, t} 0n 0n: Empty.absurd({RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, Con{x, t}, 0n, e), 0n) == RTL.xat_l8_Attestation(Con{x, t}, 0n) : RTL.MB<RTL.M_Attestation>}, F.logic__false_true(Equal.sym(Bool, True{}, False{}, ne)))
+    case Con{x, t} 0n 1n+b: {==}
+    case Con{x, t} 1n+a 0n: {==}
+    case Con{x, t} 1n+a 1n+b: l8_Attestation_xat_other(t, a, b, e, ne)
+
+def l8_Attestation_xi_same(+k: Nat, +W: List<&2, RTL.MB<RTL.M_Attestation>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Attestation>, +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> {RTL.xi_l8_Attestation(k, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0) == RTL.xi_l8_Attestation(k, W, i0) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(RTL.MB<RTL.M_Attestation>, RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0), RTL.xat_l8_Attestation(W, i0), l8_Attestation_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))) :
+        {S.Items{vm_l8_Attestation(_), RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0)} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), RTL.xi_l8_Attestation(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0), RTL.xi_l8_Attestation(q, W, 1n+i0), l8_Attestation_xi_same(q, W, 1n+i0, J, e, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), _} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), RTL.xi_l8_Attestation(q, W, 1n+i0)} : S.Value}
+      {==}
+
+# the written element is item r of the items from i0 (J = i0 + r, below the list's length)
+def l8_Attestation_xi_set(+k: Nat, +r: Nat, +W: List<&2, RTL.MB<RTL.M_Attestation>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Attestation>, +hJ: {J == Nat.add(i0, r) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Attestation>, W)) == True{} : Bool})
+    -> {RTL.xi_l8_Attestation(k, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0) == VS.items_set(RTL.xi_l8_Attestation(k, W, i0), r, vm_l8_Attestation(e)) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_Attestation>, RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), z) == e : RTL.MB<RTL.M_Attestation>}, J, i0, eJ, l8_Attestation_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l8_Attestation(_), RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0)} == S.Items{vm_l8_Attestation(e), RTL.xi_l8_Attestation(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0), RTL.xi_l8_Attestation(q, W, 1n+i0), l8_Attestation_xi_same(q, W, 1n+i0, J, e, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l8_Attestation(e), _} == S.Items{vm_l8_Attestation(e), RTL.xi_l8_Attestation(q, W, 1n+i0)} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_Attestation>, RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0), RTL.xat_l8_Attestation(W, i0), l8_Attestation_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l8_Attestation(_), RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0)} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), VS.items_set(RTL.xi_l8_Attestation(q, W, 1n+i0), p, vm_l8_Attestation(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l8_Attestation(q, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0), VS.items_set(RTL.xi_l8_Attestation(q, W, 1n+i0), p, vm_l8_Attestation(e)), l8_Attestation_xi_set(q, p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), _} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), VS.items_set(RTL.xi_l8_Attestation(q, W, 1n+i0), p, vm_l8_Attestation(e))} : S.Value}
+      {==}
+
+# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def l8_Attestation_xi_app(+k: Nat, +W: List<&2, RTL.MB<RTL.M_Attestation>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Attestation>, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Attestation>, W)) == True{} : Bool})
+    -> {RTL.xi_l8_Attestation(1n+k, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0) == VS.items_snoc(RTL.xi_l8_Attestation(k, W, i0), vm_l8_Attestation(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_Attestation>, RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), z) == e : RTL.MB<RTL.M_Attestation>}, J, i0, eJ, l8_Attestation_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l8_Attestation(_), S.EmptyItems{}} == S.Items{vm_l8_Attestation(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_Attestation>, RTL.xat_l8_Attestation(F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), i0), RTL.xat_l8_Attestation(W, i0), l8_Attestation_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l8_Attestation(_), RTL.xi_l8_Attestation(1n+p, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0)} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), VS.items_snoc(RTL.xi_l8_Attestation(p, W, 1n+i0), vm_l8_Attestation(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l8_Attestation(1n+p, F.spec_common__update(RTL.MB<RTL.M_Attestation>, W, J, e), 1n+i0), VS.items_snoc(RTL.xi_l8_Attestation(p, W, 1n+i0), vm_l8_Attestation(e)), l8_Attestation_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), _} == S.Items{vm_l8_Attestation(RTL.xat_l8_Attestation(W, i0)), VS.items_snoc(RTL.xi_l8_Attestation(p, W, 1n+i0), vm_l8_Attestation(e))} : S.Value}
+      {==}
+
+def l8_Attestation_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_Attestation>>, +J: Nat, +e: RTL.MB<RTL.M_Attestation>, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(RTL.MB<RTL.M_Attestation>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e)))), 0n)} == VS.field_set(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t))), 0n)}, J, vm_l8_Attestation(e)) : S.Value}:
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Attestation>>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e))), F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e), F.array__freeze_thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e))) :
+    {S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, _), 0n)} == VS.field_set(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t))), 0n)}, J, vm_l8_Attestation(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Attestation>>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_Attestation>, t)) :
+    {S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e)), 0n)} == VS.field_set(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, _), 0n)}, J, vm_l8_Attestation(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_Attestation>>, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, J, e)), F.spec_common__update(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t), J, e), F.array__upd_slots(RTL.MB<RTL.M_Attestation>, d, t, J, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l8_Attestation(c, _, 0n)} == VS.field_set(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n)}, J, vm_l8_Attestation(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l8_Attestation(c, F.spec_common__update(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t), J, e), 0n), VS.items_set(RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n), J, vm_l8_Attestation(e)),
+    l8_Attestation_xi_set(c, J, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n, J, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_Attestation>, d, t, pf)), hJ)))
+
+def l8_Attestation_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_Attestation>>, +e: RTL.MB<RTL.M_Attestation>, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(RTL.MB<RTL.M_Attestation>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l8_Attestation(c2, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t))), 0n)}, vm_l8_Attestation(e)) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{RTL.xi_l8_Attestation(_, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t))), 0n)}, vm_l8_Attestation(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Attestation>>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e))), F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e), F.array__freeze_thaw(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e))) :
+    {S.Sequence{RTL.xi_l8_Attestation(1n+c, F.array__slots(RTL.MB<RTL.M_Attestation>, _), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t))), 0n)}, vm_l8_Attestation(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Attestation>>, F.array__freeze(RTL.MB<RTL.M_Attestation>, F.array__thaw(RTL.MB<RTL.M_Attestation>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_Attestation>, t)) :
+    {S.Sequence{RTL.xi_l8_Attestation(1n+c, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e)), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, _), 0n)}, vm_l8_Attestation(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_Attestation>>, F.array__slots(RTL.MB<RTL.M_Attestation>, F.array__upd(RTL.MB<RTL.M_Attestation>, d, t, c, e)), F.spec_common__update(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t), c, e), F.array__upd_slots(RTL.MB<RTL.M_Attestation>, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l8_Attestation(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n)}, vm_l8_Attestation(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l8_Attestation(1n+c, F.spec_common__update(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t), c, e), 0n), VS.items_snoc(RTL.xi_l8_Attestation(c, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n), vm_l8_Attestation(e)),
+    l8_Attestation_xi_app(c, F.array__slots(RTL.MB<RTL.M_Attestation>, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_Attestation>, F.array__slots(RTL.MB<RTL.M_Attestation>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_Attestation>, d, t, pf)), hJ)))
+
+# ---- l16_Deposit ----
+def vm_l16_Deposit(m: RTL.MB<RTL.M_Deposit>) -> S.Value: RTL.v_Deposit_bx(RTL.th_Deposit_bx(m))
+
+def l16_Deposit_xat_same(+W: List<&2, RTL.MB<RTL.M_Deposit>>, +J: Nat, +e: RTL.MB<RTL.M_Deposit>, +h: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Deposit>, W)) == True{} : Bool})
+    -> {RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), J) == e : RTL.MB<RTL.M_Deposit>}:
+  match W J:
+    case Nil{} _: Empty.absurd({RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, Nil{}, J, e), J) == e : RTL.MB<RTL.M_Deposit>}, F.nat__lt_zero_absurd(J, h))
+    case Con{x, t} 0n: {==}
+    case Con{x, t} 1n+p: l16_Deposit_xat_same(t, p, e, h)
+
+def l16_Deposit_xat_other(+W: List<&2, RTL.MB<RTL.M_Deposit>>, +J: Nat, +i: Nat, +e: RTL.MB<RTL.M_Deposit>, +ne: {Nat.is_eq(J, i) == False{} : Bool})
+    -> {RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i) == RTL.xat_l16_Deposit(W, i) : RTL.MB<RTL.M_Deposit>}:
+  match W J i:
+    case Nil{} _ _: {==}
+    case Con{x, t} 0n 0n: Empty.absurd({RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, Con{x, t}, 0n, e), 0n) == RTL.xat_l16_Deposit(Con{x, t}, 0n) : RTL.MB<RTL.M_Deposit>}, F.logic__false_true(Equal.sym(Bool, True{}, False{}, ne)))
+    case Con{x, t} 0n 1n+b: {==}
+    case Con{x, t} 1n+a 0n: {==}
+    case Con{x, t} 1n+a 1n+b: l16_Deposit_xat_other(t, a, b, e, ne)
+
+def l16_Deposit_xi_same(+k: Nat, +W: List<&2, RTL.MB<RTL.M_Deposit>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Deposit>, +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> {RTL.xi_l16_Deposit(k, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0) == RTL.xi_l16_Deposit(k, W, i0) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+q:
+      %Equal.sym(RTL.MB<RTL.M_Deposit>, RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0), RTL.xat_l16_Deposit(W, i0), l16_Deposit_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))) :
+        {S.Items{vm_l16_Deposit(_), RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0)} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), RTL.xi_l16_Deposit(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0), RTL.xi_l16_Deposit(q, W, 1n+i0), l16_Deposit_xi_same(q, W, 1n+i0, J, e, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), _} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), RTL.xi_l16_Deposit(q, W, 1n+i0)} : S.Value}
+      {==}
+
+# the written element is item r of the items from i0 (J = i0 + r, below the list's length)
+def l16_Deposit_xi_set(+k: Nat, +r: Nat, +W: List<&2, RTL.MB<RTL.M_Deposit>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Deposit>, +hJ: {J == Nat.add(i0, r) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Deposit>, W)) == True{} : Bool})
+    -> {RTL.xi_l16_Deposit(k, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0) == VS.items_set(RTL.xi_l16_Deposit(k, W, i0), r, vm_l16_Deposit(e)) : S.Value}:
+  match k r:
+    case 0n _: {==}
+    case 1n+q 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_Deposit>, RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), z) == e : RTL.MB<RTL.M_Deposit>}, J, i0, eJ, l16_Deposit_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l16_Deposit(_), RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0)} == S.Items{vm_l16_Deposit(e), RTL.xi_l16_Deposit(q, W, 1n+i0)} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0), RTL.xi_l16_Deposit(q, W, 1n+i0), l16_Deposit_xi_same(q, W, 1n+i0, J, e, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, eJ), F.nat__lt_succ(i0)))) :
+        {S.Items{vm_l16_Deposit(e), _} == S.Items{vm_l16_Deposit(e), RTL.xi_l16_Deposit(q, W, 1n+i0)} : S.Value}
+      {==}
+    case 1n+q 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_Deposit>, RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0), RTL.xat_l16_Deposit(W, i0), l16_Deposit_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l16_Deposit(_), RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0)} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), VS.items_set(RTL.xi_l16_Deposit(q, W, 1n+i0), p, vm_l16_Deposit(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_Deposit(q, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0), VS.items_set(RTL.xi_l16_Deposit(q, W, 1n+i0), p, vm_l16_Deposit(e)), l16_Deposit_xi_set(q, p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), _} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), VS.items_set(RTL.xi_l16_Deposit(q, W, 1n+i0), p, vm_l16_Deposit(e))} : S.Value}
+      {==}
+
+# the written element is one past the k items from i0 (J = i0 + k, below the list's length): the items and the new one at the end
+def l16_Deposit_xi_app(+k: Nat, +W: List<&2, RTL.MB<RTL.M_Deposit>>, +i0: Nat, +J: Nat, +e: RTL.MB<RTL.M_Deposit>, +hJ: {J == Nat.add(i0, k) : Nat},
+    +hl: {Nat.is_lt(J, F.spec_common__length(RTL.MB<RTL.M_Deposit>, W)) == True{} : Bool})
+    -> {RTL.xi_l16_Deposit(1n+k, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0) == VS.items_snoc(RTL.xi_l16_Deposit(k, W, i0), vm_l16_Deposit(e)) : S.Value}:
+  match k:
+    case 0n:
+      +eJ = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      %Equal.sym(RTL.MB<RTL.M_Deposit>, RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0), e, F.logic__subst(Nat, z => {RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), z) == e : RTL.MB<RTL.M_Deposit>}, J, i0, eJ, l16_Deposit_xat_same(W, J, e, hl))) :
+        {S.Items{vm_l16_Deposit(_), S.EmptyItems{}} == S.Items{vm_l16_Deposit(e), S.EmptyItems{}} : S.Value}
+      {==}
+    case 1n+p:
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, Nat.add(i0, 1n+p), J, Equal.sym(Nat, J, Nat.add(i0, 1n+p), hJ), lt_add_succ(i0, p))
+      %Equal.sym(RTL.MB<RTL.M_Deposit>, RTL.xat_l16_Deposit(F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), i0), RTL.xat_l16_Deposit(W, i0), l16_Deposit_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))) :
+        {S.Items{vm_l16_Deposit(_), RTL.xi_l16_Deposit(1n+p, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0)} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), VS.items_snoc(RTL.xi_l16_Deposit(p, W, 1n+i0), vm_l16_Deposit(e))} : S.Value}
+      %Equal.sym(S.Value, RTL.xi_l16_Deposit(1n+p, F.spec_common__update(RTL.MB<RTL.M_Deposit>, W, J, e), 1n+i0), VS.items_snoc(RTL.xi_l16_Deposit(p, W, 1n+i0), vm_l16_Deposit(e)), l16_Deposit_xi_app(p, W, 1n+i0, J, e, Equal.trans(Nat, J, Nat.add(i0, 1n+p), Nat.add(1n+i0, p), hJ, F.nat__add_succ(i0, p)), hl)) :
+        {S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), _} == S.Items{vm_l16_Deposit(RTL.xat_l16_Deposit(W, i0)), VS.items_snoc(RTL.xi_l16_Deposit(p, W, 1n+i0), vm_l16_Deposit(e))} : S.Value}
+      {==}
+
+def l16_Deposit_view_set(+c: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_Deposit>>, +J: Nat, +e: RTL.MB<RTL.M_Deposit>, +hJ: {Nat.is_lt(J, F.spec_common__pow2(d)) == True{} : Bool},
+    +pf: {F.array__perfect(RTL.MB<RTL.M_Deposit>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e)))), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t))), 0n)}, J, vm_l16_Deposit(e)) : S.Value}:
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Deposit>>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e))), F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e), F.array__freeze_thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e))) :
+    {S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, _), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t))), 0n)}, J, vm_l16_Deposit(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Deposit>>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_Deposit>, t)) :
+    {S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e)), 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, _), 0n)}, J, vm_l16_Deposit(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_Deposit>>, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, J, e)), F.spec_common__update(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t), J, e), F.array__upd_slots(RTL.MB<RTL.M_Deposit>, d, t, J, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l16_Deposit(c, _, 0n)} == VS.field_set(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n)}, J, vm_l16_Deposit(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l16_Deposit(c, F.spec_common__update(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t), J, e), 0n), VS.items_set(RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n), J, vm_l16_Deposit(e)),
+    l16_Deposit_xi_set(c, J, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n, J, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_Deposit>, d, t, pf)), hJ)))
+
+def l16_Deposit_view_app(+c: Nat, +c2: Nat, +d: Nat, +t: F.array__Tree<RTL.MB<RTL.M_Deposit>>, +e: RTL.MB<RTL.M_Deposit>, +hJ: {Nat.is_lt(c, F.spec_common__pow2(d)) == True{} : Bool},
+    +hc2: {c2 == 1n+c : Nat}, +pf: {F.array__perfect(RTL.MB<RTL.M_Deposit>, d, t) == True{} : Bool})
+    -> {S.Sequence{RTL.xi_l16_Deposit(c2, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t))), 0n)}, vm_l16_Deposit(e)) : S.Value}:
+  %Equal.sym(Nat, c2, 1n+c, hc2) :
+    {S.Sequence{RTL.xi_l16_Deposit(_, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e)))), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t))), 0n)}, vm_l16_Deposit(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Deposit>>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e))), F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e), F.array__freeze_thaw(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e))) :
+    {S.Sequence{RTL.xi_l16_Deposit(1n+c, F.array__slots(RTL.MB<RTL.M_Deposit>, _), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t))), 0n)}, vm_l16_Deposit(e)) : S.Value}
+  %Equal.sym(F.array__Tree<RTL.MB<RTL.M_Deposit>>, F.array__freeze(RTL.MB<RTL.M_Deposit>, F.array__thaw(RTL.MB<RTL.M_Deposit>, t)), t, F.array__freeze_thaw(RTL.MB<RTL.M_Deposit>, t)) :
+    {S.Sequence{RTL.xi_l16_Deposit(1n+c, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e)), 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, _), 0n)}, vm_l16_Deposit(e)) : S.Value}
+  %Equal.sym(List<&2, RTL.MB<RTL.M_Deposit>>, F.array__slots(RTL.MB<RTL.M_Deposit>, F.array__upd(RTL.MB<RTL.M_Deposit>, d, t, c, e)), F.spec_common__update(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t), c, e), F.array__upd_slots(RTL.MB<RTL.M_Deposit>, d, t, c, e, hJ, pf)) :
+    {S.Sequence{RTL.xi_l16_Deposit(1n+c, _, 0n)} == VS.seq_append(S.Sequence{RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n)}, vm_l16_Deposit(e)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RTL.xi_l16_Deposit(1n+c, F.spec_common__update(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t), c, e), 0n), VS.items_snoc(RTL.xi_l16_Deposit(c, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n), vm_l16_Deposit(e)),
+    l16_Deposit_xi_app(c, F.array__slots(RTL.MB<RTL.M_Deposit>, t), 0n, c, e, {==}, F.logic__subst(Nat, z => {Nat.is_lt(c, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t)), Equal.sym(Nat, F.spec_common__length(RTL.MB<RTL.M_Deposit>, F.array__slots(RTL.MB<RTL.M_Deposit>, t)), F.spec_common__pow2(d), F.array__slots_length(RTL.MB<RTL.M_Deposit>, d, t, pf)), hJ)))
 
 # ---- l16_SignedVoluntaryExit ----
 def l16_SignedVoluntaryExit_xat_same(+W: List<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +J: Nat, +e: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +h: {Nat.is_lt(J, F.spec_common__length(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, W)) == True{} : Bool})

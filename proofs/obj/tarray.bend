@@ -444,3 +444,43 @@ def swap_other(-T: Type, +d: Nat, a: Array<T>, +i: U32, +j: U32, w: T, u: T, +hd
     +ne: {Nat.is_eq(U32.to_nat(i), U32.to_nat(j)) == False{} : Bool}, pf: tperf(T, d, a))
     -> {Array.swap(T, Array.set(T, a, i, w), j, u) == (put(T, put(T, a, F.u32__pow2u(d), J(F.u32__pow2u(d), i), w, Z(F.u32__pow2u(d), i)), F.u32__pow2u(d), J(F.u32__pow2u(d), j), u, Z(F.u32__pow2u(d), j)), old(T, a, F.u32__pow2u(d), J(F.u32__pow2u(d), j), Z(F.u32__pow2u(d), j))) : Array<T> & T} & {Array.swap(T, a, j, u) == (put(T, a, F.u32__pow2u(d), J(F.u32__pow2u(d), j), u, Z(F.u32__pow2u(d), j)), old(T, a, F.u32__pow2u(d), J(F.u32__pow2u(d), j), Z(F.u32__pow2u(d), j))) : Array<T> & T}:
   swap_other_go(T, d, a, i, j, w, u, ro(T, d, a, F.u32__pow2u(d), J(F.u32__pow2u(d), i), Z(F.u32__pow2u(d), i), J(F.u32__pow2u(d), j), Z(F.u32__pow2u(d), j), w, u, slots_differ(d, i, j, hd, hi, hj, ne), pf))
+
+# ---- one level of put's walk against the index as a Nat (used by coll_boxed.bend's tfzput) ----
+# half the size of a power of two is the next one down
+def shr_n(+p: Nat, +n: U32, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool}, +hn: {n == F.u32__pow2u(1n+p) : U32}) -> {U32.shr(n) == F.u32__pow2u(p) : U32}:
+  %Equal.sym(U32, n, F.u32__pow2u(1n+p), hn) : {U32.shr(_) == F.u32__pow2u(p) : U32}
+  F.u32__shr_pow2u(p, hd)
+
+# the bit test of put at this level is the test of the index j against 2^p
+def bit_nat(+p: Nat, +n: U32, +i: U32, +j: Nat, +z: Bool, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool}, +hn: {n == F.u32__pow2u(1n+p) : U32}, +hj: {U32.to_nat(i) == j : Nat},
+    +hz: {z == U32.is_lt(i, U32.shr(n)) : Bool}) -> {Nat.is_lt(j, F.spec_common__pow2(p)) == z : Bool}:
+  F.logic__subst(Nat, m => {Nat.is_lt(m, F.spec_common__pow2(p)) == z : Bool}, U32.to_nat(i), j, hj,
+    Equal.trans(Bool, Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(p)), U32.is_lt(i, F.u32__pow2u(p)), z,
+      F.array__lt_bridge(i, p, F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd), U32.is_lt(i, F.u32__pow2u(p)), {==}),
+      Equal.trans(Bool, U32.is_lt(i, F.u32__pow2u(p)), U32.is_lt(i, U32.shr(n)), z,
+        Equal.cong(U32, Bool, m => U32.is_lt(i, m), F.u32__pow2u(p), U32.shr(n), Equal.sym(U32, U32.shr(n), F.u32__pow2u(p), shr_n(p, n, hd, hn))),
+        Equal.sym(Bool, z, U32.is_lt(i, U32.shr(n)), hz))))
+
+# in the right half the index is at least 2^p
+def ge_ok(+p: Nat, +n: U32, +i: U32, +j: Nat, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool}, +hn: {n == F.u32__pow2u(1n+p) : U32}, +hj: {U32.to_nat(i) == j : Nat},
+    +hz: {False{} == U32.is_lt(i, U32.shr(n)) : Bool}) -> {Nat.is_le(F.spec_common__pow2(p), j) == True{} : Bool}:
+  F.nat__not_lt_le(j, F.spec_common__pow2(p), bit_nat(p, n, i, j, False{}, hd, hn, hj, hz))
+
+# ... and the index into the right half is below 2^p
+def hi_ok(+p: Nat, +n: U32, +i: U32, +j: Nat, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool}, +hn: {n == F.u32__pow2u(1n+p) : U32}, +hi: {Nat.is_lt(j, F.spec_common__pow2(1n+p)) == True{} : Bool},
+    +hj: {U32.to_nat(i) == j : Nat}, +hz: {False{} == U32.is_lt(i, U32.shr(n)) : Bool}) -> {Nat.is_lt(Nat.sub(j, F.spec_common__pow2(p)), F.spec_common__pow2(p)) == True{} : Bool}:
+  F.array__upper_lt(j, p, hi, ge_ok(p, n, i, j, hd, hn, hj, hz))
+
+# the index put passes to the right half, as a Nat
+def sub_of(+p: Nat, +n: U32, +i: U32, +j: Nat, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool}, +hn: {n == F.u32__pow2u(1n+p) : U32}, +hj: {U32.to_nat(i) == j : Nat},
+    +hz: {False{} == U32.is_lt(i, U32.shr(n)) : Bool}) -> {U32.to_nat(U32.sub(i, U32.shr(n))) == Nat.sub(j, F.spec_common__pow2(p)) : Nat}:
+  Equal.trans(Nat, U32.to_nat(U32.sub(i, U32.shr(n))), U32.to_nat(U32.sub(i, F.u32__pow2u(p))), Nat.sub(j, F.spec_common__pow2(p)),
+    Equal.cong(U32, Nat, m => U32.to_nat(U32.sub(i, m)), U32.shr(n), F.u32__pow2u(p), shr_n(p, n, hd, hn)),
+    Equal.trans(Nat, U32.to_nat(U32.sub(i, F.u32__pow2u(p))), Nat.sub(U32.to_nat(i), F.spec_common__pow2(p)), Nat.sub(j, F.spec_common__pow2(p)),
+      F.array__sub_bridge(i, p, F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd), F.logic__subst(Nat, m => {Nat.is_le(F.spec_common__pow2(p), m) == True{} : Bool}, j, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), j, hj), ge_ok(p, n, i, j, hd, hn, hj, hz))),
+      Equal.cong(Nat, Nat, m => Nat.sub(m, F.spec_common__pow2(p)), U32.to_nat(i), j, hj)))
+
+# and_intro with the two booleans erased (they are the perfection of trees the caller does not hold)
+def and_i(-a: Bool, -b: Bool, +ea: {a == True{} : Bool}, +eb: {b == True{} : Bool}) -> {Bool.and(a, b) == True{} : Bool}:
+  %Equal.sym(Bool, a, True{}, ea) : {Bool.and(_, b) == True{} : Bool}
+  eb
