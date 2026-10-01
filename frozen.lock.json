@@ -642,6 +642,7 @@
     "e2e/ProgressiveBitsStruct_e2e_set_generated.bend": "81732d22ab93870f415ef09328886b38a19558208cda5882f9388b2cba3e6477",
     "e2e/ProgressiveBitsStruct_e2e_set_witness_generated.bend": "488c4ddafda99ee7398684a401c034b96f6ad467c843df78576742bcda897141",
     "e2e/ProgressiveBitsStruct_e2e_witness_generated.bend": "d8965caed4b654434aa362306a9df58f894b82ca42da00ad3869e2e4431d9e8b",
+    "e2e/ProgressiveComplexTestStruct_e2e_comp_generated.bend": "73e4028b3eac34c826efe8f68d6b9f95f904703ccf9b1837e8d0fe54d8072d2e",
     "e2e/ProgressiveComplexTestStruct_e2e_dec_generated.bend": "fdb18e05e1e2f78c21b1389aec3047db90580158f2c3cf364616f15308c3e818",
     "e2e/ProgressiveComplexTestStruct_e2e_generated.bend": "a102523beb9a24bb0f41c790caae23d1bb5ba7e2ceb5a87b4d656865359e79ca",
     "e2e/ProgressiveComplexTestStruct_e2e_root_generated.bend": "889665d47238fc535f0fdad5c80f1210836752e86726b324e2712b5d3e12348c",
