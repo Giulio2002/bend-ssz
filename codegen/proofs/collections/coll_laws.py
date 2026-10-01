@@ -1579,6 +1579,27 @@ def coll_bits(cs):
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)],
                  TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')
             n += 1
+            # the spec value after an append that reallocates the storage: the bits before and the new bit (the grown tree keeps the old words: bits_view.bend's view_snoc_grow)
+            KK = 'U32.to_nat(U32.shrn((%s + 3 : U32), 2n))' % NBY
+            D2g, Gg = GW['D2'], GW['G']
+            Xg = 'WR.at(F.array__slots(U32, %s), q)' % Gg
+            NWg = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(n, 31)))' % Xg
+            T1g = 'F.array__upd(U32, %s, %s, q, %s)' % (D2g, Gg, NWg)
+            L.append('def %s_api_view_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, %s, '
+                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(%s)) == True{} : Bool}, '
+                     '+hcov: {Nat.is_le(q, %s) == True{} : Bool})' % (c, I['GA'], GW['prem'], N1, JWn, D2g, KK))
+            L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (I['GA'], VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
+            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s) : {%s == %s : +List<Bool>}'
+                     % (WB, NBY, Gg, NBY, GW['call'], VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(%s, %s, %s, %s, q, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
+                     % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bit_put(n, v, _)'), RHSn))
+            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
+                     % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('_'), RHSn))
+            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, ha), hg, hq, hk, hcov)' % (D2g, KK, N1, mlim.group(1)))
+            L.append('')
+            n += 1
         L.append('')
     head = ['import Base'] + ['import %s as %s' % (rel(pth), a) for a, pth in imps.items()]
     head += ['', HEADER.replace('coll_laws.py', 'coll_laws.py (coll_bits)'),
