@@ -166,6 +166,7 @@ def attester_slashing(lf):
 
 BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+TOT_HOOK = {}   # name -> f(predicate text) -> the proof of a total-size premise, or None (set by the provider)
 BV_CFG = {}   # the decoded bit vectors' room and check facts of the container being synthesized (set by its provider)
 EXTRA_FILES = {}   # path -> text: extra files the providers write (compose merges them into its outputs)
 BUF_K = {}   # names whose dec bridge bounds n by 4 * 2^k (Nat form): the k
@@ -1305,6 +1306,10 @@ STORAGE = {('e2e_blist.bend', 'sdk'): 'any', ('e2e_u64l.bend', 'sdk'): 'any', ('
 
 
 class DSynth(W.Synth):
+    def part(self, mod, pred, env):
+        # a decoded object's premises are open (they use the provider's lets): a part of a split chain is proved inline, not as a closed lemma
+        return self.prove(mod, pred, dict(env, __split=False))
+
     def witness(self, mod, ty, v, body, env):
         subj = env.get('__subj')
         if isinstance(subj, WordsFix):
@@ -1360,6 +1365,10 @@ class DSynth(W.Synth):
 
     def eq(self, p, env):
         subj = env.get('__subj')
+        for hk in TOT_HOOK.values():
+            r_ = hk(p)
+            if r_ is not None:
+                return r_
         mbv = re.match(r'\{last_bv(1|2|8|257)\(o\) == ', p.strip())
         if mbv and BV_CFG and env.get('__e', {}).get('o'):   # a decoded Bitvector<K> field: its bits past K are zero (e2e_dfx.rp<K>)
             K_ = int(mbv.group(1))
