@@ -636,6 +636,9 @@ def body_ctx(al, B):
     T4 = f'{Bx}, {Bo}, {Bn}'
     COM = f"d, t, {Bn}, {Bx}, {Bo}, {Bn}, {B['eo']}, {B['hd31']}, {B['hw']}, {B['hwN']}, {B['pf']}, {B['hchk']}"
     hc = lambda j: f"{WB}.itD{j}(t, {Bx}, {Bo}, {Bn}, {B['hchk']})"
+    HVK = al('e2e/e2e_hvk.bend')
+    # the window facts of list j's window the variable-size lists' libraries (e2e_dvl_*) take after the length: eo, hd, hw, hw32, pfw
+    wf = lambda j: (f"{WB}.eoJ{j}D({COM}), {B['hd31']}, {WB}.hwJ{j}D({COM}), {HVK}.hwN32({WB}.XJ{j}(t, {Bx}), {WB}.LJ{j}(t, {Bx}), {WB}.hwJ{j}N({COM})), {B['pf']}")
     A = dict(d='d', t='t', x=f'{WB}.XJ5(t, {Bx})', off=f'{WB}.FJ5({Bo}, t, {Bx})', n=f'{WB}.LJ5(t, {Bx})', pf=B['pf'], hd31=B['hd31'],
              eo=f'{WB}.eoJ5D({COM})', hw=f'{WB}.hwJ5D({COM})', hwN=f'{WB}.hwJ5N({COM})', hchk=hc(5),
              hSN=f"{DBB}.pay_hSN(t, {Bx}, {Bo}, {Bn}, {B['hS']}, {B['hchk']})")
@@ -660,6 +663,8 @@ def body_ctx(al, B):
         if fname in names:
             j = names[fname]
             L = al(BODY_ST[j])
+            if j in (1, 2):
+                return RLDec(e, lambda k: f'{L}.sdl({a}, {wf(j)}, {hc(j)})', lambda sc: f'{L}.rep({a}, {wf(j)}, {sc}, {{==}}, {{==}}, {hc(j)})')
             return RLDec(e, lambda k: f'{L}.sdl({a}, {hc(j)})', lambda sc: f'{L}.rep({a}, {sc}, {{==}}, {{==}}, {hc(j)})')
         if fname in ('var_winx_l16_SignedVoluntaryExit.bend', 'var_winx_l16_SignedBLSToExecutionChange.bend'):
             j = 4 if 'Voluntary' in fname else 6
@@ -687,7 +692,8 @@ def body_ctx(al, B):
             f"{DEP}.cc2(t, {WB}.XJ5(t, {Bx}), {WB}.FJ5({Bo}, t, {Bx}), {WB}.LJ5(t, {Bx}), {hc(5)}))")
     etx = (f'{DTX}.txl(d, t, {WP}.X1(t, {WB}.XJ5(t, {Bx})), {WP}.F1({WB}.FJ5({Bo}, t, {Bx}), t, {WB}.XJ5(t, {Bx})), {WP}.L1(t, {WB}.XJ5(t, {Bx})), {hwn1}, '
            f'{DEP}.ce1(t, {WB}.XJ5(t, {Bx}), {WB}.FJ5({Bo}, t, {Bx}), {WB}.LJ5(t, {Bx}), {hc(5)}))')
-    szeq = (f'{L[0]}.szl({w(0)}), {L[1]}.szl({w(1)}), {L[2]}.szl({w(2)}), {L[3]}.szl({w(3)}), {DRQ}.eq_VE({w(4)}), {DEP}.szr(d, t, {T5}, {etx}, {hc(5)}), '
+    w2 = lambda j: f'd, t, {WB}.XJ{j}(t, {Bx}), {WB}.FJ{j}({Bo}, t, {Bx}), {WB}.LJ{j}(t, {Bx}), {wf(j)}, {hc(j)}'
+    szeq = (f'{L[0]}.szl({w(0)}), {L[1]}.szl({w2(1)}), {L[2]}.szl({w2(2)}), {L[3]}.szl({w(3)}), {DRQ}.eq_VE({w(4)}), {DEP}.szr(d, t, {T5}, {etx}, {hc(5)}), '
             f'{DRQ}.eq_BC({w(6)}), {{==}}, {DRQ}.rq(d, t, {X8}, {F8}, {L8}, {hc(8)})')
     return dict(lets=out, words=words, rlchk=rlchk, xleaf=xleaf, hs9=hs9, hv11=hv11, szeq=szeq)
 
