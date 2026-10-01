@@ -1205,7 +1205,7 @@ def prog_bits_struct(lf):
     (pb_child, flavor 'o', under n + 4 <= 2^27) and four bit vectors"""
     name = 'ProgressiveBitsStruct'
     win = 'proofs/obj/var_winx_ProgressiveBitsStruct.bend'
-    BUF_D.add(name)
+    BUF.depth_first.add(name)
     HEAVY[name] = H27
 
     def lets(al):

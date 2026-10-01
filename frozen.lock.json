@@ -662,6 +662,7 @@
     "e2e/ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend": "c66ca851966fad4b6b272ca2d4a2291dfbd7870b017ee8f94ad7fd1cb9eaa40b",
     "e2e/ProgressiveSingleListContainerTestStruct_e2e_set_witness_generated.bend": "faf73b4511afd917b9572e9e6caab9c87006f2bba3381a8f9c321065a1445b9e",
     "e2e/ProgressiveSingleListContainerTestStruct_e2e_witness_generated.bend": "804f78103f484f8626d928a3b6e430eed253a478f1a550791a3196f8412abcfb",
+    "e2e/ProgressiveTestStruct_e2e_comp_generated.bend": "a9f15ed0beafe9395cd3920298efeb5e7da38a80830b6a5f2d6b6ecc55eda4a3",
     "e2e/ProgressiveTestStruct_e2e_dec_generated.bend": "3342ddd9dc4dd9a9d7e6359e96a9f6029963ea01a4562cc3eeed001617ea1066",
     "e2e/ProgressiveTestStruct_e2e_generated.bend": "e4462ea027603c1e76530bc95f0e84b36008214ab1a09888add3b2f6aa1a97ea",
     "e2e/ProgressiveTestStruct_e2e_root_generated.bend": "03dc2fe0bebbb5213c8d86cd4ec22af58208b8dac214ae43a99cdb30fb1aba34",

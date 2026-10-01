@@ -81,7 +81,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/proofs/collections/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->472<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->474<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->41<!-- /fig --> collections: the packed collections of whole-word
