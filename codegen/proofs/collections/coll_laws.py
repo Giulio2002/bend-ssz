@@ -1127,7 +1127,7 @@ def coll_words():
 CB = OBJ / 'coll_seq.bend'
 
 
-def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps):
+def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps, GA=None):
     """the spec view of a boxed list after an accepted set: the view before with item i replaced by the view of the stored box
     (proofs/obj/tfz_boxed.bend: freezing the written array is updating the frozen tree; view_seq.bend's induction over the items)"""
     from codegen.proofs.collections import boxedview as BV
@@ -1172,7 +1172,41 @@ def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps):
     out.append('  %s_view_go(d, t, n, i, v, hd, hi, pfT, hs, TB.tfzrs_%s(d, %s, %s, %s, U32.to_nat(i), %s, %s, hd, {==}, hi, '
                'Equal.cong(U32, Nat, m => U32.to_nat(m), %s, i, F.u32__mask_pow2u(i, d, hd, hi)), {==}, TB.amperf_%s(d, t, pfT)))'
                % (c, c, AM, NN, Ji, WV, Zi, Ji, c))
-    return 1
+    if not GA:
+        return 1
+    # an accepted append (the storage has room, the array of the tree): the view before with the new box's view at the end. Writing the box at index n is
+    # TA.put (as for set); the frozen tree is updated (tfzrs_<c>), and view_app_t_<c> reads the update
+    N1 = '(n + 1 : U32)'
+    Jn, Zn = 'TA.J(%s, n)' % NN, 'TA.Z(%s, n)' % NN
+    SEQA = lambda a_: SEQ(a_, N1)
+    RESA = 'VS.seq_append(%s(%s), VQ.vm_%s(%s))' % (XV, SEQ(AM, 'n'), c, FZW)
+    LHSA = '%s(Pair.fst(%s, Bool, %s.%s_append(%s, v)))' % (XV, T, DA, c, SEQ(AM, 'n'))
+    prea = ('+d: Nat, +t: %s, +n: U32, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hr: {U32.is_lt(n, %s) == True{} : Bool}, '
+            '+pfT: {F.array__perfect(%s, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, +hcn: {U32.to_nat(%s) == 1n+U32.to_nat(n) : Nat}' % (TR, 'v: ' + VT, NN, MB, GA, N1))
+    ZTA = BV.zatype(c, AM, NN, Jn, 'U32.to_nat(n)', WV, Zn, 'd')
+    out.append('def %s_view_go_app(%s, b: %s)\n    -> {%s == %s : S.Value}:' % (c, prea, ZTA, LHSA, RESA))
+    out.append('  (+e1, r1) = b')
+    out.append('  (+pf1, r2) = r1')
+    out.append('  (+f1, r3) = r2')
+    out.append('  (+f2, r4) = r3')
+    out.append('  (+f3, f4) = r4')
+    out.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(%s, Bool, %s.%s_app_in(_, %s, n, v))) == %s : S.Value}' % (GA, XV, T, DA, c, AM, RESA))
+    out.append('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, %s), RT.amsize_%s(d, t, pfT)) : {%s(%s) == %s : S.Value}'
+               % (EL, EL, AM, AM, NN, c, XV, SEQA('Array.set(%s, %s.%s_room_sized(n, _), n, %s)' % (EL, DA, c, WV)), RESA))
+    out.append('  %%Equal.sym(Bool, U32.is_lt(n, %s), True{}, hr) : {%s(%s) == %s : S.Value}' % (NN, XV, SEQA('Array.set(%s, %s.%s_room_pick(_, %s, n), n, %s)' % (EL, DA, c, AM, WV)), RESA))
+    out.append('  %%Equal.sym(Array<%s>, Array.set(%s, %s, n, %s), TA.put(%s, %s, %s, %s, %s, %s), TA.set_step(%s, %s, %s, n, %s, f4, f1, f2)) : {%s(%s) == %s : S.Value}'
+               % (EL, EL, AM, WV, EL, AM, NN, Jn, WV, Zn, EL, AM, NN, WV, XV, SEQA('_'), RESA))
+    TFZA = 'RT.tfz_%s(TA.put(%s, %s, %s, %s, %s, %s))' % (c, EL, AM, NN, Jn, WV, Zn)
+    UPDA = 'F.array__upd(%s, d, RT.tfz_%s(%s), U32.to_nat(n), %s)' % (MB, c, AM, FZW)
+    out.append('  %%Equal.sym(%s, %s, %s, e1) : {S.Sequence{RT.xi_%s(U32.to_nat(%s), F.array__slots(%s, _), 0n)} == %s : S.Value}' % (TR, TFZA, UPDA, c, N1, MB, RESA))
+    out.append('  F.logic__subst(%s, z => {S.Sequence{RT.xi_%s(U32.to_nat(%s), F.array__slots(%s, F.array__upd(%s, d, z, U32.to_nat(n), %s)), 0n)} == VS.seq_append(S.Sequence{RT.xi_%s(U32.to_nat(n), F.array__slots(%s, z), 0n)}, VQ.vm_%s(%s)) : S.Value}, t, RT.tfz_%s(%s), '
+               'Equal.sym(%s, RT.tfz_%s(%s), t, RT.tfzam_%s(t)), TB.view_app_t_%s(U32.to_nat(n), U32.to_nat(%s), d, t, %s, F.array__lt_bridge(n, d, hd, True{}, hr), hcn, pfT))'
+               % (TR, c, N1, MB, MB, FZW, c, MB, c, FZW, c, AM, TR, c, AM, c, c, N1, FZW))
+    out.append('def %s_api_view_append(%s)\n    -> {%s == %s : S.Value}:' % (c, prea, LHSA, RESA))
+    out.append('  %s_view_go_app(d, t, n, v, hd, hr, pfT, ha, hcn, TB.tfzrs_%s(d, %s, %s, %s, U32.to_nat(n), %s, %s, hd, {==}, F.array__lt_bridge(n, d, hd, True{}, hr), '
+               'Equal.cong(U32, Nat, m => U32.to_nat(m), %s, n, F.u32__mask_pow2u(n, d, hd, F.array__lt_bridge(n, d, hd, True{}, hr))), {==}, TB.amperf_%s(d, t, pfT)))'
+               % (c, c, AM, NN, Jn, WV, Zn, Jn, c))
+    return 2
 
 
 def seq_laws(I, imps):
@@ -1284,7 +1318,7 @@ def seq_laws(I, imps):
         out.append('    -> {%s == %s : %s}:' % (LHS, RHS, MT))
         out.append('  %s_other_go(arr, n, d, i, j, v, hs, hm, TA.swap_other(%s, d, arr, i, j, %s, O.BNone{}, hd, hi, hj, ne, pf))' % (c, EL, WV))
         k += 1
-        k += boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps)
+        k += boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps, GA=(q(I['GA']) if I['GA'] else None))
     out.append('')
     return '\n'.join(out), k
 
@@ -1544,6 +1578,27 @@ def coll_bits(cs):
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s)' % (WB, NBY, GW['G'], NBY, GW['call']),
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)],
                  TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')
+            n += 1
+            # the spec value after an append that reallocates the storage: the bits before and the new bit (the grown tree keeps the old words: bits_view.bend's view_snoc_grow)
+            KK = 'U32.to_nat(U32.shrn((%s + 3 : U32), 2n))' % NBY
+            D2g, Gg = GW['D2'], GW['G']
+            Xg = 'WR.at(F.array__slots(U32, %s), q)' % Gg
+            NWg = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(n, 31)))' % Xg
+            T1g = 'F.array__upd(U32, %s, %s, q, %s)' % (D2g, Gg, NWg)
+            L.append('def %s_api_view_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
+                     '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, %s, '
+                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(%s)) == True{} : Bool}, '
+                     '+hcov: {Nat.is_le(q, %s) == True{} : Bool})' % (c, I['GA'], GW['prem'], N1, JWn, D2g, KK))
+            L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (I['GA'], VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
+            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s) : {%s == %s : +List<Bool>}'
+                     % (WB, NBY, Gg, NBY, GW['call'], VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(%s, %s, %s, %s, q, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
+                     % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bit_put(n, v, _)'), RHSn))
+            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
+                     % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('_'), RHSn))
+            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, ha), hg, hq, hk, hcov)' % (D2g, KK, N1, mlim.group(1)))
+            L.append('')
             n += 1
         L.append('')
     head = ['import Base'] + ['import %s as %s' % (rel(pth), a) for a, pth in imps.items()]

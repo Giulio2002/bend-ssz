@@ -1,5 +1,7 @@
 import Base
 import ./FuluAttesterSlashing_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_ulist.bend as U
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../proofs/obj/schema_shapes.bend as SH
@@ -13,6 +15,7 @@ import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../types/FuluAttesterSlashing_encode_ssz_generated.bend as FuluAttesterSlashing_e
 import ../types/FuluAttesterSlashing_hashtreeroot_generated.bend as FuluAttesterSlashing_h
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
@@ -38,8 +41,23 @@ def FuluAttesterSlashing_e2e_set_attestation_1_root_rv() -> RT_L.rep_IndexedAtte
 def FuluAttesterSlashing_e2e_set_attestation_1_root_witness() -> {Some{D.bytes(Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, D.Digest, Pair.snd(B.Buf, FuluAttesterSlashing_d.AttesterSlashing & D.Digest, FuluAttesterSlashing_h.AttesterSlashing_hash_tree_root(B.alloc(0), FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default())))))} == API.hash_tree_root(Spec.AttesterSlashing(), VS.field_set(RT_L.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing_default()), 0n, RT_L.v_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluAttesterSlashing_e2e_set_attestation_1_root(B.alloc(0), FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default(), FuluAttesterSlashing_e2e_set_attestation_1_root_r(), FuluAttesterSlashing_e2e_set_attestation_1_root_rv())
 
+def FuluAttesterSlashing_e2e_set_attestation_1_encode_hs1() -> U.sd(RT_L.pj_IndexedAttestation_0(RT_L.pjb_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default()))):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluAttesterSlashing_e2e_set_attestation_1_encode_hs2() -> U.sd(RT_L.pj_IndexedAttestation_0(RT_L.pjb_IndexedAttestation_bx(RT_L.pj_AttesterSlashing_1(FuluAttesterSlashing_d.AttesterSlashing_default())))):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluAttesterSlashing_e2e_set_attestation_1_encode_witness() -> {Some{E.obytes(Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, B.Buf, FuluAttesterSlashing_e.AttesterSlashing_encode(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default()))))} == API.serialize(Spec.AttesterSlashing(), VS.field_set(RT_L.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing_default()), 0n, RT_L.v_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluAttesterSlashing_e2e_set_attestation_1_encode(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default(), FuluAttesterSlashing_e2e_set_attestation_1_root_r(), FuluAttesterSlashing_e2e_set_attestation_1_root_rv(), FuluAttesterSlashing_e2e_set_attestation_1_encode_hs1(), FuluAttesterSlashing_e2e_set_attestation_1_encode_hs2())
+
 def FuluAttesterSlashing_e2e_set_attestation_2_root_rv() -> RT_L.rep_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.AttesterSlashing())))):
   ({==}, (FuluAttestationData_d.AttestationData_default(), (FuluBytes96_d.b96_default(), ({==}, (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==}))))))
 
 def FuluAttesterSlashing_e2e_set_attestation_2_root_witness() -> {Some{D.bytes(Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, D.Digest, Pair.snd(B.Buf, FuluAttesterSlashing_d.AttesterSlashing & D.Digest, FuluAttesterSlashing_h.AttesterSlashing_hash_tree_root(B.alloc(0), FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default())))))} == API.hash_tree_root(Spec.AttesterSlashing(), VS.field_set(RT_L.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing_default()), 1n, RT_L.v_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluAttesterSlashing_e2e_set_attestation_2_root(B.alloc(0), FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default(), FuluAttesterSlashing_e2e_set_attestation_1_root_r(), FuluAttesterSlashing_e2e_set_attestation_2_root_rv())
+
+def FuluAttesterSlashing_e2e_set_attestation_2_encode_hs1() -> U.sd(RT_L.pj_IndexedAttestation_0(RT_L.pjb_IndexedAttestation_bx(RT_L.pj_AttesterSlashing_0(FuluAttesterSlashing_d.AttesterSlashing_default())))):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluAttesterSlashing_e2e_set_attestation_2_encode_witness() -> {Some{E.obytes(Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, B.Buf, FuluAttesterSlashing_e.AttesterSlashing_encode(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default()))))} == API.serialize(Spec.AttesterSlashing(), VS.field_set(RT_L.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing_default()), 1n, RT_L.v_IndexedAttestation_bx(FuluIndexedAttestation_d.IndexedAttestation_bx_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluAttesterSlashing_e2e_set_attestation_2_encode(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_default(), FuluAttesterSlashing_e2e_set_attestation_1_root_r(), FuluAttesterSlashing_e2e_set_attestation_2_root_rv(), FuluAttesterSlashing_e2e_set_attestation_2_encode_hs1(), FuluAttesterSlashing_e2e_set_attestation_1_encode_hs1())

@@ -2,13 +2,17 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
+import ../types/FuluExecutionRequests_encode_ssz_generated.bend as FuluExecutionRequests_e
 import ../types/FuluExecutionRequests_hashtreeroot_generated.bend as FuluExecutionRequests_h
 import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
 import ../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
 import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
+import ./FuluExecutionRequests_e2e_generated.bend as N
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluExecutionRequests_e2e_root_generated.bend as R
+import ./e2e_rl_ExecutionRequests.bend as RLV
 import ../proofs/obj/root_types_light.bend as RT_L
 import ../types/schema.bend as S
 import ../proofs/obj/schema_shapes.bend as SH
@@ -31,6 +35,35 @@ def FuluExecutionRequests_e2e_set_deposits_root(h: B.Buf, o: FuluExecutionReques
   %FuluExecutionRequests_e2e_set_deposits_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(h, FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w)))))} == API.hash_tree_root(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionRequests_e2e_root(h, FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w), PS.ExecutionRequests_set_deposits_rep(o, Spec.ExecutionRequests(), w, r, rv))
 
+def FuluExecutionRequests_set_deposits_hs0_hs0(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l8192_DepositRequest(w, 31n))
+    -> RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_deposits(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_deposits_hs1_hs1(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(o), 31n))
+    -> RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_deposits(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_deposits_hs2_hs2(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(o), 31n))
+    -> RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_deposits(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_e2e_set_deposits_encode(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +rv: RT_L.rep_l8192_DepositRequest(w, SH.Chain_head(SH.Container_fields(Spec.ExecutionRequests()))), +hs0: RLV.sda_l8192_DepositRequest(w, 31n), +hs1: RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(o), 31n), +hs2: RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(o), 0n, RT_L.xv_l8192_DepositRequest(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionRequests_e2e_set_deposits_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w))))} == API.serialize(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionRequests_e2e_encode(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w), PS.ExecutionRequests_set_deposits_rep(o, Spec.ExecutionRequests(), w, r, rv), FuluExecutionRequests_set_deposits_hs0_hs0(o, w, r, hs0), FuluExecutionRequests_set_deposits_hs1_hs1(o, w, r, hs1), FuluExecutionRequests_set_deposits_hs2_hs2(o, w, r, hs2))
+
 def FuluExecutionRequests_e2e_set_withdrawals_view(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq)
     -> {RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w)) == VS.field_set(RT_L.v_ExecutionRequests(o), 1n, RT_L.xv_l16_WithdrawalRequest(w)) : S.Value}:
   match o:
@@ -41,6 +74,35 @@ def FuluExecutionRequests_e2e_set_withdrawals_root(h: B.Buf, o: FuluExecutionReq
   %FuluExecutionRequests_e2e_set_withdrawals_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(h, FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w)))))} == API.hash_tree_root(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionRequests_e2e_root(h, FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w), PS.ExecutionRequests_set_withdrawals_rep(o, Spec.ExecutionRequests(), w, r, rv))
 
+def FuluExecutionRequests_set_withdrawals_hs0_hs0(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(o), 31n))
+    -> RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_withdrawals_hs1_hs1(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l16_WithdrawalRequest(w, 31n))
+    -> RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_withdrawals_hs2_hs2(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(o), 31n))
+    -> RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_e2e_set_withdrawals_encode(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +rv: RT_L.rep_l16_WithdrawalRequest(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ExecutionRequests())))), +hs0: RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(o), 31n), +hs1: RLV.sda_l16_WithdrawalRequest(w, 31n), +hs2: RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(o), 1n, RT_L.xv_l16_WithdrawalRequest(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionRequests_e2e_set_withdrawals_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w))))} == API.serialize(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionRequests_e2e_encode(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(o, w), PS.ExecutionRequests_set_withdrawals_rep(o, Spec.ExecutionRequests(), w, r, rv), FuluExecutionRequests_set_withdrawals_hs0_hs0(o, w, r, hs0), FuluExecutionRequests_set_withdrawals_hs1_hs1(o, w, r, hs1), FuluExecutionRequests_set_withdrawals_hs2_hs2(o, w, r, hs2))
+
 def FuluExecutionRequests_e2e_set_consolidations_view(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq)
     -> {RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)) == VS.field_set(RT_L.v_ExecutionRequests(o), 2n, RT_L.xv_l2_ConsolidationRequest(w)) : S.Value}:
   match o:
@@ -50,3 +112,32 @@ def FuluExecutionRequests_e2e_set_consolidations_root(h: B.Buf, o: FuluExecution
     -> {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(h, FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)))))} == API.hash_tree_root(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(o), 2n, RT_L.xv_l2_ConsolidationRequest(w))) : Maybe<&2, +List<U32>>}:
   %FuluExecutionRequests_e2e_set_consolidations_view(o, w) : {Some{D.bytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, D.Digest, Pair.snd(B.Buf, FuluExecutionRequests_d.ExecutionRequests & D.Digest, FuluExecutionRequests_h.ExecutionRequests_hash_tree_root(h, FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)))))} == API.hash_tree_root(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
   R.FuluExecutionRequests_e2e_root(h, FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w), PS.ExecutionRequests_set_consolidations_rep(o, Spec.ExecutionRequests(), w, r, rv))
+
+def FuluExecutionRequests_set_consolidations_hs0_hs0(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(o), 31n))
+    -> RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_consolidations_hs1_hs1(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(o), 31n))
+    -> RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_set_consolidations_hs2_hs2(-o: FuluExecutionRequests_d.ExecutionRequests, -w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +h: RLV.sda_l2_ConsolidationRequest(w, 31n))
+    -> RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w)), 31n):
+  (+eo, c0) = r
+  (+q0, c1) = c0
+  (+q1, +q2) = c1
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT_L.pj_ExecutionRequests_0(o), RT_L.pj_ExecutionRequests_1(o), RT_L.pj_ExecutionRequests_2(o)}, eo) : RLV.sda_l2_ConsolidationRequest(RT_L.pj_ExecutionRequests_2(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(_, w)), 31n)
+  h
+
+def FuluExecutionRequests_e2e_set_consolidations_encode(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +r: RT_L.rep_ExecutionRequests(o, Spec.ExecutionRequests()), +rv: RT_L.rep_l2_ConsolidationRequest(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ExecutionRequests()))))), +hs0: RLV.sda_l8192_DepositRequest(RT_L.pj_ExecutionRequests_0(o), 31n), +hs1: RLV.sda_l16_WithdrawalRequest(RT_L.pj_ExecutionRequests_1(o), 31n), +hs2: RLV.sda_l2_ConsolidationRequest(w, 31n))
+    -> {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w))))} == API.serialize(Spec.ExecutionRequests(), VS.field_set(RT_L.v_ExecutionRequests(o), 2n, RT_L.xv_l2_ConsolidationRequest(w))) : Maybe<&2, +List<U32>>}:
+  %FuluExecutionRequests_e2e_set_consolidations_view(o, w) : {Some{E.obytes(Pair.snd(FuluExecutionRequests_d.ExecutionRequests, B.Buf, FuluExecutionRequests_e.ExecutionRequests_encode(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w))))} == API.serialize(Spec.ExecutionRequests(), _) : Maybe<&2, +List<U32>>}
+  N.FuluExecutionRequests_e2e_encode(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(o, w), PS.ExecutionRequests_set_consolidations_rep(o, Spec.ExecutionRequests(), w, r, rv), FuluExecutionRequests_set_consolidations_hs0_hs0(o, w, r, hs0), FuluExecutionRequests_set_consolidations_hs1_hs1(o, w, r, hs1), FuluExecutionRequests_set_consolidations_hs2_hs2(o, w, r, hs2))
