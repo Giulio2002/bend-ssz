@@ -1,5 +1,6 @@
 """Static layout checks: every `codegen.` import names a module that exists, and the core does not import upward."""
 import ast
+import re
 import unittest
 
 from codegen.core.paths import CODEGEN, ROOT
@@ -86,6 +87,20 @@ class ImportTest(unittest.TestCase):
                 if isinstance(n, ast.Attribute) and isinstance(n.value, ast.Name) and n.value.id in alias and n.value.id not in rebound:
                     if n.attr not in names_of(alias[n.value.id]) and not n.attr.startswith('__'):
                         bad.append(f'{p.relative_to(ROOT)}:{n.lineno}: {n.value.id}.{n.attr}')
+        self.assertEqual(bad, [])
+
+    def test_roots_come_from_core_paths_or_are_depth_correct(self):
+        bad = []
+        for p in modules():
+            if p.name in ('paths.py', 'test_imports.py'):
+                continue
+            depth = len(p.relative_to(CODEGEN).parts)
+            for i, line in enumerate(p.read_text().splitlines(), 1):
+                if '__file__' in line and '.parent' in line and 'parents[' not in line:
+                    bad.append(f'{p.relative_to(ROOT)}:{i}: {line.strip()[:80]}')
+                for m in re.finditer(r'__file__\)\.resolve\(\)\.parents\[(\d+)\]', line):
+                    if 'ROOT' in line.split('=')[0] and int(m.group(1)) != depth:
+                        bad.append(f'{p.relative_to(ROOT)}:{i}: ROOT at parents[{m.group(1)}], depth is {depth}')
         self.assertEqual(bad, [])
 
     def test_core_imports_only_core(self):

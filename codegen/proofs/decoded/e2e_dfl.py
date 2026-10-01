@@ -16,9 +16,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+from codegen.core.paths import ROOT  # noqa: E402
 E2E = ROOT / 'e2e'
 
 MASK16 = ('FD.logic__subst(U32, w => {{U32.is_lt(w, 65536) == True{{}} : Bool}}, MK.cf16(UR.RWN(t, {y})), O.keep(2, UR.RWN(t, {y})), '

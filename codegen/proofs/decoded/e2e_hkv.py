@@ -15,11 +15,10 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import sys
-from pathlib import Path
 
 from codegen.proofs.decoded import e2e_dvv2 as DV2
 
-ROOT = Path(__file__).resolve().parent.parent
+from codegen.core.paths import ROOT  # noqa: E402
 E2E = ROOT / 'e2e'
 WF_SIG, WF_ARG, WIN = DV2.WF_SIG, DV2.WF_ARG, DV2.WIN
 

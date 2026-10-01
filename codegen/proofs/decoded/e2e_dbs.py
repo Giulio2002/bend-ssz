@@ -16,9 +16,8 @@ import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
 import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+from codegen.core.paths import ROOT  # noqa: E402
 E2E = ROOT / 'e2e'
 
 

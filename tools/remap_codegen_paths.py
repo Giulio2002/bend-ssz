@@ -77,6 +77,7 @@ def rewrite(t, py, depth=None, strip_syspath=True):
             t = re.sub(r"^sys\.path\.insert\(0, str\(Path\(__file__\)\.resolve\(\)\.parent\)\)\n", '', t, flags=re.M)
         if depth is not None:
             t = t.replace('Path(__file__).resolve().parents[1]', f'Path(__file__).resolve().parents[{depth + 1}]')
+            t = t.replace('Path(__file__).resolve().parent.parent', f'Path(__file__).resolve().parents[{depth + 1}]')
     t = map_paths(t)
     return '\n'.join(map_header(l) for l in t.split('\n')) if py else t
 
