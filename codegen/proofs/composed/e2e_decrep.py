@@ -166,6 +166,7 @@ def attester_slashing(lf):
 
 BUF_PS = ('+t: FD.array__Tree<U32>, +n: U32, +d: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
+TOT_HOOK = {}   # name -> f(predicate text) -> the proof of a total-size premise, or None (set by the provider)
 BV_CFG = {}   # the decoded bit vectors' room and check facts of the container being synthesized (set by its provider)
 
 
@@ -946,6 +947,7 @@ def data_column_sidecar(lf):
     return container_file(name, lf, 'proofs/obj/var_codec_DataColumnSidecar_acc.bend', 'OBJ', {'t': 't', 'n': 'n'}, (['t', 'n'], BUF_PS), lets, None, codec, given=given, objexpr='WN.OBJ(t, n)')
 
 
+PB_WINLIB = {'ProgressiveVarTestStruct'}   # names whose window-level element laws (e2e_dpe_<name>) are written too
 H27 = '{Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}'
 H29 = '{Nat.is_lt(U32.to_nat(n), VB.pw(29n)) == True{} : Bool}'
 
@@ -1027,7 +1029,39 @@ def pb_container(name, win, dec, lf_, flavor='d'):
                 return u16_child(al, Wc, args, e, int(mu.group(1)), fname, PB_TOP)
             return None
         return [], None, None, None, xleaf
-    return container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
+    top = container_file(name, lf_, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(HEAVY[name])), lets, None, dec)
+    if name in PB_WINLIB:
+        pb_window(name, win, dec, lf_, flavor)
+    return top
+
+
+H29W = '{Nat.is_lt(U32.to_nat(n), VB.pw(29n)) == True{} : Bool}'
+
+
+def pb_window(name, win, dec, lf, flavor='d'):
+    """the premises of a progressive-bit-list container read at ANY byte window (d, t, x, off, n), the container's own window check hchk:
+    e2e/e2e_dpe_<name>.bend (p_rep, p_hs), the element laws of a list of such containers"""
+    h = H29W if flavor == 'd' else H27
+    ps = ('+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
+          '+eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, '
+          '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h31: ' + h + ', '
+          '+hchk: {WN.CHKw(t, x, off, n) == True{} : Bool}')
+
+    def lets(al):
+        Wc = al(win)
+        B = dict(x='x', off='off', n='n', eo='eo', hd='hd', hw='hw', hwN='hwN', pf='pf', hchk='hchk', h31='h31')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e, flavor, B)
+            mu = re.fullmatch(r'var_winx_l(\d+)_u16\.bend', fname)
+            if mu and fn == 'OBJw':
+                return u16_child(al, Wc, args, e, int(mu.group(1)), fname, B)
+            return None
+        return [], None, None, None, xleaf
+    txt = container_file(name, lf, win, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps), lets, None, dec,
+                         objexpr='WN.OBJw(d, t, x, off, n)')
+    EXTRA_FILES[ROOT / 'e2e' / f'e2e_dpe_{name}.bend'] = txt
 
 
 def _cu_orwrap(x, k, n_arms):
@@ -1166,6 +1200,51 @@ def prog_bits(lf):
                           'proofs/obj/var_pbits_progbitlist.bend', given=given)
 
 
+def prog_bits_struct(lf):
+    """ProgressiveBitsStruct: four bounded bit lists (rep_bits and the storage premise SDB from e2e_pbsr / e2e_pbsw), four progressive bit lists
+    (pb_child, flavor 'o', under n + 4 <= 2^27) and four bit vectors"""
+    name = 'ProgressiveBitsStruct'
+    win = 'proofs/obj/var_winx_ProgressiveBitsStruct.bend'
+    BUF.depth_first.add(name)
+    HEAVY[name] = H27
+
+    def lets(al):
+        Wc = al(win)
+        PSR, PSW, PSV = al('e2e/e2e_pbsr.bend'), al('e2e/e2e_pbsw.bend'), al('e2e/e2e_pbsv.bend')
+        HVK = al('e2e/e2e_hvk.bend')
+        al('e2e/e2e_dfx.bend')
+
+        def xleaf(fname, fn, args, e):
+            if fname == 'var_winp_pbits.bend' and fn == 'OBJw':
+                return pb_child(al, Wc, args, e, 'o')
+            m = re.fullmatch(r'var_winx_g_bits(\d+)\.bend', fname)
+            if m and fn == 'OBJw':
+                k = int(re.match(r'[\w.]+\.XJ(\d+)\(', args[2]).group(1))
+                B = PB_TOP
+                com = f"d, t, n, 0n, 0, n, {B['eo']}, {B['hd']}, {B['hw']}, {B['hwN']}, {B['pf']}, {B['hchk']}"
+                a = ', '.join(args)
+                facts = (f"{Wc}.eoJ{k}D({com}), hd, {Wc}.hwJ{k}D({com}), {HVK}.hwN32({args[2]}, {args[4]}, {Wc}.hwJ{k}N({com})), pf, "
+                         f"{Wc}.itD{k}(t, 0n, 0, n, hchk)")
+                P = f'b{m.group(1)}'
+                return BitsDec(e, f'{PSR}.{P}_bw_rep({a}, {facts})', f'{PSW}.{P}_bw_hv({a}, {facts})')
+            m = re.fullmatch(r'vfx_bv(1280|1281)\.bend', fname)
+            if m and fn == 'OBJ':
+                Y, wd = args[2], '81' if m.group(1) == '1280' else '249'
+                hw = f"{PSV}.rmw(d, n, hn, {Wc}.hFc(t, 0n, 0, n, hchk), Nat.add({Y}, {int(m.group(1)) // 8 + (1 if m.group(1) == '1281' else 0)}n), {{==}})"
+                if m.group(1) == '1280':
+                    return FxWords(e, {('wbits_obj_light.bend', 'rep_bvb'): lambda _: f'{PSV}.rep80(d, t, {wd}, {Y}, {{==}})',
+                                       ('e2e_pbs.bend', 'SDW'): lambda _: f'{PSV}.sdw80(d, t, {Y})'})
+                hc = f'{Wc}.it10(t, 0n, 0, n, hchk)'
+                return FxWords(e, {('wbits_obj_light.bend', 'rep_bvb'): lambda _: f'{PSV}.rep81(d, t, {wd}, {Y}, {{==}}, pf, {hw}, {hc})',
+                                   ('e2e_pbs.bend', 'SDW81'): lambda _: f'{PSV}.sdw81(d, t, {wd}, {Y}, {{==}}, pf, {hw}, {hc})'})
+            return None
+        BV_CFG['p257'] = lambda Y: (f"{PSV}.rp257(d, t, {Y}, pf, {PSV}.rmw(d, n, hn, {Wc}.hFc(t, 0n, 0, n, hchk), Nat.add(Nat.add(32n, {Y}), 4n), {{==}}), "
+                                    f"{Wc}.it9(t, 0n, 0, n, hchk))")
+        return [], None, None, None, xleaf
+    return container_file(name, lf, 'proofs/obj/var_codec_ProgressiveBitsStruct.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], buf_ps(H27)), lets, None,
+                          'proofs/obj/var_codec_ProgressiveBitsStruct.bend')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -1180,6 +1259,7 @@ PROVERS = {
     'CompatibleUnionBC': lambda lf: union_provider('CompatibleUnionBC', [(2, 'c0', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c1', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend')], lf),
     'CompatibleUnionABCA': lambda lf: union_provider('CompatibleUnionABCA', [(1, 'c0', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend'), (2, 'c1', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend'), (3, 'c2', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend'), (4, 'c3', 'proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend')], lf),
     'progbitlist': lambda lf: prog_bits(lf),
+    'ProgressiveBitsStruct': lambda lf: prog_bits_struct(lf),
     'ProgressiveVarTestStruct': lambda lf: pb_container('ProgressiveVarTestStruct', 'proofs/obj/var_winx_ProgressiveVarTestStruct.bend', 'proofs/obj/var_codec_ProgressiveVarTestStruct.bend', lf),
     'ProgressiveSingleListContainerTestStruct': lambda lf: pb_container('ProgressiveSingleListContainerTestStruct', 'proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend', 'proofs/obj/var_codec_ProgressiveSingleListContainerTestStruct.bend', lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
@@ -1239,7 +1319,7 @@ class RLDec:
 
 
 BITS = {('bitlist_rep.bend', 'rep_bits'): 'rep', ('bitlist_obj_light.bend', 'rep_bits'): 'rep', ('bitlist_obj.bend', 'rep_bits'): 'rep',
-        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
+        ('e2e_bitv.bend', 'sdbv'): 'hs', ('e2e_bitl.bend', 'sdb'): 'hsb', ('e2e_bitl.bend', 'sdbc'): 'hsbc', ('e2e_bsenc.bend', 'SDB'): 'hs', ('e2e_pbs.bend', 'SDB'): 'hs', ('e2e_hvk.bend', 'SDBW'): 'hs',
         ('pbits_obj_light.bend', 'rep_pbits'): 'rep', ('e2e_encp.bend', 'SDPB'): 'hsp', ('e2e_encpd.bend', 'SDPB'): 'hsp'}
 
 
@@ -1254,6 +1334,22 @@ STORAGE = {('e2e_blist.bend', 'sdk'): 'any', ('e2e_u64l.bend', 'sdk'): 'any', ('
 
 
 class DSynth(W.Synth):
+    pctx = None   # (the p_* defs' parameter text, their argument names, the shared lets): set by container_file
+
+    def part(self, mod, pred, env):
+        # a part of a split total-size chain is its own lemma over the p_* defs' parameters and lets (a chain compared as a whole walks the total's 2^29 term)
+        c = W.parse_call(pred.strip())
+        if c and c[0].split('.')[-1] == 'P2' and mod.resolve(c[0])[0] is not None and mod.resolve(c[0])[0].path.name == 'dk.bend':
+            return self.prove(mod, pred, env)
+        term = self.prove(mod, pred, dict(env, __split=False))
+        if self.pctx is None:
+            return term
+        ptxt, args, lets_ = self.pctx
+        ty = self.subst(mod, pred.strip(), env)
+        nm = f'PC{len(self.lemmas)}'
+        self.lemmas[f'zz{len(self.lemmas):04d}_{nm}'] = f'def {nm}({ptxt})\n    -> {ty}:\n' + ''.join(f'  {l}\n' for l in lets_) + f'  {term}'
+        return f'{nm}({", ".join(args)})'
+
     def witness(self, mod, ty, v, body, env):
         subj = env.get('__subj')
         if isinstance(subj, WordsFix):
@@ -1309,7 +1405,11 @@ class DSynth(W.Synth):
 
     def eq(self, p, env):
         subj = env.get('__subj')
-        mbv = re.match(r'\{last_bv(1|2|8)\(o\) == ', p.strip())
+        for hk in TOT_HOOK.values():
+            r_ = hk(p)
+            if r_ is not None:
+                return r_
+        mbv = re.match(r'\{last_bv(1|2|8|257)\(o\) == ', p.strip())
         if mbv and BV_CFG and env.get('__e', {}).get('o'):   # a decoded Bitvector<K> field: its bits past K are zero (e2e_dfx.rp<K>)
             K_ = int(mbv.group(1))
             e = env['__e']['o'].strip()
@@ -1318,6 +1418,8 @@ class DSynth(W.Synth):
             if pth is not None and pth.name == f'vfx_bv{K_}.bend':
                 DFXA = self.ctx.alias(ROOT / 'e2e/e2e_dfx.bend')
                 Y = mo.group(3)
+                if K_ == 257:
+                    return BV_CFG['p257'](Y)
                 if K_ == 8:
                     return f'{DFXA}.rp8(d, {mo.group(2)}, {Y})'
                 return f'{DFXA}.rp{K_}(d, {mo.group(2)}, {Y}, pf, {BV_CFG["room"](Y)}, {BV_CFG["hc"][K_]})'
@@ -1509,6 +1611,7 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         return bd
     model = dec_model(OBJ, words, expand, bits, leaf)
     syn = DSynth(ctx)
+    syn.pctx = (params[1], [re.match(r'\+?(\w+):', q.strip()).group(1) for q in W.split_top(params[1])], lets)
     defs = []
     done = {}
     for tag, mod, ps in (('e', em, eps), ('r', rm, rps)):

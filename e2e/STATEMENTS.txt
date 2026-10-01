@@ -5,7 +5,7 @@
 # the object-mutation laws (proofs/obj/coll_api_*, prep_setters.bend), with the
 # imports and file-local defs they use; the proofs are in the named files, which
 # tools/check_fast.sh checks.
-# 4998 statements in 1326 files.
+# 5019 statements in 1333 files.
 
 ## e2e/BitsStruct_e2e_comp_generated.bend
 import ./e2e_comp.bend as C
@@ -6888,6 +6888,25 @@ def FuluLightClientBootstrap_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {Lis
 def FuluLightClientBootstrap_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>} -> {API.deserialize(Spec.LightClientBootstrap(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.LightClientBootstrap(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}):
 
+## e2e/FuluLightClientBootstrap_e2e_decode_witness_generated.bend
+import ./FuluLightClientBootstrap_e2e_comp_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_comp_generated
+import ./FuluLightClientBootstrap_e2e_dec_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_dec_generated
+import ./FuluLightClientBootstrap_e2e_dwh_base_generated.bend as W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/var_bytes_LightClientBootstrap.bend as W_proofs_obj_var_bytes_LightClientBootstrap
+import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/FuluLightClientBootstrap_decode_ssz_generated.bend as W_types_FuluLightClientBootstrap_decode_ssz_generated
+import ../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
+import ../types/FuluLightClientBootstrap_encode_ssz_generated.bend as W_types_FuluLightClientBootstrap_encode_ssz_generated
+import ../types/FuluLightClientBootstrap_hashtreeroot_generated.bend as W_types_FuluLightClientBootstrap_hashtreeroot_generated
+def FuluLightClientBootstrap_e2e_decode_witness_acc() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, W_types_FuluLightClientBootstrap_decode_ssz_generated.LightClientBootstrap_decode(B.fill_at(B.alloc(Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), 0, E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))) == Some{W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+def FuluLightClientBootstrap_e2e_decode_witness() -> {W_e2e_FuluLightClientBootstrap_e2e_comp_generated.isS(Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, W_types_FuluLightClientBootstrap_decode_ssz_generated.LightClientBootstrap_decode(B.fill_at(B.alloc(Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), 0, E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))))) == True{} : Bool}:
+def FuluLightClientBootstrap_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, B.Buf, W_types_FuluLightClientBootstrap_encode_ssz_generated.LightClientBootstrap_encode(W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))))) == E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()) : +List<U32>}:
+def FuluLightClientBootstrap_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, W_src_digest.Digest, Pair.snd(B.Buf, FuluLightClientBootstrap_d.LightClientBootstrap & W_src_digest.Digest, W_types_FuluLightClientBootstrap_hashtreeroot_generated.LightClientBootstrap_hash_tree_root(B.alloc(0), W_proofs_obj_var_bytes_LightClientBootstrap.OBJ(W_e2e_FuluLightClientBootstrap_e2e_dec_generated.TT(E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf()))), Pair.snd(B.Buf, U32, B.size(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())))))))} == W_e2e_e2e_comp.droot(W_spec_fulu_schemas.LightClientBootstrap(), E.obytes(W_e2e_FuluLightClientBootstrap_e2e_dwh_base_generated.FuluLightClientBootstrap_dwh_buf())) : Maybe<&2, +List<U32>>}:
+
 ## e2e/FuluLightClientBootstrap_e2e_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10893,6 +10912,25 @@ def FuluWithdrawal_e2e_set_amount_root(h: B.Buf, +o: FuluWithdrawal_d.Withdrawal
 def FuluWithdrawal_e2e_set_amount_encode(+o: FuluWithdrawal_d.Withdrawal, +w: O.U64)
     -> {Some{E.obytes(FuluWithdrawal_e.Withdrawal_encode(FuluWithdrawal_d.Withdrawal_set_amount(o, w)))} == API.serialize(Spec.Withdrawal(), VS.field_set(M1_L.v_Withdrawal(o), 3n, M1_L.v_u64(w))) : Maybe<&2, +List<U32>>}:
 
+## e2e/ProgressiveBitsStruct_e2e_comp_generated.bend
+import ./ProgressiveBitsStruct_e2e_dec_generated.bend as DB
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/var_codec_ProgressiveBitsStruct.bend as DC
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/ProgressiveBitsStruct_decode_ssz_generated.bend as ProgressiveBitsStruct_r
+import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_encode_ssz_generated.bend as ProgressiveBitsStruct_e
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as ProgressiveBitsStruct_h
+def ProgressiveBitsStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>})
+    -> {E.obytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(o))) == bs : +List<U32>}:
+def ProgressiveBitsStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>})
+    -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(h, o))))} == C.droot(Spec.ProgressiveBitsStruct(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/ProgressiveBitsStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -10915,6 +10953,33 @@ def mv(m: Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>) -> Maybe<&2,
 def ProgressiveBitsStruct_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.ProgressiveBitsStruct(), bs) : Maybe<&2, S.Value>}:
 def ProgressiveBitsStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>} -> {API.deserialize(GS.ProgressiveBitsStruct(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.ProgressiveBitsStruct(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}):
+
+## e2e/ProgressiveBitsStruct_e2e_decode_witness_generated.bend
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/ProgressiveBitsStruct_decode_ssz_generated.bend as W_types_ProgressiveBitsStruct_decode_ssz_generated
+import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../types/ProgressiveBitsStruct_encode_ssz_generated.bend as W_types_ProgressiveBitsStruct_encode_ssz_generated
+import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as W_types_ProgressiveBitsStruct_hashtreeroot_generated
+def ProgressiveBitsStruct_dw_bs() -> +List<U32>: E.obytes(ProgressiveBitsStruct_dw_buf())
+def ProgressiveBitsStruct_dw_buf() -> B.Buf: Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, W_types_ProgressiveBitsStruct_encode_ssz_generated.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default()))
+def ProgressiveBitsStruct_dw_dec() -> Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, W_types_ProgressiveBitsStruct_decode_ssz_generated.ProgressiveBitsStruct_decode(B.fill_at(B.alloc(ProgressiveBitsStruct_dw_n()), 0, ProgressiveBitsStruct_dw_bs()), ProgressiveBitsStruct_dw_n()))
+def ProgressiveBitsStruct_dw_gm(m: Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, d: ProgressiveBitsStruct_d.ProgressiveBitsStruct) -> ProgressiveBitsStruct_d.ProgressiveBitsStruct:
+  match m:
+    case Some{x}: x
+    case None{}: d
+def ProgressiveBitsStruct_dw_isS(m: Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>) -> Bool:
+  match m:
+    case Some{x}: True{}
+    case None{}: False{}
+def ProgressiveBitsStruct_dw_n() -> U32: Pair.snd(B.Buf, U32, B.size(ProgressiveBitsStruct_dw_buf()))
+def ProgressiveBitsStruct_dw_o() -> ProgressiveBitsStruct_d.ProgressiveBitsStruct: ProgressiveBitsStruct_dw_gm(ProgressiveBitsStruct_dw_dec(), ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())
+def ProgressiveBitsStruct_e2e_decode_witness() -> {ProgressiveBitsStruct_dw_isS(ProgressiveBitsStruct_dw_dec()) == True{} : Bool}:
+def ProgressiveBitsStruct_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, W_types_ProgressiveBitsStruct_encode_ssz_generated.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_dw_o()))) == ProgressiveBitsStruct_dw_bs() : +List<U32>}:
+def ProgressiveBitsStruct_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, W_src_digest.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & W_src_digest.Digest, W_types_ProgressiveBitsStruct_hashtreeroot_generated.ProgressiveBitsStruct_hash_tree_root(B.alloc(0), ProgressiveBitsStruct_dw_o()))))} == W_e2e_e2e_comp.droot(W_proofs_obj_generic_specs.ProgressiveBitsStruct(), ProgressiveBitsStruct_dw_bs()) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveBitsStruct_e2e_generated.bend
 import ../src/model.bend as API
@@ -11055,6 +11120,25 @@ import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as Progressive
 def ProgressiveBitsStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())))} == API.serialize(Spec.ProgressiveBitsStruct(), RT.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())) : Maybe<&2, +List<U32>>}:
 def ProgressiveBitsStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, D.Digest, Pair.snd(B.Buf, ProgressiveBitsStruct_d.ProgressiveBitsStruct & D.Digest, ProgressiveBitsStruct_h.ProgressiveBitsStruct_hash_tree_root(B.alloc(0), ProgressiveBitsStruct_d.ProgressiveBitsStruct_default()))))} == API.hash_tree_root(Spec.ProgressiveBitsStruct(), RT.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/ProgressiveComplexTestStruct_e2e_comp_generated.bend
+import ./ProgressiveComplexTestStruct_e2e_dec_generated.bend as DB
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/var_codec_ProgressiveComplexTestStruct.bend as DC
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as ProgressiveComplexTestStruct_r
+import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as ProgressiveComplexTestStruct_e
+import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as ProgressiveComplexTestStruct_h
+def ProgressiveComplexTestStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(258n, U32.to_nat(n)), VB.pw(29n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>})
+    -> {E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(o))) == bs : +List<U32>}:
+def ProgressiveComplexTestStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(DB.TT(bs, n), n) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(258n, U32.to_nat(n)), VB.pw(29n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>})
+    -> {Some{D.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest, ProgressiveComplexTestStruct_h.ProgressiveComplexTestStruct_hash_tree_root(h, o))))} == C.droot(Spec.ProgressiveComplexTestStruct(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/ProgressiveComplexTestStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -11077,6 +11161,47 @@ def mv(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>
 def ProgressiveComplexTestStruct_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.ProgressiveComplexTestStruct(), bs) : Maybe<&2, S.Value>}:
 def ProgressiveComplexTestStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hPB: {DC.PBQ(TT(bs, n), n) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>} -> {API.deserialize(GS.ProgressiveComplexTestStruct(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.ProgressiveComplexTestStruct(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}):
+
+## e2e/ProgressiveComplexTestStruct_e2e_decode_witness_generated.bend
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as W_types_ProgressiveComplexTestStruct_decode_ssz_generated
+import ../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as W_types_ProgressiveComplexTestStruct_encode_ssz_generated
+import ../types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend as W_types_ProgressiveComplexTestStruct_hashtreeroot_generated
+import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_d
+import ../types/list_uint16_123_def_generated.bend as list_uint16_123_d
+import ../types/progbitlist_def_generated.bend as progbitlist_d
+import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d
+import ../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d
+import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+import ../types/proglist_uint64_def_generated.bend as proglist_uint64_d
+import ../types/uint8_def_generated.bend as uint8_d
+def ProgressiveComplexTestStruct_DV() -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct:
+  ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{uint8_d.u8_default(), list_uint16_123_d.l123_u16_default(), progbitlist_d.pbits_default(), proglist_uint64_d.pl_u64_default(), proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{ALeaf{SmallTestStruct_d.SmallTestStruct_default()}, 1}, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{ALeaf{proglist_VarTestStruct_d.pl_VarTestStruct_bx_default()}, 1}, list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{ALeaf{ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default()}, 1}, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{ALeaf{ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default()}, 1}}
+def ProgressiveComplexTestStruct_dw_bs() -> +List<U32>: E.obytes(ProgressiveComplexTestStruct_dw_buf())
+def ProgressiveComplexTestStruct_dw_buf() -> B.Buf: Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, W_types_ProgressiveComplexTestStruct_encode_ssz_generated.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_DV()))
+def ProgressiveComplexTestStruct_dw_dec() -> Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, W_types_ProgressiveComplexTestStruct_decode_ssz_generated.ProgressiveComplexTestStruct_decode(B.fill_at(B.alloc(ProgressiveComplexTestStruct_dw_n()), 0, ProgressiveComplexTestStruct_dw_bs()), ProgressiveComplexTestStruct_dw_n()))
+def ProgressiveComplexTestStruct_dw_gm(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, d: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct:
+  match m:
+    case Some{x}: x
+    case None{}: d
+def ProgressiveComplexTestStruct_dw_isS(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>) -> Bool:
+  match m:
+    case Some{x}: True{}
+    case None{}: False{}
+def ProgressiveComplexTestStruct_dw_n() -> U32: Pair.snd(B.Buf, U32, B.size(ProgressiveComplexTestStruct_dw_buf()))
+def ProgressiveComplexTestStruct_dw_o() -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct: ProgressiveComplexTestStruct_dw_gm(ProgressiveComplexTestStruct_dw_dec(), ProgressiveComplexTestStruct_DV())
+def ProgressiveComplexTestStruct_e2e_decode_witness() -> {ProgressiveComplexTestStruct_dw_isS(ProgressiveComplexTestStruct_dw_dec()) == True{} : Bool}:
+def ProgressiveComplexTestStruct_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, B.Buf, W_types_ProgressiveComplexTestStruct_encode_ssz_generated.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_dw_o()))) == ProgressiveComplexTestStruct_dw_bs() : +List<U32>}:
+def ProgressiveComplexTestStruct_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, W_src_digest.Digest, Pair.snd(B.Buf, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & W_src_digest.Digest, W_types_ProgressiveComplexTestStruct_hashtreeroot_generated.ProgressiveComplexTestStruct_hash_tree_root(B.alloc(0), ProgressiveComplexTestStruct_dw_o()))))} == W_e2e_e2e_comp.droot(W_proofs_obj_generic_specs.ProgressiveComplexTestStruct(), ProgressiveComplexTestStruct_dw_bs()) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveComplexTestStruct_e2e_generated.bend
 import ../src/model.bend as API
@@ -11445,6 +11570,23 @@ import ../types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.
 def ProgressiveSingleListContainerTestStruct_e2e_witness() -> {Some{E.obytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, B.Buf, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_encode(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())))} == API.serialize(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) : Maybe<&2, +List<U32>>}:
 def ProgressiveSingleListContainerTestStruct_e2e_witness_root() -> {Some{D.bytes(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest, ProgressiveSingleListContainerTestStruct_h.ProgressiveSingleListContainerTestStruct_hash_tree_root(B.alloc(0), ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default()))))} == API.hash_tree_root(Spec.ProgressiveSingleListContainerTestStruct(), RT.v_ProgressiveSingleListContainerTestStruct(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) : Maybe<&2, +List<U32>>}:
 
+## e2e/ProgressiveTestStruct_e2e_comp_generated.bend
+import ./e2e_comp.bend as C
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/vbuf.bend as VB
+import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
+import ../src/digest.bend as D
+import ../types/ProgressiveTestStruct_decode_ssz_generated.bend as ProgressiveTestStruct_r
+import ../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../types/ProgressiveTestStruct_encode_ssz_generated.bend as ProgressiveTestStruct_e
+import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as ProgressiveTestStruct_h
+def ProgressiveTestStruct_e2e_decode_encode(+bs: +List<U32>, +n: U32, -o: ProgressiveTestStruct_d.ProgressiveTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(1n, U32.to_nat(n)), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>})
+    -> {E.obytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, B.Buf, ProgressiveTestStruct_e.ProgressiveTestStruct_encode(o))) == bs : +List<U32>}:
+def ProgressiveTestStruct_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: ProgressiveTestStruct_d.ProgressiveTestStruct, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +h31: {Nat.is_lt(Nat.add(1n, U32.to_nat(n)), VB.pw(31n)) == True{} : Bool}, dec: {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>})
+    -> {Some{D.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, D.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & D.Digest, ProgressiveTestStruct_h.ProgressiveTestStruct_hash_tree_root(h, o))))} == C.droot(Spec.ProgressiveTestStruct(), bs) : Maybe<&2, +List<U32>>}:
+
 ## e2e/ProgressiveTestStruct_e2e_dec_generated.bend
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -11462,6 +11604,33 @@ def mv(m: Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>) -> Maybe<&2,
 def ProgressiveTestStruct_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(GS.ProgressiveTestStruct(), bs) : Maybe<&2, S.Value>}:
 def ProgressiveTestStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>} -> {API.deserialize(GS.ProgressiveTestStruct(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(GS.ProgressiveTestStruct(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}):
+
+## e2e/ProgressiveTestStruct_e2e_decode_witness_generated.bend
+import ./e2e_comp.bend as W_e2e_e2e_comp
+import ./e2e_support.bend as E
+import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ../src/buffer.bend as B
+import ../src/digest.bend as W_src_digest
+import ../types/ProgressiveTestStruct_decode_ssz_generated.bend as W_types_ProgressiveTestStruct_decode_ssz_generated
+import ../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../types/ProgressiveTestStruct_encode_ssz_generated.bend as W_types_ProgressiveTestStruct_encode_ssz_generated
+import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as W_types_ProgressiveTestStruct_hashtreeroot_generated
+def ProgressiveTestStruct_dw_bs() -> +List<U32>: E.obytes(ProgressiveTestStruct_dw_buf())
+def ProgressiveTestStruct_dw_buf() -> B.Buf: Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, B.Buf, W_types_ProgressiveTestStruct_encode_ssz_generated.ProgressiveTestStruct_encode(ProgressiveTestStruct_d.ProgressiveTestStruct_default()))
+def ProgressiveTestStruct_dw_dec() -> Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, W_types_ProgressiveTestStruct_decode_ssz_generated.ProgressiveTestStruct_decode(B.fill_at(B.alloc(ProgressiveTestStruct_dw_n()), 0, ProgressiveTestStruct_dw_bs()), ProgressiveTestStruct_dw_n()))
+def ProgressiveTestStruct_dw_gm(m: Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, d: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct:
+  match m:
+    case Some{x}: x
+    case None{}: d
+def ProgressiveTestStruct_dw_isS(m: Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>) -> Bool:
+  match m:
+    case Some{x}: True{}
+    case None{}: False{}
+def ProgressiveTestStruct_dw_n() -> U32: Pair.snd(B.Buf, U32, B.size(ProgressiveTestStruct_dw_buf()))
+def ProgressiveTestStruct_dw_o() -> ProgressiveTestStruct_d.ProgressiveTestStruct: ProgressiveTestStruct_dw_gm(ProgressiveTestStruct_dw_dec(), ProgressiveTestStruct_d.ProgressiveTestStruct_default())
+def ProgressiveTestStruct_e2e_decode_witness() -> {ProgressiveTestStruct_dw_isS(ProgressiveTestStruct_dw_dec()) == True{} : Bool}:
+def ProgressiveTestStruct_e2e_decode_witness_encode() -> {E.obytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, B.Buf, W_types_ProgressiveTestStruct_encode_ssz_generated.ProgressiveTestStruct_encode(ProgressiveTestStruct_dw_o()))) == ProgressiveTestStruct_dw_bs() : +List<U32>}:
+def ProgressiveTestStruct_e2e_decode_witness_root() -> {Some{W_src_digest.bytes(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, W_src_digest.Digest, Pair.snd(B.Buf, ProgressiveTestStruct_d.ProgressiveTestStruct & W_src_digest.Digest, W_types_ProgressiveTestStruct_hashtreeroot_generated.ProgressiveTestStruct_hash_tree_root(B.alloc(0), ProgressiveTestStruct_dw_o()))))} == W_e2e_e2e_comp.droot(W_proofs_obj_generic_specs.ProgressiveTestStruct(), ProgressiveTestStruct_dw_bs()) : Maybe<&2, +List<U32>>}:
 
 ## e2e/ProgressiveTestStruct_e2e_generated.bend
 import ../src/model.bend as API
@@ -23391,6 +23560,8 @@ def bits131072_api_other_bit(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, 
     -> {bits131072_c.bits131072_get(Pair.fst(O.Bits, Bool, bits131072_c.bits131072_set(O.Bits{F.array__thaw(U32, t), n}, i, v)), j) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.bit_merge(v, WR.at(F.array__slots(U32, t), q), M.shl_by(1, U32.and(i, 31))))), n}, Some{U32.is_eq(U32.and(M.shr_by(WR.at(F.array__slots(U32, t), q), U32.and(j, 31)), 1), 1)}) : O.Bits & Maybe<&1, Bool>}:
 def bits131072_api_read_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 131072) == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
     -> {bits131072_c.bits131072_get(Pair.fst(O.Bits, Bool, bits131072_c.bits131072_append(O.Bits{F.array__thaw(U32, t), n}, v)), n) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.bit_merge(v, WR.at(F.array__slots(U32, t), q), M.shl_by(1, U32.and(n, 31))))), (n + 1 : U32)}, Some{v}) : O.Bits & Maybe<&1, Bool>}:
+def bits131072_api_view_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 131072) == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
+    -> {BO.bview(Pair.fst(O.Bits, Bool, bits131072_c.bits131072_append(O.Bits{F.array__thaw(U32, t), n}, v))) == List.append(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), n}), [v]) : +List<Bool>}:
 def bits131072_api_read_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 131072) == True{} : Bool}, +hfull: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == False{} : Bool}, +hd2: {Nat.is_lt(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 32n) == True{} : Bool}, +b1: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(d)) == True{} : Bool}, +b2: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool})
     -> {bits131072_c.bits131072_get(Pair.fst(O.Bits, Bool, bits131072_c.bits131072_append(O.Bits{F.array__thaw(U32, t), n}, v)), n) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), WR.cpy(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), t, U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n)), 0n, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 0)), q, O.bit_merge(v, WR.at(F.array__slots(U32, WR.cpy(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), t, U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n)), 0n, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 0))), q), M.shl_by(1, U32.and(n, 31))))), (n + 1 : U32)}, Some{v}) : O.Bits & Maybe<&1, Bool>}:
 def bits2048_api_read_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hg: {U32.is_lt(i, n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
@@ -23403,6 +23574,8 @@ def bits2048_api_other_bit(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +j
     -> {bits2048_c.bits2048_get(Pair.fst(O.Bits, Bool, bits2048_c.bits2048_set(O.Bits{F.array__thaw(U32, t), n}, i, v)), j) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.bit_merge(v, WR.at(F.array__slots(U32, t), q), M.shl_by(1, U32.and(i, 31))))), n}, Some{U32.is_eq(U32.and(M.shr_by(WR.at(F.array__slots(U32, t), q), U32.and(j, 31)), 1), 1)}) : O.Bits & Maybe<&1, Bool>}:
 def bits2048_api_read_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 2048) == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
     -> {bits2048_c.bits2048_get(Pair.fst(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{F.array__thaw(U32, t), n}, v)), n) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.bit_merge(v, WR.at(F.array__slots(U32, t), q), M.shl_by(1, U32.and(n, 31))))), (n + 1 : U32)}, Some{v}) : O.Bits & Maybe<&1, Bool>}:
+def bits2048_api_view_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 2048) == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
+    -> {BO.bview(Pair.fst(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{F.array__thaw(U32, t), n}, v))) == List.append(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), n}), [v]) : +List<Bool>}:
 def bits2048_api_read_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le((n + 1 : U32), 2048) == True{} : Bool}, +hfull: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == False{} : Bool}, +hd2: {Nat.is_lt(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 32n) == True{} : Bool}, +b1: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(d)) == True{} : Bool}, +b2: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool})
     -> {bits2048_c.bits2048_get(Pair.fst(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{F.array__thaw(U32, t), n}, v)), n) == (O.Bits{F.array__thaw(U32, F.array__upd(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), WR.cpy(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), t, U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n)), 0n, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 0)), q, O.bit_merge(v, WR.at(F.array__slots(U32, WR.cpy(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), t, U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n)), 0n, F.array__trep(U32, U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 0))), q), M.shl_by(1, U32.and(n, 31))))), (n + 1 : U32)}, Some{v}) : O.Bits & Maybe<&1, Bool>}:
 

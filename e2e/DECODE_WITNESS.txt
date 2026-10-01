@@ -10,23 +10,26 @@ FuluAttestation	witnessed
 FuluAttesterSlashing	witnessed
 FuluBeaconBlockBody	witnessed
 FuluBeaconBlock	witnessed
-FuluBeaconState	pending: the default object encodes to 2.7 MB (the fixed-size parts: block_roots, state_roots, randao_mixes, slashings, ...); the checker does not evaluate the encoder and the decoder over that input (the run does not finish in the check budget)
+FuluBeaconState	pending: the default object encodes to 2.7 MB (the fixed-size parts: block_roots, state_roots, randao_mixes, slashings, ...); the checker does not finish evaluating the encoder over that input, and its premise hn (List.length(bs) == to_nat(n)) is a unary Nat comparison of 2.7 million
 FuluDataColumnSidecar	witnessed
 FuluDataColumnsByRootIdentifier	witnessed
 FuluExecutionPayloadHeader	witnessed
 FuluExecutionPayload	witnessed
 FuluExecutionRequests	witnessed
 FuluIndexedAttestation	witnessed
-FuluLightClientBootstrap	pending: the default object encodes to over 25 KB (a sync committee and two branches); the run overflows the checker stack after 6 minutes
+FuluLightClientBootstrap	witnessed
 FuluLightClientFinalityUpdate	witnessed
 FuluLightClientHeader	witnessed
 FuluLightClientOptimisticUpdate	witnessed
-FuluLightClientUpdate	pending: the default object encodes to over 50 KB (two sync committees and their branches); the run does not finish in the check budget
+FuluLightClientUpdate	pending: measured: the hypothesis modules check (obl_ok 46 s, bytes_domain 142 s, hS 50 s, window check 173 s) and the composed file checks, but takes 1327 s, over the 600 s budget of one file
 FuluPendingAttestation	witnessed
 FuluSignedAggregateAndProof	witnessed
 FuluSignedBeaconBlock	witnessed
 FuluTransaction	witnessed
+ProgressiveBitsStruct	witnessed
+ProgressiveComplexTestStruct	witnessed
 ProgressiveSingleListContainerTestStruct	witnessed
+ProgressiveTestStruct	witnessed
 ProgressiveVarTestStruct	witnessed
 VarTestStruct	witnessed
 bitlist_15	witnessed

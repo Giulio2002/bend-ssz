@@ -31,6 +31,18 @@ LISTS = {
         LSTI='../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d', LST='proglist_VarTestStruct_d',
         HK='e2e_hkv.bend', ENC='proofs/obj/encx_pl_VarTestStruct.bend', EMI='proofs/obj/encx_VarTestStruct_iface.bend',
         ESCH='Spec.VarTestStruct()', SPECI='../proofs/obj/generic_specs.bend as Spec', LN=None),
+    # elements are pl_VarTestStruct windows: the element hooks (e2e_hpl.bend) need the element's 2^31 bound, so h31 is one of the window facts here
+    'pl_pl_VarTestStruct': dict(
+        X='pl_VarTestStruct', ELTI='../types/proglist_VarTestStruct_def_generated.bend as proglist_VarTestStruct_d', ELT='proglist_VarTestStruct_d.pl_VarTestStruct_Seq',
+        LSTI='../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d', LST='proglist_proglist_VarTestStruct_d',
+        HK='e2e_hpl_pl_VarTestStruct.bend', ENC='proofs/obj/encx_pl_pl_VarTestStruct.bend', EMI='proofs/obj/encx_pl_VarTestStruct.bend',
+        ESCH='S.ProgressiveList{Spec.VarTestStruct()}', SPECI='../proofs/obj/generic_specs.bend as Spec', LN=None, H31=True, THFZ=False),
+    # elements are ProgressiveVarTestStruct windows: the decoder's own bounds (x + len <= NMAX, len < 2^29) are window facts here too
+    'pl_ProgressiveVarTestStruct': dict(
+        X='ProgressiveVarTestStruct', ELTI='../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d', ELT='ProgressiveVarTestStruct_d.ProgressiveVarTestStruct',
+        LSTI='../types/proglist_ProgressiveVarTestStruct_def_generated.bend as proglist_ProgressiveVarTestStruct_d', LST='proglist_ProgressiveVarTestStruct_d',
+        HK='e2e_hkp.bend', ENC='proofs/obj/encx_pl_ProgressiveVarTestStruct.bend', EMI='proofs/obj/encx_ProgressiveVarTestStruct_iface.bend',
+        ESCH='Spec.ProgressiveVarTestStruct()', SPECI='../proofs/obj/generic_specs.bend as Spec', LN=None, H31=True, H31E=29, HWN=True, THFZ=False),
 }
 
 VLM_SRC = (E2E / 'e2e_vlm_l8_Attestation.bend').read_text()
@@ -64,6 +76,15 @@ def vq_defs():
 
 def text(c):
     P = LISTS[c]
+    H31 = P.get('H31', False)
+    H31E = P.get('H31E', 31)   # the window facts' bound: len < 2^H31E (the encode premise needs < 2^31)
+    HWN = P.get('HWN', False)   # the window fact hw32 (x + len < 2^32) is x + len <= NMAX (the window libraries of the progressive bit lists take it)
+    H31T = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(%dn)) == True{} : Bool}' % H31E
+    WSIG = WF_SIG + (', ' + H31T if H31 else '')
+    WARG = WF_ARG + (', h31' if H31 else '')
+    H31U = 'h31' if H31E == 31 else 'lt31(len, h31)'   # the encode premise's bound from the window facts'
+    H31S = '' if H31 else ', ' + H31T   # a separate h31 argument after the window facts
+    H31A = '' if H31 else ', h31'
     X, ELT, LST = P['X'], P['ELT'], P['LST']
     SEQ = f'{LST}.{c}_Seq'
     D = dtx_defs()
@@ -88,8 +109,9 @@ def text(c):
         t = t.replace('+es: {SH.ByteList_limit(sE) == U32.to_nat(1073741824) : Nat}', '+es: {sE == %s : S.Schema}' % P['ESCH'])
         t = t.replace('+ee: {SH.ByteList_limit(SH.ListOf_element(s)) == U32.to_nat(1073741824) : Nat}', '+ee: {SH.ProgressiveList_element(s) == %s : S.Schema}' % P['ESCH'])
         t = t.replace('SH.ListOf_element(s)', 'SH.ProgressiveList_element(s)')
-        t = t.replace(DVL.HWN_SIG, WF_SIG)
-        t = re.sub(r'\bhwN\b', WF_ARG, t)
+        t = t.replace(DVL.HWN_SIG, '\x00SIG\x00')
+        t = re.sub(r'\bhwN\b', WARG, t)
+        t = t.replace('\x00SIG\x00', WSIG)
         t = t.replace('TX.SUMN', 'SUMN').replace('TX.SDKS', EL_['SDKS']).replace('TX.TXL', 'LNM')
         t = DVL.unwrap_nr(t)
         key = 'BL.sdk(RT.pjb_%s_bx(RT.th_%s_bx(' % (X, X)
@@ -129,6 +151,26 @@ def text(c):
     for n in ['e1', 'inv1', 'hiq', 'isne']:
         A_(vl(VD_[n]))
         A_('')
+    if H31:
+        A_('# an element window is at most the list window: its facts from the list window\'s')
+        A_('def h31ab(+len: U32, +a: U32, +b: U32, +hab: {Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{} : Bool}, +hb: {Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{} : Bool},\n'
+           '    +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(%dn)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(U32.sub(b, a)), VB.pw(%dn)) == True{} : Bool}:\n' % (H31E, H31E) +
+           '  +e = FD.u32__sub_nat(b, a, hab)\n'
+           '  +s1 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(U32.sub(b, a)), Nat.add(U32.to_nat(a), z)) == True{} : Bool}, U32.to_nat(U32.sub(b, a)), Nat.sub(U32.to_nat(b), U32.to_nat(a)), e,\n'
+           '    Order.left_below_sum(U32.to_nat(a), U32.to_nat(U32.sub(b, a))))\n'
+           '  +s2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(U32.sub(b, a)), z) == True{} : Bool}, Nat.add(U32.to_nat(a), Nat.sub(U32.to_nat(b), U32.to_nat(a))), U32.to_nat(b), FD.nat__sub_add(U32.to_nat(b), U32.to_nat(a), hab), s1)\n'
+           '  FD.nat__le_lt_trans(U32.to_nat(U32.sub(b, a)), U32.to_nat(len), VB.pw(%dn), FD.nat__le_trans(U32.to_nat(U32.sub(b, a)), U32.to_nat(b), U32.to_nat(len), s2, hb), h31)' % H31E)
+        A_('')
+        if H31E != 31:
+            A_('# the list window below 2^%d is below 2^31, the encode premise\'s bound' % H31E)
+            assert H31E == 29
+            A_('def bbq() -> {VB.pw(31n) == A.quad(VB.pw(29n)) : Nat}:\n'
+               '  %Equal.sym(Nat, 31n, 2n+29n, {==}) : {VB.pw(_) == A.quad(VB.pw(29n)) : Nat}\n'
+               '  {==}\n\n'
+               'def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}:\n'
+               '  FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(len), z) == True{} : Bool}, A.quad(VB.pw(29n)), VB.pw(31n), Equal.sym(Nat, VB.pw(31n), A.quad(VB.pw(29n)), bbq()),\n'
+               '    FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(29n), A.quad(VB.pw(29n)), h, A.quad_ge(VB.pw(29n))))')
+            A_('')
     SUB = ('Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a)')
     EEP = '+hEE: {V.EE(True{}, t, x, off, len, a, b) == True{} : Bool}'
 
@@ -138,24 +180,32 @@ def text(c):
         sub = f'Nat.add(U32.to_nat({s}), x), U32.add(off, {s}), U32.sub({e}, {s})'
         return (f'E.{f}(d, t, {sub}, V.el_c(t, x, off, len, {s}, {e}, {hh}), '
                 f'V.eocD(d, x, off, len, {s}, FD.nat__le_trans(U32.to_nat({s}), U32.to_nat({e}), U32.to_nat(len), {ab}, {bb_}), eo, hd, hw, hw32), hd, '
-                f'V.hwab(d, x, len, {s}, {e}, {ab}, {bb_}, hw), V.hwab32(x, len, {s}, {e}, {ab}, {bb_}, hw32), pfw{extra})')
+                f'V.hwab(d, x, len, {s}, {e}, {ab}, {bb_}, hw), V.hwab32(x, len, {s}, {e}, {ab}, {bb_}, hw32), pfw' + (f', h31ab(len, {s}, {e}, {ab}, {bb_}, h31)' if H31 else '') + f'{extra})')
     for n in ['ND_l8_Attestation', 'NV_l8_Attestation', 'FT_l8_Attestation', 'pfFT_l8_Attestation', 'fillam_l8_Attestation', 'hx_at_l8_Attestation']:
         A_(vl(VD_[n]))
         A_('')
-    A_(f'def eqE_{c}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WF_SIG}, +a: U32, +b: U32, +hEE: {{V.EE(True{{}}, t, x, off, len, a, b) == True{{}} : Bool}})\n'
+    A_(f'def eqE_{c}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WSIG}, +a: U32, +b: U32, +hEE: {{V.EE(True{{}}, t, x, off, len, a, b) == True{{}} : Bool}})\n'
        f'    -> {{V.OBJE(d, t, x, off, a, b) == RT.th_{X}_bx(ND_{c}(d, t, x, off, a, b)) : O.Boxed<{ELT}>}}:\n'
        f'  Equal.sym(O.Boxed<{ELT}>, RT.th_{X}_bx(ND_{c}(d, t, x, off, a, b)), V.OBJE(d, t, x, off, a, b), {HK("canon")})')
     A_('')
     # rvF with the element canon: the vlm text, its eqE replaced
-    A_(vl(VD_['rvF_l8_Attestation']))
+    s = vl(VD_['rvF_l8_Attestation'])
+    if H31:   # the element facts of eqE take the extra window facts too: the vlm text's window facts (eo, hd, hw, hw32, pf) get them after pf
+        ex_sig = ', ' + H31T
+        ex_arg = ', h31'
+        for a, b in [('+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +dd', '+pf: {FD.array__perfect(U32, d, t) == True{} : Bool}' + ex_sig + ', +dd'),
+                     ('hw32, pf, V.WJ(t, x, i)', 'hw32, pf' + ex_arg + ', V.WJ(t, x, i)'), ('hw32, pf, dd, FD', 'hw32, pf' + ex_arg + ', dd, FD')]:
+            assert s.count(a) == 1, (a, s.count(a))
+            s = s.replace(a, b)
+    A_(s)
     A_('')
     A_('# ---- the elements\' facts at a window ----')
-    HEAD = '(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +a: U32, +b: U32, %s' % (WF_SIG, EEP)
+    HEAD = '(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +a: U32, +b: U32, %s' % (WSIG, EEP)
     A_('def XE(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT.MB<RT.M_%s>: RT.fz_%s_bx(V.OBJE(d, t, x, off, s, e))' % (X, X))
     A_('')
     A_('def obje_canon%s)\n    -> {RT.th_%s_bx(XE(d, t, x, off, a, b)) == V.OBJE(d, t, x, off, a, b) : O.Boxed<%s>}:\n'
        '  Equal.sym(O.Boxed<%s>, V.OBJE(d, t, x, off, a, b), RT.th_%s_bx(XE(d, t, x, off, a, b)), eqE_%s(d, t, x, off, len, %s, a, b, hEE))'
-       % (HEAD, X, ELT, ELT, X, c, WF_ARG))
+       % (HEAD, X, ELT, ELT, X, c, WARG))
     A_('')
     A_('def el_rep_th%s, +sE: S.Schema, +es: {sE == %s : S.Schema})\n    -> RT.rep_%s_bx(RT.th_%s_bx(XE(d, t, x, off, a, b)), sE):\n  %s'
        % (HEAD, P['ESCH'], X, X, HK('repT', ', sE, es')))
@@ -182,7 +232,7 @@ def text(c):
        '    %s, +hE: {V.EV(k, i, m, t, x, off, len, True{}, V.WJ(t, x, i)) == True{} : Bool})\n'
        '    -> {V.RV(k, i, m, d, t, x, off, len, RT.am_%s(T), RT.th_%s_bx(v)) == RT.am_%s(RVT(k, i, m, dw, d, t, x, off, len, T, v)) : Array<O.Boxed<%s>>}:\n'
        '  rvF_%s(k, i, m, d, t, x, off, len, %s, dw, T, v, pf, hdw, hm, inv, hE)'
-       % (X, X, X, WF_SIG, c, X, c, ELT, c, WF_ARG))
+       % (X, X, X, WSIG, c, X, c, ELT, c, WARG))
     A_('')
     A_(vq_defs().replace('l8_Attestation', c).replace('M_Attestation', 'M_' + X).replace('RTL.', 'RT.').replace('F.', 'FD.'))
     A_('')
@@ -203,13 +253,13 @@ def text(c):
     A_(tr(D['sum_step']))
     A_('')
     s = tr(D['rv_sum'])
-    s = s.replace('+hEE: {V.EE(True{}, t, x, off, len, s, a) == True{} : Bool},', WF_SIG + ',\n    +hEE: {V.EE(True{}, t, x, off, len, s, a) == True{} : Bool},', 1)
+    s = s.replace('+hEE: {V.EE(True{}, t, x, off, len, s, a) == True{} : Bool},', WSIG + ',\n    +hEE: {V.EE(True{}, t, x, off, len, s, a) == True{} : Bool},', 1)
     s, k = re.subn(r'Equal\.trans\(Nat, Nat\.add\(U32\.to_nat\(s\), U32\.to_nat\(U32\.sub\(a, s\)\)\), U32\.to_nat\(a\), (.*?), tele\(s, a, hab\),',
-                   lambda m: 'Equal.trans(Nat, Nat.add(U32.to_nat(s), NRa(XE(d, t, x, off, s, a))), U32.to_nat(a), %s, szel(d, t, x, off, len, %s, s, a, hEE),' % (m.group(1), WF_ARG), s)
+                   lambda m: 'Equal.trans(Nat, Nat.add(U32.to_nat(s), NRa(XE(d, t, x, off, s, a))), U32.to_nat(a), %s, szel(d, t, x, off, len, %s, s, a, hEE),' % (m.group(1), WARG), s)
     assert k == 2, k
     a1 = 'V.inv_nx(q, i, m, inv),\n        V.ev_ok('
     assert s.count(a1) == 1
-    s = s.replace(a1, 'V.inv_nx(q, i, m, inv), %s,\n        V.ev_ok(' % WF_ARG)
+    s = s.replace(a1, 'V.inv_nx(q, i, m, inv), %s,\n        V.ev_ok(' % WARG)
     A_(s)
     A_('')
     for n in ['fill_am', 'rvt_pf', 'hc_of', 'evb_of', 'hcA', 'hcC', 'quadN', 'nn1', 'succ_pred', 'inv0', 'nxk0', 'ev_start', 'ee0_of', 'ev0_of']:
@@ -242,21 +292,21 @@ def text(c):
     DWC = 'dw_cov(d, t, x, len, hc, hd, hw, hw32)'
     # arr_eq / obj_eq as in e2e_dvl
     s = tr(D['arr_eq'])
-    s = s.replace('+hchk: {V.CHKw(t, x, off, len) == True{} : Bool})', '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)' % WF_SIG, 1)
+    s = s.replace('+hchk: {V.CHKw(t, x, off, len) == True{} : Bool})', '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)' % WSIG, 1)
     s = s.replace('dw_lt(t, x, len, hc)', DWL).replace('dw_cov(t, x, len, hc)', DWC)
-    s = s.replace('obje_canon(d, t, x, off, V.W0(t, x), V.B1(t, x, len))', 'obje_canon(d, t, x, off, len, %s, V.W0(t, x), V.B1(t, x, len), ee0_of(t, x, off, len, ec, hchk))' % WF_ARG)
-    s = s.replace('inv0(t, x, len, hc))))', 'inv0(t, x, len, hc), %s, ev0_of(t, x, off, len, ec, hchk))))' % WF_ARG)
+    s = s.replace('obje_canon(d, t, x, off, V.W0(t, x), V.B1(t, x, len))', 'obje_canon(d, t, x, off, len, %s, V.W0(t, x), V.B1(t, x, len), ee0_of(t, x, off, len, ec, hchk))' % WARG)
+    s = s.replace('inv0(t, x, len, hc))))', 'inv0(t, x, len, hc), %s, ev0_of(t, x, off, len, ec, hchk))))' % WARG)
     A_(s)
     A_('')
     s = tr(D['obj_eq'])
-    s = s.replace('+hchk: {V.CHKw(t, x, off, len) == True{} : Bool})', '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)' % WF_SIG, 1)
-    s = s.replace('arr_eq(d, t, x, off, len, ec, hchk', 'arr_eq(d, t, x, off, len, ec, hchk, %s' % WF_ARG)
+    s = s.replace('+hchk: {V.CHKw(t, x, off, len) == True{} : Bool})', '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)' % WSIG, 1)
+    s = s.replace('arr_eq(d, t, x, off, len, ec, hchk', 'arr_eq(d, t, x, off, len, ec, hchk, %s' % WARG)
     A_(s)
     A_('')
     # the representation invariant: no limit
     s = tr(D['rep_c'])
     s = re.sub(r'\+es: \{SH\.ListOf_limit\(s\) == U32\.to_nat\(1048576\) : Nat\},\s*', '', s)
-    s = s.replace('obj_eq(d, t, x, off, len, ec, hchk)', 'obj_eq(d, t, x, off, len, ec, hchk, %s)' % WF_ARG)
+    s = s.replace('obj_eq(d, t, x, off, len, ec, hchk)', 'obj_eq(d, t, x, off, len, ec, hchk, %s)' % WARG)
     s = s.replace('dw_lt(t, x, len, hc)', DWL).replace('dw_cov(t, x, len, hc)', DWC)
     s = s.replace('inv0(t, x, len, hc), eo,', 'inv0(t, x, len, hc), eo,')
     i0 = s.index('case True{}: ((')
@@ -270,8 +320,8 @@ def text(c):
     assert 'ListOf_limit' not in s, s[-400:]
     A_(s.replace('+ee: {SH.ListOf_element(s) ==', '+ee: {SH.ProgressiveList_element(s) =='))
     A_('')
-    A_(f'def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WF_SIG}, +s: S.Schema, +ee: {{SH.ProgressiveList_element(s) == {P["ESCH"]} : S.Schema}}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
-       f'    -> RT.rep_{c}(V.OBJw(d, t, x, off, len), s):\n  rep_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WF_ARG}, hchk, s, ee)')
+    A_(f'def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WSIG}, +s: S.Schema, +ee: {{SH.ProgressiveList_element(s) == {P["ESCH"]} : S.Schema}}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
+       f'    -> RT.rep_{c}(V.OBJw(d, t, x, off, len), s):\n  rep_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk, s, ee)')
     A_('')
     # the byte count
     A_(f'def blsum(k: Nat, +W: List<&2, RT.MB<RT.M_{X}>>, +i: Nat) -> {{W8.BL(k, {EL_["LM"]}(W), i) == SUMN(k, W, i) : Nat}}:\n'
@@ -295,11 +345,11 @@ def text(c):
     # the byte count: szl_c as in e2e_dvl (the list's encoder bytes, from the tree)
     s = tr(D['txl_c'])
     s = s.replace('def txl_c', 'def szl_c').replace('{TX.TXL(', '{%s(' % LNF).replace('{LNM(', '{%s(' % LNF)
-    s = s.replace('obj_eq(d, t, x, off, len, ec, hchk)', 'obj_eq(d, t, x, off, len, ec, hchk, %s)' % WF_ARG)
+    s = s.replace('obj_eq(d, t, x, off, len, ec, hchk)', 'obj_eq(d, t, x, off, len, ec, hchk, %s)' % WARG)
     s = s.replace('dw_lt(t, x, len, hc)', DWL).replace('dw_cov(t, x, len, hc)', DWC)
     a2 = 'inv0(t, x, len, hc), ee0_of('
     assert s.count(a2) == 1, s.count(a2)
-    s = s.replace(a2, 'inv0(t, x, len, hc), %s, ee0_of(' % WF_ARG)
+    s = s.replace(a2, 'inv0(t, x, len, hc), %s, ee0_of(' % WARG)
     a3 = 'FD.logic__subst(FD.array__Tree<RT.MB<RT.M_%s>>, z => {Nat.add(A.quad(U32.to_nat(V.NN(t, x))), SUMN(U32.to_nat(V.NN(t, x)), FD.array__slots(RT.MB<RT.M_%s>, z), 0n)) == U32.to_nat(len) : Nat},\n        ' % (X, X)
     assert a3 in s
     k = s.index(a3) + len(a3)
@@ -323,33 +373,52 @@ def text(c):
     WINS = '+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32'
     HCK = '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}'
     hdw = f'FD.nat__lt_trans({WD}, 31n, 32n, {DWL}, {{==}})'
-    A_(f'def llw({WINS}, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {WF_SIG}, {HCK}) -> {{W8.LL({TM}({RR}), V.NN(t, x)) == U32.to_nat(len) : Nat}}:\n'
+    A_(f'def llw({WINS}, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {WSIG}, {HCK}) -> {{W8.LL({TM}({RR}), V.NN(t, x)) == U32.to_nat(len) : Nat}}:\n'
        f'  +hc = hc_of(t, x, off, len, ec, hchk)\n  {inner}')
     A_('')
-    A_(f'def pm_f({WINS}, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {WF_SIG}, {HCK}, +h31: {{Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{{}} : Bool}})\n'
+    A_(f'def pm_f({WINS}, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {WSIG}, {HCK}{H31S})\n'
        f'    -> {PM}({RR}, V.NN(t, x)):\n'
        f'  +hc = hc_of(t, x, off, len, ec, hchk)\n'
        f'  (FD.logic__subst(Nat, z => {{Nat.is_lt(z, 31n) == True{{}} : Bool}}, {WD}, ER.LDEP(RT.MB<RT.M_{X}>, {RR}), Equal.sym(Nat, ER.LDEP(RT.MB<RT.M_{X}>, {RR}), {WD}, ER.pdep(RT.MB<RT.M_{X}>, {WD}, {RR}, {PFR})), {DWL}),\n'
-       f'    (FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(len), W8.LL({TM}({RR}), V.NN(t, x)), Equal.sym(Nat, W8.LL({TM}({RR}), V.NN(t, x)), U32.to_nat(len), llw(d, t, x, off, len, ec, {WF_ARG}, hchk)), h31),\n'
+       f'    (FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(len), W8.LL({TM}({RR}), V.NN(t, x)), Equal.sym(Nat, W8.LL({TM}({RR}), V.NN(t, x)), U32.to_nat(len), llw(d, t, x, off, len, ec, {WARG}, hchk)), {H31U}),\n'
        f'      rv_sdks({K0}, 0, V.NN(t, x), {WD}, d, t, x, off, len, {TREP}, V.W0(t, x), V.B1(t, x, len), {hdw}, FD.array__trep_perfect(RT.MB<RT.M_{X}>, {WD}, RT.MNone{{}}),\n'
-       f'        {DWC}, inv0(t, x, len, hc), {WF_ARG}, ee0_of(t, x, off, len, ec, hchk), ev0_of(t, x, off, len, ec, hchk), {{==}})))')
+       f'        {DWC}, inv0(t, x, len, hc), {WARG}, ee0_of(t, x, off, len, ec, hchk), ev0_of(t, x, off, len, ec, hchk), {{==}})))')
     A_('')
-    A_(f'def sd_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WF_SIG}, {HCK}, +h31: {{Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{{}} : Bool}})\n'
+    A_(f'def sd_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WSIG}, {HCK}{H31S})\n'
        f'    -> {PRV}(V.RZ(c, d, t, x, off, len)):\n'
        f'  match c:\n'
-       f'    case True{{}}: ({{==}}, (FD.logic__subst(U32, z => {{Nat.is_lt(U32.to_nat(z), VB.pw(31n)) == True{{}} : Bool}}, len, 0, FD.u32alg__eq_of(len, 0, ec), h31), {{==}}))\n'
+       f'    case True{{}}: ({{==}}, (FD.logic__subst(U32, z => {{Nat.is_lt(U32.to_nat(z), VB.pw(31n)) == True{{}} : Bool}}, len, 0, FD.u32alg__eq_of(len, 0, ec), {H31U}), {{==}}))\n'
        f'    case False{{}}:\n'
-       f'      %Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WF_ARG})) : {PRV}(_)\n'
-       f'      FD.logic__subst(FD.array__Tree<RT.MB<RT.M_{X}>>, z => {PM}(z, V.NN(t, x)), {RR}, RT.tfz_{c}(RT.am_{c}({RR})), Equal.sym(FD.array__Tree<RT.MB<RT.M_{X}>>, RT.tfz_{c}(RT.am_{c}({RR})), {RR}, RT.tfzam_{c}({RR})), pm_f(d, t, x, off, len, ec, {WF_ARG}, hchk, h31))')
+       f'      %Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WARG})) : {PRV}(_)\n'
+       f'      FD.logic__subst(FD.array__Tree<RT.MB<RT.M_{X}>>, z => {PM}(z, V.NN(t, x)), {RR}, RT.tfz_{c}(RT.am_{c}({RR})), Equal.sym(FD.array__Tree<RT.MB<RT.M_{X}>>, RT.tfz_{c}(RT.am_{c}({RR})), {RR}, RT.tfzam_{c}({RR})), pm_f(d, t, x, off, len, ec, {WARG}, hchk{H31A}))')
     A_('')
-    A_(f'def sdl({WINS}, {WF_SIG}, +h31: {{Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{{}} : Bool}}, {HCK}) -> {PRV}(V.OBJw(d, t, x, off, len)):\n'
-       f'  sd_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WF_ARG}, hchk, h31)')
+    A_(f'def sdl({WINS}, {WSIG}{H31S}, {HCK}) -> {PRV}(V.OBJw(d, t, x, off, len)):\n'
+       f'  sd_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk{H31A})')
     A_('')
-    A_(f'def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WF_SIG}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
+    A_(f'def szl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WSIG}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
        f'    -> {{{LNF}(V.OBJw(d, t, x, off, len)) == U32.to_nat(len) : Nat}}:\n'
-       f'  szl_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WF_ARG}, hchk)')
-    A_('')
-    return '\n'.join(out) + '\n'
+       f'  szl_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
+    if P.get('THFZ', True):
+        A_('')
+        # the object is canonical: freezing then thawing the mirror gives it back (the element hooks of a list of these lists)
+        A_(f'def thfz_am(+T: FD.array__Tree<RT.MB<RT.M_{X}>>, +N: U32) -> {{RT.th_{c}(RT.fz_{c}({SEQ}{{RT.am_{c}(T), N}})) == {SEQ}{{RT.am_{c}(T), N}} : {SEQ}}}:\n'
+           f'  Equal.cong(FD.array__Tree<RT.MB<RT.M_{X}>>, {SEQ}, z => {SEQ}{{RT.am_{c}(z), N}}, RT.tfz_{c}(RT.am_{c}(T)), T, RT.tfzam_{c}(T))')
+        A_('')
+        A_(f'def thfz_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WSIG}, {HCK})\n'
+           f'    -> {{RT.th_{c}(RT.fz_{c}(V.RZ(c, d, t, x, off, len))) == V.RZ(c, d, t, x, off, len) : {SEQ}}}:\n'
+           f'  match c:\n'
+           f'    case True{{}}: thfz_am(FD.array__trep(RT.MB<RT.M_{X}>, 0n, RT.MNone{{}}), 0)\n'
+           f'    case False{{}}:\n'
+           f'      FD.logic__subst({SEQ}, z => {{RT.th_{c}(RT.fz_{c}(z)) == z : {SEQ}}}, {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, V.RZ(False{{}}, d, t, x, off, len),\n'
+           f'        Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WARG})), thfz_am({RR}, V.NN(t, x)))')
+        A_('')
+        A_(f'def thfz({WINS}, {WSIG}, {HCK}) -> {{RT.th_{c}(RT.fz_{c}(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : {SEQ}}}:\n'
+           f'  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
+        A_('')
+    res = '\n'.join(out) + '\n'
+    if HWN:
+        res = res.replace('Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n))', 'Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()))')
+    return res
 
 
 def main():
