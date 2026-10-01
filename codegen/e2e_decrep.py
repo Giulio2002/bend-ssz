@@ -812,6 +812,55 @@ def lc_finality(lf):
     return container_file(name, lf, dec, 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None, dec)
 
 
+def lc_update(lf):
+    name = 'FuluLightClientUpdate'
+    WINDOW.add(name)
+    top = 'proofs/obj/var_winx_LightClientUpdate.bend'
+
+    def lets(al):
+        DFX, DCw, YH, EPH = al('e2e/e2e_dfx.bend'), al(top), al('proofs/obj/var_bytesx_LightClientHeader.bend'), al('proofs/obj/var_bytesx_ExecutionPayloadHeader.bend')
+        al('proofs/obj/vlist.bend')
+        UCTa = al('proofs/obj/vua_ct.bend')
+        o1, L31 = lc_header_chain(al, YH, EPH, DCw, f'{DCw}.XJ0(t, x)', f'{DCw}.FJ0(off, t, x)', f'{DCw}.LJ0(t, x)', f'{DCw}.itD0(t, x, off, n, hchk)', '1')
+        o2, L32 = lc_header_chain(al, YH, EPH, DCw, f'{DCw}.XJ1(t, x)', f'{DCw}.FJ1(off, t, x)', f'{DCw}.LJ1(t, x, n)', f'{DCw}.itD1(t, x, off, n, hchk)', '2')
+        chains = {L31: '1', L32: '2'}
+
+        def words(j, e):
+            th, ln = W.split_top(e[len('O.Words{'):-1])
+            mct = re.fullmatch(r'FD\.array__thaw\(U32, ([\w.]+)\.(CT|CTN)\((.*)\)\)', th.strip(), re.S)
+            if not mct:
+                raise SystemExit(f'LCU words {j}: {e[:500]}')
+            ca = [c.strip() for c in W.split_top(mct.group(3))]
+            kind = mct.group(2)
+            q = '{==}'
+            if kind == 'CT':
+                d_, t_, off_, L0 = ca[0], ca[1], ca[2], ca[3]
+                if L0 == '256':
+                    return FxWords(e, {('words_obj_light.bend', 'rep_bv'): lambda s_: f'{DFX}.crbv({d_}, {t_}, {off_}, 3n, 8n, 7n, {q}, {q}, {q}, {q}, {s_}, {q})',
+                                       ('words_obj_light.bend', 'wf1'): lambda _: f'{DFX}.cwf1({d_}, {t_}, {off_}, 3n, 8n, 7n, {q}, {q}, {q}, {q})',
+                                       ('e2e_blist.bend', 'sdk1'): lambda k: f'{DFX}.csdk1({d_}, {t_}, {off_}, {k}, 3n, 8n, 7n, {q}, {q}, {q}, {q})'})
+                if L0 in chains:
+                    sf = chains[L0]
+                    hy, hl = f'hy{sf}', f'hl{sf}'
+                    dzl = f"{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {hl})"
+                    hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
+                    return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off_}, {L0}, {ca[4]}, {k}, FD.nat__lt_le_trans({ca[4]}, 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=hl)
+                if re.fullmatch(r'\d+', L0) and re.fullmatch(r'\d+n', ca[4]):
+                    BVW, VRb = al('e2e/e2e_bvw.bend'), al('proofs/obj/vbrt.bend')
+                    return WordsFix(e, int(L0), f'{UCTa}.CT({", ".join(ca)})', int(ca[4][:-1]), f'{BVW}.ctps({VRb}.RX({off_}), {d_}, {t_}, {off_}, {L0}, {ca[4]})')
+            if kind == 'CTN':
+                d_, t_, Y, L0 = ca[0], ca[1], ca[2], ca[3]
+                if L0 == '24576':   # a sync committee's public keys
+                    return fx_model(DFX, e, d_, t_, Y, 'sc', None, None, None, None)
+                if re.fullmatch(r'\d+', L0) and re.fullmatch(r'\d+n', ca[4]):
+                    return WordsFix(e, int(L0), f'{mct.group(1)}.CTN({", ".join(ca)})', int(ca[4][:-1]), f'{DFX}.ctn_pf({", ".join(ca)})')
+            raise SystemExit(f'LCU words {j}: {e[:500]}')
+        return o1 + o2, words, None, None, None
+    ps = WIN_PS.format(H31=H31).replace(' +h31: ' + H31 + ',', '')
+    return container_file(name, lf, top, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
+                          lets, None, top, objexpr='DC.OBJw(d, t, x, off, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -821,6 +870,7 @@ PROVERS = {
     'FuluExecutionPayload': lambda lf: execution_payload(lf),
     'FuluBeaconBlockBody': lambda lf: beacon_block_body(lf),
     'FuluLightClientFinalityUpdate': lambda lf: lc_finality(lf),
+    'FuluLightClientUpdate': lambda lf: lc_update(lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
     'FuluSignedBeaconBlock': lambda lf: beacon_block_body(lf, 'sb'),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
