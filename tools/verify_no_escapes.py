@@ -6,7 +6,7 @@
     python3 tools/verify_no_escapes.py --probe      # (ssz server) run the planted forms through the checker
 
 The forms are read off the pinned checker's parser (toolchain.lock.json: bend2/bend.ts at
-aa99b746; parse_book/parse_def have the same three forms as at 3ddfb036, the build pinned before), which is the only place a def becomes unsafe (`def.u`) or foreign (`def.i`):
+c55a7f03; parse_book/parse_def have the same three forms as at 3ddfb036, the build pinned before), which is the only place a def becomes unsafe (`def.u`) or foreign (`def.i`):
 
   parse_book   `@` is parse_take("@") and then parse_word("unsafe"): parse_skip runs in between,
                so any whitespace, newlines and `#` comments may separate them (`@ # x\\n unsafe`).
