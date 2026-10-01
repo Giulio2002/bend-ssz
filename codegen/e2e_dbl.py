@@ -1,0 +1,266 @@
+#!/usr/bin/env python3
+"""e2e/e2e_dbl_<list>.bend: the decoded list of a boxed fixed-size record list (a list of at most LIM records of SZ bytes, stored as an
+array of boxes: l16_ProposerSlashing) satisfies the encode premise and the root laws' invariant of a block body that holds it.
+
+The reader (proofs/obj/var_winx_<list>.bend: RT) writes record j (RX(t, pos(j, SZ, x)), its words read at a byte position) into the array at index i,
+for j = 0 .. N - 1. The array is am(T) for the tree T the same writes build (RTT: rt_am, with root_types_light.bend's amset: the Array.set of the box
+th(v) is the tree updated with v), every element is a record whose words are the window's (rx_rep: the proof term of the fixed-size composed theorem's
+pe_rep, with the words of the record in place of those of the input), and the window holds N = len / SZ records:
+
+    sdl(d, t, x, off, len, hchk)                  the encode premise (the tree below depth 31; the element premise is trivial)
+    rep(d, t, x, off, len, s, es, ee, hchk)       the root laws' rep_<list>(OBJw, s)
+    szl(d, t, x, off, len, hchk)                  the list's encoded byte count is the window's
+
+The lemmas over the elements (ereps_after / ereps_snoc / ereps_step) are e2e_dtx.bend's, renamed.
+
+Usage: python3 codegen/e2e_dbl.py [--check]"""
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+E2E = ROOT / 'e2e'
+
+LISTS = {
+    'l16_ProposerSlashing': dict(X='ProposerSlashing', Wf='proofs/obj/var_winx_l16_ProposerSlashing.bend', ML='e2e_ml_l16_ProposerSlashing.bend',
+                                 comp='FuluProposerSlashing_e2e_comp_generated.bend', SZ=416, WORDS=104, LIM=16, KB=4, ELEM='Spec.ProposerSlashing()',
+                                 LST='Fulu_list_ProposerSlashing_16_d'),
+}
+
+DTX = (E2E / 'e2e_dtx.bend').read_text()
+
+
+def dtx_def(name):
+    """the text of a def of e2e_dtx.bend (up to the next blank line)"""
+    m = re.search(r'^def %s\(.*?(?=\n\n)' % re.escape(name), DTX, re.M | re.S)
+    return m.group(0)
+
+
+def rename(t, c, X):
+    return t.replace('l1048576_bl1073741824', c).replace('bl1073741824_bx', X + '_bx').replace('RT.MB<RT.WMr>', 'RT.MB<RT.M_%s>' % X)
+
+
+INV_NX = '''def inv_nx(+p: Nat, +i: U32, +m: U32, +inv: {Nat.add(U32.to_nat(i), 2n+p) == U32.to_nat(m) : Nat})
+    -> {Nat.add(U32.to_nat(U32.add(i, 1)), 1n+p) == U32.to_nat(m) : Nat}:
+  +him = FD.logic__subst(Nat, z => {Nat.is_le(1n+U32.to_nat(i), z) == True{} : Bool}, Nat.add(U32.to_nat(i), 2n+p), U32.to_nat(m), inv,
+    FD.logic__subst(Nat, z => {Nat.is_le(1n+U32.to_nat(i), z) == True{} : Bool}, Nat.add(2n+p, U32.to_nat(i)), Nat.add(U32.to_nat(i), 2n+p), FD.nat__add_comm(2n+p, U32.to_nat(i)),
+      A.le_skip(1n+p, U32.to_nat(i))))
+  +e1 = VVU.addk(i, 1, m, him)
+  Equal.trans(Nat, Nat.add(U32.to_nat(U32.add(i, 1)), 1n+p), Nat.add(1n+U32.to_nat(i), 1n+p), U32.to_nat(m),
+    Equal.cong(Nat, Nat, z => Nat.add(z, 1n+p), U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), e1),
+    Equal.trans(Nat, Nat.add(1n+U32.to_nat(i), 1n+p), Nat.add(U32.to_nat(i), 2n+p), U32.to_nat(m), Equal.sym(Nat, Nat.add(U32.to_nat(i), 2n+p), 1n+Nat.add(U32.to_nat(i), 1n+p), FD.nat__add_succ(U32.to_nat(i), 1n+p)), inv))
+'''
+
+
+def text(c):
+    S = LISTS[c]
+    X, SZ, LIM, KB, LST, ELEM = S['X'], S['SZ'], S['LIM'], S['KB'], S['LST'], S['ELEM']
+    MB = 'RT.MB<RT.M_%s>' % X
+    BX = 'O.Boxed<Fulu%s_d.%s>' % (X, X)
+    comp = (E2E / S['comp']).read_text()
+    wtext = (ROOT / S['Wf']).read_text()
+    # the words of the record at y
+    rx = re.search(r'^def RX\(.*?: (.*)$', wtext, re.M).group(1)
+    words = re.findall(r'UR\.RWN\(t, [^()]*\)', rx)
+    assert len(words) == S['WORDS'], (len(words), S['WORDS'])
+    term = re.search(r'^def pe_rep\(\+bs: \+List<U32>\) -> .*?:\n  (.*)$', comp, re.M).group(1)
+    term = re.sub(r'FD\.flat__nthc\(L\.wlp\(bs\), (\d+)n\)', lambda m: words[int(m.group(1))], term)
+    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../types/schema.bend as S', 'import ../spec/fulu_schemas.bend as Spec',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vdepth.bend as VD',
+            'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vvlu.bend as VVU', 'import ../proofs/obj/schema_shapes.bend as SH',
+            'import ../proofs/obj/root_types_light.bend as RT', 'import ../%s as W' % S['Wf'], 'import ./%s as ML' % S['ML'],
+            'import ../proofs/obj/view_seq.bend as VQ', 'import ../proofs/obj/words_rw.bend as WR', 'import ../proofs/obj/vua_rd.bend as UR',
+            'import ../proofs/obj/vu32.bend as VU', 'import ../types/%s_def_generated.bend as %s' % (LST[:-2].replace('Fulu_list_', 'Fulu_list_'), LST)]
+    for m in re.finditer(r'^import (\S+) as (Fulu\w*_d)$', comp, re.M):
+        imps.append('import %s as %s' % (m.group(1), m.group(2)))
+    out = ['\n'.join(dict.fromkeys(imps)), '', '# GENERATED by codegen/e2e_dbl.py. Do not edit.',
+           "# The decoded %s (proofs/obj/var_winx_%s.bend): its encode premise, the root laws' invariant and its byte count. See codegen/e2e_dbl.py." % (c, c), '']
+    ren = lambda t: rename(t, c, X)
+    out.append('def XE(+t: FD.array__Tree<U32>, +y: Nat) -> %s: RT.fz_%s_bx(W.RX(t, y))\n' % (MB, X))
+    out.append("# the record at y: the proof term of the fixed-size composed theorem (pe_rep), with the record's words\n"
+               "def rx_rep(+t: FD.array__Tree<U32>, +y: Nat) -> RT.rep_%s_bx(RT.th_%s_bx(XE(t, y)), %s):\n  ({==}, %s)\n" % (X, X, ELEM, term))
+    out.append(dtx_def('lt_add_succ') + '\n')
+    for n in ('lt_i', 'lt_len', 'ereps_after', 'ereps_snoc', 'ereps_step', 'cnt0'):
+        out.append(ren(dtx_def(n)) + '\n')
+    out.append(INV_NX)
+    out.append(dtx_def('i1_val') + '\n')
+    UPDX = lambda T, i, j: 'FD.array__upd(%s, dw, %s, %s, XE(t, VRL.pos(%s, %dn, x)))' % (MB, T, i, j, SZ)
+    ARR = 'Array<%s>' % BX
+    out.append(f'''def RTT(+k: Nat, +i: U32, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +x: Nat, +T: FD.array__Tree<{MB}>) -> FD.array__Tree<{MB}>:
+  match k:
+    case 0n: {UPDX('T', 'U32.to_nat(i)', 'j')}
+    case 1n+q: RTT(q, U32.add(i, 1), 1n+j, dw, t, x, {UPDX('T', 'U32.to_nat(i)', 'j')})
+
+# the array the reader writes is the array of the tree its writes build
+def rt_am(+k: Nat, +i: U32, +m: U32, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +x: Nat, +T: FD.array__Tree<{MB}>,
+    +hdw: {{Nat.is_lt(dw, 32n) == True{{}} : Bool}}, +pf: {{FD.array__perfect({MB}, dw, T) == True{{}} : Bool}},
+    +hm: {{Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +inv: {{Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}})
+    -> {{W.RT(k, i, j, RT.am_{c}(T), t, x) == RT.am_{c}(RTT(k, i, j, dw, t, x, T)) : {ARR}}}:
+  match k:
+    case 0n:
+      RT.amset_{c}(dw, T, i, XE(t, VRL.pos(j, {SZ}n, x)), RT.xat_{c}(FD.array__slots({MB}, T), U32.to_nat(i)), hdw, lt_i(i, 0n, m, dw, hm, inv),
+        RT.nth_{c}(FD.array__slots({MB}, T), U32.to_nat(i), lt_len(i, 0n, m, dw, T, pf, hm, inv)), pf)
+    case 1n+q:
+      %Equal.sym({ARR}, Array.set({BX}, RT.am_{c}(T), i, W.RX(t, VRL.pos(j, {SZ}n, x))), RT.am_{c}({UPDX('T', 'U32.to_nat(i)', 'j')}),
+          RT.amset_{c}(dw, T, i, XE(t, VRL.pos(j, {SZ}n, x)), RT.xat_{c}(FD.array__slots({MB}, T), U32.to_nat(i)), hdw, lt_i(i, 1n+q, m, dw, hm, inv),
+            RT.nth_{c}(FD.array__slots({MB}, T), U32.to_nat(i), lt_len(i, 1n+q, m, dw, T, pf, hm, inv)), pf)) :
+        {{W.RT(q, U32.add(i, 1), 1n+j, _, t, x) == RT.am_{c}(RTT(1n+q, i, j, dw, t, x, T)) : {ARR}}}
+      rt_am(q, U32.add(i, 1), m, 1n+j, dw, t, x, {UPDX('T', 'U32.to_nat(i)', 'j')}, hdw,
+        FD.array__upd_perfect({MB}, dw, T, U32.to_nat(i), XE(t, VRL.pos(j, {SZ}n, x)), pf), hm, inv_nx(q, i, m, inv))
+''')
+
+    SPA = ELEM
+    NNe, CCe = 'W.NN(len)', 'W.CC(len)'
+    DW = f'B.words_depth({NNe})'
+    K0 = f'U32.to_nat(U32.sub({NNe}, 1))'
+    T0 = f'FD.array__trep({MB}, {DW}, RT.MNone{{}})'
+    TF = f'RTT({K0}, 0, 0n, {DW}, t, x, {T0})'
+    PF0 = f'FD.array__trep_perfect({MB}, {DW}, RT.MNone{{}})'
+    HCK = '+hchk: {W.CHKw(t, x, off, len) == True{} : Bool}'
+    HCW = f'W.hcw(len, hchk)'
+    out.append(f"""def rxs(+t: FD.array__Tree<U32>, +y: Nat, +sE: S.Schema, +hs: {{sE == {ELEM} : S.Schema}}) -> RT.rep_{X}_bx(RT.th_{X}_bx(XE(t, y)), sE):
+  FD.logic__subst(S.Schema, z => RT.rep_{X}_bx(RT.th_{X}_bx(XE(t, y)), z), {ELEM}, sE, Equal.sym(S.Schema, sE, {ELEM}, hs), rx_rep(t, y))
+
+""")
+    out.append(f"""def rt_ereps(+k: Nat, +i: U32, +m: U32, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +x: Nat, +T: FD.array__Tree<{MB}>,
+    +hdw: {{Nat.is_lt(dw, 32n) == True{{}} : Bool}}, +pf: {{FD.array__perfect({MB}, dw, T) == True{{}} : Bool}},
+    +hm: {{Nat.is_le(U32.to_nat(m), FD.spec_common__pow2(dw)) == True{{}} : Bool}}, +inv: {{Nat.add(U32.to_nat(i), 1n+k) == U32.to_nat(m) : Nat}},
+    +sE: S.Schema, +hs: {{sE == {ELEM} : S.Schema}},
+    +pre: RT.ereps_{c}(U32.to_nat(i), FD.array__slots({MB}, T), 0n, sE))
+    -> RT.ereps_{c}(U32.to_nat(m), FD.array__slots({MB}, RTT(k, i, j, dw, t, x, T)), 0n, sE):
+  match k:
+    case 0n:
+      FD.logic__subst(Nat, z => RT.ereps_{c}(z, FD.array__slots({MB}, {UPDX('T', 'U32.to_nat(i)', 'j')}), 0n, sE), 1n+U32.to_nat(i), U32.to_nat(m), cnt0(U32.to_nat(i), U32.to_nat(m), inv),
+        ereps_step(U32.to_nat(i), dw, T, XE(t, VRL.pos(j, {SZ}n, x)), sE, pf, lt_i(i, 0n, m, dw, hm, inv), pre, rxs(t, VRL.pos(j, {SZ}n, x), sE, hs)))
+    case 1n+q:
+      rt_ereps(q, U32.add(i, 1), m, 1n+j, dw, t, x, {UPDX('T', 'U32.to_nat(i)', 'j')}, hdw, FD.array__upd_perfect({MB}, dw, T, U32.to_nat(i), XE(t, VRL.pos(j, {SZ}n, x)), pf), hm, inv_nx(q, i, m, inv), sE, hs,
+        FD.logic__subst(Nat, z => RT.ereps_{c}(z, FD.array__slots({MB}, {UPDX('T', 'U32.to_nat(i)', 'j')}), 0n, sE), 1n+U32.to_nat(i), U32.to_nat(U32.add(i, 1)),
+          Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+U32.to_nat(i), i1_val(q, i, m, inv)),
+          ereps_step(U32.to_nat(i), dw, T, XE(t, VRL.pos(j, {SZ}n, x)), sE, pf, lt_i(i, 1n+q, m, dw, hm, inv), pre, rxs(t, VRL.pos(j, {SZ}n, x), sE, hs))))
+
+# the elements' storage premise is trivial
+def sdks_triv(+k: Nat, +W: List<&2, {MB}>, +i: Nat) -> ML.SDKS(k, W, i):
+  match k:
+    case 0n: {{==}}
+    case 1n+q: ({{==}}, sdks_triv(q, W, 1n+i))
+
+def rtt_pf(+k: Nat, +i: U32, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +x: Nat, +T: FD.array__Tree<{MB}>, +pf: {{FD.array__perfect({MB}, dw, T) == True{{}} : Bool}})
+    -> {{FD.array__perfect({MB}, dw, RTT(k, i, j, dw, t, x, T)) == True{{}} : Bool}}:
+  match k:
+    case 0n: FD.array__upd_perfect({MB}, dw, T, U32.to_nat(i), XE(t, VRL.pos(j, {SZ}n, x)), pf)
+    case 1n+q: rtt_pf(q, U32.add(i, 1), 1n+j, dw, t, x, {UPDX('T', 'U32.to_nat(i)', 'j')}, FD.array__upd_perfect({MB}, dw, T, U32.to_nat(i), XE(t, VRL.pos(j, {SZ}n, x)), pf))
+
+""")
+    fa = dtx_def('fill_am').replace('Fulu_list_bytelist_1073741824_1048576_d', LST)
+    fa = fa.replace('O.Boxed<O.Words>', BX)
+    out.append(ren(fa) + '\n')
+    out.append(dtx_def('succ_pred') + '\n')
+    out.append(f"""# ---- what the window's check says ----
+def hL() -> {{Nat.is_le(U32.to_nat({LIM}), O.pow2n({KB}n)) == True{{}} : Bool}}:
+  {{==}}
+
+def h2k(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {HCK}) -> {{Nat.is_le({CCe}, O.pow2n({KB}n)) == True{{}} : Bool}}:
+  FD.nat__le_trans({CCe}, U32.to_nat({LIM}), O.pow2n({KB}n), {HCW}, hL())
+
+def dw_lt(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {HCK}) -> {{Nat.is_lt({DW}, 31n) == True{{}} : Bool}}:
+  FD.nat__le_lt_trans({DW}, {KB}n, 31n, VD.wd_min({NNe}, {KB}n, h2k(t, x, off, len, hchk)), {{==}})
+
+def dw_cov(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {HCK}) -> {{Nat.is_le({CCe}, FD.spec_common__pow2({DW})) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le({CCe}, z) == True{{}} : Bool}}, O.pow2n({DW}), FD.spec_common__pow2({DW}),
+    Equal.sym(Nat, FD.spec_common__pow2({DW}), O.pow2n({DW}), VD.s_pow2_eq({DW})), VD.wd_cover({NNe}, {KB}n, {{==}}, h2k(t, x, off, len, hchk)))
+
+def inv0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {HCK})
+    -> {{Nat.add(U32.to_nat(0), 1n+{K0}) == {CCe} : Nat}}:
+  +h1 = W.cpos(len, {CCe}, W.ecw(len, hchk), ec)
+  Equal.trans(Nat, 1n+{K0}, 1n+Nat.sub({CCe}, 1n), {CCe},
+    Equal.cong(Nat, Nat, z => 1n+z, {K0}, Nat.sub({CCe}, 1n), FD.u32__sub_nat({NNe}, 1, h1)), succ_pred({CCe}, h1))
+
+# ---- the decoded list of a nonempty window ----
+def arr_eq(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {HCK})
+    -> {{W.RT({K0}, 0, 0n, {LST}.{c}_fill({LST}.{c}_cap({NNe})), t, x) == RT.am_{c}({TF}) : {ARR}}}:
+  FD.logic__subst({ARR}, z => {{W.RT({K0}, 0, 0n, z, t, x) == RT.am_{c}({TF}) : {ARR}}}, RT.am_{c}({T0}), {LST}.{c}_fill({LST}.{c}_cap({NNe})),
+    Equal.sym({ARR}, {LST}.{c}_fill({LST}.{c}_cap({NNe})), RT.am_{c}({T0}), fill_am({DW})),
+    rt_am({K0}, 0, {NNe}, 0n, {DW}, t, x, {T0}, FD.nat__lt_trans({DW}, 31n, 32n, dw_lt(t, x, off, len, hchk), {{==}}), {PF0}, dw_cov(t, x, off, len, hchk), inv0(t, x, off, len, ec, hchk)))
+
+def obj_eq(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +ec: {{U32.is_eq(len, 0) == False{{}} : Bool}}, {HCK})
+    -> {{W.LOBJ(False{{}}, t, x, len) == {LST}.{c}_Seq{{RT.am_{c}({TF}), {NNe}}} : {LST}.{c}_Seq}}:
+  Equal.cong({ARR}, {LST}.{c}_Seq, a => {LST}.{c}_Seq{{a, {NNe}}}, W.RT({K0}, 0, 0n, {LST}.{c}_fill({LST}.{c}_cap({NNe})), t, x), RT.am_{c}({TF}), arr_eq(d, t, x, off, len, ec, hchk))
+""")
+
+    EMPT = f'FD.array__trep({MB}, 0n, RT.MNone{{}})'
+    EC = '+ec: {U32.is_eq(len, 0) == c : Bool}'
+    TXN = '+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32'
+    D32 = f'FD.nat__lt_trans({DW}, 31n, 32n, dw_lt(t, x, off, len, hchk), {{==}})'
+    NP = f'FD.array__perfect({MB}, {DW}, {TF})'
+    out.append(f"""# ---- the list's representation invariant ----
+def rep_c(+c: Bool, +d: Nat, {TXN}, {EC}, {HCK}, +s: S.Schema, +es: {{SH.ListOf_limit(s) == U32.to_nat({LIM}) : Nat}},
+    +ee: {{SH.ListOf_element(s) == {ELEM} : S.Schema}})
+    -> RT.rep_{c}(W.LOBJ(c, t, x, len), s):
+  match c:
+    case True{{}}: (({EMPT}, (0n, (0, ({{==}}, ({{==}}, ({{==}}, ({{==}}, {{==}}))))))), FD.nat__zero_le(SH.ListOf_limit(s)))
+    case False{{}}:
+      +hc = W.hcw(len, hchk)
+      ((({TF}), ({DW}, ({NNe}, (obj_eq(d, t, x, off, len, ec, hchk), (rtt_pf({K0}, 0, 0n, {DW}, t, x, {T0}, {PF0}),
+          ({D32}, (dw_cov(t, x, off, len, hchk),
+            rt_ereps({K0}, 0, {NNe}, 0n, {DW}, t, x, {T0}, {D32}, {PF0}, dw_cov(t, x, off, len, hchk), inv0(t, x, off, len, ec, hchk), SH.ListOf_element(s), ee, {{==}})))))))),
+          FD.logic__subst(Nat, z => {{Nat.is_le({CCe}, z) == True{{}} : Bool}}, U32.to_nat({LIM}), SH.ListOf_limit(s), Equal.sym(Nat, SH.ListOf_limit(s), U32.to_nat({LIM}), es), {HCW}))
+""")
+
+    W_ = S['WORDS']
+    out.append(f"""def rep(+d: Nat, {TXN}, +s: S.Schema, +es: {{SH.ListOf_limit(s) == U32.to_nat({LIM}) : Nat}}, +ee: {{SH.ListOf_element(s) == {ELEM} : S.Schema}}, {HCK})
+    -> RT.rep_{c}(W.OBJw(d, t, x, off, len), s):
+  rep_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, hchk, s, es, ee)
+
+# ---- the encode premise ----
+def sdl_c(+c: Bool, +d: Nat, {TXN}, {EC}, {HCK}) -> ML.sdt(W.LOBJ(c, t, x, len)):
+  match c:
+    case True{{}}: ({EMPT}, (0n, (0, ({{==}}, ({{==}}, ({{==}}, ({{==}}, {{==}})))))))
+    case False{{}}:
+      ({TF}, ({DW}, ({NNe}, (obj_eq(d, t, x, off, len, ec, hchk), (rtt_pf({K0}, 0, 0n, {DW}, t, x, {T0}, {PF0}),
+        (dw_lt(t, x, off, len, hchk), (dw_cov(t, x, off, len, hchk), sdks_triv({CCe}, FD.array__slots({MB}, {TF}), 0n))))))))
+
+def sdl(+d: Nat, {TXN}, {HCK}) -> ML.sdt(W.OBJw(d, t, x, off, len)):
+  sdl_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, hchk)
+
+# ---- the encoded byte count: the records are {SZ} bytes, {W_} words, each ----
+def qadd(+a: Nat, +b: Nat) -> {{A.quad(Nat.add(a, b)) == Nat.add(A.quad(a), A.quad(b)) : Nat}}:
+  Equal.trans(Nat, A.quad(Nat.add(a, b)), Nat.double(Nat.add(Nat.double(a), Nat.double(b))), Nat.add(A.quad(a), A.quad(b)),
+    Equal.cong(Nat, Nat, z => Nat.double(z), Nat.double(Nat.add(a, b)), Nat.add(Nat.double(a), Nat.double(b)), Equal.sym(Nat, Nat.add(Nat.double(a), Nat.double(b)), Nat.double(Nat.add(a, b)), FD.nat__add_double(a, b))),
+    Equal.sym(Nat, Nat.add(A.quad(a), A.quad(b)), Nat.double(Nat.add(Nat.double(a), Nat.double(b))), FD.nat__add_double(Nat.double(a), Nat.double(b))))
+
+def qm(+c: Nat) -> {{A.quad(Nat.mul(c, {W_}n)) == Nat.mul(c, {SZ}n) : Nat}}:
+  match c:
+    case 0n: {{==}}
+    case 1n+q:
+      Equal.trans(Nat, A.quad(Nat.mul(1n+q, {W_}n)), Nat.add(A.quad({W_}n), A.quad(Nat.mul(q, {W_}n))), Nat.mul(1n+q, {SZ}n), qadd({W_}n, Nat.mul(q, {W_}n)),
+        Equal.cong(Nat, Nat, z => Nat.add(A.quad({W_}n), z), A.quad(Nat.mul(q, {W_}n)), Nat.mul(q, {SZ}n), qm(q)))
+
+def szl_c(+c: Bool, +d: Nat, {TXN}, {EC}, {HCK}) -> {{ML.LLX(W.LOBJ(c, t, x, len)) == U32.to_nat(len) : Nat}}:
+  match c:
+    case True{{}}: Equal.sym(Nat, U32.to_nat(len), 0n, Equal.cong(U32, Nat, z => U32.to_nat(z), len, 0, FD.u32alg__eq_of(len, 0, ec)))
+    case False{{}}: Equal.trans(Nat, ML.LLX(W.LOBJ(False{{}}, t, x, len)), Nat.mul({CCe}, {SZ}n), U32.to_nat(len), qm({CCe}), Equal.sym(Nat, U32.to_nat(len), Nat.mul({CCe}, {SZ}n), W.ecw(len, hchk)))
+
+def szl(+d: Nat, {TXN}, {HCK}) -> {{ML.LLX(W.OBJw(d, t, x, off, len)) == U32.to_nat(len) : Nat}}:
+  szl_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, hchk)
+""")
+    return '\n'.join(out)
+
+
+def main():
+    outs = {E2E / ('e2e_dbl_%s.bend' % c): text(c) for c in LISTS}
+    check = '--check' in sys.argv
+    stale = [p.name for p, t in outs.items() if not p.exists() or p.read_text() != t]
+    if check:
+        if stale:
+            print('stale: ' + ', '.join(stale))
+            sys.exit(1)
+        print('e2e_dbl: up to date')
+        return
+    for p, t in outs.items():
+        if not p.exists() or p.read_text() != t:
+            p.write_text(t)
+    print('e2e_dbl: %d files' % len(outs))
+
+
+if __name__ == '__main__':
+    main()
