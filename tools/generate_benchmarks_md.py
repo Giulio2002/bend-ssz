@@ -37,7 +37,7 @@ def main():
     add('Bend is the **generated typed owning object API** through its native C')
     add('backend, run with `--threads 1 --gpu off`; the measured programs are')
     add('`benchmarks/objprog/g<k>.bend` over `types/<Name>_*_generated.bend`, which')
-    add('`codegen/generate.py` emits from `codegen/fulu.yaml` (see docs/LAYOUT.md).')
+    add('`codegen/impl/generate.py` emits from `codegen/fulu.yaml` (see docs/LAYOUT.md).')
     add('Each is built under a compile-memory cap, every attempt recorded in the')
     add('report\'s `bend_compiles`. Go is pinned fastssz via go-eth2-client, built')
     add('with `go build` and run with `GOMAXPROCS(1)`. No Bun/JavaScript result')

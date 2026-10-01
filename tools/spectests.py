@@ -58,7 +58,7 @@ def build():
 
 def packed(s):
     """The generator stores a sequence of these elements as packed bytes
-    (codegen/generate.py Shape.classify): basic elements and byte vectors of a
+    (codegen/impl/generate.py Shape.classify): basic elements and byte vectors of a
     whole number of words."""
     e = s['element']
     return e['kind'] in ('bool', 'uint') or (e['kind'] == 'bytes' and e['length'] % 4 == 0)
@@ -152,10 +152,10 @@ def main():
     parser.add_argument('--only', default=None, help='substring filter on case paths (development)')
     args = parser.parse_args()
     sys.path.insert(0, str(ROOT / 'tools'))
-    sys.path.insert(0, str(ROOT / 'codegen'))
+    sys.path.insert(0, str(ROOT))
     from test_schemas import for_case, normalize
     from run_evidence import preserve_report, sha256_file
-    import generic as GEN
+    from codegen.core import generic as GEN
     started = time.monotonic()
     build()
     groups = json.loads((ROOT / 'types/obj_groups.json').read_text())
@@ -180,7 +180,7 @@ def main():
         'source_sha256': {str(p.relative_to(ROOT)): sha256_file(p)
                           for folder, pattern in [('src', '*.bend'), ('types', '*.bend'), ('spec', '*.bend'),
                                                   ('benchmarks/objprog', '*.bend'), ('benchmarks/compact', '*.bend'),
-                                                  ('tools', '*.py'), ('codegen', '*.py'), ('codegen', '*.yaml')]
+                                                  ('tools', '*.py'), ('codegen', '**/*.py'), ('codegen', '*.yaml')]
                           for p in sorted((ROOT / folder).glob(pattern))},
         'runs': 0,
     }

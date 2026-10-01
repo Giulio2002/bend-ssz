@@ -4,32 +4,32 @@
 |---|---|---|
 | `src/` | runtime: buffers, object storage, digest, model API (`src/model.bend`) | hand |
 | `spec/` | frozen SSZ specification and Fulu schemas | hand (frozen), except `spec/bit_packing.bend`, `spec/bit_decoding.bend` and `spec/fulu_schemas.bend`: written by `tools/generate_bit_packing.py`, `tools/generate_bit_decoding.py` and `tools/generate_fulu_schema_proofs.py`, frozen all the same, no header ([TRUST.md](TRUST.md)) |
-| `types/<Name>_{def,encode_ssz,decode_ssz,hashtreeroot}_generated.bend` | the typed object API per name | `codegen/generate.py` |
+| `types/<Name>_{def,encode_ssz,decode_ssz,hashtreeroot}_generated.bend` | the typed object API per name | `codegen/impl/generate.py` |
 | `proofs/obj/` | the laws of the generated functions, and their support libraries | `codegen/*.py`, a few hand-written libraries |
-| `proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend` | the per-name facades: every law in the object API's terms | `codegen/api_facade.py` |
-| `proofs/gate/` | one-import gates that check each law module in isolation; `MISSING.txt`, `api_map.json` | `codegen/api_gate.py` |
-| `e2e/<Name>_e2e_{,dec_,root_}generated.bend` (fixed-size names keep encode and decode in `<Name>_e2e_generated.bend`), `e2e/manifest.json` | the bridges to END_TO_END's model, and their index | `codegen/e2e_bridge.py` |
-| `e2e/<Name>_e2e_set_generated.bend` | per container with field setters: the spec-value law of each setter (`view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, `proofs/obj/value_set.bend`) and its composition with the root bridge and, where the premises allow, the encode bridge | `codegen/e2e_setters.py` |
-| `e2e/STATEMENTS.txt` | every public statement: the bridges, composed theorems, witnesses, setter laws and the object-mutation laws (`proofs/obj/coll_api_*`, `prep_setters.bend`), with the imports and local defs they use (no proofs) | `codegen/statements.py` |
+| `proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend` | the per-name facades: every law in the object API's terms | `codegen/proofs/facades/api_facade.py` |
+| `proofs/gate/` | one-import gates that check each law module in isolation; `MISSING.txt`, `api_map.json` | `codegen/proofs/facades/api_gate.py` |
+| `e2e/<Name>_e2e_{,dec_,root_}generated.bend` (fixed-size names keep encode and decode in `<Name>_e2e_generated.bend`), `e2e/manifest.json` | the bridges to END_TO_END's model, and their index | `codegen/proofs/bridges/e2e_bridge.py` |
+| `e2e/<Name>_e2e_set_generated.bend` | per container with field setters: the spec-value law of each setter (`view(set_f(o, w)) == field_set(view(o), k, view_f(w))`, `proofs/obj/value_set.bend`) and its composition with the root bridge and, where the premises allow, the encode bridge | `codegen/proofs/collections/e2e_setters.py` |
+| `e2e/STATEMENTS.txt` | every public statement: the bridges, composed theorems, witnesses, setter laws and the object-mutation laws (`proofs/obj/coll_api_*`, `prep_setters.bend`), with the imports and local defs they use (no proofs) | `codegen/docs/statements.py` |
 | `END_TO_END.bend`, `ROOT_DOMAIN.bend`, `PROOF.bend`, `HASH_PROOF.bend` | the model API's public laws | hand (statements frozen) |
-| `codegen/` | the generators; `codegen/fulu.yaml` and the frozen generic descriptions are their inputs | hand |
-| the figures marked `<!-- fig:KEY -->` in README.md, docs/RESULTS.md, docs/PREMISES.md | coverage counts and name lists, from `proofs/gate/` and `e2e/manifest.json` | `codegen/doc_figures.py` |
+| `codegen/` | the generators, by purpose (`core/`, `impl/`, `docs/`, `proofs/{laws,var,collections,facades,bridges,witnesses,composed,decoded,support}/`, `templates/`), listed in `codegen/registry.py`; `codegen/fulu.yaml` and the frozen generic descriptions are their inputs; see `codegen/README.md` | hand |
+| the figures marked `<!-- fig:KEY -->` in README.md, docs/RESULTS.md, docs/PREMISES.md | coverage counts and name lists, from `proofs/gate/` and `e2e/manifest.json` | `codegen/docs/doc_figures.py` |
 | `tools/check.sh`, `tools/check_fast.sh`, `tools/umbrellas.py` | the pinned-checker runners: one file, and the full check through umbrellas; `tools/check_costs.tsv` holds the per-file times the umbrella partition balances on | hand |
 | `vendor/` | pinned consensus-specs; `vendor/bendhub/` the SHA-256 BendHub package | vendored |
 | `toolchain.lock.json`, `tools/verify_pins.py` | the checker, Bun and SHA-256 package pins, and their check | hand |
 | `tools/verify_no_escapes.py`, `tools/check_stamp.py` | the textual ban on unsafe/foreign code; the full check's stamp (`benchmarks/evidence/check_fast.json`) | hand |
-| `tools/generate_*.py` | the early proof layer (`proofs/*.bend`), the three generated `spec/` files above, `src/bit_packing.bend`, `src/bit_decoding.bend`, `types/fulu.bend`, `types/fulu_model.bend`, `types/fulu_bytes.bend`, `types/byte_alias.bend`, benchmark scaffolding; `codegen/tool_generators.py --check` reruns the reproducible ones (`-v` lists what each writes) and `ONE_SHOT` there names the six that are history or measurement, not generators of checked files | hand |
+| `tools/generate_*.py` | the early proof layer (`proofs/*.bend`), the three generated `spec/` files above, `src/bit_packing.bend`, `src/bit_decoding.bend`, `types/fulu.bend`, `types/fulu_model.bend`, `types/fulu_bytes.bend`, `types/byte_alias.bend`, benchmark scaffolding; `codegen/impl/tool_generators.py --check` reruns the reproducible ones (`-v` lists what each writes) and `ONE_SHOT` there names the six that are history or measurement, not generators of checked files | hand |
 | `tests/`, `tools/run_runtime_tests.py`, `tools/bend_loader.ts` | Bun tests of compiled runtime modules and one Python unit test ([BUILD.md](BUILD.md), Tests) | hand |
 | `docs/history/` | superseded reviews and development notes, kept for provenance | hand |
 | `frozen.lock.json`, `tools/verify_frozen.py` | the hashes of the frozen spec and statements, and their check | `tools/verify_frozen.py --update` (deliberate changes only) |
 
-Files written by `codegen/` start with `# GENERATED by codegen/<gen>.py. Do not edit.`; the
-`tools/generate_*.py` outputs carry no header (the list is `codegen/tool_generators.py --check -v`).
+Files written by `codegen/` carry `# GENERATED by <gen> (codegen). Do not edit.` (`<gen>` is the generator's file stem, unique across `codegen/`; the header names no directory, so it does not change when a generator moves); the
+`tools/generate_*.py` outputs carry no header (the list is `codegen/impl/tool_generators.py --check -v`).
 Change either kind only through its generator.
 
 ## Names
 
-Every type has one readable name, computed by `codegen/names.py` and used unchanged in file names, def names and
+Every type has one readable name, computed by `codegen/core/names.py` and used unchanged in file names, def names and
 runtime symbols: the fork's names under the fork prefix (`FuluBeaconState`, `FuluAttestation`, ...); the official
 class names of the `ssz_generic` suite (`BitsStruct`, `ComplexTestStruct`, `ProgressiveTestStruct`, ...); and structural
 names for every other form (`bitvector_512`, `bitlist_33`, `vec_uint16_4`, `list_uint8_1024`, `proglist_bool`,
@@ -47,16 +47,16 @@ each is kept:
 
 | Module | What it proves | Why nothing imports it |
 |---|---|---|
-| `proofs/obj/coll_api_*.bend` (`codegen/coll_laws.py`) | the collection laws of the public API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
-| `proofs/obj/fields_*.bend` (the non-swap laws), `proofs/obj/collections_*.bend` (`codegen/laws.py`) | read-after-write laws of the field accessors over record literals, and rejected/accepted laws of the internal collection helpers with the guard given as a constant (the `X_swap_f` laws of `fields_*.bend` are listed and locked) | they hold by unfolding a definition; the spec-value setter laws and the public-API collection laws (`coll_api_*`) state what they did, so they are no longer public statements |
+| `proofs/obj/coll_api_*.bend` (`codegen/proofs/collections/coll_laws.py`) | the collection laws of the public API | they are public statements themselves (`e2e/STATEMENTS.txt`, README "Field, element and setter access") |
+| `proofs/obj/fields_*.bend` (the non-swap laws), `proofs/obj/collections_*.bend` (`codegen/proofs/collections/laws.py`) | read-after-write laws of the field accessors over record literals, and rejected/accepted laws of the internal collection helpers with the guard given as a constant (the `X_swap_f` laws of `fields_*.bend` are listed and locked) | they hold by unfolding a definition; the spec-value setter laws and the public-API collection laws (`coll_api_*`) state what they did, so they are no longer public statements |
 | `proofs/obj/cache.bend`, `proofs/obj/chist.bend` | the cached Merkle tree of `BeaconState.validators`: a write or append through the cache API updates the element and the dirty range, and every history of accepted operations keeps the cache valid | results about the root cache, a runtime feature outside the SSZ statements; `benchmarks/evidence/object_cache.json` tests the same cache |
-| `proofs/obj/cached_<list>.bend` (`codegen/cached_laws.py`) | for five of the cached lists, the runtime's cached-root loops compute the reference tree of the element roots (instances of the Validator-list proof) | the same: the cache's own laws |
-| `proofs/obj/cspec_<list>.bend` (`codegen/cached_laws.py`) | for six other lists, the cached root's element roots are the ones the uncached root law relates to the spec (`RR.roots`) | the same |
+| `proofs/obj/cached_<list>.bend` (`codegen/proofs/laws/cached_laws.py`) | for five of the cached lists, the runtime's cached-root loops compute the reference tree of the element roots (instances of the Validator-list proof) | the same: the cache's own laws |
+| `proofs/obj/cspec_<list>.bend` (`codegen/proofs/laws/cached_laws.py`) | for six other lists, the cached root's element roots are the ones the uncached root law relates to the spec (`RR.roots`) | the same |
 | `proofs/obj/ccost.bend`, `proofs/obj/cost.bend` | the cost model: how many node hashes a cached sweep does, and the closed form of the generated loops' cost | cost bounds, not correctness statements |
 | `proofs/obj/fill_pieces.bend` | the native driver's input path (64 KiB pieces, `native_bench/driver.bend`) fills the buffer as one whole fill, which is what the decode statements assume | it is about the native driver, which no proof imports |
 | `types/fulu.bend` (`tools/generate_fulu.py`) | the closed name index of the Fulu inventory | an input that `tools/generate_fulu_*.py` read, not a module anything imports |
 
-`codegen/retired.py` lists the generated modules that were deleted because nothing imported them
+`codegen/core/retired.py` lists the generated modules that were deleted because nothing imported them
 (audit round 5): the generators no longer write them. `tools/generate_decode_rank.py`,
 `tools/generate_decode_selection_bound.py`, `tools/generate_schema_selection_shape.py` and
 `codegen/var_union_o.py` were deleted with their only outputs.

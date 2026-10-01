@@ -8,8 +8,8 @@
     python3 codegen/regen_all.py --touched       # only the generators whose inputs changed since their last clean run (codegen/regen_touched.py)
     python3 codegen/regen_all.py -j N            # N generators at once (default min(8, cpus)); --serial or -j 1: one at a time
 
-The generators are every codegen/*.py that accepts --check. generate.py (the object API, which
-every law generator reads) runs first; the generators that index the others' outputs run last:
+The generators are the entries of codegen/registry.py (every script that accepts --check). generate.py (the object API, which
+every law generator reads) runs first; the generators that index the others' outputs run last (codegen/registry.py):
 api_gate.py (one-import gates), api_facade.py (the per-name facades) and e2e_bridge.py (the
 bridges and e2e/manifest.json), then statements.py (e2e/STATEMENTS.txt) and doc_figures.py (the docs' coverage figures). A law generator can read another's output (a facade records
 its imports, a split module its parent's names), so write mode repeats the whole pass until
@@ -29,28 +29,21 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FIRST = ['generate']
-# e2e_witness and e2e_compose read what e2e_bridge writes (e2e/manifest.json, the bridge files), and statements reads
-# e2e_compose's (the comp files), doc_figures COMPOSED.txt and STATEMENTS.txt: so this is the dependency order, and one
-# write pass converges (before, e2e_witness and e2e_compose ran in the pool ahead of e2e_bridge and were stale after every pass).
-LAST = ['api_gate', 'api_facade', 'e2e_bridge', 'e2e_setters', 'e2e_witness', 'e2e_compose', 'statements', 'doc_figures']
-LAST_TOGETHER = ('e2e_witness', 'e2e_compose')   # independent of each other: one pool group
-# the slowest generators (measured), started first so the pool's tail is short
-HEAVY = ['var_cont_enc', 'var_winb', 'e2e_bridge', 'api_gate', 'spec_laws', 'root_laws_b', 'api_facade', 'valid_laws']
+sys.path.insert(0, str(ROOT))
+from codegen import registry  # noqa: E402  the list of generators, their stages and dependencies
+
 JOBS = 1
 FAIL_WORDS = ('stale', 'traceback', 'error', 'orphan', 'left after', 'fail', 'not found', 'mismatch')
 
 
 def generators():
-    have = {}
-    for p in sorted((ROOT / 'codegen').glob('*.py')):
-        if p.name in ('regen_all.py', 'regen_touched.py'):
-            continue
-        t = p.read_text(errors='replace')
-        if "'--check'" in t or '"--check"' in t:
-            have[p.stem] = p
-    mid = [g for g in have if g not in FIRST and g not in LAST]
-    return [g for g in FIRST if g in have] + mid + [g for g in LAST if g in have], have
+    """([name] in run order, {name: path of its script}), from codegen/registry.py (tests/test_registry.py keeps it complete)."""
+    order = registry.ordered()
+    return [g.name for g in order], {g.name: g.path for g in order}
+
+
+def _stage(name):
+    return registry.by_name()[name].stage
 
 
 def run(path, args):
@@ -65,7 +58,8 @@ def run_many(gens, have, args):
     """[(bad, out, dt)] of run(have[g], args) for g in gens, in the order of gens; JOBS at a time, the slow ones first."""
     if JOBS <= 1 or len(gens) <= 1:
         return [run(have[g], args) for g in gens]
-    start = sorted(gens, key=lambda g: (HEAVY.index(g) if g in HEAVY else len(HEAVY), gens.index(g)))
+    reg = registry.by_name()
+    start = sorted(gens, key=lambda g: (reg[g].heavy if reg[g].heavy is not None else len(reg), gens.index(g)))
     with ThreadPoolExecutor(max_workers=JOBS) as ex:
         futs = {g: ex.submit(run, have[g], args) for g in start}
         return [futs[g].result() for g in gens]
@@ -86,15 +80,18 @@ def write_groups(order):
     """the write pass's schedule: lists of generators, run one list after the other, the members of a list in the pool"""
     if JOBS <= 1:
         return [[g] for g in order]
-    mid = [g for g in order if g not in FIRST and g not in LAST]
-    tog = [g for g in order if g in LAST_TOGETHER]
-    groups = [[g] for g in order if g in FIRST] + [mid]
-    for g in [g for g in order if g in LAST]:
-        if g in LAST_TOGETHER:
-            if g == tog[0]:
-                groups.append(tog)
-        else:
-            groups.append([g])
+    reg = registry.by_name()
+    groups = [[g] for g in order if _stage(g) == 'first'] + [[g for g in order if _stage(g) == 'mid']]
+    pools = {}
+    for g in order:
+        if _stage(g) == 'last':
+            if reg[g].pool is None:
+                groups.append([g])
+            elif reg[g].pool not in pools:   # the pool's place is its first member's
+                pools[reg[g].pool] = [g]
+                groups.append(pools[reg[g].pool])
+            else:
+                pools[reg[g].pool].append(g)
     return groups
 
 
@@ -125,7 +122,7 @@ def main():
             raise SystemExit(f'no such generator: {", ".join(unknown)}')
         order = [g for g in want]
     if '--list' in a:
-        print('\n'.join(order))
+        print('\n'.join(str(have[g].relative_to(ROOT)) if '--paths' in a else g for g in order))
         return
     verbose = '-v' in a
     global JOBS

@@ -35,7 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SOURCES = ('types/*.bend', 'src/*.bend', 'benchmarks/objprog/*.bend', 'benchmarks/compact/*.bend',
            'cases.json', 'fixtures.manifest.json')
-COMMON_HARNESS = ('benchmarks/checks/provenance.py', 'codegen/oracle.py', 'codegen/schema.py',
+COMMON_HARNESS = ('benchmarks/checks/provenance.py', 'codegen/core/oracle.py', 'codegen/core/schema.py',
                   'codegen/fulu.yaml', 'tools/test_schemas.py')
 EVIDENCE = {
     'benchmarks/evidence/object_conformance.json': 'benchmarks/checks/object_conformance.py',
