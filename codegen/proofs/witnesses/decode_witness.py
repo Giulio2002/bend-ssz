@@ -40,6 +40,11 @@ BIG = ('FuluLightClientBootstrap', 'FuluLightClientUpdate')
 SPLIT = ('FuluLightClientUpdate',)
 
 
+# names whose input holds one element in every list: a default with an EMPTY last progressive list is no input the premise hPB can be evaluated at
+# (PBQ's PALL walks 2^32 - 1 element slots of an empty window: NN - 1 wraps), the object with one element per list is
+NONEMPTY = {'ProgressiveComplexTestStruct'}
+
+
 def split_param(p):
     n, _, t = p.partition(':')
     return n.strip().lstrip('+-'), t.strip()
@@ -79,9 +84,10 @@ def build(name):
     # a default that holds empty boxes where a vector needs values (ComplexTestStruct's vec_VarTestStruct_2) is not a legal
     # object: its encoding is not an input the decoder accepts. DV() is the default with valid values there (as in e2e_witness)
     dv = ''
-    probe = W.model_ne(W.Ctx(), tmod, dflt, lists=False)     # on a throwaway context: the imports are the file's only if DV() is used
+    lists = name in NONEMPTY
+    probe = W.model_ne(W.Ctx(), tmod, dflt, lists=lists)     # on a throwaway context: the imports are the file's only if DV() is used
     if getattr(probe, 'changed', False):
-        obj0 = W.model_ne(ctx, tmod, dflt, lists=False)
+        obj0 = W.model_ne(ctx, tmod, dflt, lists=lists)
         dv = f'def {name}_DV() -> {OBJ}:\n  {obj0.expr}'
         DEF = f'{name}_DV()'
     if name in BIG:

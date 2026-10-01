@@ -52,7 +52,7 @@ def isne(+a: Nat, +b: Nat, +h: {Nat.is_lt(a, b) == True{} : Bool}) -> {Nat.is_eq
     case 1n+ +p 0n: Empty.absurd({Nat.is_eq(0n, 1n+p) == False{} : Bool}, FD.logic__false_true(h))
     case 1n+ +p 1n+ +q: isne(p, q, h)
 
-# an element window is at most the list window: below 2^31 when the list window is
+# an element window is at most the list window: its facts from the list window's
 def h31ab(+len: U32, +a: U32, +b: U32, +hab: {Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{} : Bool}, +hb: {Nat.is_le(U32.to_nat(b), U32.to_nat(len)) == True{} : Bool},
     +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(U32.sub(b, a)), VB.pw(31n)) == True{} : Bool}:
   +e = FD.u32__sub_nat(b, a, hab)

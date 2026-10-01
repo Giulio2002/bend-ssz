@@ -1334,9 +1334,21 @@ STORAGE = {('e2e_blist.bend', 'sdk'): 'any', ('e2e_u64l.bend', 'sdk'): 'any', ('
 
 
 class DSynth(W.Synth):
+    pctx = None   # (the p_* defs' parameter text, their argument names, the shared lets): set by container_file
+
     def part(self, mod, pred, env):
-        # a decoded object's premises are open (they use the provider's lets): a part of a split chain is proved inline, not as a closed lemma
-        return self.prove(mod, pred, dict(env, __split=False))
+        # a part of a split total-size chain is its own lemma over the p_* defs' parameters and lets (a chain compared as a whole walks the total's 2^29 term)
+        c = W.parse_call(pred.strip())
+        if c and c[0].split('.')[-1] == 'P2' and mod.resolve(c[0])[0] is not None and mod.resolve(c[0])[0].path.name == 'dk.bend':
+            return self.prove(mod, pred, env)
+        term = self.prove(mod, pred, dict(env, __split=False))
+        if self.pctx is None:
+            return term
+        ptxt, args, lets_ = self.pctx
+        ty = self.subst(mod, pred.strip(), env)
+        nm = f'PC{len(self.lemmas)}'
+        self.lemmas[f'zz{len(self.lemmas):04d}_{nm}'] = f'def {nm}({ptxt})\n    -> {ty}:\n' + ''.join(f'  {l}\n' for l in lets_) + f'  {term}'
+        return f'{nm}({", ".join(args)})'
 
     def witness(self, mod, ty, v, body, env):
         subj = env.get('__subj')
@@ -1599,6 +1611,7 @@ def container_file(name, lf, obj_mod, obj_def, obj_subst, params, lets, words, d
         return bd
     model = dec_model(OBJ, words, expand, bits, leaf)
     syn = DSynth(ctx)
+    syn.pctx = (params[1], [re.match(r'\+?(\w+):', q.strip()).group(1) for q in W.split_top(params[1])], lets)
     defs = []
     done = {}
     for tag, mod, ps in (('e', em, eps), ('r', rm, rps)):

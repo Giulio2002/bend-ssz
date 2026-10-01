@@ -165,6 +165,7 @@ codegen/e2e_dfl.py	codegen/proofs/decoded/e2e_dfl.py
 codegen/e2e_dvp.py	codegen/proofs/decoded/e2e_dvp.py
 codegen/e2e_dvv2.py	codegen/proofs/decoded/e2e_dvv2.py
 codegen/e2e_hkv.py	codegen/proofs/decoded/e2e_hkv.py
+codegen/e2e_hkp.py	codegen/proofs/decoded/e2e_hkp.py
 codegen/obytes_len.py	codegen/proofs/witnesses/obytes_len.py
 codegen/mutation_laws.py	codegen/proofs/laws/mutation_laws.py
 codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py

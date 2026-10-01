@@ -179,7 +179,166 @@ def prog_test_struct(lf):
                              'proofs/obj/var_codec_ProgressiveTestStruct.bend')
 
 
+def prog_complex_test_struct(lf):
+    """ProgressiveComplexTestStruct: A uint8, B List[uint16, 123], C a progressive bit list, D pl_u64, E pl_SmallTestStruct, F pl_pl_VarTestStruct,
+    G List[ProgressiveSingleFieldContainerTestStruct, 10], H pl_ProgressiveVarTestStruct: windows of the container's. The theorem takes 258 + n < 2^29: the size bound
+    TOT (the bit list's 2^29 + 1 and the bounds 246 and 10 of the two bounded lists, with the other windows' lengths) is at most 257 + n + 2^29 + 1."""
+    from codegen.proofs.composed import e2e_decrep as DR
+    name = 'ProgressiveComplexTestStruct'
+    h = '{Nat.is_lt(Nat.add(258n, U32.to_nat(n)), VB.pw(29n)) == True{} : Bool}'
+    DR.BUF.depth_first.add(name)
+    DR.HEAVY[name] = h
+    ps = DR.buf_ps(h)
+
+    def setup(al):
+        BW = al('proofs/obj/var_winx_ProgressiveComplexTestStruct.bend')
+        CH2 = al('proofs/obj/var_winp_pl_u64.bend')
+        DPQ, DFL, DFL10 = al('e2e/e2e_dpq.bend'), al('e2e/e2e_dfl_pl_SmallTestStruct.bend'), al('e2e/e2e_dfl_l10_ProgressiveSingleFieldContainerTestStruct.bend')
+        DVP, DVPP = al('e2e/e2e_dvp_pl_pl_VarTestStruct.bend'), al('e2e/e2e_dvp_pl_ProgressiveVarTestStruct.bend')
+        al('proofs/obj/words_spec.bend')
+        X = lambda j: f'{BW}.XJ{j}(t, 0n)'  # noqa: E731
+        F = lambda j: f'{BW}.FJ{j}(0, t, 0n)'  # noqa: E731
+        L = lambda j: f'{BW}.LJ{j}(t, 0n)' if j < 6 else f'{BW}.LJ6(t, 0n, n)'  # noqa: E731
+        hc = lambda j: f'{BW}.itD{j}(t, 0n, 0, n, hchk)'  # noqa: E731
+        com = f'd, t, n, 0n, 0, n, {{==}}, hd, hn, {DR.HWN_TOP}, pf, hchk'
+        out = ['+hn29 = FD.nat__le_lt_trans(U32.to_nat(n), Nat.add(258n, U32.to_nat(n)), VB.pw(29n), A.le_skip(258n, U32.to_nat(n)), h31)',
+               ]
+        for k in range(7):
+            Ok, Ek = f'{BW}.O{k}(t, 0n)', (f'{BW}.O{k + 1}(t, 0n)' if k < 6 else 'n')
+            out += [f'+lw{k} = {DPQ}.lwd({Ok}, {Ek}, n, {BW}.r1{k}(t, 0n, 0, n, hchk), {BW}.r2{k}(t, 0n, 0, n, hchk))',
+                    f'+hy{k} = VC.hyW(0n, {L(k)}, FD.nat__le_trans(U32.to_nat({L(k)}), U32.to_nat(n), U32.to_nat(VB.NMAX()), lw{k}, {DR.HWN_TOP}))',
+                    f'+hl{k} = FD.nat__le_lt_trans(U32.to_nat({L(k)}), U32.to_nat(n), VB.pw(29n), lw{k}, hn29)',
+                    f'+hh{k} = VB.le_pw_lt(U32.to_nat({L(k)}), 30n, FD.nat__lt_le(U32.to_nat({L(k)}), VB.pw(30n), VB.le_pw_lt(U32.to_nat({L(k)}), 29n, FD.nat__lt_le(U32.to_nat({L(k)}), VB.pw(29n), hl{k}))))']
+        WF = lambda j, w32: f'{BW}.eoJ{j}D({com}), hd, {BW}.hwJ{j}D({com}), {BW}.hwJ{j}{w32}({com}), pf'  # noqa: E731
+        return locals()
+
+    def lets(al):
+        V = setup(al)
+        BW, CH2, DFL, DFL10, DVP, DVPP, X, F, L, hc, WF, out = (V[k] for k in ('BW', 'CH2', 'DFL', 'DFL10', 'DVP', 'DVPP', 'X', 'F', 'L', 'hc', 'WF', 'out'))
+        PTOT = al('e2e/e2e_dpx_tot.bend')
+        DR.TOT_HOOK[name] = lambda p: (f'{PTOT}.totc(d, t, n, pf, hd, hn, h31, hS, hchk)'
+                                       if re.match(r'^\{Nat\.is_lt\(Nat\.add\(Nat\.add\(Nat\.add\(Nat\.add\(Nat\.add\(Nat\.add\(Nat\.add\(30n, 246n\)', p.strip()) else None)
+
+        def xleaf(fname, fn, args, e):
+            if fn != 'OBJw':
+                return None
+            a = ', '.join(args)
+            mk = re.match(r'[\w.]+\.XJ(\d+)\(', args[2])
+            if mk is None:
+                return None
+            k = int(mk.group(1))
+            mu = re.fullmatch(r'var_winx_l(\d+)_u16\.bend', fname)
+            if mu:
+                return DR.u16_child(al, BW, args, e, int(mu.group(1)), fname, DR.PB_TOP)
+            if fname == 'var_winp_pbits.bend':
+                return DR.pb_child(al, BW, args, e, 'd', dict(DR.PB_TOP, h31='hn29'))
+            if fname == 'var_winp_pl_u64.bend':
+                Lw = args[4]
+                f = DR.u64_list_facts(Lw, f'{CH2}.CQ({Lw})', f'{CH2}.eLc(t, {args[2]}, {args[3]}, {Lw}, {hc(k)})', None, None, None, None, None)
+                return DR.WordsDec(e, any_=lambda kk: f'DZ.ct_dec({args[0]}, t, {args[3]}, {Lw}, {kk}, {{==}}, hy{k})',
+                                   facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == \w+\.e8\(\w+\.ucnt\(o\)\)', f['facts'][0][1]),
+                                          (r'Nat\.is_lt\(U32\.to_nat\(\w+\.len\(\w+\)\), VB\.pw\(31n\)\)', f'hh{k}')])
+            if fname == 'var_winx_pl_SmallTestStruct.bend':
+                return DR.FxWords(e, {('e2e_encld.bend', 'PRL_pl_SmallTestStruct'): lambda _: f'{DFL}.sdl({a}, hh{k}, {hc(k)})',
+                                      ('root_gtypes2_light.bend', 'rep_pl_SmallTestStruct'): lambda s_: f'{DFL}.rep({a}, {s_}, hh{k}, {hc(k)})'})
+            if fname == 'vvl_pl_pl_VarTestStruct.bend':
+                return DR.FxWords(e, {('e2e_encld.bend', 'PRV_pl_pl_VarTestStruct'): lambda _: f'{DVP}.sdl({a}, {WF(k, "_32")}, hh{k}, {hc(k)})',
+                                      ('root_gtypes2_light.bend', 'rep_pl_pl_VarTestStruct'): lambda s_: f'{DVP}.rep({a}, {WF(k, "_32")}, hh{k}, {s_}, {{==}}, {hc(k)})'})
+            if fname == 'var_winx_l10_ProgressiveSingleFieldContainerTestStruct.bend':
+                return DR.FxWords(e, {('e2e_encld.bend', 'PRL_l10_ProgressiveSingleFieldContainerTestStruct'): lambda _: f'{DFL10}.sdl({a}, {hc(k)})',
+                                      ('root_gtypes2_light.bend', 'rep_l10_ProgressiveSingleFieldContainerTestStruct'): lambda s_: f'{DFL10}.rep({a}, {s_}, {{==}}, {hc(k)})'})
+            if fname == 'vvl_pl_ProgressiveVarTestStruct.bend':
+                return DR.FxWords(e, {('e2e_encld.bend', 'PRV_pl_ProgressiveVarTestStruct'): lambda _: f'{DVPP}.sdl({a}, {WF(k, "N")}, hl{k}, {hc(k)})',
+                                      ('root_gtypes2_light.bend', 'rep_pl_ProgressiveVarTestStruct'): lambda s_: f'{DVPP}.rep({a}, {WF(k, "N")}, hl{k}, {s_}, {{==}}, {hc(k)})'})
+            return None
+        return out, None, None, None, xleaf
+
+    # the total-size premise, in its own file (inlined it overflows the checker's stack)
+    imap = {}
+
+    def fal(path):
+        imap.setdefault(path, f'M{len(imap)}')
+        return imap[path]
+    V = setup(fal)
+    BW = V['BW']
+    X, F, L, hc, WF = V['X'], V['F'], V['L'], V['hc'], V['WF']
+    DPX, DPT, DFL, DVP, DVPP, WT = fal('e2e/e2e_dpx.bend'), fal('e2e/e2e_dpt.bend'), V['DFL'], V['DVP'], V['DVPP'], fal('e2e/e2e_wit.bend')
+    EL_, CH1 = fal('e2e/e2e_encld.bend'), fal('proofs/obj/var_winp_pbits.bend')
+    CH3, CH4, CH6 = fal('proofs/obj/var_winx_pl_SmallTestStruct.bend'), fal('proofs/obj/vvl_pl_pl_VarTestStruct.bend'), fal('proofs/obj/vvl_pl_ProgressiveVarTestStruct.bend')
+    Lt = lambda j: f'U32.to_nat({L(j)})'  # noqa: E731
+    Q = 'Nat.add(VB.pw(29n), 1n)'
+    QPt = f'EQ.QP({CH1}.OBJw(d, t, {X(1)}, {F(1)}, {L(1)}))'
+    QR3 = f'{EL_}.QR_pl_SmallTestStruct({CH3}.OBJw(d, t, {X(3)}, {F(3)}, {L(3)}))'
+    QV4 = f'{EL_}.QV_pl_pl_VarTestStruct({CH4}.OBJw(d, t, {X(4)}, {F(4)}, {L(4)}))'
+    QV6 = f'{EL_}.QV_pl_ProgressiveVarTestStruct({CH6}.OBJw(d, t, {X(6)}, {F(6)}, {L(6)}))'
+    S_ = lambda q, l2, l3, l4, l6: f'Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(30n, 246n), {q}), {l2}), {l3}), {l4}), 10n), {l6})'  # noqa: E731
+    l2, l3, l4, l6 = Lt(2), Lt(3), Lt(4), Lt(6)
+    Wr = f'Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(30n, 246n), {l2}), {l3}), {l4}), 10n), {l6})'
+    # QP moved last: one swap per later term (l2, l3, l4, 10, l6)
+    terms = [l2, l3, l4, '10n', l6]
+    # build the chain explicitly
+    U = [f'Nat.add({"Nat.add(30n, 246n)"}, {Q})']
+    Wl = ['Nat.add(30n, 246n)']
+    for tm in terms:
+        U.append(f'Nat.add({U[-1]}, {tm})')
+        Wl.append(f'Nat.add({Wl[-1]}, {tm})')
+    pf = None
+    for i, tm in enumerate(terms):
+        step = f'{WT}.swapq({Wl[i]}, {Q}, {tm})'
+        if pf is None:
+            pf = step
+        else:
+            pf = (f'Equal.trans(Nat, {U[i + 1]}, Nat.add(Nat.add({Wl[i]}, {Q}), {tm}), Nat.add({Wl[i + 1]}, {Q}), '
+                  f'Equal.cong(Nat, Nat, z => Nat.add(z, {tm}), {U[i]}, Nat.add({Wl[i]}, {Q}), {pf}), {step})')
+    assert U[-1] == S_(Q, l2, l3, l4, l6) and Wl[-1] == Wr
+    lens = ', '.join(Lt(j) for j in range(7))
+    hle = f'{DPX}.leW({lens})'
+    nn = f'{DPX}.tot(t, 0n, 0, n, hchk)'
+    mot = lambda z: f'z => {{Nat.is_le({Wr}, Nat.add(257n, {z})) == True{{}} : Bool}}'  # noqa: E731
+    Nsum = f'Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(29n, {Lt(0)}), {Lt(1)}), {Lt(2)}), {Lt(3)}), {Lt(4)}), {Lt(5)}), {Lt(6)})'
+    le1 = f'FD.logic__subst(Nat, {mot("z")}, {Nsum}, U32.to_nat(n), {nn}, {hle})'
+    le2 = f'Order.add_left(1n, {Wr}, Nat.add(257n, U32.to_nat(n)), {le1})'
+    le3 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(258n, U32.to_nat(n))) == True{{}} : Bool}}, Nat.add(1n, {Wr}), Nat.add({Wr}, 1n), FD.nat__add_comm(1n, {Wr}), {le2})')
+    hrw = f'FD.nat__le_lt_trans(Nat.add({Wr}, 1n), Nat.add(258n, U32.to_nat(n)), VB.pw(29n), {le3}, h31)'
+    P0 = f'{WT}.tot29({Wr}, {Q}, {{==}}, {hrw})'
+    P1 = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, Nat.add({Wr}, {Q}), {S_(Q, l2, l3, l4, l6)}, '
+          f'Equal.sym(Nat, {S_(Q, l2, l3, l4, l6)}, Nat.add({Wr}, {Q}), {pf}), {P0})')
+    mt = lambda q, a, b, c, d_: f'{{Nat.is_lt({S_(q, a, b, c, d_)}, VB.pw(31n)) == True{{}} : Bool}}'  # noqa: E731
+    qp_eq = 'qp_eq(' + f'{CH1}.OBJw(d, t, {X(1)}, {F(1)}, {L(1)}))'
+    P2 = f'FD.logic__subst(Nat, z => {mt("z", l2, l3, l4, l6)}, {Q}, {QPt}, Equal.sym(Nat, {QPt}, {Q}, {qp_eq}), {P1})'
+    sz3 = f'{DFL}.szl(d, t, {X(3)}, {F(3)}, {L(3)}, {hc(3)})'
+    P3 = f'FD.logic__subst(Nat, z => {mt(QPt, l2, "z", l4, l6)}, {l3}, {QR3}, Equal.sym(Nat, {QR3}, {l3}, {sz3}), {P2})'
+    OBJ4 = f'{CH4}.OBJw(d, t, {X(4)}, {F(4)}, {L(4)})'
+    sz4 = f'{DVP}.szl(d, t, {X(4)}, {F(4)}, {L(4)}, {WF(4, "_32")}, hh4, {hc(4)})'
+    P4 = (f'FD.logic__subst(Nat, z => {mt(QPt, l2, QR3, "z", l6)}, {l4}, {QV4}, Equal.sym(Nat, {QV4}, {l4}, Equal.trans(Nat, {QV4}, {DPT}.DVPLNQ, {l4}, {DPT}.qvl({OBJ4}), {sz4})), {P3})')
+    P4 = P4.replace(f'{DPT}.DVPLNQ', f'{DVP}.LNQ({OBJ4})')
+    OBJ6 = f'{CH6}.OBJw(d, t, {X(6)}, {F(6)}, {L(6)})'
+    sz6 = f'{DVPP}.szl(d, t, {X(6)}, {F(6)}, {L(6)}, {WF(6, "N")}, hl6, {hc(6)})'
+    P5 = (f'FD.logic__subst(Nat, z => {mt(QPt, l2, QR3, QV4, "z")}, {l6}, {QV6}, Equal.sym(Nat, {QV6}, {l6}, Equal.trans(Nat, {QV6}, {DVPP}.LNQ({OBJ6}), {l6}, {DPX}.qvl2({OBJ6}), {sz6})), {P4})')
+    # the premise's terms are those of the decoded object's fields (RT.pj_k(DC.OBJ(d, t, n))): each leaf converted on its own
+    RTa, WOa = fal('proofs/obj/root_gtypes2_light.bend'), fal('proofs/obj/words_obj_light.bend')
+    pjk = lambda i: f'{RTa}.pj_ProgressiveComplexTestStruct_{i}(DC.OBJ(d, t, n))'  # noqa: E731
+    T_QP, T_l2, T_QR, T_QV4, T_QV6 = f'EQ.QP({pjk(2)})', f'U32.to_nat({WOa}.len({pjk(3)}))', f'{EL_}.QR_pl_SmallTestStruct({pjk(4)})', f'{EL_}.QV_pl_pl_VarTestStruct({pjk(5)})', f'{EL_}.QV_pl_ProgressiveVarTestStruct({pjk(7)})'
+    Pa = f'FD.logic__subst(Nat, z => {mt("z", l2, QR3, QV4, QV6)}, {QPt}, {T_QP}, {{==}}, {P5})'
+    Pb = f'FD.logic__subst(Nat, z => {mt(T_QP, "z", QR3, QV4, QV6)}, {l2}, {T_l2}, {{==}}, {Pa})'
+    Pc = f'FD.logic__subst(Nat, z => {mt(T_QP, T_l2, "z", QV4, QV6)}, {QR3}, {T_QR}, {{==}}, {Pb})'
+    Pd = f'FD.logic__subst(Nat, z => {mt(T_QP, T_l2, T_QR, "z", QV6)}, {QV4}, {T_QV4}, {{==}}, {Pc})'
+    Pe = f'FD.logic__subst(Nat, z => {mt(T_QP, T_l2, T_QR, T_QV4, "z")}, {QV6}, {T_QV6}, {{==}}, {Pd})'
+    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
+            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/var_codec_ProgressiveComplexTestStruct.bend as DC', 'import ./e2e_encq2d.bend as EQ'] + \
+           [f"import {'./' + pth[4:] if pth.startswith('e2e/') else '../' + pth} as {a_}" for pth, a_ in imap.items()]
+    keep = [x for x in V['out'] if x.startswith('+hn29') or x.startswith('+mono') or x.startswith('+lw') or x.startswith('+hl') or x.startswith('+hh')]
+    txt = ('\n'.join(imps) + '\n\n# GENERATED by e2e_compose (codegen: e2e_decrep_x). Do not edit.\n# ProgressiveComplexTestStruct: its total-size premise (the bit list\'s 2^29 + 1, the bounds 246 and 10 and the other windows\' lengths < 2^31), from the windows\' size laws.\n\n'
+           + 'def qp_eq(o: O.Bits) -> {EQ.QP(o) == ' + Q + ' : Nat}:\n  match o:\n    case O.Bits{arr, +K}: {==}\n\n'
+           + 'def totc(' + ps + ')\n    -> EQ.TOT_ProgressiveComplexTestStruct(DC.OBJ(d, t, n)):\n'
+           + '\n'.join('  ' + l for l in keep) + '\n  ' + Pe + '\n')
+    DR.EXTRA_FILES[DR.ROOT / 'e2e' / 'e2e_dpx_tot.bend'] = txt
+    return DR.container_file(name, lf, 'proofs/obj/var_codec_ProgressiveComplexTestStruct.bend', 'OBJ', {'d': 'd', 't': 't', 'n': 'n'}, (['d', 't', 'n'], ps), lets, None,
+                             'proofs/obj/var_codec_ProgressiveComplexTestStruct.bend')
+
+
 EXTRA_PROVERS = {
     'ComplexTestStruct': lambda lf: complex_test_struct(lf),
     'ProgressiveTestStruct': lambda lf: prog_test_struct(lf),
+    'ProgressiveComplexTestStruct': lambda lf: prog_complex_test_struct(lf),
 }
