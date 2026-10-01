@@ -105,6 +105,44 @@ composed root and encode statement of a mutated list for the boxed lists, the By
 setter-then-encode where the encode bridge takes storage premises.
 [PREMISES.md](PREMISES.md) section 9.
 
+## Mutation testing (do the checks notice wrong generated code?)
+
+Every other harness here corrupts the INPUT of correct code. `tests_generated/mutation_testing.py` corrupts the
+CODE: one site of a generated file (`types/<Name>_{decode_ssz,encode_ssz,hashtreeroot}_generated.bend`) at a time,
+in a scratch copy on the server, and asks whether the evidence notices. Operators: a constant +1, a comparison
+flipped, `+` turned into `-` (never `+ 0`, which changes nothing), a validity result forced, and the two children of
+a hash_tree_root Merkle node swapped. Draws are seeded and deterministic; every mutant records file, line and
+column.
+
+- **Proof side (wide).** Up to 4 mutants per name and operation (2637 mutants over 720 facade proofs
+  `proofs/api/*`, round 1, seed 20261002). Each runs alone in a private tree holding the proof's import cone, and the
+  pinned checker (`tools/check.sh`) re-checks that one file: it must fail. 2031 failed (1899 on a statement
+  mismatch, 122 on a stack overflow, 10 other: the stack overflows are tooling accidents, not detections) and
+  **606 survived**. Survivors by cause: validity-check 160, constant 112, capacity 108, offset 86, arithmetic 48,
+  hashtreeroot-constant 45, comparison 42, reported-size 5. Bend checks only the file it is given, and the facade
+  names the generated definitions, so a "deep" stage re-checked the proving-law files (the facade's `P<k>_PRV`
+  imports, `proofs/obj`) with each survivor applied: **0 of 606 failed**. These definitions are not pinned by any
+  locked statement.
+- **Runtime side.** The 606 survivors were run through the object conformance and fuzz harnesses (the same names,
+  the exact site): all 606 were killed (first pass; the rounds are re-run with independent rounds, below). Of the 606,
+  45 are hash_tree_root mutants (the wrapper constants `bool_root(64n, h, o, 0)`: killed by conformance).
+- **Independent rounds.** One mutant per type per round is not enough: a type's program imports the types it
+  contains, so a mutant in `uint64` is also in `Slot`'s program. 189 of the 606 had another mutant of the same round
+  in their import cone, so their kill could belong to the other mutant. The runtime stage now builds rounds in
+  which no mutant is in the cone of another's type; the 417 others were never exposed. (An earlier whole-tree run of
+  1200 mutants, 997 killed, drew no hash_tree_root mutants and ran with shared rounds; it is superseded.)
+- **Reading of the survivors** (round 1). Gaps the proofs should pin: validity checks (`_valid`, `words_ok` bounds:
+  a forced `False{}` or a bound off by one is not seen, the statements assume a valid input), reported sizes
+  (`_size`, `_bx_size`), the hash_tree_root wrapper constants, the decode entry's start offset (`_build(buf, size)`
+  calls `_read(buf, 0, size)`) and the byte-packing constants and offsets of encode. Harmless by what they change:
+  `out_at(d)` over-allocation (extra zero words), and the alignment test `pos .&. 3 == 0` (a fast path versus a
+  slower one). Not drawn yet: constants -1 (under-allocation, a limit one too small).
+- **Method limits.** A "killed" proof mutant can be a compile error (invalid mutant); the runtime side separates
+  those (excluded from the rate). Equivalent mutants are not removed automatically.
+- **Runtime of the suite.** Wide proof batch about 32 min at 12 jobs; the runtime stage about 17 min for 606
+  mutants (shared rounds, 5 rounds); the deep stage about 15 min. All on the ssz server, `nice -n 10`, never while
+  a full check holds the flock. Result: `benchmarks/evidence/mutation_testing.json` (stamped by `provenance.py`).
+
 ## Conformance (official vectors, through the generated object API)
 
 `benchmarks/evidence/object_conformance.json`: every `mainnet/fulu/ssz_static` case of

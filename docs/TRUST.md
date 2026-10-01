@@ -57,6 +57,13 @@ Trusted (not proved here):
   does not depend on the shell. The gate is the full check at the pin; the 5 MB "headroom" run is informational
   (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
+- **Mutation testing shows what the statements do not pin.** `tests_generated/mutation_testing.py` mutates the
+  generated runtime code and re-checks the one facade proof (and, for survivors, the proving-law files): in round 1
+  606 of 2637 mutants passed every proof check (validity checks, reported sizes, hash_tree_root wrapper constants,
+  offsets and packing constants of encode and decode, capacities). The runtime conformance and fuzz harnesses
+  killed all 606 (see docs/RESULTS.md for the contamination caveat and the independent re-run), so the generated
+  code is tested at those sites but not proved at them. A kill by stack overflow is not counted as detection
+  evidence.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to
