@@ -350,16 +350,6 @@ table above. They are dropped when the encode laws take dw < 32.
   FuluDataColumnSidecar and of the block body's commitments (each list a whole number of elements),
   object API validity not yet proved of decoded objects (section 1).
 
-### Laws that wait for the checker port
-
-The read-back laws of the <!-- fig:rigid_count -->17<!-- /fig --> collections stored as an array of elements (Data elements, or boxed
-Type-kind containers) need `proofs/obj/tarray.bend`, which only the rigid checker of the Bend port accepts. They are not in this
-tree's gate: they live in `proofs/obj/coll_seq.bend` and `tarray.bend` on the out-of-tree branch `agent/solid3-rigid`, and
-`codegen/coll_laws.py` emits them only where `tarray.bend` exists. Until the port lands, the statements `read_set`, `read_append`
-(and, for the boxed lists, `other_set`) of these collections are not checked here, and nothing in this repository's "checks"
-claim covers them (the `_api_set_length` and `_api_append_length` laws of the same collections are in `coll_api_*.bend`). The
-collections: <!-- fig:rigid_collections -->`l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l2048_Eth1Data`, `l1099511627776_Validator`, `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`, `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`, `l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`<!-- /fig -->.
-
 ## 7. Word-storage bridges
 
 `word_storage` covers <!-- fig:word_storage -->44<!-- /fig --> `vec_uint{32,64,128,256}_N` forms; awaiting their

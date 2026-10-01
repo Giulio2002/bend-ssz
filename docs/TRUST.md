@@ -131,10 +131,6 @@ The premises and runtime limits the laws are stated under are listed in [PREMISE
 
 Not in the gate (limits of what "checks" covers):
 
-- **Laws waiting for the checker port.** The read-back laws of the <!-- fig:rigid_count -->17<!-- /fig --> array-stored collections
-  (`read_set`, `read_append`, and `other_set` of the boxed lists) are proved only for the rigid checker, on the out-of-tree branch
-  `agent/solid3-rigid` (`proofs/obj/tarray.bend`, `coll_seq.bend`). They are not checked by `tools/check_fast.sh` and no claim of
-  this repository covers them: <!-- fig:rigid_collections -->`l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l2048_Eth1Data`, `l1099511627776_Validator`, `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`, `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`, `l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`<!-- /fig -->.
 - **Fixture provenance.** The committed fixtures are tied to the pinned upstream release archives only in a gate run
   (`tools/check_fast.sh --tarballs DIR`, stamp field `fixtures_tarballs_verified`); a run without it checks them against
   `fixtures.manifest.json` only.
