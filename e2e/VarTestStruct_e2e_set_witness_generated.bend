@@ -28,20 +28,20 @@ def WZ0() -> {O.words_new(0) == O.Words{FD.array__thaw(U32, FD.array__trep(U32, 
   %FD.array__new(U32, 3n, 0) : {O.words_new(0) == O.Words{_, 0} : O.Words}
   {==}
 
-def VarTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(uint16_d.u16_default(), 65535) == True{} : Bool}:
+def VarTestStruct_e2e_set_f_A_view_hg() -> {U32.is_le(1, 65535) == True{} : Bool}:
   {==}
 
-def VarTestStruct_e2e_set_f_A_view_witness() -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(VarTestStruct_d.VarTestStruct_default(), uint16_d.u16_default()))) == VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 0n, RN.v_u16(uint16_d.u16_default())) : S.Value}:
-  SET.VarTestStruct_e2e_set_f_A_view(VarTestStruct_d.VarTestStruct_default(), uint16_d.u16_default(), VarTestStruct_e2e_set_f_A_view_hg())
+def VarTestStruct_e2e_set_f_A_view_witness() -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(VarTestStruct_d.VarTestStruct_default(), 1))) == VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 0n, RN.v_u16(1)) : S.Value}:
+  SET.VarTestStruct_e2e_set_f_A_view(VarTestStruct_d.VarTestStruct_default(), 1, VarTestStruct_e2e_set_f_A_view_hg())
 
 def VarTestStruct_e2e_set_f_A_root_r() -> RT_L.rep_VarTestStruct(VarTestStruct_d.VarTestStruct_default(), Spec.VarTestStruct()):
   (uint16_d.u16_default(), (uint8_d.u8_default(), ({==}, ({==}, ((Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==})), {==})))))
 
-def VarTestStruct_e2e_set_f_A_root_rv() -> RN.rp_u16(uint16_d.u16_default()):
+def VarTestStruct_e2e_set_f_A_root_rv() -> RN.rp_u16(1):
   {==}
 
-def VarTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(VarTestStruct_d.VarTestStruct_default(), uint16_d.u16_default()))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 0n, RN.v_u16(uint16_d.u16_default()))) : Maybe<&2, +List<U32>>}:
-  SET.VarTestStruct_e2e_set_f_A_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), uint16_d.u16_default(), VarTestStruct_e2e_set_f_A_view_hg(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_A_root_rv())
+def VarTestStruct_e2e_set_f_A_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_A(VarTestStruct_d.VarTestStruct_default(), 1))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 0n, RN.v_u16(1))) : Maybe<&2, +List<U32>>}:
+  SET.VarTestStruct_e2e_set_f_A_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), 1, VarTestStruct_e2e_set_f_A_view_hg(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_A_root_rv())
 
 def VarTestStruct_e2e_set_f_B_root_rv() -> BLI.rep_l2(list_uint16_1024_d.l1024_u16_default(), SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.VarTestStruct())))):
   (Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}, ({==}, {==}))
@@ -49,14 +49,14 @@ def VarTestStruct_e2e_set_f_B_root_rv() -> BLI.rep_l2(list_uint16_1024_d.l1024_u
 def VarTestStruct_e2e_set_f_B_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default())))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 1n, PB.vview2(list_uint16_1024_d.l1024_u16_default()))) : Maybe<&2, +List<U32>>}:
   SET.VarTestStruct_e2e_set_f_B_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), list_uint16_1024_d.l1024_u16_default(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_B_root_rv())
 
-def VarTestStruct_e2e_set_f_C_view_hg() -> {U32.is_le(uint8_d.u8_default(), 255) == True{} : Bool}:
+def VarTestStruct_e2e_set_f_C_view_hg() -> {U32.is_le(1, 255) == True{} : Bool}:
   {==}
 
-def VarTestStruct_e2e_set_f_C_view_witness() -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_default()))) == VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 2n, RN.v_u8(uint8_d.u8_default())) : S.Value}:
-  SET.VarTestStruct_e2e_set_f_C_view(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_default(), VarTestStruct_e2e_set_f_C_view_hg())
+def VarTestStruct_e2e_set_f_C_view_witness() -> {RT_L.v_VarTestStruct(Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(VarTestStruct_d.VarTestStruct_default(), 1))) == VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 2n, RN.v_u8(1)) : S.Value}:
+  SET.VarTestStruct_e2e_set_f_C_view(VarTestStruct_d.VarTestStruct_default(), 1, VarTestStruct_e2e_set_f_C_view_hg())
 
-def VarTestStruct_e2e_set_f_C_root_rv() -> RN.rp_u8(uint8_d.u8_default()):
+def VarTestStruct_e2e_set_f_C_root_rv() -> RN.rp_u8(1):
   {==}
 
-def VarTestStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_default()))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 2n, RN.v_u8(uint8_d.u8_default()))) : Maybe<&2, +List<U32>>}:
-  SET.VarTestStruct_e2e_set_f_C_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_default(), VarTestStruct_e2e_set_f_C_view_hg(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_C_root_rv())
+def VarTestStruct_e2e_set_f_C_root_witness() -> {Some{D.bytes(Pair.snd(VarTestStruct_d.VarTestStruct, D.Digest, Pair.snd(B.Buf, VarTestStruct_d.VarTestStruct & D.Digest, VarTestStruct_h.VarTestStruct_hash_tree_root(B.alloc(0), Pair.fst(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_d.VarTestStruct_set_f_C(VarTestStruct_d.VarTestStruct_default(), 1))))))} == API.hash_tree_root(Spec.VarTestStruct(), VS.field_set(RT_L.v_VarTestStruct(VarTestStruct_d.VarTestStruct_default()), 2n, RN.v_u8(1))) : Maybe<&2, +List<U32>>}:
+  SET.VarTestStruct_e2e_set_f_C_root(B.alloc(0), VarTestStruct_d.VarTestStruct_default(), 1, VarTestStruct_e2e_set_f_C_view_hg(), VarTestStruct_e2e_set_f_A_root_r(), VarTestStruct_e2e_set_f_C_root_rv())
