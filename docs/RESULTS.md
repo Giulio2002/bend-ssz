@@ -81,14 +81,15 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->470<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->472<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->41<!-- /fig --> collections: the packed collections of whole-word
   elements (`proofs/obj/words_rw.bend`, `proofs/obj/coll_zeros.bend`, `coll_b32.bend`, `coll_b48.bend`, `coll_u64.bend`), the bit lists and byte collections (`proofs/obj/u32bits.bend`,
   `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend`) and the list of 2048-byte cells (`proofs/obj/cell_rw.bend`); the other-index law of the
+  The spec-value set law of the 2 bit-list collections (`proofs/obj/bits_view.bend`, `codegen/bits_view.py`: the word replace is a bit replace of the word-expanded storage, by the 32-way split on `i & 31`, then the view is `btk` of it) is in `coll_bits.bend`.
   Data-element lists. The array-list read-back and the boxed-list laws (`proofs/obj/tarray.bend`, `coll_seq.bend`) are in the gate like the rest, and for the five boxed lists the spec-value law `..._api_view_set` (`proofs/obj/tfz_boxed.bend`, `codegen/boxedview.py`: freezing the array `Array.set` writes is updating the frozen tree of mirrors, by one induction over the depth against `tarray.bend`'s `put`, then `view_seq.bend`'s induction over the items); the view of the new element is that of the stored box, `v_X_bx(th_X_bx(fz_X_bx(wrap v)))`, which the root bridges read of a stored element.
-  The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->39<!-- /fig --> collections: the spec view of the collection after an accepted
+  The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->41<!-- /fig --> collections: the spec view of the collection after an accepted
   set is the view before with that item replaced by the view of the new element (`proofs/obj/value_set.bend`'s `field_set`: the k-th item of
   a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
   `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
@@ -98,7 +99,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
   (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
-flag, rejection and accepted-value laws in the same files. Not stated: the spec-value set law of the bit lists (the 2 bit-list collections); the spec-value
+flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of the bit lists, of a byte list whose append reallocates the storage, and of the boxed lists; the root view of the record lists that have none; the
 composed root and encode statement of a mutated list for the boxed lists, the Bytes32 list, the u64 collections and the record lists; and
 setter-then-encode where the encode bridge takes storage premises.
