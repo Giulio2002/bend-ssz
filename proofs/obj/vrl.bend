@@ -7,7 +7,7 @@ import ./vu32.bend as VU
 import ./vmul.bend as VM
 import ./vme.bend as VME
 
-# GENERATED from codegen/vrl.bend.in by codegen/var_rlist.py. Do not edit.
+# GENERATED from vrl.bend.in by var_rlist (codegen). Do not edit.
 # Arrays of any element type (lists of records): Array.set on a perfect tree.
 
 def mget(-A: Data, m: Maybe<&2, A>, +dflt: A) -> A:

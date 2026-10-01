@@ -19,7 +19,7 @@ import ./vua_rd.bend as UR
 import ./vbuf.bend as VB
 import ./vmul.bend as VM
 
-# GENERATED from codegen/vrc.bend.in by codegen/var_rlist.py. Do not edit.
+# GENERATED from vrc.bend.in by var_rlist (codegen). Do not edit.
 # Containers of three variable fields at a byte window: the window's split, and the
 # offset layout of three variable parts (no fixed part).
 

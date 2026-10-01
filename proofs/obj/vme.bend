@@ -13,7 +13,7 @@ import ./vmul.bend as VM
 import ./vspec.bend as VS
 import ./vfix.bend as VF
 
-# GENERATED from codegen/vme.bend.in by codegen/var_multi.py. Do not edit.
+# GENERATED from vme.bend.in by var_multi (codegen). Do not edit.
 # Encoder facts for lists of byte vectors: the storage check of such a list
 # (any lower/upper bound and element size), and the sizes' arithmetic.
 
