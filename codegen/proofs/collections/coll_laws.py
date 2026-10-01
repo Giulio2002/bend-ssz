@@ -303,6 +303,8 @@ ROOTS = {
     # kind: (module of the rs laws, light module alias, vector rs, list rs, rep, ok, view, count, digest names (vector, list))
     'b32': dict(mod='proofs/obj/pv_obj.bend', E='PVR', LV='proofs/obj/pv_obj_light.bend', V='PVL', rsv='pv_rs', rsl=None, repv='rep_pv', repl=None,
                 okv='ok_pv', okl=None, view='pview', cnt='chunks', dig_v='wdig', dig_l=None, elt='FuluBytes32_d', elp='types/FuluBytes32_def_generated.bend', digmod='WO'),
+    'u64': dict(mod='proofs/obj/ulist_obj.bend', E='UL', LV='proofs/obj/ulist_obj_light.bend', V='UL_L', rsv=None, rsl='ul_rs', repv=None, repl='rep_ul',
+                okv=None, okl='ok_ul', view='uview', cnt='ucnt', dig_v=None, dig_l='udig', elt='P', elp='types/primitive.bend', list_only=True),
     'b48': dict(mod='proofs/obj/elems48.bend', E='E48', LV='proofs/obj/elems48_light.bend', V='EL48L', rsv='ev_rs', rsl='el_rs', repv='rep_ev', repl='rep_el',
                 okv='ok_ev', okl='ok_el', view='eview', cnt='k48', dig_v='edig', dig_l='ldig', elt='FuluBytes48_d', elp='types/FuluBytes48_def_generated.bend'),
 }
@@ -311,7 +313,7 @@ ROOTS = {
 def root_set_law(c, I, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS):
     R = ROOTS.get(kind)
     vw = VIEWS.get((kind, c[0]))
-    if not R or not vw:
+    if not R or not vw or (R.get('list_only') and c[0] != 'l'):
         return
     fam = VL.FAMILIES[kind]
     isvec = c[0] == 'v'
@@ -351,11 +353,17 @@ def root_set_law(c, I, kind, DA, SET, PUT, WRITE, OBJ, TW, prem, largs, xs, GS):
     lines.append('  %%Equal.sym(O.Words, %s, %s, CW_%s.%s_write(%s)) : {_ == %s : O.Words}' % (WRITE, OBJ(TW), kind, kind, largs, OBJ(TW)))
     lines.append('  {==}\n')
     lines.append('def %s_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, %s, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, '
-                 '+hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == %s : Nat})\n'
-                 '    -> {%s(Pair.fst(O.Words, Bool, %s)) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}:' % (c, xp, GS, P, W, BASEi, VIEW, SET, VIEW, OBJ('t'), ES))
+                 '+hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, %dn), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == %s : Nat}%s)\n'
+                 '    -> {%s(Pair.fst(O.Words, Bool, %s)) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}:' % (c, xp, GS, P, W, BASEi,
+                     (', +hcap: {Nat.is_le(Nat.double(%s), F.spec_common__pow2(d)) == True{} : Bool}' % cnt) if conv else '', VIEW, SET, VIEW, OBJ('t'), ES))
     lines.append('  %%Equal.sym(Bool, %s, True{}, hs) : {%s(Pair.fst(O.Words, Bool, %s)) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}' % (GS, VIEW, PUT, VIEW, OBJ('t'), ES))
     lines.append('  %%Equal.sym(O.Words, %s, %s, CW_%s.%s_write(%s)) : {%s(_) == VS.field_set(%s(%s), U32.to_nat(i), %s) : S.Value}' % (WRITE, OBJ(TW), kind, kind, largs, VIEW, VIEW, OBJ('t'), ES))
-    lines.append('  VI_%s.view_set(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf)\n' % (kind, cnt, ', '.join(xs)))
+    if conv:
+        lines.append('  VI_%s.view_set_%s(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf, hcap)\n' % (kind, conv, cnt, ', '.join(xs)))
+    else:
+        lines.append('  VI_%s.view_set(%s, d, t, %s, U32.to_nat(i), q, hqe, hr, pf)\n' % (kind, cnt, ', '.join(xs)))
+    if kind == 'u64' and not isvec:
+        return u64_list_root_set(c, kind, DA, SET, OBJ, lines, imps, VIEW, ES, xp, xs, GSo, GSz, P, W, BASEi, TQ, XS, cnt)
     if kind == 'b32' and not isvec:
         return b32_list_root_set(c, kind, DA, SET, OBJ, lines, imps, VIEW, ES, xp, xs, GSo, GSz, P, W, BASEi, TQ, XS)
     # the composed law
@@ -488,6 +496,64 @@ def b32_list_root_set(c, kind, DA, SET, OBJ, lines, imps, VIEW, ES, xp, xs, GSo,
     lines.append('  (+wf, +ks) = rep')
     lines.append('  (+eN, +hv) = ks')
     lines.append('  %s_root_go(%s)\n' % (c, ARGS))
+
+
+def u64_list_root_set(c, kind, DA, SET, OBJ, lines, imps, VIEW, ES, xp, xs, GSo, GSz, P, W, BASEi, TQ, XS, cnt):
+    """the root of a list of uint64 after an accepted set: the digest is a specification root of the view with that item replaced (ulist_obj.bend's ul_rs on
+    the written object). The invariant of the written object is that of the object with the tree written: its tail is the old tail (u64_tail.bend)"""
+    imps['UT'] = 'proofs/obj/u64_tail.bend'
+    imps['LO'] = 'proofs/obj/list_obj_light.bend'
+    imps['WS'] = 'proofs/obj/words_spec.bend'
+    T0 = OBJ('t')
+    OW = 'O.Words{F.array__thaw(U32, t), n}'
+    OTQ = 'O.Words{F.array__thaw(U32, %s), n}' % TQ
+    SETo = SET.replace(T0, 'o')
+    SETn = SET.replace(T0, OW)
+    LIM = 'SH.ListOf_limit(s)'
+    DIG = lambda ob: 'D.bytes(UL.udig(hl, %s, depth))' % ob
+    FS = lambda v: 'VS.field_set(UL_L.uview(%s), U32.to_nat(i), %s)' % (v, ES)
+    CNT = 'U32.to_nat(U32.shrn(n, 3n))'
+    PARAMS = ('+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, %s, %%s'
+              '+ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, '
+              '+hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {%s == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(%s, 2n)) == q : Nat}, +hqe: {q == %s : Nat})\n'
+              '    -> RR.roots(%s, s, [%s]):' % (xp, GSo, P, BASEi, FS('o'), DIG('Pair.fst(O.Words, Bool, %s)' % SETo)))
+    CONCL = 'RR.roots(%s, s, [%s])' % (FS('o'), DIG('Pair.fst(O.Words, Bool, %s)' % SETo))
+    KS = 'DK.P2({U32.to_nat(WO.len(o)) == O.e8(UL_L.ucnt(o)) : Nat}, {Nat.is_le(UL_L.ucnt(o), %s) == True{} : Bool})' % LIM
+    lines.append('def %s_root_go(' % c + PARAMS % ('+ks: %s, +wf: LO.wfl(o), ' % KS))
+    lines.append('  (+eN, +hv) = ks')
+    lines.append('  match wf:')
+    lines.append('    case Inl{w}:')
+    for ln in ['(+t, w1) = w', '(+d, w2) = w1', '(+n, w3) = w2', '(+eo, w4) = w3', '(+pf, w5) = w4', '(+hd, +h0) = w5']:
+        lines.append('      ' + ln)
+    lines.append('      +eNN = UL.eq_n(o, t, n, eo, eN)')
+    lines.append('      +c0 = UL.e8_zero(%s, Equal.trans(Nat, 0n, U32.to_nat(n), O.e8(%s), Equal.sym(Nat, U32.to_nat(n), 0n, h0), eNN))' % (CNT, CNT))
+    lines.append('      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, %s, eo, hlt)' % OW)
+    lines.append('      Empty.absurd(%s, F.nat__lt_zero_absurd(U32.to_nat(i), F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, %s, 0n, c0, hlt0)))' % (CONCL, CNT))
+    lines.append('    case Inr{w}:')
+    for ln in ['(+t, w1) = w', '(+d, w2) = w1', '(+n, w3) = w2', '(+qc, w4) = w3', '(+r, w5) = w4', '(+eo, w6) = w5', '(+pf, w7) = w6', '(+hd, w8) = w7', '(+enq, w9) = w8',
+               '(+h1, w10) = w9', '(+h32, w11) = w10', '(+room, +slack) = w11']:
+        lines.append('      ' + ln)
+    lines.append('      +eNN = UL.eq_n(o, t, n, eo, eN)')
+    lines.append('      +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(%s), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)' % CNT)
+    lines.append('      +fit = UL.words_fit(%s, qc, r, d, t, ec, h32, pf, room)' % CNT)
+    lines.append('      +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(%s), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)' % CNT)
+    lines.append('      +hsn = F.logic__subst(O.Words, z => {%s == True{} : Bool}, o, %s, eo, hs)' % (GSz, OW))
+    lines.append('      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, %s, eo, hlt)' % OW)
+    lines.append('      +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), %s, hlt0)' % CNT)
+    lines.append('      +hr = UT.hr_of(U32.to_nat(i), q, %s, F.spec_common__pow2(d), hqe, hlt1, hcap)' % CNT)
+    lines.append('      +se = %s_seteq(d, t, n, i, q, %s, hd, pf, hsn, hq, hr)' % (c, ', '.join(xs)))
+    lines.append('      +vs = %s_viewset(d, t, n, i, q, %s, hd, pf, hsn, hq, hr, hqe, hcap)' % (c, ', '.join(xs)))
+    lines.append('      +vs2 = F.logic__subst(O.Words, z => {UL_L.uview(z) == VS.field_set(UL_L.uview(%s), U32.to_nat(i), %s) : S.Value}, Pair.fst(O.Words, Bool, %s), %s, se, vs)' % (OW, ES, SETn, OTQ))
+    lines.append('      +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(%s), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)' % CNT)
+    lines.append('      +slack2 = UT.tail_w(d, t, q, %s, Nat.add(qc, 0n), U32.to_nat(i), qc, %s, r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), %s, r, ecq))' % (', '.join(xs), CNT, CNT))
+    lines.append('      +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == O.e8(UL_L.ucnt(z)) : Nat}, {Nat.is_le(UL_L.ucnt(z), %s) == True{} : Bool}), o, %s, eo, ks)' % (LIM, OW))
+    lines.append('      %%Equal.sym(O.Words, o, %s, eo) :\n        RR.roots(%s, s, [%s])' % (OW, FS('_'), DIG('Pair.fst(O.Words, Bool, %s)' % SET.replace(T0, '_'))))
+    lines.append('      %%Equal.sym(O.Words, Pair.fst(O.Words, Bool, %s), %s, se) :\n        RR.roots(%s, s, [%s])' % (SETn, OTQ, FS(OW), DIG('_')))
+    lines.append('      %%vs2 :\n        RR.roots(_, s, [%s])' % DIG(OTQ))
+    lines.append('      UL.ul_rs(hl, ehl, h, %s, s, depth, dU, seg, (Inr{(%s, (d, (n, (qc, (r, ({==}, (WW.tk_perfect([%s], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2))))))))))))}, ks2), ok, edu, hdep)\n' % (OTQ, TQ, ', '.join(xs)))
+    lines.append('def %s_api_root_set(' % c + PARAMS % '+rep: UL_L.rep_ul(o, s), ')
+    lines.append('  (+wf, +ks) = rep')
+    lines.append('  %s_root_go(hl, ehl, h, o, s, depth, dU, seg, i, q, %s, ks, wf, ok, edu, hdep, hlt, hs, hq, hqe)\n' % (c, ', '.join(xs)))
 
 
 def root_file():
