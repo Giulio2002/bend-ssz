@@ -188,6 +188,8 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     W.PREFER[(E2E / 'e2e_cap.bend').resolve()] = 'CAP'
     if name in DR.WINDOW:   # the window reader's own form: no closed window start in any type a premise is compared with
         _wx = (ROOT / 'proofs' / 'obj' / ('var_winx_' + name[4:] + '.bend')).resolve()
+        if not _wx.exists():   # the light client updates' window readers are var_bytesx_*
+            _wx = (ROOT / 'proofs' / 'obj' / ('var_bytesx_' + name[4:] + '.bend')).resolve()
         W.PREFER[_wx] = 'WX'   # the decrep synthesis leaves DC on the window module; the codec's DC stays the codec's
         OBJ = f"{ctx.alias(_wx)}.OBJw({oa[0]}, {oa[1]}, 0n, 0, {oa[2]})"
     DRA = ctx.alias(E2E / f'{name}_e2e_decrep_generated.bend')
@@ -205,6 +207,11 @@ def build_var(name, ctx, dm, em, rm, eps, rps, DB, EB, RB, X, SPEC, V, R, DEC, M
     if name in DR.BUF_D:   # the object's arguments already start with the depth: the loaded buffer's (pf, hd, hn) follow
         BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
         xa = f', {DB}.pfe(bs, n), {FDA}.nat__le_lt_trans({BA}.capacity(n), 30n, 31n, {CA}.capM_le(n, hS), {{==}}), {CA}.capM_q(n, hS)'
+    if name in DR.BUF_K:   # the dec bridge's size bound is Nat-form n <= 4 * 2^k (e2e_cap.cap_*): the buffer's depth facts from it
+        BA, CA = ctx.alias(ROOT / 'src/buffer.bend'), ctx.alias(E2E / 'e2e_cap.bend')
+        kn = f'{DR.BUF_K[name]}n'
+        xa = (f', {DB}.pfe(bs, n), {FDA}.nat__lt_trans({BA}.capacity(n), 29n, 31n, {CA}.cap_lt(n, {kn}, {{==}}, hS), {{==}}), '
+              f'{CA}.cap_q(n, {kn}, {{==}}, hS)')
     hv_ = ''
     if name in DR.HEAVY:   # the heavy names' composed theorems take n < 2^31 explicitly: the encode laws' own size premise hZ (docs/PREMISES.md section 3), not the API's NMAX
         hyps = hyps + [('+', 'h31', DR.HEAVY[name].replace('VB.', ctx.alias(ROOT / 'proofs/obj/vbuf.bend') + '.'))]
