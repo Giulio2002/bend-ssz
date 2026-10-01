@@ -71,6 +71,14 @@ def build(name):
     otype = dict(pe)['o']
     tmod, dflt = W.default_of(ctx, cm, otype, name)
     DEF = f'{ctx.alias(tmod.path)}.{dflt}'
+    # a default that holds empty boxes where a vector needs values (ComplexTestStruct's vec_VarTestStruct_2) is not a legal
+    # object: its encoding is not an input the decoder accepts. DV() is the default with valid values there (as in e2e_witness)
+    dv = ''
+    probe = W.model_ne(W.Ctx(), tmod, dflt, lists=False)     # on a throwaway context: the imports are the file's only if DV() is used
+    if getattr(probe, 'changed', False):
+        obj0 = W.model_ne(ctx, tmod, dflt, lists=False)
+        dv = f'def {name}_DV() -> {OBJ}:\n  {obj0.expr}'
+        DEF = f'{name}_DV()'
     BA = ctx.alias(ROOT / 'src/buffer.bend')
     EA = ctx.alias(E2E / 'e2e_support.bend')
     OA = ctx.alias(ROOT / 'src/obj.bend')
@@ -83,7 +91,7 @@ def build(name):
 
     # the decode call at the instance
     dec0 = f'Pair.snd({BA}.Buf, Maybe<&1, {OBJ}>, ' + re.sub(r'(?<![\w.])(bs|n)(?![\w.])', lambda m: sub[m.group(1)], DECALL) + ')'
-    defs = [
+    defs = ([dv] if dv else []) + [
         f'def {pre}_isS(m: Maybe<&1, {OBJ}>) -> Bool:\n  match m:\n    case Some{{x}}: True{{}}\n    case None{{}}: False{{}}',
         f'def {pre}_gm(m: Maybe<&1, {OBJ}>, d: {OBJ}) -> {OBJ}:\n  match m:\n    case Some{{x}}: x\n    case None{{}}: d',
         f'def {pre}_buf() -> {BA}.Buf: Pair.snd({OBJ}, {BA}.Buf, {ENC}({DEF}))',

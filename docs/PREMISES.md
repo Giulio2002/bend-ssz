@@ -407,7 +407,7 @@ input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n
   `(bs0, n0, o0)`, `o0` the object the decoder returned, with every hypothesis (`hn`, `hd`, `hS`, `dec`) proved by computation. So each composed
   theorem is instantiated at an accepted input of its own name: its premises are not unsatisfiable together.
 
-The default object is the smallest input available (every list empty, every fixed-size part zero); a non-empty input is not witnessed. Not
+The default object is the smallest input available (every list empty, every fixed-size part zero), except that a default holding empty boxes where a vector needs values (ComplexTestStruct's `vec_VarTestStruct_2` field: its default elements are `BNone`, not a legal decoded shape, and the decoder rejects the encoding of such an object) is replaced by `DV()`, the default with valid elements there, as in the bridge witnesses; a non-empty input is not witnessed. Not
 witnessed (<!-- fig:dw_pending -->3<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
 the default encoding is too large for the checker to evaluate the encoder and the decoder over it. FuluBeaconState's is 2.7 MB (the fixed-size parts:
 `block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), the light-client bootstrap and update hold sync committees and branches (tens
