@@ -153,6 +153,22 @@ def crbv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +c: Nat, +b: Nat, +dz: Nat
     -> WO.rep_bv(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, FD.u32__pow2u(b), dz)), FD.u32__pow2u(b)}, s):
   (cwf1(d, t, off, c, b, dz, eb, hb, hd, h0),
     FD.logic__subst(Nat, z => {Nat.is_eq(U32.to_nat(FD.u32__pow2u(b)), z) == True{} : Bool}, U32.to_nat(FD.u32__pow2u(b)), SH.ByteVector_length(s), Equal.sym(Nat, SH.ByteVector_length(s), U32.to_nat(FD.u32__pow2u(b)), es), FD.nat__is_eq_refl(U32.to_nat(FD.u32__pow2u(b)))))
+def cwfv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +c: Nat, +b: Nat, +dz: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool},
+    +hd: {Nat.is_le(Nat.add(3n, c), dz) == True{} : Bool}, +h0: {Nat.is_lt(dz, 32n) == True{} : Bool}) -> PV.wfv(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, FD.u32__pow2u(b), dz)), FD.u32__pow2u(b)}):
+  FD.logic__subst(FD.array__Tree<U32>, z => PV.wfv(O.Words{FD.array__thaw(U32, z), FD.u32__pow2u(b)}), VXB.CTN(d, t, U32.to_nat(off), FD.u32__pow2u(b), dz), UCT.CT(d, t, off, FD.u32__pow2u(b), dz),
+    Equal.sym(FD.array__Tree<U32>, UCT.CT(d, t, off, FD.u32__pow2u(b), dz), VXB.CTN(d, t, U32.to_nat(off), FD.u32__pow2u(b), dz), VXB.ct_n(d, t, off, U32.to_nat(off), FD.u32__pow2u(b), dz, {==})),
+    fwfv(d, t, U32.to_nat(off), c, b, dz, eb, hb, hd, h0))
+
+def csdpv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +k: Nat, +c: Nat, +b: Nat, +dz: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool},
+    +hd: {Nat.is_le(Nat.add(3n, c), dz) == True{} : Bool}, +h0: {Nat.is_lt(dz, k) == True{} : Bool}) -> BL.sdpv(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, FD.u32__pow2u(b), dz)), FD.u32__pow2u(b)}, k):
+  FD.logic__subst(FD.array__Tree<U32>, z => BL.sdpv(O.Words{FD.array__thaw(U32, z), FD.u32__pow2u(b)}, k), VXB.CTN(d, t, U32.to_nat(off), FD.u32__pow2u(b), dz), UCT.CT(d, t, off, FD.u32__pow2u(b), dz),
+    Equal.sym(FD.array__Tree<U32>, UCT.CT(d, t, off, FD.u32__pow2u(b), dz), VXB.CTN(d, t, U32.to_nat(off), FD.u32__pow2u(b), dz), VXB.ct_n(d, t, off, U32.to_nat(off), FD.u32__pow2u(b), dz, {==})),
+    fsdpv(d, t, U32.to_nat(off), k, c, b, dz, eb, hb, hd, h0))
+
+def crpv(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +c: Nat, +b: Nat, +dz: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hc: {Nat.is_lt(c, 32n) == True{} : Bool},
+    +hd: {Nat.is_le(Nat.add(3n, c), dz) == True{} : Bool}, +h0: {Nat.is_lt(dz, 32n) == True{} : Bool},
+    +s: S.Schema, +es: {SH.Vector_length(s) == U32.to_nat(FD.u32__pow2u(c)) : Nat}) -> PV.rep_pv(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, FD.u32__pow2u(b), dz)), FD.u32__pow2u(b)}, s):
+  (cwfv(d, t, off, c, b, dz, eb, hb, hd, h0), fchk(c, b, eb, hb, hc, s, es))
 # ---- the depth of a copy of at most 32 bytes is below 28 (the header's extra data) ----
 def dz32(+L: U32, +m: Nat, +e: {U32.to_nat(L) == m : Nat}, +h: {Nat.is_le(m, 32n) == True{} : Bool}) -> {Nat.is_lt(VLS.DZ(L), 28n) == True{} : Bool}:
   match m:

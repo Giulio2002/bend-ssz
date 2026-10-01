@@ -737,6 +737,74 @@ def beacon_block_body(lf, wrap=None):
                           lets, None, top, given=given, objexpr='DC.OBJw(d, t, x, off, n)')
 
 
+def lc_header_chain(al, YH, EPH, DC, xH, oH, lH, hcH, sfx):
+    """the checks of a LightClientHeader window (xH, oH, lH; hcH: its CHKw) down to its execution header's extra data (<= 32 bytes):
+    (lets, the extra data's length expression, its hl / hy names)"""
+    a, b = f'U32.is_le(244, {lH})', f'U32.is_eq({YH}.SPOw(t, {xH}), 244)'
+    x2, o2, L2 = f'Nat.add(244n, {xH})', f'U32.add({oH}, 244)', f'{YH}.LL({lH})'
+    c = f'{EPH}.CHKw(t, {x2}, {o2}, {L2})'
+    a2, b2 = f'U32.is_le(584, {L2})', f'U32.is_eq({EPH}.SPOw(t, {x2}), 584)'
+    c2 = f'{EPH}.BLW(U32.sub({L2}, {EPH}.SPOw(t, {x2})))'
+    L3 = f'{EPH}.LL({L2})'
+    out = [f'+hc1{sfx} = {YH}.chk_c({a}, {b}, {c}, {hcH})',
+           f'+hc2{sfx} = {EPH}.chk_c({a2}, {b2}, {c2}, hc1{sfx})',
+           f'+hb2{sfx} = {EPH}.chk_b({a2}, {b2}, {c2}, hc1{sfx})',
+           f'+hcz{sfx} = FD.logic__subst(U32, z => {{{EPH}.BLW(U32.sub({L2}, z)) == True{{}} : Bool}}, {EPH}.SPOw(t, {x2}), 584, FD.u32alg__eq_of({EPH}.SPOw(t, {x2}), 584, hb2{sfx}), hc2{sfx})',
+           f'+hl{sfx} = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le({L3}, 32), Nat.is_le(U32.to_nat({L3}), U32.to_nat(32)), VB.le_u32n({L3}, 32), hcz{sfx})',
+           f'+hy{sfx} = FD.nat__le_trans(VC.YL({L3}), Nat.add(31n, U32.to_nat(32)), U32.to_nat(VB.UMAX()), Order.add_left(31n, U32.to_nat({L3}), U32.to_nat(32), hl{sfx}), {{==}})']
+    return out, L3
+
+
+def lc_finality(lf):
+    name = 'FuluLightClientFinalityUpdate'
+    HEAVY[name] = H31
+    WINDOW.add(name)
+    top = 'proofs/obj/var_bytesx_LightClientFinalityUpdate.bend'
+
+    def lets(al):
+        DFX, DC_, YH, EPH = al('e2e/e2e_dfx.bend'), al(top), al('proofs/obj/var_bytesx_LightClientHeader.bend'), al('proofs/obj/var_bytesx_ExecutionPayloadHeader.bend')
+        al('proofs/obj/vlist.bend')
+        al('proofs/obj/vua_ct.bend')
+        a, b, c, dd, e = 'U32.is_le(400, n)', 'U32.is_eq(DC.SPO0(t, x), 400)', 'DC.CK(t, x, n)', 'DC.D1(t, x, off)', 'DC.D2(t, x, off, n)'
+        out = [f'+ha = DC.c5a({a}, {b}, {c}, {dd}, {e}, hchk)',
+               f'+h1 = FD.logic__subst(Bool, z => {{DC.chk5(z, {b}, {c}, {dd}, {e}) == True{{}} : Bool}}, {a}, True{{}}, ha, hchk)',
+               f'+hb = DC.c5b({b}, {c}, {dd}, {e}, h1)',
+               f'+h2 = FD.logic__subst(Bool, z => {{DC.chk5(True{{}}, z, {c}, {dd}, {e}) == True{{}} : Bool}}, {b}, True{{}}, hb, h1)',
+               f'+hc = DC.c5c({c}, {dd}, {e}, h2)',
+               f'+h3 = FD.logic__subst(Bool, z => {{DC.chk5(True{{}}, True{{}}, z, {dd}, {e}) == True{{}} : Bool}}, {c}, True{{}}, hc, h2)',
+               f'+hk1 = DC.c5d({dd}, {e}, h3)',
+               f'+h4 = FD.logic__subst(Bool, z => {{DC.chk5(True{{}}, True{{}}, True{{}}, z, {e}) == True{{}} : Bool}}, {dd}, True{{}}, hk1, h3)',
+               f'+hk2 = DC.c5e({e}, h4)']
+        o1, L31 = lc_header_chain(al, YH, EPH, DC_, 'Nat.add(256n, Nat.add(144n, x))', 'U32.add(off, 400)', 'DC.L1(t, x)', 'hk1', '1')
+        o2, L32 = lc_header_chain(al, YH, EPH, DC_, 'DC.X2(t, x)', 'U32.add(off, DC.SPO1(t, x))', 'DC.L2(t, x, n)', 'hk2', '2')
+        chains = {L31: '1', L32: '2'}
+
+        def words(j, e):
+            th, ln = W.split_top(e[len('O.Words{'):-1])
+            mct = re.fullmatch(r'FD\.array__thaw\(U32, \w+\.CT\((.*)\)\)', th.strip(), re.S)
+            ca = [c.strip() for c in W.split_top(mct.group(1))]
+            d_, t_, off, L0 = ca[0], ca[1], ca[2], ca[3]
+            q = '{==}'
+            if L0 == '256':
+                return FxWords(e, {('words_obj_light.bend', 'rep_bv'): lambda s_: f'{DFX}.crbv({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q}, {s_}, {q})',
+                                   ('words_obj_light.bend', 'wf1'): lambda _: f'{DFX}.cwf1({d_}, {t_}, {off}, 3n, 8n, 7n, {q}, {q}, {q}, {q})',
+                                   ('e2e_blist.bend', 'sdk1'): lambda k: f'{DFX}.csdk1({d_}, {t_}, {off}, {k}, 3n, 8n, 7n, {q}, {q}, {q}, {q})'})
+            if L0 in chains:
+                sf = chains[L0]
+                hy, hl = f'hy{sf}', f'hl{sf}'
+                dzl = f"{DFX}.dz32({L0}, U32.to_nat({L0}), {{==}}, {hl})"
+                hwc = f'VD.wd_cover(VC.WZ({L0}), 30n, {{==}}, VC.wz30({L0}, {hy}))'
+                return WordsDec(e, any_=lambda k: f'DZ.ct_any({d_}, {t_}, {off}, {L0}, {ca[4]}, {k}, FD.nat__lt_le_trans({ca[4]}, 28n, {k}, {dzl}, {{==}}), {hy}, {hwc})', limit=hl)
+            if re.fullmatch(r'\d+', L0) and re.fullmatch(r'\d+n', ca[4]):   # a fixed-length vector copied from a byte offset (a branch)
+                BVW, VRb = al('e2e/e2e_bvw.bend'), al('proofs/obj/vbrt.bend')
+                return WordsFix(e, int(L0), f'UCT.CT({", ".join(ca)})', int(ca[4][:-1]), f'{BVW}.ctps({VRb}.RX({off}), {d_}, {t_}, {off}, {L0}, {ca[4]})')
+            raise SystemExit(f'LC words {j}: {e[:400]}')
+        return out + o1 + o2, words, None, None, None
+    ps = WIN_PS.format(H31=H31)
+    return container_file(name, lf, top, 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
+                          lets, None, top, objexpr='DC.OBJw(d, t, x, off, n)')
+
+
 DP_DJ = {1: 'c', 2: 'Nat.double(c)', 4: 'Nat.double(Nat.double(c))', 8: 'Nat.double(Nat.double(Nat.double(c)))'}
 
 
@@ -745,6 +813,7 @@ PROVERS = {
     'FuluBeaconState': lambda lf: beacon_state(lf),
     'FuluExecutionPayload': lambda lf: execution_payload(lf),
     'FuluBeaconBlockBody': lambda lf: beacon_block_body(lf),
+    'FuluLightClientFinalityUpdate': lambda lf: lc_finality(lf),
     'FuluBeaconBlock': lambda lf: beacon_block_body(lf, 'bk'),
     'FuluSignedBeaconBlock': lambda lf: beacon_block_body(lf, 'sb'),
     'CompatibleUnionA': lambda lf: compat_union_a(lf),
