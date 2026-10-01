@@ -158,8 +158,8 @@ proof laws (validity, offsets and reported sizes, constants and root constants, 
 closed the rest. The `out_at(d) -> out_at(d+1)` mutants were once excluded as harmless; the capacity laws kill them, so
 they are drawn again.
 
-**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (open, below), 21 proof-equivalent, 9 gaps, 1 of the proglist_bool
-case below. The 9 gaps (proof-level reading):
+**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (open, below), 21 proof-equivalent and 10 gap records (one site was found by
+both the replay and the fresh draw: 9 distinct gaps, one of them the proglist_bool case). Proof-level reading:
 
 | cause | mutants | reading |
 | --- | --- | --- |
