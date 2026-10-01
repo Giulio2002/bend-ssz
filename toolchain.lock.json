@@ -2,15 +2,15 @@
   "note": "The one toolchain pin for proof checking. tools/verify_pins.py checks it; tools/check.sh and tools/check_fast.sh run that check before any Bend run. The compiled-runtime toolchain for tests and benchmarks (not used by any proof check) is benchmarks/toolchain.json.",
   "checker": {
     "repository": "https://github.com/Giulio2002/bend",
-    "branch": "rigid-subterms",
-    "commit": "aa99b746e4e9d5d4ba309414e673650b095fdff0",
+    "branch": "rigid-memo",
+    "commit": "c55a7f038e65a11b6635573d86642ed2ad956d82",
     "base": {
       "repository": "https://github.com/bendlang/bend",
       "commit": "018751270e800bc222a93dad7f257083ee53a5f7",
       "note": "upstream main after the v2.0.34 release (tag v2.0.34 = 7d8a3eb0); Base is byte-identical to the v2.0.34 release's bend2/base.bend"
     },
-    "upstream_pr": "https://github.com/bendlang/bend/pull/1210 (head 45663e0a; closed, not merged); aa99b746 was never submitted upstream",
-    "provenance": "A fork branch, not a Bend release. Upstream bendlang/bend main at 01875127 (after v2.0.34) plus two commits on Giulio2002/bend rigid-subterms: 45663e0a 'A copy met after an unfold converts before either copy unfolds' (the full conversion pass asks the rigid, no-def-unfolds comparison again at each pair of calls of one def before unfolding them) and aa99b746 'A conversion recurses as deep as before the rigid retry' (the retry's memo no longer adds a stack frame per level, so conversions reach stock 2.0.34's depth). 45663e0a was the head of bendlang/bend#1210, closed without merging; aa99b746 was added to the branch afterwards and never submitted upstream; like the #1075 build pinned before it, this checker is trusted as the reviewed diff on top of upstream, not as an upstream release. Built on the ssz server at /srv/ssz-optimization/toolchain-rigid-aa99b746: bend-src/ is a clean checkout of aa99b746; bend2/ and guide/ are copies of its bend2/ and guide/; bin/bend = `bun build --compile bend2/main.ts --outfile ../bin/bend` run in bend-src/ with Bun 1.4.2 (its sha256 depends on the sources, Bun and the output file's name, not its directory: an independent rebuild elsewhere reproduced c9f6bedd; the bend2/ sources are pinned too). It is a release layout like v2.0.34's: bin/bend reads Base from ../bend2/base.bend.",
+    "upstream_pr": "none: bendlang/bend#1210 (head 45663e0a, the earlier form of this change) was closed unmerged; c55a7f03 (variant B, a smaller rewrite of the same idea) was never submitted upstream",
+    "provenance": "A fork branch, not a Bend release. Upstream bendlang/bend main at 01875127 (after v2.0.34) plus ONE commit on Giulio2002/bend rigid-memo: c55a7f03 'A copy met after an unfold converts before either copy unfolds' (variant B; +27/-45 lines of bend2/bend.ts against 01875127, plus two tests under tests/check/). The full conversion pass asks the rigid, no-def-unfolds comparison (compare_call) again at the arguments of two calls of one def before unfolding them; a rigid pair found unequal is marked on the cell (Var.u) so no failing walk repeats, a rigid whnf no longer fills a shared cell, and the retry adds no stack frame per level. It replaces the earlier two-commit rigid-subterms pin (45663e0a + aa99b746); 45663e0a was the head of bendlang/bend#1210, closed unmerged. Like the #1075 build pinned before, this checker is trusted as the reviewed diff on top of upstream, not as an upstream release. Built on the ssz server at /srv/ssz-optimization/toolchain-memo-788a6866: bend-src/ is a checkout of c55a7f03; bend2/ and guide/ are copies of its bend2/ and guide/; bin/bend = `bun build --compile bend2/main.ts --outfile ../bin/bend` run in bend-src/. It is a release layout like v2.0.34's: bin/bend reads Base from ../bend2/base.bend.",
     "build": {
       "bun_version": "1.4.2",
       "bun_sha256": "a83d263767d839e4d2649ca8e35d07159c7afc99afdc96d731ced29e056dda0c",
@@ -18,9 +18,9 @@
     },
     "entry": "bin/bend",
     "files": {
-      "bin/bend": "c9f6bedd3dc2df5e0a919e1b77e922fabacb150916b14663eba83702ebddf3c3",
+      "bin/bend": "42ffa263fa25ed37ff3d33cdf4fb7555777e121279eaca0d6d9cc896c4794950",
       "bend2/base.bend": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661",
-      "bend2/bend.ts": "77adc46338db07cd40b46adddce64ddd8e3eabb2f809ff8ca2ce6f8186043da6",
+      "bend2/bend.ts": "680e37ae4905cc3978ac77aa294b86007b4b6f238dff84ff5d5b340c45de5a7a",
       "bend2/main.ts": "f835f0727beb447f116daffdc9aa7c4df319b7c044fd6188add517395b86fa86",
       "bend2/comp.ts": "3bd7ed49d33f1c61334d75a905e38c0345fb15a10b45d85884b77f49833dc5ee"
     }

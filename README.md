@@ -78,10 +78,10 @@ checked, at the commit you rely on:
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
     python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
     python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
-    # the checker: Bend main 01875127 + two commits of the fork Giulio2002/bend, branch rigid-subterms
-    # (aa99b746; its upstream PR bendlang/bend#1210 was closed unmerged, see docs/TRUST.md), built as a release
+    # the checker: Bend main 01875127 + one commit of the fork Giulio2002/bend, branch rigid-memo
+    # (c55a7f03; the earlier form of the change, bendlang/bend#1210, was closed unmerged, see docs/TRUST.md), built as a release
     # layout (bin/bend + bend2/base.bend); the recipe is in toolchain.lock.json and docs/BUILD.md
-    git clone https://github.com/Giulio2002/bend T/bend-src && git -C T/bend-src checkout aa99b746e4e9d5d4ba309414e673650b095fdff0
+    git clone https://github.com/Giulio2002/bend T/bend-src && git -C T/bend-src checkout c55a7f038e65a11b6635573d86642ed2ad956d82
     cp -r T/bend-src/bend2 T/bend2 && (cd T/bend-src && bun build --compile bend2/main.ts --outfile ../bin/bend)   # Bun 1.4.2
     python3 tools/verify_pins.py --toolchain T   # bin/bend, Base, the sources and the vendored SHA-256 package match toolchain.lock.json
     BEND_TOOLCHAIN=T tools/check_fast.sh    # pins ulimit -s 16384 and a 10 MB JSC budget itself; prints "all files check"

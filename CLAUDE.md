@@ -47,6 +47,6 @@ gate stays the full check with localization, every pinned tool, no cache, and st
 - Generated files change only through their generators. Never edit `spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN,
   PROOF, HASH_PROOF, `law-statements.json` or `frozen.lock.json` except for a deliberate, announced change. Never
   weaken a law.
-- Never patch or fork Bend for the proofs; the pinned checker is listed in `toolchain.lock.json`.
+- Never patch or fork Bend for the proofs; the pinned checker (Giulio2002/bend `rigid-memo` c55a7f03, variant B) is listed in `toolchain.lock.json`.
 - Kill only your own PIDs. Never `pkill` by name; never `rm` with wildcards outside your own directories.
 - Deliver on branches and merge through the coordinator; do not push to main.

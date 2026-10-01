@@ -58,11 +58,11 @@ their imports.
 with the pinned checker; `umbrellas.py` uses them only to balance the partition, never for coverage.
 
 `check.sh` runs `<toolchain>/bin/bend <file> --check-only` with the checker pinned in
-`toolchain.lock.json` (Bend main 01875127, after v2.0.34, plus commits 45663e0a and aa99b746 of the fork
-branch Giulio2002/bend `rigid-subterms` (45663e0a was the head of bendlang/bend#1210, closed unmerged;
-aa99b746 was never submitted upstream): see
+`toolchain.lock.json` (Bend main 01875127, after v2.0.34, plus the one commit c55a7f03 of the fork
+branch Giulio2002/bend `rigid-memo`, never submitted upstream; its earlier form 45663e0a was the head of
+bendlang/bend#1210, closed unmerged): see
 [TRUST.md](TRUST.md); found through `BEND_TOOLCHAIN`, default the ssz server's
-`/srv/ssz-optimization/toolchain-rigid-aa99b746`; a source layout, `bun-linux-x64/bun` +
+`/srv/ssz-optimization/toolchain-memo-788a6866`; a source layout, `bun-linux-x64/bun` +
 `bend-src/bend2/main.ts`, is also accepted) and the SHA-256 package
 (`BEND_LIB`, default the vendored `vendor/bendhub`, BendHub bend-collections@1.0.0.0), and prints
 `ALL PROOFS CHECK` and a final
@@ -116,7 +116,7 @@ Target per file: 60 s and 8 GB (e2e files 45 s).
 
 **No retry on a stack overflow.** An umbrella passes only on exit 0 with the exact line `ALL PROOFS CHECK`; "the machine stack
 overflowed" is a failure, never retried. (The 2.0.28 build had a one-time retry for a nondeterministic overflow under load; the
-rigid-subterms checker removed the cause instead: conversions are kept shallow in the proofs, `tools/check.sh` pins the stack
+rigid-memo checker removed the cause instead: conversions are kept shallow in the proofs, `tools/check.sh` pins the stack
 (`ulimit -s 16384`, JSC budget 10485760 bytes), and the pin run is the gate; the 5 MB headroom run is informational, see above.)
 
 **The gate run.** `tools/check_fast.sh --tarballs DIR` (or `CHECK_TARBALLS=DIR`) also checks the fixture manifest against the pinned
