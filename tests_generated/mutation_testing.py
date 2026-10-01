@@ -7,7 +7,7 @@ other harnesses feed corrupted INPUT to correct code; this one corrupts the CODE
 
 Runtime side. For every Fulu name and every generic name, MUTANTS_PER_TYPE (default 5) mutants are drawn, seeded
 and deterministic, from the sites of types/<Name>_{decode_ssz,encode_ssz,hashtreeroot}_generated.bend (the code the
-object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; out_at(d) +1 is an over-allocated buffer, -1 an under-allocated one; the alignment test `pos .&. 3 == 0` is not drawn: its equivalence is open, see docs/RESULTS.md), a comparison flipped
+object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; out_at(d) +1 is an over-allocated buffer, -1 an under-allocated one; a comparison is flipped to each of is_lt / is_le / is_ge), a comparison flipped
 (is_eq -> is_lt, is_lt -> is_le, is_le -> is_lt), an addition turned into a subtraction, a validity result
 forced (True{} -> False{}, False{} -> True{}), the two children of a hash_tree_root node swapped
 (D.node(h, a, b) -> D.node(h, b, a); only the root files have them). The sites are drawn round-robin over the operators. The mutants
@@ -53,7 +53,7 @@ from provenance import stamp  # noqa: E402
 
 OPS = ('decode', 'encode', 'hashtreeroot')
 OPERATORS = ('const+1', 'const-1', 'cmp', 'addsub', 'valid', 'swap')
-CMP = {'U32.is_eq(': 'U32.is_lt(', 'U32.is_lt(': 'U32.is_le(', 'U32.is_le(': 'U32.is_lt('}
+CMP = {'U32.is_eq(': ['U32.is_lt(', 'U32.is_le(', 'U32.is_ge('], 'U32.is_lt(': ['U32.is_le('], 'U32.is_le(': ['U32.is_lt(']}
 
 
 def code_lines(text):
@@ -96,11 +96,10 @@ def sites(text, keep_classed=False):
             out.append((i, m.start(), 'const+1', m.group(0), str(int(m.group(1)) + 1) + m.group(2)))
             if int(m.group(1)) >= 1:   # one too small: an under-allocated buffer, a limit or size one short
                 out.append((i, m.start(), 'const-1', m.group(0), str(int(m.group(1)) - 1) + m.group(2)))
-        for a, b in CMP.items():
+        for a, bs in CMP.items():
             for m in re.finditer(re.escape(a), line):
-                if '.&. 3' in line and not keep_classed:   # the aligned-or-slow path choice: round 1 classes it, not redrawn
-                    continue
-                out.append((i, m.start(), 'cmp', a, b))
+                for b in bs:
+                    out.append((i, m.start(), 'cmp', a, b))
         for m in re.finditer(r' \+ (?=[1-9]\d* : U32\))', line):   # `+ 0` -> `- 0` changes nothing: not drawn
             out.append((i, m.start(), 'addsub', ' + ', ' - '))
         for st, en, args in node_calls(line):   # hash_tree_root: the two children of a Merkle node swapped

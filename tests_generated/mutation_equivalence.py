@@ -14,8 +14,6 @@ equal. This file states which survivors are equivalent and why, by rules that re
     before and after the change of lo, hi or unit, checked on every n that can differ;
   - vec_bool decoders: ok_n has one caller passing the literal N, so is_eq(N, 0) and its mutants evaluate alike and the
     True{} branch of ok_nz is never taken;
-  - the aligned-or-slow path test `pos .&. 3 == 0` is OPEN, not equivalent: both paths agree at sampled positions only
-    (the checker does not fold symbolic index terms); it is not drawn, and listed separately;
   - the one uncoverable bound (Transaction, 2^30 -> 2^30+1, needs an object of 2^30+1 bytes).
     (out_at(d) -> out_at(d+1) was once excluded as harmless; the capacity laws killed it, so it is drawn again.)
 
@@ -144,10 +142,6 @@ def classify_survivor(x):
     r = proof_equiv(x)
     if r:
         return 'proof-equivalent', r
-    if x['cause'] == 'comparison':
-        return 'open (unproved): aligned-or-slow path', ('is_eq(pos .&. 3, 0) -> is_lt/is_le: always the unaligned path (or aligned only when pos&3 == 0 is '
-                                        'false); both paths agree at the sampled positions, NOT proved for a symbolic index (the checker does not fold '
-                                        'symbolic index terms): open, not equivalent')
     if x['file'].endswith('FuluTransaction_encode_ssz_generated.bend') and x['before'] == '1073741824':
         return 'uncoverable', ('the bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes (Transaction): not constructible, '
                                'no law can be checked against it')
