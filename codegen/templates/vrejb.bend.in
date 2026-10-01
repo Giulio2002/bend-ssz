@@ -19,7 +19,7 @@ import ./vrl.bend as VRL
 import ./vua.bend as UA
 import ./vua_win.bend as UW
 
-# GENERATED from codegen/vrejb.bend.in by codegen/fix_reject_chk.py. Do not edit.
+# GENERATED from vrejb.bend.in by fix_reject_chk (codegen). Do not edit.
 # Names whose validator also checks bytes: booleans and vectors of booleans (every byte at
 # most 1). The spec side: every encoding at such a schema has only bytes 0 and 1 (ALLB),
 # and the fixed size (len_eq); the runtime side: the byte the runtime reads at a position

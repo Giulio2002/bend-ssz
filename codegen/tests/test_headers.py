@@ -34,6 +34,11 @@ class HeaderLiteralTest(unittest.TestCase):
                 bad.append(f'{p.relative_to(CODEGEN)}:{i}: {l.strip()[:100]}')
         self.assertEqual(bad, [])
 
+    def test_templates_have_no_path_in_their_headers(self):
+        bad = [f'{p.name}:{i}' for p in sorted((CODEGEN / 'templates').glob('*.in'))
+               for i, l in enumerate(p.read_text().splitlines(), 1) if l.startswith('# GENERATED') and 'codegen/' in l]
+        self.assertEqual(bad, [])
+
     def test_generated_names_are_registered_or_libraries(self):
         names = {p.stem for p in CODEGEN.rglob('*.py')}
         bad = set()

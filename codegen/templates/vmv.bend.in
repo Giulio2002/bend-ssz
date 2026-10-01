@@ -15,7 +15,7 @@ import ./vcopy.bend as VC
 import ./vlist.bend as VL
 import ./vdig.bend as VG
 
-# GENERATED from codegen/vmv.bend.in by codegen/var_multi.py. Do not edit.
+# GENERATED from vmv.bend.in by var_multi (codegen). Do not edit.
 # The offset layout of a container with THREE variable fields (spec/layout.bend),
 # and the window of a decoded list's storage. Everything is stated over word lists
 # and symbolic sizes; no closed large number is evaluated.
