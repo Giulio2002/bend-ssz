@@ -115,7 +115,7 @@ def eq_defs(text):
 
 def statement_files():
     """{root-relative path: [law names]}: the bridges (e2e/manifest.json), the composed theorems,
-    the witnesses, the validating serializer (e2e/*_e2e_ser_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and the object-mutation
+    the witnesses, the validating serializer (e2e/*_e2e_ser_generated.bend), the collection and setter witnesses (e2e/*_api_witness_generated.bend, *_e2e_set_witness_generated.bend), the setter compositions (e2e/*_e2e_set_generated.bend) and the object-mutation
     laws (OBJECT_LAWS)"""
     man = json.loads((ROOT / 'e2e/manifest.json').read_text())
     out = {'e2e/' + f: [l for e in man['files'][f] for l in e['laws']] for f in man['files']}
@@ -129,7 +129,10 @@ def statement_files():
                                             f'{n}_e2e_witness_root_nonempty', f'{n}_e2e_witness_size', f'{n}_e2e_witness_size_nonempty') if re.search(r'^def %s\(' % l, t, re.M)]
     for p in sorted((ROOT / 'e2e').glob('*_e2e_ser_generated.bend')):
         n = p.name[:-len('_e2e_ser_generated.bend')]
-        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_(?:serialize\w*|valid_\w+))\(', p.read_text(), re.M)
+        out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_(?:serialize\w*|valid_\w+|decoded_hv))\(', p.read_text(), re.M)
+    for pat in ('*_api_witness_generated.bend', '*_api_root_witness_generated.bend', '*_e2e_set_witness_generated.bend'):
+        for p in sorted((ROOT / 'e2e').glob(pat)):
+            out['e2e/' + p.name] = re.findall(r'^def (\w+_witness)\(', p.read_text(), re.M)
     for p in sorted((ROOT / 'e2e').glob('*_e2e_set_generated.bend')):
         out['e2e/' + p.name] = re.findall(r'^def (\w+_e2e_set_\w+)\(', p.read_text(), re.M)
     for g in OBJECT_LAWS:
