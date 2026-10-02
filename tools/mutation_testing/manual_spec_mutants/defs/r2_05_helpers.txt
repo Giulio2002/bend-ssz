@@ -348,7 +348,9 @@ sym: w32,w32_split,shr_over
 spec: an unaligned 4-byte write at p = 2 mod 4 puts x >> 16 into the next word
 fault: the spill constant for p = 2 mod 4 is x >> 24
 why: constant
+-    case 1: U32.shrn(x, 24n)
 -    case 2: U32.shrn(x, 16n)
++    case 1: U32.shrn(x, 24n)
 +    case 2: U32.shrn(x, 24n)
 === r2-s02-unaligned-writer
 type: ComplexTestStruct
