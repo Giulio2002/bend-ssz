@@ -185,11 +185,11 @@ both the replay and the fresh draw: 9 distinct gaps, one of them the proglist_bo
 what has a proof-level reason, never "the tests pass": an argument the callee never reads (hl and seg of the hash_tree_root
 leaf wrappers, the len argument of the fixed-size field readers, the proglist decode offsets), a flag read only by
 `O.is_poisoned` (`(o, 0)` -> `(o, 1)`), `words_ok` / `bits_ok` changes that leave the accepted set unchanged, and the
-vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte
-object). **Open, not equivalent:** the aligned-or-slow path test `pos .&. 3 == 0`. `is_ge` was killed by the comparison laws;
-`is_lt` and `is_le` (42 mutants per round, 84 in the earlier draws) agree with the original only at sampled positions: for a
-symbolic index the checker does not fold the terms, so the equivalence is unproved. They are not drawn and are listed here
-so that the exclusion is visible.
+vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte object). Nothing else is excluded.
+The aligned-or-slow path test `pos .&. 3 == 0` was listed here as open (agreement only at sampled positions: the checker does
+not fold symbolic index terms); it is now **closed by proof** (the cmp_all, cmp_unal and zcmpeq_guard laws: every aligned
+position, symbolic, and the unaligned path) and its three variants (`is_lt`, `is_le`, `is_ge` of the `is_eq`) are drawn
+again as a regression guard, as is `out_at(d) -> out_at(d+1)` (killed by the capacity laws).
 
 **Runtime of a round:** the fresh draw of about 2800 mutants takes 2750 s at 12 jobs on the ssz server; a replay of 565 mutants about 1000 s.
 Result: `benchmarks/evidence/mutation_testing.json`.

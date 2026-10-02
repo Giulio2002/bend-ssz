@@ -65,8 +65,8 @@ Trusted (not proved here):
   took the replay from 606 survivors to 9 gaps on main 80cef74d (reported sizes of three types, the offsets of two union
   arms, one encoder field offset, one arithmetic-lemma case). What is excluded is excluded by a proof-level reason (an argument
   the callee never reads, a flag read only by `is_poisoned`, an accepted set that does not change, one uncoverable bound);
-  the aligned-or-slow path test is listed as OPEN (unproved), not as equivalent. A proof stack overflow is not counted as
-  detection.
+  nothing is excluded without a reason, and the aligned-or-slow path test, once open, is now closed by proof. A proof
+  stack overflow is not counted as detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to
