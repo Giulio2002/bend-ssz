@@ -106,3 +106,24 @@ Verdict: unsound as an exclusion; a new law kills it.
 Server only, in a private copy: `python3 tools/exclusion_audit.py structural --json OUT` (all sites, all rules),
 `laws-unread types` then `bend --check-only` on each `types/_audit_unread_*.bend`, `laws-boolvec`, `laws-misc proofs`,
 `poison`, `diff-poison DIR` and `run-diff DIR/cases.json`, `exclusion_audit_words.py cases` and `gen`. Delete `types/_audit_*` and `proofs/_audit_*` afterwards.
+
+## Closure (agent/mutfix-hidden)
+
+Each of the 41 hidden mutants was applied alone to a private hard-linked tree and its own facade re-checked with the pinned checker
+(`tools/mutant_facade_run.py`; the trees are deleted at once). Result:
+
+* 35 hidden `words_ok` siblings and 4 hidden read offsets: all FAIL with a statement mismatch on their own facade. The existing laws
+  already kill them (`X_serialize_vsym` states every constant of the validity pass symbolically; `X_decode_fields` pins the read
+  offsets); they were never drawn because the exclusion key hid them. No new law is needed.
+* Transaction `2^30 -> 2^30+1`: FAILs on the Transaction facade (`expected ..<= 1073741825.. observed ..<= 1073741824..`), killed by the
+  existing `Transaction_serialize_vsym`. The `uncoverable` entry is removed.
+* ExecutionBranch `v4_b32_pk_ok` flag `0 -> 1`: PASSED its own facade (the light-client and DataColumnSidecar facades already failed it,
+  which the loop never checks for a mutant of this file). New generator `codegen/proofs/laws/hidden_flag_laws.py` writes
+  `proofs/obj/pkflag_<runtime>_<X>.bend` for every words name (76 files): `X_serialize_vflag(out, o): {T.P_pk_ok((out, o)) == (out, (o, 0))}`,
+  filed by api_gate in the name's encode facade. The unmutated facade passes; the mutant fails with
+  `expected (out, o, 1)`, `observed (out, o, 0)`. The 29 pk-flag exclusions of the other names now die as well.
+* Exclusion key: `tests_generated/mutation_testing.excluded` and `mutation_equivalence.py` key on (file, def, operator, before, after,
+  line text, column); `mutation_exclusions.json` has one entry per equivalent site (218 entries; the two unsound entries are gone, siblings
+  are drawn). `pk_equiv` no longer applies to FuluExecutionBranch.
+
+The outcome of each mutant is in the `closed` field of `docs/EXCLUSION_AUDIT_HIDDEN.json`.
