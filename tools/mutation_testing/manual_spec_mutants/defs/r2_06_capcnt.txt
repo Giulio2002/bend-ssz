@@ -1,0 +1,183 @@
+## ROUND 2, area 6: the O.cap_cnt chunk clamp of the crash-fix2 tip (29af0ebcc), words_root/elems_root/bits_root and the progressive variants
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the two arms of the clamp are swapped (a fitting object is hashed over w / u items)
+why: arms swapped
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    case True{}: k
+-    case False{}: Nat.div(w, u)
++    case True{}: Nat.div(w, u)
++    case False{}: k
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the clamp tests m < w (an object whose items exactly fill the storage is clamped to w / u = k: designed equivalent)
+why: strict comparison, equal result at equality
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-def cap_cnt(+k: Nat, +m: Nat, +u: Nat, +w: Nat) -> Nat: cap_cnt_go(Nat.is_le(m, w), k, u, w)
++def cap_cnt(+k: Nat, +m: Nat, +u: Nat, +w: Nat) -> Nat: cap_cnt_go(Nat.is_lt(m, w), k, u, w)
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the clamp admits objects that overrun the storage by up to one item (m <= w + u)
+why: slack in the comparison
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-def cap_cnt(+k: Nat, +m: Nat, +u: Nat, +w: Nat) -> Nat: cap_cnt_go(Nat.is_le(m, w), k, u, w)
++def cap_cnt(+k: Nat, +m: Nat, +u: Nat, +w: Nat) -> Nat: cap_cnt_go(Nat.is_le(m, Nat.add(w, u)), k, u, w)
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an object that overruns its storage is hashed over the items the storage holds, w / u: here one more (ceil)
+why: ceil written as floor
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    case False{}: Nat.div(w, u)
++    case False{}: Nat.div(Nat.add(w, u), u)
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an object that overruns its storage is hashed over w / u items: here w / (u + 1)
+why: wrong divisor
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    case False{}: Nat.div(w, u)
++    case False{}: Nat.div(w, Nat.add(u, 1n))
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cap_cnt,cap_cnt_go,wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an object that overruns its storage is hashed over w / u items: here w items (words taken for chunks)
+why: division forgotten
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    case False{}: Nat.div(w, u)
++    case False{}: w
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_size,cap_cnt,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the object's words are 8 per chunk (m = e8(chunks))
+why: m is the chunk count (words and chunks confused)
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), chunks_of(n), 8n, U32.to_nat(sz)))
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_size,cap_cnt,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: a chunk is 8 words
+why: a chunk is taken as 4 words in the clamp
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 4n, U32.to_nat(sz)))
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_size,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the root is bounded by the storage (CH-03)
+why: the storage size passed to the clamp is the byte length n (not the array's capacity)
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    case Words{ws, +n}: wr_size(hl, h, depth, n, Array.size(U32, ws))
++    case Words{ws, +n}: wr_size(hl, h, depth, n, (ws, n))
+=== r2-k01-cap-cnt
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_size,words_root_prog,cap_cnt
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the progressive packed-bytes root is bounded by the storage (CH-03)
+why: the clamp is dropped on the progressive path (CH-03 reintroduced there)
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  mt_words(n, prog_root(hl, LWords{}, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)), h, ws))
++  mt_words(n, prog_root(hl, LWords{}, chunks_of(n), h, ws))
+=== r2-k01-cap-cnt
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: er_size,elems_root,cap_cnt
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an element sequence is bounded by the storage: m = count * ew words
+why: m is the element count (elements and words confused)
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
++  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew), U32.to_nat(sz)))
+=== r2-k01-cap-cnt
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: er_size,elems_root,cap_cnt
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an element sequence is bounded by the storage: an element is ew words
+why: an element is taken as one word in the clamp
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
++  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), 1n, U32.to_nat(sz)))
+=== r2-k01-cap-cnt
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: erp_size,elems_root_prog,cap_cnt
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: the progressive element root is bounded by the storage
+why: the clamp is dropped on the progressive element path
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-    cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)), h, ws))
++    U32.to_nat(U32.div(n, (4 * ew : U32))), h, ws))
+=== r2-k01-cap-cnt
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_cnt,words_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an empty data tree is the zero tree
+why: the chunk-presence flag is 0 <= k
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+=== r2-k01-cap-cnt
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: er_cnt,elems_root
+spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+fault: an empty element sequence is the zero tree
+why: the element-presence flag is 0 <= k
+base: 29af0ebcc
+proofs: proofs/obj/words_cap.bend
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl,
