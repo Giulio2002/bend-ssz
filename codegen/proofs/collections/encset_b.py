@@ -170,17 +170,13 @@ def text(c, kind):
     L.append('# ---- the value of the written mirror: the old value with byte i replaced ----')
     if kind == 'b':
         tgt = 'VSE.bytes_set(W.VALw(T, 0n, N), U32.to_nat(i), v)'
-        wrap = lambda x: 'S.BytesValue{%s}' % x
         vs = 'VW.view_set(dw, T, N, i, q, v, hv, hq, hk, p%d)' % ik['pf']
         lem = 'EB2.wv_bt'
-        old_form = 'S.BytesValue{VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, T)))}'
         vw = lambda t_: 'S.BytesValue{WO.wview(O.Words{F.array__thaw(U32, %s), N})}' % t_
     else:
         tgt = 'VSE.field_set(W.VALw(T, 0n, N), U32.to_nat(i), %s)' % UV
-        wrap = None
         vs = 'VW.view_set_u8(dw, T, N, i, q, v, hv, hq, hk, p%d)' % ik['pf']
         lem = 'EB2.vv_bt'
-        old_form = 'S.Sequence{PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, T))))}'
         vw = lambda t_: 'PB.vview1(O.Words{F.array__thaw(U32, %s), N})' % t_
     L.append('def %s_vall_set(%s)\n    -> {W.VALw(%s, 0n, N) == %s : S.Value}:' % (c, pre, T2, tgt))
     L += common()
