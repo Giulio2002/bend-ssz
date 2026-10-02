@@ -24,285 +24,502 @@ def unpack_pairs(src, names, indent, tmp='s', start=1, closed=True):
     return '\n'.join(out)
 
 
-# The module aliases the bridge generators' Bend files import, one line per (path, alias). Where one alias names different modules in
-# different files (EB, EM, EL, ...), the alias is spelled <alias>=<file stem> in import_lines.
+# The Bend modules the generated bridge files import: `<key> <path>`, the key being the alias the file uses. Where one alias names
+# different modules in different files (EB, EM, EL, ...), the key is `<alias>=<file stem>` and the alias is the part before the `=`.
 _MODULES = '''
-../proofs/compact/arith.bend as A
-../proofs/compact/arith.bend as A4
-../proofs/obj/arr_copy.bend as AC
-../proofs/obj/arr_emit.bend as AE
-../proofs/obj/arr_shift.bend as AH
-../proofs/obj/arr_enc.bend as AN
-../src/model.bend as API
-../proofs/obj/arr_spec.bend as AS
-../proofs/obj/arr_vec.bend as AV
-../src/buffer.bend as B
-../proofs/compact/buf.bend as BF
-../proofs/obj/bitlist_pack.bend as BK
-./e2e_bitl.bend as BL
-./e2e_blist.bend as BL
-../proofs/obj/spec_arr_Blob.bend as BL
-./e2e_bitl.bend as BLB
-../proofs/obj/bits_leaf.bend as BLf
-../proofs/obj/bitlist_obj.bend as BO
-../proofs/obj/bitlist_obj_light.bend as BO
-../proofs/obj/bitlist_rep.bend as BOr
-./e2e_pbs.bend as BS
-../proofs/compact/bits.bend as BT
-./e2e_bview.bend as BV
-./e2e_bvh.bend as BV
-./e2e_bvw.bend as BVW
-./e2e_bx.bend as BX
-./e2e_bx.bend as BXW
-../spec/primitives.bend as Bytes
-./e2e_cap.bend as C
-./e2e_comp.bend as C
-../proofs/obj/cells.bend as CE
-./e2e_chunks.bend as CH
-../proofs/obj/var_winx_l1024_u16.bend as CH0
-../proofs/obj/encx_ProgressiveBitsStruct_iface.bend as CI
-../proofs/codec_inverse.bend as CI
-../proofs/obj/vbitcore.bend as CO
-./e2e_cap.bend as CQ4
-../spec/codec.bend as Codec
-../types/proglist_proglist_VarTestStruct_def_generated.bend as D
-../types/proglist_ProgressiveVarTestStruct_def_generated.bend as D
-../src/digest.bend as D
-./e2e_db.bend as DB
-./FuluBlobSidecar_e2e_dec_generated.bend as DB
-./e2e_dbs_BlobSidecar.bend as DBS
-./e2e_dfx.bend as DFX
-../proofs/obj/dk.bend as DK
-../proofs/obj/vbitdl.bend as DL
-./e2e_dpt.bend as DPT
-./e2e_dvp_pl_pl_VarTestStruct.bend as DVP
-./e2e_dvp_pl_ProgressiveVarTestStruct.bend as DVP
-./e2e_dz.bend as DZ
-../spec/decoding_relation.bend as Decoding
-../spec/value_domain.bend as Domain
-./e2e_bytes.bend as E
-./e2e_support.bend as E
-./e2e_bits.bend as E2B
-../END_TO_END.bend as E2E
-./e2e_tree.bend as E3
-./e2e_any.bend as E4
-../proofs/obj/elems48.bend as E48
-./e2e_bits.bend as EB
-./FuluBlobSidecar_e2e_generated.bend as EB
-./e2e_encld.bend as EL
-../proofs/obj/var_elems.bend as EL
-./e2e_emit.bend as EM
-../proofs/obj/var_codec_DataColumnsByRootIdentifier_enc.bend as EN
-../proofs/obj/var_codec_ProgressiveBitsStruct_enc.bend as EN
-./e2e_encp.bend as EP
-../proofs/obj/encx_l1048576_bl1073741824.bend as ET
-./e2e_e48w.bend as EW
-./e2e_e48w.bend as EW48
-../proofs/obj/encx_l16_Withdrawal.bend as EWL
-../proofs/obj/encx_l4096_b48.bend as EX
-../proofs/obj/encx_pbits.bend as EXP
-../proofs/obj/encx_bits1280.bend as EX_bits1280
-../proofs/obj/encx_bits1281.bend as EX_bits1281
-../proofs/obj/encx_bits256.bend as EX_bits256
-../proofs/obj/encx_bits257.bend as EX_bits257
-../proofs/obj/encx_pbits.bend as EX_pbits
-./e2e_bytes.bend as EY
-../spec/codec.bend as Encoding
-../proofs/obj/spec_fixed.bend as F
-../proofs/obj/vfx_bv257.bend as F57
-../proofs/obj/vfx_v6_b32.bend as F6
-../proofs/obj/vfx_v7_b32.bend as F7
-../proofs/obj/vfx_bv1280.bend as F80
-../proofs/obj/vfx_bv1281.bend as F81
-../proofs/obj/spec_bits.bend as FB
-../proofs/compact/found.bend as FD
-../proofs/obj/vfx_SyncAggregate.bend as FSA
-../proofs/obj/vfx_SyncCommittee.bend as FSC
-../proofs/obj/spec_fixed.bend as FX
-../proofs/obj/vfx_u16.bend as FX16
-../proofs/obj/vfx_u8.bend as FX8
-../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
-../types/FuluAttestation_def_generated.bend as FuluAttestation_d
-../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
-../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
-../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
-../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
-../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
-../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
-../types/FuluBytes32_def_generated.bend as FuluBytes32_d
-../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-../types/FuluBytes96_def_generated.bend as FuluBytes96_d
-../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
-../types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_e
-../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
-../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
-../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
-../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
-../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
-../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
-../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
-../proofs/obj/gleaf.bend as GL
-./e2e_gpb.bend as GPB
-../proofs/obj/generic_specs.bend as GS
-../proofs/obj/gvalid_gtypes2.bend as GV
-./e2e_gwin.bend as GW
-./e2e_hvk.bend as HVK
-../src/primitives.bend as I
-../proofs/integer_decoding.bend as ID
-../proofs/obj/var_winx_l4096_b48.bend as K
-./e2e_load.bend as L
-../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as LD
-../proofs/obj/list_obj.bend as LO
-../types/Fulu_list_Withdrawal_16_def_generated.bend as LW
-../proofs/obj/vua_lay.bend as LY
-../spec/type_legality.bend as Legal
-../src/merkle_fast.bend as M
-../proofs/obj/spec_arr_SyncCommittee.bend as M
-../proofs/obj/spec_arr_BlobSidecar.bend as M
-../proofs/obj/spec_arr_HistoricalBatch.bend as M
-../spec/primitives.bend as M0_WO_SP
-../proofs/obj/mtree_run.bend as MR
-../src/obj.bend as O
-../proofs/nat_order.bend as Order
-../types/primitive.bend as P
-../src/primitives.bend as P4
-../proofs/obj/packed_bytes.bend as PB
-../proofs/obj/pb_min.bend as PB
-../proofs/obj/packed_bytes.bend as PBF
-../proofs/obj/pb_min.bend as PBM
-../proofs/obj/var_winp_pbits.bend as PBW
-../types/ProgressiveBitsStruct_def_generated.bend as PB_d
-../types/ProgressiveBitsStruct_encode_ssz_generated.bend as PB_e
-../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as PB_h
-../proofs/power_division.bend as PD
-../proofs/obj/packed_obj_light.bend as PK
-./e2e_plist.bend as PL
-../proofs/obj/pv_obj.bend as PV
-./e2e_plw.bend as PW
-../proofs/obj/repr.bend as R
-./FuluBlob_e2e_root_generated.bend as RB
-../proofs/compact/reads.bend as RD
-../proofs/obj/fixrej_SyncCommittee.bend as RJ
-../proofs/obj/fixrej_BlobSidecar.bend as RJ
-../proofs/obj/fixrej_HistoricalBatch.bend as RJ
-../proofs/obj/fixrej_Blob.bend as RJ
-./e2e_rl_ExecutionPayload.bend as RLV
-../proofs/obj/root_names.bend as RN
-../proofs/obj/root_gnames_light.bend as RN
-../proofs/obj/root_gnames.bend as RN
-../proofs/obj/root_names_light.bend as RN
-../proofs/obj/root_types.bend as RT
-../proofs/obj/root_gtypes2.bend as RT
-../proofs/obj/root_gtypes.bend as RT
-../proofs/obj/root_types_light.bend as RT
-../spec/root_relation.bend as Roots
-../types/schema.bend as S
-../proofs/obj/spec_fixed.bend as SF
-../proofs/obj/schema_shapes.bend as SH
-../spec/primitives.bend as SP
-../proofs/obj/sub_pack.bend as SP2
-../spec/fulu_schemas.bend as Spec
-../proofs/obj/generic_specs.bend as Spec
-../types/fulu_obj.bend as T
-../proofs/obj/vvl_l1048576_bl1073741824.bend as TX
-./e2e_tz.bend as TZ
-./e2e_ulist.bend as U
-../proofs/obj/vua.bend as UA
-../proofs/obj/vua_copy.bend as UC
-../proofs/obj/vua_ct.bend as UCT
-../proofs/obj/ulist_obj.bend as UL
-../proofs/obj/ulist_obj_light.bend as UL
-../proofs/u32_order.bend as UO
-../proofs/obj/vua_rd.bend as UR
-../proofs/obj/vua_win.bend as UW
-../proofs/primitive_invariants.bend as V
-../proofs/obj/vvl_v2_VarTestStruct.bend as V2
-../proofs/obj/vbv257s.bend as V2S
-../proofs/obj/vbv128s.bend as V2S8
-../proofs/obj/vbv1281d.bend as V81
-../proofs/obj/vbuf.bend as VB
-../proofs/obj/vbig.bend as VBG
-../proofs/obj/vbitl.bend as VBL
-../proofs/obj/vbrt.bend as VBR
-../proofs/obj/vbitrep.bend as VBR
-../proofs/obj/vbspec.bend as VBS
-../proofs/obj/vbitenc.bend as VBT
-../proofs/obj/vbytes.bend as VBY
-../proofs/obj/vcopy.bend as VC
-../proofs/obj/vcont.bend as VCN
-../proofs/obj/vdepth.bend as VD
-../proofs/obj/vvle.bend as VE2
-../proofs/obj/vfix.bend as VF
-../proofs/obj/vfx_bv1.bend as VFB1
-../proofs/obj/vlist.bend as VL
-../proofs/obj/valid_lib.bend as VL
-../proofs/obj/vlist.bend as VLS
-../proofs/obj/vmul.bend as VM
-../proofs/obj/vpb29.bend as VP
-../proofs/obj/vbrt.bend as VR
-../proofs/obj/vbitrep.bend as VR
-../proofs/obj/vrejb.bend as VRB
-../proofs/obj/vrejf.bend as VRF
-../proofs/type_validator_soundness.bend as VS
-../proofs/obj/vspec.bend as VS
-../proofs/obj/vspec.bend as VSP
-../proofs/obj/vu32.bend as VU
-../proofs/obj/vvlu.bend as VVU
-./e2e_vw512.bend as VW
-../proofs/obj/vua_fixb.bend as VXB
-../proofs/obj/vfxg.bend as VXG
-../proofs/obj/vbyte.bend as VY
-../proofs/obj/vbytes.bend as VY
-../proofs/obj/vbytes.bend as VYS
-../types/VarTestStruct_def_generated.bend as VarTestStruct_d
-../proofs/obj/var_winx_ProgressiveTestStruct.bend as W
-../proofs/obj/var_winx_ProgressiveComplexTestStruct.bend as W
-../proofs/obj/var_winx_l4096_b48.bend as W
-../proofs/obj/var_winx_bits131072.bend as W131
-../proofs/obj/wany.bend as WA
-../proofs/obj/var_winp_bool.bend as WB
-../proofs/obj/wbits_obj_light.bend as WBV
-../proofs/obj/wbits_obj.bend as WBV
-../proofs/obj/vuwd.bend as WD
-../proofs/word_facts.bend as WF
-../proofs/obj/words_obj.bend as WO
-../proofs/obj/words_obj_light.bend as WO
-../proofs/obj/words_root.bend as WR
-../proofs/obj/words_spec.bend as WS
-../proofs/word_split.bend as WSp
-../proofs/obj/var_winx_l131072_u64.bend as WU
-./e2e_fixd.bend as X
-./e2e_fixdw48.bend as X48
-./e2e_fixdw.bend as XW
-../proofs/obj/var_winx_Attestation.bend as YA
-../proofs/obj/var_winx_IndexedAttestation.bend as YI
-../proofs/obj/var_winx_AttesterSlashing.bend as YS
-../proofs/obj/vvlb_bl1073741824.bend as YW
-../proofs/obj/var_winx_VarTestStruct.bend as YW
-../types/bitvector_256_def_generated.bend as bitvector_256_d
-../types/bitvector_257_def_generated.bend as bitvector_257_d
-../types/bitvector_257_encode_ssz_generated.bend as bitvector_257_e
-../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
+Base
+A ../proofs/compact/arith.bend
+A4 ../proofs/compact/arith.bend
+AC ../proofs/obj/arr_copy.bend
+AE ../proofs/obj/arr_emit.bend
+AH ../proofs/obj/arr_shift.bend
+AN ../proofs/obj/arr_enc.bend
+API ../src/model.bend
+AS ../proofs/obj/arr_spec.bend
+ATW ./e2e_attw.bend
+AV ../proofs/obj/arr_vec.bend
+AW ./e2e_aapw.bend
+B ../src/buffer.bend
+BBA ./e2e_bbatt.bend
+BD ./e2e_bbdec.bend
+BF ../proofs/compact/buf.bend
+BK ../proofs/obj/bitlist_pack.bend
+BL=e2e_bitl ./e2e_bitl.bend
+BL=e2e_blist ./e2e_blist.bend
+BL=spec_arr_Blob ../proofs/obj/spec_arr_Blob.bend
+BLB ./e2e_bitl.bend
+BLI ../proofs/obj/blist_obj.bend
+BLP ../proofs/obj/bitlist_pack.bend
+BLT ./e2e_bitl.bend
+BLf ../proofs/obj/bits_leaf.bend
+BO=bitlist_obj ../proofs/obj/bitlist_obj.bend
+BO=bitlist_obj_light ../proofs/obj/bitlist_obj_light.bend
+BOL ../proofs/obj/bitlist_obj_light.bend
+BOr ../proofs/obj/bitlist_rep.bend
+BR ../proofs/obj/bitlist_rep.bend
+BS ./e2e_pbs.bend
+BSE ./e2e_bsenc.bend
+BSH ./e2e_bswh.bend
+BSW ./e2e_bsw.bend
+BT ../proofs/compact/bits.bend
+BTV ./e2e_bitv.bend
+BV=e2e_bvh ./e2e_bvh.bend
+BV=e2e_bview ./e2e_bview.bend
+BVH ./e2e_bvh.bend
+BVS ./e2e_bvsub.bend
+BVW ./e2e_bvw.bend
+BW ../proofs/obj/var_winx_BitsStruct.bend
+BW=var_bytes_LightClientBootstrap_win ../proofs/obj/var_bytes_LightClientBootstrap_win.bend
+BX ./e2e_bx.bend
+BXW ./e2e_bx.bend
+Bytes ../spec/primitives.bend
+C=e2e_cap ./e2e_cap.bend
+C=e2e_comp ./e2e_comp.bend
+CB1280 ../proofs/obj/var_winx_g_bits1280.bend
+CB1281 ../proofs/obj/var_winx_g_bits1281.bend
+CB256 ../proofs/obj/var_winx_g_bits256.bend
+CB257 ../proofs/obj/var_winx_g_bits257.bend
+CB5 ../proofs/obj/var_winx_g_bits5.bend
+CB6 ../proofs/obj/var_winx_g_bits6.bend
+CE ../proofs/obj/cells.bend
+CH ./e2e_chunks.bend
+CH0 ../proofs/obj/var_winx_l1024_u16.bend
+CI=codec_inverse ../proofs/codec_inverse.bend
+CI=encx_ProgressiveBitsStruct_iface ../proofs/obj/encx_ProgressiveBitsStruct_iface.bend
+CO ../proofs/obj/vbitcore.bend
+CQ4 ./e2e_cap.bend
+CS ../proofs/obj/vconts.bend
+CUA ../types/CompatibleUnionA_def_generated.bend
+Codec ../spec/codec.bend
+D=digest ../src/digest.bend
+D=proglist_ProgressiveVarTestStruct_def_generated ../types/proglist_ProgressiveVarTestStruct_def_generated.bend
+D=proglist_proglist_VarTestStruct_def_generated ../types/proglist_proglist_VarTestStruct_def_generated.bend
+DB=FuluBlobSidecar_e2e_dec_generated ./FuluBlobSidecar_e2e_dec_generated.bend
+DB=e2e_db ./e2e_db.bend
+DBL ../proofs/obj/bitlist_obj_light.bend
+DBS ./e2e_dbs_BlobSidecar.bend
+DC ../proofs/obj/var_pbits_progbitlist.bend
+DC=var_codec_ProgressiveComplexTestStruct ../proofs/obj/var_codec_ProgressiveComplexTestStruct.bend
+DC=var_codec_ProgressiveTestStruct ../proofs/obj/var_codec_ProgressiveTestStruct.bend
+DFX ./e2e_dfx.bend
+DK ../proofs/obj/dk.bend
+DL ../proofs/obj/vbitdl.bend
+DP ./e2e_dpl.bend
+DPT ./e2e_dpt.bend
+DVP=e2e_dvp_pl_ProgressiveVarTestStruct ./e2e_dvp_pl_ProgressiveVarTestStruct.bend
+DVP=e2e_dvp_pl_pl_VarTestStruct ./e2e_dvp_pl_pl_VarTestStruct.bend
+DZ ./e2e_dz.bend
+Decoding ../spec/decoding_relation.bend
+Domain ../spec/value_domain.bend
+E=e2e_bytes ./e2e_bytes.bend
+E=e2e_support ./e2e_support.bend
+E2 ./e2e_support.bend
+E2B ./e2e_bits.bend
+E2E ../END_TO_END.bend
+E3 ./e2e_tree.bend
+E4 ./e2e_any.bend
+E48 ../proofs/obj/elems48.bend
+EB ../proofs/obj/encx_bl32.bend
+EB=FuluBlobSidecar_e2e_generated ./FuluBlobSidecar_e2e_generated.bend
+EB=e2e_bits ./e2e_bits.bend
+EBT ./e2e_bits.bend
+EI ../proofs/obj/encx_IndexedAttestation_iface.bend
+EK ../proofs/obj/encx_VarTestStruct.bend
+EL=e2e_encld ./e2e_encld.bend
+EL=var_elems ../proofs/obj/var_elems.bend
+EM ./e2e_emit.bend
+EM=encx_Attestation_iface ../proofs/obj/encx_Attestation_iface.bend
+EM=encx_VarTestStruct_iface ../proofs/obj/encx_VarTestStruct_iface.bend
+EMT ./e2e_emit.bend
+EN=var_codec_DataColumnsByRootIdentifier_enc ../proofs/obj/var_codec_DataColumnsByRootIdentifier_enc.bend
+EN=var_codec_ProgressiveBitsStruct_enc ../proofs/obj/var_codec_ProgressiveBitsStruct_enc.bend
+EN2 ../proofs/obj/encx_v2_VarTestStruct.bend
+EP ./e2e_encp.bend
+EP8 ./e2e_pv8.bend
+EQ ./e2e_encq.bend
+EQ=e2e_encq2d ./e2e_encq2d.bend
+ER ./e2e_u64l.bend
+ER=e2e_encr ./e2e_encr.bend
+ES ../proofs/obj/encx_AttesterSlashing_iface.bend
+ET ../proofs/obj/encx_l1048576_bl1073741824.bend
+EW ./e2e_e48w.bend
+EW48 ./e2e_e48w.bend
+EWL ../proofs/obj/encx_l16_Withdrawal.bend
+EW_l16_Withdrawal ../proofs/obj/encx_l16_Withdrawal.bend
+EX ../proofs/obj/encx_l4096_b48.bend
+EX8 ../proofs/obj/encx_l1099511627776_u8.bend
+EX8D ../proofs/obj/encx_l1099511627776_u8_d.bend
+EXP ../proofs/obj/encx_pbits.bend
+EX_bits1280 ../proofs/obj/encx_bits1280.bend
+EX_bits1281 ../proofs/obj/encx_bits1281.bend
+EX_bits256 ../proofs/obj/encx_bits256.bend
+EX_bits257 ../proofs/obj/encx_bits257.bend
+EX_bits5 ../proofs/obj/encx_bits5.bend
+EX_bits6 ../proofs/obj/encx_bits6.bend
+EX_pbits ../proofs/obj/encx_pbits.bend
+EXb ../proofs/obj/encx_bits131072.bend
+EXh ../proofs/obj/encx_l16777216_b32.bend
+EXhD ../proofs/obj/encx_l16777216_b32_d.bend
+EXu ../proofs/obj/encx_l131072_u64.bend
+EXu=encx_l1099511627776_u64 ../proofs/obj/encx_l1099511627776_u64.bend
+EXuD ../proofs/obj/encx_l1099511627776_u64_d.bend
+EY ./e2e_bytes.bend
+Encoding ../spec/codec.bend
+F ../proofs/obj/spec_fixed.bend
+F4 ../proofs/obj/vfx_bv4.bend
+F56 ../proofs/obj/vfx_bv256.bend
+F57 ../proofs/obj/vfx_bv257.bend
+F6 ../proofs/obj/vfx_v6_b32.bend
+F7 ../proofs/obj/vfx_v7_b32.bend
+F80 ../proofs/obj/vfx_bv1280.bend
+F81 ../proofs/obj/vfx_bv1281.bend
+FB ../proofs/obj/spec_bits.bend
+FD ../proofs/compact/found.bend
+FSA ../proofs/obj/vfx_SyncAggregate.bend
+FSC ../proofs/obj/vfx_SyncCommittee.bend
+FWS ../proofs/obj/vfixw_spec.bend
+FX ../proofs/obj/spec_fixed.bend
+FX1 ../proofs/obj/vfx_bv1.bend
+FX16 ../proofs/obj/vfx_u16.bend
+FX2 ../proofs/obj/vfx_bv2.bend
+FX8 ../proofs/obj/vfx_u8.bend
+FX8=vfx_bv8 ../proofs/obj/vfx_bv8.bend
+FXA ../proofs/obj/vfx_u8.bend
+FXB ../proofs/obj/vfx_u16.bend
+FXE ./e2e_fx.bend
+FXV ./e2e_fx.bend
+FXV4 ../proofs/obj/vfx_v4_FixedTestStruct.bend
+FixedTestStruct_d ../types/FixedTestStruct_def_generated.bend
+FixedTestStruct_e ../types/FixedTestStruct_encode_ssz_generated.bend
+FuluAttestationData_d ../types/FuluAttestationData_def_generated.bend
+FuluAttestation_d ../types/FuluAttestation_def_generated.bend
+FuluAttesterSlashing_d ../types/FuluAttesterSlashing_def_generated.bend
+FuluBeaconBlockHeader_d ../types/FuluBeaconBlockHeader_def_generated.bend
+FuluBlobSidecar_d ../types/FuluBlobSidecar_def_generated.bend
+FuluBlobSidecar_e ../types/FuluBlobSidecar_encode_ssz_generated.bend
+FuluBlobSidecar_h ../types/FuluBlobSidecar_hashtreeroot_generated.bend
+FuluBlobSidecar_r ../types/FuluBlobSidecar_decode_ssz_generated.bend
+FuluBytes20_d ../types/FuluBytes20_def_generated.bend
+FuluBytes32_d ../types/FuluBytes32_def_generated.bend
+FuluBytes48_d ../types/FuluBytes48_def_generated.bend
+FuluBytes96_d ../types/FuluBytes96_def_generated.bend
+FuluCheckpoint_d ../types/FuluCheckpoint_def_generated.bend
+FuluDataColumnsByRootIdentifier_d ../types/FuluDataColumnsByRootIdentifier_def_generated.bend
+FuluDataColumnsByRootIdentifier_e ../types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
+FuluEth1Data_d ../types/FuluEth1Data_def_generated.bend
+FuluExecutionPayloadHeader_d ../types/FuluExecutionPayloadHeader_def_generated.bend
+FuluIndexedAttestation_d ../types/FuluIndexedAttestation_def_generated.bend
+FuluLightClientHeader_d ../types/FuluLightClientHeader_def_generated.bend
+FuluSignedBeaconBlockHeader_d ../types/FuluSignedBeaconBlockHeader_def_generated.bend
+FuluSyncAggregate_d ../types/FuluSyncAggregate_def_generated.bend
+FuluSyncCommittee_d ../types/FuluSyncCommittee_def_generated.bend
+FuluWithdrawal_d ../types/FuluWithdrawal_def_generated.bend
+Fulu_bitvector_4_d ../types/Fulu_bitvector_4_def_generated.bend
+Fulu_bitvector_512_d ../types/Fulu_bitvector_512_def_generated.bend
+Fulu_bitvector_64_d ../types/Fulu_bitvector_64_def_generated.bend
+Fulu_list_Attestation_8_d ../types/Fulu_list_Attestation_8_def_generated.bend
+Fulu_list_AttesterSlashing_1_d ../types/Fulu_list_AttesterSlashing_1_def_generated.bend
+Fulu_list_Withdrawal_16_d ../types/Fulu_list_Withdrawal_16_def_generated.bend
+Fulu_list_bytelist_1073741824_1048576_d ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+G81 ../proofs/obj/vfx_bv1281.bend
+GC ./e2e_gcp.bend
+GL ../proofs/obj/gleaf.bend
+GP ./e2e_gprog.bend
+GPB ./e2e_gpb.bend
+GPH ./e2e_gph.bend
+GRL ./e2e_grl.bend
+GS ../proofs/obj/generic_specs.bend
+GV ../proofs/obj/gvalid_gtypes2.bend
+GV=gvalid_gpacked ../proofs/obj/gvalid_gpacked.bend
+GV=gvalid_types ../proofs/obj/gvalid_types.bend
+GV2 ./e2e_gvt.bend
+GVL ./e2e_gvl.bend
+GVT ./e2e_gvt.bend
+GW ./e2e_gwin.bend
+HV ./e2e_hv.bend
+HVK ./e2e_hvk.bend
+HVO ./e2e_hvo.bend
+I ../src/primitives.bend
+IB ../proofs/obj/encx_bl32.bend
+ID ../proofs/integer_decoding.bend
+IE ../proofs/obj/encx_ExecutionPayloadHeader_iface.bend
+IL ../proofs/obj/encx_LightClientHeader_iface.bend
+K ../proofs/obj/var_winx_l4096_b48.bend
+L ./e2e_load.bend
+L123 ../proofs/obj/var_winx_l123_u16.bend
+LB ../proofs/obj/len_bridge.bend
+LD ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+LO ../proofs/obj/list_obj.bend
+LO=list_obj_light ../proofs/obj/list_obj_light.bend
+LW ../types/Fulu_list_Withdrawal_16_def_generated.bend
+LY ../proofs/obj/vua_lay.bend
+Legal ../spec/type_legality.bend
+M=merkle_fast ../src/merkle_fast.bend
+M=spec_arr_BlobSidecar ../proofs/obj/spec_arr_BlobSidecar.bend
+M=spec_arr_HistoricalBatch ../proofs/obj/spec_arr_HistoricalBatch.bend
+M=spec_arr_SyncCommittee ../proofs/obj/spec_arr_SyncCommittee.bend
+M0_WO_SP ../spec/primitives.bend
+MR ../proofs/obj/mtree_run.bend
+MW ./e2e_mw.bend
+O ../src/obj.bend
+Order ../proofs/nat_order.bend
+P ../types/primitive.bend
+P4 ../src/primitives.bend
+PB ../proofs/obj/packed_bytes_light.bend
+PB=packed_bytes ../proofs/obj/packed_bytes.bend
+PB=pb_min ../proofs/obj/pb_min.bend
+PBD ./e2e_pbsd.bend
+PBF ../proofs/obj/packed_bytes.bend
+PBF=packed_bytes_light ../proofs/obj/packed_bytes_light.bend
+PBL ../proofs/obj/packed_bytes_light.bend
+PBM ../proofs/obj/pb_min.bend
+PBO ../proofs/obj/pbits_obj_light.bend
+PBO=pbits_obj ../proofs/obj/pbits_obj.bend
+PBSH ./e2e_pbsh.bend
+PBW ../proofs/obj/var_winp_pbits.bend
+PB_d ../types/ProgressiveBitsStruct_def_generated.bend
+PB_e ../types/ProgressiveBitsStruct_encode_ssz_generated.bend
+PB_h ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+PD ../proofs/power_division.bend
+PG ../proofs/obj/prog_list.bend
+PG=prog_list_light ../proofs/obj/prog_list_light.bend
+PH ./e2e_pbh.bend
+PK ../proofs/obj/packed_obj_light.bend
+PK=packed_obj ../proofs/obj/packed_obj.bend
+PK_L ../proofs/obj/packed_obj_light.bend
+PL ./e2e_plist.bend
+PQ ./e2e_pbq.bend
+PU64 ../proofs/obj/var_winp_pl_u64.bend
+PU8 ../proofs/obj/var_winp_u8.bend
+PV ../proofs/obj/pv_obj.bend
+PV=pv_obj_light ../proofs/obj/pv_obj_light.bend
+PW ./e2e_plw.bend
+PW=e2e_pbsw ./e2e_pbsw.bend
+ProgressiveSingleFieldContainerTestStruct_d ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend
+ProgressiveVarTestStruct_d ../types/ProgressiveVarTestStruct_def_generated.bend
+R ../proofs/obj/repr.bend
+RB ./FuluBlob_e2e_root_generated.bend
+RD ../proofs/compact/reads.bend
+RG ../proofs/obj/root_gtypes.bend
+RG=root_gtypes2 ../proofs/obj/root_gtypes2.bend
+RG2 ../proofs/obj/root_gtypes2.bend
+RJ=fixrej_Blob ../proofs/obj/fixrej_Blob.bend
+RJ=fixrej_BlobSidecar ../proofs/obj/fixrej_BlobSidecar.bend
+RJ=fixrej_HistoricalBatch ../proofs/obj/fixrej_HistoricalBatch.bend
+RJ=fixrej_SyncCommittee ../proofs/obj/fixrej_SyncCommittee.bend
+RL1 ../proofs/obj/var_winx_l10_ProgressiveSingleFieldContainerTestStruct.bend
+RL4 ../proofs/obj/var_winx_pl_SmallTestStruct.bend
+RLV ./e2e_rl_ExecutionPayload.bend
+RN=root_gnames ../proofs/obj/root_gnames.bend
+RN=root_gnames_light ../proofs/obj/root_gnames_light.bend
+RN=root_names ../proofs/obj/root_names.bend
+RN=root_names_light ../proofs/obj/root_names_light.bend
+RN_L ../proofs/obj/root_names_light.bend
+RT ../proofs/obj/root_gtypes2_light.bend
+RT=root_gtypes ../proofs/obj/root_gtypes.bend
+RT=root_gtypes2 ../proofs/obj/root_gtypes2.bend
+RT=root_types ../proofs/obj/root_types.bend
+RT=root_types_light ../proofs/obj/root_types_light.bend
+RT2 ../proofs/obj/root_gtypes2.bend
+RTL ../proofs/obj/root_gtypes2_light.bend
+RT_L ../proofs/obj/root_types_light.bend
+RV ../proofs/obj/encx_v4_FixedTestStruct.bend
+Roots ../spec/root_relation.bend
+S ../types/schema.bend
+SF ../proofs/obj/spec_fixed.bend
+SH ../proofs/obj/schema_shapes.bend
+SP ../spec/primitives.bend
+SP2 ../proofs/obj/sub_pack.bend
+SPK ../proofs/obj/sub_pack.bend
+ST ../proofs/obj/root_state.bend
+SV ./e2e_stv.bend
+Spec=fulu_schemas ../spec/fulu_schemas.bend
+Spec=generic_specs ../proofs/obj/generic_specs.bend
+T ../types/fulu_obj.bend
+T=generic_obj ../types/generic_obj.bend
+TB ../proofs/obj/vvl_pl_pl_VarTestStruct.bend
+TC ../proofs/obj/vvl_pl_ProgressiveVarTestStruct.bend
+TVS ../proofs/type_validator_soundness.bend
+TX ../proofs/obj/vvl_l1048576_bl1073741824.bend
+TX=e2e_eptx ./e2e_eptx.bend
+TXH ../proofs/obj/vvl_l1048576_bl1073741824.bend
+TZ ./e2e_tz.bend
+U ./e2e_ulist.bend
+U=e2e_u64l ./e2e_u64l.bend
+UA ../proofs/obj/vua.bend
+UB ../proofs/obj/vua_bits.bend
+UC ../proofs/obj/vua_copy.bend
+UCT ../proofs/obj/vua_ct.bend
+UL=ulist_obj ../proofs/obj/ulist_obj.bend
+UL=ulist_obj_light ../proofs/obj/ulist_obj_light.bend
+ULW ./e2e_ulist.bend
+UO ../proofs/u32_order.bend
+UR ../proofs/obj/vua_rd.bend
+UW ../proofs/obj/vua_win.bend
+UW=vuw ../proofs/obj/vuw.bend
+V ../proofs/primitive_invariants.bend
+V2 ../proofs/obj/vvl_v2_VarTestStruct.bend
+V2S ../proofs/obj/vbv257s.bend
+V2S8 ../proofs/obj/vbv128s.bend
+V81 ../proofs/obj/vbv1281d.bend
+VB ../proofs/obj/vbuf.bend
+VBB ../proofs/obj/vbitb.bend
+VBG ../proofs/obj/vbig.bend
+VBL ../proofs/obj/vbitl.bend
+VBR=vbitrep ../proofs/obj/vbitrep.bend
+VBR=vbrt ../proofs/obj/vbrt.bend
+VBS ../proofs/obj/vbspec.bend
+VBT ../proofs/obj/vbitenc.bend
+VBY ../proofs/obj/vbytes.bend
+VC ../proofs/obj/vcopy.bend
+VCN ../proofs/obj/vcont.bend
+VD ../proofs/obj/vdepth.bend
+VE ../proofs/obj/venc.bend
+VE2 ../proofs/obj/vvle.bend
+VEH ./e2e_vbx_ExecutionPayloadHeader.bend
+VEN ../proofs/obj/venc.bend
+VF ../proofs/obj/vfix.bend
+VFB1 ../proofs/obj/vfx_bv1.bend
+VG ../proofs/obj/vbig.bend
+VL ./e2e_vlm_l8_Attestation.bend
+VL=valid_lib ../proofs/obj/valid_lib.bend
+VL=vlist ../proofs/obj/vlist.bend
+VLS ../proofs/obj/vlist.bend
+VM ../proofs/obj/vmul.bend
+VM0 ./e2e_vlm_l16_ProposerSlashing.bend
+VM1 ./e2e_vlm_l1_AttesterSlashing.bend
+VM2 ./e2e_vlm_l8_Attestation.bend
+VM3 ./e2e_vlm_l16_Deposit.bend
+VM4 ./e2e_vl_l16_SignedVoluntaryExit.bend
+VM6 ./e2e_vl_l16_SignedBLSToExecutionChange.bend
+VN ../proofs/obj/vnest.bend
+VP ../proofs/obj/vpb29.bend
+VP5 ./e2e_vbx_ExecutionPayload.bend
+VR ../proofs/obj/vrej.bend
+VR=vbitrep ../proofs/obj/vbitrep.bend
+VR=vbrt ../proofs/obj/vbrt.bend
+VR8 ../proofs/obj/vrej.bend
+VRB ../proofs/obj/vrejb.bend
+VRB=vrecb ../proofs/obj/vrecb.bend
+VRF ../proofs/obj/vrejf.bend
+VRL ../proofs/obj/vrl.bend
+VRX ../proofs/obj/vrecx.bend
+VS=type_validator_soundness ../proofs/type_validator_soundness.bend
+VS=vspec ../proofs/obj/vspec.bend
+VS2 ../proofs/obj/vspec.bend
+VSP ../proofs/obj/vspec.bend
+VT ./e2e_vtx.bend
+VTX ../proofs/obj/vua_fix.bend
+VU ../proofs/obj/vu32.bend
+VVU ../proofs/obj/vvlu.bend
+VW ./e2e_vw512.bend
+VWL ./e2e_vl_l16_Withdrawal.bend
+VWX ./e2e_vbx_BeaconState.bend
+VWX=e2e_vbx_ExecutionPayload ./e2e_vbx_ExecutionPayload.bend
+VWX=e2e_vw_LightClientBootstrap ./e2e_vw_LightClientBootstrap.bend
+VX8 ./e2e_vwx_ExecutionRequests.bend
+VXB ../proofs/obj/vua_fixb.bend
+VXG ../proofs/obj/vfxg.bend
+VY=vbyte ../proofs/obj/vbyte.bend
+VY=vbytes ../proofs/obj/vbytes.bend
+VYS ../proofs/obj/vbytes.bend
+VZ ../proofs/obj/vbspec.bend
+VarTestStruct_d ../types/VarTestStruct_def_generated.bend
+W ../proofs/obj/var_winx_ProgressiveBitsStruct.bend
+W=var_winx_ProgressiveComplexTestStruct ../proofs/obj/var_winx_ProgressiveComplexTestStruct.bend
+W=var_winx_ProgressiveTestStruct ../proofs/obj/var_winx_ProgressiveTestStruct.bend
+W=var_winx_l4096_b48 ../proofs/obj/var_winx_l4096_b48.bend
+W1 ../proofs/obj/encx_l1_AttesterSlashing.bend
+W131 ../proofs/obj/var_winx_bits131072.bend
+W4B ../proofs/obj/var_winx_ProgressiveSingleListContainerTestStruct.bend
+W4B_CH0 ../proofs/obj/var_winp_pbits.bend
+W64 ../proofs/obj/var_winx_l1099511627776_u64.bend
+W663 ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend
+W8 ../proofs/obj/encx_l8_Attestation.bend
+W8=var_winx_l1099511627776_u8 ../proofs/obj/var_winx_l1099511627776_u8.bend
+WA ../proofs/obj/wany.bend
+WA=var_win_AggregateAndProof ../proofs/obj/var_win_AggregateAndProof.bend
+WB ../proofs/obj/var_winp_bool.bend
+WBV=wbits_obj ../proofs/obj/wbits_obj.bend
+WBV=wbits_obj_light ../proofs/obj/wbits_obj_light.bend
+WD ../proofs/obj/vuwd.bend
+WF ../proofs/word_facts.bend
+WH ../proofs/obj/var_winx_l16777216_b32.bend
+WO=words_obj ../proofs/obj/words_obj.bend
+WO=words_obj_light ../proofs/obj/words_obj_light.bend
+WO_L ../proofs/obj/words_obj_light.bend
+WR ../proofs/obj/words_root.bend
+WR=words_root_light ../proofs/obj/words_root_light.bend
+WR_L ../proofs/obj/words_root_light.bend
+WS ../proofs/obj/words_spec.bend
+WS=var_win_SignedAggregateAndProof ../proofs/obj/var_win_SignedAggregateAndProof.bend
+WSp ../proofs/word_split.bend
+WT ../proofs/obj/var_win_Attestation.bend
+WU ../proofs/obj/var_winx_l131072_u64.bend
+WXA ./e2e_wxa.bend
+WXH ./e2e_wxah.bend
+X ./e2e_fixd.bend
+X16 ./e2e_fixd16.bend
+X48 ./e2e_fixdw48.bend
+XB ./e2e_fixdb.bend
+XU64 ../proofs/obj/encx_pl_u64.bend
+XU8 ../proofs/obj/encx_pl_u8.bend
+XW ./e2e_fixdw.bend
+XW=var_bytesx_ExecutionPayloadHeader ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend
+Xl1024 ../proofs/obj/encx_l1024_u16.bend
+YA ../proofs/obj/var_winx_Attestation.bend
+YI ../proofs/obj/var_winx_IndexedAttestation.bend
+YS ../proofs/obj/var_winx_AttesterSlashing.bend
+YV ./e2e_vbx_LightClientHeader.bend
+YV=e2e_vbxD_ExecutionPayloadHeader ./e2e_vbxD_ExecutionPayloadHeader.bend
+YV=e2e_vbxD_LightClientHeader ./e2e_vbxD_LightClientHeader.bend
+YW ../proofs/obj/var_bytes_LightClientHeader_win.bend
+YW=var_bytesx_ExecutionPayloadHeader ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend
+YW=var_bytesx_LightClientHeader ../proofs/obj/var_bytesx_LightClientHeader.bend
+YW=var_winx_VarTestStruct ../proofs/obj/var_winx_VarTestStruct.bend
+YW=vvlb_bl1073741824 ../proofs/obj/vvlb_bl1073741824.bend
+YW0 ../proofs/obj/var_winx_VarTestStruct.bend
+YW1 ../proofs/obj/var_winx_ProgressiveVarTestStruct.bend
+YWV ./e2e_vw_LightClientHeader.bend
+bitvector_1_d ../types/bitvector_1_def_generated.bend
+bitvector_1_e ../types/bitvector_1_encode_ssz_generated.bend
+bitvector_256_d ../types/bitvector_256_def_generated.bend
+bitvector_257_d ../types/bitvector_257_def_generated.bend
+bitvector_257_e ../types/bitvector_257_encode_ssz_generated.bend
+bitvector_2_d ../types/bitvector_2_def_generated.bend
+bitvector_2_e ../types/bitvector_2_encode_ssz_generated.bend
+bitvector_8_d ../types/bitvector_8_def_generated.bend
+bitvector_8_e ../types/bitvector_8_encode_ssz_generated.bend
+proglist_ProgressiveVarTestStruct_d ../types/proglist_ProgressiveVarTestStruct_def_generated.bend
+proglist_VarTestStruct_d ../types/proglist_VarTestStruct_def_generated.bend
+proglist_proglist_VarTestStruct_d ../types/proglist_proglist_VarTestStruct_def_generated.bend
+uint16_e ../types/uint16_encode_ssz_generated.bend
+uint256_d ../types/uint256_def_generated.bend
+uint8_e ../types/uint8_encode_ssz_generated.bend
+vec_FixedTestStruct_4_d ../types/vec_FixedTestStruct_4_def_generated.bend
+vec_VarTestStruct_2_d ../types/vec_VarTestStruct_2_def_generated.bend
 '''
 
 
-def _module_keys():
-    entries = [l for l in _MODULES.split('\n') if l]
-    by_alias = {}
-    for l in entries:
-        by_alias.setdefault(l.rsplit(' as ', 1)[-1] if ' as ' in l else l, []).append(l)
-    keys = {}
-    for alias, ls in by_alias.items():
-        for l in ls:
-            stem = l.split(' ')[0].rsplit('/', 1)[-1][:-len('.bend')] if ' as ' in l else ''
-            keys[alias if len(ls) == 1 else alias + '=' + stem] = 'import ' + l
-    return keys
+def _parse_modules():
+    out = {}
+    for line in _MODULES.split('\n'):
+        if line == 'Base':
+            out['Base'] = 'import Base'
+        elif line:
+            key, path = line.split(' ')
+            out[key] = f'import {path} as {key.split("=")[0]}'
+    return out
 
 
-_KEYS = _module_keys()
+_IMPORTS = _parse_modules()
+
+
+def import_list(spec):
+    """The Bend import lines for the keys in `spec` (space separated), in that order, as a list: `[*import_list('Base O FD')]`."""
+    return [_IMPORTS[k] for k in spec.split()]
 
 
 def import_lines(spec):
-    """The Bend import lines for the aliases in `spec` (space separated), in that order: `import_lines('Base O FD')`."""
-    return '\n'.join(_KEYS[k] for k in spec.split())
+    """The same, joined by newlines (for a text template)."""
+    return '\n'.join(import_list(spec))
