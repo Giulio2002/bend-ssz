@@ -174,10 +174,10 @@
  ],
  "history": "docs/RESULTS.md rounds table",
  "provenance": {
-  "git_commit": "496f797c661415107ffd1a3e40d89cc6f0df9cde",
+  "git_commit": "d56c416c51c5c04731bf60256105312c64f68fcd",
   "git_dirty": false,
-  "git_tree": "049f4ad6e78203019a9316b52fc4650b314784c1",
-  "utc": "2026-10-02T14:50:53Z",
+  "git_tree": "9acefb4ee734869fa0603e93cf936c2a43b355dc",
+  "utc": "2026-10-02T16:23:23Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -545,7 +545,7 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "tests_generated/mutation_testing.py": "cdbe70ca05312d938367e25a193602e10aef7d5fc67f81d4d33a4402c16fea6a",
+   "tests_generated/mutation_testing.py": "9b1a75569683150e8d3e68ef392911dc6db2db9b931fd6b80235a69b69f23238",
    "benchmarks/checks/provenance.py": "85d994759b5c6d2d6696e8a4a5ef7b5f12f6daf8b8da28b60fd937db9a997a64",
    "codegen/core/independent_ssz_oracle.py": "a2136a0f15d8ea303bfbebd9230d0231521531a52386f6d58d93c0afb08bcf8d",
    "codegen/core/fulu_schema_loader.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
