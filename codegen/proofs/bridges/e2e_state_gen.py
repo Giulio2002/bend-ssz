@@ -10,25 +10,13 @@ Each lemma states that the root view of a field object read at byte x of a perfe
 Sizes are powers of two carried symbolically (vbig: u32pow, nw_pow, pw_mono); no closed size is evaluated.
 """
 import re
+from codegen.core.shared_bridges import import_list  # noqa: E402
 
 HEAD = [
-    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
-    'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vdepth.bend as VD',
-    'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vlist.bend as VLS',
-    'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/vua_win.bend as UW',
-    'import ../proofs/obj/vua_fixb.bend as VXB', 'import ../proofs/obj/vfxg.bend as VXG', 'import ../proofs/obj/arr_vec.bend as AV',
-    'import ../proofs/obj/vmul.bend as VM', 'import ../proofs/obj/vbig.bend as VG', 'import ../proofs/obj/vbig.bend as VBG',
-    'import ../proofs/obj/pv_obj.bend as PV', 'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/packed_bytes.bend as PBF',
-    'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/blist_obj.bend as BLI',
-    'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/words_spec.bend as WS', 'import ../proofs/obj/words_root.bend as WR',
-    'import ../proofs/obj/var_elems.bend as EL', 'import ../proofs/obj/bitlist_pack.bend as BLP',
-    'import ../proofs/obj/root_state.bend as ST',
-    'import ../proofs/obj/vfx_bv4.bend as F4', 'import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d',
-    'import ../proofs/obj/var_winx_l1099511627776_u8.bend as W8', 'import ../proofs/obj/var_winx_l1099511627776_u64.bend as W64',
-    'import ../proofs/obj/var_winx_l16777216_b32.bend as WH',
-    'import ./e2e_bvsub.bend as BVS', 'import ./e2e_bvw.bend as BVW', 'import ./e2e_pv8.bend as EP8', 'import ./e2e_bx.bend as BXW',
-    'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_plw.bend as PW']
+    *import_list(
+        'Base O S P FD A Order VB VR=vbrt VD VC VS=vspec VLS UCT UR UW VXB VXG AV VM VG VBG PV '
+        'PK=packed_obj PBF PBM UL=ulist_obj BLI WO=words_obj WS WR EL=var_elems BLP ST F4 '
+        'Fulu_bitvector_4_d W8=var_winx_l1099511627776_u8 W64 WH BVS BVW EP8 BXW BL=e2e_blist PL PW')]
 
 BASE = r'''
 # ---- justification_bits: the four low bits of the byte at x ----
@@ -268,10 +256,9 @@ def state_holes():
 # bviewY) in place of d < 28; the window's facts are its D / N ones (d < 31, hwN).
 HY = '+hy: {Nat.is_le(VC.YL(@L@), U32.to_nat(VB.UMAX())) == True{} : Bool}'
 HD28 = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool}'
-DEEP_HEAD = ['import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/elems48.bend as E48', 'import ../proofs/obj/root_names_light.bend as RN',
-             'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/vfx_SyncCommittee.bend as FSC',
-             'import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as XW', 'import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d',
-             'import ./e2e_fx.bend as FXE', 'import ./e2e_e48w.bend as EW', 'import ./e2e_vbx_ExecutionPayloadHeader.bend as VEH']
+DEEP_HEAD = [*import_list(
+    'F E48 RN=root_names_light RT=root_types FSC XW=var_bytesx_ExecutionPayloadHeader '
+    'FuluBytes48_d FXE EW VEH')]
 
 
 def _block(text, name):
@@ -393,9 +380,7 @@ def state_holes_deep():
 
 def vbx_state_deep():
     from codegen.proofs.bridges import e2e_var_b as EVB
-    imps = ['import ./e2e_stv.bend as SV', 'import ../proofs/obj/vbig.bend as VG',
-            'import ../proofs/obj/packed_bytes.bend as PB', 'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/ulist_obj.bend as UL',
-            'import ../proofs/obj/blist_obj.bend as BLI', 'import ../proofs/obj/arr_vec.bend as AV']
+    imps = [*import_list('SV VG PB=packed_bytes PK=packed_obj UL=ulist_obj BLI AV')]
     for j, V in ((1, 'l2048_Eth1Data'), (2, 'l1099511627776_Validator'), (8, 'l16777216_HistoricalSummary'), (9, 'l134217728_PendingDeposit'),
                  (10, 'l134217728_PendingPartialWithdrawal'), (11, 'l262144_PendingConsolidation')):
         imps.append(f'import ./e2e_vl_{V}.bend as VL{j}')
@@ -408,8 +393,7 @@ def vbx_state_deep():
 
 
 def vdec_state_deep():
-    return {'view': 'ST.v_BeaconState', 'imports': ['import ../proofs/obj/root_state.bend as ST', 'import ./e2e_vbx_BeaconState.bend as VWX',
-                                                    'import ../proofs/obj/vbuf.bend as VB'],
+    return {'view': 'ST.v_BeaconState', 'imports': [*import_list('ST VWX VB')],
             'text': '''# ---- the view of a decoded BeaconState is the codec law's value (the window's view at offset 0, within NMAX) ----
 
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
