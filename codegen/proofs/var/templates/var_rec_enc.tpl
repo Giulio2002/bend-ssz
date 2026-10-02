@@ -1956,3 +1956,33 @@ def bmulW(+i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {U32.to_nat(Su) == S : Nat},
       Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, S), em), hm)),
     em)
 
+
+@@ rec_text_lines @@
+def pf_${n}(${WSIG}, +dd: Nat, +D: ${TR}, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == ${TRUE}})
+    -> {FD.array__perfect(U32, dd, PX_${n}(${WA}, dd, D, q, r)) == ${TRUE}}:
+  ${pfs}
+@@ rec_text_lines_2 @@
+  +ep${i} = VRX.fpos(X, q, r, ${c // 4}n, ${c}, ${Ln}, dd, e, {==}, hd, {==}, hl)
+  +hl${i} = VRX.froom(q, r, dd, ${c // 4}n, ${m}n, ${Ln}, {==}, hl)
+  +z${i} = UW.inv_zero(UA.BYT(D), ${X0}, ${Ln}, ${E}, ${c}n, ${m}n, UA.BYT(${Di}), hX, I${i}, {==}, {==}, {==})
+  +hz${i} = FD.logic__subst(Nat, zz => {VS.bt(${m}n, VS.bdr(zz, UA.BYT(${Di}))) == UW.ZB(${m}n) : +List<U32>}, Nat.add(${X0}, ${c}n), Nat.add(A.quad(${pos}), r), VRX.fpx(q, r, ${c // 4}n), z${i})
+@@ urec_text_lines @@
+def pf_${n}(${WSIG}, +dd: Nat, +D: ${TR}, +X: U32, +pf: {FD.array__perfect(U32, dd, D) == ${TRUE}})
+    -> {FD.array__perfect(U32, dd, PX_${n}(${WA}, dd, D, X)) == ${TRUE}}:
+  ${pfs}
+def BY_${n}(${WSIG}) -> +List<U32>: ${BYTES}
+@@ urec_text_lines_2 @@
+  +pp${i} = VP.ppos(X, ${c}, ${c}n, q, r, ${Ln}, ${m}n, dd, e, {==}, hd, {==}, hl)
+  +hl${i} = VP.proom(X, ${c}, ${c}n, q, r, ${Ln}, ${m}n, dd, e, {==}, hd, {==}, hl)
+  +z${i} = UW.inv_zero(UA.BYT(D), ${X0}, ${Ln}, ${E}, ${c}n, ${m}n, UA.BYT(${Di}), hX, I${i}, {==}, {==}, {==})
+  +hz${i} = FD.logic__subst(Nat, zz => {VS.bt(${m}n, VS.bdr(zz, UA.BYT(${Di}))) == UW.ZB(${m}n) : +List<U32>}, Nat.add(${X0}, ${c}n), ${pos}, pp${i}, z${i})
+@@ belem_text_lines @@
++ep${k} = VRX.fpos(X, q, r, ${C[k] // 4}n, ${C[k]}, ${RS}n, dd, e, {==}, hd, {==}, hl)
++hl${k} = VRX.froom(q, r, dd, ${C[k] // 4}n, ${S[k]}n, ${RS}n, {==}, hl)
++hz${k} = VRX.zhead(${S[k]}n, ${rem}n, VS.bdr(${Xk(k)}, UA.BYT(${Dk(k)})), ${Zk})
+@@ belem_text_lines_2 @@
++g${k} = putxo_${R[k]}(a${k}, dd, ${Dk(k)}, U32.add(X, ${C[k]}), ${qk[k]}, r, ep${k}, hr, hd, hl${k}, ${pfk}, hz${k})
++rt${k} = PA(RTo_${R[k]}(a${k}, dd, ${Dk(k)}, U32.add(X, ${C[k]}), ${qk[k]}, r), BYo_${R[k]}(a${k}, dd, ${Dk(k)}, ${qk[k]}, r), g${k})
++by${k} = PB(RTo_${R[k]}(a${k}, dd, ${Dk(k)}, U32.add(X, ${C[k]}), ${qk[k]}, r), BYo_${R[k]}(a${k}, dd, ${Dk(k)}, ${qk[k]}, r), g${k})
++pf${k + 1} = pfo_${R[k]}(a${k}, dd, ${Dk(k)}, ${qk[k]}, r, ${pfk})
++hX${k} = VRX.xstart(${qk[k]}, r, ${S[k]}n, dd, ${Dk(k)}, ${pfk}, hl${k})
