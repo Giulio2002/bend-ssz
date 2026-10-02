@@ -35,9 +35,8 @@ import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
 
-from codegen.core import writer  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import finish, per_name  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 
 M32 = (1 << 32) - 1
@@ -166,14 +165,8 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws_arith'),
-         f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
-         '# (found by mutation testing; codegen/proofs/laws/mutation_laws_arith.py). Each is by computation.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('mutation_laws_arith', [f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
+                                              '# (found by mutation testing; codegen/proofs/laws/mutation_laws_arith.py). Each is by computation.'], laws, tmod)
 
 
 def main():
