@@ -6,7 +6,7 @@
 #
 #   1. rsyncs this checkout (no .git, build/, node_modules) to a per-user server directory
 #      (ITER_HOST, default root@build-server.example; ITER_DIR, default /srv/ssz-optimization/agents/iter-$USER);
-#   2. there, runs `codegen/regen_all.py --touched` (only the generators whose inputs changed;
+#   2. there, runs `codegen/regenerate_all.py --touched` (only the generators whose inputs changed;
 #      --gen a,b forces those generators too);
 #   3. checks with tools/check.sh (the pinned checker, memory / CPU / stack / JSC limits as in a gate)
 #      ONLY the .bend files that (a) differ from the git base locally (uncommitted + untracked; --base REF:
@@ -39,7 +39,7 @@ if [ "${1:-}" = --remote ]; then
   t0=$(date +%s)
   files=("$@")
   if [ "$REGEN" = 1 ]; then
-    python3 codegen/regen_all.py --touched -j 12 ${FORCE:+--force "$FORCE"} 2>&1 | grep -v '^CHANGED ' | sed 's/^/regen: /'
+    python3 codegen/regenerate_all.py --touched -j 12 ${FORCE:+--force "$FORCE"} 2>&1 | grep -v '^CHANGED ' | sed 's/^/regen: /'
     [ "${PIPESTATUS[0]}" = 0 ] || { echo "iter.sh: regeneration failed"; exit 2; }
     [ -f build/regen_changed.txt ] && while read -r f; do files+=("$f"); done < build/regen_changed.txt
   fi

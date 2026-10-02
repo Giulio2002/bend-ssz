@@ -1,8 +1,8 @@
 """Every official ssz_generic case through the GENERATED typed object API.
 
 The generated programs are benchmarks/objprog/x<k>.bend over
-types/generic_obj*.bend, which codegen/impl/generate.py emits from the frozen
-schema descriptions in tools/test_schemas.py (translated by codegen/core/generic.py).
+types/generic_obj*.bend, which codegen/impl/typed_object_runtime.py emits from the frozen
+schema descriptions in tools/test_schemas.py (translated by codegen/core/generic_form_schemas.py).
 They are the same generated code the Fulu names use - one shape system, one
 validator, one reader, one encoder, one root.
 
@@ -34,7 +34,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tools'))
-from codegen.core import generic as GEN  # noqa: E402
+from codegen.core import generic_form_schemas as GEN  # noqa: E402
 
 index = json.load(open('types/generic_obj_index.json'))
 generated, unsupported = index['generated'], index['unsupported']

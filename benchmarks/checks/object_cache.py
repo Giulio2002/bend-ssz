@@ -6,7 +6,7 @@ build/compact-ocache (benchmarks/compact/ocache.bend) decodes a real
 BeaconState, takes its validators list and prints the root it computes under
 seven modes: no cache, a fresh cache, a warm cache, a write with and without a
 cache, an append with and without a cache. Every root must equal the root
-codegen/core/oracle.py computes for the same list from the raw fixture bytes - code
+codegen/core/independent_ssz_oracle.py computes for the same list from the raw fixture bytes - code
 that shares nothing with the runtime - and the cached and uncached roots must
 agree with each other.
 
@@ -30,8 +30,8 @@ sys.path.insert(0, str(ROOT / 'benchmarks/checks'))
 from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT))
-from codegen.core import oracle  # noqa: E402
-from codegen.core import schema  # noqa: E402
+from codegen.core import independent_ssz_oracle as oracle  # noqa: E402
+from codegen.core import fulu_schema_loader as schema  # noqa: E402
 
 TY = schema.load('codegen/fulu.yaml')
 VALIDATORS = dict(TY['BeaconState'].fields)['validators']
@@ -53,7 +53,7 @@ HISTORY_STEPS = [0, 1, 5, 17]
 
 def seed_validator(x):
     """The validator T.Validator_seed(x) builds: field i from seed x + 1 + i,
-    exactly as codegen/impl/generate.py emits it (see tests_generated/fuzz_objects.py
+    exactly as codegen/impl/typed_object_runtime.py emits it (see tests_generated/fuzz_objects.py
     for the general rule)."""
     sys.path.insert(0, str(ROOT / 'tests_generated'))
     import fuzz_objects
@@ -206,7 +206,7 @@ def main():
     out = ROOT / 'benchmarks/evidence/object_cache.json'
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({'cases': rows, 'histories': hist_rows, 'pass': allok, 'arg': ARG, 'provenance': stamp(__file__),
-                               'note': 'roots compared with codegen/core/oracle.py; times are whole-process '
+                               'note': 'roots compared with codegen/core/independent_ssz_oracle.py; times are whole-process '
                                        'wall clock including decode, min of %d' % REPEATS}, indent=1) + '\n')
     print(('all cached roots match the oracle' if allok else 'FAILURES') + f' ({len(rows)} fixtures)')
     sys.exit(0 if allok else 1)

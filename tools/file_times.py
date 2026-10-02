@@ -81,7 +81,7 @@ def family(f):
         return 'gate'
     if f.startswith(('benchmarks/', 'native_bench/', 'tests_generated/')):
         return 'benchmark'
-    if re.search(r'(coll_|cached_|bl\d|l\d+_|var_win|vlist)', f):
+    if re.search(r'(coll_|cached_|bl\d|l\d+_|nested_type_window_laws|vlist)', f):
         return 'collection law'
     if f.startswith('proofs/obj/'):
         return 'law'

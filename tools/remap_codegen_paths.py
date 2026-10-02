@@ -4,7 +4,7 @@
     python3 tools/remap_codegen_paths.py FILE...                  # rewrite old references in place (any text file)
     python3 tools/remap_codegen_paths.py --place codegen/new_gen.py proofs/var   # also move a NEW flat generator into
                                                                   # codegen/proofs/var/, add the root preamble, and
-                                                                  # print the codegen/registry.py line to add
+                                                                  # print the codegen/generator_registry.py line to add
 
 What it rewrites in a python file: `import X [as Y]` / `from X import ...` of a moved module -> `from codegen.<dir> import X`,
 `__import__('X')`, `ROOT = Path(__file__).resolve().parents[1]` (adjusted to the new depth for a placed file),
@@ -106,7 +106,7 @@ def main(argv):
         L = t.split('\n')
         L[ins:ins] = (PRE % (depth + 1)).rstrip('\n').split('\n')
         dst.write_text('\n'.join(L))
-        print(f"moved {src} -> {dst.relative_to(ROOT)}; add to codegen/registry.py:\n    Gen('{stem}', '{d}'),")
+        print(f"moved {src} -> {dst.relative_to(ROOT)}; add to codegen/generator_registry.py:\n    Gen('{stem}', '{d}'),")
         return 0
     for f in argv:
         p = Path(f)

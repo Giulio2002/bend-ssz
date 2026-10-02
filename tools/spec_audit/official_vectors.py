@@ -30,7 +30,7 @@ ap.add_argument('--fx', required=True)
 a = ap.parse_args()
 sys.path.insert(0, os.path.join(a.repo, 'tools'))
 sys.path.insert(0, a.repo)
-from codegen.core import generic as GEN  # noqa: E402
+from codegen.core import generic_form_schemas as GEN  # noqa: E402
 
 ref, gen = Ref(a.cs), ref_generic(a.cs)
 fulu = json.load(open(os.path.join(a.repo, 'types/obj_groups.json')))

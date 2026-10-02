@@ -4,11 +4,11 @@
         [--valid K] [--invalid M] [--only Name,Name] [--budget SECONDS]
 
 For every one of the 109 mainnet Fulu names (build/obj-g<k>) and every generic schema the generator supports
-(build/obj-x<k>, the schemas of tools/test_schemas.py translated by codegen/core/generic.py) the campaign runs
+(build/obj-x<k>, the schemas of tools/test_schemas.py translated by codegen/core/generic_form_schemas.py) the campaign runs
 these kinds of case through the native object programs, all derived from the schema alone:
 
   valid    a pseudo-random value of the type is built here, serialized by
-           codegen/core/oracle.py (an independent SSZ implementation that shares no
+           codegen/core/independent_ssz_oracle.py (an independent SSZ implementation that shares no
            code with the runtime), and given to the program. The program must
            decode it, re-encode it to exactly the same bytes, and report the
            same full 32-byte hash_tree_root the oracle computes.
@@ -52,9 +52,9 @@ from provenance import stamp  # noqa: E402
 os.chdir(ROOT)
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tools'))
-from codegen.core import generic as GEN  # noqa: E402
-from codegen.core import oracle  # noqa: E402
-from codegen.core import schema  # noqa: E402
+from codegen.core import generic_form_schemas as GEN  # noqa: E402
+from codegen.core import independent_ssz_oracle as oracle  # noqa: E402
+from codegen.core import fulu_schema_loader as schema  # noqa: E402
 
 TY = schema.load('codegen/fulu.yaml')
 GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
@@ -245,7 +245,7 @@ def _words(x, n):
 
 
 def seed_value(t, x):
-    """The value the generated <shape>_seed(x) builds - see codegen/impl/generate.py."""
+    """The value the generated <shape>_seed(x) builds - see codegen/impl/typed_object_runtime.py."""
     k = t.kind
     if k == 'bool':
         return (x & 1) == 1
@@ -506,12 +506,12 @@ def main():
                    f'--valid {args.valid} --invalid {args.invalid} --history {args.history} --histories {args.histories}',
         'toolchain': json.loads((ROOT / 'benchmarks/toolchain.json').read_text()),
         'source_sha256': {**{p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
-                             for p in ['src/obj.bend', 'codegen/fulu.yaml', 'codegen/impl/generate.py', 'codegen/core/oracle.py']},
+                             for p in ['src/obj.bend', 'codegen/fulu.yaml', 'codegen/impl/typed_object_runtime.py', 'codegen/core/independent_ssz_oracle.py']},
                           # the runtime, split per name and operation: its files in name order, concatenated
                           'types/*_generated.bend': hashlib.sha256(b''.join(
                               q.read_bytes() for q in sorted((ROOT / 'types').glob('*_generated.bend')))).hexdigest()},
         'findings': findings[:50], 'findings_total': len(findings), 'provenance': stamp(__file__),
-        'note': 'oracle = codegen/core/oracle.py, written from the SSZ specification and validated '
+        'note': 'oracle = codegen/core/independent_ssz_oracle.py, written from the SSZ specification and validated '
                 'against the 295 official static cases; comparison is full bytes and full '
                 '32-byte roots, not checksums',
     }

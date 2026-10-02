@@ -27,8 +27,8 @@ Four comparisons, each with its own reader (none of them imports a generator):
      ProgressiveContainer and CompatibleUnion; the classes' field names A, B, .. are written
      f_A, f_B, .. there, which is undone), and every one of those must have a case.
 
-codegen/impl/check_schema.py (codegen/fulu.yaml against the JSON) runs this too, so strictcheck and
-regen_all.py --check cover it; tools/check_fast.sh runs it before checking anything.
+codegen/impl/fulu_schema_inventory_check.py (codegen/fulu.yaml against the JSON) runs this too, so strictcheck and
+regenerate_all.py --check cover it; tools/check_fast.sh runs it before checking anything.
 """
 import ast
 import json
@@ -339,7 +339,7 @@ def main():
     zero = {k for k, s in want.items() if s['kind'] in ('vector', 'bits') and int(s['length']) == 0}
     shared = {key(frozen[n]) for n in ('boolean', 'uint8', 'uint32', 'uint64', 'uint256')}
     supported = set(want) - zero
-    # the generic classes' field names (A, B, ...) are written f_A, f_B, ... in Bend (codegen/core/generic.py)
+    # the generic classes' field names (A, B, ...) are written f_A, f_B, ... in Bend (codegen/core/generic_form_schemas.py)
     gspecs = read_bend_schemas(ROOT / 'proofs/obj/generic_specs.bend', field_prefix='f_')
     have = {}
     for n, s in gspecs.items():

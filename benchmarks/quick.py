@@ -8,7 +8,7 @@ acceptance gate.
 
 What it does, in order:
 
-1. runs the generator (codegen/impl/generate.py) so the measured Bend program is the
+1. runs the generator (codegen/impl/typed_object_runtime.py) so the measured Bend program is the
    one the current YAML and generator produce - never a stale checked-in copy;
 2. for every program group the selection needs, computes a cache key over the
    compiler executable, the compile flags, and the bytes of every .bend file in
@@ -145,7 +145,7 @@ def main():
     try:
         # 1. generate
         if not os.environ.get('QUICK_NO_GENERATE'):   # mutation testing builds mutated generated files as they are
-            b.sh([b.PY3, 'codegen/impl/generate.py'])
+            b.sh([b.PY3, 'codegen/impl/typed_object_runtime.py'])
         b.GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
         if a.build_compact:
             for entry in sorted((ROOT / 'benchmarks/compact').glob('*.bend')):

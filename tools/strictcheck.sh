@@ -1,6 +1,6 @@
 #!/bin/bash
 # tools/strictcheck.sh DIR [TARBALL_CACHE]: run ON THE SERVER (never on a laptop), it runs every generator and the fixture provenance check.
-# every generator of codegen/ (the list: `python3 codegen/regen_all.py --list --paths`, from codegen/registry.py), with and without --no-big if supported; fails on nonzero exit or a failure word
+# every generator of codegen/ (the list: `python3 codegen/regenerate_all.py --list --paths`, from codegen/generator_registry.py), with and without --no-big if supported; fails on nonzero exit or a failure word
 # Output: one line per FAIL (red), a summary line (green when nothing failed), then `strictcheck-done`. Colors are on when stdout is a
 # terminal or FORCE_COLOR=1, and off when NO_COLOR is set or the output is a pipe/file (so logs and `grep FAIL` stay plain).
 cd ${1:-.}
@@ -12,7 +12,7 @@ else
 fi
 pass=0; fail=0
 fail_line() { fail=$((fail+1)); echo "${RED}FAIL${OFF} $1"; }
-for g in $(python3 codegen/regen_all.py --list --paths); do
+for g in $(python3 codegen/regenerate_all.py --list --paths); do
   for a in "" "--no-big"; do
     [ -n "$a" ] && ! grep -q -- "--no-big" $g && continue
     out=$(python3 $g --check $a 2>&1); rc=$?

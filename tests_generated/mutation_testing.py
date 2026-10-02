@@ -651,11 +651,11 @@ def main():
         raise SystemExit('mutation_testing: --scratch must be a copy, not the real tree')
     # precondition: every generated file of the tree under test is what its generator writes. A stale facade (no
     # proof law imported) or stale types made a whole round invalid once; nothing runs on such a tree.
-    r = subprocess.run([sys.executable, 'codegen/regen_all.py', '--check'], cwd=S, capture_output=True, text=True)
+    r = subprocess.run([sys.executable, 'codegen/regenerate_all.py', '--check'], cwd=S, capture_output=True, text=True)
     last = (r.stdout + r.stderr).strip().split('\n')[-1] if (r.stdout + r.stderr).strip() else ''
     if r.returncode != 0:
-        raise SystemExit(f'mutation_testing: codegen/regen_all.py --check fails on {S} (generated files are stale):\n' + (r.stdout + r.stderr)[-1200:])
-    print(f'precondition: regen_all --check: {last}', flush=True)
+        raise SystemExit(f'mutation_testing: codegen/regenerate_all.py --check fails on {S} (generated files are stale):\n' + (r.stdout + r.stderr)[-1200:])
+    print(f'precondition: regenerate_all --check: {last}', flush=True)
     sc = Scratch(S)
     global started_global
     started = started_global = time.monotonic()

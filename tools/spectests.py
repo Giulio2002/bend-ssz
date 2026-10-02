@@ -58,7 +58,7 @@ def build():
 
 def packed(s):
     """The generator stores a sequence of these elements as packed bytes
-    (codegen/impl/generate.py Shape.classify): basic elements and byte vectors of a
+    (codegen/impl/typed_object_runtime.py Shape.classify): basic elements and byte vectors of a
     whole number of words."""
     e = s['element']
     return e['kind'] in ('bool', 'uint') or (e['kind'] == 'bytes' and e['length'] % 4 == 0)
@@ -155,7 +155,7 @@ def main():
     sys.path.insert(0, str(ROOT))
     from test_schemas import for_case, normalize
     from run_evidence import preserve_report, sha256_file
-    from codegen.core import generic as GEN
+    from codegen.core import generic_form_schemas as GEN
     started = time.monotonic()
     build()
     groups = json.loads((ROOT / 'types/obj_groups.json').read_text())
