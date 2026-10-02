@@ -82,3 +82,34 @@ def fxs(m: ${MP}) -> +List<U32>:
 # every value whose parts are the window's byte passes the check
 def inv(+t: ${TR}, +x: Nat, +v: S.Value, +e: {Codec.parts(v, Spec.Schema83()) == Some{[S.Fixed{UW.WX(t, x, 1n)}]} : ${MP}}) -> {CHK(t, x) == ${TRUE}}:
   chkl(UA.BYT(t), x, bvinv(v, UW.WX(t, x, 1n), e))
+
+@@ bv4_mod_lines @@
+
+def bvp(+v: U32, +h: {CHKv(v) == ${TRUE}}) -> ${goalv('v')}:
+  match v:
+    case ${word(['+' + x for x in a])}: z31(${', '.join(a)}, h)
+
+@@ bv4_mod_lines_2 @@
+
+# any bits value whose parts are one fixed part ys: the first byte of ys has bits 4..7 clear
+def bvinv(+v: S.Value, +ys: +List<U32>, +e: {Codec.parts(v, S.BitVector{4n}) == Some{[S.Fixed{ys}]} : ${MP}}) -> {CHKL(ys) == ${TRUE}}:
+  match v:
+    case S.BitsValue{+bs}:
+      match bs:
+        case Nil{}: ${AB}
+        case Con{+b0, +r0}:
+          match r0:
+            case Nil{}: ${AB}
+            case Con{+b1, +r1}:
+              match r1:
+                case Nil{}: ${AB}
+                case Con{+b2, +r2}:
+                  match r2:
+                    case Nil{}: ${AB}
+                    case Con{+b3, +r3}:
+                      match r3:
+                        case Con{+b4, +r4}: ${AB}
+                        case Nil{}:
+                          +ey = Equal.cong(${MP}, +List<U32>, z => fxs(z), Some{[S.Fixed{[${OCT}]}]}, Some{[S.Fixed{ys}]}, e)
+                          %Equal.sym(+List<U32>, ys, [${OCT}], Equal.sym(+List<U32>, [${OCT}], ys, ey)) : {CHKL(_) == ${TRUE}}
+                          chko(b0, b1, b2, b3)
