@@ -21,6 +21,7 @@ import re
 import sys
 
 from codegen.core.paths import E2E  # noqa: E402
+from codegen.core.shared_rest import close_paren  # noqa: E402
 
 LISTS = {
     'l8_Attestation': dict(X='Attestation', LIM=8, DEPTH=3, LST='Fulu_list_Attestation_8_d', HK='e2e_hk_Attestation.bend', BB='e2e_bbatt.bend',
@@ -48,18 +49,6 @@ def dtx_defs():
         out[m.group(1)] = '\n'.join(lines[i:j]).rstrip()
         i = j
     return out
-
-
-def close_paren(t, i):
-    depth = 0
-    for k in range(i, len(t)):
-        if t[k] == '(':
-            depth += 1
-        elif t[k] == ')':
-            depth -= 1
-            if depth == 0:
-                return k
-    raise ValueError
 
 
 def unwrap_nr(t):
