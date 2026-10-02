@@ -315,10 +315,8 @@ def gwords_text(p, S, W, unit=1, generic=True):
         out.append(f'  %Equal.sym(Array<U32> & U32, Array.get(U32, FD.array__thaw(U32, TB), {j}), (FD.array__thaw(U32, TB), VB.slot(TB, {j}n)), VB.get_n(dB, TB, {j}, {j}n, {{==}}, hB32, {hi}, pfB)) :')
         out.append(f'    {{T.{p}_pk_ok(T.{p}_pal({S}, T.{p}_pa{j}(U32.shrn(pos, 2n), {pre}, _))) == {RHS0} : {TY}}}')
         nxt = f'T.{p}_pa{j + 1}(U32.shrn(pos, 2n), _, Array.get(U32, FD.array__thaw(U32, TB), {j + 1}))' if j + 1 < W else '(_, FD.array__thaw(U32, TB))'
-        out.append(f'  %Equal.sym(Array<U32>, Array.set(U32, {pre}, U32.add(U32.shrn(pos, 2n), {j}), VB.slot(TB, {j}n)), {post},')
-        out.append(f'      VB.set_at(dd, VF.updv(WP{j}_{p}(TB), dd, D, P), U32.shrn(pos, 2n), {j}, P, VB.slot(TB, {j}n), VF.al_q(pos, P, e), hd32,')
-        out.append(f'        VF.in_lt({j}n, {W}n, P, VB.pw(dd), {{==}}, hb), VF.updv_perfect(WP{j}_{p}(TB), dd, D, P, pf))) :')
-        out.append(f'    {{T.{p}_pk_ok(T.{p}_pal({S}, {nxt})) == {RHS0} : {TY}}}')
+        for line in TPL.render('gwords_text_lines', RHS0=RHS0, S=S, TY=TY, W=W, j=j, nxt=nxt, p=p, post=post, pre=pre).split('\n'):
+            out.append(line)
     out.append('  {==}')
     out.append(TPL.render('gwords_text_wl_', OBJ=OBJ, P=P, PX=PX, RT=RT, S=S, TY=TY, W=W, WS=WS, kw=kw, p=p, unit=unit))
     for s in (1, 2, 3):

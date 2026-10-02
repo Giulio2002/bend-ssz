@@ -522,3 +522,9 @@ def ${p}_any(${P})
 def ${p}_any_bytes(${P})
     -> ${BY}:
   DK3(${RT}, ${BY}, at(${ARGS}))
+
+@@ gwords_text_lines @@
+  %Equal.sym(Array<U32>, Array.set(U32, ${pre}, U32.add(U32.shrn(pos, 2n), ${j}), VB.slot(TB, ${j}n)), ${post},
+      VB.set_at(dd, VF.updv(WP${j}_${p}(TB), dd, D, P), U32.shrn(pos, 2n), ${j}, P, VB.slot(TB, ${j}n), VF.al_q(pos, P, e), hd32,
+        VF.in_lt(${j}n, ${W}n, P, VB.pw(dd), {==}, hb), VF.updv_perfect(WP${j}_${p}(TB), dd, D, P, pf))) :
+    {T.${p}_pk_ok(T.${p}_pal(${S}, ${nxt})) == ${RHS0} : ${TY}}
