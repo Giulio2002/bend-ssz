@@ -114,7 +114,7 @@ one() {
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$rc" "$ok" "${s:-0}" "$(( ${kb:-0} / 1024 ))" "$roots" "$ck" "$how" >> "$out/summary.tsv"
   if [ "$ck" != - ] && [ "$CACHE" = 1 ]; then
     if [ $rc = 0 ] && [ "$ok" != 0 ]; then
-      python3 tools/umbrella_cache.py store "$ck" --seconds "${s:-0}" --peak-mb "$(( ${kb:-0} / 1024 ))" --roots "$roots"
+      python3 tools/umbrella_cache.py store "$ck" --seconds "${s:-0}" --peak-mb "$(( ${kb:-0} / 1024 ))" --plan "$out/umb/plan.tsv" --umbrella "$u"
     elif [ "$how" = recheck ]; then
       echo "$u" >> "$out/cache_mismatch"     # a cached pass failed when rerun: the cache lied (or the run is flaky)
     fi

@@ -4,7 +4,7 @@
     python3 tools/umbrella_cache.py key ROOT... [--settings S]       print the cache key of the umbrella over these roots; exit 3
                                                                        when it is not cacheable (an import cannot be resolved exactly)
     python3 tools/umbrella_cache.py lookup KEY                       print the entry and exit 0, or exit 1 when absent
-    python3 tools/umbrella_cache.py store KEY --seconds S --peak-mb M [--roots R...]   record a PASS
+    python3 tools/umbrella_cache.py store KEY --seconds S --peak-mb M [--roots 'R R'] | [--plan PLAN --umbrella U]   record a PASS
     python3 tools/umbrella_cache.py prepare PLAN SETTINGS.tsv OUT [--recheck K]   keys, hits and the K safety rechecks of a whole plan
     python3 tools/umbrella_cache.py clear                            delete every entry
     python3 tools/umbrella_cache.py verify-rows STAMP.json           recompute the key of every cached row of a stamp
@@ -287,6 +287,9 @@ def main():
     elif cmd == 'store':
         s, m = float(opt('--seconds')), int(opt('--peak-mb'))
         roots = opt('--roots', '')
+        plan, u = opt('--plan'), opt('--umbrella')       # the roots of the biggest umbrella do not fit an argument list
+        if plan and u:
+            roots = next(l.rstrip('\n').split('\t')[3] for l in open(plan) if l.split('\t')[0] == u)
         store(rest[0], roots.split() if roots else [], s, m)
     elif cmd == 'prepare':
         k = int(opt('--recheck', '3'))
