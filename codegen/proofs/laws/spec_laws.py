@@ -640,25 +640,8 @@ def unique_small():
     return '\n'.join(L) + '\n'
 
 
-def validator_module(src):
-    """proofs/obj/spec_rec_Validator.bend: Validator, a boolean inside an unaligned
-    record (pubkey 48, withdrawal_credentials 32, effective_balance 8 bytes, then
-    `slashed` at byte 88, then four uint64 at bytes 89, 97, 105, 113).
-
-    Checked here: the spec side (the spec's parts of the value of any words and
-    boolean are the bytes limbs(words 0..21) ++ [boolean] ++ limbs(epochs), the
-    canonical encoding, and uniqueness), the decoder's rejections (every other
-    size; byte 88 above 1), and its acceptance: a buffer of 121 bytes whose byte
-    88 is at most 1 decodes to the object of words 0..21, that boolean and the
-    epochs read across words 22..30 (`B.join_sel`), and the spec relates exactly
-    the buffer's bytes to that object's value (Validator_spec_decoded: bit lemmas
-    of proofs/compact/bits.bend for the joined words, U32.to_nat for the boolean).
-    The encoder's bytes (Validator_spec_bytes): the encoder writes the epochs
-    with `U32.mul(w, 256)` and `U32.or`; U32.mul recurses over its left operand's
-    bits, so it does not reduce for a symbolic word, and proofs/obj/word_mul.bend
-    (from codegen/templates/word_mul.bend.in) proves `U32.mul(w, 256) == U32.shln(w, 8n)`
-    for every w; the bytes of the shifted words then follow from bits.bend.
-    """
+def _vm_setup():
+    """the Validator's word names, the object, bytes and value builders, and the module header"""
     xs = [f'x{i}' for i in range(22)]
     es = [f'e{i}' for i in range(8)]
     ebits = [[f'e{i}_{k}' for k in range(32)] for i in range(8)]
@@ -698,7 +681,11 @@ def validator_module(src):
         w('def lct(+it: S.Value, +nm: +List<String>, +fs: S.Schema) -> {Codec.aggregate(Codec.parts(it, fs), SSC.fixed_size(fs)) == Codec.parts(S.Sequence{it}, S.Container{nm, fs}) : Maybe<&2, +List<S.Part>>}:')
         w('  {==}')
         w('')
-    # spec parts, over free words
+    return xs, es, L, w, obj, byts, val
+
+
+def _vm_spec_parts(xs, es, w, byts, val):
+    """the spec's parts of the value for each boolean, and the encoder's soundness against spec/codec.bend"""
     xsig = ', '.join(f'+{x}: U32' for x in xs)
     esig = ', '.join(f'+{e}: U32' for e in es)
     V = val(xs, 'b', es)
@@ -758,7 +745,11 @@ def validator_module(src):
     w(f'    -> Decoding.decodes(Spec.Validator(), {BY}, {V}):')
     w(f'  F.encoding_of_parts(Spec.Validator(), {V}, {BY}, Validator_spec_parts({", ".join(xs)}, b, {", ".join(es)}))')
     w('')
-    # a buffer whose byte 88 is above 1 (any words): refused
+    return xsig, V, BY
+
+
+def _vm_reject_bool(w):
+    """a buffer whose boolean byte is above 1 is refused"""
     ws = [f'w{i}' for i in range(32)]
     bufc = f'B.Buf{{{tree(ws)}, 121}}'
     wsig = ', '.join(f'+{x}: U32' for x in ws)
@@ -768,7 +759,10 @@ def validator_module(src):
     w(f'  %Equal.sym(Bool, U32.is_le(B.byte_sel(0, w22), 1), False{{}}, h) : {{T.Validator_built(121, T.Validator_c0(_, {bufc}, 0)) == ({bufc}, None{{}}) : B.Buf & Maybe<&1, T.Validator>}}')
     w('  {==}')
     w('')
-    # ---- the decoder's acceptance, and the spec value of what it returns ----
+
+
+def _vm_limb_lemmas(w):
+    """the limbs of a joined word and a word the decoder accepts as a boolean"""
     A_ = [f'a{i}' for i in range(32)]
     B_ = [f'b{i}' for i in range(32)]
     WA, WB = word_pat(A_), word_pat(B_)
@@ -811,6 +805,11 @@ def validator_module(src):
     w('def Validator_bool_byte(+x: U32, +h: {U32.is_le(x, 1) == True{} : Bool}) -> {SP.boolean_encoding(U32.is_eq(x, 1)) == [x] : +List<U32>}:')
     w('  Validator_bb_go(x, U32.to_nat(x), {==}, FD.logic__subst(Cmp, c => {Cmp.is_le(c) == True{} : Bool}, U32.cmp(x, 1), Nat.cmp(U32.to_nat(x), 1n), FD.u32__u32_cmp(x, 1), h))')
     w('')
+    return A_, J
+
+
+def _vm_spec_decode(w, obj, byts, val, J):
+    """the decode law, the buffer's bytes and the spec's decoded relation"""
     ws = [f'w{i}' for i in range(32)]
     bufc = f'B.Buf{{{tree(ws)}, 121}}'
     wsig = ', '.join(f'+{x}: U32' for x in ws)
@@ -860,7 +859,10 @@ def validator_module(src):
     w(f'  FD.logic__subst(+List<U32>, z => Decoding.decodes(Spec.Validator(), z, {VW}), {BYW}, {BYTESW}, eq,')
     w(f'    Validator_spec_encode({", ".join(ws[:22])}, {bw}, {", ".join(JS)}))')
     w('')
-    # ---- the encoder's bytes ----
+
+
+def _vm_epoch_limbs(w, A_):
+    """the limb of a word from its four bytes, and the words across the epochs"""
     C_ = [f'c{i}' for i in range(32)]
     FF = ['False{}']
     bs = lambda k, x: f'B.byte_sel({k}, {x})'
@@ -910,6 +912,11 @@ def validator_module(src):
     w('  match d:')
     w(f'    case {EC}: Equal.trans(U32, {bs(0, f"U32.or(0, U32.shrn({EC}, 24n))")}, {top}, {bs(3, EC)}, {selw(0, C_[24:] + FF * 24)}, Equal.sym(U32, {bs(3, EC)}, {top}, {selw(3, C_)}))')
     w('')
+    return bs
+
+
+def _vm_spec_bytes(src, xs, es, w, obj, byts, bs):
+    """the bytes the encoder emits and the refusal of every other size"""
     esig = ', '.join(f'+{e}: U32' for e in es)
     w('# the encoder emits the spec bytes of the value of the words and the boolean')
     w(f'def Validator_spec_bytes({", ".join(f"+{x}: U32" for x in xs)}, +b: Bool, {esig})')
@@ -944,6 +951,39 @@ def validator_module(src):
     w('    -> {T.Validator_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Validator>}:')
     w(f'  %Equal.sym(Bool, U32.is_eq(m, 121), False{{}}, e) : {{T.Validator_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : B.Buf & Maybe<&1, T.Validator>}}')
     w('  {==}')
+    return esig
+
+
+def validator_module(src):
+    """proofs/obj/spec_rec_Validator.bend: Validator, a boolean inside an unaligned
+    record (pubkey 48, withdrawal_credentials 32, effective_balance 8 bytes, then
+    `slashed` at byte 88, then four uint64 at bytes 89, 97, 105, 113).
+
+    Checked here: the spec side (the spec's parts of the value of any words and
+    boolean are the bytes limbs(words 0..21) ++ [boolean] ++ limbs(epochs), the
+    canonical encoding, and uniqueness), the decoder's rejections (every other
+    size; byte 88 above 1), and its acceptance: a buffer of 121 bytes whose byte
+    88 is at most 1 decodes to the object of words 0..21, that boolean and the
+    epochs read across words 22..30 (`B.join_sel`), and the spec relates exactly
+    the buffer's bytes to that object's value (Validator_spec_decoded: bit lemmas
+    of proofs/compact/bits.bend for the joined words, U32.to_nat for the boolean).
+    The encoder's bytes (Validator_spec_bytes): the encoder writes the epochs
+    with `U32.mul(w, 256)` and `U32.or`; U32.mul recurses over its left operand's
+    bits, so it does not reduce for a symbolic word, and proofs/obj/word_mul.bend
+    (from codegen/templates/word_mul.bend.in) proves `U32.mul(w, 256) == U32.shln(w, 8n)`
+    for every w; the bytes of the shifted words then follow from bits.bend.
+    """
+    xs, es, L, w, obj, byts, val = _vm_setup()
+    # spec parts, over free words
+    xsig, V, BY = _vm_spec_parts(xs, es, w, byts, val)
+    # a buffer whose byte 88 is above 1 (any words): refused
+    _vm_reject_bool(w)
+    # ---- the decoder's acceptance, and the spec value of what it returns ----
+    A_, J = _vm_limb_lemmas(w)
+    _vm_spec_decode(w, obj, byts, val, J)
+    # ---- the encoder's bytes ----
+    bs = _vm_epoch_limbs(w, A_)
+    esig = _vm_spec_bytes(src, xs, es, w, obj, byts, bs)
     U = ['import Base', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
          'import ../../spec/primitives.bend as SP', 'import ../../spec/decoding_relation.bend as Decoding',
          'import ../../spec/fulu_schemas.bend as Spec', 'import ../decode_unique.bend as E',
