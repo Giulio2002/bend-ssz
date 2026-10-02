@@ -23,7 +23,8 @@ from codegen.proofs.support import lim_pow as LPW
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 
-def enc_module_text(g, x):
+def _em_limits(g, x):
+    """the list's sizes, the bounds on its powers of two and the limit arithmetic"""
     n, FS, H, po, LIM, lp = x.n, x.FS, x.H, x.po, x.LIM, x.lp
     KO, KK = x.KO, max(x.K, x.KO)
     Tn = f'T.{n}'
@@ -56,6 +57,11 @@ def enc_module_text(g, x):
         BS = FS + LIMB
         K_PB = K_ES = K_YN = K_YS = K_KO = K_LB = K_FIT = '{==}'
         MKO = f'{H}n+Nat.double({LIMN})'
+    return n, FS, H, po, lp, KO, KK, Tn, LIMB, PB, P2, ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, LIMN, YS, LP, BS, K_PB, K_ES, K_YN, K_YS, MKO, K_KO, K_LB, K_FIT
+
+
+def _em_names(x, n, FS, H, po, Tn, hdr, LIMN, LP):
+    """the module header and the name bundles: parameters, objects, trees and the type definitions"""
     ks = [k for k in range(H) if k != po]
     WS = ', '.join(f'+w{k}: U32' for k in ks)
     WA = ', '.join(f'w{k}' for k in ks)
@@ -102,6 +108,11 @@ def enc_module_text(g, x):
     for j, f in enumerate(fixed):
         TREES.append(f'def TD{j + 1}({WS}, +N: U32, +T: FD.array__Tree<U32>) -> FD.array__Tree<U32>: VF.updv({V(f)}, DO(N), {TD(j)}, {f["k"]}n)')
     w('\n'.join(TREES))
+    return WS, WA, fixed, V, fobj, OBJ, FIXOBJS, WORDS, NC, NCa, ALLP, ALLa, TD, OUT3, S3, ST, HDR, HDRL, NW, toN, M, MP, L, w
+
+
+def _em_object_laws(FS, H, po, KO, Tn, PB, P2, LIMN, BS, K_PB, K_ES, K_YN, K_YS, MKO, K_KO, WS, WA, fixed, V, OBJ, FIXOBJS, NC, NCa, ALLP, TD, toN, w):
+    """the offsets, the output trees and the laws of their words"""
     w(f'''
 def leN({NC}) -> {{Nat.is_le({toN}, VS.x8({LIMN})) == True{{}} : Bool}}:
   %Equal.sym(Nat, {toN}, VS.x8(c), ec) : {{Nat.is_le(_, VS.x8({LIMN})) == True{{}} : Bool}}
@@ -190,6 +201,11 @@ def size_eval({ALLP})
   %Equal.sym(U32, O.padd({FS}, N), SFS(N), padd({NCa})) : {{({OBJ}, _) == {RS} : {Tn} & U32}}
   {{==}}
 ''')
+    return hb, RS
+
+
+def _em_put_eval(FS, H, po, lp, Tn, LIMB, LIMN, K_LB, WA, fixed, fobj, OBJ, FIXOBJS, WORDS, NCa, ALLP, TD, OUT3, toN, w, hb):
+    """put_eval: the runtime's put against the model"""
     RP = f'(FD.array__thaw(U32, {OUT3}), ({OBJ}, SFS(N)))'
     TP = f'Array<U32> & ({Tn} & U32)'
 
@@ -223,6 +239,11 @@ def size_eval({ALLP})
         w(f'      VT.put_{ft.p}(DO(N), {TD(j)}, U32.add(0, {f["c"]}), {f["k"]}n, {{==}}, hd29, pfD{j}({WA}, N, T), {hb(f)}, {ws})) :')
         w(f'    {{({puts(j + 1, "_")}, ({OBJ}, SFS(N))) == {RP} : {TP}}}')
     w('  {==}')
+    return RP, TP
+
+
+def _em_encode_eval(FS, KO, KK, Tn, WS, WA, OBJ, NC, NCa, ALLP, ALLa, OUT3, w, RS, RP, TP):
+    """encode_eval: the encoder returns the object and the output tree's buffer"""
     RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {OUT3}), SFS(N)}})'
     TE = f'{Tn} & B.Buf'
     w(f'''
@@ -244,7 +265,11 @@ def encode_eval({ALLP})
     SP = f'{WS}, {NC}, +T: FD.array__Tree<U32>'
     SPa = f'{WA}, {NCa}, T'
     LT = 'List<&2, U32>'
+    return SP, SPa, LT
 
+
+def _em_windows(x, FS, H, po, WA, fixed, V, NCa, TD, S3, ST, HDRL, NW, w, hb, SP, SPa, LT):
+    """the windows of the output's words: header, payload and their equalities"""
     def win(m, p, j):
         return f'VF.WIN({m}, {p}, FD.array__slots(U32, {TD(j)}))'
 
@@ -325,7 +350,10 @@ def encode_eval({ALLP})
             w(f'    {{{pre("_")} == {HDRL} : {LT}}}')
     w('  {==}')
     w('')
-    # ---- spec ----
+
+
+def _em_spec_side(n, FS, H, ITEMS, CHAIN, PL, CAT, PRE, POST, LIMN, YS, K_FIT, WS, WA, NC, NCa, ALLP, ALLa, S3, ST, HDR, HDRL, NW, toN, M, MP, L, w, SPa, LT):
+    """the spec side: the value and bytes of the object and encode_spec"""
     RHSk = f'Some{{F.limbs({HDR} <> {YS})}}'
     ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), F.limbs({YS}))'
     RHS = f'F.limbs({HDR} <> VS.wtake(Nat.double(c), {ST}))'
@@ -386,3 +414,15 @@ def encode_spec({ALLP})
     Equal.cong(+List<U32>, {M}, z => Some{{z}}, {RHS}, {BT}, Equal.sym(+List<U32>, {BT}, {RHS}, out_eq({ALLa}))))
 ''')
     return '\n'.join(L) + '\n'
+
+
+def enc_module_text(g, x):
+    n, FS, H, po, lp, KO, KK, Tn, LIMB, PB, P2, ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, LIMN, YS, LP, BS, K_PB, K_ES, K_YN, K_YS, MKO, K_KO, K_LB, K_FIT = _em_limits(g, x)
+    WS, WA, fixed, V, fobj, OBJ, FIXOBJS, WORDS, NC, NCa, ALLP, ALLa, TD, OUT3, S3, ST, HDR, HDRL, NW, toN, M, MP, L, w = _em_names(x, n, FS, H, po, Tn, hdr, LIMN, LP)
+    hb, RS = _em_object_laws(FS, H, po, KO, Tn, PB, P2, LIMN, BS, K_PB, K_ES, K_YN, K_YS, MKO, K_KO, WS, WA, fixed, V, OBJ, FIXOBJS, NC, NCa, ALLP, TD, toN, w)
+    RP, TP = _em_put_eval(FS, H, po, lp, Tn, LIMB, LIMN, K_LB, WA, fixed, fobj, OBJ, FIXOBJS, WORDS, NCa, ALLP, TD, OUT3, toN, w, hb)
+    SP, SPa, LT = _em_encode_eval(FS, KO, KK, Tn, WS, WA, OBJ, NC, NCa, ALLP, ALLa, OUT3, w, RS, RP, TP)
+
+    _em_windows(x, FS, H, po, WA, fixed, V, NCa, TD, S3, ST, HDRL, NW, w, hb, SP, SPa, LT)
+    # ---- spec ----
+    return _em_spec_side(n, FS, H, ITEMS, CHAIN, PL, CAT, PRE, POST, LIMN, YS, K_FIT, WS, WA, NC, NCa, ALLP, ALLa, S3, ST, HDR, HDRL, NW, toN, M, MP, L, w, SPa, LT)
