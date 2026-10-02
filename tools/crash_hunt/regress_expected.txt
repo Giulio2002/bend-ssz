@@ -10,3 +10,21 @@
 10 decode_checked_40_control=some
 11 decode_checked_2gib=none
 12 complex_default_serialize_ok=1 size=100
+13 pl_u8_root_huge_claim=done
+14 bits2048_root_huge_claim=done
+15 u64list_append_max=0
+16 pl_u16_append_max=0
+17 pl_u32_append_max=0
+18 pl_u64_append_max=0
+19 pl_u8_append_chunk_wrap=0
+20 cell_set_one_word=0
+21 cell_append_one_word=0
+22 decode_checked_lying_buf=none
+23 pd_root_huge_claim=done
+24 pd_cache_huge_claim=done
+25 pd_cache_at_huge_depth=done
+26 tight_root_equals_roomy=1
+27 attestation_1_absent ok=0
+28 attestation_2_absent ok=0
+29 both_present_control ok=1
+30 dirty_root_equals_clean=1

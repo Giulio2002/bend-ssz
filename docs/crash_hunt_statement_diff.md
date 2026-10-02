@@ -72,3 +72,43 @@ cached lists substitute their own limit. `codegen/proofs/laws/cached_root_laws.p
 modules `proofs/obj/coll_api_0..6.bend`, `coll_bits.bend`, `coll_bytes.bend`, `coll_seq.bend`; and the 23 collection types
 `types/<list or bit list>_def_generated.bend` whose setter or appender text changed. The lock was refreshed once, after regenerating and
 after checking that this list is the one above (`tools/verify_frozen.py --update`); it passes without `--update` on the tip.
+
+## Second pass (agent/crash-fix2): CH-03
+
+No statement changed and `frozen.lock.json` did not move (`tools/verify_frozen.py` without `--update` passes: no statement-reached definition changed). `src/obj.bend` moved: `words_root`, `words_root_prog`, `elems_root`, `elems_root_prog` (and
+the helpers `cap_cnt`, `wr_cnt`, `wr_size`, `wrp_size`, `er_cnt`, `er_size`, `erp_size`) clamp the chunk count to the storage. For every
+storage-valid object (the representation every root statement carries) the new definition reduces to the old term, which is proved in
+`proofs/obj/words_cap.bend` and used by the root laws; the only values that differ are the roots of invalid objects (claim beyond the storage),
+which no statement mentions. Equivalent for every statement.
+
+## Third pass (agent/crash-fix3): R2-01, R2-05, R2-06
+
+Compared: `e2e/STATEMENTS.txt` at origin/main 5977f2a9c against the tip of `agent/crash-fix3` (the complete old and new text of the 49 changed statements is the
+`git diff` of that file; `docs/crash_hunt_statement_diff_full_pass3.txt` is its output). Seven collections, all packed byte lists, change; every other statement is
+byte for byte the one of main. No spec, schema, END_TO_END, ROOT_DOMAIN, PROOF or HASH_PROOF text changed.
+
+| collection | append guard on main | append guard now | relation |
+|---|---|---|---|
+| `Fulu_list_uint64_1099511627776` (BeaconState balances, inactivity scores) | none (`True`) | `n < 536870908` | stronger (R2-01: `(n + 1) * 8` wrapped to 0) |
+| `Fulu_list_uint8_1099511627776` | `n < 4294967295` | `n < 4294967264` | stronger (R2-06: the rounding to a chunk wrapped) |
+| `Fulu_list_uint64_128`, `_131072` | `n + 1 <= L` | `n < L` | equivalent (the count of a byte list below 2^32 bytes cannot reach 2^32 - 1) |
+| `Fulu_list_bytevec_32_16777216`, `_48_4096` | `n + 1 <= L` | `n < L` | equivalent |
+| `Fulu_list_bytevec_2048_4096` (cells) | `n + 1 <= 4096` and `vn == 2048` | `n < 4096`, `vn == 2048` and `vc >= 512` | stronger (R2-05: the cell's storage) |
+
+Statement families that print the guard change with it: `api_append_flag` and `api_append_rejected` (7 collections each, and their witnesses), `api_read_append` (6),
+`api_read_append_grow` (6), `api_view_append` (6), `api_view_append_grow` (5); for the cells also `api_set_flag` and `api_set_rejected`. For a collection with a
+finite limit the old and the new text are equivalent propositions (`n + 1 <= L` for a count that cannot wrap is `n < L`). For the two collections without a limit the
+hypothesis `ha` of the read/view-after-append laws, `guard == True`, names the stricter bound: those laws no longer cover a list of 536,870,908 or more 8-byte
+elements (4 GiB - 32 bytes) or of 4,294,967,264 or more bytes, which `_serialize` refuses already (size >= 2^31, CH-07) and no frozen e2e theorem claims.
+This is the same kind of change as CH-04 (the guard states the exact count the runtime accepts) and does not narrow the premise of any frozen END_TO_END,
+ROOT_DOMAIN, PROOF or HASH_PROOF theorem; it is listed here so that it can be refused.
+
+The cells: the laws `l4096_b2048_api_{set,append}_{flag,rejected}` take the storage size of the argument as a new parameter `vc` with the premise
+`es: Array.size(U32, vws) == (vws, vc)`, and the flag is `guard && U32.is_le(512, vc)`. Every array has a size, so `forall vws vn. P(Array.size(vws))` and
+`forall vws vn vc. es -> P(vc)` are equivalent statements; the new text is the one the proof can unfold without a case on an array.
+
+`frozen.lock.json`: `statement_defs` of 20 files change (and nothing else): `types/Fulu_list_{uint64_1099511627776,uint8_1099511627776,uint64_128,uint64_131072,
+bytevec_32_16777216,bytevec_48_4096,bytevec_2048_4096}_def_generated.bend`, `proofs/obj/coll_api_{0,2,3,5,6}_generated.bend`, `proofs/obj/coll_bytes_generated.bend`,
+and the seven witnesses `e2e/l{1099511627776_u64,1099511627776_u8,128_u64,131072_u64,16777216_b32,4096_b2048,4096_b48}_api_witness_generated.bend`.
+`tools/verify_frozen.py` without `--update` names exactly these and no other file. src/obj.bend (the roots, `words_zero`, the checked decoder) and the encode types
+(the size pass of boxes, CH-12) are not reached by a frozen statement.

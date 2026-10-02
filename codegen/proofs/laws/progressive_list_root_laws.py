@@ -299,6 +299,8 @@ import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_obj.bend as WO
 import ./list_root.bend as LR
+import ./words_cap.bend as WC
+import ./words_canon.bend as WCN
 import ./list_obj.bend as LO
 import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
@@ -348,8 +350,12 @@ def pdig(+hl: Nat, o: O.Words, +sh: Nat) -> D.Digest:
 def prog_st(+hl: Nat, -h: B.Buf, +t: F.array__Tree<U32>, +N: U32, +seg: U32, +sh: Nat, +dw: Nat,
     +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool},
-    +hn: {Nat.is_le(O.e8(O.chunks_of(N)), F.spec_common__pow2(dw)) == True{} : Bool})
+    +hn: {Nat.is_le(O.e8(O.chunks_of(N)), F.spec_common__pow2(dw)) == True{} : Bool},
+    +cn: {O.wcn_k(O.chunks_of(N), N, F.u32__pow2u(dw), F.array__thaw(U32, t)) == (F.array__thaw(U32, t), True{}) : Array<U32> & Bool})
     -> {O.mix_count(hl, sh, O.words_root_prog(hl, h, O.Words{F.array__thaw(U32, t), N}, seg)) == (h, (O.Words{F.array__thaw(U32, t), N}, pdig(hl, O.Words{F.array__thaw(U32, t), N}, sh))) : B.Buf & (O.Words & D.Digest)}:
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root_prog(hl, h, O.Words{F.array__thaw(U32, t), N}, seg), O.mt_words(N, O.prog_root(hl, O.LWords{}, O.chunks_of(N), h, F.array__thaw(U32, t))),
+      WC.wrp_unfold(hl, h, seg, N, dw, t, pf, hd, hn, cn)) :
+    {O.mix_count(hl, sh, _) == (h, (O.Words{F.array__thaw(U32, t), N}, pdig(hl, O.Words{F.array__thaw(U32, t), N}, sh))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.ptree(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, O.LWords{}, 0n, 0n, O.chunks_of(N), (h, (F.array__thaw(U32, t), D.zero()))),
       (h, (F.array__thaw(U32, t), PR.pr(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), MR.clist(O.chunks_of(N), F.array__slots(U32, t), 0n)))),
       PR.pt_run(1n+O.chunks_of(N), Nat.is_lt(0n, O.chunks_of(N)), hl, 0n, 0n, O.chunks_of(N), dw, t, h, D.zero(), {==}, hd, pf, hn)) :
@@ -383,7 +389,7 @@ def pl_st(+hl: Nat, -h: B.Buf, -o: O.Words, +seg: U32, +sh: Nat, +wf: LO.wfl(o))
       (+hd, +en0) = w5
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
         {O.mix_count(hl, sh, O.words_root_prog(hl, h, _, seg)) == (h, (_, pdig(hl, _, sh))) : B.Buf & (O.Words & D.Digest)}
-      prog_st(hl, h, t, N, seg, sh, dw, hd, pf, hn0(N, dw, en0))
+      prog_st(hl, h, t, N, seg, sh, dw, hd, pf, hn0(N, dw, en0), WCN.canon0(N, F.u32__pow2u(dw), F.array__thaw(U32, t), Equal.cong(Nat, Nat, z => Nat.div(Nat.add(z, 31n), 32n), U32.to_nat(N), 0n, en0)))
     case Inr{w}:
       (+t, w1) = w
       (+dw, w2) = w1
@@ -399,7 +405,7 @@ def pl_st(+hl: Nat, -h: B.Buf, -o: O.Words, +seg: U32, +sh: Nat, +wf: LO.wfl(o))
       (+room, +slack) = w11
       %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
         {O.mix_count(hl, sh, O.words_root_prog(hl, h, _, seg)) == (h, (_, pdig(hl, _, sh))) : B.Buf & (O.Words & D.Digest)}
-      prog_st(hl, h, t, N, seg, sh, dw, hd, pf, hn1(N, q, r, dw, enq, h1, h32, room))
+      prog_st(hl, h, t, N, seg, sh, dw, hd, pf, hn1(N, q, r, dw, enq, h1, h32, room), WCN.canon1(N, q, r, dw, t, enq, h1, h32, hd, pf, room, slack))
 
 # The chunks of nonempty storage merkleize progressively to the bytes of pr.
 def pl_merk(+hl: Nat, +ehl: {hl == 64n : Nat}, +q: Nat, +dw: Nat, +t: F.array__Tree<U32>,

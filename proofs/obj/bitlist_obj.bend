@@ -14,6 +14,7 @@ import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
 import ./words_root_light.bend as WR_L
+import ./words_cap.bend as WC
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./schema_shapes_generated.bend as SH
@@ -78,6 +79,9 @@ def bst(+hl: Nat, -h: B.Buf, -o: O.Bits, +dU: U32, +seg: U32, +depth: Nat, +wf: 
         {O.bits_root(hl, h, _, dU, seg) == (h, (_, bdig(hl, _, depth))) : B.Buf & (O.Bits & D.Digest)}
       %Equal.sym(U32, K, 0, kz) :
         {O.bits_root(hl, h, O.Bits{F.array__thaw(U32, t), _}, dU, seg) == (h, (O.Bits{F.array__thaw(U32, t), _}, bdig(hl, O.Bits{F.array__thaw(U32, t), _}, depth))) : B.Buf & (O.Bits & D.Digest)}
+      %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(hl, h, O.Words{F.array__thaw(U32, t), O.bits_nbytes(0)}, dU, seg), O.mt_words(O.bits_nbytes(0), O.mtree(U32.to_nat(dU), 0n, Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, O.LWords{}, O.pow2n(U32.to_nat(dU)), 0n, O.chunks_of(O.bits_nbytes(0)), (h, (F.array__thaw(U32, t), D.zero())))),
+          WC.wr_unfold0(hl, h, dU, seg, O.bits_nbytes(0), dw, t, pf, hd, {==})) :
+        {O.bits_rooted(hl, 0, _) == (h, (O.Bits{F.array__thaw(U32, t), 0}, bdig(hl, O.Bits{F.array__thaw(U32, t), 0}, depth))) : B.Buf & (O.Bits & D.Digest)}
       %Equal.sym(Nat, U32.to_nat(dU), depth, edu) :
         {O.bits_rooted(hl, 0, O.mt_words(O.bits_nbytes(0), O.mtree(_, 0n, Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, O.LWords{}, O.pow2n(_), 0n, O.chunks_of(O.bits_nbytes(0)), (h, (F.array__thaw(U32, t), D.zero()))))) == (h, (O.Bits{F.array__thaw(U32, t), 0}, bdig(hl, O.Bits{F.array__thaw(U32, t), 0}, depth))) : B.Buf & (O.Bits & D.Digest)}
       %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.mtree(depth, 0n, False{}, hl, O.LWords{}, O.pow2n(depth), 0n, 0n, (h, (F.array__thaw(U32, t), D.zero()))), (h, (F.array__thaw(U32, t), MD.rtree(depth, False{}, hl, MR.clist(0n, F.array__slots(U32, t), 0n), 0n))),

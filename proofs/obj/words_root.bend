@@ -18,6 +18,8 @@ import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root_light.bend as LV
+import ./words_cap.bend as WC
+import ./words_canon.bend as WCN
 
 # Roots of packed byte storage (O.Words) against the specification.
 #
@@ -92,6 +94,12 @@ def bv_state(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +N: U32, +depth: Nat, +q:
     +slack: {WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
     +edu: {U32.to_nat(dU) == depth : Nat}, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool})
     -> {O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}:
+  +hcn = Equal.trans(Nat, O.chunks_of(N), Nat.div(Nat.add(Nat.add(WS.e32(q), r), 31n), 32n), 1n+q,
+    Equal.cong(Nat, Nat, z => Nat.div(Nat.add(z, 31n), 32n), U32.to_nat(N), Nat.add(WS.e32(q), r), en), WS.chunks_count(q, r, h1, h32))
+  +hcap = F.logic__subst(Nat, z => {Nat.is_le(O.e8(z), F.spec_common__pow2(dw)) == True{} : Bool}, 1n+q, O.chunks_of(N), Equal.sym(Nat, O.chunks_of(N), 1n+q, hcn), cap)
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg),
+      O.mt_words(N, O.mtree(U32.to_nat(dU), 0n, Nat.is_lt(0n, O.chunks_of(N)), hl, O.LWords{}, O.pow2n(U32.to_nat(dU)), 0n, O.chunks_of(N), (h, (F.array__thaw(U32, t), D.zero())))), WC.wr_unfold(hl, h, dU, seg, N, dw, t, pf, hd, hcap, WCN.canon1(N, q, r, dw, t, en, h1, h32, hd, pf, cap, slack))) :
+    {_ == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(dU), depth, edu) :
     {O.mt_words(N, O.mtree(_, 0n, Nat.is_lt(0n, O.chunks_of(N)), hl, O.LWords{}, O.pow2n(_), 0n, O.chunks_of(N), (h, (F.array__thaw(U32, t), D.zero())))) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, True{}, hl, MR.clist(1n+q, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), en) :

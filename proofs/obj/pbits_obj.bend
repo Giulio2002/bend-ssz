@@ -14,6 +14,8 @@ import ../../proofs/nat_order.bend as Order
 import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
 import ./words_root_light.bend as WR
+import ./words_cap.bend as WC
+import ./words_canon.bend as WCN
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./schema_shapes_generated.bend as SH
@@ -58,8 +60,12 @@ def pow2_eq(d):
 def pst(+hl: Nat, -h: B.Buf, +t: F.array__Tree<U32>, +K: U32, +seg: U32, +dw: Nat,
     +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool},
-    +hn: {Nat.is_le(O.e8(O.chunks_of(O.bits_nbytes(K))), F.spec_common__pow2(dw)) == True{} : Bool})
+    +hn: {Nat.is_le(O.e8(O.chunks_of(O.bits_nbytes(K))), F.spec_common__pow2(dw)) == True{} : Bool},
+    +cn: {O.wcn_k(O.chunks_of(O.bits_nbytes(K)), O.bits_nbytes(K), F.u32__pow2u(dw), F.array__thaw(U32, t)) == (F.array__thaw(U32, t), True{}) : Array<U32> & Bool})
     -> {O.bits_root_prog(hl, h, O.Bits{F.array__thaw(U32, t), K}, seg) == (h, (O.Bits{F.array__thaw(U32, t), K}, pbdig(hl, O.Bits{F.array__thaw(U32, t), K}))) : B.Buf & (O.Bits & D.Digest)}:
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root_prog(hl, h, O.Words{F.array__thaw(U32, t), O.bits_nbytes(K)}, seg), O.mt_words(O.bits_nbytes(K), O.prog_root(hl, O.LWords{}, O.chunks_of(O.bits_nbytes(K)), h, F.array__thaw(U32, t))),
+      WC.wrp_unfold(hl, h, seg, O.bits_nbytes(K), dw, t, pf, hd, hn, cn)) :
+    {O.bits_rooted(hl, K, _) == (h, (O.Bits{F.array__thaw(U32, t), K}, pbdig(hl, O.Bits{F.array__thaw(U32, t), K}))) : B.Buf & (O.Bits & D.Digest)}
   %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.ptree(1n+O.chunks_of(O.bits_nbytes(K)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(K))), hl, O.LWords{}, 0n, 0n, O.chunks_of(O.bits_nbytes(K)), (h, (F.array__thaw(U32, t), D.zero()))),
       (h, (F.array__thaw(U32, t), PR.pr(1n+O.chunks_of(O.bits_nbytes(K)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(K))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(K)), MR.clist(O.chunks_of(O.bits_nbytes(K)), F.array__slots(U32, t), 0n)))),
       PR.pt_run(1n+O.chunks_of(O.bits_nbytes(K)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(K))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(K)), dw, t, h, D.zero(), {==}, hd, pf, hn)) :
@@ -92,7 +98,7 @@ def pbst(+hl: Nat, -h: B.Buf, -o: O.Bits, +seg: U32, +wf: BO_L.wfb(o))
         {O.bits_root_prog(hl, h, _, seg) == (h, (_, pbdig(hl, _))) : B.Buf & (O.Bits & D.Digest)}
       %Equal.sym(U32, K, 0, kz) :
         {O.bits_root_prog(hl, h, O.Bits{F.array__thaw(U32, t), _}, seg) == (h, (O.Bits{F.array__thaw(U32, t), _}, pbdig(hl, O.Bits{F.array__thaw(U32, t), _}))) : B.Buf & (O.Bits & D.Digest)}
-      pst(hl, h, t, 0, seg, dw, hd, pf, LR.zero_le(F.spec_common__pow2(dw)))
+      pst(hl, h, t, 0, seg, dw, hd, pf, LR.zero_le(F.spec_common__pow2(dw)), WCN.canon0(O.bits_nbytes(0), F.u32__pow2u(dw), F.array__thaw(U32, t), {==}))
     case Inr{w}:
       (+t, w1) = w
       (+dw, w2) = w1
@@ -111,7 +117,7 @@ def pbst(+hl: Nat, -h: B.Buf, -o: O.Bits, +seg: U32, +wf: BO_L.wfb(o))
       (+hbc, +hln) = w14
       %Equal.sym(O.Bits, o, O.Bits{F.array__thaw(U32, t), K}, eo) :
         {O.bits_root_prog(hl, h, _, seg) == (h, (_, pbdig(hl, _))) : B.Buf & (O.Bits & D.Digest)}
-      pst(hl, h, t, K, seg, dw, hd, pf, pb_hn1(K, q, r, dw, enq, h1, h32, room))
+      pst(hl, h, t, K, seg, dw, hd, pf, pb_hn1(K, q, r, dw, enq, h1, h32, room), WCN.canon1(O.bits_nbytes(K), q, r, dw, t, enq, h1, h32, hd, pf, room, slack))
 
 # ---- the specification root ---------------------------------------------------------
 

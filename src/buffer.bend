@@ -23,6 +23,16 @@ def size(b: Buf) -> Buf & U32:
   match b:
     case Buf{ws, +n}: (Buf{ws, n}, n)
 
+# The words the array of the buffer really holds. `Buf{ws, size}` is a public constructor, so `size` is a claim; a window is inside
+# the buffer only if it is inside this storage too (docs/CRASH_HUNT.md R2-04).
+def stored_fin(+n: U32, pair: Array<U32> & U32) -> Buf & U32:
+  (ws, +c) = pair
+  (Buf{ws, n}, c)
+
+def stored(b: Buf) -> Buf & U32:
+  match b:
+    case Buf{ws, +n}: stored_fin(n, Array.size(U32, ws))
+
 def rewrap(+n: U32, pair: Array<U32> & U32) -> Buf & U32:
   (ws, w) = pair
   (Buf{ws, n}, w)

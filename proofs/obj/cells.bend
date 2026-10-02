@@ -16,6 +16,7 @@ import ./mtree_spec.bend as MS
 import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root_light.bend as WR
+import ./words_cap.bend as WC
 import ./spec_fixed.bend as FX
 import ./elems_obj.bend as EL
 import ../../spec/codec.bend as Codec
@@ -266,6 +267,9 @@ def ev_st(+hl: Nat, -h: B.Buf, -o: O.Words, +dU: U32, +seg: U32, +depth: Nat, +w
   (+hd, +room) = w5
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
     {O.elems_root(hl, h, _, 512, 6, dU, seg) == (h, (_, edig(hl, _, depth))) : B.Buf & (O.Words & D.Digest)}
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.elems_root(hl, h, O.Words{F.array__thaw(U32, t), N}, 512, 6, dU, seg), O.er_cnt(hl, h, 512, 6, dU, N, F.array__thaw(U32, t), U32.to_nat(U32.div(N, (4 * 512 : U32)))),
+      WC.er_unfold(hl, h, 512, 6, dU, seg, N, dw, t, pf, hd, room)) :
+    {_ == (h, (O.Words{F.array__thaw(U32, t), N}, edig(hl, O.Words{F.array__thaw(U32, t), N}, depth))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(dU), depth, edu) :
     {O.mt_words(N, O.mtree(_, 0n, Nat.is_lt(0n, LV.kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(_), 0n, LV.kc(N), (h, (F.array__thaw(U32, t), D.zero())))) == (h, (O.Words{F.array__thaw(U32, t), N}, edig(hl, O.Words{F.array__thaw(U32, t), N}, depth))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(B.Buf & (Array<U32> & D.Digest), O.mtree(depth, 0n, Nat.is_lt(0n, LV.kc(N)), hl, O.LElems{512n, 6n, 64n}, O.pow2n(depth), 0n, LV.kc(N), (h, (F.array__thaw(U32, t), D.zero()))),

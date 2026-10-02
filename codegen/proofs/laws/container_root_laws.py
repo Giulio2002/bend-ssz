@@ -51,7 +51,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./root_support.bend as RS', 'import ./words_obj.bend as WO', 'import ./list_obj.bend as LO',
         'import ./pv_obj.bend as PV', 'import ./bitlist_obj.bend as BO', 'import ./cells.bend as CE', 'import ./obj_support.bend as OS', 'import ./root_names.bend as RN',
         'import ./ulist_obj.bend as UL', 'import ./lim_ul.bend as LUL', 'import ./lim_leaf.bend as LLF', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
-        'import ./mtree_run.bend as MR', 'import ./list_root.bend as LR', 'import ../../spec/codec.bend as Codec',
+        'import ./mtree_run.bend as MR', 'import ./list_root.bend as LR', 'import ./words_cap.bend as WC', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
 
@@ -1584,6 +1584,10 @@ class Gen:
             w('  (+hd, +hn) = w5')
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
         w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Array<{RX}> & U32, Array.size({RX}, {Ts}), ({Ts}, F.u32__pow2u(dw)), F.array__size_thaw({RX}, dw, t, pf)) :')
+        w(f'    {{T.{p}_rt_sz(hl, N, h, seg, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{{}}, WC.le_u32_pow2(N, dw, hd, hn)) :')
+        w(f'    {{T.{p}_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), {Ts}) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
         w(f'  %Equal.sym({TY}, T.{p}_mt0({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, U32.to_nat(N), (h, ({Ts}, D.zero()))), (h, ({Ts}, MD.rtree({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, {XLo}, 0n))),')
         w(f'      xmt0_{p}({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, dw, t, U32.to_nat(N), h, D.zero(), {{==}}, hd, pf, hn)) :')
         w(f'    {{T.{p}_rt_fin(hl, N, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
@@ -1746,6 +1750,10 @@ class Gen:
         dest()
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
         w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Array<{RX}> & U32, Array.size({RX}, {Ts}), ({Ts}, F.u32__pow2u(dw)), F.array__size_thaw({RX}, dw, t, pf)) :')
+        w(f'    {{T.{p}_rt_sz(hl, N, h, seg, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{{}}, WC.le_u32_pow2(N, dw, hd, hn)) :')
+        w(f'    {{T.{p}_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), {Ts}) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
         w(f'  %Equal.sym({TY}, T.{p}_ptr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, (h, ({Ts}, D.zero()))), (h, ({Ts}, {PRo})),')
         w(f'      xpt_{p}(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, dw, t, h, D.zero(), {{==}}, hd, pf, hn)) :')
         w(f'    {{T.{p}_rt_fin(hl, N, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
@@ -2094,6 +2102,10 @@ class Gen:
         w('  (+hn, +er) = w6')
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
         w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Array<{BR}> & U32, Array.size({BR}, {Ts}), ({Ts}, F.u32__pow2u(dw)), amsize_{p}(dw, t, pf)) :')
+        w(f'    {{T.{p}_rt_sz(hl, N, h, seg, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{{}}, WC.le_u32_pow2(N, dw, hd, hn)) :')
+        w(f'    {{T.{p}_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), {Ts}) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
         w(f'  %Equal.sym({TY}, T.{p}_mt0({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, U32.to_nat(N), (h, ({Ts}, D.zero()))), (h, ({Ts}, MD.rtree({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, {XLo}, 0n))),')
         w(f'      xmt0_{p}({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, dw, t, U32.to_nat(N), h, D.zero(), {{==}}, hd, pf, hn, SH.ListOf_element(s), er)) :')
         w(f'    {{T.{p}_rt_fin(hl, N, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
@@ -2290,6 +2302,10 @@ class Gen:
         dest()
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
         w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Array<{BR}> & U32, Array.size({BR}, {Ts}), ({Ts}, F.u32__pow2u(dw)), amsize_{p}(dw, t, pf)) :')
+        w(f'    {{T.{p}_rt_sz(hl, N, h, seg, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{{}}, WC.le_u32_pow2(N, dw, hd, hn)) :')
+        w(f'    {{T.{p}_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), {Ts}) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
         w(f'  %Equal.sym({TY}, T.{p}_ptr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, (h, ({Ts}, D.zero()))), (h, ({Ts}, {PRo})),')
         w(f'      xpt_{p}(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, dw, t, h, D.zero(), {{==}}, hd, pf, hn, {sE}, er)) :')
         w(f'    {{T.{p}_rt_fin(hl, N, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')

@@ -23,6 +23,7 @@ import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
 import ./words_root_light.bend as WR_L
+import ./words_cap.bend as WC
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./list_obj_light.bend as LO
@@ -138,6 +139,9 @@ def wr0(+hl: Nat, -h: B.Buf, +dU: U32, +seg: U32, +N: U32, +depth: Nat, +dw: Nat
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat}, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool})
     -> {O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, False{}, hl, MR.clist(0n, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}:
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(hl, h, O.Words{F.array__thaw(U32, t), N}, dU, seg), O.mt_words(N, O.mtree(U32.to_nat(dU), 0n, Nat.is_lt(0n, O.chunks_of(N)), hl, O.LWords{}, O.pow2n(U32.to_nat(dU)), 0n, O.chunks_of(N), (h, (F.array__thaw(U32, t), D.zero())))),
+      WC.wr_unfold0(hl, h, dU, seg, N, dw, t, pf, hd, Equal.cong(Nat, Nat, z => Nat.div(Nat.add(z, 31n), 32n), U32.to_nat(N), 0n, en))) :
+    {_ == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, False{}, hl, MR.clist(0n, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(dU), depth, edu) :
     {O.mt_words(N, O.mtree(_, 0n, Nat.is_lt(0n, O.chunks_of(N)), hl, O.LWords{}, O.pow2n(_), 0n, O.chunks_of(N), (h, (F.array__thaw(U32, t), D.zero())))) == (h, (O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, False{}, hl, MR.clist(0n, F.array__slots(U32, t), 0n), 0n))) : B.Buf & (O.Words & D.Digest)}
   %Equal.sym(Nat, U32.to_nat(N), 0n, en) :

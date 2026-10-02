@@ -892,13 +892,149 @@ def mt_words(+n: U32, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Words &
 # the proofs reason about it with Nat division alone).
 def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
 
+# The number of items a root hashes: the object's own count k, bounded by the storage. An object whose storage holds its items
+# (m = u * k words of u-word items, at most the storage's w words: every object the API builds) is hashed whole, so its root is the
+# specification's; an object that claims more than its storage holds (not valid: `X_valid` is False) is hashed over the items the
+# storage holds, w / u, so the work is bounded by the allocation and not by the claim (docs/CRASH_HUNT.md CH-03: a 16-byte object
+# claiming 2^32 - 1 bytes took 75 s).
+def cap_cnt_go(ok: Bool, +k: Nat, +u: Nat, +w: Nat) -> Nat:
+  match ok:
+    case True{}: k
+    case False{}: Nat.div(w, u)
+
+def cap_cnt(+k: Nat, +m: Nat, +u: Nat, +w: Nat) -> Nat: cap_cnt_go(Nat.is_le(m, w), k, u, w)
+
 # Root of the packed bytes as `depth` levels of chunks (a vector or a list's
 # data tree; a list mixes its length in afterwards).
+def wr_cnt(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+
+# Bytes r..3 of x are zero (r = n mod 4; r = 0 means the word is not a tail).
+def tail_zero(+r: U32, +x: U32) -> Bool:
+  match r:
+    case 0: True{}
+    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
+    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
+    case _: U32.is_eq(U32.shrn(x, 24n), 0)
+
+def e32(+x: Nat) -> Nat: Nat.double(Nat.double(e8(x)))
+
+# Is the storage clean: no byte past the length in the words up to the end of the last chunk of the n bytes? The root hashes whole chunks, so
+# the bytes of the last chunk past the length are part of its digest: an object a caller builds by hand may hold anything there while `X_valid`
+# is True (it needs only that the rest of its last word is zero), and its root would not be the root of its bytes (docs/CRASH_HUNT.md R2-02 (b)).
+# `wcn` reads the partial word and the eight words of the last chunk (the chunk q of 8 words; the length is 32 q + rN, 1 <= rN <= 32): a word
+# that holds only bytes past the length is zero. It reads words of the first chunks of storage only after the capacity test (`wr_size`).
+def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(q), j)))
+
+def lc_step(+rN: Nat, +c: Nat, acc: Bool, pair: Array<U32> & U32) -> Array<U32> & Bool:
+  (ws, +x) = pair
+  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
+
+def lc_s7(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_step(rN, 28n, acc, lc_read(q, 7n, ws))
+
+def lc_s6(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s7(q, rN, lc_step(rN, 24n, acc, lc_read(q, 6n, ws)))
+
+def lc_s5(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 5n, ws)))
+
+def lc_s4(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s5(q, rN, lc_step(rN, 16n, acc, lc_read(q, 4n, ws)))
+
+def lc_s3(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s4(q, rN, lc_step(rN, 12n, acc, lc_read(q, 3n, ws)))
+
+def lc_s2(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s3(q, rN, lc_step(rN, 8n, acc, lc_read(q, 2n, ws)))
+
+def lc_s1(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s2(q, rN, lc_step(rN, 4n, acc, lc_read(q, 1n, ws)))
+
+def lc_s0(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, acc) = pair
+  lc_s1(q, rN, lc_step(rN, 0n, acc, lc_read(q, 0n, ws)))
+
+# the partial word of the last byte (the capacity c is read first: the word is past the storage only when the length is a multiple of 4)
+def wcn_tz(+n: U32, +c: U32, pair: Array<U32> & U32) -> Array<U32> & Bool:
+  (ws, +x) = pair
+  (ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
+
+def wcn_c(+q: Nat, +rN: Nat, pair: Array<U32> & Bool) -> Array<U32> & Bool:
+  (ws, ok) = pair
+  match ok:
+    case True{}: lc_s0(q, rN, (ws, True{}))
+    case False{}: (ws, False{})
+
+def wcn_t(+n: U32, +c: U32, +q: Nat, +rN: Nat, ws: Array<U32>) -> Array<U32> & Bool:
+  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 2n))))
+
+def wcn_k(+k: Nat, +n: U32, +c: U32, ws: Array<U32>) -> Array<U32> & Bool:
+  match k:
+    case 0n: (ws, True{})
+    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
+
+# The root reads whole chunks: 8 * chunks_of(n) words. Every object the API builds has them (and zero words past its last byte), and the
+# object a proof represents too. An object a caller builds by hand may hold fewer words than that while `X_valid` is True (it needs only
+# ceil(n / 4) words): its root is the root of its bytes in a zero-padded copy of whole chunks (docs/CRASH_HUNT.md R2-02 (c); the unclean
+# words of the copy are cleared), and one whose storage does not even hold ceil(n / 4) words is hashed over the chunks the storage holds,
+# so the work is bounded by the allocation either way (CH-03).
+def cc_go(+k: Nat, +j: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  match k pair:
+    case 0n Tuple{ws, x}: (out, ws)
+    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 1 : U32)))
+
+def cc_fin(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
+  (out, ws) = pair
+  (mask_last(n, out), ws)
+
+# The words of the n bytes of ws in storage of whole chunks, zero past them; the pair is that copy and the array it was read from.
+def words_copy(+n: U32, ws: Array<U32>) -> Array<U32> & Array<U32>:
+  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
+
+def wr_swap(ws: Array<U32>, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Words & D.Digest):
+  (h, r) = pair
+  (w, d) = r
+  match w:
+    case Words{out, +n}: (h, (Words{ws, n}, d))
+
+def wr_clean(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & (Words & D.Digest):
+  (out, ws) = pair
+  wr_swap(ws, wr_cnt(hl, h, depth, n, out, chunks_of(n)))
+
+def wr_slow(covered: Bool, +hl: Nat, h: B.Buf, +depth: U32, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match covered:
+    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+    case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
+
+def wr_fit(roomy: Bool, +hl: Nat, h: B.Buf, +depth: U32, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match roomy:
+    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+    case False{}: wr_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+
+def wr_zc(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, +sz: U32, pair: Array<U32> & Bool) -> B.Buf & (Words & D.Digest):
+  (ws, ok) = pair
+  wr_fit(ok, hl, h, depth, n, sz, ws)
+
+def wr_cap(capok: Bool, +hl: Nat, h: B.Buf, +depth: U32, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match capok:
+    case True{}: wr_zc(hl, h, depth, n, sz, wcn_k(chunks_of(n), n, sz, ws))
+    case False{}: wr_fit(False{}, hl, h, depth, n, sz, ws)
+
+def wr_size(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, pair: Array<U32> & U32) -> B.Buf & (Words & D.Digest):
+  (ws, +sz) = pair
+  wr_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+
 def words_root(+hl: Nat, h: B.Buf, w: Words, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
-    case Words{ws, +n}:
-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
-        chunks_of(n), (h, (ws, D.zero()))))
+    case Words{ws, +n}: wr_size(hl, h, depth, n, Array.size(U32, ws))
 
 # ---- progressive merkleization -------------------------------------------
 # merkleize_progressive (spec/progressive.bend): the zero chunk for no chunks,
@@ -931,9 +1067,39 @@ def prog_root(+hl: Nat, +lf: Leaf, +n: Nat, h: B.Buf, ws: Array<U32>) -> B.Buf &
   ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
 
 # Root of the packed bytes as a progressive chunk tree, without the length mix.
+def wrp_cnt(+hl: Nat, h: B.Buf, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+  mt_words(n, prog_root(hl, LWords{}, k, h, ws))
+
+def wrp_clean(+hl: Nat, h: B.Buf, +n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & (Words & D.Digest):
+  (out, ws) = pair
+  wr_swap(ws, wrp_cnt(hl, h, n, out, chunks_of(n)))
+
+def wrp_slow(covered: Bool, +hl: Nat, h: B.Buf, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match covered:
+    case True{}: wrp_clean(hl, h, n, words_copy(n, ws))
+    case False{}: wrp_cnt(hl, h, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
+
+def wrp_fit(roomy: Bool, +hl: Nat, h: B.Buf, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match roomy:
+    case True{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
+    case False{}: wrp_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)
+
+def wrp_zc(+hl: Nat, h: B.Buf, +n: U32, +sz: U32, pair: Array<U32> & Bool) -> B.Buf & (Words & D.Digest):
+  (ws, ok) = pair
+  wrp_fit(ok, hl, h, n, sz, ws)
+
+def wrp_cap(capok: Bool, +hl: Nat, h: B.Buf, +n: U32, +sz: U32, ws: Array<U32>) -> B.Buf & (Words & D.Digest):
+  match capok:
+    case True{}: wrp_zc(hl, h, n, sz, wcn_k(chunks_of(n), n, sz, ws))
+    case False{}: wrp_fit(False{}, hl, h, n, sz, ws)
+
+def wrp_size(+hl: Nat, h: B.Buf, +n: U32, pair: Array<U32> & U32) -> B.Buf & (Words & D.Digest):
+  (ws, +sz) = pair
+  wrp_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, n, sz, ws)
+
 def words_root_prog(+hl: Nat, h: B.Buf, w: Words, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
-    case Words{ws, +n}: mt_words(n, prog_root(hl, LWords{}, chunks_of(n), h, ws))
+    case Words{ws, +n}: wrp_size(hl, h, n, Array.size(U32, ws))
 
 # ---- bit lists ------------------------------------------------------------
 # A Bitlist is held as its bits (Words.n = number of bits, bytes ceil(n/8)),
@@ -1072,21 +1238,30 @@ def mix_count(+hl: Nat, +shift: Nat, pair: B.Buf & (Words & D.Digest)) -> B.Buf 
 
 
 # Root of a packed sequence of `ew`-word byte vectors: element trees of depth
-# `ed`, the sequence tree of depth `depth`.
+# `ed`, the sequence tree of depth `depth`. The element count is bounded by the storage like the chunk count of words_root.
+def er_cnt(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
+    LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+    pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+
+def er_size(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +depth: U32, +n: U32, pair: Array<U32> & U32) -> B.Buf & (Words & D.Digest):
+  (ws, +sz) = pair
+  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
+
 def elems_root(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
-    case Words{ws, +n}:
-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew : U32)))), hl,
-        LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
-        pow2n(U32.to_nat(depth)), 0n, U32.to_nat(U32.div(n, (4 * ew : U32))), (h, (ws, D.zero()))))
+    case Words{ws, +n}: er_size(hl, h, ew, ed, depth, n, Array.size(U32, ws))
 
 # The same over a progressive tree (a progressive list of fixed-size byte
 # vectors); each element's own tree is still binary.
+def erp_size(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +n: U32, pair: Array<U32> & U32) -> B.Buf & (Words & D.Digest):
+  (ws, +sz) = pair
+  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+    cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)), h, ws))
+
 def elems_root_prog(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
-    case Words{ws, +n}:
-      mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
-        U32.to_nat(U32.div(n, (4 * ew : U32))), h, ws))
+    case Words{ws, +n}: erp_size(hl, h, ew, ed, n, Array.size(U32, ws))
 
 # ---- boxed fields ------------------------------------------------------------
 # The native backend lays every non-recursive record out inline, and no
@@ -1315,6 +1490,13 @@ def pow2u(+d: Nat) -> U32:
     case 0n: 1
     case 1n+q: U32.shl(pow2u(q))
 
+# A cache depth the array can hold: below 32 and with 2^d slots within the array's size (docs/CRASH_HUNT.md R2-03). A depth the array
+# cannot hold would allocate 2^(1 + d) digests from a claim.
+def cache_dok(fits: Bool, +d: Nat, +c: U32) -> Bool:
+  match fits:
+    case True{}: U32.is_le(pow2u(d), c)
+    case False{}: False{}
+
 def nat_u32(+d: Nat) -> U32:
   match d:
     case 0n: 0
@@ -1432,14 +1614,6 @@ def dump_bits_n(b: Bits, t: +List<U32>) -> +List<U32>:
 # checks, and the public `{Name}_serialize` refuses an invalid value instead
 # of truncating, wrapping or merging it. Every check is O(1) per packed
 # collection except the boolean scan, which is O(words).
-
-# Bytes r..3 of x are zero (r = n mod 4; r = 0 means the word is not a tail).
-def tail_zero(+r: U32, +x: U32) -> Bool:
-  match r:
-    case 0: True{}
-    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
-    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
-    case _: U32.is_eq(U32.shrn(x, 24n), 0)
 
 # Bits r..31 of x are zero, r = 0..31.
 def bits_above_zero(+r: U32, +x: U32) -> Bool:

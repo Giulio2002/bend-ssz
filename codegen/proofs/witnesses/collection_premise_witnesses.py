@@ -136,6 +136,7 @@ def build_stmt(ctx, mod, name, txt):
         return None, 'needs two distinct indices and the collection holds one element'
     mc = re.search(r'\{U32\.is_le\(\(n \+ 1 : U32\), (\d+)\) == False\{\}', alltext) or \
         re.search(r'\{U32\.is_lt\(n, (\d+)\) == False\{\}', alltext) or \
+        re.search(r'\{(?:Bool\.and\()?U32\.is_lt\(\(U32\.div\(n, \d+\)\), (\d+)\)(?:, U32\.is_eq\(vn, \d+\))?\)? == False\{\}', alltext) or \
         re.search(r'\{(?:Bool\.and\()?U32\.is_le\(\(\(U32\.div\(n, \d+\)\) \+ 1 : U32\), (\d+)\)(?:, U32\.is_eq\(vn, \d+\)\))? == False\{\}', alltext)
     if re.search(r'\{True\{\} == False\{\}', alltext):
         return None, ('the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never '
@@ -158,6 +159,7 @@ def build_stmt(ctx, mod, name, txt):
     if 'vws' in have:       # a cell argument taken apart (collection_api_laws.py): its storage and its length, the cell's size
         env['vws'] = f'Array.new(U32, {dd}n, 0)'
         env['vn'] = str(K)
+        env['vc'] = str(2 ** dd)    # the words of Array.new(U32, dd, 0): the premise es is its size
     env.update(rs_env)
     if 'tv' in have:
         env['tv'] = f'{FD}.array__trep(U32, {env.get("dv", str(dd) + "n")}, 0)'

@@ -156,10 +156,12 @@ def info(c):
         # argument as O.Words{vws, vn}; the laws then take vws and vn as parameters
         sv = body(t, c + '_set_v')
         I['vwords'] = bool(sv)
-        sb = (sv or body(t, c + '_set_n'))[2].split('\n')[-1].strip()
+        # the cell's guard also tests the words its storage holds (R2-05): `_set_w` / `_app_w` take the storage size `vc` as a pair
+        sw = body(t, c + '_set_w')
+        sb = (sw or sv or body(t, c + '_set_n'))[2].split('\n')[-1].strip()
         sb = re.sub(r'^case [^:]*: ', '', sb)
         I['GS'] = subst_n(call_args(sb, c + '_put_at')[0], I['ln'])
-        a = body(t, c + '_app_v') or body(t, c + '_app_n')
+        a = body(t, c + '_app_w') or body(t, c + '_app_v') or body(t, c + '_app_n')
         if a:
             ab = re.sub(r'^case [^:]*: ', '', a[2].split('\n')[-1].strip())
             fn = c + '_grow' if ab.startswith(c + '_grow(') else c + '_push'
@@ -221,6 +223,11 @@ def laws(I, imps):
         # the cell argument is taken apart: its storage (erased) and its length (the guard reads it)
         vb, V = '-vws: Array<U32>, +vn: U32', '%s{vws, vn}' % T
     VA = 'vws, vn' if I.get('vwords') else 'v'     # the argument names of the flag lemmas
+    VW = bool(I.get('vwords'))
+    # a cell's guard also reads the storage size of its argument (docs/CRASH_HUNT.md R2-05): the laws take it as `vc`, tied to the
+    # argument's array by the premise `es`, and first rewrite the runtime's `Array.size` to that pair
+    vbp = vb + ', +vc: U32, +es: {Array.size(U32, vws) == (vws, vc) : Array<U32> & U32}' if VW else vb
+    ESZ = '  %%Equal.sym(Array<U32> & U32, Array.size(U32, vws), (vws, vc), es) : {%s}'
     if I['kind'] == 'seq':
         EL = q(I['EL'])
         OBJ = '%s.%s{arr, n}' % (DA, I['T'])
@@ -242,9 +249,16 @@ def laws(I, imps):
     # the flags: exactly the guard (a case split on the guard's value)
     w('def %s_flag_set(b: Bool, %s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:' % (c, bind, vb, T, put('b')))
     w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
-    w('def %s_api_set_flag(%s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vb, T, SET, GS))
+    LNQ = I['ln'] if re.fullmatch(r'\w+', I['ln']) else '(%s)' % I['ln']
+    SETW = '%s.%s_set_w(i, %s, %s, vn, _)' % (DA, c, OBJ, LNQ)
+    APPW = '%s.%s_app_w(%s, %s, vn, _)' % (DA, c, OBJ, LNQ)
+    w('def %s_api_set_flag(%s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vbp, T, SET, GS))
+    if VW:
+        w(ESZ % ('Pair.snd(%s, Bool, %s) == %s : Bool' % (T, SETW, GS)))
     w('  %s_flag_set(%s, %s, i, %s)' % (c, GS, 'arr, n' if I['kind'] == 'seq' else 'ws, n', VA))
-    w('def %s_api_set_rejected(%s, +i: U32, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vb, GS, SET, OBJ, T))
+    w('def %s_api_set_rejected(%s, +i: U32, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vbp, GS, SET, OBJ, T))
+    if VW:
+        w(ESZ % ('%s == (%s, False{}) : %s & Bool' % (SETW, OBJ, T)))
     w('  %%Equal.sym(Bool, %s, False{}, e) : {%s == (%s, False{}) : %s & Bool}' % (GS, put('_'), OBJ, T))
     w('  {==}')
     w('def %s_api_get_outside(%s, +i: U32, +e: {%s == False{} : Bool}) -> {%s == (%s, None{}) : %s & Maybe<&1, %s>}:' % (c, bind, GG, GET, OBJ, T, ET))
@@ -254,9 +268,13 @@ def laws(I, imps):
     if GA:
         w('def %s_flag_append(b: Bool, %s, %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:' % (c, bind, vb, T, app('b')))
         w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
-        w('def %s_api_append_flag(%s, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vb, T, APP, GA))
+        w('def %s_api_append_flag(%s, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vbp, T, APP, GA))
+        if VW:
+            w(ESZ % ('Pair.snd(%s, Bool, %s) == %s : Bool' % (T, APPW, GA)))
         w('  %s_flag_append(%s, %s, %s)' % (c, GA, 'arr, n' if I['kind'] == 'seq' else 'ws, n', VA))
-        w('def %s_api_append_rejected(%s, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vb, GA, APP, OBJ, T))
+        w('def %s_api_append_rejected(%s, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vbp, GA, APP, OBJ, T))
+        if VW:
+            w(ESZ % ('%s == (%s, False{}) : %s & Bool' % (APPW, OBJ, T)))
         w('  %%Equal.sym(Bool, %s, False{}, e) : {%s == (%s, False{}) : %s & Bool}' % (GA, app('_'), OBJ, T))
         w('  {==}')
         n += 2
@@ -1069,10 +1087,18 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
     at = body(I['text'], c + '_at')
     K = m.group(2) if m else None
     # the setter's guard is the index test and the argument's length (the cell is exactly K bytes): GSV, the guard at a K-byte value
-    if not m or GS != 'Bool.and(%s, U32.is_eq(vn, %s))' % (GG, K) or I['ET'] != 'O.Words' or not at:
+    # (and the words its storage holds, R2-05: the guard reads the storage size `vc` of the argument)
+    if not m or GS != 'Bool.and(Bool.and(%s, U32.is_eq(vn, %s)), U32.is_le(%d, vc))' % (GG, K, int(K) // 4) or I['ET'] != 'O.Words' or not at:
         return 0
-    GSV = 'Bool.and(%s, U32.is_eq(%s, %s))' % (GG, K, K)
-    HGV = 'F.logic__and_intro(%s, U32.is_eq(%s, %s), hg, {==})' % (GG, K, K)
+    WU = int(K) // 4
+    LNC = I['ln'] if re.fullmatch(r'\w+', I['ln']) else '(%s)' % I['ln']
+    imps['WC'] = 'proofs/obj/words_cap.bend'
+    # the argument of the read-back laws is a perfect tree of depth dv holding its K bytes: its storage is 2^dv words, at least the cell's
+    GSV = 'Bool.and(Bool.and(%s, U32.is_eq(%s, %s)), U32.is_le(%d, F.u32__pow2u(dv)))' % (GG, K, K, WU)
+    HGV = ('F.logic__and_intro(Bool.and(%s, U32.is_eq(%s, %s)), U32.is_le(%d, F.u32__pow2u(dv)), F.logic__and_intro(%s, U32.is_eq(%s, %s), hg, {==}), '
+           'WC.le_u32_pow2(%d, dv, hdv, hv))' % (GG, K, K, WU, GG, K, K, WU))
+    SZV = ('  %%Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, tv)), (F.array__thaw(U32, tv), F.u32__pow2u(dv)), '
+           'F.array__size_thaw(U32, dv, tv, pfv)) : {%s}')
     GS = GG     # the laws below keep their hypothesis hg: {index test == True}; the length test at K evaluates
     assert at[2].strip() == 'O.words_slice(o, (i * %s : U32), %s)' % (K, K), at
     W = int(K) // 4
@@ -1103,6 +1129,7 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
       '+pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(%s, F.spec_common__pow2(dv)) == True{} : Bool}, '
       '+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, %s)' % (c, WN, GS, BASE, hr))
     w('    -> {%s == %s}:' % (GETF('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, %s))' % (DA, c, O0, V)), RES))
+    w(SZV % ('%s == %s' % (GETF('Pair.fst(O.Words, Bool, %s.%s_set_w(i, %s, %s, %s, _))' % (DA, c, O0, LNC, K)), RES)))
     w('  %%Equal.sym(Bool, %s, True{}, %s) : {%s == %s}' % (GSV, HGV, GETF('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RES))
     BLIT = lambda x: GETF('%s.%s_blit(O.bl_fin(%s, %s))' % (DA, c, K, x))
     w('  %%Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, tv), 0), (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n)), '
@@ -1149,6 +1176,7 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
       '+pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(%s, F.spec_common__pow2(dv)) == True{} : Bool}, '
       '+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, %s, %s, %s)' % (c, WN, GS, BASE, hr, hqe, hcap))
     w('    -> {%s == %s : S.Value}:' % (VEW('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, %s))' % (DA, c, O0, V)), RESV))
+    w(SZV % ('%s == %s : S.Value' % (VEW('Pair.fst(O.Words, Bool, %s.%s_set_w(i, %s, %s, %s, _))' % (DA, c, O0, LNC, K)), RESV)))
     w('  %%Equal.sym(Bool, %s, True{}, %s) : {%s == %s : S.Value}' % (GSV, HGV, VEW('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RESV))
     BL = lambda x: '%s.%s_blit(O.bl_fin(%s, %s))' % (DA, c, K, x)
     w('  %%Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, tv), 0), (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n)), '
