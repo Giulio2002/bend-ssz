@@ -141,3 +141,16 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +len: U32, ${VBY.P
   +c = YW.CHKw(t, Nat.add(${H}n, i), LL(len))
   +epo = FD.u32alg__eq_of(SPOw(t, i), ${FS}, chk_b(a, b, c, hchk))
   specw_go(d, t, n, i, len, pf, hd, hw, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
+
+@@ spec_part_seg_lines @@
+# Order.left_below_sum at a symbolic k, with the sum's literal part named 1 + k; instantiated at
+# k = H - 1 it converts to H + i without walking H - 1 in unary
+def lbs1(+k: Nat, +i: Nat) -> {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), Nat.add(Nat.add(1n, k), i)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), z) == True{} : Bool}, Nat.add(k, Nat.add(1n, Nat.add(0n, i))), Nat.add(Nat.add(1n, k), i), FD.nat__add_succ(k, i), Order.left_below_sum(k, Nat.add(1n, Nat.add(0n, i))))
+
+def winH(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +len: U32, ${VBY.PF}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, ${HA})
+    -> {VS.wtake(${H}n, VB.wdr(i, ${s})) == VZ.cat(${SEGSs}) : List<&2, U32>}:
+  +hsl = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(${H}n, i), z) == True{} : Bool}, VB.pw(d), VB.len(${s}), Equal.sym(Nat, VB.len(${s}), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), hHi(d, i, len, hw, ha))
+@@ spec_part_seg_lines_2 @@
+  %Equal.sym(${LT}, VZ.cat([]), [], VBZ.cat_nil()) : {${LHSF} == ${rpre('_')} : ${LT}}
+  {==}
