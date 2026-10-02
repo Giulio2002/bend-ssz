@@ -344,6 +344,28 @@ def main():
         out = pathlib.Path(sys.argv[3]) if len(sys.argv) > 3 and sys.argv[2] == '--json' else None
         if out: out.write_text(json.dumps(hidden, indent=1))
         for h in hidden: print('HIDDEN', h['rule'], h['file'].split('/')[-1], h['line'], h['col'], h['operator'], h['before'], '->', h['after'], h['verdict'], '|', h['why'], h['witness_n'])
+    elif cmd == 'migrate':
+        # rewrite tests_generated/mutation_exclusions.json with one entry per EQUIVALENT site (column added); the sibling sites the old key hid are
+        # dropped (they are drawn again), and so are the two entries this audit found unsound (ExecutionBranch flag, Transaction bound)
+        R = repo_text(); new = []
+        for e in EXCL:
+            rl = rule_of(e)
+            if rl == 'uncoverable' or (rl == 'poison-flag' and e['file'].endswith('FuluExecutionBranch_encode_ssz_generated.bend')): continue
+            for (i, col) in entry_sites(e):
+                if rl == 'unread-arg': v = check_unread(e, i, col)[0]
+                elif rl == 'words_ok': v = check_words(e, i, col)[0]
+                elif rl == 'bits_ok': v = check_bits(e, i, col)[0]
+                elif rl == 'boolvec': v = check_boolvec(e, i, col, R)[0]
+                else: v = 'EQUIVALENT'
+                if v in ('OK', 'EQUIVALENT'):
+                    ln = pathlib.Path(e['file']).read_text().split('\n')[i]
+                    new.append({**{k: e[k] for k in ('file', 'def', 'operator', 'before', 'after', 'text')}, 'col': col - (len(ln) - len(ln.lstrip())),
+                                'class': e['class'], 'reason': e['reason']})
+        d = json.loads(pathlib.Path('tests_generated/mutation_exclusions.json').read_text())
+        d['note'] = 'mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py; one entry per site: file, def, operator, literal, line text, column)'
+        d['entries'] = sorted(new, key=lambda e: (e['class'], e['file'], e['text'], e['col']))
+        pathlib.Path('tests_generated/mutation_exclusions.json').write_text(json.dumps(d, indent=1) + '\n')
+        print(len(EXCL), '->', len(new))
     elif cmd == 'laws-misc':
         out = pathlib.Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
         for n, t in MISC_LAWS.items(): (out / n).write_text(t)

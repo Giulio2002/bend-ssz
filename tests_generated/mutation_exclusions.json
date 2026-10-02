@@ -1,5 +1,5 @@
 {
- "note": "mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py)",
+ "note": "mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py; one entry per site: file, def, operator, literal, line text, column)",
  "entries": [
   {
    "file": "types/BitsStruct_decode_ssz_generated.bend",
@@ -8,6 +8,7 @@
    "before": "1",
    "after": "0",
    "text": "BitsStruct_rd3(off, len, o_f_A, o_f_D, f_A, bitvector_2_r.bv2_read(buf, (off + 4 : U32), 1))",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "argument never read: bitvector_2_r.bv2_read ignores its parameter len"
   },
@@ -18,6 +19,7 @@
    "before": "1",
    "after": "2",
    "text": "ComplexTestStruct_rd6(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, uint8_r.u8_read(buf, (off + 6 : U32), 1))",
+   "col": 108,
    "class": "proof-equivalent",
    "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
   },
@@ -28,6 +30,7 @@
    "before": "1",
    "after": "2",
    "text": "def FixedTestStruct_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FixedTestStruct_d.FixedTestStruct: FixedTestStruct_rd0(off, len, uint8_r.u8_read(buf, (off + 0 : U32), 1))",
+   "col": 173,
    "class": "proof-equivalent",
    "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
   },
@@ -38,6 +41,7 @@
    "before": "8",
    "after": "9",
    "text": "AttestationData_rd1(off, len, slot, uint64_r.u64_read(buf, (off + 8 : U32), 8))",
+   "col": 76,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -48,6 +52,7 @@
    "before": "8",
    "after": "7",
    "text": "def AttestationData_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluAttestationData_d.AttestationData: AttestationData_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 179,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -58,6 +63,7 @@
    "before": "20",
    "after": "19",
    "text": "BLSToExecutionChange_rd2(off, len, validator_index, from_bls_pubkey, FuluBytes20_r.b20_read(buf, (off + 56 : U32), 20))",
+   "col": 115,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
   },
@@ -68,6 +74,7 @@
    "before": "96",
    "after": "95",
    "text": "BeaconBlockBody_g0_rd5(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))",
+   "col": 175,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -78,6 +85,7 @@
    "before": "32",
    "after": "31",
    "text": "BeaconBlockBody_g0_rd7(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, eth1_data, FuluBytes32_r.b32_read(buf, (off + 168 : U32",
+   "col": 203,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -88,6 +96,7 @@
    "before": "8",
    "after": "9",
    "text": "def BeaconBlockHeader_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader: BeaconBlockHeader_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 187,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -98,6 +107,7 @@
    "before": "8",
    "after": "9",
    "text": "BeaconBlock_rd1(off, len, o_body, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 74,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -108,6 +118,7 @@
    "before": "1",
    "after": "2",
    "text": "BeaconState_g2_rd3(off, len, vend, o_current_epoch_participation, o_inactivity_scores, current_epoch_participation, Fulu_bitvector_4_r.bv4_read(buf, (off + 2687256 : U32), 1))",
+   "col": 172,
    "class": "proof-equivalent",
    "reason": "argument never read: Fulu_bitvector_4_r.bv4_read ignores its parameter len"
   },
@@ -118,6 +129,7 @@
    "before": "8",
    "after": "7",
    "text": "BlobIdentifier_rd1(off, len, block_root, uint64_r.u64_read(buf, (off + 32 : U32), 8))",
+   "col": 82,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -128,6 +140,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 89,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBlobIndex_hashtreeroot_generated.bend",
+   "def": "BlobIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -138,18 +162,9 @@
    "before": "0",
    "after": "1",
    "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 100,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluBlobIndex_hashtreeroot_generated.bend",
-   "def": "BlobIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def BlobIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluBlobSidecar_decode_ssz_generated.bend",
@@ -158,6 +173,7 @@
    "before": "48",
    "after": "49",
    "text": "BlobSidecar_rd2(off, len, index, blob, FuluBytes48_r.b48_read(buf, (off + 131080 : U32), 48))",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
   },
@@ -168,38 +184,64 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
   {
    "file": "types/FuluBytes1_hashtreeroot_generated.bend",
    "def": "Bytes1_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "col": 90,
+   "class": "proof-equivalent",
+   "reason": "argument never read: b1_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+   "def": "Bytes1_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "col": 90,
+   "class": "proof-equivalent",
+   "reason": "argument never read: b1_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+   "def": "Bytes1_hash_tree_root",
    "operator": "const+1",
    "before": "0",
    "after": "1",
    "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "col": 101,
    "class": "proof-equivalent",
    "reason": "argument never read: b1_root ignores its parameter seg"
   },
   {
-   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
-   "def": "Bytes1_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: b1_root ignores its parameter hl"
-  },
-  {
-   "file": "types/FuluBytes1_hashtreeroot_generated.bend",
-   "def": "Bytes1_hash_tree_root",
+   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
+   "def": "CellIndex_hash_tree_root",
    "operator": "const+1",
    "before": "64n",
    "after": "65n",
-   "text": "def Bytes1_hash_tree_root(h: B.Buf, +o: FuluBytes1_d.Bytes1) -> B.Buf & D.Digest: b1_root(64n, h, o, 0)",
+   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 89,
    "class": "proof-equivalent",
-   "reason": "argument never read: b1_root ignores its parameter hl"
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
+   "def": "CellIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 89,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
@@ -208,28 +250,9 @@
    "before": "0",
    "after": "1",
    "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 100,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
-   "def": "CellIndex_hash_tree_root",
-   "operator": "const+1",
-   "before": "64n",
-   "after": "65n",
-   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
-  },
-  {
-   "file": "types/FuluCellIndex_hashtreeroot_generated.bend",
-   "def": "CellIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def CellIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluCell_encode_ssz_generated.bend",
@@ -238,6 +261,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -248,6 +272,7 @@
    "before": "1",
    "after": "2",
    "text": "def b2048_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2048, 2048, False{}, 1)",
+   "col": 82,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -258,6 +283,7 @@
    "before": "32",
    "after": "33",
    "text": "Checkpoint_rd1(off, len, epoch, FuluBytes32_r.b32_read(buf, (off + 8 : U32), 32))",
+   "col": 77,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -268,6 +294,7 @@
    "before": "8",
    "after": "7",
    "text": "def Checkpoint_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluCheckpoint_d.Checkpoint: Checkpoint_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 159,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -278,6 +305,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 91,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluColumnIndex_hashtreeroot_generated.bend",
+   "def": "ColumnIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 91,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -288,18 +327,9 @@
    "before": "0",
    "after": "1",
    "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 102,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluColumnIndex_hashtreeroot_generated.bend",
-   "def": "ColumnIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def ColumnIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
@@ -308,6 +338,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
+   "def": "CommitmentIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -318,18 +360,9 @@
    "before": "0",
    "after": "1",
    "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 106,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluCommitmentIndex_hashtreeroot_generated.bend",
-   "def": "CommitmentIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def CommitmentIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
@@ -338,6 +371,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 94,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
+   "def": "CommitteeIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -348,18 +393,9 @@
    "before": "0",
    "after": "1",
    "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 105,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluCommitteeIndex_hashtreeroot_generated.bend",
-   "def": "CommitteeIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def CommitteeIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluConsolidationRequest_decode_ssz_generated.bend",
@@ -368,6 +404,7 @@
    "before": "48",
    "after": "47",
    "text": "ConsolidationRequest_rd1(off, len, source_address, FuluBytes48_r.b48_read(buf, (off + 20 : U32), 48))",
+   "col": 97,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
   },
@@ -378,6 +415,7 @@
    "before": "20",
    "after": "21",
    "text": "def ConsolidationRequest_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluConsolidationRequest_d.ConsolidationRequest: ConsolidationRequest_rd0(off, len, FuluBytes20_r.b20_read(buf, (off + 0 : U3",
+   "col": 204,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
   },
@@ -388,6 +426,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 92,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluCustodyIndex_hashtreeroot_generated.bend",
+   "def": "CustodyIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 92,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -398,18 +448,9 @@
    "before": "0",
    "after": "1",
    "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 103,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluCustodyIndex_hashtreeroot_generated.bend",
-   "def": "CustodyIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def CustodyIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluDataColumnSidecar_decode_ssz_generated.bend",
@@ -418,6 +459,7 @@
    "before": "8",
    "after": "9",
    "text": "DataColumnSidecar_rd3(off, len, o_column, o_kzg_commitments, o_kzg_proofs, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 115,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -428,6 +470,7 @@
    "before": "96",
    "after": "95",
    "text": "DepositData_rd3(off, len, pubkey, withdrawal_credentials, amount, FuluBytes96_r.b96_read(buf, (off + 88 : U32), 96))",
+   "col": 112,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -438,6 +481,7 @@
    "before": "32",
    "after": "33",
    "text": "DepositMessage_rd1(off, len, pubkey, FuluBytes32_r.b32_read(buf, (off + 48 : U32), 32))",
+   "col": 83,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -448,6 +492,7 @@
    "before": "1056",
    "after": "1057",
    "text": "def Deposit_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluDeposit_d.Deposit: Deposit_rd0(off, len, Fulu_vec_bytevec_32_33_r.v33_b32_read(buf, (off + 0 : U32), 1056))",
+   "col": 167,
    "class": "proof-equivalent",
    "reason": "argument never read: Fulu_vec_bytevec_32_33_r.v33_b32_read ignores its parameter len"
   },
@@ -458,6 +503,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 85,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluEpoch_hashtreeroot_generated.bend",
+   "def": "Epoch_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -468,18 +525,9 @@
    "before": "0",
    "after": "1",
    "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 96,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluEpoch_hashtreeroot_generated.bend",
-   "def": "Epoch_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def Epoch_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluEth1Block_decode_ssz_generated.bend",
@@ -488,6 +536,7 @@
    "before": "8",
    "after": "9",
    "text": "Eth1Block_rd2(off, len, timestamp, deposit_root, uint64_r.u64_read(buf, (off + 40 : U32), 8))",
+   "col": 90,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -498,6 +547,7 @@
    "before": "32",
    "after": "31",
    "text": "Eth1Data_rd2(off, len, deposit_root, deposit_count, FuluBytes32_r.b32_read(buf, (off + 40 : U32), 32))",
+   "col": 98,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -508,18 +558,9 @@
    "before": "32",
    "after": "33",
    "text": "def Eth1Data_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluEth1Data_d.Eth1Data: Eth1Data_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "col": 156,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
-  },
-  {
-   "file": "types/FuluEther_hashtreeroot_generated.bend",
-   "def": "Ether_hash_tree_root",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluEther_hashtreeroot_generated.bend",
@@ -528,6 +569,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -538,18 +580,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
-   "file": "types/FuluExecutionBranch_encode_ssz_generated.bend",
-   "def": "v4_b32_pk_ok",
+   "file": "types/FuluEther_hashtreeroot_generated.bend",
+   "def": "Ether_hash_tree_root",
    "operator": "const+1",
    "before": "0",
    "after": "1",
-   "text": "(out, (o, 0))",
+   "text": "def Ether_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 96,
    "class": "proof-equivalent",
-   "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluExecutionPayloadHeader_decode_ssz_generated.bend",
@@ -558,6 +602,7 @@
    "before": "32",
    "after": "33",
    "text": "ExecutionPayloadHeader_g0_rd3(off, len, vend, parent_hash, fee_recipient, state_root, FuluBytes32_r.b32_read(buf, (off + 84 : U32), 32))",
+   "col": 132,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -568,6 +613,7 @@
    "before": "256",
    "after": "257",
    "text": "ExecutionPayload_g0_rd4(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, Fulu_bytevec_256_r.b256_read(buf, (off + 116 : U32), 256))",
+   "col": 148,
    "class": "proof-equivalent",
    "reason": "argument never read: Fulu_bytevec_256_r.b256_read ignores its parameter len"
   },
@@ -578,6 +624,7 @@
    "before": "256",
    "after": "255",
    "text": "ExecutionPayload_g0_rd4(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, Fulu_bytevec_256_r.b256_read(buf, (off + 116 : U32), 256))",
+   "col": 148,
    "class": "proof-equivalent",
    "reason": "argument never read: Fulu_bytevec_256_r.b256_read ignores its parameter len"
   },
@@ -588,6 +635,7 @@
    "before": "8",
    "after": "7",
    "text": "ExecutionPayload_g0_rd7(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, uint64_r.u64_read(buf, (off + 412 : U32), 8))",
+   "col": 176,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -598,6 +646,7 @@
    "before": "4",
    "after": "5",
    "text": "def ForkData_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluForkData_d.ForkData: ForkData_rd0(off, len, FuluBytes4_r.b4_read(buf, (off + 0 : U32), 4))",
+   "col": 154,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes4_r.b4_read ignores its parameter len"
   },
@@ -608,6 +657,7 @@
    "before": "4",
    "after": "3",
    "text": "def Fork_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluFork_d.Fork: Fork_rd0(off, len, FuluBytes4_r.b4_read(buf, (off + 0 : U32), 4))",
+   "col": 138,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes4_r.b4_read ignores its parameter len"
   },
@@ -618,6 +668,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 84,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluGwei_hashtreeroot_generated.bend",
+   "def": "Gwei_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 84,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -628,18 +690,9 @@
    "before": "0",
    "after": "1",
    "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluGwei_hashtreeroot_generated.bend",
-   "def": "Gwei_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def Gwei_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluHistoricalSummary_decode_ssz_generated.bend",
@@ -648,6 +701,7 @@
    "before": "32",
    "after": "33",
    "text": "def HistoricalSummary_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluHistoricalSummary_d.HistoricalSummary: HistoricalSummary_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "col": 192,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -658,6 +712,7 @@
    "before": "96",
    "after": "97",
    "text": "IndexedAttestation_rd3(off, len, o_attesting_indices, attesting_indices, data, FuluBytes96_r.b96_read(buf, (off + 132 : U32), 96))",
+   "col": 126,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -668,18 +723,9 @@
    "before": "8",
    "after": "9",
    "text": "MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (off + 2104 : U32), 8))",
+   "col": 100,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
-  },
-  {
-   "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
-   "def": "ParticipationFlags_hash_tree_root",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint8_h.u8_root ignores its parameter seg"
   },
   {
    "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
@@ -688,6 +734,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: uint8_h.u8_root ignores its parameter hl"
   },
@@ -698,8 +745,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: uint8_h.u8_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluParticipationFlags_hashtreeroot_generated.bend",
+   "def": "ParticipationFlags_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def ParticipationFlags_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: uint8_h.u8_root(64n, h, o, 0)",
+   "col": 105,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint8_h.u8_root ignores its parameter seg"
   },
   {
    "file": "types/FuluPendingAttestation_decode_ssz_generated.bend",
@@ -708,6 +767,7 @@
    "before": "8",
    "after": "9",
    "text": "PendingAttestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, uint64_r.u64_read(buf, (off + 132 : U32), 8))",
+   "col": 119,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -718,6 +778,7 @@
    "before": "8",
    "after": "7",
    "text": "PendingConsolidation_rd1(off, len, source_index, uint64_r.u64_read(buf, (off + 8 : U32), 8))",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -728,6 +789,7 @@
    "before": "8",
    "after": "9",
    "text": "def PendingConsolidation_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPendingConsolidation_d.PendingConsolidation: PendingConsolidation_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8",
+   "col": 199,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -738,6 +800,7 @@
    "before": "8",
    "after": "7",
    "text": "PendingDeposit_rd2(off, len, pubkey, withdrawal_credentials, uint64_r.u64_read(buf, (off + 80 : U32), 8))",
+   "col": 102,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -748,6 +811,7 @@
    "before": "8",
    "after": "9",
    "text": "PendingDeposit_rd4(off, len, pubkey, withdrawal_credentials, amount, signature, uint64_r.u64_read(buf, (off + 184 : U32), 8))",
+   "col": 122,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -758,6 +822,7 @@
    "before": "8",
    "after": "7",
    "text": "PendingPartialWithdrawal_rd2(off, len, validator_index, amount, uint64_r.u64_read(buf, (off + 16 : U32), 8))",
+   "col": 105,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -768,6 +833,7 @@
    "before": "8",
    "after": "7",
    "text": "def PendingPartialWithdrawal_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal: PendingPartialWithdrawal_rd0(off, len, uint64_r.u64_read(buf, (o",
+   "col": 215,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -778,6 +844,7 @@
    "before": "32",
    "after": "33",
    "text": "PowBlock_rd1(off, len, block_hash, FuluBytes32_r.b32_read(buf, (off + 32 : U32), 32))",
+   "col": 81,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -788,6 +855,7 @@
    "before": "32",
    "after": "33",
    "text": "PowBlock_rd2(off, len, block_hash, parent_hash, uint256_r.u256_read(buf, (off + 64 : U32), 32))",
+   "col": 91,
    "class": "proof-equivalent",
    "reason": "argument never read: uint256_r.u256_read ignores its parameter len"
   },
@@ -798,6 +866,7 @@
    "before": "32",
    "after": "33",
    "text": "def PowBlock_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPowBlock_d.PowBlock: PowBlock_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "col": 156,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
   },
@@ -808,18 +877,9 @@
    "before": "32",
    "after": "31",
    "text": "def PowBlock_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluPowBlock_d.PowBlock: PowBlock_rd0(off, len, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))",
+   "col": 156,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes32_r.b32_read ignores its parameter len"
-  },
-  {
-   "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
-   "def": "RowIndex_hash_tree_root",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
@@ -828,6 +888,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 88,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -838,8 +899,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 88,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluRowIndex_hashtreeroot_generated.bend",
+   "def": "RowIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def RowIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 99,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluSignedBLSToExecutionChange_decode_ssz_generated.bend",
@@ -848,6 +921,7 @@
    "before": "96",
    "after": "95",
    "text": "SignedBLSToExecutionChange_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 76 : U32), 96))",
+   "col": 96,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -858,6 +932,7 @@
    "before": "96",
    "after": "95",
    "text": "SignedBeaconBlockHeader_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 112 : U32), 96))",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -868,6 +943,7 @@
    "before": "96",
    "after": "95",
    "text": "SignedVoluntaryExit_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 16 : U32), 96))",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes96_r.b96_read ignores its parameter len"
   },
@@ -878,6 +954,7 @@
    "before": "8",
    "after": "9",
    "text": "def SingleAttestation_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluSingleAttestation_d.SingleAttestation: SingleAttestation_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8))",
+   "col": 187,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -885,19 +962,10 @@
    "file": "types/FuluSlot_hashtreeroot_generated.bend",
    "def": "Slot_hash_tree_root",
    "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluSlot_hashtreeroot_generated.bend",
-   "def": "Slot_hash_tree_root",
-   "operator": "const+1",
    "before": "64n",
    "after": "65n",
    "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 84,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -908,16 +976,18 @@
    "before": "64n",
    "after": "63n",
    "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 84,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
-   "file": "types/FuluSubnetID_hashtreeroot_generated.bend",
-   "def": "SubnetID_hash_tree_root",
+   "file": "types/FuluSlot_hashtreeroot_generated.bend",
+   "def": "Slot_hash_tree_root",
    "operator": "const+1",
    "before": "0",
    "after": "1",
-   "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "text": "def Slot_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
@@ -928,6 +998,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 88,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -938,8 +1009,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 88,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluSubnetID_hashtreeroot_generated.bend",
+   "def": "SubnetID_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def SubnetID_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 99,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluSyncCommitteeContribution_decode_ssz_generated.bend",
@@ -948,6 +1031,7 @@
    "before": "8",
    "after": "9",
    "text": "SyncCommitteeContribution_rd2(off, len, slot, beacon_block_root, uint64_r.u64_read(buf, (off + 40 : U32), 8))",
+   "col": 106,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -958,6 +1042,7 @@
    "before": "8",
    "after": "7",
    "text": "def SyncCommitteeMessage_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluSyncCommitteeMessage_d.SyncCommitteeMessage: SyncCommitteeMessage_rd0(off, len, uint64_r.u64_read(buf, (off + 0 : U32), 8",
+   "col": 199,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -968,6 +1053,7 @@
    "before": "48",
    "after": "49",
    "text": "SyncCommittee_rd1(off, len, pubkeys, FuluBytes48_r.b48_read(buf, (off + 24576 : U32), 48))",
+   "col": 86,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
   },
@@ -978,18 +1064,9 @@
    "before": "0",
    "after": "1",
    "text": "Transaction_built(size, bl1073741824_ok(buf, 0, size))",
+   "col": 45,
    "class": "proof-equivalent",
    "reason": "argument never read: bl1073741824_ok ignores its parameter off"
-  },
-  {
-   "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
-   "def": "ValidatorIndex_hash_tree_root",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
@@ -998,6 +1075,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -1008,8 +1086,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluValidatorIndex_hashtreeroot_generated.bend",
+   "def": "ValidatorIndex_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def ValidatorIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 105,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
   },
   {
    "file": "types/FuluValidator_decode_ssz_generated.bend",
@@ -1018,6 +1108,7 @@
    "before": "8",
    "after": "7",
    "text": "Validator_rd4(off, len, pubkey, withdrawal_credentials, effective_balance, slashed, uint64_r.u64_read(buf, (off + 89 : U32), 8))",
+   "col": 125,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -1028,6 +1119,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
+   "class": "proof-equivalent",
+   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
+  },
+  {
+   "file": "types/FuluWithdrawalIndex_hashtreeroot_generated.bend",
+   "def": "WithdrawalIndex_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
@@ -1038,18 +1141,9 @@
    "before": "0",
    "after": "1",
    "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
+   "col": 106,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_h.u64_root ignores its parameter seg"
-  },
-  {
-   "file": "types/FuluWithdrawalIndex_hashtreeroot_generated.bend",
-   "def": "WithdrawalIndex_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def WithdrawalIndex_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: uint64_h.u64_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: uint64_h.u64_root ignores its parameter hl"
   },
   {
    "file": "types/FuluWithdrawalRequest_decode_ssz_generated.bend",
@@ -1058,6 +1152,7 @@
    "before": "48",
    "after": "49",
    "text": "WithdrawalRequest_rd1(off, len, source_address, FuluBytes48_r.b48_read(buf, (off + 20 : U32), 48))",
+   "col": 94,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes48_r.b48_read ignores its parameter len"
   },
@@ -1068,6 +1163,7 @@
    "before": "20",
    "after": "19",
    "text": "def WithdrawalRequest_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & FuluWithdrawalRequest_d.WithdrawalRequest: WithdrawalRequest_rd0(off, len, FuluBytes20_r.b20_read(buf, (off + 0 : U32), 20))",
+   "col": 192,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
   },
@@ -1078,6 +1174,7 @@
    "before": "20",
    "after": "21",
    "text": "Withdrawal_rd2(off, len, index, validator_index, FuluBytes20_r.b20_read(buf, (off + 16 : U32), 20))",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "argument never read: FuluBytes20_r.b20_read ignores its parameter len"
   },
@@ -1088,6 +1185,7 @@
    "before": "8",
    "after": "9",
    "text": "Withdrawal_rd3(off, len, index, validator_index, address, uint64_r.u64_read(buf, (off + 36 : U32), 8))",
+   "col": 99,
    "class": "proof-equivalent",
    "reason": "argument never read: uint64_r.u64_read ignores its parameter len"
   },
@@ -1098,6 +1196,7 @@
    "before": "161",
    "after": "160",
    "text": "ProgressiveBitsStruct_g1_rd4(off, len, vend, o_f_I, o_f_K, o_f_L, f_I, bitvector_1281_r.bv1281_read(buf, (off + 249 : U32), 161))",
+   "col": 124,
    "class": "proof-equivalent",
    "reason": "argument never read: bitvector_1281_r.bv1281_read ignores its parameter len"
   },
@@ -1108,6 +1207,7 @@
    "before": "1",
    "after": "0",
    "text": "ProgressiveComplexTestStruct_rd7(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, o_f_G, o_f_H, uint8_r.u8_read(buf, (off + 0 : U32), 1))",
+   "col": 130,
    "class": "proof-equivalent",
    "reason": "argument never read: uint8_r.u8_read ignores its parameter len"
   },
@@ -1118,18 +1218,9 @@
    "before": "2",
    "after": "1",
    "text": "SmallTestStruct_rd1(off, len, f_A, uint16_r.u16_read(buf, (off + 2 : U32), 2))",
+   "col": 75,
    "class": "proof-equivalent",
    "reason": "argument never read: uint16_r.u16_read ignores its parameter len"
-  },
-  {
-   "file": "types/boolean_hashtreeroot_generated.bend",
-   "def": "boolean_hash_tree_root",
-   "operator": "const+1",
-   "before": "0",
-   "after": "1",
-   "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: bool_root ignores its parameter seg"
   },
   {
    "file": "types/boolean_hashtreeroot_generated.bend",
@@ -1138,6 +1229,7 @@
    "before": "64n",
    "after": "65n",
    "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "col": 78,
    "class": "proof-equivalent",
    "reason": "argument never read: bool_root ignores its parameter hl"
   },
@@ -1148,8 +1240,20 @@
    "before": "64n",
    "after": "63n",
    "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "col": 78,
    "class": "proof-equivalent",
    "reason": "argument never read: bool_root ignores its parameter hl"
+  },
+  {
+   "file": "types/boolean_hashtreeroot_generated.bend",
+   "def": "boolean_hash_tree_root",
+   "operator": "const+1",
+   "before": "0",
+   "after": "1",
+   "text": "def boolean_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)",
+   "col": 89,
+   "class": "proof-equivalent",
+   "reason": "argument never read: bool_root ignores its parameter seg"
   },
   {
    "file": "types/progbitlist_encode_ssz_generated.bend",
@@ -1158,6 +1262,7 @@
    "before": "0",
    "after": "1",
    "text": "def pbits_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 0, True{})",
+   "col": 58,
    "class": "proof-equivalent",
    "reason": "bits_ok: limit is only read under Bool.or(big, ..) and big is True{}"
   },
@@ -1168,6 +1273,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, True{}, 1))",
+   "col": 77,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1178,6 +1284,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 16)",
+   "col": 66,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1188,6 +1295,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 2)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1198,6 +1306,7 @@
    "before": "0",
    "after": "1",
    "text": "proglist_uint256_built(size, pl_u256_ok(buf, 0, size))",
+   "col": 45,
    "class": "proof-equivalent",
    "reason": "argument never read: pl_u256_ok ignores its parameter off"
   },
@@ -1208,6 +1317,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 32)",
+   "col": 66,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1218,6 +1328,7 @@
    "before": "0",
    "after": "1",
    "text": "proglist_uint32_built(size, pl_u32_ok(buf, 0, size))",
+   "col": 43,
    "class": "proof-equivalent",
    "reason": "argument never read: pl_u32_ok ignores its parameter off"
   },
@@ -1228,6 +1339,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1238,6 +1350,7 @@
    "before": "0",
    "after": "1",
    "text": "proglist_uint64_built(size, pl_u64_ok(buf, 0, size))",
+   "col": 43,
    "class": "proof-equivalent",
    "reason": "argument never read: pl_u64_ok ignores its parameter off"
   },
@@ -1248,6 +1361,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 8)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1258,6 +1372,7 @@
    "before": "0",
    "after": "1",
    "text": "proglist_uint8_built(size, pl_u8_ok(buf, 0, size))",
+   "col": 41,
    "class": "proof-equivalent",
    "reason": "argument never read: pl_u8_ok ignores its parameter off"
   },
@@ -1268,6 +1383,7 @@
    "before": "0",
    "after": "1",
    "text": "def pl_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 1)",
+   "col": 64,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1278,6 +1394,18 @@
    "before": "64n",
    "after": "65n",
    "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "col": 75,
+   "class": "proof-equivalent",
+   "reason": "argument never read: u16_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint16_hashtreeroot_generated.bend",
+   "def": "uint16_hash_tree_root",
+   "operator": "const-1",
+   "before": "64n",
+   "after": "63n",
+   "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "col": 75,
    "class": "proof-equivalent",
    "reason": "argument never read: u16_root ignores its parameter hl"
   },
@@ -1288,18 +1416,31 @@
    "before": "0",
    "after": "1",
    "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "col": 86,
    "class": "proof-equivalent",
    "reason": "argument never read: u16_root ignores its parameter seg"
   },
   {
-   "file": "types/uint16_hashtreeroot_generated.bend",
-   "def": "uint16_hash_tree_root",
+   "file": "types/uint32_hashtreeroot_generated.bend",
+   "def": "uint32_hash_tree_root",
+   "operator": "const+1",
+   "before": "64n",
+   "after": "65n",
+   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "col": 75,
+   "class": "proof-equivalent",
+   "reason": "argument never read: u32_root ignores its parameter hl"
+  },
+  {
+   "file": "types/uint32_hashtreeroot_generated.bend",
+   "def": "uint32_hash_tree_root",
    "operator": "const-1",
    "before": "64n",
    "after": "63n",
-   "text": "def uint16_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)",
+   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "col": 75,
    "class": "proof-equivalent",
-   "reason": "argument never read: u16_root ignores its parameter hl"
+   "reason": "argument never read: u32_root ignores its parameter hl"
   },
   {
    "file": "types/uint32_hashtreeroot_generated.bend",
@@ -1308,28 +1449,31 @@
    "before": "0",
    "after": "1",
    "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "col": 86,
    "class": "proof-equivalent",
    "reason": "argument never read: u32_root ignores its parameter seg"
   },
   {
-   "file": "types/uint32_hashtreeroot_generated.bend",
-   "def": "uint32_hash_tree_root",
+   "file": "types/uint64_hashtreeroot_generated.bend",
+   "def": "uint64_hash_tree_root",
    "operator": "const+1",
    "before": "64n",
    "after": "65n",
-   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "col": 77,
    "class": "proof-equivalent",
-   "reason": "argument never read: u32_root ignores its parameter hl"
+   "reason": "argument never read: u64_root ignores its parameter hl"
   },
   {
-   "file": "types/uint32_hashtreeroot_generated.bend",
-   "def": "uint32_hash_tree_root",
+   "file": "types/uint64_hashtreeroot_generated.bend",
+   "def": "uint64_hash_tree_root",
    "operator": "const-1",
    "before": "64n",
    "after": "63n",
-   "text": "def uint32_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)",
+   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "col": 77,
    "class": "proof-equivalent",
-   "reason": "argument never read: u32_root ignores its parameter hl"
+   "reason": "argument never read: u64_root ignores its parameter hl"
   },
   {
    "file": "types/uint64_hashtreeroot_generated.bend",
@@ -1338,28 +1482,31 @@
    "before": "0",
    "after": "1",
    "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "col": 88,
    "class": "proof-equivalent",
    "reason": "argument never read: u64_root ignores its parameter seg"
   },
   {
-   "file": "types/uint64_hashtreeroot_generated.bend",
-   "def": "uint64_hash_tree_root",
+   "file": "types/uint8_hashtreeroot_generated.bend",
+   "def": "uint8_hash_tree_root",
    "operator": "const+1",
    "before": "64n",
    "after": "65n",
-   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "col": 73,
    "class": "proof-equivalent",
-   "reason": "argument never read: u64_root ignores its parameter hl"
+   "reason": "argument never read: u8_root ignores its parameter hl"
   },
   {
-   "file": "types/uint64_hashtreeroot_generated.bend",
-   "def": "uint64_hash_tree_root",
+   "file": "types/uint8_hashtreeroot_generated.bend",
+   "def": "uint8_hash_tree_root",
    "operator": "const-1",
    "before": "64n",
    "after": "63n",
-   "text": "def uint64_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)",
+   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "col": 73,
    "class": "proof-equivalent",
-   "reason": "argument never read: u64_root ignores its parameter hl"
+   "reason": "argument never read: u8_root ignores its parameter hl"
   },
   {
    "file": "types/uint8_hashtreeroot_generated.bend",
@@ -1368,28 +1515,9 @@
    "before": "0",
    "after": "1",
    "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
+   "col": 84,
    "class": "proof-equivalent",
    "reason": "argument never read: u8_root ignores its parameter seg"
-  },
-  {
-   "file": "types/uint8_hashtreeroot_generated.bend",
-   "def": "uint8_hash_tree_root",
-   "operator": "const+1",
-   "before": "64n",
-   "after": "65n",
-   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: u8_root ignores its parameter hl"
-  },
-  {
-   "file": "types/uint8_hashtreeroot_generated.bend",
-   "def": "uint8_hash_tree_root",
-   "operator": "const-1",
-   "before": "64n",
-   "after": "63n",
-   "text": "def uint8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)",
-   "class": "proof-equivalent",
-   "reason": "argument never read: u8_root ignores its parameter hl"
   },
   {
    "file": "types/vec_bool_16_decode_ssz_generated.bend",
@@ -1398,6 +1526,7 @@
    "before": "True{}",
    "after": "False{}",
    "text": "case True{}: (buf, True{})",
+   "col": 19,
    "class": "proof-equivalent",
    "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 16 != 0: it is never reached"
   },
@@ -1408,6 +1537,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v16_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 15,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 16: is_eq(16, 0) and is_lt(16, 0) both evaluate to False{}"
   },
@@ -1418,6 +1548,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1428,6 +1559,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1438,6 +1570,7 @@
    "before": "True{}",
    "after": "False{}",
    "text": "case True{}: (buf, True{})",
+   "col": 19,
    "class": "proof-equivalent",
    "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 31 != 0: it is never reached"
   },
@@ -1448,6 +1581,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v31_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 15,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 31: is_eq(31, 0) and is_lt(31, 0) both evaluate to False{}"
   },
@@ -1458,6 +1592,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1468,6 +1603,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v3_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 14,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 3: is_eq(3, 0) and is_lt(3, 0) both evaluate to False{}"
   },
@@ -1478,6 +1614,7 @@
    "before": "0",
    "after": "1",
    "text": "v3_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 27,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller passing the literal n = 3: is_eq(3, 0) and is_eq(3, 1) both evaluate to False{}"
   },
@@ -1488,6 +1625,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v4_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 14,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 4: is_eq(4, 0) and is_lt(4, 0) both evaluate to False{}"
   },
@@ -1498,6 +1636,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1508,6 +1647,7 @@
    "before": "1",
    "after": "2",
    "text": "def v4_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 4, 4, False{}, 1))",
+   "col": 89,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1518,6 +1658,7 @@
    "before": "True{}",
    "after": "False{}",
    "text": "case True{}: (buf, True{})",
+   "col": 19,
    "class": "proof-equivalent",
    "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 512 != 0: it is never reached"
   },
@@ -1528,6 +1669,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v512_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 16,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 512: is_eq(512, 0) and is_lt(512, 0) both evaluate to False{}"
   },
@@ -1538,6 +1680,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1548,6 +1691,7 @@
    "before": "1",
    "after": "2",
    "text": "def v512_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 512, 512, False{}, 1))",
+   "col": 95,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1558,6 +1702,7 @@
    "before": "True{}",
    "after": "False{}",
    "text": "case True{}: (buf, True{})",
+   "col": 19,
    "class": "proof-equivalent",
    "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 513 != 0: it is never reached"
   },
@@ -1568,6 +1713,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v513_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 16,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 513: is_eq(513, 0) and is_lt(513, 0) both evaluate to False{}"
   },
@@ -1578,6 +1724,7 @@
    "before": "True{}",
    "after": "False{}",
    "text": "case True{}: (buf, True{})",
+   "col": 19,
    "class": "proof-equivalent",
    "reason": "the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = 5 != 0: it is never reached"
   },
@@ -1588,6 +1735,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1598,6 +1746,7 @@
    "before": "U32.is_eq(",
    "after": "U32.is_lt(",
    "text": "v8_bool_ok_nz(U32.is_eq(n, 0), buf, off, n)",
+   "col": 14,
    "class": "proof-equivalent",
    "reason": "ok_n has one caller, ok_at, passing the literal n = 8: is_eq(8, 0) and is_lt(8, 0) both evaluate to False{}"
   },
@@ -1608,6 +1757,7 @@
    "before": "16",
    "after": "17",
    "text": "def v1_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 16)",
+   "col": 67,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1618,6 +1768,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1628,6 +1779,7 @@
    "before": "496",
    "after": "495",
    "text": "def v31_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 496, 496, False{}, 16)",
+   "col": 64,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1638,6 +1790,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1648,16 +1801,7 @@
    "before": "8192",
    "after": "8191",
    "text": "def v512_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8192, 8192, False{}, 16)",
-   "class": "proof-equivalent",
-   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
-  },
-  {
-   "file": "types/vec_uint128_513_encode_ssz_generated.bend",
-   "def": "v513_u128_valid",
-   "operator": "const+1",
-   "before": "8208",
-   "after": "8209",
-   "text": "def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1668,6 +1812,18 @@
    "before": "8208",
    "after": "8207",
    "text": "def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)",
+   "col": 65,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint128_513_encode_ssz_generated.bend",
+   "def": "v513_u128_valid",
+   "operator": "const+1",
+   "before": "8208",
+   "after": "8209",
+   "text": "def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)",
+   "col": 71,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1678,6 +1834,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1688,6 +1845,18 @@
    "before": "2",
    "after": "1",
    "text": "def v1_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2, 2, False{}, 2)",
+   "col": 62,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_1_encode_ssz_generated.bend",
+   "def": "v1_u16_valid",
+   "operator": "const-1",
+   "before": "2",
+   "after": "1",
+   "text": "def v1_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2, 2, False{}, 2)",
+   "col": 77,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1698,6 +1867,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1708,6 +1878,7 @@
    "before": "2",
    "after": "1",
    "text": "def v2_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 2)",
+   "col": 77,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1718,6 +1889,7 @@
    "before": "62",
    "after": "63",
    "text": "def v31_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 62, 62, False{}, 2)",
+   "col": 67,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1728,16 +1900,7 @@
    "before": "2",
    "after": "1",
    "text": "def v31_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 62, 62, False{}, 2)",
-   "class": "proof-equivalent",
-   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
-  },
-  {
-   "file": "types/vec_uint16_3_encode_ssz_generated.bend",
-   "def": "v3_u16_valid",
-   "operator": "const+1",
-   "before": "2",
-   "after": "3",
-   "text": "def v3_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 6, 6, False{}, 2)",
+   "col": 80,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1748,6 +1911,18 @@
    "before": "6",
    "after": "7",
    "text": "def v3_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 6, 6, False{}, 2)",
+   "col": 65,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_3_encode_ssz_generated.bend",
+   "def": "v3_u16_valid",
+   "operator": "const+1",
+   "before": "2",
+   "after": "3",
+   "text": "def v3_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 6, 6, False{}, 2)",
+   "col": 77,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1758,6 +1933,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1768,6 +1944,7 @@
    "before": "1024",
    "after": "1023",
    "text": "def v512_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1024, 1024, False{}, 2)",
+   "col": 64,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1778,6 +1955,7 @@
    "before": "2",
    "after": "1",
    "text": "def v512_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1024, 1024, False{}, 2)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1788,18 +1966,9 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
-  },
-  {
-   "file": "types/vec_uint16_513_encode_ssz_generated.bend",
-   "def": "v513_u16_valid",
-   "operator": "const+1",
-   "before": "2",
-   "after": "3",
-   "text": "def v513_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1026, 1026, False{}, 2)",
-   "class": "proof-equivalent",
-   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
   {
    "file": "types/vec_uint16_513_encode_ssz_generated.bend",
@@ -1808,6 +1977,18 @@
    "before": "1026",
    "after": "1025",
    "text": "def v513_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1026, 1026, False{}, 2)",
+   "col": 64,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint16_513_encode_ssz_generated.bend",
+   "def": "v513_u16_valid",
+   "operator": "const+1",
+   "before": "2",
+   "after": "3",
+   "text": "def v513_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1026, 1026, False{}, 2)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1818,6 +1999,7 @@
    "before": "10",
    "after": "9",
    "text": "def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 10, 10, False{}, 2)",
+   "col": 62,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1828,6 +2010,7 @@
    "before": "10",
    "after": "11",
    "text": "def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 10, 10, False{}, 2)",
+   "col": 66,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1838,6 +2021,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1848,6 +2032,7 @@
    "before": "512",
    "after": "513",
    "text": "def v16_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 512, 512, False{}, 32)",
+   "col": 69,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1858,18 +2043,9 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
-  },
-  {
-   "file": "types/vec_uint256_31_encode_ssz_generated.bend",
-   "def": "v31_u256_valid",
-   "operator": "const+1",
-   "before": "992",
-   "after": "993",
-   "text": "def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)",
-   "class": "proof-equivalent",
-   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
   {
    "file": "types/vec_uint256_31_encode_ssz_generated.bend",
@@ -1878,6 +2054,18 @@
    "before": "992",
    "after": "991",
    "text": "def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)",
+   "col": 64,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint256_31_encode_ssz_generated.bend",
+   "def": "v31_u256_valid",
+   "operator": "const+1",
+   "before": "992",
+   "after": "993",
+   "text": "def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)",
+   "col": 69,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1888,18 +2076,9 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
-  },
-  {
-   "file": "types/vec_uint256_512_encode_ssz_generated.bend",
-   "def": "v512_u256_valid",
-   "operator": "const+1",
-   "before": "16384",
-   "after": "16385",
-   "text": "def v512_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16384, 16384, False{}, 32)",
-   "class": "proof-equivalent",
-   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
   {
    "file": "types/vec_uint256_512_encode_ssz_generated.bend",
@@ -1908,16 +2087,18 @@
    "before": "16384",
    "after": "16383",
    "text": "def v512_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16384, 16384, False{}, 32)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
   {
-   "file": "types/vec_uint256_513_encode_ssz_generated.bend",
-   "def": "v513_u256_valid",
+   "file": "types/vec_uint256_512_encode_ssz_generated.bend",
+   "def": "v512_u256_valid",
    "operator": "const+1",
-   "before": "16416",
-   "after": "16417",
-   "text": "def v513_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16416, 16416, False{}, 32)",
+   "before": "16384",
+   "after": "16385",
+   "text": "def v512_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16384, 16384, False{}, 32)",
+   "col": 72,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1928,6 +2109,18 @@
    "before": "16416",
    "after": "16415",
    "text": "def v513_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16416, 16416, False{}, 32)",
+   "col": 65,
+   "class": "proof-equivalent",
+   "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
+  },
+  {
+   "file": "types/vec_uint256_513_encode_ssz_generated.bend",
+   "def": "v513_u256_valid",
+   "operator": "const+1",
+   "before": "16416",
+   "after": "16417",
+   "text": "def v513_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16416, 16416, False{}, 32)",
+   "col": 72,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1938,6 +2131,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1948,6 +2142,7 @@
    "before": "8",
    "after": "9",
    "text": "def v2_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 4)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1958,6 +2153,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1968,6 +2164,7 @@
    "before": "12",
    "after": "13",
    "text": "def v3_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 12, 12, False{}, 4)",
+   "col": 66,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1978,6 +2175,7 @@
    "before": "4",
    "after": "3",
    "text": "def v3_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 12, 12, False{}, 4)",
+   "col": 79,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -1988,6 +2186,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -1998,6 +2197,7 @@
    "before": "2048",
    "after": "2049",
    "text": "def v512_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2048, 2048, False{}, 4)",
+   "col": 70,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2008,6 +2208,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2018,6 +2219,7 @@
    "before": "4",
    "after": "3",
    "text": "def v513_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2052, 2052, False{}, 4)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2028,6 +2230,7 @@
    "before": "4",
    "after": "5",
    "text": "def v5_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 20, 20, False{}, 4)",
+   "col": 79,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2038,6 +2241,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2048,6 +2252,7 @@
    "before": "8",
    "after": "9",
    "text": "def v1_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 8)",
+   "col": 65,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2058,6 +2263,7 @@
    "before": "16",
    "after": "17",
    "text": "def v2_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 8)",
+   "col": 66,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2068,6 +2274,7 @@
    "before": "4096",
    "after": "4095",
    "text": "def v512_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4096, 4096, False{}, 8)",
+   "col": 64,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2078,6 +2285,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2088,6 +2296,7 @@
    "before": "4104",
    "after": "4105",
    "text": "def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4104, 4104, False{}, 8)",
+   "col": 70,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2098,6 +2307,7 @@
    "before": "8",
    "after": "9",
    "text": "def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4104, 4104, False{}, 8)",
+   "col": 85,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2108,6 +2318,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2118,6 +2329,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2128,6 +2340,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2138,6 +2351,7 @@
    "before": "1",
    "after": "2",
    "text": "def v4_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 1)",
+   "col": 76,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2148,6 +2362,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2158,6 +2373,7 @@
    "before": "1",
    "after": "2",
    "text": "def v512_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 512, 512, False{}, 1)",
+   "col": 82,
    "class": "proof-equivalent",
    "reason": "words_ok: the accepted byte lengths {lo<=n<=hi, unit | n} are the same set (hi/lo/unit changed only where unit or big already decides)"
   },
@@ -2168,6 +2384,7 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
   },
@@ -2178,18 +2395,9 @@
    "before": "0",
    "after": "1",
    "text": "(out, (o, 0))",
+   "col": 10,
    "class": "proof-equivalent",
    "reason": "the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1"
-  },
-  {
-   "file": "types/FuluTransaction_encode_ssz_generated.bend",
-   "def": "bl1073741824_valid",
-   "operator": "const+1",
-   "before": "1073741824",
-   "after": "1073741825",
-   "text": "def bl1073741824_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1073741824, False{}, 1)",
-   "class": "uncoverable",
-   "reason": "the bound 2^30 -> 2^30+1 differs only for an object of 2^30+1 bytes (Transaction): not constructible, no law can be checked against it"
   }
  ]
 }

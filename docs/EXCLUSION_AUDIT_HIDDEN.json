@@ -11,7 +11,8 @@
   "verdict": "FAIL",
   "why": "the mutated literal is not the whole argument ('(off + 8 : U32)')",
   "witness_n": null,
-  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site"
+  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "unread-arg",
@@ -25,7 +26,8 @@
   "verdict": "FAIL",
   "why": "the mutated literal is not the whole argument ('(off + 8 : U32)')",
   "witness_n": null,
-  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site"
+  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "unread-arg",
@@ -39,7 +41,8 @@
   "verdict": "FAIL",
   "why": "the mutated literal is not the whole argument ('(off + 32 : U32)')",
   "witness_n": null,
-  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site"
+  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "unread-arg",
@@ -53,7 +56,8 @@
   "verdict": "FAIL",
   "why": "the mutated literal is not the whole argument ('(off + 2 : U32)')",
   "witness_n": null,
-  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site"
+  "status": "NOT equivalent: the literal is the offset of the read (off + k), the callee reads off; hidden by the key of the equivalent length-argument site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -67,7 +71,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -81,7 +86,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -95,7 +101,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -109,7 +116,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -123,7 +131,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -137,7 +146,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -151,7 +161,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 0 -> 1: accepted lengths differ",
   "witness_n": 0,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "boolvec",
@@ -235,7 +246,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 16 -> 17: accepted lengths differ",
   "witness_n": 16,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -249,7 +261,8 @@
   "verdict": "DIFFERS",
   "why": "arg 4 (unit) 16 -> 17: accepted lengths differ",
   "witness_n": 16,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -263,7 +276,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 496 -> 495: accepted lengths differ",
   "witness_n": 496,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -277,7 +291,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 8192 -> 8191: accepted lengths differ",
   "witness_n": 8192,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -291,7 +306,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 8208 -> 8209: accepted lengths differ",
   "witness_n": 8208,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -305,7 +321,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 8208 -> 8207: accepted lengths differ",
   "witness_n": 8208,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -319,7 +336,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 2 -> 1: accepted lengths differ",
   "witness_n": 2,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -333,7 +351,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 62 -> 63: accepted lengths differ",
   "witness_n": 62,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -347,7 +366,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 6 -> 7: accepted lengths differ",
   "witness_n": 6,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -361,7 +381,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 1024 -> 1023: accepted lengths differ",
   "witness_n": 1024,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -375,7 +396,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 1026 -> 1025: accepted lengths differ",
   "witness_n": 1026,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -389,7 +411,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 10 -> 9: accepted lengths differ",
   "witness_n": 10,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -403,7 +426,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 10 -> 11: accepted lengths differ",
   "witness_n": 10,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -417,7 +441,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 512 -> 513: accepted lengths differ",
   "witness_n": 512,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -431,7 +456,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 992 -> 993: accepted lengths differ",
   "witness_n": 992,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -445,7 +471,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 992 -> 991: accepted lengths differ",
   "witness_n": 992,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -459,7 +486,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 16384 -> 16385: accepted lengths differ",
   "witness_n": 16384,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -473,7 +501,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 16384 -> 16383: accepted lengths differ",
   "witness_n": 16384,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -487,7 +516,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 16416 -> 16417: accepted lengths differ",
   "witness_n": 16416,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -501,7 +531,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 16416 -> 16415: accepted lengths differ",
   "witness_n": 16416,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -515,7 +546,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 8 -> 9: accepted lengths differ",
   "witness_n": 8,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -529,7 +561,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 12 -> 13: accepted lengths differ",
   "witness_n": 12,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -543,7 +576,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 2048 -> 2049: accepted lengths differ",
   "witness_n": 2048,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -557,7 +591,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 8 -> 9: accepted lengths differ",
   "witness_n": 8,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -571,7 +606,8 @@
   "verdict": "DIFFERS",
   "why": "arg 4 (unit) 8 -> 9: accepted lengths differ",
   "witness_n": 8,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -585,7 +621,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 16 -> 17: accepted lengths differ",
   "witness_n": 16,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -599,7 +636,8 @@
   "verdict": "DIFFERS",
   "why": "arg 2 (hi) 4096 -> 4095: accepted lengths differ",
   "witness_n": 4096,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "words_ok",
@@ -613,7 +651,8 @@
   "verdict": "DIFFERS",
   "why": "arg 1 (lo) 4104 -> 4105: accepted lengths differ",
   "witness_n": 4104,
-  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site"
+  "status": "NOT equivalent: accepted lengths differ (witness_n is a byte length one side accepts and the other refuses); hidden by the key of an equivalent sibling site",
+  "closed": "killed by an existing law on its own facade (statement mismatch); re-run in a private tree"
  },
  {
   "rule": "poison-flag",
@@ -625,7 +664,8 @@
   "after": "1",
   "verdict": "UNSOUND",
   "status": "NOT equivalent: the flag is OR-ed into the length of LightClientHeader/Bootstrap/FinalityUpdate/OptimisticUpdate/Update serialize; differential run: lengths 828->829, 25648->25649, 2056->2058, 1000->1001, 26872->26874",
-  "witness": "LightClientHeader_serialize(LightClientHeader_default())"
+  "witness": "LightClientHeader_serialize(LightClientHeader_default())",
+  "closed": "killed by the new law <X>_serialize_vflag (hidden_flag_laws.py) on its own facade; the light-client facades already killed it"
  },
  {
   "rule": "uncoverable",
@@ -637,6 +677,7 @@
   "after": "1073741825",
   "verdict": "KILLABLE",
   "status": "not equivalent and NOT beyond proof: a Bend law (docs/EXCLUSION_AUDIT.md, tx_valid_refuses_2p30_plus_1) holds for the original and fails for the mutant",
-  "witness": "Words{ws, 1073741825} for any ws"
+  "witness": "Words{ws, 1073741825} for any ws",
+  "closed": "killed by the existing <X>_serialize_vsym on the Transaction facade (statement mismatch); the exclusion is removed"
  }
 ]
