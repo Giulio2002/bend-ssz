@@ -396,7 +396,7 @@ no premise besides a guard; the `ComplexTestStruct` setter whose default list is
 Every composed theorem (`<Name>_e2e_decode_encode`, `<Name>_e2e_decode_root`, `e2e/<Name>_e2e_comp_generated.bend`) assumes
 `decode(bs) == Some{o}`; its other hypotheses (`hn`, `hd`, `hS`) are facts about the input. The decoded-object premises are derived, but
 nothing in those statements shows that a real input is accepted, so a composed theorem could hold vacuously. For the variable-size names,
-`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->56<!-- /fig --> files) takes the real
+`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->55<!-- /fig --> files) takes the real
 input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n0` its size), and states, public and locked:
 
 - `<Name>_e2e_decode_witness`: `isS(X_decode(fill_at(alloc(n0), 0, bs0), n0)) == True`, the decoder accepts `bs0`, evaluated by the checker;
@@ -405,18 +405,22 @@ input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n
   theorem is instantiated at an accepted input of its own name: its premises are not unsatisfiable together.
 
 The default object is the smallest input available (every list empty, every fixed-size part zero), except that a default holding empty boxes where a vector needs values (ComplexTestStruct's `vec_VarTestStruct_2` field: its default elements are `BNone`, not a legal decoded shape, and the decoder rejects the encoding of such an object) is replaced by `DV()`, the default with valid elements there, as in the bridge witnesses; a non-empty input is not witnessed. Not
-witnessed (<!-- fig:dw_pending -->2<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
+witnessed (<!-- fig:dw_pending -->3<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
 FuluBeaconState's default encoding is 2.7 MB (the fixed-size parts: `block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), too large for the checker to
 evaluate the encoder and the window check over it; a witness needs a symbolic decoder-acceptance proof over the zero-run windows, a separate
 architecture (design, measurements and the first slice: `docs/BS_WITNESS_DESIGN.md`). For it the evidence is the acceptance witness of its variable-size substructures that are witnessed here, the composed theorems of the
 substructures' own names, and the 295 official vectors; its composed theorem is not instantiated at a concrete accepted input.
 
-The light-client bootstrap (25 KB) is witnessed (the light-client update, 50 KB, is not yet: with all three theorems in one file it took 1327 s, over the 600 s budget of one file; the four costly hypotheses together take 193 s in one module, and the three theorem files built over that module, in `decode_witness.py` as BIG + SPLIT, are not yet checked) in a different shape, because the checker compares the unary Nat of the byte count:
-`hn` (`List.length(bs) == to_nat(n)`) is proved, not computed, by `obl_buf` (`e2e/e2e_obytes_len_generated.bend`, `codegen/proofs/witnesses/obytes_len.py`),
-the symbolic length lemma `List.length(E.obytes(buf)) == to_nat(size(buf))` (induction over `B.emit_go`, the word count a Nat variable), whose side conditions are
-one Bool over the size, `obl_ok`. The costly hypotheses (`obl_ok`, `hS`, `hd`, `DC.CHK`) are proved together by one evaluation of the input in one module
-(`e2e/<Name>_e2e_dwh_{base,all}_generated.bend`, extracted by lemmas symbolic in `bs`, `n`), and the witness file applies `d_acc` and the composed theorems with those proofs; its types name the
-input as `E.obytes(<Name>_dwh_buf())`, never through a thunk (the checker unfolds a thunk by evaluating it).
+The light-client bootstrap (25 648 bytes) and update (26 872 bytes) are witnessed over the offsets-only skeleton of the default encoding, by
+`codegen/proofs/witnesses/sym_skel.py` (`e2e/<Name>_e2e_decode_witness_generated.bend`, library `e2e/e2e_skel_lib_generated.bend`), not by evaluating the
+encoder: the input is written as what it is, `ZB(4 a_0) ++ B(v_0) ++ ZB(4 a_1) ++ ... ++ []` (zero runs and the 3 resp. 6 non-zero offset words of the default
+encoding, which the generator computes from `codegen/fulu.yaml`), and nothing is evaluated over it: `hn` (`length == to_nat(n0)`) and `hd` (`bytes_domain`) are
+proved segment by segment from the end (`zr_len`, `zr_dom`, `A.add_le` on the U32 sum `n0`), the loader's words `wlp(bs0)` likewise (`zr_wlp`), and the window
+check `hchk` is evaluated on the tree of that short word list, never on a tree packed from the bytes; `dec` is `DB.d_acc(..., hchk)` with the decoded object
+kept as the term `DC.OBJ(...)`. The statements spell the input out (a thunk would be unfolded by evaluating it). Checking: bootstrap about 60 s, update about 120 s
+on the server at load 20 (the floor of the update's file is the import of its composed theorem, about 95 s). The previous route (the encoder evaluated, `hd`/`hS`/
+window check in one module, the length lemma `obl_buf` in `e2e/e2e_obytes_len_generated.bend`) took 267 s and about 700 s per file and is no longer used for
+these names; `obl_buf` stays as a library lemma.
 
 ## 9. Objects changed through the API
 

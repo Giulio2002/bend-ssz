@@ -98,3 +98,50 @@ empty-window check does not reduce symbolically; (c) the payload header's non-em
 `zr_dom`, `zr_dom0`, `zr_len`, `zr_wlp` (family 1, by induction on the number of zero bytes / words) and `u64l_window`,
 `u64l_zero_window` (a u64 list window of 2^20 words = 8388608 bytes of zeros, over any buffer and offset, is accepted: the check reads no
 byte; the 8 MiB list is never formed). Checks in 18 s.
+
+## 5. Stage 1 (done): the approach end to end on a small container, and the read lemmas at BeaconState scale
+
+`codegen/proofs/witnesses/sym_decode.py` writes three kinds of files (all by the generator, from the window modules):
+
+* `e2e/e2e_symdec_lib_generated.bend` (21 to 27 s): `rd_seg` / `rd_seg_u` (the four bytes at the aligned / unaligned position of the tree of a word list
+  are word q, or the join of words q and q + 1), `pos_lit` / `pos_split` (a U32 position as 4 q + r with q kept as the term
+  `to_nat(shrn(c, 2n))`), `nthc_zr`, `nthc_zr0`, `nthc_zr1` (reading past a zero run), `rd_off` / `rd_off_u` (the window modules' read
+  `RWN(t, Nat.add(x, to_nat(c)))`, in terms of variables only).
+* `e2e/FuluExecutionRequests_e2e_symdec_generated.bend` (40 to 50 s, 6.7 GB): the **whole chain on a real name**. The window module's check is copied
+  with every offset read replaced by a U32 parameter (`CHKwS`, generated from `var_winx_ExecutionRequests.bend`: the closure of `CHKw`, the
+  defs that read an offset shadowed, the others copied); `chk_shadow` (`CHKw == CHKwS(.., O0(t, x), ..)`, by computation, any tree), `chk_from`
+  (`CHKw(t, 0n, 0, n0) == True` from the three offset words, by congruence one offset at a time and a final computation in which the three
+  children's windows have length 0 and are never read), the skeleton input `bs0` (the 12 bytes), the three reads through `rd_seg` (never
+  evaluating the tree), `hchk`, `accepts` (`DB.d_acc(..., hchk)`: the decoder returns `Some{DC.OBJ(...)}`, the object a term never evaluated) and
+  `decode_encode` (`FuluExecutionRequests_e2e_decode_encode` applied at `(bs0, 12, DC.OBJ(...), ...)`).
+* `e2e/FuluBeaconState_e2e_symdec_generated.bend` (82 s, 9.4 GB): the same generator on `var_winx_BeaconState.bend`: the check copied over the **12**
+  offset words (`CHKwS`), `chk_shadow`, and **all 12 offset reads at their real byte positions** (524464 to 2736709, six of them unaligned),
+  each over a run-structured word list `ZW(QX(c)) ++ [lo, hi]` at depth 20, proved to equal the value. (BeaconState has 12 offset words, not
+  26: 26 is the number of conjuncts of the check, each reading one or two of them.)
+
+### What the measurements taught (every one a way to lose minutes)
+
+1. **Unary Nat equality overflows**: `A.quad(to_nat(shrn(524464, 2n))) == to_nat(524464)` by `{==}` is "the machine stack overflowed" (both sides 500,000
+   successors); positions are related by `split4`-style lemmas, never by comparing expansions. A Bool function of big Nats (`Nat.is_lt(Q, pow2(20n))`) is fine
+   (1.4 s at 131,000; about 7 s at 670,000).
+2. **A conversion that reduces `Nat.add(0n, to_nat(c))` expands `to_nat(c)`**: `{EW.O4(t, 0n) == RWN(t, to_nat(2687248))}` by `{==}` costs 150 s and the cost is
+   linear in c (35 s at 524464, 170 to 230 s at 2.7 million); the same read stated for a *variable* x (`rdK(d, sl, x, hx: x == 0n, ...)`) and then applied at
+   `x := 0n` costs nothing (the instance's type is the substitution, compared syntactically). Every read lemma is therefore generated generic in x. With
+   it, the 12 reads and the copied check take 82 s in one file (the file's own load of `var_winx_BeaconState.bend`: about 45 s).
+3. **`Nat.add` recurses on its first argument**: `Nat.add(Q, 1n)` with Q = 670,000 overflowed the stack at 320 to 540 s; `1n+Q` and `Nat.add(j, m)` (small first)
+   are free. `nthc_zr` is stated `j + m` for that reason.
+
+### What is left (stage 2 onwards), with the same hazards in view
+
+* **One list for all 12 words.** Each probe read has its own list. The input is the byte list `ZB(g0) ++ O0 ++ ZB(g1) ++ O1 ...` (four of the words overlap
+  neighbours: 2736705 and 2736709 share a word), so the gaps are not multiples of 4: `wlp(ZB(4 m + r) ++ s) == ZW(m) ++ wlp(ZB(r) ++ s)` for r < 4 (a
+  small-case lemma on top of `zr_wlp`), and the gap lengths as `U32.to_nat` of binary differences with `to_nat` of a U32 sum proved by the existing
+  `VB.add_lt32` family. Estimated 2 to 3 days.
+* **`hn`, `hd`, `hS`, `h31` for that list**: `zr_len`/`zr_dom` (done) plus the sum of the gaps equal to `to_nat(n0)` (same arithmetic), and `bytes_domain` of
+  the literal pieces. 1 day.
+* **The 12 child windows**: the check calls `CH0 .. CH11`; every list is empty in the skeleton so each window has length 0 and must reduce without
+  reading `t` (as the three of ExecutionRequests do); `ProgressiveList`-free names only. One child, the payload header (`latest_execution_payload_header`),
+  has a fixed part (584 bytes) and its own offset (extra_data): stage 3, the same generator on its window module and a skeleton for it. 1 to 2 days.
+* **Assembly** (stage 4): `accepts` and the two composed theorems for BeaconState, `o0 := DC.OBJ(...)`. Memory is the open risk: the probe file alone peaks
+  at 9.4 GB (the module `var_winx_BeaconState` is 7 GB of it); the file that imports it together with `FuluBeaconState_e2e_comp_generated.bend` and its
+  `decrep` must stay under the 12 GB cap of `tools/check.sh`.

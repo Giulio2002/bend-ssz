@@ -17,11 +17,11 @@ FuluExecutionPayloadHeader	witnessed
 FuluExecutionPayload	witnessed
 FuluExecutionRequests	witnessed
 FuluIndexedAttestation	witnessed
-FuluLightClientBootstrap	witnessed
+FuluLightClientBootstrap	witnessed (offsets-only skeleton, sym_skel.py)
 FuluLightClientFinalityUpdate	witnessed
 FuluLightClientHeader	witnessed
 FuluLightClientOptimisticUpdate	witnessed
-FuluLightClientUpdate	pending: measured (WIP): the four costly hypotheses proved together in one module take 193 s (one evaluation of the 50 KB input; separately 46+142+50+173 s); with the three composed theorems in one file the witness took 1327 s, and applied in separate files each, built over the separate hypothesis modules, over 600 s under load (an earlier unloaded run: acceptance 456 s, decode;encode 420 s); the files built over the combined module (BIG + SPLIT in this generator) are not yet checked. The Bootstrap witness over the combined module checks in 267 s
+FuluLightClientUpdate	witnessed (offsets-only skeleton, sym_skel.py)
 FuluPendingAttestation	witnessed
 FuluSignedAggregateAndProof	witnessed
 FuluSignedBeaconBlock	witnessed
