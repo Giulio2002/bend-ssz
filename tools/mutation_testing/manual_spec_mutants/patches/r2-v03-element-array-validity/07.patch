@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v03-element-array-validity/07
+# type: FuluExecutionRequests
+# ops: encode
+# spec: the encoded size of n WithdrawalRequests is 76 n
+# fault: the running size reported by putn is 75 n
+# why: constant mistyped
+# file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+# sym: l16_WithdrawalRequest_putn,l16_WithdrawalRequest_ptn_fin
+--- a/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+@@ -44,3 +44,3 @@
+   (out, sq) = pair
+-  (out, (sq, (n * 76 : U32)))
++  (out, (sq, (n * 75 : U32)))
+ 

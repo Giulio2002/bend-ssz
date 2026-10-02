@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/04
+# type: FuluDataColumnSidecar
+# ops: encode
+# spec: the output array has 2^ceil(log2 w) words for w words
+# fault: the threshold of the 16-bit step is 257
+# why: threshold off by one
+# file: src/buffer.bend
+# sym: ubits16,ubits8,words_depth_u,zeros_bytes
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -390,3 +390,3 @@
+     case True{}: ubits8(U32.is_le(256, U32.shrn(m, 16n)), U32.shrn(m, 16n), 16)
+-    case False{}: ubits8(U32.is_le(256, m), m, 0)
++    case False{}: ubits8(U32.is_le(257, m), m, 0)
+ 

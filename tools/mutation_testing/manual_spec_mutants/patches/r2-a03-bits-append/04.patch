@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a03-bits-append/04
+# type: bitlist_9
+# ops: decode,encode,root
+# spec: an appended bit is stored at index k and the length becomes k + 1
+# fault: the new bit is stored at index k + 1
+# why: index confusion between old and new length
+# file: src/obj.bend
+# sym: bits_push,bits_set,bits_of_words
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1304,3 +1304,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
++    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), (k + 1 : U32), v)
+ 

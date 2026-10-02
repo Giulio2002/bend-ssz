@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/04
+# type: FuluExecutionRequests
+# ops: root
+# spec: segment k of a progressive tree starts at chunk (4^k - 1) / 3 (streaming merkleizer, unused by the object runtime)
+# fault: the start is 4^k / 3
+# why: constant mistyped
+# file: src/merkle_fast.bend
+# sym: prog_start
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -363,3 +363,3 @@
+ 
+-def prog_start(+k: U32) -> U32: U32.div((prog_cap(k) - 1 : U32), 3)
++def prog_start(+k: U32) -> U32: U32.div(prog_cap(k), 3)
+ 

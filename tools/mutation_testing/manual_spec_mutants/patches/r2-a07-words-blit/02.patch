@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/02
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: an empty source copies nothing (CH-01)
+# fault: the empty guard is removed (the loop count n/4 - 1 wraps to 2^32 - 1 for n = 0)
+# why: the CH-01 fix reverted
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1362,3 +1362,3 @@
+   match src:
+-    case Words{ws, +n}: bl_some(U32.is_eq(n, 0), o, p, ws, n)
++    case Words{ws, +n}: bl_some(False{}, o, p, ws, n)
+ 

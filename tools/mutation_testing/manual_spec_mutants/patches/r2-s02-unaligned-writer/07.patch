@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/07
+# type: ComplexTestStruct
+# ops: encode
+# spec: the interior words of an unaligned run are those fully inside the range: (n + s - 4) >> 2
+# fault: the interior count is (n + s - 3) >> 2 (one word too many when n + s is 3 mod 4)
+# why: constant
+# file: src/obj.bend
+# sym: put_words,pw_mid,pw_un
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -643,4 +643,4 @@
+   pick(U32.is_lt((n + s : U32), 4), 0,
+-    pick(U32.is_lt((nw - 1 : U32), U32.shrn((n + s - 4 : U32), 2n)), (nw - 1 : U32),
+-      U32.shrn((n + s - 4 : U32), 2n)))
++    pick(U32.is_lt((nw - 1 : U32), U32.shrn((n + s - 3 : U32), 2n)), (nw - 1 : U32),
++      U32.shrn((n + s - 3 : U32), 2n)))
+ 

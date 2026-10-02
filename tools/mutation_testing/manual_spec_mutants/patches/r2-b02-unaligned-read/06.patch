@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b02-unaligned-read/06
+# type: ComplexTestStruct
+# ops: decode
+# spec: a uint64 at offset i is (read32 i, read32 (i + 4))
+# fault: the high word is read at i + 8
+# why: index slip
+# file: src/buffer.bend
+# sym: read64,read64_lo,read64_hi
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -86,3 +86,3 @@
+   (b, lo) = pair
+-  read64_hi(lo, read32(b, (i + 4 : U32)))
++  read64_hi(lo, read32(b, (i + 8 : U32)))
+ 

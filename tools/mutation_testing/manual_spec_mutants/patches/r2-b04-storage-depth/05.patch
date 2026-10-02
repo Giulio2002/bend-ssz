@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/05
+# type: FuluDataColumnSidecar
+# ops: encode
+# spec: a value with w - 1 >= 65536 takes the two-level path
+# fault: the two-level threshold is 65537
+# why: threshold off by one
+# file: src/buffer.bend
+# sym: words_depth_unz,words_depth_u,zeros_bytes
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -395,3 +395,3 @@
+     case True{}: 0
+-    case False{}: ubits16(U32.is_le(65536, (w - 1 : U32)), (w - 1 : U32))
++    case False{}: ubits16(U32.is_le(65537, (w - 1 : U32)), (w - 1 : U32))
+ 

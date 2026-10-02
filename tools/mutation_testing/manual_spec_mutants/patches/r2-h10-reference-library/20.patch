@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/20
+# type: CompatibleUnionBC
+# ops: root
+# spec: a union root mixes in the selector (not the option index)
+# fault: the selector chunk is the selector plus one
+# why: selector confusion
+# file: src/root.bend
+# sym: selector_mix
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -64,3 +64,3 @@
+     case None{}: None{}
+-    case Some{xs}: single(Mixing.mix_in_selector(xs, selector))
++    case Some{xs}: single(Mixing.mix_in_selector(xs, (selector + 1 : U32)))
+ 

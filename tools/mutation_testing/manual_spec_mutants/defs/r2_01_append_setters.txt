@@ -1,0 +1,571 @@
+## ROUND 2, area 1: the append guards, the element setters and growth of the collection API (types/*_def_generated.bend, src/obj.bend words_fit/bits_push/words_blit)
+=== r2-a01-bytelist-append-guard
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_app_n,bl256_grow
+spec: List[byte, 256] holds at most 256 elements
+fault: the append guard is n <= 256 (a 257th element is accepted)
+why: off-by-one between count and bound
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.and(U32.is_le(n, 256), U32.is_le(v, 255)), o, n, v)
+=== r2-a01-bytelist-append-guard
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_app_n,bl256_grow
+spec: List[byte, 256] holds at most 256 elements
+fault: the append guard is n < 255 (the 256th element is refused)
+why: limit minus one
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.and(U32.is_lt(n, 255), U32.is_le(v, 255)), o, n, v)
+=== r2-a01-bytelist-append-guard
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_app_n,bl256_grow
+spec: a byte element is below 256
+fault: the append value range is v <= 256 (the value 256 is stored and spills into the next byte)
+why: bound off by one
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 256)), o, n, v)
+=== r2-a01-bytelist-append-guard
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_app_n,bl256_grow
+spec: an element is appended only when the list has room AND the value is a byte
+fault: the two append conditions are or-ed
+why: Bool.and written as Bool.or
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.or(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
+=== r2-a01-bytelist-append-guard
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_app_n,bl256_grow
+spec: the appended value is written at index n
+fault: the value is written at index n + 1 (a hole at n, the length grows by one)
+why: index confusion between old and new length
+-    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), (n + 1 : U32), v)
+=== r2-a01-bytelist-append-grow
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_grow,words_fit,words_resize
+spec: an append makes room for the new element before writing it
+fault: room is made for n elements, not n + 1 (storage can be one word short, the write lands outside the array)
+why: capacity computed from the old length
+-    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 0 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
+=== r2-a01-bytelist-append-grow
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_append,bl256_grow,words_fit,words_resize
+spec: an append increases the length by one
+fault: the length is resized to n (the appended element is not counted)
+why: new length computed from the old
+-    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 0 : U32) * 1 : U32)), n, v)
+=== r2-a01-bytelist-setter
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_set,bl256_set_n,bl256_put_at
+spec: set replaces an existing element only
+fault: the setter bound is i <= n (an element one past the end is written, the length unchanged)
+why: off-by-one in the index test
+-  bl256_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bl256_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 255)), o, i, v)
+=== r2-a01-bytelist-setter
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_set,bl256_set_n,bl256_put_at
+spec: an element is a byte
+fault: the setter does not check the value range (v up to 2^32 - 1 is merged into the word)
+why: value check forgotten on the setter
+-  bl256_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bl256_put_at(U32.is_lt(i, n), o, i, v)
+=== r2-a01-bytelist-getter
+type: bytelist_256
+ops: decode,encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_get,bl256_get_n,bl256_get_in
+spec: reading index n is out of range
+fault: the getter bound is i <= n (index n reads the zero padding and answers Some(0))
+why: off-by-one in the index test
+-  bl256_get_in(U32.is_lt(i, n), o, i)
++  bl256_get_in(U32.is_le(i, n), o, i)
+=== r2-a02-large-limit-append
+type: Fulu_list_uint8_1099511627776
+ops: decode,encode,root
+file: types/Fulu_list_uint8_1099511627776_def_generated.bend
+sym: l1099511627776_u8_append,l1099511627776_u8_app_n
+spec: List[uint8, 2^40]: a U32 count cannot pass 2^32 - 1; the element at count 2^32 - 1 is refused
+fault: the guard is n <= 4294967295 (always true: the append at n = 2^32 - 1 wraps the count to 0)
+why: the limit is clamped to the largest U32 but compared with <=
+-  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(v, 255)), o, n, v)
++  l1099511627776_u8_grow(Bool.and(U32.is_le(n, 4294967295), U32.is_le(v, 255)), o, n, v)
+=== r2-a02-large-limit-append
+type: Fulu_list_uint8_1099511627776
+ops: decode,encode,root
+file: types/Fulu_list_uint8_1099511627776_def_generated.bend
+sym: l1099511627776_u8_append,l1099511627776_u8_app_n
+spec: List[uint8, 2^40] accepts every count below 2^32 - 1
+fault: the guard is n < 4294967294 (one element less)
+why: clamp minus one
+-  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(v, 255)), o, n, v)
++  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967294), U32.is_le(v, 255)), o, n, v)
+=== r2-a02-large-limit-append
+type: Fulu_list_uint8_1099511627776
+ops: decode,encode,root
+file: types/Fulu_list_uint8_1099511627776_def_generated.bend
+sym: l1099511627776_u8_append,l1099511627776_u8_app_n
+spec: the pre-fix guard: n + 1 <= limit in 32-bit arithmetic wraps to 0 at n = 2^32 - 1 (CH-04)
+fault: the guard is the wrapped sum (n + 1) <= 4294967295
+why: the older form of the guard, reintroduced
+-  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(v, 255)), o, n, v)
++  l1099511627776_u8_grow(Bool.and(U32.is_le((n + 1 : U32), 4294967295), U32.is_le(v, 255)), o, n, v)
+=== r2-a02-large-limit-append
+type: proglist_uint8
+ops: decode,encode,root
+file: types/proglist_uint8_def_generated.bend
+sym: pl_u8_append,pl_u8_app_n
+spec: ProgressiveList[uint8]: counts are U32; the append at 2^32 - 1 is refused
+fault: the guard is n <= 4294967295 (always true)
+why: unbounded list, comparison written with <=
+-  pl_u8_grow(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(v, 255)), o, n, v)
++  pl_u8_grow(Bool.and(U32.is_le(n, 4294967295), U32.is_le(v, 255)), o, n, v)
+=== r2-a02-large-limit-append
+type: progbitlist
+ops: decode,encode,root
+file: types/progbitlist_def_generated.bend
+sym: pbits_append,pbits_app_n
+spec: ProgressiveBitlist: counts are U32; the append at 2^32 - 1 is refused
+fault: the guard is n <= 4294967295 (always true)
+why: unbounded list, comparison written with <=
+-  pbits_push(U32.is_lt(n, 4294967295), o, v)
++  pbits_push(U32.is_le(n, 4294967295), o, v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: types/bitlist_9_def_generated.bend
+sym: bits9_append,bits9_app_n,bits9_push
+spec: Bitlist[9] holds at most 9 bits
+fault: the append guard is n <= 9 (a tenth bit is accepted)
+why: off-by-one between count and bound
+-  bits9_push(U32.is_lt(n, 9), o, v)
++  bits9_push(U32.is_le(n, 9), o, v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: types/bitlist_9_def_generated.bend
+sym: bits9_append,bits9_app_n,bits9_push
+spec: Bitlist[9] holds up to 9 bits
+fault: the append guard is n < 8 (the ninth bit is refused)
+why: limit minus one
+-  bits9_push(U32.is_lt(n, 9), o, v)
++  bits9_push(U32.is_lt(n, 8), o, v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: types/bitlist_9_def_generated.bend
+sym: bits9_set,bits9_set_n,bits9_put_at
+spec: set replaces an existing bit only
+fault: the setter bound is i <= n (the bit past the end is set, length unchanged)
+why: off-by-one in the index test
+-  bits9_put_at(U32.is_lt(i, n), o, i, v)
++  bits9_put_at(U32.is_le(i, n), o, i, v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: src/obj.bend
+sym: bits_push,bits_set,bits_of_words
+spec: an appended bit is stored at index k and the length becomes k + 1
+fault: the new bit is stored at index k + 1
+why: index confusion between old and new length
+-    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
++    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), (k + 1 : U32), v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: src/obj.bend
+sym: bits_push,bits_of_words,words_fit
+spec: an append grows the length by one
+fault: the length stays k after the push
+why: new length forgotten
+-    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
++    case Bits{ws, +k}: bits_set(bits_of_words(k, words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
+=== r2-a03-bits-append
+type: bitlist_9
+ops: decode,encode,root
+file: src/obj.bend
+sym: bits_push,bits_set,bit_merge,bit_put
+spec: pushing False clears the bit, pushing True sets it
+fault: bit_merge is inverted (True clears, False sets)
+why: swapped branches
+-    case True{}: (x .|. m : U32)
+-    case False{}: (x .&. U32.not(m) : U32)
++    case True{}: (x .&. U32.not(m) : U32)
++    case False{}: (x .|. m : U32)
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in,l16_WithdrawalRequest_room
+spec: List[WithdrawalRequest, 16] holds at most 16 elements
+fault: the append guard is n <= 16 (a 17th element is accepted)
+why: off-by-one between count and bound
+-l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
++l16_WithdrawalRequest_app_in(U32.is_le(n, 16), arr, n, v)
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in,l16_WithdrawalRequest_room
+spec: an append into full storage grows the array
+fault: the room test is n <= cap (an append at n = cap writes one past the storage)
+why: off-by-one between count and capacity
+-  l16_WithdrawalRequest_room_pick(U32.is_lt(n, cap), arr, n)
++  l16_WithdrawalRequest_room_pick(U32.is_le(n, cap), arr, n)
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_room,l16_WithdrawalRequest_copy
+spec: growing the storage keeps every existing element
+fault: the copy loop moves n - 1 elements (the last element is lost)
+why: loop bound off by one
+-    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
++    case False{}: l16_WithdrawalRequest_copy(U32.to_nat((n - 1 : U32)), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_room,l16_WithdrawalRequest_cap
+spec: the grown storage holds the new element
+fault: the new storage is sized for n elements (not n + 1)
+why: capacity from the old length
+-    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
++    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap(n)), arr))
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in
+spec: the appended element is stored at index n and the count becomes n + 1
+fault: the count becomes n + 2
+why: increment twice
+-    case True{}: (l16_WithdrawalRequest_Seq{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32)}, True{})
++    case True{}: (l16_WithdrawalRequest_Seq{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 2 : U32)}, True{})
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_set,l16_WithdrawalRequest_put_in
+spec: set replaces an existing element only
+fault: the setter bound is i <= n
+why: off-by-one in the index test
+-l16_WithdrawalRequest_put_in(U32.is_lt(i, n), arr, n, i, v)
++l16_WithdrawalRequest_put_in(U32.is_le(i, n), arr, n, i, v)
+=== r2-a04-element-array-append
+type: FuluExecutionRequests
+ops: decode,encode,root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_get,l16_WithdrawalRequest_get_in
+spec: reading index n is out of range
+fault: the getter bound is i <= n (index n answers the default element)
+why: off-by-one in the index test
+-l16_WithdrawalRequest_get_in(U32.is_lt(i, n), arr, n, i)
++l16_WithdrawalRequest_get_in(U32.is_le(i, n), arr, n, i)
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_in,l16_WithdrawalRequest_capp_fit
+spec: the cached list appends under the same bound as the plain list
+fault: the cached append guard is n <= 16
+why: off-by-one between count and bound
+-l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
++l16_WithdrawalRequest_capp_in(U32.is_le(n, 16), arr, n, d, nodes, lo, hi, v)
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_fit
+spec: the cached tree has capacity 2^d leaves; an append at n = 2^d deepens it
+fault: the fit test is n <= 2^d (the leaf 2^d is stored in a tree of 2^d leaves)
+why: off-by-one between count and tree capacity
+-    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
++    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_le(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_fit
+spec: a deepened cache has depth d + 1 and a node array of 2^(d+2) slots
+fault: the deepened cache keeps depth d
+why: depth not incremented
+-    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), 1n+d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_fit
+spec: a deepened cache marks every leaf dirty (lo = 0, hi = 2^(d+1) - 1)
+fault: the dirty range after deepening is 0 .. 2^d - 1 (the new right half is never hashed)
+why: old width used for the dirty range
+-    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), 1n+d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), 1n+d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(d) - 1 : U32)}
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_cset,l16_WithdrawalRequest_cset_in
+spec: a cached set marks the written leaf dirty: lo = min(lo, i), hi = max(hi, i)
+fault: only the lower dirty bound is updated (hi keeps its value)
+why: one bound forgotten
+-    case True{}: (l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, arr, i, v), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, arr, i, v), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), hi}, True{})
+=== r2-a05-cached-append
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_cset,l16_WithdrawalRequest_cset_in
+spec: a cached set marks the written leaf dirty
+fault: the cached set bound is i <= n
+why: off-by-one in the index test
+-l16_WithdrawalRequest_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++l16_WithdrawalRequest_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set,l4096_b2048_set_v,l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_blit
+spec: a Cell is exactly 2048 bytes; List[Cell, 4096]
+fault: the setter takes a cell of at most 2048 bytes (a shorter cell is written and the tail of the old cell is kept)
+why: length equality weakened to a bound
+-    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(vn, 2048)), o, i, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set,l4096_b2048_set_v,l4096_b2048_blit
+spec: a Cell is exactly 2048 bytes
+fault: the setter takes a cell of at least 2048 bytes (a longer cell overruns the next one)
+why: length equality weakened to a bound
+-    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(2048, vn)), o, i, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set,l4096_b2048_set_v,l4096_b2048_blit
+spec: a Cell is exactly 2048 bytes and the index must be below the length
+fault: the setter bound is i <= n (writes the cell after the last)
+why: off-by-one in the index test
+-    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_le(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_grow
+spec: List[Cell, 4096] holds at most 4096 cells
+fault: the append guard is n + 1 < 4096 (4095 cells at most)
+why: bound off by one
+-    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_lt((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_grow
+spec: List[Cell, 4096] holds at most 4096 cells
+fault: the append guard is n + 1 <= 4097 (4097 cells)
+why: bound off by one
+-    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4097), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_grow
+spec: an appended cell must be exactly 2048 bytes
+fault: the append length check is dropped
+why: only the count is checked on append
+-    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_grow(U32.is_le((n + 1 : U32), 4096), o, n, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_grow
+spec: an appended cell must be exactly 2048 bytes
+fault: the append length check is vn <= 2048
+why: equality weakened to a bound
+-    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_le(vn, 2048)), o, n, O.Words{vws, vn})
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_len,l4096_b2048_len_of
+spec: the element count is bytes / 2048
+fault: the count divides by 2047
+why: constant mistyped
+-  (o, U32.div(n, 2048))
++  (o, U32.div(n, 2047))
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_at,l4096_b2048_get
+spec: element i occupies bytes [2048 i, 2048 i + 2048)
+fault: the getter slices 2047 bytes
+why: constant mistyped
+-def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, (i * 2048 : U32), 2048)
++def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, (i * 2048 : U32), 2047)
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_at,l4096_b2048_get
+spec: element i occupies bytes [2048 i, 2048 i + 2048)
+fault: the getter starts at byte 2048 (i + 1)
+why: index shifted
+-def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, (i * 2048 : U32), 2048)
++def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, ((i + 1 : U32) * 2048 : U32), 2048)
+=== r2-a06-cells
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_grow,words_fit,words_resize
+spec: an append makes room for the new cell
+fault: the room is made for n cells (the write lands outside the storage)
+why: capacity from the old length
+-    case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
++    case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 0 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit copies a non-empty word range (an empty source copies nothing)
+fault: the empty test is n <= 0 (same as n = 0 on an unsigned count)
+why: designed equivalent: is_le(n, 0) is is_eq(n, 0) for U32
+-def words_blit(o: Words, +p: U32, src: Words) -> Words & Words:
+-  match src:
+-    case Words{ws, +n}: bl_some(U32.is_eq(n, 0), o, p, ws, n)
++def words_blit(o: Words, +p: U32, src: Words) -> Words & Words:
++  match src:
++    case Words{ws, +n}: bl_some(U32.is_le(n, 0), o, p, ws, n)
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: an empty source copies nothing (CH-01)
+fault: the empty guard is removed (the loop count n/4 - 1 wraps to 2^32 - 1 for n = 0)
+why: the CH-01 fix reverted
+-    case Words{ws, +n}: bl_some(U32.is_eq(n, 0), o, p, ws, n)
++    case Words{ws, +n}: bl_some(False{}, o, p, ws, n)
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit copies ceil(n/4) words
+fault: the word count drops the rounding (n >> 2 words, a final partial word is not copied)
+why: ceil written as floor
+-    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
++    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit writes the source at byte position p (word p >> 2)
+fault: the destination word base is p (not p >> 2)
+why: byte offset used as word index
+-    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
++    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, p, o, Array.get(U32, ws, 0)))
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit returns the destination with its length unchanged and the source untouched
+fault: the destination word is stored at base + j + 1 (one word late)
+why: off-by-one in the destination index of the copy loop
+-      (words_setw(o, (base + j : U32), x), ws)
++      (words_setw(o, (base + j + 1 : U32), x), ws)
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit copies every word of the source
+fault: the source index advances by 2 (every second word)
+why: stride mistake in the copy loop
+-      bl_go(q, (j + 1 : U32), base, words_setw(o, (base + j : U32), x), Array.get(U32, ws, (j + 1 : U32)))
++      bl_go(q, (j + 1 : U32), base, words_setw(o, (base + j : U32), x), Array.get(U32, ws, (j + 2 : U32)))
+=== r2-a07-words-blit
+type: FuluDataColumnSidecar
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_blit,bl_some,bl_go,bl_fin
+spec: blit returns the written destination and the source with its length n
+fault: the returned source length is n + 1
+why: result length confusion
+-def bl_fin(+n: U32, pair: Words & Array<U32>) -> Words & Words:
+-  (o, ws) = pair
+-  (o, Words{ws, n})
++def bl_fin(+n: U32, pair: Words & Array<U32>) -> Words & Words:
++  (o, ws) = pair
++  (o, Words{ws, (n + 1 : U32)})
+=== r2-a08-words-fit
+type: bytelist_256
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+spec: words_fit makes room for `want` bytes and the whole chunk around them, keeping the existing words
+fault: the room test is `want-chunks <= cap` replaced by `< cap` (grows one append early, equivalent in result)
+why: designed near-equivalent: growing earlier never changes the value, only the allocation
+-  fit_pick(U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), cap), n, want, cap, ws)
++  fit_pick(U32.is_lt((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), cap), n, want, cap, ws)
+=== r2-a08-words-fit
+type: bytelist_256
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+spec: words_fit makes room for `want` bytes
+fault: the room test is `<= cap + 8` (a full chunk of slack is assumed: storage can be too small by up to eight words)
+why: slack double-counted
+-  fit_pick(U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), cap), n, want, cap, ws)
++  fit_pick(U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), (cap + 8 : U32)), n, want, cap, ws)
+=== r2-a08-words-fit
+type: bytelist_256
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+spec: growing the storage copies every existing word
+fault: the grow copies ceil(n/4) - 1 words (the last word is lost)
+why: loop bound off by one
+-  gfin(n, gcopy(U32.to_nat(nw), 0, zeros_for(want), Array.get(U32, ws, 0)))
++  gfin(n, gcopy(U32.to_nat((nw - 1 : U32)), 0, zeros_for(want), Array.get(U32, ws, 0)))
+=== r2-a08-words-fit
+type: bytelist_256
+ops: decode,encode,root
+file: src/obj.bend
+sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+spec: the grown storage holds `want` bytes
+fault: the grown storage is sized for n bytes (not want)
+why: capacity from the old length
+-    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), want, ws)
++    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), n, ws)

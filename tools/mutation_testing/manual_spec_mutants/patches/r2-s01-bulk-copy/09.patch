@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/09
+# type: ComplexTestStruct
+# ops: decode
+# spec: an empty range copies nothing
+# fault: an empty range is copied as if it had a word (the empty test is n = 1)
+# why: empty test mistyped
+# file: src/obj.bend
+# sym: copy_into,ci_go
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -356,3 +356,3 @@
+     case B.Buf{ws, +len}:
+-      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
++      ci_fin(len, n, ci_go(U32.is_eq(n, 1), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
+         dst, ws))

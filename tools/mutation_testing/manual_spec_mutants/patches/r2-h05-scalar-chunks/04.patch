@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h05-scalar-chunks/04
+# type: FuluCheckpoint
+# ops: root
+# spec: a uint64 root is its 8 little-endian bytes padded to 32
+# fault: the two words are swapped (high word first)
+# why: word order of a uint64
+# file: src/obj.bend
+# sym: u64_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1058,3 +1058,3 @@
+   match v:
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+ 

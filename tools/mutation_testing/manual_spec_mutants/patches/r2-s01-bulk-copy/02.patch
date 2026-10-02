@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/02
+# type: FuluBytes96
+# ops: decode
+# spec: a byte range is copied word for word
+# fault: lane 3 reads source word a + 3 instead of a + 4 (one lane repeated)
+# why: source index slip in the unrolled copy
+# file: src/obj.bend
+# sym: acopy,ac_c4,ac_c3,ac_blk,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -98,3 +98,3 @@
+   (src, +w) = pair
+-  ac_c4(a, b, Array.set(U32, dst, (b + 3 : U32), w), Array.get(U32, src, (a + 4 : U32)))
++  ac_c4(a, b, Array.set(U32, dst, (b + 3 : U32), w), Array.get(U32, src, (a + 3 : U32)))
+ 

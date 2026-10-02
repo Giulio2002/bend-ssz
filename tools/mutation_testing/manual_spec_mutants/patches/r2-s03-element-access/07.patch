@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/07
+# type: bytelist_256
+# ops: encode
+# spec: a read returns the  bytes at byte p
+# fault: the in-word shift is ignored (always the first byte of the word)
+# why: shift forgotten
+# file: src/obj.bend
+# sym: words_byte_at,read_at,shr_bytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1196,3 +1196,3 @@
+   (w, +x) = pair
+-  (w, keep(bytes, shr_bytes(x, (p .&. 3 : U32))))
++  (w, keep(bytes, x))
+ 

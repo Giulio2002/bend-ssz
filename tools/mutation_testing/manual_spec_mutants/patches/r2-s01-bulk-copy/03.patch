@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/03
+# type: FuluBytes96
+# ops: decode
+# spec: each block advances source and destination by eight words
+# fault: the destination advances by 7 words per block
+# why: stride mismatch
+# file: src/obj.bend
+# sym: acopy,ac_blk,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -117,3 +117,3 @@
+       (dst, src) = pair
+-      ac_blk(t, (a + 8 : U32), (b + 8 : U32), ac_c0(a, b, dst, Array.get(U32, src, a)))
++      ac_blk(t, (a + 8 : U32), (b + 7 : U32), ac_c0(a, b, dst, Array.get(U32, src, a)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/09
+# type: VarTestStruct
+# ops: encode
+# spec: the storage holds ceil(n / 4) words
+# fault: the storage check counts n / 4 words (floor: a partial last word may be missing)
+# why: ceil written as floor
+# file: src/obj.bend
+# sym: wk_cap,wk_last,words_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1484,3 +1484,3 @@
+   (ws, +c) = pair
+-  wk_last(Bool.and(ok, U32.is_le(U32.shrn((n + 3 : U32), 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
++  wk_last(Bool.and(ok, U32.is_le(U32.shrn(n, 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
+ 

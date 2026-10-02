@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/07
+# type: ProgressiveTestStruct
+# ops: root
+# spec: H(rest_root, segment_root): the remainder is the LEFT operand
+# fault: the segment is the left operand
+# why: operand order
+# file: src/progressive.bend
+# sym: tree,join
+--- a/src/progressive.bend
++++ b/src/progressive.bend
+@@ -9,3 +9,3 @@
+   (right, rest) = pair
+-  Hash.hash(Lists.append(U32, next(rest), right))
++  Hash.hash(Lists.append(U32, right, next(rest)))
+ 

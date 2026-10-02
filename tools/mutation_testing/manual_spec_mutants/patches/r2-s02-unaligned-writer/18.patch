@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/18
+# type: ComplexTestStruct
+# ops: encode
+# spec: an unaligned 4-byte write touches words p >> 2 and p >> 2 + 1
+# fault: the spill goes to word p >> 2 + 2
+# why: index slip
+# file: src/obj.bend
+# sym: w32,w32_split
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -410,3 +410,3 @@
+ def w32_split(out: Array<U32>, +p: U32, +x: U32, +s: U32) -> Array<U32>:
+-  or_word(or_word(out, U32.shrn(p, 2n), shl_bytes(x, s)), (U32.shrn(p, 2n) + 1 : U32), shr_over(x, s))
++  or_word(or_word(out, U32.shrn(p, 2n), shl_bytes(x, s)), (U32.shrn(p, 2n) + 2 : U32), shr_over(x, s))
+ 

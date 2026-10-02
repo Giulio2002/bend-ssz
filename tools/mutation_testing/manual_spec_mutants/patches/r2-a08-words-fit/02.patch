@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a08-words-fit/02
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: words_fit makes room for `want` bytes
+# fault: the room test is `<= cap + 8` (a full chunk of slack is assumed: storage can be too small by up to eight words)
+# why: slack double-counted
+# file: src/obj.bend
+# sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1244,3 +1244,3 @@
+   (ws, +cap) = pair
+-  fit_pick(U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), cap), n, want, cap, ws)
++  fit_pick(U32.is_le((U32.shrn((want + 31 : U32), 5n) * 8 + 8 : U32), (cap + 8 : U32)), n, want, cap, ws)
+ 

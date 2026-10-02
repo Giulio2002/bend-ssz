@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/04
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: the grown storage holds the new element
+# fault: the new storage is sized for n elements (not n + 1)
+# why: capacity from the old length
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_room,l16_WithdrawalRequest_cap
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -106,3 +106,3 @@
+     case True{}: arr
+-    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
++    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap(n)), arr))
+ 

@@ -257,3 +257,28 @@ Fixers: `codegen/proofs/slop/container_field_validity.py`, `packed_boolean_valid
 
 Limitation: the bit-list names without a `_serialize` entry (bitlist_256, 257, 1280, 1281, the Fulu bit lists, bitvector_1281) have no table law on their own facades.
 The audit's own killer of bv03/02 is `proofs/obj/bitz_generated.bend` `bz_5`, which no facade imports; the table laws on the 19 bit-list facades with a `_serialize` entry are the facade-level pin.
+
+## Manual spec-mutation audit, round 2 (collection guards, poison path, composite validity, packed units)
+
+Generators (all in `codegen/proofs/slop/`, outputs `proofs/slop/validity/*_generated.bend`, filed by api_gate under `serialize_valid` of the facade of the name X): `collection_guards.py` (`<X>_serialize_vcoll_<p>_*`), `container_field_validity.py` (extended: `vpoison_*`, `vrefuse_*`, `vreject_<field>` for every field kind, `vreject_default_valid`), `word_unit_validity.py` (`<X>_serialize_vunit_<p>_{refuse_n|accept_n}`), `bit_padding_validity.py` (extended: `vbits_access_<i>`). Every statement is by computation; no frozen file is touched. Mutants applied by exact patch to a private hard-linked copy (patchrun.py); the module column is the first module that fails with a statement mismatch, the facade column the facade file that imports it.
+
+| fault | public counterexample | law | module | facade |
+|---|---|---|---|---|
+| a01 append-guard 01..05 | `bl256_append` of a 257th element, of 256, `bl256_get(l, len)` | `vcoll_bl256_append_range/append_full/len_get/get_edge` | killed | killed (ComplexTestStruct) |
+| a01 getter/setter 01, 02; append-grow 02 | `bl256_set(l, len, v)`, set past the end | `vcoll_bl256_set_edge/set_write/len_get` | killed | killed |
+| a01 append-grow 01 | none: equivalent | none | survives | survives |
+| a03 bits-append 01..05, s03 element-access 13..15 | `bits9_append` of a tenth bit, the bit at the wrong index | `vcoll_bits9_first/order/full/set_edge`, `vbits_access_<i>` | killed | killed (bitlist_9) |
+| o03 dfill 01..03 | default object of the container | `vreject_default_valid` | killed | killed |
+| s05 poison 02, 03 | `VarTestStruct_serialize` of a uint8 out of range | `vpoison_*`, `vrefuse_<field>` | killed (03) | killed |
+| v01 composite validity 01..04 | `AttesterSlashing_serialize` with an invalid attestation | `vreject_*` on AttesterSlashing | killed | killed |
+| v01 05, 06 | `IndexedAttestation` with an invalid index list or signature | `vreject_*` on IndexedAttestation | killed | killed (IndexedAttestation facade; the AttesterSlashing facade does not import that module) |
+| v02 box-absent 02 | absent box in the container | `vreject_<field>` | killed | killed |
+| v02 box-absent 01 | baseline: `AttesterSlashing_serialize` accepts an absent attestation_1 box (fixer A) | not pinned here | survives | survives |
+| v04 group validity 01..03, 09, 10 | ExecutionPayload group field validity | `vreject_<field>` (group fields included) | killed | killed |
+| v04 04, 05, 07, 08 | same | `vreject_<field>`, `_elem`, `_earlier` witnesses for Seq/Boxed lists | killed | the mutated facade overflows the checker stack: not a pass, unjudged |
+| v05 attestation 01, 02 | Attestation validity | `vreject_*` on Attestation | killed | killed |
+| v06 composite list validity 01, 02, 04 | `List[Transaction]` element loop | `vreject_transactions`, `_elem`, `_earlier` | killed | killed |
+| s04 packed validity 03, 04 | packed list unit 4 and unit 32 | `vunit_<p>_refuse_n/accept_n` | killed | 03 killed; 04: BeaconState facade overflows the stack, killed on the module `fulu_BeaconState_unit_l16777216_b32` |
+
+Equivalent, with the argument: a01 append-grow/01 makes room for n instead of n + 1 elements. `zeros_for` and `fit_sized` allocate a whole chunk of 8 words plus 8 words of slack, so the write at word n/4 is always inside the array (needed(n) is at least n/4 + 8 words, more than the index): no input differs.
+Limitations: the four v04 facades and s04/04 crash the pinned checker with the mutant in (an unmutated facade passes, 8 facades re-checked); their kill is shown on the module. Group (4) (List[Cell,4096] len/get/set at index 1, `O.words_blit`) waits for the crash fix on main. Baseline findings (valid vs root storage, absent attestation_1 accepted) are not pinned.

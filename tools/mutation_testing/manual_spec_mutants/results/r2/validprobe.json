@@ -1,0 +1,160 @@
+{
+ "baseline": {
+  "1": "slash_default_control=1",
+  "2": "slash_absent_1=1",
+  "3": "slash_absent_2=1",
+  "4": "slash_bad_list_1=0",
+  "5": "slash_bad_list_2=0",
+  "6": "att_default_control=1",
+  "7": "att_bad_bits=0",
+  "8": "dchk_empty_40=none",
+  "9": "dchk_alloc_40=some",
+  "10": "dchk_alloc_40_size_41=none",
+  "11": "dchk_alloc_40_size_2gib=none",
+  "12": "dchk_big_buf_40=some",
+  "13": "complex_default_serialize_ok=1 size=100"
+ },
+ "r2-d01-decode-checked/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-d01-decode-checked/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-d01-decode-checked/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-d01-decode-checked/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-d01-decode-checked/09": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-d01-decode-checked/10": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-d01-decode-checked/11": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-d01-decode-checked/12": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-d01-decode-checked/13": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-o03-dfill/01": {
+  "B2": "KILLED",
+  "diff": {
+   "13": [
+    "complex_default_serialize_ok=1 size=100",
+    "complex_default_serialize_ok=1 size=93"
+   ]
+  }
+ },
+ "r2-o03-dfill/02": {
+  "B2": "KILLED",
+  "diff": {
+   "13": [
+    "complex_default_serialize_ok=1 size=100",
+    "complex_default_serialize_ok=1 size=93"
+   ]
+  }
+ },
+ "r2-o03-dfill/03": {
+  "B2": "KILLED",
+  "diff": {
+   "13": [
+    "complex_default_serialize_ok=1 size=100",
+    "complex_default_serialize_ok=1 size=86"
+   ]
+  }
+ },
+ "r2-v01-composite-validity/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v01-composite-validity/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v01-composite-validity/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v01-composite-validity/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v01-composite-validity/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v01-composite-validity/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v02-box-absent/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v02-box-absent/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v04-group-validity/01": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/02": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/03": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/04": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/05": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/07": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/08": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/09": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v04-group-validity/10": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v05-attestation/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v05-attestation/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r2-v06-composite-list-validity/01": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v06-composite-list-validity/02": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-v06-composite-list-validity/04": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r2-s05-poison/03": {
+  "B2": "KILLED",
+  "diff": {
+   "14": [
+    "vts_c_300=0 size=0",
+    "vts_c_300=1 size=7"
+   ]
+  }
+ }
+}

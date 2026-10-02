@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/10
+# type: bytelist_256
+# ops: root
+# spec: after a full chunk the next chunk starts with 32 free bytes (room 31)
+# fault: after a full chunk the room is 30
+# why: chunk size off by one
+# file: src/packing.bend
+# sym: scan
+--- a/src/packing.bend
++++ b/src/packing.bend
+@@ -20,3 +20,3 @@
+       match room:
+-        case 0n: scan(t, 31n, [], List.append(&2, U32, buffer, [h]) <> chunks)
++        case 0n: scan(t, 30n, [], List.append(&2, U32, buffer, [h]) <> chunks)
+         case 1n+p: scan(t, p, List.append(&2, U32, buffer, [h]), chunks)

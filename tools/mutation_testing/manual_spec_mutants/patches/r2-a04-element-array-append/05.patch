@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/05
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: the appended element is stored at index n and the count becomes n + 1
+# fault: the count becomes n + 2
+# why: increment twice
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -116,3 +116,3 @@
+   match ok:
+-    case True{}: (l16_WithdrawalRequest_Seq{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32)}, True{})
++    case True{}: (l16_WithdrawalRequest_Seq{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 2 : U32)}, True{})
+     case False{}: (l16_WithdrawalRequest_Seq{arr, n}, False{})

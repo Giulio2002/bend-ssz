@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/14
+# type: bitlist_9
+# ops: encode
+# spec: setting bit i touches bit i mod 32 of word i / 32
+# fault: the word index of the write is i / 16
+# why: shift constant
+# file: src/obj.bend
+# sym: bits_set,bit_put,bit_merge
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1284,3 +1284,3 @@
+   (b, +x) = pair
+-  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
++  bits_setw(b, U32.shrn(i, 4n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/14
+# type: ComplexTestStruct
+# ops: encode
+# spec: the destination word of a range at byte p is p >> 2
+# fault: the destination word is p >> 3
+# why: shift constant
+# file: src/obj.bend
+# sym: put_words,pw_empty
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -666,3 +666,3 @@
+       put_fin(n, pw_empty(U32.is_eq(n, 0), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
+-        U32.shrn(p, 2n), out, ws))
++        U32.shrn(p, 3n), out, ws))
+ 

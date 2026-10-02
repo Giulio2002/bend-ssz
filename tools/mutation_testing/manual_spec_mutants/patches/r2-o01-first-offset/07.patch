@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o01-first-offset/07
+# type: FuluAttesterSlashing
+# ops: decode
+# spec: an input shorter than the fixed part (8 bytes) is rejected
+# fault: the minimum length is 4 (the second offset is read past the end)
+# why: minimum taken as one offset
+# file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+# sym: AttesterSlashing_ok,AttesterSlashing_ok_len
+--- a/types/FuluAttesterSlashing_decode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_decode_ssz_generated.bend
+@@ -71,3 +71,3 @@
+ 
+-def AttesterSlashing_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok_len(U32.is_le(8, len), buf, off, len)
++def AttesterSlashing_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok_len(U32.is_le(4, len), buf, off, len)
+ 

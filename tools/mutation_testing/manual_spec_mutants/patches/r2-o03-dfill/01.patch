@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o03-dfill/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: the default Vector[VarTestStruct, 2] holds two present elements (CH-10)
+# fault: the default fills one element (dfill count 1)
+# why: loop count off by one
+# file: types/vec_VarTestStruct_2_def_generated.bend
+# sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+--- a/types/vec_VarTestStruct_2_def_generated.bend
++++ b/types/vec_VarTestStruct_2_def_generated.bend
+@@ -25,3 +25,3 @@
+ 
+-def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(2n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
++def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(1n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
+ 

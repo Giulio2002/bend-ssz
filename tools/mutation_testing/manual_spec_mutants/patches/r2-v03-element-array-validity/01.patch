@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v03-element-array-validity/01
+# type: FuluExecutionRequests
+# ops: encode
+# spec: the count of a list of elements may not exceed its storage (the serializer would read outside the array)
+# fault: the storage check n <= capacity is dropped from the validity
+# why: only the limit is checked
+# file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+# sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+--- a/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+@@ -58,3 +58,3 @@
+   (arr, +c) = pair
+-  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
++  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, ok)
+ 

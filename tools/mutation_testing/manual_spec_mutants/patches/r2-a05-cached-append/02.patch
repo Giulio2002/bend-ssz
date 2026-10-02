@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a05-cached-append/02
+# type: FuluExecutionRequests
+# ops: root
+# spec: the cached tree has capacity 2^d leaves; an append at n = 2^d deepens it
+# fault: the fit test is n <= 2^d (the leaf 2^d is stored in a tree of 2^d leaves)
+# why: off-by-one between count and tree capacity
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_fit
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -175,3 +175,3 @@
+   match ok:
+-    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
++    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_le(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
+     case False{}: (l16_WithdrawalRequest_Cached{arr, n, d, nodes, lo, hi}, False{})

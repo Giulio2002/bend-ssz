@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/04
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit writes the source at byte position p (word p >> 2)
+# fault: the destination word base is p (not p >> 2)
+# why: byte offset used as word index
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1358,3 +1358,3 @@
+     case True{}: (o, Words{ws, n})
+-    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
++    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, p, o, Array.get(U32, ws, 0)))
+ 

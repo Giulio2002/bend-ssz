@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/13
+# type: ComplexTestStruct
+# ops: encode
+# spec: an empty range writes nothing
+# fault: an empty range is written as a one-word range (the empty test is n = 1)
+# why: empty test mistyped
+# file: src/obj.bend
+# sym: put_words,pw_empty
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -665,3 +665,3 @@
+     case Words{ws, +n}:
+-      put_fin(n, pw_empty(U32.is_eq(n, 0), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
++      put_fin(n, pw_empty(U32.is_eq(n, 1), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
+         U32.shrn(p, 2n), out, ws))

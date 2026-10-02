@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/11
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: an element sequence is bounded by the storage: m = count * ew words
+# why: m is the element count (elements and words confused)
+# file: src/obj.bend
+# sym: er_size,elems_root,cap_cnt
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1103,3 +1103,3 @@
+   (ws, +sz) = pair
+-  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
++  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew), U32.to_nat(sz)))
+ 

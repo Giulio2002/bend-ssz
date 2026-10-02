@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a05-cached-append/03
+# type: FuluExecutionRequests
+# ops: root
+# spec: a deepened cache has depth d + 1 and a node array of 2^(d+2) slots
+# fault: the deepened cache keeps depth d
+# why: depth not incremented
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_fit
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -171,3 +171,3 @@
+     case True{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, arr, n, v), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), 1n+d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l16_WithdrawalRequest_Cached{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32), d, l16_WithdrawalRequest_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
+ 

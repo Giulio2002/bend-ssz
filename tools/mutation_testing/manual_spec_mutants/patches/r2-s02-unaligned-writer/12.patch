@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/12
+# type: FuluBytes96
+# ops: encode
+# spec: the partial last word of an aligned run is OR-ed at word q + nw - 1
+# fault: it is OR-ed at word q + nw
+# why: index slip
+# file: src/obj.bend
+# sym: put_words,pw_aligned,pw_al_or_w
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -463,3 +463,3 @@
+   (ws, +w) = pair
+-  (or_word(out, (q + nw - 1 : U32), w), ws)
++  (or_word(out, (q + nw : U32), w), ws)
+ 

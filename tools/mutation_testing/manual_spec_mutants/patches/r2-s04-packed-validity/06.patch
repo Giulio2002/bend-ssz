@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/06
+# type: VarTestStruct
+# ops: encode
+# spec: a packed collection's length is at least lo
+# fault: the lower bound is strict (n > lo)
+# why: strictness
+# file: src/obj.bend
+# sym: words_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1502,3 +1502,3 @@
+     case Words{ws, +n}:
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_lt(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
+ 

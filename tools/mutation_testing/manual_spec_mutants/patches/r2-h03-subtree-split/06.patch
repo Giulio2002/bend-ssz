@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/06
+# type: bytelist_256
+# ops: root
+# spec: a chunk is eight consecutive words
+# fault: the seventh word is read from b + 6 (repeats a word)
+# why: index slip in the unrolled chunk read
+# file: src/obj.bend
+# sym: chunkn,cn6
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -720,3 +720,3 @@
+   (ws, +a6) = pair
+-  cn7(b, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, U32.from_nat(Nat.add(b, 7n))))
++  cn7(b, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, U32.from_nat(Nat.add(b, 6n))))
+ def cn5(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

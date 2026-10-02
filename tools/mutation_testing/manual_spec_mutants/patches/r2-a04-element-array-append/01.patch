@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/01
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: List[WithdrawalRequest, 16] holds at most 16 elements
+# fault: the append guard is n <= 16 (a 17th element is accepted)
+# why: off-by-one between count and bound
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in,l16_WithdrawalRequest_room
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -121,3 +121,3 @@
+   match o:
+-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
++    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_in(U32.is_le(n, 16), arr, n, v)
+ 

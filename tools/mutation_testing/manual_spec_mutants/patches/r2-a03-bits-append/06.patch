@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-a03-bits-append/06
+# type: bitlist_9
+# ops: decode,encode,root
+# spec: pushing False clears the bit, pushing True sets it
+# fault: bit_merge is inverted (True clears, False sets)
+# why: swapped branches
+# file: src/obj.bend
+# sym: bits_push,bits_set,bit_merge,bit_put
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1279,4 +1279,4 @@
+   match v:
+-    case True{}: (x .|. m : U32)
+-    case False{}: (x .&. U32.not(m) : U32)
++    case True{}: (x .&. U32.not(m) : U32)
++    case False{}: (x .|. m : U32)
+ 

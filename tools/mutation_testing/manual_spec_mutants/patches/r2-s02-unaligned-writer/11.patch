@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/11
+# type: FuluBytes96
+# ops: encode
+# spec: an aligned range: whole words stored, a partial last word OR-ed in
+# fault: the partial-word test is n & 3 = 1 (a 2 or 3 byte tail is stored whole and overwrites its neighbour)
+# why: tail test mistyped
+# file: src/obj.bend
+# sym: put_words,pw_aligned,pw_al_tail,pw_al_or
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -475,3 +475,3 @@
+ def pw_aligned(+n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+-  pw_al_tail(U32.is_eq((n .&. 3 : U32), 0), nw, q,
++  pw_al_tail(U32.is_eq((n .&. 3 : U32), 1), nw, q,
+     acopy(pick(U32.is_eq((n .&. 3 : U32), 0), nw, (nw - 1 : U32)), 0, q, out, ws))

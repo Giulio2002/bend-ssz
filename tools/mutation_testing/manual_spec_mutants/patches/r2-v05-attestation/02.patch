@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v05-attestation/02
+# type: FuluAttestation
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the field validity is or-ed with the accumulator
+# why: Bool.and written as Bool.or
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_va0
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -96,3 +96,3 @@
+   (aggregation_bits, ok) = pair
+-  (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, Bool.and(acc, ok))
++  (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, Bool.or(acc, ok))
+ 

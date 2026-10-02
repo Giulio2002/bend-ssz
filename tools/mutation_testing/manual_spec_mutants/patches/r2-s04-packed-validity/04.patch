@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/04
+# type: Fulu_list_bytevec_2048_4096
+# ops: encode
+# spec: a packed collection of 32-byte elements has a byte count divisible by 32
+# fault: the divisibility test is n & 15 = 0
+# why: mask constant
+# file: src/obj.bend
+# sym: words_ok,unit_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1493,3 +1493,3 @@
+     case 8: U32.is_eq((n .&. 7 : U32), 0)
+-    case 32: U32.is_eq((n .&. 31 : U32), 0)
++    case 32: U32.is_eq((n .&. 15 : U32), 0)
+     case _: U32.is_eq(U32.mod(n, unit), 0)

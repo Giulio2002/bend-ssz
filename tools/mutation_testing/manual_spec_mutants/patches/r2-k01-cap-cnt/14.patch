@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/14
+# type: bytelist_256
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: an empty data tree is the zero tree
+# why: the chunk-presence flag is 0 <= k
+# file: src/obj.bend
+# sym: wr_cnt,words_root
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -909,3 +909,3 @@
+ def wr_cnt(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+ 

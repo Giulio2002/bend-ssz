@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/11
+# type: bytelist_256
+# ops: root
+# spec: the last partial chunk is padded with zeros up to 32 bytes
+# fault: the pad is one byte short
+# why: padding length
+# file: src/packing.bend
+# sym: finish
+--- a/src/packing.bend
++++ b/src/packing.bend
+@@ -13,3 +13,3 @@
+     case Nil{}: List.reverse(&2, +List<U32>, chunks)
+-    case Con{h, t}: List.reverse(&2, +List<U32>, List.append(&2, U32, h <> t, P.pad(1n+room, [])) <> chunks)
++    case Con{h, t}: List.reverse(&2, +List<U32>, List.append(&2, U32, h <> t, P.pad(room, [])) <> chunks)
+ 

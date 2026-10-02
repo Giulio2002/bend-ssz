@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v06-composite-list-validity/02
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: an element's validity is combined with all earlier ones (conjunction)
+# why: the conjunction is an or (one valid element makes the list valid)
+# file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+# sym: l1048576_bl1073741824_va_back,l1048576_bl1073741824_va
+--- a/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+@@ -118,3 +118,3 @@
+   (v, ok) = pair
+-  (Array.set(O.Boxed<O.Words>, arr, i, v), Bool.and(acc, ok))
++  (Array.set(O.Boxed<O.Words>, arr, i, v), Bool.or(acc, ok))
+ 

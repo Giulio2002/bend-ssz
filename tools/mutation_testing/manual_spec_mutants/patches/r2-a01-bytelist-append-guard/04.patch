@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a01-bytelist-append-guard/04
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: an element is appended only when the list has room AND the value is a byte
+# fault: the two append conditions are or-ed
+# why: Bool.and written as Bool.or
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_append,bl256_app_n,bl256_grow
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.or(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
+ 

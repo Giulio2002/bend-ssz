@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/06
+# type: ProgressiveTestStruct
+# ops: root
+# spec: merkleize_progressive(chunks, n) = H(merkleize_progressive(rest, 4n), merkleize(first n chunks, n))
+# fault: the depth grows by 1 (2x) instead of 2 (4x)
+# why: growth factor
+# file: src/progressive.bend
+# sym: tree,join
+--- a/src/progressive.bend
++++ b/src/progressive.bend
+@@ -17,3 +17,3 @@
+         case Nil{}: P.pad(32n, [])
+-        case Con{h, t}: join(Tree.consume(depth, h <> t), rest => tree(p, 2n+depth, rest))
++        case Con{h, t}: join(Tree.consume(depth, h <> t), rest => tree(p, 1n+depth, rest))
+ 

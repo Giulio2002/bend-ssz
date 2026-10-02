@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a05-cached-append/01
+# type: FuluExecutionRequests
+# ops: root
+# spec: the cached list appends under the same bound as the plain list
+# fault: the cached append guard is n <= 16
+# why: off-by-one between count and bound
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_in,l16_WithdrawalRequest_capp_fit
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -180,3 +180,3 @@
+   match c:
+-    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
++    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_le(n, 16), arr, n, d, nodes, lo, hi, v)
+ 

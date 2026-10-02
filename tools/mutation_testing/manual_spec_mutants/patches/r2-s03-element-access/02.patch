@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/02
+# type: bytelist_256
+# ops: encode
+# spec: a write replaces  bytes at byte position p
+# fault: a 2-byte write uses the 1-byte mask
+# why: mask table
+# file: src/obj.bend
+# sym: words_write,put_in,merge_word,mask_at,byte_mask
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1172,3 +1172,3 @@
+     case 1: 255
+-    case 2: 65535
++    case 2: 255
+     case 3: 16777215

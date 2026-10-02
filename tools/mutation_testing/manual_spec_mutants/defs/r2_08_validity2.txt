@@ -1,0 +1,191 @@
+## ROUND 2, area 8: container validity as the conjunction of field validity across field groups (ExecutionPayload g0/g1/g2), Attestation, and the element-validity loop of a list of variable-size elements
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_va1,ExecutionPayload_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the group g2 step keeps only the last group's validity (the running conjunction is replaced by ok)
+why: accumulator forgotten
+-  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, ok)
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_va1,ExecutionPayload_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the final step ignores the last group (acc only)
+why: last group forgotten
+-  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, acc)
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_va0,ExecutionPayload_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of group g0 is not carried into the conjunction (acc dropped at the second step)
+why: first group forgotten
+-  ExecutionPayload_va1(g0, g2, Bool.and(acc, ok), ExecutionPayload_g1_valid(g1))
++  ExecutionPayload_va1(g0, g2, acc, ExecutionPayload_g1_valid(g1))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_va0,ExecutionPayload_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of group g1 (extra_data, transactions, withdrawals) is not consulted
+why: middle group forgotten
+-  ExecutionPayload_va1(g0, g2, Bool.and(acc, ok), ExecutionPayload_g1_valid(g1))
++  ExecutionPayload_va1(g0, g2, Bool.and(acc, ok), (g1, True{}))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_valid,ExecutionPayload_g0_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of group g0 (logs_bloom) is not consulted
+why: first group forgotten
+-    case FuluExecutionPayload_d.ExecutionPayload{g0, g1, +g2}: ExecutionPayload_va0(g1, g2, True{}, ExecutionPayload_g0_valid(g0))
++    case FuluExecutionPayload_d.ExecutionPayload{g0, g1, +g2}: ExecutionPayload_va0(g1, g2, True{}, (g0, True{}))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va0,ExecutionPayload_g1_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of extra_data is not consulted
+why: field forgotten
+-True{}, Fulu_bytelist_32_e.bl32_valid(extra_data))
++True{}, (extra_data, True{}))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va0,ExecutionPayload_g1_va1
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of the transactions list is not consulted
+why: field forgotten
+-  ExecutionPayload_g1_va1(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Bool.and(acc, ok), Fulu_list_bytelist_1073741824_1048576_e.l1048576_bl1073741824_valid(transactions))
++  ExecutionPayload_g1_va1(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Bool.and(acc, ok), (transactions, True{}))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va1,ExecutionPayload_g1_va2
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of the withdrawals list is not consulted
+why: field forgotten
+-  ExecutionPayload_g1_va2(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, blob_gas_used, Bool.and(acc, ok), Fulu_list_Withdrawal_16_e.l16_Withdrawal_valid(withdrawals))
++  ExecutionPayload_g1_va2(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, blob_gas_used, Bool.and(acc, ok), (withdrawals, True{}))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va2
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the last field's validity is combined with the accumulator by or
+why: Bool.and written as Bool.or
+-  (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, Bool.or(acc, ok))
+=== r2-v04-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g0_va0
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the logs_bloom validity is combined with the accumulator by or
+why: Bool.and written as Bool.or
+-  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.or(acc, ok))
+=== r2-v05-attestation
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_valid,Attestation_va0
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the validity of aggregation_bits (the only checked field of Attestation) is not consulted
+why: field forgotten
+-    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_va0(data, signature, committee_bits, True{}, Fulu_bitlist_131072_e.bits131072_valid(aggregation_bits))
++    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_va0(data, signature, committee_bits, True{}, (aggregation_bits, True{}))
+=== r2-v05-attestation
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_va0
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the field validity is or-ed with the accumulator
+why: Bool.and written as Bool.or
+-  (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, Bool.and(acc, ok))
++  (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, Bool.or(acc, ok))
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_back,l1048576_bl1073741824_va
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: an element's validity is combined with all earlier ones (conjunction)
+why: only the last element's validity counts (the accumulator is dropped)
+-  (Array.set(O.Boxed<O.Words>, arr, i, v), Bool.and(acc, ok))
++  (Array.set(O.Boxed<O.Words>, arr, i, v), ok)
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_back,l1048576_bl1073741824_va
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: an element's validity is combined with all earlier ones (conjunction)
+why: the conjunction is an or (one valid element makes the list valid)
+-  (Array.set(O.Boxed<O.Words>, arr, i, v), Bool.and(acc, ok))
++  (Array.set(O.Boxed<O.Words>, arr, i, v), Bool.or(acc, ok))
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_nz,l1048576_bl1073741824_va
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: every one of the n elements is checked
+why: the loop checks n - 1 elements (the last is not validated)
+-  l1048576_bl1073741824_va(U32.to_nat(n), 0, (arr, True{}))
++  l1048576_bl1073741824_va(Nat.sub(U32.to_nat(n), 1n), 0, (arr, True{}))
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_fin,l1048576_bl1073741824_va_go
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the list is valid iff the loop result is valid
+why: the loop result is ignored
+-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, Bool.and(ok, b))
++  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, ok)
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_cap,l1048576_bl1073741824_va_go
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: the count may not exceed the storage
+why: the storage check is dropped
+-  l1048576_bl1073741824_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
++  l1048576_bl1073741824_va_go(ok, n, arr)
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_valid
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: List[Transaction, 1048576] holds at most 1048576 transactions
+why: the limit is 1048577
+-    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_va_cap(Bool.or(False{}, U32.is_le(n, 1048576)), n, Array.size(O.Boxed<O.Words>, arr))
++    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_va_cap(Bool.or(False{}, U32.is_le(n, 1048577)), n, Array.size(O.Boxed<O.Words>, arr))
+=== r2-v06-composite-list-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_va_one,l1048576_bl1073741824_va
+spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+fault: an element is validated in place (swapped out and set back)
+why: each element is validated from a freshly swapped-in empty box (the real element is never examined)
+-  l1048576_bl1073741824_va_back(i, acc, arr, FuluTransaction_e.bl1073741824_bx_valid(v))
++  l1048576_bl1073741824_va_back(i, acc, arr, FuluTransaction_e.bl1073741824_bx_valid(O.BNone{}))

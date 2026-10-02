@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/15
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: an empty element sequence is the zero tree
+# why: the element-presence flag is 0 <= k
+# file: src/obj.bend
+# sym: er_cnt,elems_root
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1097,3 +1097,3 @@
+ def er_cnt(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl,
+     LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},

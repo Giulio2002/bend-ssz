@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h05-scalar-chunks/02
+# type: FuluValidator
+# ops: root
+# spec: false hashes as the zero chunk
+# fault: false is the all-ones chunk word
+# why: constant mistyped
+# file: src/obj.bend
+# sym: bool_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1052,3 +1052,3 @@
+     case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
+-    case False{}: D.zero()
++    case False{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+ 

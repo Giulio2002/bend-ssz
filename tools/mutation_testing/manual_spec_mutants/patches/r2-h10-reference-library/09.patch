@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/09
+# type: bytelist_256
+# ops: root
+# spec: chunks are 32 bytes; the last chunk is zero-padded to 32
+# fault: a chunk completes after 30 bytes (room starts at 30)
+# why: chunk size off by one
+# file: src/packing.bend
+# sym: scan,finish
+--- a/src/packing.bend
++++ b/src/packing.bend
+@@ -26,3 +26,3 @@
+     case False{}: None{}
+-    case True{}: Some{scan(xs, 31n, [], [])}
++    case True{}: Some{scan(xs, 30n, [], [])}
+ 

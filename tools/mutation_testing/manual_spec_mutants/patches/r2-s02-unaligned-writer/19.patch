@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/19
+# type: ComplexTestStruct
+# ops: encode
+# spec: a byte at position p is shifted by 8 (p mod 4) bits
+# fault: shift by 2 bytes becomes 1 byte (x * 256)
+# why: constant
+# file: src/obj.bend
+# sym: w8,shl_bytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -392,3 +392,3 @@
+     case 1: (x * 256 : U32)
+-    case 2: (x * 65536 : U32)
++    case 2: (x * 256 : U32)
+     case _: (x * 16777216 : U32)

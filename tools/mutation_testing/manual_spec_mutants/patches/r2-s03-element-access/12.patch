@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/12
+# type: Fulu_list_uint64_128
+# ops: encode
+# spec: a uint64 element is written as (lo, hi) at consecutive words
+# fault: hi is written two words later
+# why: index slip
+# file: src/obj.bend
+# sym: words_write_u64
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1217,3 +1217,3 @@
+   match v:
+-    case U64{+lo, +hi}: words_setw(words_setw(w, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 1 : U32), hi)
++    case U64{+lo, +hi}: words_setw(words_setw(w, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 2 : U32), hi)
+ 

@@ -40,6 +40,24 @@ def SingleFieldTestStruct__encode_spec__SingleFieldTestStruct_spec_encode(+x0: U
 def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vfields(+f_A: U32) -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct{f_A}) == uint8_e.u8_valid(f_A) : Bool}:
   P2_PRV.SingleFieldTestStruct_serialize_vfields(f_A)
 
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_false_flag() -> {P2_O.is_poisoned(P2_O.pz(False{})) == True{} : Bool}:
+  P2_PRV.SingleFieldTestStruct_serialize_vpoison_false_flag()
+
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_true_flag() -> {P2_O.is_poisoned(P2_O.pz(True{})) == False{} : Bool}:
+  P2_PRV.SingleFieldTestStruct_serialize_vpoison_true_flag()
+
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(2147483647) == False{} : Bool}:
+  P2_PRV.SingleFieldTestStruct_serialize_vpoison_below()
+
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 2147483648)) == True{} : Bool}:
+  P2_PRV.SingleFieldTestStruct_serialize_vpoison_carried()
+
 def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vreject_f_A() -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 256)) == False{} : Bool}:
   P2_PRV.SingleFieldTestStruct_serialize_vreject_f_A()
+
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vrefuse_f_A() -> {SingleFieldTestStruct_e.SingleFieldTestStruct_serialize(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 256)) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.SingleFieldTestStruct_serialize_vrefuse_f_A()
+
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vreject_default_valid() -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct_default()) == True{} : Bool}:
+  P2_PRV.SingleFieldTestStruct_serialize_vreject_default_valid()
 

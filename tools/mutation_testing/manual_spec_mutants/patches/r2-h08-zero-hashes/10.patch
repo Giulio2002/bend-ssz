@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/10
+# type: FuluExecutionRequests
+# ops: root
+# spec: a Merkle node hashes 64 bytes
+# fault: the message length is hl - 1 (63 bytes)
+# why: message length off by one
+# file: src/digest.bend
+# sym: node
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -92,3 +92,3 @@
+ def node(+hl: Nat, l: Digest, r: Digest) -> Digest:
+-  of_result(PKG.sha256(pair_words(l, r), hl))
++  of_result(PKG.sha256(pair_words(l, r), Nat.sub(hl, 1n)))
+ 

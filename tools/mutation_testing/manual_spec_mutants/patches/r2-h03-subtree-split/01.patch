@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/01
+# type: bytelist_256
+# ops: root
+# spec: the right half of a tree starts at s + w/2
+# fault: the right half starts at s + w
+# why: split point
+# file: src/obj.bend
+# sym: mtree,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -878,3 +878,3 @@
+             case True{}:
+-              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              mtree(p, 1n, Nat.is_lt(Nat.add(s, w), n), hl, lf, Nat.div(w, 2n), Nat.add(s, w), n,
+                 mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))

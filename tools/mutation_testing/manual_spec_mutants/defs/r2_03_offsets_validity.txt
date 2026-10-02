@@ -1,0 +1,393 @@
+## ROUND 2, area 3: first-offset and offset-order laws of decoders not mutated in round 1 (AttesterSlashing, List[Attestation, 8]); dfill; container validity and size-pass checks of composites
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v0,AttesterSlashing_c0
+spec: the first offset of a container equals the fixed-part size (8 = two offsets)
+fault: the first offset may be any value at least 8
+why: equality weakened to a lower bound
+-  AttesterSlashing_c0(U32.is_eq(o0, 8), buf, off, len, o0)
++  AttesterSlashing_c0(U32.is_le(8, o0), buf, off, len, o0)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v0,AttesterSlashing_c0
+spec: the first offset of a container equals the fixed-part size
+fault: the first offset may be any value at most 8
+why: equality weakened to an upper bound
+-  AttesterSlashing_c0(U32.is_eq(o0, 8), buf, off, len, o0)
++  AttesterSlashing_c0(U32.is_le(o0, 8), buf, off, len, o0)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v0,AttesterSlashing_c0
+spec: the first offset of a container equals the fixed-part size
+fault: the first offset check is dropped
+why: only the second offset is validated
+-  AttesterSlashing_c0(U32.is_eq(o0, 8), buf, off, len, o0)
++  AttesterSlashing_c0(True{}, buf, off, len, o0)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v1,AttesterSlashing_c1
+spec: offsets are non-decreasing: o0 <= o1
+fault: the order test o0 <= o1 is dropped (the first element window is negative)
+why: only the bound against the input length is kept
+-  AttesterSlashing_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  AttesterSlashing_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v1,AttesterSlashing_c1
+spec: every offset lies within the input: o1 <= len
+fault: the bound o1 <= len is dropped
+why: only the order test is kept
+-  AttesterSlashing_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  AttesterSlashing_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_v1,AttesterSlashing_c1
+spec: every offset lies within the input: o1 <= len
+fault: the bound is o1 < len (an empty second element is refused: it is invalid anyway)
+why: strict comparison
+-  AttesterSlashing_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  AttesterSlashing_c1(Bool.and(U32.is_le(o0, o1), U32.is_lt(o1, len)), buf, off, len, o0, o1)
+=== r2-o01-first-offset
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_ok,AttesterSlashing_ok_len
+spec: an input shorter than the fixed part (8 bytes) is rejected
+fault: the minimum length is 4 (the second offset is read past the end)
+why: minimum taken as one offset
+-def AttesterSlashing_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok_len(U32.is_le(8, len), buf, off, len)
++def AttesterSlashing_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok_len(U32.is_le(4, len), buf, off, len)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: List[variable T, N]: the first offset is a multiple of 4
+fault: the alignment test (first mod 4 = 0) is dropped
+why: alignment forgotten
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(U32.is_le(first, len), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the element count first/4 is at most the limit 8
+fault: the count limit is 9
+why: off-by-one in the limit
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 9))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the element count first/4 is at most the limit 8
+fault: the count limit is 7
+why: off-by-one in the limit
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 7))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the count limit is enforced (at most 8 attestations)
+fault: the count limit is dropped
+why: limit forgotten on the decoder
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_le(4, first)), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the first offset is at most the input length
+fault: the bound first <= len is dropped (the count may exceed what the input holds)
+why: bound forgotten
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), True{}), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the first offset is at least 4 (one offset)
+fault: the lower bound 4 is dropped (first offset 0: count 0 and a non-empty input is accepted)
+why: lower bound forgotten
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(True{}, U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+spec: the checks on the first offset hold together
+fault: the alignment and bound conjunction is an or
+why: Bool.and written as Bool.or
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.or(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_ok,l8_Attestation_ok_nz
+spec: an empty scope is the empty list
+fault: the empty scope is refused
+why: empty list special case reversed
+-    case True{}: (buf, True{})
+-    case False{}: l8_Attestation_head(len, off, B.read32(buf, off))
++    case True{}: (buf, False{})
++    case False{}: l8_Attestation_head(len, off, B.read32(buf, off))
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_next
+spec: the last element ends at the input end: its end offset is len
+fault: the last element's end is read one offset past (i + 3 == n selects len)
+why: loop-index confusion in the last-element test
+-      l8_Attestation_ev(q, (i + 1 : U32), n, off, len, l8_Attestation_ee(ok, off, len, a, l8_Attestation_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))))
++      l8_Attestation_ev(q, (i + 1 : U32), n, off, len, l8_Attestation_ee(ok, off, len, a, l8_Attestation_next(U32.is_eq((i + 3 : U32), n), buf, off, len, (i + 1 : U32))))
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_eb
+spec: each element window is valid and offsets are non-decreasing and inside the input
+fault: the element is validated only when it is the first window (acc kept True afterwards)
+why: accumulator reset in the loop
+-  l8_Attestation_eb(b, O.and_pair(acc, l8_Attestation_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l8_Attestation_eb(b, O.and_pair(True{}, l8_Attestation_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
+=== r2-o02-list-of-variable-first-offset
+type: FuluBeaconBlockBody
+ops: decode
+file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_eb
+spec: the decoded list is valid only if every element is
+fault: the accumulated validity of the earlier elements is ignored when the element is not validated (acc lost)
+why: wrong accumulator returned
+-  (buf, (ok, b))
++  (buf, (True{}, b))
+=== r2-o03-dfill
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+spec: the default Vector[VarTestStruct, 2] holds two present elements (CH-10)
+fault: the default fills one element (dfill count 1)
+why: loop count off by one
+-def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(2n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
++def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(1n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
+=== r2-o03-dfill
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+spec: the default Vector[VarTestStruct, 2] holds two present elements (CH-10)
+fault: every slot is filled at index 0 (the second slot stays absent)
+why: index not advanced
+-    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_default()))
++    case 1n+q: v2_VarTestStruct_dfill(q, i, Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_default()))
+=== r2-o03-dfill
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+spec: the default Vector[VarTestStruct, 2] holds present elements, not empty boxes
+fault: the filler is the empty box (the absent element the CH-10 fix removed)
+why: CH-10 reverted
+-    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_default()))
++    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, O.BNone{}))
+=== r2-o03-dfill
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+spec: the default Vector[VarTestStruct, 2] has length 2
+fault: the stored count is 1 (elements fill both slots but the count is one)
+why: count and fill disagree
+-def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(2n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
++def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(2n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 1}
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+spec: a container is valid iff every field is valid
+fault: field attestation_1's validity is not consulted
+why: first field of the conjunction forgotten
+-    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_va0(attestation_2, True{}, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_1))
++    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_va0(attestation_2, True{}, (attestation_1, True{}))
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+spec: a container is valid iff every field is valid
+fault: field attestation_2's validity is not consulted
+why: last field of the conjunction forgotten
+-  AttesterSlashing_va1(attestation_1, Bool.and(acc, ok), FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_2))
++  AttesterSlashing_va1(attestation_1, Bool.and(acc, ok), (attestation_2, True{}))
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+spec: a container is valid iff every field is valid
+fault: the running conjunction is an or at the last field
+why: Bool.and written as Bool.or
+-  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, Bool.and(acc, ok))
++  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, Bool.or(acc, ok))
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+spec: a container is valid iff every field is valid
+fault: the running conjunction is an or at the first step
+why: Bool.and written as Bool.or
+-  AttesterSlashing_va1(attestation_1, Bool.and(acc, ok), FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_2))
++  AttesterSlashing_va1(attestation_1, Bool.or(acc, ok), FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_2))
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_valid,IndexedAttestation_va0
+spec: a container is valid iff every field is valid (the index list is the only field that can be invalid)
+fault: the validity of attesting_indices is not consulted
+why: the only checking field forgotten
+-    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_va0(data, signature, True{}, Fulu_list_uint64_131072_e.l131072_u64_valid(attesting_indices))
++    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_va0(data, signature, True{}, (attesting_indices, True{}))
+=== r2-v01-composite-validity
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_valid,IndexedAttestation_va0
+spec: a container is valid iff every field is valid
+fault: the field validity is or-ed with the accumulator
+why: Bool.and written as Bool.or
+-  (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, Bool.and(acc, ok))
++  (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, Bool.or(acc, ok))
+=== r2-v02-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_bx_valid,AttesterSlashing_bx_putk
+spec: an absent boxed field (no value) is not a valid value and must be refused by the serializer
+fault: an empty box is valid
+why: the absent case treated as the default
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+=== r2-v02-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_valid,IndexedAttestation_bx_putk
+spec: an absent boxed field is not a valid value
+fault: an empty box is valid
+why: the absent case treated as the default
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+=== r2-v02-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_valid,IndexedAttestation_bx_putk
+spec: an absent boxed field is poisoned in the fused encoder
+fault: an empty box contributes no poison to the running size (the encoder writes nothing for it and reports a valid size)
+why: poison constant forgotten
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 0))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+spec: the count of a list of elements may not exceed its storage (the serializer would read outside the array)
+fault: the storage check n <= capacity is dropped from the validity
+why: only the limit is checked
+-  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
++  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, ok)
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+spec: the count of a list of elements may not exceed its storage
+fault: the storage check is n < capacity (a full array is refused)
+why: strict comparison
+-  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
++  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, Bool.and(ok, U32.is_lt(n, c)))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+spec: the list limit is 16 elements
+fault: the limit check is dropped (Bool.or(True, ...))
+why: limit forgotten, only storage checked
+-    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(False{}, U32.is_le(n, 16)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
++    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(True{}, U32.is_le(n, 16)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+spec: the list limit is 16 elements
+fault: the limit check is n <= 17
+why: off-by-one in the limit
+-    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(False{}, U32.is_le(n, 16)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
++    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(False{}, U32.is_le(n, 17)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_size,l16_WithdrawalRequest_szf
+spec: the size pass refuses a list whose count exceeds its storage (nothing that large is allocated for it)
+fault: the size pass does not check the storage (size = n * 76 whatever the array holds)
+why: poison omitted from the size pass
+-  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 76 : U32), 2147483648))
++  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, (n * 76 : U32))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_size,l16_WithdrawalRequest_szf
+spec: the size pass refuses a list whose count exceeds its storage
+fault: the size-pass storage check is n < c
+why: strict comparison
+-  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 76 : U32), 2147483648))
++  (Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, n}, O.pick(U32.is_lt(n, c), (n * 76 : U32), 2147483648))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_putn,l16_WithdrawalRequest_ptn_fin
+spec: the encoded size of n WithdrawalRequests is 76 n
+fault: the running size reported by putn is 75 n
+why: constant mistyped
+-  (out, (sq, (n * 76 : U32)))
++  (out, (sq, (n * 75 : U32)))
+=== r2-v03-element-array-validity
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_pt,l16_WithdrawalRequest_put
+spec: element i is written at pos + 76 i
+fault: the intermediate elements are written at pos + 75 i
+why: constant mistyped
+-      l16_WithdrawalRequest_pt(q, (i + 1 : U32), pos, FuluWithdrawalRequest_e.WithdrawalRequest_put(out, (pos + i * 76 : U32), v), Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, (i + 1 : U32)))
++      l16_WithdrawalRequest_pt(q, (i + 1 : U32), pos, FuluWithdrawalRequest_e.WithdrawalRequest_put(out, (pos + i * 75 : U32), v), Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, (i + 1 : U32)))

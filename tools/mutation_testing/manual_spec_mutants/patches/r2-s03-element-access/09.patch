@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/09
+# type: bytelist_256
+# ops: encode
+# spec: an in-word shift of 3 bytes is x >> 24
+# fault: a shift of 3 bytes is x >> 16
+# why: constant
+# file: src/obj.bend
+# sym: words_byte_at,read_at,shr_bytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -400,3 +400,3 @@
+     case 2: U32.shrn(x, 16n)
+-    case _: U32.shrn(x, 24n)
++    case _: U32.shrn(x, 16n)
+ 

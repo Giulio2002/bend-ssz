@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/15
+# type: bitlist_9
+# ops: encode
+# spec: setting bit i touches bit i mod 32
+# fault: the bit position is i mod 16
+# why: mask constant
+# file: src/obj.bend
+# sym: bits_set,bit_put
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1284,3 +1284,3 @@
+   (b, +x) = pair
+-  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
++  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 15 : U32))))
+ 

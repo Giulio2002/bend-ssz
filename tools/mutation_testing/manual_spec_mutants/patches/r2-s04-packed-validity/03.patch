@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/03
+# type: Fulu_list_uint64_128
+# ops: encode
+# spec: a packed collection of 4-byte elements has a byte count divisible by 4
+# fault: the divisibility test is n & 1 = 0
+# why: mask constant
+# file: src/obj.bend
+# sym: words_ok,unit_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1491,3 +1491,3 @@
+     case 2: U32.is_eq((n .&. 1 : U32), 0)
+-    case 4: U32.is_eq((n .&. 3 : U32), 0)
++    case 4: U32.is_eq((n .&. 1 : U32), 0)
+     case 8: U32.is_eq((n .&. 7 : U32), 0)

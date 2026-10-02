@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/17
+# type: Fulu_list_bytevec_2048_4096
+# ops: encode
+# spec: an element slice starts at word p >> 2
+# fault: it starts at word p >> 2 + 1
+# why: index slip
+# file: src/obj.bend
+# sym: words_slice,sl_go
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1330,3 +1330,3 @@
+       (o, +x) = pair
+-      sl_go(q, (j + 1 : U32), base, Array.set(U32, out, j, x), words_word(o, (base + j + 1 : U32)))
++      sl_go(q, (j + 1 : U32), base, Array.set(U32, out, j, x), words_word(o, (base + j + 2 : U32)))
+ 

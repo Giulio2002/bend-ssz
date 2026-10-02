@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/19
+# type: ProgressiveTestStruct
+# ops: root
+# spec: a progressive container mixes in its active-field bitvector padded to 32 bytes
+# fault: the active-field chunk is padded to 31 bytes
+# why: padding width
+# file: src/root.bend
+# sym: active_root
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -85,3 +85,3 @@
+     case None{}: None{}
+-    case Some{rs}: single(Bits.mix_length_bytes(Cached.progressive(active_chunks(active, rs), table), Some{P.pad(32n, BitPack.pack(active))}))
++    case Some{rs}: single(Bits.mix_length_bytes(Cached.progressive(active_chunks(active, rs), table), Some{P.pad(31n, BitPack.pack(active))}))
+ 

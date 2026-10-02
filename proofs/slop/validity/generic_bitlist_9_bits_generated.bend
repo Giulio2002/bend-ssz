@@ -139,3 +139,47 @@ def bitlist_9_serialize_vbits_nbytes()
 def bitlist_9_vbits_nbytes()
     -> {Bool.and(U32.is_eq(O.bits_nbytes(0), 0), Bool.and(U32.is_eq(O.bits_nbytes(1), 1), Bool.and(U32.is_eq(O.bits_nbytes(7), 1), Bool.and(U32.is_eq(O.bits_nbytes(8), 1), Bool.and(U32.is_eq(O.bits_nbytes(9), 2), Bool.and(U32.is_eq(O.bits_nbytes(4294967287), 536870911), Bool.and(U32.is_eq(O.bits_nbytes(4294967288), 536870911), Bool.and(U32.is_eq(O.bits_nbytes(4294967289), 536870912), U32.is_eq(O.bits_nbytes(4294967295), 536870912))))))))) == True{} : Bool}:
   {==}
+
+def bitlist_9_serialize_vbits_access_0()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 0, True{}), 0)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 0, True{}), 1)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 0, True{}), 1)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_1()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 1, True{}), 1)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 1, True{}), 0)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 1, True{}), 2)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_7()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 7, True{}), 7)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 7, True{}), 6)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 7, True{}), 8)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_8()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 8, True{}), 8)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 8, True{}), 7)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 8, True{}), 9)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_15()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 15, True{}), 15)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 15, True{}), 14)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 15, True{}), 16)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_16()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 16, True{}), 16)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 16, True{}), 15)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 16, True{}), 17)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_17()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 17, True{}), 17)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 17, True{}), 16)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 17, True{}), 18)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_31()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 31, True{}), 31)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 31, True{}), 30)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 31, True{}), 32)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_32()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 32, True{}), 32)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 32, True{}), 31)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 32, True{}), 33)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_33()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 33, True{}), 33)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 33, True{}), 32)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 33, True{}), 34)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}
+
+def bitlist_9_serialize_vbits_access_39()
+    -> {(Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 39, True{}), 39)), (Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 39, True{}), 38)), Pair.snd(O.Bits, Bool, O.bits_get(O.bits_set(O.bits_zeros(40), 39, True{}), 40)))) == (True{}, (False{}, False{})) : Bool & (Bool & Bool)}:
+  {==}

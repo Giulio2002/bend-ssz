@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o01-first-offset/01
+# type: FuluAttesterSlashing
+# ops: decode
+# spec: the first offset of a container equals the fixed-part size (8 = two offsets)
+# fault: the first offset may be any value at least 8
+# why: equality weakened to a lower bound
+# file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+# sym: AttesterSlashing_ok,AttesterSlashing_v0,AttesterSlashing_c0
+--- a/types/FuluAttesterSlashing_decode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_decode_ssz_generated.bend
+@@ -64,3 +64,3 @@
+   (buf, +o0) = pair
+-  AttesterSlashing_c0(U32.is_eq(o0, 8), buf, off, len, o0)
++  AttesterSlashing_c0(U32.is_le(8, o0), buf, off, len, o0)
+ 

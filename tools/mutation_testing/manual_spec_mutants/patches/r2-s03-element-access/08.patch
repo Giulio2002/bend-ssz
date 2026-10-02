@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/08
+# type: bytelist_256
+# ops: encode
+# spec: a read keeps the low  bytes
+# fault: a 3-byte read keeps 2 bytes
+# why: mask table
+# file: src/obj.bend
+# sym: words_byte_at,read_at,keep
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -66,3 +66,3 @@
+     case 2: (w .&. 65535 : U32)
+-    case 3: (w .&. 16777215 : U32)
++    case 3: (w .&. 65535 : U32)
+     case _: w

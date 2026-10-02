@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/17
+# type: FuluExecutionRequests
+# ops: root
+# spec: the chunk limit of a basic list is (limit * size + 31) / 32, of a composite list is limit
+# fault: the basic-size limit rounds down
+# why: ceil written as floor
+# file: src/root.bend
+# sym: count_limit
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -41,3 +41,3 @@
+     case None{}: limit
+-    case Some{s}: Nat.div(Nat.add(Nat.mul(limit, s), 31n), 32n)
++    case Some{s}: Nat.div(Nat.mul(limit, s), 32n)
+ 

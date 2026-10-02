@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/07
+# type: ComplexTestStruct
+# ops: decode
+# spec: a range starting s = off mod 4 bytes into a word is copied with the shift for s (0: plain, 1, 2, 3)
+# fault: offset 1 mod 4 uses the plain copy
+# why: case mapping
+# file: src/obj.bend
+# sym: copy_into,ci_pick,scopy1,scopy2,scopy3,acopy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -337,3 +337,3 @@
+     case 0: acopy(nw, a, 0, dst, src)
+-    case 1: scopy1(nw, a, 0, dst, src)
++    case 1: acopy(nw, a, 0, dst, src)
+     case 2: scopy2(nw, a, 0, dst, src)

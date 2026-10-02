@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v04-group-validity/07
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the validity of the transactions list is not consulted
+# why: field forgotten
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_g1_va0,ExecutionPayload_g1_va1
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -193,3 +193,3 @@
+   (extra_data, ok) = pair
+-  ExecutionPayload_g1_va1(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Bool.and(acc, ok), Fulu_list_bytelist_1073741824_1048576_e.l1048576_bl1073741824_valid(transactions))
++  ExecutionPayload_g1_va1(gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Bool.and(acc, ok), (transactions, True{}))
+ 

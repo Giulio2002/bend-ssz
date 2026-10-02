@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/16
+# type: bitlist_9
+# ops: root
+# spec: a list mixes in its count as a 32-byte uint256
+# fault: the count is encoded in 8 bytes
+# why: length width
+# file: src/root.bend
+# sym: length_mix
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -59,3 +59,3 @@
+     case None{}: root
+-    case Some{n}: Bits.mix_length_bytes(root, Length.encode(32n, n))
++    case Some{n}: Bits.mix_length_bytes(root, Length.encode(8n, n))
+ 

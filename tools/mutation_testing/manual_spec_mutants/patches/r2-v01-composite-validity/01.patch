@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v01-composite-validity/01
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: a container is valid iff every field is valid
+# fault: field attestation_1's validity is not consulted
+# why: first field of the conjunction forgotten
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -108,3 +108,3 @@
+   match o:
+-    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_va0(attestation_2, True{}, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_1))
++    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_va0(attestation_2, True{}, (attestation_1, True{}))
+ 

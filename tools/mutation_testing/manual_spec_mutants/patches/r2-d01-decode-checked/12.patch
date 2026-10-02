@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-d01-decode-checked/12
+# type: bitlist_9
+# ops: decode
+# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+# fault: the 2^31 bound is dropped
+# why: only the buffer test kept
+# file: types/bitlist_9_decode_ssz_generated.bend
+# sym: bitlist_9_decode_checked,bitlist_9_dchk,bitlist_9_dgo
+--- a/types/bitlist_9_decode_ssz_generated.bend
++++ b/types/bitlist_9_decode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (buf, +n) = pair
+-  bitlist_9_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  bitlist_9_dgo(U32.is_le(size, n), buf, size)
+ 

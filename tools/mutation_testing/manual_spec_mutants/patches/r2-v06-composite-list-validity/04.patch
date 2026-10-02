@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v06-composite-list-validity/04
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the list is valid iff the loop result is valid
+# why: the loop result is ignored
+# file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+# sym: l1048576_bl1073741824_va_fin,l1048576_bl1073741824_va_go
+--- a/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+@@ -114,3 +114,3 @@
+   (arr, b) = pair
+-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, Bool.and(ok, b))
++  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, ok)
+ 

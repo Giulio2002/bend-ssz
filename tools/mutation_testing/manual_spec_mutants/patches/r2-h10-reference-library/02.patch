@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/02
+# type: FuluExecutionRequests
+# ops: root
+# spec: a node hashes two exact 32-byte chunks
+# fault: the right operand's length is not checked
+# why: validity conjunction weakened
+# file: src/merkle.bend
+# sym: hash_pair,pair_checked
+--- a/src/merkle.bend
++++ b/src/merkle.bend
+@@ -11,3 +11,3 @@
+ def hash_pair(+left: +List<U32>, +right: +List<U32>) -> Maybe<&2, +List<U32>>:
+-  pair_checked(Bool.and(P.valid_bytes(32n, left), P.valid_bytes(32n, right)), left, right)
++  pair_checked(P.valid_bytes(32n, left), left, right)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b02-unaligned-read/04
+# type: VarTestStruct
+# ops: decode
+# spec: the high part of an unaligned uint32 is the next word
+# fault: the high part is two words on
+# why: index slip
+# file: src/buffer.bend
+# sym: read32_split
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -69,3 +69,3 @@
+   (b, lo) = pair
+-  join_words(j, lo, word(b, (U32.shrn(i, 2n) + 1 : U32)))
++  join_words(j, lo, word(b, (U32.shrn(i, 2n) + 2 : U32)))
+ 

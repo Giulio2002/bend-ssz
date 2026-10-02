@@ -71,7 +71,7 @@ LAW_FORMS = {
     'reject_long': [r'<X>(_[tf])?_reject_long'],
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
-    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag|fields|reject_\w+|bool_\w+|bits_\w+)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
+    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag|fields|reject_\w+|refuse_\w+|poison_\w+|bool_\w+|bits_\w+|coll_\w+|unit_\w+)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
     'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
     'decode_first_offset': [r'<X>_decode_first_offset'],
 }
@@ -109,7 +109,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(') or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes)\(', concl) is not None
+        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes)\(|T\.\w+_(?:append|set|get|len)\(', concl) is not None
     if kind == 'decode_offsets':
         return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
     if kind == 'decode_first_offset':
@@ -311,7 +311,7 @@ def scan():
                 xs.add(n[:-len('_serialize_vsym')])
             if n.endswith('_serialize_vflag'):    # codegen/proofs/slop/poison_flag.py: the statement names the writer's pk_ok
                 xs.add(n[:-len('_serialize_vflag')])
-            mv = re.fullmatch(r'(\w+)_serialize_v(?:fields|reject_\w+|bool_\w+|bits_\w+)', n)    # container_field_validity / packed_boolean_validity / bit_padding_validity
+            mv = re.fullmatch(r'(\w+)_serialize_v(?:fields|reject_\w+|refuse_\w+|poison_\w+|bool_\w+|bits_\w+|coll_\w+|unit_\w+)', n)    # container_field_validity / packed_boolean_validity / bit_padding_validity
             if mv:
                 xs.add(mv.group(1))
             ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/slop/word_positions.py: the writers' own names are not X's

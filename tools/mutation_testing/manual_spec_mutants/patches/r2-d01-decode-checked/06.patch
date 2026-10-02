@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-d01-decode-checked/06
+# type: FuluCheckpoint
+# ops: decode
+# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+# fault: the 2^31 bound is size < 2^31 - 1 (the window 2^31 - 1 is refused)
+# why: off-by-one in the bound
+# file: types/FuluCheckpoint_decode_ssz_generated.bend
+# sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+--- a/types/FuluCheckpoint_decode_ssz_generated.bend
++++ b/types/FuluCheckpoint_decode_ssz_generated.bend
+@@ -54,3 +54,3 @@
+   (buf, +n) = pair
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483647)), buf, size)
+ 

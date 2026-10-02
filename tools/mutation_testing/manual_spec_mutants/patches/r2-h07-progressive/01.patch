@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h07-progressive/01
+# type: ProgressiveTestStruct
+# ops: root
+# spec: an empty remainder of a progressive tree is the zero chunk, not a node
+# fault: the remainder is inside when s + 2^dep <= n (an empty remainder is hashed as a node)
+# why: off-by-one in the emptiness test
+# file: src/obj.bend
+# sym: ptree
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -927,3 +927,3 @@
+           pt_right(hl, lf, dep, s, n,
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_le(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
+ 

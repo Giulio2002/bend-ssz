@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/06
+# type: bytelist_256
+# ops: encode
+# spec: the in-word position of byte p is p mod 4
+# fault: the in-word position is p mod 2
+# why: mask constant
+# file: src/obj.bend
+# sym: words_write,put_in
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1188,3 +1188,3 @@
+ def words_write(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
+-  put_in(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in(U32.shrn(p, 2n), x, (p .&. 1 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+ 

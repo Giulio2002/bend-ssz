@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v06-composite-list-validity/03
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: every one of the n elements is checked
+# why: the loop checks n - 1 elements (the last is not validated)
+# file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+# sym: l1048576_bl1073741824_va_nz,l1048576_bl1073741824_va
+--- a/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+@@ -132,3 +132,3 @@
+ def l1048576_bl1073741824_va_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<O.Words>>) -> Array<O.Boxed<O.Words>> & Bool:
+-  l1048576_bl1073741824_va(U32.to_nat(n), 0, (arr, True{}))
++  l1048576_bl1073741824_va(Nat.sub(U32.to_nat(n), 1n), 0, (arr, True{}))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/05
+# type: Fulu_list_bytevec_2048_4096
+# ops: encode
+# spec: any other element size is tested by n mod unit = 0
+# fault: the general case tests n / unit = 0
+# why: mod written as div
+# file: src/obj.bend
+# sym: words_ok,unit_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1494,3 +1494,3 @@
+     case 32: U32.is_eq((n .&. 31 : U32), 0)
+-    case _: U32.is_eq(U32.mod(n, unit), 0)
++    case _: U32.is_eq(U32.div(n, unit), 0)
+ 

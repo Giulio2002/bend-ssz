@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/02
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: an append into full storage grows the array
+# fault: the room test is n <= cap (an append at n = cap writes one past the storage)
+# why: off-by-one between count and capacity
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in,l16_WithdrawalRequest_room
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -110,3 +110,3 @@
+   (arr, +cap) = pair
+-  l16_WithdrawalRequest_room_pick(U32.is_lt(n, cap), arr, n)
++  l16_WithdrawalRequest_room_pick(U32.is_le(n, cap), arr, n)
+ 

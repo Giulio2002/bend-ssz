@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-d01-decode-checked/14
+# type: FuluCheckpoint
+# ops: decode
+# spec: the checked decoder compares the window with the buffer's own size
+# fault: the checked entry passes the window size as the buffer size (the comparison is vacuous)
+# why: the wrong value is handed to the checker
+# file: types/FuluCheckpoint_decode_ssz_generated.bend
+# sym: Checkpoint_decode_checked,Checkpoint_dchk
+--- a/types/FuluCheckpoint_decode_ssz_generated.bend
++++ b/types/FuluCheckpoint_decode_ssz_generated.bend
+@@ -56,3 +56,3 @@
+ 
+-def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, B.size(buf))
++def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, (buf, size))
+ 

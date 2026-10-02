@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/08
+# type: bytelist_256
+# ops: decode
+# spec: the zero storage of a decoded Words has 2^ceil(log2 w) words
+# fault: the last bit adds nothing (m = 1 is not rounded up)
+# why: rounding step dropped
+# file: src/buffer.bend
+# sym: bits1,words_depth
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -173,3 +173,3 @@
+     case True{}: U32.to_nat(acc)
+-    case False{}: U32.to_nat((acc + 1 : U32))
++    case False{}: U32.to_nat(acc)
+ 

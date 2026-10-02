@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/15
+# type: bitlist_9
+# ops: root
+# spec: a bit list mixes in its bit count
+# fault: the bit count is encoded in 8 bytes
+# why: length width
+# file: src/bit_root.bend
+# sym: list_gate
+--- a/src/bit_root.bend
++++ b/src/bit_root.bend
+@@ -36,3 +36,3 @@
+     case True{}:
+-      mix_length_bytes(Merkle.merkleize(chunk_limit(capacity), chunks(bits)), Length.encode(32n, List.length(&2, Bool, bits)))
++      mix_length_bytes(Merkle.merkleize(chunk_limit(capacity), chunks(bits)), Length.encode(8n, List.length(&2, Bool, bits)))
+ 

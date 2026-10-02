@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/05
+# type: bytelist_256
+# ops: encode
+# spec: the mask covers the bytes at position s
+# fault: the mask is not shifted to position s
+# why: shift forgotten
+# file: src/obj.bend
+# sym: words_write,mask_at
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1176,3 +1176,3 @@
+ 
+-def mask_at(+s: U32, +bytes: U32) -> U32: shl_bytes(byte_mask(bytes), s)
++def mask_at(+s: U32, +bytes: U32) -> U32: byte_mask(bytes)
+ 

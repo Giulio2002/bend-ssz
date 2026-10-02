@@ -44,6 +44,13 @@ def table_law(X, r):
     return f'def {X}_serialize_vbits_table_{r}()\n    -> {{{c} == True{{}} : Bool}}:\n  {{==}}'
 
 
+def access_law(X, i):
+    """the bit accessors on a list of 40 bits: the bit written at i reads back at i and at no neighbour (word and bit position)"""
+    s = f'O.bits_set(O.bits_zeros(40), {i}, True{{}})'
+    g = lambda j: f'Pair.snd(O.Bits, Bool, O.bits_get({s}, {j}))'   # noqa: E731
+    return (f'def {X}_serialize_vbits_access_{i}()\n    -> {{({g(i)}, ({g(i - 1) if i else g(i + 1)}, {g(i + 1)})) == (True{{}}, (False{{}}, False{{}})) : Bool & (Bool & Bool)}}:\n  {{==}}')
+
+
 def nbytes_law(X, name):
     terms = [f'U32.is_eq(O.bits_nbytes({n}), {want})' for n, want in NBYTES]
     c = terms[-1]
@@ -80,7 +87,7 @@ def outputs():
     for runtime in ('fulu', 'generic'):
         tx = MC.Text(runtime)
         for X in names_of(tx):
-            laws = [table_law(X, r) for r in range(32)] + [nbytes_law(X, f"{X}_serialize_vbits_nbytes"), nbytes_law(X, f"{X}_vbits_nbytes")]
+            laws = [table_law(X, r) for r in range(32)] + [nbytes_law(X, f"{X}_serialize_vbits_nbytes"), nbytes_law(X, f"{X}_vbits_nbytes")] + [access_law(X, i) for i in (0, 1, 7, 8, 15, 16, 17, 31, 32, 33, 39)]
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_bits')] = module(X, laws)
     return out
 

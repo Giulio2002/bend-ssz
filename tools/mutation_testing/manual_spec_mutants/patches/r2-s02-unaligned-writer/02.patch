@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: a byte range written at a position 2 mod 4 uses the 16-bit shift
+# fault: position 2 mod 4 uses the 24-bit family (pw_run3)
+# why: case mapping
+# file: src/obj.bend
+# sym: put_words,pw_un,pw_run2,pw_run3
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -649,3 +649,3 @@
+     case 1: pw_carry((q + nw : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
+-    case 2: pw_carry((q + nw : U32), pw_run2(nw, pw_mid(n, s, nw), q, out, ws))
++    case 2: pw_carry((q + nw : U32), pw_run3(nw, pw_mid(n, s, nw), q, out, ws))
+     case _: pw_carry((q + nw : U32), pw_run3(nw, pw_mid(n, s, nw), q, out, ws))

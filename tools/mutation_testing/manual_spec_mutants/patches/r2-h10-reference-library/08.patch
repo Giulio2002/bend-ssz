@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/08
+# type: ProgressiveTestStruct
+# ops: root
+# spec: the empty progressive tree is the zero chunk
+# fault: the fuel is one less than the chunk count
+# why: fuel off by one
+# file: src/progressive.bend
+# sym: tree
+--- a/src/progressive.bend
++++ b/src/progressive.bend
+@@ -22,3 +22,3 @@
+     case False{}: None{}
+-    case True{}: Some{tree(Lists.length(+List<U32>, chunks), 0n, chunks)}
++    case True{}: Some{tree(Nat.sub(Lists.length(+List<U32>, chunks), 1n), 0n, chunks)}
+ 

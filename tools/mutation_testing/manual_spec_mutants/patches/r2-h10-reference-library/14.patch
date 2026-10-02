@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/14
+# type: bitlist_9
+# ops: root
+# spec: the chunk limit of a bitlist/bitvector of n bits is (n + 255) / 256
+# fault: the limit is (n + 256) / 256
+# why: rounding constant
+# file: src/bit_root.bend
+# sym: chunk_limit
+--- a/src/bit_root.bend
++++ b/src/bit_root.bend
+@@ -10,3 +10,3 @@
+ def chunk_limit(capacity: Nat) -> Nat:
+-  Nat.div(Nat.add(capacity, 255n), 256n)
++  Nat.div(Nat.add(capacity, 256n), 256n)
+ 

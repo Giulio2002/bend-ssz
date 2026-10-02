@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h05-scalar-chunks/05
+# type: FuluCheckpoint
+# ops: root
+# spec: a uint64 root pads the 8 bytes with zeros
+# fault: the high word is dropped
+# why: truncation to 32 bits
+# file: src/obj.bend
+# sym: u64_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1058,3 +1058,3 @@
+   match v:
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(lo), 0, 0, 0, 0, 0, 0, 0}
+ 

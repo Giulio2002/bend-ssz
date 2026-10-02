@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h05-scalar-chunks/01
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: a boolean root is 0x01 followed by 31 zero bytes
+# fault: true is chunk 0x00000001 in the first word (big-endian word, wrong byte)
+# why: endianness of the boolean chunk
+# file: src/obj.bend
+# sym: bool_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1051,3 +1051,3 @@
+   match b:
+-    case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++    case True{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+     case False{}: D.zero()

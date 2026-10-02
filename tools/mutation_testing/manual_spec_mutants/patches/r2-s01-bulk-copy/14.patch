@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/14
+# type: ComplexTestStruct
+# ops: decode
+# spec: a range starting 2 bytes into a word: word j = (src[j] >> 16) | (src[j+1] << 16)
+# fault: the tail word shifts the carry by 8 (not 16)
+# why: constant
+# file: src/obj.bend
+# sym: scopy2,sc2_w,sc2_tail,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -246,3 +246,3 @@
+   (src, +w) = pair
+-  (Array.set(U32, dst, b, (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), (src, w))
++  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 65536 : U32) : U32)), (src, w))
+ 

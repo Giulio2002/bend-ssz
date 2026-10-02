@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/16
+# type: Fulu_list_bytevec_2048_4096
+# ops: encode
+# spec: an element slice copies ceil(n / 4) words starting at word p >> 2
+# fault: the slice copies floor(n / 4) words
+# why: ceil written as floor
+# file: src/obj.bend
+# sym: words_slice,sl_go,sl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1337,3 +1337,3 @@
+ def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words:
+-  sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
++  sl_fin(n, sl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
+     zeros_for(n), words_word(o, U32.shrn(p, 2n))))

@@ -46,6 +46,24 @@ def FixedTestStruct__encode_spec__FixedTestStruct_spec_encode(+x0: U32, +x1: U32
 def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vfields(+f_A: U32, f_B: P3_O.U64, +f_C: U32) -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct{f_A, f_B, f_C}) == uint8_e.u8_valid(f_A) : Bool}:
   P3_PRV.FixedTestStruct_serialize_vfields(f_A, f_B, f_C)
 
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_false_flag() -> {P3_O.is_poisoned(P3_O.pz(False{})) == True{} : Bool}:
+  P3_PRV.FixedTestStruct_serialize_vpoison_false_flag()
+
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_true_flag() -> {P3_O.is_poisoned(P3_O.pz(True{})) == False{} : Bool}:
+  P3_PRV.FixedTestStruct_serialize_vpoison_true_flag()
+
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(2147483647) == False{} : Bool}:
+  P3_PRV.FixedTestStruct_serialize_vpoison_below()
+
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 2147483648)) == True{} : Bool}:
+  P3_PRV.FixedTestStruct_serialize_vpoison_carried()
+
 def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vreject_f_A() -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct_set_f_A_go(FixedTestStruct_d.FixedTestStruct_default(), 256)) == False{} : Bool}:
   P3_PRV.FixedTestStruct_serialize_vreject_f_A()
+
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vrefuse_f_A() -> {FixedTestStruct_e.FixedTestStruct_serialize(FixedTestStruct_d.FixedTestStruct_set_f_A_go(FixedTestStruct_d.FixedTestStruct_default(), 256)) == P3_O.refused() : P3_O.Encoded}:
+  P3_PRV.FixedTestStruct_serialize_vrefuse_f_A()
+
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vreject_default_valid() -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct_default()) == True{} : Bool}:
+  P3_PRV.FixedTestStruct_serialize_vreject_default_valid()
 

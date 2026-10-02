@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/01
+# type: FuluExecutionRequests
+# ops: root
+# spec: the zero-subtree root Z(6) = SHA-256(Z(6 - 1) || Z(6 - 1))
+# fault: the first word of the constant Z(6) is off by one
+# why: one digit of a hard-coded SHA-256 constant
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -124,3 +124,3 @@
+               match k6:
+-                case 0n: D{3633176558, 3556812917, 1435939353, 1119963518, 290205742, 1628973327, 2447800105, 1979981729}
++                case 0n: D{3633176559, 3556812917, 1435939353, 1119963518, 290205742, 1628973327, 2447800105, 1979981729}
+                 case 1n+k7:

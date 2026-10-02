@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/08
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: an empty scope is the empty list
+# fault: the empty scope is refused
+# why: empty list special case reversed
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_ok,l8_Attestation_ok_nz
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -96,3 +96,3 @@
+   match empty:
+-    case True{}: (buf, True{})
++    case True{}: (buf, False{})
+     case False{}: l8_Attestation_head(len, off, B.read32(buf, off))

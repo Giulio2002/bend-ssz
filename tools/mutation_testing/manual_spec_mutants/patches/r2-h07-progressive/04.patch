@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h07-progressive/04
+# type: ProgressiveTestStruct
+# ops: root
+# spec: an empty progressive list is the zero chunk
+# fault: the emptiness flag is 0 <= n (an empty list is hashed as a node)
+# why: strict comparison lost
+# file: src/obj.bend
+# sym: prog_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -930,3 +930,3 @@
+ def prog_root(+hl: Nat, +lf: Leaf, +n: Nat, h: B.Buf, ws: Array<U32>) -> B.Buf & (Array<U32> & D.Digest):
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+n, Nat.is_le(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+ 

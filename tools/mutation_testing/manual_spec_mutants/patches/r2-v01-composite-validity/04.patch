@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v01-composite-validity/04
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: a container is valid iff every field is valid
+# fault: the running conjunction is an or at the first step
+# why: Bool.and written as Bool.or
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -104,3 +104,3 @@
+   (attestation_1, ok) = pair
+-  AttesterSlashing_va1(attestation_1, Bool.and(acc, ok), FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_2))
++  AttesterSlashing_va1(attestation_1, Bool.or(acc, ok), FuluIndexedAttestation_e.IndexedAttestation_bx_valid(attestation_2))
+ 

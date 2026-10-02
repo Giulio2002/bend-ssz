@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/13
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: the progressive element root is bounded by the storage
+# why: the clamp is dropped on the progressive element path
+# file: src/obj.bend
+# sym: erp_size,elems_root_prog,cap_cnt
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1114,3 +1114,3 @@
+   mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+-    cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)), h, ws))
++    U32.to_nat(U32.div(n, (4 * ew : U32))), h, ws))
+ 

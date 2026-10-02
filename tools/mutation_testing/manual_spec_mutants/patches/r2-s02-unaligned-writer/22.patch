@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/22
+# type: ComplexTestStruct
+# ops: encode
+# spec: a 16-bit value is written little-endian at p and p + 1
+# fault: the high byte is written at p + 2
+# why: index slip
+# file: src/obj.bend
+# sym: w16
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1047,3 +1047,3 @@
+ def w16(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
+-  w8(w8(out, p, x), (p + 1 : U32), U32.shrn(x, 8n))
++  w8(w8(out, p, x), (p + 2 : U32), U32.shrn(x, 8n))
+ 

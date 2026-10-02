@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a06-cells/05
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: List[Cell, 4096] holds at most 4096 cells
+# fault: the append guard is n + 1 <= 4097 (4097 cells)
+# why: bound off by one
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_append,l4096_b2048_app_v,l4096_b2048_grow
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -64,3 +64,3 @@
+   match v:
+-    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4097), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
+ 

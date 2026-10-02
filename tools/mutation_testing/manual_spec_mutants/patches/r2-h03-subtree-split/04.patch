@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/04
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: the right half of an element tree starts at s + w/2
+# fault: the element tree's right half starts at s + w
+# why: split point
+# file: src/obj.bend
+# sym: ctree,elems_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -838,3 +838,3 @@
+             case True{}:
+-              ctree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, base, ew, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              ctree(p, 1n, Nat.is_lt(Nat.add(s, w), n), hl, base, ew, Nat.div(w, 2n), Nat.add(s, w), n,
+                 ctree(p, 0n, True{}, hl, base, ew, Nat.div(w, 2n), s, n, st))

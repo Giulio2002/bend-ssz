@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/01
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit copies a non-empty word range (an empty source copies nothing)
+# fault: the empty test is n <= 0 (same as n = 0 on an unsigned count)
+# why: designed equivalent: is_le(n, 0) is is_eq(n, 0) for U32
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1362,3 +1362,3 @@
+   match src:
+-    case Words{ws, +n}: bl_some(U32.is_eq(n, 0), o, p, ws, n)
++    case Words{ws, +n}: bl_some(U32.is_le(n, 0), o, p, ws, n)
+ 

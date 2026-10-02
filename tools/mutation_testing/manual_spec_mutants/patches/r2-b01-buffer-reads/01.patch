@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b01-buffer-reads/01
+# type: VarTestStruct
+# ops: decode
+# spec: byte j of a word is (w >> 8j) & 255
+# fault: byte 1 is selected with a 16-bit shift
+# why: constant
+# file: src/buffer.bend
+# sym: byte_sel,byte_at
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -41,3 +41,3 @@
+     case 0: (w .&. 255 : U32)
+-    case 1: (U32.shrn(w, 8n) .&. 255 : U32)
++    case 1: (U32.shrn(w, 16n) .&. 255 : U32)
+     case 2: (U32.shrn(w, 16n) .&. 255 : U32)

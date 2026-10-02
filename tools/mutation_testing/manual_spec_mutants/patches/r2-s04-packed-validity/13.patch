@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/13
+# type: bitlist_9
+# ops: encode
+# spec: a bit list has at most cputime         unlimited
+# fault: the limit applies only when big (and instead of or)
+# why: Bool.or written as Bool.and
+# file: src/obj.bend
+# sym: bits_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1560,3 +1560,3 @@
+   match o:
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.and(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
+ 

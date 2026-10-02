@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a03-bits-append/05
+# type: bitlist_9
+# ops: decode,encode,root
+# spec: an append grows the length by one
+# fault: the length stays k after the push
+# why: new length forgotten
+# file: src/obj.bend
+# sym: bits_push,bits_of_words,words_fit
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1304,3 +1304,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
++    case Bits{ws, +k}: bits_set(bits_of_words(k, words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
+ 

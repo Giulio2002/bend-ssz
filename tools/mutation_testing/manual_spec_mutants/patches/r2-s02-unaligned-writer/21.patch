@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/21
+# type: ComplexTestStruct
+# ops: encode
+# spec: a byte write lands at byte p mod 4 of word p >> 2
+# fault: the byte position is p mod 2
+# why: mask constant
+# file: src/obj.bend
+# sym: w8
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -424,3 +424,3 @@
+ def w8(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
+-  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 3 : U32)))
++  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 1 : U32)))
+ 

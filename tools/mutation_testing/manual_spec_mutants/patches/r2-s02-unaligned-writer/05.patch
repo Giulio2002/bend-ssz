@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: a range at position 1 mod 4: the carry of a word is its top byte (>> 24)
+# fault: the carry is >> 16
+# why: constant
+# file: src/obj.bend
+# sym: put_words,pw_or1,pw_run1
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -496,3 +496,3 @@
+       (ws, +w) = pair
+-      pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
++      pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+         or_word(out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))

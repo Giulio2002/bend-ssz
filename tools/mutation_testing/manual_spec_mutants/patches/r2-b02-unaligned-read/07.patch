@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b02-unaligned-read/07
+# type: ComplexTestStruct
+# ops: decode
+# spec: a uint64 is the pair (low word, high word)
+# fault: the pair is (high, low)
+# why: word order
+# file: src/buffer.bend
+# sym: read64,read64_hi
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -82,3 +82,3 @@
+   (b, hi) = pair
+-  (b, (lo, hi))
++  (b, (hi, lo))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v04-group-validity/03
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the validity of group g0 is not carried into the conjunction (acc dropped at the second step)
+# why: first group forgotten
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_va0,ExecutionPayload_valid
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -205,3 +205,3 @@
+   (g0, ok) = pair
+-  ExecutionPayload_va1(g0, g2, Bool.and(acc, ok), ExecutionPayload_g1_valid(g1))
++  ExecutionPayload_va1(g0, g2, acc, ExecutionPayload_g1_valid(g1))
+ 

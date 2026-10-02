@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a01-bytelist-getter/01
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: reading index n is out of range
+# fault: the getter bound is i <= n (index n reads the zero padding and answers Some(0))
+# why: off-by-one in the index test
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_get,bl256_get_n,bl256_get_in
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -34,3 +34,3 @@
+   (o, +n) = pair
+-  bl256_get_in(U32.is_lt(i, n), o, i)
++  bl256_get_in(U32.is_le(i, n), o, i)
+ 

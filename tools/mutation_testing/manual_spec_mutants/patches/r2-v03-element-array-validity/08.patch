@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v03-element-array-validity/08
+# type: FuluExecutionRequests
+# ops: encode
+# spec: element i is written at pos + 76 i
+# fault: the intermediate elements are written at pos + 75 i
+# why: constant mistyped
+# file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+# sym: l16_WithdrawalRequest_pt,l16_WithdrawalRequest_put
+--- a/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+@@ -27,3 +27,3 @@
+       (arr, +v) = pair
+-      l16_WithdrawalRequest_pt(q, (i + 1 : U32), pos, FuluWithdrawalRequest_e.WithdrawalRequest_put(out, (pos + i * 76 : U32), v), Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, (i + 1 : U32)))
++      l16_WithdrawalRequest_pt(q, (i + 1 : U32), pos, FuluWithdrawalRequest_e.WithdrawalRequest_put(out, (pos + i * 75 : U32), v), Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, (i + 1 : U32)))
+ 

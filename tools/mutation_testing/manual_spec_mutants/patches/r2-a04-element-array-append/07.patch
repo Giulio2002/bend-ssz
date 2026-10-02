@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/07
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: reading index n is out of range
+# fault: the getter bound is i <= n (index n answers the default element)
+# why: off-by-one in the index test
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_get,l16_WithdrawalRequest_get_in
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -79,3 +79,3 @@
+   match o:
+-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_get_in(U32.is_lt(i, n), arr, n, i)
++    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_get_in(U32.is_le(i, n), arr, n, i)
+ 

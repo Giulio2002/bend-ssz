@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/06
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit copies every word of the source
+# fault: the source index advances by 2 (every second word)
+# why: stride mistake in the copy loop
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1347,3 +1347,3 @@
+       (ws, +x) = pair
+-      bl_go(q, (j + 1 : U32), base, words_setw(o, (base + j : U32), x), Array.get(U32, ws, (j + 1 : U32)))
++      bl_go(q, (j + 1 : U32), base, words_setw(o, (base + j : U32), x), Array.get(U32, ws, (j + 2 : U32)))
+ 

@@ -11,6 +11,30 @@ def SingleFieldTestStruct_serialize_vfields(+f_A: U32)
     -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct{f_A}) == uint8_e.u8_valid(f_A) : Bool}:
   {==}
 
+def SingleFieldTestStruct_serialize_vpoison_false_flag()
+    -> {O.is_poisoned(O.pz(False{})) == True{} : Bool}:
+  {==}
+
+def SingleFieldTestStruct_serialize_vpoison_true_flag()
+    -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
+  {==}
+
+def SingleFieldTestStruct_serialize_vpoison_below()
+    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+  {==}
+
+def SingleFieldTestStruct_serialize_vpoison_carried()
+    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+  {==}
+
 def SingleFieldTestStruct_serialize_vreject_f_A()
     -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 256)) == False{} : Bool}:
+  {==}
+
+def SingleFieldTestStruct_serialize_vrefuse_f_A()
+    -> {SingleFieldTestStruct_e.SingleFieldTestStruct_serialize(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 256)) == O.refused() : O.Encoded}:
+  {==}
+
+def SingleFieldTestStruct_serialize_vreject_default_valid()
+    -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct_default()) == True{} : Bool}:
   {==}

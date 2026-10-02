@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/01
+# type: FuluExecutionRequests
+# ops: root
+# spec: an empty tree of depth d is Z(d); a full one is the stack top (streaming merkleizer, unused by the object runtime)
+# fault: the empty tree answers Z(0)
+# why: slot index
+# file: src/merkle_fast.bend
+# sym: close_pick,close,full_in
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -319,3 +319,3 @@
+       match empty:
+-        case True{}: B.get_digest(buf, (960 + depth : U32))
++        case True{}: B.get_digest(buf, (960 + 0 : U32))
+         case False{}:

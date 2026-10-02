@@ -67,6 +67,8 @@ GENERATORS = (
     Gen('packed_boolean_validity', 'proofs/slop'),
     Gen('bit_padding_validity', 'proofs/slop'),
     Gen('first_offset_check', 'proofs/slop'),
+    Gen('collection_guards', 'proofs/slop'),
+    Gen('word_unit_validity', 'proofs/slop'),
     Gen('word_positions', 'proofs/slop'),
     Gen('decoder_offsets', 'proofs/slop'),
     Gen('validity_checks', 'proofs/slop'),

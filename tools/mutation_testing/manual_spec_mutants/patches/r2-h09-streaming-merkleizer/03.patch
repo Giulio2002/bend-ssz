@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/03
+# type: FuluExecutionRequests
+# ops: root
+# spec: the stack entry is the LEFT sibling when bit k of the count is set (streaming merkleizer, unused by the object runtime)
+# fault: climb hashes the stack entry on the right
+# why: operand order
+# file: src/merkle_fast.bend
+# sym: climb
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -272,3 +272,3 @@
+   match left:
+-    case True{}: D.hash_pair(other, acc)
++    case True{}: D.hash_pair(acc, other)
+     case False{}: D.hash_pair(acc, other)

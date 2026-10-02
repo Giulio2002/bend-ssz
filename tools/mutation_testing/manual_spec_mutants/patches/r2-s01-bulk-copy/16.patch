@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/16
+# type: FuluBytes96
+# ops: decode
+# spec: a range starting 1 byte into a word (lane 5 of a block): shifts 8 and 24
+# fault: lane 5 uses << 8 for the high part
+# why: constant
+# file: src/obj.bend
+# sym: scopy1,sc1_c5,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -158,3 +158,3 @@
+   (src, +w) = pair
+-  sc1_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
++  sc1_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 8n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
+ 

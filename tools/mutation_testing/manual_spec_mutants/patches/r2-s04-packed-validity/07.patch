@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/07
+# type: VarTestStruct
+# ops: encode
+# spec: a bounded packed collection has at most hi bytes (unless big)
+# fault: the upper bound applies only when big (and instead of or)
+# why: Bool.or written as Bool.and
+# file: src/obj.bend
+# sym: words_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1502,3 +1502,3 @@
+     case Words{ws, +n}:
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.and(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/09
+# type: ComplexTestStruct
+# ops: encode
+# spec: the carry word after the range is OR-ed only when it is non-zero
+# fault: the carry is skipped when it is at most 1 (a carry of exactly 1 is lost)
+# why: zero test mistyped
+# file: src/obj.bend
+# sym: put_words,pw_carry_skip,pw_carry_at
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -633,3 +633,3 @@
+ def pw_carry_at(+i: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & Array<U32>:
+-  pw_carry_skip(U32.is_eq(c, 0), i, out, ws, c)
++  pw_carry_skip(U32.is_le(c, 1), i, out, ws, c)
+ 

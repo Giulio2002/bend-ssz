@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/07
+# type: FuluExecutionRequests
+# ops: root
+# spec: Z(0) is the all-zero chunk
+# fault: Z(0) is not zero (first word 1)
+# why: constant mistyped
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -106,3 +106,3 @@
+   match k:
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++    case 0n: D{1, 0, 0, 0, 0, 0, 0, 0}
+     case 1n+k1:

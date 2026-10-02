@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b03-byte-swap/01
+# type: FuluCheckpoint
+# ops: root
+# spec: SHA-256 words are big-endian: byte 1 goes to bits 16..23
+# fault: byte 1 goes to bits 8..15
+# why: constant
+# file: src/buffer.bend
+# sym: swap32,be_word_at
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -95,3 +95,3 @@
+   (U32.shln((w .&. 255 : U32), 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
+-    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 24n) : U32)
++    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 16n) .|. U32.shrn(w, 24n) : U32)
+ 

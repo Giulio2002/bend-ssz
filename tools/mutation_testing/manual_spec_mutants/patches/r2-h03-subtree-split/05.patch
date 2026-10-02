@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/05
+# type: bytelist_256
+# ops: root
+# spec: a node is H(left || right)
+# fault: the join hashes right || left
+# why: operand order
+# file: src/obj.bend
+# sym: mt_join
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -798,3 +798,3 @@
+   (ws, dr) = r
+-  (h, (ws, D.node(hl, dl, dr)))
++  (h, (ws, D.node(hl, dr, dl)))
+ 

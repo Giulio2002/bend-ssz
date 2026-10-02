@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v06-composite-list-validity/07
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: an element is validated in place (swapped out and set back)
+# why: each element is validated from a freshly swapped-in empty box (the real element is never examined)
+# file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+# sym: l1048576_bl1073741824_va_one,l1048576_bl1073741824_va
+--- a/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+@@ -122,3 +122,3 @@
+   (arr, v) = pair
+-  l1048576_bl1073741824_va_back(i, acc, arr, FuluTransaction_e.bl1073741824_bx_valid(v))
++  l1048576_bl1073741824_va_back(i, acc, arr, FuluTransaction_e.bl1073741824_bx_valid(O.BNone{}))
+ 

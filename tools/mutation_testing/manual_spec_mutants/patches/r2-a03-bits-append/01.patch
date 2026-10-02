@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a03-bits-append/01
+# type: bitlist_9
+# ops: decode,encode,root
+# spec: Bitlist[9] holds at most 9 bits
+# fault: the append guard is n <= 9 (a tenth bit is accepted)
+# why: off-by-one between count and bound
+# file: types/bitlist_9_def_generated.bend
+# sym: bits9_append,bits9_app_n,bits9_push
+--- a/types/bitlist_9_def_generated.bend
++++ b/types/bitlist_9_def_generated.bend
+@@ -50,3 +50,3 @@
+   (o, +n) = pair
+-  bits9_push(U32.is_lt(n, 9), o, v)
++  bits9_push(U32.is_le(n, 9), o, v)
+ 

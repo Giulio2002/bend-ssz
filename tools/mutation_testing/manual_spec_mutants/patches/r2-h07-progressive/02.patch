@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h07-progressive/02
+# type: ProgressiveTestStruct
+# ops: root
+# spec: merkleize_progressive(chunks) = H(merkleize_progressive(rest), merkleize(first 2^dep chunks))
+# fault: the segment's tree has width 2^(dep+1)
+# why: width of a segment
+# file: src/obj.bend
+# sym: pt_right,prog_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -911,3 +911,3 @@
+   (ws, dl) = r
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, Nat.double(pow2n(dep)), s, n, (h, (ws, D.zero()))))
+ 

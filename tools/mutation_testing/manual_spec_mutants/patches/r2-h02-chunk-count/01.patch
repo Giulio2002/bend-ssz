@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h02-chunk-count/01
+# type: bytelist_256
+# ops: root
+# spec: an empty byte list has an all-zero data tree
+# fault: the chunk-presence flag is 0 <= chunks (always true)
+# why: strict comparison lost
+# file: src/obj.bend
+# sym: words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -899,3 +899,3 @@
+     case Words{ws, +n}:
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
+         chunks_of(n), (h, (ws, D.zero()))))

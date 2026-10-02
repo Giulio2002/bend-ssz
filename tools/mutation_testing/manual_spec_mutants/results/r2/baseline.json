@@ -1,0 +1,317 @@
+{
+ "e2e/l1099511627776_u8_api_witness_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 6.6,
+  "laws": []
+ },
+ "e2e/l16_WithdrawalRequest_api_witness_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 6.7,
+  "laws": []
+ },
+ "e2e/l4096_b2048_api_witness_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.8,
+  "laws": []
+ },
+ "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 24.6,
+  "laws": []
+ },
+ "proofs/api/ComplexTestStruct_encode_ssz_proof_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 21.0,
+  "laws": []
+ },
+ "proofs/api/FuluExecutionRequests_hashtreeroot_proof_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 15.8,
+  "laws": []
+ },
+ "proofs/api/VarTestStruct_encode_ssz_proof_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 17.9,
+  "laws": []
+ },
+ "proofs/bit_chunk_count.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.4,
+  "laws": []
+ },
+ "proofs/bit_list_root.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.9,
+  "laws": []
+ },
+ "proofs/cached_tree.bend": {
+  "verdict": "SURVIVED",
+  "secs": 0.7,
+  "laws": []
+ },
+ "proofs/compact/reads.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.0,
+  "laws": []
+ },
+ "proofs/gate/g__sub_boolean_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.7,
+  "laws": []
+ },
+ "proofs/gate/slop/constants/IndexedAttestation_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.0,
+  "laws": []
+ },
+ "proofs/merkle.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.6,
+  "laws": []
+ },
+ "proofs/mixing.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.2,
+  "laws": []
+ },
+ "proofs/obj/arr_copy.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.6,
+  "laws": []
+ },
+ "proofs/obj/arr_shift.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.4,
+  "laws": []
+ },
+ "proofs/obj/cached_l16_WithdrawalRequest.bend": {
+  "verdict": "SURVIVED",
+  "secs": 11.4,
+  "laws": []
+ },
+ "proofs/obj/cell_rw.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.6,
+  "laws": []
+ },
+ "proofs/obj/cells.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.2,
+  "laws": []
+ },
+ "proofs/obj/coll_u64.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.3,
+  "laws": []
+ },
+ "proofs/obj/collections_0.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.4,
+  "laws": []
+ },
+ "proofs/obj/cspec_l16_WithdrawalRequest.bend": {
+  "verdict": "SURVIVED",
+  "secs": 14.7,
+  "laws": []
+ },
+ "proofs/obj/elems48.bend": {
+  "verdict": "SURVIVED",
+  "secs": 11.6,
+  "laws": []
+ },
+ "proofs/obj/elems_obj.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.8,
+  "laws": []
+ },
+ "proofs/obj/encset_r_l1024_u16.bend": {
+  "verdict": "SURVIVED",
+  "secs": 11.8,
+  "laws": []
+ },
+ "proofs/obj/encx_bits6.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.9,
+  "laws": []
+ },
+ "proofs/obj/encx_l1048576_bl1073741824.bend": {
+  "verdict": "SURVIVED",
+  "secs": 9.4,
+  "laws": []
+ },
+ "proofs/obj/encx_l16_WithdrawalRequest.bend": {
+  "verdict": "SURVIVED",
+  "secs": 9.7,
+  "laws": []
+ },
+ "proofs/obj/leaf_small.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.4,
+  "laws": []
+ },
+ "proofs/obj/list_obj.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.5,
+  "laws": []
+ },
+ "proofs/obj/mtree_run.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.6,
+  "laws": []
+ },
+ "proofs/obj/mtree_spec.bend": {
+  "verdict": "SURVIVED",
+  "secs": 8.7,
+  "laws": []
+ },
+ "proofs/obj/pbits_obj.bend": {
+  "verdict": "SURVIVED",
+  "secs": 12.3,
+  "laws": []
+ },
+ "proofs/obj/prog_root.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.8,
+  "laws": []
+ },
+ "proofs/obj/pv_obj.bend": {
+  "verdict": "SURVIVED",
+  "secs": 8.9,
+  "laws": []
+ },
+ "proofs/obj/root_leaf.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.0,
+  "laws": []
+ },
+ "proofs/obj/spec_arr_SyncCommittee.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.9,
+  "laws": []
+ },
+ "proofs/obj/u32bits.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.4,
+  "laws": []
+ },
+ "proofs/obj/var_bits_enc_bitlist_32.bend": {
+  "verdict": "SURVIVED",
+  "secs": 8.4,
+  "laws": []
+ },
+ "proofs/obj/var_codec_AttesterSlashing.bend": {
+  "verdict": "SURVIVED",
+  "secs": 9.1,
+  "laws": []
+ },
+ "proofs/obj/var_fix_types.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.8,
+  "laws": []
+ },
+ "proofs/obj/var_plist_proglist_uint256_enc.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.6,
+  "laws": []
+ },
+ "proofs/obj/var_rlenc_ExecutionRequests.bend": {
+  "verdict": "SURVIVED",
+  "secs": 7.9,
+  "laws": []
+ },
+ "proofs/obj/vbitcont.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.4,
+  "laws": []
+ },
+ "proofs/obj/vbitenc.bend": {
+  "verdict": "SURVIVED",
+  "secs": 5.5,
+  "laws": []
+ },
+ "proofs/obj/vbuf.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.6,
+  "laws": []
+ },
+ "proofs/obj/vbx.bend": {
+  "verdict": "SURVIVED",
+  "secs": 5.6,
+  "laws": []
+ },
+ "proofs/obj/vbytes.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.7,
+  "laws": []
+ },
+ "proofs/obj/vcopy.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.5,
+  "laws": []
+ },
+ "proofs/obj/vdepth.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.7,
+  "laws": []
+ },
+ "proofs/obj/venc.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.6,
+  "laws": []
+ },
+ "proofs/obj/vua_bits.bend": {
+  "verdict": "SURVIVED",
+  "secs": 0.9,
+  "laws": []
+ },
+ "proofs/obj/vuw.bend": {
+  "verdict": "SURVIVED",
+  "secs": 5.5,
+  "laws": []
+ },
+ "proofs/obj/vuwf1_bv64.bend": {
+  "verdict": "SURVIVED",
+  "secs": 6.4,
+  "laws": []
+ },
+ "proofs/obj/vuwl_bv1281.bend": {
+  "verdict": "SURVIVED",
+  "secs": 10.2,
+  "laws": []
+ },
+ "proofs/obj/words_rw.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.6,
+  "laws": []
+ },
+ "proofs/packing.bend": {
+  "verdict": "SURVIVED",
+  "secs": 0.5,
+  "laws": []
+ },
+ "proofs/root_domain_steps.bend": {
+  "verdict": "SURVIVED",
+  "secs": 3.8,
+  "laws": []
+ },
+ "proofs/root_scope.bend": {
+  "verdict": "SURVIVED",
+  "secs": 4.3,
+  "laws": []
+ },
+ "proofs/root_total_steps.bend": {
+  "verdict": "SURVIVED",
+  "secs": 4.5,
+  "laws": []
+ },
+ "proofs/slop/crash/crash_fix_laws_generated.bend": {
+  "verdict": "SURVIVED",
+  "secs": 1.3,
+  "laws": []
+ },
+ "proofs/tree.bend": {
+  "verdict": "SURVIVED",
+  "secs": 2.2,
+  "laws": []
+ }
+}
