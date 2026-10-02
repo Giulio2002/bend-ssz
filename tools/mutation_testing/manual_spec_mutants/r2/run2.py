@@ -39,6 +39,9 @@ def candidates(a, h, idx):
         pool.sort(key=lambda r: cost.get(r, 999))
         hit = [r for r in pool if mentions(a.tree, r, syms)]
         out += hit[:(100 if a.wide else a.k)]
+    direct = [r for r, ds in idx.get("direct", {}).items() if h["file"] in ds and not r.startswith(("types/", "proofs/api/", "benchmarks/", "tools/")) and r not in out]
+    direct.sort(key=lambda r: idx["cost"].get(r, 999))
+    out += [r for r in direct if idx["cost"].get(r, 999) <= (600 if a.wide else 150)][:(20 if a.wide else 3)]
     if h.get('type') and h.get('ops'):
         out += [f for _, _, f in facades(h) if f not in out and os.path.exists(os.path.join(a.tree, f))]
     return out
