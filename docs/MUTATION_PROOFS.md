@@ -171,3 +171,25 @@ New laws of `mutation_laws_small.py` (and `mc_ser`'s witness now sets every seed
 Re-run (8 mutants): 7 killed with a statement mismatch at the new law; 1 equivalent: `CompatibleUnionA_rd0`, `len - 1` to `len - 0`
 in the fallthrough branch: the callee chain `ProgressiveSingleFieldContainerTestStruct_read(buf, off, len)` passes `len` to `rd0`,
 which never reads it, so the changed literal disappears under conversion (the argument is unused).
+
+## 8. Spec constants no law reached (library target `spec`)
+
+The frozen spec (spec/) is not edited. `codegen/proofs/laws/spec_pins.py` writes two small modules that import the spec files,
+so a mutated copy of a spec file fails them (the harness checks a spec file with the two smallest proof files that import it
+directly: the modules are 294 and 377 bytes, smaller than the other importers `src/byte_alias.bend` 615 and `src/list_alias.bend` 528):
+
+| module | law | pins |
+|---|---|---|
+| `proofs/obj/specpin_bytes.bend` | `size_fits_is_fits4`: `size_fits(n) == Length.fits(4n, n)` | the `256n` of each of the four quotient steps (the 2^32 size limit); `nat_bytes.fits` counts the width by recursion, an independent definition |
+| `proofs/obj/specpin_bytes.bend` | `vector_domain_1`: `vector_domain(1n, [7]) == True` | the `1n` of `byte_scope(1n+p, xs)` (exact scope n) |
+| `proofs/obj/specpin_byte_list.bend` | `domain_size_limit`: `domain(c, xs)` is the conjunction of the byte-domain test, the capacity bound and `size_fits(length)` | the `4n` width of the byte-list length prefix (the limit is `size_fits`, not a literal width) |
+
+Re-run on private copies (`tools/check.sh` of the module): `4n -> 3n` (spec/byte_list.bend:11), `256n -> 255n` (spec/bytes.bend:6)
+and `1n -> 2n` (spec/bytes.bend:13) each fail with a statement mismatch (`expected` / `observed`: three versus four division
+steps; `False{}` versus `True{}`). No boundary at 2^32 is computed (a unary literal of that size is the budget hazard); the pins are
+structural and symbolic.
+
+`e2e/e2e_aapw.bend:64`, `WS.eoF(d, t, 0 -> 1, ...)`: equivalent. `eoF`'s `n: U32` is passed to `eoc` and nowhere else; `eoc`'s
+signature and result type (`{U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}`) do not mention `n`, none of its
+hypotheses does, and its body (`VF.off_add_lt(...)`) does not use it: an argument the callee never reads disappears under
+conversion, so no statement can distinguish the two values.
