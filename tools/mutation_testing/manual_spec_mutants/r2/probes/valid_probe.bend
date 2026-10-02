@@ -80,6 +80,8 @@ def dispatch(+c: U32) -> IO(Unit):
     case 10: c10()
     case 11: c11()
     case 12: c12()
+    case 14: c14()
+    case 15: c15()
     case _: c13()
 
 def main() -> IO(Unit):
