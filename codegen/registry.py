@@ -114,6 +114,7 @@ GENERATORS = (
     # codegen/proofs/collections/
     Gen('bits_view', 'proofs/collections'),
     Gen('u64_tail', 'proofs/collections'),
+    Gen('encset', 'proofs/collections'),
     Gen('boxedview', 'proofs/collections'),
     Gen('coll_laws', 'proofs/collections'),
     Gen('e2e_setters', 'proofs/collections', stage='last', after=('e2e_bridge',)),
@@ -132,6 +133,7 @@ GENERATORS = (
     # codegen/proofs/witnesses/
     Gen('decode_witness', 'proofs/witnesses'),
     Gen('obytes_len', 'proofs/witnesses'),
+    Gen('zero_run', 'proofs/witnesses'),
     Gen('coll_witness', 'proofs/witnesses'),
     Gen('e2e_witness', 'proofs/witnesses', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/composed/
