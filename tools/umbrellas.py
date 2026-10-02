@@ -51,22 +51,25 @@ def imports(f):
 
 
 def family_split(u, clo, w):
-    """Split an oversized umbrella u = (cost, roots, modules) by root family: proofs/gate, proofs/api, e2e and the rest are
-    checked in separate umbrellas, and a family of more than 600 roots is cut into two contiguous halves of its sorted
-    names (e2e: three slices: the names of one type share their imports). The cost model (stale standalone times) cannot
-    see which roots are heavy; measured on the ssz server, the 2573-root umbrella (790 s) became parts of 360, 202, 375,
-    364, 64, 65 and 35 s run side by side. Roots only move between umbrellas, each stays in exactly one: coverage is unchanged."""
+    """Split an oversized umbrella u = (cost, roots, modules) by root family and size: proofs/gate (and its slop/ folders),
+    proofs/slop, proofs/api, proofs/obj, e2e and the rest are checked in separate umbrellas, and a family is cut into
+    contiguous slices of its sorted names: about 200 roots per slice (gate, slop, api, obj), e2e in three, the rest
+    (benchmarks) in halves from 10 roots. The cost model (stale standalone times) cannot see which roots are heavy;
+    measured on the ssz server, the 2573-root umbrella (790 s) became parts of 35 to 375 s run side by side, and the
+    largest parts (proofs/api 404 s, proofs/gate 397 s, benchmarks 394 s) were halved again to stay under 360 s.
+    Roots only move between umbrellas, each stays in exactly one: coverage is unchanged."""
     cost, roots, _ = u
     fam = {}
     for r in roots:
-        k = 'gate' if r.startswith('proofs/gate/') else 'api' if r.startswith('proofs/api/') else 'e2e' if r.startswith('e2e/') else 'rest'
+        k = ('gate' if r.startswith('proofs/gate/') else 'slop' if r.startswith('proofs/slop/') else 'api' if r.startswith('proofs/api/')
+             else 'obj' if r.startswith('proofs/obj/') else 'e2e' if r.startswith('e2e/') else 'rest')
         fam.setdefault(k, []).append(r)
     for k in [k for k, v in fam.items() if len(v) < 15 and k != 'rest']:
         fam.setdefault('rest', []).extend(fam.pop(k))
     parts = []
     for k, v in sorted(fam.items()):
         v = sorted(v)
-        n = 2 if len(v) > 600 else 3 if k == 'e2e' and len(v) > 100 else 1
+        n = 3 if k == 'e2e' and len(v) > 100 else 2 if k == 'rest' and len(v) >= 10 else max(1, -(-len(v) // 200)) if k != 'rest' else 1
         parts += [v[i * len(v) // n:(i + 1) * len(v) // n] for i in range(n)]
     if len(parts) < 2:
         return [u]
@@ -87,6 +90,9 @@ def main():
     ap.add_argument('--max-umb', type=float, default=0.0,
                     help='split an umbrella of 20 or more roots whose estimated seconds exceed this by root family (0: never); a split '
                          'repeats the imports its parts share, so it pays only for umbrellas that dominate the wall time')
+    ap.add_argument('--hist', default='tools/umb_hist.tsv',
+                    help='measured wall seconds of earlier umbrellas (first root, seconds); an umbrella whose first root is listed gets '
+                         'that figure as its estimate (ordering and memory model), so the plan is predictive where it has been measured')
     ap.add_argument('--files', help='only cover these files (one per line) instead of all')
     a = ap.parse_args()
 
@@ -182,6 +188,14 @@ def main():
     else:
         umbs.sort(key=lambda u: -u[0])
 
+    if os.path.exists(a.hist):
+        hist = {}
+        for line in open(a.hist):
+            q = line.rstrip('\n').split('\t')
+            if len(q) >= 2 and not line.startswith('#'):
+                hist[q[0]] = float(q[1])
+        if hist:
+            umbs = sorted(((hist.get(ms[0], c), ms, nm) for c, ms, nm in umbs), key=lambda u: -u[0])
     covered = set().union(*[clo[r] for _, ms, _ in umbs for r in ms]) if umbs else set()
     miss = [f for f in want if idx[f] not in covered]
     assert not miss, 'umbrellas miss ' + ', '.join(miss[:5])
