@@ -18,6 +18,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import light_pair  # noqa: E402
 OUT = ROOT / 'proofs/obj/prog_list.bend'
 M = 'Maybe<&2, +List<U32>>'
 SL = 'F.array__slots(U32, t)'
@@ -447,27 +448,7 @@ def emit():
 
 
 def main():
-    text = emit()
-    # the representation defs importers state against go to a light companion (codegen/proofs/support/light_split.py)
-    import re as _re
-    from codegen.proofs.support import light_split as LS
-    text, ltext = LS.split(text, lambda n: _re.match(r'(rep|wf)_', n) is not None or n in {'hview', 'cnt1', 'cnt2'}, f'./{OUT.stem}_light.bend', 'prog_laws (codegen)')
-    text = LS.light(text)
-    ltext = LS.light(ltext) if ltext is not None else None
-    LOUT = OUT.with_name(f'{OUT.stem}_light.bend')
-    if '--check' in sys.argv:
-        if ltext is not None and (not LOUT.exists() or LOUT.read_text() != ltext):
-            print(f'{LOUT} is stale; run codegen/proofs/laws/prog_laws.py')
-            return 1
-        if not OUT.exists() or OUT.read_text() != text:
-            print(f'{OUT} is stale; run codegen/proofs/laws/prog_laws.py')
-            return 1
-        print('progressive list laws are current')
-        return 0
-    OUT.write_text(text)
-    if ltext is not None:
-        LOUT.write_text(ltext)
-    return 0
+    return light_pair(OUT, emit(), 'prog_laws', 'progressive list laws are current')
 
 
 if __name__ == '__main__':
