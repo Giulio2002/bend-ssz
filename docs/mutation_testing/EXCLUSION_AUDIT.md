@@ -118,8 +118,8 @@ Each of the 41 hidden mutants was applied alone to a private hard-linked tree an
 * Transaction `2^30 -> 2^30+1`: FAILs on the Transaction facade (`expected ..<= 1073741825.. observed ..<= 1073741824..`), killed by the
   existing `Transaction_serialize_vsym`. The `uncoverable` entry is removed.
 * ExecutionBranch `v4_b32_pk_ok` flag `0 -> 1`: PASSED its own facade (the light-client and DataColumnSidecar facades already failed it,
-  which the loop never checks for a mutant of this file). New generator `codegen/proofs/mutation_coverage/poison_flag.py` writes
-  `proofs/mutation_coverage/validity/<runtime>_<X>_poison_flag.bend` for every words name (76 files): `X_serialize_vflag(out, o): {T.P_pk_ok((out, o)) == (out, (o, 0))}`,
+  which the loop never checks for a mutant of this file). New generator `codegen/proofs/slop/poison_flag.py` writes
+  `proofs/slop/validity/<runtime>_<X>_poison_flag.bend` for every words name (76 files): `X_serialize_vflag(out, o): {T.P_pk_ok((out, o)) == (out, (o, 0))}`,
   filed by object_api_coverage_gate in the name's encode facade. The unmutated facade passes; the mutant fails with
   `expected (out, o, 1)`, `observed (out, o, 0)`. The 29 pk-flag exclusions of the other names now die as well.
 * Exclusion key: `tests_generated/mutation_testing.excluded` and `mutation_equivalence.py` key on (file, def, operator, before, after,
