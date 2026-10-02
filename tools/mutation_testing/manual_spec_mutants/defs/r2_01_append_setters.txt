@@ -219,8 +219,8 @@ sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_app_in,l16_WithdrawalReq
 spec: List[WithdrawalRequest, 16] holds at most 16 elements
 fault: the append guard is n <= 16 (a 17th element is accepted)
 why: off-by-one between count and bound
--  l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
-+  l16_WithdrawalRequest_app_in(U32.is_le(n, 16), arr, n, v)
+-l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
++l16_WithdrawalRequest_app_in(U32.is_le(n, 16), arr, n, v)
 === r2-a04-element-array-append
 type: FuluExecutionRequests
 ops: decode,encode,root
@@ -269,8 +269,8 @@ sym: l16_WithdrawalRequest_set,l16_WithdrawalRequest_put_in
 spec: set replaces an existing element only
 fault: the setter bound is i <= n
 why: off-by-one in the index test
--  l16_WithdrawalRequest_put_in(U32.is_lt(i, n), arr, n, i, v)
-+  l16_WithdrawalRequest_put_in(U32.is_le(i, n), arr, n, i, v)
+-l16_WithdrawalRequest_put_in(U32.is_lt(i, n), arr, n, i, v)
++l16_WithdrawalRequest_put_in(U32.is_le(i, n), arr, n, i, v)
 === r2-a04-element-array-append
 type: FuluExecutionRequests
 ops: decode,encode,root
@@ -279,8 +279,8 @@ sym: l16_WithdrawalRequest_get,l16_WithdrawalRequest_get_in
 spec: reading index n is out of range
 fault: the getter bound is i <= n (index n answers the default element)
 why: off-by-one in the index test
--  l16_WithdrawalRequest_get_in(U32.is_lt(i, n), arr, n, i)
-+  l16_WithdrawalRequest_get_in(U32.is_le(i, n), arr, n, i)
+-l16_WithdrawalRequest_get_in(U32.is_lt(i, n), arr, n, i)
++l16_WithdrawalRequest_get_in(U32.is_le(i, n), arr, n, i)
 === r2-a05-cached-append
 type: FuluExecutionRequests
 ops: root
@@ -289,8 +289,8 @@ sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_in,l16_WithdrawalRequ
 spec: the cached list appends under the same bound as the plain list
 fault: the cached append guard is n <= 16
 why: off-by-one between count and bound
--  l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
-+  l16_WithdrawalRequest_capp_in(U32.is_le(n, 16), arr, n, d, nodes, lo, hi, v)
+-l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
++l16_WithdrawalRequest_capp_in(U32.is_le(n, 16), arr, n, d, nodes, lo, hi, v)
 === r2-a05-cached-append
 type: FuluExecutionRequests
 ops: root
@@ -339,8 +339,8 @@ sym: l16_WithdrawalRequest_cset,l16_WithdrawalRequest_cset_in
 spec: a cached set marks the written leaf dirty
 fault: the cached set bound is i <= n
 why: off-by-one in the index test
--  l16_WithdrawalRequest_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
-+  l16_WithdrawalRequest_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+-l16_WithdrawalRequest_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++l16_WithdrawalRequest_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
 === r2-a06-cells
 type: FuluDataColumnSidecar
 ops: decode,encode,root
