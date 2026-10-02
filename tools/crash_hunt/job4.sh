@@ -10,7 +10,7 @@ mkdir -p $OUT
 t0=$(date +%s)
 stamp() { echo "== $1 at +$(( $(date +%s) - t0 )) s"; df -h /srv | tail -1; }
 stamp start
-for p in pb_api pc_bigdecode; do
+for p in pb_api pc_bigdecode pa_objects; do
   BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 900 $BEND tools/crash_hunt/$p.bend -o build/ch/${p%%_*} > $OUT/compile_$p.log 2>&1
   echo "compile $p rc=$?"; head -12 $OUT/compile_$p.log
 done
@@ -22,6 +22,9 @@ for spec in "1 1048576 18 0" "1 2147483648 29 1431655765" "1 4294967295 30 14316
             "2 1048576 18 2155905152" "2 536870913 27 2155905152" "2 536870912 27 2155905152" "3 536870912 27 2155905152" "3 1048576 18 2155905152"; do
   set -- $spec
   ( ulimit -d 11534336; export SSZ_CASE=$1 SSZ_ARG=$2 SSZ_DEPTH=$3 SSZ_FILL=$4; s=$(date +%s); timeout 120 nice -n 19 build/ch/pc --threads 1 --gpu off > $OUT/pc_$1_$2.out 2> $OUT/pc_$1_$2.err; rc=$?; e=$(date +%s); echo "case $1 size $2 depth $3 rc=$rc sec=$((e - s)) :: $(tr '\n' ' ' < $OUT/pc_$1_$2.out | cut -c1-200) :: $(head -c 200 $OUT/pc_$1_$2.err | tr '\n' ' ')" ) | tee -a $OUT/pc_summary.txt
+done
+for a in 2147483647 2147483648; do
+  ( ulimit -d 8388608; export SSZ_CASE=15 SSZ_ARG=$a; s=$(date +%s); timeout 120 nice -n 19 build/ch/pa --threads 1 --gpu off > $OUT/pa_15_$a.out 2> $OUT/pa_15_$a.err; rc=$?; e=$(date +%s); echo "pa case 15 arg $a rc=$rc sec=$((e - s)) :: $(tr '\n' ' ' < $OUT/pa_15_$a.out | cut -c1-200) :: $(head -c 200 $OUT/pa_15_$a.err | tr '\n' ' ')" ) | tee -a $OUT/pa_summary.txt
 done
 stamp probes_done
 nice -n 19 timeout 600 $PY tools/crash_hunt/countbomb.py --repo . --out $OUT --mem-gb 8 > $OUT/countbomb.log 2>&1

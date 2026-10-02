@@ -103,6 +103,9 @@ def case13() -> IO(Unit): app_line(L128.l128_u64_append(O.Words{Array.new(U32, 1
 # 14: progressive byte list append at n bytes claimed
 def case14(+n: U32) -> IO(Unit): app_line(PlD.pl_u8_append(O.Words{Array.new(U32, 4n, 0), n}, 7))
 
+# 15: serialize a valid byte list of exactly 2^31 bytes (2 GiB) / 16: of 2^31 - 1 bytes (control)
+def case15(+n: U32) -> IO(Unit): ser_line("serialize_big", PlE.proglist_uint8_serialize(O.Words{Array.new(U32, 29n, 0), n}))
+
 def dispatch(+c: U32, +a: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -118,6 +121,7 @@ def dispatch(+c: U32, +a: U32) -> IO(Unit):
     case 11: case11(a)
     case 12: case12()
     case 13: case13()
+    case 15: case15(a)
     case _: case14(a)
 
 def main() -> IO(Unit):
