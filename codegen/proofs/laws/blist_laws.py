@@ -35,6 +35,7 @@ from codegen.proofs.laws import prog_laws as PL  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import light_pair  # noqa: E402
+from codegen.proofs.support import light_split as LS  # noqa: E402
 OUT = ROOT / 'proofs/obj/blist_obj.bend'
 M = 'Maybe<&2, +List<U32>>'
 SL = 'F.array__slots(U32, t)'
@@ -495,7 +496,7 @@ def emit():
 
 
 def main():
-    return light_pair(OUT, emit(), 'blist_laws', 'packed list laws are current')
+    return light_pair(OUT, emit(), 'blist_laws', 'packed list laws are current', '--check' in sys.argv, LS)
 
 
 if __name__ == '__main__':

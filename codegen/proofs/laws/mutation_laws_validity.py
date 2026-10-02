@@ -37,6 +37,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema, generic  # noqa: E402
@@ -282,7 +283,7 @@ def main():
         for X, t in files.items():
             out[OBJ / f'mutval_{runtime}_{X}.bend'] = t
         cnt.append(n)
-    if finish(out, ('mutval_*.bend',), 'stale validity laws: ', 'validity laws are current'):
+    if finish(RR.rewire_out(out), ('mutval_*.bend',), 'stale validity laws: ', 'validity laws are current', '--check' in sys.argv):
         print(f'{cnt} laws in {len(out)} files')
 
 

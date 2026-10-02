@@ -19,6 +19,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
+
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_each  # noqa: E402
 from codegen.proofs.collections import encset_w as EW  # noqa: E402
@@ -228,7 +230,7 @@ def out_path(c):
 
 
 def main():
-    run_each('encset_b', [(BASE, BASE_TEXT)] + [(out_path(c), text(c, k)) for c, k in LISTS])
+    run_each('encset_b', [(BASE, BASE_TEXT)] + [(out_path(c), text(c, k)) for c, k in LISTS], '--check' in sys.argv)
 
 
 if __name__ == '__main__':

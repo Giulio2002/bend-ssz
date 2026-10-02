@@ -35,6 +35,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
@@ -166,7 +167,8 @@ def main():
         assert not dup, f'a name in both runtimes: {sorted(dup)[:3]}'
         out.update(o)
         cnt.append(c)
-    if finish(out, ('offset_laws_*.bend', 'offset_size_*.bend'), 'stale offset mutation laws: ', 'offset mutation laws are current'):
+    if finish(RR.rewire_out(out), ('offset_laws_*.bend', 'offset_size_*.bend'), 'stale offset mutation laws: ', 'offset mutation laws are current',
+              '--check' in sys.argv):
         print(f'{len(out)} files; (decode_build, decode_fields, size) per runtime: {cnt}')
 
 

@@ -911,7 +911,7 @@ def main():
     outs = [(SPECS, specs), (PCF, PCL.emit_file(pcont_patterns(names), union_selectors(names))), (GA, ta), (GB, tb), (GB2, tb2), (GL, tl)] + sorted(tbits.items())
     outs = light_outs(outs, 'root_laws_generic (codegen)')
     from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    return sync_pairs(RR.rewire_out(outs), 'root_laws_generic', 'generic root laws are current')
+    return sync_pairs(RR.rewire_out(outs), 'root_laws_generic', 'generic root laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':

@@ -931,7 +931,7 @@ def main():
                       './packed_bytes_light.bend', 'packed_laws (codegen)')
     outs = [(p, LS.light(t)) for p, t in [(OUT, t1), (OUT.with_name('packed_obj_light.bend'), l1),
                                           (OUT2, t2), (OUT2.with_name('packed_bytes_light.bend'), l2)]]
-    return sync_pairs(outs, 'packed_laws', 'packed laws are current')
+    return sync_pairs(outs, 'packed_laws', 'packed laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':

@@ -1438,7 +1438,7 @@ def main():
     ztext = emit_zero_hex()
     ftext = emit_fast()
     htext = emit_hex_file()
-    return sync_pairs(((OUT, text), (ZOUT, ztext), (FOUT, ftext), (HOUT, htext)), 'sha_laws', 'generated SHA laws are current')
+    return sync_pairs(((OUT, text), (ZOUT, ztext), (FOUT, ftext), (HOUT, htext)), 'sha_laws', 'generated SHA laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':

@@ -29,6 +29,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
@@ -96,7 +97,7 @@ def main():
         if n:
             out[OBJ / f'mutation_laws_{runtime}.bend'] = t
         cnt.append(n)
-    if finish(out, ('mutation_laws_*.bend',), 'stale mutation laws: ', 'mutation laws are current'):
+    if finish(RR.rewire_out(out), ('mutation_laws_*.bend',), 'stale mutation laws: ', 'mutation laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

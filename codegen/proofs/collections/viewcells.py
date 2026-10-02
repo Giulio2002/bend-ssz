@@ -15,6 +15,8 @@ storage (hC).
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
+import sys
+
 from codegen.proofs.collections import view_laws as VL
 
 from codegen.core.paths import ROOT  # noqa: E402
@@ -188,7 +190,7 @@ def el_same(+d: Nat, +t: F.array__Tree<U32>, @XP@, +i: Nat, +J: Nat, +ne: {Nat.i
 
 
 def main():
-    run_single('viewcells', OUT, cells_file())
+    run_single('viewcells', OUT, cells_file(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

@@ -16,6 +16,8 @@ codegen/proofs/collections/coll_laws.py's byte and bit view laws use it.
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
+import sys
+
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/u32split.bend'
@@ -127,7 +129,7 @@ def alg_step(+A: Nat, +H: Nat, +D: Nat) -> {Nat.add(A, Nat.double(Nat.add(H, D))
 
 
 def main():
-    run_single('u32_split', OUT, text())
+    run_single('u32_split', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

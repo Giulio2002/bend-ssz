@@ -19,6 +19,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
@@ -53,7 +54,7 @@ def main():
     for runtime, tmod in RUNTIMES:
         for X, t in module(RR.mono_text(runtime), tmod).items():
             out[OBJ / f'pkflag_{runtime}_{X}.bend'] = t
-    if finish(out, ('pkflag_*.bend',), 'stale flag laws: ', 'flag laws are current'):
+    if finish(RR.rewire_out(out), ('pkflag_*.bend',), 'stale flag laws: ', 'flag laws are current', '--check' in sys.argv):
         print(f'{len(out)} files')
 
 

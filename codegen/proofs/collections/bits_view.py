@@ -18,6 +18,8 @@ bit_rw_go (coll_bits.bend): the five low bits of i are literal, the mask is then
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
+import sys
+
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/bits_view.bend'
@@ -605,7 +607,7 @@ def text():
 
 
 def main():
-    run_single('bits_view', OUT, text())
+    run_single('bits_view', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

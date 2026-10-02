@@ -25,6 +25,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
@@ -60,7 +61,7 @@ def module(tmod, X, law):
 
 def main():
     out, cnt = per_name(name_laws, module, 'capacity', weigh=lambda law: 1)
-    if finish(out, ('capacity_*.bend',), 'stale capacity laws: ', 'capacity laws are current'):
+    if finish(RR.rewire_out(out), ('capacity_*.bend',), 'stale capacity laws: ', 'capacity laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

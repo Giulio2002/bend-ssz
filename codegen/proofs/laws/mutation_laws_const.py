@@ -35,6 +35,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
@@ -375,7 +376,7 @@ def outputs():
 
 def main():
     out = outputs()
-    if finish(out, ('mutconst_*.bend',), 'stale mutation const laws: ', 'mutation const laws are current'):
+    if finish(RR.rewire_out(out), ('mutconst_*.bend',), 'stale mutation const laws: ', 'mutation const laws are current', '--check' in sys.argv):
         print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
 
 

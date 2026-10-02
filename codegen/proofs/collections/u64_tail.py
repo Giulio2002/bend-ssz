@@ -19,6 +19,8 @@ codegen/proofs/collections/coll_laws.py's root-after-set laws of the uint64 coll
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
+import sys
+
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/u64_tail.bend'
@@ -179,7 +181,7 @@ def text():
 
 
 def main():
-    run_single('u64_tail', OUT, text())
+    run_single('u64_tail', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

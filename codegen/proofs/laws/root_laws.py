@@ -1090,7 +1090,7 @@ def main():
         for n, st in status.items():
             print(f'{n}: {st}')
         return
-    return sync_pairs(RR.rewire_out(outs), 'root_laws', 'generated root laws are current')
+    return sync_pairs(RR.rewire_out(outs), 'root_laws', 'generated root laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':

@@ -30,6 +30,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
@@ -147,7 +148,7 @@ def main():
                 seen.add(('u', X))
                 out[ROOT / f'proofs/obj/zuarm_{X}.bend'] = module(tmod, X, laws)
                 cnt[2] += len(laws)
-    if finish(out, ('zpwdcmp_*.bend', 'zflag_*.bend', 'zuarm_*.bend'), 'stale cmp3 laws: ', 'cmp3 laws are current'):
+    if finish(RR.rewire_out(out), ('zpwdcmp_*.bend', 'zflag_*.bend', 'zuarm_*.bend'), 'stale cmp3 laws: ', 'cmp3 laws are current', '--check' in sys.argv):
         print(f'{cnt} laws (pwd names, flag names, union arm laws)')
 
 

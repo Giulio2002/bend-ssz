@@ -13,6 +13,8 @@ replaced (view_seq.bend's induction over the items, the same `<list>_view_set` t
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
+import sys
+
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_single  # noqa: E402
 
@@ -212,7 +214,7 @@ def text():
 
 
 def main():
-    run_single('boxedview', OUT, text())
+    run_single('boxedview', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

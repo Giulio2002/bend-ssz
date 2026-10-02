@@ -34,6 +34,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
@@ -171,7 +172,7 @@ def module(tmod, X, laws):
 
 def main():
     out, cnt = per_name(name_laws, lambda tmod, X, ls: module(tmod, X, ls) + '\n', 'wordpos')
-    if finish(out, ('wordpos_*.bend',), 'stale arithmetic mutation laws: ', 'arithmetic mutation laws are current'):
+    if finish(RR.rewire_out(out), ('wordpos_*.bend',), 'stale arithmetic mutation laws: ', 'arithmetic mutation laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

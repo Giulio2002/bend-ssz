@@ -35,6 +35,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
@@ -268,7 +269,7 @@ def main():
     out, cnt = per_name(name_laws, module, 'zcmpeq')
     out[ROOT / 'proofs/obj/zcmpeq_guard.bend'] = guard_module()
     out[ROOT / 'proofs/obj/zcmpeq_lib.bend'] = lib_module()
-    if finish(out, ('zcmpeq_*.bend',), 'stale cmp laws: ', 'cmp laws are current'):
+    if finish(RR.rewire_out(out), ('zcmpeq_*.bend',), 'stale cmp laws: ', 'cmp laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

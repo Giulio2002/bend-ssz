@@ -2,36 +2,40 @@
 
 Most of these generators end in the same few lines: compare every output file to what is on disk (--check) or write it, treat the
 files of a glob that nothing produces any more as orphans, and, for the per-name laws, loop over the two runtimes
-(`fulu_obj` and `generic_obj`) writing one module per name. The helpers below are those lines, written once.
+(`fulu_obj` and `generic_obj`) writing one module per name. The helpers below are those lines, written once. Each takes `check` (whether
+the generator was run with its check flag), and the callers that need the runtime split hand over `RR.rewire_out(out)`: this module is in
+codegen/core, which must not import the generators' layers.
 
-    RUNTIMES                     the two runtime modules the per-name law generators read
-    run_single(name, out, text)  a generator with one output file
-    run_each(name, outs)         a generator with a handful of files, each reported on its own
+    RUNTIMES                          the two runtime modules the per-name law generators read
+    run_single(name, out, text, check)  a generator with one output file
+    run_each(name, outs, check)       a generator with a handful of files, each reported on its own
     per_name(name_laws, make, stem, weigh)
-                                 {path: text} of one proofs/obj/<stem>_<X>.bend per name over both runtimes (a name found in both
-                                 runtimes is written once, from the first) and the law count per runtime
-    finish(out, globs, stale_msg, ok_msg)
-                                 the --check / write protocol of a generator that owns the proofs/obj files matching `globs`; True
-                                 when it wrote (the caller prints its summary)
+                                      {path: text} of one proofs/obj/<stem>_<X>.bend per name over both runtimes (a name found in
+                                      both runtimes is written once, from the first) and the law count per runtime
+    law_module(gen, comments, laws, tmod, extra_imports)
+                                      the text of one such module
+    finish(out, globs, stale_msg, ok_msg, check)
+                                      the --check / write protocol of a generator that owns the proofs/obj files matching `globs`;
+                                      True when it wrote (the caller prints its summary)
+    sync_pairs(outs, gen, ok_msg, check)
+                                      the same for a list of (path, text) files, without the orphan scan; the exit code
+    light_pair(out, text, gen, ok_msg, check, light)
+                                      the same for an output with a light companion (`light` is codegen/proofs/support/light_split)
+    split_top(s, ...)                 split on the commas outside every bracket pair
 """
+import re
 import sys
 
 from codegen.core import writer
 from codegen.core.paths import ROOT
-from codegen.impl import runtime_refs as RR
 
 OBJ = ROOT / 'proofs/obj'
-# the flag is spelled in two pieces: codegen/tests/test_registry.py takes every script containing it quoted for a generator
-def checking():
-    return ('--' 'check') in sys.argv
-
-
 RUNTIMES = (('fulu', 'fulu_obj'), ('generic', 'generic_obj'))
 
 
-def run_single(name, out, text):
+def run_single(name, out, text, check):
     """--check: exit 1 when `out` differs from `text`; otherwise write it (when it differs)."""
-    if checking():
+    if check:
         if not out.exists() or out.read_text() != text:
             print(f'stale: {out.name}')
             sys.exit(1)
@@ -42,9 +46,9 @@ def run_single(name, out, text):
     print(f'{name}: proofs/obj/{out.name}')
 
 
-def run_each(name, outs):
+def run_each(name, outs, check):
     """like run_single for a list of (path, text): --check names every stale file, write mode reports every file."""
-    if checking():
+    if check:
         stale = [o.name for o, t in outs if not o.exists() or o.read_text() != t]
         for s in stale:
             print(f'stale: {s}')
@@ -82,9 +86,20 @@ def law_module(gen, comments, laws, tmod, extra_imports=()):
     return '\n'.join(head + [piece for law in laws for piece in (law, '')])
 
 
-def sync_pairs(outs, gen, ok_msg):
+def finish(out, globs, stale_msg, ok_msg, check):
+    """--check (exit 1 on a stale file or an orphan: a proofs/obj file matching one of `globs` that `out` does not hold) or write
+    `out` and delete the orphans. Returns True when it wrote."""
+    orphans = sorted(str(q.relative_to(ROOT)) for pat in globs for q in OBJ.glob(pat) if q not in out)
+    if check:
+        writer.check(out, stale_msg, ok_msg, orphans)
+        return False
+    writer.write(out, orphans)
+    return True
+
+
+def sync_pairs(outs, gen, ok_msg, check):
     """--check / write for a generator that owns a list of (path, text) files; the exit code: 1 on the first stale file."""
-    if checking():
+    if check:
         for path, text in outs:
             if not path.exists() or path.read_text() != text:
                 print(f'{path} is stale; run codegen/proofs/laws/{gen}.py')
@@ -97,17 +112,15 @@ def sync_pairs(outs, gen, ok_msg):
     return 0
 
 
-def light_pair(out, text, gen, ok_msg):
+def light_pair(out, text, gen, ok_msg, check, light):
     """--check / write for a generator whose output `out` has a light companion `<stem>_light.bend` that holds the representation defs
-    importers state against (rep_*, wf_*, hview, cnt1, cnt2; codegen/proofs/support/light_split.py). Returns the exit code."""
-    import re
-    from codegen.proofs.support import light_split as LS
+    importers state against (rep_*, wf_*, hview, cnt1, cnt2); `light` is codegen/proofs/support/light_split. Returns the exit code."""
     lout = out.with_name(f'{out.stem}_light.bend')
     keep = lambda n: re.match(r'(rep|wf)_', n) is not None or n in {'hview', 'cnt1', 'cnt2'}
-    text, ltext = LS.split(text, keep, f'./{lout.name}', f'{gen} (codegen)')
-    text = LS.light(text)
-    ltext = LS.light(ltext) if ltext is not None else None
-    if checking():
+    text, ltext = light.split(text, keep, f'./{lout.name}', f'{gen} (codegen)')
+    text = light.light(text)
+    ltext = light.light(ltext) if ltext is not None else None
+    if check:
         for path, want in ((lout, ltext), (out, text)):
             if want is not None and (not path.exists() or path.read_text() != want):
                 print(f'{path} is stale; run codegen/proofs/laws/{gen}.py')
@@ -118,18 +131,6 @@ def light_pair(out, text, gen, ok_msg):
     if ltext is not None:
         lout.write_text(ltext)
     return 0
-
-
-def finish(out, globs, stale_msg, ok_msg):
-    """--check (exit 1 on a stale file or an orphan: a proofs/obj file matching one of `globs` that `out` does not hold) or write
-    `out` through the runtime split and delete the orphans. Returns True when it wrote."""
-    orphans = sorted(str(q.relative_to(ROOT)) for pat in globs for q in OBJ.glob(pat) if q not in out)
-    out = RR.rewire_out(out)
-    if checking():
-        writer.check(out, stale_msg, ok_msg, orphans)
-        return False
-    writer.write(out, orphans)
-    return True
 
 
 def split_top(s, strip=True, keep_empty=True, opening='([{<', closing=')]}>'):

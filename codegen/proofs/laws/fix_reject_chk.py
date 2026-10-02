@@ -21,6 +21,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+import sys
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 from codegen.core.paths import ROOT  # noqa: E402
@@ -225,7 +226,7 @@ def outputs():
 
 def main():
     out = outputs()
-    if finish(out, (), 'stale: ', 'boolean-check reject laws are current'):
+    if finish(RR.rewire_out(out), (), 'stale: ', 'boolean-check reject laws are current', '--check' in sys.argv):
         print(f'{len(out)} files: ' + ', '.join(r[0] for r in rows()))
 
 
