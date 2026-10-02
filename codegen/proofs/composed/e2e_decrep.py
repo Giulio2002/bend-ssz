@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from codegen.proofs.witnesses import e2e_witness as W  # noqa: E402
+from codegen.core.shared_bridges import import_list  # noqa: E402
 
 ROOT = W.ROOT
 E2E = ROOT / 'e2e'
@@ -32,9 +33,7 @@ def u32le(a, b, h):
 
 def byte_list(name, codec, spec, limit):
     """a byte list List[byte, limit] alone (FuluTransaction): rep_bl and the storage premise BL.sdk(o, 31)"""
-    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD',
-               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC',
-               'import ../proofs/obj/list_obj_light.bend as LO', 'import ../spec/fulu_schemas.bend as Spec',
+    imports = [*import_list('Base O FD VB VC LO=list_obj_light Spec=fulu_schemas'),
                f'import ../proofs/obj/{codec}.bend as DC', 'import ./e2e_blist.bend as BL', 'import ./e2e_dz.bend as DZ']
     defs = (f'# the decoded byte list: its storage as the root invariant wants it, and its length within the limit\n'
             f'def p_rep({PS})\n    -> LO.rep_bl(DC.OBJ(d, t, n), Spec.{spec}()):\n'
@@ -430,12 +429,10 @@ def prog_list(name, codec, k):
     repn = {0: 'rep_pl1', 1: 'rep_pl2', 2: 'rep_pl4', 3: 'rep_pl8', 4: 'rep_pl16', 5: 'rep_pl32'}[k]
     obj = 'DC.OBJ(d, t, n)' if win else 'DC.OBJ(t, n)'
     ps = ('+d: Nat, ' if win else '') + '+t: FD.array__Tree<U32>, +n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {' + ('DC.CHK(t, n)' if win else 'DC.CHK(n)') + ' == True{} : Bool}'
-    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbytes.bend as VY',
-               'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/words_obj_light.bend as WO', 'import ../proofs/obj/list_obj_light.bend as LO',
-               'import ../proofs/obj/prog_list_light.bend as PG', 'import ../proofs/obj/ulist_obj_light.bend as UL', 'import ../proofs/obj/packed_obj_light.bend as PK',
-               'import ../proofs/obj/packed_bytes_light.bend as PB', 'import ../proofs/obj/var_elems.bend as EL', 'import ../proofs/obj/generic_specs.bend as Spec',
-               f'import ../proofs/obj/{codec}.bend as DC', 'import ./e2e_blist.bend as BL', 'import ./e2e_dz.bend as DZ', 'import ./e2e_dpl.bend as DP']
+    imports = [*import_list(
+        'Base O FD A VB VC VY=vbytes VLS WO=words_obj_light LO=list_obj_light PG=prog_list_light '
+        'UL=ulist_obj_light PK PB EL=var_elems Spec=generic_specs'),
+               f'import ../proofs/obj/{codec}.bend as DC', *import_list('BL=e2e_blist DZ DP')]
     hy = HY
     cq = 'WN.CQ(n)' if win else 'DC.CQ(n)'
     if win:
@@ -475,11 +472,7 @@ def prog_bool(name, codec):
     BUF.depth_first.add(name)
     ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
-    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_win.bend as UW',
-               'import ../proofs/obj/words_obj_light.bend as WO', 'import ../proofs/obj/prog_list_light.bend as PG', 'import ../proofs/obj/packed_bytes_light.bend as PBL',
-               'import ../proofs/obj/generic_specs.bend as Spec', f'import ../proofs/obj/{codec}.bend as DC', 'import ./e2e_blist.bend as BL', 'import ./e2e_dz.bend as DZ',
-               'import ./e2e_dpl.bend as DP']
+    imports = [*import_list('Base O FD A VB VC UW WO=words_obj_light PG=prog_list_light PBL Spec=generic_specs'), f'import ../proofs/obj/{codec}.bend as DC', *import_list('BL=e2e_blist DZ DP')]
     obj = 'DC.OBJ(d, t, n)'
     sc = (f'FD.logic__subst(+List<U32>, z => {{PBL.bscope(U32.to_nat(n), z) == True{{}} : Bool}}, BL.WX0(t, n), WO.wview({obj}), '
           f'Equal.sym(+List<U32>, WO.wview({obj}), BL.WX0(t, n), BL.bviewY(d, t, 0, n, 0n, {{==}}, hn, pf, {HY})), '
@@ -559,9 +552,7 @@ def compat_union_a(lf):
     BUF.depth_first.add(name)
     ps = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, '
           '+hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}')
-    imports = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
-               'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/spec_fixed.bend as FX',
-               'import ../proofs/obj/root_gtypes2_light.bend as RT', 'import ../types/CompatibleUnionA_def_generated.bend as CUA',
+    imports = [*import_list('Base FD A VB UA VR=vbrt FX RT CUA'),
                f'import ../proofs/obj/var_codec_{name}.bend as DC', f'import ../proofs/obj/var_winx_{name}.bend as W',
                'import ../proofs/obj/var_winx_ProgressiveSingleFieldContainerTestStruct.bend as CH', 'import ./e2e_dpl.bend as DP']
     defs = ('def ob0(+c: Bool, +s: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32)\n'
@@ -1145,7 +1136,7 @@ def union_provider(name, arms, lf):
     arm_files = [_cu_arm(name, k, wpath, a[2], supf, lf, C, 'o', N) for k, a in enumerate(arms)]
     # the selector chain
     root_l = 'proofs/obj/root_gtypes2_light.bend'
-    cs = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
+    cs = [*import_list('Base FD A VB'),
           f'import ../{root_l} as RTL', f'import ../{wpath} as W', f'import ./{name}_e2e_generated.bend as EB'] + [f'import ./e2e_cu_{name}_{k}.bend as AR{k}' for k in range(N)]
     cs.append('')
     cs.append(HEADER)
