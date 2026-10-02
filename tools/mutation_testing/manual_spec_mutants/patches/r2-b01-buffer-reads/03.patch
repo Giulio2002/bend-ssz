@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b01-buffer-reads/03
+# type: VarTestStruct
+# ops: decode
+# spec: byte 0 of a word is w & 255
+# fault: byte 0 keeps seven bits (mask 127)
+# why: constant
+# file: src/buffer.bend
+# sym: byte_sel,byte_at
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -40,3 +40,3 @@
+   match j:
+-    case 0: (w .&. 255 : U32)
++    case 0: (w .&. 127 : U32)
+     case 1: (U32.shrn(w, 8n) .&. 255 : U32)

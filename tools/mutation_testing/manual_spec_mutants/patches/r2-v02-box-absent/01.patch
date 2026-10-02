@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v02-box-absent/01
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: an absent boxed field (no value) is not a valid value and must be refused by the serializer
+# fault: an empty box is valid
+# why: the absent case treated as the default
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_bx_valid,AttesterSlashing_bx_putk
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -113,3 +113,3 @@
+     case O.BSome{v, rest}: AttesterSlashing_bx_va_back(AttesterSlashing_valid(v))
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+ 

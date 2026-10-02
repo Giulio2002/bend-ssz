@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a01-bytelist-setter/02
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: an element is a byte
+# fault: the setter does not check the value range (v up to 2^32 - 1 is merged into the word)
+# why: value check forgotten on the setter
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_set,bl256_set_n,bl256_put_at
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -45,3 +45,3 @@
+   (o, +n) = pair
+-  bl256_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bl256_put_at(U32.is_lt(i, n), o, i, v)
+ 

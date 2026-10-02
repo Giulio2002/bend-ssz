@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/14
+# type: bitvector_9
+# ops: encode
+# spec: the bits of a bit vector past its k bits are zero in the last word
+# fault: the check reads word k >> 5 + 1
+# why: index slip
+# file: src/obj.bend
+# sym: bitvec_tail,bv_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1538,3 +1538,3 @@
+   match o:
+-    case Words{ws, +n}: bv_fin(n, ok, k, Array.get(U32, ws, U32.shrn(k, 5n)))
++    case Words{ws, +n}: bv_fin(n, ok, k, Array.get(U32, ws, (U32.shrn(k, 5n) + 1 : U32)))
+ 

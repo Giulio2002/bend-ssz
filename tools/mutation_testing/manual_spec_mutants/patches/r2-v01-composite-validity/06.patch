@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v01-composite-validity/06
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: a container is valid iff every field is valid
+# fault: the field validity is or-ed with the accumulator
+# why: Bool.and written as Bool.or
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_valid,IndexedAttestation_va0
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -94,3 +94,3 @@
+   (attesting_indices, ok) = pair
+-  (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, Bool.and(acc, ok))
++  (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, Bool.or(acc, ok))
+ 

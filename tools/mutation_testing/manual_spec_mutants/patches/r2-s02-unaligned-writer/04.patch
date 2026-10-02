@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/04
+# type: VarTestStruct
+# ops: encode
+# spec: a range at position 3 mod 4: the first byte lands in the top byte of its word (<< 24)
+# fault: the word is shifted by 16 on the last step
+# why: constant
+# file: src/obj.bend
+# sym: put_words,pw_or3,pw_run3
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -581,3 +581,3 @@
+       (ws, +w) = pair
+-      (or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
++      (or_word(out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
+     case 1n+e:

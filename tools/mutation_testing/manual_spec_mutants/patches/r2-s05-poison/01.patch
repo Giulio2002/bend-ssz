@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s05-poison/01
+# type: VarTestStruct
+# ops: encode
+# spec: a size accumulator keeps bit 31 once any addend carries it
+# fault: the poison bit is not kept (a plain sum)
+# why: poison propagation forgotten
+# file: src/obj.bend
+# sym: padd,is_poisoned,pz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1554,3 +1554,3 @@
+ # Add two counts, keeping bit 31 if either had it.
+-def padd(+a: U32, +b: U32) -> U32: ((a + b : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
++def padd(+a: U32, +b: U32) -> U32: (a + b : U32)
+ 

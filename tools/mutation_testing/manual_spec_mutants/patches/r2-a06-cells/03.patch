@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a06-cells/03
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: a Cell is exactly 2048 bytes and the index must be below the length
+# fault: the setter bound is i <= n (writes the cell after the last)
+# why: off-by-one in the index test
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_set,l4096_b2048_set_v,l4096_b2048_blit
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -49,3 +49,3 @@
+   match v:
+-    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
++    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_le(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
+ 

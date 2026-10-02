@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h04-element-chunks/04
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: element i starts at word i * ew
+# fault: element i starts at word i * (ew + 1)
+# why: stride of an element
+# file: src/obj.bend
+# sym: elems_root,leaf_at
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -849,3 +849,3 @@
+     case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, Nat.add(ew, 1n)), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/03
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: growing the storage keeps every existing element
+# fault: the copy loop moves n - 1 elements (the last element is lost)
+# why: loop bound off by one
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_append,l16_WithdrawalRequest_room,l16_WithdrawalRequest_copy
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -106,3 +106,3 @@
+     case True{}: arr
+-    case False{}: l16_WithdrawalRequest_copy(U32.to_nat(n), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
++    case False{}: l16_WithdrawalRequest_copy(U32.to_nat((n - 1 : U32)), 0, (l16_WithdrawalRequest_fill(l16_WithdrawalRequest_cap((n + 1 : U32))), arr))
+ 

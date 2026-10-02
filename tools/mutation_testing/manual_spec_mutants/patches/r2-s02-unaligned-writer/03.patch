@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/03
+# type: VarTestStruct
+# ops: encode
+# spec: a range at position 3 mod 4: the bytes shifted out of word j are carried into word j + 1 (<< 24 and >> 8)
+# fault: the carry shift is >> 16
+# why: constant
+# file: src/obj.bend
+# sym: put_words,pw_un,pw_or3,pw_run3
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -584,3 +584,3 @@
+       (ws, +w) = pair
+-      pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
++      pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+         or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))

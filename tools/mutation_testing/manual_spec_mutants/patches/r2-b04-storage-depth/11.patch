@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/11
+# type: FuluBytes48
+# ops: decode
+# spec: the halving loop gives ceil(log2 w) for w > 16
+# fault: the loop halves with floor ((need) >> 1 instead of (need + 1) >> 1)
+# why: ceil written as floor
+# file: src/buffer.bend
+# sym: capacity_go,capacity_small,capacity
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -134,3 +134,3 @@
+         case 1: depth
+-        case _: capacity_go(p, U32.shrn((need + 1 : U32), 1n), 1n+depth)
++        case _: capacity_go(p, U32.shrn(need, 1n), 1n+depth)
+ 

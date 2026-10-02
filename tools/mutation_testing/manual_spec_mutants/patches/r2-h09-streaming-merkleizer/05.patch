@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/05
+# type: FuluExecutionRequests
+# ops: root
+# spec: Z(k + 1) = H(Z(k), Z(k)) fills the hasher's zero table (the table is read by no root of the object runtime)
+# fault: the table fill hashes Z(k) with the zero chunk
+# why: wrong operand
+# file: src/merkle_fast.bend
+# sym: ready_pick,fill_zeros
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -213,3 +213,3 @@
+     case 0n: buf
+-    case 1n+p: fill_zeros(p, (i + 1 : U32), D.hash_pair(z, z), B.set_digest(buf, (960 + i : U32), z))
++    case 1n+p: fill_zeros(p, (i + 1 : U32), D.hash_pair(z, D.zero()), B.set_digest(buf, (960 + i : U32), z))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/10
+# type: ComplexTestStruct
+# ops: encode
+# spec: the carry of the last source word lands at word q + nw
+# fault: the carry lands at word q + nw - 1
+# why: index slip
+# file: src/obj.bend
+# sym: put_words,pw_carry,pw_un
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -648,3 +648,3 @@
+   match s:
+-    case 1: pw_carry((q + nw : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
++    case 1: pw_carry((q + nw - 1 : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
+     case 2: pw_carry((q + nw : U32), pw_run2(nw, pw_mid(n, s, nw), q, out, ws))

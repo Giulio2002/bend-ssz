@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/04
+# type: FuluBytes96
+# ops: decode
+# spec: the words past the last whole block are copied one at a time
+# fault: the tail loop advances the destination by 2
+# why: stride mismatch
+# file: src/obj.bend
+# sym: acopy,ac_tail,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -128,3 +128,3 @@
+       (dst, src) = pair
+-      ac_tail(t, (a + 1 : U32), (b + 1 : U32), ac_w(b, dst, Array.get(U32, src, a)))
++      ac_tail(t, (a + 1 : U32), (b + 2 : U32), ac_w(b, dst, Array.get(U32, src, a)))
+ 

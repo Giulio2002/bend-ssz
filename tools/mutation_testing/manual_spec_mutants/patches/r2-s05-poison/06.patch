@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s05-poison/06
+# type: VarTestStruct
+# ops: encode
+# spec: a poisoned encoding is refused, a valid one returns its bytes
+# fault: the output length is m + 1
+# why: length off by one
+# file: src/obj.bend
+# sym: ser_done
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1583,3 +1583,3 @@
+     case True{}: refused()
+-    case False{}: Encoded{True{}, B.Buf{out, m}}
++    case False{}: Encoded{True{}, B.Buf{out, (m + 1 : U32)}}
+ 

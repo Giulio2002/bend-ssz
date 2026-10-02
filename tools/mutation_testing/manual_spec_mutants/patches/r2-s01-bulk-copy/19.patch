@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/19
+# type: FuluBytes96
+# ops: decode
+# spec: each block advances by eight words
+# fault: the block advances the destination by 9
+# why: stride
+# file: src/obj.bend
+# sym: scopy1,sc1_blk,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -186,3 +186,3 @@
+       (src, c) = r
+-      sc1_blk(q, (a + 8 : U32), (b + 8 : U32), sc1_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
++      sc1_blk(q, (a + 8 : U32), (b + 9 : U32), sc1_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+ 

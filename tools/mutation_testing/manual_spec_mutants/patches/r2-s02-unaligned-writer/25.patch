@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/25
+# type: ComplexTestStruct
+# ops: encode
+# spec: false writes nothing (the output is pre-zeroed), true writes the byte 1
+# fault: true writes the byte 2
+# why: constant
+# file: src/obj.bend
+# sym: wbool
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -437,3 +437,3 @@
+   match b:
+-    case True{}: w8(out, p, 1)
++    case True{}: w8(out, p, 2)
+     case False{}: out

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/02
+# type: Fulu_list_uint64_128
+# ops: encode
+# spec: a packed collection of 8-byte elements has a byte count divisible by 8
+# fault: the divisibility test is n & 3 = 0
+# why: mask constant
+# file: src/obj.bend
+# sym: words_ok,unit_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1492,3 +1492,3 @@
+     case 4: U32.is_eq((n .&. 3 : U32), 0)
+-    case 8: U32.is_eq((n .&. 7 : U32), 0)
++    case 8: U32.is_eq((n .&. 3 : U32), 0)
+     case 32: U32.is_eq((n .&. 31 : U32), 0)

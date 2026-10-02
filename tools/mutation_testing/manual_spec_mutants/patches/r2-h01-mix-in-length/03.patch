@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h01-mix-in-length/03
+# type: bitlist_9
+# ops: root
+# spec: a bit list mixes in its bit count (not its byte count)
+# fault: the byte count ceil(k/8) is mixed in
+# why: bytes confused with bits
+# file: src/obj.bend
+# sym: bits_rooted,bits_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -998,3 +998,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, bits_nbytes(k))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b03-byte-swap/02
+# type: FuluCheckpoint
+# ops: root
+# spec: the lane of byte 1 is masked to 8 bits (designed equivalent: the shift-left by 24 already drops the upper bits)
+# fault: the mask of byte 0 is dropped
+# why: redundant mask
+# file: src/buffer.bend
+# sym: swap32
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -94,3 +94,3 @@
+ def swap32(+w: U32) -> U32:
+-  (U32.shln((w .&. 255 : U32), 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
++  (U32.shln(w, 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
+     .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 24n) : U32)

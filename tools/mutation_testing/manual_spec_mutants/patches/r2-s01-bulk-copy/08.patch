@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/08
+# type: ComplexTestStruct
+# ops: decode
+# spec: a range starting 2 bytes into a word is copied with the 16-bit shift
+# fault: offset 2 mod 4 uses the 24-bit shift (scopy3)
+# why: case mapping
+# file: src/obj.bend
+# sym: copy_into,ci_pick,scopy1,scopy2,scopy3
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -338,3 +338,3 @@
+     case 1: scopy1(nw, a, 0, dst, src)
+-    case 2: scopy2(nw, a, 0, dst, src)
++    case 2: scopy3(nw, a, 0, dst, src)
+     case _: scopy3(nw, a, 0, dst, src)

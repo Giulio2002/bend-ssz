@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-d01-decode-checked/09
+# type: VarTestStruct
+# ops: decode
+# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+# fault: the window-inside-buffer test is dropped
+# why: only the 2^31 bound kept
+# file: types/VarTestStruct_decode_ssz_generated.bend
+# sym: VarTestStruct_decode_checked,VarTestStruct_dchk,VarTestStruct_dgo
+--- a/types/VarTestStruct_decode_ssz_generated.bend
++++ b/types/VarTestStruct_decode_ssz_generated.bend
+@@ -86,3 +86,3 @@
+   (buf, +n) = pair
+-  VarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  VarTestStruct_dgo(U32.is_lt(size, 2147483648), buf, size)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a02-large-limit-append/05
+# type: progbitlist
+# ops: decode,encode,root
+# spec: ProgressiveBitlist: counts are U32; the append at 2^32 - 1 is refused
+# fault: the guard is n <= 4294967295 (always true)
+# why: unbounded list, comparison written with <=
+# file: types/progbitlist_def_generated.bend
+# sym: pbits_append,pbits_app_n
+--- a/types/progbitlist_def_generated.bend
++++ b/types/progbitlist_def_generated.bend
+@@ -50,3 +50,3 @@
+   (o, +n) = pair
+-  pbits_push(U32.is_lt(n, 4294967295), o, v)
++  pbits_push(U32.is_le(n, 4294967295), o, v)
+ 

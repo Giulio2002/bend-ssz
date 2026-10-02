@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h06-bit-roots/03
+# type: bitlist_513
+# ops: root
+# spec: ceil(k / 8) bytes for k bits
+# fault: the byte count is floor(k / 8)
+# why: ceil written as floor
+# file: src/obj.bend
+# sym: bits_nbytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -946,3 +946,3 @@
+ # ceil(nbits / 8), for every U32 nbits: (nbits >> 3) + ((nbits & 7) + 7 >> 3) (nbits + 7 would wrap above 2^32 - 8).
+-def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
++def bits_nbytes(+nbits: U32) -> U32: U32.shrn(nbits, 3n)
+ 

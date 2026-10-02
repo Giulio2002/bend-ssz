@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/03
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit copies ceil(n/4) words
+# fault: the word count drops the rounding (n >> 2 words, a final partial word is not copied)
+# why: ceil written as floor
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1358,3 +1358,3 @@
+     case True{}: (o, Words{ws, n})
+-    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
++    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
+ 

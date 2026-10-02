@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/06
+# type: bytelist_256
+# ops: decode
+# spec: the zero storage of a decoded Words has 2^ceil(log2 w) words (the Nat twin of ubits)
+# fault: the threshold of the 2-bit step is 3
+# why: threshold off by one
+# file: src/buffer.bend
+# sym: bits2,bits1,words_depth,zeros_for,capacity
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -183,3 +183,3 @@
+     case True{}: bits1(U32.is_le(2, U32.shrn(m, 2n)), U32.shrn(m, 2n), (acc + 2 : U32))
+-    case False{}: bits1(U32.is_le(2, m), m, acc)
++    case False{}: bits1(U32.is_le(3, m), m, acc)
+ 

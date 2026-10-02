@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/13
+# type: ComplexTestStruct
+# ops: decode
+# spec: a range starting 1 byte into a word: word j = (src[j] >> 8) | (src[j+1] << 24)
+# fault: the tail word uses << 16 (the constant of the 2-byte shift)
+# why: constant of the wrong lane family
+# file: src/obj.bend
+# sym: scopy1,sc1_w,sc1_tail,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -190,3 +190,3 @@
+   (src, +w) = pair
+-  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), (src, w))
++  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 65536 : U32) : U32)), (src, w))
+ 

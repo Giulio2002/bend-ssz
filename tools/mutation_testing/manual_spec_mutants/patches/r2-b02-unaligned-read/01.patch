@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b02-unaligned-read/01
+# type: VarTestStruct
+# ops: decode
+# spec: a uint32 at offset 1 mod 4 is (lo >> 8) | (hi << 24)
+# fault: the high part is shifted by 16
+# why: constant
+# file: src/buffer.bend
+# sym: join_sel,read32
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -59,3 +59,3 @@
+   match j:
+-    case 1: (U32.shrn(lo, 8n) .|. U32.shln(hi, 24n) : U32)
++    case 1: (U32.shrn(lo, 8n) .|. U32.shln(hi, 16n) : U32)
+     case 2: (U32.shrn(lo, 16n) .|. U32.shln(hi, 16n) : U32)

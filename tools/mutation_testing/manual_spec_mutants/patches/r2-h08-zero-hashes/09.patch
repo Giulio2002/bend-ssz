@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/09
+# type: FuluExecutionRequests
+# ops: root
+# spec: a Merkle node is SHA-256(left || right)
+# fault: the node hashes right || left
+# why: operand order
+# file: src/digest.bend
+# sym: node,hash_pair
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -92,3 +92,3 @@
+ def node(+hl: Nat, l: Digest, r: Digest) -> Digest:
+-  of_result(PKG.sha256(pair_words(l, r), hl))
++  of_result(PKG.sha256(pair_words(r, l), hl))
+ 

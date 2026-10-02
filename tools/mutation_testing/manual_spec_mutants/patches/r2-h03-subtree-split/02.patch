@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/02
+# type: bytelist_256
+# ops: root
+# spec: the right half is inside the chunk count iff s + w/2 < n
+# fault: the right half is inside iff s + w/2 <= n
+# why: off-by-one in the occupancy test (reads a chunk that does not exist: zero in storage, but the value hashed is the real zero chunk)
+# file: src/obj.bend
+# sym: mtree,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -878,3 +878,3 @@
+             case True{}:
+-              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              mtree(p, 1n, Nat.is_le(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                 mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))

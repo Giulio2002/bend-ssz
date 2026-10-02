@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/12
+# type: ProgressiveTestStruct
+# ops: root
+# spec: a missing subtree of depth d is zero_hash(d)
+# fault: the missing subtree of depth 1+p is zero_hash(p)
+# why: zero level off by one
+# file: src/tree.bend
+# sym: consume
+--- a/src/tree.bend
++++ b/src/tree.bend
+@@ -23,3 +23,3 @@
+       match chunks:
+-        case Nil{}: (M.zero_hash(1n+p), [])
++        case Nil{}: (M.zero_hash(p), [])
+         case Con{h, t}:

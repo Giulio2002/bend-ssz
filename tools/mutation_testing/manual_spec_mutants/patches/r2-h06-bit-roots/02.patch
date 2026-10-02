@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h06-bit-roots/02
+# type: progbitlist
+# ops: root
+# spec: a progressive bit list: progressive tree over the bit chunks, then the bit count
+# fault: the byte count is used as the mixed length
+# why: bytes confused with bits
+# file: src/obj.bend
+# sym: bits_root_prog,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1018,3 +1018,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, bits_nbytes(k), words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
+ 

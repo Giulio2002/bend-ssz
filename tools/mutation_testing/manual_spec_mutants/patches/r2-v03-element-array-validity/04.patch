@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v03-element-array-validity/04
+# type: FuluExecutionRequests
+# ops: encode
+# spec: the list limit is 16 elements
+# fault: the limit check is n <= 17
+# why: off-by-one in the limit
+# file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+# sym: l16_WithdrawalRequest_valid,l16_WithdrawalRequest_va_cap,l16_WithdrawalRequest_szf
+--- a/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+@@ -62,3 +62,3 @@
+   match o:
+-    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(False{}, U32.is_le(n, 16)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
++    case Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_va_cap(Bool.or(False{}, U32.is_le(n, 17)), n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
+ 

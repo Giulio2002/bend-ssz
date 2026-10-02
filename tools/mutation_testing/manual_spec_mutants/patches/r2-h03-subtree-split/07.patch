@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r2-h03-subtree-split/07
+# type: bytelist_256
+# ops: root
+# spec: the words of a chunk are big-endian for SHA
+# fault: the last word of a chunk is not byte-swapped
+# why: endianness of one word
+# file: src/obj.bend
+# sym: chunkn,cn7,echunkn,ec7
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -717,3 +717,3 @@
+   (ws, +a7) = pair
+-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
++  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), a7})
+ def cn6(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+@@ -749,3 +749,3 @@
+   (ws, +a7) = pair
+-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
++  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), a7})
+ def ec6(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

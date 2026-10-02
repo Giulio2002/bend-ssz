@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/15
+# type: ComplexTestStruct
+# ops: encode
+# spec: an unaligned 4-byte write at p = 1 mod 4 puts x >> 24 into the next word
+# fault: the spill constant for p = 1 mod 4 is x >> 16
+# why: constant
+# file: src/obj.bend
+# sym: w32,w32_split,shr_over
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -405,3 +405,3 @@
+   match s:
+-    case 1: U32.shrn(x, 24n)
++    case 1: U32.shrn(x, 16n)
+     case 2: U32.shrn(x, 16n)

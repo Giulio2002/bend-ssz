@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/05
+# type: FuluExecutionRequests
+# ops: root
+# spec: mix_in_length(root, length) = H(root || uint256 length)
+# fault: the root and the root length chunk are mixed in the other order
+# why: operand order
+# file: src/mixing.bend
+# sym: mix_in_length
+--- a/src/mixing.bend
++++ b/src/mixing.bend
+@@ -8,3 +8,3 @@
+ def mix_in_length(+root: +List<U32>, length: T.UInt) -> Maybe<&2, +List<U32>>:
+-  M.pair_checked(P.valid_bytes(32n, root), root, P.uint_bytes(length))
++  M.pair_checked(P.valid_bytes(32n, root), P.uint_bytes(length), root)
+ 

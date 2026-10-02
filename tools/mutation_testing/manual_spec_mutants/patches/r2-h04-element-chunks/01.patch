@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h04-element-chunks/01
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: words past an element's end read as zero (j + k < ew)
+# fault: word 8c+4 is taken inside the element when j + 4 <= ew (reads the next element's first word)
+# why: off-by-one in the element bound
+# file: src/obj.bend
+# sym: echunkn,ec4,rdc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -758,3 +758,3 @@
+   (ws, +a4) = pair
+-  ec5(b, j, ew, a0, a1, a2, a3, a4, rdc(Nat.is_lt(Nat.add(j, 5n), ew), ws, Nat.add(b, Nat.add(j, 5n))))
++  ec5(b, j, ew, a0, a1, a2, a3, a4, rdc(Nat.is_le(Nat.add(j, 5n), ew), ws, Nat.add(b, Nat.add(j, 5n))))
+ def ec3(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

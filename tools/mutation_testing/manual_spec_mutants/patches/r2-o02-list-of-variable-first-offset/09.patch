@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/09
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: the last element ends at the input end: its end offset is len
+# fault: the last element's end is read one offset past (i + 3 == n selects len)
+# why: loop-index confusion in the last-element test
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_next
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -83,3 +83,3 @@
+       (ok, a) = r
+-      l8_Attestation_ev(q, (i + 1 : U32), n, off, len, l8_Attestation_ee(ok, off, len, a, l8_Attestation_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))))
++      l8_Attestation_ev(q, (i + 1 : U32), n, off, len, l8_Attestation_ee(ok, off, len, a, l8_Attestation_next(U32.is_eq((i + 3 : U32), n), buf, off, len, (i + 1 : U32))))
+ 

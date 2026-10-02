@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b02-unaligned-read/05
+# type: VarTestStruct
+# ops: decode
+# spec: an offset is aligned iff i mod 4 = 0
+# fault: an offset is taken as aligned iff i mod 2 = 0 (offsets 2 mod 4 read the whole word)
+# why: mask constant
+# file: src/buffer.bend
+# sym: read32_choose,read32
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -77,3 +77,3 @@
+ def read32(b: Buf, +i: U32) -> Buf & U32:
+-  read32_choose(i, (i .&. 3 : U32), U32.is_eq((i .&. 3 : U32), 0), b)
++  read32_choose(i, (i .&. 3 : U32), U32.is_eq((i .&. 1 : U32), 0), b)
+ 

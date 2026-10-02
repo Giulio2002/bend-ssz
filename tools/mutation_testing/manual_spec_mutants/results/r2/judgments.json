@@ -1,0 +1,578 @@
+{
+ "r2-a01-bytelist-append-grow/01": {
+  "counterexample": "",
+  "reachability": "",
+  "verdict": "?",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend"
+ },
+ "r2-a01-bytelist-append-grow/02": {
+  "counterexample": "public call sequence of api_probe case 1: baseline prints 'bl_append_257th=0', mutant prints 'bl_append_257th=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-append-guard/01": {
+  "counterexample": "public call sequence of api_probe case 1: baseline prints 'bl_append_257th=0', mutant prints 'bl_append_257th=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-append-guard/02": {
+  "counterexample": "public call sequence of api_probe case 2: baseline prints 'bl_len_after_257th=256', mutant prints 'bl_len_after_257th=255'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-append-guard/03": {
+  "counterexample": "public call sequence of api_probe case 6: baseline prints 'bl_append_value_256=0', mutant prints 'bl_append_value_256=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-append-guard/04": {
+  "counterexample": "public call sequence of api_probe case 1: baseline prints 'bl_append_257th=0', mutant prints 'bl_append_257th=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-append-guard/05": {
+  "counterexample": "public call sequence of api_probe case 9: baseline prints 'bl_get_2_after_3=some 2', mutant prints 'bl_get_2_after_3=some 1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-getter/01": {
+  "counterexample": "public call sequence of api_probe case 3: baseline prints 'bl_get_at_len=none', mutant prints 'bl_get_at_len=some 0'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-setter/01": {
+  "counterexample": "public call sequence of api_probe case 4: baseline prints 'bl_set_at_len=0', mutant prints 'bl_set_at_len=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a01-bytelist-setter/02": {
+  "counterexample": "public call sequence of api_probe case 5: baseline prints 'bl_set_value_300=0', mutant prints 'bl_set_value_300=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): ComplexTestStruct_e2e_witness_generated.bend, ComplexTestStruct_e2e_decode_witness_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a03-bits-append/01": {
+  "counterexample": "public call sequence of api_probe case 20: baseline prints 'bits_append_10th=0', mutant prints 'bits_append_10th=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): bitlist_9_e2e_witness_generated.bend, bitlist_9_e2e_decode_witness_generated.bend, bitlist_9_decode_ssz_proof_generated.bend, bitlist_9_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a03-bits-append/02": {
+  "counterexample": "public call sequence of api_probe case 21: baseline prints 'bits_append_9th=1', mutant prints 'bits_append_9th=0'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): bitlist_9_e2e_witness_generated.bend, bitlist_9_e2e_decode_witness_generated.bend, bitlist_9_decode_ssz_proof_generated.bend, bitlist_9_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a03-bits-append/03": {
+  "counterexample": "public call sequence of api_probe case 23: baseline prints 'bits_set_at_len=0', mutant prints 'bits_set_at_len=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): bitlist_9_e2e_witness_generated.bend, bitlist_9_e2e_decode_witness_generated.bend, bitlist_9_decode_ssz_proof_generated.bend, bitlist_9_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a03-bits-append/04": {
+  "counterexample": "public call sequence of api_probe case 38: baseline prints 'bits_get_0_after_true_push=some 1', mutant prints 'bits_get_0_after_true_push=some 0'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): u32bits.bend, cell_rw.bend, bitlist_9_decode_ssz_proof_generated.bend, bitlist_9_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a03-bits-append/05": {
+  "counterexample": "public call sequence of api_probe case 20: baseline prints 'bits_append_10th=0', mutant prints 'bits_append_10th=1'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): words_rw.bend, ulist_obj.bend, prog_list.bend, coll_root.bend, u32bits.bend, cell_rw.bend, bitlist_9_decode_ssz_proof_generated.bend, bitlist_9_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a06-cells/08": {
+  "counterexample": "public call sequence of api_probe case 39: baseline prints 'cells_len_2047=2047', mutant prints 'cells_len_2047=2048'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): collections_1.bend, FuluDataColumnSidecar_e2e_witness_generated.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a06-cells/09": {
+  "counterexample": "public call sequence of api_probe case 40: baseline prints 'cells_get_1_len=some len 2048', mutant prints 'cells_get_1_len=some len 2047'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): l4096_b2048_api_witness_generated.bend, collections_1.bend, FuluDataColumnSidecar_e2e_witness_generated.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a06-cells/10": {
+  "counterexample": "public call sequence of api_probe case 41: baseline prints 'cells_word0_after_set_1=7', mutant prints 'cells_word0_after_set_1=0'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): l4096_b2048_api_witness_generated.bend, collections_1.bend, FuluDataColumnSidecar_e2e_witness_generated.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a06-cells/11": {
+  "counterexample": "none: slack chunk",
+  "reachability": "l4096_b2048_grow",
+  "verdict": "equivalent-in-context",
+  "evidence": "room for n cells instead of n+1: zeros_for slack covers it"
+ },
+ "r2-a07-words-blit/01": {
+  "counterexample": "is_le(n,0) is is_eq(n,0) on U32",
+  "reachability": "X_set/X_append of List[Cell,4096] -> O.words_blit",
+  "verdict": "equivalent",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, e2e_encvd.bend, u32bits.bend, words_rw.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend"
+ },
+ "r2-a07-words-blit/02": {
+  "counterexample": "callers (set/append) fix n = 2048 by their guard; O.words_blit is internal (API_CONTRACTS)",
+  "reachability": "X_set/X_append of List[Cell,4096] -> O.words_blit",
+  "verdict": "gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, e2e_encvd.bend, u32bits.bend, words_rw.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend"
+ },
+ "r2-a07-words-blit/03": {
+  "counterexample": "n = 2048 is a multiple of 4 for the only caller",
+  "reachability": "X_set/X_append of List[Cell,4096] -> O.words_blit",
+  "verdict": "equivalent-in-context",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, e2e_encvd.bend, u32bits.bend, words_rw.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend"
+ },
+ "r2-a07-words-blit/04": {
+  "counterexample": "public call sequence of api_probe case 41: baseline prints 'cells_word0_after_set_1=7', mutant prints 'cells_word0_after_set_1=0'",
+  "reachability": "public entry points X_append/X_set/X_get/X_len of the collection (types/*_def_generated.bend); no proof file names the faulty definitions (stage-1 roots above all check)",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, e2e_encvd.bend, u32bits.bend, words_rw.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend; B' API probe r2/probes/api_probe.bend kills it; the reference corpus cannot reach append/set/get (it only decodes, re-encodes, hashes)"
+ },
+ "r2-a07-words-blit/07": {
+  "counterexample": "blit copies every second word: set(0, cell) leaves half of the cell stale",
+  "reachability": "X_set/X_append of List[Cell,4096] -> O.words_blit",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, e2e_encvd.bend, u32bits.bend, words_rw.bend, FuluDataColumnSidecar_decode_ssz_proof_generated.bend, FuluDataColumnSidecar_encode_ssz_proof_generated.bend"
+ },
+ "r2-d01-decode-checked/03": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): crash_fix_laws_generated.bend, g__spec_codec_Checkpoint_generated.bend, spec_codec_Checkpoint.bend, FuluCheckpoint_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/04": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): crash_fix_laws_generated.bend, g__spec_codec_Checkpoint_generated.bend, spec_codec_Checkpoint.bend, FuluCheckpoint_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/05": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): crash_fix_laws_generated.bend, g__spec_codec_Checkpoint_generated.bend, spec_codec_Checkpoint.bend, FuluCheckpoint_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/06": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): crash_fix_laws_generated.bend, g__spec_codec_Checkpoint_generated.bend, spec_codec_Checkpoint.bend, FuluCheckpoint_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/09": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): g__var_codec_VarTestStruct_generated.bend, var_codec_VarTestStruct.bend, VarTestStruct_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/10": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): g__var_codec_VarTestStruct_generated.bend, var_codec_VarTestStruct.bend, VarTestStruct_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/11": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): g__var_codec_VarTestStruct_generated.bend, var_codec_VarTestStruct.bend, VarTestStruct_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/12": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): var_bits_bitlist_9.bend, g__var_bits_bitlist_9_generated.bend, bitlist_9_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-d01-decode-checked/13": {
+  "counterexample": "a window of 2^31 .. 2^32-2 bytes inside a buffer whose recorded size is that large",
+  "reachability": "X_decode_checked; for fixed-size types (Checkpoint) the decoder answers None for every size but 40, so the bound is not observable; for variable types it needs a >= 2 GiB buffer",
+  "verdict": "equivalent-in-context / gap-unreachable",
+  "evidence": "proof roots run, all check (or crash/timeout): var_bits_bitlist_9.bend, g__var_bits_bitlist_9_generated.bend, bitlist_9_decode_ssz_proof_generated.bend; proofs: only crash_fix_laws pin empty-buffer, 2^31 and inside-window"
+ },
+ "r2-h09-streaming-merkleizer/01": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): objio.bend, arr_copy.bend, driver.bend, obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-h09-streaming-merkleizer/02": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-h09-streaming-merkleizer/03": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-h09-streaming-merkleizer/04": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-h09-streaming-merkleizer/05": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-h09-streaming-merkleizer/06": {
+  "counterexample": "none: no root of the object runtime calls the streaming merkleizer or the hasher's zero table",
+  "reachability": "types import M but use only M.ready, M.shl_by, M.shr_by; zero hashes come from D.zconst; O.zero has no caller",
+  "verdict": "equivalent-in-context (dead code)",
+  "evidence": "proof roots run, all check (or crash/timeout): obj.bend, vbitenc.bend, FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/01": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/02": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/03": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/04": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/05": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/06": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/07": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/08": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/09": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/10": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o02-list-of-variable-first-offset/11": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): vvl_l8_Attestation.bend, var_winx_BeaconBlockBody.bend, FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+ },
+ "r2-o03-dfill/01": {
+  "counterexample": "valid_probe case 13: baseline 'complex_default_serialize_ok=1 size=100', mutant 'complex_default_serialize_ok=1 size=93'",
+  "reachability": "public X_serialize / X_default",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): prep_setters_g1.bend, root_gtypes_light.bend, ComplexTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-o03-dfill/02": {
+  "counterexample": "valid_probe case 13: baseline 'complex_default_serialize_ok=1 size=100', mutant 'complex_default_serialize_ok=1 size=93'",
+  "reachability": "public X_serialize / X_default",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): prep_setters_g1.bend, root_gtypes_light.bend, ComplexTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-o03-dfill/03": {
+  "counterexample": "valid_probe case 13: baseline 'complex_default_serialize_ok=1 size=100', mutant 'complex_default_serialize_ok=1 size=86'",
+  "reachability": "public X_serialize / X_default",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): prep_setters_g1.bend, root_gtypes_light.bend, ComplexTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-s01-bulk-copy/07": {
+  "counterexample": "survived 12 proof roots and the api probe; no distinguishing input found",
+  "reachability": "",
+  "verdict": "unresolved: survived (unjudged if checker crash)",
+  "evidence": "proof roots run, all check (or crash/timeout): arr_shift.bend, arr_copy.bend, spec_garr_vec_uint64_512.bend, arr_enc.bend, vbuf.bend, spec_gcodec_vec_uint256_16.bend, venc.bend, spec_garr_vec_uint32_512.bend, vcopy.bend, spec_garr_vec_uint64_513.bend, spec_garr_vec_uint128_512.bend, vbenc.bend, u32bits.bend, cell_rw.bend, ComplexTestStruct_decod"
+ },
+ "r2-s01-bulk-copy/08": {
+  "counterexample": "survived 12 proof roots and the api probe; no distinguishing input found",
+  "reachability": "",
+  "verdict": "unresolved: survived (unjudged if checker crash)",
+  "evidence": "proof roots run, all check (or crash/timeout): arr_copy.bend, vcopy.bend, spec_garr_vec_uint64_513.bend, vbytes.bend, spec_garr_vec_uint32_513.bend, spec_garr_vec_uint128_513.bend, spec_garr_vec_uint256_513.bend, vbrt.bend, vua_copy.bend, vbx.bend, vua_sc.bend, spec_arr_HistoricalBatch.bend, u32bits.bend, cell_rw.bend, ComplexTestStruct_decode_s"
+ },
+ "r2-s02-unaligned-writer/12": {
+  "counterexample": "survived 12 proof roots and the api probe; no distinguishing input found",
+  "reachability": "",
+  "verdict": "unresolved: survived (unjudged if checker crash)",
+  "evidence": "proof roots run, all check (or crash/timeout): arr_copy.bend, venc.bend, var_plist_proglist_uint256_enc.bend, var_plist_proglist_uint128_enc.bend, spec_garr_vec_uint64_513.bend, vbenc.bend, spec_garr_vec_uint32_513.bend, var_plist_proglist_uint64_enc.bend, var_plist_proglist_uint32_enc.bend, spec_garr_vec_uint128_513.bend, var_codec_DataColumnsB"
+ },
+ "r2-s02-unaligned-writer/23": {
+  "counterexample": "survived 12 proof roots and the api probe; no distinguishing input found",
+  "reachability": "",
+  "verdict": "unresolved: survived (unjudged if checker crash)",
+  "evidence": "proof roots run, all check (or crash/timeout): var_fix_types.bend, var_fix_types_m.bend, var_fix_put_er.bend, var_bytes_fix.bend, vuw.bend, e2e_rbs.bend, vuwd.bend, var_winx_l16_Deposit.bend, var_winx_l16_ProposerSlashing.bend, u32bits.bend, cell_rw.bend, ComplexTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-s02-unaligned-writer/25": {
+  "counterexample": "survived 12 proof roots and the api probe; no distinguishing input found",
+  "reachability": "",
+  "verdict": "unresolved: survived (unjudged if checker crash)",
+  "evidence": "proof roots run, all check (or crash/timeout): u32bits.bend, cell_rw.bend, ComplexTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-s03-element-access/01": {
+  "counterexample": "no caller passes a 3-byte write (words_write is called with 1, 2, 4)",
+  "reachability": "none",
+  "verdict": "equivalent-in-context",
+  "evidence": "proof roots run, all check (or crash/timeout): encset_r_l1024_u16.bend, byte_bits.bend, encset_r_base.bend, encset_h_l128_u16.bend, encset_r_l128_u16.bend, encset_b_l1099511627776_u8.bend, encset_h_l123_u16.bend, halfword16.bend, halfword.bend, view_bytes.bend, encset_r_l123_u16.bend, tz_merge.bend, u32bits.bend, cell_rw.bend"
+ },
+ "r2-s03-element-access/13": {
+  "counterexample": "Bitlist with more than 16 bits: get/set(i >= 16) touches bit i mod 16",
+  "reachability": "X_get/X_set of Fulu_bitlist_2048 / 131072 (bitlist_9 has 9 bits: equivalent there)",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): words_rw.bend, u32bits.bend, cell_rw.bend, bitlist_9_encode_ssz_proof_generated.bend"
+ },
+ "r2-s03-element-access/14": {
+  "counterexample": "Bitlist with more than 16 bits: get/set(i >= 16) touches bit i mod 16",
+  "reachability": "X_get/X_set of Fulu_bitlist_2048 / 131072 (bitlist_9 has 9 bits: equivalent there)",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): u32bits.bend, encset_t_bits131072.bend, bits_view.bend, bitz.bend, cell_rw.bend, words_rw.bend, bitlist_9_encode_ssz_proof_generated.bend"
+ },
+ "r2-s03-element-access/15": {
+  "counterexample": "Bitlist with more than 16 bits: get/set(i >= 16) touches bit i mod 16",
+  "reachability": "X_get/X_set of Fulu_bitlist_2048 / 131072 (bitlist_9 has 9 bits: equivalent there)",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): u32bits.bend, cell_rw.bend, bitlist_9_encode_ssz_proof_generated.bend"
+ },
+ "r2-s03-element-access/16": {
+  "counterexample": "element sizes of the Cell/byte-vector lists are multiples of 4",
+  "reachability": "words_slice",
+  "verdict": "equivalent-in-context",
+  "evidence": "proof roots run, all check (or crash/timeout): cell_rw.bend, u32bits.bend, words_rw.bend"
+ },
+ "r2-s04-packed-validity/03": {
+  "counterexample": "List[uint64] with 12 bytes (not a multiple of 8) / 32-byte element list with 16 bytes: X_serialize accepts",
+  "reachability": "X_serialize on a hand-built Words{ws, n}",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): arr_copy.bend, venc.bend, vbenc.bend, vme.bend, var_codec_DataColumnsByRootIdentifier_enc.bend, spec_arr_SyncCommittee.bend, spec_codec_Deposit.bend, spec_arr_HistoricalBatch.bend, spec_codec_MatrixEntry.bend, var_codec_IndexedAttestation_enc.bend, encx_l128_u16_d.bend, encx_bl256.bend, u32bits.bend"
+ },
+ "r2-s04-packed-validity/04": {
+  "counterexample": "List[uint64] with 12 bytes (not a multiple of 8) / 32-byte element list with 16 bytes: X_serialize accepts",
+  "reachability": "X_serialize on a hand-built Words{ws, n}",
+  "verdict": "critical (not run)",
+  "evidence": "proof roots run, all check (or crash/timeout): arr_copy.bend, venc.bend, vbenc.bend, vme.bend, var_codec_DataColumnsByRootIdentifier_enc.bend, spec_arr_SyncCommittee.bend, spec_codec_Deposit.bend, spec_arr_HistoricalBatch.bend, spec_codec_MatrixEntry.bend, var_codec_IndexedAttestation_enc.bend, encx_l128_u16_d.bend, encx_bl256.bend, u32bits.bend"
+ },
+ "r2-s05-poison/02": {
+  "counterexample": "needs a size accumulator of exactly 2^31: every container's fixed part is non-zero, so poison alone never sums to 2^31",
+  "reachability": "none found",
+  "verdict": "equivalent-in-context",
+  "evidence": "proof roots run, all check (or crash/timeout): u32bits.bend, cell_rw.bend, VarTestStruct_encode_ssz_proof_generated.bend"
+ },
+ "r2-s05-poison/03": {
+  "counterexample": "valid_probe case 14: baseline 'vts_c_300=0 size=0', mutant 'vts_c_300=1 size=7'",
+  "reachability": "public X_serialize / X_default",
+  "verdict": "critical",
+  "evidence": "proof roots run, all check (or crash/timeout): venc.bend, sub_pack.bend, vbspec.bend, var_codec_DataColumnsByRootIdentifier_enc.bend, vua_copy.bend, var_bytes_ExecutionPayloadHeader_enc.bend, var_bytes_LightClientHeader_enc.bend, vrecx.bend, var_codec_IndexedAttestation_enc.bend, encx_l1048576_bl1073741824.bend, var_rlenc_ExecutionRequests.bend,"
+ },
+ "r2-v01-composite-validity/01": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1_AttesterSlashing.bend, encx_AttesterSlashing_iface.bend, var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+ },
+ "r2-v01-composite-validity/02": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1_AttesterSlashing.bend, encx_AttesterSlashing_iface.bend, var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+ },
+ "r2-v01-composite-validity/03": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1_AttesterSlashing.bend, encx_AttesterSlashing_iface.bend, var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v01-composite-validity/04": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1_AttesterSlashing.bend, encx_AttesterSlashing_iface.bend, var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v01-composite-validity/05": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_IndexedAttestation_iface.bend, encx_AttesterSlashing_iface.bend, var_codec_IndexedAttestation_enc.bend, g__var_codec_IndexedAttestation_enc_generated.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+ },
+ "r2-v01-composite-validity/06": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_IndexedAttestation_iface.bend, encx_AttesterSlashing_iface.bend, var_codec_IndexedAttestation_enc.bend, g__var_codec_IndexedAttestation_enc_generated.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v02-box-absent/01": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1_AttesterSlashing.bend, AttesterSlashing_generated.bend, AttesterSlashing_generated.bend, var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-b04-storage-depth/09": {
+  "counterexample": "B.alloc(n) for n = 20 / 36 bytes (5 / 9 words) returns an array of 4 / 8 words (Array.get masks indices: reads wrap)",
+  "reachability": "B.alloc / B.capacity are the input-buffer constructors (tests, benchmarks, crash laws); not an X_ entry point",
+  "verdict": "gap-unreachable-through-X_-entry-points",
+  "evidence": "proof roots run, all check (or crash/timeout): words_rw.bend, reads.bend, merkle_fast.bend, buf.bend, cache.bend, arr_copy.bend, lim_bl.bend, nat_facts.bend, arr_enc.bend, arr_emit.bend, vbuf.bend, vu40.bend, var_plist_zeros.bend, vua_bits.bend, FuluBytes48_decode_ssz_proof_generated.bend"
+ },
+ "r2-b04-storage-depth/10": {
+  "counterexample": "B.alloc(n) for n = 20 / 36 bytes (5 / 9 words) returns an array of 4 / 8 words (Array.get masks indices: reads wrap)",
+  "reachability": "B.alloc / B.capacity are the input-buffer constructors (tests, benchmarks, crash laws); not an X_ entry point",
+  "verdict": "gap-unreachable-through-X_-entry-points",
+  "evidence": "proof roots run, all check (or crash/timeout): words_rw.bend, reads.bend, merkle_fast.bend, buf.bend, cache.bend, arr_copy.bend, lim_bl.bend, nat_facts.bend, arr_enc.bend, arr_emit.bend, vbuf.bend, vu40.bend, var_plist_zeros.bend, vua_bits.bend, FuluBytes48_decode_ssz_proof_generated.bend"
+ },
+ "r2-b04-storage-depth/11": {
+  "counterexample": "B.alloc(n) for n = 20 / 36 bytes (5 / 9 words) returns an array of 4 / 8 words (Array.get masks indices: reads wrap)",
+  "reachability": "B.alloc / B.capacity are the input-buffer constructors (tests, benchmarks, crash laws); not an X_ entry point",
+  "verdict": "gap-unreachable-through-X_-entry-points",
+  "evidence": "proof roots run, all check (or crash/timeout): words_rw.bend, reads.bend, merkle_fast.bend, buf.bend, cache.bend, arr_copy.bend, lim_bl.bend, nat_facts.bend, arr_enc.bend, arr_emit.bend, vbuf.bend, vu40.bend, var_plist_zeros.bend, vua_bits.bend, FuluBytes48_decode_ssz_proof_generated.bend"
+ },
+ "r2-v02-box-absent/02": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): var_codec_AttesterSlashing_enc.bend, encx_AttesterSlashing.bend, encx_AttesterSlashing_iface.bend, IndexedAttestation_generated.bend, var_codec_IndexedAttestation_enc.bend, g__var_codec_IndexedAttestation_enc_generated.bend, FuluAttesterSlashing_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v04-group-validity/01": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_BeaconBlockBody_size.bend, encx_BeaconBlockBody_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v04-group-validity/02": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_BeaconBlockBody_size.bend, encx_BeaconBlockBody_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v04-group-validity/03": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_BeaconBlockBody_size.bend, encx_BeaconBlockBody_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v04-group-validity/04": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_BeaconBlockBody_size.bend, encx_BeaconBlockBody_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend"
+ },
+ "r2-v04-group-validity/05": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_BeaconBlockBody_size.bend, encx_BeaconBlockBody_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend"
+ },
+ "r2-v04-group-validity/07": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend"
+ },
+ "r2-v04-group-validity/08": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend"
+ },
+ "r2-v04-group-validity/09": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v04-group-validity/10": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_ExecutionPayload_size.bend, encx_ExecutionPayload_size_o.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_iface.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v05-attestation/01": {
+  "counterexample": "not judged: the checker overflowed its stack on this mutant at the pinned settings (and at 1 GB)",
+  "reachability": "",
+  "verdict": "unjudged",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_Attestation_iface.bend, encx_l8_Attestation.bend, encx_Attestation.bend, FuluAttestation_e2e_set_generated.bend, FuluAttestation_encode_ssz_proof_generated.bend"
+ },
+ "r2-v05-attestation/02": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_Attestation_iface.bend, encx_Attestation.bend, FuluAttestation_e2e_set_generated.bend, FuluAttestation_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v06-composite-list-validity/01": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1048576_bl1073741824.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_size.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v06-composite-list-validity/02": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1048576_bl1073741824.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_size.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-v06-composite-list-validity/04": {
+  "counterexample": "AttesterSlashing_valid / ExecutionPayload_valid / Attestation_valid return True for an invalid field",
+  "reachability": "public X_valid (documented precondition of X_hash_tree_root); X_serialize does NOT use X_valid for these types (fused poison path): valid_probe cases 2-7 unchanged under the mutant",
+  "verdict": "gap (X_valid entry only); equivalent for X_serialize",
+  "evidence": "proof roots run, all check (or crash/timeout): encx_l1048576_bl1073741824.bend, encx_ExecutionPayload.bend, encx_ExecutionPayload_size.bend, FuluExecutionPayload_encode_ssz_proof_generated.bend; valid_probe: serialize outcome identical"
+ },
+ "r2-k01-cap-cnt/04": {
+  "counterexample": "object whose storage is smaller than its chunk-rounded words (invalid, or valid-but-tight)",
+  "reachability": "X_hash_tree_root precondition X_valid; clamp branch is taken only by such objects",
+  "verdict": "gap-unreachable for API-built objects; see the tight-storage finding",
+  "evidence": "proof roots run, all check (or crash/timeout): words_cap.bend, words_root_light.bend, pv_obj.bend, root_words.bend, list_obj.bend, u32bits.bend, cell_rw.bend"
+ },
+ "r2-k01-cap-cnt/05": {
+  "counterexample": "object whose storage is smaller than its chunk-rounded words (invalid, or valid-but-tight)",
+  "reachability": "X_hash_tree_root precondition X_valid; clamp branch is taken only by such objects",
+  "verdict": "gap-unreachable for API-built objects; see the tight-storage finding",
+  "evidence": "proof roots run, all check (or crash/timeout): words_cap.bend, words_root_light.bend, pv_obj.bend, root_words.bend, list_obj.bend, u32bits.bend, cell_rw.bend"
+ },
+ "r2-k01-cap-cnt/06": {
+  "counterexample": "object whose storage is smaller than its chunk-rounded words (invalid, or valid-but-tight)",
+  "reachability": "X_hash_tree_root precondition X_valid; clamp branch is taken only by such objects",
+  "verdict": "gap-unreachable for API-built objects; see the tight-storage finding",
+  "evidence": "proof roots run, all check (or crash/timeout): words_cap.bend, words_root_light.bend, pv_obj.bend, root_words.bend, list_obj.bend, u32bits.bend, cell_rw.bend"
+ },
+ "r2-k01-cap-cnt/13": {
+  "counterexample": "elems_root_prog has no caller in types/*",
+  "reachability": "none",
+  "verdict": "equivalent-in-context (dead code); a law is missing for its clamp",
+  "evidence": "grep: no type uses O.elems_root_prog"
+ }
+}

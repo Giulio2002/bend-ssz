@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/04
+# type: bytelist_256
+# ops: encode
+# spec: the written value is cut to its  bytes
+# fault: the written value is not masked (a wide value spills into the neighbours)
+# why: mask forgotten
+# file: src/obj.bend
+# sym: words_write,put_in,merge_word
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1179,3 +1179,3 @@
+ def merge_word(+old: U32, +x: U32, +s: U32, +bytes: U32) -> U32:
+-  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
++  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. shl_bytes(x, s) : U32)
+ 

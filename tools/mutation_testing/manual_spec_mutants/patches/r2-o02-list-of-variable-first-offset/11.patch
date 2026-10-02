@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/11
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: the decoded list is valid only if every element is
+# fault: the accumulated validity of the earlier elements is ignored when the element is not validated (acc lost)
+# why: wrong accumulator returned
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_eb
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (buf, ok) = pair
+-  (buf, (ok, b))
++  (buf, (True{}, b))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h06-bit-roots/01
+# type: bitlist_513
+# ops: root
+# spec: a bit list's chunks are its bits ceil(k / 8) bytes, without the delimiter
+# fault: the chunked bytes are k (bit count) instead of ceil(k / 8)
+# why: bits confused with bytes
+# file: src/obj.bend
+# sym: bits_root,bits_rooted
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1013,3 +1013,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, k}, depth, seg))
+ 

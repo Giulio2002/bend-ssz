@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/05
+# type: FuluExecutionRequests
+# ops: root
+# spec: the zero-subtree root Z(41) = SHA-256(Z(41 - 1) || Z(41 - 1))
+# fault: the first word of the constant Z(41) is off by one
+# why: one digit of a hard-coded SHA-256 constant
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -229,3 +229,3 @@
+                                                                                     match k41:
+-                                                                                      case 0n: D{2817670377, 404177116, 571244871, 2187677678, 1791932913, 3969000132, 3796270346, 2976385079}
++                                                                                      case 0n: D{2817670378, 404177116, 571244871, 2187677678, 1791932913, 3969000132, 3796270346, 2976385079}
+                                                                                       case 1n+k42:

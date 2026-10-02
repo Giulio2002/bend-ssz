@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/04
+# type: bytelist_256
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: an object that overruns its storage is hashed over the items the storage holds, w / u: here one more (ceil)
+# why: ceil written as floor
+# file: src/obj.bend
+# sym: cap_cnt,cap_cnt_go,wr_size,words_root
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -902,3 +902,3 @@
+     case True{}: k
+-    case False{}: Nat.div(w, u)
++    case False{}: Nat.div(Nat.add(w, u), u)
+ 

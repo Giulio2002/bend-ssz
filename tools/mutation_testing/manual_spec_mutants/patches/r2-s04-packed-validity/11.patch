@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/11
+# type: bitlist_9
+# ops: encode
+# spec: a bit list's storage holds the word of bit nbits (the delimiter is OR-ed there)
+# fault: storage is required only through word nbits >> 5 - 1
+# why: word count off by one
+# file: src/obj.bend
+# sym: bits_ok,bk_cap,bk_last
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1528,3 +1528,3 @@
+   (ws, +c) = pair
+-  bk_last(Bool.and(ok, U32.is_le((U32.shrn(k, 5n) + 1 : U32), c)), k, Array.get(U32, ws, U32.shrn(k, 5n)))
++  bk_last(Bool.and(ok, U32.is_le(U32.shrn(k, 5n), c)), k, Array.get(U32, ws, U32.shrn(k, 5n)))
+ # A bit vector of k bits held as packed words: its bits from k up to the end of

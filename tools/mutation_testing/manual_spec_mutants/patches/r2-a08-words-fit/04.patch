@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a08-words-fit/04
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: the grown storage holds `want` bytes
+# fault: the grown storage is sized for n bytes (not want)
+# why: capacity from the old length
+# file: src/obj.bend
+# sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1240,3 +1240,3 @@
+     case True{}: Words{ws, n}
+-    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), want, ws)
++    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), n, ws)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a01-bytelist-append-guard/05
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: the appended value is written at index n
+# fault: the value is written at index n + 1 (a hole at n, the length grows by one)
+# why: index confusion between old and new length
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_append,bl256_app_n,bl256_grow
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -51,3 +51,3 @@
+   match ok:
+-    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), (n + 1 : U32), v)
+     case False{}: (o, False{})

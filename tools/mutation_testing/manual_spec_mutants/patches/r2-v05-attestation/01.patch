@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v05-attestation/01
+# type: FuluAttestation
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the validity of aggregation_bits (the only checked field of Attestation) is not consulted
+# why: field forgotten
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_valid,Attestation_va0
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -100,3 +100,3 @@
+   match o:
+-    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_va0(data, signature, committee_bits, True{}, Fulu_bitlist_131072_e.bits131072_valid(aggregation_bits))
++    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_va0(data, signature, committee_bits, True{}, (aggregation_bits, True{}))
+ 

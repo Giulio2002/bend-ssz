@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h02-chunk-count/02
+# type: bytelist_256
+# ops: root
+# spec: the tree has 2^depth leaves
+# fault: the tree width is 2^depth * 2
+# why: width constant
+# file: src/obj.bend
+# sym: words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -899,3 +899,3 @@
+     case Words{ws, +n}:
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, Nat.double(pow2n(U32.to_nat(depth))), 0n,
+         chunks_of(n), (h, (ws, D.zero()))))

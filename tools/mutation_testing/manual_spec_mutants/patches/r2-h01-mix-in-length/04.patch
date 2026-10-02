@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h01-mix-in-length/04
+# type: bitlist_9
+# ops: root
+# spec: a bit list mixes in its bit count (the delimiter is not counted)
+# fault: the count includes the delimiter bit (k + 1)
+# why: wire length confused with the logical length
+# file: src/obj.bend
+# sym: bits_rooted,bits_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -998,3 +998,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a06-cells/08
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: the element count is bytes / 2048
+# fault: the count divides by 2047
+# why: constant mistyped
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_len,l4096_b2048_len_of
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -17,3 +17,3 @@
+   (o, +n) = pair
+-  (o, U32.div(n, 2048))
++  (o, U32.div(n, 2047))
+ 

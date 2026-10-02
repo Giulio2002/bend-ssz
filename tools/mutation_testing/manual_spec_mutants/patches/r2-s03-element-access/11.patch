@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/11
+# type: Fulu_list_uint64_128
+# ops: encode
+# spec: the high word of a uint64 element is the word after the low one
+# fault: it is read two words later
+# why: index slip
+# file: src/obj.bend
+# sym: words_u64_at,u64_lo
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1209,3 +1209,3 @@
+   (w, +lo) = pair
+-  u64_pair(lo, words_word(w, (U32.shrn(p, 2n) + 1 : U32)))
++  u64_pair(lo, words_word(w, (U32.shrn(p, 2n) + 2 : U32)))
+ 

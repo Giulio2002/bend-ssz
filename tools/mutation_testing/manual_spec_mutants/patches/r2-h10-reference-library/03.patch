@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/03
+# type: FuluExecutionRequests
+# ops: root
+# spec: mix_in_selector(root, selector) = H(root || selector as a 32-byte chunk); selector < 256
+# fault: the selector bound is dropped
+# why: range check forgotten
+# file: src/mixing.bend
+# sym: mix_in_selector
+--- a/src/mixing.bend
++++ b/src/mixing.bend
+@@ -13,3 +13,3 @@
+ def mix_in_selector(+root: +List<U32>, +selector: U32) -> Maybe<&2, +List<U32>>:
+-  M.pair_checked(Bool.and(P.valid_bytes(32n, root), U32.is_lt(selector, 256)), root, P.pad(32n, [selector]))
++  M.pair_checked(P.valid_bytes(32n, root), root, P.pad(32n, [selector]))
+ 

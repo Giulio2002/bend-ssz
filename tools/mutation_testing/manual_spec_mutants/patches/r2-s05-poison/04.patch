@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s05-poison/04
+# type: VarTestStruct
+# ops: encode
+# spec: the size pass poisons a packed collection whose storage cannot hold its length
+# fault: the storage test is ceil(n / 4) < capacity
+# why: strictness
+# file: src/obj.bend
+# sym: wsz_pick,words_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1589,3 +1589,3 @@
+   (ws, +c) = pair
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
++  (Words{ws, n}, pick(U32.is_lt(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+ 

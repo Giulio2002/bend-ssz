@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/18
+# type: ProgressiveTestStruct
+# ops: root
+# spec: an inactive field of a progressive container contributes a zero chunk
+# fault: an inactive field contributes nothing (the slot is skipped)
+# why: inactive slot dropped
+# file: src/root.bend
+# sym: active_chunks
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -76,3 +76,3 @@
+       match h:
+-        case False{}: P.pad(32n, []) <> active_chunks(t, chunks)
++        case False{}: active_chunks(t, chunks)
+         case True{}:

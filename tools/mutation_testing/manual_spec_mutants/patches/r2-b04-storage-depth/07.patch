@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/07
+# type: bytelist_256
+# ops: decode
+# spec: the zero storage of a decoded Words has 2^ceil(log2 w) words
+# fault: the threshold of the 4-bit step is 5
+# why: threshold off by one
+# file: src/buffer.bend
+# sym: bits4,bits2,words_depth,zeros_for,capacity
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -188,3 +188,3 @@
+     case True{}: bits2(U32.is_le(4, U32.shrn(m, 4n)), U32.shrn(m, 4n), (acc + 4 : U32))
+-    case False{}: bits2(U32.is_le(4, m), m, acc)
++    case False{}: bits2(U32.is_le(5, m), m, acc)
+ 

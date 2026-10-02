@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a08-words-fit/03
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: growing the storage copies every existing word
+# fault: the grow copies ceil(n/4) - 1 words (the last word is lost)
+# why: loop bound off by one
+# file: src/obj.bend
+# sym: words_fit,fit_sized,fit_pick,grow_to,gcopy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1235,3 +1235,3 @@
+ def grow_to(+n: U32, +nw: U32, +want: U32, ws: Array<U32>) -> Words:
+-  gfin(n, gcopy(U32.to_nat(nw), 0, zeros_for(want), Array.get(U32, ws, 0)))
++  gfin(n, gcopy(U32.to_nat((nw - 1 : U32)), 0, zeros_for(want), Array.get(U32, ws, 0)))
+ 

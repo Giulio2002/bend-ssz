@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/01
+# type: VarTestStruct
+# ops: encode
+# spec: a packed collection of 2-byte elements has an even byte count
+# fault: the evenness test is n & 3 = 0
+# why: mask constant
+# file: src/obj.bend
+# sym: words_ok,unit_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1490,3 +1490,3 @@
+     case 1: True{}
+-    case 2: U32.is_eq((n .&. 1 : U32), 0)
++    case 2: U32.is_eq((n .&. 3 : U32), 0)
+     case 4: U32.is_eq((n .&. 3 : U32), 0)

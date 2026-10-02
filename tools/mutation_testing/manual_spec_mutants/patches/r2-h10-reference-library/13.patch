@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/13
+# type: ProgressiveTestStruct
+# ops: root
+# spec: residual chunks past the capacity make the root fail
+# fault: residual chunks are ignored
+# why: over-capacity not rejected
+# file: src/tree.bend
+# sym: finish
+--- a/src/tree.bend
++++ b/src/tree.bend
+@@ -37,3 +37,3 @@
+         case Nil{}: Some{root}
+-        case Con{h, t}: None{}
++        case Con{h, t}: Some{root}
+ 

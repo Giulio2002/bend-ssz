@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/05
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: the first offset is at most the input length
+# fault: the bound first <= len is dropped (the count may exceed what the input holds)
+# why: bound forgotten
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), True{}), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
+ 

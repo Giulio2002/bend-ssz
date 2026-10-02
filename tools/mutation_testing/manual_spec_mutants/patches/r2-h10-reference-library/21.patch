@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/21
+# type: FuluExecutionRequests
+# ops: root
+# spec: a Vector[T, n] value must have exactly n elements
+# fault: the count of a vector may be any value at most n
+# why: equality weakened
+# file: src/root.bend
+# sym: valid_value
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -220,3 +220,3 @@
+       match schema:
+-        case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_eq(C.count(items), n))))
++        case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_le(C.count(items), n))))
+         case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_le(C.count(items), n)))

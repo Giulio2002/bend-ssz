@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/13
+# type: bitlist_9
+# ops: encode
+# spec: bit i is bit i mod 32 of word i / 32
+# fault: bit i is bit i mod 16 of word i / 32
+# why: mask constant
+# file: src/obj.bend
+# sym: bits_get,bit_of,bits_word
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1269,3 +1269,3 @@
+   (b, +x) = pair
+-  (b, U32.is_eq((M.shr_by(x, (i .&. 31 : U32)) .&. 1 : U32), 1))
++  (b, U32.is_eq((M.shr_by(x, (i .&. 15 : U32)) .&. 1 : U32), 1))
+ 

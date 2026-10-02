@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/06
+# type: FuluExecutionRequests
+# ops: root
+# spec: a hasher's zero table is filled once
+# fault: the table is never filled
+# why: the readiness test is inverted
+# file: src/merkle_fast.bend
+# sym: ready_seen
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -226,3 +226,3 @@
+   (buf, d) = pair
+-  ready_pick(Bool.not(U32.is_eq(first_word(d), 0)), buf)
++  ready_pick(U32.is_eq(first_word(d), 0), buf)
+ 

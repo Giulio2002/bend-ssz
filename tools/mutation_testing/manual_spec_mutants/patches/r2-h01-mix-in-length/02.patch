@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h01-mix-in-length/02
+# type: VarTestStruct
+# ops: root
+# spec: the length mixed in is the element count
+# fault: the length mixed in is n + 1
+# why: one-based count
+# file: src/obj.bend
+# sym: len_chunk,mix_len
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -707,3 +707,3 @@
+ 
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk((n + 1 : U32)))
+ 

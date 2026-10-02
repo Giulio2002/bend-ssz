@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s05-poison/03
+# type: VarTestStruct
+# ops: encode
+# spec: a validity flag contributes bit 31 when false
+# fault: a false flag contributes bit 30
+# why: constant
+# file: src/obj.bend
+# sym: pz,padd
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1551,3 +1551,3 @@
+     case True{}: 0
+-    case False{}: 2147483648
++    case False{}: 1073741824
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/05
+# type: FuluBytes48
+# ops: decode
+# spec: nw mod 8 words remain after the whole blocks (the tail count is nw & 7)
+# fault: the tail count is nw & 3 (words 4..7 of the remainder are not copied)
+# why: mask constant
+# file: src/obj.bend
+# sym: acopy,ac_tail,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -131,3 +131,3 @@
+ def acopy(+nw: U32, +a: U32, +b: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+-  ac_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
++  ac_tail(U32.to_nat((nw .&. 3 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+     ac_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, (dst, src)))

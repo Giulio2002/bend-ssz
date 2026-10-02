@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/06
+# type: FuluBytes96
+# ops: decode
+# spec: nw / 8 whole blocks are copied
+# fault: the block count is nw / 4
+# why: shift constant
+# file: src/obj.bend
+# sym: acopy,ac_blk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -132,3 +132,3 @@
+   ac_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+-    ac_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, (dst, src)))
++    ac_blk(U32.to_nat(U32.shrn(nw, 2n)), a, b, (dst, src)))
+ 

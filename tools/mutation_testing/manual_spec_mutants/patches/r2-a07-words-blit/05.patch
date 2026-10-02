@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/05
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit returns the destination with its length unchanged and the source untouched
+# fault: the destination word is stored at base + j + 1 (one word late)
+# why: off-by-one in the destination index of the copy loop
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1344,3 +1344,3 @@
+       (ws, +x) = pair
+-      (words_setw(o, (base + j : U32), x), ws)
++      (words_setw(o, (base + j + 1 : U32), x), ws)
+     case 1n+q:

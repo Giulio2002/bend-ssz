@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r2-h08-zero-hashes/08
+# type: FuluExecutionRequests
+# ops: root
+# spec: the table covers depth 0..63; beyond it the value is never used
+# fault: the table ends one level early: Z(63) answers the zero chunk
+# why: table truncated
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -295,3 +295,4 @@
+                                                                                                                                 match k63:
+-                                                                                                                                  case 0n: D{3972334281, 2970902329, 1355513150, 943866991, 2175070431, 502609870, 3778670436, 3935849433}
++                                                                                                                                  case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++                                                                                                                                  case 1n+kk: D{3972334281, 2970902329, 1355513150, 943866991, 2175070431, 502609870, 3778670436, 3935849433}
+                                                                                                                                   case 1n+k64: zero()

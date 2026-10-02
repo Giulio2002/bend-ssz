@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a07-words-blit/07
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: blit returns the written destination and the source with its length n
+# fault: the returned source length is n + 1
+# why: result length confusion
+# file: src/obj.bend
+# sym: words_blit,bl_some,bl_go,bl_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1351,3 +1351,3 @@
+   (o, ws) = pair
+-  (o, Words{ws, n})
++  (o, Words{ws, (n + 1 : U32)})
+ 

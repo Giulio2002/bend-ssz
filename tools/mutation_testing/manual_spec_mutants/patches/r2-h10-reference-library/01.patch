@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/01
+# type: FuluExecutionRequests
+# ops: root
+# spec: zero_hash(d + 1) = H(zero_hash(d) || zero_hash(d))
+# fault: zero_hash(d + 1) hashes the child with the zero chunk
+# why: wrong operand
+# file: src/merkle.bend
+# sym: zero_hash
+--- a/src/merkle.bend
++++ b/src/merkle.bend
+@@ -20,3 +20,3 @@
+       +child = zero_hash(p)
+-      H.hash(List.append(&2, U32, child, child))
++      H.hash(List.append(&2, U32, child, P.pad(32n, [])))
+ 

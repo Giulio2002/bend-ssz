@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o03-dfill/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: the default Vector[VarTestStruct, 2] holds present elements, not empty boxes
+# fault: the filler is the empty box (the absent element the CH-10 fix removed)
+# why: CH-10 reverted
+# file: types/vec_VarTestStruct_2_def_generated.bend
+# sym: v2_VarTestStruct_default,v2_VarTestStruct_dfill
+--- a/types/vec_VarTestStruct_2_def_generated.bend
++++ b/types/vec_VarTestStruct_2_def_generated.bend
+@@ -23,3 +23,3 @@
+     case 0n: arr
+-    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_default()))
++    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, O.BNone{}))
+ 

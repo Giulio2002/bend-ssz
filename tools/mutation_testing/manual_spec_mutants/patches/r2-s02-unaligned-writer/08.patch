@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s02-unaligned-writer/08
+# type: ComplexTestStruct
+# ops: encode
+# spec: a range shorter than 4 - s bytes has no interior word
+# fault: the short-range test is n + s <= 4
+# why: strictness
+# file: src/obj.bend
+# sym: put_words,pw_mid
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -642,3 +642,3 @@
+ def pw_mid(+n: U32, +s: U32, +nw: U32) -> U32:
+-  pick(U32.is_lt((n + s : U32), 4), 0,
++  pick(U32.is_le((n + s : U32), 4), 0,
+     pick(U32.is_lt((nw - 1 : U32), U32.shrn((n + s - 4 : U32), 2n)), (nw - 1 : U32),

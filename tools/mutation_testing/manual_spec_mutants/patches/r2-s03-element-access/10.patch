@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/10
+# type: Fulu_list_uint64_128
+# ops: encode
+# spec: a uint64 element is (lo word, hi word) at consecutive words
+# fault: the pair is (hi, lo)
+# why: word order
+# file: src/obj.bend
+# sym: words_u64_at,u64_lo,u64_pair
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1205,3 +1205,3 @@
+   (w, +hi) = pair
+-  (w, U64{lo, hi})
++  (w, U64{hi, lo})
+ 

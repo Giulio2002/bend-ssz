@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/10
+# type: VarTestStruct
+# ops: encode
+# spec: the bytes of the last word past n are zero (r = n mod 4)
+# fault: the tail test uses n mod 2 (r = 3 is tested like r = 1)
+# why: mask constant
+# file: src/obj.bend
+# sym: wk_last,tail_zero
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1481,3 +1481,3 @@
+   (ws, +x) = pair
+-  (Words{ws, n}, Bool.and(ok, tail_zero((n .&. 3 : U32), x)))
++  (Words{ws, n}, Bool.and(ok, tail_zero((n .&. 1 : U32), x)))
+ def wk_cap(ok: Bool, +n: U32, pair: Array<U32> & U32) -> Words & Bool:

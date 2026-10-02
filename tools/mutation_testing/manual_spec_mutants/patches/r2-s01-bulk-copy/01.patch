@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/01
+# type: FuluBytes96
+# ops: decode
+# spec: a byte range is copied word for word (eight words per block, the rest one at a time)
+# fault: the last lane of a block stores to b + 6 (overwrites lane 6, lane 7 is left zero)
+# why: lane index slip in the unrolled copy
+# file: src/obj.bend
+# sym: acopy,ac_c7,ac_blk,copy_into,ci_pick
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -82,3 +82,3 @@
+   (src, +w) = pair
+-  (Array.set(U32, dst, (b + 7 : U32), w), src)
++  (Array.set(U32, dst, (b + 6 : U32), w), src)
+ 

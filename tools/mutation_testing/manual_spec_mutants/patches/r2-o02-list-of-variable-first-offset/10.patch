@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/10
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: each element window is valid and offsets are non-decreasing and inside the input
+# fault: the element is validated only when it is the first window (acc kept True afterwards)
+# why: accumulator reset in the loop
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_ev,l8_Attestation_ee,l8_Attestation_eb
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   (buf, +b) = pair
+-  l8_Attestation_eb(b, O.and_pair(acc, l8_Attestation_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l8_Attestation_eb(b, O.and_pair(True{}, l8_Attestation_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
+ 

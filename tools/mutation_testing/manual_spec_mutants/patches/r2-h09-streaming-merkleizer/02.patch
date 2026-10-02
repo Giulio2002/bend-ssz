@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h09-streaming-merkleizer/02
+# type: FuluExecutionRequests
+# ops: root
+# spec: the depth for limit leaves is ceil(log2 limit) (streaming merkleizer, unused by the object runtime)
+# fault: the depth rounds down: (limit + 1) is replaced by limit
+# why: ceil written as floor
+# file: src/merkle_fast.bend
+# sym: depth_go,depth_of
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -309,3 +309,3 @@
+         case 1: d
+-        case _: depth_go(p, U32.shrn((limit + 1 : U32), 1n), (d + 1 : U32))
++        case _: depth_go(p, U32.shrn(limit, 1n), (d + 1 : U32))
+ 

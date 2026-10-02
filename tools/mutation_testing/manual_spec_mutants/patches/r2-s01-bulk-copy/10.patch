@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/10
+# type: ComplexTestStruct
+# ops: decode
+# spec: the source word index is off >> 2
+# fault: the source word index is off >> 3
+# why: shift constant
+# file: src/obj.bend
+# sym: copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -356,3 +356,3 @@
+     case B.Buf{ws, +len}:
+-      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
++      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 3n), U32.shrn((n + 3 : U32), 2n),
+         dst, ws))

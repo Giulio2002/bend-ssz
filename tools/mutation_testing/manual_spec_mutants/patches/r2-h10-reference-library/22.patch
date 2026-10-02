@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h10-reference-library/22
+# type: FuluExecutionRequests
+# ops: root
+# spec: a List[T, n] value must have at most n elements
+# fault: the list limit is strict (count < n)
+# why: off-by-one in the limit
+# file: src/root.bend
+# sym: valid_value
+--- a/src/root.bend
++++ b/src/root.bend
+@@ -221,3 +221,3 @@
+         case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_eq(C.count(items), n))))
+-        case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_le(C.count(items), n)))
++        case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_lt(C.count(items), n)))
+         case T.ProgressiveList{s}: valid_value(items, T.Repeat{s}, ok)

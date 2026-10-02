@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/17
+# type: FuluBytes96
+# ops: decode
+# spec: a range starting 2 bytes into a word (lane 2 of a block): shifts 16 and 16
+# fault: lane 2 reads the next source word one too far (a + 5)
+# why: index slip
+# file: src/obj.bend
+# sym: scopy2,sc2_c2,copy_into
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -226,3 +226,3 @@
+   (src, +w) = pair
+-  sc2_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 4 : U32)))
++  sc2_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 5 : U32)))
+ 

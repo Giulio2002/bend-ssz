@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v01-composite-validity/03
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: a container is valid iff every field is valid
+# fault: the running conjunction is an or at the last field
+# why: Bool.and written as Bool.or
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_valid,AttesterSlashing_va0,AttesterSlashing_va1
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -100,3 +100,3 @@
+   (attestation_2, ok) = pair
+-  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, Bool.and(acc, ok))
++  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, Bool.or(acc, ok))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v01-composite-validity/05
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: a container is valid iff every field is valid (the index list is the only field that can be invalid)
+# fault: the validity of attesting_indices is not consulted
+# why: the only checking field forgotten
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_valid,IndexedAttestation_va0
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -98,3 +98,3 @@
+   match o:
+-    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_va0(data, signature, True{}, Fulu_list_uint64_131072_e.l131072_u64_valid(attesting_indices))
++    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_va0(data, signature, True{}, (attesting_indices, True{}))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s01-bulk-copy/12
+# type: ComplexTestStruct
+# ops: decode
+# spec: bytes past the logical length are zeroed in the last word
+# fault: the mask applies to the word before the last
+# why: index off by one
+# file: src/obj.bend
+# sym: copy_into,mask_last
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -332,3 +332,3 @@
+ def mask_last(+n: U32, dst: Array<U32>) -> Array<U32>:
+-  ml_go(U32.is_eq((n .&. 3 : U32), 0), (n .&. 3 : U32), (U32.shrn((n + 3 : U32), 2n) - 1 : U32), dst)
++  ml_go(U32.is_eq((n .&. 3 : U32), 0), (n .&. 3 : U32), (U32.shrn((n + 3 : U32), 2n) - 2 : U32), dst)
+ 

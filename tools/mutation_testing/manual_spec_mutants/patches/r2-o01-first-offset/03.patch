@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o01-first-offset/03
+# type: FuluAttesterSlashing
+# ops: decode
+# spec: the first offset of a container equals the fixed-part size
+# fault: the first offset check is dropped
+# why: only the second offset is validated
+# file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+# sym: AttesterSlashing_ok,AttesterSlashing_v0,AttesterSlashing_c0
+--- a/types/FuluAttesterSlashing_decode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_decode_ssz_generated.bend
+@@ -64,3 +64,3 @@
+   (buf, +o0) = pair
+-  AttesterSlashing_c0(U32.is_eq(o0, 8), buf, off, len, o0)
++  AttesterSlashing_c0(True{}, buf, off, len, o0)
+ 

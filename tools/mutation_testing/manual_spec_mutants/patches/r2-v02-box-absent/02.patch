@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v02-box-absent/02
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: an absent boxed field is not a valid value
+# fault: an empty box is valid
+# why: the absent case treated as the default
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_bx_valid,IndexedAttestation_bx_putk
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -103,3 +103,3 @@
+     case O.BSome{v, rest}: IndexedAttestation_bx_va_back(IndexedAttestation_valid(v))
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+ 

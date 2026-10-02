@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s03-element-access/03
+# type: bytelist_256
+# ops: encode
+# spec: a write replaces the old bytes (it masks the word first)
+# fault: the old word is not cleared (the new bytes are OR-ed into the old ones)
+# why: replace written as or
+# file: src/obj.bend
+# sym: words_write,put_in,merge_word
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1179,3 +1179,3 @@
+ def merge_word(+old: U32, +x: U32, +s: U32, +bytes: U32) -> U32:
+-  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
++  (old .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
+ 

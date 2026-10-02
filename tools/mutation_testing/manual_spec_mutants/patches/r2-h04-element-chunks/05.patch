@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h04-element-chunks/05
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: the element count is words / (4 ew) bytes
+# fault: the element count divides by 4 ew + 4
+# why: divisor mistyped
+# file: src/obj.bend
+# sym: elems_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1078,3 +1078,3 @@
+     case Words{ws, +n}:
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew : U32)))), hl,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew + 4 : U32)))), hl,
+         LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},

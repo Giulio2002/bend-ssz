@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s05-poison/02
+# type: VarTestStruct
+# ops: encode
+# spec: a final length with bit 31 set means an invalid value
+# fault: the poison test is strictly above 2^31 (exactly 2^31 is not detected)
+# why: strictness
+# file: src/obj.bend
+# sym: is_poisoned,ser_done
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1556,3 +1556,3 @@
+ 
+-def is_poisoned(+m: U32) -> Bool: U32.is_le(2147483648, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(2147483648, m)
+ 

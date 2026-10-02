@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h05-scalar-chunks/03
+# type: FuluCheckpoint
+# ops: root
+# spec: a uint32 root is its little-endian bytes padded to 32
+# fault: the value is not byte-swapped
+# why: endianness of the uint chunk
+# file: src/obj.bend
+# sym: u32_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1054,3 +1054,3 @@
+ 
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{v, 0, 0, 0, 0, 0, 0, 0}
+ 

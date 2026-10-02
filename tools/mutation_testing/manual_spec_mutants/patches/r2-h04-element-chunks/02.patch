@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-h04-element-chunks/02
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: word 8c of an element chunk is read only inside the element
+# fault: the first word of the chunk is read unconditionally
+# why: bound forgotten on the first word
+# file: src/obj.bend
+# sym: echunkn,ec0,rdc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -772,3 +772,3 @@
+ def echunkn(ws: Array<U32>, +b: Nat, +c: Nat, +ew: Nat) -> Array<U32> & D.Digest:
+-  ec0(b, e8(c), ew, rdc(Nat.is_lt(Nat.add(e8(c), 0n), ew), ws, Nat.add(b, Nat.add(e8(c), 0n))))
++  ec0(b, e8(c), ew, rdc(True{}, ws, Nat.add(b, Nat.add(e8(c), 0n))))
+ 

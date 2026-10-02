@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/09
+# type: bytelist_256
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: the root is bounded by the storage (CH-03)
+# why: the storage size passed to the clamp is the byte length n (not the array's capacity)
+# file: src/obj.bend
+# sym: wr_size,words_root
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -917,3 +917,3 @@
+   match w:
+-    case Words{ws, +n}: wr_size(hl, h, depth, n, Array.size(U32, ws))
++    case Words{ws, +n}: wr_size(hl, h, depth, n, (ws, n))
+ 

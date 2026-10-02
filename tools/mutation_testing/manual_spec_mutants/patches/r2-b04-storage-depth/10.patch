@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-b04-storage-depth/10
+# type: FuluBytes48
+# ops: decode
+# spec: the small-buffer depth table is ceil(log2 w): 9 words need depth 4
+# fault: 9 words get depth 3
+# why: table entry
+# file: src/buffer.bend
+# sym: capacity_small,capacity
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -151,3 +151,3 @@
+     case 8: 3n
+-    case 9: 4n
++    case 9: 3n
+     case 10: 4n

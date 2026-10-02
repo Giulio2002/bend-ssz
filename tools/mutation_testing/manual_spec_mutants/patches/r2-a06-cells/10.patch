@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a06-cells/10
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: element i occupies bytes [2048 i, 2048 i + 2048)
+# fault: the getter starts at byte 2048 (i + 1)
+# why: index shifted
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_at,l4096_b2048_get
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -25,3 +25,3 @@
+ 
+-def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, (i * 2048 : U32), 2048)
++def l4096_b2048_at(o: O.Words, +i: U32) -> O.Words & O.Words: O.words_slice(o, ((i + 1 : U32) * 2048 : U32), 2048)
+ 

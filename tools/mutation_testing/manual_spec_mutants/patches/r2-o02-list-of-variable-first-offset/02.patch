@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o02-list-of-variable-first-offset/02
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: the element count first/4 is at most the limit 8
+# fault: the count limit is 9
+# why: off-by-one in the limit
+# file: types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+# sym: l8_Attestation_head,l8_Attestation_first,l8_Attestation_ok,l8_Attestation_ok_nz
+--- a/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
++++ b/types/Fulu_list_Attestation_8_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 8))), buf, off, len, first)
++  l8_Attestation_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 9))), buf, off, len, first)
+ 

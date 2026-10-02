@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a01-bytelist-append-guard/02
+# type: bytelist_256
+# ops: decode,encode,root
+# spec: List[byte, 256] holds at most 256 elements
+# fault: the append guard is n < 255 (the 256th element is refused)
+# why: limit minus one
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_append,bl256_app_n,bl256_grow
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
++  bl256_grow(Bool.and(U32.is_lt(n, 255), U32.is_le(v, 255)), o, n, v)
+ 

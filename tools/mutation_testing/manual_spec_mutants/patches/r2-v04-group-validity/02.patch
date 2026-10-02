@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-v04-group-validity/02
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
+# fault: the final step ignores the last group (acc only)
+# why: last group forgotten
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_va1,ExecutionPayload_valid
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -201,3 +201,3 @@
+   (g1, ok) = pair
+-  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload{g0, g1, g2}, acc)
+ 

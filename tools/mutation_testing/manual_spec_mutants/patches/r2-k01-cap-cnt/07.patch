@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r2-k01-cap-cnt/07
+# type: bytelist_256
+# ops: root
+# spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
+# fault: the object's words are 8 per chunk (m = e8(chunks))
+# why: m is the chunk count (words and chunks confused)
+# file: src/obj.bend
+# sym: wr_size,cap_cnt,words_root
+# proofs: proofs/obj/words_cap.bend
+# base: 29af0ebcc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -913,3 +913,3 @@
+   (ws, +sz) = pair
+-  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), chunks_of(n), 8n, U32.to_nat(sz)))
+ 

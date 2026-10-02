@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-s04-packed-validity/12
+# type: bitlist_9
+# ops: encode
+# spec: bits from nbits up to the end of its word are zero (r = nbits mod 32)
+# fault: r is nbits mod 16
+# why: mask constant
+# file: src/obj.bend
+# sym: bits_ok,bk_cap,bk_last
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1525,3 +1525,3 @@
+   (ws, +x) = pair
+-  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
++  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 15 : U32), x)))
+ def bk_cap(ok: Bool, +k: U32, pair: Array<U32> & U32) -> Bits & Bool:

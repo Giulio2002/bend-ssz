@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a06-cells/11
+# type: FuluDataColumnSidecar
+# ops: decode,encode,root
+# spec: an append makes room for the new cell
+# fault: the room is made for n cells (the write lands outside the storage)
+# why: capacity from the old length
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_grow,words_fit,words_resize
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -59,3 +59,3 @@
+   match ok:
+-    case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
++    case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 0 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
+     case False{}: (o, False{})

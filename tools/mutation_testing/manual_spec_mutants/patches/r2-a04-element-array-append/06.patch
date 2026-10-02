@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a04-element-array-append/06
+# type: FuluExecutionRequests
+# ops: decode,encode,root
+# spec: set replaces an existing element only
+# fault: the setter bound is i <= n
+# why: off-by-one in the index test
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_set,l16_WithdrawalRequest_put_in
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -88,3 +88,3 @@
+   match o:
+-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_put_in(U32.is_le(i, n), arr, n, i, v)
+ 

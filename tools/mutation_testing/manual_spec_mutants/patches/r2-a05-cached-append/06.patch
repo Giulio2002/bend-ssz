@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-a05-cached-append/06
+# type: FuluExecutionRequests
+# ops: root
+# spec: a cached set marks the written leaf dirty
+# fault: the cached set bound is i <= n
+# why: off-by-one in the index test
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_cset,l16_WithdrawalRequest_cset_in
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -166,3 +166,3 @@
+   match c:
+-    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r2-o01-first-offset/05
+# type: FuluAttesterSlashing
+# ops: decode
+# spec: every offset lies within the input: o1 <= len
+# fault: the bound o1 <= len is dropped
+# why: only the order test is kept
+# file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+# sym: AttesterSlashing_ok,AttesterSlashing_v1,AttesterSlashing_c1
+--- a/types/FuluAttesterSlashing_decode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_decode_ssz_generated.bend
+@@ -55,3 +55,3 @@
+   (buf, +o1) = pair
+-  AttesterSlashing_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  AttesterSlashing_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+ 
