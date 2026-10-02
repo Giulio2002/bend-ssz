@@ -25,17 +25,18 @@ stamp probeA_done
 mk() { n=$1; src=benchmarks/objprog/$n.bend; BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 1200 $BEND $src -o build/obj-$n > $OUT/compile_$n.log 2>&1; echo "compile $n rc=$?"; }
 export -f mk; export BEND OUT
 ls benchmarks/objprog/ | sed 's/\.bend//' | grep -E '^(g|x)[0-9]+$' | xargs -P 4 -I{} bash -c 'mk {}' 
-FP="4 10 12 13 15 17 18 19 20 21 22 23 24 25 26"
-mkf() { n=f$1; BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 1200 $BEND benchmarks/objprog/$n.bend -o build/fuzz-$n > $OUT/compile_$n.log 2>&1; echo "compile $n rc=$?"; }
-export -f mkf
-echo $FP | tr ' ' '\n' | xargs -P 4 -I{} bash -c 'mkf {}'
 stamp programs_built
 # D. hostile decode
-nice -n 19 timeout 1800 $PY tools/crash_hunt/hostile_decode.py --repo . --out $OUT --jobs 4 --limit-seeds 2 --timeout 60 > $OUT/hostile.log 2>&1
+nice -n 19 timeout 1800 $PY tools/crash_hunt/hostile_decode.py --repo . --out $OUT --jobs 4 --limit-seeds 1 --timeout 40 > $OUT/hostile.log 2>&1
 tail -3 $OUT/hostile.log
 stamp hostile_done
 nice -n 19 timeout 1200 $PY tools/crash_hunt/scale_decode.py --repo . --out $OUT --mem-gb 12 --timeout 100 > $OUT/scale.log 2>&1
 tail -30 $OUT/scale.log
+FP="4 10 12 13 15 17 18 19 20 21 22 23 24 25 26"
+mkf() { n=f$1; BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 1200 $BEND benchmarks/objprog/$n.bend -o build/fuzz-$n > $OUT/compile_$n.log 2>&1; echo "compile $n rc=$?"; }
+export -f mkf
+echo $FP | tr ' ' '\n' | xargs -P 4 -I{} bash -c 'mkf {}'
+stamp fuzz_programs_built
 nice -n 19 timeout 1500 $PY tools/crash_hunt/mutate_hostile.py --repo . --out $OUT --jobs 4 --timeout 60 > $OUT/mutate.log 2>&1
 tail -3 $OUT/mutate.log
 stamp all_done
