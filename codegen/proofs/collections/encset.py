@@ -26,7 +26,7 @@ import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import run_each  # noqa: E402
+from codegen.core.shared_laws import run_each, split_top as shared_split_top  # noqa: E402
 from codegen.proofs.collections import viewseq as VQS  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
@@ -51,19 +51,7 @@ def and_i(+a: Bool, +b: Bool, +ha: {a == True{} : Bool}, +hb: {b == True{} : Boo
 
 
 def split_top(s):
-    out, depth, cur = [], 0, ''
-    for ch in s:
-        if ch in '([{<':
-            depth += 1
-        elif ch in ')]}>':
-            depth -= 1
-        if ch == ',' and depth == 0:
-            out.append(cur)
-            cur = ''
-        else:
-            cur += ch
-    out.append(cur)
-    return out
+    return shared_split_top(s, strip=False)
 
 
 def facts(c):

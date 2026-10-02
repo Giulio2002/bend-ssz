@@ -22,7 +22,7 @@ import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import run_each  # noqa: E402
+from codegen.core.shared_laws import run_each, split_top  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
 BASE = OBJ / 'encset_w_base.bend'
@@ -140,22 +140,6 @@ def ql_ge(+c: Nat, +N: U32, +e: {U32.to_nat(N) == VS.x8(c) : Nat}) -> {Nat.is_le
   qle(Nat.double(c), Q, F.nat__le_trans(A.quad(Nat.double(c)), Nat.add(r, A.quad(Q)), Nat.add(A.quad(Q), 3n),
     F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(r, A.quad(Q))) == True{} : Bool}, VS.x8(c), A.quad(Nat.double(c)), x8_quad2(c), h1), qle_add(r, Q, RD.and_le(N, 3))))
 '''
-
-
-def split_top(s):
-    out, depth, cur = [], 0, ''
-    for ch in s:
-        if ch in '([{<':
-            depth += 1
-        elif ch in ')]}>':
-            depth -= 1
-        if ch == ',' and depth == 0:
-            out.append(cur.strip())
-            cur = ''
-        else:
-            cur += ch
-    out.append(cur.strip())
-    return out
 
 
 def conjuncts(e):

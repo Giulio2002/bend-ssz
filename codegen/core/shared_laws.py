@@ -84,3 +84,22 @@ def finish(out, globs, stale_msg, ok_msg):
         return False
     writer.write(out, orphans)
     return True
+
+
+def split_top(s, strip=True, keep_empty=True, opening='([{<', closing=')]}>'):
+    """split `s` on the commas outside every bracket pair: `strip` strips each part, `keep_empty` keeps an empty last part (a trailing
+    comma, or an empty `s`); `opening` / `closing` are the bracket characters that count."""
+    out, depth, cur = [], 0, ''
+    for ch in s:
+        if ch in opening:
+            depth += 1
+        elif ch in closing:
+            depth -= 1
+        if ch == ',' and depth == 0:
+            out.append(cur.strip() if strip else cur)
+            cur = ''
+        else:
+            cur += ch
+    if keep_empty or cur.strip():
+        out.append(cur.strip() if strip else cur)
+    return out
