@@ -102,7 +102,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed encode statement of a mutated list of the bit lists, and the runtime-level collection set laws of the uint16 lists (read-back, view and other-element laws over the runtime's `l1024_u16_set`; their tree-level composed encode is in `proofs/obj/encset_h_<c>.bend`, `codegen/proofs/collections/encset_h.py`, offsets 0 and 2, over `halfword.bend`; the element value is `v16of(v & 255, (v >> 8) & 255)`, equal to `v` below 65536 is not stated); see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/encset_b.py`, with `tz_merge.bend`'s zero-tail lemma); and
+composed encode statement of a mutated list of the bit lists other than `bits131072` (they have no set law; `bits131072` is in `proofs/obj/encset_t_bits131072.bend`), and the root view of the runtime set of the uint16 lists (the runtime-level set object law, the composed encode with the premise `2 j = 4 q + s` derived, the read-back and the other-element laws over the runtime's `l1024_u16_set` and `l1024_u16_get` are in `proofs/obj/encset_r_<c>.bend`, `codegen/proofs/collections/encset_r.py`, over `halfword16.bend` (the sixteen-bit halfword read of a merged word) and `encset_r_base.bend`; the guard `U32.div(N, 2)` and the byte position `i * 2` are derived, the parity of `i` is the premise `(i * 2) & 3 = 0 or 2`; their tree-level composed encode is in `proofs/obj/encset_h_<c>.bend`, `codegen/proofs/collections/encset_h.py`, offsets 0 and 2, over `halfword.bend`; the element value is `v16of(v & 255, (v >> 8) & 255)`, it is `v` for `v <= 65535`: `proofs/obj/v16_rt.bend`, `codegen/proofs/collections/v16.py`); see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/encset_b.py`, with `tz_merge.bend`'s zero-tail lemma); and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
@@ -143,9 +143,9 @@ statement first needs the set and view laws. Everything else (the written mirror
 Status of that note: (a) is `tz_merge.bend` (`tz_merge`: for `b` in 1..2 and `s + b <= r <= 3`, `tail_zero(r, merge_word(old, x, s, b))` from `tail_zero(r, old)`, by `shrn` over `.&.` / `.|.`
 and the closed masks, `codegen/proofs/collections/subword_tz.py`, checks in 10 s); (b) is done for the byte lists `bl32`, `bl256` and the list of uint8 (`encset_b.bend`, with the `PB.it1` definitions of `pb_min.bend` and
 `packed_bytes_light.bend` bridged) and, at tree level with the offset 0 or 2 as the two laws, for the three lists of uint16 (`encset_h.bend`, over `halfword.bend`: the bytes of a word after a halfword merge, by the
-bit patterns of `byte_bits.bend`'s kind, 20 lemmas in 6 s; `it2_set2` replaces item `j` when the two bytes of element `j` are replaced). Every file checks in under 21 s. What is left is the bit list
-`bits131072` (the only bit list with both a set law and an encode bridge). Its `OKT` has three tails on words of the bit storage: `tail_zero(nbytes(K) & 3, slot(T, nbytes(K) >> 2))`, `DL.HZ(RK(K), slot(T, K >> 5))` and
-`bits_above_zero(K & 31, wd(T, dw, K >> 5))`. The plan: state all three as `zlist(bdrB(r, wbits w))` (`HZ` already is; `bits_above_zero(r, w)` and `tail_zero(r, w)` for the literal `r` are equal to it, one closed
+bit patterns of `byte_bits.bend`'s kind, 20 lemmas in 6 s; `it2_set2` replaces item `j` when the two bytes of element `j` are replaced). Every file checks in under 21 s. The bit list
+`bits131072` (the only bit list with both a set law and an encode bridge) is done too, in `proofs/obj/encset_t_bits131072.bend` (`codegen/proofs/collections/encset_t.py`, 12 s) over `proofs/obj/bitz.bend` (`bitz.py`, 8 s). Its `OKT` has three tails on words of the bit storage: `tail_zero(nbytes(K) & 3, slot(T, nbytes(K) >> 2))`, `DL.HZ(RK(K), slot(T, K >> 5))` and
+`bits_above_zero(K & 31, wd(T, dw, K >> 5))`. The proof states all three as `zlist(bdrB(r, wbits w))` (`HZ` already is; `bits_above_zero(r, w)` and `tail_zero(r, w)` for the literal `r` are equal to it, one closed
 fact per `r`, by `wbits` of the mask and `zan`), preserve it under the merge by `bits_view.bend`'s `wset_i` (`wbits(bit_merge(v, x, shl_by(1, i & 31))) == lset(wbits x, i & 31, v)`) and one symbolic induction
 (`zlist(bdrB(r, lset(L, k, v))) == zlist(bdrB(r, L))` for `k < r`), and take `k < r` from `n < K` and `n >> 5 == K >> 5` (`USP.split5`, `lt_cancel` of `encset_b_base.bend`) and, for the byte tail, from `n < K <= 8 nbytes(K)`
 (`vbitenc.bend`'s `E3`). The value is `bits_view.bend`'s `view_set` over `CO.BITS(T, K) = btk(K, bitsof(slots T))`. The runtime-level collection set laws of the uint16 lists (read-back and other-element laws over `l1024_u16_set`,
@@ -196,6 +196,10 @@ after and line text); fresh = a new seed over every name and operation (up to 4 
 | 2 (stale facades, invalid) | cdae9e94 | replay 606 + seed 20261003 | 3438 | 2929 | 509 | not used |
 | 3 | df8dbcf9 | replay 722 + seed 20261004 | 3494 | 3154 | 340 | 46 |
 | 4 | 80cef74d | replay 565 + seed 20261005 | 3342 | 3270 | 72 | **9** (+41 open) |
+| 5 (discarded: main moved) | 00cf555b | seed 20261006 | - | - | - | not used |
+| 6 | 9e96b9d5 | replay 727 + seed 20261007 | 3504 | 3452 | 52 | 11 + 18 (all `_pwd` alignment guards, below) |
+| 7 | 3ff8d509 | seed 20261008 | 2777 | 2736 | 41 | 9 (8 `is_le` guards, 1 accumulator flag) |
+| 8 | 376669ac | replay 17 + seed 20261010 | 2794 | 2754 | 40 | **0** |
 
 A stack overflow is a tooling accident, not a detection. The proving-law files (`proofs/obj`) also pass with every round-1
 survivor applied: the facades only named the generated definitions, and no locked statement pinned them. Four rounds of
@@ -203,25 +207,45 @@ proof laws (validity, offsets and reported sizes, constants and root constants, 
 closed the rest. The `out_at(d) -> out_at(d+1)` mutants were once excluded as harmless; the capacity laws kill them, so
 they are drawn again.
 
-**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (open, below), 21 proof-equivalent and 10 gap records (one site was found by
-both the replay and the fresh draw: 9 distinct gaps, one of them the proglist_bool case). Proof-level reading:
 
-| cause | mutants | reading |
-| --- | --- | --- |
-| reported-size | 4: `HistoricalBatch_size` 524288 -> 524287, `SyncCommittee_size` 24624 -> 24625 and 24623, `LightClientBootstrap` 24820 -> 24821 | gap: no law ties the reported size of these types to the encoded length |
-| offset | 3: `CompatibleUnionA_decode` and `CompatibleUnionABCA_decode`, the union arm's `read(buf, off + 1, len - 1)` | gap: the arm's offset and length after the selector byte are not pinned |
-| arithmetic | 1: `MatrixEntry_encode`, `b48_put(out, pos + 2048, ...)` `+` -> `-` | gap: one field offset of an encoder |
-| validity | 1: `proglist_bool_decode`, `pl_bool_ok_len`, `case False{}: (buf, False{})` -> `True{}` | equivalent by an arithmetic lemma that no law states: the test `is_eq(len, len/1*1)` is always True for unit 1, so the branch is dead if `U32.div(x, 1) = x`; the checker does not fold it, so the lemma must be proved or the case stays open |
+**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (then open), 21 proof-equivalent and 10 gap records (one site
+was found by both the replay and the fresh draw: 9 distinct gaps): reported sizes of three types, the offsets of the union
+arms, one encoder field offset, and a proglist_bool case. Fixer C and fixer D closed them with proof laws (small2, cmp2, cmp3).
+
+**Round 8, the first with no gap.** Replay of the 8 `is_lt` survivors of round 6 and the 9 survivors of round 7: 9 killed (the
+`is_lt` guards now fail the checker: their facades import the `zpwdcmp_*` laws; on the tree where they survived, the facades
+imported no comparison law, which is why a replay on the tree of record is the rule), 8 survive, all `is_le`. Fresh round: 2777
+mutants, 2745 killed, 32 survived: 29 proof-equivalent by the rules below and 3 more `is_le` guards. The `is_le` guards
+(`is_eq(pos .&. 3, 0)` -> `is_le(pos .&. 3, 0)`) are **proof-equivalent**: for an unsigned U32, `x <= 0` holds exactly when
+`x == 0`, and the law `le_eq` of `proofs/obj/zpwdcmp_lib.bend` states it; the facade imports that library.
+
+**Library targets (first pilot, seed 20261009, 10 files per group, 4 mutants per file, 120 s per check, none too slow).** The
+loop also mutates the code the proofs rely on, not only the generated codec files (`--lib collections|e2e|sha256|spec`): each
+mutant runs alone in a private tree; the checkers are the file itself and the two smallest proof files that import it; the
+mutant is killed if any fails; a check over 120 s is reported as `too slow`, never as a kill. Pilot: collections 40 mutants, 40
+killed; e2e 34, 33 killed; sha256 (vendored bend-collections 1.0.0.0) 36, 32 killed; spec 39, 36 killed. Survivors: e2e
+`e2e_aapw.bend:64:129` (`eoF(d, t, 0 -> 1, ...)`: the argument is not in the result type; probably equivalent, to be confirmed);
+sha256 `stream_correct` `&2 -> &1` twice (an erased label: equivalent) and `hex_digit`/`hex_word_go` in `packed/core_model.bend`
+(the hex rendering of digests, not used by our laws, in a vendored package we cannot change: a gap of the package); **spec**:
+`spec/byte_list.bend:11:100` (`Length.fits(4n -> 3n, ...)`), `spec/bytes.bend:6:54` (`size_fits`, `256n -> 255n`) and
+`spec/bytes.bend:13:37` (`vector_domain`, `1n -> 2n` in the pattern `1n+p`): constants of the specification transcription that no
+law catches. The spec is frozen: only copies in private trees were mutated.
+
+**Known out-of-scope item: the hex rendering of the vendored SHA-256.** `hex_digit` (`U32.is_lt(x, 10)`) and `hex_word_go`
+(the shift `4n`) in `proofs/crypto/sha/packed/core_model.bend` of bend-collections 1.0.0.0 render a digest as a hex string. No
+law of this repository reaches them (our laws use the byte API and the FIPS 180-4 model, never the hex strings), and the package
+is pinned and vendored (`toolchain.lock.json`), so it is not changed here. Mutants in that rendering survive by design and are
+listed as out of scope, not as gaps and not as equivalent; they would be reported to the package owner.
 
 **Excluded** (`tests_generated/mutation_exclusions.json`; rules and reasons in `tests_generated/mutation_equivalence.py`): only
 what has a proof-level reason, never "the tests pass": an argument the callee never reads (hl and seg of the hash_tree_root
 leaf wrappers, the len argument of the fixed-size field readers, the proglist decode offsets), a flag read only by
 `O.is_poisoned` (`(o, 0)` -> `(o, 1)`), `words_ok` / `bits_ok` changes that leave the accepted set unchanged, and the
-vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte
-object). **Open, not equivalent:** the aligned-or-slow path test `pos .&. 3 == 0`. `is_ge` was killed by the comparison laws;
-`is_lt` and `is_le` (42 mutants per round, 84 in the earlier draws) agree with the original only at sampled positions: for a
-symbolic index the checker does not fold the terms, so the equivalence is unproved. They are not drawn and are listed here
-so that the exclusion is visible.
+vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte object). Nothing else is excluded.
+The aligned-or-slow path test `pos .&. 3 == 0` was listed here as open (agreement only at sampled positions: the checker does
+not fold symbolic index terms); it is now **closed by proof** (the cmp_all, cmp_unal and zcmpeq_guard laws: every aligned
+position, symbolic, and the unaligned path) and its three variants (`is_lt`, `is_le`, `is_ge` of the `is_eq`) are drawn
+again as a regression guard, as is `out_at(d) -> out_at(d+1)` (killed by the capacity laws).
 
 **Runtime of a round:** the fresh draw of about 2800 mutants takes 2750 s at 12 jobs on the ssz server; a replay of 565 mutants about 1000 s.
 Result: `benchmarks/evidence/mutation_testing.json`.
@@ -243,13 +267,13 @@ each with the same sha256.
 ## Other test evidence (finite regressions, not laws)
 
 All against the independent oracle `codegen/core/oracle.py` (written from the specification, sharing
-no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server at
-<!-- fig:evidence_commit -->3278d74b<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-02<!-- /fig --> on the ssz server at
+<!-- fig:evidence_commit -->da19f102<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
 the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
 |---|---|---|
-| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->240<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->131<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->1,920<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->15,360<!-- /fig --> random and <!-- fig:fuzz_boundary -->34,228<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->16<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->3,840<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->3<!-- /fig --> minutes |
+| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->240<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->131<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->1,920<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->15,360<!-- /fig --> random and <!-- fig:fuzz_boundary -->34,228<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->16<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->3,840<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->2<!-- /fig --> minutes |
 | `object_mutations.json` | `benchmarks/checks/object_mutations.py` | malformed variants of every ssz_static case (5,455 inputs); the verdict of each comes from the oracle; 0 disagreements |
 | `object_mutation_tests.json` | `tests_generated/mutations.py` | 8 field/element updates through the object API against the oracle's re-encoding, rejections leave the value unchanged |
 | `invalid_objects.json` | `tests_generated/invalid_objects.py` | 14 cases: representable but invalid objects (built with raw constructors) are refused by the checked encoder, each with a valid control |

@@ -34,10 +34,10 @@ shared modules (`src/`, `spec/`, `END_TO_END.bend`, the big encoder interfaces) 
 (about 58,000 CPU seconds). `check_fast.sh` instead groups the root files (those no other file
 imports; their closures cover every file, which `tools/umbrellas.py` asserts) by shared imports into
 umbrellas: files that only import them, so one run of an umbrella checks each module of its closure
-once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->6c7f3520<!-- /fig -->):
-<!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->8,976<!-- /fig --> files,
-<!-- fig:check_cpu -->4,987<!-- /fig --> CPU seconds, <!-- fig:check_wall -->14.5<!-- /fig --> minutes wall at 20 jobs on
-the ssz server, the slowest umbrella <!-- fig:check_slowest -->820<!-- /fig --> s. A
+once. The recorded run (`benchmarks/evidence/check_fast.json`, commit <!-- fig:check_commit -->7e0bace0<!-- /fig -->):
+<!-- fig:check_umbrellas -->48<!-- /fig --> umbrellas over <!-- fig:check_files -->8,989<!-- /fig --> files,
+<!-- fig:check_cpu -->5,177<!-- /fig --> CPU seconds, <!-- fig:check_wall -->14.3<!-- /fig --> minutes wall at 20 jobs on
+the ssz server, the slowest umbrella <!-- fig:check_slowest -->810<!-- /fig --> s. A
 failure in any imported definition, or an open law, fails the umbrella exactly as it fails the file.
 
 Failures are localized automatically: each failed umbrella is bisected into import-only halves
@@ -139,7 +139,7 @@ boundaries; `tests/layout.test.ts` checks `src/layout.bend` against `spec/layout
 `benchmarks/toolchain.json` (`BEND_RUNTIME` names it where it is not at the lock's path; on the
 ssz server `/srv/ssz-optimization/toolchain-2.0.34/bin/bend`) and fails on any failure,
 compile error or empty run; with no arguments it runs every `tests/**/*.test.ts`. Last run
-<!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
+<!-- fig:evidence_date -->2026-10-02<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
 list-model layer (`tests/new/`, with their helpers `tools/primitive_backend.ts` and
 `tools/generic_transport.ts`) were removed on 2026-09-30: each imported `types/fulu*.bend`,
 which the runtime compiler cannot compile as an entry (above), so none of them had run since the

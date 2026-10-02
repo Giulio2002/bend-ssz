@@ -145,3 +145,70 @@ byte; the 8 MiB list is never formed). Checks in 18 s.
 * **Assembly** (stage 4): `accepts` and the two composed theorems for BeaconState, `o0 := DC.OBJ(...)`. Memory is the open risk: the probe file alone peaks
   at 9.4 GB (the module `var_winx_BeaconState` is 7 GB of it); the file that imports it together with `FuluBeaconState_e2e_comp_generated.bend` and its
   `decrep` must stay under the 12 GB cap of `tools/check.sh`.
+
+## 6. Stages 2 to 4 (done): the premises of the composed theorems at the offsets-only input
+
+`codegen/proofs/witnesses/sym_bs.py` writes five modules for FuluBeaconState (the stage 1 probe of section 5 is dropped: the check module reads the same offsets).
+Each checks on its own. Measured on the server one file at a time at load average 14 to 16 (other full checks running; the recorded quiet costs run about 1.3 times
+lower), peak memory from `tools/check.sh`:
+
+| module | what it proves | time, peak memory |
+|---|---|---|
+| `e2e_zero_run_generated.bend`, `e2e_symdec_lib_generated.bend` | zero runs; the window modules' reads over the tree of a word list | 18 s, 2.6 GB each |
+| `e2e_symdec_sk_lib_generated.bend` | zero words, `limbs`/`wlp` round trip, sparse writes `ups(kv, l)` with `ups_nth`, `neq`, `lt_nat`, `lt_pw`, `lt_pwv`, `lt_pw_s`, `succ_nat` | 19 s, 2.5 GB |
+| `FuluBeaconState_e2e_symdec_sk_generated.bend` | the skeleton input `limbs(ups(kv, ZW(M)))`: its length `hn` (as `A.quad(M) == to_nat(n0)`, no unary number), byte domain `hd`, `wlp(limbs) = sl`, and every word the check reads (13 aligned and unaligned reads, the header's offset, the justification bits) | 35 s, 4.7 GB |
+| `FuluBeaconState_e2e_symdec_chk_generated.bend` | `chk_from_bs`: the window check of FuluBeaconState (the closure of `CHKw`, copied over 12 offset words and 2 child results) holds of the tree of ANY word list holding those words | 34 s, 5.6 GB |
+| `FuluBeaconState_e2e_symdec_hdr_generated.bend` | the two children that read the tree: the justification bits (`FX_bv4.CHK`) and the 584-byte payload header window (`CH7.CHKw`, its offset word) | 36 s, 6.6 GB |
+| `FuluBeaconState_e2e_symdec_asm_generated.bend` | `hchk`, `hS`, `h31`, and `accepts`: the decoder returns `Some{DC.OBJ(...)}` on the skeleton; `hn` and `hd` from the skeleton module | 78 s, 6.9 GB |
+| `FuluExecutionRequests_e2e_symdec_generated.bend` (stage 1) | the whole chain on a small name, with the composed theorem applied | 42 s, 6.9 GB |
+
+**The input.** Every list is empty; the payload header has its 584-byte fixed part (its extra_data offset 584) and 3 bytes of extra data, so the length is
+2737812 = 4 * 684453; the 15 words that hold the twelve offsets (the first is the fixed-part size 2737225, the last four the end of the header, 2737812),
+the header's own offset and the justification bits' byte are written over 684453 zero words (`ups(kv, ZW(M))`). The byte list is `F.limbs` of that list.
+No gap length is ever added: `ups_nth` (the word k of a sparse list is its last write, else the base word) is proved once by induction, and each read is
+a lookup on U32 literals (binary).
+
+**What the composed theorem still needs, and what it costs.** `FuluBeaconState_e2e_decode_encode(bs0, n0, o0, hn, hd, hS, h31, dec)` takes exactly the
+facts of the assembly module (`sk_len`, `sk_dom`, `hS`, `h31`, `accepts` with `o0 := DC.OBJ(...)`). Applying it needs `e2e/FuluBeaconState_e2e_comp_generated.bend`,
+which costs 154.6 s on its own (`tools/check_costs.tsv`: comp 154.6, decrep 115, dec 67.5), so a file that applies it cannot be under 120 s whatever it proves;
+the assembly module therefore stops at the premises and restates the three bridge lemmas of the decode module (`ld`, `pfe`, `d_acc`) over the loader and capacity
+modules instead of importing it (that import alone added 80 s). The application is one definition: `COMP.FuluBeaconState_e2e_decode_encode(bs0, 2737812, o0, SK.sk_len(),
+SK.sk_dom(), hS(), h31(), accepts())`, to be added when comp is split.
+
+**The budget.** The assembly's cost is the union of its imports (an import is re-evaluated by every file that has it): the import set alone is 53 s; the bridge
+lemmas `ld2`/`acc2` add about 20 s, `hchk` 18 s. A 50 s cost in an earlier version was one conversion: `h31` is stated `Nat.is_lt(to_nat(n0), VB.pw(31n))`, and
+a proof of the same statement with `FD.spec_common__pow2(31n)` differs in its head (rigid comparison fails), so the checker evaluated 2^31 successors; `K.lt_pwv` states it with
+`VB.pw(d)` generic in `d` (-50 s). The other cuts: the bound facts (`Nat.is_lt(1n+Q, pow2(20n))`, 4 to 5 s each by `{==}`) are binary (`lt_pw`, `lt_pw_s`); the decode module
+is not imported (-80 s). All modules are under 120 s with margin (largest 78 s), and under 12 GB (largest 6.9 GB).
+
+**Hazards found in these stages (the generator keeps all of them out).**
+4. A closed application such as `EW.O4(t, 0n)` is unfolded by the checker (heads differ, so the rigid comparison fails and both sides are evaluated: 150 s at 2.7M): every
+   lemma about a window module's reads is stated for a variable `x` and applied at `x := 0n` (the instance's type is the substitution).
+5. A Bool function of two unary numbers of 680,000 successors costs 4 to 5 s each; the bounds go through `U32.is_lt` and `lt_nat` (`VB.lt_u32n`).
+6. A sparse write list needs distinctness of indices: `Nat.is_eq` on two such numbers costs 2.3 s; `neq` derives it from the U32 inequality (`u32__injective`).
+7. Termination of a recursion over my own type wants the shrinking argument first (`ups(kv, l)`, not `ups(l, kv)`); a parameter used twice is `+`.
+
+## 7. The composed theorems' own cost (investigation, no code kept)
+
+The application `COMP.FuluBeaconState_e2e_decode_encode(...)` needs `e2e/FuluBeaconState_e2e_comp_generated.bend`: 154.6 s recorded (202 s measured under load 20),
+over the 120 s rule. What it is made of, measured one import at a time on a server at load 24 down to 9 (`import`-only files, in seconds):
+
+| imported alone | time |
+|---|---|
+| `e2e_cap` + `e2e_comp` | 16 |
+| `FuluBeaconState_e2e_dec_generated` | 59 |
+| `FuluBeaconState_e2e_root_generated` | 47 |
+| dec + root together | 94 |
+| `FuluBeaconState_e2e_decrep_generated` (its 27 premise lemmas; its encode-bridge import only serves `p_hZ`) | 111 (recorded 115) |
+| the same file cut after `p_rep` (`fld17`, `rep_of`, `p_rep`: the only lemma decode;root uses) | 128 |
+
+The theorems themselves (`ge`, `gr`) are applications: nothing in comp is the cost. The cost is `p_rep`, the representation invariant of the decoded object (an 18 KB proof term,
+about 100 s with its imports), which both theorems need, on top of the decode module (59 s) and, for decode;encode, the encode bridge `FuluBeaconState_e2e_generated.bend` (103 s recorded).
+Splitting by theorem therefore cannot reach 120 s: decode;root would be `p_rep` (about 100 to 128) + dec + root imports (about 94, shared in part): roughly 150 to 200 s, and decode;encode
+the encode bridge (103) + all of decrep (111) + dec: over 200 s. What was tried and measured: `p_hZ` (the only lemma whose statement names the encode bridge) moved to its own module, and
+`FuluBeaconState_e2e_cde_generated.bend` / `_cdr_generated.bend` (the two theorems alone, byte-identical statements, minimal imports): `tools/verify_frozen.py` passes with an unchanged `frozen.lock.json`
+(the statement files are found by name, `*_e2e_comp_generated.bend`; the new files are not statement files and their statements are the comp file's text), the files check
+(`cdr` 217 s at load 17 to 21, decrep core 139 s at load 36), but none is near 120 s, so the change was not kept (it would only add files to every full check).
+The recoverable work, if the rule must hold for these two files, is in `p_rep` itself: its proof (not its statement) is the thing to make cheaper (the field-by-field `rep_of` over 19 field invariants with
+`SH.Chain_tail` chains of depth up to 37, each re-elaborated per use), or the premise could be restated per field and assembled; both change a proof, not a statement.
+Until then the witness stops at the premises (section 6), which are all within budget, and the one-line application is in section 6.

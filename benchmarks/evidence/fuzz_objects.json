@@ -414,7 +414,7 @@
   "DataColumnSidecar": 6,
   "CustodyIndex": 0
  },
- "elapsed_s": 150.8,
+ "elapsed_s": 148.1,
  "command": "/srv/ssz-optimization/agents/rename-venv/bin/python tests_generated/fuzz_objects.py --seed 20260921 --valid 8 --invalid 8 --history 10 --histories 6",
  "toolchain": {
   "note": "The compiled-runtime toolchain for tests and benchmarks (tools/bend_loader.ts, tools/spectests.py, tools/run_runtime_tests.py, tests_generated/fuzz_objects.py, benchmarks/checks/*): stock upstream Bend 2.0.34 (release bend-2.0.34-linux-x64.tar.gz from github.com/bendlang/bend). The runtime sources (src/digest.bend, src/sha256.bend) use the 2.0.34 Base API after the port, so the 2.0.28 build no longer compiles them. Set BEND_RUNTIME to the binary (the paths below are the maintainer's laptop; every evidence file records the sha256 of the binary and Base it actually used). base.bend is the 2.0.34 release's, byte-identical to the checker's (toolchain.lock.json). No proof check uses this file; the checker is pinned in toolchain.lock.json.",
@@ -438,10 +438,10 @@
  "findings": [],
  "findings_total": 0,
  "provenance": {
-  "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
+  "git_commit": "da19f102292c966ede4ecd80d19abde7feab85a4",
   "git_dirty": false,
-  "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
-  "utc": "2026-10-01T23:37:57Z",
+  "git_tree": "08766e790065be2383abe5c5b798456483700615",
+  "utc": "2026-10-02T04:44:43Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
