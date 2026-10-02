@@ -11,6 +11,7 @@ l1048576_bl1073741824	7 witnessed
   pending l1048576_bl1073741824_api_root_set: the representation premise RT.rep_l1048576_bl1073741824(o, s) is not read
 l1099511627776_Validator	10 witnessed
   pending l1099511627776_Validator_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
+  pending l1099511627776_Validator_api_root_set: the representation premise STL.rep_l1099511627776_Validator(o, s) is not read
 l1099511627776_u64	14 witnessed
   pending l1099511627776_u64_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
   pending l1099511627776_u64_api_root_set: the representation premise UL_L.rep_ul(o, s) is not read
@@ -20,8 +21,11 @@ l128_u64	15 witnessed
 l131072_u64	15 witnessed
   pending l131072_u64_api_root_set: the representation premise UL_L.rep_ul(o, s) is not read
 l134217728_PendingDeposit	11 witnessed
+  pending l134217728_PendingDeposit_api_root_set: the representation premise STL.rep_l134217728_PendingDeposit(o, s) is not read
 l134217728_PendingPartialWithdrawal	11 witnessed
+  pending l134217728_PendingPartialWithdrawal_api_root_set: the representation premise STL.rep_l134217728_PendingPartialWithdrawal(o, s) is not read
 l16777216_HistoricalSummary	11 witnessed
+  pending l16777216_HistoricalSummary_api_root_set: the representation premise STL.rep_l16777216_HistoricalSummary(o, s) is not read
 l16777216_b32	15 witnessed
   pending l16777216_b32_api_root_set: the representation premise BLI.rep_lh(o, s) is not read
 l16_Deposit	7 witnessed
@@ -39,7 +43,9 @@ l16_WithdrawalRequest	11 witnessed
 l1_AttesterSlashing	7 witnessed
   pending l1_AttesterSlashing_api_root_set: the representation premise RT.rep_l1_AttesterSlashing(o, s) is not read
 l2048_Eth1Data	11 witnessed
+  pending l2048_Eth1Data_api_root_set: the representation premise STL.rep_l2048_Eth1Data(o, s) is not read
 l262144_PendingConsolidation	11 witnessed
+  pending l262144_PendingConsolidation_api_root_set: the representation premise STL.rep_l262144_PendingConsolidation(o, s) is not read
 l2_ConsolidationRequest	11 witnessed
   pending l2_ConsolidationRequest_api_root_set: the representation premise RTL.rep_l2_ConsolidationRequest(o, s) is not read
 l4096_b2048	8 witnessed
