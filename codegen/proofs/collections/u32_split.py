@@ -76,8 +76,7 @@ def alg_step(+A: Nat, +H: Nat, +D: Nat) -> {Nat.add(A, Nat.double(Nat.add(H, D))
         xs = ['x%d' % j for j in range(k)]
         tw = 'Word(%dn)' % (32 - k)
         mask = (1 << k) - 1
-        W = 't'
-        full = 'U32{%s}' % ('WCon{' + ', WCon{'.join(xs) + ', t' + '}' * k)
+        full ='U32{%s}' % ('WCon{' + ', WCon{'.join(xs) + ', t' + '}' * k)
         masked = 'U32{%s}' % (''.join('WCon{Bool.and(%s, True{}), ' % x for x in xs) + '_' + '}' * k)
         out.append('def and%d(%s, +t: %s)\n    -> {U32.to_nat(U32.and(%s, %d)) == %s : Nat}:' % (k, ', '.join('+%s: Bool' % x for x in xs), tw, full, mask, Hexpr([BV(x) for x in xs])))
         out.append('  %%Equal.sym(%s, Word.and(%dn, t, Word.zero(%dn)), Word.zero(%dn), UB.wand_zero(%dn, t)) :' % (tw, 32 - k, 32 - k, 32 - k, 32 - k))
@@ -114,10 +113,8 @@ def alg_step(+A: Nat, +H: Nat, +D: Nat) -> {Nat.add(A, Nat.double(Nat.add(H, D))
             else:
                 proof[m] = 'Equal.trans(Nat, %s, Nat.add(%s, Nat.double(%s)), %s,\n      %s,\n      Equal.cong(Nat, Nat, z => Nat.add(%s, Nat.double(z)), %s, %s,\n      %s))' % (
                     nat_m(m), As[m], nat_m(m + 1), expr[m], split_m, As[m], nat_m(m + 1), expr[m + 1], proof[m + 1])
-        # the goal: to_nat(i) == H + 2^k N
         Hk = Hexpr(As)
         Dk = dbl(N, k)
-        goal = 'U32.to_nat(%s) == Nat.add(U32.to_nat(U32.and(%s, %d)), %s)' % (full, full, mask, Dk)
         fh = 'fh%d_%d(%s)' % (k, k, ', '.join(As + [N]))
         out.append('def split%d(+i: U32) -> {U32.to_nat(i) == Nat.add(U32.to_nat(U32.and(i, %d)), %s) : Nat}:\n  match i:\n    case U32{%s}:' % (
             k, mask, dbl('U32.to_nat(U32.shrn(i, %dn))' % k, k), 'WCon{' + ', WCon{'.join('+' + x for x in xs) + ', +t' + '}' * k))
