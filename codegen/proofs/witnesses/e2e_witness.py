@@ -38,6 +38,7 @@ import sys
 from pathlib import Path
 
 from codegen.core.paths import ROOT, E2E  # noqa: E402
+from codegen.core.shared_rest import bracket_end  # noqa: E402
 
 # the names whose encode bridge carries premises beyond rep
 NAMES = ['FuluExecutionPayload', 'FuluExecutionPayloadHeader', 'FuluExecutionRequests', 'FuluDataColumnSidecar',
@@ -262,16 +263,7 @@ class Mod:
         """(param names, return type text, body text) of a def"""
         d = self.defs[name]
         k = d.index('(')
-        depth, j = 0, k
-        while True:
-            c = d[j]
-            if c in '([{':
-                depth += 1
-            elif c in ')]}':
-                depth -= 1
-                if depth == 0:
-                    break
-            j += 1
+        j = bracket_end(d, k)
         self.fullp = [p.strip() for p in split_top(d[k + 1:j])]
         params = [p.strip().lstrip('+-').split(':')[0].strip() for p in split_top(d[k + 1:j])]
         rest = d[j + 1:]
@@ -321,18 +313,10 @@ def parse_call(e):
     m = re.match(r'([\w.]+)\(', e)
     if not m:
         return None
-    depth = 0
-    for i in range(m.end() - 1, len(e)):
-        c = e[i]
-        if c in '([{':
-            depth += 1
-        elif c in ')]}':
-            depth -= 1
-            if depth == 0:
-                if i != len(e) - 1:
-                    return None
-                return m.group(1), split_top(e[m.end():i])
-    return None
+    i = bracket_end(e, m.end() - 1)
+    if i is None or i != len(e) - 1:
+        return None
+    return m.group(1), split_top(e[m.end():i])
 
 
 # ---------------------------------------------------------------- the default object's model
@@ -1315,27 +1299,10 @@ def law_files():
 
 def params_of(d):
     k = d.index('(')
-    depth, j = 0, k
-    while True:
-        c = d[j]
-        if c in '([{':
-            depth += 1
-        elif c in ')]}':
-            depth -= 1
-            if depth == 0:
-                break
-        j += 1
+    j = bracket_end(d, k)
     rest = d[j + 1:]
     a = rest.index('{')
-    depth, e = 0, a
-    while True:
-        if rest[e] == '{':
-            depth += 1
-        elif rest[e] == '}':
-            depth -= 1
-            if depth == 0:
-                break
-        e += 1
+    e = bracket_end(rest, a, '{', '}')
     return split_top(d[k + 1:j]), rest[a:e + 1]
 
 
@@ -1370,9 +1337,6 @@ def default_of(ctx, mod, otype, name):
     if tn == 'U32':
         return None, '0'
     raise SystemExit(f'e2e_witness: no default {tn} in {Path(path).name}')
-
-
-BRANCH_T = 'FD.array__Tree<U32>'
 
 
 def build_branch(name, lf):
