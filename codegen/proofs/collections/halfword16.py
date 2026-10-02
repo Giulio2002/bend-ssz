@@ -15,9 +15,8 @@ shr_bytes(word, r) & 65535 for the offset r = 0 or 2, so the same facts are need
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
-import sys
-
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 
 OUT = ROOT / 'proofs/obj/halfword16.bend'
 
@@ -138,16 +137,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: %s' % OUT.name)
-            sys.exit(1)
-        print('halfword16: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('halfword16: proofs/obj/%s' % OUT.name)
+    run_single('halfword16', OUT, text())
 
 
 if __name__ == '__main__':
