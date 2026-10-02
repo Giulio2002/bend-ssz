@@ -1,5 +1,6 @@
 """The shared bit-list view module (e2e/e2e_bview.bend) and the generic bit lists' view lemmas, for e2e_bridge."""
 import itertools
+from codegen.core.shared_bridges import import_lines, import_list, unpack_pairs  # noqa: E402
 
 
 def _src(p):
@@ -15,24 +16,7 @@ WS = 'FD.array__slots(U32, T)'
 W32p = 'U32{' + ''.join(f'WCon{{+a{i}, ' for i in range(32)) + 'WNil{}' + '}' * 32 + '}'
 
 HEAD = '''import Base
-import ../src/obj.bend as O
-import ../src/merkle_fast.bend as M
-import ../proofs/compact/found.bend as FD
-import ../proofs/compact/buf.bend as BF
-import ../proofs/obj/bits_leaf.bend as BLf
-import ../proofs/obj/bitlist_pack.bend as BK
-import ../proofs/obj/vspec.bend as VSP
-import ../proofs/obj/vbyte.bend as VY
-import ../proofs/obj/spec_fixed.bend as SF
-import ../proofs/obj/vbitl.bend as VBL
-import ../proofs/obj/vdepth.bend as VD
-import ../proofs/compact/arith.bend as A
-import ../proofs/nat_order.bend as Order
-import ./e2e_cap.bend as C
-import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/vlist.bend as VL
-import ../proofs/obj/vbrt.bend as VR
+''' + import_lines('O M=merkle_fast FD BF BLf BK VSP VY=vbyte SF VBL VD A Order C=e2e_cap VB VC VL=vlist VR=vbrt') + '''
 '''
 
 HDR = """
@@ -730,13 +714,7 @@ def bl_view(X, nby, lim, kdz, ky):
     kc = 0
     while 4 * 2 ** kc < nby:
         kc += 1
-    text = f'''# ---- the view of a decoded bit list: its first NB bits are the value bits of its bytes (e2e_bview) ----
-
-def bvw(o: O.Bits) -> S.Value: S.BitsValue{{BR.bview(o)}}
-
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
-    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
-  +h1 = DC.c1(t, n, hchk)
+    prelude = f'''  +h1 = DC.c1(t, n, hchk)
   +nz = DC.cB(t, n, h1)
   +bd = DC.cC(t, n, h1, nz)
   +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
@@ -758,7 +736,14 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
   +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
     Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
   +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+  +hh = BV.hb7(V)'''
+    text = f'''# ---- the view of a decoded bit list: its first NB bits are the value bits of its bytes (e2e_bview) ----
+
+def bvw(o: O.Bits) -> S.Value: S.BitsValue{{BR.bview(o)}}
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
+{prelude}
   +A1 = BV.vobj(n, dz, M, DC.NBu(t, n), m, h, pfM, hdz, hh, eNB, hN, hn3, e1)
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
@@ -785,29 +770,7 @@ def hK0() -> {{Nat.is_le(Nat.add(U32.to_nat({lim}), 8n), O.pow2n({kb}n)) == True
 def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}})
     -> DBL.rep_bits(DC.OBJ(t, n), S.BitList{{U32.to_nat({lim})}}):
-  +h1 = DC.c1(t, n, hchk)
-  +nz = DC.cB(t, n, h1)
-  +bd = DC.cC(t, n, h1, nz)
-  +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
-  +m = DC.M1(n)
-  +hb = DC.hB(t, n, e1, bd)
-  +dz = VL.DZ(n)
-  +M = VL.MMg(t, n)
-  +pfM = VB.mone_perfect(VC.NW(n), 0n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
-  +hdz = FD.nat__le_lt_trans(dz, {kdz}n, 32n, DC.hdzK(d, n, hd, hn, hb), {{==}})
-  +V = DC.V(t, n)
-  +h = VY.hb(V)
-  +hm8 = FD.nat__le_trans(Nat.mul(8n, m), DC.BD(t, n), U32.to_nat({lim}), FD.nat__le_add_right(Nat.mul(8n, m), h), bd)
-  +emul = VU.mul_le(8, U32.sub(n, 1), {lim}, hm8)
-  +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(n, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), emul), bd)
-  +eNB = Equal.trans(Nat, U32.to_nat(DC.NBu(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(n, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(n, 1)), O.high_bit(V), {lim}, hadd),
-    Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(n, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
-  +hkc = FD.nat__le_trans(U32.to_nat(n), {nby}n, A.quad(FD.spec_common__pow2({kc}n)), hb, {{==}})
-  +hNW = C.nw(n, {kc}n, {{==}}, hkc)
-  +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
-    Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
-  +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+{prelude}
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
   +ew = BV.win(d, t, n, m, pf, hn, e1, hNW, DC.hrgB(n, hb))
@@ -830,29 +793,7 @@ def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perf
 
 def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> BTV.sdbv(DC.OBJ(t, n)):
-  +h1 = DC.c1(t, n, hchk)
-  +nz = DC.cB(t, n, h1)
-  +bd = DC.cC(t, n, h1, nz)
-  +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
-  +m = DC.M1(n)
-  +hb = DC.hB(t, n, e1, bd)
-  +dz = VL.DZ(n)
-  +M = VL.MMg(t, n)
-  +pfM = VB.mone_perfect(VC.NW(n), 0n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
-  +hdz = FD.nat__le_lt_trans(dz, {kdz}n, 32n, DC.hdzK(d, n, hd, hn, hb), {{==}})
-  +V = DC.V(t, n)
-  +h = VY.hb(V)
-  +hm8 = FD.nat__le_trans(Nat.mul(8n, m), DC.BD(t, n), U32.to_nat({lim}), FD.nat__le_add_right(Nat.mul(8n, m), h), bd)
-  +emul = VU.mul_le(8, U32.sub(n, 1), {lim}, hm8)
-  +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(n, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), emul), bd)
-  +eNB = Equal.trans(Nat, U32.to_nat(DC.NBu(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(n, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(n, 1)), O.high_bit(V), {lim}, hadd),
-    Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(n, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
-  +hkc = FD.nat__le_trans(U32.to_nat(n), {nby}n, A.quad(FD.spec_common__pow2({kc}n)), hb, {{==}})
-  +hNW = C.nw(n, {kc}n, {{==}}, hkc)
-  +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
-    Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
-  +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+{prelude}
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
   +ew = BV.win(d, t, n, m, pf, hn, e1, hNW, DC.hrgB(n, hb))
@@ -870,12 +811,9 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
     HV.hvobj(n, dz, M, DC.NBu(t, n), m, h, pfM, hdz, hh, eNB, hN, hn3, e1, eh2))
 
 '''
-    imports = ['import ../proofs/obj/bitlist_rep.bend as BR', 'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/vbitl.bend as VBL',
-               'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
-               'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vbrt.bend as VR',
-               'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/nat_order.bend as Order', 'import ./e2e_bview.bend as BV',
-               'import ./e2e_db.bend as DB', 'import ./e2e_hv.bend as HV', 'import ./e2e_bitv.bend as BTV', 'import ../proofs/obj/vdepth.bend as VD',
-               'import ../proofs/obj/bitlist_obj_light.bend as DBL']
+    imports = [*import_list(
+        'BR BK VBL VY=vbyte VSP VB VC VL=vlist VR=vbrt VU Order BV=e2e_bview DB=e2e_db HV BTV VD '
+        'DBL')]
     return {'view': 'bvw', 'imports': imports, 'text': text}
 
 
@@ -1007,13 +945,9 @@ def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perf
   DB.dbits(L, {i0}n, t, dz, DC.NBW(t, n), m, h, hdz, hh, eNB, hN, hn3, e1, eh2, hy, hwc, {kb}n, {{==}}, hK, U32.to_nat({lim}), hNL)
 
 '''
-    imports = ['import ../proofs/obj/bitlist_pack.bend as BK', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/vdepth.bend as VD',
-               'import ../proofs/obj/bitlist_obj_light.bend as DBL', 'import ../proofs/obj/vbitl.bend as VBL',
-               'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
-               'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vbrt.bend as VR',
-               'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/root_types.bend as RT',
-               'import ./e2e_bview.bend as BV', 'import ../proofs/obj/spec_bits.bend as FB', 'import ./e2e_bits.bend as E2B',
-               'import ./e2e_hv.bend as HV', 'import ./e2e_bitv.bend as BTV']
+    imports = [*import_list(
+        'BK DB=e2e_db VD DBL VBL VY=vbyte VSP VB VC VLS VR=vbrt VU Order RT=root_types BV=e2e_bview '
+        'FB E2B HV BTV')]
     return {'view': f'RT.v_{name}', 'imports': imports, 'text': text}
 
 
@@ -1039,10 +973,9 @@ def vroot_bitc_text(R, X, types):
     cs = lambda n: '\n'.join(f'      ({v}, w{i + 1}) = {"w" if i == 0 else "w" + str(i)}' for i, v in enumerate(n))
     rb = (f'      rt2(h, o, rep, t, K, {XA}, Equal.trans({D}, o, {D}{{RT.pj_{X}_0(o), {XA}}}, {O1}, eo,\n'
           f'        Equal.cong(O.Bits, {D}, z => {D}{{z, {XA}}}, RT.pj_{X}_0(o), O.Bits{{FD.array__thaw(U32, t), K}}, ew)))')
-    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S',
-            'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/gvalid_types.bend as GV', 'import ./e2e_support.bend as E']
+    imps = [*import_list(
+        'Base E2E API B D=digest O T S Spec=fulu_schemas VS=type_validator_soundness FD '
+        'RT=root_types GV=gvalid_types E=e2e_support')]
     return '\n'.join(imps) + f"""
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
@@ -1074,24 +1007,7 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}
 
 
 BVW = r'''import Base
-import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
-import ../proofs/compact/arith.bend as A
-import ../proofs/nat_order.bend as Order
-import ../proofs/obj/spec_fixed.bend as SF
-import ../proofs/obj/vspec.bend as VSP
-import ../proofs/obj/vdepth.bend as VD
-import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/vbrt.bend as VR
-import ../proofs/obj/vbitl.bend as VBL
-import ../proofs/obj/vbyte.bend as VY
-import ../proofs/obj/bitlist_pack.bend as BK
-import ../proofs/obj/vbytes.bend as VBY
-import ../proofs/obj/vua_copy.bend as UC
-import ../proofs/obj/vua_ct.bend as UCT
-import ./e2e_cap.bend as C
-import ./e2e_bview.bend as BV
+''' + import_lines('O FD A Order SF VSP VD VB VC VR=vbrt VBL VY=vbyte BK VBY UC UCT C=e2e_cap BV=e2e_bview') + r'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
 # A bit list at any byte offset of the buffer (the windowed readers: var_winx_* / var_win_*): the reader copies
@@ -1204,11 +1120,7 @@ def {P}_bw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo:
       UW.WX(t, x, 1n+m), UW.WX(t, x, U32.to_nat(len)), Equal.sym(+List<U32>, UW.WX(t, x, U32.to_nat(len)), UW.WX(t, x, 1n+m), eV), R))
 '''
 
-GW_IMPORTS = ['import ../proofs/obj/bitlist_rep.bend as BR', 'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/vbitl.bend as VBL',
-              'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
-              'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vbrt.bend as VR',
-              'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_win.bend as UW',
-              'import ../proofs/obj/vua_ct.bend as UCT', 'import ./e2e_bview.bend as BV', 'import ./e2e_bvw.bend as BVW']
+GW_IMPORTS = [*import_list('BR BK VBL VY=vbyte VSP VB VC VLS VR=vbrt VU UA UW UCT BV=e2e_bview BVW')]
 
 
 
@@ -1343,12 +1255,8 @@ def attw_text(obj_dir, pmod='var_win_Attestation.bend', cmod='var_win_bits131072
     W = '+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32'
     A = 'd, t, 0, i, off, len, eo, hd, hw, hw32, pf'
     lim, kdz, ky = gwa_params(obj_dir, cmod)
-    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-               'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
-               'import ../proofs/obj/spec_bits.bend as FB', 'import ./e2e_cap.bend as C', 'import ./e2e_bits.bend as E2B',
-               'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{pmod} as CHA', f'import ../proofs/obj/{cmod} as CHB'] + GW_IMPORTS + [
-               'import ./e2e_hv.bend as HV', 'import ./e2e_bitv.bend as BTV', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/vdepth.bend as VD',
-               'import ../proofs/obj/bitlist_obj_light.bend as DBL', 'import ../proofs/nat_order.bend as Order']
+    imports = [*import_list('Base O S P FD A F FB C=e2e_cap E2B RT=root_types'), f'import ../proofs/obj/{pmod} as CHA', f'import ../proofs/obj/{cmod} as CHB'] + GW_IMPORTS + [
+               *import_list('HV BTV DB=e2e_db VD DBL Order')]
     return '\n'.join(imports) + '\n' + gwa_text('bl', 'CHB', lim, kdz, ky) + gwa_hv('bl', 'CHB', lim, kdz, ky) + gwa_rep('bl', 'CHB', lim, kdz, ky) + f'''
 # The {name} a word-aligned window reader builds (window at word i, off = 4 i) views as the value the codec reads there.
 def att_w({W}, +eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 31n) == True{{}} : Bool}},
@@ -1450,12 +1358,9 @@ HV_PROJ = {'Attestation': lambda o: f'RT.pj_Attestation_0({o})',
 
 
 def aapw_text(obj_dir):
-    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-               'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
-               'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT',
-               'import ../proofs/obj/var_win_Attestation.bend as WT', 'import ../proofs/obj/var_win_AggregateAndProof.bend as WA',
-               'import ../proofs/obj/var_win_SignedAggregateAndProof.bend as WS', 'import ./e2e_attw.bend as ATW', 'import ./e2e_bitv.bend as BTV',
-               'import ../proofs/obj/bitlist_obj_light.bend as DBL']
+    imports = [*import_list(
+        'Base O S P FD A F VB RT=root_types WT WA=var_win_AggregateAndProof '
+        'WS=var_win_SignedAggregateAndProof ATW BTV DBL')]
     return '\n'.join(imports) + '\n' + \
         lift_w(obj_dir, 'aap_w', 'AggregateAndProof', 'WA', 'var_win_AggregateAndProof.bend', 'WT', 'Attestation', 'ATW.att_w') + \
         lift_w(obj_dir, 'saap_w', 'SignedAggregateAndProof', 'WS', 'var_win_SignedAggregateAndProof.bend', 'WA', 'AggregateAndProof', 'aap_w')
@@ -1482,8 +1387,7 @@ def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perf
   AW.{lemma}_rep(d, t, 0n, 0, n, {{==}}, hd, hn, VB.u32_lt(n), pf, hchk)
 
 '''
-    imports = ['import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT', 'import ./e2e_aapw.bend as AW', 'import ./e2e_bitv.bend as BTV',
-               'import ../proofs/obj/bitlist_obj_light.bend as DBL']
+    imports = [*import_list('VB RT=root_types AW BTV DBL')]
     return {'view': f'RT.v_{name}', 'imports': imports, 'text': text}
 
 
@@ -1521,10 +1425,9 @@ def vroot_agg_text(R, X):
              '  (+ea, +rbits) = r3\n  (+wf, +rr) = rbits\n')
     cs = lambda n: '\n'.join(f'      ({v}, w{i + 1}) = {"w" if i == 0 else "w" + str(i)}' for i, v in enumerate(n))
     rb = f'      rt2(h, o, rep, t, K, {wa},\n        {eO})'
-    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S',
-            'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/gvalid_types.bend as GV', 'import ./e2e_support.bend as E']
+    imps = [*import_list(
+        'Base E2E API B D=digest O T S Spec=fulu_schemas VS=type_validator_soundness FD '
+        'RT=root_types GV=gvalid_types E=e2e_support')]
     return '\n'.join(imps) + f"""
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
@@ -1556,11 +1459,7 @@ def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}
 # Their encode laws take, besides rep, the list's storage (T at depth dw < 31 with room for its words, hcap) and
 # hv: the last word's bits above K are zero. sdbv names these, the premise (i) carries (hv: no lemma yet).
 BITV = r'''import Base
-import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/vbitenc.bend as VBT
-import ../proofs/obj/dk.bend as DK
+''' + import_lines('O FD VB VBT DK') + r'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
 # The storage premise of a bit list field (i) carries: its words T in a perfect tree of depth dw < 31 with room
@@ -1659,31 +1558,19 @@ def venc_bitc(obj_dir, R, X, pmod):
 def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({P0})) -> {G("o")}:
 {reps}
   (+eo, +rb) = q{len(xs)}
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+ew, s4) = s3
-  (+pf, s5) = s4
-  (+hdw, s6) = s5
-  (+hcap, +hv) = s6
+{unpack_pairs('hs', ['T', 'dw', 'K', 'ew', 'pf', 'hdw', 'hcap', 'hv'], '  ')}
   +eo1 = Equal.trans({Dt}, o, {CT(P0)}, {CT(OB)}, eo, Equal.cong(O.Bits, {Dt}, z => {CT("z")}, {P0}, {OB}, ew))
   +rb1 = FD.logic__subst(O.Bits, z => BO.rep_bits(z, SH.Chain_head(SH.Container_fields(Spec.{X}()))), {P0}, {OB}, ew, rb)
   e0(o, {", ".join(xs)}, dw, T, K, pf, hdw, rb1, hcap, hv, eo1)
 '''
     mods = sorted(set(re.findall(r'\b(Fulu\w*?)_d\.', flds_all := ' '.join(flds) + ' ' + Dt)))
-    imps = ['import Base', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
-            'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec', 'import ../spec/codec.bend as Encoding',
-            'import ../proofs/obj/spec_fixed.bend as F',
-            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/spec_bits.bend as FB',
-            'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vbitenc.bend as VBT',
-            'import ../proofs/obj/vbitcore.bend as CO', 'import ../proofs/obj/vbitrep.bend as VR', 'import ../proofs/obj/bitlist_obj.bend as BO',
-            'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{pmod} as PRV',
+    imps = [*import_list(
+        'Base API B O S P Spec=fulu_schemas Encoding F VS=type_validator_soundness FD A Order SF FB '
+        'VSP VB VBT CO VR=vbitrep BO=bitlist_obj SH RT=root_types'), f'import ../proofs/obj/{pmod} as PRV',
             f'import ../types/{R}_encode_ssz_generated.bend as {R}_e'] + \
            [f'import ../types/{m}_def_generated.bend as {m}_d' for m in mods] + \
            ['import ./e2e_support.bend as E', './e2e_cap.bend', './e2e_emit.bend', './e2e_bits.bend', './e2e_bitv.bend']
-    imps = imps[:-5] + ['import ./e2e_support.bend as E', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM',
-                        'import ./e2e_bits.bend as E2B', 'import ./e2e_bitv.bend as BTV']
+    imps = imps[:-5] + [*import_list('E=e2e_support C=e2e_cap EM E2B BTV')]
     return '\n'.join(imps) + f'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
@@ -1868,19 +1755,14 @@ def venc_agg(obj_dir, R, X, pmod, cR, cX):
         helpers.append(sig + '\n' + bodyi)
     rlets = '\n'.join(f'  {v} = {r}' for v, r in lets if v != 'rb')
     mods = sorted(set(re.findall(r'\b(Fulu\w*?)_d\.', full + ' ' + Dt)))
-    imps = ['import Base', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
-            'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec',
-            'import ../spec/codec.bend as Encoding', 'import ../proofs/obj/spec_fixed.bend as F',
-            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vspec.bend as VSP',
-            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbytes.bend as VY',
-            'import ../proofs/obj/vbitenc.bend as VBT', 'import ../proofs/obj/vbitcore.bend as CO', 'import ../proofs/obj/vbitrep.bend as VR',
-            'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_types.bend as RT',
+    imps = [*import_list(
+        'Base API B O S P Spec=fulu_schemas Encoding F VS=type_validator_soundness FD A Order SF '
+        'VSP VB VC VY=vbytes VBT CO VR=vbitrep BO=bitlist_obj SH RT=root_types'),
             f'import ../proofs/obj/{pmod} as PRV', 'import ../proofs/obj/var_bitc_enc_Attestation.bend as EA',
             'import ../proofs/obj/var_codec_AggregateAndProof_enc.bend as CC',
             f'import ../types/{R}_encode_ssz_generated.bend as {R}_e'] + \
            [f'import ../types/{mm}_def_generated.bend as {mm}_d' for mm in mods] + \
-           ['import ./e2e_support.bend as E2', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM', 'import ./e2e_bitv.bend as BTV',
+           [*import_list('E2 C=e2e_cap EM BTV'),
             f'import ./{cR}_e2e_generated.bend as CX']
     return '\n'.join(imps) + f'''
 
@@ -1922,13 +1804,7 @@ def encw({WP}, {STO}, {HYP}) -> {G(OBJX)}:
 # (i): for every object the root law represents (rep) whose bit list's storage meets the encode laws' premises (hs)
 def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({PBITS})) -> {G("o")}:
 {rlets}
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+ew, s4) = s3
-  (+pf, s5) = s4
-  (+hdw, s6) = s5
-  (+hcap, +hv) = s6
+{unpack_pairs('hs', ['T', 'dw', 'K', 'ew', 'pf', 'hdw', 'hcap', 'hv'], '  ')}
   +rb1 = FD.logic__subst(O.Bits, z => BO.rep_bits(z, {SCH}), {PBITS}, O.Bits{{FD.array__thaw(U32, T), K}}, ew, {PB[0]})
   e0(o, {", ".join(v for v, _, _ in slots)}, dw, T, K, pf, hdw, rb1, hcap, hv,
     {EQ})
@@ -1938,11 +1814,7 @@ def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({PBI
 # ---- the generic containers' sub-word bit vectors (vfx_bvK, K <= 8): their root view is the codec value ----
 
 def bvsub_text(ks=(1, 2, 8)):
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../src/primitives.bend as I',
-            'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vbitl.bend as VBL',
-            'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/vua_bits.bend as UB',
-            'import ../proofs/obj/bitlist_pack.bend as BLP', 'import ../proofs/obj/root_gnames.bend as RN'] + \
+    imps = [*import_list('Base O B I S FD A VB VR=vbrt VBL UA UR UB BLP RN=root_gnames')] + \
            [f'import ../types/bitvector_{k}_def_generated.bend as bitvector_{k}_d' for k in ks] + \
            [f'import ../proofs/obj/vfx_bv{k}.bend as FX{k}' for k in ks]
     L = ['# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.',
@@ -1985,9 +1857,7 @@ def bvsub_text(ks=(1, 2, 8)):
 
 def bsw_text(obj_dir):
     """e2e_bsw: the views of BitsStruct's two windowed bit lists (gw_text for var_winx_g_bits5 / _6)."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C', 'import ../proofs/obj/var_winx_g_bits5.bend as CB5', 'import ../proofs/obj/var_winx_g_bits6.bend as CB6'] + GW_IMPORTS
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap CB5 CB6')] + GW_IMPORTS
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + \
         gw_text('b5', 'CB5', *gw_params(obj_dir, 'var_winx_g_bits5.bend')) + gw_text('b6', 'CB6', *gw_params(obj_dir, 'var_winx_g_bits6.bend'))
 
@@ -2022,9 +1892,7 @@ def gw_hv(P, CH, lim, kdz, ky, Kd=31):
 
 def bswh_text(obj_dir):
     """e2e_bswh: BitsStruct's two windowed bit lists satisfy the storage premise (gw_hv for var_winx_g_bits5 / _6)."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C', 'import ../proofs/obj/var_winx_g_bits5.bend as CB5', 'import ../proofs/obj/var_winx_g_bits6.bend as CB6'] + GW_IMPORTS + [
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap CB5 CB6')] + GW_IMPORTS + [
             'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO']
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + \
         gw_hv('b5', 'CB5', *gw_params(obj_dir, 'var_winx_g_bits5.bend')) + gw_hv('b6', 'CB6', *gw_params(obj_dir, 'var_winx_g_bits6.bend'))
@@ -2054,36 +1922,25 @@ def gw_rep(P, CH, lim, kdz, ky):
 
 def bswr_text(obj_dir):
     """e2e_bswr: BitsStruct's two windowed bit lists satisfy rep_bits (gw_rep for var_winx_g_bits5 / _6)."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C', 'import ../proofs/obj/var_winx_g_bits5.bend as CB5', 'import ../proofs/obj/var_winx_g_bits6.bend as CB6'] + GW_IMPORTS + [
-            'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/bitlist_obj_light.bend as BOL',
-            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/nat_order.bend as Order']
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap CB5 CB6')] + GW_IMPORTS + [
+            *import_list('HVK HVO DB=e2e_db BOL VD Order')]
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + \
         gw_rep('b5', 'CB5', *gw_params(obj_dir, 'var_winx_g_bits5.bend')) + gw_rep('b6', 'CB6', *gw_params(obj_dir, 'var_winx_g_bits6.bend'))
 
 
 def wxar_text(obj_dir):
     """e2e_wxar: the bit list of the Attestation a byte-window reader builds (var_winx_bits131072 at any window) satisfies bitlist_obj's rep_bits (gw_rep)."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C', 'import ../proofs/obj/var_winx_bits131072.bend as W131'] + GW_IMPORTS + [
-            'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/bitlist_obj_light.bend as BOL',
-            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/nat_order.bend as Order']
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap W131')] + GW_IMPORTS + [
+            *import_list('HVK HVO DB=e2e_db BOL VD Order')]
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + \
         gw_rep('bx', 'W131', *gw_params(obj_dir, 'var_winx_bits131072.bend'))
 
 
 def pbh_text():
     """e2e_pbh: the progressive bit list a window reader (var_winp_pbits) builds satisfies hv (HV.SDX), at any depth d < 31."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/vbuf.bend as VB',
-            'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vcopy.bend as VC',
-            'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_win.bend as UW',
-            'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/vbrt.bend as VR',
-            'import ../proofs/obj/vpb29.bend as VP', 'import ../proofs/obj/var_winp_pbits.bend as PBW', 'import ./e2e_cap.bend as C',
-            'import ./e2e_bview.bend as BV', 'import ./e2e_gpb.bend as GPB', 'import ./e2e_bvw.bend as BVW',
-            'import ./e2e_hv.bend as HV', 'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO']
+    imps = [*import_list(
+        'Base O S FD A Order VB VSP SF VC VY=vbyte UCT UA UW VLS VBL VR=vbrt VP PBW C=e2e_cap '
+        'BV=e2e_bview GPB BVW HV HVK HVO')]
     NB = 'PBW.NB(t, off, len)'
     LMs = 'SF.limbs(FD.array__slots(U32, CT))'
     return '\n'.join(imps) + f"""
@@ -2142,8 +1999,7 @@ def pbx_text():
     records' storage premise SDPB (the size bounds K + 8 <= 2^31, 31 + (K + 1) <= 2^30 from the window's length: e2e_pbq) and the
     representation invariant rep_pbits (= wfb), on the prefix of e2e_pbh.pbv_hv."""
     base = pbh_text()
-    imps = [l for l in base.split('\n') if l.startswith('import ')] + ['import ./e2e_pbq.bend as PQ', 'import ./e2e_encp.bend as EP', 'import ./e2e_db.bend as DB',
-            'import ../proofs/obj/bitlist_obj_light.bend as BOL', 'import ../proofs/obj/pbits_obj_light.bend as PBO', 'import ../proofs/obj/vdepth.bend as VD']
+    imps = [l for l in base.split('\n') if l.startswith('import ')] + [*import_list('PQ EP DB=e2e_db BOL PBO VD')]
     i0 = base.index('def pbv_hv(')
     sig = base[i0:base.index('    -> HVK.SDXO')]
     sig = sig.replace('def pbv_hv(', 'def PNAME(').rstrip()
@@ -2192,13 +2048,9 @@ def pbl_text(obj_dir):
     a = tx.index('  +W1 = VR.WB(t, 0n, 1n+m)', tx.index('def decoded_rep('))
     b = tx.index('  +hyU', a)
     tail = tx[a:b].replace('DC.hrgB(n, hb)', 'hr0')
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/spec_fixed.bend as F',
-            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vbitl.bend as VBL',
-            'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vpb29.bend as VP', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/bitlist_pack.bend as BK',
-            'import ../proofs/obj/var_pbits_progbitlist.bend as DC', 'import ../proofs/obj/bitlist_obj_light.bend as DBL', 'import ../proofs/obj/pbits_obj_light.bend as PBO',
-            'import ./e2e_cap.bend as C', 'import ./e2e_bview.bend as BV', 'import ./e2e_db.bend as DB', 'import ./e2e_hv.bend as HV', 'import ./e2e_bitl.bend as BLT',
-            'import ./e2e_pbq.bend as PQ']
+    imps = [*import_list(
+        'Base O S FD A Order VB VSP F VC VY=vbyte VL=vlist VBL VR=vbrt VP VD BK DC DBL PBO '
+        'C=e2e_cap BV=e2e_bview DB=e2e_db HV BLT PQ')]
     sig = ('(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},\n'
            '    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hlen: {Nat.is_le(Nat.add(U32.to_nat(n), 4n), VB.pw(27n)) == True{} : Bool}, '
            '+hchk: {DC.CHK(t, n) == True{} : Bool})')
@@ -2245,9 +2097,7 @@ def pbl_text(obj_dir):
 def pbsw_text(obj_dir):
     """e2e_pbsw: the four bounded bit lists of ProgressiveBitsStruct (bits256 / 257 / 1280 / 1281 window readers) satisfy the storage premise SDB (dz < 28)."""
     mods = ['256', '257', '1280', '1281']
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C'] + [f'import ../proofs/obj/var_winx_g_bits{m}.bend as CB{m}' for m in mods] + GW_IMPORTS + [
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap')] + [f'import ../proofs/obj/var_winx_g_bits{m}.bend as CB{m}' for m in mods] + GW_IMPORTS + [
             'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO']
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + ''.join(
         gw_hv(f'b{m}', f'CB{m}', *gw_params(obj_dir, f'var_winx_g_bits{m}.bend'), Kd=28) for m in mods)
@@ -2256,11 +2106,8 @@ def pbsw_text(obj_dir):
 def pbsr_text(obj_dir):
     """e2e_pbsr: the four bounded bit lists of ProgressiveBitsStruct (bits256 / 257 / 1280 / 1281 window readers) satisfy rep_bits (gw_rep, Kd = 28)."""
     mods = ['256', '257', '1280', '1281']
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C'] + [f'import ../proofs/obj/var_winx_g_bits{m}.bend as CB{m}' for m in mods] + GW_IMPORTS + [
-            'import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO', 'import ./e2e_db.bend as DB', 'import ../proofs/obj/bitlist_obj_light.bend as BOL',
-            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/nat_order.bend as Order']
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap')] + [f'import ../proofs/obj/var_winx_g_bits{m}.bend as CB{m}' for m in mods] + GW_IMPORTS + [
+            *import_list('HVK HVO DB=e2e_db BOL VD Order')]
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + ''.join(
         gw_rep(f'b{m}', f'CB{m}', *gw_params(obj_dir, f'var_winx_g_bits{m}.bend')) for m in mods)
 
@@ -2272,43 +2119,9 @@ def pbsv_text():
 
 
 PBSV_TEXT = r'''import Base
-import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
-import ../proofs/compact/arith.bend as A
-import ../proofs/compact/reads.bend as RD
-import ../proofs/nat_order.bend as Order
-import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/vbytes.bend as VBY
-import ../proofs/obj/vbrt.bend as VR
-import ../proofs/obj/vua.bend as UA
-import ../proofs/obj/vua_ct.bend as UCT
-import ../proofs/obj/vua_copy.bend as UC
-import ../proofs/obj/vua_rd.bend as UR
-import ../proofs/obj/vua_fixb.bend as VXB
-import ../proofs/obj/vua_win.bend as UW
-import ../proofs/obj/vspec.bend as VSP
-import ../proofs/obj/vbitl.bend as VBL
-import ../proofs/obj/spec_fixed.bend as SF
-import ../proofs/obj/bitlist_pack.bend as BK
-import ../proofs/obj/bits_leaf.bend as BLf
-import ../proofs/obj/vbitenc.bend as VBT
-import ../proofs/obj/wbits_obj_light.bend as WBV
-import ../proofs/obj/words_obj_light.bend as WO
-import ../proofs/obj/root_gnames_light.bend as RN
-import ../proofs/obj/vfx_bv1.bend as VFB1
-import ../proofs/obj/vfx_bv257.bend as F57
-import ../proofs/obj/vfx_bv1280.bend as F80
-import ../proofs/obj/vfx_bv1281.bend as F81
-import ../proofs/obj/vbv1281d.bend as V81
-import ./e2e_dz.bend as DZ
-import ./e2e_db.bend as DB
-import ./e2e_hvk.bend as HVK
-import ./e2e_dfx.bend as DFX
-import ./e2e_blist.bend as BL
-import ./e2e_tree.bend as E3
-import ./e2e_pbs.bend as BS
+''' + import_lines(
+    'O FD A RD Order DK VB VC VBY VR=vbrt UA UCT UC UR VXB UW VSP VBL SF BK BLf VBT WBV=wbits_obj_light '
+    'WO=words_obj_light RN=root_gnames_light VFB1 F57 F80 F81 V81 DZ DB=e2e_db HVK DFX BL=e2e_blist E3 BS') + r'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
 # ProgressiveBitsStruct's bit vectors, decoded from a window: the representation facts (rep_bvb, rp_bv257) and the storage premises (SDW, SDW81).
@@ -2475,12 +2288,9 @@ def dpt_text():
 
 
 DPT_TEXT = r'''import Base
-import ../proofs/compact/found.bend as FD
-import ../proofs/nat_order.bend as Order
-import ../proofs/obj/var_winx_ProgressiveTestStruct.bend as W
-import ../types/proglist_proglist_VarTestStruct_def_generated.bend as D
-import ./e2e_encld.bend as EL
-import ./e2e_dvp_pl_pl_VarTestStruct.bend as DVP
+''' + import_lines(
+    'FD Order W=var_winx_ProgressiveTestStruct D=proglist_proglist_VarTestStruct_def_generated '
+    'EL=e2e_encld DVP=e2e_dvp_pl_pl_VarTestStruct') + r'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
 # ProgressiveTestStruct's size bound: 17 + the four windows' lengths is 1 + n (the first offset is 16; the windows follow one another to the end).
@@ -2519,13 +2329,9 @@ def dpx_text():
 
 
 DPX_TEXT = r'''import Base
-import ../proofs/compact/found.bend as FD
-import ../proofs/nat_order.bend as Order
-import ../proofs/obj/var_winx_ProgressiveComplexTestStruct.bend as W
-import ../types/proglist_ProgressiveVarTestStruct_def_generated.bend as D
-import ./e2e_encld.bend as EL
-import ./e2e_dvp_pl_ProgressiveVarTestStruct.bend as DVP
-import ./e2e_dpt.bend as DPT
+''' + import_lines(
+    'FD Order W=var_winx_ProgressiveComplexTestStruct D=proglist_ProgressiveVarTestStruct_def_generated '
+    'EL=e2e_encld DVP=e2e_dvp_pl_ProgressiveVarTestStruct DPT') + r'''
 
 # GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.
 # ProgressiveComplexTestStruct's size bound: the windows follow one another from the first offset 29 to the end (sum7); the sum of the bounds the
@@ -2579,9 +2385,7 @@ def pbsh_text(objexpr=None, only_type=False):
     """e2e_pbsh: ProgressiveBitsStruct's decoded bit lists satisfy hv (the bounded ones the whole storage premise SDB, the progressive ones
     the hv part SDXE: their size bounds are the premise's own)."""
     X = 'ProgressiveBitsStruct'
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/root_gtypes2_light.bend as RT',
-            'import ../proofs/obj/var_winx_ProgressiveBitsStruct.bend as W', 'import ./e2e_hvk.bend as HVK', 'import ./e2e_pbsw.bend as PW', 'import ./e2e_pbh.bend as PH']
+    imps = [*import_list('Base O FD A VB DK RT W HVK PW=e2e_pbsw PH')]
     win = '+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32'
     A = 'd, t, n, x, off, len, eo, hd, hw, hwN, pf, h'
     LJ = lambda j: 'W.LJ7(t, x, len)' if j == 7 else f'W.LJ{j}(t, x)'
@@ -2636,9 +2440,7 @@ def _gph_info(obj_dir, X):
 
 def gph_text(obj_dir):
     """e2e_gph: the progressive bit lists of the three progressive containers with an SDPB field satisfy hv (HVK.SDXE), at their window."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A',
-            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vlist.bend as VLS',
-            'import ../proofs/obj/root_gtypes2_light.bend as RT', 'import ./e2e_hvk.bend as HVK', 'import ./e2e_pbh.bend as PH']
+    imps = [*import_list('Base O FD A VB DK VLS RT HVK PH')]
     body = ''
     for k, (X, pjs) in enumerate(GPH_NAMES):
         js, deep, lj = _gph_info(obj_dir, X)
@@ -2688,8 +2490,7 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
   {call}
 
 """
-    imps = list(view['imports']) + ['import ./e2e_pbsh.bend as PBSH', 'import ./e2e_hvk.bend as HVK', 'import ../proofs/obj/dk.bend as DK',
-                                    'import ../proofs/obj/root_gtypes2_light.bend as RTL']
+    imps = list(view['imports']) + [*import_list('PBSH HVK DK RTL')]
     return dict(view, text=text.replace('RT.pj_', 'RTL.pj_'), imports=imps)
 
 
@@ -2715,7 +2516,7 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
   {call}
 
 """
-    imps = list(view['imports']) + ['import ./e2e_gph.bend as GPH', 'import ./e2e_hvk.bend as HVK', 'import ../proofs/obj/dk.bend as DK']
+    imps = list(view['imports']) + [*import_list('GPH HVK DK')]
     if not any(i.endswith('as VB') for i in imps):
         imps.append('import ../proofs/obj/vbuf.bend as VB')
     return dict(view, text=text, imports=imps)
@@ -2723,10 +2524,7 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
 
 def wxah_text(obj_dir):
     """e2e_wxah: the Attestation a byte-window reader builds (var_winx_Attestation) has its bit list satisfy the storage premise SDB (hv included)."""
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/spec_fixed.bend as SF',
-            'import ./e2e_cap.bend as C', 'import ../proofs/obj/var_winx_bits131072.bend as W131', 'import ../proofs/obj/var_winx_Attestation.bend as YA',
-            'import ../proofs/obj/root_types_light.bend as RT', 'import ./e2e_wxa.bend as WXA', 'import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d'] + GW_IMPORTS + ['import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO']
+    imps = [*import_list('Base O S FD A F SF C=e2e_cap W131 YA RT=root_types_light WXA FuluAttestation_d')] + GW_IMPORTS + ['import ./e2e_hvk.bend as HVK', 'import ./e2e_hvo.bend as HVO']
     return '\n'.join(imps) + '\n\n# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.\n' + \
         gw_hv('bx', 'W131', *gw_params(obj_dir, 'var_winx_bits131072.bend')) + """
 # the mirror's bits thaw back to the object's
@@ -2765,8 +2563,7 @@ def vhl8_text():
     names = re.findall(r'^def (\w+)\(', vl, re.M)
     qual = lambda t: re.sub(r'(?<![\w.])(' + '|'.join(re.escape(n) for n in sorted(names, key=len, reverse=True)) + r')\(', r'VL.\1(', t)
     imps = [l for l in vl.split('\n') if l.startswith('import ') and 'e2e_wxa.bend' not in l] + [
-        'import ../proofs/obj/var_winx_bits131072.bend as W131', 'import ./e2e_vlm_l8_Attestation.bend as VL', 'import ./e2e_wxa.bend as WXA', 'import ./e2e_wxah.bend as WXH', 'import ./e2e_bbatt.bend as BBA',
-        'import ../proofs/obj/dk.bend as DK']
+        *import_list('W131 VL WXA WXH BBA DK')]
     imps = list(dict.fromkeys(imps))
     MB = 'RT.MB<RT.M_Attestation>'
     ARR = 'Array<O.Boxed<FuluAttestation_d.Attestation>>'
@@ -2981,11 +2778,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 {HDS}  {prf}
 
 '''
-    imports = ['import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_gtypes2.bend as RG2', 'import ../proofs/obj/root_gnames.bend as RN',
-               'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/var_winx_BitsStruct.bend as BW',
-               'import ../proofs/obj/var_winx_g_bits5.bend as CB5', 'import ../proofs/obj/var_winx_g_bits6.bend as CB6',
-               'import ../proofs/obj/vfx_bv1.bend as FX1', 'import ../proofs/obj/vfx_bv2.bend as FX2', 'import ../proofs/obj/vfx_bv8.bend as FX8',
-               'import ./e2e_bvsub.bend as BVS', 'import ./e2e_bsw.bend as BSW']
+    imports = [*import_list('VB RG2 RN=root_gnames BO=bitlist_obj BW CB5 CB6 FX1 FX2 FX8=vfx_bv8 BVS BSW')]
     if deep:
         # the decoded object's two bit lists satisfy the (i) premise e2e_bsenc.SDB (hv included; e2e_bswh)
         H0 = PR[0].replace('BSW.b5_bw(', 'BSH.b5_bw_hv(')
@@ -2999,7 +2792,7 @@ def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfe
    {H3})
 
 '''
-        imports += ['import ../proofs/obj/dk.bend as DK', 'import ./e2e_bsenc.bend as BSE', 'import ./e2e_bswh.bend as BSH']
+        imports += [*import_list('DK BSE BSH')]
     return {'view': f'RG2.v_{X}', 'imports': imports, 'text': text}
 
 
@@ -3022,14 +2815,10 @@ def vroot_bs_text(R, X):
     rb0 = '      rt3(h, o, rep, x1, x2, x4, eo, t0, K0, ew0, r1)'
     R1 = (f'DK.P2(RN.rp_bv2(x1), DK.P2(RN.rp_bv1(x2), DK.P2(BO.rep_bits({P3}, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail('
           f'SH.Container_fields(Spec.{X}())))))), RN.rp_bv8(x4))))')
-    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
-            'import ../proofs/obj/generic_specs.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS',
-            'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/dk.bend as DK',
-            'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/root_gnames.bend as RN',
-            'import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/gvalid_gtypes2.bend as GV', 'import ./e2e_support.bend as E',
-            'import ../types/bitvector_1_def_generated.bend as bitvector_1_d', 'import ../types/bitvector_2_def_generated.bend as bitvector_2_d',
-            'import ../types/bitvector_8_def_generated.bend as bitvector_8_d', f'import ../types/{R}_def_generated.bend as {R}_d',
+    imps = [*import_list(
+        'Base E2E API B D=digest O S Spec=generic_specs VS=type_validator_soundness FD '
+        'BO=bitlist_obj DK SH RN=root_gnames RT=root_gtypes2 GV E=e2e_support bitvector_1_d '
+        'bitvector_2_d bitvector_8_d'), f'import ../types/{R}_def_generated.bend as {R}_d',
             f'import ../types/{R}_hashtreeroot_generated.bend as {R}_h']
     return '\n'.join(imps) + f"""
 
@@ -3063,10 +2852,7 @@ def rt3(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {WS}, +eo: {{o == {m
 
 # (iv)
 def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}:
-  (+x1, q1) = rep
-  (+x2, q2) = q1
-  (+x4, q3) = q2
-  (+eo, +r0) = q3
+{unpack_pairs('rep', ['x1', 'x2', 'x4', 'eo', 'r0'], '  ', tmp='q', start=1)}
   (+rb0, +r1) = r0
   (+wf0, +rr0) = rb0
   match wf0:
@@ -3139,13 +2925,9 @@ def bits_part(N, kb, KY, NB=None, k8=None, EX=None):
 
 def bsenc_text():
     from codegen.proofs.bridges import e2e_fix_d as EFD  # noqa: F401  kept: the import may register hooks at import time
-    imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/compact/arith.bend as A', 'import ../proofs/compact/reads.bend as RD', 'import ../proofs/nat_order.bend as Order',
-            'import ../proofs/word_split.bend as WSp', 'import ../proofs/power_division.bend as PD', 'import ../proofs/obj/vbuf.bend as VB',
-            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vbytes.bend as VY', 'import ../proofs/obj/vbitenc.bend as VBT',
-            'import ../proofs/obj/vbitdl.bend as DL', 'import ../proofs/obj/vbitcore.bend as CO', 'import ../proofs/obj/vbitrep.bend as VBR',
-            'import ../proofs/obj/vua_lay.bend as LY', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/bitlist_obj.bend as BO',
-            'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/dk.bend as DK', 'import ./e2e_bitl.bend as BLB', 'import ./e2e_encp.bend as EP'] + \
+    imps = [*import_list(
+        'Base O S FD A RD Order WSp PD VB VD VY=vbytes VBT DL CO VBR=vbitrep LY VU BO=bitlist_obj '
+        'BK DK BLB EP')] + \
            [f'import ../proofs/obj/encx_bits{N}.bend as EX_bits{N}' for N in BS_BITS]
     B = ['# GENERATED by e2e_bridge (codegen: e2e_bview_gen). Do not edit.',
          '# BitsStruct (i): its bit lists\' encode records (encx_bits5 / _6) from rep_bits and the premise SDB, and',
@@ -3264,15 +3046,10 @@ def bs3(-o: {D}, +x1: {b2}, +x2: {b1}, +x4: {b8}, +eo: {{o == {E0(P0, "x1", "x2"
   (+eo, +r0) = q3
   (+rb0, +r1) = r0
   bs3(o, x1, x2, x4, eo, BSE.bb5({P0}, rb0, hs0), r1, hs3)'''
-    imps = ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', 'import ../proofs/obj/bitlist_obj.bend as BO',
-            'import ../proofs/obj/bitlist_pack.bend as BLP', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/vbitb.bend as VBB',
-            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vua_lay.bend as LY', 'import ../proofs/obj/vbig.bend as VBG',
-            'import ../proofs/nat_order.bend as Order', 'import ./e2e_cap.bend as C',
-            'import ../proofs/obj/encx_bits5.bend as EX_bits5', 'import ../proofs/obj/encx_bits6.bend as EX_bits6',
-            'import ../types/bitvector_1_def_generated.bend as bitvector_1_d', 'import ../types/bitvector_2_def_generated.bend as bitvector_2_d',
-            'import ../types/bitvector_8_def_generated.bend as bitvector_8_d', 'import ../types/bitvector_1_encode_ssz_generated.bend as bitvector_1_e',
-            'import ../types/bitvector_2_encode_ssz_generated.bend as bitvector_2_e', 'import ../types/bitvector_8_encode_ssz_generated.bend as bitvector_8_e',
-            'import ./e2e_bsenc.bend as BSE']
+    imps = [*import_list(
+        'RT=root_gtypes2 RN=root_gnames BO=bitlist_obj BLP SH VBB VD LY VBG Order C=e2e_cap '
+        'EX_bits5 EX_bits6 bitvector_1_d bitvector_2_d bitvector_8_d bitvector_1_e bitvector_2_e '
+        'bitvector_8_e BSE')]
     sig = f'+rep: RT.rep_{X}(o, Spec.{X}()), +hs0: BSE.SDB({P0}, 31n), +hs3: BSE.SDB({P3}, 31n)'
     return defs, body, imps, sig
 
@@ -3591,6 +3368,25 @@ def hcore{p}(+dz: Nat, +M: FD.array__Tree<U32>, +n: U32, +NB: U32, +Q: Nat, +h: 
     return ''.join(L)
 
 
+def _hv_case_head(p, r, N, Q, K):
+    """The shared opening of hvn<r> / hvcn<r>: the offset from n = 1 + m, the bit count, the word index and its bound."""
+    return f'''  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
+  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
+    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
+        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
+          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
+      BV.alg3({K}n, BV.x32({Q}), h)))
+  +y = U32.shrn(({N} + 3 : U32), 2n)
+  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
+    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
+      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
+  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
+    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
+    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
+  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))'''
+
+
 def _hv_objs():
     HYP = ('+dz: Nat, +M: FD.array__Tree<U32>, +NB: U32, +m: Nat, +h: Nat, +pf: {FD.array__perfect(U32, dz, M) == True{} : Bool}, '
            '+hdz: {Nat.is_lt(dz, 32n) == True{} : Bool}, +hh: {Nat.is_le(h, 7n) == True{} : Bool}, '
@@ -3617,21 +3413,7 @@ def _hv_objs():
         L.append(f'''
 def hvn{r}(+r: Word(30n), {HYP.replace('U32.to_nat(n)', f'U32.to_nat({N})')})
     -> {G.replace('mask_last(n,', f'mask_last({N},')}:
-  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
-  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
-    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
-      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
-        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
-          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
-      BV.alg3({K}n, BV.x32({Q}), h)))
-  +y = U32.shrn(({N} + 3 : U32), 2n)
-  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
-    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
-      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
-  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
-    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
-    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
-  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))
+{_hv_case_head(p, r, N, Q, K)}
 {ebt(p, Q)}  hcore{p}(dz, M, {N}, NB, {Q}, h, pf, hdz, hh, Equal.sym(U32, U32{{WCon{{{B(c[0])}, WCon{{{B(c[1])}, Word.zero(30n)}}}}}}, U32.and({N}, 3), BF.low_sel({B(c[0])}, {B(c[1])}, r)), ei, eNB2, hq, eb)
 ''')
         cases.append(f'    case {Np}: hvn{r}(r, dz, M, NB, m, h, pf, hdz, hh, eNB, hN, hn3, e1, eh)')
@@ -3664,16 +3446,9 @@ def hvobj(+n: U32, {HYP}) -> {G}:
     return ''.join(L)
 
 
-HV_IMPORTS = ['import Base', 'import ../src/obj.bend as O', 'import ../src/merkle_fast.bend as M', 'import ../proofs/compact/found.bend as FD',
-              'import ../proofs/compact/buf.bend as BF', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/compact/reads.bend as RD',
-              'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/bits_leaf.bend as BLf',
-              'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/spec_fixed.bend as SF',
-              'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vbuf.bend as VB',
-              'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vbig.bend as VG', 'import ../proofs/obj/vbitenc.bend as VBT',
-              'import ../proofs/obj/vbytes.bend as VYS', 'import ../proofs/obj/vbytes.bend as VBY', 'import ../proofs/obj/vcopy.bend as VC',
-              'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vua_copy.bend as UC', 'import ../proofs/obj/vua_ct.bend as UCT',
-              'import ../proofs/obj/venc.bend as VE',
-              'import ./e2e_cap.bend as C', 'import ./e2e_bview.bend as BV', 'import ./e2e_bitv.bend as BTV']
+HV_IMPORTS = [*import_list(
+    'Base O M=merkle_fast FD BF A RD Order DK BLf VSP VY=vbyte SF VBL VD VB VU VG VBT VYS VBY '
+    'VC VR=vbrt UC UCT VE C=e2e_cap BV=e2e_bview BTV')]
 
 
 def hv_text():
@@ -3896,21 +3671,7 @@ def _hv_objsG():
         L.append(f'''
 def hvcn{r}(+r: Word(30n), {HYP.replace('U32.to_nat(n)', f'U32.to_nat({N})').replace('VBY.KW(n)', f'VBY.KW({N})').replace('VBY.RM(n)', f'VBY.RM({N})')})
     -> {G}:
-  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
-  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
-    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
-      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
-        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
-          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
-      BV.alg3({K}n, BV.x32({Q}), h)))
-  +y = U32.shrn(({N} + 3 : U32), 2n)
-  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
-    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
-      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
-  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
-    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
-    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
-  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))
+{_hv_case_head(p, r, N, Q, K)}
 {ebt(p, Q)}{exf(p, N, Q, c)}  hcoreG{p}(dz, CT, NB, {Q}, h, pf, hdz, hh, eNB2, hq, VB.slot(CT, {Q}), eX, eb)
 ''')
         cases.append(f'    case {Np}: hvcn{r}(r, dz, CT, NB, m, h, pf, hdz, hh, eNB, hN, hn3, e1, eh, kf)')

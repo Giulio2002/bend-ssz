@@ -23,6 +23,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT, E2E  # noqa: E402
+from codegen.core.shared_rest import close_paren  # noqa: E402
 
 LISTS = {
     'l16_ProposerSlashing': dict(X='ProposerSlashing', Wf='proofs/obj/var_winx_l16_ProposerSlashing.bend', ML='e2e_ml_l16_ProposerSlashing.bend',
@@ -44,19 +45,6 @@ def dtx_def(name):
 
 def rename(t, c, X):
     return t.replace('l1048576_bl1073741824', c).replace('bl1073741824_bx', X + '_bx').replace('RT.MB<RT.WMr>', 'RT.MB<RT.M_%s>' % X)
-
-
-def close_paren(t, i):
-    """index of the paren closing the one at t[i]"""
-    depth = 0
-    for k in range(i, len(t)):
-        if t[k] == '(':
-            depth += 1
-        elif t[k] == ')':
-            depth -= 1
-            if depth == 0:
-                return k
-    raise ValueError
 
 
 def to_sde(t, c, X):

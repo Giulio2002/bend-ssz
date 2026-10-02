@@ -98,9 +98,6 @@ def struct_domain(ctx, n2, R, VAL, cons, xs, expr, concl2, O_):
     gsm = W.Mod.get(ROOT / 'proofs/obj/generic_specs.bend')
     sname = sch.rpartition('.')[2].rstrip('()')
     _, _, sbody = gsm.signature(sname)
-    vm_path = None
-    for a_, pth in ctx.used.items():
-        pass
     vname = view.rpartition('.')[2].split('(')[0]
     vmod = W.Mod.get(ROOT / 'proofs/obj/root_gnames_light.bend')
     _, _, vbody = vmod.signature(vname)

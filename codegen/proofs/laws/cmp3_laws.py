@@ -33,8 +33,9 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import finish  # noqa: E402
+from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
 MAX_DEPTH = 10
@@ -147,12 +148,8 @@ def main():
                 seen.add(('u', X))
                 out[ROOT / f'proofs/obj/zuarm_{X}.bend'] = module(tmod, X, laws)
                 cnt[2] += len(laws)
-    orphans = sorted(str(q.relative_to(ROOT)) for pat in ('zpwdcmp_*.bend', 'zflag_*.bend', 'zuarm_*.bend') for q in (ROOT / 'proofs/obj').glob(pat) if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale cmp3 laws: ', 'cmp3 laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws (pwd names, flag names, union arm laws)')
+    if finish(RR.rewire_out(out), ('zpwdcmp_*.bend', 'zflag_*.bend', 'zuarm_*.bend'), 'stale cmp3 laws: ', 'cmp3 laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws (pwd names, flag names, union arm laws)')
 
 
 if __name__ == '__main__':

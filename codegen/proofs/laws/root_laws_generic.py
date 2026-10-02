@@ -27,6 +27,7 @@ from codegen.proofs.laws import root_laws_b as RB  # noqa: E402
 from codegen.proofs.laws import pcont_laws as PCL  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import sync_pairs  # noqa: E402
 SPECS = ROOT / 'proofs/obj/generic_specs.bend'
 GA = ROOT / 'proofs/obj/root_gnames.bend'
 GB = ROOT / 'proofs/obj/root_gtypes.bend'
@@ -910,18 +911,7 @@ def main():
     outs = [(SPECS, specs), (PCF, PCL.emit_file(pcont_patterns(names), union_selectors(names))), (GA, ta), (GB, tb), (GB2, tb2), (GL, tl)] + sorted(tbits.items())
     outs = light_outs(outs, 'root_laws_generic (codegen)')
     from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    outs = RR.rewire_out(outs)
-    if '--check' in sys.argv:
-        for path, text in outs:
-            if not path.exists() or path.read_text() != text:
-                print(f'{path} is stale; run codegen/proofs/laws/root_laws_generic.py')
-                return 1
-        print('generic root laws are current')
-        return 0
-    for path, text in outs:
-        if not path.exists() or path.read_text() != text:
-            path.write_text(text)
-    return 0
+    return sync_pairs(RR.rewire_out(outs), 'root_laws_generic', 'generic root laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':

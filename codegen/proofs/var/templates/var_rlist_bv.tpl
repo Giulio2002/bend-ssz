@@ -1,0 +1,122 @@
+@@ bvx_text @@
+# ---- the copy's storage depth, from the element limit ---------------------------------------
+# (no closed number above ${N} is evaluated: the bounds are stated as right shifts)
+
+def mE_E(+E: Nat, +G: Nat, +k: Nat, +h: {Nat.is_le(E, G) == ${TRUE}}) -> {Nat.is_le(VM.mulE(E, k), VM.mulE(G, k)) == ${TRUE}}:
+  match k:
+    case 0n: {==}
+    case 1n+ +c:
+      FD.nat__le_trans(Nat.add(E, VM.mulE(E, c)), Nat.add(G, VM.mulE(E, c)), Nat.add(G, VM.mulE(G, c)),
+        Order.add_right(E, G, VM.mulE(E, c), h), Order.add_left(G, VM.mulE(E, c), VM.mulE(G, c), mE_E(E, G, c, h)))
+
+def le_eq(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(a, b) == ${TRUE}}, +e: {b == c : Nat}) -> {Nat.is_le(a, c) == ${TRUE}}:
+  FD.logic__subst(Nat, z => {Nat.is_le(a, z) == ${TRUE}}, b, c, e, h)
+
+# (2^${SH} c + 2^${SH} - 1) >> ${SH} = c
+def rsh(+c: Nat) -> {VD.s_rng(${SH}n, Nat.add(${P1}n, VM.mulE(${PS}n, c))) == c : Nat}:
+  match c:
+    case 0n: {==}
+    case 1n+ +q: Equal.cong(Nat, Nat, z => 1n+z, VD.s_rng(${SH}n, Nat.add(${P1}n, VM.mulE(${PS}n, q))), q, rsh(q))
+
+# the copy's allocation, in words
+def eYL(${CW}, ${HC}) -> {VD.s_rng(2n, VC.YL(len)) == 7n+MQ(len) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(len), A.quad(MQ(len)), eqw(len, hchk)) : {VD.s_rng(2n, Nat.add(31n, _)) == 7n+MQ(len) : Nat}
+  VLS.rng2_q(7n+MQ(len))
+
+def hWZ(${CW}, ${HC}) -> {Nat.is_le(U32.to_nat(VC.WZ(len)), Nat.add(${P1}n, VM.mulE(${PS}n, CC(len)))) == ${TRUE}}:
+  +c = CC(len)
+  +a1 = VC.wz_le(len, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, len, hlen(d, x, len, hw)))
+  +a2 = le_eq(U32.to_nat(VC.WZ(len)), Nat.add(VD.s_rng(2n, VC.YL(len)), 8n), Nat.add(7n+MQ(len), 8n), a1,
+    Equal.cong(Nat, Nat, z => Nat.add(z, 8n), VD.s_rng(2n, VC.YL(len)), 7n+MQ(len), eYL(${CA}, hchk)))
+  +a3 = le_eq(Nat.add(7n+MQ(len), 8n), Nat.add(7n+VM.mulE(${PS}n, c), 8n), Nat.add(${P1}n, VM.mulE(${PS}n, c)),
+    Order.add_right(7n+MQ(len), 7n+VM.mulE(${PS}n, c), 8n, mE_E(${E}n, ${PS}n, c, {==})),
+    Equal.cong(Nat, Nat, z => 7n+z, Nat.add(VM.mulE(${PS}n, c), 8n), Nat.add(8n, VM.mulE(${PS}n, c)), FD.nat__add_comm(VM.mulE(${PS}n, c), 8n)))
+  FD.nat__le_trans(U32.to_nat(VC.WZ(len)), Nat.add(7n+MQ(len), 8n), Nat.add(${P1}n, VM.mulE(${PS}n, c)), a2, a3)
+
+# the allocation is below 2^${K} words
+def hS(${CW}, ${HC}) -> {Nat.is_le(VD.s_rng(${K}n, U32.to_nat(VC.WZ(len))), 0n) == ${TRUE}}:
+  +c = CC(len)
+  +X = Nat.add(${P1}n, VM.mulE(${PS}n, c))
+  +b1 = VC.rng_mono(${K}n, U32.to_nat(VC.WZ(len)), X, hWZ(${CA}, hchk))
+  +e1 = Equal.trans(Nat, VD.s_rng(${K}n, X), VD.s_rng(${KR}n, VD.s_rng(${SH}n, X)), VD.s_rng(${KR}n, c), VD.rng_comp2(${SH}n, ${KR}n, X),
+    Equal.cong(Nat, Nat, z => VD.s_rng(${KR}n, z), VD.s_rng(${SH}n, X), c, rsh(c)))
+  +b2 = le_eq(VD.s_rng(${K}n, U32.to_nat(VC.WZ(len))), VD.s_rng(${K}n, X), VD.s_rng(${KR}n, c), b1, e1)
+  FD.nat__le_trans(VD.s_rng(${K}n, U32.to_nat(VC.WZ(len))), VD.s_rng(${KR}n, c), VD.s_rng(${KR}n, U32.to_nat(${N})), b2, VC.rng_mono(${KR}n, c, U32.to_nat(${N}), hcw(len, hchk)))
+
+# words_depth(w) <= k when w >> k = 0
+def wd_r(+w: U32, +k: Nat, +h: {Nat.is_le(VD.s_rng(k, U32.to_nat(w)), 0n) == ${TRUE}}) -> {Nat.is_le(B.words_depth(w), k) == ${TRUE}}:
+  VD.wd_min(w, k, FD.nat__lt_le(U32.to_nat(w), O.pow2n(k), VD.small_inv(k, U32.to_nat(w), FD.nat__le_lt_succ(VD.s_rng(k, U32.to_nat(w)), 0n, h))))
+
+def hDZ(${CW}, ${HC}) -> {Nat.is_le(VLS.DZ(len), ${K}n) == ${TRUE}}: wd_r(VC.WZ(len), ${K}n, hS(${CA}, hchk))
+
+
+@@ bvx_text_2 @@
+  +hy = VC.hyW(x, len, hwN)
+  +hz = ${HZ}
+  +ez = ${EZ}
+  UCT.copy_in_atU(d, t, n, off, len, VLS.DZ(len), pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), 30n, 31n, hz, {==}), ez,
+    UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hy)
+@@ bvx_text_3 @@
+  +hL = hlen(d, x, len, hw)
+  +hz = ${HZ}
+  +ez = ${EZ}
+  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), FD.nat__le_lt_trans(VLS.DZ(len), ${KZ}n, 31n, hz, {==}), ez,
+    UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))
+@@ bvx_text_4 @@
+def BF(t: ${TR}, +n: U32) -> B.Buf: UA.BF(t, n)
+
+# ---- the validator ------------------------------------------------------------------------------
+
+def CHKw(+t: ${TR}, +x: Nat, +off: U32, +len: U32) -> Bool:
+  Bool.and(U32.is_eq(len, (U32.div(len, ${B}) * ${B} : U32)), U32.is_le(U32.div(len, ${B}), ${N}))
+
+def ok_evalw(${CW}) -> {T.${p}_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  {==}
+
+def vR() -> Word(31n): FD.spec_numeric__from_nat(31n, ${B}n)
+
+# The window is c whole elements, c <= ${N}.
+def CC(+len: U32) -> Nat: U32.to_nat(U32.div(len, ${B}))
+def MQ(+len: U32) -> Nat: VM.mulE(${E}n, CC(len))
+def ecw(+len: U32, +h: ${CK})
+    -> {U32.to_nat(len) == Nat.mul(CC(len), ${B}n) : Nat}:
+  Pair.fst({U32.to_nat(len) == Nat.mul(CC(len), U32.to_nat(${B})) : Nat}, {Nat.is_le(CC(len), U32.to_nat(${N})) == ${TRUE}}, VU.whole_t(len, ${B}, ${N}, vR(), {==}, {==}, {==}, h))
+def hcw(+len: U32, +h: ${CK})
+    -> {Nat.is_le(CC(len), U32.to_nat(${N})) == ${TRUE}}:
+  Pair.snd({U32.to_nat(len) == Nat.mul(CC(len), U32.to_nat(${B})) : Nat}, {Nat.is_le(CC(len), U32.to_nat(${N})) == ${TRUE}}, VU.whole_t(len, ${B}, ${N}, vR(), {==}, {==}, {==}, h))
+
+# its bytes are 4 E c
+def eqw(+len: U32, +h: ${CK}) -> {U32.to_nat(len) == A.quad(MQ(len)) : Nat}:
+  Equal.trans(Nat, U32.to_nat(len), Nat.mul(CC(len), ${B}n), A.quad(MQ(len)), ecw(len, h), VM.mulq(CC(len), ${E}n))
+
+def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == ${TRUE}})
+    -> {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == ${TRUE}}:
+  FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)
+
+${STORE}${ZER}
+# ---- the reader ---------------------------------------------------------------------------------
+
+def OBJw(+d: Nat, +t: ${TR}, +x: Nat, +off: U32, +len: U32) -> O.Words: O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, len, VLS.DZ(len))), len}
+
+def readw(${CW}, ${HC})
+    -> {T.${p}_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & O.Words}:
+${READ}
+
+# ---- the value ----------------------------------------------------------------------------------
+
+def VALw(+t: ${TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{VM.bvit(CC(len), ${E}n, UR.RWS(MQ(len), t, x))}
+
+def specw(${CW}, ${HC})
+    -> {Codec.parts(VALw(t, x, len), ${LSCH}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  +c = CC(len)
+  +M = MQ(len)
+  +W = UR.RWS(M, t, x)
+  +el = eqw(len, hchk)
+  +hq = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == ${TRUE}}, U32.to_nat(len), A.quad(M), el, hw)
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == ${TRUE}}, U32.to_nat(len), A.quad(M), el, ${FIT})
+  +hl = FD.logic__subst(Nat, z => {Nat.is_le(M, z) == ${TRUE}}, M, VB.len(W), Equal.sym(Nat, VB.len(W), M, UR.rws_len(M, t, x)), FD.nat__le_refl(M))
+  %Equal.sym(Nat, U32.to_nat(len), A.quad(M), el) : {Codec.parts(VALw(t, x, len), ${LSCH}) == Some{[S.Variable{UW.WX(t, x, _)}]} : Maybe<&2, +List<S.Part>>}
+  %UR.rws_bytes(M, d, t, x, pf, hq) : {Codec.parts(VALw(t, x, len), ${LSCH}) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
+  %UR.wtake_rws(M, t, x) : {Codec.parts(VALw(t, x, len), ${LSCH}) == Some{[S.Variable{F.limbs(_)}]} : Maybe<&2, +List<S.Part>>}
+  VM.list_bv(c, ${E}n, ${B}n, W, U32.to_nat(${N}), {==}, {==}, {==}, hcw(len, hchk), hl, fit)
+

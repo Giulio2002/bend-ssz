@@ -20,6 +20,7 @@ import sys
 from codegen.proofs.collections import view_laws as VL
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/view_cells.bend'
 
 BASE = lambda i: 'O.e8(Nat.mul(%s, 64n))' % i
@@ -189,16 +190,7 @@ def el_same(+d: Nat, +t: F.array__Tree<U32>, @XP@, +i: Nat, +J: Nat, +ne: {Nat.i
 
 
 def main():
-    t = cells_file()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: view_cells.bend')
-            sys.exit(1)
-        print('viewcells: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('viewcells: proofs/obj/view_cells.bend')
+    run_single('viewcells', OUT, cells_file(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

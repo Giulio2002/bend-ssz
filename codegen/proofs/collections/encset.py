@@ -28,6 +28,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_each, split_top as shared_split_top  # noqa: E402
 from codegen.proofs.collections import viewseq as VQS  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
@@ -52,19 +53,7 @@ def and_i(+a: Bool, +b: Bool, +ha: {a == True{} : Bool}, +hb: {b == True{} : Boo
 
 
 def split_top(s):
-    out, depth, cur = [], 0, ''
-    for ch in s:
-        if ch in '([{<':
-            depth += 1
-        elif ch in ')]}>':
-            depth -= 1
-        if ch == ',' and depth == 0:
-            out.append(cur)
-            cur = ''
-        else:
-            cur += ch
-    out.append(cur)
-    return out
+    return shared_split_top(s, strip=False)
 
 
 def facts(c):
@@ -357,22 +346,7 @@ def out_path(c):
 
 
 def main():
-    stale = False
-    for c in LISTS + REC_LISTS:
-        t = text(c) if c in LISTS else rec_text(c)
-        o = out_path(c)
-        if '--check' in sys.argv:
-            if not o.exists() or o.read_text() != t:
-                print('stale: %s' % o.name)
-                stale = True
-            continue
-        if not o.exists() or o.read_text() != t:
-            o.write_text(t)
-        print('encset: proofs/obj/%s' % o.name)
-    if '--check' in sys.argv:
-        if stale:
-            sys.exit(1)
-        print('encset: up to date')
+    run_each('encset', [(out_path(c), text(c) if c in LISTS else rec_text(c)) for c in LISTS + REC_LISTS], '--check' in sys.argv)
 
 
 if __name__ == '__main__':

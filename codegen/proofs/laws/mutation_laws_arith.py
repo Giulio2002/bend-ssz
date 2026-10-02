@@ -36,9 +36,9 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.impl import runtime_refs as RR  # noqa: E402
 
 M32 = (1 << 32) - 1
 Q0 = 3  # the word of the zero buffer the unaligned writers start at (odd: 2q is not a multiple of any capacity)
@@ -166,34 +166,14 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws_arith'),
-         f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
-         '# (found by mutation testing; codegen/proofs/laws/mutation_laws_arith.py). Each is by computation.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('mutation_laws_arith', [f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
+                                              '# (found by mutation testing; codegen/proofs/laws/mutation_laws_arith.py). Each is by computation.'], laws, tmod)
 
 
 def main():
-    out, cnt, seen = {}, [], set()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        n = 0
-        for X, ls in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/wordpos_{X}.bend'] = module(tmod, X, ls) + '\n'
-            n += len(ls)
-        cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('wordpos_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale arithmetic mutation laws: ', 'arithmetic mutation laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws')
+    out, cnt = per_name(name_laws, lambda tmod, X, ls: module(tmod, X, ls) + '\n', 'wordpos')
+    if finish(RR.rewire_out(out), ('wordpos_*.bend',), 'stale arithmetic mutation laws: ', 'arithmetic mutation laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws')
 
 
 if __name__ == '__main__':

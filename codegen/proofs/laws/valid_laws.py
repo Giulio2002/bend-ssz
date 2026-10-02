@@ -42,7 +42,8 @@ from codegen.impl import generate as G  # noqa: E402
 from codegen.proofs.laws import root_laws as RA  # noqa: E402
 from codegen.proofs.laws import root_laws_generic as RG  # noqa: E402
 
-from codegen.core.paths import ROOT, OBJ  # noqa: E402
+from codegen.core.paths import OBJ  # noqa: E402
+from codegen.core.shared_laws import sync_pairs  # noqa: E402
 
 
 def vneeds_rp(s):
@@ -75,7 +76,6 @@ def valid_shape(s, w, RN):
     E = RA.spec_schema(s)
     rp = vneeds_rp(s)
     head = f'def rv_{p}(+o: {R}' + (f', +rp: {RN}.rp_{p}(o)' if rp else '') + f') -> {{VD.root_valid({RN}.v_{p}(o), {E}) == True{{}} : Bool}}:'
-    Z7 = ', '.join(['0'] * 7)
     if k == 'bool':
         w(head + ' {==}')
     elif k == 'u8':
@@ -587,7 +587,6 @@ class VB:
 
     def okdepth(self, fs):
         """The depth term of a box of byte list's ok (literal, or the DV entry)."""
-        g = self.gen
         inner = fs.inner
         d = G.log2ceil(max(1, (inner.t.size + 31) // 32))
         return f'OS.dv_{d}(dv)' if d >= RBmod().BIGD else f'{d}n'
@@ -755,7 +754,7 @@ class VB:
         p = s.p
         R = RA.qual(s.rep)
         m = g.meta[p]
-        F, kinds, sx, cf = m['F'], m['kinds'], m['sx'], m.get('cf', 'SH.Container_fields')
+        F, kinds, sx = m['F'], m['kinds'], m['sx']
         n = len(F)
         prog = s.t is not None and s.t.kind == 'pcontainer'
         wide = n > G.GROUP
@@ -1568,7 +1567,6 @@ def emit_blists(w):
         w(f'        {{VD.root_valid(S.Sequence{{{itsz}}}, S.ListOf{{{elem}, L}}) == True{{}} : Bool}}')
         if K == 'h':
             rv = f'VO.items_valid({k}, F.array__slots(U32, t), 0n)'
-            le = f'Equal.sym(Nat, {k}, VD.items_length({its}), VO.items_len({k}, F.array__slots(U32, t), 0n))'
             w(f'      %Equal.sym(Bool, VD.root_valid({its}, {R}), True{{}}, {rv}) :')
             w(f'        {{Bool.and(Nat.is_le(VD.items_length({its}), L), _) == True{{}} : Bool}}')
             w(f'      %Equal.sym(Nat, VD.items_length({its}), {k}, VO.items_len({k}, F.array__slots(U32, t), 0n)) :')
@@ -1671,17 +1669,8 @@ def main():
     TYPES = emit_types()
     outs = [(OBJ / 'gvalid_gnames.bend', emit_gnames()), (OBJ / 'gvalid_leaves.bend', emit_leaves()), (OBJ / 'gvalid_words.bend', emit_words()), (OBJ / 'gvalid_types.bend', TYPES[0]), (OBJ / 'gvalid_packed.bend', emit_packed_lib()), (OBJ / 'gvalid_gpacked.bend', emit_gnames_packed()[0])] + ([] if False else sorted(TYPES[2].items())) + sorted(emit_gbits().items()) + sorted(emit_gtypes()[0].items())
     from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    outs = RR.rewire_out(outs)
-    if '--check' in sys.argv:
-        for path, text in outs:
-            if not path.exists() or path.read_text() != text:
-                sys.exit(f'{path.relative_to(ROOT)} is stale; run codegen/proofs/laws/valid_laws.py')
-        print('validity laws are current')
-        return
-    for path, text in outs:
-        if not path.exists() or path.read_text() != text:
-            path.write_text(text)
+    return sync_pairs(RR.rewire_out(outs), 'valid_laws', 'validity laws are current', '--check' in sys.argv)
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

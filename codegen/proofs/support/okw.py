@@ -609,7 +609,6 @@ def okw_relink(t, comps):
 
 
 # ==== the encoder laws' O twins (codegen/proofs/var/var_cont_top.py: encode_evalO / encode_specO on OKW) ====
-GTW = ['HD', 'mk3', 'room', 'rt0', 'by0', 'eval_go', 'obytes', 'encode_eval', 'encode_spec']
 GTN = {'HD': 'HDW', 'mk3': 'mk3W'}
 TTW = ['putx0', 'eval_go', 'obytes', 'spec_go', 'encode_eval', 'encode_spec']
 

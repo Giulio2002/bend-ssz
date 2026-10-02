@@ -21,6 +21,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/bits_view.bend'
 
 HEAD = '''import Base
@@ -606,16 +607,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: bits_view.bend')
-            sys.exit(1)
-        print('bits_view: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('bits_view: proofs/obj/bits_view.bend')
+    run_single('bits_view', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

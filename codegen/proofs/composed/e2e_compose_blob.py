@@ -2,6 +2,7 @@
 (e2e_compose_fixed.build_tree_rec's output for FuluHistoricalBatch) written for a decoder whose object is DB.OWd(15n, bs),
 with the premises supplied by e2e/e2e_dbs_BlobSidecar.bend (codegen/proofs/decoded/e2e_dbs.py)."""
 import sys as _sys
+from codegen.core.shared_bridges import import_lines  # noqa: E402
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 
@@ -57,28 +58,10 @@ def @FULU@_e2e_decode_root(h: B.Buf, +bs: +List<U32>, +n: U32, -o: @FULU@_d.@X@,
 
 
 HEAD = '''import Base
-import ./FuluBlob_e2e_root_generated.bend as RB
-import ./FuluBlobSidecar_e2e_dec_generated.bend as DB
-import ./FuluBlobSidecar_e2e_generated.bend as EB
-import ./e2e_bytes.bend as EY
-import ./e2e_comp.bend as C
-import ./e2e_dbs_BlobSidecar.bend as DBS
-import ./e2e_load.bend as L
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as RT
-import ../spec/fulu_schemas.bend as Spec
-import ../spec/primitives.bend as M0_WO_SP
-import ../src/buffer.bend as B
-import ../src/digest.bend as D
-import ../src/model.bend as API
-import ../src/obj.bend as O
-import ../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
-import ../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
-import ../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
-import ../types/FuluBlobSidecar_hashtreeroot_generated.bend as FuluBlobSidecar_h
-import ../types/schema.bend as S
+''' + import_lines(
+    'RB DB=FuluBlobSidecar_e2e_dec_generated EB=FuluBlobSidecar_e2e_generated EY C=e2e_comp DBS L '
+    'E=e2e_support E3 FD RT=root_types_light Spec=fulu_schemas M0_WO_SP B D=digest API O '
+    'FuluBlobSidecar_r FuluBlobSidecar_d FuluBlobSidecar_e FuluBlobSidecar_h S') + '''
 
 '''
 

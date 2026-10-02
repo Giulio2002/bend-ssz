@@ -39,6 +39,7 @@ import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
+from codegen.core.shared_laws import finish  # noqa: E402
 from codegen.impl import generate as G  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
@@ -166,13 +167,9 @@ def main():
         assert not dup, f'a name in both runtimes: {sorted(dup)[:3]}'
         out.update(o)
         cnt.append(c)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in list((ROOT / 'proofs/obj').glob('offset_laws_*.bend')) +
-                     list((ROOT / 'proofs/obj').glob('offset_size_*.bend')) if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale offset mutation laws: ', 'offset mutation laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{len(out)} files; (decode_build, decode_fields, size) per runtime: {cnt}')
+    if finish(RR.rewire_out(out), ('offset_laws_*.bend', 'offset_size_*.bend'), 'stale offset mutation laws: ', 'offset mutation laws are current',
+              '--check' in sys.argv):
+        print(f'{len(out)} files; (decode_build, decode_fields, size) per runtime: {cnt}')
 
 
 if __name__ == '__main__':

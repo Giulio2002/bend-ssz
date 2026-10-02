@@ -185,7 +185,6 @@ def collection_laws(w, s):
     if k in ('packed', 'packed_elems', 'bytelist'):
         byteish = k == 'bytelist'
         el = None if byteish else s.g.shape(t.elem)
-        es = 1 if byteish else t.elem.fixed_size()
         er = 'U32' if byteish else qual(el.rep)
         pl = '+' if byteish else G.plus(el)
         w(f'def {L}_write_rejected(ws: Array<U32>, +n: U32, +i: U32, {pl}v: {er})')

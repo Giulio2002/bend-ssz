@@ -32,8 +32,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.impl import generate as G  # noqa: E402
 from codegen.core import schema  # noqa: E402
@@ -44,6 +44,8 @@ from codegen.proofs.laws import spec_laws as SL  # noqa: E402
 from codegen.proofs.var import var_bytes_nest as VBN  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_var_b import Templates  # noqa: E402
+TPL = Templates('var_bytes_x', globals())
 NAMES = ['ExecutionPayloadHeader']
 # names nesting a covered name (codegen/proofs/var/var_bytes_nest.py), in dependency order
 NEST = ['LightClientHeader']
@@ -150,9 +152,8 @@ def inv_text(x):
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         q = q.replace(a, b)
     L.append(q.rstrip() + '\n')
-    L.append('# Every value whose spec parts are one variable part has its bytes in the checked shape.')
-    L.append(f'def inv_p(+v: S.Value, +bs: +List<U32>, +e: {{Codec.parts(v, Spec.{x.n}()) == Some{{[S.Variable{{bs}}]}} : Maybe<&2, +List<S.Part>>}}) -> FACTS(bs):')
-    L.append(f'  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.{x.n}()), Some{{[S.Variable{{bs}}]}}, e))')
+    for line in TPL.render('inv_text_lines', x=x).split('\n'):
+        L.append(line)
     return '\n'.join(L) + '\n'
 
 
@@ -192,99 +193,19 @@ def win_text(x):
                       '# (see the module docstring of codegen/proofs/var/var_bytes_x.py).', '']
     w = L.append
     w(between(al, 'def chk3(', '# The byte list\'s check'))
-    w(f'''# The byte list's check: its length is at most the limit.
-def BLW(+L: U32) -> Bool: U32.is_le(L, {LIM})
-def LL(+len: U32) -> U32: U32.sub(len, {FS})
-def SPOw(t: FD.array__Tree<U32>, +x: Nat) -> U32: {rwn(cvar).replace("UR.RWN(t, ", "UR.RWN(t, ")}
-
-def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
-  chk3(U32.is_le({FS}, len), U32.is_eq(SPOw(t, x), {FS}), BLW(U32.sub(len, SPOw(t, x))))
-''')
+    w(TPL.render('win_text', FS=FS, LIM=LIM, cvar=cvar))
     w(between(al, 'def c1_id(', 'def winb('))
-    w(f'''# c + x <= 4 2^d for c <= {FS}.
-def hcx(+d: Nat, +x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == True{{}} : Bool}}, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), {P4}) == True{{}} : Bool}}, {HA})
-    -> {{Nat.is_le(Nat.add(c, x), {P4}) == True{{}} : Bool}}:
-  FD.nat__le_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P4},
-    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),
-    FD.logic__subst(Nat, z => {{Nat.is_le(z, {P4}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
-
-# The byte offset off + c of header byte c <= {FS} is at c + x.
-def eoc(+d: Nat, +x: Nat, +off: U32, +len: U32, +c: U32, +hc: {{Nat.is_le(U32.to_nat(c), {FS}n) == True{{}} : Bool}}, {WHX}, {HA})
-    -> {{U32.to_nat(U32.add(off, c)) == Nat.add(U32.to_nat(c), x) : Nat}}:
-  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}), hcx(d, x, len, U32.to_nat(c), hc, hw, ha))
-
-# Room for a field of s bytes at c + x, for c + s <= {FS}.
-def roomc(+d: Nat, +x: Nat, +len: U32, +c: Nat, +s: Nat, +hc: {{Nat.is_le(Nat.add(c, s), {FS}n) == True{{}} : Bool}}, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), {P4}) == True{{}} : Bool}}, {HA})
-    -> {{Nat.is_le(Nat.add(Nat.add(c, x), s), {P4}) == True{{}} : Bool}}:
-  UR.roomf(x, U32.to_nat(len), c, s, {P4}, hw, FD.nat__le_trans(Nat.add(c, s), {FS}n, U32.to_nat(len), hc, leFS(len, ha)))
-
-# The byte list's window: ({FS} + x) + (len - {FS}) = x + len.
-def hwv(+d: Nat, +x: Nat, +len: U32, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), {P4}) == True{{}} : Bool}}, {HA})
-    -> {{Nat.is_le(Nat.add(Nat.add(U32.to_nat({FS}), x), U32.to_nat(LL(len))), {P4}) == True{{}} : Bool}}:
-  +e = Equal.trans(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LL(len)))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))),
-    FD.nat__add_assoc({FS}n, x, U32.to_nat(LL(len))), FD.lru_nat_algebra__add_swap({FS}n, x, U32.to_nat(LL(len))))
-  %Equal.sym(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))), e) : {{Nat.is_le(_, {P4}) == True{{}} : Bool}}
-  %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)) : {{Nat.is_le(Nat.add(x, _), {P4}) == True{{}} : Bool}}
-  hw
-
-# ---- the validator ----------------------------------------------------------------------------
-
-def rdoff(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA})
-    -> {{B.read32({BF}, U32.add(off, {cvar})) == ({BF}, SPOw(t, x)) : B.Buf & U32}}:
-  UR.rwx(d, t, n, U32.add(off, {cvar}), {posx(cvar)}, eoc(d, x, off, len, {cvar}, {{==}}, eo, hd, hw, ha), FD.nat__lt_trans(d, 28n, 31n, hd, {{==}}), pf,
-    roomc(d, x, len, {cvar}n, 4n, {{==}}, hw, ha))
-
-def okw_c0(+t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +b: Bool)
-    -> {{{Tn}_c0(b, {BF}, off, len, SPOw(t, x)) == ({BF}, chk3(True{{}}, b, BLW(U32.sub(len, SPOw(t, x))))) : B.Buf & Bool}}:
-  match b:
-    case False{{}}: {{==}}
-    case True{{}}: c1_id(BLW(U32.sub(len, SPOw(t, x))), {BF}, off, len, SPOw(t, x))
-
-def okw_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +a: Bool, +ea: {{U32.is_le({FS}, len) == a : Bool}})
-    -> {{{Tn}_ok_len(a, {BF}, off, len) == ({BF}, chk3(a, U32.is_eq(SPOw(t, x), {FS}), BLW(U32.sub(len, SPOw(t, x))))) : B.Buf & Bool}}:
-  match a:
-    case False{{}}: {{==}}
-    case True{{}}:
-      %Equal.sym(B.Buf & U32, B.read32({BF}, U32.add(off, {cvar})), ({BF}, SPOw(t, x)), rdoff(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {{{Tn}_v0(off, len, _) == ({BF}, chk3(True{{}}, U32.is_eq(SPOw(t, x), {FS}), BLW(U32.sub(len, SPOw(t, x))))) : B.Buf & Bool}}
-      okw_c0(t, n, x, off, len, U32.is_eq(SPOw(t, x), {FS}))
-
-# The validator on the window returns the buffer and CHKw(t, x, off, len).
-def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF})
-    -> {{{Tn}_ok({BF}, off, len) == ({BF}, CHKw(t, x, off, len)) : B.Buf & Bool}}:
-  okw_len(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le({FS}, len), {{==}})
-
-# ---- the byte list's bounds --------------------------------------------------------------------
-''')
+    w(TPL.render('win_text_hcx', BF=BF, FS=FS, HA=HA, Tn=Tn, cvar=cvar))
     w(between(al, 'def hLx(', '# The byte list\'s words lie in the buffer'))
     w(between(al, '# The storage of the byte list: depth', '# The byte list\'s storage: the masked copy'))
-    w(f'''# The byte list's words lie in the buffer.
-def hsv(+d: Nat, +x: Nat, +off: U32, +len: U32, {WHX}, {HA})
-    -> {{Nat.is_le(Nat.add(VC.NW(LL(len)), VRT.QX(U32.add(off, {FS}))), VB.pw(d)) == True{{}} : Bool}}:
-  UW.hsx(d, U32.add(off, {FS}), Nat.add(U32.to_nat({FS}), x), LL(len), eoc(d, x, off, len, {FS}, {{==}}, eo, hd, hw, ha), hd, hwv(d, x, len, hw, ha))
-
-# The offset word, once checked, reads as {FS}.
-def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}})
-    -> {{B.read32({BF}, U32.add(off, {cvar})) == ({BF}, {FS}) : B.Buf & U32}}:
-  %Equal.sym(B.Buf & U32, B.read32({BF}, U32.add(off, {cvar})), ({BF}, SPOw(t, x)), rdoff(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-    {{_ == ({BF}, {FS}) : B.Buf & U32}}
-  %Equal.sym(U32, SPOw(t, x), {FS}, epo) : {{({BF}, _) == ({BF}, {FS}) : B.Buf & U32}}
-  {{==}}
-''')
+    w(TPL.render('win_text_hsv', BF=BF, FS=FS, HA=HA, cvar=cvar))
     # ---- the reader ----
     leaves, OBJ = VBY.read_plan(x)
     OBJ = OBJ.replace('VF.BF(t, n)', BF)
     RHS = f'({BF}, OBJw(d, t, x, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w('# The reader on the window, when the checks hold.')
-    w(f'def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},')
-    w(f'    {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, {HX})')
-    w(f'    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:')
-    w('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})')
-    w('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})')
+    for line in TPL.render('win_text_lines', BF=BF, FS=FS, HA=HA, HX=HX, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn).split('\n'):
+        w(line)
 
     def ecf(c):
         return f'eoc(d, x, off, len, {c}, {{==}}, eo, hd, hw, ha)'
@@ -307,23 +228,11 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
             w(f'  %Equal.sym(B.Buf & O.Words, {call}, ({BF}, {val}),')
             w(f'      VBX.copy_into_at(d, t, n, U32.add(off, {c}), {z}, {f["dz"]}n, {kw}n, pf, hd31, {{==}}, {hs}, {{==}}, {{==}}, {{==}})) :')
         else:
-            w(f'  %Equal.sym(B.Buf & O.Words, {call}, ({BF}, {val}),')
-            w(f'      UCT.copy_in_at(d, t, n, U32.add(off, {FS}), LL(len), DZ(len), {KY}n, pf, hd31, hdz31(len, hx), ez(len, hx),')
-            w(f'        hsv(d, x, off, len, eo, hd, hw, ha), hr(len, hx), {{==}}, hyL(len, hx))) :')
+            for line in TPL.render('win_text_lines_2', BF=BF, FS=FS, KY=KY, call=call, val=val).split('\n'):
+                w(line)
         w(f'    {{{pat} == {RHS} : {TY}}}')
     w('  {==}')
-    w(f'''
-# When the window's checks hold, the reader returns OBJw(d, t, x, off, len).
-def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}})
-    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:
-  +a = U32.is_le({FS}, len)
-  +b = U32.is_eq(SPOw(t, x), {FS})
-  +c = BLW(U32.sub(len, SPOw(t, x)))
-  +epo = FD.u32alg__eq_of(SPOw(t, x), {FS}, chk_b(a, b, c, hchk))
-  rdw_go(d, t, n, x, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo,
-    FD.logic__subst(U32, z => {{BLW(U32.sub(len, z)) == True{{}} : Bool}}, SPOw(t, x), {FS}, epo, chk_c(a, b, c, hchk)))
-''')
+    w(TPL.render('win_text_readw', BF=BF, FS=FS, RHS=RHS, TY=TY, Tn=Tn))
     L.extend(spec_part(x))
     L.extend(inv_part(x))
     return '\n'.join(L) + '\n'
@@ -426,49 +335,7 @@ def inv_part(x):
     FSL = '[' + ', '.join(map(str, fsb)) + ']'
     WX = 'UW.WX(t, x, U32.to_nat(len))'
     MP = 'Maybe<&2, +List<S.Part>>'
-    return [f'''
-# ---- every value whose spec parts are the window's bytes passes the checks ----------------------
-
-def ek_sub(+n: U32, +k: Nat, +en: {{U32.to_nat(n) == Nat.add({FS}n, k) : Nat}}) -> {{U32.to_nat(LL(n)) == k : Nat}}:
-  +le = FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == True{{}} : Bool}}, Nat.add({FS}n, k), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), Nat.add({FS}n, k), en), Order.below_sum({FS}n, k))
-  %Equal.sym(Nat, U32.to_nat(LL(n)), Nat.sub(U32.to_nat(n), {FS}n), FD.u32__sub_nat(n, {FS}, le)) : {{_ == k : Nat}}
-  %Equal.sym(Nat, U32.to_nat(n), Nat.add({FS}n, k), en) : {{Nat.sub(_, {FS}n) == k : Nat}}
-  FD.nat__add_sub_cancel({FS}n, k)
-
-def chk_truew(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +k: Nat, +en: {{U32.to_nat(len) == Nat.add({FS}n, k) : Nat}},
-    +hk: {{Nat.is_le(k, {LIM}n) == True{{}} : Bool}}, +epo: {{SPOw(t, x) == {FS} : U32}}) -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  +le = FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == True{{}} : Bool}}, Nat.add({FS}n, k), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add({FS}n, k), en), Order.below_sum({FS}n, k))
-  +hL = FD.logic__subst(Nat, z => {{Nat.is_le(z, {LIM}n) == True{{}} : Bool}}, k, U32.to_nat(LL(len)), Equal.sym(Nat, U32.to_nat(LL(len)), k, ek_sub(len, k, en)), hk)
-  %Equal.sym(Bool, U32.is_le({FS}, len), True{{}}, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le({FS}n, U32.to_nat(len)), U32.is_le({FS}, len), Equal.sym(Bool, U32.is_le({FS}, len), Nat.is_le({FS}n, U32.to_nat(len)), VU.le_u32({FS}, len)), le)) :
-    {{chk3(_, U32.is_eq(SPOw(t, x), {FS}), BLW(U32.sub(len, SPOw(t, x)))) == True{{}} : Bool}}
-  %Equal.sym(U32, SPOw(t, x), {FS}, epo) : {{chk3(True{{}}, U32.is_eq(_, {FS}), BLW(U32.sub(len, _))) == True{{}} : Bool}}
-  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(LL(len)), U32.to_nat({LIM})), U32.is_le(LL(len), {LIM}), Equal.sym(Bool, U32.is_le(LL(len), {LIM}), Nat.is_le(U32.to_nat(LL(len)), U32.to_nat({LIM})), VU.le_u32(LL(len), {LIM})), hL)
-
-# The four bytes at the window's offset field are the limbs of its offset word.
-def byteP(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, +k: Nat, +en: {{U32.to_nat(len) == Nat.add({FS}n, k) : Nat}}, {PF},
-    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}})
-    -> {{VS.bt(4n, VS.bdr({cvar}n, {WX})) == F.limbs([SPOw(t, x)]) : +List<U32>}}:
-  +hw2 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({cvar}n, 4n+Nat.add({R}n, k)), en, hw)
-  %Equal.sym(Nat, U32.to_nat(len), Nat.add({cvar}n, 4n+Nat.add({R}n, k)), en) : {{VS.bt(4n, VS.bdr({cvar}n, UW.WX(t, x, _))) == F.limbs([SPOw(t, x)]) : +List<U32>}}
-  UW.byteWX(d, t, x, {cvar}n, Nat.add({R}n, k), pf, hw2)
-
-def inv_facts(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {PF},
-    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, facts: XI.FACTS({WX}))
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  (+hb, ex) = facts
-  (+k, +pr) = ex
-  (+hlen, +hk) = pr
-  +en = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, {WX}), Nat.add({FS}n, k), Equal.sym(Nat, List.length(&2, U32, {WX}), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)), hlen)
-  +epo = XI.wordFS(SPOw(t, x), Equal.trans(+List<U32>, F.limbs([SPOw(t, x)]), VS.bt(4n, VS.bdr({cvar}n, {WX})), {FSL},
-    Equal.sym(+List<U32>, VS.bt(4n, VS.bdr({cvar}n, {WX})), F.limbs([SPOw(t, x)]), byteP(d, t, x, len, k, en, pf, hw)), hb))
-  chk_truew(t, x, off, len, k, en, hk, epo)
-
-# Every value whose spec parts are the window's bytes passes the checks.
-def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +v: S.Value, +e: {{Codec.parts(v, Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}})
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  inv_facts(d, t, x, off, len, pf, hw, XI.inv_p(v, {WX}, e))
-''']
+    return [TPL.render('inv_part', FS=FS, FSL=FSL, LIM=LIM, MP=MP, R=R, WX=WX, cvar=cvar, n=n)]
 
 
 # ---- names nesting a covered name ---------------------------------------------------------------
@@ -539,12 +406,7 @@ def win_deep(text, FS):
         text = text[:m.start()] + 'UW.hsxB(' + ','.join(args) + ')' + text[b + 1:]
     # c + x below 2^32 for a header byte c
     a = text.index('\ndef eoc(')
-    hcx32 = (f"# c + x below 2^32 for c <= {FS}.\n"
-             f"def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == {T}}}, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
-             f"    -> {{Nat.is_lt(Nat.add(c, x), {P32}) == {T}}}:\n"
-             f"  FD.nat__le_lt_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P32},\n"
-             f"    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),\n"
-             f"    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))\n")
+    hcx32 = (TPL.render('hcx32', FS=FS, P32=P32, T=T))
     text = text[:a + 1] + hcx32 + text[a + 1:]
     left = [l for l in text.split('\n') if re.search(r'lt_trans\(d, 28n|UW\.hsx\(|\.rdx_\w+\(|add_le_at\(|VFT\.fits4\(|VMR\.fitsn\(', l)]
     assert not left, left[:3]
@@ -566,9 +428,8 @@ def xn_inv_text(x):
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         q = q.replace(a, b)
     L.append(q.rstrip() + '\n')
-    L.append('# Every value whose spec parts are one variable part has its bytes in the checked shape.')
-    L.append(f'def inv_p(+v: S.Value, +bs: +List<U32>, +e: {{Codec.parts(v, Spec.{x.n}()) == Some{{[S.Variable{{bs}}]}} : Maybe<&2, +List<S.Part>>}}) -> FACTS(bs):')
-    L.append(f'  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.{x.n}()), Some{{[S.Variable{{bs}}]}}, e))')
+    for line in TPL.render('xn_inv_text_lines', x=x).split('\n'):
+        L.append(line)
     return '\n'.join(L) + '\n'
 
 
@@ -620,22 +481,11 @@ def xn_win_deep(text, FS):
     text = text[:a] + f'  VFT.fits4lt(Nat.add({FSn}n, List.length(&2, U32, {YXt})),\n  ' + new.lstrip() + ')' + text[e:]
     # c + x below 2^32 for a header byte c
     a = text.index('\ndef eoc(')
-    hcx32 = (f"# c + x below 2^32 for c <= {FS}.\n"
-             f"def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == {T}}}, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
-             f"    -> {{Nat.is_lt(Nat.add(c, x), {P32}) == {T}}}:\n"
-             f"  FD.nat__le_lt_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P32},\n"
-             f"    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),\n"
-             f"    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))\n")
+    hcx32 = (TPL.render('hcx32_hcx32', FS=FS, P32=P32, T=T))
     text = text[:a + 1] + hcx32 + text[a + 1:]
     # the child's window below 2^32
     a = text.index('\ndef ecY(')
-    hwy32 = (f"def hwY32(+x: Nat, +len: U32, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
-             f"    -> {{Nat.is_lt(Nat.add(Nat.add(U32.to_nat({FS}), x), U32.to_nat(LL(len))), {P32}) == {T}}}:\n"
-             f"  +e = Equal.trans(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LL(len)))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))),\n"
-             f"    FD.nat__add_assoc({FS}n, x, U32.to_nat(LL(len))), FD.lru_nat_algebra__add_swap({FS}n, x, U32.to_nat(LL(len))))\n"
-             f"  %Equal.sym(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))), e) : {{Nat.is_lt(_, {P32}) == {T}}}\n"
-             f"  %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)) : {{Nat.is_lt(Nat.add(x, _), {P32}) == {T}}}\n"
-             f"  hw32\n")
+    hwy32 = (TPL.render('hwy32', FS=FS, P32=P32, T=T))
     text = text[:a + 1] + hwy32 + text[a + 1:]
     # the child's D interface (its hw32 after its hw)
     pat = re.compile(r'(?<![\w.])YW\.(ok_evalw|readw|specw|invw)\(')
@@ -682,105 +532,20 @@ def _xw_setup(x):
                       f'# {Y}\'s at the window (off + {FS}, len - {FS}) (see codegen/proofs/var/var_bytes_x.py).', '']
     w = L.append
     w(between(al, 'def chk3(', 'def LL('))
-    w(f'''def LL(+len: U32) -> U32: U32.sub(len, {FS})
-def SPOw(t: FD.array__Tree<U32>, +x: Nat) -> U32: {rwn(cvar)}
-
-# The checks: the size, the offset, and {Y}'s checks on the window after the header.
-def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
-  chk3(U32.is_le({FS}, len), U32.is_eq(SPOw(t, x), {FS}), {YCHK})
-
-''')
+    w(TPL.render('_xw_setup', FS=FS, Y=Y, YCHK=YCHK, cvar=cvar))
     w(between(al, 'def c1_id(', 'def winb('))
     return n, FS, H, po, cvar, Y, JX, Tn, HA, HW, MP, M, BF, yok, YCHK, L, w
 
 
 def _xw_reader(x, FS, cvar, Y, JX, Tn, HA, HW, BF, yok, YCHK, w):
     """the window's checks and sizes (hcx), the object read from the window and rdw_go"""
-    w(f'''def hcx(+d: Nat, +x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == True{{}} : Bool}}, {HW}, {HA})
-    -> {{Nat.is_le(Nat.add(c, x), {P4}) == True{{}} : Bool}}:
-  FD.nat__le_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P4},
-    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),
-    FD.logic__subst(Nat, z => {{Nat.is_le(z, {P4}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
-
-# The byte offset off + c of header byte c <= {FS} is at c + x.
-def eoc(+d: Nat, +x: Nat, +off: U32, +len: U32, +c: U32, +hc: {{Nat.is_le(U32.to_nat(c), {FS}n) == True{{}} : Bool}}, {WHX}, {HA})
-    -> {{U32.to_nat(U32.add(off, c)) == Nat.add(U32.to_nat(c), x) : Nat}}:
-  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}), hcx(d, x, len, U32.to_nat(c), hc, hw, ha))
-
-def roomc(+d: Nat, +x: Nat, +len: U32, +c: Nat, +s: Nat, +hc: {{Nat.is_le(Nat.add(c, s), {FS}n) == True{{}} : Bool}}, {HW}, {HA})
-    -> {{Nat.is_le(Nat.add(Nat.add(c, x), s), {P4}) == True{{}} : Bool}}:
-  UR.roomf(x, U32.to_nat(len), c, s, {P4}, hw, FD.nat__le_trans(Nat.add(c, s), {FS}n, U32.to_nat(len), hc, leFS(len, ha)))
-
-# The child's window ({FS} + x, len - {FS}) lies in the buffer.
-def hwY(+d: Nat, +x: Nat, +len: U32, {HW}, {HA})
-    -> {{Nat.is_le(Nat.add(Nat.add(U32.to_nat({FS}), x), U32.to_nat(LL(len))), {P4}) == True{{}} : Bool}}:
-  +e = Equal.trans(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LL(len)))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))),
-    FD.nat__add_assoc({FS}n, x, U32.to_nat(LL(len))), FD.lru_nat_algebra__add_swap({FS}n, x, U32.to_nat(LL(len))))
-  %Equal.sym(Nat, Nat.add(Nat.add({FS}n, x), U32.to_nat(LL(len))), Nat.add(x, Nat.add({FS}n, U32.to_nat(LL(len)))), e) : {{Nat.is_le(_, {P4}) == True{{}} : Bool}}
-  %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)) : {{Nat.is_le(Nat.add(x, _), {P4}) == True{{}} : Bool}}
-  hw
-
-def ecY(+d: Nat, +x: Nat, +off: U32, +len: U32, {WHX}, {HA}) -> {{U32.to_nat(U32.add(off, {FS})) == {JX} : Nat}}:
-  eoc(d, x, off, len, {FS}, {{==}}, eo, hd, hw, ha)
-
-# ---- the validator ----------------------------------------------------------------------------
-
-def rdoff(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA})
-    -> {{B.read32({BF}, U32.add(off, {cvar})) == ({BF}, SPOw(t, x)) : B.Buf & U32}}:
-  UR.rwx(d, t, n, U32.add(off, {cvar}), {posx(cvar)}, eoc(d, x, off, len, {cvar}, {{==}}, eo, hd, hw, ha), FD.nat__lt_trans(d, 28n, 31n, hd, {{==}}), pf,
-    roomc(d, x, len, {cvar}n, 4n, {{==}}, hw, ha))
-
-def okw_c1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}})
-    -> {{{Tn}_c0(True{{}}, {BF}, off, len, SPOw(t, x)) == ({BF}, {YCHK}) : B.Buf & Bool}}:
-  %Equal.sym(U32, SPOw(t, x), {FS}, epo) :
-    {{{Tn}_v1(off, len, _, {yok}({BF}, U32.add(off, _), U32.sub(len, _))) == ({BF}, {YCHK}) : B.Buf & Bool}}
-  %Equal.sym(B.Buf & Bool, T.{Y}_ok({BF}, U32.add(off, {FS}), LL(len)), ({BF}, {YCHK}),
-      YW.ok_evalw(d, t, n, {JX}, U32.add(off, {FS}), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf)) :
-    {{{Tn}_v1(off, len, {FS}, _) == ({BF}, {YCHK}) : B.Buf & Bool}}
-  c1_id({YCHK}, {BF}, off, len, {FS})
-
-def okw_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA},
-    +b: Bool, +eb: {{U32.is_eq(SPOw(t, x), {FS}) == b : Bool}})
-    -> {{{Tn}_c0(b, {BF}, off, len, SPOw(t, x)) == ({BF}, chk3(True{{}}, b, {YCHK})) : B.Buf & Bool}}:
-  match b:
-    case False{{}}: {{==}}
-    case True{{}}: okw_c1(d, t, n, x, off, len, eo, hd, hw, pf, ha, FD.u32alg__eq_of(SPOw(t, x), {FS}, eb))
-
-def okw_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +a: Bool, +ea: {{U32.is_le({FS}, len) == a : Bool}})
-    -> {{{Tn}_ok_len(a, {BF}, off, len) == ({BF}, chk3(a, U32.is_eq(SPOw(t, x), {FS}), {YCHK})) : B.Buf & Bool}}:
-  match a:
-    case False{{}}: {{==}}
-    case True{{}}:
-      %Equal.sym(B.Buf & U32, B.read32({BF}, U32.add(off, {cvar})), ({BF}, SPOw(t, x)), rdoff(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {{{Tn}_v0(off, len, _) == ({BF}, chk3(True{{}}, U32.is_eq(SPOw(t, x), {FS}), {YCHK})) : B.Buf & Bool}}
-      okw_c0(d, t, n, x, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, x), {FS}), {{==}})
-
-# The validator on the window returns the buffer and CHKw(t, x, off, len).
-def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF})
-    -> {{{Tn}_ok({BF}, off, len) == ({BF}, CHKw(t, x, off, len)) : B.Buf & Bool}}:
-  okw_len(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le({FS}, len), {{==}})
-
-# The offset word, once checked, reads as {FS}.
-def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}})
-    -> {{B.read32({BF}, U32.add(off, {cvar})) == ({BF}, {FS}) : B.Buf & U32}}:
-  %Equal.sym(B.Buf & U32, B.read32({BF}, U32.add(off, {cvar})), ({BF}, SPOw(t, x)), rdoff(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-    {{_ == ({BF}, {FS}) : B.Buf & U32}}
-  %Equal.sym(U32, SPOw(t, x), {FS}, epo) : {{({BF}, _) == ({BF}, {FS}) : B.Buf & U32}}
-  {{==}}
-''')
+    w(TPL.render('_xw_reader', BF=BF, FS=FS, HA=HA, HW=HW, JX=JX, Tn=Tn, Y=Y, YCHK=YCHK, cvar=cvar, yok=yok))
     leaves, OBJ = VBN.read_plan(x)
     OBJ = OBJ.replace('VF.BF(t, n)', BF)
     RHS = f'({BF}, OBJw(d, t, x, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w('# The reader on the window, when the checks hold.')
-    w(f'def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},')
-    w(f'    {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, +hY: {{{YCHK} == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:')
-    w('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})')
-    w('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})')
+    for line in TPL.render('_xw_reader_lines', BF=BF, FS=FS, HA=HA, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn, YCHK=YCHK).split('\n'):
+        w(line)
 
     def ecf(c):
         return f'eoc(d, x, off, len, {c}, {{==}}, eo, hd, hw, ha)'
@@ -809,17 +574,7 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
             raise VBY.Skip('leaf kind ' + kind)
         w(f'    {{{pat} == {RHS} : {TY}}}')
     w('  {==}')
-    w(f'''
-# When the window's checks hold, the reader returns OBJw(d, t, x, off, len).
-def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}})
-    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:
-  +a = U32.is_le({FS}, len)
-  +b = U32.is_eq(SPOw(t, x), {FS})
-  +c = {YCHK}
-  +epo = FD.u32alg__eq_of(SPOw(t, x), {FS}, chk_b(a, b, c, hchk))
-  rdw_go(d, t, n, x, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
-''')
+    w(TPL.render('_xw_reader_readw', BF=BF, FS=FS, RHS=RHS, TY=TY, Tn=Tn, YCHK=YCHK))
 
 
 def _xw_spec_value(x, n, FS, H, po, Y, JX, HA, HW, MP, M, YCHK, w):
@@ -912,75 +667,7 @@ def _xw_invariant(n, FS, cvar, Y, JX, HW, MP, YCHK, w, L4, YX, WX):
     fsb = [FS & 255, (FS >> 8) & 255, (FS >> 16) & 255, (FS >> 24) & 255]
     FSL = '[' + ', '.join(map(str, fsb)) + ']'
     R = FS - cvar - 4
-    w(f'''
-# ---- every value whose spec parts are the window's bytes passes the checks ----------------------
-
-def ek_sub(+n: U32, +k: Nat, +en: {{U32.to_nat(n) == Nat.add({FS}n, k) : Nat}}) -> {{U32.to_nat(LL(n)) == k : Nat}}:
-  +le = FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == True{{}} : Bool}}, Nat.add({FS}n, k), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), Nat.add({FS}n, k), en), Order.below_sum({FS}n, k))
-  %Equal.sym(Nat, U32.to_nat(LL(n)), Nat.sub(U32.to_nat(n), {FS}n), FD.u32__sub_nat(n, {FS}, le)) : {{_ == k : Nat}}
-  %Equal.sym(Nat, U32.to_nat(n), Nat.add({FS}n, k), en) : {{Nat.sub(_, {FS}n) == k : Nat}}
-  FD.nat__add_sub_cancel({FS}n, k)
-
-def chk_truew(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +k: Nat, +en: {{U32.to_nat(len) == Nat.add({FS}n, k) : Nat}},
-    +epo: {{SPOw(t, x) == {FS} : U32}}, +hY: {{{YCHK} == True{{}} : Bool}}) -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  +le = FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == True{{}} : Bool}}, Nat.add({FS}n, k), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add({FS}n, k), en), Order.below_sum({FS}n, k))
-  %Equal.sym(Bool, U32.is_le({FS}, len), True{{}}, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le({FS}n, U32.to_nat(len)), U32.is_le({FS}, len), Equal.sym(Bool, U32.is_le({FS}, len), Nat.is_le({FS}n, U32.to_nat(len)), VU.le_u32({FS}, len)), le)) :
-    {{chk3(_, U32.is_eq(SPOw(t, x), {FS}), {YCHK}) == True{{}} : Bool}}
-  %Equal.sym(U32, SPOw(t, x), {FS}, epo) : {{chk3(True{{}}, U32.is_eq(_, {FS}), {YCHK}) == True{{}} : Bool}}
-  hY
-
-def byteP(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, +k: Nat, +en: {{U32.to_nat(len) == Nat.add({FS}n, k) : Nat}}, {PF}, {HW})
-    -> {{VS.bt(4n, VS.bdr({cvar}n, {WX})) == F.limbs([SPOw(t, x)]) : +List<U32>}}:
-  +hw2 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), {P4}) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({cvar}n, 4n+Nat.add({R}n, k)), en, hw)
-  %Equal.sym(Nat, U32.to_nat(len), Nat.add({cvar}n, 4n+Nat.add({R}n, k)), en) : {{VS.bt(4n, VS.bdr({cvar}n, UW.WX(t, x, _))) == F.limbs([SPOw(t, x)]) : +List<U32>}}
-  UW.byteWX(d, t, x, {cvar}n, Nat.add({R}n, k), pf, hw2)
-
-# The child's bytes: the window after the header.
-def eys(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +k: Nat, +en: {{U32.to_nat(len) == Nat.add({FS}n, k) : Nat}})
-    -> {{VS.bdr({FS}n, {WX}) == {YX} : +List<U32>}}:
-  %Equal.sym(Nat, U32.to_nat(len), Nat.add({FS}n, k), en) : {{VS.bdr({FS}n, UW.WX(t, x, _)) == {YX} : +List<U32>}}
-  %Equal.sym(Nat, {L4}, k, ek_sub(len, k, en)) : {{VS.bdr({FS}n, UW.WX(t, x, Nat.add({FS}n, k))) == UW.WX(t, {JX}, _) : +List<U32>}}
-  UW.tailWX(t, x, {FS}n, k)
-
-def inv_tail(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +hb: {{VS.bt(4n, VS.bdr({cvar}n, {WX})) == {FSL} : +List<U32>}}, +hv0: S.Value, +ys: +List<U32>,
-    +hlen: {{List.length(&2, U32, {WX}) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}},
-    +hdr: {{VS.bdr({FS}n, {WX}) == ys : +List<U32>}},
-    +hvp: {{Codec.parts(hv0, Spec.{Y}()) == Some{{[S.Variable{{ys}}]}} : {MP}}})
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  +k = List.length(&2, U32, ys)
-  +en = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, {WX}), Nat.add({FS}n, k), Equal.sym(Nat, List.length(&2, U32, {WX}), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)), hlen)
-  +ha = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le({FS}n, U32.to_nat(len)), U32.is_le({FS}, len), Equal.sym(Bool, U32.is_le({FS}, len), Nat.is_le({FS}n, U32.to_nat(len)), VU.le_u32({FS}, len)),
-    FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == True{{}} : Bool}}, Nat.add({FS}n, k), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add({FS}n, k), en), Order.below_sum({FS}n, k)))
-  +epo = XI.wordFS(SPOw(t, x), Equal.trans(+List<U32>, F.limbs([SPOw(t, x)]), VS.bt(4n, VS.bdr({cvar}n, {WX})), {FSL},
-    Equal.sym(+List<U32>, VS.bt(4n, VS.bdr({cvar}n, {WX})), F.limbs([SPOw(t, x)]), byteP(d, t, x, len, k, en, pf, hw)), hb))
-  +ey = Equal.trans(+List<U32>, ys, VS.bdr({FS}n, {WX}), {YX}, Equal.sym(+List<U32>, VS.bdr({FS}n, {WX}), ys, hdr), eys(t, x, len, k, en))
-  +hv = FD.logic__subst(+List<U32>, z => {{Codec.parts(hv0, Spec.{Y}()) == Some{{[S.Variable{{z}}]}} : {MP}}}, ys, {YX}, ey, hvp)
-  chk_truew(t, x, off, len, k, en, epo,
-    YW.invw(d, t, n, {JX}, U32.add(off, {FS}), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf, hv0, hv))
-
-def inv_p2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +hb: {{VS.bt(4n, VS.bdr({cvar}n, {WX})) == {FSL} : +List<U32>}}, +hv0: S.Value, +ys: +List<U32>,
-    +hlen: {{List.length(&2, U32, {WX}) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}},
-    r3: DK.P2({{VS.bdr({FS}n, {WX}) == ys : +List<U32>}}, {{Codec.parts(hv0, Spec.{Y}()) == Some{{[S.Variable{{ys}}]}} : {MP}}}))
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  (+hdr, hvp) = r3
-  inv_tail(d, t, n, x, off, len, eo, hd, hw, pf, hb, hv0, ys, hlen, hdr, hvp)
-
-def inv_facts(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF}, facts: XI.FACTS({WX}))
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  (+hb, ex) = facts
-  (+hv0, r1) = ex
-  (+ys, r2) = r1
-  (+hlen, r3) = r2
-  inv_p2(d, t, n, x, off, len, eo, hd, hw, pf, hb, hv0, ys, hlen, r3)
-
-# Every value whose spec parts are the window's bytes passes the checks.
-def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},
-    +v: S.Value, +e: {{Codec.parts(v, Spec.{n}()) == Some{{[S.Variable{{{WX}}}]}} : {MP}}})
-    -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
-  inv_facts(d, t, n, x, off, len, eo, hd, hw, pf, XI.inv_p(v, {WX}, e))
-''')
+    w(TPL.render('_xw_invariant', FS=FS, FSL=FSL, HW=HW, JX=JX, L4=L4, MP=MP, R=R, WX=WX, Y=Y, YCHK=YCHK, YX=YX, cvar=cvar, n=n))
 
 
 def xn_win_text(x):
@@ -994,6 +681,7 @@ def xn_win_text(x):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed, container_fixed, ...)
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
@@ -1023,15 +711,7 @@ def main():
         out[fname(x, '_dec')] = VX2.dec_text(x)
     mine = sorted((ROOT / 'proofs/obj').glob('var_bytesx_*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated byte-offset byte-list laws: ', 'generated byte-offset byte-list laws are current', orphans=orphans)
-    for p, text in out.items():
-        p.write_text(text)
-    for q in orphans:
-        (ROOT / q).unlink()
-    print(f'{len(xs) + len(ns) + len(x2s)} names: ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated byte-offset byte-list laws: ', 'generated byte-offset byte-list laws are current', orphans)
 
 
 if __name__ == '__main__':
