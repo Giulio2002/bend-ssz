@@ -519,14 +519,11 @@ def sync_committee(name='SyncCommittee'):
     pTIN = (f'F.logic__and_intro(F.array__perfect(U32, 12n, {SA}), F.array__perfect(U32, 12n, F.TNode{{bb, {SC}}}), {pSA}, '
             f'F.logic__and_intro(F.array__perfect(U32, 11n, bb), F.array__perfect(U32, 11n, {SC}), pbb, {pSC}))')
     iparams = f'{sparams}, +bb: {TV}, +pbb: {pf(11, "bb")}, {gsig}, +z0: U32, +z1: U32, +z2: U32, +z3: U32, {cparams}'
-    iargs = ', '.join(['x0'] + [f'q{j}' for j in range(12)] + [f'pq{j}' for j in range(12)] + ['bb', 'pbb'] + g + ['z0', 'z1', 'z2', 'z3']
-                      + [f'c{j}' for j in range(4, 11)] + [f'pc{j}' for j in range(4, 11)])
-    BUF = f'B.Buf{{{th(TIN)}, {n}}}'
+    BUF =f'B.Buf{{{th(TIN)}, {n}}}'
     PK = f'O.Words{{ANode{{{th(SA)}, ANode{{{th("bb")}, Array.new(U32, 11n, 0)}}}}, {pkb}}}'
     OBJ = f'{R}{{{PK}, {B48}}}'
     RT = f'B.Buf & Maybe<&1, {R}>'
-    W = f'F.spec_common__append(U32, {slots(SA)}, {slots("bb")})'
-    BY = f'SF.limbs(F.spec_common__append(U32, {slots(SA)}, F.spec_common__append(U32, {slots("bb")}, {G})))'
+    BY =f'SF.limbs(F.spec_common__append(U32, {slots(SA)}, F.spec_common__append(U32, {slots("bb")}, {G})))'
     w(f'# decoding any buffer of {n} bytes accepts: the pubkeys are the first {pkw} words, the')
     w(f'# aggregate pubkey the next 12 (every perfect tree of depth 13 is such a tree)')
     w(f'def {name}_spec_decode({iparams})')
@@ -833,7 +830,6 @@ def _bs_spec_load(name, n, FS, w, Lt, pL, I, OBJ, RT):
     pargs = zargs + ', ' + ', '.join(f'p{j}' for j in range(8, 15)) + ', ' + ', '.join(f'hp{j}' for j in range(8, 15))
     w(f'def {name}_spec_load_p({pparams})')
     w(f'    -> {{B.fill_at(B.alloc({n}), 0, SF.limbs({WI})) == {BUFP} : B.Buf}}:')
-    cur = RP
     done = RP
     for j in range(14, 7, -1):
         mot = done.replace(f', p{j}}}', ', _}')
@@ -1124,10 +1120,7 @@ def uvec_tail(name, e, fname):
     OBJ = f'O.Words{{{th(DEC)}, {n}}}'
     RT = f'B.Buf & Maybe<&1, {R_}>'
     D1 = f'F.array__trep(U32, {p + 1}n, 0)'
-    tn = f'{t}n'
-    blk = lambda S, pS: (f'AC.blk(U32.to_nat(U32.shrn({nw}, 3n)), Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0, 0, 0n, 0n, {p + 1}n, {p + 1}n, {S}, {D1}, '
-                         f'{{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {pS}, F.array__trep_perfect(U32, {p + 1}n, 0))')
-    CP = lambda Tl, Tr: f'AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0n, 0n, {D1}, {slots(f"F.TNode{{{Tl}, {Tr}}}")})'
+    CP =lambda Tl, Tr: f'AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0n, 0n, {D1}, {slots(f"F.TNode{{{Tl}, {Tr}}}")})'
     TAILC = lambda Tr: f'AC.cpt({p}n, {Eb}n, 0n, 0n, F.array__trep(U32, {p}n, 0), {slots(Tr)})'
     # the copies in the reader's / writer's own terms (arr_copy read_al / put_al):
     # no copy or fill loop is run on the literal sizes
@@ -1226,7 +1219,6 @@ def uvec_tail(name, e, fname):
     BYE = f'SF.limbs(F.spec_common__append(U32, {slots(SE)}, {HL}))'
     RHS = f'({OBJE}, {BYE})'
     ET = f'{R_} & +List<U32>'
-    ectx = lambda inner: f'{{SF.emitted({R_}, T.{name}_enc_out(O.put_fin({n}, {inner})), k) == {RHS} : {ET}}}'
     TOUT = f'F.TNode{{{SE}, {ZT}}}'
     pTOUT = f'F.logic__and_intro(F.array__perfect(U32, {p}n, {SE}), F.array__perfect(U32, {p}n, {ZT}), {pSE}, {pZT})'
     pSE_ = pSE
