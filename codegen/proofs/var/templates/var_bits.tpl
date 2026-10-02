@@ -363,3 +363,17 @@ law decode_reject:
   Decoding.outside_image(GS.@X(), DC.VW(t, n))
 def decode_reject(d, t, n, pf, hd, hn, hchk):
   v => e => inv_v(d, t, n, pf, hd, hn, hchk, v, e)
+
+@@ byte_module_lines @@
+law ${name}:
+  for +w: Word(8n)
+  for +nz: {U32.is_eq(PD.embed8(w), 0) == False{} : Bool}
+  ${stmt('PD.embed8(w)', 'w')}
+def ${name}(w, nz):
+  match w:
+    case ${PAT}: ${name}_7(c0, c1, c2, c3, c4, c5, c6, c7, nz)
+
+@@ byte_module_lines_2 @@
+  %Equal.sym(U32, ${oct}, ${E}, BLf.oct8(${', '.join(hk(k))})) :
+    DK.P2({U32.is_eq(_, 0) == False{} : Bool}, {${k}n == hb(_) : Nat})
+  ({==}, hb${k}(${', '.join(bs)}))

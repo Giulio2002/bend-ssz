@@ -188,3 +188,242 @@ def paOld${j}(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +a: U32, +b: U32, +hl
       +hle = FD.logic__subst(Bool, z => {z == ${T}}, Nat.is_le(U32.to_nat(U32.sub(b, a)), U32.to_nat(VP.PMAX())), U32.is_le(U32.sub(b, a), VP.PMAX()),
         Equal.sym(Bool, U32.is_le(U32.sub(b, a), VP.PMAX()), Nat.is_le(U32.to_nat(U32.sub(b, a)), U32.to_nat(VP.PMAX())), VB.le_u32n(U32.sub(b, a), VP.PMAX())), hs)
       CH${j}.pall_old(t, Nat.add(U32.to_nat(a), x), U32.sub(b, a), hle)
+
+@@ EUDEFS_lines @@
+def wf${q}() -> {LY.WFS(WSS${q}()) == U32.to_nat(${R}) : Nat}:
+  Equal.trans(Nat, LY.WFS(WSS${q}()), Nat.add(${L.SZ(sz[q])}, U32.to_nat(${R1})), U32.to_nat(${R}), VA.wfs_c(${wv[q]}, WSS${q + 1}(), ${L.SZ(sz[q])}, U32.to_nat(${R1}), {==}, wf${q + 1}()),
+    VA.stpL(${sz[q]}, ${R1}, ${R}, ${L.SZ(sz[q])}, ${L.ES(sz[q])}, {==}, {==}))
+@@ EUDEFS_lines_2 @@
+def wp${i}_${q}() -> {LY.WPOS(WSS${q}(), ${i - q}n) == U32.to_nat(${D}) : Nat}:
+  Equal.trans(Nat, LY.WPOS(WSS${q}(), ${i - q}n), Nat.add(${L.SZ(sz[q])}, U32.to_nat(${D1})), U32.to_nat(${D}), VA.wpos_c(${wv[q]}, WSS${q + 1}(), ${i - q - 1}n, ${L.SZ(sz[q])}, U32.to_nat(${D1}), {==}, wp${i}_${q + 1}()),
+    VA.stpL(${sz[q]}, ${D1}, ${D}, ${L.SZ(sz[q])}, ${L.ES(sz[q])}, {==}, {==}))
+@@ defs_text_lines @@
+
+# The fixed part is there, the first offset is ${L.FS}, the offsets are in order inside
+# the window, and each variable field's window passes its child's check.
+def CHKw(${TXO}) -> Bool: K0(${TXOA})
+
+@@ facts_text_lines @@
+def hFc(${TXO}, ${H}) -> {Nat.is_le(${L.FSN}, U32.to_nat(len)) == ${TRUE}}: ${LEF(L, 'it0(' + TXOA + ', h)')}
+def eO0(${TXO}, ${H}) -> {U32.to_nat(${L.O(0)}) == ${L.FSN} : Nat}:
+  Equal.cong(U32, Nat, z => U32.to_nat(z), ${L.O(0)}, ${L.FS}, FD.u32alg__eq_of(${L.O(0)}, ${L.FS}, it1(${TXOA}, h)))
+@@ facts_text_lines_2 @@
+def eoJ${j}(${CW}, ${H}) -> {U32.to_nat(${L.FJ(j)}) == ${L.XJ(j)} : Nat}: eoW(${CWA}, ${L.O(j)}, ${E}, r1${j}(${TXOA}, h), r2${j}(${TXOA}, h))
+def hwJ${j}(${CW}, ${H}) -> {Nat.is_le(Nat.add(${L.XJ(j)}, U32.to_nat(${L.LJ(j)})), ${PW}) == ${TRUE}}: hwj(${CWA}, ${L.O(j)}, ${E}, r1${j}(${TXOA}, h), r2${j}(${TXOA}, h))
+def itD${j}(${TXO}, ${H}) -> {CH${j}.CHKw(t, ${L.XJ(j)}, ${L.FJ(j)}, ${L.LJ(j)}) == ${TRUE}}: it${k + 1 + len(L.fchk) + j}(${TXOA}, h)
+def eE${j}(${TXO}, ${H}) -> {U32.to_nat(${E}) == Nat.add(U32.to_nat(${L.O(j)}), U32.to_nat(${L.LJ(j)})) : Nat}:
+  Equal.sym(Nat, Nat.add(U32.to_nat(${L.O(j)}), U32.to_nat(U32.sub(${E}, ${L.O(j)}))), U32.to_nat(${E}), VM.sub_eq(${E}, ${L.O(j)}, VMR.u32le(${L.O(j)}, ${E}, r1${j}(${TXOA}, h))))
+@@ validator_text_lines_4 @@
+def okc${i}(${CW}, ${decl}, +b: Bool, +eb: {IT${i + 1}(${TXOA}) == b : Bool}) -> {${cur} == (${BUF}, b) : B.Buf & Bool}:
+  match b:
+    case True{}: {==}
+    case False{}: {==}
+
+@@ validator_text_lines_3 @@
+def okc${i}(${CW}, ${decl}, +b: Bool, +eb: {IT${i + 1}(${TXOA}) == b : Bool}) -> {${cur} == (${BUF}, ${RES}) : B.Buf & Bool}:
+  match b:
+    case False{}: {==}
+    case True{}:
+@@ validator_text_lines_5 @@
+      %Equal.sym(B.Buf & Bool, T.${f['rt']}_ok_at(${BUF}, U32.add(off, ${c})), (${BUF}, ${f['fa']}.CHK(t, ${L.pos(c)})),
+          ${f['fa']}.ok(d, t, n, U32.add(off, ${c}), ${L.pos(c)}, ${L.EOC(c)}, hd, pf, ${L.ROOM(c, f['rs'])})) :
+        {${Tn}_v${i + 1}(off, len, ${OS(k - 1)}, _) == ${GOALT}}
+@@ validator_text_lines_6 @@
+      %Equal.sym(B.Buf & Bool, ${okf}(${BUF}, ${L.FJ(j)}, ${L.LJ(j)}), (${BUF}, CH${j}.CHKw(t, ${L.XJ(j)}, ${L.FJ(j)}, ${L.LJ(j)})),
+          CH${j}.ok_evalw(d, t, n, ${L.XJ(j)}, ${L.FJ(j)}, ${L.LJ(j)}, eoW(${CWA}, ${L.O(j)}, ${L.E(j)}, ${h1}, ${h2}), hd,
+            hwj(${CWA}, ${L.O(j)}, ${L.E(j)}, ${h1}, ${h2}), pf)) :
+        {${Tn}_v${i + 1}(off, len, ${OS(k - 1)}, _) == ${GOALT}}
+@@ validator_text_lines @@
+def okl(${CW}, +a: Bool, +ea: {IT0(${TXOA}) == a : Bool})
+    -> {${Tn}_ok_len(a, ${BUF}, off, len) == (${BUF}, Bool.and(a, K1(${TXOA}))) : B.Buf & Bool}:
+  match a:
+    case False{}: {==}
+    case True{}:
+      +hF = ${LEF(L, 'ea')}
+@@ validator_text_lines_2 @@
+      %Equal.sym(B.Buf & U32, B.read32(${BUF}, U32.add(off, ${c0})), (${BUF}, ${L.O(0)}), ${L.RD(c0)}) :
+        {${Tn}_v0(off, len, _) == (${BUF}, K1(${TXOA})) : B.Buf & Bool}
+      okc0(${CWA}, hF, IT1(${TXOA}), {==})
+
+# The validator on the window returns the buffer and CHKw.
+def ok_evalw(${CW}) -> {${Tn}_ok(${BUF}, off, len) == (${BUF}, CHKw(t, x, off, len)) : B.Buf & Bool}:
+  okl(${CWA}, IT0(${TXOA}), {==})
+
+@@ fieldset_reader_lines @@
+  %Equal.sym(${ty}, ${call}, (${BUF}, ${o}),
+      ${prf}) :
+    {T.${prefix}_rd${len(vs) + q}(${pre}, ${hole}) == ${RHS}}
+@@ reader_text_lines_2 @@
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+# The reader on the window, when the checks hold.
+def readw(${CW}, ${HCHK}) -> {${Tn}_read(${BUF}, off, len) == (${BUF}, OBJw(d, t, x, off, len)) : B.Buf & ${Tn}}:
+  rd_all(${CWA}, hchk)
+
+@@ reader_text_lines @@
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+# The reader on the window, when the checks hold.
+@@ sym_header_text_lines @@
+  %Equal.sym(+List<Maybe<&2, Nat>>, ${full}, ${WS}, {==}) : {_ == ${WS} : +List<Maybe<&2, Nat>>}
+  {==}
+
+def efsw(${CW}, ${H}) -> {Layout.fixed_size(${PSV}) == ${FSN} : Nat}:
+  Equal.trans(Nat, Layout.fixed_size(${PSV}), LY.WFS(${WS}), ${FSN}, Equal.trans(Nat, Layout.fixed_size(${PSV}), LY.WFS(LY.WID(${PSV})), LY.WFS(${WS}), LY.fs_w(${PSV}),
+    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID(${PSV}), ${WS}, ewidw(${CWA}, h))), wf0())
+
+@@ sym_header_text_lines_2 @@
+# The fixed region: the fixed fields' slices and the offset words, the window's first ${FS} bytes.
+def hdrE(${CW}, ${H}) -> {LY.HDRW(${PSV}, ${OSL}) == UW.WX(t, x, ${FSN}) : +List<U32>}:
+  +hF = hFc(${TXOA}, h)
+  %Equal.trans(Nat, Nat.add(x, U32.to_nat(0)), Nat.add(x, 0n), x, {==}, FD.nat__add_zero(x)) : {LY.HDRW(${PSV}, ${OSL}) == UW.WX(t, _, ${FSN}) : +List<U32>}
+@@ sym_schema_text_lines @@
+def isc(${SVE}) -> {SH.is_${CK}(sv) == True{} : Bool}:
+  FD.logic__subst(S.Schema, z => {SH.is_${CK}(z) == True{} : Bool}, ${X}, sv, Equal.sym(S.Schema, sv, ${X}, esv), {==})
+def fsn(${SVE}) -> {SS.fixed_size(SH.${CK}_fields(sv)) == None{} : Maybe<&2, Nat>}:
+  FD.logic__subst(S.Schema, z => {SS.fixed_size(SH.${CK}_fields(z)) == None{} : Maybe<&2, Nat>}, ${X}, sv, Equal.sym(S.Schema, sv, ${X}, esv), {==})
+@@ sym_schema_text_lines_3 @@
+def es${i}(${SVE}) -> {HD${i}(sv) == ${L.spec(f)} : S.Schema}:
+  FD.logic__subst(S.Schema, z => {HD${i}(z) == ${L.spec(f)} : S.Schema}, ${X}, sv, Equal.sym(S.Schema, sv, ${X}, esv), {==})
+def isch${i}(${SVE}) -> {SH.is_Chain(TL${i}(sv)) == True{} : Bool}:
+  FD.logic__subst(S.Schema, z => {SH.is_Chain(TL${i}(z)) == True{} : Bool}, ${X}, sv, Equal.sym(S.Schema, sv, ${X}, esv), {==})
+@@ sym_schema_text_lines_2 @@
+def isend(${SVE}) -> {SH.is_End(TL${nf}(sv)) == True{} : Bool}:
+  FD.logic__subst(S.Schema, z => {SH.is_End(TL${nf}(z)) == True{} : Bool}, ${X}, sv, Equal.sym(S.Schema, sv, ${X}, esv), {==})
+def CHS${nf}(+sv: S.Schema) -> S.Schema: S.End{}
+@@ sym_schema_text_lines_4 @@
+def fe${i}(${SVE}) -> {TL${i}(sv) == ${ch(i)} : S.Schema}:
+  Equal.trans(S.Schema, TL${i}(sv), S.Chain{HD${i}(sv), TL${i + 1}(sv)}, ${ch(i)}, SH.Chain_shape(TL${i}(sv), isch${i}(sv, esv)),
+    Equal.cong(S.Schema, S.Schema, z => S.Chain{HD${i}(sv), z}, TL${i + 1}(sv), ${ch(i + 1)}, fe${i + 1}(sv, esv)))
+@@ spec_text_lines_5 @@
+def eq${j}(${CW}, ${H}) -> {U32.to_nat(${Ej}) == ${Q[j]} : Nat}:
+  Equal.trans(Nat, U32.to_nat(${Ej}), Nat.add(U32.to_nat(${L.O(j - 1)}), ${Ln[j - 1]}), ${Q[j]}, eE${j - 1}(${TXOA}, h),
+    Equal.trans(Nat, Nat.add(U32.to_nat(${L.O(j - 1)}), ${Ln[j - 1]}), Nat.add(${Q[j - 1]}, ${Ln[j - 1]}), ${Q[j]},
+      Equal.cong(Nat, Nat, z => Nat.add(z, ${Ln[j - 1]}), U32.to_nat(${L.O(j - 1)}), ${Q[j - 1]}, eq${j - 1}(${CWA}, h)),
+      Equal.cong(Nat, Nat, z => Nat.add(${Q[j - 1]}, z), ${Ln[j - 1]}, ${lenY[j - 1]}, Equal.sym(Nat, ${lenY[j - 1]}, ${Ln[j - 1]}, lY${j - 1}(${CWA}, h)))))
+@@ spec_text_lines_6 @@
+def eln${j}(${TXO}, ${H}) -> {U32.to_nat(len) == Nat.add(U32.to_nat(${L.O(j)}), ${RS[j]}) : Nat}:
+  Equal.trans(Nat, U32.to_nat(len), Nat.add(U32.to_nat(${L.O(j + 1)}), ${RS[j + 1]}), Nat.add(U32.to_nat(${L.O(j)}), ${RS[j]}), eln${j + 1}(${TXOA}, h),
+    Equal.trans(Nat, Nat.add(U32.to_nat(${L.O(j + 1)}), ${RS[j + 1]}), Nat.add(Nat.add(U32.to_nat(${L.O(j)}), ${Ln[j]}), ${RS[j + 1]}), Nat.add(U32.to_nat(${L.O(j)}), ${RS[j]}),
+      Equal.cong(Nat, Nat, z => Nat.add(z, ${RS[j + 1]}), U32.to_nat(${L.O(j + 1)}), Nat.add(U32.to_nat(${L.O(j)}), ${Ln[j]}), eE${j}(${TXOA}, h)),
+      FD.nat__add_assoc(U32.to_nat(${L.O(j)}), ${Ln[j]}, ${RS[j + 1]})))
+@@ spec_text_lines @@
+def elen(${TXO}, ${H}) -> {U32.to_nat(len) == Nat.add(${FSN}, ${RS[0]}) : Nat}:
+  Equal.trans(Nat, U32.to_nat(len), Nat.add(U32.to_nat(${L.O(0)}), ${RS[0]}), Nat.add(${FSN}, ${RS[0]}), eln0(${TXOA}, h),
+    Equal.cong(Nat, Nat, z => Nat.add(z, ${RS[0]}), U32.to_nat(${L.O(0)}), ${FSN}, eO0(${TXOA}, h)))
+
+@@ spec_text_lines_2 @@
+def winE(${CW}, ${H})
+    -> {${LHS} == ${WBL} : +List<U32>}:
+  +hwR = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), ${PW}) == ${TRUE}}, U32.to_nat(len), Nat.add(${FSN}, ${RS[0]}), elen(${TXOA}, h), hw)
+@@ spec_text_lines_7 @@
+  %Equal.sym(+List<U32>, UW.WX(t, x, Nat.add(${FSN}, ${RS[0]})), List.append(&2, U32, UW.WX(t, x, ${FSN}), UW.WX(t, Nat.add(x, ${FSN}), ${RS[0]})),
+      splitR(t, x, ${FSN}, ${RS[0]})) :
+    {${CUR} == _ : +List<U32>}
+  %hdrE(${CWA}, h) : {${CUR} == List.append(&2, U32, _, UW.WX(t, Nat.add(x, ${FSN}), ${RS[0]})) : +List<U32>}
+@@ spec_text_lines_8 @@
+  %Equal.sym(+List<U32>, UW.WX(t, x, Nat.add(A.quad(${L.H}n), ${RS[0]})), List.append(&2, U32, F.limbs(UR.RWS(${L.H}n, t, x)), UW.WX(t, Nat.add(A.quad(${L.H}n), x), ${RS[0]})),
+      UW.headWX(d, t, x, ${L.H}n, ${RS[0]}, pf, hwR)) :
+    {${CUR} == _ : +List<U32>}
+@@ spec_text_lines_3 @@
+def partsw(${CW}, ${HCHK}${SV}) -> {Codec.parts(${itm(0)}, ${chain(0)}) == Some{${PSV}} : ${MP}}:
+  ${cat(0)}
+
+@@ spec_text_lines_9 @@
+  %Equal.sym(S.Schema, sv, ${SHP}, SH.${CK}_shape(sv, isc(sv, esv))) : {Codec.parts(VALw(t, x, len), _) == ${TGT} : ${MP}}
+  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.${CK}_fields(sv)), None{}, fsn(sv, esv)) : {Codec.aggregate(Codec.parts(${itm(0)}, SH.${CK}_fields(sv)), _) == ${TGT} : ${MP}}
+  %Equal.sym(S.Schema, TL0(sv), ${chain(0)}, fe0(sv, esv)) : {Codec.aggregate(Codec.parts(${itm(0)}, _), None{}) == ${TGT} : ${MP}}
+  %Equal.sym(${MP}, Codec.parts(${itm(0)}, ${chain(0)}), Some{${PSV}}, partsw(${CWA}, hchk, sv, esv)) : {Codec.aggregate(_, None{}) == ${TGT} : ${MP}}
+  %Equal.sym(${M}, Layout.encoding(${PSV}), Some{${LHS}}, encw(${CWA}, hchk)) : {Codec.one(_, None{}) == ${TGT} : ${MP}}
+  %Equal.sym(+List<U32>, ${LHS}, ${WBL}, winE(${CWA}, hchk)) : {Codec.one(Some{_}, None{}) == ${TGT} : ${MP}}
+  {==}
+
+# The spec parts of the value: one variable part, the window's bytes.
+def specw(${CW}, ${HCHK}) -> {Codec.parts(VALw(t, x, len), ${L.top}) == ${TGT} : ${MP}}:
+  specg(${CWA}, hchk, ${L.top}, {==})
+
+@@ spec_text_lines_4 @@
+# The spec parts of the value: one variable part, the window's bytes.
+def specw(${CW}, ${HCHK}) -> {Codec.parts(VALw(t, x, len), ${L.top}) == ${TGT} : ${MP}}:
+  %Equal.sym(${MP}, Codec.parts(${itm(0)}, ${chain(0)}), Some{${PSV}}, partsw(${CWA}, hchk)) : {Codec.aggregate(_, None{}) == ${TGT} : ${MP}}
+  %Equal.sym(${M}, Layout.encoding(${PSV}), Some{${LHS}}, encw(${CWA}, hchk)) : {Codec.one(_, None{}) == ${TGT} : ${MP}}
+  %Equal.sym(+List<U32>, ${LHS}, ${WBL}, winE(${CWA}, hchk)) : {Codec.one(Some{_}, None{}) == ${TGT} : ${MP}}
+  {==}
+
+@@ _inv_parts_bytes_lines @@
+def BYX(${PLD[:-2]}) -> +List<U32>: List.append(&2, U32, Layout.fixed_parts(${PS}, Layout.fixed_size(${PS})), Layout.payloads(${PS}))
+def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {Codec.parts(h, s) == Some{[S.Variable{y}]} : ${MP}}
+def EXF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {Codec.parts(h, s) == Some{[S.Fixed{y}]} : ${MP}}
+def LXF(+s: Nat, +xs: +List<U32>) -> Data: {Some{s} == Some{List.length(&2, U32, xs)} : Maybe<&2, Nat>}
+def mis(a: Maybe<&2, Nat>, +n: Nat) -> Bool:
+  match a:
+    case None{}: False{}
+    case Some{v}: Nat.is_eq(v, n)
+def eqM(+a: Maybe<&2, Nat>, +n: Nat, +e: {mis(a, n) == True{} : Bool}) -> {a == Some{n} : Maybe<&2, Nat>}:
+  match a:
+    case None{}: Empty.absurd({None{} == Some{n} : Maybe<&2, Nat>}, FD.logic__false_true(e))
+    case Some{+v}: Equal.cong(Nat, Maybe<&2, Nat>, z => Some{z}, v, n, FD.nat__eq_from_is_eq(v, n, e))
+@@ _inv_window_lengths_lines @@
+def eL(${SD}) -> {U32.to_nat(len) == ${END} : Nat}:
+  +FPt = ${FP}
+  +lenB = Equal.trans(Nat, List.length(&2, U32, ${BYTES}), Nat.add(List.length(&2, U32, FPt), ${LPL}), ${END}, VS.len_app(FPt, ${PL}),
+    Equal.trans(Nat, Nat.add(List.length(&2, U32, FPt), ${LPL}), Nat.add(${FSN}, ${LPL}), ${END},
+      Equal.cong(Nat, Nat, z => Nat.add(z, ${LPL}), List.length(&2, U32, FPt), ${FSN},
+        Equal.trans(Nat, List.length(&2, U32, FPt), Layout.fixed_size(${PS}), ${FSN}, LY.lay_len(${PS}, Layout.fixed_size(${PS})), efs(${SA}))),
+      LY.lay_end(${PS}, ${FSN})))
+  Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, ${WBL}), ${END}, Equal.sym(Nat, List.length(&2, U32, ${WBL}), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),
+    Equal.trans(Nat, List.length(&2, U32, ${WBL}), List.length(&2, U32, ${BYTES}), ${END},
+      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), ${WBL}, ${BYTES}, Equal.sym(+List<U32>, ${BYTES}, ${WBL}, eq)), lenB))
+
+@@ _inv_variable_parts_lines_2 @@
+  offwX(${CWA}, ${L.PN(c)}, ${OFF}, FD.nat__le_trans(Nat.add(${L.PN(c)}, 4n), ${FSN}, U32.to_nat(len), ${L.LEA(c, 4)}, ${HFS}),
+    FD.logic__subst(Nat, z => {Nat.is_le(${OFF}, z) == ${TRUE}}, ${END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), ${END}, eL(${SA})), LY.off_le(${PS}, ${i}n, ${FSN})),
+    eb${j}(${SA}))
+@@ _inv_variable_parts_lines @@
+  +eL2 = Equal.trans(Nat, U32.to_nat(len), ${END}, Nat.add(${FSN}, List.length(&2, U32, ${PL})), eL(${SA}), Equal.sym(Nat, Nat.add(${FSN}, List.length(&2, U32, ${PL})), ${END}, LY.lay_end(${PS}, ${FSN})))
+  offw(${CWA}, ${c}n, Nat.add(${RF}n, List.length(&2, U32, ${PL})), ${OFF}, eL2,
+    FD.logic__subst(Nat, z => {Nat.is_le(${OFF}, z) == ${TRUE}}, ${END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), ${END}, eL(${SA})), LY.off_le(${PS}, ${i}n, ${FSN})),
+    eb${j}(${SA}))
+@@ _inv_variable_parts_lines_3 @@
+def el${j}(${SD}) -> {U32.to_nat(${L.LJ(j)}) == ${ly} : Nat}: VMR.subL(${E}, ${L.O(j)}, ${OFF}, ${ly}, ov${j}(${SA}), ${ovE})
+def nle${j}(${SD}) -> {Nat.is_le(U32.to_nat(${L.O(j)}), U32.to_nat(${E})) == ${TRUE}}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(${E})) == ${TRUE}}, ${OFF}, U32.to_nat(${L.O(j)}), Equal.sym(Nat, U32.to_nat(${L.O(j)}), ${OFF}, ov${j}(${SA})),
+    FD.logic__subst(Nat, z => {Nat.is_le(${OFF}, z) == ${TRUE}}, Nat.add(${OFF}, ${ly}), U32.to_nat(${E}), Equal.sym(Nat, U32.to_nat(${E}), Nat.add(${OFF}, ${ly}), ${ovE}),
+      FD.nat__le_add_right(${OFF}, ${ly})))
+@@ _inv_variable_parts_lines_5 @@
+def nle2${j}(${SD}) -> {Nat.is_le(U32.to_nat(${E}), U32.to_nat(len)) == ${TRUE}}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == ${TRUE}}, ${OFFE}, U32.to_nat(${E}), Equal.sym(Nat, U32.to_nat(${E}), ${OFFE}, ${ovE}),
+    FD.logic__subst(Nat, z => {Nat.is_le(${OFFE}, z) == ${TRUE}}, ${END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), ${END}, eL(${SA})), LY.off_le(${PS}, ${i2}n, ${FSN})))
+@@ _inv_variable_parts_lines_4 @@
+def ypay${j}(${SD}) -> {${L.Y(j)} == y${j} : +List<U32>}:
+  %Equal.sym(Nat, U32.to_nat(${L.LJ(j)}), ${ly}, el${j}(${SA})) : {UW.WX(t, ${L.XJ(j)}, _) == y${j} : +List<U32>}
+  %Equal.sym(Nat, U32.to_nat(${L.O(j)}), ${OFF}, ov${j}(${SA})) : {UW.WX(t, Nat.add(_, x), ${ly}) == y${j} : +List<U32>}
+  %UW.subWX(t, x, ${OFF}, ${ly}, U32.to_nat(len), ${hl}) : {_ == y${j} : +List<U32>}
+  %eq : {VS.bt(${ly}, VS.bdr(${OFF}, _)) == y${j} : +List<U32>}
+  %efs(${SA}) : {VS.bt(${ly}, VS.bdr(LY.OFF(${PS}, ${i}n, _), ${BYTES})) == y${j} : +List<U32>}
+  LY.lay_pay(${PS}, ${i}n, y${j}, Layout.fixed_size(${PS}), ${FP}, LY.lay_len(${PS}, Layout.fixed_size(${PS})), {==})
+def dch${j}(${SD}${', +h' + str(j) + ': S.Value, +ev' + str(j) + ': EVF(h' + str(j) + ', ' + L.spec(f) + ', y' + str(j) + ')' if CP else ''}) -> {CH${j}.CHKw(t, ${L.XJ(j)}, ${L.FJ(j)}, ${L.LJ(j)}) == ${TRUE}}:
+  CH${j}.invw(d, t, n, ${L.XJ(j)}, ${L.FJ(j)}, ${L.LJ(j)}, eoW(${CWA}, ${L.O(j)}, ${E}, nle${j}(${SA}), nle2${j}(${SA})), hd,
+    hwj(${CWA}, ${L.O(j)}, ${E}, nle${j}(${SA}), nle2${j}(${SA})), pf, h${j},
+    FD.logic__subst(+List<U32>, z => {Codec.parts(h${j}, ${L.spec(f)}) == Some{[S.Variable{z}]} : ${MP}}, y${j}, ${L.Y(j)}, Equal.sym(+List<U32>, ${L.Y(j)}, y${j}, ypay${j}(${SA})), ev${j}))
+@@ _inv_checks_lines @@
+def fin(${CW}, ${sdecl(nf)}+b: Bool, +e: {Codec.one(SP.optional(b, ${BYTES}), None{}) == ${TGT} : ${MP}}) -> ${GOAL}:
+  match b:
+    case False{}: ${absurd()}
+    case True{}: contra(${CWA}, ${sargs(nf)}var_inj(${BYTES}, ${WBL}, e))
+
+@@ _inv_item_matches_lines @@
+def fp${i}(${CW}, ${sdecl(i)}+h: S.Value, +ps: +List<S.Part>, hf: DF.single(${wd}, ps), +em: {Codec.parts(h, ${sp}) == Some{ps} : ${MP}}, +r: S.Value,
+    +e: ${e_fp}) -> ${GOAL}:
+  match ps:
+    case Nil{}: Empty.absurd(${GOAL}, hf)
+@@ _inv_item_matches_lines_2 @@
+    case Con{S.Fixed{+xs}, Con{+a, +b}}: Empty.absurd(${GOAL}, hf)
+    case Con{S.Variable{+xs}, Con{+a, +b}}: Empty.absurd(${GOAL}, hf)
+
+@@ _inv_item_matches_lines_3 @@
+def fm${i}(${CW}, ${sdecl(i)}+h: S.Value, +mm: ${MP}, hf: DF.single_result(${wd}, mm), +em: {Codec.parts(h, ${sp}) == mm : ${MP}}, +r: S.Value,
+    +e: ${e_fm}) -> ${GOAL}:
+  match mm:
+    case None{}: ${absurd()}
+    case Some{+ps}: fp${i}(${CWA}, ${sargs(i)}h, ps, hf, em, r, e)

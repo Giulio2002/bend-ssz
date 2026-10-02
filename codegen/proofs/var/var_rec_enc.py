@@ -133,9 +133,8 @@ def rec_text(n, ft):
             pfs = f'pf_{k.s.rep}({", ".join(kw)}, dd, {tree(i)}, {pos}, r, {pfs})'
         else:
             pfs = f'{leaf(k)[3]}(r, dd, {tree(i)}, {pos}, {", ".join(kw)}, {pfs})'
-    w(f'def pf_{n}({WSIG}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})')
-    w(f'    -> {{FD.array__perfect(U32, dd, PX_{n}({WA}, dd, D, q, r)) == {TRUE}}}:')
-    w(f'  {pfs}')
+    for line in TPL.render('rec_text_lines', WA=WA, WSIG=WSIG, n=n, pfs=pfs).split('\n'):
+        w(line)
     RT = f'{{T.{n}_put(FD.array__thaw(U32, D), X, {OBJ}) == FD.array__thaw(U32, PX_{n}({WA}, dd, D, q, r)) : Array<U32>}}'
     BY = f'{{UA.BYT(PX_{n}({WA}, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, FX.limbs([{WA}])) : +List<U32>}}'
     w(TPL.render('rec_text', BY=BY, Ln=Ln, RT=RT, W=W, WA=WA, WSIG=WSIG, X0=X0, n=n))
@@ -148,10 +147,8 @@ def rec_text(n, ft):
         Di = tree(i)
         Dn = tree(i + 1)
         Xi = f'U32.add(X, {c})'
-        w(f'  +ep{i} = VRX.fpos(X, q, r, {c // 4}n, {c}, {Ln}, dd, e, {{==}}, hd, {{==}}, hl)')
-        w(f'  +hl{i} = VRX.froom(q, r, dd, {c // 4}n, {m}n, {Ln}, {{==}}, hl)')
-        w(f'  +z{i} = UW.inv_zero(UA.BYT(D), {X0}, {Ln}, {E}, {c}n, {m}n, UA.BYT({Di}), hX, I{i}, {{==}}, {{==}}, {{==}})')
-        w(f'  +hz{i} = FD.logic__subst(Nat, zz => {{VS.bt({m}n, VS.bdr(zz, UA.BYT({Di}))) == UW.ZB({m}n) : +List<U32>}}, Nat.add({X0}, {c}n), Nat.add(A.quad({pos}), r), VRX.fpx(q, r, {c // 4}n), z{i})')
+        for line in TPL.render('rec_text_lines_2', Di=Di, E=E, Ln=Ln, X0=X0, c=c, i=i, m=m, pos=pos).split('\n'):
+            w(line)
         if k.kind == 'container':
             w(f'  +g{i} = putx_{k.s.rep}({", ".join(kw)}, dd, {Di}, {Xi}, {pos}, r, ep{i}, hr, hd, hl{i}, {pf_cur}, hz{i})')
             rt = f'DK.P2(RT_{k.s.rep}({", ".join(kw)}, dd, {Di}, {Xi}, {pos}, r), BY_{k.s.rep}({", ".join(kw)}, dd, {Di}, {pos}, r))'
@@ -418,10 +415,8 @@ def urec_text(n):
     pfs = 'pf'
     for i in range(len(F)):
         pfs = lv[i]['pf'](RC(hoff[i]), tree(i), QC(hoff[i]), pfs)
-    w(f'def pf_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})')
-    w(f'    -> {{FD.array__perfect(U32, dd, PX_{n}({WA}, dd, D, X)) == {TRUE}}}:')
-    w(f'  {pfs}')
-    w(f'def BY_{n}({WSIG}) -> +List<U32>: {BYTES}')
+    for line in TPL.render('urec_text_lines', BYTES=BYTES, WA=WA, WSIG=WSIG, n=n, pfs=pfs).split('\n'):
+        w(line)
     RT = f'{{T.{n}_put(FD.array__thaw(U32, D), X, {OBJ}) == FD.array__thaw(U32, PX_{n}({WA}, dd, D, X)) : Array<U32>}}'
     BY = f'{{UA.BYT(PX_{n}({WA}, dd, D, X)) == UW.SPL(UA.BYT(D), {X0}, BY_{n}({WA})) : +List<U32>}}'
     w(TPL.render('urec_text', BY=BY, Ln=Ln, RT=RT, WA=WA, WSIG=WSIG, n=n))
@@ -438,10 +433,8 @@ def urec_text(n):
         Di, Dn = tree(i), tree(i + 1)
         Xc = f'U32.add(X, {c})'
         pos = f'Nat.add(A.quad({QC(c)}), {RC(c)})'
-        b(f'  +pp{i} = VP.ppos(X, {c}, {c}n, q, r, {Ln}, {m}n, dd, e, {{==}}, hd, {{==}}, hl)')
-        b(f'  +hl{i} = VP.proom(X, {c}, {c}n, q, r, {Ln}, {m}n, dd, e, {{==}}, hd, {{==}}, hl)')
-        b(f'  +z{i} = UW.inv_zero(UA.BYT(D), {X0}, {Ln}, {E}, {c}n, {m}n, UA.BYT({Di}), hX, I{i}, {{==}}, {{==}}, {{==}})')
-        b(f'  +hz{i} = FD.logic__subst(Nat, zz => {{VS.bt({m}n, VS.bdr(zz, UA.BYT({Di}))) == UW.ZB({m}n) : +List<U32>}}, Nat.add({X0}, {c}n), {pos}, pp{i}, z{i})')
+        for line in TPL.render('urec_text_lines_2', Di=Di, E=E, Ln=Ln, X0=X0, c=c, i=i, m=m, pos=pos).split('\n'):
+            b(line)
         sub = lambda t: t.replace('@e', f'VC.split4({Xc})').replace('@hr', f'VCN.rx_lt({Xc})').replace('@hl', f'hl{i}').replace('@pf', pf_cur).replace('@hz', f'hz{i}')  # noqa: E731
         b(f'  +rt{i} = {sub(x["rt"](Di, Xc, QC(c), RC(c)))}')
         b(f'  +by{i} = {sub(x["by"](Di, Xc, QC(c), RC(c)))}')
@@ -1047,15 +1040,11 @@ def belem_text(VLW, EN, g, names, E):
     for k in range(n):
         rem = RS - C[k] - S[k]
         Zk = 'hz' if k == 0 else f'Z{k}'
-        a(f'+ep{k} = VRX.fpos(X, q, r, {C[k] // 4}n, {C[k]}, {RS}n, dd, e, {{==}}, hd, {{==}}, hl)')
-        a(f'+hl{k} = VRX.froom(q, r, dd, {C[k] // 4}n, {S[k]}n, {RS}n, {{==}}, hl)')
-        a(f'+hz{k} = VRX.zhead({S[k]}n, {rem}n, VS.bdr({Xk(k)}, UA.BYT({Dk(k)})), {Zk})')
+        for line in TPL.render('belem_text_lines', C=C, Dk=Dk, RS=RS, S=S, Xk=Xk, Zk=Zk, k=k, rem=rem).split('\n'):
+            a(line)
         pfk = 'pf' if k == 0 else f'pf{k}'
-        a(f'+g{k} = putxo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r, ep{k}, hr, hd, hl{k}, {pfk}, hz{k})')
-        a(f'+rt{k} = PA(RTo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r), BYo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r), g{k})')
-        a(f'+by{k} = PB(RTo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r), BYo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r), g{k})')
-        a(f'+pf{k + 1} = pfo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r, {pfk})')
-        a(f'+hX{k} = VRX.xstart({qk[k]}, r, {S[k]}n, dd, {Dk(k)}, {pfk}, hl{k})')
+        for line in TPL.render('belem_text_lines_2', C=C, Dk=Dk, R=R, S=S, k=k, pfk=pfk, qk=qk).split('\n'):
+            a(line)
         if k < n - 1:
             a(f'+eX{k} = UW.pos_eq({S[k] // 4}n, {qk[k]}, r)')
             a(f'+Z{k + 1} = VRX.znext(UA.BYT({Dk(k)}), {Xk(k)}, {Y[k]}, {Xk(k + 1)}, {S[k]}n, {rem}n, UA.BYT({model(k)}), hX{k}, lenb_{R[k]}(a{k}), eX{k}, by{k}, {Zk})')

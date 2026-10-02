@@ -43,11 +43,8 @@ def bv4_mod(HEAD, sig, TR, TRUE):
         w(f'    case True{{}}: Empty.absurd({goalv(wt)}, FD.logic__false_true(h))')
         nxt = f'z{i - 1}({", ".join(a[:i])})' if i == 4 else f'z{i - 1}({", ".join(a[:i])}, h)'
         w(f'    case False{{}}: {nxt}')
-    w('')
-    w(f'def bvp(+v: U32, +h: {{CHKv(v) == {TRUE}}}) -> {goalv("v")}:')
-    w('  match v:')
-    w(f'    case {word(["+" + x for x in a])}: z31({", ".join(a)}, h)')
-    w('')
+    for line in TPL.render('bv4_mod_lines', TRUE=TRUE, a=a, goalv=goalv, word=word).split('\n'):
+        w(line)
     w(TPL.render('bv4_mod_prt', MP=MP, P=P, TR=TR, TRUE=TRUE))
     AB = f'Empty.absurd({{CHKL(ys) == {TRUE}}}, FD.logic__none_some(+List<S.Part>, [S.Fixed{{ys}}], e))'
     OCT = 'Bp.octet(b0, b1, b2, b3, False{}, False{}, False{}, False{})'
@@ -55,29 +52,8 @@ def bv4_mod(HEAD, sig, TR, TRUE):
     w('  match b0 b1 b2 b3:')
     for lo in itertools.product([False, True], repeat=4):
         w(f'    case {" ".join(B(b) for b in lo)}: {{==}}')
-    w('')
-    w('# any bits value whose parts are one fixed part ys: the first byte of ys has bits 4..7 clear')
-    w(f'def bvinv(+v: S.Value, +ys: +List<U32>, +e: {{Codec.parts(v, S.BitVector{{4n}}) == Some{{[S.Fixed{{ys}}]}} : {MP}}}) -> {{CHKL(ys) == {TRUE}}}:')
-    w('  match v:')
-    w('    case S.BitsValue{+bs}:')
-    w('      match bs:')
-    w(f'        case Nil{{}}: {AB}')
-    w('        case Con{+b0, +r0}:')
-    w('          match r0:')
-    w(f'            case Nil{{}}: {AB}')
-    w('            case Con{+b1, +r1}:')
-    w('              match r1:')
-    w(f'                case Nil{{}}: {AB}')
-    w('                case Con{+b2, +r2}:')
-    w('                  match r2:')
-    w(f'                    case Nil{{}}: {AB}')
-    w('                    case Con{+b3, +r3}:')
-    w('                      match r3:')
-    w(f'                        case Con{{+b4, +r4}}: {AB}')
-    w('                        case Nil{}:')
-    w(f'                          +ey = Equal.cong({MP}, +List<U32>, z => fxs(z), Some{{[S.Fixed{{[{OCT}]}}]}}, Some{{[S.Fixed{{ys}}]}}, e)')
-    w(f'                          %Equal.sym(+List<U32>, ys, [{OCT}], Equal.sym(+List<U32>, [{OCT}], ys, ey)) : {{CHKL(_) == {TRUE}}}')
-    w('                          chko(b0, b1, b2, b3)')
+    for line in TPL.render('bv4_mod_lines_2', AB=AB, MP=MP, OCT=OCT, TRUE=TRUE).split('\n'):
+        w(line)
     for c in ['S.BooleanValue{+b}', 'S.UnsignedValue{+u}', 'S.BytesValue{+xs}', 'S.Sequence{+it}', 'S.Items{+hh, +tl}', 'S.EmptyItems{}',
               'S.Selected{+sel, +sv}', 'S.NullValue{}']:
         w(f'    case {c}: {AB}')

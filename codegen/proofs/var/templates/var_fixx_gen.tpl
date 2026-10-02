@@ -370,3 +370,54 @@ def prt(+d: Nat, +t: ${TR}, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == ${TRU
   %Equal.sym(S.Schema, s, ${SCH}, es) : {Codec.parts(VAL(t, x), _) == Some{[S.Fixed{UW.WX(t, x, 4n)}]} : ${MP}}
   %UR.rws_bytes(1n, d, t, x, pf, hb) : {Codec.parts(VAL(t, x), ${SCH}) == Some{[S.Fixed{_}]} : ${MP}}
   F.uint32_part(UR.RWN(t, x))
+
+@@ bvn_mod_lines_3 @@
+def bvp(+v: U32, +h: {CHKv(v) == ${TRUE}}) -> ${goalv('v')}:
+  match v:
+    case ${word(['+' + x for x in a])}: z31(${', '.join(a)}, h)
+@@ bvn_mod_lines_4 @@
+# a byte: the embedding of its eight bits
+def bvp8(+w8: Word(8n)) -> ${goalv('PD.embed8(w8)')}:
+  match w8:
+@@ bvn_mod_lines @@
+
+# any bits value whose parts are one fixed part ys: the first byte of ys has bits ${N}..7 clear
+def bvinv(+v: S.Value, +ys: +List<U32>, +e: {Codec.parts(v, ${SCH}) == Some{[S.Fixed{ys}]} : ${MP}}) -> {CHKL(ys) == ${TRUE}}:
+  match v:
+    case S.BitsValue{+bs}:
+@@ bvn_mod_lines_2 @@
+${ind}  case Con{+b${N}, +r${N}}: ${AB}
+${ind}  case Nil{}:
+${ind}    +ey = Equal.cong(${MP}, +List<U32>, z => fxs(z), Some{[S.Fixed{[${OCT}]}]}, Some{[S.Fixed{ys}]}, e)
+${ind}    %Equal.sym(+List<U32>, ys, [${OCT}], Equal.sym(+List<U32>, [${OCT}], ys, ey)) : {CHKL(_) == ${TRUE}}
+${ind}    chko(${', '.join(bs)})
+@@ bvw1_mod_lines @@
+# a byte with bits 1..31 clear is the octet of its low bit
+def z0(+a0: Bool) -> ${goal(zw(0))}:
+  match a0:
+    case True{}: {==}
+    case False{}: {==}
+@@ bvw1_mod_lines_2 @@
+def ob1(+v: U32, +h: {CHKv(v) == ${TRUE}}) -> ${goal('v')}:
+  match v:
+    case ${word(['+' + x for x in a])}: z31(${', '.join(a)}, h)
+
+@@ bvw1_mod_lines_3 @@
+def pkl(m, bs, h):
+  match m bs:
+    case 0n _: pk0(bs, h)
+@@ recvec_mod_lines_4 @@
+  %Equal.sym(B.Buf & ${f['rep']}, T.${f['p']}_read(UA.BF(t, n), U32.add(off, ${f['c']}), ${f['s']}), (UA.BF(t, n), ${a}.OBJ(d, t, ${pos})),
+      ${a}.rdx(d, t, n, U32.add(off, ${f['c']}), ${pos}, ec(d, off, x, ${f['c']}, ${f['c']}n, ${ES}n, e, hd, {==}, {==}, hb), hd, pf, rm(x, ${f['c']}n, ${f['s']}n, ${ES}n, {==}, ${P}, hb))) :
+    {${Tn}_rd${j}(${args}) == ${RHS}}
+@@ recvec_mod_lines @@
+def ewx(+t: ${TR}, +x: Nat) -> ${est}:
+  ${eprf}
+
+@@ recvec_mod_lines_2 @@
+def OBJ(+d: Nat, +t: ${TR}, +x: Nat) -> ${Vt}_Seq: ${Vt}_Seq{${arr}, ${K}}
+
+${sig('rdx', S)}
+@@ recvec_mod_lines_3 @@
+def vwx(+t: ${TR}, +x: Nat) -> ${vst}:
+  ${vprf}

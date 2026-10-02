@@ -324,3 +324,34 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
     +v: S.Value, +e: {Codec.parts(v, Spec.${n}()) == Some{[S.Variable{${WX}}]} : ${MP}})
     -> {CHKw(t, x, off, len) == True{} : Bool}:
   inv_facts(d, t, n, x, off, len, eo, hd, hw, pf, XI.inv_p(v, ${WX}, e))
+
+@@ inv_text_lines @@
+# Every value whose spec parts are one variable part has its bytes in the checked shape.
+def inv_p(+v: S.Value, +bs: +List<U32>, +e: {Codec.parts(v, Spec.${x.n}()) == Some{[S.Variable{bs}]} : Maybe<&2, +List<S.Part>>}) -> FACTS(bs):
+  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.${x.n}()), Some{[S.Variable{bs}]}, e))
+@@ win_text_lines @@
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+# The reader on the window, when the checks hold.
+def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, ${WHX}, ${PF},
+    ${HA}, +epo: {SPOw(t, x) == ${FS} : U32}, ${HX})
+    -> {${Tn}_read(${BF}, off, len) == ${RHS} : ${TY}}:
+  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})
+  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
+@@ win_text_lines_2 @@
+  %Equal.sym(B.Buf & O.Words, ${call}, (${BF}, ${val}),
+      UCT.copy_in_at(d, t, n, U32.add(off, ${FS}), LL(len), DZ(len), ${KY}n, pf, hd31, hdz31(len, hx), ez(len, hx),
+        hsv(d, x, off, len, eo, hd, hw, ha), hr(len, hx), {==}, hyL(len, hx))) :
+@@ xn_inv_text_lines @@
+# Every value whose spec parts are one variable part has its bytes in the checked shape.
+def inv_p(+v: S.Value, +bs: +List<U32>, +e: {Codec.parts(v, Spec.${x.n}()) == Some{[S.Variable{bs}]} : Maybe<&2, +List<S.Part>>}) -> FACTS(bs):
+  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.${x.n}()), Some{[S.Variable{bs}]}, e))
+@@ _xw_reader_lines @@
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+# The reader on the window, when the checks hold.
+def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, ${WHX}, ${PF},
+    ${HA}, +epo: {SPOw(t, x) == ${FS} : U32}, +hY: {${YCHK} == True{} : Bool})
+    -> {${Tn}_read(${BF}, off, len) == ${RHS} : ${TY}}:
+  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})
+  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})

@@ -187,15 +187,8 @@ def cont_text(g, x, ch, chmod, CSCH, chrep, bits):
     OBJ = f'{Tn}{{' + ', '.join(objs) + '}'
     RHS = '(BF(t, n), OBJw(t, i, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w(f'def rd_go({CW}, {HA}, +epo: {{SPOw(t, i) == {FS} : U32}}, +hc: {{{CHK_child} == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:')
-    w(f'  +hH = hHi({CWA}, ha)')
-    w(f'  %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, {4 * po})), (VF.BF(t, n), SPOw(t, i)),')
-    w(f'      VF.rd32a(d, t, n, U32.add(off, {4 * po}), Nat.add({po}n, i), eoc({CWA}, {po}n, {4 * po}, {{==}}, {{==}}, ha),')
-    w(f'        VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {{==}})), hiw({CWA}, {po}n, {{==}}, ha), pf)) :')
-    w(f'    {{{Tn}_rd0(off, len, _) == {RHS} : {TY}}}')
+    for text_line in TPL.render('cont_text_lines', CHK_child=CHK_child, CW=CW, CWA=CWA, FS=FS, HA=HA, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn, po=po).split('\n'):
+        w(text_line)
 
     def read_term(f, o):
         if f['kind'] == 'fix':
@@ -210,9 +203,8 @@ def cont_text(g, x, ch, chmod, CSCH, chrep, bits):
             ft = f['ft']
             k = f['k']
             hb = f'FD.nat__le_trans(Nat.add({ft.W}n, Nat.add({k}n, i)), Nat.add({H}n, i), VB.pw(d), Order.left_below_sum({H - ft.W - k}n, Nat.add({ft.W}n, Nat.add({k}n, i))), hH)'
-            w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
-            w(f'      VT.rdd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({k}n, i), eoc({CWA}, {k}n, {f["c"]}, {{==}}, {{==}}, ha), hd, pf, {hb})) :')
-            w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
+            for text_line in TPL.render('cont_text_lines_2', CWA=CWA, FS=FS, RHS=RHS, TY=TY, Tn=Tn, args=args, f=f, ft=ft, hb=hb, j=j, k=k, objs=objs, read_term=read_term).split('\n'):
+                w(text_line)
         else:
             base = x.rdf[:-3] if x.boxed else x.rdf
             cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'
@@ -347,32 +339,24 @@ def inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL):
     lens_eq('eP', pre, Pz)
     lens_eq('eQ', post, Qz)
     w(f'def fz_eq(' + ', '.join(decl_m) + f') -> {{VRJ.FZ({PRE}, {POST}) == {FS}n : Nat}}:')
-    w(f'  %Equal.sym(Nat, VRJ.lens({PRE}), {Pz}n, eP({ALL})) : {{Nat.add(_, 4n+VRJ.lens({POST})) == {FS}n : Nat}}')
-    w(f'  %Equal.sym(Nat, VRJ.lens({POST}), {Qz}n, eQ({ALL})) : {{Nat.add({Pz}n, 4n+_) == {FS}n : Nat}}')
-    w('  {==}')
-    w('')
+    for text_line in TPL.render('inv_text_lines', ALL=ALL, FS=FS, POST=POST, PRE=PRE, Pz=Pz, Qz=Qz).split('\n'):
+        w(text_line)
     w(f'def f_off(' + ', '.join(decl_m) + f') -> {{VS.bt(4n, VS.bdr({P}n, {OUT})) == N.digits(4n, {FS}n) : +List<U32>}}:')
-    w(f'  %eP({ALL}) : {{VS.bt(4n, VS.bdr(_, {OUT})) == N.digits(4n, Nat.add(_, 4n+{Qz}n)) : +List<U32>}}')
-    w(f'  %eQ({ALL}) : {{VS.bt(4n, VS.bdr(VRJ.lens({PRE}), {OUT})) == N.digits(4n, Nat.add(VRJ.lens({PRE}), 4n+_)) : +List<U32>}}')
-    w(f'  VRJ.out_off({PRE}, ys, {POST})')
-    w('')
+    for text_line in TPL.render('inv_text_lines_2', ALL=ALL, OUT=OUT, POST=POST, PRE=PRE, Qz=Qz).split('\n'):
+        w(text_line)
     w(f'def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}}:')
-    w(f'  %fz_eq({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(_, List.length(&2, U32, ys)) : Nat}}')
-    w(f'  VRJ.out_len({PRE}, ys, {POST})')
-    w('')
+    for text_line in TPL.render('inv_text_lines_3', ALL=ALL, OUT=OUT, POST=POST, PRE=PRE).split('\n'):
+        w(text_line)
     w(f'def f_tail(' + ', '.join(decl_m) + f') -> {{VS.bdr({FS}n, {OUT}) == ys : +List<U32>}}:')
-    w(f'  %fz_eq({ALL}) : {{VS.bdr(_, {OUT}) == ys : +List<U32>}}')
-    w(f'  VBC.out_tail({PRE}, ys, {POST})')
-    w('')
+    for text_line in TPL.render('inv_text_lines_4', ALL=ALL, OUT=OUT, POST=POST, PRE=PRE).split('\n'):
+        w(text_line)
     RF = FS - P - 4
     w(TPL.render('inv_text', ALL=ALL, CHK_child=CHK_child, CSCH=CSCH, CW=CW, CWA=CWA, FS=FS, GOAL=GOAL, H=H, MP=MP, OUT=OUT, P=P, RF=RF, WBL=WBL, decl_m=decl_m, po=po))
     PLIST = '[' + ', '.join(parts_m) + ']'
     b5 = f'Bool.and(Layout.bytes_valid({PLIST}), N.fits(4n, Nat.add(Layout.fixed_size({PLIST}), List.length(&2, U32, Layout.payloads({PLIST})))))'
     w(sig('fin', decl_m, ['+b5: Bool', f'+e: {{Codec.one(SP.optional(b5, {OUT}), None{{}}) == Some{{[S.Variable{{{WBL}}}]}} : {MP}}}']))
-    w('  match b5:')
-    w(f'    case False{{}}: {absurd()}')
-    w(f'    case True{{}}: contra({CWA}, {ALL}, var_inj({OUT}, {WBL}, e))')
-    w('')
+    for text_line in TPL.render('inv_text_lines_5', ALL=ALL, CWA=CWA, OUT=OUT, WBL=WBL, absurd=absurd).split('\n'):
+        w(text_line)
     w(sig(f'st{m}', decl_m, ['+items: S.Value', '+e: ' + E(parts_m, 'Codec.parts(items, S.End{})')]))
     L.extend(match_value('items', ('EmptyItems', []), f'fin({CWA}, {ALL}, {b5}, e)'))
     w('')
@@ -386,19 +370,12 @@ def inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL):
             z = f['ft'].size
             w(sig(f'fp{i}', decl, ['+ps: +List<S.Part>', f'hf: DF.single(Some{{{z}n}}, ps)', '+r: S.Value',
                                    '+e: ' + E(parts, f'Codec.concatenate(Some{{ps}}, {nxt})')]))
-            w('  match ps:')
-            w(f'    case Nil{{}}: Empty.absurd({GOAL}, hf)')
-            w(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: st{i + 1}({CWA}, {A}xs, Equal.sym(Nat, {z}n, List.length(&2, U32, xs), FD.logic__some_inj(Nat, {z}n, List.length(&2, U32, xs), hf)), r, e)')
-            w(f'    case Con{{S.Variable{{+xs}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {z}n, Equal.sym(Maybe<&2, Nat>, Some{{{z}n}}, None{{}}, hf)))')
-            w(f'    case Con{{S.Fixed{{+xs}}, Con{{+h2, +t2}}}}: Empty.absurd({GOAL}, hf)')
-            w(f'    case Con{{S.Variable{{+xs}}, Con{{+h2, +t2}}}}: Empty.absurd({GOAL}, hf)')
-            w('')
+            for text_line in TPL.render('inv_text_lines_6', A=A, CWA=CWA, GOAL=GOAL, i=i, z=z).split('\n'):
+                w(text_line)
             w(sig(f'fm{i}', decl, ['+mm: Maybe<&2, +List<S.Part>>', f'hf: DF.single_result(Some{{{z}n}}, mm)', '+r: S.Value',
                                    '+e: ' + E(parts, f'Codec.concatenate(mm, {nxt})')]))
-            w('  match mm:')
-            w(f'    case None{{}}: {absurd()}')
-            w(f'    case Some{{+ps}}: fp{i}({CWA}, {A}ps, hf, r, e)')
-            w('')
+            for text_line in TPL.render('inv_text_lines_7', A=A, CWA=CWA, absurd=absurd, i=i).split('\n'):
+                w(text_line)
             w(sig(f'fd{i}', decl, ['+h: S.Value', '+r: S.Value', '+e: ' + E(parts, f'Codec.concatenate(Codec.parts(h, {sch}), {nxt})')]))
             w(f'  fm{i}({CWA}, {A}Codec.parts(h, {sch}), DS.facts(h, {sch}, {{==}}), r, e)')
             w('')
@@ -406,20 +383,13 @@ def inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL):
             w(sig(f'vp{i}', decl, ['+h: S.Value', '+ps: +List<S.Part>', 'hf: DF.single(None{}, ps)',
                                    f'+em: {{Codec.parts(h, {CSCH}) == Some{{ps}} : {MP}}}', '+r: S.Value',
                                    '+e: ' + E(parts, f'Codec.concatenate(Some{{ps}}, {nxt})')]))
-            w('  match ps:')
-            w(f'    case Nil{{}}: Empty.absurd({GOAL}, hf)')
-            w(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
-            w(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: st{i + 1}({CWA}, {A}h, ys, em, r, e)')
-            w(f'    case Con{{S.Fixed{{+xs}}, Con{{+h2, +t2}}}}: Empty.absurd({GOAL}, hf)')
-            w(f'    case Con{{S.Variable{{+xs}}, Con{{+h2, +t2}}}}: Empty.absurd({GOAL}, hf)')
-            w('')
+            for text_line in TPL.render('inv_text_lines_8', A=A, CWA=CWA, GOAL=GOAL, i=i).split('\n'):
+                w(text_line)
             w(sig(f'vm{i}', decl, ['+h: S.Value', '+mm: Maybe<&2, +List<S.Part>>', 'hf: DF.single_result(None{}, mm)',
                                    f'+em: {{Codec.parts(h, {CSCH}) == mm : {MP}}}', '+r: S.Value',
                                    '+e: ' + E(parts, f'Codec.concatenate(mm, {nxt})')]))
-            w('  match mm:')
-            w(f'    case None{{}}: {absurd()}')
-            w(f'    case Some{{+ps}}: vp{i}({CWA}, {A}h, ps, hf, em, r, e)')
-            w('')
+            for text_line in TPL.render('inv_text_lines_9', A=A, CWA=CWA, absurd=absurd, i=i).split('\n'):
+                w(text_line)
             w(sig(f'fd{i}', decl, ['+h: S.Value', '+r: S.Value', '+e: ' + E(parts, f'Codec.concatenate(Codec.parts(h, {sch}), {nxt})')]))
             w(f'  vm{i}({CWA}, {A}h, Codec.parts(h, {sch}), DS.facts(h, {sch}, {{==}}), {{==}}, r, e)')
             w('')
@@ -576,12 +546,8 @@ def _cx_reader(x, chrep, FS, P, Tn, CW, CWA, HA, w, CHK_child):
     OBJ = f'{Tn}{{' + ', '.join(objs) + '}'
     RHS = '(BF(t, n), OBJw(d, t, x, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w(f'def rd_go({CW}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, +hc: {{{CHK_child} == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:')
-    w(f'  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, {P})), (BF(t, n), SPOw(t, x)), rdpo({CWA}, ha)) :')
-    w(f'    {{{Tn}_rd0(off, len, _) == {RHS} : {TY}}}')
+    for text_line in TPL.render('_cx_reader_lines', CHK_child=CHK_child, CW=CW, CWA=CWA, FS=FS, HA=HA, OBJ=OBJ, P=P, RHS=RHS, TY=TY, Tn=Tn).split('\n'):
+        w(text_line)
 
     def read_term(f, o):
         if f['kind'] == 'fix':
@@ -595,10 +561,8 @@ def _cx_reader(x, chrep, FS, P, Tn, CW, CWA, HA, w, CHK_child):
         if f['kind'] == 'fix':
             ft = f['ft']
             c = f['c']
-            w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
-            w(f'      VTX.rdxd_{ft.p}(d, t, n, U32.add(off, {c}), {posx(c)}, eoc({CWA}, {c}, {c}n, {{==}}, {{==}}, ha), hd, pf,')
-            w(f'        roomF({CWA}, ha, {c}n, {ft.size}n, {{==}}))) :')
-            w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
+            for text_line in TPL.render('_cx_reader_lines_2', CWA=CWA, FS=FS, RHS=RHS, TY=TY, Tn=Tn, args=args, c=c, f=f, ft=ft, j=j, objs=objs, read_term=read_term).split('\n'):
+                w(text_line)
         else:
             base = x.rdf[:-3] if x.boxed else x.rdf
             cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'

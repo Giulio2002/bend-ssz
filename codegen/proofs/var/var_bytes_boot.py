@@ -231,15 +231,8 @@ def spec_part_seg(x):
     L = [TPL.render('spec_part_seg', CAT=CAT, CHAIN=CHAIN, CT=CT, ENC=ENC, ENCR=ENCR, FS=FS, FSN=FSN, G=G, HFS=HFS, HLW=HLW, ITEMS=ITEMS, M=M, MP=MP, PL=PL, POST=POST, PRE=PRE, VY_=VY_, WPK=WPK, Y=Y, cf=cf, n=n)]
     w = L.append
     # the header window as the concatenated segments
-    w('# Order.left_below_sum at a symbolic k, with the sum\'s literal part named 1 + k; instantiated at')
-    w('# k = H - 1 it converts to H + i without walking H - 1 in unary')
-    w('def lbs1(+k: Nat, +i: Nat) -> {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), Nat.add(Nat.add(1n, k), i)) == True{} : Bool}:')
-    w('  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, Nat.add(0n, i)), z) == True{} : Bool}, Nat.add(k, Nat.add(1n, Nat.add(0n, i))), '
-      'Nat.add(Nat.add(1n, k), i), FD.nat__add_succ(k, i), Order.left_below_sum(k, Nat.add(1n, Nat.add(0n, i))))')
-    w('')
-    w(f'def winH(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +len: U32, {VBY.PF}, +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})')
-    w(f'    -> {{VS.wtake({H}n, VB.wdr(i, {s})) == VZ.cat({SEGSs}) : List<&2, U32>}}:')
-    w(f'  +hsl = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({H}n, i), z) == True{{}} : Bool}}, VB.pw(d), VB.len({s}), Equal.sym(Nat, VB.len({s}), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), hHi(d, i, len, hw, ha))')
+    for line in TPL.render('spec_part_seg_lines', H=H, HA=HA, SEGSs=SEGSs, s=s).split('\n'):
+        w(line)
     LT = 'List<&2, U32>'
 
     def win(m, p):
@@ -288,8 +281,7 @@ def spec_part_seg(x):
         rest_ = '[' + ', '.join(sb[j + 1:]) + ']'
         w(f'  %Equal.sym({LT}, {cur}, VF.app({sb[j]}, VZ.cat({rest_})), VBZ.cat_cons({sb[j]}, {rest_})) : {{{LHSF} == {rpre("_")} : {LT}}}')
         rpre = (lambda p0, x: (lambda t: p0(f'VF.app({x}, {t})')))(rpre, sb[j])
-    w(f'  %Equal.sym({LT}, VZ.cat([]), [], VBZ.cat_nil()) : {{{LHSF} == {rpre("_")} : {LT}}}')
-    w('  {==}')
-    w('')
+    for line in TPL.render('spec_part_seg_lines_2', LHSF=LHSF, LT=LT, rpre=rpre).split('\n'):
+        w(line)
     L.append(TPL.render('spec_part_seg_hlWw', ENH=ENH, FS=FS, FSN=FSN, H=H, HA=HA, HDRB=HDRB, MP=MP, SEGSh=SEGSh, SEGSs=SEGSs, VY_=VY_, WIN=WIN, WPK=WPK, YT=YT, cf=cf, n=n, s=s))
     return L

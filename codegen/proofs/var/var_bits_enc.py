@@ -62,28 +62,20 @@ def bw_module():
         DM = 1 << r
         T = (f'DK.P2({{BK.btk({r + 1}n, BLf.wbits(U32.or(x, {DM}))) == List.append(&2, Bool, BK.btk({r}n, BLf.wbits(x)), [True{{}}]) : +List<Bool>}}, '
              f'{{BK.zw({r + 1}n, U32.or(x, {DM})) == True{{}} : Bool}})')
-        w(f'law bw{r}:')
-        w('  for +x: U32')
-        w(f'  for +hz: {{hzw({r}n, x) == True{{}} : Bool}}')
-        w(f'  {T}')
-        w(f'def bw{r}(x, hz):')
-        w('  match x:')
-        w(f'    case {pat}:')
+        for line in TPL.render('bw_module_lines_6', T=T, pat=pat, r=r).split('\n'):
+            w(line)
         xx = 'U32{' + word(a + ['False{}'] * m) + '}'
         mot = (f'DK.P2({{BK.btk({r + 1}n, BLf.wbits(U32{{_}})) == List.append(&2, Bool, BK.btk({r}n, BLf.wbits({xx})), [True{{}}]) : +List<Bool>}}, '
                f'{{BK.zw({r + 1}n, U32{{_}}) == True{{}} : Bool}})')
-        w(f'      %Equal.sym(Word(32n), Word.or(32n, WSp.join({r}n, {m}n, {LO}, Word.zero({m}n)), WSp.join({r}n, {m}n, Word.zero({r}n), {E})), '
-          f'WSp.join({r}n, {m}n, {LO}, {E}), WSp.join_or({r}n, {m}n, {LO}, {E})) :')
-        w(f'        {mot}')
-        w('      ({==}, {==})')
+        for line in TPL.render('bw_module_lines_7', E=E, LO=LO, m=m, mot=mot, r=r).split('\n'):
+            w(line)
         for i in range(r, 32):
             bits = [f'+{v}' for v in a] + ['False{}'] * (i - r) + ['True{}'] + [f'+c{k}' for k in range(i + 1, 32)]
             w(f'    case U32{{{word(bits)}}}: Empty.absurd({T.replace("x", "U32{" + word([v.lstrip("+") for v in bits]) + "}")}, F.logic__false_true(hz))')
         w('')
     # The delimiter mask of byte j, bit b.
-    w('# The delimiter mask of byte j < 4, bit b < 8: bit 8 j + b.')
-    w('def DL(j: Nat, b: Nat) -> U32:')
-    w('  match j:')
+    for line in TPL.text('bw_module_lines').split('\n'):
+        w(line)
     for J in range(4):
         w(f'    case {J}n:')
         w('      match b:')
@@ -95,18 +87,8 @@ def bw_module():
     RR = 'Nat.add(VS.x8(j), b)'
     TG = (f'DK.P2({{BK.btk(1n+{RR}, BLf.wbits(U32.or(x, DL(j, b)))) == List.append(&2, Bool, BK.btk({RR}, BLf.wbits(x)), [True{{}}]) : +List<Bool>}}, '
           f'{{BK.zw(1n+{RR}, U32.or(x, DL(j, b))) == True{{}} : Bool}})')
-    w('# OR-ing the delimiter into word x: bit r = 8 j + b is set, the bits below kept,')
-    w('# the bits above zero.')
-    w('law dlc:')
-    w('  for +j: Nat')
-    w('  for +b: Nat')
-    w('  for +x: U32')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w(f'  for +hz: {{hzw({RR}, x) == True{{}} : Bool}}')
-    w(f'  {TG}')
-    w('def dlc(j, b, x, hj, hb, hz):')
-    w('  match j b:')
+    for line in TPL.render('bw_module_lines_2', RR=RR, TG=TG).split('\n'):
+        w(line)
     for J in range(4):
         for B in range(8):
             r = 8 * J + B
@@ -116,45 +98,18 @@ def bw_module():
     w(f'    case 4n+ +e _: Empty.absurd({TG.replace("(j,", "(4n+e,").replace("VS.x8(j)", "VS.x8(4n+e)")}, F.nat__lt_zero_absurd(e, hj))')
     w('')
     KD = 'O.shl_bytes(U32.and(MF.shl_by(1, U32.and(K, 7)), 255), U32.and(U32.add(0, U32.shrn(K, 3n)), 3))'
-    w('# The runtime delimiter mask (O.w8_delim at p = 0) is DL of the bit count\'s byte and bit.')
-    w('law dmk_dl:')
-    w('  for +K: U32')
-    w('  for +j: Nat')
-    w('  for +b: Nat')
-    w('  for +ej: {U32.to_nat(U32.and(U32.add(0, U32.shrn(K, 3n)), 3)) == j : Nat}')
-    w('  for +eb: {U32.to_nat(U32.and(K, 7)) == b : Nat}')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w(f'  {{{KD} == DL(j, b) : U32}}')
-    w('def dmk_dl(K, j, b, ej, eb, hj, hb):')
-    w('  match j b:')
+    for line in TPL.render('bw_module_lines_3', KD=KD).split('\n'):
+        w(line)
     for J in range(4):
         for B in range(8):
-            w(f'    case {J}n {B}n:')
-            w(f'      %Equal.sym(U32, U32.and(K, 7), {B}, F.u32__injective(U32.and(K, 7), {B}, eb)) :')
-            w(f'        {{O.shl_bytes(U32.and(MF.shl_by(1, _), 255), U32.and(U32.add(0, U32.shrn(K, 3n)), 3)) == DL({J}n, {B}n) : U32}}')
-            w(f'      %Equal.sym(U32, U32.and(U32.add(0, U32.shrn(K, 3n)), 3), {J}, F.u32__injective(U32.and(U32.add(0, U32.shrn(K, 3n)), 3), {J}, ej)) :')
-            w(f'        {{O.shl_bytes(U32.and(MF.shl_by(1, {B}), 255), _) == DL({J}n, {B}n) : U32}}')
-            w('      {==}')
+            for line in TPL.render('bw_module_lines_8', B=B, J=J).split('\n'):
+                w(line)
         w(f'    case {J}n 8n+ +e: Empty.absurd({{{KD} == DL({J}n, 8n+e) : U32}}, F.nat__lt_zero_absurd(e, hb))')
-    w(f'    case 4n+ +e _: Empty.absurd({{{KD} == DL(4n+e, b) : U32}}, F.nat__lt_zero_absurd(e, hj))')
-    w('')
-    w('# Whether the last word is partial: 0 at a word boundary, else 1.')
-    w('def CWr(r: Nat) -> Nat:')
-    w('  match r:')
-    w('    case 0n: 0n')
-    w('    case 1n+p: 1n')
-    w('')
+    for line in TPL.render('bw_module_lines_4', KD=KD).split('\n'):
+        w(line)
     CF = (TPL.text('CF'))
-    w('# The closed facts of byte j < 4, bit b < 8.')
-    w('law cfj:')
-    w('  for +j: Nat')
-    w('  for +b: Nat')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w(f'  {CF}')
-    w('def cfj(j, b, hj, hb):')
-    w('  match j b:')
+    for line in TPL.render('bw_module_lines_5', CF=CF).split('\n'):
+        w(line)
     for J in range(4):
         for B in range(8):
             w(f'    case {J}n {B}n: ({{==}}, ({{==}}, ({{==}}, ({{==}}, ({{==}}, {{==}})))))')
@@ -206,20 +161,10 @@ def pad_module():
     for R in range(1, 33):
         i, c = (R - 1) // 4, (R - 1) % 4 + 1
         CB = 'WS.cb(S, Nat.add(Q, 0n))'
-        w(f'law padw{R}:')
-        w('  for +S: List<&2, U32>')
-        w('  for +Q: Nat')
-        w(f'  for +hp: {{WS.bdrop({R}n, {CB}) == SP.zero_bytes({32 - R}n) : +List<U32>}}')
-        w(f'  {{WS.bdrop({c}n, I.limb(MR.wd(S, Nat.add(O.e8(Nat.add(Q, 0n)), {i}n)))) == SP.zero_bytes({4 - c}n) : +List<U32>}}')
-        w(f'def padw{R}(S, Q, hp):')
-        w(f'  Equal.cong(+List<U32>, +List<U32>, z => WS.btake({4 - c}n, z), WS.bdrop({R}n, {CB}), SP.zero_bytes({32 - R}n), hp)')
-        w('')
-    w('law cwb:')
-    w('  for +b: Nat')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w('  {VD.s_rng(3n, Nat.add(b, 7n)) == BW.CWr(b) : Nat}')
-    w('def cwb(b, hb):')
-    w('  match b:')
+        for line in TPL.render('pad_module_lines_5', CB=CB, R=R, c=c, i=i).split('\n'):
+            w(line)
+    for line in TPL.text('pad_module_lines').split('\n'):
+        w(line)
     for B in range(8):
         w(f'    case {B}n: {{==}}')
     w('    case 8n+ +e: Empty.absurd({VD.s_rng(3n, Nat.add(8n+e, 7n)) == BW.CWr(8n+e) : Nat}, F.nat__lt_zero_absurd(e, hb))')
@@ -229,30 +174,16 @@ def pad_module():
     w('law cib:')
     for v in ['j', 'b', 'i']:
         w(f'  for +{v}: Nat')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w('  for +hi: {Nat.is_lt(i, 8n) == True{} : Bool}')
-    w(f'  {CI}')
-    w('def cib(j, b, i, hj, hb, hi):')
-    w('  match j b i:')
+    for line in TPL.render('pad_module_lines_2', CI=CI).split('\n'):
+        w(line)
     for J in range(4):
         for B in range(8):
             for I in range(8):
                 w(f'    case {J}n {B}n {I}n: {{==}}')
             w(f'    case {J}n {B}n 8n+ +e: Empty.absurd({{Nat.is_le(Nat.add(A.quad(8n+e), Nat.add({J}n, BW.CWr({B}n))), 32n) == True{{}} : Bool}}, F.nat__lt_zero_absurd(e, hi))')
         w(f'    case {J}n 8n+ +e _: Empty.absurd({{Nat.is_le(Nat.add(A.quad(i), Nat.add({J}n, BW.CWr(8n+e))), 32n) == True{{}} : Bool}}, F.nat__lt_zero_absurd(e, hb))')
-    w('    case 4n+ +e _ _: Empty.absurd({Nat.is_le(Nat.add(A.quad(i), Nat.add(4n+e, BW.CWr(b))), 32n) == True{} : Bool}, F.nat__lt_zero_absurd(e, hj))')
-    w('')
-    w('# A nonzero bit offset 8 j + b has a nonzero byte count j + [b > 0] in its word.')
-    w('law cpos:')
-    w('  for +j: Nat')
-    w('  for +b: Nat')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w('  for +h: {Nat.is_lt(0n, Nat.add(VS.x8(j), b)) == True{} : Bool}')
-    w('  {Nat.is_lt(0n, Nat.add(j, BW.CWr(b))) == True{} : Bool}')
-    w('def cpos(j, b, hj, hb, h):')
-    w('  match j b:')
+    for line in TPL.text('pad_module_lines_3').split('\n'):
+        w(line)
     for J in range(4):
         for B in range(8):
             if J == 0 and B == 0:
@@ -271,16 +202,8 @@ def pad_module():
     w('law hzd:')
     for v in ['j', 'b', 'i']:
         w(f'  for +{v}: Nat')
-    w('  for +S: List<&2, U32>')
-    w('  for +Q: Nat')
-    w('  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}')
-    w('  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}')
-    w('  for +hi: {Nat.is_lt(i, 8n) == True{} : Bool}')
-    w(f'  for +hz: {HZ}')
-    w(f'  for +hp: {HP}')
-    w(f'  {GL}')
-    w('def hzd(j, b, i, S, Q, hj, hb, hi, hz, hp):')
-    w('  match j b i:')
+    for line in TPL.render('pad_module_lines_4', GL=GL, HP=HP, HZ=HZ).split('\n'):
+        w(line)
 
     def sub(t, J, B, I):
         return t.replace('VS.x8(j)', f'VS.x8({J})').replace('Nat.add(j, ', f'Nat.add({J}, ').replace('CWr(b)', f'CWr({B})').replace('VS.x8(' + J + '), b)', f'VS.x8({J}), {B})').replace('A.quad(i)', f'A.quad({I})').replace('0n)), i))', f'0n)), {I}))')
@@ -344,10 +267,8 @@ def name_module(X, N, p, src):
                  '# spec/codec.bend encoding of the object\'s value BO.bview, the first K bits of its words.', '']
     w = L.append
     OBJ = 'O.Bits{F.array__thaw(U32, T), K}'
-    w(f'def OUT(+T: F.array__Tree<U32>, +K: U32) -> F.array__Tree<U32>: DL.OZ({DO}, T, K)')
-    w(f'def VAL(+T: F.array__Tree<U32>, +K: U32) -> S.Value: S.BitsValue{{BO.bview({OBJ})}}')
-    w('def BY(+T: F.array__Tree<U32>, +K: U32) -> +List<U32>: VS.bt(U32.to_nat(CO.NK(K)), FX.limbs(F.array__slots(U32, OUT(T, K))))')
-    w('')
+    for line in TPL.render('name_module_lines', DO=DO, OBJ=OBJ).split('\n'):
+        w(line)
     P = ['+dw: Nat', '+T: F.array__Tree<U32>', '+K: U32', '+pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}',
          '+hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}', f'+rep: BO.rep_bits({OBJ}, GS.{X}())']
     A = ['dw', 'T', 'K', 'pfT', 'hdw', 'rep']
@@ -361,12 +282,8 @@ def name_module(X, N, p, src):
         core = f'CO.enc_sized(dw, T, K, {kb}n, {KY}n, {KO}n, {N}n, pfT, hdw, {{==}}, {{==}}, {{==}}, hN, {{==}}, {{==}}, {{==}}, hcap, hz)'
     QS = (f'CO.qs_small(dw, K, {kb}n, {N}n, {{==}}, hN, {{==}}, {{==}})' if small else
           f'CO.qs_sized(dw, K, {kb}n, {N}n, {{==}}, hN, {{==}}, hcap)')
-    w(f'def cr({PS}) -> CO.CR({DO}, T, K):')
-    w('  (+wf, +r1) = rep')
-    w(f'  +hN = VR.rep_N(T, K, {N}n, rep)')
-    w(f'  +hz = VR.rep_hz(dw, T, K, {kb}n, {N}n, pfT, {{==}}, hN, {{==}}, {QS}, wf)')
-    w(f'  {core}')
-    w('')
+    for line in TPL.render('name_module_lines_2', DO=DO, N=N, PS=PS, QS=QS, core=core, kb=kb).split('\n'):
+        w(line)
     if sized:
         w(ZD.zeros_at_text(KO, 'F'))
         w('')
@@ -381,48 +298,33 @@ def name_module(X, N, p, src):
     w(f'  {{T.{X}_encode({OBJ}) == {RE} : O.Bits & B.Buf}}')
     w(f'def encode_eval({", ".join(A)}):')
     if small:
-        w(f'  %Equal.sym(Array<U32>, Array.new(U32, 0n, 0), {ZT}, F.array__new(U32, 0n, 0)) :')
-        w(f'    {{T.{X}_enc_put(T.{p}_putn(_, 0, {OBJ})) == {RE} : O.Bits & B.Buf}}')
-        w(f'  %Equal.sym({PN}, O.put_bits_n({ZT}, 0, {OBJ}), (F.array__thaw(U32, OUT(T, K)), ({OBJ}, CO.NK(K))), {EV}) :')
-        w(f'    {{T.{X}_enc_put(_) == {RE} : O.Bits & B.Buf}}')
+        for line in TPL.render('name_module_lines_6', EV=EV, OBJ=OBJ, PN=PN, RE=RE, X=X, ZT=ZT, p=p).split('\n'):
+            w(line)
         HL = (f'F.nat__le_lt_trans(U32.to_nat(CO.NK(K)), {N + 1}n, F.spec_common__pow2({KS}n), '
               f'CO.nk_le(K, {kb}n, {N}n, {{==}}, VR.rep_N(T, K, {N}n, rep), {{==}}), {{==}})')
-        w(f'  %Equal.sym(U32, U32.and(CO.NK(K), 2147483647), CO.NK(K), VBE.and31(CO.NK(K), {KS}n, {{==}}, {HL})) :')
-        w(f'    {{({OBJ}, O.out_done(_, F.array__thaw(U32, OUT(T, K)))) == {RE} : O.Bits & B.Buf}}')
-        w('  {==}')
+        for line in TPL.render('name_module_lines_7', HL=HL, KS=KS, OBJ=OBJ, RE=RE).split('\n'):
+            w(line)
     else:
         CAP = 'U32.is_le(U32.add(U32.shrn(K, 5n), 1), F.u32__pow2u(dw))'
-        w(f'  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :')
-        w(f'    {{T.{X}_enc_sized(O.bsz_pick(K, _)) == {RE} : O.Bits & B.Buf}}')
-        w(f'  %Equal.sym(Bool, {CAP}, True{{}}, CO.capT(K, dw, hdw, hcap)) :')
-        w(f'    {{T.{X}_enc_sized(({OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == {RE} : O.Bits & B.Buf}}')
+        for line in TPL.render('name_module_lines_8', CAP=CAP, OBJ=OBJ, RE=RE, X=X).split('\n'):
+            w(line)
         ZB = 'B.zeros(B.words_depth_u(VC.nwu(CO.NK(K))))'
-        w(f'  %Equal.sym(Array<U32>, {ZB}, {ZT},')
-        w(f'      Equal.trans(Array<U32>, {ZB}, Array.new(U32, CO.DOK(K), 0), {ZT},')
-        w(f'        zeros_at(B.words_depth_u(VC.nwu(CO.NK(K))), CO.DOK(K), VD.wdu(VC.nwu(CO.NK(K))), CO.hDOK(K, {kb}n, {KO}n, {N}n, {{==}}, VR.rep_N(T, K, {N}n, rep), {{==}}, {{==}})),')
-        w(f'        F.array__new(U32, CO.DOK(K), 0))) :')
-        w(f'    {{T.{X}_enc_put(CO.NK(K), T.{p}_putn(_, 0, {OBJ})) == {RE} : O.Bits & B.Buf}}')
-        w(f'  %Equal.sym({PN}, O.put_bits_n({ZT}, 0, {OBJ}), (F.array__thaw(U32, OUT(T, K)), ({OBJ}, CO.NK(K))), {EV}) :')
-        w(f'    {{T.{X}_enc_put(CO.NK(K), _) == {RE} : O.Bits & B.Buf}}')
-        w('  {==}')
-    w('')
-    w('# Those bytes are the spec/codec.bend encoding of the object\'s value.')
-    w('law encode_spec:')
+        for line in TPL.render('name_module_lines_9', EV=EV, KO=KO, N=N, OBJ=OBJ, PN=PN, RE=RE, X=X, ZB=ZB, ZT=ZT, kb=kb, p=p).split('\n'):
+            w(line)
+    for line in TPL.text('name_module_lines_3').split('\n'):
+        w(line)
     for q in P:
         w(f'  for {q}')
     w('  Decoding.decodes(GS.' + X + '(), BY(T, K), VAL(T, K))')
-    w(f'def encode_spec({", ".join(A)}):')
-    w(f'  +c = cr({AS})')
-    w('  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, T)), T, F.array__freeze_thaw(U32, T)) :')
-    w(f'    Decoding.decodes(GS.{X}(), BY(T, K), S.BitsValue{{BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, _)))}})')
+    for line in TPL.render('name_module_lines_4', A=A, AS=AS, X=X).split('\n'):
+        w(line)
     MOT = 'Codec.bytes(Codec.one(Bits.encoding(@D, List.append(&2, Bool, CO.BITS(T, K), [True{}])), None{}))'
     w(f'  %Equal.sym(Nat, List.length(&2, Bool, CO.BITS(T, K)), U32.to_nat(K), CO.cr3({DO}, T, K, c)) :')
     w('    {' + MOT.replace('@D', f'Nat.is_le(_, {N}n)') + ' == Some{BY(T, K)} : Maybe<&2, +List<U32>>}')
     w(f'  %Equal.sym(Bool, Nat.is_le(U32.to_nat(K), {N}n), True{{}}, VR.rep_N(T, K, {N}n, rep)) :')
     w('    {' + MOT.replace('@D', '_') + ' == Some{BY(T, K)} : Maybe<&2, +List<U32>>}')
-    w(f'  %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{{}}])), BY(T, K), CO.cr2({DO}, T, K, c)) :')
-    w('    {Codec.bytes(Codec.one(Some{_}, None{})) == Some{BY(T, K)} : Maybe<&2, +List<U32>>}')
-    w('  {==}')
+    for line in TPL.render('name_module_lines_5', DO=DO).split('\n'):
+        w(line)
     return '\n'.join(L) + '\n'
 
 
@@ -532,9 +434,8 @@ def _cm_tree_laws(FS, H, po, N, kb, KY, KO, PB, kb2, fixed, WS, WA, V, NC, NCa, 
     w(TPL.render('_cm_tree_laws', CF=CF, FS=FS, H=H, KO=KO, LT=LT, N=N, NC=NC, NCa=NCa, PB=PB, kb=kb, kb2=kb2, po=po, q=q))
     for j, f in enumerate(fixed):
         pass
-    w('def pfD0(+T: FD.array__Tree<U32>, +K: U32) -> {FD.array__perfect(U32, DO(K), OUTA(T, K)) == True{} : Bool}:')
-    w(f'  FD.array__upd_perfect(U32, DO(K), VBT.MT(DO(K), OUT1(K), T, {H}n, K), Nat.add({H}n, {q}), U32.or(VB.slot(VBT.MT(DO(K), OUT1(K), T, {H}n, K), Nat.add({H}n, {q})), VBT.DMK(U32.add(0, {FS}), K)),')
-    w(f'    VB.mone_perfect(VC.NW(O.bits_nbytes(K)), 0n, {H}n, DO(K), OUT1(K), T, pf1(K)))')
+    for line in TPL.render('_cm_tree_laws_lines', FS=FS, H=H, q=q).split('\n'):
+        w(line)
     for j, f in enumerate(fixed):
         prev = f'pfD{j}(T, K)' if j == 0 else f'pfD{j}({WA}, T, K)'
         w(f'def pfD{j + 1}({WS}, +T: FD.array__Tree<U32>, +K: U32) -> {{FD.array__perfect(U32, DO(K), {TD(j + 1)}) == True{{}} : Bool}}:')
@@ -563,28 +464,14 @@ def _cm_size_put_eval(FS, H, po, N, lp, Tn, kb, fixed, fobj, OBB, OBJ, FIXOBJS, 
         for f in fixed[j:]:
             t = f'T.{f["ft"].p}_put({t}, U32.add(0, {f["c"]}), {fobj(f)})'
         return t
-    w(f'def put_eval({ALLP})')
-    w(f'    -> {{{Tn}_putn(FD.array__thaw(U32, VC.ZT(DO(K))), 0, {OBJ}) == {RP} : {TP}}}:')
-    w(f'  +hN = {HN}')
-    w(f'  +c = cra({ALLa})')
-    w(f'  %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, VC.ZT(DO(K))), {po}, {FS}), FD.array__thaw(U32, OUT1(K)),')
-    w(f'      VB.set_n(DO(K), VC.ZT(DO(K)), {po}, {po}n, {FS}, {{==}}, VB.lt32(DO(K), hDO31({NCa})), FD.nat__lt_le_trans({po}n, {H}n, VB.pw(DO(K)), {{==}}, hbk({H}n, {NCa}, {{==}})), pf0(K))) :')
-    w(f'    {{{Tn}_pw0(0, {FIXOBJS}, T.{lp}_pvb({FS}, T.{lp}_pk(_, U32.add(0, {FS}), T.{lp}_valid({OBB})))) == {RP} : {TP}}}')
-    w(f'  %Equal.sym(O.Bits & Bool, T.{lp}_valid({OBB}), ({OBB}, True{{}}),')
-    w(f'      CT.valid_eval(dw, T, K, {kb}n, {N}n, {N}, pfT, hdw, {{==}}, {{==}}, hN, hNk0(), hcap, hv)) :')
-    w(f'    {{{Tn}_pw0(0, {FIXOBJS}, T.{lp}_pvb({FS}, T.{lp}_pk(FD.array__thaw(U32, OUT1(K)), U32.add(0, {FS}), _))) == {RP} : {TP}}}')
-    w(f'  %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(FD.array__thaw(U32, OUT1(K)), U32.add(0, {FS}), {OBB}), (FD.array__thaw(U32, OUTA(T, K)), ({OBB}, CO.NK(K))),')
-    w(f'      CT.cra1(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K, c)) :')
-    w(f'    {{{Tn}_pw0(0, {FIXOBJS}, T.{lp}_pvb({FS}, _)) == {RP} : {TP}}}')
-    w(f'  %Equal.sym(U32, O.padd({FS}, CO.NK(K)), SFS(K), padd({NCa})) :')
-    w(f'    {{({puts(0, "FD.array__thaw(U32, OUTA(T, K))")}, ({OBJ}, _)) == {RP} : {TP}}}')
+    for line in TPL.render('_cm_size_put_eval_lines', ALLP=ALLP, ALLa=ALLa, FIXOBJS=FIXOBJS, FS=FS, H=H, HN=HN, N=N, NCa=NCa, OBB=OBB, OBJ=OBJ, RP=RP, TP=TP, Tn=Tn, kb=kb, lp=lp, po=po, puts=puts).split('\n'):
+        w(line)
     for j, f in enumerate(fixed):
         ft = f['ft']
         cur = f'T.{ft.p}_put(FD.array__thaw(U32, {TD(j)}), U32.add(0, {f["c"]}), {fobj(f)})'
         ws = ', '.join(f'w{f["k"] + i}' for i in range(ft.W))
-        w(f'  %Equal.sym(Array<U32>, {cur}, FD.array__thaw(U32, {TD(j + 1)}),')
-        w(f'      VT.put_{ft.p}(DO(K), {TD(j)}, U32.add(0, {f["c"]}), {f["k"]}n, {{==}}, hDO29({NCa}), {pfd(j)}, {hb(f)}, {ws})) :')
-        w(f'    {{({puts(j + 1, "_")}, ({OBJ}, SFS(K))) == {RP} : {TP}}}')
+        for line in TPL.render('_cm_size_put_eval_lines_2', NCa=NCa, OBJ=OBJ, RP=RP, TD=TD, TP=TP, cur=cur, f=f, ft=ft, hb=hb, j=j, pfd=pfd, puts=puts, ws=ws).split('\n'):
+            w(line)
     w('  {==}')
     w('')
     return RS, RP, TP
@@ -596,24 +483,12 @@ def _cm_encode_eval(Tn, KO, OBJ, NCa, ALLP, ALLa, HN, OUT, w, RS, RP, TP):
     RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {OUT}), SFS(K)}})'
     TE = f'{Tn} & B.Buf'
     ps = ['+' + p_.strip() for p_ in re.split(r',\s*\+', ' '.join(ALLP.split()).lstrip('+'))]
-    w('')
-    w('# The encoder returns the object and the buffer of the output tree.')
-    w('law encode_eval:')
+    for line in TPL.text('_cm_encode_eval_lines').split('\n'):
+        w(line)
     for p_ in ps:
         w(f'  for {p_}')
-    w(f'  {{{Tn}_encode({OBJ}) == {RE} : {TE}}}')
-    w(f'def encode_eval({ALLa}):')
-    w(f'  +hN = {HN}')
-    w(f'  %Equal.sym({Tn} & U32, {Tn}_size({OBJ}), {RS}, size_eval({ALLa})) :')
-    w(f'    {{{Tn}_enc_sized(_) == {RE} : {TE}}}')
-    w(f'  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), FD.array__thaw(U32, VC.ZT(DO(K))),')
-    w(f'      Equal.trans(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), Array.new(U32, DO(K), 0), FD.array__thaw(U32, VC.ZT(DO(K))),')
-    w(f'        zeros_at(B.words_depth_u(VC.nwu(SFS(K))), DO(K), VD.wdu(VC.nwu(SFS(K))), hDOK({NCa})), FD.array__new(U32, DO(K), 0))) :')
-    w(f'    {{{Tn}_enc_put(SFS(K), {Tn}_putn(_, 0, {OBJ})) == {RE} : {TE}}}')
-    w(f'  %Equal.sym({TP}, {Tn}_putn(FD.array__thaw(U32, VC.ZT(DO(K))), 0, {OBJ}), {RP}, put_eval({ALLa})) :')
-    w(f'    {{{Tn}_enc_put(SFS(K), _) == {RE} : {TE}}}')
-    w('  {==}')
-    w('')
+    for line in TPL.render('_cm_encode_eval_lines_2', ALLa=ALLa, HN=HN, NCa=NCa, OBJ=OBJ, RE=RE, RP=RP, RS=RS, TE=TE, TP=TP, Tn=Tn).split('\n'):
+        w(line)
     return ps
 
 
@@ -750,11 +625,8 @@ def _cm_spec_side(g, x, VL, n, FS, H, N, vi, LIMN, WS, WA, OBB, NCa, ALLP, ALLa,
     w('law encode_spec:')
     for p_ in ps:
         w(f'  for {p_}')
-    w(f'  Decoding.decodes(Spec.{n}(), {BY}, VAL({WA}, T, K))')
-    w(f'def encode_spec({ALLa}):')
-    w(f'  Equal.trans({M}, Codec.encoding_for_legal_type(Spec.{n}(), VAL({WA}, T, K)), {RHSk}, Some{{{BY}}},')
-    w(f'    encE({ALLa}),')
-    w(f'    Equal.cong(+List<U32>, {M}, z => Some{{z}}, {RHS}, {BY}, Equal.sym(+List<U32>, {BY}, {RHS}, out_eq({ALLa}))))')
+    for line in TPL.render('_cm_spec_side_lines', ALLa=ALLa, BY=BY, M=M, RHS=RHS, RHSk=RHSk, WA=WA, n=n).split('\n'):
+        w(line)
     txt = '\n'.join(L) + '\n'
     if LIMN != f'{N}n':
         txt = re.sub(rf'\b{N}n\b', LIMN, txt)

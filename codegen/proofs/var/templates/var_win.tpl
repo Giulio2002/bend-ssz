@@ -1695,3 +1695,79 @@ def contra(@CW, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, @S) == Som
   chk_all(t, x, off, len, h8, e0, h01, h1n, cn_hk0(@CWA, h0, y0, eh0, y1, eq, le8y0, e0, e1, h81, h1n, h01), cn_hk1(@CWA, y0, h1, y1, eh1, eq, en, e1, h1n))
 
 @STAGES
+
+@@ cont_text_lines @@
+def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+def rd_go(${CW}, ${HA}, +epo: {SPOw(t, i) == ${FS} : U32}, +hc: {${CHK_child} == True{} : Bool})
+    -> {${Tn}_read(BF(t, n), off, len) == ${RHS} : ${TY}}:
+  +hH = hHi(${CWA}, ha)
+  %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, ${4 * po})), (VF.BF(t, n), SPOw(t, i)),
+      VF.rd32a(d, t, n, U32.add(off, ${4 * po}), Nat.add(${po}n, i), eoc(${CWA}, ${po}n, ${4 * po}, {==}, {==}, ha),
+        VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hiw(${CWA}, ${po}n, {==}, ha), pf)) :
+    {${Tn}_rd0(off, len, _) == ${RHS} : ${TY}}
+@@ cont_text_lines_2 @@
+  %Equal.sym(B.Buf & ${ft.rep()}, ${read_term(f, FS)}, (BF(t, n), ${objs[j]}),
+      VT.rdd_${ft.p}(d, t, n, U32.add(off, ${f['c']}), Nat.add(${k}n, i), eoc(${CWA}, ${k}n, ${f['c']}, {==}, {==}, ha), hd, pf, ${hb})) :
+    {${Tn}_rd${j + 1}(${args}, _) == ${RHS} : ${TY}}
+@@ inv_text_lines @@
+  %Equal.sym(Nat, VRJ.lens(${PRE}), ${Pz}n, eP(${ALL})) : {Nat.add(_, 4n+VRJ.lens(${POST})) == ${FS}n : Nat}
+  %Equal.sym(Nat, VRJ.lens(${POST}), ${Qz}n, eQ(${ALL})) : {Nat.add(${Pz}n, 4n+_) == ${FS}n : Nat}
+  {==}
+
+@@ inv_text_lines_2 @@
+  %eP(${ALL}) : {VS.bt(4n, VS.bdr(_, ${OUT})) == N.digits(4n, Nat.add(_, 4n+${Qz}n)) : +List<U32>}
+  %eQ(${ALL}) : {VS.bt(4n, VS.bdr(VRJ.lens(${PRE}), ${OUT})) == N.digits(4n, Nat.add(VRJ.lens(${PRE}), 4n+_)) : +List<U32>}
+  VRJ.out_off(${PRE}, ys, ${POST})
+
+@@ inv_text_lines_3 @@
+  %fz_eq(${ALL}) : {List.length(&2, U32, ${OUT}) == Nat.add(_, List.length(&2, U32, ys)) : Nat}
+  VRJ.out_len(${PRE}, ys, ${POST})
+
+@@ inv_text_lines_4 @@
+  %fz_eq(${ALL}) : {VS.bdr(_, ${OUT}) == ys : +List<U32>}
+  VBC.out_tail(${PRE}, ys, ${POST})
+
+@@ inv_text_lines_5 @@
+  match b5:
+    case False{}: ${absurd()}
+    case True{}: contra(${CWA}, ${ALL}, var_inj(${OUT}, ${WBL}, e))
+
+@@ inv_text_lines_6 @@
+  match ps:
+    case Nil{}: Empty.absurd(${GOAL}, hf)
+    case Con{S.Fixed{+xs}, Nil{}}: st${i + 1}(${CWA}, ${A}xs, Equal.sym(Nat, ${z}n, List.length(&2, U32, xs), FD.logic__some_inj(Nat, ${z}n, List.length(&2, U32, xs), hf)), r, e)
+    case Con{S.Variable{+xs}, Nil{}}: Empty.absurd(${GOAL}, FD.logic__none_some(Nat, ${z}n, Equal.sym(Maybe<&2, Nat>, Some{${z}n}, None{}, hf)))
+    case Con{S.Fixed{+xs}, Con{+h2, +t2}}: Empty.absurd(${GOAL}, hf)
+    case Con{S.Variable{+xs}, Con{+h2, +t2}}: Empty.absurd(${GOAL}, hf)
+
+@@ inv_text_lines_7 @@
+  match mm:
+    case None{}: ${absurd()}
+    case Some{+ps}: fp${i}(${CWA}, ${A}ps, hf, r, e)
+
+@@ inv_text_lines_8 @@
+  match ps:
+    case Nil{}: Empty.absurd(${GOAL}, hf)
+    case Con{S.Fixed{+xs}, Nil{}}: Empty.absurd(${GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))
+    case Con{S.Variable{+ys}, Nil{}}: st${i + 1}(${CWA}, ${A}h, ys, em, r, e)
+    case Con{S.Fixed{+xs}, Con{+h2, +t2}}: Empty.absurd(${GOAL}, hf)
+    case Con{S.Variable{+xs}, Con{+h2, +t2}}: Empty.absurd(${GOAL}, hf)
+
+@@ inv_text_lines_9 @@
+  match mm:
+    case None{}: ${absurd()}
+    case Some{+ps}: vp${i}(${CWA}, ${A}h, ps, hf, em, r, e)
+
+@@ _cx_reader_lines @@
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ${Tn}: ${OBJ}
+
+def rd_go(${CW}, ${HA}, +epo: {SPOw(t, x) == ${FS} : U32}, +hc: {${CHK_child} == True{} : Bool})
+    -> {${Tn}_read(BF(t, n), off, len) == ${RHS} : ${TY}}:
+  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, ${P})), (BF(t, n), SPOw(t, x)), rdpo(${CWA}, ha)) :
+    {${Tn}_rd0(off, len, _) == ${RHS} : ${TY}}
+@@ _cx_reader_lines_2 @@
+  %Equal.sym(B.Buf & ${ft.rep()}, ${read_term(f, FS)}, (BF(t, n), ${objs[j]}),
+      VTX.rdxd_${ft.p}(d, t, n, U32.add(off, ${c}), ${posx(c)}, eoc(${CWA}, ${c}, ${c}n, {==}, {==}, ha), hd, pf,
+        roomF(${CWA}, ha, ${c}n, ${ft.size}n, {==}))) :
+    {${Tn}_rd${j + 1}(${args}, _) == ${RHS} : ${TY}}

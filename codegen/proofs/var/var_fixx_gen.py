@@ -115,13 +115,11 @@ def bvn_mod(N, HEAD, sig, TR, TRUE):
         w(f'    case False{{}}: {nxt}')
     w('')
     if chk:
-        w(f'def bvp(+v: U32, +h: {{CHKv(v) == {TRUE}}}) -> {goalv("v")}:')
-        w('  match v:')
-        w(f'    case {word(["+" + x for x in a])}: z31({", ".join(a)}, h)')
+        for line in TPL.render('bvn_mod_lines_3', TRUE=TRUE, a=a, goalv=goalv, word=word).split('\n'):
+            w(line)
     else:
-        w('# a byte: the embedding of its eight bits')
-        w(f'def bvp8(+w8: Word(8n)) -> {goalv("PD.embed8(w8)")}:')
-        w('  match w8:')
+        for line in TPL.render('bvn_mod_lines_4', goalv=goalv).split('\n'):
+            w(line)
         w('    case ' + ''.join(f'WCon{{+{x}, ' for x in a[:8]) + 'WNil{}' + '}' * 8 + f': z7({", ".join(a[:8])})')
     w('')
     HB = f'+hb: {{Nat.is_le(Nat.add(x, 1n), {P}) == {TRUE}}}'
@@ -139,11 +137,8 @@ def bvn_mod(N, HEAD, sig, TR, TRUE):
     w(f'  match {" ".join(bs)}:')
     for lo in itertools.product([False, True], repeat=N):
         w(f'    case {" ".join(B_(b) for b in lo)}: {{==}}')
-    w('')
-    w(f'# any bits value whose parts are one fixed part ys: the first byte of ys has bits {N}..7 clear')
-    w(f'def bvinv(+v: S.Value, +ys: +List<U32>, +e: {{Codec.parts(v, {SCH}) == Some{{[S.Fixed{{ys}}]}} : {MP}}}) -> {{CHKL(ys) == {TRUE}}}:')
-    w('  match v:')
-    w('    case S.BitsValue{+bs}:')
+    for line in TPL.render('bvn_mod_lines', MP=MP, N=N, SCH=SCH, TRUE=TRUE).split('\n'):
+        w(line)
     ind = '      '
     w(f'{ind}match bs:')
     cur = 'bs'
@@ -152,11 +147,8 @@ def bvn_mod(N, HEAD, sig, TR, TRUE):
         w(f'{ind}  case Con{{+b{i}, +r{i}}}:')
         ind += '    '
         w(f'{ind}match r{i}:')
-    w(f'{ind}  case Con{{+b{N}, +r{N}}}: {AB}')
-    w(f'{ind}  case Nil{{}}:')
-    w(f'{ind}    +ey = Equal.cong({MP}, +List<U32>, z => fxs(z), Some{{[S.Fixed{{[{OCT}]}}]}}, Some{{[S.Fixed{{ys}}]}}, e)')
-    w(f'{ind}    %Equal.sym(+List<U32>, ys, [{OCT}], Equal.sym(+List<U32>, [{OCT}], ys, ey)) : {{CHKL(_) == {TRUE}}}')
-    w(f'{ind}    chko({", ".join(bs)})')
+    for line in TPL.render('bvn_mod_lines_2', AB=AB, MP=MP, N=N, OCT=OCT, TRUE=TRUE, bs=bs, ind=ind).split('\n'):
+        w(line)
     for c in ['S.BooleanValue{+b}', 'S.UnsignedValue{+u}', 'S.BytesValue{+xs}', 'S.Sequence{+it}', 'S.Items{+hh, +tl}', 'S.EmptyItems{}',
               'S.Selected{+sel, +sv}', 'S.NullValue{}']:
         w(f'    case {c}: {AB}')
@@ -256,11 +248,8 @@ def bvw1_mod(HEAD, sig, TR, TRUE, N=257):
     L[-1] = _re.sub(r'\bO4\b', O4txt, _re.sub(r'\bH\b', Htxt, L[-1].split('law pack_app:')[1])).join([L[-1].split('law pack_app:')[0] + 'law pack_app:', ''])
     goal = lambda v: f'{{Bp.octet(LB({v}), {F7}) == {v} : U32}}'
     zw = lambda i: word(a[:i + 1] + ['False{}'] * (31 - i))
-    w('# a byte with bits 1..31 clear is the octet of its low bit')
-    w(f'def z0(+a0: Bool) -> {goal(zw(0))}:')
-    w('  match a0:')
-    w('    case True{}: {==}')
-    w('    case False{}: {==}')
+    for line in TPL.render('bvw1_mod_lines', goal=goal, zw=zw).split('\n'):
+        w(line)
     for i in range(1, 32):
         ps = ", ".join("+" + x + ": Bool" for x in a[:i + 1])
         w(f'def z{i}({ps}, +h: {{CHKv({zw(i)}) == {TRUE}}}) -> {goal(zw(i))}:')
@@ -269,10 +258,8 @@ def bvw1_mod(HEAD, sig, TR, TRUE, N=257):
         w(f'    case True{{}}: Empty.absurd({goal(wt)}, FD.logic__false_true(h))')
         nxt = f'z{i - 1}({", ".join(a[:i])})' if i == 1 else f'z{i - 1}({", ".join(a[:i])}, h)'
         w(f'    case False{{}}: {nxt}')
-    w(f'def ob1(+v: U32, +h: {{CHKv(v) == {TRUE}}}) -> {goal("v")}:')
-    w('  match v:')
-    w(f'    case {word(["+" + x for x in a])}: z31({", ".join(a)}, h)')
-    w('')
+    for line in TPL.render('bvw1_mod_lines_2', TRUE=TRUE, a=a, goal=goal, word=word).split('\n'):
+        w(line)
     APP = f'List.append(&2, U32, F.limbs({WS}), [BX(t, {X32})])'
     APPO = f'List.append(&2, U32, F.limbs({WS}), [Bp.octet(LB(BX(t, {X32})), {F7})])'
     w(TPL.render('bvw1_mod_wx', APP=APP, BITS=BITS, C=C, M=M, MP=MP, NB=NB, P=P, S=S, SCH=SCH, TR=TR, TRUE=TRUE, WS=WS, X32=X32))
@@ -280,9 +267,8 @@ def bvw1_mod(HEAD, sig, TR, TRUE, N=257):
     bs = [f'b{i}' for i in range(8)]
     w(TPL.render('bvw1_mod_GE', MP=MP, TRUE=TRUE))
     G = lambda lst: f'{{CHKv(VBL.nthb(Bp.pack({lst}), 1n+p)) == {TRUE}}}'
-    w('def pkl(m, bs, h):')
-    w('  match m bs:')
-    w('    case 0n _: pk0(bs, h)')
+    for line in TPL.text('bvw1_mod_lines_3').split('\n'):
+        w(line)
     ind = '  '
     pre = []
     for i in range(8):
@@ -379,9 +365,8 @@ def EV(+t: {TR}, +x: Nat) -> S.Value: S.Sequence{{{''.join(f'S.Items{{{alias[f["
         a = alias[f['mod']]
         pos = fpos(f, 'x')
         args = ', '.join(['off', str(ES)] + done + ['_'])
-        w(f'  %Equal.sym(B.Buf & {f["rep"]}, T.{f["p"]}_read(UA.BF(t, n), U32.add(off, {f["c"]}), {f["s"]}), (UA.BF(t, n), {a}.OBJ(d, t, {pos})),')
-        w(f'      {a}.rdx(d, t, n, U32.add(off, {f["c"]}), {pos}, ec(d, off, x, {f["c"]}, {f["c"]}n, {ES}n, e, hd, {{==}}, {{==}}, hb), hd, pf, rm(x, {f["c"]}n, {f["s"]}n, {ES}n, {{==}}, {P}, hb))) :')
-        w(f'    {{{Tn}_rd{j}({args}) == {RHS}}}')
+        for line in TPL.render('recvec_mod_lines_4', ES=ES, P=P, RHS=RHS, Tn=Tn, a=a, args=args, f=f, j=j, pos=pos).split('\n'):
+            w(line)
         done.append(f'{a}.OBJ(d, t, {pos})')
     w('  {==}')
     w('')
@@ -402,9 +387,8 @@ def EV(+t: {TR}, +x: Nat) -> S.Value: S.Sequence{{{''.join(f'S.Items{{{alias[f["
                    f'    Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, {wk}, z), UW.WX(t, {nxt}, {rems[k + 1]}n), {cats[k + 1]}, {prf}))')
         return f'{{UW.WX(t, {xe}, {total}n) == {cats[0]} : +List<U32>}}', cats[0], prf
     est, ecat, eprf = wcat(lambda k: fpos(fl[k], 'x') if k < len(fl) else f'Nat.add({ES}n, x)', [f['s'] for f in fl], 'x', ES)
-    w(f'def ewx(+t: {TR}, +x: Nat) -> {est}:')
-    w(f'  {eprf}')
-    w('')
+    for line in TPL.render('recvec_mod_lines', TR=TR, eprf=eprf, est=est).split('\n'):
+        w(line)
     # the record's parts
     PL = '[' + ', '.join(f'S.Fixed{{UW.WX(t, {fpos(f, "x")}, {f["s"]}n)}}' for f in fl) + ']'
     def items_from(k):
@@ -436,9 +420,8 @@ def EV(+t: {TR}, +x: Nat) -> S.Value: S.Sequence{{{''.join(f'S.Items{{{alias[f["
     arr = f'{Vt}_fill({Vt}_cap({K}))'
     for j in range(K):
         arr = f'Array.set({Tn}, {arr}, {j}, EO(d, t, {epos(j)}))'
-    w(f'def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> {Vt}_Seq: {Vt}_Seq{{{arr}, {K}}}')
-    w('')
-    w(f"{sig('rdx', S)}")
+    for line in TPL.render('recvec_mod_lines_2', K=K, S=S, TR=TR, Vt=Vt, arr=arr, sig=sig).split('\n'):
+        w(line)
     RHV = f'(UA.BF(t, n), OBJ(d, t, x)) : B.Buf & {Vt}_Seq'
     w(f'    -> {{{Vt}_read(UA.BF(t, n), off, {S}) == {RHV}}}:')
     acc = f'{Vt}_fill({Vt}_cap({K}))'
@@ -455,9 +438,8 @@ def EV(+t: {TR}, +x: Nat) -> S.Value: S.Sequence{{{''.join(f'S.Items{{{alias[f["
     w('')
     w(f'def VAL(+t: {TR}, +x: Nat) -> S.Value: S.Sequence{{{"".join(f"S.Items{{EV(t, {epos(j)}), " for j in range(K))}S.EmptyItems{{}}{"}" * K}}}')
     vst, vcat, vprf = wcat(lambda j: epos(j) if j < K else f'Nat.add({S}n, x)', [ES] * K, 'x', S)
-    w(f'def vwx(+t: {TR}, +x: Nat) -> {vst}:')
-    w(f'  {vprf}')
-    w('')
+    for line in TPL.render('recvec_mod_lines_3', TR=TR, vprf=vprf, vst=vst).split('\n'):
+        w(line)
     VPL = '[' + ', '.join(f'S.Fixed{{UW.WX(t, {epos(j)}, {ES}n)}}' for j in range(K)) + ']'
     def vitems(k):
         return ''.join(f'S.Items{{EV(t, {epos(j)}), ' for j in range(k, K)) + 'S.EmptyItems{}' + '}' * (K - k)

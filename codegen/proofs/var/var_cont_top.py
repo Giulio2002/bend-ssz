@@ -222,9 +222,8 @@ def _top_size_chain_flat(P, OAS, FIX, facts, w, ENDC, Ls, SZt, Q):
     for i2 in range(n):
         EP_.append(f'Nat.add({EP_[-1]}, {Ls[i2]})')
         CP_.append(f'O.padd({CP_[-1]}, {SZt[i2]})')
-    a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
-    a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
-    a(f'+b{n} = bnd')
+    for line in TPL.render('_top_size_chain_flat_lines', OAS=OAS, n=n).split('\n'):
+        a(line)
     for i2 in range(n - 1, 0, -1):
         a(f'+b{i2} = FD.nat__le_trans({EP_[i2]}, {EP_[i2 + 1]}, {Q}, Order.below_sum({EP_[i2]}, {Ls[i2]}), b{i2 + 1})')
     for i2, (f, ch, sz) in enumerate(facts):
