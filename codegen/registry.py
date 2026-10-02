@@ -131,6 +131,7 @@ GENERATORS = (
     # codegen/proofs/witnesses/
     Gen('decode_witness', 'proofs/witnesses'),
     Gen('obytes_len', 'proofs/witnesses'),
+    Gen('zero_run', 'proofs/witnesses'),
     Gen('coll_witness', 'proofs/witnesses'),
     Gen('e2e_witness', 'proofs/witnesses', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/composed/
