@@ -45,10 +45,7 @@ def case4() -> IO(Unit): cell_after(Cells.l4096_b2048_append(cells2(), O.Words{A
 
 def enc_line(label: String, e: O.Encoded) -> IO(Unit):
   match e:
-    case O.Encoded{ok, b}:
-      do IO<Unit>:
-        IO.print(label ++ "_ok=" ++ O.pick_str(ok))
-        IO.print(label ++ "_size=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+    case O.Encoded{ok, b}: IO.print(label ++ "_ok=" ++ O.pick_str(ok) ++ " size=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
 
 def ser_line(label: String, pair: O.Words & O.Encoded) -> IO(Unit):
   (o, e) = pair

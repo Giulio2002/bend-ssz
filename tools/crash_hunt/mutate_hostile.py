@@ -24,7 +24,7 @@ SEEDS = [0, 1, 255, 256, 65535, 65536, 2**31, 2**32 - 1]
 
 def run(prog, env, mem_gb, timeout):
     def lim():
-        resource.setrlimit(resource.RLIMIT_AS, (int(mem_gb * 2**30), int(mem_gb * 2**30)))
+        resource.setrlimit(resource.RLIMIT_DATA, (int(mem_gb * 2**30), int(mem_gb * 2**30)))
         os.nice(19)
     try:
         r = subprocess.run([prog, '--threads', '1', '--gpu', 'off'], env=env, capture_output=True, text=True, timeout=timeout, preexec_fn=lim)

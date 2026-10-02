@@ -110,7 +110,7 @@ def run_one(prog, idx, data, tmp, mem_gb, timeout):
     env = {**os.environ, 'SSZ_MODE': '0', 'SSZ_INDEX': str(idx), 'SSZ_OPS': '1', 'SSZ_INPUT': inp, 'SSZ_OUTPUT': out}
 
     def lim():
-        resource.setrlimit(resource.RLIMIT_AS, (int(mem_gb * 2**30), int(mem_gb * 2**30)))
+        resource.setrlimit(resource.RLIMIT_DATA, (int(mem_gb * 2**30), int(mem_gb * 2**30)))
         os.nice(19)
     t0 = time.time()
     try:
