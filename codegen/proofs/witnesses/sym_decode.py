@@ -177,8 +177,10 @@ def balanced(s, i):
     raise SystemExit('unbalanced')
 
 
-def shadow(defs):
-    """(order, shadow text lines, offsets) of CHKw's closure copied over the offset words"""
+def shadow(defs, holes=None):
+    """(order, shadow text lines, offsets) of CHKw's closure copied over the offset words. `holes` {def name: Bool parameter}: that def's
+    value is a parameter of every shadow (the call of a child window, proved separately)"""
+    holes = holes or {}
     names = set(defs)
     ident = re.compile(r'(?<![\w.])([A-Za-z_]\w*)\(')
 
@@ -192,7 +194,7 @@ def shadow(defs):
         clo.append(n)
         todo += sorted(calls(defs[n][2]))
     offs = sorted((n for n in clo if re.fullmatch(r'O\d+', n)), key=lambda n: int(n[1:]))
-    dep = set(offs)
+    dep = set(offs) | set(h for h in holes if h in clo)
     ch = True
     while ch:
         ch = False
@@ -201,8 +203,8 @@ def shadow(defs):
                 dep.add(n)
                 ch = True
     ks = [n[1:] for n in offs]
-    extra_p = ', '.join(f'+o{k}: U32' for k in ks)
-    extra_a = ', '.join(f'o{k}' for k in ks)
+    extra_p = ', '.join([f'+o{k}: U32' for k in ks] + [f'+{v}: Bool' for v in holes.values()])
+    extra_a = ', '.join([f'o{k}' for k in ks] + list(holes.values()))
 
     def rewrite(body):
         out, i = '', 0
@@ -227,7 +229,7 @@ def shadow(defs):
     for n in reversed(clo):
         if n in dep and n not in offs:
             p, r, b = defs[n]
-            lines.append(f'def {n}S({p}, {extra_p}) -> {r}: {rewrite(b)}')
+            lines.append(f'def {n}S({p}, {extra_p}) -> {r}: {holes[n] if n in holes else rewrite(b)}')
     return lines, offs, extra_a
 
 
