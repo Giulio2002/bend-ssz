@@ -53,7 +53,7 @@ def name_laws(runtime):
     text = RR.mono_text(runtime)
     out = {}
     for m in re.finditer(r'^def (\w+)_encode\(o: O\.Words\) -> [^\n:]*: \w+_enc_(?:out|put)\((\w+)_put\(O\.out_at\((\d+)n\), 0, o\)\)$', text, re.M):
-        X, P, d = m.group(1), m.group(2), int(m.group(3))
+        X, P = m.group(1), m.group(2)
         pm = re.search(rf'^def {P}_put\(out: Array<U32>, \+pos: U32, o: O\.Words\) -> Array<U32> & O\.Words:\n  match o:\n    case O\.Words\{{ws, \+n\}}: {P}_pw\(U32\.is_eq\(\(pos \.&\. 3 : U32\), 0\), out, pos, ws, n\)$', text, re.M)
         pas = sorted(int(x) for x in re.findall(rf'^def {P}_pa(\d+)\(', text, re.M))
         mv = re.search(rf'^def {P}_valid\(o: O\.Words\) -> [^\n:]*: (?:O\.bools_ok\()?O\.words_ok\(o, (\d+), (\d+), False\{{\}}, \d+\)\)?$', text, re.M)
@@ -185,7 +185,6 @@ def name_proof(X, P, nw, N):
     w('')
     # the general writer's whole-word copy
     sigb = f'+b: U32, +Bn: Nat, {TREES}, +eb: {{U32.to_nat(b) == Bn : Nat}}, {BASEH}, {HA}, {HB.replace("Q", "Bn")}, {PERF}'
-    argb = 'b, Bn, ds, dd, S, D, eb, hs, hdd, hA, hB, ps, pd'
     cpb = f'AC.cpt(dd, {nw}n, 0n, Bn, D, {SL})'
     if r:
         w(f'def {X}_lele(+b: U32, +Bn: Nat, +dd: Nat, +eb: {{U32.to_nat(b) == Bn : Nat}}, +hdd: {{Nat.is_lt(dd, 32n) == True{{}} : Bool}}, +hB: {{Nat.is_le(Nat.add({nw}n, Bn), {P2("dd")}) == True{{}} : Bool}})')
