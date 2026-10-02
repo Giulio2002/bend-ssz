@@ -31,7 +31,7 @@
 # CHECK_TARBALLS=DIR, the gate run) also against the pinned release tarballs, and the stamp then has fixtures_tarballs_verified: true.
 # Run from the repository root.
 set -u
-J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=10485760; TARB=${CHECK_TARBALLS:-}
+J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=10485760; TARB=${CHECK_TARBALLS:-}; CACHE=${CHECK_CACHE:-1}
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -41,7 +41,9 @@ while [ $# -gt 0 ]; do
     --no-localize) LOC=0; shift;;
     --jsc-stack) JSC=$2; shift 2;;
     --tarballs) TARB=$2; shift 2;;
-    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize] [--jsc-stack BYTES] [--tarballs DIR]" >&2; exit 2;;
+    --no-cache) CACHE=0; shift;;
+    --cache) CACHE=1; shift;;
+    *) echo "usage: tools/check_fast.sh [--jobs N] [--target S] [--out DIR] [--files LIST] [--no-localize] [--jsc-stack BYTES] [--tarballs DIR] [--no-cache]" >&2; exit 2;;
   esac
 done
 t0=$(date +%s)
@@ -68,25 +70,55 @@ python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FIL
 # The umbrellas of the slowest roots (UMB_BIG_RE, matched against the roots in plan.tsv) get a larger heap,
 # UMB_BIG_MEMMAX / UMB_BIG_RAM: at the 12e9 heap the garbage collector thrashes (BeaconState witness 322 s -> ~150-230 s).
 BIG_RE=${UMB_BIG_RE:-e2e/Fulu(BeaconState|BeaconBlock|BeaconBlockBody|SignedBeaconBlock)_e2e_witness_generated|e2e/FuluBeaconState_e2e_(comp|decrep)_generated}
-run() {
-  local mem=${UMB_MEMMAX:-16G} ram=${UMB_RAM:-12000000000}
+# umb_limits(umbrella file): sets mem and ram, the heap limits this umbrella runs under
+umb_limits() {
+  mem=${UMB_MEMMAX:-16G}; ram=${UMB_RAM:-12000000000}
   if [ -n "$BIG_RE" ] && awk -F'\t' -v u="$(basename "$1")" -v re="$BIG_RE" '$1 == u && $4 ~ re {f=1} END {exit !f}' "$OUT/umb/plan.tsv"; then
     mem=${UMB_BIG_MEMMAX:-32G}; ram=${UMB_BIG_RAM:-24000000000}
   fi
+}
+# cache_settings(umbrella file): every setting the verdict can depend on, one line (part of the cache key, tools/umbrella_cache.py)
+cache_settings() {
+  local mem ram; umb_limits "$1"
+  echo "stack_kb=${CHECK_STACK_KB:-16384};jsc=$JSC;mem=$mem;ram=$ram;timeout=${UMB_TIMEOUT:-1200};cpus=${CHECK_CPUS:-2};bun=$(env | grep '^BUN_' | grep -v '^BUN_JSC_forceRAMSize=' | sort | tr '\n' ',')"
+}
+run() {
+  local mem ram; umb_limits "$1"
   CHECK_MEMMAX=$mem CHECK_TIMEOUT=${UMB_TIMEOUT:-1200} CHECK_JSC_STACK=$JSC \
     BUN_JSC_forceRAMSize=$ram tools/check.sh "$1" > "$2" 2>&1
   local rc=$?; [ $rc != 0 ] && return $rc
   grep -qx 'ALL PROOFS CHECK' "$2" || return 1
 }
+# one(umbrella, out): check it, or reuse a cached pass of exactly this closure (tools/umbrella_cache.py); a summary row is
+# umbrella, exit, ok, seconds, peak MB, roots, cache key ('-' if not cacheable), how (run | cached | recheck)
 one() {
   u=$1; out=$2
   lg=$out/${u%.bend}.log
+  roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")
+  ck=-; how=run; ent=""
+  if [ "$CACHE" = 1 ] && [ -s "$out/cache_keys.tsv" ]; then
+    ent=$(awk -F'\t' -v u="$u" '$1 == u {print}' "$out/cache_keys.tsv")
+    ck=$(echo "$ent" | cut -f2); st=$(echo "$ent" | cut -f3)
+    if [ "$st" = hit ]; then
+      printf 'CHECK_STACK ulimit_kb=%s jsc_bytes=%s\nCACHED key=%s from commit %s at %s (original %s s, %s MB); not run here\n' \
+        "${CHECK_STACK_KB:-16384}" "$JSC" "$ck" "$(echo "$ent" | cut -f6)" "$(echo "$ent" | cut -f7)" "$(echo "$ent" | cut -f4)" "$(echo "$ent" | cut -f5)" > "$lg"
+      printf '%s\t0\t1\t%s\t%s\t%s\t%s\tcached\n' "$u" "$(echo "$ent" | cut -f4)" "$(echo "$ent" | cut -f5)" "$roots" "$ck" >> "$out/summary.tsv"
+      return
+    fi
+    [ "$st" = recheck ] && how=recheck
+  fi
   run "$out/umb/$u" "$lg"; rc=$?
   ok=$(grep -cx 'ALL PROOFS CHECK' "$lg")
   tl=$(grep '^CHECK_TIME' "$lg" | tail -n 1)
   s=$(echo "$tl" | awk '{print $2}'); kb=$(echo "$tl" | awk '{print $3}')
-  roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")
-  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$rc" "$ok" "${s:-0}" "$(( ${kb:-0} / 1024 ))" "$roots" >> "$out/summary.tsv"
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$rc" "$ok" "${s:-0}" "$(( ${kb:-0} / 1024 ))" "$roots" "$ck" "$how" >> "$out/summary.tsv"
+  if [ "$ck" != - ] && [ "$CACHE" = 1 ]; then
+    if [ $rc = 0 ] && [ "$ok" != 0 ]; then
+      python3 tools/umbrella_cache.py store "$ck" --seconds "${s:-0}" --peak-mb "$(( ${kb:-0} / 1024 ))" --roots "$roots"
+    elif [ "$how" = recheck ]; then
+      echo "$u" >> "$out/cache_mismatch"     # a cached pass failed when rerun: the cache lied (or the run is flaky)
+    fi
+  fi
 }
 # umb(file, roots...): write an import-only umbrella over these roots
 umb() {
@@ -121,11 +153,25 @@ localize() {
   bisect "${u%.bend}_" "$OUT/${u%.bend}.log" "${rs[@]}"
 }
 UP=$(python3 -c 'import os, sys; print(os.path.relpath(".", sys.argv[1]))' "$OUT/umb")
-export OUT UP BIG_RE JSC
-export -f run one umb bisect localize
+export OUT UP BIG_RE JSC CACHE
+export -f run one umb bisect localize umb_limits cache_settings
+if [ "$CACHE" = 1 ]; then
+  # keys of every umbrella (the settings each runs under, its roots and import closure), the hits, and K=3 hits to re-run anyway
+  : > "$OUT/cache_settings.tsv"
+  for u in $(cut -f1 "$OUT/umb/plan.tsv"); do printf '%s\t%s\n' "$u" "$(cache_settings "$OUT/umb/$u")" >> "$OUT/cache_settings.tsv"; done
+  python3 tools/umbrella_cache.py prepare "$OUT/umb/plan.tsv" "$OUT/cache_settings.tsv" "$OUT/cache_keys.tsv" --recheck "${CHECK_CACHE_RECHECK:-3}" || CACHE=0
+fi
 # tools/umb_pool.py: at most J at once, and only while the running umbrellas' expected memory fits (UMB_BUDGET_MB, default 170000)
 UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan.tsv" -- bash -c 'one "$@"' _ {} "$OUT"
 n=$(wc -l < "$OUT/summary.tsv")
+if [ -s "$OUT/cache_mismatch" ]; then
+  echo "CACHE MISMATCH: umbrellas whose cached pass failed when re-run: $(tr '\n' ' ' < "$OUT/cache_mismatch")"
+  python3 tools/umbrella_cache.py clear
+  echo "the cache is cleared; this run FAILS (rerun with --no-cache to see the real verdicts)"
+  exit 1
+fi
+reused=$(awk -F'\t' '$8 == "cached"' "$OUT/summary.tsv" | wc -l)
+echo "$reused of $n reused from the umbrella cache"
 echo "checked $n umbrellas in $(( $(date +%s) - t0 )) s; slowest:"
 sort -t$'\t' -k4 -g -r "$OUT/summary.tsv" | head -n 5 | awk -F'\t' '{printf "  %7.1f s %6d MB  %s  %.60s\n", $4, $5, $1, $6}'
 CHECK_FAST_WALL=$(( $(date +%s) - t0 )) CHECK_FAST_FILES=$FILES \

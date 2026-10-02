@@ -26,7 +26,10 @@ first. Report before and after in seconds.
   170 to 185 s). Split or trim the slowest file rather than adding more jobs.
 - Make generators idempotent: if `regenerate_all.py` needs more than two passes, two generators undo each other's output.
 - A module cache or any incremental checker may be used in the dev loop only. It never counts for a gate, a stamp
-  or a claim, and the docs must say so.
+  or a claim, and the docs must say so. The one exception is the umbrella result cache (tools/umbrella_cache.py,
+  check_fast.sh's default): it reuses a PASS only for an umbrella whose checker, settings and whole import closure are
+  byte-identical, 3 cached umbrellas are re-run every time, the stamp says which umbrellas were reused, and
+  `check_fast.sh --no-cache` is the full run before a release.
 - One-at-a-time locks are for full runs only. Single-file checks run freely within the memory caps.
 
 **Proofs that check fast.** Bend's `Nat` is unary: comparing two spellings of a large number makes the checker

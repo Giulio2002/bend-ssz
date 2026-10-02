@@ -34,7 +34,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HARNESS = ['tools/check.sh', 'tools/check_fast.sh', 'tools/umbrellas.py', 'tools/umb_pool.py', 'tools/check_stamp.py',
+HARNESS = ['tools/check.sh', 'tools/check_fast.sh', 'tools/umbrellas.py', 'tools/umb_pool.py', 'tools/check_stamp.py', 'tools/umbrella_cache.py',
            'tools/verify_pins.py', 'tools/verify_frozen.py', 'tools/verify_no_escapes.py',
            'tools/verify_schemas.py', 'tools/test_schemas.py', 'tools/verify_fixtures.py']
 
@@ -86,17 +86,43 @@ def fixtures_record(d):
     return {'fixtures_tarballs_verified': False}
 
 
+def cache_entry(d, u):
+    """the cache entry a cached row stands for (DIR/cache_keys.tsv: u, key, state, seconds, peak, commit, utc) and its settings"""
+    out = {}
+    try:
+        for line in open(os.path.join(d, 'cache_keys.tsv')):
+            f = line.rstrip('\n').split('\t')
+            if f[0] == u and len(f) >= 7:
+                out = {'commit': f[5], 'utc': f[6]}
+        for line in open(os.path.join(d, 'cache_settings.tsv')):
+            f = line.rstrip('\n').split('\t', 1)
+            if f[0] == u:
+                out['settings'] = f[1]
+    except OSError:
+        pass
+    return out
+
+
 def write(d, out):
     plan_path = os.path.join(d, 'umb', 'plan.tsv')
     plan = [line.rstrip('\n').split('\t') for line in open(plan_path) if line.strip()]
     got = {}
     dup = []
     for line in open(os.path.join(d, 'summary.tsv')):
-        u, rc, ok, s, mb, roots = line.rstrip('\n').split('\t')
+        f = line.rstrip('\n').split('\t')
+        u, rc, ok, s, mb, roots = f[:6]
         if u in got:
             dup.append(u)
         got[u] = {'umbrella': u, 'exit': int(rc), 'all_terms_check': int(ok) > 0, 'seconds': float(s),
                   'peak_mb': int(mb), 'roots': len(roots.split())}
+        if len(f) >= 8 and f[7] == 'cached':
+            # not run here: a pass of exactly this closure under these settings, recorded earlier (tools/umbrella_cache.py).
+            # seconds / peak_mb are the ORIGINAL run's; cache_key is recomputed from the tree by `verify`.
+            ent = cache_entry(d, u)
+            got[u].update({'cached': True, 'cache_key': f[6], 'roots_list': roots.split(), 'settings': ent.get('settings', ''),
+                           'original_commit': ent.get('commit'), 'original_utc': ent.get('utc'), 'original_seconds': float(s)})
+        elif len(f) >= 8:
+            got[u].update({'cached': False, 'cache_key': f[6] if f[6] != '-' else None, 'cache_state': f[7]})
     rows = []
     for p in plan:
         r = got.pop(p[0], None)
@@ -132,6 +158,7 @@ def write(d, out):
           'plan_roots': sum(len(p[3].split()) for p in plan), 'scope': scope,
           'totals': {'umbrellas': len(rows), 'passed': sum(r['result'] == 'pass' for r in rows),
                      'failed': sum(r['result'] == 'fail' for r in rows), 'missing': len(missing),
+                     'reused': sum(bool(r.get('cached')) for r in rows),
                      'cpu_seconds': round(sum(r['seconds'] or 0 for r in rows), 1),
                      'slowest_umbrella_seconds': max([r['seconds'] or 0 for r in rows] or [0]),
                      'wall_seconds': int(os.environ['CHECK_FAST_WALL']) if os.environ.get('CHECK_FAST_WALL') else None},
@@ -163,11 +190,17 @@ def verify(f):
     want = (16384, int(mj.group(1)) if mj else 10485760)
     if (st.get('stack_kb'), st.get('jsc_stack_bytes')) != want:
         diff.append('stack (stamped %s KB / %s bytes, expected %s KB / %s bytes)' % (st.get('stack_kb'), st.get('jsc_stack_bytes'), *want))
+    # a cached umbrella was not run for this stamp: its key must be the key of THIS tree's closure, or the stamp claims a tree it did not cover
+    if any(r.get('cached') for r in st.get('umbrellas', [])):
+        sys.path.insert(0, os.path.join(ROOT, 'tools'))
+        import umbrella_cache
+        diff += ['cached umbrella ' + u + ' (' + why + ')' for u, why in umbrella_cache.verify_rows(f)]
     h = harness()
     diff += ['harness ' + k for k in sorted(set(h) | set(st.get('harness_sha256', {})))
              if st.get('harness_sha256', {}).get(k) != h.get(k)]
     print('%s: %s at %s (commit %s, checker %s, %s umbrellas, scope %s): %s' % (
-        f, st['verdict'], st['utc'], st['commit'][:12], st['checker_commit'][:8], st.get('plan_umbrellas', '?'),
+        f, st['verdict'], st['utc'], st['commit'][:12], st['checker_commit'][:8],
+        '%s, %s of them reused from the cache' % (st.get('plan_umbrellas', '?'), st.get('totals', {}).get('reused', 0)),
         st.get('scope', '?'), 'this tree is the one checked' if not diff else 'differs from this tree: ' + ', '.join(diff)))
     sys.exit(0 if not diff and st['verdict'] == 'all files check' else 1)
 
