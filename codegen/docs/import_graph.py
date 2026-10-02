@@ -19,11 +19,11 @@ import functools
 import re
 import sys
 
-from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
 IMPORT = re.compile(r'^\s*import\s+(\S+\.bend)\b', re.M)
 
 # The public/measured entry points. Anything these reach is production.
-# the typed object runtime, generated split per name and operation (codegen/impl/runtime_refs.py): the 109
+# the typed object runtime, generated split per name and operation (codegen/impl/runtime_file_split.py): the 109
 # mainnet Fulu names and the supported generic SSZ forms
 PRODUCTION = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'types').glob('*_generated.bend'))
 MEASURED = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glob('g*.bend'))

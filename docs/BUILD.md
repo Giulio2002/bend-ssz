@@ -2,18 +2,18 @@
 
 ## Regenerate
 
-    python3 codegen/regen_all.py            # write mode
-    python3 codegen/regen_all.py --check    # stale check (CI)
+    python3 codegen/regenerate_all.py            # write mode
+    python3 codegen/regenerate_all.py --check    # stale check (CI)
 
-`regen_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/impl/generate.py`
-first, then every law generator in import order, then `api_gate.py`, `api_facade.py` and
-`e2e_bridge.py`, and repeats until a pass writes nothing (the facades and gates record their
+`regenerate_all.py` (`--list` shows the order, `--only a,b` a subset, `-j N` parallelism) runs `codegen/impl/typed_object_runtime.py`
+first, then every law generator in import order, then `object_api_coverage_gate.py`, `object_api_facade_proofs.py` and
+`object_api_model_bridges.py`, and repeats until a pass writes nothing (the facades and gates record their
 imports, so one law change can take two passes). `--check` runs every generator's `--check`
 and fails on any stale file. Requirements: Python 3.12 with `requirements.txt`.
 
 The early proof layer (`proofs/*.bend`: compatibility, identity, root relation, codec and bit
 packing proofs), a few `spec/` and `types/` files and benchmark scaffolding were written by the 68
-`tools/generate_*.py`. `codegen/impl/tool_generators.py --check` (one of the generators `regen_all.py
+`tools/generate_*.py`. `codegen/impl/reproducible_tool_scripts.py --check` (one of the generators `regenerate_all.py
 --check` runs) reruns the 62 reproducible ones in a scratch copy of the tree and fails if any
 writes nothing, exits nonzero, or writes a file that differs from the committed one. The other
 six are listed in its `ONE_SHOT` table with the reason: a Markdown renderer that needs a benchmark
@@ -151,7 +151,7 @@ tested by the official vectors and the evidence in [RESULTS.md](RESULTS.md).
 ## Fast iteration
 
 `tools/iter.sh [--gen a,b] [--base REF] [-j N] [--no-regen] [--cache] [files...]` is the dev loop. It
-rsyncs the checkout to a per-user server directory, runs `codegen/regen_all.py --touched` (only the
+rsyncs the checkout to a per-user server directory, runs `codegen/regenerate_all.py --touched` (only the
 generators whose traced inputs changed since their last clean run; stamps in `build/regen_stamps.json`),
 then checks with `tools/check.sh` only the `.bend` files that changed locally, were rewritten by the
 regeneration, or are named, at most `-j` (4) at once, with no localization and no full-check lock. It prints
@@ -159,5 +159,5 @@ PASS/FAIL per file with seconds and the failing location, and pulls the regenera
 `--cache` uses a dev-only toolchain with a module cache (`/srv/ssz-optimization/toolchain-dev-cache`,
 rigid Bend + bendlang/bend#1209): a cache trusts earlier results, so it is never a gate and never makes a
 stamp. Only the full `tools/check_fast.sh` (with localization) and strictcheck gate a merge; iter.sh results
-are not evidence. `regen_all.py --check` stays the authority on generated files; `--touched` output is
+are not evidence. `regenerate_all.py --check` stays the authority on generated files; `--touched` output is
 byte-identical to a full regeneration.

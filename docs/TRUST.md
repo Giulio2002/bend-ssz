@@ -61,7 +61,7 @@ Trusted (not proved here):
   (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated runtime code must
   make the pinned checker reject a proof; conformance and fuzz are optional triage and classify nothing. The first runtime
   counts were invalid (a crashing harness counts as a kill) and one round ran on stale generated files, so the harness now
-  requires `regen_all --check` clean and, for any runtime stage, an unmutated baseline that passes. After eight rounds of
+  requires `regenerate_all --check` clean and, for any runtime stage, an unmutated baseline that passes. After eight rounds of
   proof laws the replay and a fresh draw on main 376669ac leave no gap (round 8). What is excluded is excluded by a
   proof-level reason (an argument the callee never reads, a flag read only by `is_poisoned`, an accepted set that does not
   change, `is_le(x, 0) = is_eq(x, 0)` by the law `le_eq`, one uncoverable bound). The loop also mutates the code the proofs
@@ -94,7 +94,7 @@ Trusted (not proved here):
   (`tools/generate_bit_decoding.py`, which also writes `src/bit_decoding.bend` and
   `proofs/bit_decoding.bend`) and `spec/fulu_schemas.bend` (`tools/generate_fulu_schema_proofs.py`,
   a transcription of `schemas/fulu_mainnet.json`). They are frozen like every spec file (their
-  bytes are in `frozen.lock.json`), and `codegen/impl/tool_generators.py --check` reruns the three
+  bytes are in `frozen.lock.json`), and `codegen/impl/reproducible_tool_scripts.py --check` reruns the three
   scripts and requires the committed bytes, so the script is a record of how the text was
   produced, not a way to change it. What they are reviewed as is the text they contain.
   **Independence of the bit packing.** `spec/bit_packing.bend` and `src/bit_packing.bend` come
@@ -150,7 +150,7 @@ Trusted (not proved here):
   says that the code the stock compiler emits for those same sources agrees with an independent oracle. It does NOT mean that
   what the compiler emits is what the proofs are about: a miscompilation in stock 2.0.34, or a difference between the checker's
   evaluation and the compiled program's, is covered only by the differential evidence (the official vectors, the fuzzing and the
-  mutation testing, all against `codegen/oracle.py`), never by a proof. The rigid-subterms change is in the checker only; the
+  mutation testing, all against `codegen/independent_ssz_oracle.py`), never by a proof. The rigid-subterms change is in the checker only; the
   compiler used for the evidence is unmodified upstream.
 - **Compilation and the host.** Only Bend terms are verified; the Bend compiler, its runtime
   (and any native build) and the machine executing them are outside the proofs.

@@ -7,7 +7,7 @@
   `bitlist_33`, `proglist_bool`) of the suite's 144; the other 8 (zero-length vectors and bit vectors) are not SSZ types
   and are refused. Five of the 136 are the fork's own `boolean` / `uint8` / `uint32` / `uint64` / `uint256`
   (`uint16` and `uint128` exist only in the suite), so there are 131 generic names beside the 109 Fulu ones. Readable
-  names come from `codegen/core/names.py`.
+  names come from `codegen/core/readable_type_names.py`.
 - <!-- fig:names -->240<!-- /fig --> names have object-API facades (`proofs/api/`: <!-- fig:facade_files -->720<!-- /fig --> files), each
   with an encode, a decode and a hash_tree_root file. `proofs/gate/MISSING.txt`: <!-- fig:missing -->0<!-- /fig --> of
   <!-- fig:core_pairs -->2160<!-- /fig --> core (name, law) pairs lack a proving law. Laws per name (from
@@ -39,8 +39,8 @@
   The manifest's open lists: <!-- fig:manifest_open -->`uncovered` empty, `decode_uncovered` empty, `root_awaiting` empty<!-- /fig -->.
   The remaining premises and limits are in [PREMISES.md](PREMISES.md).
 
-All figures in this section are generated from the artifacts by `codegen/docs/doc_figures.py`, which
-`codegen/regen_all.py --check` runs.
+All figures in this section are generated from the artifacts by `codegen/docs/documentation_figures.py`, which
+`codegen/regenerate_all.py --check` runs.
 
 ## Object-API laws (`proofs/api/<Name>_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend`)
 
@@ -73,28 +73,28 @@ directly. END_TO_END's statements are frozen; only their proofs were changed.
 
 Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.json`:
 
-- setter laws, `e2e/<Name>_e2e_set_generated.bend` (`codegen/proofs/collections/e2e_setters.py`), for
+- setter laws, `e2e/<Name>_e2e_set_generated.bend` (`codegen/proofs/collections/setter_bridge_compositions.py`), for
   <!-- fig:set_containers -->71<!-- /fig --> containers (Fulu and generic, BeaconState included):
   <!-- fig:set_view_count -->315<!-- /fig --> spec-value laws `view(set_f(o, w)) == field_set(view(o), k, view_f(w))`
   (`proofs/obj/value_set.bend`), composed with the root bridge (<!-- fig:set_root_count -->315<!-- /fig -->
   statements) and the encode bridge (<!-- fig:set_encode_count -->208<!-- /fig --> statements) where the
   bridge's premises allow;
-- setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/rep_laws.py`):
+- setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/setter_keeps_representation_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
-- collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/proofs/collections/coll_laws.py`):
+- collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/proofs/collections/collection_api_laws.py`):
   <!-- fig:obj_coll_statements -->504<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->41<!-- /fig --> collections: the packed collections of whole-word
   elements (`proofs/obj/words_rw.bend`, `proofs/obj/coll_zeros.bend`, `coll_b32.bend`, `coll_b48.bend`, `coll_u64.bend`), the bit lists and byte collections (`proofs/obj/u32bits.bend`,
   `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend`) and the list of 2048-byte cells (`proofs/obj/cell_rw.bend`); the other-index law of the
-  The spec-value set law of the 2 bit-list collections (`proofs/obj/bits_view.bend`, `codegen/proofs/collections/bits_view.py`: the word replace is a bit replace of the word-expanded storage, by the 32-way split on `i & 31`, then the view is `btk` of it) is in `coll_bits.bend`.
-  Data-element lists. The array-list read-back and the boxed-list laws (`proofs/obj/tarray.bend`, `coll_seq.bend`) are in the gate like the rest, and for the five boxed lists the spec-value law `..._api_view_set` (`proofs/obj/tfz_boxed.bend`, `codegen/proofs/collections/boxedview.py`: freezing the array `Array.set` writes is updating the frozen tree of mirrors, by one induction over the depth against `tarray.bend`'s `put`, then `view_seq.bend`'s induction over the items); the view of the new element is that of the stored box, `v_X_bx(th_X_bx(fz_X_bx(wrap v)))`, which the root bridges read of a stored element.
+  The spec-value set law of the 2 bit-list collections (`proofs/obj/bits_view.bend`, `codegen/proofs/collections/bit_list_set_view.py`: the word replace is a bit replace of the word-expanded storage, by the 32-way split on `i & 31`, then the view is `btk` of it) is in `coll_bits.bend`.
+  Data-element lists. The array-list read-back and the boxed-list laws (`proofs/obj/tarray.bend`, `coll_seq.bend`) are in the gate like the rest, and for the five boxed lists the spec-value law `..._api_view_set` (`proofs/obj/tfz_boxed.bend`, `codegen/proofs/collections/boxed_list_set_view.py`: freezing the array `Array.set` writes is updating the frozen tree of mirrors, by one induction over the depth against `tarray.bend`'s `put`, then `view_seq.bend`'s induction over the items); the view of the new element is that of the stored box, `v_X_bx(th_X_bx(fz_X_bx(wrap v)))`, which the root bridges read of a stored element.
   The spec-value law, `..._api_view_set`, for <!-- fig:obj_coll_view -->41<!-- /fig --> collections: the spec view of the collection after an accepted
   set is the view before with that item replaced by the view of the new element (`proofs/obj/value_set.bend`'s `field_set`: the k-th item of
   a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
   `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
-  `view_seq.bend` (which also covers the boxed lists, over the frozen mirror trees of `root_types_light.bend`), `view_bytes.bend` and, for the list of 2048-byte cells, `view_cells.bend` (`codegen/proofs/collections/view_laws.py`, `codegen/proofs/collections/viewcells.py`: the same induction, with a cell's bytes the limbs of its 512-word window, `proofs/obj/words_list.bend`; it needs `hcap`, the blocks below the count inside the storage) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
+  `view_seq.bend` (which also covers the boxed lists, over the frozen mirror trees of `root_types_light.bend`), `view_bytes.bend` and, for the list of 2048-byte cells, `view_cells.bend` (`codegen/proofs/collections/packed_list_set_view.py`, `codegen/proofs/collections/cell_list_set_view.py`: the same induction, with a cell's bytes the limbs of its 512-word window, `proofs/obj/words_list.bend`; it needs `hcap`, the blocks below the count inside the storage) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
   `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant; for the list of Bytes32, `blist_obj.bend`'s `lh_core` on the written tree, with the size facts of the object and the room of its chunks from its `wfl` invariant; for the lists and vectors of uint64, `ul_rs` and `v8_rs` on the written object, whose `wfl` / `wf1` invariant is rebuilt: the zero tail of its last chunk is the old one, `proofs/obj/u64_tail.bend`): `..._api_root_set`, for <!-- fig:obj_coll_root -->32<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
   The spec-value append law of the bit lists (`..._api_view_append` with room, `..._api_view_append_grow` when the storage is reallocated, `proofs/obj/bits_view.bend`: `view_snoc`, `view_snoc_grow`; the grow law derives that the new bit's word index is within the words copied, `kcov`, from the byte count of the new length and the schema limit, with no premise left on it) and of the boxed lists (`..._api_view_append`, `proofs/obj/tfz_boxed.bend`) is in `coll_bits.bend` and `coll_seq.bend`. An accepted append with room in the storage gives `seq_append`: the view before with the new element's view at the end (`..._api_view_append`; the word lists, the record lists and the byte lists), and `..._api_view_append_grow` when the append reallocates (the word lists: `proofs/obj/words_win.bend`'s `at_cpy_in` says the copy keeps the old words).
   (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
@@ -102,7 +102,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed encode statement of a mutated list of the bit lists other than `bits131072` (they have no set law; `bits131072` is in `proofs/obj/encset_t_bits131072.bend`), and the root view of the runtime set of the uint16 lists (the runtime-level set object law, the composed encode with the premise `2 j = 4 q + s` derived, the read-back and the other-element laws over the runtime's `l1024_u16_set` and `l1024_u16_get` are in `proofs/obj/encset_r_<c>.bend`, `codegen/proofs/collections/encset_r.py`, over `halfword16.bend` (the sixteen-bit halfword read of a merged word) and `encset_r_base.bend`; the guard `U32.div(N, 2)` and the byte position `i * 2` are derived, the parity of `i` is the premise `(i * 2) & 3 = 0 or 2`; their tree-level composed encode is in `proofs/obj/encset_h_<c>.bend`, `codegen/proofs/collections/encset_h.py`, offsets 0 and 2, over `halfword.bend`; the element value is `v16of(v & 255, (v >> 8) & 255)`, it is `v` for `v <= 65535`: `proofs/obj/v16_rt.bend`, `codegen/proofs/collections/v16.py`); see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/encset_b.py`, with `tz_merge.bend`'s zero-tail lemma); and
+composed encode statement of a mutated list of the bit lists other than `bits131072` (they have no set law; `bits131072` is in `proofs/obj/encset_t_bits131072.bend`), and the root view of the runtime set of the uint16 lists (the runtime-level set object law, the composed encode with the premise `2 j = 4 q + s` derived, the read-back and the other-element laws over the runtime's `l1024_u16_set` and `l1024_u16_get` are in `proofs/obj/encset_r_<c>.bend`, `codegen/proofs/collections/uint16_list_runtime_set_laws.py`, over `halfword16.bend` (the sixteen-bit halfword read of a merged word) and `encset_r_base.bend`; the guard `U32.div(N, 2)` and the byte position `i * 2` are derived, the parity of `i` is the premise `(i * 2) & 3 = 0 or 2`; their tree-level composed encode is in `proofs/obj/encset_h_<c>.bend`, `codegen/proofs/collections/halfword_list_encode_after_set.py`, offsets 0 and 2, over `halfword.bend`; the element value is `v16of(v & 255, (v >> 8) & 255)`, it is `v` for `v <= 65535`: `proofs/obj/v16_rt.bend`, `codegen/proofs/collections/uint16_from_two_bytes.py`); see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/byte_list_encode_after_set.py`, with `tz_merge.bend`'s zero-tail lemma); and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
@@ -116,13 +116,13 @@ of the written list: `rep_<c>(set(o, i, v), s)` from `rep_<c>(o, s)`, which need
 representation as a premise (`rep_X(v, sE)`; for a boxed list `th_bx(fz_bx(wrap v))` is `wrap v` only given the element's own freeze/thaw law, which the container setters of
 `proofs/obj/prep_setters.bend` already assume as `rv`), and (c) the composition of `rs_<c>` with the view law, as `coll_root.bend` does for the word families. The other six record lists (`Eth1Data`, `Validator`, `HistoricalSummary`, the three `Pending*` lists) have their view and list-root law in `root_state_light.bend` / `root_state.bend`
 (module `STL` / `RSH`; their `rs_<c>` also takes `dv`, `edv`), and `coll_root.bend` composes them the same way (`seq_root_law`), so all 17 record and boxed lists have a root-after-set law.
-The encode of a mutated list is stated in `proofs/obj/encset_<c>.bend` for these 17 lists (`codegen/proofs/collections/encset.py`): over the encode module's own mirror
+The encode of a mutated list is stated in `proofs/obj/encset_<c>.bend` for these 17 lists (`codegen/proofs/collections/record_list_encode_after_set.py`): over the encode module's own mirror
 types (`encx_<c>.bend`), `<c>_okl_set` says the written tree satisfies the encode bridge's premises `OKL` (for the boxed lists per element: `eoks_set`, from `xat_same` / `xat_other`,
 the new element's `EOK` at the index and the old ones elsewhere; the depth of the perfect tree is unchanged, `tdm`), `<c>_vall_set` that the value of the written list is the old value with item i
 replaced (`field_set`, by `xi_set` over the updated slots), `<c>_written` that the written object is the old array with the new element (its box) at i, and `<c>_api_encode_set` composes them
 with `encx_specB`: the spec encode of the set value is the bytes `ENCL` of the written tree, under a bound on the byte count. The new element's `EOK` (boxed lists) and the byte-count bound are premises.
 
-The lists of whole-word elements have the same composed statement in `proofs/obj/encset_w_<c>.bend` (`codegen/proofs/collections/encset_w.py`; the lists of uint64 `l131072_u64`, `l1099511627776_u64`,
+The lists of whole-word elements have the same composed statement in `proofs/obj/encset_w_<c>.bend` (`codegen/proofs/collections/word_list_encode_after_set.py`; the lists of uint64 `l131072_u64`, `l1099511627776_u64`,
 of Bytes32 `l16777216_b32` and of Bytes48 `l4096_b48`; shared lemmas in `encset_w_base.bend`, `encset_w_base32.bend`, `encset_w_base48.bend`). Their encode bridge is over the window `MW{dw, T, N}`
 with `OKT(dw, T, N)`: `<c>_okt_set` says the tree `WW.tk(words, dw, T, q, 0)` written at the element's words satisfies it (the perfect tree by `tk_perfect`, the room and the limit unchanged, the zero tail
 of the word `N >> 2` untouched because the written words end before it: `wd_after` with `N = 4 M`, `ql_gen` / `ql_ge`), `<c>_vall_set` that the encode value `W.VALw` of the written tree is the old
@@ -141,10 +141,10 @@ set laws (`VB.view_set_u8`, `view_bytes.bend`, `bits_view.bend`'s `view_set`) ap
 statement first needs the set and view laws. Everything else (the written mirror, `encx_spec`, the composition) is the same.
 
 Status of that note: (a) is `tz_merge.bend` (`tz_merge`: for `b` in 1..2 and `s + b <= r <= 3`, `tail_zero(r, merge_word(old, x, s, b))` from `tail_zero(r, old)`, by `shrn` over `.&.` / `.|.`
-and the closed masks, `codegen/proofs/collections/subword_tz.py`, checks in 10 s); (b) is done for the byte lists `bl32`, `bl256` and the list of uint8 (`encset_b.bend`, with the `PB.it1` definitions of `pb_min.bend` and
+and the closed masks, `codegen/proofs/collections/merged_word_zero_tail.py`, checks in 10 s); (b) is done for the byte lists `bl32`, `bl256` and the list of uint8 (`encset_b.bend`, with the `PB.it1` definitions of `pb_min.bend` and
 `packed_bytes_light.bend` bridged) and, at tree level with the offset 0 or 2 as the two laws, for the three lists of uint16 (`encset_h.bend`, over `halfword.bend`: the bytes of a word after a halfword merge, by the
 bit patterns of `byte_bits.bend`'s kind, 20 lemmas in 6 s; `it2_set2` replaces item `j` when the two bytes of element `j` are replaced). Every file checks in under 21 s. The bit list
-`bits131072` (the only bit list with both a set law and an encode bridge) is done too, in `proofs/obj/encset_t_bits131072.bend` (`codegen/proofs/collections/encset_t.py`, 12 s) over `proofs/obj/bitz.bend` (`bitz.py`, 8 s). Its `OKT` has three tails on words of the bit storage: `tail_zero(nbytes(K) & 3, slot(T, nbytes(K) >> 2))`, `DL.HZ(RK(K), slot(T, K >> 5))` and
+`bits131072` (the only bit list with both a set law and an encode bridge) is done too, in `proofs/obj/encset_t_bits131072.bend` (`codegen/proofs/collections/bit_list_encode_after_set.py`, 12 s) over `proofs/obj/bitz.bend` (`bit_list_zero_tails.py`, 8 s). Its `OKT` has three tails on words of the bit storage: `tail_zero(nbytes(K) & 3, slot(T, nbytes(K) >> 2))`, `DL.HZ(RK(K), slot(T, K >> 5))` and
 `bits_above_zero(K & 31, wd(T, dw, K >> 5))`. The proof states all three as `zlist(bdrB(r, wbits w))` (`HZ` already is; `bits_above_zero(r, w)` and `tail_zero(r, w)` for the literal `r` are equal to it, one closed
 fact per `r`, by `wbits` of the mask and `zan`), preserve it under the merge by `bits_view.bend`'s `wset_i` (`wbits(bit_merge(v, x, shl_by(1, i & 31))) == lset(wbits x, i & 31, v)`) and one symbolic induction
 (`zlist(bdrB(r, lset(L, k, v))) == zlist(bdrB(r, L))` for `k < r`), and take `k < r` from `n < K` and `n >> 5 == K >> 5` (`USP.split5`, `lt_cancel` of `encset_b_base.bend`) and, for the byte tail, from `n < K <= 8 nbytes(K)`
@@ -182,7 +182,7 @@ no hash_tree_root sites, shared rounds) is superseded for the same reason.
 touch each other's result. The runtime stage builds rounds in which no mutant lies in the import cone of another's
 type (12 rounds for 606 mutants); the proof batch needs no such care.
 
-**Preconditions (each is a past failure).** (1) `python3 codegen/regen_all.py --check` must report every generator up to
+**Preconditions (each is a past failure).** (1) `python3 codegen/regenerate_all.py --check` must report every generator up to
 date on the tree under test: round 2 once ran on a main whose facades were stale (no facade imported the new laws), which
 inflated its survivors; the harness now refuses to start otherwise. (2) A runtime stage needs its unmutated baseline to
 pass (see above). (3) The evidence file is stamped only from a run on the final tree.
@@ -262,7 +262,7 @@ the file, its two smallest importers, up to 3 proof files that mention the mutat
 `proofs/mutation_coverage/spec/` whose import cone contains the mutated file; at most 6 checks at once, nice 19, 120 s group kill).
 First pass (main dc852a8f): 1049 mutants, 1018 killed, 31 survived (an earlier sampled pass of 232 mutants had found 8 of them). Fixer C
 pinned the 31 in `proofs/mutation_coverage/spec/` (generated by `codegen/proofs/mutation_coverage/spec_constants*.py`). **Confirming pass
-(tree of `agent/mut` 6cbcf4e7 plus the harness edit; `regen_all --check` clean; 690 s, budget 40 min): 1049 mutants, 1045 killed, 4
+(tree of `agent/mut` 6cbcf4e7 plus the harness edit; `regenerate_all --check` clean; 690 s, budget 40 min): 1049 mutants, 1045 killed, 4
 survived, 0 too slow, 0 not run. Critical: none.** The 4 survivors are the progressive-aggregate limit `0n` -> `1n` at
 `root_relation.bend:143:52` and `:163:128` and `root_relation_serializable.bend:44:54` and `:64:181`; they are **proved equivalent**: the
 laws `aggregate_progressive_ignores_limit`, `sequence_progressive_ignores_limit`, `roots_progressive_bits_any_limit` and
@@ -323,7 +323,7 @@ each with the same sha256.
 
 ## Other test evidence (finite regressions, not laws)
 
-All against the independent oracle `codegen/core/oracle.py` (written from the specification, sharing
+All against the independent oracle `codegen/core/independent_ssz_oracle.py` (written from the specification, sharing
 no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-02<!-- /fig --> on the ssz server at
 <!-- fig:evidence_commit -->d680d7dc<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
 the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).

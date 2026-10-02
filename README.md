@@ -75,7 +75,7 @@ What a reader relies on is: the specification (`spec/`, mapped to `simple-serial
 checked, at the commit you rely on:
 
     python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
-    python3 codegen/regen_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
+    python3 codegen/regenerate_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
     python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
     # the checker: Bend main 01875127 + one commit of the fork Giulio2002/bend, branch rigid-memo
     # (c55a7f03; the earlier form of the change, bendlang/bend#1210, was closed unmerged, see docs/TRUST.md), built as a release
@@ -100,8 +100,8 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
 
 ## Regenerate and check
 
-    python3 codegen/regen_all.py            # regenerate every generated file (idempotent)
-    python3 codegen/regen_all.py --check    # fail if any generated file is stale
+    python3 codegen/regenerate_all.py            # regenerate every generated file (idempotent)
+    python3 codegen/regenerate_all.py --check    # fail if any generated file is stale
     tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
                                             # (last recorded run: <!-- fig:check_wall -->13.4<!-- /fig --> min wall at 20 jobs);
                                             # on failure it bisects and prints the failing files

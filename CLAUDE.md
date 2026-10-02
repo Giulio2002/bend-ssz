@@ -10,10 +10,10 @@ iteration, or one iteration takes more than about five minutes, stop the feature
 first. Report before and after in seconds.
 
 **The loop, cheapest first:**
-1. Regenerate only what you changed: `python3 codegen/regen_all.py --only <generator>[,<generator>]`. The full
-   `regen_all.py` repeats up to 16 fixpoint passes (e2e_compose alone is 120 s per pass); never use it in the loop.
+1. Regenerate only what you changed: `python3 codegen/regenerate_all.py --only <generator>[,<generator>]`. The full
+   `regenerate_all.py` repeats up to 16 fixpoint passes (decode_then_encode_theorems alone is 120 s per pass); never use it in the loop.
    The generators live in `codegen/<purpose>/<name>.py` (layout and conventions: `codegen/README.md`; a new
-   generator must be added to `codegen/registry.py`; `tools/test_codegen.sh` runs the unit tests, ruff and `--check`).
+   generator must be added to `codegen/generator_registry.py`; `tools/test_codegen.sh` runs the unit tests, ruff and `--check`).
 2. Check the single file you touched, on the server: `tools/check.sh <file.bend>` (about 1 to 3 minutes). No lock.
 3. Only when the single files pass, run one full check for the batch of fixes:
    `flock /srv/ssz-optimization/agents/.fullcheck.lock tools/check_fast.sh --jobs 12 --no-localize --out <dir>`.
@@ -24,7 +24,7 @@ first. Report before and after in seconds.
 **Other levers, in order of payoff:**
 - A full run takes as long as its slowest umbrella (the FuluBeaconState witness is 431 s, the block witnesses
   170 to 185 s). Split or trim the slowest file rather than adding more jobs.
-- Make generators idempotent: if `regen_all.py` needs more than two passes, two generators undo each other's output.
+- Make generators idempotent: if `regenerate_all.py` needs more than two passes, two generators undo each other's output.
 - A module cache or any incremental checker may be used in the dev loop only. It never counts for a gate, a stamp
   or a claim, and the docs must say so.
 - One-at-a-time locks are for full runs only. Single-file checks run freely within the memory caps.
@@ -44,7 +44,7 @@ gate stays the full check with localization, every pinned tool, no cache, and st
 
 ## Standing rules
 
-- Nothing heavy on the laptop: no bend, bun, regen_all, generator `--check` or whole-tree verifier. Use the server
+- Nothing heavy on the laptop: no bend, bun, regenerate_all, generator `--check` or whole-tree verifier. Use the server
   (root@build-server.example, /srv/ssz-optimization/agents) with `nice -n 10`, memory caps and timeouts.
 - Generated files change only through their generators. Never edit `spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN,
   PROOF, HASH_PROOF, `law-statements.json` or `frozen.lock.json` except for a deliberate, announced change. Never
