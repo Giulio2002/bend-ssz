@@ -289,3 +289,8 @@ def eval_go(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})
   {==}
 
 def eval_go_sized(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})
+
+@@ _top_size_chain_flat_lines @@
++bnd = CI.okbk(${OAS}, h, k, ek)
++hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, 29n) == ${TRUE}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==})
++b${n} = bnd
