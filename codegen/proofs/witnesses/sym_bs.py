@@ -139,6 +139,11 @@ def lt_nat(+a: U32, +b: U32, +h: {U32.is_lt(a, b) == True{} : Bool}) -> {Nat.is_
 def lt_pw(+a: U32, +d: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +h: {U32.is_lt(a, FD.u32__pow2u(d)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(a), FD.spec_common__pow2(d)) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(a), z) == True{} : Bool}, U32.to_nat(FD.u32__pow2u(d)), FD.spec_common__pow2(d), FD.u32__pow2u_value(d, hd), lt_nat(a, FD.u32__pow2u(d), h))
 
+# the same stated with VB.pw (the composed theorems' h31 is `Nat.is_lt(to_nat(n), VB.pw(31n))`): generic in d, so that VB.pw(d) unfolds
+# to the power of two with d a variable; a closed `VB.pw(31n)` against `spec_common__pow2(31n)` would be evaluated (2^31 successors)
+def lt_pwv(+a: U32, +d: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +h: {U32.is_lt(a, FD.u32__pow2u(d)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(a), VB.pw(d)) == True{} : Bool}:
+  lt_pw(a, d, hd, h)
+
 # a U32 index a below b below 2^d: 1 + a is below 2^d
 def lt_pw_s(+a: U32, +b: U32, +d: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hab: {U32.is_lt(a, b) == True{} : Bool}, +hb: {U32.is_lt(b, FD.u32__pow2u(d)) == True{} : Bool})
     -> {Nat.is_lt(1n+U32.to_nat(a), FD.spec_common__pow2(d)) == True{} : Bool}:
@@ -519,7 +524,7 @@ def asm_module():
     L.append('')
     L.append(f'def hS() -> {{U32.is_le({n0}, VB.NMAX()) == True{{}} : Bool}}: {{==}}')
     L.append('')
-    L.append(f'def h31() -> {{Nat.is_lt(U32.to_nat({n0}), VB.pw(31n)) == True{{}} : Bool}}: K.lt_pw({n0}, 31n, {{==}}, {{==}})')
+    L.append(f'def h31() -> {{Nat.is_lt(U32.to_nat({n0}), VB.pw(31n)) == True{{}} : Bool}}: K.lt_pwv({n0}, 31n, {{==}}, {{==}})')
     L.append('')
     obj = f'DC.OBJ(B.capacity({n0}), {TT(bs, n0)}, {n0})'
     L.append('# the decoder accepts the skeleton; the decoded object is the term below, never evaluated')
