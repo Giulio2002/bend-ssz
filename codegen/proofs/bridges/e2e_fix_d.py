@@ -4000,43 +4000,9 @@ def bsd_text(EB):
                 PTT=PTT, OT=OT)
 
 
-def bsd_file(EB):
-    d = bsd_text(EB)
-    g = lambda k: d[k]  # noqa: E731
-    OT, M1, MV, MB, IN, DEC, RES, API, HN, HD, EC, DP, Wl = (d[k] for k in ('OT', 'M1', 'MV', 'MB', 'IN', 'DEC', 'RES', 'API', 'HN', 'HD', 'EC', 'DP', 'Wl'))
-    TT, A, Bt = d['TT'], d['A'], d['Bt']
-    SPlL, BTlL = d['SPl'], d['BTl']
-    SPl, BTl = 'SPLd(dd, bs)', 'BTLd(dd, bs)'
-    TGTl = d['TGT']
-    TG = 'TGTd(dd, bs)'
-    S = f'FD.array__slots(U32, {TG})'
-    X = f'AH.tk(AH.dp({S}, 2n), 32768n)'
-    x0L, x1L, FLL = d['x0'], d['x1'], d['FL']
-    x0, x1, FL = 'X0d(dd, bs)', 'X1d(dd, bs)', 'FLd(dd, bs)'
-    SSP = f'FD.array__slots(U32, {SPl})'
-    SBT = f'FD.array__slots(U32, {BTl})'
-    R = f'AH.dp({SBT}, 214n)'
-    PFX = f'FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, {FL}))'
-    BY = f'SF.limbs({PFX})'
-    SLT = f'SF.limbs(FD.array__slots(U32, {TT}))'
-    # the object and the value with the tree as TGTd
-    OW = d['OW'].replace(f'FD.array__slots(U32, {TGTl})', S)
-    SV = d['SV'].replace(f'FD.array__slots(U32, {TGTl})', S)
-    assert TGTl not in OW and TGTl not in SV
-    PA15 = d['PSPl'].split(', lspke(')[0]  # unused
-    PA = f'XW.spl(dd, {TT}, {d["PTT"]})'
-    PBr = f'XW.spr(dd, {TT}, {d["PTT"]})'
-    PA15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {A}) == True{{}} : Bool}}, dd, 15n, ed, {PA})'
-    PB15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {Bt}) == True{{}} : Bool}}, dd, 15n, ed, {PBr})'
-    PSPl = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 15n, z) == True{{}} : Bool}}, {A}, {SPl}, lspke(1n, 14n, {A}, {PA15}), {PA15})'
-    PTGT = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 16n, z) == True{{}} : Bool}}, {TT}, {TG}, ett(dd, ed, bs), FD.logic__subst(Nat, z => {{FD.array__perfect(U32, 1n+z, {TT}) == True{{}} : Bool}}, dd, 15n, ed, {d["PTT"]}))'
-    # the view with the blob's words abstracted (fields of OW)
-    RTa = 'RT'
-    fl = bsd_split(OW)
-    UV = lambda blob: (f'S.Sequence{{S.Items{{RN.v_u64({fl[0]}), S.Items{{S.BytesValue{{{blob}}}, S.Items{{RN.v_b48({fl[2]}), S.Items{{RN.v_b48({fl[3]}), '  # noqa: E731
-                       f'S.Items{{{RTa}.v_SignedBeaconBlockHeader_bx({fl[4]}), S.Items{{PV.pview({fl[5]}), S.EmptyItems{{}}}}}}}}}}}}}}}}')
-    BLOBW = fl[1]
-    s = f'''
+def _bsd_trees_and_lists(SPlL, BTlL, TGTl, x0L, x1L, FLL, OT, OW, SV):
+    """the tree and list definitions of the blob sidecar's decode (SPLd, BTLd, TGTd, X0d, X1d, FLd, OWd, SVd)"""
+    return f'''
 # ---- trees and lists ----
 def SPLd(+dd: Nat, +bs: +List<U32>) -> FD.array__Tree<U32>: {SPlL}
 
@@ -4054,7 +4020,12 @@ def OWd(+dd: Nat, +bs: +List<U32>) -> {OT}: {OW}
 
 def SVd(+dd: Nat, +bs: +List<U32>) -> S.Value: {SV}
 
-# the left spine of a perfect tree down to a literal depth-k subtree
+'''
+
+
+def _bsd_list_lemmas():
+    """the list lemmas: left spine, first k words, canonical tree, slots, the blob's bytes"""
+    return f'''# the left spine of a perfect tree down to a literal depth-k subtree
 def lspk(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
   match d:
     case 0n: E3.tf(k, t)
@@ -4136,7 +4107,12 @@ def k131928() -> {{U32.to_nat(131928) == 131928n : Nat}}:
   FD.logic__subst(U32, z => {{U32.to_nat(z) == 131928n : Nat}}, U32.add(FD.u32__pow2u(17n), 856), 131928, {{==}},
     Equal.trans(Nat, U32.to_nat(U32.add(FD.u32__pow2u(17n), 856)), Nat.add(U32.to_nat(856), FD.spec_common__pow2(17n)), 131928n, e1, e2))
 
-# ---- (ii) / (iii) ----
+'''
+
+
+def _bsd_decode_facts(M1, MV, R, EC, RES, DEC, IN, HN, API, DP, Wl, TT, TG, d, X, PTGT, S, SSP, SBT, FL, x0, x1, BTl, BTlL, SPl, SPlL, TGTl):
+    """(ii) / (iii): the none cases, the sizes, the words of the tree and its halves"""
+    return f'''# ---- (ii) / (iii) ----
 def bs_mv(m: {M1}) -> {MV}:
   match m:
     case None{{}}: None{{}}
@@ -4182,7 +4158,12 @@ def tk2e({DP}, +bs: +List<U32>) -> {{AH.tk({S}, 2n) == [{x0}, {x1}] : List<&2, U
   +hl = FD.array__slots_length(U32, 16n, {TG}, {PTGT})
   AH.tk2({S}, FD.logic__subst(Nat, z => {{Nat.is_le(2n, z) == True{{}} : Bool}}, FD.spec_common__pow2(16n), FD.spec_common__length(U32, {S}), Equal.sym(Nat, FD.spec_common__length(U32, {S}), FD.spec_common__pow2(16n), hl), {{==}}))
 
-# the words: the two header words, the blob, the rest of the fixed part, then the rest
+'''
+
+
+def _bsd_words_and_split(DP, S, x0, x1, X, FL, R, SPl, PSPl, SSP, SBT, BY, PFX, SLT, TT, TG):
+    """the words of the whole tree, the blob's length and the split of the storage"""
+    return f'''# the words: the two header words, the blob, the rest of the fixed part, then the rest
 def d_sl({DP}, +bs: +List<U32>) -> {{{S} == FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, FD.spec_common__append(U32, {FL}, {R}))) : List<&2, U32>}}:
   +hl = FD.array__slots_length(U32, 15n, {SPl}, {PSPl})
   +hl2 = Equal.trans(Nat, FD.spec_common__length(U32, {SSP}), FD.spec_common__pow2(15n), 32768n, hl, FD.nat__eq_from_is_eq(FD.spec_common__pow2(15n), 32768n, {{==}}))
@@ -4219,7 +4200,12 @@ def d_split({DP}, +bs: +List<U32>) -> {{{SLT} == List.append(&2, U32, {BY}, SF.l
     Equal.cong(List<&2, U32>, +List<U32>, z => SF.limbs(z), FD.array__slots(U32, {TT}), FD.spec_common__append(U32, {PFX}, {R}), e3),
     AS.limbs_app({PFX}, {R}))
 
-def d_by({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +en: {{n == 131928 : U32}}) -> {{{BY} == bs : +List<U32>}}:
+'''
+
+
+def _bsd_decode_laws(DP, HN, HD, BY, SLT, R, RES, M1, IN, TT, TGTl, d, API, MV, MB, x0, x1, X, UV, BLOBW, EC):
+    """the decode laws: bytes, some, the view, the rejection"""
+    return f'''def d_by({DP}, +bs: +List<U32>, +n: U32, {HN}, {HD}, +en: {{n == 131928 : U32}}) -> {{{BY} == bs : +List<U32>}}:
   +vw = L.vw(bs, n, 1n+dd, hd, hn, hw(dd, ed, bs, n, hn, en))
   %Equal.sym(U32, n, 131928, en) : {{{BY} == bs : +List<U32>}}
   Equal.trans(+List<U32>, {BY}, VSP.bt(U32.to_nat(n), {SLT}), bs,
@@ -4281,6 +4267,50 @@ def FuluBlobSidecar_e2e_decode_reject(+bs: +List<U32>, +n: U32, {HN}, {HD})
      Equal.cong({M1}, {MV}, q => bs_mv(q), {RES}, None{{}}, dn)),
    an => d_bn({RES}, Equal.cong({MV}, Bool, z => Maybe.is_some(&2, S.Value, z), bs_mv({RES}), None{{}}, Equal.trans({MV}, bs_mv({RES}), {API}, None{{}}, FuluBlobSidecar_e2e_decode_view(bs, n, hn, hd), an))))
 '''
+
+
+def bsd_file(EB):
+    d = bsd_text(EB)
+    g = lambda k: d[k]  # noqa: E731
+    OT, M1, MV, MB, IN, DEC, RES, API, HN, HD, EC, DP, Wl = (d[k] for k in ('OT', 'M1', 'MV', 'MB', 'IN', 'DEC', 'RES', 'API', 'HN', 'HD', 'EC', 'DP', 'Wl'))
+    TT, A, Bt = d['TT'], d['A'], d['Bt']
+    SPlL, BTlL = d['SPl'], d['BTl']
+    SPl, BTl = 'SPLd(dd, bs)', 'BTLd(dd, bs)'
+    TGTl = d['TGT']
+    TG = 'TGTd(dd, bs)'
+    S = f'FD.array__slots(U32, {TG})'
+    X = f'AH.tk(AH.dp({S}, 2n), 32768n)'
+    x0L, x1L, FLL = d['x0'], d['x1'], d['FL']
+    x0, x1, FL = 'X0d(dd, bs)', 'X1d(dd, bs)', 'FLd(dd, bs)'
+    SSP = f'FD.array__slots(U32, {SPl})'
+    SBT = f'FD.array__slots(U32, {BTl})'
+    R = f'AH.dp({SBT}, 214n)'
+    PFX = f'FD.spec_common__append(U32, [{x0}, {x1}], FD.spec_common__append(U32, {X}, {FL}))'
+    BY = f'SF.limbs({PFX})'
+    SLT = f'SF.limbs(FD.array__slots(U32, {TT}))'
+    # the object and the value with the tree as TGTd
+    OW = d['OW'].replace(f'FD.array__slots(U32, {TGTl})', S)
+    SV = d['SV'].replace(f'FD.array__slots(U32, {TGTl})', S)
+    assert TGTl not in OW and TGTl not in SV
+    PA15 = d['PSPl'].split(', lspke(')[0]  # unused
+    PA = f'XW.spl(dd, {TT}, {d["PTT"]})'
+    PBr = f'XW.spr(dd, {TT}, {d["PTT"]})'
+    PA15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {A}) == True{{}} : Bool}}, dd, 15n, ed, {PA})'
+    PB15 = f'FD.logic__subst(Nat, z => {{FD.array__perfect(U32, z, {Bt}) == True{{}} : Bool}}, dd, 15n, ed, {PBr})'
+    PSPl = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 15n, z) == True{{}} : Bool}}, {A}, {SPl}, lspke(1n, 14n, {A}, {PA15}), {PA15})'
+    PTGT = f'FD.logic__subst(FD.array__Tree<U32>, z => {{FD.array__perfect(U32, 16n, z) == True{{}} : Bool}}, {TT}, {TG}, ett(dd, ed, bs), FD.logic__subst(Nat, z => {{FD.array__perfect(U32, 1n+z, {TT}) == True{{}} : Bool}}, dd, 15n, ed, {d["PTT"]}))'
+    # the view with the blob's words abstracted (fields of OW)
+    RTa = 'RT'
+    fl = bsd_split(OW)
+    UV = lambda blob: (f'S.Sequence{{S.Items{{RN.v_u64({fl[0]}), S.Items{{S.BytesValue{{{blob}}}, S.Items{{RN.v_b48({fl[2]}), S.Items{{RN.v_b48({fl[3]}), '  # noqa: E731
+                       f'S.Items{{{RTa}.v_SignedBeaconBlockHeader_bx({fl[4]}), S.Items{{PV.pview({fl[5]}), S.EmptyItems{{}}}}}}}}}}}}}}}}')
+    BLOBW = fl[1]
+    s = (
+        _bsd_trees_and_lists(SPlL, BTlL, TGTl, x0L, x1L, FLL, OT, OW, SV) +
+        _bsd_list_lemmas() +
+        _bsd_decode_facts(M1, MV, R, EC, RES, DEC, IN, HN, API, DP, Wl, TT, TG, d, X, PTGT, S, SSP, SBT, FL, x0, x1, BTl, BTlL, SPl, SPlL, TGTl) +
+        _bsd_words_and_split(DP, S, x0, x1, X, FL, R, SPl, PSPl, SSP, SBT, BY, PFX, SLT, TT, TG) +
+        _bsd_decode_laws(DP, HN, HD, BY, SLT, R, RES, M1, IN, TT, TGTl, d, API, MV, MB, x0, x1, X, UV, BLOBW, EC))
     hdr = '''import Base
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
