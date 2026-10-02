@@ -71,6 +71,7 @@ GENERATORS = (
     Gen('decoder_offsets', 'proofs/slop'),
     Gen('validity_checks', 'proofs/slop'),
     Gen('poison_flag', 'proofs/slop'),
+    Gen('crash_fix_laws', 'proofs/slop'),
     Gen('packed_vector_root_laws', 'proofs/laws'),
     Gen('progressive_list_root_laws', 'proofs/laws'),
     Gen('hash_tree_root_laws', 'proofs/laws'),

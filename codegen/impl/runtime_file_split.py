@@ -68,7 +68,7 @@ TO_SPLIT = './'
 TO_ROOT = '../'
 LETTER = {'def': 'd', 'encode_ssz': 'e', 'decode_ssz': 'r', 'hashtreeroot': 'h'}
 ROOTS = {
-    'decode_ssz': ['decode', 'ok', 'read', 'build'],
+    'decode_ssz': ['decode', 'ok', 'read', 'build', 'decode_checked'],
     'encode_ssz': ['encode', 'serialize', 'putk', 'putn', 'put', 'putv', 'size', 'valid'],
     'hashtreeroot': ['hash_tree_root', 'root'],
 }

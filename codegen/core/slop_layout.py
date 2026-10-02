@@ -10,6 +10,7 @@ proofs/slop/<group>/<name>_generated.bend, one group directory per kind of gap:
     offsets      the offsets the decoders read at and the word positions the writers and readers use
     constants    the constants of the generated encoders and root wrappers
     spec         the constants of the frozen specification that no other law reaches
+    crash        the fixes of the crash hunt (docs/CRASH_HUNT.md): refusals and the default's size, by computation
 
 Several generators may write into one group directory: an orphan is a file of the directory whose header names the generator
 that is checking (core/generated_file_writer.py `owner`), so one generator never deletes another's file.
@@ -27,7 +28,7 @@ from codegen.core.repository_paths import ROOT
 PROOFS = ROOT / 'proofs'
 SLOP = PROOFS / 'slop'
 SUFFIX = '_generated.bend'
-GROUPS = ('validity', 'size', 'capacity', 'alignment', 'offsets', 'constants', 'spec')
+GROUPS = ('validity', 'size', 'capacity', 'alignment', 'offsets', 'constants', 'spec', 'crash')
 
 _IMPORT = re.compile(r'^import (\S+)(.*)$', re.M)
 

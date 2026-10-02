@@ -1,0 +1,12 @@
+1 cell_set_empty=0
+2 cell_set_4096_at_1=0
+3 cell_set_64=0
+4 cell_append_empty=0
+5 cell_set_2048_control=1
+6 pbits_append_max=0
+7 bits2048_append_max=0
+8 pl_u8_append_max=0
+9 decode_checked_empty_buf_40=none
+10 decode_checked_40_control=some
+11 decode_checked_2gib=none
+12 complex_default_serialize_ok=1 size=100

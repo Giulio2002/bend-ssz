@@ -453,3 +453,4 @@ codegen/container_field_validity.py	codegen/proofs/slop/container_field_validity
 codegen/packed_boolean_validity.py	codegen/proofs/slop/packed_boolean_validity.py
 codegen/bit_padding_validity.py	codegen/proofs/slop/bit_padding_validity.py
 codegen/first_offset_check.py	codegen/proofs/slop/first_offset_check.py
+codegen/crash_fix_laws.py	codegen/proofs/slop/crash_fix_laws.py
