@@ -141,6 +141,49 @@ def le_eq_equiv(x, line):
     return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/obj/zpwdcmp_lib.bend, imported by the facade'
 
 
+def in_signature(path, line, col):
+    """True if the (1-based line, column) lies in the header of the def that contains it: the parameters and the result
+    type (the statement) up to the `:` that opens the body. False: the mutation is inside the body (the proof term or
+    the definition's value)."""
+    text = pathlib.Path(path).read_text()
+    lines = text.split('\n')
+    i = line - 1
+    while i >= 0 and not lines[i].startswith('def '):
+        i -= 1
+    if i < 0:
+        return None
+    start = sum(len(l) + 1 for l in lines[:i])
+    pos = sum(len(l) + 1 for l in lines[:line - 1]) + col
+    depth, j, seen_arrow = 0, start, False
+    while j < len(text):
+        c = text[j]
+        if c in '([{<':
+            depth += 1
+        elif c in ')]}>':
+            depth -= 1
+        elif text.startswith('->', j) and depth == 0:
+            seen_arrow = True
+            j += 1   # the '>' of the arrow is not a bracket
+        elif c == ':' and depth == 0 and seen_arrow:
+            return pos < j
+        elif c == ':' and depth == 0 and not seen_arrow and text[j + 1:j + 2] in ('\n', ' '):
+            return pos < j
+        j += 1
+    return None
+
+
+def lib_proof_body(x):
+    """A mutation inside the body of a lemma of the proof libraries (proofs/obj, e2e): the statement (the def's result type)
+    is unchanged, so the same statement is still proved, only by a different term. That is not a gap in what is proved."""
+    f = x['file']
+    if not (f.startswith('proofs/obj/') or f.startswith('e2e/')):
+        return None
+    sig = in_signature(f, x['line'], x['col'])
+    if sig is False:
+        return 'a mutation inside the proof term of a lemma: its statement is unchanged and still checks, so the same statement is proved by another term'
+    return None
+
+
 def proof_equiv(x):
     line=pathlib.Path(x['file']).read_text().split('\n')[x['line']-1]
     if x['operator'].startswith('const'):
