@@ -227,3 +227,16 @@ Equivalent, with the proof-level reason:
 * `root_relation.bend:143` `aggregate(True{}, 0n -> 1n, ProgressiveBits ..)`: equivalent, by the same lemma as `root_relation_serializable`:
   `spec/root_relation.bend` proves `aggregate(True{}, a, c, l, o) == aggregate(True{}, b, c, l, o)` for all arguments (the limit only reaches `tree`,
   whose `True` arm ignores it); the module imports the mutated file and still checks.
+
+### Exhaustive spec pass (main dc852a8f, 31 survivors; `spec_constants_extra.py`)
+
+The auditor mutated every numeric site of the 32 spec files, +1 and -1 (1049 mutants, 31 survived). The new laws, in `proofs/mutation_coverage/spec/`:
+
+* `bit_root`: `chunk_limit` at 0, 1, 256, 257, 512, 513 (both directions of the 255n and the 256n); `chunks` of 257 bits is `[[0 x 32], [1, 0 x 31]]` (the 31n of `scan`, both ways).
+* `fulu_schemas`: `pin_<name>`, one law per schema definition (`X() == <its text>`; a statement over the whole file, found by the harness because it imports and mentions the mutated file).
+* `root_relation`: `count` of the empty and of a two-field chain; the Null leaf `roots(NullValue, Null, [32 zero bytes])` with the zeros written out.
+* `tree`: `tree(1n+p, []) == zero_subtree(1n+p)`, symbolic in p (a concrete depth-1 tree computes a SHA: over 300 s).
+* `type_legality`: ByteVector{1} and Vector{Boolean, 1} are legal; a union of 128 options (behind Null or not) is illegal (`h -> Empty` through `FD.logic__false_true` on the bound component).
+* Equivalent, with the proof: the progressive aggregate limit at `root_relation` 143:52, 163:128 and `root_relation_serializable` 44:54, 64:181. `roots` at ProgressiveBits / ProgressiveList equals `aggregate` / `sequence` at any limit `a` (modules `root_relation`, `root_relation_serializable`); the lemmas still check with the mutant applied.
+
+Re-run on private copies against the modules in their place: 27 fail with a statement mismatch (or a type error for the inhabitant laws), 4 are the equivalent sites above.
