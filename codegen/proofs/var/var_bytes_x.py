@@ -664,7 +664,8 @@ def xn_win_deep(text, FS):
     return deep.compat(text, VW.XIFACE + ['eoc', 'ecY'], VW.HWX, VW.HW32X, 'Nat.add(x, U32.to_nat(len))')
 
 
-def xn_win_text(x):
+def _xw_setup(x):
+    """the container's facts, the window module's imports and the child's window definitions"""
     n, FS, H, po, cvar, Y, JX = x.n, x.FS, x.H, x.po, x.cvar, x.Y, x.JX
     Tn = f'T.{n}'
     HA = f'+ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}'
@@ -690,6 +691,11 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
 
 ''')
     w(between(al, 'def c1_id(', 'def winb('))
+    return n, FS, H, po, cvar, Y, JX, Tn, HA, HW, MP, M, BF, yok, YCHK, L, w
+
+
+def _xw_reader(x, FS, cvar, Y, JX, Tn, HA, HW, BF, yok, YCHK, w):
+    """the window's checks and sizes (hcx), the object read from the window and rdw_go"""
     w(f'''def hcx(+d: Nat, +x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == True{{}} : Bool}}, {HW}, {HA})
     -> {{Nat.is_le(Nat.add(c, x), {P4}) == True{{}} : Bool}}:
   FD.nat__le_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P4},
@@ -814,7 +820,10 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
   +epo = FD.u32alg__eq_of(SPOw(t, x), {FS}, chk_b(a, b, c, hchk))
   rdw_go(d, t, n, x, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
 ''')
-    # ---- the spec side ----
+
+
+def _xw_spec_value(x, n, FS, H, po, Y, JX, HA, HW, MP, M, YCHK, w):
+    """the spec side: the items, header and value of the container read from the window"""
     ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, CDEFS = VBN.spec_items(x, 'V', 'Yb', 'hv', named=('XC', '+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value', 't, x, V', '+t: FD.array__Tree<U32>, +x: Nat, +Yb: +List<U32>', 't, x, Yb',
         '+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value, +Yb: +List<U32>, +hv: {Codec.parts(V, Spec.' + x.Y + '()) == Some{[S.Variable{Yb}]} : Maybe<&2, +List<S.Part>>}', 't, x, V, Yb, hv'))
     CDEF = '\n'.join(CDEFS)
@@ -895,7 +904,11 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
   +epo = FD.u32alg__eq_of(SPOw(t, x), {FS}, chk_b(a, b, c, hchk))
   specw_go(d, t, n, x, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
 ''')
-    # ---- the inversion ----
+    return L4, YX, WX
+
+
+def _xw_invariant(n, FS, cvar, Y, JX, HW, MP, YCHK, w, L4, YX, WX):
+    """the invariant: every value whose parts are the window's bytes passes the checks"""
     fsb = [FS & 255, (FS >> 8) & 255, (FS >> 16) & 255, (FS >> 24) & 255]
     FSL = '[' + ', '.join(map(str, fsb)) + ']'
     R = FS - cvar - 4
@@ -968,6 +981,15 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
     -> {{CHKw(t, x, off, len) == True{{}} : Bool}}:
   inv_facts(d, t, n, x, off, len, eo, hd, hw, pf, XI.inv_p(v, {WX}, e))
 ''')
+
+
+def xn_win_text(x):
+    n, FS, H, po, cvar, Y, JX, Tn, HA, HW, MP, M, BF, yok, YCHK, L, w = _xw_setup(x)
+    _xw_reader(x, FS, cvar, Y, JX, Tn, HA, HW, BF, yok, YCHK, w)
+    # ---- the spec side ----
+    L4, YX, WX = _xw_spec_value(x, n, FS, H, po, Y, JX, HA, HW, MP, M, YCHK, w)
+    # ---- the inversion ----
+    _xw_invariant(n, FS, cvar, Y, JX, HW, MP, YCHK, w, L4, YX, WX)
     return '\n'.join(L) + '\n'
 
 
