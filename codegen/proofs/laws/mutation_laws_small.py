@@ -72,6 +72,42 @@ def max_size(t):
     return None
 
 
+def type_decl(tx, R):
+    """[(constructor, [(field, type)])] of the type R in the runtime text"""
+    m = re.search(rf'^type {re.escape(R)} is Type:\n((?:  [^\n]+\n)+)', tx.text, re.M)
+    if not m:
+        return None
+    out = []
+    for line in m.group(1).strip('\n').split('\n'):
+        mm = re.fullmatch(r'\s*(\w+)\{(.*)\}', line)
+        if not mm:
+            return None
+        out.append((mm.group(1), [(a.split(':', 1)[0].strip(), a.split(':', 1)[1].strip()) for a in MC.split_top_args(mm.group(2))] if mm.group(2) else []))
+    return out
+
+
+def decl_ok(tx, R):
+    return type_decl(tx, R) is not None
+
+
+def object_witness(tx, X, R):
+    """a value of the container X with every seeded field set (its seed, else the default with setters)"""
+    sd = f'{X}_seed'
+    if tx.get(sd) and tx.get(sd)[1] == R:
+        return f'T.{sd}(2271560481)'
+    d = tx.get(f'{X}_default')
+    if not (d and d[1] == R):
+        return None
+    w, n = f'T.{X}_default()', 0
+    for nm in sorted(tx.blk):
+        if re.fullmatch(rf'{re.escape(X)}_set_\w+', nm):
+            sg = tx.get(nm)
+            if sg and len(sg[0]) == 2 and sg[1] == R and MC.ptype(sg[0][0]) == R and MC.ptype(sg[0][1]) in MC.seeds_of(tx):
+                w = f'T.{nm}({w}, T.{MC.seeds_of(tx)[MC.ptype(sg[0][1])]}({2271560481 + 17 * n}))'
+                n += 1
+    return w if n else None
+
+
 def laws_of(tx, X, syms):
     laws = []
     enc = tx.get(f'{X}_encode')
@@ -128,6 +164,65 @@ def laws_of(tx, X, syms):
             QB = 'O.Boxed<' + qual(Bx[len('O.Boxed<'):-1]) + '>'
             laws.append((f'bxsize_{m.group(1)}',
                          f'def {X}_ms_bxsize_{m.group(1)}()\n    -> {{Pair.snd({QB}, U32, T.{nm}(O.BNone{{}})) == 0 : U32}}:\n  {{==}}'))
+    # ---- the size pass of a container, symbolic in its fixed fields ----------------------------------
+    t = MC.SCHEMA.get(X) if MC.SCHEMA else None
+    if sz and sz[1] == f'{R} & U32' and dflt and dflt[1] == R and t is not None and t.kind == 'container' and not (ms is not None and ms <= SIZE_MAX):
+        decl = type_decl(tx, R)
+        body = re.fullmatch(rf'{re.escape(R)}\{{(.*)\}}', dflt[2])
+        if decl and len(decl) == 1 and body:
+            dexpr = MC.split_top_args(body.group(1))
+            flds = decl[0][1]
+            if len(dexpr) == len(flds) == len(t.fields):
+                params, args = [], []
+                for (fn, ft), de, (_, st) in zip(flds, dexpr, t.fields):
+                    if st.fixed():
+                        params.append(f'{fn}: {qual(ft)}')
+                        args.append(fn)
+                    else:
+                        args.append('T.' + de if re.match(r'[A-Za-z_]\w*\(', de) and '.' not in de.split('(')[0] else de)
+                laws.append(('sizesym',
+                             f'def {X}_ms_sizesym({", ".join(params)})\n    -> {{Pair.snd({QR}, U32, T.{X}_size(T.{R}{{{", ".join(args)}}})) == {MC.min_size(t)} : U32}}:\n  {{==}}'))
+    # ---- the checked writer against the unchecked one (fixed-size containers) ---------------------------
+    pk, pu = tx.get(f'{X}_putk'), tx.get(f'{X}_put')
+    if (t is not None and t.kind == 'container' and t.fixed() and t.fixed_size() <= SIZE_MAX and pk and pu and decl_ok(tx, R)
+            and pk[1] == f'Array<U32> & ({R} & U32)' and pu[1] == f'Array<U32> & {R}'):
+        w = object_witness(tx, X, R)
+        if w:
+            # the words at every field's first and last byte do not depend on the capacity of the output array
+            # (a write at `pos - k` instead of `pos + k` lands on the same word when the capacity is 2k bytes)
+            js, off = [], 0
+            for _, ft in t.fields:
+                sz_ = ft.fixed_size()
+                js += [off // 4, (off + sz_ - 1) // 4]
+                off += sz_
+            js = sorted(set(js))
+            K0 = depth_for_bytes(t.fixed_size())
+            get = lambda k, j: f'Pair.snd(Array<U32>, U32, Array.get(U32, Pair.fst(Array<U32>, ({QR} & U32), T.{X}_putk(O.out_at({k}n), 0, {w})), {j}))'   # noqa: E731
+            nest_ = lambda items: items[0] if len(items) == 1 else f'({items[0]}, {nest_(items[1:])})'   # noqa: E731
+            nt = lambda n: 'U32' if n == 1 else f'U32 & ({nt(n - 1)})'   # noqa: E731
+            laws.append(('putk', f'def {X}_ms_putk()\n    -> {{{nest_([get(K0, j) for j in js])} == {nest_([get(K0 + 2, j) for j in js])} : {nt(len(js))}}}:\n  {{==}}'))
+    # ---- union arms ---------------------------------------------------------------------------------
+    decl = type_decl(tx, R)
+    if decl and all(re.fullmatch(r'\w+_c\d+', c_) for c_, _ in decl) and tx.get(f'{X}_decode') and tx.get(f'{X}_encode'):
+        RD = tx.get(f'{X}_decode')[1].replace(R, QR)
+        for ci, (ctor, fl) in enumerate(decl):
+            if len(fl) != 1:
+                continue
+            PT = fl[0][1]
+            sd = MC.seeds_of(tx).get(PT)
+            if not sd:        # a payload without a seed (a list's default) decodes to another capacity: not structurally equal
+                continue
+            pw = f'T.{sd}(2271560481)'
+            w = f'T.{ctor}{{{pw}}}'
+            E = f'Pair.snd({QR}, B.Buf, T.{X}_encode({w}))'
+            if ci == 0 and tx.get(f'{X}_put') and tx.get(f'{X}_read'):
+                # a selector that names no arm (bit 7 set): the reader falls through every arm to the first (decode never
+                # gets here, `ok` refuses it; `X_read` / `X_build` do not check)
+                A = f'Pair.fst(Array<U32>, {QR}, T.{X}_put(O.out_at(3n), 0, {w}))'
+                Nn = f'Pair.snd(B.Buf, U32, B.size({E}))'
+                Eb = f'B.Buf{{O.or_word({A}, 0, 128), {Nn}}}'
+                laws.append(('armbad', f'def {X}_ms_armbad()\n    -> {{T.{X}_read({Eb}, 0, {Nn}) == ({Eb}, {w}) : B.Buf & {QR}}}:\n  {{==}}'))
+            laws.append((f'arm{ci}', f'def {X}_ms_arm{ci}()\n    -> {{T.{X}_decode({E}, Pair.snd(B.Buf, U32, B.size({E}))) == ({E}, Some{{{w}}}) : {RD}}}:\n  {{==}}'))
     # ---- record readers --------------------------------------------------------------------------------
     mr = re.search(r'\b(\w+)_put\(O\.out_at\((\d+)n\), 0, o\)', enc[2])
     nb = re.search(r'O\.out_done\((\d+), ', enc[2])

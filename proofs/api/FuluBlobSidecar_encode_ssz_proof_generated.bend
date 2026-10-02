@@ -58,3 +58,6 @@ def FuluBlobSidecar__serialize_valid__BlobSidecar_ms_senc_out(out: Array<U32>, o
 def FuluBlobSidecar__serialize_valid__BlobSidecar_ms_encout(out: Array<U32>, o: FuluBlobSidecar_d.BlobSidecar) -> {FuluBlobSidecar_e.BlobSidecar_enc_out((out, o)) == (o, P2_B.Buf{out, 131928}) : FuluBlobSidecar_d.BlobSidecar & P2_B.Buf}:
   P2_PRV.BlobSidecar_ms_encout(out, o)
 
+def FuluBlobSidecar__serialize_valid__BlobSidecar_ms_sizesym(index: P2_O.U64, blob: P2_O.Words, kzg_commitment: FuluBytes48_d.Bytes48, kzg_proof: FuluBytes48_d.Bytes48, signed_block_header: P2_O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, kzg_commitment_inclusion_proof: P2_O.Words) -> {Pair.snd(FuluBlobSidecar_d.BlobSidecar, U32, FuluBlobSidecar_e.BlobSidecar_size(FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof})) == 131928 : U32}:
+  P2_PRV.BlobSidecar_ms_sizesym(index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof)
+

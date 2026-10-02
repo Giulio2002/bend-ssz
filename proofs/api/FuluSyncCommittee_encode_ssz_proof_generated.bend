@@ -51,3 +51,6 @@ def FuluSyncCommittee__serialize_valid__SyncCommittee_ms_senc_out(out: Array<U32
 def FuluSyncCommittee__serialize_valid__SyncCommittee_ms_encout(out: Array<U32>, o: FuluSyncCommittee_d.SyncCommittee) -> {FuluSyncCommittee_e.SyncCommittee_enc_out((out, o)) == (o, P2_B.Buf{out, 24624}) : FuluSyncCommittee_d.SyncCommittee & P2_B.Buf}:
   P2_PRV.SyncCommittee_ms_encout(out, o)
 
+def FuluSyncCommittee__serialize_valid__SyncCommittee_ms_sizesym(pubkeys: P2_O.Words, aggregate_pubkey: FuluBytes48_d.Bytes48) -> {Pair.snd(FuluSyncCommittee_d.SyncCommittee, U32, FuluSyncCommittee_e.SyncCommittee_size(FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey})) == 24624 : U32}:
+  P2_PRV.SyncCommittee_ms_sizesym(pubkeys, aggregate_pubkey)
+

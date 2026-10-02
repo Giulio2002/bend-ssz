@@ -1,6 +1,8 @@
 import Base
 import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
 import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
 import ../../types/FuluBeaconBlockBody_encode_ssz_generated.bend as FuluBeaconBlockBody_e
@@ -73,7 +75,7 @@ def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_mc_bxpoison_BeaconBloc
 def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_mc_bxcount_BeaconBlockBody(out: Array<U32>, pos: U32) -> {Pair.snd(P1_O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, Pair.snd(Array<U32>, (P1_O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32), FuluBeaconBlockBody_e.BeaconBlockBody_bx_putn(out, pos, P1_O.BNone{}))) == 0 : U32}:
   P1_PRV.BeaconBlockBody_mc_bxcount_BeaconBlockBody(out, pos)
 
-def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_mc_ser() -> {FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271560481))) == (Pair.fst(FuluBeaconBlockBody_d.BeaconBlockBody, P1_B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271560481)))), P1_O.encoded(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, P1_B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271560481)))))) : FuluBeaconBlockBody_d.BeaconBlockBody & P1_O.Encoded}:
+def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_mc_ser() -> {FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody_set_randao_reveal(FuluBeaconBlockBody_d.BeaconBlockBody_set_graffiti(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271569729)), FuluBytes32_d.b32_seed(2271569780)), FuluBytes96_d.b96_seed(2271569814))) == (Pair.fst(FuluBeaconBlockBody_d.BeaconBlockBody, P1_B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(FuluBeaconBlockBody_d.BeaconBlockBody_set_randao_reveal(FuluBeaconBlockBody_d.BeaconBlockBody_set_graffiti(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271569729)), FuluBytes32_d.b32_seed(2271569780)), FuluBytes96_d.b96_seed(2271569814)))), P1_O.encoded(Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, P1_B.Buf, FuluBeaconBlockBody_e.BeaconBlockBody_encode(FuluBeaconBlockBody_d.BeaconBlockBody_set_randao_reveal(FuluBeaconBlockBody_d.BeaconBlockBody_set_graffiti(FuluBeaconBlockBody_d.BeaconBlockBody_set_eth1_data(FuluBeaconBlockBody_d.BeaconBlockBody_default(), FuluEth1Data_d.Eth1Data_seed(2271569729)), FuluBytes32_d.b32_seed(2271569780)), FuluBytes96_d.b96_seed(2271569814)))))) : FuluBeaconBlockBody_d.BeaconBlockBody & P1_O.Encoded}:
   P1_PRV.BeaconBlockBody_mc_ser()
 
 def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_ms_size() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, U32, FuluBeaconBlockBody_e.BeaconBlockBody_size(FuluBeaconBlockBody_d.BeaconBlockBody_default())) == 936 : U32}:

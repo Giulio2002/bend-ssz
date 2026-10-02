@@ -2,7 +2,9 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
 import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
 import ../../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 
@@ -11,5 +13,5 @@ import ../../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 # (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.
 
 def BitsStruct_mc_ser()
-    -> {BitsStruct_e.BitsStruct_serialize(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481))) == (Pair.fst(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481)))), O.encoded(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481)))))) : BitsStruct_d.BitsStruct & O.Encoded}:
+    -> {BitsStruct_e.BitsStruct_serialize(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365))) == (Pair.fst(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365)))), O.encoded(Pair.snd(BitsStruct_d.BitsStruct, B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365)))))) : BitsStruct_d.BitsStruct & O.Encoded}:
   {==}

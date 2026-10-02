@@ -152,3 +152,22 @@ written word when the array had exactly 8 words).
 Re-run, 27 survivors (21 of the audit's constant / reported-size / arithmetic / offset groups, 6 mislabelled `capacity`
 and `capacity-1` ones): 27 killed, 0 equivalent, 0 blocked. Slowest facade check with the new laws: 100 to 160 s
 (vec_uint256_512, vec_uint128_513: the existing `mc_ser`, 8192-byte witnesses, under load).
+
+## 7. Round 3: big-type sizes, union fallthrough, capacity-wrapped writes
+
+New laws of `mutation_laws_small.py` (and `mc_ser`'s witness now sets every seeded field):
+
+* `ms_sizesym` (HistoricalBatch, SyncCommittee, LightClientBootstrap, LightClientUpdate, BlobSidecar): the size pass of a container
+  constructed from symbolic fixed fields and default variable fields equals the schema's least size. Nothing is encoded, so
+  the 524288-byte and 24624-byte types cost milliseconds. Kills 524288 to 524287, 24624 to 24625 / 24623, 24820 to 24821.
+* `ms_putk` (fixed-size containers with a checked writer): the words at the first and last byte of every field, written by
+  `X_putk` into an output of depth K and of depth K+2, are equal. `Array.set` indexes modulo the array length, so a write
+  at `pos - 2048` lands on the same word as `pos + 2048` when the capacity is 4096 bytes: the single-capacity
+  serialize / encode comparison cannot see MatrixEntry's `b48_put(out, pos + 2048)` to `pos - 2048`; a second capacity can.
+* `ms_arm<i>` (unions): decode of the encoding of arm i (seeded payload) returns the arm. `ms_armbad`: a buffer whose selector
+  names no arm (bit 7 set) reads as arm 0 through `X_read`: this pins the fallthrough `case False{}` of the last `rd` helper
+  (`off + 1` to `off + 2`, `off + 1` to `off - 1`), which `X_decode` never reaches (`ok` refuses the selector).
+
+Re-run (8 mutants): 7 killed with a statement mismatch at the new law; 1 equivalent: `CompatibleUnionA_rd0`, `len - 1` to `len - 0`
+in the fallthrough branch: the callee chain `ProgressiveSingleFieldContainerTestStruct_read(buf, off, len)` passes `len` to `rd0`,
+which never reads it, so the changed literal disappears under conversion (the argument is unused).
