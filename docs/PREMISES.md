@@ -396,7 +396,7 @@ no premise besides a guard; the `ComplexTestStruct` setter whose default list is
 Every composed theorem (`<Name>_e2e_decode_encode`, `<Name>_e2e_decode_root`, `e2e/<Name>_e2e_comp_generated.bend`) assumes
 `decode(bs) == Some{o}`; its other hypotheses (`hn`, `hd`, `hS`) are facts about the input. The decoded-object premises are derived, but
 nothing in those statements shows that a real input is accepted, so a composed theorem could hold vacuously. For the variable-size names,
-`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->55<!-- /fig --> files) takes the real
+`e2e/<Name>_e2e_decode_witness_generated.bend` (`codegen/proofs/witnesses/decode_witness.py`, <!-- fig:dw_files -->53<!-- /fig --> files) takes the real
 input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n0` its size), and states, public and locked:
 
 - `<Name>_e2e_decode_witness`: `isS(X_decode(fill_at(alloc(n0), 0, bs0), n0)) == True`, the decoder accepts `bs0`, evaluated by the checker;
@@ -405,7 +405,7 @@ input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n
   theorem is instantiated at an accepted input of its own name: its premises are not unsatisfiable together.
 
 The default object is the smallest input available (every list empty, every fixed-size part zero), except that a default holding empty boxes where a vector needs values (ComplexTestStruct's `vec_VarTestStruct_2` field: its default elements are `BNone`, not a legal decoded shape, and the decoder rejects the encoding of such an object) is replaced by `DV()`, the default with valid elements there, as in the bridge witnesses; a non-empty input is not witnessed. Not
-witnessed (<!-- fig:dw_pending -->3<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
+witnessed (<!-- fig:dw_pending -->5<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientBootstrap, FuluLightClientFinalityUpdate, FuluLightClientOptimisticUpdate, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
 FuluBeaconState's default encoding is 2.7 MB (the fixed-size parts: `block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), too large for the checker to
 evaluate the encoder and the window check over it; a witness needs a symbolic decoder-acceptance proof over the zero-run windows, a separate
 architecture (design, measurements and the first slice: `docs/BS_WITNESS_DESIGN.md`). For it the evidence is the acceptance witness of its variable-size substructures that are witnessed here, the composed theorems of the

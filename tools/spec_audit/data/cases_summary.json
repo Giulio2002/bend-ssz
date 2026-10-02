@@ -1,0 +1,1048 @@
+{
+ "cases": 48279,
+ "by_verdict": {
+  "accept": 37138,
+  "reject": 11141
+ },
+ "types": 240,
+ "by_type": {
+  "AggregateAndProof": {
+   "accept": 232,
+   "reject": 155
+  },
+  "Attestation": {
+   "accept": 251,
+   "reject": 115
+  },
+  "AttestationData": {
+   "accept": 243,
+   "reject": 25
+  },
+  "AttesterSlashing": {
+   "accept": 153,
+   "reject": 247
+  },
+  "BLSPubkey": {
+   "accept": 264,
+   "reject": 25
+  },
+  "BLSSignature": {
+   "accept": 266,
+   "reject": 25
+  },
+  "BLSToExecutionChange": {
+   "accept": 259,
+   "reject": 25
+  },
+  "BeaconBlock": {
+   "accept": 130,
+   "reject": 270
+  },
+  "BeaconBlockBody": {
+   "accept": 157,
+   "reject": 243
+  },
+  "BeaconBlockHeader": {
+   "accept": 254,
+   "reject": 25
+  },
+  "BeaconState": {
+   "accept": 2
+  },
+  "BitsStruct": {
+   "accept": 56,
+   "reject": 294
+  },
+  "Blob": {
+   "accept": 5,
+   "reject": 2
+  },
+  "BlobIdentifier": {
+   "accept": 247,
+   "reject": 25
+  },
+  "BlobIndex": {
+   "accept": 79,
+   "reject": 17
+  },
+  "BlobSidecar": {
+   "accept": 5
+  },
+  "Bytes1": {
+   "accept": 11,
+   "reject": 15
+  },
+  "Bytes20": {
+   "accept": 250,
+   "reject": 25
+  },
+  "Bytes32": {
+   "accept": 251,
+   "reject": 25
+  },
+  "Bytes4": {
+   "accept": 91,
+   "reject": 20
+  },
+  "Bytes48": {
+   "accept": 265,
+   "reject": 25
+  },
+  "Bytes8": {
+   "accept": 181,
+   "reject": 25
+  },
+  "Bytes96": {
+   "accept": 266,
+   "reject": 25
+  },
+  "Cell": {
+   "accept": 267,
+   "reject": 25
+  },
+  "CellIndex": {
+   "accept": 99,
+   "reject": 17
+  },
+  "Checkpoint": {
+   "accept": 240,
+   "reject": 25
+  },
+  "ColumnIndex": {
+   "accept": 79,
+   "reject": 17
+  },
+  "CommitmentIndex": {
+   "accept": 79,
+   "reject": 17
+  },
+  "CommitteeIndex": {
+   "accept": 97,
+   "reject": 17
+  },
+  "CompatibleUnionA": {
+   "accept": 6,
+   "reject": 42
+  },
+  "CompatibleUnionABCA": {
+   "accept": 18,
+   "reject": 63
+  },
+  "CompatibleUnionBC": {
+   "accept": 25,
+   "reject": 165
+  },
+  "ComplexTestStruct": {
+   "accept": 100,
+   "reject": 300
+  },
+  "ConsolidationRequest": {
+   "accept": 264,
+   "reject": 25
+  },
+  "ContributionAndProof": {
+   "accept": 262,
+   "reject": 25
+  },
+  "CurrentSyncCommitteeBranch": {
+   "accept": 267,
+   "reject": 27
+  },
+  "CustodyIndex": {
+   "accept": 99,
+   "reject": 17
+  },
+  "DataColumnSidecar": {
+   "accept": 215,
+   "reject": 185
+  },
+  "DataColumnsByRootIdentifier": {
+   "accept": 241,
+   "reject": 133
+  },
+  "Deposit": {
+   "accept": 268,
+   "reject": 25
+  },
+  "DepositData": {
+   "accept": 265,
+   "reject": 25
+  },
+  "DepositMessage": {
+   "accept": 250,
+   "reject": 25
+  },
+  "DepositRequest": {
+   "accept": 263,
+   "reject": 25
+  },
+  "Domain": {
+   "accept": 261,
+   "reject": 25
+  },
+  "DomainType": {
+   "accept": 93,
+   "reject": 20
+  },
+  "Epoch": {
+   "accept": 58,
+   "reject": 12
+  },
+  "Eth1Block": {
+   "accept": 252,
+   "reject": 25
+  },
+  "Eth1Data": {
+   "accept": 261,
+   "reject": 25
+  },
+  "Ether": {
+   "accept": 120,
+   "reject": 22
+  },
+  "ExecutionAddress": {
+   "accept": 246,
+   "reject": 25
+  },
+  "ExecutionBranch": {
+   "accept": 266,
+   "reject": 27
+  },
+  "ExecutionPayload": {
+   "accept": 197,
+   "reject": 203
+  },
+  "ExecutionPayloadHeader": {
+   "accept": 285,
+   "reject": 83
+  },
+  "ExecutionRequests": {
+   "accept": 161,
+   "reject": 239
+  },
+  "FinalityBranch": {
+   "accept": 264,
+   "reject": 27
+  },
+  "FixedTestStruct": {
+   "accept": 216,
+   "reject": 25
+  },
+  "Fork": {
+   "accept": 228,
+   "reject": 25
+  },
+  "ForkData": {
+   "accept": 268,
+   "reject": 25
+  },
+  "ForkDigest": {
+   "accept": 91,
+   "reject": 20
+  },
+  "G1Point": {
+   "accept": 257,
+   "reject": 25
+  },
+  "G2Point": {
+   "accept": 264,
+   "reject": 25
+  },
+  "Gwei": {
+   "accept": 120,
+   "reject": 22
+  },
+  "Hash32": {
+   "accept": 252,
+   "reject": 25
+  },
+  "HistoricalBatch": {
+   "accept": 2
+  },
+  "HistoricalSummary": {
+   "accept": 260,
+   "reject": 25
+  },
+  "IndexedAttestation": {
+   "accept": 235,
+   "reject": 130
+  },
+  "KZGCommitment": {
+   "accept": 255,
+   "reject": 25
+  },
+  "KZGProof": {
+   "accept": 260,
+   "reject": 25
+  },
+  "LightClientBootstrap": {
+   "accept": 199,
+   "reject": 187
+  },
+  "LightClientFinalityUpdate": {
+   "accept": 151,
+   "reject": 249
+  },
+  "LightClientHeader": {
+   "accept": 246,
+   "reject": 134
+  },
+  "LightClientOptimisticUpdate": {
+   "accept": 198,
+   "reject": 183
+  },
+  "LightClientUpdate": {
+   "accept": 160,
+   "reject": 240
+  },
+  "MatrixEntry": {
+   "accept": 261,
+   "reject": 25
+  },
+  "NextSyncCommitteeBranch": {
+   "accept": 261,
+   "reject": 27
+  },
+  "NodeID": {
+   "accept": 252,
+   "reject": 27
+  },
+  "ParticipationFlags": {
+   "accept": 9,
+   "reject": 13
+  },
+  "PayloadId": {
+   "accept": 178,
+   "reject": 25
+  },
+  "PendingAttestation": {
+   "accept": 244,
+   "reject": 114
+  },
+  "PendingConsolidation": {
+   "accept": 205,
+   "reject": 25
+  },
+  "PendingDeposit": {
+   "accept": 268,
+   "reject": 25
+  },
+  "PendingPartialWithdrawal": {
+   "accept": 200,
+   "reject": 25
+  },
+  "PowBlock": {
+   "accept": 237,
+   "reject": 25
+  },
+  "ProgressiveBitsStruct": {
+   "accept": 239,
+   "reject": 161
+  },
+  "ProgressiveComplexTestStruct": {
+   "accept": 171,
+   "reject": 229
+  },
+  "ProgressiveSingleFieldContainerTestStruct": {
+   "accept": 5,
+   "reject": 6
+  },
+  "ProgressiveSingleListContainerTestStruct": {
+   "accept": 41,
+   "reject": 172
+  },
+  "ProgressiveTestStruct": {
+   "accept": 103,
+   "reject": 297
+  },
+  "ProgressiveVarTestStruct": {
+   "accept": 114,
+   "reject": 259
+  },
+  "ProposerSlashing": {
+   "accept": 263,
+   "reject": 25
+  },
+  "Root": {
+   "accept": 257,
+   "reject": 25
+  },
+  "RowIndex": {
+   "accept": 120,
+   "reject": 22
+  },
+  "SignedAggregateAndProof": {
+   "accept": 191,
+   "reject": 200
+  },
+  "SignedBLSToExecutionChange": {
+   "accept": 261,
+   "reject": 25
+  },
+  "SignedBeaconBlock": {
+   "accept": 110,
+   "reject": 290
+  },
+  "SignedBeaconBlockHeader": {
+   "accept": 264,
+   "reject": 25
+  },
+  "SignedContributionAndProof": {
+   "accept": 259,
+   "reject": 25
+  },
+  "SignedVoluntaryExit": {
+   "accept": 249,
+   "reject": 25
+  },
+  "SigningData": {
+   "accept": 256,
+   "reject": 25
+  },
+  "SingleAttestation": {
+   "accept": 245,
+   "reject": 25
+  },
+  "SingleFieldTestStruct": {
+   "accept": 5,
+   "reject": 6
+  },
+  "Slot": {
+   "accept": 99,
+   "reject": 17
+  },
+  "SmallTestStruct": {
+   "accept": 85,
+   "reject": 20
+  },
+  "SubnetID": {
+   "accept": 79,
+   "reject": 17
+  },
+  "SyncAggregate": {
+   "accept": 267,
+   "reject": 25
+  },
+  "SyncAggregatorSelectionData": {
+   "accept": 141,
+   "reject": 20
+  },
+  "SyncCommittee": {
+   "accept": 268,
+   "reject": 25
+  },
+  "SyncCommitteeContribution": {
+   "accept": 260,
+   "reject": 25
+  },
+  "SyncCommitteeMessage": {
+   "accept": 255,
+   "reject": 25
+  },
+  "Transaction": {
+   "accept": 169
+  },
+  "Validator": {
+   "accept": 250,
+   "reject": 25
+  },
+  "ValidatorIndex": {
+   "accept": 99,
+   "reject": 17
+  },
+  "VarTestStruct": {
+   "accept": 138,
+   "reject": 196
+  },
+  "Version": {
+   "accept": 93,
+   "reject": 20
+  },
+  "VersionedHash": {
+   "accept": 248,
+   "reject": 25
+  },
+  "VoluntaryExit": {
+   "accept": 215,
+   "reject": 25
+  },
+  "Withdrawal": {
+   "accept": 225,
+   "reject": 25
+  },
+  "WithdrawalIndex": {
+   "accept": 99,
+   "reject": 17
+  },
+  "WithdrawalRequest": {
+   "accept": 251,
+   "reject": 25
+  },
+  "bitlist_1": {
+   "accept": 3,
+   "reject": 20
+  },
+  "bitlist_15": {
+   "accept": 43,
+   "reject": 19
+  },
+  "bitlist_16": {
+   "accept": 37,
+   "reject": 16
+  },
+  "bitlist_17": {
+   "accept": 45,
+   "reject": 17
+  },
+  "bitlist_2": {
+   "accept": 7,
+   "reject": 23
+  },
+  "bitlist_3": {
+   "accept": 11,
+   "reject": 35
+  },
+  "bitlist_31": {
+   "accept": 54,
+   "reject": 17
+  },
+  "bitlist_32": {
+   "accept": 46,
+   "reject": 16
+  },
+  "bitlist_33": {
+   "accept": 72,
+   "reject": 19
+  },
+  "bitlist_4": {
+   "accept": 14,
+   "reject": 35
+  },
+  "bitlist_5": {
+   "accept": 17,
+   "reject": 34
+  },
+  "bitlist_511": {
+   "accept": 53,
+   "reject": 17
+  },
+  "bitlist_512": {
+   "accept": 69,
+   "reject": 19
+  },
+  "bitlist_513": {
+   "accept": 54,
+   "reject": 17
+  },
+  "bitlist_6": {
+   "accept": 15,
+   "reject": 32
+  },
+  "bitlist_7": {
+   "accept": 19,
+   "reject": 30
+  },
+  "bitlist_8": {
+   "accept": 30,
+   "reject": 26
+  },
+  "bitlist_9": {
+   "accept": 35,
+   "reject": 29
+  },
+  "bitvector_1": {
+   "accept": 2,
+   "reject": 8
+  },
+  "bitvector_15": {
+   "accept": 39,
+   "reject": 30
+  },
+  "bitvector_16": {
+   "accept": 44,
+   "reject": 20
+  },
+  "bitvector_17": {
+   "accept": 54,
+   "reject": 31
+  },
+  "bitvector_2": {
+   "accept": 4,
+   "reject": 14
+  },
+  "bitvector_3": {
+   "accept": 8,
+   "reject": 15
+  },
+  "bitvector_31": {
+   "accept": 84,
+   "reject": 30
+  },
+  "bitvector_32": {
+   "accept": 93,
+   "reject": 20
+  },
+  "bitvector_33": {
+   "accept": 97,
+   "reject": 36
+  },
+  "bitvector_4": {
+   "accept": 8,
+   "reject": 17
+  },
+  "bitvector_5": {
+   "accept": 10,
+   "reject": 18
+  },
+  "bitvector_511": {
+   "accept": 255,
+   "reject": 35
+  },
+  "bitvector_512": {
+   "accept": 265,
+   "reject": 25
+  },
+  "bitvector_513": {
+   "accept": 247,
+   "reject": 36
+  },
+  "bitvector_6": {
+   "accept": 10,
+   "reject": 18
+  },
+  "bitvector_7": {
+   "accept": 10,
+   "reject": 17
+  },
+  "bitvector_8": {
+   "accept": 11,
+   "reject": 15
+  },
+  "bitvector_9": {
+   "accept": 15,
+   "reject": 31
+  },
+  "boolean": {
+   "accept": 2,
+   "reject": 8
+  },
+  "progbitlist": {
+   "accept": 57,
+   "reject": 12
+  },
+  "proglist_bool": {
+   "accept": 33,
+   "reject": 24
+  },
+  "proglist_uint128": {
+   "accept": 268,
+   "reject": 35
+  },
+  "proglist_uint16": {
+   "accept": 133,
+   "reject": 24
+  },
+  "proglist_uint256": {
+   "accept": 270,
+   "reject": 34
+  },
+  "proglist_uint32": {
+   "accept": 201,
+   "reject": 28
+  },
+  "proglist_uint64": {
+   "accept": 253,
+   "reject": 34
+  },
+  "proglist_uint8": {
+   "accept": 58
+  },
+  "uint128": {
+   "accept": 125,
+   "reject": 17
+  },
+  "uint16": {
+   "accept": 27,
+   "reject": 17
+  },
+  "uint256": {
+   "accept": 147,
+   "reject": 17
+  },
+  "uint32": {
+   "accept": 39,
+   "reject": 14
+  },
+  "uint64": {
+   "accept": 79,
+   "reject": 17
+  },
+  "uint8": {
+   "accept": 6,
+   "reject": 10
+  },
+  "vec_bool_1": {
+   "accept": 2,
+   "reject": 8
+  },
+  "vec_bool_16": {
+   "accept": 60,
+   "reject": 136
+  },
+  "vec_bool_2": {
+   "accept": 4,
+   "reject": 19
+  },
+  "vec_bool_3": {
+   "accept": 8,
+   "reject": 32
+  },
+  "vec_bool_31": {
+   "accept": 58,
+   "reject": 132
+  },
+  "vec_bool_4": {
+   "accept": 13,
+   "reject": 42
+  },
+  "vec_bool_5": {
+   "accept": 23,
+   "reject": 65
+  },
+  "vec_bool_512": {
+   "accept": 65,
+   "reject": 146
+  },
+  "vec_bool_513": {
+   "accept": 65,
+   "reject": 146
+  },
+  "vec_bool_8": {
+   "accept": 43,
+   "reject": 106
+  },
+  "vec_uint128_1": {
+   "accept": 130,
+   "reject": 16
+  },
+  "vec_uint128_16": {
+   "accept": 213,
+   "reject": 27
+  },
+  "vec_uint128_2": {
+   "accept": 172,
+   "reject": 21
+  },
+  "vec_uint128_3": {
+   "accept": 214,
+   "reject": 27
+  },
+  "vec_uint128_31": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint128_4": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint128_5": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint128_512": {
+   "accept": 215,
+   "reject": 27
+  },
+  "vec_uint128_513": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint128_8": {
+   "accept": 215,
+   "reject": 27
+  },
+  "vec_uint16_1": {
+   "accept": 25,
+   "reject": 13
+  },
+  "vec_uint16_16": {
+   "accept": 224,
+   "reject": 27
+  },
+  "vec_uint16_2": {
+   "accept": 73,
+   "reject": 21
+  },
+  "vec_uint16_3": {
+   "accept": 103,
+   "reject": 24
+  },
+  "vec_uint16_31": {
+   "accept": 226,
+   "reject": 27
+  },
+  "vec_uint16_4": {
+   "accept": 151,
+   "reject": 27
+  },
+  "vec_uint16_5": {
+   "accept": 181,
+   "reject": 27
+  },
+  "vec_uint16_512": {
+   "accept": 227,
+   "reject": 27
+  },
+  "vec_uint16_513": {
+   "accept": 222,
+   "reject": 27
+  },
+  "vec_uint16_8": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint256_1": {
+   "accept": 225,
+   "reject": 26
+  },
+  "vec_uint256_16": {
+   "accept": 230,
+   "reject": 27
+  },
+  "vec_uint256_2": {
+   "accept": 221,
+   "reject": 26
+  },
+  "vec_uint256_3": {
+   "accept": 214,
+   "reject": 27
+  },
+  "vec_uint256_31": {
+   "accept": 220,
+   "reject": 27
+  },
+  "vec_uint256_4": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint256_5": {
+   "accept": 234,
+   "reject": 27
+  },
+  "vec_uint256_512": {
+   "accept": 220,
+   "reject": 27
+  },
+  "vec_uint256_513": {
+   "accept": 223,
+   "reject": 27
+  },
+  "vec_uint256_8": {
+   "accept": 212,
+   "reject": 27
+  },
+  "vec_uint32_1": {
+   "accept": 51,
+   "reject": 13
+  },
+  "vec_uint32_16": {
+   "accept": 224,
+   "reject": 27
+  },
+  "vec_uint32_2": {
+   "accept": 87,
+   "reject": 15
+  },
+  "vec_uint32_3": {
+   "accept": 213,
+   "reject": 26
+  },
+  "vec_uint32_31": {
+   "accept": 223,
+   "reject": 27
+  },
+  "vec_uint32_4": {
+   "accept": 194,
+   "reject": 26
+  },
+  "vec_uint32_5": {
+   "accept": 196,
+   "reject": 27
+  },
+  "vec_uint32_512": {
+   "accept": 225,
+   "reject": 27
+  },
+  "vec_uint32_513": {
+   "accept": 222,
+   "reject": 27
+  },
+  "vec_uint32_8": {
+   "accept": 204,
+   "reject": 27
+  },
+  "vec_uint64_1": {
+   "accept": 99,
+   "reject": 16
+  },
+  "vec_uint64_16": {
+   "accept": 217,
+   "reject": 27
+  },
+  "vec_uint64_2": {
+   "accept": 112,
+   "reject": 16
+  },
+  "vec_uint64_3": {
+   "accept": 209,
+   "reject": 27
+  },
+  "vec_uint64_31": {
+   "accept": 212,
+   "reject": 27
+  },
+  "vec_uint64_4": {
+   "accept": 219,
+   "reject": 27
+  },
+  "vec_uint64_5": {
+   "accept": 220,
+   "reject": 27
+  },
+  "vec_uint64_512": {
+   "accept": 220,
+   "reject": 27
+  },
+  "vec_uint64_513": {
+   "accept": 233,
+   "reject": 27
+  },
+  "vec_uint64_8": {
+   "accept": 220,
+   "reject": 27
+  },
+  "vec_uint8_1": {
+   "accept": 11,
+   "reject": 15
+  },
+  "vec_uint8_16": {
+   "accept": 245,
+   "reject": 25
+  },
+  "vec_uint8_2": {
+   "accept": 46,
+   "reject": 20
+  },
+  "vec_uint8_3": {
+   "accept": 71,
+   "reject": 20
+  },
+  "vec_uint8_31": {
+   "accept": 268,
+   "reject": 25
+  },
+  "vec_uint8_4": {
+   "accept": 90,
+   "reject": 20
+  },
+  "vec_uint8_5": {
+   "accept": 113,
+   "reject": 25
+  },
+  "vec_uint8_512": {
+   "accept": 269,
+   "reject": 25
+  },
+  "vec_uint8_513": {
+   "accept": 264,
+   "reject": 25
+  },
+  "vec_uint8_8": {
+   "accept": 181,
+   "reject": 25
+  }
+ },
+ "reference_rejection_reasons": {
+  "first offset is not the fixed size": 3130,
+  "scope not aligned with element size": 1786,
+  "offsets out of order or range": 1495,
+  "byte vector length": 772,
+  "boolean": 668,
+  "shorter than the fixed part": 634,
+  "extra bytes after a fixed-size container": 567,
+  "uint length": 380,
+  "bitlist delimiter": 379,
+  "vector length": 338,
+  "bitvector length": 322,
+  "bitlist limit": 260,
+  "bitvector padding bits": 113,
+  "first offset": 111,
+  "compatible union selector": 98,
+  "list limit": 47,
+  "byte list limit": 19,
+  "short offset": 19,
+  "empty compatible union": 3
+ },
+ "case_families": {
+  "byte": 36048,
+  "off": 3681,
+  "append": 2362,
+  "truncate": 1782,
+  "prepend": 996,
+  "rand": 626,
+  "zero": 240,
+  "max": 235,
+  "len_zero": 199,
+  "empty": 159,
+  "len_rand": 154,
+  "swap": 153,
+  "cu_sel_pl": 79,
+  "C.len_zero": 73,
+  "elem_misaligned": 69,
+  "elem_short": 69,
+  "bl_delim_at__bit": 52,
+  "bl_": 41,
+  "C.len_rand": 37,
+  "B.len_zero": 36,
+  "bytes_short": 34,
+  "bytes_long": 34,
+  "D.len_zero": 28,
+  "attested_header.execution.extr": 27,
+  "aggregation_bits.len_zero": 26,
+  "F.len_zero": 26,
+  "B.len_rand": 23,
+  "H.len_zero": 23,
+  "attestations.[].aggregation_bi": 22,
+  "uint_short": 22,
+  "uint_long": 22,
+  "aggregate.aggregation_bits.len": 21,
+  "D.len_rand": 21,
+  "E.len_zero": 21,
+  "message.aggregate.aggregation_": 21,
+  "uint_empty": 20,
+  "finalized_header.execution.ext": 18,
+  "limit+": 18,
+  "bl_empty": 18,
+  "bl_ff": 18,
+  "bl_delim_after_zero_byte": 18,
+  "bl_too_many_bytes": 18,
+  "bv_long": 18,
+  "bv_short": 18,
+  "bl_delim_at_": 17,
+  "E.len_rand": 16,
+  "F.len_rand": 16,
+  "H.len_rand": 16,
+  "I.len_zero": 16,
+  "L.len_zero": 16,
+  "H.[].C.len_zero": 16,
+  "attestation_.attesting_indices": 14,
+  "A.len_zero": 14,
+  "bv_ones": 14,
+  "bv_pad_bit_set": 14,
+  "aggregation_bits.len_rand": 13,
+  "K.len_zero": 13,
+  "A.len_rand": 11,
+  "bv_top_pad_bit": 10,
+  "body.execution_payload.extra_d": 9
+ }
+}

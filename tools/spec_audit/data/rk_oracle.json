@@ -1,0 +1,594 @@
+{
+ "cases": 48279,
+ "tally": {
+  "accept/accept/AGREE": 34546,
+  "reject/accept/DISAGREE": 73,
+  "reject/reject/AGREE": 9671
+ },
+ "disagreements": [
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "CompatibleUnionABCA#6642",
+   "type": "CompatibleUnionABCA",
+   "label": "rand0|off@1=5",
+   "reason": "first offset is not the fixed size",
+   "hex": "02050000005a12"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ComplexTestStruct#6898",
+   "type": "ComplexTestStruct",
+   "label": "rand0|off@98=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "0100470000000b470000004800000001010000000000000000000000c100000000000000000100000000000000000000000000000000f50000000000000000010000004f000000b6ffff07000000000800000011000000ffff07000000f970d801000b00"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ComplexTestStruct#7154",
+   "type": "ComplexTestStruct",
+   "label": "rand1|off@109=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffff47000000ff490000004900000000ffffffffffffffffffffffff0d0100000000000000e2cc0f380101000000000000000100000000010000000000000000000000560000000000a585070000000172ba290801000800000015000000ffff07000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "DataColumnsByRootIdentifier#8929",
+   "type": "DataColumnsByRootIdentifier",
+   "label": "columns.len1_zero|off@32=44",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000002c0000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "DataColumnsByRootIdentifier#8948",
+   "type": "DataColumnsByRootIdentifier",
+   "label": "columns.len1_rand|off@32=44",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000002c000000c820522907237ca0"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayload#11961",
+   "type": "ExecutionPayload",
+   "label": "extra_data.len1_rand|off@436=529",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayload#12195",
+   "type": "ExecutionPayload",
+   "label": "extra_data.len2_zero|off@436=529",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayload#12231",
+   "type": "ExecutionPayload",
+   "label": "extra_data.len2_zero|off@436=530",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12396",
+   "type": "ExecutionPayloadHeader",
+   "label": "max|off@436=587",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12402",
+   "type": "ExecutionPayloadHeader",
+   "label": "max|byte@436=49",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12430",
+   "type": "ExecutionPayloadHeader",
+   "label": "rand0|off@436=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "ef2211190e43cc0b5826006bd2bbe86530c9cfac6ffe604ef89dbb6ef8bb496fdc75c7e13666528e9baaaa5db7845faa1050165279fdd16b0d8c586cc143668b8fbf4bf11e5c64e533892a28b55cbca620060ea25156eb10471fb21c730985703c9de9bd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12465",
+   "type": "ExecutionPayloadHeader",
+   "label": "rand0|off@436=588",
+   "reason": "first offset is not the fixed size",
+   "hex": "ef2211190e43cc0b5826006bd2bbe86530c9cfac6ffe604ef89dbb6ef8bb496fdc75c7e13666528e9baaaa5db7845faa1050165279fdd16b0d8c586cc143668b8fbf4bf11e5c64e533892a28b55cbca620060ea25156eb10471fb21c730985703c9de9bd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12521",
+   "type": "ExecutionPayloadHeader",
+   "label": "rand2|off@436=590",
+   "reason": "first offset is not the fixed size",
+   "hex": "17d120980d9592a5e0f7ccdb2524efa20e72d91476c7bc2fa39b1f468a05709ce135e249b5d41d75193a50a796ecfcedcc8dba92687b676a33c83a3a84db0ca42c1101baf8bb05be17e9b631a5b81a2ef82eec8e3308278d205af9f6ca1ec01debf7be47"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12535",
+   "type": "ExecutionPayloadHeader",
+   "label": "rand2|off@436=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "17d120980d9592a5e0f7ccdb2524efa20e72d91476c7bc2fa39b1f468a05709ce135e249b5d41d75193a50a796ecfcedcc8dba92687b676a33c83a3a84db0ca42c1101baf8bb05be17e9b631a5b81a2ef82eec8e3308278d205af9f6ca1ec01debf7be47"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12583",
+   "type": "ExecutionPayloadHeader",
+   "label": "extra_data.len1_zero|off@436=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12639",
+   "type": "ExecutionPayloadHeader",
+   "label": "extra_data.len1_rand|off@436=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12650",
+   "type": "ExecutionPayloadHeader",
+   "label": "extra_data.len2_zero|off@436=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionPayloadHeader#12678",
+   "type": "ExecutionPayloadHeader",
+   "label": "extra_data.len2_zero|off@436=586",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionRequests#12715",
+   "type": "ExecutionRequests",
+   "label": "deposits.len1_zero|off@0=204",
+   "reason": "first offset is not the fixed size",
+   "hex": "cc000000cc000000cc00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionRequests#12791",
+   "type": "ExecutionRequests",
+   "label": "deposits.len2_zero|off@0=396",
+   "reason": "first offset is not the fixed size",
+   "hex": "8c0100008c0100008c01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ExecutionRequests#12939",
+   "type": "ExecutionRequests",
+   "label": "deposits.len1_rand|off@0=204",
+   "reason": "first offset is not the fixed size",
+   "hex": "cc000000cc000000cc000000ffb9465607ad67ac6fd04ff8e3f797d44a07f80a9540d3714c6127b7950c33446a572c80a0318f1338da4c6a399a1c0f522cd2e77f32f4ff4f9db14f54e875887718bf29d4f24fe9956e53113c0c18c6ffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "IndexedAttestation#15624",
+   "type": "IndexedAttestation",
+   "label": "max|off@0=244",
+   "reason": "first offset is not the fixed size",
+   "hex": "f4000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "IndexedAttestation#15765",
+   "type": "IndexedAttestation",
+   "label": "rand2|off@0=252",
+   "reason": "first offset is not the fixed size",
+   "hex": "fc0000001a6b5a4c48fe33f600000000000000001e1d9fda0ab11eb3934d4115f8e49cddc658abdb5b1cace1f038e20f1079340bffffffffffffffff229a43e920a849b474ceb66625d7a12a311caf2e9feffa4f0aa78d071efe1ad3ffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "IndexedAttestation#15900",
+   "type": "IndexedAttestation",
+   "label": "attesting_indices.len2_rand|off@0=244",
+   "reason": "first offset is not the fixed size",
+   "hex": "f4000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#16972",
+   "type": "LightClientFinalityUpdate",
+   "label": "rand0|off@1344=248",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000d0040000cda106485676966fc0446d7bbc2cd42a9d37f1e49c804a2ff2ae4c598c560a968c087323c84c01c635405aaba1c45e4e912929466947013ed1d6aa790a8136021894bb4e7412edd533c36e0c390f05835086e3dd86be1f59ab2224cd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17028",
+   "type": "LightClientFinalityUpdate",
+   "label": "rand2|off@1912=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000d00400007f405c9b08f19ea2dfb99ed8ab072a3787a1bcb6f5ecbff36e5c93dc9574fbe19aa93f40db7626e4d5c8e7e30d56928d392e4a542750e74727dfcb6f3f287c7970d3152e51e09fad6a73af30d2f8b88d3581b4054780d5f9f9f54765"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17105",
+   "type": "LightClientFinalityUpdate",
+   "label": "max|off@1343=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000cf040000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17127",
+   "type": "LightClientFinalityUpdate",
+   "label": "rand0|off@1912=588",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000d0040000cda106485676966fc0446d7bbc2cd42a9d37f1e49c804a2ff2ae4c598c560a968c087323c84c01c635405aaba1c45e4e912929466947013ed1d6aa790a8136021894bb4e7412edd533c36e0c390f05835086e3dd86be1f59ab2224cd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17136",
+   "type": "LightClientFinalityUpdate",
+   "label": "rand2|off@1344=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000d00400007f405c9b08f19ea2dfb99ed8ab072a3787a1bcb6f5ecbff36e5c93dc9574fbe19aa93f40db7626e4d5c8e7e30d56928d392e4a542750e74727dfcb6f3f287c7970d3152e51e09fad6a73af30d2f8b88d3581b4054780d5f9f9f54765"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17199",
+   "type": "LightClientFinalityUpdate",
+   "label": "rand0|off@1912=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000d0040000cda106485676966fc0446d7bbc2cd42a9d37f1e49c804a2ff2ae4c598c560a968c087323c84c01c635405aaba1c45e4e912929466947013ed1d6aa790a8136021894bb4e7412edd533c36e0c390f05835086e3dd86be1f59ab2224cd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientFinalityUpdate#17235",
+   "type": "LightClientFinalityUpdate",
+   "label": "max|off@1911=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "90010000cf040000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17345",
+   "type": "LightClientHeader",
+   "label": "max|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17407",
+   "type": "LightClientHeader",
+   "label": "rand0|off@112=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "0100000000000000010000000000000040889b7665f5f7c7cbbf450eb9a9ff27b87b21344d6215ebab1e519b5564c53b007577895228dc524a213400961e278dca803f716b3af9cbff63a642d67dbbb5c2ca55e842c98c8cbd64229fd243e5ae149feceb"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17418",
+   "type": "LightClientHeader",
+   "label": "rand0|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "0100000000000000010000000000000040889b7665f5f7c7cbbf450eb9a9ff27b87b21344d6215ebab1e519b5564c53b007577895228dc524a213400961e278dca803f716b3af9cbff63a642d67dbbb5c2ca55e842c98c8cbd64229fd243e5ae149feceb"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17444",
+   "type": "LightClientHeader",
+   "label": "rand1|off@112=248",
+   "reason": "first offset is not the fixed size",
+   "hex": "01000000000000001a083b79bb3783a8a8469ca18cf0d6ed0eaecce4818b77308dabc93fb049ac6c39e3f37b1785662cc83ab02ad2c3d63101ea669c73e590d8a7b676ef3f995216f9cdc3c6731501aa9509dbfd21de4fa28d37a5be2931ad40c41c979d"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17445",
+   "type": "LightClientHeader",
+   "label": "rand1|off@680=588",
+   "reason": "first offset is not the fixed size",
+   "hex": "01000000000000001a083b79bb3783a8a8469ca18cf0d6ed0eaecce4818b77308dabc93fb049ac6c39e3f37b1785662cc83ab02ad2c3d63101ea669c73e590d8a7b676ef3f995216f9cdc3c6731501aa9509dbfd21de4fa28d37a5be2931ad40c41c979d"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17464",
+   "type": "LightClientHeader",
+   "label": "rand1|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "01000000000000001a083b79bb3783a8a8469ca18cf0d6ed0eaecce4818b77308dabc93fb049ac6c39e3f37b1785662cc83ab02ad2c3d63101ea669c73e590d8a7b676ef3f995216f9cdc3c6731501aa9509dbfd21de4fa28d37a5be2931ad40c41c979d"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17511",
+   "type": "LightClientHeader",
+   "label": "rand2|off@112=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000ec2275031722c8f321e75063c3909ae06fea838454bda455d0284d72238974eb3572974b54b720f3bdcec2132f3a158aea022e0c8c061878510d47f32fba5fdb43ace1b4050938ac86d9753965ab38e0f1b3bafd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17514",
+   "type": "LightClientHeader",
+   "label": "rand2|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000ec2275031722c8f321e75063c3909ae06fea838454bda455d0284d72238974eb3572974b54b720f3bdcec2132f3a158aea022e0c8c061878510d47f32fba5fdb43ace1b4050938ac86d9753965ab38e0f1b3bafd"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17526",
+   "type": "LightClientHeader",
+   "label": "execution.extra_data.len1_zero|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17569",
+   "type": "LightClientHeader",
+   "label": "execution.extra_data.len1_rand|off@680=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientHeader#17571",
+   "type": "LightClientHeader",
+   "label": "execution.extra_data.len1_rand|off@112=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17743",
+   "type": "LightClientOptimisticUpdate",
+   "label": "max|byte@0=ad",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17752",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand0|byte@0=ad",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad0000005e46eec541a9eefd4fa48cacee62a812d1a243a545e764d90e96b653551c35a0d027e8a2a3bfb2136a00f31002b8920cf2a85e2809d3c868adc864d683cafe8751263a7d4cd1aaa6b9a3b6ae67274527ffd74304609689517ff27e2ce2be5b23"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17758",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand0|off@852=588",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac0000005e46eec541a9eefd4fa48cacee62a812d1a243a545e764d90e96b653551c35a0d027e8a2a3bfb2136a00f31002b8920cf2a85e2809d3c868adc864d683cafe8751263a7d4cd1aaa6b9a3b6ae67274527ffd74304609689517ff27e2ce2be5b23"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17790",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand0|off@284=248",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac0000005e46eec541a9eefd4fa48cacee62a812d1a243a545e764d90e96b653551c35a0d027e8a2a3bfb2136a00f31002b8920cf2a85e2809d3c868adc864d683cafe8751263a7d4cd1aaa6b9a3b6ae67274527ffd74304609689517ff27e2ce2be5b23"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17801",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand1|off@852=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000270f2ebc2f036255193cea09bbcb99c3388ce044a92a6e5588ff281613498c801cad1e0ee27040b760a73f7ceb817bce5a44860bf22b956506742b1ec572de1a69cb23491f4cb7a61e888fa31ca3222773a593da4084efb3b6bec42e6f4d2ee7"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17824",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand1|off@0=173",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000270f2ebc2f036255193cea09bbcb99c3388ce044a92a6e5588ff281613498c801cad1e0ee27040b760a73f7ceb817bce5a44860bf22b956506742b1ec572de1a69cb23491f4cb7a61e888fa31ca3222773a593da4084efb3b6bec42e6f4d2ee7"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17826",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand1|off@0=176",
+   "reason": "first offset is not the fixed size",
+   "hex": "b0000000270f2ebc2f036255193cea09bbcb99c3388ce044a92a6e5588ff281613498c801cad1e0ee27040b760a73f7ceb817bce5a44860bf22b956506742b1ec572de1a69cb23491f4cb7a61e888fa31ca3222773a593da4084efb3b6bec42e6f4d2ee7"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17832",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand1|off@284=248",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000270f2ebc2f036255193cea09bbcb99c3388ce044a92a6e5588ff281613498c801cad1e0ee27040b760a73f7ceb817bce5a44860bf22b956506742b1ec572de1a69cb23491f4cb7a61e888fa31ca3222773a593da4084efb3b6bec42e6f4d2ee7"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17864",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand2|off@0=173",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000bddc0a9b7943a008094539801d755231ecd7fcd2d19117e3684aaf659ceea8b6f02188db1eaa89aec9dab4fe137255b61379628ce8de0d302439df8e2fc909cf2ccec16bc2d48512e213230546b6099aeda9406fc70ed2fe4491929b476ab979"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17873",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand2|off@284=248",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000bddc0a9b7943a008094539801d755231ecd7fcd2d19117e3684aaf659ceea8b6f02188db1eaa89aec9dab4fe137255b61379628ce8de0d302439df8e2fc909cf2ccec16bc2d48512e213230546b6099aeda9406fc70ed2fe4491929b476ab979"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17874",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand2|off@0=176",
+   "reason": "first offset is not the fixed size",
+   "hex": "b0000000bddc0a9b7943a008094539801d755231ecd7fcd2d19117e3684aaf659ceea8b6f02188db1eaa89aec9dab4fe137255b61379628ce8de0d302439df8e2fc909cf2ccec16bc2d48512e213230546b6099aeda9406fc70ed2fe4491929b476ab979"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17884",
+   "type": "LightClientOptimisticUpdate",
+   "label": "rand2|off@284=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000bddc0a9b7943a008094539801d755231ecd7fcd2d19117e3684aaf659ceea8b6f02188db1eaa89aec9dab4fe137255b61379628ce8de0d302439df8e2fc909cf2ccec16bc2d48512e213230546b6099aeda9406fc70ed2fe4491929b476ab979"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17903",
+   "type": "LightClientOptimisticUpdate",
+   "label": "attested_header.execution.extra_data.len1_zero|off@0=173",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#17944",
+   "type": "LightClientOptimisticUpdate",
+   "label": "attested_header.execution.extra_data.len1_rand|off@0=173",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#18012",
+   "type": "LightClientOptimisticUpdate",
+   "label": "attested_header.execution.extra_data.len2_zero|off@284=245",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#18013",
+   "type": "LightClientOptimisticUpdate",
+   "label": "attested_header.execution.extra_data.len2_zero|off@852=585",
+   "reason": "first offset is not the fixed size",
+   "hex": "ac000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "LightClientOptimisticUpdate#18016",
+   "type": "LightClientOptimisticUpdate",
+   "label": "attested_header.execution.extra_data.len2_zero|off@0=173",
+   "reason": "first offset is not the fixed size",
+   "hex": "ad000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "PendingAttestation#19627",
+   "type": "PendingAttestation",
+   "label": "rand0|off@0=149",
+   "reason": "first offset is not the fixed size",
+   "hex": "950000000000000000000000010000000000000010c812bd4d7ecbb51dcf5e39ee627fee1fcaab97d8536820b50fd758ee0c8c5a00000000000000000f15cd4a348bbb38c765ea60e2176886a07dbb79b8d9a1db499ca6e1cf942f540000000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "PendingAttestation#19683",
+   "type": "PendingAttestation",
+   "label": "rand1|off@0=149",
+   "reason": "first offset is not the fixed size",
+   "hex": "95000000062d74c013e2fbf9ffffffffffffffff9094f559752cddd6c57ee74932b0cd5dfdd3c025aec565c5bed1766f27c9e5dfa9189f168ec311cd5513bbb74613eab8e6eebd4be8789920d7ee25cd0c3a931949c7486df675ea070100000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "PendingAttestation#19715",
+   "type": "PendingAttestation",
+   "label": "rand2|off@0=149",
+   "reason": "first offset is not the fixed size",
+   "hex": "9500000070fdb8dcbc6e69cc1661723f335a2acafc96fc286cc14a703ee5ab9f24a5aee2c0b07e8dd751ab122900877ecc4bc961010000000000000081d2b79888474117d94e9f8e6c9c79c3c77d407b1b361ab4eee1a349a0d9b7ad0100000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ProgressiveTestStruct#22079",
+   "type": "ProgressiveTestStruct",
+   "label": "A.len2_zero|byte@0=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "110000001200000012000000120000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "ProgressiveTestStruct#22121",
+   "type": "ProgressiveTestStruct",
+   "label": "A.len1_rand|byte@0=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "1100000011000000110000001100000001"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "SignedAggregateAndProof#23619",
+   "type": "SignedAggregateAndProof",
+   "label": "rand2|off@108=109",
+   "reason": "first offset is not the fixed size",
+   "hex": "64000000edc6effc7018a949d560be1f2d843d124245e25561051320e87f9c478060686ad0b77dd606467af50c24c844ff81167b961a4128807d532dd91ce2ea2b8f1b9d1ab4bac0f29d8d9957d46cd743d5b97a9a12de575c0ae456c829f404f06b11b4"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "SignedAggregateAndProof#23625",
+   "type": "SignedAggregateAndProof",
+   "label": "rand2|off@0=101",
+   "reason": "first offset is not the fixed size",
+   "hex": "65000000edc6effc7018a949d560be1f2d843d124245e25561051320e87f9c478060686ad0b77dd606467af50c24c844ff81167b961a4128807d532dd91ce2ea2b8f1b9d1ab4bac0f29d8d9957d46cd743d5b97a9a12de575c0ae456c829f404f06b11b4"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "SignedAggregateAndProof#23631",
+   "type": "SignedAggregateAndProof",
+   "label": "rand2|off@208=237",
+   "reason": "first offset is not the fixed size",
+   "hex": "64000000edc6effc7018a949d560be1f2d843d124245e25561051320e87f9c478060686ad0b77dd606467af50c24c844ff81167b961a4128807d532dd91ce2ea2b8f1b9d1ab4bac0f29d8d9957d46cd743d5b97a9a12de575c0ae456c829f404f06b11b4"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28131",
+   "type": "VarTestStruct",
+   "label": "max|off@2=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffff0b000000ffffffffff"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28181",
+   "type": "VarTestStruct",
+   "label": "rand0|off@2=9",
+   "reason": "first offset is not the fixed size",
+   "hex": "ffff09000000ff0000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28216",
+   "type": "VarTestStruct",
+   "label": "rand1|off@2=9",
+   "reason": "first offset is not the fixed size",
+   "hex": "000009000000010000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28235",
+   "type": "VarTestStruct",
+   "label": "rand2|off@2=11",
+   "reason": "first offset is not the fixed size",
+   "hex": "ebc70b000000ff00000100"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28273",
+   "type": "VarTestStruct",
+   "label": "B.len1_zero|off@2=9",
+   "reason": "first offset is not the fixed size",
+   "hex": "000009000000000000"
+  },
+  {
+   "kind": "markdown port rejects, remerkleable accepts",
+   "id": "VarTestStruct#28317",
+   "type": "VarTestStruct",
+   "label": "B.len1_rand|off@2=9",
+   "reason": "first offset is not the fixed size",
+   "hex": "00000900000000ffff"
+  }
+ ]
+}
