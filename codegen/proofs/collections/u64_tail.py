@@ -88,18 +88,11 @@ def hr_of(+i: Nat, +q: Nat, +c: Nat, +P: Nat, +hq: {q == Nat.double(i) : Nat}, +
 '''
 
 
-def words(side, k0, iq='iq'):
-    return ['MR.wd(%s, Nat.add(O.e8(%s), %dn))' % (side, iq, k) for k in range(8)]
-
-
 def tail_m(m):
     r = 8 * m
     a = 2 * m   # the first word kept
     W2 = 'F.array__slots(U32, WW.tk([x0, x1], d, t, qw, 0n))'
     W = 'F.array__slots(U32, t)'
-    w2 = words(W2, a)
-    w1 = words(W, a)
-    CB = lambda ws: 'FX.limbs([%s])' % ', '.join(ws)
     ZB = 'SP.zero_bytes(Nat.sub(32n, %dn))' % r
     out = []
     out.append('def tail_m%d(+d: Nat, +t: F.array__Tree<U32>, +qw: Nat, +x0: U32, +x1: U32, +iq: Nat, +i: Nat, +qc: Nat, +c: Nat, +eiq: {iq == qc : Nat}, +hq: {qw == Nat.double(i) : Nat},' % m)
