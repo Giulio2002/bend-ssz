@@ -116,6 +116,7 @@ GENERATORS = (
     Gen('u64_tail', 'proofs/collections'),
     Gen('encset', 'proofs/collections'),
     Gen('encset_w', 'proofs/collections'),
+    Gen('subword_tz', 'proofs/collections'),
     Gen('boxedview', 'proofs/collections'),
     Gen('coll_laws', 'proofs/collections'),
     Gen('e2e_setters', 'proofs/collections', stage='last', after=('e2e_bridge',)),
