@@ -34,7 +34,7 @@ facade law pins (section 4), (ii) the decoder acceptance side of variable-size t
 ## 2. Verdict labels
 
 * **A proofs.** `runner.py`: a private hard-linked copy of the import cone of the facade proof file(s) `proofs/api/<Name>_<op>_proof_generated.bend` (they import the
-  `proofs/mutation_coverage/<group>/` laws), the one patched file copied and patched, `tools/check.sh` (pinned checker, 120 s per file, at most 4 at a time at nice 19, only
+  `proofs/slop/<group>/` laws), the one patched file copied and patched, `tools/check.sh` (pinned checker, 120 s per file, at most 4 at a time at nice 19, only
   while `.fullcheck.lock` was free at start). KILLED: a law no longer checks (its name is listed). UNJUDGED: the checker dies with `RangeError: Maximum call stack size exceeded`
   on the mutant at the pinned settings (`ulimit -s 16384`, JSC 10 MB), and again with 1 GB / 800 MB; all 61 UNJUDGED faults of the first pass were re-run one at a time at the pinned
   settings (`recheck.py`, `results/recheck.json`): all 61 overflow again (the 5 later ones overflowed at their first, pinned run). No fault was counted as killed because of a crash.
