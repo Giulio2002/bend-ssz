@@ -186,3 +186,4 @@ codegen/encset_w.py	codegen/proofs/collections/encset_w.py
 codegen/subword_tz.py	codegen/proofs/collections/subword_tz.py
 codegen/encset_b.py	codegen/proofs/collections/encset_b.py
 codegen/halfword.py	codegen/proofs/collections/halfword.py
+codegen/encset_h.py	codegen/proofs/collections/encset_h.py
