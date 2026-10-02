@@ -218,6 +218,37 @@ class Scratch:
             return 124, 'timeout'
 
 
+FULLCHECK_LOCK = '/srv/ssz-optimization/agents/.fullcheck.lock'
+
+
+def wait_flock():
+    """Never start a check while a full check holds the lock (the server is shared): test it, do not rely on a freeze."""
+    while os.path.exists(FULLCHECK_LOCK):
+        r = subprocess.run(['flock', '-n', FULLCHECK_LOCK, 'true'], capture_output=True)
+        if r.returncode == 0:
+            return
+        time.sleep(15)
+
+
+def run_guarded(cmd, cwd, env, timeout):
+    """One private check: waits for the flock, runs at nice 19 in its own process group, and on the time limit kills the
+    WHOLE group (check.sh and the bend it started), then reaps it. Returns (returncode, output); raises TimeoutExpired."""
+    import signal
+    wait_flock()
+    p = subprocess.Popen(['nice', '-n', '19'] + cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         text=True, start_new_session=True)
+    try:
+        out, _ = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        p.communicate()
+        raise
+    return p.returncode, out
+
+
 def classify(rec):
     """The cause group of a mutation: what a gap in it would mean."""
     text = rec.get('text', '')
@@ -319,10 +350,12 @@ def proof_wide(S, a, names):
                 shutil.copyfile(f, dest)
         env = {**os.environ, 'CHECK_PINS_VERIFIED': '1', 'CHECK_MEMMAX': '12G'}
         t0 = time.monotonic()
-        p = subprocess.run([str(S / 'tools/check.sh'), t['api'].relative_to(S).as_posix()], cwd=d, env=env,
-                           capture_output=True, text=True)
+        try:
+            rc, out = run_guarded([str(S / 'tools/check.sh'), t['api'].relative_to(S).as_posix()], d, env, 900)
+        except subprocess.TimeoutExpired:
+            rc, out = 124, 'timeout'
         shutil.rmtree(d, ignore_errors=True)
-        return p.stdout + p.stderr, time.monotonic() - t0
+        return out, time.monotonic() - t0
 
     results = []
     with cf.ThreadPoolExecutor(a.proof_jobs) as ex:
@@ -382,12 +415,10 @@ def deep_proof(S, a):
         t0 = time.monotonic()
         for p in prv:
             try:
-                q = subprocess.run([str(S / 'tools/check.sh'), p.relative_to(S).as_posix()], cwd=d, env=env,
-                                   capture_output=True, text=True, timeout=a.deep_timeout)
+                _rc, out = run_guarded([str(S / 'tools/check.sh'), p.relative_to(S).as_posix()], d, env, a.deep_timeout)
             except subprocess.TimeoutExpired:
                 res['outcome'] = 'timeout'
                 break
-            out = q.stdout + q.stderr
             if 'ALL PROOFS CHECK' not in out:
                 m = re.search(r'Error:[^\n]*(\n- [^\n]*)?', out)
                 res.update(outcome='killed', killed_in=p.relative_to(S).as_posix(), error=(m.group(0)[:160] if m else out[-160:]))
@@ -533,12 +564,10 @@ def lib_wide(S, a):
             if not (d / c.relative_to(S)).exists():
                 continue
             try:
-                q = subprocess.run([str(S / 'tools/check.sh'), c.relative_to(S).as_posix()], cwd=d, env=env,
-                                   capture_output=True, text=True, timeout=a.lib_timeout)
+                _rc, out = run_guarded([str(S / 'tools/check.sh'), c.relative_to(S).as_posix()], d, env, a.lib_timeout)
             except subprocess.TimeoutExpired:
                 slow = True
                 continue
-            out = q.stdout + q.stderr
             if 'ALL PROOFS CHECK' not in out:
                 m = re.search(r'Error:[^\n]*(\n- [^\n]*)?', out)
                 res = {'outcome': 'killed', 'killed_in': c.relative_to(S).as_posix(), 'error': (m.group(0)[:160] if m else out[-160:])}
@@ -560,6 +589,8 @@ def lib_wide(S, a):
                    'checked': [c.relative_to(S).as_posix() for c in t['checkers']],
                    'text': t['file'].read_text().split('\n')[st[0]].strip()[:200], **r}
             results.append(rec)
+            with open(a.out + '.partial', 'a') as pf:
+                pf.write(json.dumps(rec) + '\n')
             if n_done % 50 == 0 or n_done == len(futs):
                 print(f'lib: {n_done}/{len(futs)}, survived so far {sum(1 for x in results if x["outcome"] == "survived")}, '
                       f'too slow {sum(1 for x in results if x["outcome"] == "too slow")}, {time.monotonic() - started_global:.0f}s', flush=True)
@@ -576,7 +607,7 @@ def main():
     ap.add_argument('--workers', type=int, default=8)
     ap.add_argument('--no-proofs', action='store_true')
     ap.add_argument('--proof-wide', type=int, default=0, help='proof side only, wide: this many mutants per name and operation')
-    ap.add_argument('--proof-jobs', type=int, default=12)
+    ap.add_argument('--proof-jobs', type=int, default=6)
     ap.add_argument('--lib', default=None, choices=sorted(LIB_GROUPS), help='mutate the library code of this group (collections, e2e, sha256, spec) instead of the generated codec files')
     ap.add_argument('--lib-per-file', type=int, default=4)
     ap.add_argument('--lib-files', type=int, default=0, help='only the first N files of the group (a pilot)')
