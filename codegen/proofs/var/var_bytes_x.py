@@ -152,9 +152,8 @@ def inv_text(x):
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         q = q.replace(a, b)
     L.append(q.rstrip() + '\n')
-    L.append('# Every value whose spec parts are one variable part has its bytes in the checked shape.')
-    L.append(f'def inv_p(+v: S.Value, +bs: +List<U32>, +e: {{Codec.parts(v, Spec.{x.n}()) == Some{{[S.Variable{{bs}}]}} : Maybe<&2, +List<S.Part>>}}) -> FACTS(bs):')
-    L.append(f'  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.{x.n}()), Some{{[S.Variable{{bs}}]}}, e))')
+    for line in TPL.render('inv_text_lines', x=x).split('\n'):
+        L.append(line)
     return '\n'.join(L) + '\n'
 
 
@@ -205,14 +204,8 @@ def win_text(x):
     OBJ = OBJ.replace('VF.BF(t, n)', BF)
     RHS = f'({BF}, OBJw(d, t, x, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w('# The reader on the window, when the checks hold.')
-    w(f'def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},')
-    w(f'    {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, {HX})')
-    w(f'    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:')
-    w('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})')
-    w('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})')
+    for line in TPL.render('win_text_lines', BF=BF, FS=FS, HA=HA, HX=HX, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn).split('\n'):
+        w(line)
 
     def ecf(c):
         return f'eoc(d, x, off, len, {c}, {{==}}, eo, hd, hw, ha)'
@@ -235,9 +228,8 @@ def win_text(x):
             w(f'  %Equal.sym(B.Buf & O.Words, {call}, ({BF}, {val}),')
             w(f'      VBX.copy_into_at(d, t, n, U32.add(off, {c}), {z}, {f["dz"]}n, {kw}n, pf, hd31, {{==}}, {hs}, {{==}}, {{==}}, {{==}})) :')
         else:
-            w(f'  %Equal.sym(B.Buf & O.Words, {call}, ({BF}, {val}),')
-            w(f'      UCT.copy_in_at(d, t, n, U32.add(off, {FS}), LL(len), DZ(len), {KY}n, pf, hd31, hdz31(len, hx), ez(len, hx),')
-            w(f'        hsv(d, x, off, len, eo, hd, hw, ha), hr(len, hx), {{==}}, hyL(len, hx))) :')
+            for line in TPL.render('win_text_lines_2', BF=BF, FS=FS, KY=KY, call=call, val=val).split('\n'):
+                w(line)
         w(f'    {{{pat} == {RHS} : {TY}}}')
     w('  {==}')
     w(TPL.render('win_text_readw', BF=BF, FS=FS, RHS=RHS, TY=TY, Tn=Tn))
@@ -436,9 +428,8 @@ def xn_inv_text(x):
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         q = q.replace(a, b)
     L.append(q.rstrip() + '\n')
-    L.append('# Every value whose spec parts are one variable part has its bytes in the checked shape.')
-    L.append(f'def inv_p(+v: S.Value, +bs: +List<U32>, +e: {{Codec.parts(v, Spec.{x.n}()) == Some{{[S.Variable{{bs}}]}} : Maybe<&2, +List<S.Part>>}}) -> FACTS(bs):')
-    L.append(f'  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.{x.n}()), Some{{[S.Variable{{bs}}]}}, e))')
+    for line in TPL.render('xn_inv_text_lines', x=x).split('\n'):
+        L.append(line)
     return '\n'.join(L) + '\n'
 
 
@@ -553,14 +544,8 @@ def _xw_reader(x, FS, cvar, Y, JX, Tn, HA, HW, BF, yok, YCHK, w):
     OBJ = OBJ.replace('VF.BF(t, n)', BF)
     RHS = f'({BF}, OBJw(d, t, x, off, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w('# The reader on the window, when the checks hold.')
-    w(f'def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, {WHX}, {PF},')
-    w(f'    {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, +hY: {{{YCHK} == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read({BF}, off, len) == {RHS} : {TY}}}:')
-    w('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})')
-    w('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})')
+    for line in TPL.render('_xw_reader_lines', BF=BF, FS=FS, HA=HA, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn, YCHK=YCHK).split('\n'):
+        w(line)
 
     def ecf(c):
         return f'eoc(d, x, off, len, {c}, {{==}}, eo, hd, hw, ha)'
