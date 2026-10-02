@@ -18,8 +18,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.impl import generate as G  # noqa: E402
@@ -702,21 +701,12 @@ def outputs():
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     VLW.SL.EXACT = True   # the exact spec-parts proofs (codegen/proofs/laws/spec_laws.py), before any walk
-    out = outputs()
-    if False:
-        out = {p: t for p, t in out.items() if not p.name.startswith('')}
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    from codegen.proofs.support import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
-    out = deep.dify_out(out, handled={'posWW'})
-    # VRL.posWW takes hW: 1 <= W (the record's word count, a literal) before hb
-    out = {p: re.sub(r'(VRL\.posWW\(dd, pos, Q, i, j, \d+, \d+n, \{==\}, ep, ei, hdd), ', r'\1, {==}, ', t) for p, t in out.items()}
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale: ', 'record-list windows are current')
-    for p, t in out.items():
-        p.write_text(t)
-    print(f'{len(out)} files')
+    def posww_hw(out):
+        # VRL.posWW takes hW: 1 <= W (the record's word count, a literal) before hb
+        return {p: re.sub(r'(VRL\.posWW\(dd, pos, Q, i, j, \d+, \d+n, \{==\}, ep, ei, hdd), ', r'\1, {==}, ', t) for p, t in out.items()}
+    return finish(outputs(), 'stale: ', 'record-list windows are current', dify=dict(handled={'posWW'}), final=posww_hw)
 
 
 if __name__ == '__main__':

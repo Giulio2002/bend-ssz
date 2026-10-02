@@ -24,9 +24,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 from codegen.core.bendtext import generic  # noqa: E402
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.var import var_win as VW  # noqa: E402
@@ -1341,24 +1340,14 @@ def outputs():
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     out = outputs()
     mine = sorted((ROOT / 'proofs/obj').glob('var_winp_*.bend')) + [encx_fname(k) for k in KINDS if encx_fname(k).exists()] + [l16_fname(N) for N in L16 if l16_fname(N).exists()] + [gbl_fname(q) for q, N in GBL if gbl_fname(q).exists()] + ([PLU64X_FNAME] if PLU64X_FNAME.exists() else [])
     for X, _ in KINDS.values():
         mine += sorted((ROOT / 'proofs/obj').glob(f'var_plist_{X}*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    from codegen.proofs.support import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
-    out = deep.dify_out(out)
-    from codegen.core import retired  # modules nothing imports: not written (codegen/core/retired.py)
-    out = retired.drop(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated sub-word progressive-list laws: ', 'generated sub-word progressive-list laws are current', orphans=orphans)
-    for q in orphans:
-        (ROOT / q).unlink()
-    for p, t in out.items():
-        p.write_text(t)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated sub-word progressive-list laws: ', 'generated sub-word progressive-list laws are current',
+                  orphans, dify={}, retire=True)
 
 
 if __name__ == '__main__':

@@ -20,6 +20,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 # p -> (kind, K): 'lim' the validity bounds N (K: the window's hyB exponent, W.hyB(N, N <= lim));
 # 'hyL' the window's hyL (W.hyL(T, 0n, 0, N, CHKw), pw(K)); 'prog' no limit (NMAX conjunct added)
@@ -231,23 +232,8 @@ def outputs():
 
 
 def main():
-    import sys
-    if False:   # (the big modules are not generated)
-        print('encx D twins: none in this mode')
-        return
-    out = outputs()
-    from codegen.core import retired  # modules nothing imports: not written (codegen/core/retired.py)
-    out = retired.drop(out)
-    if '--check' in sys.argv:
-        stale = [str(p) for p, t in out.items() if not p.exists() or p.read_text() != t]
-        if stale:
-            print('stale encx D twins: ' + ', '.join(stale))
-            sys.exit(1)
-        print('encx D twins are current')
-        return
-    for p, t in out.items():
-        p.write_text(t)
-    print(', '.join(q.name for q in out))
+    # accepts '--check' (var_finish.finish reads it)
+    return finish(outputs(), 'stale encx D twins: ', 'encx D twins are current', rewire=False, retire=True)
 
 
 

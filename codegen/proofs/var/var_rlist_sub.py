@@ -19,8 +19,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.var import var_rlist as RL  # noqa: E402
@@ -560,19 +559,12 @@ def outputs():
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     out = outputs()
     mine = sorted((ROOT / 'proofs/obj').glob('*var_winx_*.bend'))
     mine = [q for q in mine if q.read_text().find(HDR) >= 0]
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated record lists: ', 'generated record lists are current', orphans=orphans)
-    for q in orphans:
-        (ROOT / q).unlink()
-    for p, t in out.items():
-        p.write_text(t)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated record lists: ', 'generated record lists are current', orphans)
 
 
 if __name__ == '__main__':

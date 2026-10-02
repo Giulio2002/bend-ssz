@@ -27,8 +27,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.proofs.var import var_laws as VL  # noqa: E402
 from codegen.proofs.var import var_win as W  # noqa: E402
@@ -2095,6 +2094,7 @@ def layout(name, sym=False, fixmod=None, generic=False):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     VL.SL.EXACT = True   # the exact spec-parts proofs (codegen/proofs/laws/spec_laws.py), before any walk
     out = {}
     for name, fn, sym in MODULES:
@@ -2122,13 +2122,7 @@ def main():
         dm = deep_modes(L)
         shallow = dm is None or name in TOP_SHALLOW or (KEEP_PB_REJECT and any(f['mod'] == PBITS_MOD for f in L.vars))
         out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = uq if shallow else unique_deep(uq, dm[0])
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated container windows: ', 'generated container windows are current')
-    for p, t in out.items():
-        p.write_text(t)
-    print('wrote ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated container windows: ', 'generated container windows are current')
 
 
 if __name__ == '__main__':

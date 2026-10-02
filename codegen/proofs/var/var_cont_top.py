@@ -18,8 +18,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 
@@ -1190,24 +1189,18 @@ def okw_size(q, t):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     out = {}
-    if True:
-        for C in SIZES:
-            out.update(full_texts(C))
-        for C in GSIZES:
-            out.update(full_texts(C, generic=True))
-        for C in GTOPS:
-            out[out_file(C)] = gtop_text(C)
+    for C in SIZES:
+        out.update(full_texts(C))
+    for C in GSIZES:
+        out.update(full_texts(C, generic=True))
+    for C in GTOPS:
+        out[out_file(C)] = gtop_text(C)
     out = RR.rewire_out(out)
     out.update(okw_sizes(out))
     out.update(okw_tops(out))
-    from codegen.core import retired  # modules nothing imports: not written (codegen/core/retired.py)
-    out = retired.drop(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated container encoder laws: ', 'generated container encoder laws are current')
-    for q, t in out.items():
-        q.write_text(t)
-    print(', '.join(str(q.relative_to(ROOT)) for q in out))
+    return finish(out, 'stale generated container encoder laws: ', 'generated container encoder laws are current', rewire=False, retire=True)
 
 
 if __name__ == '__main__':

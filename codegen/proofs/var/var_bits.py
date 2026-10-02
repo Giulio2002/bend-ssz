@@ -26,8 +26,7 @@ The byte-list development on top of it is proofs/obj/vbitl.bend.
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 from codegen.proofs.support import zeros_dispatch as ZD  # noqa: E402
 
 
@@ -571,21 +570,14 @@ def gbits_rej(X, N):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     out = {BYTE: byte_module()}
     for X, N, p in gbits_names():
         out[ROOT / f'proofs/obj/var_bits_{X}.bend'] = gbits_text(X, N, p)
         out[ROOT / f'proofs/obj/var_bits_{X}_unique.bend'] = gbits_unique(X)
         out[ROOT / f'proofs/obj/var_bits_{X}_rej.bend'] = gbits_rej(X, N)
     orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('var_bits_*.bend') if q not in out and not q.name.startswith('var_bits_enc_'))
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated bit-list laws: ', 'generated bit-list laws are current', orphans=orphans)
-    for q in orphans:
-        (ROOT / q).unlink()
-    for p, t in out.items():
-        p.write_text(t)
-    print('wrote ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated bit-list laws: ', 'generated bit-list laws are current', orphans)
 
 
 if __name__ == '__main__':

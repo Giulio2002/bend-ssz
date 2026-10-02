@@ -28,8 +28,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 
@@ -3133,6 +3132,7 @@ def rec_strict(q, t, res):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     VL.SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed / container_fixed): no parts run to compare forms
     VL.SL.TOTAL = True   # their layout by vspec.agg_total, not {==}
     out = {OUT: module_text()}
@@ -3143,26 +3143,19 @@ def main():
     for parent, field in BLISTS_BOX:
         p, t = blist_box_text(g, names, parent, field)
         out[lfile(p)] = t
-    if True:
-        for p, X, LIM in BLISTS:
-            out[bl_file(p)] = bl_text(p, X, LIM)
-        for p, R, LIM in SUBLISTS:
-            out[sub_file(p)] = sub_text(p, R, LIM)
-        for p, R, NV in RVECS:
-            out[sub_file(p)] = vec_text(p, R, NV)
-        for p in FLISTS:
-            out[bl_file(p)] = flist_text(p)
+    for p, X, LIM in BLISTS:
+        out[bl_file(p)] = bl_text(p, X, LIM)
+    for p, R, LIM in SUBLISTS:
+        out[sub_file(p)] = sub_text(p, R, LIM)
+    for p, R, NV in RVECS:
+        out[sub_file(p)] = vec_text(p, R, NV)
+    for p in FLISTS:
+        out[bl_file(p)] = flist_text(p)
     for n in URECS:
         out[urec_file(n)] = urec_text(n)
     out[lfile(VLIST)] = vlist_module()
-    out = RR.rewire_out(out)
-    from codegen.proofs.support import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
-    out = deep.dify_out(out, handled={'rposW', 'mulqW', 'posbW', 'pposW', 'proomW', 'fposW', 'vposW'}, post=rec_strict)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated record encoder windows: ', 'generated record encoder windows are current')
-    for p, t in out.items():
-        p.write_text(t)
-    print(', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated record encoder windows: ', 'generated record encoder windows are current',
+                  dify=dict(handled={'rposW', 'mulqW', 'posbW', 'pposW', 'proomW', 'fposW', 'vposW'}, post=rec_strict))
 
 
 if __name__ == '__main__':

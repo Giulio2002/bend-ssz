@@ -26,8 +26,7 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 from codegen.proofs.support import zeros_dispatch as ZD  # noqa: E402
 
@@ -987,6 +986,7 @@ def cont_module(g, x, src):
 
 
 def main():
+    # accepts '--check' (var_finish.finish reads it)
     out = {BW: bw_module(), PAD: pad_module()}
     src = RR.mono_text('generic')
     for X, N, p in names():
@@ -998,14 +998,7 @@ def main():
         out[cont_fname(x)] = cont_module(g, x, fsrc)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*.bend') if q.name.startswith(('var_bits_enc_', 'var_bitc_enc_', 'var_bitc_enc_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale generated bit-list encoder laws: ', 'generated bit-list encoder laws are current', orphans=orphans)
-    for q in orphans:
-        (ROOT / q).unlink()
-    for p, t in out.items():
-        p.write_text(t)
-    print('wrote ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    return finish(out, 'stale generated bit-list encoder laws: ', 'generated bit-list encoder laws are current', orphans)
 
 
 if __name__ == '__main__':
