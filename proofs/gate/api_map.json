@@ -2951,6 +2951,10 @@
      "law": "FinalityBranch_serialize_vsym"
     },
     {
+     "file": "pkflag_fulu_FinalityBranch.bend",
+     "law": "FinalityBranch_serialize_vflag"
+    },
+    {
      "file": "zcapsym_FinalityBranch.bend",
      "law": "FinalityBranch_serialize_capsym"
     },
@@ -9246,6 +9250,10 @@
      "law": "CurrentSyncCommitteeBranch_serialize_vsym"
     },
     {
+     "file": "pkflag_fulu_CurrentSyncCommitteeBranch.bend",
+     "law": "CurrentSyncCommitteeBranch_serialize_vflag"
+    },
+    {
      "file": "zcapsym_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_serialize_capsym"
     },
@@ -9384,6 +9392,10 @@
     {
      "file": "mutval_fulu_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_serialize_vsym"
+    },
+    {
+     "file": "pkflag_fulu_NextSyncCommitteeBranch.bend",
+     "law": "NextSyncCommitteeBranch_serialize_vflag"
     },
     {
      "file": "zcapsym_NextSyncCommitteeBranch.bend",
@@ -11007,6 +11019,10 @@
      "law": "ExecutionBranch_serialize_vsym"
     },
     {
+     "file": "pkflag_fulu_ExecutionBranch.bend",
+     "law": "ExecutionBranch_serialize_vflag"
+    },
+    {
      "file": "zcapsym_ExecutionBranch.bend",
      "law": "ExecutionBranch_serialize_capsym"
     },
@@ -12354,6 +12370,10 @@
      "law": "Blob_serialize_vsym"
     },
     {
+     "file": "pkflag_fulu_Blob.bend",
+     "law": "Blob_serialize_vflag"
+    },
+    {
      "file": "zcapsym_Blob.bend",
      "law": "Blob_serialize_capsym"
     },
@@ -12587,6 +12607,10 @@
     {
      "file": "mutval_fulu_Cell.bend",
      "law": "Cell_serialize_vsym"
+    },
+    {
+     "file": "pkflag_fulu_Cell.bend",
+     "law": "Cell_serialize_vflag"
     },
     {
      "file": "zcapsym_Cell.bend",
@@ -14013,6 +14037,10 @@
      "law": "vec_bool_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_16.bend",
+     "law": "vec_bool_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_16.bend",
      "law": "vec_bool_16_serialize_capsym"
     },
@@ -14139,6 +14167,10 @@
      "law": "vec_bool_1_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_1.bend",
+     "law": "vec_bool_1_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_1.bend",
      "law": "vec_bool_1_serialize_capsym"
     },
@@ -14259,6 +14291,10 @@
     {
      "file": "mutval_generic_vec_bool_2.bend",
      "law": "vec_bool_2_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_bool_2.bend",
+     "law": "vec_bool_2_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_bool_2.bend",
@@ -14383,6 +14419,10 @@
      "law": "vec_bool_31_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_31.bend",
+     "law": "vec_bool_31_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_31.bend",
      "law": "vec_bool_31_serialize_capsym"
     },
@@ -14503,6 +14543,10 @@
     {
      "file": "mutval_generic_vec_bool_3.bend",
      "law": "vec_bool_3_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_bool_3.bend",
+     "law": "vec_bool_3_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_bool_3.bend",
@@ -14639,6 +14683,10 @@
      "law": "vec_bool_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_4.bend",
+     "law": "vec_bool_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_4.bend",
      "law": "vec_bool_4_serialize_capsym"
     },
@@ -14765,6 +14813,10 @@
      "law": "vec_bool_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_512.bend",
+     "law": "vec_bool_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_512.bend",
      "law": "vec_bool_512_serialize_capsym"
     },
@@ -14887,6 +14939,10 @@
      "law": "vec_bool_513_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_bool_513.bend",
+     "law": "vec_bool_513_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_bool_513.bend",
      "law": "vec_bool_513_serialize_capsym"
     },
@@ -15007,6 +15063,10 @@
     {
      "file": "mutval_generic_vec_bool_5.bend",
      "law": "vec_bool_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_bool_5.bend",
+     "law": "vec_bool_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_bool_5.bend",
@@ -15141,6 +15201,10 @@
     {
      "file": "mutval_generic_vec_bool_8.bend",
      "law": "vec_bool_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_bool_8.bend",
+     "law": "vec_bool_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_bool_8.bend",
@@ -15373,6 +15437,10 @@
      "law": "vec_uint128_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint128_16.bend",
+     "law": "vec_uint128_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint128_16.bend",
      "law": "vec_uint128_16_serialize_capsym"
     },
@@ -15511,6 +15579,10 @@
     {
      "file": "mutval_generic_vec_uint128_1.bend",
      "law": "vec_uint128_1_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_1.bend",
+     "law": "vec_uint128_1_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_1.bend",
@@ -15653,6 +15725,10 @@
      "law": "vec_uint128_2_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint128_2.bend",
+     "law": "vec_uint128_2_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint128_2.bend",
      "law": "vec_uint128_2_serialize_capsym"
     },
@@ -15779,6 +15855,10 @@
     {
      "file": "mutval_generic_vec_uint128_31.bend",
      "law": "vec_uint128_31_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_31.bend",
+     "law": "vec_uint128_31_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_31.bend",
@@ -15915,6 +15995,10 @@
     {
      "file": "mutval_generic_vec_uint128_3.bend",
      "law": "vec_uint128_3_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_3.bend",
+     "law": "vec_uint128_3_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_3.bend",
@@ -16057,6 +16141,10 @@
      "law": "vec_uint128_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint128_4.bend",
+     "law": "vec_uint128_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint128_4.bend",
      "law": "vec_uint128_4_serialize_capsym"
     },
@@ -16172,6 +16260,10 @@
      "law": "vec_uint128_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint128_512.bend",
+     "law": "vec_uint128_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint128_512.bend",
      "law": "vec_uint128_512_serialize_capsym"
     },
@@ -16281,6 +16373,10 @@
     {
      "file": "mutval_generic_vec_uint128_513.bend",
      "law": "vec_uint128_513_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_513.bend",
+     "law": "vec_uint128_513_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_513.bend",
@@ -16413,6 +16509,10 @@
     {
      "file": "mutval_generic_vec_uint128_5.bend",
      "law": "vec_uint128_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_5.bend",
+     "law": "vec_uint128_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_5.bend",
@@ -16553,6 +16653,10 @@
     {
      "file": "mutval_generic_vec_uint128_8.bend",
      "law": "vec_uint128_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint128_8.bend",
+     "law": "vec_uint128_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint128_8.bend",
@@ -16779,6 +16883,10 @@
      "law": "vec_uint8_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_16.bend",
+     "law": "vec_uint8_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_16.bend",
      "law": "vec_uint8_16_serialize_capsym"
     },
@@ -16897,6 +17005,10 @@
      "law": "vec_uint8_1_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_1.bend",
+     "law": "vec_uint8_1_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_1.bend",
      "law": "vec_uint8_1_serialize_capsym"
     },
@@ -17009,6 +17121,10 @@
     {
      "file": "mutval_generic_vec_uint8_2.bend",
      "law": "vec_uint8_2_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint8_2.bend",
+     "law": "vec_uint8_2_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint8_2.bend",
@@ -17125,6 +17241,10 @@
      "law": "vec_uint8_31_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_31.bend",
+     "law": "vec_uint8_31_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_31.bend",
      "law": "vec_uint8_31_serialize_capsym"
     },
@@ -17237,6 +17357,10 @@
     {
      "file": "mutval_generic_vec_uint8_3.bend",
      "law": "vec_uint8_3_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint8_3.bend",
+     "law": "vec_uint8_3_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint8_3.bend",
@@ -17365,6 +17489,10 @@
      "law": "vec_uint8_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_4.bend",
+     "law": "vec_uint8_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_4.bend",
      "law": "vec_uint8_4_serialize_capsym"
     },
@@ -17483,6 +17611,10 @@
      "law": "vec_uint8_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_512.bend",
+     "law": "vec_uint8_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_512.bend",
      "law": "vec_uint8_512_serialize_capsym"
     },
@@ -17597,6 +17729,10 @@
      "law": "vec_uint8_513_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint8_513.bend",
+     "law": "vec_uint8_513_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint8_513.bend",
      "law": "vec_uint8_513_serialize_capsym"
     },
@@ -17709,6 +17845,10 @@
     {
      "file": "mutval_generic_vec_uint8_5.bend",
      "law": "vec_uint8_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint8_5.bend",
+     "law": "vec_uint8_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint8_5.bend",
@@ -17835,6 +17975,10 @@
     {
      "file": "mutval_generic_vec_uint8_8.bend",
      "law": "vec_uint8_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint8_8.bend",
+     "law": "vec_uint8_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint8_8.bend",
@@ -18053,6 +18197,10 @@
      "law": "vec_uint16_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_16.bend",
+     "law": "vec_uint16_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_16.bend",
      "law": "vec_uint16_16_serialize_capsym"
     },
@@ -18169,6 +18317,10 @@
     {
      "file": "mutval_generic_vec_uint16_1.bend",
      "law": "vec_uint16_1_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint16_1.bend",
+     "law": "vec_uint16_1_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint16_1.bend",
@@ -18297,6 +18449,10 @@
      "law": "vec_uint16_2_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_2.bend",
+     "law": "vec_uint16_2_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_2.bend",
      "law": "vec_uint16_2_serialize_capsym"
     },
@@ -18415,6 +18571,10 @@
      "law": "vec_uint16_31_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_31.bend",
+     "law": "vec_uint16_31_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_31.bend",
      "law": "vec_uint16_31_serialize_capsym"
     },
@@ -18527,6 +18687,10 @@
     {
      "file": "mutval_generic_vec_uint16_3.bend",
      "law": "vec_uint16_3_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint16_3.bend",
+     "law": "vec_uint16_3_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint16_3.bend",
@@ -18655,6 +18819,10 @@
      "law": "vec_uint16_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_4.bend",
+     "law": "vec_uint16_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_4.bend",
      "law": "vec_uint16_4_serialize_capsym"
     },
@@ -18773,6 +18941,10 @@
      "law": "vec_uint16_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_512.bend",
+     "law": "vec_uint16_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_512.bend",
      "law": "vec_uint16_512_serialize_capsym"
     },
@@ -18887,6 +19059,10 @@
      "law": "vec_uint16_513_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint16_513.bend",
+     "law": "vec_uint16_513_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint16_513.bend",
      "law": "vec_uint16_513_serialize_capsym"
     },
@@ -18999,6 +19175,10 @@
     {
      "file": "mutval_generic_vec_uint16_5.bend",
      "law": "vec_uint16_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint16_5.bend",
+     "law": "vec_uint16_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint16_5.bend",
@@ -19125,6 +19305,10 @@
     {
      "file": "mutval_generic_vec_uint16_8.bend",
      "law": "vec_uint16_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint16_8.bend",
+     "law": "vec_uint16_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint16_8.bend",
@@ -19345,6 +19529,10 @@
      "law": "vec_uint256_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint256_16.bend",
+     "law": "vec_uint256_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint256_16.bend",
      "law": "vec_uint256_16_serialize_capsym"
     },
@@ -19479,6 +19667,10 @@
     {
      "file": "mutval_generic_vec_uint256_1.bend",
      "law": "vec_uint256_1_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_1.bend",
+     "law": "vec_uint256_1_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_1.bend",
@@ -19621,6 +19813,10 @@
      "law": "vec_uint256_2_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint256_2.bend",
+     "law": "vec_uint256_2_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint256_2.bend",
      "law": "vec_uint256_2_serialize_capsym"
     },
@@ -19747,6 +19943,10 @@
     {
      "file": "mutval_generic_vec_uint256_31.bend",
      "law": "vec_uint256_31_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_31.bend",
+     "law": "vec_uint256_31_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_31.bend",
@@ -19883,6 +20083,10 @@
     {
      "file": "mutval_generic_vec_uint256_3.bend",
      "law": "vec_uint256_3_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_3.bend",
+     "law": "vec_uint256_3_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_3.bend",
@@ -20025,6 +20229,10 @@
      "law": "vec_uint256_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint256_4.bend",
+     "law": "vec_uint256_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint256_4.bend",
      "law": "vec_uint256_4_serialize_capsym"
     },
@@ -20140,6 +20348,10 @@
      "law": "vec_uint256_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint256_512.bend",
+     "law": "vec_uint256_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint256_512.bend",
      "law": "vec_uint256_512_serialize_capsym"
     },
@@ -20245,6 +20457,10 @@
     {
      "file": "mutval_generic_vec_uint256_513.bend",
      "law": "vec_uint256_513_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_513.bend",
+     "law": "vec_uint256_513_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_513.bend",
@@ -20377,6 +20593,10 @@
     {
      "file": "mutval_generic_vec_uint256_5.bend",
      "law": "vec_uint256_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_5.bend",
+     "law": "vec_uint256_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_5.bend",
@@ -20517,6 +20737,10 @@
     {
      "file": "mutval_generic_vec_uint256_8.bend",
      "law": "vec_uint256_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint256_8.bend",
+     "law": "vec_uint256_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint256_8.bend",
@@ -20749,6 +20973,10 @@
      "law": "vec_uint32_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint32_16.bend",
+     "law": "vec_uint32_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint32_16.bend",
      "law": "vec_uint32_16_serialize_capsym"
     },
@@ -20887,6 +21115,10 @@
     {
      "file": "mutval_generic_vec_uint32_1.bend",
      "law": "vec_uint32_1_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint32_1.bend",
+     "law": "vec_uint32_1_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint32_1.bend",
@@ -21029,6 +21261,10 @@
      "law": "vec_uint32_2_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint32_2.bend",
+     "law": "vec_uint32_2_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint32_2.bend",
      "law": "vec_uint32_2_serialize_capsym"
     },
@@ -21167,6 +21403,10 @@
     {
      "file": "mutval_generic_vec_uint32_31.bend",
      "law": "vec_uint32_31_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint32_31.bend",
+     "law": "vec_uint32_31_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint32_31.bend",
@@ -21309,6 +21549,10 @@
      "law": "vec_uint32_3_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint32_3.bend",
+     "law": "vec_uint32_3_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint32_3.bend",
      "law": "vec_uint32_3_serialize_capsym"
     },
@@ -21449,6 +21693,10 @@
      "law": "vec_uint32_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint32_4.bend",
+     "law": "vec_uint32_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint32_4.bend",
      "law": "vec_uint32_4_serialize_capsym"
     },
@@ -21572,6 +21820,10 @@
      "law": "vec_uint32_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint32_512.bend",
+     "law": "vec_uint32_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint32_512.bend",
      "law": "vec_uint32_512_serialize_capsym"
     },
@@ -21689,6 +21941,10 @@
     {
      "file": "mutval_generic_vec_uint32_513.bend",
      "law": "vec_uint32_513_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint32_513.bend",
+     "law": "vec_uint32_513_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint32_513.bend",
@@ -21825,6 +22081,10 @@
     {
      "file": "mutval_generic_vec_uint32_5.bend",
      "law": "vec_uint32_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint32_5.bend",
+     "law": "vec_uint32_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint32_5.bend",
@@ -21965,6 +22225,10 @@
     {
      "file": "mutval_generic_vec_uint32_8.bend",
      "law": "vec_uint32_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint32_8.bend",
+     "law": "vec_uint32_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint32_8.bend",
@@ -22197,6 +22461,10 @@
      "law": "vec_uint64_16_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint64_16.bend",
+     "law": "vec_uint64_16_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint64_16.bend",
      "law": "vec_uint64_16_serialize_capsym"
     },
@@ -22335,6 +22603,10 @@
     {
      "file": "mutval_generic_vec_uint64_1.bend",
      "law": "vec_uint64_1_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint64_1.bend",
+     "law": "vec_uint64_1_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint64_1.bend",
@@ -22477,6 +22749,10 @@
      "law": "vec_uint64_2_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint64_2.bend",
+     "law": "vec_uint64_2_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint64_2.bend",
      "law": "vec_uint64_2_serialize_capsym"
     },
@@ -22615,6 +22891,10 @@
     {
      "file": "mutval_generic_vec_uint64_31.bend",
      "law": "vec_uint64_31_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint64_31.bend",
+     "law": "vec_uint64_31_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint64_31.bend",
@@ -22757,6 +23037,10 @@
      "law": "vec_uint64_3_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint64_3.bend",
+     "law": "vec_uint64_3_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint64_3.bend",
      "law": "vec_uint64_3_serialize_capsym"
     },
@@ -22897,6 +23181,10 @@
      "law": "vec_uint64_4_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint64_4.bend",
+     "law": "vec_uint64_4_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint64_4.bend",
      "law": "vec_uint64_4_serialize_capsym"
     },
@@ -23020,6 +23308,10 @@
      "law": "vec_uint64_512_serialize_vsym"
     },
     {
+     "file": "pkflag_generic_vec_uint64_512.bend",
+     "law": "vec_uint64_512_serialize_vflag"
+    },
+    {
      "file": "zcapsym_vec_uint64_512.bend",
      "law": "vec_uint64_512_serialize_capsym"
     },
@@ -23129,6 +23421,10 @@
     {
      "file": "mutval_generic_vec_uint64_513.bend",
      "law": "vec_uint64_513_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint64_513.bend",
+     "law": "vec_uint64_513_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint64_513.bend",
@@ -23265,6 +23561,10 @@
     {
      "file": "mutval_generic_vec_uint64_5.bend",
      "law": "vec_uint64_5_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint64_5.bend",
+     "law": "vec_uint64_5_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint64_5.bend",
@@ -23405,6 +23705,10 @@
     {
      "file": "mutval_generic_vec_uint64_8.bend",
      "law": "vec_uint64_8_serialize_vsym"
+    },
+    {
+     "file": "pkflag_generic_vec_uint64_8.bend",
+     "law": "vec_uint64_8_serialize_vflag"
     },
     {
      "file": "zcapsym_vec_uint64_8.bend",
