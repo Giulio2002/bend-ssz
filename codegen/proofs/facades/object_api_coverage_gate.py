@@ -71,8 +71,8 @@ LAW_FORMS = {
     'reject_long': [r'<X>(_[tf])?_reject_long'],
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
-    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
-    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
+    'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag|fields|reject_\w+|bool_\w+|bits_\w+)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
+    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields', r'<X>_decode_first_offset'],
 }
 
 
@@ -108,9 +108,9 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(') or re.match(r'\{T\.\w+_(?:valid|pk_ok)\(', concl) is not None
+        return concl.startswith(f'{{T.{X}_serialize(') or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes)\(', concl) is not None
     if kind == 'decode_offsets':
-        return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
+        return (concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)) or concl.startswith(f'{{T.{X}_ok(')
     return False
 
 
@@ -308,6 +308,9 @@ def scan():
                 xs.add(n[:-len('_serialize_vsym')])
             if n.endswith('_serialize_vflag'):    # codegen/proofs/slop/poison_flag.py: the statement names the writer's pk_ok
                 xs.add(n[:-len('_serialize_vflag')])
+            mv = re.fullmatch(r'(\w+)_serialize_v(?:fields|reject_\w+|bool_\w+|bits_\w+)', n)    # container_field_validity / packed_boolean_validity / bit_padding_validity
+            if mv:
+                xs.add(mv.group(1))
             ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/slop/word_positions.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
@@ -327,6 +330,11 @@ def scan():
                 mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
                     late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (key, n)))
+            # codegen/proofs/slop/bit_padding_validity.py: <X>_vbits_nbytes (the bit count of a bit list) is a law of the ROOT facade
+            # (hash_tree_root reads it); its twin <X>_serialize_vbits_nbytes goes to the encode facade by the name form
+            nb = re.fullmatch(r'(\w+)_vbits_nbytes', n) if f.parent.name == 'validity' and f.parent.parent == LAYOUT.SLOP else None
+            if nb and nb.group(1) in U and k == 'def':
+                late.append(((nb.group(1), 'root'), (key, n)))
     for lkey, v in late:      # after every other law: the bridges read the first law of a kind
         ent.setdefault(lkey, []).append(v)
     return fulu, gen, ent, parsed
