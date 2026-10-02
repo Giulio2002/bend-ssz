@@ -181,6 +181,7 @@ codegen/mutation_laws_arith.py	codegen/proofs/laws/mutation_laws_arith.py
 codegen/mutation_laws_offset.py	codegen/proofs/laws/mutation_laws_offset.py
 codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py
 codegen/mutation_laws_validity.py	codegen/proofs/laws/mutation_laws_validity.py
+codegen/hidden_flag_laws.py	codegen/proofs/laws/hidden_flag_laws.py
 codegen/u64_tail.py	codegen/proofs/collections/u64_tail.py
 codegen/encset.py	codegen/proofs/collections/encset.py
 codegen/zero_run.py	codegen/proofs/witnesses/zero_run.py

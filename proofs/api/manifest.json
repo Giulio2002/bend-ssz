@@ -712,6 +712,7 @@
     "zcmpeq_FinalityBranch.bend",
     "capacity_FinalityBranch.bend",
     "mutval_fulu_FinalityBranch.bend",
+    "pkflag_fulu_FinalityBranch.bend",
     "mutconst_FinalityBranch.bend",
     "mutsmall_FinalityBranch.bend"
    ]
@@ -2498,6 +2499,7 @@
     "zcmpeq_CurrentSyncCommitteeBranch.bend",
     "capacity_CurrentSyncCommitteeBranch.bend",
     "mutval_fulu_CurrentSyncCommitteeBranch.bend",
+    "pkflag_fulu_CurrentSyncCommitteeBranch.bend",
     "mutconst_CurrentSyncCommitteeBranch.bend",
     "mutsmall_CurrentSyncCommitteeBranch.bend"
    ]
@@ -2535,6 +2537,7 @@
     "zcmpeq_NextSyncCommitteeBranch.bend",
     "capacity_NextSyncCommitteeBranch.bend",
     "mutval_fulu_NextSyncCommitteeBranch.bend",
+    "pkflag_fulu_NextSyncCommitteeBranch.bend",
     "mutconst_NextSyncCommitteeBranch.bend",
     "mutsmall_NextSyncCommitteeBranch.bend"
    ]
@@ -3001,6 +3004,7 @@
     "zcmpeq_ExecutionBranch.bend",
     "capacity_ExecutionBranch.bend",
     "mutval_fulu_ExecutionBranch.bend",
+    "pkflag_fulu_ExecutionBranch.bend",
     "mutconst_ExecutionBranch.bend",
     "mutsmall_ExecutionBranch.bend"
    ]
@@ -3411,6 +3415,7 @@
     "zcapsym_Blob.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_Blob.bend",
+    "pkflag_fulu_Blob.bend",
     "mutconst_Blob.bend",
     "mutsmall_Blob.bend"
    ]
@@ -3475,6 +3480,7 @@
     "capacity_Cell.bend",
     "mutation_laws_fulu.bend",
     "mutval_fulu_Cell.bend",
+    "pkflag_fulu_Cell.bend",
     "mutconst_Cell.bend",
     "mutsmall_Cell.bend"
    ]
@@ -3921,6 +3927,7 @@
     "zcmpeq_vec_bool_16.bend",
     "capacity_vec_bool_16.bend",
     "mutval_generic_vec_bool_16.bend",
+    "pkflag_generic_vec_bool_16.bend",
     "mutconst_vec_bool_16.bend",
     "mutsmall_vec_bool_16.bend"
    ]
@@ -3954,6 +3961,7 @@
     "zcapsym_vec_bool_1.bend",
     "capacity_vec_bool_1.bend",
     "mutval_generic_vec_bool_1.bend",
+    "pkflag_generic_vec_bool_1.bend",
     "mutconst_vec_bool_1.bend",
     "mutsmall_vec_bool_1.bend"
    ]
@@ -3987,6 +3995,7 @@
     "zcapsym_vec_bool_2.bend",
     "capacity_vec_bool_2.bend",
     "mutval_generic_vec_bool_2.bend",
+    "pkflag_generic_vec_bool_2.bend",
     "mutconst_vec_bool_2.bend",
     "mutsmall_vec_bool_2.bend"
    ]
@@ -4020,6 +4029,7 @@
     "zcapsym_vec_bool_31.bend",
     "capacity_vec_bool_31.bend",
     "mutval_generic_vec_bool_31.bend",
+    "pkflag_generic_vec_bool_31.bend",
     "mutconst_vec_bool_31.bend",
     "mutsmall_vec_bool_31.bend"
    ]
@@ -4053,6 +4063,7 @@
     "zcapsym_vec_bool_3.bend",
     "capacity_vec_bool_3.bend",
     "mutval_generic_vec_bool_3.bend",
+    "pkflag_generic_vec_bool_3.bend",
     "mutconst_vec_bool_3.bend",
     "mutsmall_vec_bool_3.bend"
    ]
@@ -4088,6 +4099,7 @@
     "zcmpeq_vec_bool_4.bend",
     "capacity_vec_bool_4.bend",
     "mutval_generic_vec_bool_4.bend",
+    "pkflag_generic_vec_bool_4.bend",
     "mutconst_vec_bool_4.bend",
     "mutsmall_vec_bool_4.bend"
    ]
@@ -4121,6 +4133,7 @@
     "zcapsym_vec_bool_512.bend",
     "capacity_vec_bool_512.bend",
     "mutval_generic_vec_bool_512.bend",
+    "pkflag_generic_vec_bool_512.bend",
     "mutconst_vec_bool_512.bend",
     "mutsmall_vec_bool_512.bend"
    ]
@@ -4154,6 +4167,7 @@
     "zcapsym_vec_bool_513.bend",
     "capacity_vec_bool_513.bend",
     "mutval_generic_vec_bool_513.bend",
+    "pkflag_generic_vec_bool_513.bend",
     "mutconst_vec_bool_513.bend",
     "mutsmall_vec_bool_513.bend"
    ]
@@ -4187,6 +4201,7 @@
     "zcapsym_vec_bool_5.bend",
     "capacity_vec_bool_5.bend",
     "mutval_generic_vec_bool_5.bend",
+    "pkflag_generic_vec_bool_5.bend",
     "mutconst_vec_bool_5.bend",
     "mutsmall_vec_bool_5.bend"
    ]
@@ -4222,6 +4237,7 @@
     "zcmpeq_vec_bool_8.bend",
     "capacity_vec_bool_8.bend",
     "mutval_generic_vec_bool_8.bend",
+    "pkflag_generic_vec_bool_8.bend",
     "mutconst_vec_bool_8.bend",
     "mutsmall_vec_bool_8.bend"
    ]
@@ -4286,6 +4302,7 @@
     "zcmpeq_vec_uint128_16.bend",
     "capacity_vec_uint128_16.bend",
     "mutval_generic_vec_uint128_16.bend",
+    "pkflag_generic_vec_uint128_16.bend",
     "mutconst_vec_uint128_16.bend",
     "mutsmall_vec_uint128_16.bend"
    ]
@@ -4323,6 +4340,7 @@
     "zcmpeq_vec_uint128_1.bend",
     "capacity_vec_uint128_1.bend",
     "mutval_generic_vec_uint128_1.bend",
+    "pkflag_generic_vec_uint128_1.bend",
     "mutconst_vec_uint128_1.bend",
     "mutsmall_vec_uint128_1.bend"
    ]
@@ -4360,6 +4378,7 @@
     "zcmpeq_vec_uint128_2.bend",
     "capacity_vec_uint128_2.bend",
     "mutval_generic_vec_uint128_2.bend",
+    "pkflag_generic_vec_uint128_2.bend",
     "mutconst_vec_uint128_2.bend",
     "mutsmall_vec_uint128_2.bend"
    ]
@@ -4395,6 +4414,7 @@
     "zcapsym_vec_uint128_31.bend",
     "capacity_vec_uint128_31.bend",
     "mutval_generic_vec_uint128_31.bend",
+    "pkflag_generic_vec_uint128_31.bend",
     "mutconst_vec_uint128_31.bend",
     "mutsmall_vec_uint128_31.bend"
    ]
@@ -4432,6 +4452,7 @@
     "zcmpeq_vec_uint128_3.bend",
     "capacity_vec_uint128_3.bend",
     "mutval_generic_vec_uint128_3.bend",
+    "pkflag_generic_vec_uint128_3.bend",
     "mutconst_vec_uint128_3.bend",
     "mutsmall_vec_uint128_3.bend"
    ]
@@ -4469,6 +4490,7 @@
     "zcmpeq_vec_uint128_4.bend",
     "capacity_vec_uint128_4.bend",
     "mutval_generic_vec_uint128_4.bend",
+    "pkflag_generic_vec_uint128_4.bend",
     "mutconst_vec_uint128_4.bend",
     "mutsmall_vec_uint128_4.bend"
    ]
@@ -4503,6 +4525,7 @@
     "spec_garr_vec_uint128_512.bend",
     "zcapsym_vec_uint128_512.bend",
     "mutval_generic_vec_uint128_512.bend",
+    "pkflag_generic_vec_uint128_512.bend",
     "mutconst_vec_uint128_512.bend",
     "mutsmall_vec_uint128_512.bend"
    ]
@@ -4535,6 +4558,7 @@
     "spec_garr_vec_uint128_513.bend",
     "zcapsym_vec_uint128_513.bend",
     "mutval_generic_vec_uint128_513.bend",
+    "pkflag_generic_vec_uint128_513.bend",
     "mutconst_vec_uint128_513.bend",
     "mutsmall_vec_uint128_513.bend"
    ]
@@ -4570,6 +4594,7 @@
     "zcmpeq_vec_uint128_5.bend",
     "capacity_vec_uint128_5.bend",
     "mutval_generic_vec_uint128_5.bend",
+    "pkflag_generic_vec_uint128_5.bend",
     "mutconst_vec_uint128_5.bend",
     "mutsmall_vec_uint128_5.bend"
    ]
@@ -4607,6 +4632,7 @@
     "zcmpeq_vec_uint128_8.bend",
     "capacity_vec_uint128_8.bend",
     "mutval_generic_vec_uint128_8.bend",
+    "pkflag_generic_vec_uint128_8.bend",
     "mutconst_vec_uint128_8.bend",
     "mutsmall_vec_uint128_8.bend"
    ]
@@ -4673,6 +4699,7 @@
     "capacity_vec_uint8_16.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_16.bend",
+    "pkflag_generic_vec_uint8_16.bend",
     "mutconst_vec_uint8_16.bend",
     "mutsmall_vec_uint8_16.bend"
    ]
@@ -4707,6 +4734,7 @@
     "capacity_vec_uint8_1.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_1.bend",
+    "pkflag_generic_vec_uint8_1.bend",
     "mutconst_vec_uint8_1.bend",
     "mutsmall_vec_uint8_1.bend"
    ]
@@ -4741,6 +4769,7 @@
     "capacity_vec_uint8_2.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_2.bend",
+    "pkflag_generic_vec_uint8_2.bend",
     "mutconst_vec_uint8_2.bend",
     "mutsmall_vec_uint8_2.bend"
    ]
@@ -4775,6 +4804,7 @@
     "capacity_vec_uint8_31.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_31.bend",
+    "pkflag_generic_vec_uint8_31.bend",
     "mutconst_vec_uint8_31.bend",
     "mutsmall_vec_uint8_31.bend"
    ]
@@ -4809,6 +4839,7 @@
     "capacity_vec_uint8_3.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_3.bend",
+    "pkflag_generic_vec_uint8_3.bend",
     "mutconst_vec_uint8_3.bend",
     "mutsmall_vec_uint8_3.bend"
    ]
@@ -4845,6 +4876,7 @@
     "capacity_vec_uint8_4.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_4.bend",
+    "pkflag_generic_vec_uint8_4.bend",
     "mutconst_vec_uint8_4.bend",
     "mutsmall_vec_uint8_4.bend"
    ]
@@ -4879,6 +4911,7 @@
     "capacity_vec_uint8_512.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_512.bend",
+    "pkflag_generic_vec_uint8_512.bend",
     "mutconst_vec_uint8_512.bend",
     "mutsmall_vec_uint8_512.bend"
    ]
@@ -4913,6 +4946,7 @@
     "capacity_vec_uint8_513.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_513.bend",
+    "pkflag_generic_vec_uint8_513.bend",
     "mutconst_vec_uint8_513.bend",
     "mutsmall_vec_uint8_513.bend"
    ]
@@ -4947,6 +4981,7 @@
     "capacity_vec_uint8_5.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_5.bend",
+    "pkflag_generic_vec_uint8_5.bend",
     "mutconst_vec_uint8_5.bend",
     "mutsmall_vec_uint8_5.bend"
    ]
@@ -4983,6 +5018,7 @@
     "capacity_vec_uint8_8.bend",
     "mutation_laws_generic.bend",
     "mutval_generic_vec_uint8_8.bend",
+    "pkflag_generic_vec_uint8_8.bend",
     "mutconst_vec_uint8_8.bend",
     "mutsmall_vec_uint8_8.bend"
    ]
@@ -5046,6 +5082,7 @@
     "zcmpeq_vec_uint16_16.bend",
     "capacity_vec_uint16_16.bend",
     "mutval_generic_vec_uint16_16.bend",
+    "pkflag_generic_vec_uint16_16.bend",
     "mutconst_vec_uint16_16.bend",
     "mutsmall_vec_uint16_16.bend"
    ]
@@ -5079,6 +5116,7 @@
     "zcapsym_vec_uint16_1.bend",
     "capacity_vec_uint16_1.bend",
     "mutval_generic_vec_uint16_1.bend",
+    "pkflag_generic_vec_uint16_1.bend",
     "mutconst_vec_uint16_1.bend",
     "mutsmall_vec_uint16_1.bend"
    ]
@@ -5114,6 +5152,7 @@
     "zcmpeq_vec_uint16_2.bend",
     "capacity_vec_uint16_2.bend",
     "mutval_generic_vec_uint16_2.bend",
+    "pkflag_generic_vec_uint16_2.bend",
     "mutconst_vec_uint16_2.bend",
     "mutsmall_vec_uint16_2.bend"
    ]
@@ -5147,6 +5186,7 @@
     "zcapsym_vec_uint16_31.bend",
     "capacity_vec_uint16_31.bend",
     "mutval_generic_vec_uint16_31.bend",
+    "pkflag_generic_vec_uint16_31.bend",
     "mutconst_vec_uint16_31.bend",
     "mutsmall_vec_uint16_31.bend"
    ]
@@ -5180,6 +5220,7 @@
     "zcapsym_vec_uint16_3.bend",
     "capacity_vec_uint16_3.bend",
     "mutval_generic_vec_uint16_3.bend",
+    "pkflag_generic_vec_uint16_3.bend",
     "mutconst_vec_uint16_3.bend",
     "mutsmall_vec_uint16_3.bend"
    ]
@@ -5215,6 +5256,7 @@
     "zcmpeq_vec_uint16_4.bend",
     "capacity_vec_uint16_4.bend",
     "mutval_generic_vec_uint16_4.bend",
+    "pkflag_generic_vec_uint16_4.bend",
     "mutconst_vec_uint16_4.bend",
     "mutsmall_vec_uint16_4.bend"
    ]
@@ -5248,6 +5290,7 @@
     "zcapsym_vec_uint16_512.bend",
     "capacity_vec_uint16_512.bend",
     "mutval_generic_vec_uint16_512.bend",
+    "pkflag_generic_vec_uint16_512.bend",
     "mutconst_vec_uint16_512.bend",
     "mutsmall_vec_uint16_512.bend"
    ]
@@ -5281,6 +5324,7 @@
     "zcapsym_vec_uint16_513.bend",
     "capacity_vec_uint16_513.bend",
     "mutval_generic_vec_uint16_513.bend",
+    "pkflag_generic_vec_uint16_513.bend",
     "mutconst_vec_uint16_513.bend",
     "mutsmall_vec_uint16_513.bend"
    ]
@@ -5314,6 +5358,7 @@
     "zcapsym_vec_uint16_5.bend",
     "capacity_vec_uint16_5.bend",
     "mutval_generic_vec_uint16_5.bend",
+    "pkflag_generic_vec_uint16_5.bend",
     "mutconst_vec_uint16_5.bend",
     "mutsmall_vec_uint16_5.bend"
    ]
@@ -5349,6 +5394,7 @@
     "zcmpeq_vec_uint16_8.bend",
     "capacity_vec_uint16_8.bend",
     "mutval_generic_vec_uint16_8.bend",
+    "pkflag_generic_vec_uint16_8.bend",
     "mutconst_vec_uint16_8.bend",
     "mutsmall_vec_uint16_8.bend"
    ]
@@ -5411,6 +5457,7 @@
     "zcapsym_vec_uint256_16.bend",
     "capacity_vec_uint256_16.bend",
     "mutval_generic_vec_uint256_16.bend",
+    "pkflag_generic_vec_uint256_16.bend",
     "mutconst_vec_uint256_16.bend",
     "mutsmall_vec_uint256_16.bend"
    ]
@@ -5448,6 +5495,7 @@
     "zcmpeq_vec_uint256_1.bend",
     "capacity_vec_uint256_1.bend",
     "mutval_generic_vec_uint256_1.bend",
+    "pkflag_generic_vec_uint256_1.bend",
     "mutconst_vec_uint256_1.bend",
     "mutsmall_vec_uint256_1.bend"
    ]
@@ -5485,6 +5533,7 @@
     "zcmpeq_vec_uint256_2.bend",
     "capacity_vec_uint256_2.bend",
     "mutval_generic_vec_uint256_2.bend",
+    "pkflag_generic_vec_uint256_2.bend",
     "mutconst_vec_uint256_2.bend",
     "mutsmall_vec_uint256_2.bend"
    ]
@@ -5520,6 +5569,7 @@
     "zcapsym_vec_uint256_31.bend",
     "capacity_vec_uint256_31.bend",
     "mutval_generic_vec_uint256_31.bend",
+    "pkflag_generic_vec_uint256_31.bend",
     "mutconst_vec_uint256_31.bend",
     "mutsmall_vec_uint256_31.bend"
    ]
@@ -5557,6 +5607,7 @@
     "zcmpeq_vec_uint256_3.bend",
     "capacity_vec_uint256_3.bend",
     "mutval_generic_vec_uint256_3.bend",
+    "pkflag_generic_vec_uint256_3.bend",
     "mutconst_vec_uint256_3.bend",
     "mutsmall_vec_uint256_3.bend"
    ]
@@ -5594,6 +5645,7 @@
     "zcmpeq_vec_uint256_4.bend",
     "capacity_vec_uint256_4.bend",
     "mutval_generic_vec_uint256_4.bend",
+    "pkflag_generic_vec_uint256_4.bend",
     "mutconst_vec_uint256_4.bend",
     "mutsmall_vec_uint256_4.bend"
    ]
@@ -5628,6 +5680,7 @@
     "spec_garr_vec_uint256_512.bend",
     "zcapsym_vec_uint256_512.bend",
     "mutval_generic_vec_uint256_512.bend",
+    "pkflag_generic_vec_uint256_512.bend",
     "mutconst_vec_uint256_512.bend",
     "mutsmall_vec_uint256_512.bend"
    ]
@@ -5660,6 +5713,7 @@
     "spec_garr_vec_uint256_513.bend",
     "zcapsym_vec_uint256_513.bend",
     "mutval_generic_vec_uint256_513.bend",
+    "pkflag_generic_vec_uint256_513.bend",
     "mutconst_vec_uint256_513.bend",
     "mutsmall_vec_uint256_513.bend"
    ]
@@ -5695,6 +5749,7 @@
     "zcmpeq_vec_uint256_5.bend",
     "capacity_vec_uint256_5.bend",
     "mutval_generic_vec_uint256_5.bend",
+    "pkflag_generic_vec_uint256_5.bend",
     "mutconst_vec_uint256_5.bend",
     "mutsmall_vec_uint256_5.bend"
    ]
@@ -5732,6 +5787,7 @@
     "zcmpeq_vec_uint256_8.bend",
     "capacity_vec_uint256_8.bend",
     "mutval_generic_vec_uint256_8.bend",
+    "pkflag_generic_vec_uint256_8.bend",
     "mutconst_vec_uint256_8.bend",
     "mutsmall_vec_uint256_8.bend"
    ]
@@ -5798,6 +5854,7 @@
     "zcmpeq_vec_uint32_16.bend",
     "capacity_vec_uint32_16.bend",
     "mutval_generic_vec_uint32_16.bend",
+    "pkflag_generic_vec_uint32_16.bend",
     "mutconst_vec_uint32_16.bend",
     "mutsmall_vec_uint32_16.bend"
    ]
@@ -5835,6 +5892,7 @@
     "zcmpeq_vec_uint32_1.bend",
     "capacity_vec_uint32_1.bend",
     "mutval_generic_vec_uint32_1.bend",
+    "pkflag_generic_vec_uint32_1.bend",
     "mutconst_vec_uint32_1.bend",
     "mutsmall_vec_uint32_1.bend"
    ]
@@ -5872,6 +5930,7 @@
     "zcmpeq_vec_uint32_2.bend",
     "capacity_vec_uint32_2.bend",
     "mutval_generic_vec_uint32_2.bend",
+    "pkflag_generic_vec_uint32_2.bend",
     "mutconst_vec_uint32_2.bend",
     "mutsmall_vec_uint32_2.bend"
    ]
@@ -5909,6 +5968,7 @@
     "zcmpeq_vec_uint32_31.bend",
     "capacity_vec_uint32_31.bend",
     "mutval_generic_vec_uint32_31.bend",
+    "pkflag_generic_vec_uint32_31.bend",
     "mutconst_vec_uint32_31.bend",
     "mutsmall_vec_uint32_31.bend"
    ]
@@ -5946,6 +6006,7 @@
     "zcmpeq_vec_uint32_3.bend",
     "capacity_vec_uint32_3.bend",
     "mutval_generic_vec_uint32_3.bend",
+    "pkflag_generic_vec_uint32_3.bend",
     "mutconst_vec_uint32_3.bend",
     "mutsmall_vec_uint32_3.bend"
    ]
@@ -5983,6 +6044,7 @@
     "zcmpeq_vec_uint32_4.bend",
     "capacity_vec_uint32_4.bend",
     "mutval_generic_vec_uint32_4.bend",
+    "pkflag_generic_vec_uint32_4.bend",
     "mutconst_vec_uint32_4.bend",
     "mutsmall_vec_uint32_4.bend"
    ]
@@ -6018,6 +6080,7 @@
     "zcapsym_vec_uint32_512.bend",
     "capacity_vec_uint32_512.bend",
     "mutval_generic_vec_uint32_512.bend",
+    "pkflag_generic_vec_uint32_512.bend",
     "mutconst_vec_uint32_512.bend",
     "mutsmall_vec_uint32_512.bend"
    ]
@@ -6051,6 +6114,7 @@
     "zcapsym_vec_uint32_513.bend",
     "capacity_vec_uint32_513.bend",
     "mutval_generic_vec_uint32_513.bend",
+    "pkflag_generic_vec_uint32_513.bend",
     "mutconst_vec_uint32_513.bend",
     "mutsmall_vec_uint32_513.bend"
    ]
@@ -6086,6 +6150,7 @@
     "zcmpeq_vec_uint32_5.bend",
     "capacity_vec_uint32_5.bend",
     "mutval_generic_vec_uint32_5.bend",
+    "pkflag_generic_vec_uint32_5.bend",
     "mutconst_vec_uint32_5.bend",
     "mutsmall_vec_uint32_5.bend"
    ]
@@ -6123,6 +6188,7 @@
     "zcmpeq_vec_uint32_8.bend",
     "capacity_vec_uint32_8.bend",
     "mutval_generic_vec_uint32_8.bend",
+    "pkflag_generic_vec_uint32_8.bend",
     "mutconst_vec_uint32_8.bend",
     "mutsmall_vec_uint32_8.bend"
    ]
@@ -6189,6 +6255,7 @@
     "zcmpeq_vec_uint64_16.bend",
     "capacity_vec_uint64_16.bend",
     "mutval_generic_vec_uint64_16.bend",
+    "pkflag_generic_vec_uint64_16.bend",
     "mutconst_vec_uint64_16.bend",
     "mutsmall_vec_uint64_16.bend"
    ]
@@ -6226,6 +6293,7 @@
     "zcmpeq_vec_uint64_1.bend",
     "capacity_vec_uint64_1.bend",
     "mutval_generic_vec_uint64_1.bend",
+    "pkflag_generic_vec_uint64_1.bend",
     "mutconst_vec_uint64_1.bend",
     "mutsmall_vec_uint64_1.bend"
    ]
@@ -6263,6 +6331,7 @@
     "zcmpeq_vec_uint64_2.bend",
     "capacity_vec_uint64_2.bend",
     "mutval_generic_vec_uint64_2.bend",
+    "pkflag_generic_vec_uint64_2.bend",
     "mutconst_vec_uint64_2.bend",
     "mutsmall_vec_uint64_2.bend"
    ]
@@ -6300,6 +6369,7 @@
     "zcmpeq_vec_uint64_31.bend",
     "capacity_vec_uint64_31.bend",
     "mutval_generic_vec_uint64_31.bend",
+    "pkflag_generic_vec_uint64_31.bend",
     "mutconst_vec_uint64_31.bend",
     "mutsmall_vec_uint64_31.bend"
    ]
@@ -6337,6 +6407,7 @@
     "zcmpeq_vec_uint64_3.bend",
     "capacity_vec_uint64_3.bend",
     "mutval_generic_vec_uint64_3.bend",
+    "pkflag_generic_vec_uint64_3.bend",
     "mutconst_vec_uint64_3.bend",
     "mutsmall_vec_uint64_3.bend"
    ]
@@ -6374,6 +6445,7 @@
     "zcmpeq_vec_uint64_4.bend",
     "capacity_vec_uint64_4.bend",
     "mutval_generic_vec_uint64_4.bend",
+    "pkflag_generic_vec_uint64_4.bend",
     "mutconst_vec_uint64_4.bend",
     "mutsmall_vec_uint64_4.bend"
    ]
@@ -6409,6 +6481,7 @@
     "zcapsym_vec_uint64_512.bend",
     "capacity_vec_uint64_512.bend",
     "mutval_generic_vec_uint64_512.bend",
+    "pkflag_generic_vec_uint64_512.bend",
     "mutconst_vec_uint64_512.bend",
     "mutsmall_vec_uint64_512.bend"
    ]
@@ -6441,6 +6514,7 @@
     "spec_garr_vec_uint64_513.bend",
     "zcapsym_vec_uint64_513.bend",
     "mutval_generic_vec_uint64_513.bend",
+    "pkflag_generic_vec_uint64_513.bend",
     "mutconst_vec_uint64_513.bend",
     "mutsmall_vec_uint64_513.bend"
    ]
@@ -6476,6 +6550,7 @@
     "zcmpeq_vec_uint64_5.bend",
     "capacity_vec_uint64_5.bend",
     "mutval_generic_vec_uint64_5.bend",
+    "pkflag_generic_vec_uint64_5.bend",
     "mutconst_vec_uint64_5.bend",
     "mutsmall_vec_uint64_5.bend"
    ]
@@ -6513,6 +6588,7 @@
     "zcmpeq_vec_uint64_8.bend",
     "capacity_vec_uint64_8.bend",
     "mutval_generic_vec_uint64_8.bend",
+    "pkflag_generic_vec_uint64_8.bend",
     "mutconst_vec_uint64_8.bend",
     "mutsmall_vec_uint64_8.bend"
    ]
