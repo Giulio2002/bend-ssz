@@ -110,7 +110,6 @@ def pack_module():
     eqs = [f'BT.and_true(a{i})' for i in range(16)] + [f'BT.and_false(a{i})' for i in range(16, 32)]
     sel = lambda k, bits: wp(bits[8 * k:8 * k + 8] + [F_] * 24)
     bs = lambda k, x: f'B.byte_sel({k}, {x})'
-    LIM = lambda x: f'[U32.and({x}, 255), U32.and(U32.shrn({x}, 8n), 255), U32.and(U32.shrn({x}, 16n), 255), U32.shrn({x}, 24n)]'
     w('# the low half of a word: its bytes 0 and 1')
     w('def lo16(+w: U32) -> U32: U32.and(w, 65535)')
     w('')
@@ -1317,7 +1316,6 @@ def cont_bytes(w, n, fields, rec, pr):
     from codegen.proofs.laws import sub_cont as SC
     size = sum(fw for _, fw in fields)
     nw = (size + 3) // 4
-    r = size % 4
     W = [('c', 0)] * nw
     SH = {0: None, 1: 256, 2: 65536, 3: 16777216}
     def orw(i, x):
