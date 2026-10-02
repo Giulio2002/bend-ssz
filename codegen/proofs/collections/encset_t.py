@@ -22,7 +22,8 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.proofs.collections.encset_w import split_top, conjuncts  # noqa: E402
+from codegen.core.shared_laws import run_each  # noqa: E402
+from codegen.proofs.collections.encset_w import conjuncts  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
 BASE = OBJ / 'encset_t_base.bend'
@@ -280,21 +281,7 @@ def out_path(c):
 
 
 def main():
-    outs = [(BASE, BASE_TEXT)] + [(out_path(c), text(c)) for c in LISTS]
-    stale = False
-    for o, t in outs:
-        if '--check' in sys.argv:
-            if not o.exists() or o.read_text() != t:
-                print('stale: %s' % o.name)
-                stale = True
-            continue
-        if not o.exists() or o.read_text() != t:
-            o.write_text(t)
-        print('encset_t: proofs/obj/%s' % o.name)
-    if '--check' in sys.argv:
-        if stale:
-            sys.exit(1)
-        print('encset_t: up to date')
+    run_each('encset_t', [(BASE, BASE_TEXT)] + [(out_path(c), text(c)) for c in LISTS], '--check' in sys.argv)
 
 
 if __name__ == '__main__':

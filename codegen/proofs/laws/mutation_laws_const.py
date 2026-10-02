@@ -39,6 +39,7 @@ import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
+from codegen.core.shared_laws import finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 from codegen.proofs.laws import mutation_laws as ML  # noqa: E402
@@ -334,7 +335,6 @@ def build_name_laws(tx, X, idx, files, syms):
     if rw:
         m = re.fullmatch(r'(\w+)\(64n, h, o, 0\)', rw[2])
         if m:
-            callee = tx.blk.get(m.group(1), '')
             cs = tx.get(m.group(1))
             if cs and re.fullmatch(r'O\.(words|bits)_root\(hl, h, o, \w+, seg\)', cs[2]):
                 ps = ', '.join(f'{pname(p)}: {ptype(p)}' for p in rw[0])
@@ -376,12 +376,8 @@ def outputs():
 
 def main():
     out = outputs()
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('mutconst_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale mutation const laws: ', 'mutation const laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
+    if finish(RR.rewire_out(out), ('mutconst_*.bend',), 'stale mutation const laws: ', 'mutation const laws are current', '--check' in sys.argv):
+        print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
 
 
 if __name__ == '__main__':

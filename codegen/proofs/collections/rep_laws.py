@@ -24,6 +24,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import split_top as shared_split_top  # noqa: E402
 from codegen.core import schema as SC  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
@@ -35,20 +36,7 @@ OUT = ROOT / 'proofs/obj/prep_setters.bend'
 
 def split_top(s):
     """Split on top-level commas (outside (), {}, <>)."""
-    out, depth, cur = [], 0, ''
-    for ch in s:
-        if ch in '({<':
-            depth += 1
-        elif ch in ')}>':
-            depth -= 1
-        if ch == ',' and depth == 0:
-            out.append(cur.strip())
-            cur = ''
-        else:
-            cur += ch
-    if cur.strip():
-        out.append(cur.strip())
-    return out
+    return shared_split_top(s, keep_empty=False, opening='({<', closing=')}>')
 
 
 def strip_call(s, head):

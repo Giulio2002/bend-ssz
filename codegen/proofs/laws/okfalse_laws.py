@@ -23,9 +23,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 
 
 def name_laws(runtime):
@@ -41,29 +40,14 @@ def name_laws(runtime):
 
 
 def module(tmod, X, law):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('okfalse_laws'),
-         f'# {X}: the refusing branch of the length check of its decoder (found by mutation testing;',
-         '# codegen/proofs/laws/okfalse_laws.py). By computation.', '', law, '']
-    return '\n'.join(L)
+    return law_module('okfalse_laws', [f'# {X}: the refusing branch of the length check of its decoder (found by mutation testing;',
+                                       '# codegen/proofs/laws/okfalse_laws.py). By computation.'], [law], tmod)
 
 
 def main():
-    out, cnt, seen = {}, [], set()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        for X, law in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/zokf_{X}.bend'] = module(tmod, X, law)
-        cnt.append(len(laws))
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('zokf_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale ok-false laws: ', 'ok-false laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws')
+    out, cnt = per_name(name_laws, module, 'zokf', weigh=lambda law: 1)
+    if finish(RR.rewire_out(out), ('zokf_*.bend',), 'stale ok-false laws: ', 'ok-false laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws')
 
 
 if __name__ == '__main__':

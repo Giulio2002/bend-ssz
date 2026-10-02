@@ -125,7 +125,6 @@ def emit():
                 j = zs[i]
                 bits_now = refined(zs[:i])
                 g = goal.replace(Wd, bitfix.word(bits_now))
-                zt_now = f'zb{k}({", ".join(bits_now[:j] + ["True{}"] + bits_now[j + 1:])})'
                 w(f'{ind}match a{j}:')
                 w(f'{ind}  case True{{}}: Empty.absurd({g.replace(bitfix.word(bits_now), bitfix.word(bits_now[:j] + ["True{}"] + bits_now[j + 1:]))}, MD.false_true(z))')
                 w(f'{ind}  case False{{}}:')

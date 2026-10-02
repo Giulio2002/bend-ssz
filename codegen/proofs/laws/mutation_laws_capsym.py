@@ -33,9 +33,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_senc_(?:out|put))\((\w+)_putk\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
@@ -94,34 +93,15 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws_capsym'),
-         f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
-         '# (found by mutation testing; codegen/proofs/laws/mutation_laws_capsym.py). By computation on a variable object.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('mutation_laws_capsym', [f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
+                                               '# (found by mutation testing; codegen/proofs/laws/mutation_laws_capsym.py). By computation on a variable object.'],
+                      laws, tmod)
 
 
 def main():
-    out, cnt, seen = {}, [], set()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        n = 0
-        for X, ls in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/zcapsym_{X}.bend'] = module(tmod, X, ls)
-            n += len(ls)
-        cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('zcapsym_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale capsym laws: ', 'capsym laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws; depth differs from the size-derived one: {MISMATCH}')
+    out, cnt = per_name(name_laws, module, 'zcapsym')
+    if finish(RR.rewire_out(out), ('zcapsym_*.bend',), 'stale capsym laws: ', 'capsym laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws; depth differs from the size-derived one: {MISMATCH}')
 
 
 if __name__ == '__main__':

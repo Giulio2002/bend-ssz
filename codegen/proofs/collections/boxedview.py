@@ -16,6 +16,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 
 
 P_ = 'F.spec_common__pow2'
@@ -54,26 +55,17 @@ def tfzsp_{c}(+d: Nat, a: Array<{T}>, pf: TA.tperf({T}, d, a)) -> {SPT('a', 'd')
       tfzsp_n_{c}(p, xs, ys, tfzsp_{c}(p, xs, pl), tfzsp_{c}(p, ys, pr))
 """)
     # one level of the update walk, left and right
-    for side, z, xs_, ys_ in (('l', 'True{}', 'xs', 'ys'), ('r', 'False{}', 'ys', 'xs')):
-        hz = '{%s == U32.is_lt(i, U32.shr(n)) : Bool}' % z
+    for side, z in (('l', 'True{}'), ('r', 'False{}')):
         if side == 'l':
-            ii, jj = 'i', 'j'
-            sub_ = 'xs'
-            hi_ = 'TA.bit_nat(p, n, i, j, True{}, hd, hn, hj, hz)'
-            hj_ = 'hj'
-            res = 'F.TNode{%s(%s), %s(ys)}' % (TFZ, PUT('xs', 'U32.shr(n)', 'i', 'w', 'U32.is_lt(i, U32.shr(U32.shr(n)))'), TFZ)
-            tup = 'F.TNode{F.array__tupd(%s, p, %s(xs), j, %s(w), F.array__ndec(p, j)), %s(ys)}' % (MB, TFZ, FZ, TFZ)
             ih = EQ('xs', 'U32.shr(n)', 'i', 'j', 'w', 'U32.is_lt(i, U32.shr(U32.shr(n)))', 'p')
             rew = ('%%Equal.sym(%s, %s(%s), F.array__tupd(%s, p, %s(xs), j, %s(w), F.array__ndec(p, j)), ih) :\n'
                    '        {F.TNode{_, %s(ys)} == F.TNode{F.array__tupd(%s, p, %s(xs), j, %s(w), F.array__ndec(p, j)), %s(ys)} : %s}'
                    % (TR, TFZ, PUT('xs', 'U32.shr(n)', 'i', 'w', 'U32.is_lt(i, U32.shr(U32.shr(n)))'), MB, TFZ, FZ, TFZ, MB, TFZ, FZ, TFZ, TR))
         else:
-            sub_ = 'ys'
             JS = '%s(p)' % P_
             PI = 'U32.sub(i, U32.shr(n))'
             PJ = 'Nat.sub(j, %s)' % JS
             PZ = 'U32.is_lt(%s, U32.shr(U32.shr(n)))' % PI
-            res = 'F.TNode{%s(xs), %s(%s)}' % (TFZ, TFZ, PUT('ys', 'U32.shr(n)', PI, 'w', PZ))
             ih = EQ('ys', 'U32.shr(n)', PI, PJ, 'w', PZ, 'p')
             rew = ('%%Equal.sym(%s, %s(%s), F.array__tupd(%s, p, %s(ys), %s, %s(w), F.array__ndec(p, %s)), ih) :\n'
                    '        {F.TNode{%s(xs), _} == F.TNode{%s(xs), F.array__tupd(%s, p, %s(ys), %s, %s(w), F.array__ndec(p, %s))} : %s}'
@@ -222,16 +214,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: tfz_boxed.bend')
-            sys.exit(1)
-        print('boxedview: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('boxedview: proofs/obj/tfz_boxed.bend')
+    run_single('boxedview', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

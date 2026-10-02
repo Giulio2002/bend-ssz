@@ -19,6 +19,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 
 OUT = ROOT / 'proofs/obj/halfword.bend'
 
@@ -149,7 +150,6 @@ def limb(s):
     L = ['def limb_hw_%d(+old: U32, +v: U32) -> {I.limb(%s) == VS.list_set(VS.list_set(I.limb(old), %dn, %s), %dn, %s) : +List<U32>}:' % (s, M, s, LO, s + 1, HI)]
     for j in range(4):
         cur = RHS[:j] + ['_'] + LHS[j + 1:]
-        prev = RHS[:j] + LHS[j:]
         L.append('  %%Equal.sym(U32, %s, %s, %s) : {[%s] == [%s] : +List<U32>}' % (LHS[j], RHS[j], eqs[j], ', '.join(cur), ', '.join(RHS)))
     L.append('  {==}')
     L.append('')
@@ -188,16 +188,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: halfword.bend')
-            sys.exit(1)
-        print('halfword: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('halfword: proofs/obj/halfword.bend')
+    run_single('halfword', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

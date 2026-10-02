@@ -24,6 +24,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_each, split_top  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
 BASE = OBJ / 'encset_w_base.bend'
@@ -143,22 +144,6 @@ def ql_ge(+c: Nat, +N: U32, +e: {U32.to_nat(N) == VS.x8(c) : Nat}) -> {Nat.is_le
 '''
 
 
-def split_top(s):
-    out, depth, cur = [], 0, ''
-    for ch in s:
-        if ch in '([{<':
-            depth += 1
-        elif ch in ')]}>':
-            depth -= 1
-        if ch == ',' and depth == 0:
-            out.append(cur.strip())
-            cur = ''
-        else:
-            cur += ch
-    out.append(cur.strip())
-    return out
-
-
 def conjuncts(e):
     """Bool.and(a, Bool.and(b, c)) -> [a, b, c]"""
     e = e.strip()
@@ -173,7 +158,6 @@ def facts(c):
     imps = {a: p for p, a in re.findall(r'^import (\S+) as (\w+)', txt, re.M)}
     mo = re.search(r'^def OKT\(\+dw: Nat, \+T: FD\.array__Tree<U32>, \+N: U32\) -> Bool:\n(.*?)\ndef OK\(', txt, re.M | re.S)
     cj = conjuncts(mo.group(1))
-    sch = re.search(r'^def encx_spec\(m, hok\):', txt, re.M)
     ms = re.search(r'^  \{Codec\.parts\(VAL\(m\), (.+?)\) == Some\{\[S\.Variable\{ENC\(m\)\}\]\}', txt, re.M)
     return dict(c=c, imps=imps, cj=cj, schema=ms.group(1), W=imps['W'])
 
@@ -288,7 +272,6 @@ FAM = {
 def base_block(fam):
     f = FAM[fam]
     m = f['m']
-    X = ['x%d' % j for j in range(m)]
     ys = ', '.join('UR.RWN(t, %dn+%s)' % (4 * j, f['Kq']) for j in range(m))
     hj = []
     for j in range(m):
@@ -460,21 +443,8 @@ def out_path(c):
 
 
 def main():
-    outs = [(BASE, BASE_TEXT)] + [(OBJ / FAM[fam]['base'], base_block(fam)) for fam in FAM] + [(out_path(c), text(c)) for c in LISTS] + [(out_path(c), text_block(c, fam)) for c, fam in LISTS32]
-    stale = False
-    for o, t in outs:
-        if '--check' in sys.argv:
-            if not o.exists() or o.read_text() != t:
-                print('stale: %s' % o.name)
-                stale = True
-            continue
-        if not o.exists() or o.read_text() != t:
-            o.write_text(t)
-        print('encset_w: proofs/obj/%s' % o.name)
-    if '--check' in sys.argv:
-        if stale:
-            sys.exit(1)
-        print('encset_w: up to date')
+    run_each('encset_w', [(BASE, BASE_TEXT)] + [(OBJ / FAM[fam]['base'], base_block(fam)) for fam in FAM] + [(out_path(c), text(c)) for c in LISTS]
+             + [(out_path(c), text_block(c, fam)) for c, fam in LISTS32], '--check' in sys.argv)
 
 
 if __name__ == '__main__':

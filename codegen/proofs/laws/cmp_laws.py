@@ -38,8 +38,9 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.impl import runtime_refs as RR  # noqa: E402
 
 
 def log2ceil(w):
@@ -53,7 +54,7 @@ def name_laws(runtime):
     text = RR.mono_text(runtime)
     out = {}
     for m in re.finditer(r'^def (\w+)_encode\(o: O\.Words\) -> [^\n:]*: \w+_enc_(?:out|put)\((\w+)_put\(O\.out_at\((\d+)n\), 0, o\)\)$', text, re.M):
-        X, P, d = m.group(1), m.group(2), int(m.group(3))
+        X, P = m.group(1), m.group(2)
         pm = re.search(rf'^def {P}_put\(out: Array<U32>, \+pos: U32, o: O\.Words\) -> Array<U32> & O\.Words:\n  match o:\n    case O\.Words\{{ws, \+n\}}: {P}_pw\(U32\.is_eq\(\(pos \.&\. 3 : U32\), 0\), out, pos, ws, n\)$', text, re.M)
         pas = sorted(int(x) for x in re.findall(rf'^def {P}_pa(\d+)\(', text, re.M))
         mv = re.search(rf'^def {P}_valid\(o: O\.Words\) -> [^\n:]*: (?:O\.bools_ok\()?O\.words_ok\(o, (\d+), (\d+), False\{{\}}, \d+\)\)?$', text, re.M)
@@ -185,7 +186,6 @@ def name_proof(X, P, nw, N):
     w('')
     # the general writer's whole-word copy
     sigb = f'+b: U32, +Bn: Nat, {TREES}, +eb: {{U32.to_nat(b) == Bn : Nat}}, {BASEH}, {HA}, {HB.replace("Q", "Bn")}, {PERF}'
-    argb = 'b, Bn, ds, dd, S, D, eb, hs, hdd, hA, hB, ps, pd'
     cpb = f'AC.cpt(dd, {nw}n, 0n, Bn, D, {SL})'
     if r:
         w(f'def {X}_lele(+b: U32, +Bn: Nat, +dd: Nat, +eb: {{U32.to_nat(b) == Bn : Nat}}, +hdd: {{Nat.is_lt(dd, 32n) == True{{}} : Bool}}, +hB: {{Nat.is_le(Nat.add({nw}n, Bn), {P2("dd")}) == True{{}} : Bool}})')
@@ -246,15 +246,9 @@ def name_proof(X, P, nw, N):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F',
-         'import ./arr_copy.bend as AC', 'import ./zcmpeq_lib.bend as ZL', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('cmp_laws'),
-         f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
-         '# (found by mutation testing; codegen/proofs/laws/cmp_laws.py). By computation on variable words.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('cmp_laws', [f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
+                                   '# (found by mutation testing; codegen/proofs/laws/cmp_laws.py). By computation on variable words.'], laws, tmod,
+                      ['import ../compact/found.bend as F', 'import ./arr_copy.bend as AC', 'import ./zcmpeq_lib.bend as ZL'])
 
 
 def guard_module():
@@ -272,25 +266,11 @@ def guard_module():
 
 
 def main():
-    out, cnt, seen = {}, [], set()
+    out, cnt = per_name(name_laws, module, 'zcmpeq')
     out[ROOT / 'proofs/obj/zcmpeq_guard.bend'] = guard_module()
     out[ROOT / 'proofs/obj/zcmpeq_lib.bend'] = lib_module()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        n = 0
-        for X, ls in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/zcmpeq_{X}.bend'] = module(tmod, X, ls)
-            n += len(ls)
-        cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('zcmpeq_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale cmp laws: ', 'cmp laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws')
+    if finish(RR.rewire_out(out), ('zcmpeq_*.bend',), 'stale cmp laws: ', 'cmp laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws')
 
 
 if __name__ == '__main__':

@@ -27,6 +27,7 @@ import sys
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import finish  # noqa: E402
 CHUNK = 16
 SOLO = 8192     # names this large get a module of their own
 TRUE = 'True{} : Bool'
@@ -168,21 +169,8 @@ def outputs():
 
 def main():
     out = outputs()
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
-        orphans = [str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('fixrej_*.bend') if q not in out]
-        if stale or orphans:
-            print('stale: ' + ', '.join(stale + orphans))
-            sys.exit(1)
-        print('fixed-size reject laws are current')
-        return
-    for q in (ROOT / 'proofs/obj').glob('fixrej_*.bend'):
-        if q not in out:
-            q.unlink()
-    for p, t in out.items():
-        p.write_text(t)
-    print(f'{len(out)} files')
+    if finish(RR.rewire_out(out), ('fixrej_*.bend',), 'stale: ', 'fixed-size reject laws are current', '--check' in sys.argv):
+        print(f'{len(out)} files')
 
 
 if __name__ == '__main__':

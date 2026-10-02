@@ -644,8 +644,6 @@ def _vm_setup():
     """the Validator's word names, the object, bytes and value builders, and the module header"""
     xs = [f'x{i}' for i in range(22)]
     es = [f'e{i}' for i in range(8)]
-    ebits = [[f'e{i}_{k}' for k in range(32)] for i in range(8)]
-    E = [word_pat(b) for b in ebits]
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
          'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S',
          'import ../../types/primitive.bend as P', 'import ../../spec/codec.bend as Codec',
@@ -669,7 +667,6 @@ def _vm_setup():
         for it in reversed(items):
             out = f'S.Items{{{it}, {out}}}'
         return f'S.Sequence{{{out}}}'
-    split = ['  match b:', '    case True{}: {==}', '    case False{}: {==}']
     names_ = '["pubkey", "withdrawal_credentials", "effective_balance", "slashed", "activation_eligibility_epoch", "activation_epoch", "exit_epoch", "withdrawable_epoch"]'
     chain_ = 'S.End{}'
     for sch_ in reversed(['S.ByteVector{48n}', 'S.ByteVector{32n}', 'S.Unsigned{P.U64{}}', 'S.Boolean{}'] + ['S.Unsigned{P.U64{}}'] * 4):
@@ -699,7 +696,6 @@ def _vm_spec_parts(xs, es, w, byts, val):
         chain = f'S.Chain{{{sch}, {chain}}}'
     for bv in ['True', 'False']:
         vb = val(xs, f'{bv}{{}}', es)
-        items_list = []
         # the value's items and their proofs, in order
         itv = [f'S.BytesValue{{F.limbs({wl(xs[:12])})}}', f'S.BytesValue{{F.limbs({wl(xs[12:20])})}}',
                f'S.UnsignedValue{{P.UInt{{x20, x21, 0, 0, 0, 0, 0, 0}}}}', f'S.BooleanValue{{{bv}{{}}}}'] + \
@@ -1569,7 +1565,7 @@ def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None, vt=Non
     if lh is not None:
         H = 1 << lh
         X, Rw = node.words[:H], node.words[H:] + pads
-        LX, LR = tree(X), tree(Rw)
+        LR = tree(Rw)
         cname, rest = top_args(node.dec)
         LZ = tree(['0'] * H)
         y0, ms = spine_args(X)
@@ -1585,7 +1581,7 @@ def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None, vt=Non
         H_ = 1 << lt[0]
         W_ = H_ + lt[1]
         X, Rw = node.words[:H_], node.words[H_:] + pads
-        LX, LR = tree(X), tree(Rw)
+        LR = tree(Rw)
         cname, rest = top_args(node.dec)
         DZ = tree(node.words[H_:W_] + ['0'] * (H_ - lt[1]))
         y0, ms = spine_args(X)

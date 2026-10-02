@@ -22,6 +22,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 OUT = ROOT / 'proofs/obj/u64_tail.bend'
 
 HEAD = '''import Base
@@ -89,18 +90,11 @@ def hr_of(+i: Nat, +q: Nat, +c: Nat, +P: Nat, +hq: {q == Nat.double(i) : Nat}, +
 '''
 
 
-def words(side, k0, iq='iq'):
-    return ['MR.wd(%s, Nat.add(O.e8(%s), %dn))' % (side, iq, k) for k in range(8)]
-
-
 def tail_m(m):
     r = 8 * m
     a = 2 * m   # the first word kept
     W2 = 'F.array__slots(U32, WW.tk([x0, x1], d, t, qw, 0n))'
     W = 'F.array__slots(U32, t)'
-    w2 = words(W2, a)
-    w1 = words(W, a)
-    CB = lambda ws: 'FX.limbs([%s])' % ', '.join(ws)
     ZB = 'SP.zero_bytes(Nat.sub(32n, %dn))' % r
     out = []
     out.append('def tail_m%d(+d: Nat, +t: F.array__Tree<U32>, +qw: Nat, +x0: U32, +x1: U32, +iq: Nat, +i: Nat, +qc: Nat, +c: Nat, +eiq: {iq == qc : Nat}, +hq: {qw == Nat.double(i) : Nat},' % m)
@@ -109,10 +103,6 @@ def tail_m(m):
     out.append('    -> {WS.bdrop(%dn, WS.cb(%s, iq)) == %s : +List<U32>}:' % (r, W2, ZB))
     for k in range(a, 8):
         out.append('  +e%d = WW.wd_after([x0, x1], d, t, qw, Nat.add(O.e8(iq), %dn), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(qw, 2n), Nat.add(O.e8(z), %dn)) == True{} : Bool}, qc, iq, Equal.sym(Nat, iq, qc, eiq), y_le(i, qw, qc, c, %dn, %dn, hq, hlt, hc, {==})), hb, pf)' % (k, k, k, m, k))
-    # the goal: the limbs of the written words, the first a dropped, then each kept word rewritten to the old one
-    cur = list(w2)
-    lines = []
-    goal = lambda ws: '{WS.bdrop(%dn, %s) == WS.bdrop(%dn, %s) : +List<U32>}' % (r, CB(ws), r, CB(w1))
     out.append('  Equal.trans(+List<U32>, WS.bdrop(%dn, WS.cb(%s, iq)), WS.bdrop(%dn, WS.cb(%s, iq)), %s,' % (r, W2, r, W, ZB))
     out.append('    bdeq_m%d(d, t, qw, x0, x1, iq, %s),' % (m, ', '.join(['e%d' % k for k in range(a, 8)])))
     out.append('    slack)')
@@ -191,16 +181,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: u64_tail.bend')
-            sys.exit(1)
-        print('u64_tail: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('u64_tail: proofs/obj/u64_tail.bend')
+    run_single('u64_tail', OUT, text(), '--check' in sys.argv)
 
 
 if __name__ == '__main__':

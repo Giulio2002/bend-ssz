@@ -22,6 +22,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_each  # noqa: E402
 from codegen.proofs.collections import encset_w as EW  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
@@ -230,21 +231,7 @@ def out_path(c):
 
 
 def main():
-    outs = [(BASE, BASE_TEXT)] + [(out_path(c), text(c)) for c in LISTS]
-    stale = False
-    for o, t in outs:
-        if '--check' in sys.argv:
-            if not o.exists() or o.read_text() != t:
-                print('stale: %s' % o.name)
-                stale = True
-            continue
-        if not o.exists() or o.read_text() != t:
-            o.write_text(t)
-        print('encset_h: proofs/obj/%s' % o.name)
-    if '--check' in sys.argv:
-        if stale:
-            sys.exit(1)
-        print('encset_h: up to date')
+    run_each('encset_h', [(BASE, BASE_TEXT)] + [(out_path(c), text(c)) for c in LISTS], '--check' in sys.argv)
 
 
 if __name__ == '__main__':

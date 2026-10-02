@@ -27,9 +27,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
 MAX_DEPTH = 10  # a default whose encoder buffer has more than 2^10 words costs 75 s (SyncCommittee, 2^13) to 160+ s (LightClientUpdate) to check, Blob (2^15) over 600 s
@@ -56,31 +55,14 @@ def name_laws(runtime):
 
 
 def module(tmod, X, law):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws_cap'),
-         f'# {X}: the checked serializer\'s output buffer is the encoder\'s (same capacity)',
-         '# (found by mutation testing; codegen/proofs/laws/mutation_laws_cap.py). By computation.', '', law, '']
-    return '\n'.join(L)
+    return law_module('mutation_laws_cap', [f'# {X}: the checked serializer\'s output buffer is the encoder\'s (same capacity)',
+                                            '# (found by mutation testing; codegen/proofs/laws/mutation_laws_cap.py). By computation.'], [law], tmod)
 
 
 def main():
-    out, cnt, seen = {}, [], set()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        n = 0
-        for X, law in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/capacity_{X}.bend'] = module(tmod, X, law)
-            n += 1
-        cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('capacity_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale capacity laws: ', 'capacity laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws')
+    out, cnt = per_name(name_laws, module, 'capacity', weigh=lambda law: 1)
+    if finish(RR.rewire_out(out), ('capacity_*.bend',), 'stale capacity laws: ', 'capacity laws are current', '--check' in sys.argv):
+        print(f'{cnt} laws')
 
 
 if __name__ == '__main__':

@@ -144,7 +144,6 @@ class Prover:
         w = self.lines.append
         env = {v: [f'{v}b{i}' for i in range(32)] for v in vs}
         pats = {v: wp(env[v]) for v in vs}
-        L2 = subst(cur, {})
         lb = bits(cur, env)
         rb = bits(rhs, env)
         ql, pl = self.L.word_eq(lb)
