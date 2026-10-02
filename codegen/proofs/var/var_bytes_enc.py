@@ -77,10 +77,8 @@ def wput_module(x_list):
                 w(f'  %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, TB), {j}), (F.array__thaw(U32, TB), VB.slot(TB, {j}n)), VB.get_n(dB, TB, {j}, {j}n, {{==}}, hB32, {hi}, pfB)) :')
                 w(f'    {{T.{p}_pk_ok(T.{p}_pal({S}, T.{p}_pa{j}(U32.shrn(pos, 2n), {pre}, _))) == {RHS} : {TY}}}')
                 nxt = f'T.{p}_pa{j + 1}(U32.shrn(pos, 2n), _, Array.get(U32, F.array__thaw(U32, TB), {j + 1}))' if j + 1 < W else '(_, F.array__thaw(U32, TB))'
-                w(f'  %Equal.sym(Array<U32>, Array.set(U32, {pre}, U32.add(U32.shrn(pos, 2n), {j}), VB.slot(TB, {j}n)), {post},')
-                w(f'      VB.set_at(dd, VF.updv(WP{j}_{p}(TB), dd, D, P), U32.shrn(pos, 2n), {j}, P, VB.slot(TB, {j}n), VF.al_q(pos, P, e), hd32,')
-                w(f'        VF.in_lt({j}n, {W}n, P, VB.pw(dd), {{==}}, hb), VF.updv_perfect(WP{j}_{p}(TB), dd, D, P, pf))) :')
-                w(f'    {{T.{p}_pk_ok(T.{p}_pal({S}, {nxt})) == {RHS} : {TY}}}')
+                for line in TPL.render('wput_module_lines', RHS=RHS, S=S, TY=TY, W=W, j=j, nxt=nxt, p=p, post=post, pre=pre).split('\n'):
+                    w(line)
             w('  {==}')
             w('')
     return '\n'.join(L) + '\n'
@@ -240,15 +238,8 @@ def enc_text(x):
     DP = f'{E.P}, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat'
     DA = f'{E.A}, dd, D, P'
     OBJ = f'OBJE({E.A})'
-    w(f'def OBJE({E.P}) -> {Tn}: {E.objterm()}')
-    w(f'def SFS(+N: U32) -> U32: U32.add({FS}, N)')
-    w(f'# The words the encoding occupies past word P, and the word under the byte list\'s partial last word.')
-    w(f'def ROOM(+N: U32, +P: Nat) -> Nat: Nat.add(VC.NW(N), Nat.add({H}n, P))')
-    w(f'def KZ(+N: U32, +P: Nat) -> Nat: Nat.add(VY.QL(N), Nat.add({H}n, P))')
-    w(f'def room_hp(+N: U32, +P: Nat) -> {{Nat.is_le(P, ROOM(N, P)) == True{{}} : Bool}}:')
-    w(f'  FD.nat__le_trans(P, Nat.add({H}n, P), ROOM(N, P), Order.left_below_sum({H}n, P), Order.left_below_sum(VC.NW(N), Nat.add({H}n, P)))')
-    w(f'def kz_hp(+N: U32, +P: Nat) -> {{Nat.is_le(Nat.add({H}n, P), KZ(N, P)) == True{{}} : Bool}}:')
-    w(f'  Order.left_below_sum(VY.QL(N), Nat.add({H}n, P))')
+    for line in TPL.render('enc_text_lines', E=E, FS=FS, H=H, Tn=Tn).split('\n'):
+        w(line)
     layers, leaves = plan(x, E)
     NL = len(layers)
 
@@ -292,10 +283,8 @@ def enc_text(x):
         f = x.fields[i]
         prev = f'hzL{j}({DA}, pf, hdst, hz0)' if j else 'hz0'
         pfp = f'pfL{j}({DA}, pf)' if j else 'pf'
-        w(f'def hzL{j + 1}({DP}, {PFD}, {HDST}, {HZ}) -> {{VB.slot({tree(j + 1)}, {K}) == 0 : U32}}:')
-        w(f'  Equal.trans(U32, VB.slot({tree(j + 1)}, {K}), VB.slot({tree(j)}, {K}), 0,')
-        w(f'    VBE.slot_updv_hi({vterm(kind, V, i)}, dd, {tree(j)}, Nat.add({k}n, P), {K}, {pfp}, {hbw(f["W"], k)}, hbz({f["W"]}n, {k}n, N, P, {{==}})),')
-        w(f'    {prev})')
+        for line in TPL.render('enc_text_lines_3', DP=DP, HDST=HDST, HZ=HZ, K=K, PFD=PFD, V=V, f=f, hbw=hbw, i=i, j=j, k=k, kind=kind, pfp=pfp, prev=prev, tree=tree, vterm=vterm).split('\n'):
+            w(line)
     w('')
     XOBJ = 'O.Words{FD.array__thaw(U32, TX), N}'
     D2 = f'VF.updv([{FS}], dd, D1, Nat.add({po}n, P))'
@@ -308,11 +297,8 @@ def enc_text(x):
     w(TPL.render('enc_text_xput', D2=D2, D3=D3, FS=FS, H=H, HDST=HDST, K=K, KY=KY, LIM=LIM, RX=RX, TX_=TX_, XH=XH, XOBJ=XOBJ, cvar=cvar, ecF=ecF, ecv=ecv, hbw=hbw, lp=lp, po=po))
     RHS = f'(FD.array__thaw(U32, OUTW({DA})), ({OBJ}, SFS(N)))'
     TY = f'Array<U32> & ({Tn} & U32)'
-    w('# The writer at pos = 4 P over any perfect tree D (depth dd < 29) with room for the')
-    w("# encoding and a zero word under the byte list's partial last word.")
-    w(f'def putw({DP}, {", ".join(E.hyps)}, +pos: U32, +eP: {{U32.to_nat(pos) == A.quad(P) : Nat}},')
-    w(f'    +hdd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, {PFD}, {HDST}, {HZ})')
-    w(f'    -> {{{Tn}_putn(FD.array__thaw(U32, D), pos, {OBJ}) == {RHS} : {TY}}}:')
+    for line in TPL.render('enc_text_lines_2', DP=DP, E=E, HDST=HDST, HZ=HZ, OBJ=OBJ, PFD=PFD, RHS=RHS, TY=TY, Tn=Tn).split('\n'):
+        w(line)
     for ctx, i, j0, j1, kind, cur in leaves:
         f = x.fields[i]
         pat = ctx.replace('@', '_')
@@ -339,9 +325,8 @@ def enc_text(x):
                   f'eoc({f["k"]}n, {f["c"]}, P, pos, dd, eP, hdd, {{==}}, hbq({f["W"]}n, {f["k"]}n, P, dd, {hbw(f["W"], f["k"])})), '
                   f'hdd, {pfp}, {hbw(f["W"], f["k"])}, {", ".join(E.words[i])})')
             ty = 'Array<U32>'
-        w(f'  %Equal.sym({ty}, {call}, {res},')
-        w(f'      {pr}) :')
-        w(f'    {{{pat} == {RHS} : {TY}}}')
+        for line in TPL.render('enc_text_lines_4', RHS=RHS, TY=TY, call=call, pat=pat, pr=pr, res=res, ty=ty).split('\n'):
+            w(line)
     w('  {==}')
     return E, L, layers, leaves, NL
 
@@ -473,9 +458,8 @@ def enc_spec_text(x, E, layers, NL):
     out = '{==}'
     for a_, b_, pr in reversed(steps):
         out = f'Equal.trans({LT}, {a_}, {b_}, VF.WIN(m, p, FD.array__slots(U32, D)), {pr},\n    {out})'
-    w(f'# The encoder leaves every window below word P alone.')
-    w(f'def frame_lo({DP}, {PFD}, {HDST}, +m: Nat, +p: Nat, +h: {{Nat.is_le(Nat.add(m, p), P) == True{{}} : Bool}})')
-    w(f'    -> {{VF.WIN(m, p, FD.array__slots(U32, OUTW({DA}))) == VF.WIN(m, p, FD.array__slots(U32, D)) : {LT}}}:')
+    for line in TPL.render('enc_spec_text_lines', DA=DA, DP=DP, HDST=HDST, LT=LT, PFD=PFD).split('\n'):
+        w(line)
     w('  ' + out)
     w('')
     hdr = []

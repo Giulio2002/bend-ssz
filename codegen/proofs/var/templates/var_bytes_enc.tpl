@@ -154,3 +154,38 @@ def encode_spec(${E.AH}):
       partsw(${A0}, ${', '.join(E.hargs)}, FD.array__trep_perfect(U32, ${DO}n, 0), ${HD0}, {==})) :
     {Codec.bytes(_) == Some{${BY0}} : ${M}}
   {==}
+
+@@ wput_module_lines @@
+  %Equal.sym(Array<U32>, Array.set(U32, ${pre}, U32.add(U32.shrn(pos, 2n), ${j}), VB.slot(TB, ${j}n)), ${post},
+      VB.set_at(dd, VF.updv(WP${j}_${p}(TB), dd, D, P), U32.shrn(pos, 2n), ${j}, P, VB.slot(TB, ${j}n), VF.al_q(pos, P, e), hd32,
+        VF.in_lt(${j}n, ${W}n, P, VB.pw(dd), {==}, hb), VF.updv_perfect(WP${j}_${p}(TB), dd, D, P, pf))) :
+    {T.${p}_pk_ok(T.${p}_pal(${S}, ${nxt})) == ${RHS} : ${TY}}
+@@ enc_text_lines @@
+def OBJE(${E.P}) -> ${Tn}: ${E.objterm()}
+def SFS(+N: U32) -> U32: U32.add(${FS}, N)
+# The words the encoding occupies past word P, and the word under the byte list's partial last word.
+def ROOM(+N: U32, +P: Nat) -> Nat: Nat.add(VC.NW(N), Nat.add(${H}n, P))
+def KZ(+N: U32, +P: Nat) -> Nat: Nat.add(VY.QL(N), Nat.add(${H}n, P))
+def room_hp(+N: U32, +P: Nat) -> {Nat.is_le(P, ROOM(N, P)) == True{} : Bool}:
+  FD.nat__le_trans(P, Nat.add(${H}n, P), ROOM(N, P), Order.left_below_sum(${H}n, P), Order.left_below_sum(VC.NW(N), Nat.add(${H}n, P)))
+def kz_hp(+N: U32, +P: Nat) -> {Nat.is_le(Nat.add(${H}n, P), KZ(N, P)) == True{} : Bool}:
+  Order.left_below_sum(VY.QL(N), Nat.add(${H}n, P))
+@@ enc_text_lines_3 @@
+def hzL${j + 1}(${DP}, ${PFD}, ${HDST}, ${HZ}) -> {VB.slot(${tree(j + 1)}, ${K}) == 0 : U32}:
+  Equal.trans(U32, VB.slot(${tree(j + 1)}, ${K}), VB.slot(${tree(j)}, ${K}), 0,
+    VBE.slot_updv_hi(${vterm(kind, V, i)}, dd, ${tree(j)}, Nat.add(${k}n, P), ${K}, ${pfp}, ${hbw(f['W'], k)}, hbz(${f['W']}n, ${k}n, N, P, {==})),
+    ${prev})
+@@ enc_text_lines_2 @@
+# The writer at pos = 4 P over any perfect tree D (depth dd < 29) with room for the
+# encoding and a zero word under the byte list's partial last word.
+def putw(${DP}, ${', '.join(E.hyps)}, +pos: U32, +eP: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, ${PFD}, ${HDST}, ${HZ})
+    -> {${Tn}_putn(FD.array__thaw(U32, D), pos, ${OBJ}) == ${RHS} : ${TY}}:
+@@ enc_text_lines_4 @@
+  %Equal.sym(${ty}, ${call}, ${res},
+      ${pr}) :
+    {${pat} == ${RHS} : ${TY}}
+@@ enc_spec_text_lines @@
+# The encoder leaves every window below word P alone.
+def frame_lo(${DP}, ${PFD}, ${HDST}, +m: Nat, +p: Nat, +h: {Nat.is_le(Nat.add(m, p), P) == True{} : Bool})
+    -> {VF.WIN(m, p, FD.array__slots(U32, OUTW(${DA}))) == VF.WIN(m, p, FD.array__slots(U32, D)) : ${LT}}:
