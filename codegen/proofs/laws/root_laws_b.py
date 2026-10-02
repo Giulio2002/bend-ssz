@@ -1523,7 +1523,6 @@ class Gen:
         Seq = f'T.{p}_Seq'
         L = []
         w = L.append
-        W = f'F.array__slots({RX}, t)'
         w(f'# ---- {p}: list of {X.p} (Data elements) ----')
         Ts, XL, TY, erp, ER = self.xcommon(p, X, RX, EX, w)
         w(f'def xmt0_{p}(+d: Nat, +b: Bool, +hl: Nat, +seg: U32, +dw: Nat, +t: F.array__Tree<{RX}>, +n: Nat, -h: B.Buf, +junk: D.Digest,')
