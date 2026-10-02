@@ -17,7 +17,7 @@ import ./vfits.bend as VFT
 import ./vrej.bend as VR
 import ./vnest.bend as VN
 
-# GENERATED from vmr.bend.in by var_multi (codegen). Do not edit.
+# GENERATED from vmr.bend.in by multi_variable_field_codec_laws (codegen). Do not edit.
 # Variable-size rejection with THREE variable parts, specification side: the
 # encoding of a list of byte vectors has a whole number of elements, and the
 # offset layout of [one fixed part | three variable parts | fixed parts] puts
