@@ -2,7 +2,7 @@
 """More laws that pin constants of the frozen spec no other law reaches (docs/mutation_testing/MUTATION_PROOFS.md section 8): the spec is
 never edited; each law states a spec function on witnesses in a small module that imports the spec file.
 
-    python3 codegen/proofs/mutation_coverage/spec_constants_extra.py [--check]
+    python3 codegen/proofs/slop/spec_constants_extra.py [--check]
 
   spec/bit_root.bend chunk_limit(1n) == 1n, chunk_limit(257n) == 2n              (ceil(N / 256): the 255n)
   spec/packing.bend pack of 33 bytes is two chunks, the first of 32 bytes        (the room 31n of scan)
@@ -23,7 +23,7 @@ import re
 import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 
 H = writer.header("spec_constants_extra")

@@ -2,9 +2,9 @@
 """Laws that pin the offsets the decoders read at and the reported size of a boxed container, the two proof-side
 mutation groups `offset` and `reported-size` that no earlier statement noticed (docs/mutation_testing/MUTATION_PROOFS.md).
 
-    python3 codegen/proofs/mutation_coverage/decoder_offsets.py [--check]
+    python3 codegen/proofs/slop/decoder_offsets.py [--check]
 
-Per name X, proofs/mutation_coverage/offsets/<X>.bend holds (kind `decode_offsets` of object_api_coverage_gate, filed in the
+Per name X, proofs/slop/offsets/<X>.bend holds (kind `decode_offsets` of object_api_coverage_gate, filed in the
 name's decode facade):
 
   <X>_decode_build(buf, size, b2, e: {P_ok(buf, 0, size) == (b2, True{})})
@@ -20,7 +20,7 @@ name's decode facade):
       `off - K`: on a power-of-two buffer the word index 2^30 - K/4 is the same tree path as K/4, so no statement over
       the tight buffer of the object can see it) does not match the hypothesis.
 
-proofs/mutation_coverage/offsets/<X>_reported_size.bend, for a name whose size pass is a literal and whose boxed size pass is the
+proofs/slop/offsets/<X>_reported_size.bend, for a name whose size pass is a literal and whose boxed size pass is the
 match form (Deposit, ProposerSlashing, ...; the literal boxed form is reported_size_and_vector_bound.py's):
 
   <X>_encoded_size(v, rest)
@@ -39,7 +39,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import fulu_schema_loader as schema  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import typed_object_runtime as G  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402

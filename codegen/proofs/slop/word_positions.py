@@ -2,7 +2,7 @@
 """Laws that pin the word positions the encoders and the decoder write and read, found by mutation testing
 (the `arithmetic` survivors: `q + k` / `pos + k` / `off + k` changed to `- k`).
 
-    python3 codegen/proofs/mutation_coverage/word_positions.py [--check]
+    python3 codegen/proofs/slop/word_positions.py [--check]
 
 Why the existing statements missed them. A word index in the runtime's arrays is taken modulo the array's size (the
 tree walk reads the low `d` bits of the index of a `2^d` word array), and every statement about an encoder or
@@ -12,7 +12,7 @@ invisible. The unaligned writers `P_pw1..3` run only at a byte offset that is no
 encoder passes, so nothing evaluates them at all. These laws evaluate the same definitions on a larger buffer, or
 at an offset the top level never uses, where the two indices differ.
 
-proofs/mutation_coverage/offsets/<X>_word_positions.bend (one module per name, so a facade imports only its own) holds, for the
+proofs/slop/offsets/<X>_word_positions.bend (one module per name, so a facade imports only its own) holds, for the
 names that have the form:
 
   <X>_arith_pw<K>   K = 1, 2, 3: the unaligned writer P_pw<K> of a word list (leaf scalars, byte vectors, bit
@@ -38,7 +38,7 @@ import sys
 
 from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 M32 = (1 << 32) - 1
@@ -168,7 +168,7 @@ def name_laws(runtime):
 
 def module(tmod, X, laws):
     return law_module('word_positions', [f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
-                                              '# (found by mutation testing; codegen/proofs/mutation_coverage/word_positions.py). Each is by computation.'], laws, tmod)
+                                              '# (found by mutation testing; codegen/proofs/slop/word_positions.py). Each is by computation.'], laws, tmod)
 
 
 def main():

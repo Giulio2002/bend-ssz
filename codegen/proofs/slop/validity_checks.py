@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Laws that pin the validity checks of the encoders (docs/mutation_testing/MUTATION_PROOFS.md, group "validity-check").
 
-    python3 codegen/proofs/mutation_coverage/spec_constants.py [--check]
+    python3 codegen/proofs/slop/spec_constants.py [--check]
 
 The checked serializer of every name is `X_ser_pick(P_valid(o), o)` (a Data object) or a pass that threads the
 storage (words and bits). The existing laws say what follows from `P_valid(o) == True` and from `== False`; none says
 when the validity pass is one or the other, so a changed bound, a forced result or a wrong poison flag was invisible.
-For every name this file writes, into proofs/mutation_coverage/validity/<runtime>_<X>.bend (one file per name: a facade
+For every name this file writes, into proofs/slop/validity/<runtime>_<X>.bend (one file per name: a facade
 imports and re-checks only its own),
 
   <X>_serialize_vdom(o)         a Data name: `X_serialize(o) == X_ser_pick(DOM(o), o)`, DOM the schema's domain written out:
@@ -29,7 +29,7 @@ imports and re-checks only its own),
 The storage of the objects is a concrete zero array with room (the check reads the storage's size, so a variable one
 would leave it stuck); that bounds the edges that can be stated: nothing above IN_MAX bytes or bits is (Blob's
 131072-byte encoding did not check in 600 s; a list limit of 2^30 would need 2^28 words). Byte vectors that
-codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py already covers are skipped. Every statement is by computation.
+codegen/proofs/slop/reported_size_and_vector_bound.py already covers are skipped. Every statement is by computation.
 They are named so that object_api_coverage_gate files them under serialize_valid, so they reach each name's
 proofs/api/<X>_encode_ssz_proof_generated.bend.
 """
@@ -43,7 +43,7 @@ from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import fulu_schema_loader as schema, generic_form_schemas as generic  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
@@ -159,7 +159,7 @@ def edge_laws(text, sink):
                 continue
             lo, hi, big, unit = int(wm.group(1)), int(wm.group(2)), wm.group(3) == 'True', int(wm.group(4))
             if lo == hi and not big and unit == 1 and 0 < lo <= 4096 and not v.startswith('O.bools_ok('):
-                continue  # a byte vector: codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py
+                continue  # a byte vector: codegen/proofs/slop/reported_size_and_vector_bound.py
             if lo > IN_MAX or (lo == hi and not big and hi > IN_MAX):
                 continue
             ins = [lo] if lo else [0, unit]

@@ -2,7 +2,7 @@
 """Laws that pin the capacity of the checked serializer's output buffer, found by mutation testing (an
 `O.out_at(d)` in `X_serialize` changed to `O.out_at(d - 1)`).
 
-    python3 codegen/proofs/mutation_coverage/buffer_capacity.py [--check]
+    python3 codegen/proofs/slop/buffer_capacity.py [--check]
 
 `O.out_at(d)` is `Array.new(U32, d, 0)`: a zero array of 2^d words, and word indices are taken modulo that size, so an
 encoder whose buffer is one power of two too small writes over its own head without any error. The encoders
@@ -11,7 +11,7 @@ array), but `X_serialize` (the checked serializer, its own `out_at`) had no stat
 serialize_valid law exists only for scalars and byte vectors, and `X_serialize_in` (reported_size_and_vector_bound.py) only for byte
 vectors of up to 4096 bytes.
 
-proofs/mutation_coverage/capacity/<X>.bend (one module per name) holds, for every name whose serializer allocates with `O.out_at`:
+proofs/slop/capacity/<X>.bend (one module per name) holds, for every name whose serializer allocates with `O.out_at`:
 
   <X>_serialize_cap    : {T.X_serialize(D) == (D, O.encoded(<the encoder's buffer for D>)) : ..}
       D is the name's default object (every field zero, storage of the right size: valid), by computation. The
@@ -28,7 +28,7 @@ import re
 import sys
 
 from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
@@ -57,7 +57,7 @@ def name_laws(runtime):
 
 def module(tmod, X, law):
     return law_module('buffer_capacity', [f'# {X}: the checked serializer\'s output buffer is the encoder\'s (same capacity)',
-                                            '# (found by mutation testing; codegen/proofs/mutation_coverage/buffer_capacity.py). By computation.'], [law], tmod)
+                                            '# (found by mutation testing; codegen/proofs/slop/buffer_capacity.py). By computation.'], [law], tmod)
 
 
 def main():

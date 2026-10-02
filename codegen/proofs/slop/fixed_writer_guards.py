@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Proof laws for three mutation classes the earlier laws left open (auditor round on 9e96b9d5).
 
-    python3 codegen/proofs/mutation_coverage/fixed_writer_guards.py [--check]
+    python3 codegen/proofs/slop/fixed_writer_guards.py [--check]
 
 1. The guard of the fixed-size writers (`P_put(out, pos, o) = P_pwd(U32.is_eq((pos .&. 3), 0), (pos .&. 3), out, pos >> 2, w..)`).
    alignment/<X>_writer_guard.bend: <X>_cmp_pwd, for every s, out, q and word values w..:
@@ -34,7 +34,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
@@ -60,7 +60,7 @@ def qexpr(e):
 
 def lib_module():
     L = ['import Base', 'import ../compact/found.bend as F', '', writer.header('fixed_writer_guards'),
-         '# U32.is_le(x, 0) is U32.is_eq(x, 0) for every x (codegen/proofs/mutation_coverage/fixed_writer_guards.py).', '',
+         '# U32.is_le(x, 0) is U32.is_eq(x, 0) for every x (codegen/proofs/slop/fixed_writer_guards.py).', '',
          'def cl(+n: Nat) -> {Cmp.is_le(Nat.cmp(n, 0n)) == Cmp.is_eq(Nat.cmp(n, 0n)) : Bool}:', '  match n:', '    case 0n: {==}',
          '    case 1n+ +p: {==}', '',
          'def le_eq(+x: U32) -> {U32.is_le(x, 0) == U32.is_eq(x, 0) : Bool}:',
@@ -122,7 +122,7 @@ def module(tmod, X, laws, lib=False, tag='writer_guard'):
     if lib:
         L.append('import ./writer_guard_library.bend as ZL')
     L += [f'import ../../types/{tmod}.bend as T', '', writer.header('fixed_writer_guards'),
-          f'# {X}: mutation classes the earlier laws left open (codegen/proofs/mutation_coverage/fixed_writer_guards.py). By computation unless noted.', '']
+          f'# {X}: mutation classes the earlier laws left open (codegen/proofs/slop/fixed_writer_guards.py). By computation unless noted.', '']
     for t in laws:
         L += [t, '']
     return '\n'.join(L)

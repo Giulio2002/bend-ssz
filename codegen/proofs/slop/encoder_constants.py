@@ -2,9 +2,9 @@
 """Laws that pin constants of the generated encoders the other laws of a name leave to its callers, found by mutation
 testing (docs/mutation_testing/MUTATION_PROOFS.md, "constant" and "hashtreeroot-constant" survivors).
 
-    python3 codegen/proofs/mutation_coverage/encoder_constants.py [--check]
+    python3 codegen/proofs/slop/encoder_constants.py [--check]
 
-proofs/mutation_coverage/constants/<X>.bend, one module per name (a facade imports only its own name's laws), holds, for the names
+proofs/slop/constants/<X>.bend, one module per name (a facade imports only its own name's laws), holds, for the names
 the forms below apply to, laws named <X>_mc_<tag> (object_api_coverage_gate files them in the name's facades by the tag):
 
   <X>_mc_poison_<P>      the checked writer P_pk marks an invalid value with the runtime's poison marker
@@ -39,10 +39,10 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import fulu_schema_loader as schema  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
-from codegen.proofs.mutation_coverage import reported_size_and_vector_bound as ML  # noqa: E402
+from codegen.proofs.slop import reported_size_and_vector_bound as ML  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 
 SER_MAX = 8192          # bytes: a `_mc_ser` witness is computed through its encoding

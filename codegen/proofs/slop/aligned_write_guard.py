@@ -2,14 +2,14 @@
 """Equivalence laws for the aligned-or-general path choice of the word-vector writers, found by mutation testing
 (`U32.is_eq((pos .&. 3), 0)` changed to `is_lt` / `is_le` / `is_ge` in `X_put`).
 
-    python3 codegen/proofs/mutation_coverage/aligned_write_guard.py [--check]
+    python3 codegen/proofs/slop/aligned_write_guard.py [--check]
 
 `P_put(out, pos, Words{ws, n})` of a word-stored vector picks, by `pos .&. 3 == 0`, between two writers of the same
 words: the unrolled aligned chain (`P_pa0 .. P_paK`, single-word stores) and the general `O.put_words`. They agree at
 every aligned position, so a guard that always takes the general writer (`is_lt(x, 0)` is never true; `is_le(x, 0)`
 is `is_eq` on unsigned words) changes nothing, and a guard that takes the chain at an unaligned position is wrong.
 
-proofs/mutation_coverage/alignment/<X>_aligned_path.bend (one module per name whose put has that guard) proves, for every X:
+proofs/slop/alignment/<X>_aligned_path.bend (one module per name whose put has that guard) proves, for every X:
 
   <X>_cmp_all    for every aligned position pos (e3: pos .&. 3 == 0), every word index q = pos >> 2 with value Q, and every
                  pair of perfect trees D (destination, 2^dd words, Q + nw <= 2^dd) and S (the nw source words):
@@ -28,7 +28,7 @@ always. Together: a guard `is_le` is the original guard on every position; a gua
 writer, which by `<X>_cmp_all` agrees with the chain on every aligned position and is what the original does on the
 others; neither changes the result of `X_put`.
 
-Named so that object_api_coverage_gate files them under encode_eval; object_api_coverage_gate reads the mutation-coverage modules after the name's own
+Named so that object_api_coverage_gate files them under encode_eval; object_api_coverage_gate reads the slop modules after the name's own
 proving files (a facade's first proving import must stay the spec/encx file).
 """
 import sys as _sys
@@ -39,7 +39,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 
@@ -104,7 +104,7 @@ def lib_module():
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F',
          'import ./arr_copy.bend as AC', '', writer.header('aligned_write_guard'),
          '# The model of the tail of O.acopy (fewer than eight single-word copies) on perfect trees, for symbolic indices a, b',
-         '# whose values A, Bn are tracked (codegen/proofs/mutation_coverage/aligned_write_guard.py; arr_copy.bend has the blocks).', '']
+         '# whose values A, Bn are tracked (codegen/proofs/slop/aligned_write_guard.py; arr_copy.bend has the blocks).', '']
     w = L.append
     w(f'def acw(+b: U32, +Bn: Nat, +dd: Nat, +D: F.array__Tree<U32>, src: Array<U32>, +w: U32, +eb: {{U32.to_nat(b) == Bn : Nat}}, +hdd: {{Nat.is_lt(dd, 32n) == True{{}} : Bool}},')
     w(f'    +hk: {{Nat.is_lt(Bn, {P2("dd")}) == True{{}} : Bool}}, +pd: {{F.array__perfect(U32, dd, D) == True{{}} : Bool}})')
@@ -247,7 +247,7 @@ def name_proof(X, P, nw, N):
 
 def module(tmod, X, laws):
     return law_module('aligned_write_guard', [f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
-                                   '# (found by mutation testing; codegen/proofs/mutation_coverage/aligned_write_guard.py). By computation on variable words.'], laws, tmod,
+                                   '# (found by mutation testing; codegen/proofs/slop/aligned_write_guard.py). By computation on variable words.'], laws, tmod,
                       ['import ../compact/found.bend as F', 'import ./arr_copy.bend as AC', 'import ./aligned_path_library.bend as ZL'])
 
 
@@ -257,7 +257,7 @@ def guard_module():
     one written `is_lt` always takes the general writer (the statements of <X>_aligned_path say that this changes no word)"""
     L = ['import Base', '', writer.header('aligned_write_guard'),
          '# The comparison of the aligned-or-general writer choice, on every value of pos .&. 3 (found by mutation testing;',
-         '# codegen/proofs/mutation_coverage/aligned_write_guard.py). By computation.', '']
+         '# codegen/proofs/slop/aligned_write_guard.py). By computation.', '']
     for k in range(4):
         L.append(f'def guard_le_is_eq_{k}() -> {{U32.is_le({k}, 0) == U32.is_eq({k}, 0) : Bool}}:\n  {{==}}\n')
         L.append(f'def guard_lt_is_never_{k}() -> {{U32.is_lt({k}, 0) == False{{}} : Bool}}:\n  {{==}}\n')

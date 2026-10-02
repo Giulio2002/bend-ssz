@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Laws that pin the poison flag of the words writers (docs/mutation_testing/EXCLUSION_AUDIT.md: the hidden ExecutionBranch mutant).
 
-    python3 codegen/proofs/mutation_coverage/poison_flag.py [--check]
+    python3 codegen/proofs/slop/poison_flag.py [--check]
 
 The checked serializer of a words name writes with `P_putk`, whose `P_pk_ok` branch returns the object and the flag 0 (valid:
 no poison bit). A writer's flag is OR-ed into the running length of every container that embeds the name
 (`cur .|. fl`), so `0 -> 1` in `P_pk_ok` changes the reported length of LightClientHeader, the light-client updates and any
 other variable-size container by one, but not the serialized length of the name itself, which `O.is_poisoned` reads
 (bit 31): the facade of the name saw no difference. For every words name this file writes, into
-proofs/mutation_coverage/validity/<runtime>_<X>_poison_flag.bend (one file per name),
+proofs/slop/validity/<runtime>_<X>_poison_flag.bend (one file per name),
 
   <X>_serialize_vflag(out, o) : {T.P_pk_ok((out, o)) == (out, (o, 0))}
 
@@ -23,7 +23,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: O\.Words\) -> [^\n]*: ([^\n]*)$', re.M)

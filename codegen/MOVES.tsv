@@ -432,3 +432,20 @@ codegen/proofs/var/templates/var_winu.tpl	codegen/proofs/var/templates/compatibl
 tools/exclusion_audit.py	tools/mutation_testing/exclusion_audit.py
 tools/exclusion_audit_words.py	tools/mutation_testing/exclusion_audit_words.py
 tools/mutant_facade_run.py	tools/mutation_testing/mutant_facade_run.py
+# slop: the mutation-coverage folders and their generators are called slop; every generated module there carries _generated in its name
+codegen/proofs/mutation_coverage/aligned_write_guard.py	codegen/proofs/slop/aligned_write_guard.py
+codegen/proofs/mutation_coverage/buffer_capacity.py	codegen/proofs/slop/buffer_capacity.py
+codegen/proofs/mutation_coverage/decoder_offsets.py	codegen/proofs/slop/decoder_offsets.py
+codegen/proofs/mutation_coverage/encoder_constants.py	codegen/proofs/slop/encoder_constants.py
+codegen/proofs/mutation_coverage/fixed_writer_guards.py	codegen/proofs/slop/fixed_writer_guards.py
+codegen/proofs/mutation_coverage/length_check_refusal.py	codegen/proofs/slop/length_check_refusal.py
+codegen/proofs/mutation_coverage/poison_flag.py	codegen/proofs/slop/poison_flag.py
+codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py	codegen/proofs/slop/reported_size_and_vector_bound.py
+codegen/proofs/mutation_coverage/spec_constants.py	codegen/proofs/slop/spec_constants.py
+codegen/proofs/mutation_coverage/spec_constants_extra.py	codegen/proofs/slop/spec_constants_extra.py
+codegen/proofs/mutation_coverage/symbolic_buffer_capacity.py	codegen/proofs/slop/symbolic_buffer_capacity.py
+codegen/proofs/mutation_coverage/validity_checks.py	codegen/proofs/slop/validity_checks.py
+codegen/proofs/mutation_coverage/word_positions.py	codegen/proofs/slop/word_positions.py
+codegen/proofs/mutation_coverage/write_start_and_sizes.py	codegen/proofs/slop/write_start_and_sizes.py
+codegen/core/mutation_layout.py	codegen/core/slop_layout.py
+docs/mutation_testing/MUTATION_COVERAGE_LAYOUT.md	docs/mutation_testing/SLOP_LAYOUT.md

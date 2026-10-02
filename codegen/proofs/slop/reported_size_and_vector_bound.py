@@ -3,9 +3,9 @@
 (docs/mutation_testing/MUTATION_PROOFS.md): the reported size of a boxed fixed-size object, and the upper bound of a byte vector's
 validity check.
 
-    python3 codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py [--check]
+    python3 codegen/proofs/slop/reported_size_and_vector_bound.py [--check]
 
-proofs/mutation_coverage/size/size_and_bound_<fulu|generic>.bend holds
+proofs/slop/size/size_and_bound_<fulu|generic>.bend holds
 
   <X>_encoded_size(o: O.Boxed<X>, v: X)      for every name whose size pass reports a literal size
       : {size(T.<X>_bx_size(o)) == size(T.<X>_encode(v))}
@@ -33,7 +33,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 

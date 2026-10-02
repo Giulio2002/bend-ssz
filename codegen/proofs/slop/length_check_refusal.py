@@ -2,7 +2,7 @@
 """Pins the refusal branch of the length check of the list-shaped decoders, found by mutation testing
 (`case False{}: (buf, False{})` of `P_ok_len` changed to `True{}`).
 
-    python3 codegen/proofs/mutation_coverage/length_check_refusal.py [--check]
+    python3 codegen/proofs/slop/length_check_refusal.py [--check]
 
 `P_ok(buf, off, len) = P_ok_len(Bool.and(U32.is_eq(len, (U32.div(len, e) * e)), True{}), buf, off, len)`: the length of a
 list of fixed-size elements must be a multiple of the element size. For an element of one byte (`U32.div(len, 1)`) the
@@ -10,7 +10,7 @@ test is always true, so the refusing branch of `P_ok_len` is never reached throu
 `U32.div(x, 1) == x`, which the checker does not fold for a symbolic x). It is a definition of its own, so its refusal
 is pinned directly:
 
-proofs/mutation_coverage/validity/<X>_length_refusal.bend (one module per name whose decoder has that check; object_api_coverage_gate reads it after the name's own proving files):
+proofs/slop/validity/<X>_length_refusal.bend (one module per name whose decoder has that check; object_api_coverage_gate reads it after the name's own proving files):
 
   <X>_okf_len(buf, off, len) : {T.P_ok_len(False{}, buf, off, len) == (buf, False{}) : B.Buf & Bool}
 
@@ -24,7 +24,7 @@ import re
 import sys
 
 from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 
@@ -42,7 +42,7 @@ def name_laws(runtime):
 
 def module(tmod, X, law):
     return law_module('length_check_refusal', [f'# {X}: the refusing branch of the length check of its decoder (found by mutation testing;',
-                                       '# codegen/proofs/mutation_coverage/length_check_refusal.py). By computation.'], [law], tmod)
+                                       '# codegen/proofs/slop/length_check_refusal.py). By computation.'], [law], tmod)
 
 
 def main():

@@ -2,14 +2,14 @@
 """Symbolic capacity laws: the allocation depth of an encoder or checked serializer, pinned without computing
 anything (a continuation of buffer_capacity.py, whose default-object law is too slow past 2^10 words).
 
-    python3 codegen/proofs/mutation_coverage/symbolic_buffer_capacity.py [--check]
+    python3 codegen/proofs/slop/symbolic_buffer_capacity.py [--check]
 
 `O.out_at(d)` is a zero array of 2^d words and word indices wrap modulo its size, so an encoder whose `d` is one too
 small silently overwrites its own head. buffer_capacity.py states, for the default object, that the serializer's
 buffer is the encoder's; computing it costs 74 s at 2^13 words and 406 s at 2^15 (Blob), and does not finish for
 HistoricalBatch (2^17).
 
-proofs/mutation_coverage/capacity/<X>_symbolic.bend (one module per name) holds, for every name whose serializer or encoder allocates with
+proofs/slop/capacity/<X>_symbolic.bend (one module per name) holds, for every name whose serializer or encoder allocates with
 `O.out_at(d)` (an encoder that reports its size inline, `O.out_done(N, P_put(O.out_at(d), 0, o))`, is stated the same way):
 
   <X>_serialize_capsym(o)   : {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(dn), 0, o)) : ..}
@@ -23,7 +23,7 @@ array in the stuck term and so the statement's value; no write loop is evaluated
 size of the name (1 s for Blob).
 
 Named so that object_api_coverage_gate files them under serialize_valid and encode_eval: they land in the name's encode facade. The
-object_api_coverage_gate scans proofs/mutation_coverage after proofs/obj, so these modules come after every other proving file of encode_eval: a facade's first proving import stays
+object_api_coverage_gate scans proofs/slop after proofs/obj, so these modules come after every other proving file of encode_eval: a facade's first proving import stays
 the name's own spec/encx file (block_and_light_client_bridges/test_struct_and_union_bridges read it as P0). Consequence: a facade that holds a heavy statement
 before this law (LightClientBootstrap_encode) still evaluates it first on a mutant.
 """
@@ -34,7 +34,7 @@ import re
 import sys
 
 from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
@@ -95,7 +95,7 @@ def name_laws(runtime):
 
 def module(tmod, X, laws):
     return law_module('symbolic_buffer_capacity', [f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
-                                               '# (found by mutation testing; codegen/proofs/mutation_coverage/symbolic_buffer_capacity.py). By computation on a variable object.'],
+                                               '# (found by mutation testing; codegen/proofs/slop/symbolic_buffer_capacity.py). By computation on a variable object.'],
                       laws, tmod)
 
 

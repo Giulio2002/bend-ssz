@@ -2,9 +2,9 @@
 """Laws that pin the write start, the length constants and the reported sizes of the generated encoders, and the
 read offset of the record decoders (docs/mutation_testing/MUTATION_PROOFS.md, section 6: mutation round 2).
 
-    python3 codegen/proofs/mutation_coverage/write_start_and_sizes.py [--check]
+    python3 codegen/proofs/slop/write_start_and_sizes.py [--check]
 
-proofs/mutation_coverage/size/<X>.bend, one module per name; object_api_coverage_gate files `<X>_ms_<tag>` in the name's encode facade.
+proofs/slop/size/<X>.bend, one module per name; object_api_coverage_gate files `<X>_ms_<tag>` in the name's encode facade.
 
   <X>_ms_serdepth   {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(Kn), 0, o))}      (symbolic in o)
       the checked serializer of a fixed-size name writes at byte 0 of an output of exactly the depth K that holds
@@ -30,10 +30,10 @@ import re
 import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
-from codegen.proofs.mutation_coverage import encoder_constants as MC  # noqa: E402
+from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 
 SIZE_MAX = 4096   # bytes: the default object of a `_ms_size` law is computed
 
@@ -124,7 +124,7 @@ def laws_of(tx, X, syms):
     mn = re.search(r'O\.ser_done\(O\.is_poisoned\(fl\), (\d+), out\)', so + '\n' + sp)
     mx = None
     if ser and not mn:
-        import codegen.proofs.mutation_coverage.encoder_constants as _mc
+        import codegen.proofs.slop.encoder_constants as _mc
         _mc.default_size(X)
         t = _mc.SCHEMA.get(X)
         mx = None if t is None else max_size(t)
