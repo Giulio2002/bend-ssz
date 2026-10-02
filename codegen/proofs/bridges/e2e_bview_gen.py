@@ -730,13 +730,7 @@ def bl_view(X, nby, lim, kdz, ky):
     kc = 0
     while 4 * 2 ** kc < nby:
         kc += 1
-    text = f'''# ---- the view of a decoded bit list: its first NB bits are the value bits of its bytes (e2e_bview) ----
-
-def bvw(o: O.Bits) -> S.Value: S.BitsValue{{BR.bview(o)}}
-
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
-    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
-  +h1 = DC.c1(t, n, hchk)
+    prelude = f'''  +h1 = DC.c1(t, n, hchk)
   +nz = DC.cB(t, n, h1)
   +bd = DC.cC(t, n, h1, nz)
   +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
@@ -758,7 +752,14 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
   +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
     Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
   +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+  +hh = BV.hb7(V)'''
+    text = f'''# ---- the view of a decoded bit list: its first NB bits are the value bits of its bytes (e2e_bview) ----
+
+def bvw(o: O.Bits) -> S.Value: S.BitsValue{{BR.bview(o)}}
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{bvw(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
+{prelude}
   +A1 = BV.vobj(n, dz, M, DC.NBu(t, n), m, h, pfM, hdz, hh, eNB, hN, hn3, e1)
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
@@ -785,29 +786,7 @@ def hK0() -> {{Nat.is_le(Nat.add(U32.to_nat({lim}), 8n), O.pow2n({kb}n)) == True
 def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}})
     -> DBL.rep_bits(DC.OBJ(t, n), S.BitList{{U32.to_nat({lim})}}):
-  +h1 = DC.c1(t, n, hchk)
-  +nz = DC.cB(t, n, h1)
-  +bd = DC.cC(t, n, h1, nz)
-  +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
-  +m = DC.M1(n)
-  +hb = DC.hB(t, n, e1, bd)
-  +dz = VL.DZ(n)
-  +M = VL.MMg(t, n)
-  +pfM = VB.mone_perfect(VC.NW(n), 0n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
-  +hdz = FD.nat__le_lt_trans(dz, {kdz}n, 32n, DC.hdzK(d, n, hd, hn, hb), {{==}})
-  +V = DC.V(t, n)
-  +h = VY.hb(V)
-  +hm8 = FD.nat__le_trans(Nat.mul(8n, m), DC.BD(t, n), U32.to_nat({lim}), FD.nat__le_add_right(Nat.mul(8n, m), h), bd)
-  +emul = VU.mul_le(8, U32.sub(n, 1), {lim}, hm8)
-  +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(n, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), emul), bd)
-  +eNB = Equal.trans(Nat, U32.to_nat(DC.NBu(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(n, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(n, 1)), O.high_bit(V), {lim}, hadd),
-    Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(n, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
-  +hkc = FD.nat__le_trans(U32.to_nat(n), {nby}n, A.quad(FD.spec_common__pow2({kc}n)), hb, {{==}})
-  +hNW = C.nw(n, {kc}n, {{==}}, hkc)
-  +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
-    Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
-  +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+{prelude}
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
   +ew = BV.win(d, t, n, m, pf, hn, e1, hNW, DC.hrgB(n, hb))
@@ -830,29 +809,7 @@ def decoded_rep(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perf
 
 def decoded_hv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> BTV.sdbv(DC.OBJ(t, n)):
-  +h1 = DC.c1(t, n, hchk)
-  +nz = DC.cB(t, n, h1)
-  +bd = DC.cC(t, n, h1, nz)
-  +e1 = VR.e1n(n, VR.pos1(n, DC.cA(U32.is_lt(0, n), t, n, hchk)))
-  +m = DC.M1(n)
-  +hb = DC.hB(t, n, e1, bd)
-  +dz = VL.DZ(n)
-  +M = VL.MMg(t, n)
-  +pfM = VB.mone_perfect(VC.NW(n), 0n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
-  +hdz = FD.nat__le_lt_trans(dz, {kdz}n, 32n, DC.hdzK(d, n, hd, hn, hb), {{==}})
-  +V = DC.V(t, n)
-  +h = VY.hb(V)
-  +hm8 = FD.nat__le_trans(Nat.mul(8n, m), DC.BD(t, n), U32.to_nat({lim}), FD.nat__le_add_right(Nat.mul(8n, m), h), bd)
-  +emul = VU.mul_le(8, U32.sub(n, 1), {lim}, hm8)
-  +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(n, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), emul), bd)
-  +eNB = Equal.trans(Nat, U32.to_nat(DC.NBu(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(n, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(n, 1)), O.high_bit(V), {lim}, hadd),
-    Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(n, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(n, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
-  +hkc = FD.nat__le_trans(U32.to_nat(n), {nby}n, A.quad(FD.spec_common__pow2({kc}n)), hb, {{==}})
-  +hNW = C.nw(n, {kc}n, {{==}}, hkc)
-  +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(n), 0n), C.nwn(U32.to_nat(n)),
-    Equal.trans(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), C.nwn(U32.to_nat(n)), FD.nat__add_zero(VC.NW(n)), hNW), DC.hrgB(n, hb))
-  +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), U32.to_nat({nby + 3}), FD.spec_common__pow2(32n), Order.add_left(3n, U32.to_nat(n), {nby}n, hb), VB.u32_lt({nby + 3}))
-  +hh = BV.hb7(V)
+{prelude}
   +W1 = VR.WB(t, 0n, 1n+m)
   +hw1 = DC.hw1(d, n, m, hn, e1)
   +ew = BV.win(d, t, n, m, pf, hn, e1, hNW, DC.hrgB(n, hb))
@@ -3591,6 +3548,25 @@ def hcore{p}(+dz: Nat, +M: FD.array__Tree<U32>, +n: U32, +NB: U32, +Q: Nat, +h: 
     return ''.join(L)
 
 
+def _hv_case_head(p, r, N, Q, K):
+    """The shared opening of hvn<r> / hvcn<r>: the offset from n = 1 + m, the bit count, the word index and its bound."""
+    return f'''  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
+  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
+    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
+        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
+          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
+      BV.alg3({K}n, BV.x32({Q}), h)))
+  +y = U32.shrn(({N} + 3 : U32), 2n)
+  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
+    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
+      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
+  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
+    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
+    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
+  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))'''
+
+
 def _hv_objs():
     HYP = ('+dz: Nat, +M: FD.array__Tree<U32>, +NB: U32, +m: Nat, +h: Nat, +pf: {FD.array__perfect(U32, dz, M) == True{} : Bool}, '
            '+hdz: {Nat.is_lt(dz, 32n) == True{} : Bool}, +hh: {Nat.is_le(h, 7n) == True{} : Bool}, '
@@ -3617,21 +3593,7 @@ def _hv_objs():
         L.append(f'''
 def hvn{r}(+r: Word(30n), {HYP.replace('U32.to_nat(n)', f'U32.to_nat({N})')})
     -> {G.replace('mask_last(n,', f'mask_last({N},')}:
-  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
-  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
-    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
-      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
-        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
-          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
-      BV.alg3({K}n, BV.x32({Q}), h)))
-  +y = U32.shrn(({N} + 3 : U32), 2n)
-  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
-    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
-      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
-  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
-    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
-    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
-  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))
+{_hv_case_head(p, r, N, Q, K)}
 {ebt(p, Q)}  hcore{p}(dz, M, {N}, NB, {Q}, h, pf, hdz, hh, Equal.sym(U32, U32{{WCon{{{B(c[0])}, WCon{{{B(c[1])}, Word.zero(30n)}}}}}}, U32.and({N}, 3), BF.low_sel({B(c[0])}, {B(c[1])}, r)), ei, eNB2, hq, eb)
 ''')
         cases.append(f'    case {Np}: hvn{r}(r, dz, M, NB, m, h, pf, hdz, hh, eNB, hN, hn3, e1, eh)')
@@ -3896,21 +3858,7 @@ def _hv_objsG():
         L.append(f'''
 def hvcn{r}(+r: Word(30n), {HYP.replace('U32.to_nat(n)', f'U32.to_nat({N})').replace('VBY.KW(n)', f'VBY.KW({N})').replace('VBY.RM(n)', f'VBY.RM({N})')})
     -> {G}:
-  +em = FD.nat__succ_inj(m, Nat.add({p}n, A.quad({Q})), Equal.sym(Nat, U32.to_nat({N}), 1n+m, e1))
-  +eNB2 = Equal.trans(Nat, U32.to_nat(NB), Nat.add(VSP.x8(m), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)), eNB,
-    Equal.trans(Nat, Nat.add(VSP.x8(m), h), Nat.add(Nat.add({K}n, BV.x32({Q})), h), Nat.add(BV.x32({Q}), Nat.add({K}n, h)),
-      Equal.cong(Nat, Nat, z => Nat.add(z, h), VSP.x8(m), Nat.add({K}n, BV.x32({Q})),
-        Equal.trans(Nat, VSP.x8(m), VSP.x8(Nat.add({p}n, A.quad({Q}))), Nat.add({K}n, BV.x32({Q})), Equal.cong(Nat, Nat, z => VSP.x8(z), m, Nat.add({p}n, A.quad({Q})), em),
-          Equal.cong(Nat, Nat, z => Nat.add({K}n, z), VSP.x8(A.quad({Q})), BV.x32({Q}), BV.x8q({Q})))),
-      BV.alg3({K}n, BV.x32({Q}), h)))
-  +y = U32.shrn(({N} + 3 : U32), 2n)
-  +ey = Equal.trans(Nat, U32.to_nat(y), VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), 1n+{Q}, VD.shrk(2n, ({N} + 3 : U32)),
-    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(({N} + 3 : U32))), C.nwn(Nat.add({r}n, A.quad({Q}))), 1n+{Q},
-      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(({N} + 3 : U32)), Nat.add(3n, U32.to_nat({N})), VB.add_lt32({N}, 3, U32.to_nat({N}), {{==}}, hn3)), BV.nwr{r}({Q})))
-  +ei = Equal.trans(Nat, U32.to_nat(U32.sub(y, 1)), Nat.sub(U32.to_nat(y), 1n), {Q},
-    FD.u32__sub_nat(y, 1, FD.logic__subst(Nat, z => {{Nat.is_le(1n, z) == True{{}} : Bool}}, 1n+{Q}, U32.to_nat(y), Equal.sym(Nat, U32.to_nat(y), 1n+{Q}, ey), FD.nat__zero_le({Q}))),
-    Equal.trans(Nat, Nat.sub(U32.to_nat(y), 1n), Nat.sub(1n+{Q}, 1n), {Q}, Equal.cong(Nat, Nat, z => Nat.sub(z, 1n), U32.to_nat(y), 1n+{Q}, ey), FD.list__sub_zero_eq({Q})))
-  +hq = FD.nat__succ_le_lt({Q}, FD.spec_common__pow2(dz), FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, C.nwn(U32.to_nat({N})), 1n+{Q}, BV.nwr{r}({Q}), hN))
+{_hv_case_head(p, r, N, Q, K)}
 {ebt(p, Q)}{exf(p, N, Q, c)}  hcoreG{p}(dz, CT, NB, {Q}, h, pf, hdz, hh, eNB2, hq, VB.slot(CT, {Q}), eX, eb)
 ''')
         cases.append(f'    case {Np}: hvcn{r}(r, dz, CT, NB, m, h, pf, hdz, hh, eNB, hN, hn3, e1, eh, kf)')
