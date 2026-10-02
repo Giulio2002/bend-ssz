@@ -37,13 +37,13 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema, generic  # noqa: E402
+from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 
 IN_MAX = 4096  # bytes or bits an edge law computes whole (the symbolic `vsym` law covers the larger constants)
 DATA = re.compile(r'^def (\w+)_serialize\(\+o: ([\w.]+)\) -> O\.Encoded: \1_ser_pick\((\w+)_valid\(o\), o\)$', re.M)
@@ -277,17 +277,13 @@ def module(runtime, tmod):
 
 def main():
     out, cnt = {}, []
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
+    for runtime, tmod in RUNTIMES:
         files, n = module(runtime, tmod)
         for X, t in files.items():
-            out[ROOT / f'proofs/obj/mutval_{runtime}_{X}.bend'] = t
+            out[OBJ / f'mutval_{runtime}_{X}.bend'] = t
         cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('mutval_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale validity laws: ', 'validity laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws in {len(out)} files')
+    if finish(out, ('mutval_*.bend',), 'stale validity laws: ', 'validity laws are current'):
+        print(f'{cnt} laws in {len(out)} files')
 
 
 if __name__ == '__main__':
