@@ -1,0 +1,8 @@
+{
+ "cases": 48277,
+ "tally": {
+  "accept/accept/AGREE": 37136,
+  "reject/reject/AGREE": 11141
+ },
+ "disagreements": []
+}
