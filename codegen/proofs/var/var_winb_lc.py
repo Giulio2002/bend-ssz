@@ -16,8 +16,7 @@ proofs/obj/var_codec_LightClientUpdate.bend.
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
-import sys
-from codegen.core import writer  # noqa: E402
+from codegen.proofs.var.var_finish import finish  # noqa: E402
 
 from codegen.proofs.var import var_fixx as FX  # noqa: E402
 from codegen.proofs.var import var_winb as WB  # noqa: E402
@@ -69,14 +68,8 @@ def outputs():
 
 
 def main():
-    out = outputs()
-    from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale: ', 'LightClientUpdate window modules are current')
-    for p, t in out.items():
-        p.write_text(t)
-    print('wrote ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    # accepts '--check' (var_finish.finish reads it)
+    return finish(outputs(), 'stale: ', 'LightClientUpdate window modules are current')
 
 
 if __name__ == '__main__':
