@@ -271,9 +271,8 @@ def spec_text(x, C, c):
         rest_ = '[' + ', '.join(sb[j + 1:]) + ']'
         w(f'  %Equal.sym({LT}, {cur}, VF.app({sb[j]}, VZ.cat({rest_})), VBZ.cat_cons({sb[j]}, {rest_})) : {{{LHSF} == {rpre("_")} : {LT}}}')
         rpre = (lambda p0_, x_: (lambda t: p0_(f'VF.app({x_}, {t})')))(rpre, sb[j])
-    w(f'  %Equal.sym({LT}, VZ.cat([]), [], VBZ.cat_nil()) : {{{LHSF} == {rpre("_")} : {LT}}}')
-    w('  {==}')
-    w('')
+    for line in TPL.render('spec_text_lines', LHSF=LHSF, rpre=rpre).split('\n'):
+        w(line)
     # ---- the bytes ----
     YBW = f'VS.bt(U32.to_nat(YE.SFS(N)), F.limbs(VB.wdr({PC}, {S_})))'
     BYTES = f'VS.bt(U32.to_nat(SFS(N)), F.limbs(VB.wdr(P, {S_})))'

@@ -248,3 +248,7 @@ def encode_spec(${', '.join(c['args'] + hargs)}):
       partsw(${A0}, ${', '.join(hargs)}, FD.array__trep_perfect(U32, ${DO}n, 0), ${HD0}, {==})) :
     {Codec.bytes(_) == Some{${BY0}} : ${M}}
   {==}
+
+@@ spec_text_lines @@
+  %Equal.sym(${LT}, VZ.cat([]), [], VBZ.cat_nil()) : {${LHSF} == ${rpre('_')} : ${LT}}
+  {==}
