@@ -148,7 +148,6 @@ def limb(s):
     L = ['def limb_hw_%d(+old: U32, +v: U32) -> {I.limb(%s) == VS.list_set(VS.list_set(I.limb(old), %dn, %s), %dn, %s) : +List<U32>}:' % (s, M, s, LO, s + 1, HI)]
     for j in range(4):
         cur = RHS[:j] + ['_'] + LHS[j + 1:]
-        prev = RHS[:j] + LHS[j:]
         L.append('  %%Equal.sym(U32, %s, %s, %s) : {[%s] == [%s] : +List<U32>}' % (LHS[j], RHS[j], eqs[j], ', '.join(cur), ', '.join(RHS)))
     L.append('  {==}')
     L.append('')
