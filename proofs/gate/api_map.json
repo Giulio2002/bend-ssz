@@ -2860,35 +2860,11 @@
     },
     {
      "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_a0"
+     "law": "FinalityBranch_cmp_all"
     },
     {
      "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_a72"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_FinalityBranch.bend",
-     "law": "FinalityBranch_cmp_u7"
+     "law": "FinalityBranch_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -9107,35 +9083,11 @@
     },
     {
      "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_a0"
+     "law": "CurrentSyncCommitteeBranch_cmp_all"
     },
     {
      "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_a80"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_CurrentSyncCommitteeBranch.bend",
-     "law": "CurrentSyncCommitteeBranch_cmp_u7"
+     "law": "CurrentSyncCommitteeBranch_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -9271,35 +9223,11 @@
     },
     {
      "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_a0"
+     "law": "NextSyncCommitteeBranch_cmp_all"
     },
     {
      "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_a80"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_NextSyncCommitteeBranch.bend",
-     "law": "NextSyncCommitteeBranch_cmp_u7"
+     "law": "NextSyncCommitteeBranch_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -10908,35 +10836,11 @@
     },
     {
      "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_a0"
+     "law": "ExecutionBranch_cmp_all"
     },
     {
      "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_a32"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_ExecutionBranch.bend",
-     "law": "ExecutionBranch_cmp_u7"
+     "law": "ExecutionBranch_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -13775,6 +13679,10 @@
     {
      "file": "var_plist_proglist_bool_top.bend",
      "law": "ok_eval"
+    },
+    {
+     "file": "zokf_proglist_bool.bend",
+     "law": "proglist_bool_okf_len"
     }
    ],
    "decode_accept": [
@@ -13917,6 +13825,14 @@
     {
      "file": "zcapsym_vec_bool_16.bend",
      "law": "vec_bool_16_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_bool_16.bend",
+     "law": "vec_bool_16_cmp_all"
+    },
+    {
+     "file": "zcmpeq_vec_bool_16.bend",
+     "law": "vec_bool_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -14535,6 +14451,14 @@
     {
      "file": "zcapsym_vec_bool_4.bend",
      "law": "vec_bool_4_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_bool_4.bend",
+     "law": "vec_bool_4_cmp_all"
+    },
+    {
+     "file": "zcmpeq_vec_bool_4.bend",
+     "law": "vec_bool_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -15031,6 +14955,14 @@
     {
      "file": "zcapsym_vec_bool_8.bend",
      "law": "vec_bool_8_encode_capsym"
+    },
+    {
+     "file": "zcmpeq_vec_bool_8.bend",
+     "law": "vec_bool_8_cmp_all"
+    },
+    {
+     "file": "zcmpeq_vec_bool_8.bend",
+     "law": "vec_bool_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -15250,35 +15182,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_a0"
+     "law": "vec_uint128_16_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_a64"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_16.bend",
-     "law": "vec_uint128_16_cmp_u7"
+     "law": "vec_uint128_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -15414,35 +15322,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_a0"
+     "law": "vec_uint128_1_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_a4"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_1.bend",
-     "law": "vec_uint128_1_cmp_u7"
+     "law": "vec_uint128_1_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -15578,35 +15462,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_a0"
+     "law": "vec_uint128_2_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_a8"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_2.bend",
-     "law": "vec_uint128_2_cmp_u7"
+     "law": "vec_uint128_2_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -15866,35 +15726,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_a0"
+     "law": "vec_uint128_3_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_a20"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_3.bend",
-     "law": "vec_uint128_3_cmp_u7"
+     "law": "vec_uint128_3_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -16030,35 +15866,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_a0"
+     "law": "vec_uint128_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_a16"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_4.bend",
-     "law": "vec_uint128_4_cmp_u7"
+     "law": "vec_uint128_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -16412,35 +16224,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_a0"
+     "law": "vec_uint128_5_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_a44"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_5.bend",
-     "law": "vec_uint128_5_cmp_u7"
+     "law": "vec_uint128_5_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -16576,35 +16364,11 @@
     },
     {
      "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_a0"
+     "law": "vec_uint128_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_a32"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint128_8.bend",
-     "law": "vec_uint128_8_cmp_u7"
+     "law": "vec_uint128_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -16830,35 +16594,11 @@
     },
     {
      "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_a0"
+     "law": "vec_uint8_16_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_a4"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_16.bend",
-     "law": "vec_uint8_16_cmp_u7"
+     "law": "vec_uint8_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -17440,23 +17180,11 @@
     },
     {
      "file": "zcmpeq_vec_uint8_4.bend",
-     "law": "vec_uint8_4_cmp_a0"
+     "law": "vec_uint8_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint8_4.bend",
-     "law": "vec_uint8_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_4.bend",
-     "law": "vec_uint8_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_4.bend",
-     "law": "vec_uint8_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_4.bend",
-     "law": "vec_uint8_4_cmp_u7"
+     "law": "vec_uint8_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -17924,27 +17652,11 @@
     },
     {
      "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_a0"
+     "law": "vec_uint8_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint8_8.bend",
-     "law": "vec_uint8_8_cmp_u7"
+     "law": "vec_uint8_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -18160,35 +17872,11 @@
     },
     {
      "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_a0"
+     "law": "vec_uint16_16_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_a8"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_16.bend",
-     "law": "vec_uint16_16_cmp_u7"
+     "law": "vec_uint16_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -18428,23 +18116,11 @@
     },
     {
      "file": "zcmpeq_vec_uint16_2.bend",
-     "law": "vec_uint16_2_cmp_a0"
+     "law": "vec_uint16_2_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint16_2.bend",
-     "law": "vec_uint16_2_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_2.bend",
-     "law": "vec_uint16_2_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_2.bend",
-     "law": "vec_uint16_2_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_2.bend",
-     "law": "vec_uint16_2_cmp_u7"
+     "law": "vec_uint16_2_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -18798,27 +18474,11 @@
     },
     {
      "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_a0"
+     "law": "vec_uint16_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_4.bend",
-     "law": "vec_uint16_4_cmp_u7"
+     "law": "vec_uint16_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -19286,35 +18946,11 @@
     },
     {
      "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_a0"
+     "law": "vec_uint16_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_a4"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint16_8.bend",
-     "law": "vec_uint16_8_cmp_u7"
+     "law": "vec_uint16_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -19654,35 +19290,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_a0"
+     "law": "vec_uint256_1_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_a8"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_1.bend",
-     "law": "vec_uint256_1_cmp_u7"
+     "law": "vec_uint256_1_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -19818,35 +19430,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_a0"
+     "law": "vec_uint256_2_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_a16"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_2.bend",
-     "law": "vec_uint256_2_cmp_u7"
+     "law": "vec_uint256_2_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -20106,35 +19694,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_a0"
+     "law": "vec_uint256_3_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_a40"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_3.bend",
-     "law": "vec_uint256_3_cmp_u7"
+     "law": "vec_uint256_3_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -20270,35 +19834,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_a0"
+     "law": "vec_uint256_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_a32"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_4.bend",
-     "law": "vec_uint256_4_cmp_u7"
+     "law": "vec_uint256_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -20648,35 +20188,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_a0"
+     "law": "vec_uint256_5_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_a88"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_5.bend",
-     "law": "vec_uint256_5_cmp_u7"
+     "law": "vec_uint256_5_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -20812,35 +20328,11 @@
     },
     {
      "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_a0"
+     "law": "vec_uint256_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_a64"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint256_8.bend",
-     "law": "vec_uint256_8_cmp_u7"
+     "law": "vec_uint256_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21066,35 +20558,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_a0"
+     "law": "vec_uint32_16_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_a16"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_16.bend",
-     "law": "vec_uint32_16_cmp_u7"
+     "law": "vec_uint32_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21230,23 +20698,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_1.bend",
-     "law": "vec_uint32_1_cmp_a0"
+     "law": "vec_uint32_1_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_1.bend",
-     "law": "vec_uint32_1_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_1.bend",
-     "law": "vec_uint32_1_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_1.bend",
-     "law": "vec_uint32_1_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_1.bend",
-     "law": "vec_uint32_1_cmp_u7"
+     "law": "vec_uint32_1_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21382,27 +20838,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_a0"
+     "law": "vec_uint32_2_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_2.bend",
-     "law": "vec_uint32_2_cmp_u7"
+     "law": "vec_uint32_2_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21538,35 +20978,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_a0"
+     "law": "vec_uint32_31_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_a33"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_31.bend",
-     "law": "vec_uint32_31_cmp_u7"
+     "law": "vec_uint32_31_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21702,35 +21118,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_a0"
+     "law": "vec_uint32_3_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_a5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_3.bend",
-     "law": "vec_uint32_3_cmp_u7"
+     "law": "vec_uint32_3_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -21866,35 +21258,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_a0"
+     "law": "vec_uint32_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_a4"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_4.bend",
-     "law": "vec_uint32_4_cmp_u7"
+     "law": "vec_uint32_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -22268,35 +21636,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_a0"
+     "law": "vec_uint32_5_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_a11"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_5.bend",
-     "law": "vec_uint32_5_cmp_u7"
+     "law": "vec_uint32_5_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -22432,35 +21776,11 @@
     },
     {
      "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_a0"
+     "law": "vec_uint32_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_a8"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint32_8.bend",
-     "law": "vec_uint32_8_cmp_u7"
+     "law": "vec_uint32_8_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -22686,35 +22006,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_a0"
+     "law": "vec_uint64_16_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_a32"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_16.bend",
-     "law": "vec_uint64_16_cmp_u7"
+     "law": "vec_uint64_16_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -22850,27 +22146,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_a0"
+     "law": "vec_uint64_1_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_1.bend",
-     "law": "vec_uint64_1_cmp_u7"
+     "law": "vec_uint64_1_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -23006,35 +22286,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_a0"
+     "law": "vec_uint64_2_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_a4"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_2.bend",
-     "law": "vec_uint64_2_cmp_u7"
+     "law": "vec_uint64_2_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -23170,35 +22426,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_a0"
+     "law": "vec_uint64_31_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_a66"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_31.bend",
-     "law": "vec_uint64_31_cmp_u7"
+     "law": "vec_uint64_31_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -23334,35 +22566,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_a0"
+     "law": "vec_uint64_3_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_a10"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_3.bend",
-     "law": "vec_uint64_3_cmp_u7"
+     "law": "vec_uint64_3_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -23498,35 +22706,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_a0"
+     "law": "vec_uint64_4_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_a8"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_4.bend",
-     "law": "vec_uint64_4_cmp_u7"
+     "law": "vec_uint64_4_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -23892,35 +23076,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_a0"
+     "law": "vec_uint64_5_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_a22"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_5.bend",
-     "law": "vec_uint64_5_cmp_u7"
+     "law": "vec_uint64_5_cmp_unal"
     }
    ],
    "encode_spec": [
@@ -24056,35 +23216,11 @@
     },
     {
      "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_a0"
+     "law": "vec_uint64_8_cmp_all"
     },
     {
      "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_a1"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_a2"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_a3"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_a16"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_u5"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_u6"
-    },
-    {
-     "file": "zcmpeq_vec_uint64_8.bend",
-     "law": "vec_uint64_8_cmp_u7"
+     "law": "vec_uint64_8_cmp_unal"
     }
    ],
    "encode_spec": [
