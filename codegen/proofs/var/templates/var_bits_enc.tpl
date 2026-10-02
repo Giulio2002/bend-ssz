@@ -224,3 +224,215 @@ def encE(${ALLP})
   %Equal.sym(${M}, Layout.encoding(VS.fpv(${PRE}, ${Y}, ${POST})), Some{${ENCR}}, VBC.enc_fpvb(${PRE}, ${Y}, ${POST}, VZ.bd_btl(U32.to_nat(CO.NK(K)), VB.wdr(${H}n, ${SA})), fitY(${ALLa}))) :
     {Codec.bytes(Codec.one(_, None{})) == ${RHSk} : ${M}}
   {==}
+
+@@ bw_module_lines_6 @@
+law bw${r}:
+  for +x: U32
+  for +hz: {hzw(${r}n, x) == True{} : Bool}
+  ${T}
+def bw${r}(x, hz):
+  match x:
+    case ${pat}:
+@@ bw_module_lines_7 @@
+      %Equal.sym(Word(32n), Word.or(32n, WSp.join(${r}n, ${m}n, ${LO}, Word.zero(${m}n)), WSp.join(${r}n, ${m}n, Word.zero(${r}n), ${E})), WSp.join(${r}n, ${m}n, ${LO}, ${E}), WSp.join_or(${r}n, ${m}n, ${LO}, ${E})) :
+        ${mot}
+      ({==}, {==})
+@@ bw_module_lines @@
+# The delimiter mask of byte j < 4, bit b < 8: bit 8 j + b.
+def DL(j: Nat, b: Nat) -> U32:
+  match j:
+@@ bw_module_lines_2 @@
+# OR-ing the delimiter into word x: bit r = 8 j + b is set, the bits below kept,
+# the bits above zero.
+law dlc:
+  for +j: Nat
+  for +b: Nat
+  for +x: U32
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  for +hz: {hzw(${RR}, x) == True{} : Bool}
+  ${TG}
+def dlc(j, b, x, hj, hb, hz):
+  match j b:
+@@ bw_module_lines_3 @@
+# The runtime delimiter mask (O.w8_delim at p = 0) is DL of the bit count's byte and bit.
+law dmk_dl:
+  for +K: U32
+  for +j: Nat
+  for +b: Nat
+  for +ej: {U32.to_nat(U32.and(U32.add(0, U32.shrn(K, 3n)), 3)) == j : Nat}
+  for +eb: {U32.to_nat(U32.and(K, 7)) == b : Nat}
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  {${KD} == DL(j, b) : U32}
+def dmk_dl(K, j, b, ej, eb, hj, hb):
+  match j b:
+@@ bw_module_lines_8 @@
+    case ${J}n ${B}n:
+      %Equal.sym(U32, U32.and(K, 7), ${B}, F.u32__injective(U32.and(K, 7), ${B}, eb)) :
+        {O.shl_bytes(U32.and(MF.shl_by(1, _), 255), U32.and(U32.add(0, U32.shrn(K, 3n)), 3)) == DL(${J}n, ${B}n) : U32}
+      %Equal.sym(U32, U32.and(U32.add(0, U32.shrn(K, 3n)), 3), ${J}, F.u32__injective(U32.and(U32.add(0, U32.shrn(K, 3n)), 3), ${J}, ej)) :
+        {O.shl_bytes(U32.and(MF.shl_by(1, ${B}), 255), _) == DL(${J}n, ${B}n) : U32}
+      {==}
+@@ bw_module_lines_4 @@
+    case 4n+ +e _: Empty.absurd({${KD} == DL(4n+e, b) : U32}, F.nat__lt_zero_absurd(e, hj))
+
+# Whether the last word is partial: 0 at a word boundary, else 1.
+def CWr(r: Nat) -> Nat:
+  match r:
+    case 0n: 0n
+    case 1n+p: 1n
+
+@@ bw_module_lines_5 @@
+# The closed facts of byte j < 4, bit b < 8.
+law cfj:
+  for +j: Nat
+  for +b: Nat
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  ${CF}
+def cfj(j, b, hj, hb):
+  match j b:
+@@ pad_module_lines_5 @@
+law padw${R}:
+  for +S: List<&2, U32>
+  for +Q: Nat
+  for +hp: {WS.bdrop(${R}n, ${CB}) == SP.zero_bytes(${32 - R}n) : +List<U32>}
+  {WS.bdrop(${c}n, I.limb(MR.wd(S, Nat.add(O.e8(Nat.add(Q, 0n)), ${i}n)))) == SP.zero_bytes(${4 - c}n) : +List<U32>}
+def padw${R}(S, Q, hp):
+  Equal.cong(+List<U32>, +List<U32>, z => WS.btake(${4 - c}n, z), WS.bdrop(${R}n, ${CB}), SP.zero_bytes(${32 - R}n), hp)
+
+@@ pad_module_lines @@
+law cwb:
+  for +b: Nat
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  {VD.s_rng(3n, Nat.add(b, 7n)) == BW.CWr(b) : Nat}
+def cwb(b, hb):
+  match b:
+@@ pad_module_lines_2 @@
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  for +hi: {Nat.is_lt(i, 8n) == True{} : Bool}
+  ${CI}
+def cib(j, b, i, hj, hb, hi):
+  match j b i:
+@@ pad_module_lines_3 @@
+    case 4n+ +e _ _: Empty.absurd({Nat.is_le(Nat.add(A.quad(i), Nat.add(4n+e, BW.CWr(b))), 32n) == True{} : Bool}, F.nat__lt_zero_absurd(e, hj))
+
+# A nonzero bit offset 8 j + b has a nonzero byte count j + [b > 0] in its word.
+law cpos:
+  for +j: Nat
+  for +b: Nat
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  for +h: {Nat.is_lt(0n, Nat.add(VS.x8(j), b)) == True{} : Bool}
+  {Nat.is_lt(0n, Nat.add(j, BW.CWr(b))) == True{} : Bool}
+def cpos(j, b, hj, hb, h):
+  match j b:
+@@ pad_module_lines_4 @@
+  for +S: List<&2, U32>
+  for +Q: Nat
+  for +hj: {Nat.is_lt(j, 4n) == True{} : Bool}
+  for +hb: {Nat.is_lt(b, 8n) == True{} : Bool}
+  for +hi: {Nat.is_lt(i, 8n) == True{} : Bool}
+  for +hz: ${HZ}
+  for +hp: ${HP}
+  ${GL}
+def hzd(j, b, i, S, Q, hj, hb, hi, hz, hp):
+  match j b i:
+@@ name_module_lines @@
+def OUT(+T: F.array__Tree<U32>, +K: U32) -> F.array__Tree<U32>: DL.OZ(${DO}, T, K)
+def VAL(+T: F.array__Tree<U32>, +K: U32) -> S.Value: S.BitsValue{BO.bview(${OBJ})}
+def BY(+T: F.array__Tree<U32>, +K: U32) -> +List<U32>: VS.bt(U32.to_nat(CO.NK(K)), FX.limbs(F.array__slots(U32, OUT(T, K))))
+
+@@ name_module_lines_2 @@
+def cr(${PS}) -> CO.CR(${DO}, T, K):
+  (+wf, +r1) = rep
+  +hN = VR.rep_N(T, K, ${N}n, rep)
+  +hz = VR.rep_hz(dw, T, K, ${kb}n, ${N}n, pfT, {==}, hN, {==}, ${QS}, wf)
+  ${core}
+
+@@ name_module_lines_6 @@
+  %Equal.sym(Array<U32>, Array.new(U32, 0n, 0), ${ZT}, F.array__new(U32, 0n, 0)) :
+    {T.${X}_enc_put(T.${p}_putn(_, 0, ${OBJ})) == ${RE} : O.Bits & B.Buf}
+  %Equal.sym(${PN}, O.put_bits_n(${ZT}, 0, ${OBJ}), (F.array__thaw(U32, OUT(T, K)), (${OBJ}, CO.NK(K))), ${EV}) :
+    {T.${X}_enc_put(_) == ${RE} : O.Bits & B.Buf}
+@@ name_module_lines_7 @@
+  %Equal.sym(U32, U32.and(CO.NK(K), 2147483647), CO.NK(K), VBE.and31(CO.NK(K), ${KS}n, {==}, ${HL})) :
+    {(${OBJ}, O.out_done(_, F.array__thaw(U32, OUT(T, K)))) == ${RE} : O.Bits & B.Buf}
+  {==}
+@@ name_module_lines_8 @@
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
+    {T.${X}_enc_sized(O.bsz_pick(K, _)) == ${RE} : O.Bits & B.Buf}
+  %Equal.sym(Bool, ${CAP}, True{}, CO.capT(K, dw, hdw, hcap)) :
+    {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == ${RE} : O.Bits & B.Buf}
+@@ name_module_lines_9 @@
+  %Equal.sym(Array<U32>, ${ZB}, ${ZT},
+      Equal.trans(Array<U32>, ${ZB}, Array.new(U32, CO.DOK(K), 0), ${ZT},
+        zeros_at(B.words_depth_u(VC.nwu(CO.NK(K))), CO.DOK(K), VD.wdu(VC.nwu(CO.NK(K))), CO.hDOK(K, ${kb}n, ${KO}n, ${N}n, {==}, VR.rep_N(T, K, ${N}n, rep), {==}, {==})),
+        F.array__new(U32, CO.DOK(K), 0))) :
+    {T.${X}_enc_put(CO.NK(K), T.${p}_putn(_, 0, ${OBJ})) == ${RE} : O.Bits & B.Buf}
+  %Equal.sym(${PN}, O.put_bits_n(${ZT}, 0, ${OBJ}), (F.array__thaw(U32, OUT(T, K)), (${OBJ}, CO.NK(K))), ${EV}) :
+    {T.${X}_enc_put(CO.NK(K), _) == ${RE} : O.Bits & B.Buf}
+  {==}
+@@ name_module_lines_3 @@
+
+# Those bytes are the spec/codec.bend encoding of the object's value.
+law encode_spec:
+@@ name_module_lines_4 @@
+def encode_spec(${', '.join(A)}):
+  +c = cr(${AS})
+  %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, T)), T, F.array__freeze_thaw(U32, T)) :
+    Decoding.decodes(GS.${X}(), BY(T, K), S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, _)))})
+@@ name_module_lines_5 @@
+  %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}])), BY(T, K), CO.cr2(${DO}, T, K, c)) :
+    {Codec.bytes(Codec.one(Some{_}, None{})) == Some{BY(T, K)} : Maybe<&2, +List<U32>>}
+  {==}
+@@ _cm_tree_laws_lines @@
+def pfD0(+T: FD.array__Tree<U32>, +K: U32) -> {FD.array__perfect(U32, DO(K), OUTA(T, K)) == True{} : Bool}:
+  FD.array__upd_perfect(U32, DO(K), VBT.MT(DO(K), OUT1(K), T, ${H}n, K), Nat.add(${H}n, ${q}), U32.or(VB.slot(VBT.MT(DO(K), OUT1(K), T, ${H}n, K), Nat.add(${H}n, ${q})), VBT.DMK(U32.add(0, ${FS}), K)),
+    VB.mone_perfect(VC.NW(O.bits_nbytes(K)), 0n, ${H}n, DO(K), OUT1(K), T, pf1(K)))
+@@ _cm_size_put_eval_lines @@
+def put_eval(${ALLP})
+    -> {${Tn}_putn(FD.array__thaw(U32, VC.ZT(DO(K))), 0, ${OBJ}) == ${RP} : ${TP}}:
+  +hN = ${HN}
+  +c = cra(${ALLa})
+  %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, VC.ZT(DO(K))), ${po}, ${FS}), FD.array__thaw(U32, OUT1(K)),
+      VB.set_n(DO(K), VC.ZT(DO(K)), ${po}, ${po}n, ${FS}, {==}, VB.lt32(DO(K), hDO31(${NCa})), FD.nat__lt_le_trans(${po}n, ${H}n, VB.pw(DO(K)), {==}, hbk(${H}n, ${NCa}, {==})), pf0(K))) :
+    {${Tn}_pw0(0, ${FIXOBJS}, T.${lp}_pvb(${FS}, T.${lp}_pk(_, U32.add(0, ${FS}), T.${lp}_valid(${OBB})))) == ${RP} : ${TP}}
+  %Equal.sym(O.Bits & Bool, T.${lp}_valid(${OBB}), (${OBB}, True{}),
+      CT.valid_eval(dw, T, K, ${kb}n, ${N}n, ${N}, pfT, hdw, {==}, {==}, hN, hNk0(), hcap, hv)) :
+    {${Tn}_pw0(0, ${FIXOBJS}, T.${lp}_pvb(${FS}, T.${lp}_pk(FD.array__thaw(U32, OUT1(K)), U32.add(0, ${FS}), _))) == ${RP} : ${TP}}
+  %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(FD.array__thaw(U32, OUT1(K)), U32.add(0, ${FS}), ${OBB}), (FD.array__thaw(U32, OUTA(T, K)), (${OBB}, CO.NK(K))),
+      CT.cra1(DO(K), OUT1(K), T, U32.add(0, ${FS}), ${H}n, K, c)) :
+    {${Tn}_pw0(0, ${FIXOBJS}, T.${lp}_pvb(${FS}, _)) == ${RP} : ${TP}}
+  %Equal.sym(U32, O.padd(${FS}, CO.NK(K)), SFS(K), padd(${NCa})) :
+    {(${puts(0, 'FD.array__thaw(U32, OUTA(T, K))')}, (${OBJ}, _)) == ${RP} : ${TP}}
+@@ _cm_size_put_eval_lines_2 @@
+  %Equal.sym(Array<U32>, ${cur}, FD.array__thaw(U32, ${TD(j + 1)}),
+      VT.put_${ft.p}(DO(K), ${TD(j)}, U32.add(0, ${f['c']}), ${f['k']}n, {==}, hDO29(${NCa}), ${pfd(j)}, ${hb(f)}, ${ws})) :
+    {(${puts(j + 1, '_')}, (${OBJ}, SFS(K))) == ${RP} : ${TP}}
+@@ _cm_encode_eval_lines @@
+
+# The encoder returns the object and the buffer of the output tree.
+law encode_eval:
+@@ _cm_encode_eval_lines_2 @@
+  {${Tn}_encode(${OBJ}) == ${RE} : ${TE}}
+def encode_eval(${ALLa}):
+  +hN = ${HN}
+  %Equal.sym(${Tn} & U32, ${Tn}_size(${OBJ}), ${RS}, size_eval(${ALLa})) :
+    {${Tn}_enc_sized(_) == ${RE} : ${TE}}
+  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), FD.array__thaw(U32, VC.ZT(DO(K))),
+      Equal.trans(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), Array.new(U32, DO(K), 0), FD.array__thaw(U32, VC.ZT(DO(K))),
+        zeros_at(B.words_depth_u(VC.nwu(SFS(K))), DO(K), VD.wdu(VC.nwu(SFS(K))), hDOK(${NCa})), FD.array__new(U32, DO(K), 0))) :
+    {${Tn}_enc_put(SFS(K), ${Tn}_putn(_, 0, ${OBJ})) == ${RE} : ${TE}}
+  %Equal.sym(${TP}, ${Tn}_putn(FD.array__thaw(U32, VC.ZT(DO(K))), 0, ${OBJ}), ${RP}, put_eval(${ALLa})) :
+    {${Tn}_enc_put(SFS(K), _) == ${RE} : ${TE}}
+  {==}
+
+@@ _cm_spec_side_lines @@
+  Decoding.decodes(Spec.${n}(), ${BY}, VAL(${WA}, T, K))
+def encode_spec(${ALLa}):
+  Equal.trans(${M}, Codec.encoding_for_legal_type(Spec.${n}(), VAL(${WA}, T, K)), ${RHSk}, Some{${BY}},
+    encE(${ALLa}),
+    Equal.cong(+List<U32>, ${M}, z => Some{z}, ${RHS}, ${BY}, Equal.sym(+List<U32>, ${BY}, ${RHS}, out_eq(${ALLa}))))
