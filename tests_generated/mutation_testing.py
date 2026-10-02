@@ -7,7 +7,7 @@ other harnesses feed corrupted INPUT to correct code; this one corrupts the CODE
 
 Runtime side. For every Fulu name and every generic name, MUTANTS_PER_TYPE (default 5) mutants are drawn, seeded
 and deterministic, from the sites of types/<Name>_{decode_ssz,encode_ssz,hashtreeroot}_generated.bend (the code the
-object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; out_at(d) +1 is an over-allocated buffer, -1 an under-allocated one; the alignment test `pos .&. 3 == 0` is not drawn: its equivalence is open, see docs/RESULTS.md), a comparison flipped
+object programs run): a numeric constant changed by +1 or -1 (an offset, a size, a depth; out_at(d) +1 is an over-allocated buffer, -1 an under-allocated one; a comparison is flipped to each of is_lt / is_le / is_ge), a comparison flipped
 (is_eq -> is_lt, is_lt -> is_le, is_le -> is_lt), an addition turned into a subtraction, a validity result
 forced (True{} -> False{}, False{} -> True{}), the two children of a hash_tree_root node swapped
 (D.node(h, a, b) -> D.node(h, b, a); only the root files have them). The sites are drawn round-robin over the operators. The mutants
@@ -53,7 +53,7 @@ from provenance import stamp  # noqa: E402
 
 OPS = ('decode', 'encode', 'hashtreeroot')
 OPERATORS = ('const+1', 'const-1', 'cmp', 'addsub', 'valid', 'swap')
-CMP = {'U32.is_eq(': 'U32.is_lt(', 'U32.is_lt(': 'U32.is_le(', 'U32.is_le(': 'U32.is_lt('}
+CMP = {'U32.is_eq(': ['U32.is_lt(', 'U32.is_le(', 'U32.is_ge('], 'U32.is_lt(': ['U32.is_le('], 'U32.is_le(': ['U32.is_lt(']}
 
 
 def code_lines(text):
@@ -96,11 +96,10 @@ def sites(text, keep_classed=False):
             out.append((i, m.start(), 'const+1', m.group(0), str(int(m.group(1)) + 1) + m.group(2)))
             if int(m.group(1)) >= 1:   # one too small: an under-allocated buffer, a limit or size one short
                 out.append((i, m.start(), 'const-1', m.group(0), str(int(m.group(1)) - 1) + m.group(2)))
-        for a, b in CMP.items():
+        for a, bs in CMP.items():
             for m in re.finditer(re.escape(a), line):
-                if '.&. 3' in line and not keep_classed:   # the aligned-or-slow path choice: round 1 classes it, not redrawn
-                    continue
-                out.append((i, m.start(), 'cmp', a, b))
+                for b in bs:
+                    out.append((i, m.start(), 'cmp', a, b))
         for m in re.finditer(r' \+ (?=[1-9]\d* : U32\))', line):   # `+ 0` -> `- 0` changes nothing: not drawn
             out.append((i, m.start(), 'addsub', ' + ', ' - '))
         for st, en, args in node_calls(line):   # hash_tree_root: the two children of a Merkle node swapped
@@ -411,6 +410,143 @@ def deep_proof(S, a):
     return out
 
 
+LIB_GROUPS = {
+    'collections': ['proofs/obj/coll_*.bend', 'proofs/obj/tarray.bend', 'proofs/obj/view_*.bend', 'proofs/obj/root_*.bend',
+                    'proofs/obj/words_*.bend', 'proofs/obj/fields_*.bend', 'proofs/obj/cached_*.bend', 'proofs/obj/cspec_*.bend',
+                    'proofs/obj/gbits_*.bend', 'proofs/obj/gvalid_*.bend', 'proofs/obj/fixrej_*.bend', 'proofs/obj/vua_*.bend',
+                    'proofs/obj/vvl_*.bend', 'proofs/obj/encset_*.bend'],
+    'e2e': ['e2e/e2e_*.bend'],
+    'sha256': ['vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/**/*.bend'],
+    'spec': ['spec/*.bend'],
+}
+HUB = '0xd9a2fae439ac7ff9e21e0853948f94fe'
+
+
+def lib_importers(S):
+    """file -> the proof files that import it directly (relative imports; the hub package by its 0x path)."""
+    rev = collections.defaultdict(set)
+    roots = [S / d for d in ('proofs', 'e2e', 'spec', 'vendor/bendhub')]
+    for r in roots:
+        for f in r.rglob('*.bend'):
+            for m in re.finditer(r'^import\s+(\S+\.bend)', f.read_text(), re.M):
+                t = m.group(1)
+                tgt = (S / 'vendor/bendhub' / t).resolve() if t.startswith('0x') else (f.parent / t).resolve()
+                rev[tgt].add(f.resolve())
+    return rev
+
+
+def lib_wide(S, a):
+    """Mutants of the library code the proofs rely on: a draw of --lib-per-file mutants for each file of a group; each
+    runs alone in a private tree (the union import cone of its checkers, the package copied whole for the SHA-256
+    vendor); the checkers are the file itself and the two smallest proof files that import it, and the mutant is
+    killed if any of them fails. A check over --lib-timeout seconds is `too slow`, not a kill."""
+    import glob
+    files = []
+    for pat in LIB_GROUPS[a.lib]:
+        files += sorted(pathlib.Path(g).resolve() for g in glob.glob(str(S / pat), recursive=True))
+    files = sorted(set(files))
+    if a.lib_only:
+        want = {(S / w).resolve() for w in a.lib_only.split(',')}
+        files = [f for f in files if f in want]
+    if a.lib_files:
+        files = files[:a.lib_files]
+    rev = lib_importers(S)
+    memo = {}
+
+    def cone_of(f):
+        f = f.resolve()
+        if f not in memo:
+            memo[f] = {c for c in import_cone(f)}
+        return memo[f]
+    tasks = []
+    for f in files:
+        text = f.read_text()
+        rng = random.Random(f'{a.seed}:lib:{f.relative_to(S)}')
+        lines = text.split('\n')
+        pool = collections.defaultdict(list)
+        for st in sites(text):
+            if st[2] in ('swap', 'valid'):
+                continue
+            if excluded(f.relative_to(S).as_posix(), def_name(text, st[0]), st, lines[st[0]]):
+                continue
+            pool[st[2]].append(st)
+        for v in pool.values():
+            v.sort(key=lambda x: (x[0], x[1], x[3]))
+            rng.shuffle(v)
+        ops = [o for o in OPERATORS if pool[o]]
+        rng.shuffle(ops)
+        picked = []
+        while len(picked) < a.lib_per_file and any(pool[o] for o in ops):
+            for o in ops:
+                if pool[o] and len(picked) < a.lib_per_file:
+                    picked.append(pool[o].pop())
+        imps = sorted((i for i in rev.get(f, ()) if i != f), key=lambda i: i.stat().st_size)[:2]
+        for st in picked:
+            tasks.append({'file': f, 'site': st, 'checkers': [f] + imps, 'def': def_name(text, st[0])})
+    print(f'lib {a.lib}: {len(tasks)} mutants over {len(files)} files', flush=True)
+    tmp = pathlib.Path(os.environ.get('MUT_TMP', '/tmp')) / f'mutlib-{os.getpid()}'
+
+    def run(i, t):
+        st, f = t['site'], t['file']
+        d = tmp / str(i)
+        hub = (S / 'vendor/bendhub' / HUB).resolve()
+        inhub = hub in f.parents
+        cones = set()
+        for c in t['checkers']:
+            cones |= cone_of(c)
+        cones.add(f)
+        for c in cones:
+            dest = d / c.relative_to(S)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(apply(c.read_text(), st)) if c == f else shutil.copyfile(c, dest)
+        env = {**os.environ, 'CHECK_PINS_VERIFIED': '1', 'CHECK_MEMMAX': '12G'}
+        if inhub or any(HUB in c.read_text() for c in t['checkers'] if c.exists()):
+            # the package is imported by its 0x path: give the private tree its own copy, mutated
+            dst = d / 'vendor/bendhub' / HUB
+            if not dst.exists():
+                shutil.copytree(hub, dst)
+            if inhub:
+                (dst / f.relative_to(hub)).write_text(apply(f.read_text(), st))
+            env['BEND_LIB'] = str(d / 'vendor/bendhub')
+        res, t0, slow = {'outcome': 'survived'}, time.monotonic(), False
+        for c in t['checkers']:
+            if not (d / c.relative_to(S)).exists():
+                continue
+            try:
+                q = subprocess.run([str(S / 'tools/check.sh'), c.relative_to(S).as_posix()], cwd=d, env=env,
+                                   capture_output=True, text=True, timeout=a.lib_timeout)
+            except subprocess.TimeoutExpired:
+                slow = True
+                continue
+            out = q.stdout + q.stderr
+            if 'ALL PROOFS CHECK' not in out:
+                m = re.search(r'Error:[^\n]*(\n- [^\n]*)?', out)
+                res = {'outcome': 'killed', 'killed_in': c.relative_to(S).as_posix(), 'error': (m.group(0)[:160] if m else out[-160:])}
+                break
+        if res['outcome'] == 'survived' and slow:
+            res['outcome'] = 'too slow'
+        res['seconds'] = round(time.monotonic() - t0, 1)
+        shutil.rmtree(d, ignore_errors=True)
+        return res
+
+    results = []
+    with cf.ThreadPoolExecutor(a.proof_jobs) as ex:
+        futs = [(t, ex.submit(run, i, t)) for i, t in enumerate(tasks)]
+        for n_done, (t, fu) in enumerate(futs, 1):
+            st = t['site']
+            r = fu.result()
+            rec = {'file': t['file'].relative_to(S).as_posix(), 'line': st[0] + 1, 'col': st[1], 'operator': st[2],
+                   'before': st[3], 'after': st[4], 'def': t['def'], 'in': 'lib', 'cause': 'lib-' + a.lib,
+                   'checked': [c.relative_to(S).as_posix() for c in t['checkers']],
+                   'text': t['file'].read_text().split('\n')[st[0]].strip()[:200], **r}
+            results.append(rec)
+            if n_done % 50 == 0 or n_done == len(futs):
+                print(f'lib: {n_done}/{len(futs)}, survived so far {sum(1 for x in results if x["outcome"] == "survived")}, '
+                      f'too slow {sum(1 for x in results if x["outcome"] == "too slow")}, {time.monotonic() - started_global:.0f}s', flush=True)
+    shutil.rmtree(tmp, ignore_errors=True)
+    return results
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--scratch', required=False, help='a COPY of the tree with its build/ (never the real tree)')
@@ -421,6 +557,11 @@ def main():
     ap.add_argument('--no-proofs', action='store_true')
     ap.add_argument('--proof-wide', type=int, default=0, help='proof side only, wide: this many mutants per name and operation')
     ap.add_argument('--proof-jobs', type=int, default=12)
+    ap.add_argument('--lib', default=None, choices=sorted(LIB_GROUPS), help='mutate the library code of this group (collections, e2e, sha256, spec) instead of the generated codec files')
+    ap.add_argument('--lib-per-file', type=int, default=4)
+    ap.add_argument('--lib-files', type=int, default=0, help='only the first N files of the group (a pilot)')
+    ap.add_argument('--lib-only', default=None, help='only these files of the group (comma-separated paths relative to the root)')
+    ap.add_argument('--lib-timeout', type=int, default=120, help='a mutant check over this many seconds is `too slow`, not a kill')
     ap.add_argument('--replay', default=None, help='with --proof-wide: instead of drawing, re-check the survivors of this earlier report (by file, def, operator, before, after and line text) on the current tree')
     ap.add_argument('--restamp', default=None, help='recompute the provenance of this result file for the tree this script is in (after the programs of this tree are built); runs nothing')
     ap.add_argument('--deep-timeout', type=int, default=900)
@@ -458,6 +599,18 @@ def main():
     if a.types:
         want = set(a.types.split(','))
         names = [x for x in names if x[0] in want]
+    if a.lib:
+        res = lib_wide(S, a)
+        sv = [r for r in res if r['outcome'] == 'survived']
+        slow = [r for r in res if r['outcome'] == 'too slow']
+        rep = {'group': a.lib, 'seed': a.seed, 'lib_per_file': a.lib_per_file, 'mutants': len(res),
+               'killed': sum(1 for r in res if r['outcome'] == 'killed'), 'survived': len(sv), 'too_slow': len(slow),
+               'survivors_by_operator': dict(collections.Counter(r['operator'] for r in sv)),
+               'survivors': sv, 'too_slow_list': slow, 'results': res, 'elapsed_s': round(time.monotonic() - started, 1),
+               'provenance': stamp(__file__)}
+        pathlib.Path(a.out).write_text(json.dumps(rep, indent=1) + '\n')
+        print(f"lib {a.lib}: {rep['mutants']} mutants, {rep['killed']} killed, {rep['survived']} survived, {rep['too_slow']} too slow; {rep['elapsed_s']}s")
+        return
     if a.deep_from:
         res = deep_proof(S, a)
         rep = {'seed': a.seed, 'survivors_in': len(res), 'killed': sum(1 for o in res if o['outcome'] == 'killed'),

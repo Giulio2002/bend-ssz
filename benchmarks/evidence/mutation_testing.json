@@ -1,184 +1,183 @@
 {
- "evidence": "proof-side mutation testing on main 80cef74d; conformance and fuzz are triage only (docs/RESULTS.md)",
+ "evidence": "proof-side mutation testing on main 376669ac; conformance and fuzz are triage only (docs/RESULTS.md)",
  "precondition": "regen_all --check: every generator up to date on the tree under test",
  "replay": {
-  "mutants": 565,
-  "killed": 518,
-  "survived": 47
+  "mutants": 17,
+  "killed": 9,
+  "survived": 8
  },
  "fresh_round": {
-  "seed": 20261005,
+  "seed": 20261010,
   "proof_per_file": 4,
   "mutants": 2777,
-  "killed": 2752,
-  "survived": 25,
+  "killed": 2745,
+  "survived": 32,
   "by_cause": {
-   "offset": 17,
-   "reported-size": 1,
-   "arithmetic": 1,
-   "validity-check": 5,
-   "constant": 1
+   "offset": 22,
+   "comparison": 3,
+   "constant": 1,
+   "validity-check": 6
   }
  },
  "survivor_classes_this_round": {
-  "open (unproved): aligned-or-slow path": 41,
-  "gap": 10,
-  "proof-equivalent": 21
+  "proof-equivalent": 40
  },
  "gaps": {
-  "total": 9,
-  "by_cause": {
-   "reported-size": 4,
-   "arithmetic": 1,
-   "offset": 3,
-   "validity-check": 1
+  "total": 0
+ },
+ "library_pilot": {
+  "e2e": {
+   "mutants": 34,
+   "killed": 33,
+   "survived": 1,
+   "too_slow": 0
+  },
+  "sha256": {
+   "mutants": 36,
+   "killed": 32,
+   "survived": 4,
+   "too_slow": 0
+  },
+  "spec": {
+   "mutants": 39,
+   "killed": 36,
+   "survived": 3,
+   "too_slow": 0
+  },
+  "collections": {
+   "mutants": 40,
+   "killed": 40,
+   "survived": 0,
+   "too_slow": 0
   }
  },
- "open_unproved": {
-  "aligned_or_slow_path": "is_lt / is_le of pos .&. 3 == 0: equivalent only at sampled positions, not drawn"
- },
- "excluded_entries": {
-  "file": "tests_generated/mutation_exclusions.json",
-  "by_class": {
-   "open (unproved): aligned-or-slow path": 42,
-   "proof-equivalent": 218,
-   "uncoverable": 1
-  }
- },
- "gap_list": [
+ "library_survivors": [
   {
-   "type": "HistoricalBatch",
-   "file": "types/FuluHistoricalBatch_encode_ssz_generated.bend",
-   "line": 12,
-   "col": 119,
-   "operator": "const-1",
-   "before": "524288",
-   "after": "524287",
-   "def": "HistoricalBatch_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluHistoricalBatch_encode_ssz_proof_generated.bend",
-   "text": "def HistoricalBatch_size(o: FuluHistoricalBatch_d.HistoricalBatch) -> FuluHistoricalBatch_d.HistoricalBatch & U32: (o, 524288)"
-  },
-  {
-   "type": "SyncCommittee",
-   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
-   "line": 14,
-   "col": 109,
+   "file": "e2e/e2e_aapw.bend",
+   "line": 64,
+   "col": 129,
    "operator": "const+1",
-   "before": "24624",
-   "after": "24625",
-   "def": "SyncCommittee_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
-   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+   "before": "0",
+   "after": "1",
+   "def": "saap_w",
+   "text": "+e1 = aap_w(d, t, WS.JW(i), WS.OWc(off), WS.LLw(len), WS.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WS.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WS.hwc32(d, t, 0, i, off, len,",
+   "checked": [
+    "e2e/e2e_aapw.bend",
+    "e2e/FuluAggregateAndProof_e2e_dec_generated.bend",
+    "e2e/FuluSignedAggregateAndProof_e2e_dec_generated.bend"
+   ]
   },
   {
-   "type": "LightClientBootstrap",
-   "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
-   "line": 22,
-   "col": 201,
-   "operator": "const+1",
-   "before": "24820",
-   "after": "24821",
-   "def": "LightClientBootstrap_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend",
-   "text": "case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_sz0(current_sync_committee, current_sync_committee_branch, 248"
-  },
-  {
-   "type": "MatrixEntry",
-   "file": "types/FuluMatrixEntry_encode_ssz_generated.bend",
-   "line": 20,
-   "col": 68,
-   "operator": "addsub",
-   "before": " + ",
-   "after": " - ",
-   "def": "MatrixEntry_pw0",
-   "in": "encode",
-   "cause": "arithmetic",
-   "checked": "proofs/api/FuluMatrixEntry_encode_ssz_proof_generated.bend",
-   "text": "(uint64_e.u64_put(uint64_e.u64_put(FuluBytes48_e.b48_put(out, (pos + 2048 : U32), kzg_proof), (pos + 2096 : U32), column_index), (pos + 2104 : U32), row_index), (FuluMatrixEntry_d.MatrixEntry{cell, kz"
-  },
-  {
-   "type": "CompatibleUnionA",
-   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
-   "line": 36,
-   "col": 142,
-   "operator": "const+1",
-   "before": "1",
-   "after": "2",
-   "def": "CompatibleUnionA_rd0",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
-  },
-  {
-   "type": "CompatibleUnionABCA",
-   "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend",
-   "line": 67,
-   "col": 142,
-   "operator": "addsub",
-   "before": " + ",
-   "after": " - ",
-   "def": "CompatibleUnionABCA_rd3",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
-  },
-  {
-   "type": "SyncCommittee",
-   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
-   "line": 14,
-   "col": 109,
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/conformance.bend",
+   "line": 2323,
+   "col": 30,
    "operator": "const-1",
-   "before": "24624",
-   "after": "24623",
-   "def": "SyncCommittee_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
-   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+   "before": "2",
+   "after": "1",
+   "def": "stream_correct",
+   "text": "mod_tail(List.length(&2, U32, b0 <> b1 <> b2 <> b3 <> b4 <> b5 <> b6 <> b7 <> b8 <> b9 <> b10 <> b11 <> b12 <> b13 <> b14 <> b15 <> b16 <> b17 <> b18 <> Nil{}), k)) :",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/conformance.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/correctness.bend"
+   ]
   },
   {
-   "type": "CompatibleUnionA",
-   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
-   "line": 36,
-   "col": 159,
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/conformance.bend",
+   "line": 2195,
+   "col": 29,
    "operator": "const-1",
-   "before": "1",
-   "after": "0",
-   "def": "CompatibleUnionA_rd0",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
+   "before": "2",
+   "after": "1",
+   "def": "stream_correct",
+   "text": "Nat.mod(List.length(&2, U32, b0 <> b1 <> b2 <> Nil{}), 64n),",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/conformance.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/proof.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend"
+   ]
   },
   {
-   "type": "proglist_bool",
-   "file": "types/proglist_bool_decode_ssz_generated.bend",
-   "line": 30,
-   "col": 24,
-   "operator": "valid",
-   "before": "False{}",
-   "after": "True{}",
-   "def": "pl_bool_ok_len",
-   "in": "decode",
-   "cause": "validity-check",
-   "checked": "proofs/api/proglist_bool_decode_ssz_proof_generated.bend",
-   "text": "case False{}: (buf, False{})"
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+   "line": 674,
+   "col": 18,
+   "operator": "cmp",
+   "before": "U32.is_lt(",
+   "after": "U32.is_le(",
+   "def": "hex_digit",
+   "text": "hex_digit_if(x, U32.is_lt(x, 10))",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/packed_proof.bend"
+   ]
+  },
+  {
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+   "line": 681,
+   "col": 33,
+   "operator": "const-1",
+   "before": "4n",
+   "after": "3n",
+   "def": "hex_word_go",
+   "text": "hex_word_go(p, U32.shrn(x, 4n), SCon{hex_digit((x .&. 15 : U32)), acc})",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/packed_proof.bend"
+   ]
+  },
+  {
+   "file": "spec/byte_list.bend",
+   "line": 11,
+   "col": 100,
+   "operator": "const-1",
+   "before": "4n",
+   "after": "3n",
+   "def": "domain",
+   "text": "Bool.and(Bool.and(P.bytes_domain(xs), Nat.is_le(List.length(&2, U32, xs), capacity)), Length.fits(4n, List.length(&2, U32, xs)))",
+   "checked": [
+    "spec/byte_list.bend",
+    "spec/list_alias.bend",
+    "proofs/obj/gvalid_Transaction.bend"
+   ]
+  },
+  {
+   "file": "spec/bytes.bend",
+   "line": 6,
+   "col": 54,
+   "operator": "const-1",
+   "before": "256n",
+   "after": "255n",
+   "def": "size_fits",
+   "text": "Nat.is_eq(Nat.div(Nat.div(Nat.div(Nat.div(n, 256n), 256n), 256n), 256n), 0n)",
+   "checked": [
+    "spec/bytes.bend",
+    "spec/byte_alias.bend",
+    "spec/byte_root.bend"
+   ]
+  },
+  {
+   "file": "spec/bytes.bend",
+   "line": 13,
+   "col": 37,
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "def": "vector_domain",
+   "text": "case 1n+p: Bool.and(P.byte_scope(1n+p, xs), size_fits(1n+p))",
+   "checked": [
+    "spec/bytes.bend",
+    "spec/byte_alias.bend",
+    "spec/byte_root.bend"
+   ]
   }
  ],
- "history": "docs/RESULTS.md table: rounds 1-4",
+ "history": "docs/RESULTS.md rounds table",
  "provenance": {
-  "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
+  "git_commit": "da19f102292c966ede4ecd80d19abde7feab85a4",
   "git_dirty": false,
-  "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
-  "utc": "2026-10-01T23:38:42Z",
+  "git_tree": "08766e790065be2383abe5c5b798456483700615",
+  "utc": "2026-10-02T04:45:29Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -546,7 +545,7 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "tests_generated/mutation_testing.py": "4b075c7243be7ad19482ff30b2c2fbdc3d557bb340ff619e0ff161872496c5e5",
+   "tests_generated/mutation_testing.py": "e59dbc34e42f8f91a8ad1dff897d2b6facfa7cf14c4cc7b9ce82b95f071da031",
    "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
    "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
    "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
