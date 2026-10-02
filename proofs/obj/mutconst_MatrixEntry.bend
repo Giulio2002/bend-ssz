@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/uint64_def_generated.bend as uint64_d
 import ../../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_e
@@ -11,5 +12,5 @@ import ../../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_
 # (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.
 
 def MatrixEntry_mc_ser()
-    -> {FuluMatrixEntry_e.MatrixEntry_serialize(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271560481))) == (Pair.fst(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271560481)))), O.encoded(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271560481)))))) : FuluMatrixEntry_d.MatrixEntry & O.Encoded}:
+    -> {FuluMatrixEntry_e.MatrixEntry_serialize(FuluMatrixEntry_d.MatrixEntry_set_row_index(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271619760)), FuluBytes48_d.b48_seed(2271619777)), uint64_d.u64_seed(2271619794))) == (Pair.fst(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271619760)), FuluBytes48_d.b48_seed(2271619777)), uint64_d.u64_seed(2271619794)))), O.encoded(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), uint64_d.u64_seed(2271619760)), FuluBytes48_d.b48_seed(2271619777)), uint64_d.u64_seed(2271619794)))))) : FuluMatrixEntry_d.MatrixEntry & O.Encoded}:
   {==}

@@ -1,6 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
+import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
 import ../../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
 import ../obj/mutsmall_LightClientUpdate.bend as PRV
@@ -10,4 +13,7 @@ import ../obj/mutsmall_LightClientUpdate.bend as PRV
 
 def LightClientUpdate__serialize_valid__LightClientUpdate_ms_serdepth(o: FuluLightClientUpdate_d.LightClientUpdate) -> {FuluLightClientUpdate_e.LightClientUpdate_serialize(o) == FuluLightClientUpdate_e.LightClientUpdate_senc_put(FuluLightClientUpdate_e.LightClientUpdate_putk(O.out_at(13n), 0, o)) : FuluLightClientUpdate_d.LightClientUpdate & O.Encoded}:
   PRV.LightClientUpdate_ms_serdepth(o)
+
+def LightClientUpdate__serialize_valid__LightClientUpdate_ms_sizesym(next_sync_committee: FuluSyncCommittee_d.SyncCommittee, next_sync_committee_branch: O.Words, finality_branch: O.Words, sync_aggregate: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, signature_slot: O.U64) -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, U32, FuluLightClientUpdate_e.LightClientUpdate_size(FuluLightClientUpdate_d.LightClientUpdate{FuluLightClientHeader_d.LightClientHeader_default(), next_sync_committee, next_sync_committee_branch, FuluLightClientHeader_d.LightClientHeader_default(), finality_branch, sync_aggregate, signature_slot})) == 26872 : U32}:
+  PRV.LightClientUpdate_ms_sizesym(next_sync_committee, next_sync_committee_branch, finality_branch, sync_aggregate, signature_slot)
 

@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
 import ../../types/FuluIndexedAttestation_encode_ssz_generated.bend as FuluIndexedAttestation_e
@@ -19,5 +20,5 @@ def IndexedAttestation_mc_bxcount_IndexedAttestation(out: Array<U32>, pos: U32)
   {==}
 
 def IndexedAttestation_mc_ser()
-    -> {FuluIndexedAttestation_e.IndexedAttestation_serialize(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481))) == (Pair.fst(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481)))), O.encoded(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481)))))) : FuluIndexedAttestation_d.IndexedAttestation & O.Encoded}:
+    -> {FuluIndexedAttestation_e.IndexedAttestation_serialize(FuluIndexedAttestation_d.IndexedAttestation_set_signature(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271612688)), FuluBytes96_d.b96_seed(2271612705))) == (Pair.fst(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_signature(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271612688)), FuluBytes96_d.b96_seed(2271612705)))), O.encoded(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_signature(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271612688)), FuluBytes96_d.b96_seed(2271612705)))))) : FuluIndexedAttestation_d.IndexedAttestation & O.Encoded}:
   {==}

@@ -1,6 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../../types/FuluSyncCommittee_encode_ssz_generated.bend as FuluSyncCommittee_e
 import ../obj/mutsmall_SyncCommittee.bend as PRV
@@ -16,4 +17,7 @@ def SyncCommittee__serialize_valid__SyncCommittee_ms_senc_out(out: Array<U32>, o
 
 def SyncCommittee__serialize_valid__SyncCommittee_ms_serdepth(o: FuluSyncCommittee_d.SyncCommittee) -> {FuluSyncCommittee_e.SyncCommittee_serialize(o) == FuluSyncCommittee_e.SyncCommittee_senc_out(FuluSyncCommittee_e.SyncCommittee_putk(O.out_at(13n), 0, o)) : FuluSyncCommittee_d.SyncCommittee & O.Encoded}:
   PRV.SyncCommittee_ms_serdepth(o)
+
+def SyncCommittee__serialize_valid__SyncCommittee_ms_sizesym(pubkeys: O.Words, aggregate_pubkey: FuluBytes48_d.Bytes48) -> {Pair.snd(FuluSyncCommittee_d.SyncCommittee, U32, FuluSyncCommittee_e.SyncCommittee_size(FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey})) == 24624 : U32}:
+  PRV.SyncCommittee_ms_sizesym(pubkeys, aggregate_pubkey)
 

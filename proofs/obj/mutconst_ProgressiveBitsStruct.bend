@@ -3,6 +3,7 @@ import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
 import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
+import ../../types/bitvector_257_def_generated.bend as bitvector_257_d
 import ../../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
 import ../../types/ProgressiveBitsStruct_encode_ssz_generated.bend as ProgressiveBitsStruct_e
 
@@ -11,5 +12,5 @@ import ../../types/ProgressiveBitsStruct_encode_ssz_generated.bend as Progressiv
 # (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.
 
 def ProgressiveBitsStruct_mc_ser()
-    -> {ProgressiveBitsStruct_e.ProgressiveBitsStruct_serialize(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271560481))) == (Pair.fst(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271560481)))), O.encoded(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271560481)))))) : ProgressiveBitsStruct_d.ProgressiveBitsStruct & O.Encoded}:
+    -> {ProgressiveBitsStruct_e.ProgressiveBitsStruct_serialize(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271571293)), bitvector_257_d.bv257_seed(2271571344))) == (Pair.fst(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271571293)), bitvector_257_d.bv257_seed(2271571344)))), O.encoded(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271571293)), bitvector_257_d.bv257_seed(2271571344)))))) : ProgressiveBitsStruct_d.ProgressiveBitsStruct & O.Encoded}:
   {==}

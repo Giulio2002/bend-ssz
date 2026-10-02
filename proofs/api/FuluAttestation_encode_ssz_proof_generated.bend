@@ -2,6 +2,8 @@ import Base
 import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
 import ../../types/schema.bend as P0_S
@@ -66,7 +68,7 @@ def FuluAttestation__serialize_valid__Attestation_mc_bxpoison_Attestation(out: A
 def FuluAttestation__serialize_valid__Attestation_mc_bxcount_Attestation(out: Array<U32>, pos: U32) -> {Pair.snd(P1_O.Boxed<FuluAttestation_d.Attestation>, U32, Pair.snd(Array<U32>, (P1_O.Boxed<FuluAttestation_d.Attestation> & U32), FuluAttestation_e.Attestation_bx_putn(out, pos, P1_O.BNone{}))) == 0 : U32}:
   P1_PRV.Attestation_mc_bxcount_Attestation(out, pos)
 
-def FuluAttestation__serialize_valid__Attestation_mc_ser() -> {FuluAttestation_e.Attestation_serialize(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271560481))) == (Pair.fst(FuluAttestation_d.Attestation, P1_B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271560481)))), P1_O.encoded(Pair.snd(FuluAttestation_d.Attestation, P1_B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271560481)))))) : FuluAttestation_d.Attestation & P1_O.Encoded}:
+def FuluAttestation__serialize_valid__Attestation_mc_ser() -> {FuluAttestation_e.Attestation_serialize(FuluAttestation_d.Attestation_set_signature(FuluAttestation_d.Attestation_set_data(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271563592)), FuluAttestationData_d.AttestationData_seed(2271563609)), FuluBytes96_d.b96_seed(2271563626))) == (Pair.fst(FuluAttestation_d.Attestation, P1_B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_signature(FuluAttestation_d.Attestation_set_data(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271563592)), FuluAttestationData_d.AttestationData_seed(2271563609)), FuluBytes96_d.b96_seed(2271563626)))), P1_O.encoded(Pair.snd(FuluAttestation_d.Attestation, P1_B.Buf, FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_set_signature(FuluAttestation_d.Attestation_set_data(FuluAttestation_d.Attestation_set_committee_bits(FuluAttestation_d.Attestation_default(), Fulu_bitvector_64_d.bv64_seed(2271563592)), FuluAttestationData_d.AttestationData_seed(2271563609)), FuluBytes96_d.b96_seed(2271563626)))))) : FuluAttestation_d.Attestation & P1_O.Encoded}:
   P1_PRV.Attestation_mc_ser()
 
 def FuluAttestation__serialize_valid__Attestation_ms_size() -> {Pair.snd(FuluAttestation_d.Attestation, U32, FuluAttestation_e.Attestation_size(FuluAttestation_d.Attestation_default())) == 237 : U32}:
