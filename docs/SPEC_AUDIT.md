@@ -329,3 +329,87 @@ python3 tools/spec_audit/summarize.py $W/cases tools/spec_audit/data $W/spec-log
 `bendparse.py` (constants audit), `ssz_ref.py`, `cases.py`, `run_bend.py`, `rk_oracle.py`, `official_vectors.py`, `progressive_reading.py`, `selftest.sh`, `selftest_run.py`
 (differential), `specgen.py`, `spec_cases/`, `run_spec_cases.sh` (spec-level proofs: at most 2 checks at a time at nice 19, refuses to start while the
 full-check lock is held), `summarize.py`, `run_all.sh`, `data/`. `PY` is a python with python-snappy and ruamel.yaml (the repository requirements).
+
+## 8. Invalid objects and window cases (additive: `invalid_cases.py`, `invalid_bytes_cases.py`, `run_*`)
+
+**Why.** The manual spec-mutation auditor (branch `agent/manual-spec-mutations`, 268 hand-written faults) found 34 faults that the proofs reject
+(result KILLED) and that the 48,279-case corpus of section 5 and the official vectors never reach, and 9 faults that survived the proofs.
+The corpus starts from BYTES: it decodes them and re-encodes what was accepted, so every object the Bend side serializes came out of a decoder
+and is valid. Code that differs only on an invalid object (the validity pass of every `<Name>_serialize`) is unreachable from it. Per fault,
+`tools/spec_audit/data/manual_fault_results.tsv` has the row (the 34 are the faults with A = KILLED and no corpus or official disagreement; 4 of
+them, `u02/01`, `u02/05`, `bl01/02`, `p02/04`, had no corpus run at all in the merged results).
+
+**Result.** 20 of the 34 corpus-missed faults and 6 of the 9 proof survivors are now caught (26 of 43). The remaining 17 are not caught by any
+input the runtime can take (section 8.4): 12 are equivalent at runtime or masked by a second check, 2 are designed controls, 3 need inputs of
+512 MB to 4 GB. The old corpus is untouched; everything is new files.
+
+### 8.1 What was added
+
+| file | content | count |
+|---|---|---:|
+| `invalid_cases.py` -> `data/invalid_cases.json` | object-level cases: NEUTRAL values (numbers, bit lists, element lists, field maps), the reference port decides refuse or serialize (bytes, root) | 200 (+ 75 reruns through the unchecked `<Name>_encode`) |
+| `run_invalid_cases.py` | lowers every value to the raw record constructors of the compiled object API (a state no decoder or checked setter produces), one Bend program for all cases, one process per case; `--patch` for a mutated tree | |
+| `invalid_bytes_cases.py` -> `data/invalid_bytes_cases.jsonl` | byte-level rows (cases.jsonl schema): every raw window of a pool for every variable field of 11 containers (valid values around it: zero, two random), and progressive lists at the chunk boundaries | 985 + 336 |
+| `run_bytes_cases.py` | the rows against programs built from a tree with an optional patch (the same protocol as `run_bend.py`) | |
+| `run_empty_input.py` | `G.decode(i, buf, 0)`: the empty input for all 240 names (an empty file cannot be loaded by the object programs) | 240 names |
+| `data/manual_fault_results.tsv` | the 43 faults: result and reason | 43 |
+
+Object-level cases by class (every case: the reference verdict, 125 refused and 75 serialized with their bytes):
+
+| class | cases | what it guards |
+|---|---:|---|
+| uint-range | 9 | uint8 / uint16 above their width |
+| bit-padding | 21 | bits above the length of a bit vector; stray bits of a bit list before its delimiter |
+| limit | 36 | list / bit list one past the limit, vector one short or long |
+| storage | 19 | storage smaller than the length, byte length that is not whole elements |
+| field-validity | 22 | each field of SmallTestStruct, SingleField, ProgressiveSingleField, FixedTestStruct, VarTestStruct, ComplexTestStruct out of range among valid ones |
+| union-payload | 2 | CompatibleUnionA with an out-of-range payload |
+| bool-bytes | 15 | packed boolean vector with a byte 2, 3 or 255 |
+| absent-box | 1 | the default ComplexTestStruct (see 8.3) |
+| valid-bytes | 75 | valid objects at the boundaries: serialize bytes (offsets, lengths, padding); each also through `<Name>_encode` (+75 runs) |
+
+On the clean tree: object cases 200 of 200 agree with the reference (1 known open, 8.3); byte cases 1,321 of 1,321; empty input 240 of 240.
+
+### 8.2 Why the old corpus could not see them (the 20 caught)
+
+| class | faults | reason |
+|---|---|---|
+| encode of an invalid object | bl05/01, bl05/03, bv03/01, bv03/02, bv03/03, f03/04, l02/03, l03/01, l03/03, l03/05, q02/05, u04/01, u04/02, v02/05, b04/01, n03/05 (16 + b04) | needs a value no decoder produces: padding bits, limit + 1, a wrong vector length, out-of-range scalars, packed boolean 2, a union payload |
+| container field validity | c02/05, c06/02, c06/03, c06/04, c06/05 | the poison of ONE field must reach the result: needs a container with one invalid field among valid ones |
+| unchecked encoder | v02/04 | `<Name>_encode` is not the path of `G.encode` (that uses `_serialize`), valid objects must go through it too |
+| valid objects at a type the run did not cover | c05/06, m03/05 | the old corpus run of the auditor used one representative type (VarTestStruct: its offset is not 4-aligned; its list is the last field). The same corpus on ComplexTestStruct / FuluAttestation / ExecutionRequests catches them (40 and 13 cases); the object cases catch c05/06 with 26 |
+| missing run | u02/01, u02/05 | the old corpus catches both (315 and 210 cases on VarTestStruct, SmallTestStruct, ComplexTestStruct); the merged results had no row |
+
+### 8.3 A finding
+
+`ComplexTestStruct_serialize(ComplexTestStruct_default())` is ACCEPTED and writes 86 bytes where the reference zero value has 100: the default
+of a vector of variable-size elements (`vec_VarTestStruct_2_default`) holds boxes with no value (`O.BNone{}`), and the serializer writes their
+offsets but no bytes instead of refusing (a boxed field with no value is refused elsewhere: `box_empty` of `tests_generated/invalid_objects.py`).
+The case `absent-box/ComplexTestStruct/default_boxes` records it (marked `known`, reported as KNOWN-OPEN, not counted as a disagreement).
+All other cases build vector fields with present elements. Not fixed here.
+
+### 8.4 The 17 not caught, and why no case can
+
+| fault | reason |
+|---|---|
+| b01/03 | dead behind the validator (every byte above 1 is refused before the reader runs) |
+| bl01/02, p02/04 | the empty window is accepted by the mutated check and refused by a later one: no input, not even the empty one for all 240 names, differs |
+| bl06/01 | the delimiter byte it adds to the chunked data is zero storage that is already zero: no root differs (also at the progressive chunk boundaries) |
+| p01/06 | the fuel bound n/2 + 1 is never short of the number of subtrees |
+| f03/06 | the window of a fixed field is 8 bytes by the layout |
+| s01/04, s01/05 | redundant: the validity pass refuses the same storage |
+| u04/03 | the byte writer only sees values the validity pass already bounded |
+| v02/01, v02/02, v02/03 | masked by the unit check / equal bounds |
+| z01/01, z01/02 | designed controls (capacity only, unused parameter) |
+| s01/01, s01/02, s01/03 | need 512 MB to 4 GB inputs (bit count above 2^32 - 8, 2^29 bytes, 2^32 - 32 bytes): not run |
+
+### 8.5 Reproduce (server)
+
+    python3 tools/spec_audit/invalid_cases.py --repo . --cs <cs> --out tools/spec_audit/data/invalid_cases.json
+    python3 tools/spec_audit/run_invalid_cases.py --repo . --cases tools/spec_audit/data/invalid_cases.json --work DIR [--patch P]
+    python3 tools/spec_audit/invalid_bytes_cases.py --repo . --cs <cs> --out tools/spec_audit/data/invalid_bytes_cases.jsonl
+    python3 tools/spec_audit/run_bytes_cases.py --repo . --cases tools/spec_audit/data/invalid_bytes_cases.jsonl --work DIR [--types A,B] [--patch P]
+    python3 tools/spec_audit/run_empty_input.py --repo . --cs <cs> --work DIR [--patch P]
+
+The patches are those of `agent/manual-spec-mutations` (`/srv/ssz-optimization/agents/manualmut/patches/<id>.patch`). A build is one compile of the
+import closure of the program (8 to 15 s); 4 jobs at nice 19.

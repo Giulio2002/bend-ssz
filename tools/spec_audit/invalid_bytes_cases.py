@@ -28,6 +28,11 @@ NAMES = ['BitsStruct', 'ProgressiveBitsStruct', 'ProgressiveVarTestStruct', 'Var
          'FuluPendingAttestation', 'FuluExecutionRequests', 'SingleFieldTestStruct', 'SmallTestStruct', 'FixedTestStruct']
 
 
+# (type, elements per 32-byte chunk)
+PROG = [('progbitlist', 256), ('proglist_bool', 32), ('proglist_uint8', 32), ('proglist_uint16', 16), ('proglist_uint32', 8),
+        ('proglist_uint64', 4), ('proglist_uint128', 2), ('proglist_uint256', 1)]
+
+
 def pool(ft):
     """raw windows for a variable field of type ft: (label, bytes)"""
     k = ft[0]
@@ -113,6 +118,31 @@ def main():
                         f.write(json.dumps({'id': 'win/%s#%d' % (name, n), 'type': nm if name.startswith('Fulu') else name, 'src': src,
                                             'group': info['group'], 'index': info['index'], 'label': 'win|%s.%s' % (t[1][j][0], lab),
                                             'hex': s.hex(), 'len': len(s), 'verdict': vd, 'reason': why, 'root': root}) + '\n')
+                        n += 1
+                        stats[vd] = stats.get(vd, 0) + 1
+        # progressive lists: the element counts around the chunk boundaries of the subtree sizes 1, 4, 16, 64, ... (1, 5, 21, 85 chunks):
+        # the chunk count is a function of the byte or bit count, and a chunk too many or too few moves the progressive tree
+        for name, per in PROG:
+            t, info = gen[name][0], gi[name]
+            for c in (1, 2, 5, 6, 21, 22, 85):
+                for d in (-1, 0, 1):
+                    k = per * c + d
+                    if k < 0:
+                        continue
+                    for pat_name, val in (('ones', 1), ('alt', None)):
+                        et = ('bool',) if t[0] == 'proglist' and t[1] == ('bool',) else None
+                        if t[0] == 'progbits':
+                            v = [1] * k if val else [(i % 3 == 0) * 1 for i in range(k)]
+                        else:
+                            top = (1 << t[1][1]) - 1 if t[1][0] == 'uint' else 1
+                            v = [top] * k if val else [(top if i % 3 == 0 else 1 if i % 3 == 1 else 0) for i in range(k)]
+                            if et:
+                                v = [bool(x) for x in v]
+                        s = S.serialize(t, v)
+                        vd, why, root = verdict(t, s)
+                        f.write(json.dumps({'id': 'prog/%s#%d' % (name, n), 'type': name, 'src': 'generic', 'group': info['group'],
+                                            'index': info['index'], 'label': 'prog|%dchunks%+d.%s' % (c, d, pat_name), 'hex': s.hex(),
+                                            'len': len(s), 'verdict': vd, 'reason': why, 'root': root}) + '\n')
                         n += 1
                         stats[vd] = stats.get(vd, 0) + 1
     print('cases %d %s' % (n, json.dumps(stats)))

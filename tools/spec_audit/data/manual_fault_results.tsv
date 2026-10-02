@@ -1,0 +1,45 @@
+# the 34 faults the 48,279-case corpus missed (A=KILLED, no corpus or official disagreement) and the 9 that survived the proofs; manual spec mutants of the agent/manual-spec-mutations branch
+# columns: fault, group (34 = corpus-missed, 9 = survived the proofs), disagreements of the new object-level cases (200 + 75), of the byte cases on the types the fault touches (window cases 1,321 / old corpus on those types), result, why a case can or cannot see it
+b01-boolean-decode/03	34	0	0 / 0	not caught	equivalent at runtime: the validator rejects every byte above 1 before the reader runs
+b04-boolean-packed-validity/01	9	10	-	caught	packed boolean byte 2 / 3 / 255 (bool-bytes)
+bl01-bitlist-delimiter-decode/02	34	0	0 / 0 (and the empty input of all 240 names: 0)	not caught	the empty window is refused by a later check; no input differs
+bl05-bitlist-encode-validity/01	34	4	-	caught	bit list one bit past its limit (limit)
+bl05-bitlist-encode-validity/03	34	11	-	caught	stray bits past the length (bit-padding)
+bl06-bitlist-root/01	34	0	0 / 0 (and the progressive chunk boundaries: 0)	not caught	adds one zero byte to storage that is already zero: no root differs
+bv03-bitvector-padding-encode/01	34	1	-	caught	bit vector with a bit above its length (bit-padding)
+bv03-bitvector-padding-encode/02	9	2	-	caught	stray bit 5 of a Bitlist[5] (bit-padding)
+bv03-bitvector-padding-encode/03	34	1	-	caught	bit vector with a bit above its length (bit-padding)
+c02-fixed-field-offsets/05	9	3	-	caught	uint8 field of a container out of range (field-validity)
+c05-offset-encode/06	34	26	-	caught	valid objects serialized with offsets at 4-aligned positions: the old corpus only ran VarTestStruct, whose offset is unaligned (valid-bytes, unchecked-encode)
+c06-container-validity-composition/02	34	5	-	caught	scalar fields of VarTestStruct out of range (field-validity)
+c06-container-validity-composition/03	9	3	-	caught	field B of SmallTestStruct out of range (field-validity)
+c06-container-validity-composition/04	9	3	-	caught	field of SingleFieldTestStruct out of range (field-validity)
+c06-container-validity-composition/05	9	5	-	caught	field of ProgressiveSingleFieldContainerTestStruct out of range (field-validity, union-payload)
+f03-attestation-bitlist/04	34	1	-	caught	aggregation_bits one past 131072 with full storage (limit)
+f03-attestation-bitlist/06	9	0	0 / 0	not caught	the committee_bits window of a container is always 8 bytes by the layout: the check cannot be reached with another length
+l02-list-element-alignment/03	34	1	-	caught	byte length that is not a whole number of elements (storage)
+l03-list-limit-encode/01	34	1	-	caught	List[uint16,1024] with 1025 elements (limit)
+l03-list-limit-encode/03	34	1	-	caught	ByteList[256] with 257 bytes (limit)
+l03-list-limit-encode/05	34	19	-	caught	every packed list one past its limit (limit, storage)
+m03-chunk-count-packing/05	34	0	34 / 40 (ComplexTestStruct, ExecutionRequests)	caught	the old corpus never ran a type with a list followed by another field: a partial last word then holds the next field's bytes
+n03-union-encode/05	34	2	-	caught	union with an out-of-range payload (union-payload)
+p01-progressive-growth/06	34	0	0 / 0 (progressive chunk boundaries 1, 2, 5, 6, 21, 22, 85: 0)	not caught	the fuel bound n/2 + 1 is never short of the number of subtrees (about log4 n): no root differs
+p02-progressive-length-mix/04	34	0	0 / 0 (and the empty input: 0)	not caught	the empty window is refused by a later check; no input differs
+q02-fixed-composite-list/05	34	1	-	caught	List[ConsolidationRequest,2] with 3 elements (limit)
+s01-size-overflow/01	9	0	0 / 0	not caught	needs a bit count above 2^32 - 8 (a 512 MB input): not run
+s01-size-overflow/02	34	0	0 / 0	not caught	needs an input of 2^29 bytes: not run
+s01-size-overflow/03	34	0	0 / 0	not caught	needs a byte count above 2^32 - 32 (a 4 GB input): not run
+s01-size-overflow/04	34	0	-	not caught	redundant: the validity pass refuses a collection whose storage is too small as well, so no serialize result differs
+s01-size-overflow/05	34	0	-	not caught	redundant: the validity pass refuses a bit list whose storage is too small as well
+u02-uint-decode/01	34	0	53 / 315 (VarTestStruct, SmallTestStruct, ComplexTestStruct)	caught	missing from the old merged results (the corpus run for it never happened); the old corpus catches it
+u02-uint-decode/05	34	0	45 / 210 (same types)	caught	missing from the old merged results; the old corpus catches it
+u04-uint-range/01	34	7	-	caught	uint8 256 and above (uint-range)
+u04-uint-range/02	34	13	-	caught	uint16 65536 and above (uint-range, field-validity)
+u04-uint-range/03	34	0	-	not caught	the byte writer only ever sees values the validity pass has already bounded: no output differs
+v02-vector-length-encode/01	34	0	-	not caught	masked: a vector of 11 bytes is refused by the unit check (odd length)
+v02-vector-length-encode/02	34	0	-	not caught	masked: a vector of 9 bytes is refused by the unit check
+v02-vector-length-encode/03	34	0	-	not caught	masked: with both bounds 10 no other length passes, the unit does not matter
+v02-vector-length-encode/04	34	4	-	caught	the unchecked encoder `vec_uint16_5_encode` reports 12 bytes: valid objects through `<Name>_encode` (unchecked-encode)
+v02-vector-length-encode/05	34	2	-	caught	Vector[byte,3] with 4 bytes (limit, storage)
+z01-designed-equivalent/01	34	0	-	not caught	designed control: only the capacity of the output buffer changes
+z01-designed-equivalent/02	9	0	-	not caught	designed control: unused parameter

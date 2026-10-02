@@ -59,10 +59,13 @@ class Types:
         fn, plus, arg, res = m.groups() if m else (None, '', '', 'O.Encoded')
         direct = res.strip() == 'O.Encoded'
         r = None if direct else res.split(' & O.Encoded')[0]
+        em = re.search(r'^def (\w+_encode)\((\+?)o: ([^)]+)\) -> (.+?):', e, re.M)
+        efn = em.group(1) if em else None
+        eres = em.group(4).strip() if em else None
         dm = re.search(r'^def (\w+)_default\(\) -> (\w+): (.*)$', d, re.M)
         default = dm.group(3) if dm else None
         rec = re.search(r'^type (\w+) is (?:Data|Type):\n  (\w+)\{(.*)\}$', d, re.M)
-        self.info[base] = {'fn': fn, 'direct': direct, 'res': r, 'arg': arg, 'default': default,
+        self.info[base] = {'fn': fn, 'efn': efn, 'eres': eres, 'direct': direct, 'res': r, 'arg': arg, 'default': default,
                            'ctor': rec.group(2) if rec else None, 'fields': rec.group(3) if rec else '', 'def': d}
         return self.info[base]
 
@@ -111,6 +114,27 @@ def bits_to_words(bits, nwords):
     return ws
 
 
+def present_default(T, a):
+    """The default of a vector of variable-size elements holds boxes with no value (`O.BNone{}`): a state no decoder produces.
+    For the cases that are not about that state, the field is built with every element present (the element's own default)."""
+    m = re.fullmatch(r'(\w+_d)\.(\w+)_default\(\)', a)
+    if not m:
+        return a
+    alias = m.group(1)
+    info = T.get(alias[:-2])
+    d = info['def']
+    bx = re.search(r'^def (\w+)_fill\(\+d: Nat\) -> Array<O\.Boxed<([\w.]+)>>', d, re.M)
+    sd = re.search(r'^def \w+_default\(\) -> \w+: (\w+)\{(\w+)\((\w+)\((\d+)\)\), (\d+)\}$', d, re.M)
+    if not (bx and sd):
+        return a
+    elem = bx.group(2)
+    elem_default = elem + '_default()'
+    arr = '%s.%s(%s.%s(%s))' % (alias, sd.group(2), alias, sd.group(3), sd.group(4))
+    for i in range(int(sd.group(4))):
+        arr = 'Array.set(O.Boxed<%s>, %s, %d, O.BSome{%s, O.BNone{}})' % (elem, arr, i, elem_default)
+    return '%s.%s{%s, %s}' % (alias, sd.group(1), arr, sd.group(5))
+
+
 def lower_value(T, v, default_arg=None, base=None):
     """the Bend expression of a neutral value. `default_arg` is the text of the field's default (a container field), `base` the
     type name of a named top-level or union payload value."""
@@ -148,6 +172,8 @@ def lower_value(T, v, default_arg=None, base=None):
         info = T.get(b)
         m = re.match(r'(\w+)\{(.*)\}$', info['default'])
         args = split_top(m.group(2))
+        if not v.get('absent'):
+            args = [present_default(T, a) for a in args]
         for name, x in v['fields'].items():
             i = v['_idx'][name]
             args[i] = lower_value(T, x, default_arg=args[i], base=None)
@@ -167,6 +193,14 @@ def driver(T, cases):
     for i, c in enumerate(cases):
         info = T.get(c['type'])
         obj = lower_value(T, c['value'], base=c['type'])
+        if c.get('mode') == 'encode':        # the unchecked encoder `<Name>_encode`: valid values only
+            call = '%s_e.%s(%s)' % (c['type'], info['efn'], obj)
+            if info['eres'] == 'B.Buf':
+                bodies.append('def case_%d() -> IO(Unit): show_buf(%s)' % (i, call))
+            else:
+                h = snds.setdefault('buf:' + info['eres'].split(' & B.Buf')[0], 'sndb_%d' % len(snds))
+                bodies.append('def case_%d() -> IO(Unit): %s(%s)' % (i, h, call))
+            continue
         call = '%s_e.%s(%s)' % (c['type'], info['fn'], obj)
         if info['direct']:
             bodies.append('def case_%d() -> IO(Unit): show_enc(%s)' % (i, call))
@@ -196,17 +230,39 @@ def driver(T, cases):
           '        IOx.emit_encoding(B.size(b))',
           '    case False{}: IO.print("ACCEPTED=0")',
           '',
+          'def show_buf(b: B.Buf) -> IO(Unit):',
+          '  do IO<Unit>:',
+          '    IO.print("ACCEPTED=1")',
+          '    IOx.emit_encoding(B.size(b))',
+          '',
           'def show_enc(e: O.Encoded) -> IO(Unit):',
           '  match e:',
           '    case O.Encoded{ok, b}: show_ok(ok, b)', '']
     for r, h in snds.items():
-        L += ['def %s(pair: %s & O.Encoded) -> IO(Unit):' % (h, r), '  (o, e) = pair', '  show_enc(e)', '']
-    L += bodies + ['', 'def run(+i: U32) -> IO(Unit):', '  match i:']
-    for i in range(len(cases)):
-        L.append('    case %d: case_%d()' % (i, i))
-    L += ['    case _: IO.print("NOCASE=1")', '', 'def main() -> IO(Unit):', '  do IO<Unit>:',
-          '    +i : U32 <- IOx.env_u32("SSZ_CASE")', '    run(i)', '']
+        if r.startswith('buf:'):
+            L += ['def %s(pair: %s & B.Buf) -> IO(Unit):' % (h, r[4:]), '  (o, b) = pair', '  show_buf(b)', '']
+        else:
+            L += ['def %s(pair: %s & O.Encoded) -> IO(Unit):' % (h, r), '  (o, e) = pair', '  show_enc(e)', '']
+    L += bodies + [''] + dispatch(len(cases))
+    L += ['', 'def main() -> IO(Unit):', '  do IO<Unit>:', '    +i : U32 <- IOx.env_u32("SSZ_CASE")', '    run_0(i)', '']
     return '\n'.join(L)
+
+
+def dispatch(n, lo=0, hi=None, leaf=8):
+    """run_<lo>(i): the case i of lo..hi-1 as a balanced tree of comparisons (a flat chain of 200 `match` arms overflows the compiler)"""
+    hi = n if hi is None else hi
+    name = 'run_%d' % lo if (lo, hi) == (0, n) else 'run_%d_%d' % (lo, hi)
+    if hi - lo <= leaf:
+        L = ['def %s(+i: U32) -> IO(Unit):' % name, '  match i:']
+        L += ['    case %d: case_%d()' % (i, i) for i in range(lo, hi)]
+        L += ['    case _: IO.print("NOCASE=1")', '']
+        return L
+    mid = (lo + hi) // 2
+    L = dispatch(n, lo, mid, leaf) + dispatch(n, mid, hi, leaf)
+    L += ['def %s_pick(b: Bool, +i: U32) -> IO(Unit):' % name, '  match b:',
+          '    case True{}: run_%d_%d(i)' % (lo, mid), '    case False{}: run_%d_%d(i)' % (mid, hi), '',
+          'def %s(+i: U32) -> IO(Unit): %s_pick(U32.is_lt(i, %d), i)' % (name, name, mid), '']
+    return L
 
 
 # ---- building and running --------------------------------------------------------------------------------------------------
@@ -285,11 +341,17 @@ def main():
     ap.add_argument('--patch', default=None)
     ap.add_argument('--jobs', type=int, default=4)
     ap.add_argument('--out', default=None)
+    ap.add_argument('--limit', type=int, default=None, help='only the first N cases (compile debugging)')
+    ap.add_argument('--compile-only', action='store_true')
     ap.add_argument('--keep', action='store_true')
     ap.add_argument('--emit-driver', default=None, help='write the Bend program here and stop')
     a = ap.parse_args()
     repo = os.path.abspath(a.repo)
     cases = json.load(open(a.cases))['cases']
+    # every valid object is also run through the unchecked encoder `<Name>_encode` (same bytes expected)
+    cases += [dict(c, id=c['id'] + '#unchecked', mode='encode', **{'class': 'unchecked-encode'}) for c in cases if c['verdict'] == 'accept']
+    if a.limit:
+        cases = cases[:a.limit]
     for c in cases:
         c['value'] = expand(c['value'])
     T = Types(repo)
@@ -302,6 +364,9 @@ def main():
     if prog is None:
         print('COMPILE FAILED\n' + err)
         return 2
+    if a.compile_only:
+        print('compiled', len(cases), 'cases')
+        return 0
     tmp = tempfile.mkdtemp(prefix='rawobj-', dir=a.work)
     with ThreadPoolExecutor(a.jobs) as ex:
         res = list(ex.map(lambda i: run_case(prog, i, tmp), range(len(cases))))
@@ -317,7 +382,10 @@ def main():
             kind = 'reference serializes, Bend refuses'
         elif want == 'accept' and r['hex'] != c['hex']:
             kind = 'both serialize, bytes differ'
-        k = (c['class'], 'AGREE' if kind is None else 'DISAGREE')
+        if kind and c.get('known'):
+            k, kind = (c['class'], 'KNOWN-OPEN'), None
+        else:
+            k = (c['class'], 'AGREE' if kind is None else 'DISAGREE')
         tally[k] = tally.get(k, 0) + 1
         if kind:
             bad.append({'id': c['id'], 'class': c['class'], 'kind': kind, 'want': want, 'bend': r})

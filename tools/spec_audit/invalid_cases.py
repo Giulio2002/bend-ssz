@@ -50,6 +50,7 @@ CLASSES = {
     'union-payload': 'a union whose payload is invalid',
     'bool-bytes': 'a packed boolean vector holding a byte other than 0 and 1',
     'valid-bytes': 'valid objects at and next to the boundaries: the exact bytes of the serializer (offsets, lengths, padding)',
+    'absent-box': 'a vector of variable-size elements whose boxes hold no value (the default object): not a value of the type',
 }
 
 
@@ -115,8 +116,8 @@ def cases():
     add('valid-bytes', 'progbitlist', {'bits': []}, 'empty')
     add('bit-padding', 'progbitlist', {'rawbits': [8], 'k': 3, 'depth': 3}, 'stray_k3')
     add('limit', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': [0] * 131073}}}, 'bits131073')
-    add('limit', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': [1] * 131080}}}, 'bits131080')
-    add('valid-bytes', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': [1] * 131072}}}, 'bits131072')
+    add('limit', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': bits_of(131080, {0, 131079})}}}, 'bits131080')
+    add('valid-bytes', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': bits_of(131072, {0, 131071})}}}, 'bits131072')
     add('valid-bytes', 'FuluAttestation', {'fields': {'aggregation_bits': {'bits': [1] * 5}}}, 'bits5')
     add('storage', 'FuluAttestation', {'fields': {'aggregation_bits': {'rawbits': [0], 'k': 131072, 'depth': 12}}}, 'bits131072_short_storage')
     add('storage', 'FuluAttestation', {'fields': {'aggregation_bits': {'rawbits': [0], 'k': 100000, 'depth': 10}}}, 'bits100000_short_storage')
@@ -183,6 +184,8 @@ def cases():
         fv('ComplexTestStruct', 'B', {'elems': pat(n, 2), 'esize': 2}, 'valid-bytes', 'len%d' % n)
     fv('ComplexTestStruct', 'A', {'u': 65536}, 'field-validity', '65536')
     fv('ComplexTestStruct', 'C', {'u': 256}, 'field-validity', '256')
+    add('absent-box', 'ComplexTestStruct', {'fields': {}, 'absent': True}, 'default_boxes')
+    out[-1]['known'] = 'open finding: ComplexTestStruct_serialize accepts the default object (the vector of VarTestStruct holds absent boxes) and writes 14 bytes too few'
     for n in (3, 4, 5):
         fv('FuluExecutionRequests', 'consolidations', {'items': n}, 'limit', 'items%d' % n)
     for n in (0, 1, 2):
@@ -276,7 +279,7 @@ def ref_value(t, v):
         if t[0] == 'bytes' or t[0] == 'bytelist':
             return bytes(v['elems'])
         if t[0] == 'vector' and t[1] == ('bool',):
-            return [x if x in (0, 1) else x for x in v['elems']]
+            return [bool(x) if x in (0, 1) else x for x in v['elems']]
         return list(v['elems'])
     if 'items' in v:
         et = t[1]
@@ -296,6 +299,8 @@ def ref_value(t, v):
 
 
 def is_raw(v):
+    if 'absent' in v:
+        return True
     if 'rawbits' in v or 'rawwords' in v:
         return True
     if 'fields' in v:
@@ -329,6 +334,8 @@ def raw_valid(c, types):
     t = types[c['type']]
 
     def to_plain(t, v):
+        if 'absent' in v:
+            return v, True
         if 'rawbits' in v:
             k = v['k']
             ws = v['rawbits']
