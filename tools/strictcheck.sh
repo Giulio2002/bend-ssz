@@ -30,6 +30,16 @@ if [ $rc -ne 0 ]; then
 else
   pass=$((pass+1)); [ -n "${VERBOSE:-}" ] && echo "${GREEN}ok${OFF}   ${DIM}unittest codegen/tests${OFF}"
 fi
+# the umbrella cache (tools/umbrella_cache.py): its unit tests, and a stamp that reuses cached umbrellas is accepted only if each cached
+# umbrella's key, recomputed from this tree, is the stamped one (a stamp must not claim a tree it did not cover)
+if [ -f tools/test_umbrella_cache.py ]; then
+  out=$(python3 -m unittest tools.test_umbrella_cache 2>&1); rc=$?
+  if [ $rc -ne 0 ]; then fail_line "rc=$rc unittest tools.test_umbrella_cache: $(echo "$out" | tail -2 | tr '\n' ' ' | cut -c1-300)"; else pass=$((pass+1)); fi
+  if grep -q '"cached": true' benchmarks/evidence/check_fast.json 2>/dev/null; then
+    out=$(python3 tools/umbrella_cache.py verify-rows benchmarks/evidence/check_fast.json 2>&1); rc=$?
+    if [ $rc -ne 0 ]; then fail_line "rc=$rc cached stamp rows: $(echo "$out" | tail -2 | tr '\n' ' ' | cut -c1-300)"; else pass=$((pass+1)); fi
+  fi
+fi
 # fixture provenance: the committed fixtures and the manifest against the pinned release tarballs (cached)
 if [ -f tools/verify_fixtures.py ]; then
   out=$(python3 tools/verify_fixtures.py --tarballs $TB 2>&1); rc=$?
