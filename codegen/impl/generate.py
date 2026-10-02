@@ -560,7 +560,6 @@ def emit_var_elems_ok(s, w):
 def emit_container_ok(s, w, fixed):
     p, F = s.p, s.fields
     hoff, fp = container_layout(F)
-    names = [f for f, _ in F]
     var = [i for i, (f, fs) in enumerate(F) if not fs.fixed]
     steps = [('off', i) for i in var]
     steps += [('fixed', i) for i, (f, fs) in enumerate(F) if fs.fixed and chk(fs)]
@@ -580,7 +579,6 @@ def emit_container_ok(s, w, fixed):
     def known(k):
         return ofs[:sum(1 for x in steps[:k] if x[0] == 'off')]
 
-    entry = 'ok_at' if fixed else 'ok_go'
     sig_len = '' if fixed else ', +len: U32'
     arg_len = '' if fixed else ', len'
     for k in range(len(steps) - 1, -1, -1):
@@ -687,7 +685,7 @@ def emit_access(s, w):
             w('  (o, +x) = pair')
             w('  (o, U32.is_eq(x, 1))')
             rd = f'{p}_bool_at(O.words_byte_at(o, i, 1))'
-            wr = f'O.words_write(o, i, O.pick(v, 1, 0), 1)'
+            wr = 'O.words_write(o, i, O.pick(v, 1, 0), 1)'
             dom = None
         elif ekind == 'uint' and es == 8:
             rd = 'O.words_u64_at(o, (i * 8 : U32))'
@@ -1134,7 +1132,7 @@ def emit_valid(s, w):
         i = s.inner
         B_ = s.rep
         w(f'def {p}_va_back(pair: {i.rep} & Bool) -> {B_} & Bool:')
-        w(f'  (v, ok) = pair')
+        w('  (v, ok) = pair')
         w(f'  (O.BSome{{v, O.BNone{{}}}}, ok)')
         w(f'def {p}_valid(o: {B_}) -> {B_} & Bool:')
         w('  match o:')
@@ -1877,11 +1875,6 @@ def emit_seq(s, w):
         w(f'def {p}_default() -> {S}: {S}{{{p}_fill(0n), 0}}')
     else:
         w(f'def {p}_default() -> {S}: {S}{{{p}_fill({p}_cap({count})), {count}}}')
-    # element access for the loops: Data elements are read, linear ones swapped out
-    if e.data:
-        take = f'Array.get({R}, arr, i)'
-    else:
-        take = f'Array.swap({R}, arr, i, {placeholder(e)})'
     # ---- read ----
     _seq_fixed_reader(w, p, e, R, E, S, is_list, count)
     # ---- size, put ----
@@ -2268,7 +2261,6 @@ def emit_fieldset(s, w, p, R, F, hoff, fixed_part, mode, data):
     # fields' checks. A fixed-size container threads a flag in the same slot.
     sized = bool(var) or mode == 'group'
     cur0 = 'voff' if mode == 'group' else (str(fixed_part) if sized else '0')
-    vparam = ['+voff: U32'] if mode == 'group' else []
     entry = f'{p}_putn' if (sized and mode != 'group') else (f'{p}_put' if mode == 'group' else f'{p}_putk')
     rtype = f'Array<U32> & ({R} & U32)'
     dchk = [f'{fs.p}_valid({f})' for f, fs in F if fs.data and not trivial(fs)]
@@ -3049,7 +3041,6 @@ def literal_depth(t):
 def emit_api(g, name, s, w):
     R = s.rep
     p = s.p
-    fixed = s.fixed
     w(f'# ---- {name} ----')
     # decode: the generated validator decides the window, then the reader builds
     w(f'def {name}_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, {R}>:')
@@ -3087,10 +3078,10 @@ def emit_api(g, name, s, w):
             if lit is not None and not s.fixed:
                 w(f'def {name}_{x}enc_out(out: Array<U32>, o: {R}, +m: U32) -> {R} & {Bt}:')
                 if x == '':
-                    w(f'  (o, O.out_done((m .&. 2147483647 : U32), out))')
+                    w('  (o, O.out_done((m .&. 2147483647 : U32), out))')
                 else:
                     # the writer's length carries bit 31 when the value is invalid
-                    w(f'  (o, O.ser_done(O.is_poisoned(m), m, out))')
+                    w('  (o, O.ser_done(O.is_poisoned(m), m, out))')
                 w(f'def {name}_{x}enc_put(pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
                 w('  (out, r) = pair')
                 w('  (o, m) = r')
@@ -3110,9 +3101,9 @@ def emit_api(g, name, s, w):
             elif not s.fixed:
                 w(f'def {name}_{x}enc_out(+n: U32, out: Array<U32>, o: {R}, +m: U32) -> {R} & {Bt}:')
                 if x == '':
-                    w(f'  (o, O.out_done(n, out))')
+                    w('  (o, O.out_done(n, out))')
                 else:
-                    w(f'  (o, O.ser_done(O.is_poisoned(m), n, out))')
+                    w('  (o, O.ser_done(O.is_poisoned(m), n, out))')
                 w(f'def {name}_{x}enc_put(+n: U32, pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
                 w('  (out, r) = pair')
                 w('  (o, m) = r')
@@ -3144,7 +3135,7 @@ def emit_api(g, name, s, w):
                 w(f'def {name}_{x}enc_out(+n: U32, pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
                 w('  (out, r) = pair')
                 w('  (o, fl) = r')
-                w(f'  (o, O.ser_done(O.is_poisoned(fl), n, out))')
+                w('  (o, O.ser_done(O.is_poisoned(fl), n, out))')
                 w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
                 w('  (o, +n) = pair')
                 w(f'  {name}_{x}enc_out(n, {p}_putk(O.out_new(n), 0, o))')
@@ -3579,259 +3570,10 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
     return '\n'.join(L) + '\n'
 
 
-PROGRAM = r"""import Base
-import ../../src/buffer.bend as B
-import ../../src/digest.bend as D
-import ../../src/obj.bend as O
-import ../../types/@MOD@_g@K@.bend as G
-import ../compact/objio.bend as IOx
-
-# GENERATED by generate (codegen). Do not edit.
-# The typed object API of group @K@ under measurement. SSZ_MODE selects the
-# operation: 0 checks one input (decode, encode to SSZ_OUTPUT, root), 1 times
-# SSZ_OPS decodes (each builds and consumes a whole object), 2 times SSZ_OPS
-# encodes of one decoded object, 3 times SSZ_OPS roots of it. Reading the
-# input, writing the output and the one decode that mode 2 and 3 need are all
-# outside the timed region, as the Go reference does.
-
-def word_of(pair: B.Buf & U32) -> U32:
-  (b, +w) = pair
-  w
-
-def sized_word(pair: B.Buf & U32) -> U32:
-  (b, +n) = pair
-  word_of(B.word(b, O.pick(U32.is_eq(n, 0), 0, (U32.shrn((n + 3 : U32), 2n) - 1 : U32))))
-
-# Consumes an encoding by reading its last word.
-def consume(out: B.Buf) -> U32: sized_word(B.size(out))
-
-def dloop(+k: Nat, +i: U32, +size: U32, +acc: U32, +good: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & (U32 & U32):
-  match k:
-    case 0n:
-      (buf, r) = pair
-      (x, g) = r
-      (buf, ((acc .^. x : U32), (good + g : U32)))
-    case 1n+p:
-      (buf, r) = pair
-      (x, g) = r
-      dloop(p, i, size, (acc .^. x : U32), (good + g : U32), G.decode_force(i, buf, size))
-
-def dec_ok(all: Bool, +ms: Nat, +acc: U32, +good: U32) -> IO(Unit):
-  match all:
-    case True{}: IO.print("MS=" ++ Nat.show(ms) ++ " ACC=" ++ U32.show(acc) ++ " ACCEPTED=" ++ U32.show(good))
-    case False{}: IO.die(Unit, 1, "decode rejected")
-
-def dec_time(+ops: U32, +t0: Nat, +acc: U32, +good: U32) -> IO(Unit):
-  do IO<Unit>:
-    t1 : Nat <- IO.now()
-    dec_ok(U32.is_eq(good, ops), Nat.sub(t1, t0), acc, good)
-
-def dec_report(+ops: U32, +t0: Nat, pair: B.Buf & (U32 & U32)) -> IO(Unit):
-  (buf, r) = pair
-  (acc, good) = r
-  dec_time(ops, t0, acc, good)
-
-def run_dec(+i: U32, +ops: U32, +size: U32, buf: B.Buf) -> IO(Unit):
-  do IO<Unit>:
-    t0 : Nat <- IO.now()
-    dec_report(ops, t0, dloop(U32.to_nat((ops - 1 : U32)), i, size, 0, 0,
-      G.decode_force(i, buf, size)))
-
-def eloop(+k: Nat, +acc: U32, pair: G.Any & B.Buf) -> G.Any & (U32 & B.Buf):
-  match k:
-    case 0n:
-      (a, out) = pair
-      (a, (acc, out))
-    case 1n+p:
-      (a, out) = pair
-      eloop(p, (acc .^. consume(out) : U32), G.encode(a))
-
-def enc_time(+t0: Nat, +acc: U32, out: B.Buf) -> IO(Unit):
-  do IO<Unit>:
-    t1 : Nat <- IO.now()
-    IO.print("MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " ACC=" ++ U32.show(acc))
-    IOx.emit_encoding(B.size(out))
-
-def enc_report(+t0: Nat, pair: G.Any & (U32 & B.Buf)) -> IO(Unit):
-  (a, r) = pair
-  (acc, out) = r
-  enc_time(t0, acc, out)
-
-def run_enc(+ops: U32, a: G.Any) -> IO(Unit):
-  do IO<Unit>:
-    t0 : Nat <- IO.now()
-    enc_report(t0, eloop(U32.to_nat((ops - 1 : U32)), 0, G.encode(a)))
-
-def rlast(+acc: U32, h: B.Buf, a: G.Any, +d: D.Digest) -> B.Buf & (G.Any & (U32 & D.Digest)):
-  (h, (a, ((acc .^. IOx.fold(d) : U32), d)))
-
-def rloop(+k: Nat, +acc: U32, pair: B.Buf & (G.Any & D.Digest)) -> B.Buf & (G.Any & (U32 & D.Digest)):
-  match k:
-    case 0n:
-      (h, r) = pair
-      (a, d) = r
-      rlast(acc, h, a, d)
-    case 1n+p:
-      (h, r) = pair
-      (a, d) = r
-      rloop(p, (acc .^. IOx.fold(d) : U32), G.root(h, a))
-
-def root_time(+t0: Nat, +acc: U32, +d: D.Digest) -> IO(Unit):
-  do IO<Unit>:
-    t1 : Nat <- IO.now()
-    IO.print("MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " ACC=" ++ U32.show(acc))
-    IO.print("ROOTSUM=" ++ U32.show(IOx.rootsum(d)))
-    IO.print("ROOTWORDS=" ++ IOx.words(d))
-
-def root_report(+t0: Nat, pair: B.Buf & (G.Any & (U32 & D.Digest))) -> IO(Unit):
-  (h, r) = pair
-  (a, x) = r
-  (acc, d) = x
-  root_time(t0, acc, d)
-
-def run_root(+ops: U32, a: G.Any) -> IO(Unit):
-  do IO<Unit>:
-    h : B.Buf <- IO.pure(B.Buf, O.hasher())
-    t0 : Nat <- IO.now()
-    root_report(t0, rloop(U32.to_nat((ops - 1 : U32)), 0, G.root(h, a)))
-
-def check_show(out: B.Buf, +d: D.Digest) -> IO(Unit):
-  do IO<Unit>:
-    IO.print("ROOTSUM=" ++ U32.show(IOx.rootsum(d)))
-    IO.print("ROOTWORDS=" ++ IOx.words(d))
-    IOx.emit_encoding(B.size(out))
-
-def check_root(out: B.Buf, pair: B.Buf & (G.Any & D.Digest)) -> IO(Unit):
-  (h, r) = pair
-  (a, d) = r
-  check_show(out, d)
-
-def check_enc(pair: G.Any & B.Buf) -> IO(Unit):
-  (a, out) = pair
-  check_root(out, G.root(O.hasher(), a))
-
-def run_check(a: G.Any) -> IO(Unit):
-  do IO<Unit>:
-    IO.print("DECODED=1")
-    check_enc(G.encode(a))
-
-# Mode 5 writes the decoded object's structural value dump (src/obj.bend) to
-# SSZ_OUTPUT for tools/spectests.py, which compares it with value.yaml.
-def run_dump(a: G.Any) -> IO(Unit):
-  do IO<Unit>:
-    IO.print("DECODED=1")
-    IOx.write_list(G.dump(a, []))
-
-def with_obj(+mode: U32, +ops: U32, a: G.Any) -> IO(Unit):
-  match mode:
-    case 2: run_enc(ops, a)
-    case 3: run_root(ops, a)
-    case 5: run_dump(a)
-    case _: run_check(a)
-
-def on_decoded(m: Maybe<&1, G.Any>, +mode: U32, +ops: U32) -> IO(Unit):
-  match m:
-    case None{}: IO.die(Unit, 1, "DECODED=0")
-    case Some{a}: with_obj(mode, ops, a)
-
-def decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, G.Any>) -> IO(Unit):
-  (buf, m) = pair
-  on_decoded(m, mode, ops)
-
-def dispatch(+mode: U32, +i: U32, +ops: U32, +size: U32, buf: B.Buf) -> IO(Unit):
-  match mode:
-    case 1: run_dec(i, ops, size, buf)
-    case _: decoded(mode, ops, G.decode(i, buf, size))
-
-def with_input(+mode: U32, +i: U32, +ops: U32, pair: B.Buf & U32) -> IO(Unit):
-  (buf, +size) = pair
-  dispatch(mode, i, ops, size, buf)
-
-def main() -> IO(Unit):
-  do IO<Unit>:
-    +mode : U32 <- IOx.env_u32("SSZ_MODE")
-    +index : U32 <- IOx.env_u32("SSZ_INDEX")
-    +ops : U32 <- IOx.env_u32("SSZ_OPS")
-    input : B.Buf & U32 <- IOx.load()
-    with_input(mode, index, ops, input)
-"""
-
-
-PROGRAM_FUZZ = r"""import Base
-import ../../src/buffer.bend as B
-import ../../src/digest.bend as D
-import ../../src/obj.bend as O
-import ../../types/fulu_obj_f@K@.bend as G
-import ../compact/objio.bend as IOx
-
-# GENERATED by generate (codegen). Do not edit.
-# The mutation driver of fuzz group @K@, for tests_generated/fuzz_objects.py:
-# decode SSZ_INPUT as the name at SSZ_INDEX, apply operation SSZ_SEL of that
-# name's table (types/obj_fuzz_ops.json) at index SSZ_IDX with value seed
-# SSZ_SEED, then re-encode to SSZ_OUTPUT and print the root of the result.
-# SSZ_MODE 0 skips the mutation, which is the plain decode/encode/root check.
-
-def check_show(out: B.Buf, d: D.Digest) -> IO(Unit):
-  do IO<Unit>:
-    IO.print("ROOTWORDS=" ++ IOx.words(d))
-    IOx.emit_encoding(B.size(out))
-
-def check_root(out: B.Buf, pair: B.Buf & (G.Any & D.Digest)) -> IO(Unit):
-  (h, r) = pair
-  (a, d) = r
-  check_show(out, d)
-
-def check_enc(pair: G.Any & B.Buf) -> IO(Unit):
-  (a, out) = pair
-  check_root(out, G.root(O.hasher(), a))
-
-def status(ok: Bool) -> IO(Unit):
-  match ok:
-    case True{}: IO.print("STATUS=1")
-    case False{}: IO.print("STATUS=0")
-
-def mutated(pr: G.Any & Bool) -> IO(Unit):
-  (a, ok) = pr
-  do IO<Unit>:
-    status(ok)
-    check_enc(G.encode(a))
-
-def run_plain(a: G.Any) -> IO(Unit):
-  do IO<Unit>:
-    IO.print("STATUS=1")
-    check_enc(G.encode(a))
-
-def with_obj(+mode: U32, +sel: U32, +idx: U32, +seed: U32, a: G.Any) -> IO(Unit):
-  match mode:
-    case 0: run_plain(a)
-    case _: mutated(G.fuzz(a, sel, idx, seed))
-
-def on_decoded(m: Maybe<&1, G.Any>, +mode: U32, +sel: U32, +idx: U32, +seed: U32) -> IO(Unit):
-  match m:
-    case None{}: IO.die(Unit, 1, "DECODED=0")
-    case Some{a}:
-      do IO<Unit>:
-        IO.print("DECODED=1")
-        with_obj(mode, sel, idx, seed, a)
-
-def decoded(+mode: U32, +sel: U32, +idx: U32, +seed: U32, pair: B.Buf & Maybe<&1, G.Any>) -> IO(Unit):
-  (buf, m) = pair
-  on_decoded(m, mode, sel, idx, seed)
-
-def with_input(+mode: U32, +i: U32, +sel: U32, +idx: U32, +seed: U32, pair: B.Buf & U32) -> IO(Unit):
-  (buf, +size) = pair
-  decoded(mode, sel, idx, seed, G.decode(i, buf, size))
-
-def main() -> IO(Unit):
-  do IO<Unit>:
-    +mode : U32 <- IOx.env_u32("SSZ_MODE")
-    +index : U32 <- IOx.env_u32("SSZ_INDEX")
-    +sel : U32 <- IOx.env_u32("SSZ_SEL")
-    +idx : U32 <- IOx.env_u32("SSZ_IDX")
-    +seed : U32 <- IOx.env_u32("SSZ_SEED")
-    input : B.Buf & U32 <- IOx.load()
-    with_input(mode, index, sel, idx, seed, input)
-"""
+# the benchmark programs (benchmarks/objprog/): static Bend text, with @K@ (the group) and @MOD@ (the runtime module) filled in
+TEMPLATES = _pathlib.Path(__file__).resolve().parent / 'templates'
+PROGRAM = (TEMPLATES / 'objprog.bend.in').read_text()
+PROGRAM_FUZZ = (TEMPLATES / 'objprog_fuzz.bend.in').read_text()
 
 
 def qual(rep):
