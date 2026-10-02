@@ -17,9 +17,8 @@ into that word (s the byte offset, b the width in bytes, s + b <= r), so the wri
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
-import sys
-
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 
 OUT = ROOT / 'proofs/obj/tz_merge.bend'
 
@@ -135,16 +134,7 @@ def tz_merge(+r: U32, +s: U32, +b: U32, +old: U32, +x: U32, +hsb: {Nat.is_le(Nat
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: tz_merge.bend')
-            sys.exit(1)
-        print('subword_tz: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('subword_tz: proofs/obj/tz_merge.bend')
+    run_single('subword_tz', OUT, text())
 
 
 if __name__ == '__main__':
