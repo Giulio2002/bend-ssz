@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT m03-chunk-count-packing/06
-# type: VarTestStruct
+# type: VarTestStruct,ComplexTestStruct
 # ops: decode
 # spec: the last partial word keeps only its n mod 4 low bytes
 # fault: the mask keeps one byte too many (rem+1)

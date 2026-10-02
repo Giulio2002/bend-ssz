@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT b04-boolean-packed-validity/01
-# type: vec_bool_5
+# type: vec_bool_5,vec_bool_16,proglist_bool
 # ops: encode
 # spec: every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)
 # fault: the packed-boolean scan lets bit 1 of each byte through (mask 0xFCFCFCFC)

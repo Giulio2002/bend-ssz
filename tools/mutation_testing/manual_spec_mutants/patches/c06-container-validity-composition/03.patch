@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c06-container-validity-composition/03
+# type: SmallTestStruct,ProgressiveTestStruct,ProgressiveComplexTestStruct
+# ops: encode
+# spec: a container value is valid only if every field is valid (SmallTestStruct has two uint16 fields)
+# fault: the validity of field B is not checked
+# why: checking only the first field
+# file: types/SmallTestStruct_encode_ssz_generated.bend
+--- a/types/SmallTestStruct_encode_ssz_generated.bend
++++ b/types/SmallTestStruct_encode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   match o:
+-    case SmallTestStruct_d.SmallTestStruct{+f_A, +f_B}: Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B))
++    case SmallTestStruct_d.SmallTestStruct{+f_A, +f_B}: uint16_e.u16_valid(f_A)
+ 

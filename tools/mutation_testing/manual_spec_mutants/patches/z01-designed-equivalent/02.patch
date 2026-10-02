@@ -1,14 +1,14 @@
 # MANUAL SPEC MUTANT z01-designed-equivalent/02
-# type: uint16
-# ops: encode
-# spec: designed control: encoder buffer capacity is not part of the contract (out_at(0n) holds 1 word, 2 bytes need 1 word)
-# fault: the output buffer is allocated with depth 1 instead of 0 (capacity only)
-# why: over-allocation
-# file: types/uint16_encode_ssz_generated.bend
---- a/types/uint16_encode_ssz_generated.bend
-+++ b/types/uint16_encode_ssz_generated.bend
-@@ -13,3 +13,3 @@
- 
--def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))
-+def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(1n), 0, o))
+# type: bitlist_5
+# ops: root
+# spec: designed control: the seg parameter is only a scratch-segment index
+# fault: unused parameter replaced
+# why: dead parameter change
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1013,3 +1013,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, 0))
  

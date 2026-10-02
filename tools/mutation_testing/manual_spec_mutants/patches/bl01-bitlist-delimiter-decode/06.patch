@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl01-bitlist-delimiter-decode/06
+# type: bitlist_5
+# ops: decode
+# spec: the delimiter is the highest set bit of the last byte (last byte 0b10 puts it at bit 1)
+# fault: the lowest threshold of the high-bit table is 3: a last byte of 2 puts the delimiter at bit 0
+# why: threshold typo in the high-bit table
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -963,3 +963,3 @@
+   pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 16), 4,
+-    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 0)))))))
++    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 3), 1, 0)))))))
+ 

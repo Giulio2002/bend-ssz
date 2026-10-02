@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c06-container-validity-composition/05
+# type: ProgressiveSingleFieldContainerTestStruct,CompatibleUnionA,CompatibleUnionABCA
+# ops: encode
+# spec: a progressive container value is valid only if its field is valid (uint8 range)
+# fault: the field validity is not checked
+# why: assuming the single field is in range
+# file: types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend
+--- a/types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   match o:
+-    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+f_A}: uint8_e.u8_valid(f_A)
++    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+f_A}: True{}
+ 

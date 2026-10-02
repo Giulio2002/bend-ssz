@@ -324,11 +324,11 @@ why: off by one in the bit count
 -U32.is_lt(w0, 32)
 +U32.is_lt(w0, 64)
 === bv03-bitvector-padding-encode
-type: bitvector_5
+type: bitlist_5,BitsStruct,FuluAttestation
 ops: encode
 file: src/obj.bend
-spec: serializing a bit vector with a set bit past N is invalid
-fault: the above-N table for r=5 masks from bit 6
+spec: serializing a Bitlist[5] (or a bit vector) whose last storage word has a set bit between the length and the delimiter position is invalid
+fault: the above-N table entry for r=5 masks from bit 6 (a stray bit 5 is accepted)
 why: constant typo in a 32-entry table
 -    case 5: U32.is_eq((x .&. 4294967264 : U32), 0)
 +    case 5: U32.is_eq((x .&. 4294967232 : U32), 0)
@@ -368,6 +368,8 @@ fault: the root mixes in the bit count 512 like a Bitlist
 why: bitlist rule applied to a bitvector
 -(h, D.node(hl, D.D{B.swap32(w0)
 +(h, O.mix_len(hl, D.node(hl, D.D{B.swap32(w0)
+-B.swap32(w15)}))
++B.swap32(w15)}), 512))
 === bl01-bitlist-delimiter-decode
 type: bitlist_5
 ops: decode
@@ -378,7 +380,7 @@ why: treating the delimiter as optional
 -  (buf, bsel(U32.is_eq(v, 0), False{},
 +  (buf, bsel(U32.is_eq(v, 0), True{},
 === bl01-bitlist-delimiter-decode
-type: bitlist_5
+type: bitlist_5,BitsStruct
 ops: decode
 file: src/obj.bend
 spec: an empty byte string is not a Bitlist value
@@ -490,7 +492,7 @@ why: bitvector size rule applied to a bitlist (no room for the delimiter when le
 -    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
 +    case Bits{ws, +k}: (Bits{ws, k}, U32.shrn((k + 7 : U32), 3n))
 === bl04-bitlist-size
-type: bitlist_8
+type: bitlist_8,progbitlist,FuluAttestation
 ops: encode
 file: src/obj.bend
 spec: a Bitlist of len bits serializes to len/8 + 1 bytes
@@ -517,7 +519,7 @@ why: strict inequality
 -    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
 +    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_lt(k, limit)), k, Array.size(U32, ws))
 === bl05-bitlist-encode-validity
-type: bitlist_5
+type: bitlist_5,progbitlist,FuluAttestation
 ops: encode
 file: src/obj.bend
 spec: bits past the length (before the delimiter) must be zero in the value

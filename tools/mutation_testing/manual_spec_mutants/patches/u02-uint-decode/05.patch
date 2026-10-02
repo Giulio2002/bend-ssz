@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT u02-uint-decode/05
-# type: uint32
+# type: uint32,VarTestStruct
 # ops: decode
 # spec: uint32 little-endian decode of an SSZ offset or scalar at an unaligned position
 # fault: the unaligned 4-byte read joins the two words with the wrong shift (8 instead of 16 for a 2-byte misalignment)

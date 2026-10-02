@@ -42,14 +42,15 @@ def build(tree, work, name, patch, groups, bend):
         dst = os.path.join(d, r)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         os.link(os.path.join(tree, r), dst)
-    tgt = patch['file']
-    os.makedirs(os.path.dirname(os.path.join(d, tgt)), exist_ok=True)
-    if os.path.exists(os.path.join(d, tgt)):
-        os.unlink(os.path.join(d, tgt))
-    shutil.copy(os.path.join(tree, tgt), os.path.join(d, tgt))
-    r = subprocess.run(['patch', '-p1', '--no-backup-if-mismatch', '-s', '-i', patch['path']], cwd=d, capture_output=True, text=True)
-    if r.returncode:
-        raise RuntimeError('patch failed ' + r.stdout + r.stderr)
+    if patch is not None:
+        tgt = patch['file']
+        os.makedirs(os.path.dirname(os.path.join(d, tgt)), exist_ok=True)
+        if os.path.exists(os.path.join(d, tgt)):
+            os.unlink(os.path.join(d, tgt))
+        shutil.copy(os.path.join(tree, tgt), os.path.join(d, tgt))
+        r = subprocess.run(['patch', '-p1', '--no-backup-if-mismatch', '-s', '-i', patch['path']], cwd=d, capture_output=True, text=True)
+        if r.returncode:
+            raise RuntimeError('patch failed ' + r.stdout + r.stderr)
     os.makedirs(os.path.join(d, 'build'), exist_ok=True)
     env = dict(os.environ, BEND_NO_TELEMETRY='1', BUN_JSC_forceRAMSize='3000000000')
     for p, k in groups:
@@ -61,13 +62,17 @@ def build(tree, work, name, patch, groups, bend):
     return d
 
 
+CASE_TIMEOUT = 120
+MAXHEX = 400000
+
+
 def run_prog(prog, idx, data, tmp):
     inp = tempfile.mktemp(dir=tmp, suffix='.ssz')
     open(inp, 'wb').write(data)
     out = inp + '.out'
     env = {**os.environ, 'SSZ_MODE': '0', 'SSZ_INDEX': str(idx), 'SSZ_OPS': '1', 'SSZ_INPUT': inp, 'SSZ_OUTPUT': out}
     try:
-        r = subprocess.run([prog, '--threads', '1', '--gpu', 'off'], env=env, capture_output=True, text=True, timeout=120)
+        r = subprocess.run([prog, '--threads', '1', '--gpu', 'off'], env=env, capture_output=True, text=True, timeout=CASE_TIMEOUT)
         acc = r.returncode == 0 and 'DECODED=1' in r.stdout
         root = enc = None
         if acc:
@@ -91,7 +96,7 @@ def corpus_cases(path, wanted):
         m = re.search(r'"type": "([^"]+)"', l)
         if m and m.group(1) in wanted:
             c = json.loads(l)
-            if c['hex'] is not None and len(c['hex']) < 400000:
+            if c['hex'] is not None and len(c['hex']) < MAXHEX:
                 out.append(c)
     return out
 
@@ -129,6 +134,8 @@ def official(tree, wanted_fork, wanted_gen, snappy):
             continue
         d = os.path.join('fixtures', c)
         data = snappy.decompress(open(os.path.join(d, 'serialized.ssz_snappy'), 'rb').read())
+        if len(data) * 2 >= MAXHEX:
+            continue
         valid = '/ssz_static/' in c or '/valid/' in c
         want = None
         if valid:
@@ -193,8 +200,11 @@ def one(a, path):
             for r in ex.map(ro, ov):
                 if r:
                     obad.append(r)
-        res.update(cases=len(cases), official=len(ov), corpus_bad=len(bad), official_bad=len(obad),
-                   examples=[f'{i}: {k}' for i, k in bad[:4]] + obad[:3], B='KILLED' if (bad or obad) else 'SURVIVED',
+        kinds = collections.Counter(k for _, k in bad)
+        real = [b for b in bad if b[1] != 'timeout']
+        res.update(cases=len(cases), official=len(ov), corpus_bad=len(real), official_bad=len(obad), kinds=dict(kinds),
+                   timeouts=kinds.get('timeout', 0),
+                   examples=[f'{i}: {k}' for i, k in real[:4]] + obad[:3], B='KILLED' if (real or obad) else ('TIMEOUT-ONLY' if bad else 'SURVIVED'),
                    secs=round(time.time() - t0, 1))
         shutil.rmtree(d, ignore_errors=True)
         shutil.rmtree(tmp, ignore_errors=True)
@@ -210,13 +220,18 @@ def main():
     ap.add_argument('--cases', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--jobs', type=int, default=4)
+    ap.add_argument('--maxhex', type=int, default=400000)
+    ap.add_argument('--case-timeout', type=int, default=120)
     ap.add_argument('--bend', default=os.environ.get('BEND_RUNTIME', '/srv/ssz-optimization/toolchain-2.0.34/bin/bend'))
     ap.add_argument('patches', nargs='+')
     a = ap.parse_args()
+    global CASE_TIMEOUT, MAXHEX
+    CASE_TIMEOUT, MAXHEX = a.case_timeout, a.maxhex
     a.tree = os.path.abspath(a.tree)
     a.work = os.path.abspath(a.work)
     a.cases = os.path.abspath(a.cases)
     a.out = os.path.abspath(a.out)
+    a.patches = [os.path.abspath(p) for p in a.patches]
     done = {}
     if os.path.exists(a.out):
         done = {r['id']: r for r in json.load(open(a.out))}

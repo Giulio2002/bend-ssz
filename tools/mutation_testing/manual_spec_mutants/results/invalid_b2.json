@@ -1,0 +1,67 @@
+[
+ {
+  "id": "b04-boolean-packed-validity/01",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/02",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c02-fixed-field-offsets/05",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c06-container-validity-composition/01",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c06-container-validity-composition/02",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c06-container-validity-composition/03",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c06-container-validity-composition/04",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "c06-container-validity-composition/05",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/03",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "u04-uint-range/01",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "u04-uint-range/02",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "l03-list-limit-encode/01",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ },
+ {
+  "id": "l03-list-limit-encode/03",
+  "B2": "SURVIVED",
+  "failing_cases": []
+ }
+]

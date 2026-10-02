@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT m03-chunk-count-packing/01
-# type: VarTestStruct
+# type: VarTestStruct,ComplexTestStruct
 # ops: root
 # spec: pack: the chunk count is ceil(bytes/32)
 # fault: chunk count computed as floor(bytes/32) + 1 style: adds 32 (an extra chunk when bytes is a multiple of 32)

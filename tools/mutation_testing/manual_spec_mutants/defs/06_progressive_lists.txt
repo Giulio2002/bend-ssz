@@ -92,14 +92,14 @@ why: chunking the serialization
 -    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
 +    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes((k + 8 : U32))}, seg))
 === p02-progressive-length-mix
-type: progbitlist
+type: progbitlist,ProgressiveBitsStruct,ProgressiveVarTestStruct
 ops: decode
 file: src/obj.bend
-spec: ProgressiveBitlist has no limit but a non-empty value with a non-zero last byte
-fault: the unbounded bitlist accepts a zero last byte
-why: skipping the delimiter test when there is no limit
--  (buf, bsel(U32.is_eq(v, 0), False{},
-+  (buf, bsel(U32.is_eq(v, 0), big,
+spec: a ProgressiveBitlist value is non-empty (it has at least the delimiter byte)
+fault: the empty input is accepted (the length test is <= instead of <)
+why: bound error in the emptiness test
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
 === p03-progressive-container
 type: ProgressiveVarTestStruct
 ops: root
@@ -215,8 +215,8 @@ file: types/proglist_VarTestStruct_decode_ssz_generated.bend
 spec: offsets must be non-decreasing
 fault: the non-decreasing test is dropped
 why: forgetting the order check
--U32.is_le(a, b), U32.is_le(b, len))
-+U32.is_le(b, len))
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(b, len)
 === q01-composite-list-offsets
 type: ProgressiveTestStruct
 ops: decode
@@ -224,8 +224,8 @@ file: types/proglist_VarTestStruct_decode_ssz_generated.bend
 spec: offsets must lie within the buffer
 fault: the upper-bound test is dropped
 why: forgetting the range check
--U32.is_le(a, b), U32.is_le(b, len))
-+U32.is_le(a, b))
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(a, b)
 === q01-composite-list-offsets
 type: ProgressiveTestStruct
 ops: decode
@@ -233,17 +233,17 @@ file: types/proglist_VarTestStruct_decode_ssz_generated.bend
 spec: equal consecutive offsets give an empty element, which is legal
 fault: offsets must strictly increase
 why: < instead of <=
--U32.is_le(a, b), U32.is_le(b, len))
-+U32.is_lt(a, b), U32.is_le(b, len))
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++Bool.and(U32.is_lt(a, b), U32.is_le(b, len))
 === q01-composite-list-offsets
 type: ProgressiveTestStruct
 ops: decode
 file: types/proglist_VarTestStruct_decode_ssz_generated.bend
 spec: each element's window ends at the next offset
-fault: the element window extends to the end of the whole buffer
+fault: the element window length is the end offset b instead of b - a
 why: forgetting the next offset
 -VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
-+VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
++VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), b)
 === q01-composite-list-offsets
 type: ProgressiveTestStruct
 ops: decode

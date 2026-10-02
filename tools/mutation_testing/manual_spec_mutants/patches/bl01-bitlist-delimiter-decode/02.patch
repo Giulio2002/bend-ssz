@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT bl01-bitlist-delimiter-decode/02
-# type: bitlist_5
+# type: bitlist_5,BitsStruct
 # ops: decode
 # spec: an empty byte string is not a Bitlist value
 # fault: the empty input is accepted

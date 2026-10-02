@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT s01-size-overflow/03
+# type: VarTestStruct,bitlist_513
+# ops: root
+# spec: pack: the chunk count is ceil(bytes/32) for every byte count below 2^32
+# fault: the chunk count is computed in 32-bit arithmetic ((n + 31) wraps above 2^32 - 32)
+# why: the formula without the widening to Nat
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -892,3 +892,3 @@
+ # the proofs reason about it with Nat division alone).
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(U32.to_nat((n + 31 : U32)), 32n)
+ 

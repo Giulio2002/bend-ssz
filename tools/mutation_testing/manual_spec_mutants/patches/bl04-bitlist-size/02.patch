@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT bl04-bitlist-size/02
-# type: bitlist_8
+# type: bitlist_8,progbitlist,FuluAttestation
 # ops: encode
 # spec: a Bitlist of len bits serializes to len/8 + 1 bytes
 # fault: the size pass of the checked serializer reports ceil(len/8)

@@ -2,7 +2,7 @@
 # type: ProgressiveTestStruct
 # ops: decode
 # spec: each element's window ends at the next offset
-# fault: the element window extends to the end of the whole buffer
+# fault: the element window length is the end offset b instead of b - a
 # why: forgetting the next offset
 # file: types/proglist_VarTestStruct_decode_ssz_generated.bend
 --- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
@@ -10,5 +10,5 @@
 @@ -58,3 +58,3 @@
    match ok:
 -    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
-+    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
++    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), b)
      case False{}: (buf, False{})

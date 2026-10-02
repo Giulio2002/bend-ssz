@@ -1,0 +1,46 @@
+## 32-bit size limits (SSZ: a serialized vector, list or container must be below 2**32 bytes; no wrap-around in length arithmetic)
+=== s01-size-overflow
+type: bitlist_513,progbitlist,FuluAttestation,FuluPendingAttestation
+ops: root,encode
+file: src/obj.bend
+spec: the byte count of a Bitlist of n bits is ceil(n/8) for every n (no 32-bit wrap)
+fault: ceil(n/8) is computed as (n + 7) >> 3 in 32-bit arithmetic (wraps above 2^32 - 8)
+why: the textbook formula, overflowing for huge bit counts
+-def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
++def bits_nbytes(+nbits: U32) -> U32: U32.shrn((nbits + 7 : U32), 3n)
+=== s01-size-overflow
+type: progbitlist
+ops: decode
+file: src/obj.bend
+spec: a Bitlist without limit still has a bit count that fits 32 bits (8 * (len - 1) + position < 2^32)
+fault: the unbounded Bitlist decoder drops the 2^29-byte guard (bit count may wrap)
+why: no limit means no check
+-    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(
++    bsel(big, True{}, Nat.is_le(
+=== s01-size-overflow
+type: VarTestStruct,bitlist_513
+ops: root
+file: src/obj.bend
+spec: pack: the chunk count is ceil(bytes/32) for every byte count below 2^32
+fault: the chunk count is computed in 32-bit arithmetic ((n + 31) wraps above 2^32 - 32)
+why: the formula without the widening to Nat
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(U32.to_nat((n + 31 : U32)), 32n)
+=== s01-size-overflow
+type: VarTestStruct,progbitlist
+ops: encode
+file: src/obj.bend
+spec: a collection whose storage cannot hold its length is invalid (no out-of-range access, no wrapped size)
+fault: the size pass of a packed collection does not check that the storage holds the length
+why: trusting the length field
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
++  (Words{ws, n}, n)
+=== s01-size-overflow
+type: progbitlist,FuluAttestation
+ops: encode
+file: src/obj.bend
+spec: a Bitlist whose storage cannot hold its bits is invalid
+fault: the bit-list size pass does not check that the storage holds the bits
+why: trusting the length field
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
++  (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))

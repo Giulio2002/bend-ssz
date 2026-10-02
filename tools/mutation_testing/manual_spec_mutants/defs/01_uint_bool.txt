@@ -63,7 +63,7 @@ why: length constant computed as bits/8 - 1 (off by one)
 -O.out_done(32, u256_put(O.out_at(3n), 0, o))
 +O.out_done(31, u256_put(O.out_at(3n), 0, o))
 === u02-uint-decode
-type: uint16
+type: uint16,VarTestStruct
 ops: decode
 file: src/obj.bend
 spec: uint16 decodes exactly its two bytes (the bytes after them belong to the next field)
@@ -99,7 +99,7 @@ why: stride of 8 copied from the uint64 reader
 -(off + 4 : U32)
 +(off + 8 : U32)
 === u02-uint-decode
-type: uint32
+type: uint32,VarTestStruct
 ops: decode
 file: src/buffer.bend
 spec: uint32 little-endian decode of an SSZ offset or scalar at an unaligned position
@@ -317,7 +317,7 @@ why: inverted match arms
 -    case False{}: D.zero()
 +    case False{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
 === b04-boolean-packed-validity
-type: vec_bool_5
+type: vec_bool_5,vec_bool_16,proglist_bool
 ops: encode
 file: src/obj.bend
 spec: every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)

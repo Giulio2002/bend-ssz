@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT bl05-bitlist-encode-validity/03
-# type: bitlist_5
+# type: bitlist_5,progbitlist,FuluAttestation
 # ops: encode
 # spec: bits past the length (before the delimiter) must be zero in the value
 # fault: the stray-bit check on the last word is dropped

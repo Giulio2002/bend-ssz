@@ -51,10 +51,10 @@ type: ComplexTestStruct
 ops: decode
 file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
 spec: each element's window ends at the next offset
-fault: the element window of each element extends to the end of the buffer
+fault: the element window length is the end offset b instead of b - a
 why: forgetting the next offset
 -VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
-+VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
++VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), b)
 === q03-vector-of-variable
 type: ComplexTestStruct
 ops: decode
@@ -62,8 +62,8 @@ file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
 spec: offsets must be in order and within the buffer
 fault: the order test between consecutive offsets is dropped
 why: forgetting monotonicity
--U32.is_le(a, b), U32.is_le(b, len))
-+U32.is_le(b, len))
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(b, len)
 === bl01-bitlist-delimiter-decode
 type: bitlist_5
 ops: decode

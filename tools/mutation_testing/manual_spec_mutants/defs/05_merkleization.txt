@@ -130,7 +130,7 @@ why: next power of two of the bit limit in bytes
 -O.bits_root(hl, h, o, 9, seg)
 +O.bits_root(hl, h, o, 10, seg)
 === m03-chunk-count-packing
-type: VarTestStruct
+type: VarTestStruct,ComplexTestStruct
 ops: root
 file: src/obj.bend
 spec: pack: the chunk count is ceil(bytes/32)
@@ -139,7 +139,7 @@ why: ceil written as (n + 32) / 32
 -def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
 +def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
 === m03-chunk-count-packing
-type: VarTestStruct
+type: VarTestStruct,ComplexTestStruct
 ops: root
 file: src/obj.bend
 spec: pack: the chunk count is ceil(bytes/32)
@@ -170,7 +170,7 @@ why: forgetting to add the half width
 -hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
 +hl, lf, Nat.div(w, 2n), s, n,
 === m03-chunk-count-packing
-type: VarTestStruct
+type: VarTestStruct,ComplexTestStruct
 ops: decode
 file: src/obj.bend
 spec: the last (partial) chunk is padded with zero bytes: bytes after the data in the last word are zero
@@ -179,7 +179,7 @@ why: copying whole words
 -  (B.Buf{src, len}, Words{mask_last(n, dst), n})
 +  (B.Buf{src, len}, Words{dst, n})
 === m03-chunk-count-packing
-type: VarTestStruct
+type: VarTestStruct,ComplexTestStruct
 ops: decode
 file: src/obj.bend
 spec: the last partial word keeps only its n mod 4 low bytes
@@ -188,7 +188,7 @@ why: off by one in the mask width
 -  Array.set(U32, a, i, keep(rem, w))
 +  Array.set(U32, a, i, keep((rem + 1 : U32), w))
 === m03-chunk-count-packing
-type: VarTestStruct
+type: VarTestStruct,ComplexTestStruct
 ops: decode
 file: src/obj.bend
 spec: a list at an unaligned byte offset is copied byte-exact
@@ -266,10 +266,10 @@ type: FixedTestStruct
 ops: root
 file: types/FixedTestStruct_hashtreeroot_generated.bend
 spec: a 3-field container pads to 4 leaves with a zero chunk
-fault: the fourth leaf repeats the third root
-why: padding with the last element instead of zero
+fault: the fourth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk
+why: zero-hash table indexed from the wrong level
 -D.node(hl, d_f_C, D.zero())
-+D.node(hl, d_f_C, d_f_C)
++D.node(hl, d_f_C, D.zconst(1n))
 === m05-container-root
 type: FixedTestStruct
 ops: root
@@ -313,10 +313,10 @@ type: ComplexTestStruct
 ops: root
 file: types/ComplexTestStruct_hashtreeroot_generated.bend
 spec: a 7-field container pads to 8 leaves with a zero chunk
-fault: the eighth leaf repeats the seventh root
-why: padding with the last element instead of zero
+fault: the eighth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk
+why: zero-hash table indexed from the wrong level
 -D.node(hl, d_f_G, D.zero())
-+D.node(hl, d_f_G, d_f_G)
++D.node(hl, d_f_G, D.zconst(1n))
 === m05-container-root
 type: ComplexTestStruct
 ops: root

@@ -1,0 +1,5144 @@
+[
+ {
+  "id": "m02-depth-from-limit/07",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "m03-chunk-count-packing/03",
+  "type": "vec_uint64_8",
+  "cases": 247,
+  "official": 16,
+  "corpus_bad": 205,
+  "official_bad": 1,
+  "examples": [
+   "vec_uint64_8#46251: root differs",
+   "vec_uint64_8#46252: root differs",
+   "vec_uint64_8#46253: root differs",
+   "vec_uint64_8#46261: root differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_8_random"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "m04-mix-in-length/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 85,
+  "official_bad": 70,
+  "examples": [
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "ComplexTestStruct#6873: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.8
+ },
+ {
+  "id": "n01-union-selector-decode/07",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 13,
+  "official_bad": 66,
+  "examples": [
+   "CompatibleUnionABCA#6599: ref accepts, mutant rejects",
+   "CompatibleUnionABCA#6633: ref accepts, mutant rejects",
+   "CompatibleUnionABCA#6635: ref accepts, mutant rejects",
+   "CompatibleUnionABCA#6650: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_lengthy_selector_3_with_2_data",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_max_selector_3_with_2_data",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_nil_selector_3_with_2_data"
+  ],
+  "B": "KILLED",
+  "secs": 48.1
+ },
+ {
+  "id": "n03-union-encode/07",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 1,
+  "official_bad": 30,
+  "examples": [
+   "CompatibleUnionABCA#6613: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.6
+ },
+ {
+  "id": "p01-progressive-growth/02",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 8,
+  "official_bad": 18,
+  "examples": [
+   "proglist_uint16#32824: root differs",
+   "proglist_uint16#32825: root differs",
+   "proglist_uint16#32826: root differs",
+   "proglist_uint16#32827: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1366",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_20"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "p02-progressive-length-mix/02",
+  "type": "proglist_uint64",
+  "cases": 287,
+  "official": 135,
+  "corpus_bad": 252,
+  "official_bad": 38,
+  "examples": [
+   "proglist_uint64#33502: root differs",
+   "proglist_uint64#33503: root differs",
+   "proglist_uint64#33504: root differs",
+   "proglist_uint64#33505: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint64_max_1",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint64_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint64_max_1366"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "p03-progressive-container/07",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "cases": 11,
+  "official": 58,
+  "corpus_bad": 5,
+  "official_bad": 21,
+  "examples": [
+   "ProgressiveSingleFieldContainerTestStruct#21670: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21671: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21675: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21676: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 13.7
+ },
+ {
+  "id": "q03-vector-of-variable/04",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.6
+ },
+ {
+  "id": "u01-uint-encode-byte-order/04",
+  "type": "uint32",
+  "cases": 53,
+  "official": 11,
+  "corpus_bad": 36,
+  "official_bad": 6,
+  "examples": [
+   "uint32#34198: re-encoding differs",
+   "uint32#34205: re-encoding differs",
+   "uint32#34206: re-encoding differs",
+   "uint32#34207: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_32_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_32_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_32_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "u03-uint-width/01",
+  "type": "uint16",
+  "cases": 44,
+  "official": 11,
+  "corpus_bad": 5,
+  "official_bad": 1,
+  "examples": [
+   "uint16#33992: ref rejects, mutant accepts",
+   "uint16#33994: ref rejects, mutant accepts",
+   "uint16#33995: ref rejects, mutant accepts",
+   "uint16#34003: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_16_one_byte_shorter"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "u03-uint-width/05",
+  "type": "uint8",
+  "cases": 16,
+  "official": 11,
+  "corpus_bad": 10,
+  "official_bad": 3,
+  "examples": [
+   "uint8#34348: ref rejects, mutant accepts",
+   "uint8#34349: ref rejects, mutant accepts",
+   "uint8#34350: ref rejects, mutant accepts",
+   "uint8#34351: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_8_one_byte_longer",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_8_one_byte_shorter",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_8_one_too_high"
+  ],
+  "B": "KILLED",
+  "secs": 7.6
+ },
+ {
+  "id": "u03-uint-width/06",
+  "type": "uint128",
+  "cases": 142,
+  "official": 11,
+  "corpus_bad": 9,
+  "official_bad": 2,
+  "examples": [
+   "uint128#33850: ref rejects, mutant accepts",
+   "uint128#33853: ref rejects, mutant accepts",
+   "uint128#33854: ref rejects, mutant accepts",
+   "uint128#33887: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_128_one_byte_longer",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_128_one_too_high"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "z01-designed-equivalent/01",
+  "type": "uint16",
+  "cases": 44,
+  "official": 11,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 6.7
+ },
+ {
+  "id": "z01-designed-equivalent/02",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.3
+ },
+ {
+  "id": "bl04-bitlist-size/01",
+  "type": "bitlist_8",
+  "cases": 56,
+  "official": 29,
+  "corpus_bad": 14,
+  "official_bad": 13,
+  "examples": [
+   "bitlist_8#30580: re-encoding differs",
+   "bitlist_8#30583: re-encoding differs",
+   "bitlist_8#30590: re-encoding differs",
+   "bitlist_8#30591: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.2
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/02",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 3,
+  "examples": [
+   "bitvector_5#31362: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_max_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_random_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_zero_6"
+  ],
+  "B": "KILLED",
+  "secs": 9.8
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/01",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.9
+ },
+ {
+  "id": "c02-fixed-field-offsets/05",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.5
+ },
+ {
+  "id": "c04-offset-order-and-range/10",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "examples": [
+   "ComplexTestStruct#6869: ref accepts, mutant rejects",
+   "ComplexTestStruct#6870: ref accepts, mutant rejects",
+   "ComplexTestStruct#6871: ref accepts, mutant rejects",
+   "ComplexTestStruct#6872: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "c06-container-validity-composition/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.3
+ },
+ {
+  "id": "f03-attestation-bitlist/02",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "examples": [
+   "Attestation#411: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 14.3
+ },
+ {
+  "id": "f03-attestation-bitlist/06",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.3
+ },
+ {
+  "id": "f03-attestation-bitlist/07",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 143,
+  "official_bad": 4,
+  "examples": [
+   "Attestation#388: root differs",
+   "Attestation#391: root differs",
+   "Attestation#393: root differs",
+   "Attestation#394: root differs",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_2",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_3"
+  ],
+  "B": "KILLED",
+  "secs": 14.9
+ },
+ {
+  "id": "l02-list-element-alignment/03",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.3
+ },
+ {
+  "id": "b04-boolean-packed-validity/01",
+  "type": "vec_bool_5,vec_bool_16,proglist_bool",
+  "cases": 341,
+  "official": 198,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 20.3
+ },
+ {
+  "id": "bl04-bitlist-size/02",
+  "type": "bitlist_8,progbitlist,FuluAttestation",
+  "cases": 491,
+  "official": 737,
+  "corpus_bad": 51,
+  "official_bad": 264,
+  "examples": [
+   "Attestation#387: re-encoding differs",
+   "Attestation#397: re-encoding differs",
+   "Attestation#398: re-encoding differs",
+   "Attestation#403: re-encoding differs",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_0",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_1",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_2"
+  ],
+  "B": "KILLED",
+  "secs": 30.8
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/03",
+  "type": "bitlist_5,progbitlist,FuluAttestation",
+  "cases": 486,
+  "official": 737,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 28.4
+ },
+ {
+  "id": "c06-container-validity-composition/03",
+  "type": "SmallTestStruct",
+  "cases": 105,
+  "official": 22,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.2
+ },
+ {
+  "id": "c06-container-validity-composition/04",
+  "type": "SingleFieldTestStruct",
+  "cases": 11,
+  "official": 22,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.5
+ },
+ {
+  "id": "c06-container-validity-composition/05",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "cases": 11,
+  "official": 58,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 13.3
+ },
+ {
+  "id": "q01-composite-list-offsets/04",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 27,
+  "official_bad": 11,
+  "kinds": {
+   "ref accepts, mutant rejects": 12,
+   "ref rejects, mutant accepts": 15
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21897: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21956: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21962: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21964: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_one_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_one_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_one_2"
+  ],
+  "B": "KILLED",
+  "secs": 146.6
+ },
+ {
+  "id": "u05-uint-root-chunk/02",
+  "type": "uint64",
+  "cases": 96,
+  "official": 11,
+  "corpus_bad": 76,
+  "official_bad": 6,
+  "kinds": {
+   "root differs": 76
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint64#34251: root differs",
+   "uint64#34259: root differs",
+   "uint64#34260: root differs",
+   "uint64#34261: root differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 8.2
+ },
+ {
+  "id": "c05-offset-encode/05",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 81,
+  "official_bad": 68,
+  "kinds": {
+   "re-encoding differs": 81
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "VarTestStruct#28057: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.6
+ },
+ {
+  "id": "m05-container-root/07",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.1
+ },
+ {
+  "id": "m04-mix-in-length/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 41,
+  "official_bad": 68,
+  "kinds": {
+   "root differs": 41
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6873: root differs",
+   "ComplexTestStruct#6881: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/04",
+  "type": "bitlist_8",
+  "cases": 56,
+  "official": 29,
+  "corpus_bad": 30,
+  "official_bad": 25,
+  "kinds": {
+   "re-encoding differs": 30
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_8#30580: re-encoding differs",
+   "bitlist_8#30581: re-encoding differs",
+   "bitlist_8#30582: re-encoding differs",
+   "bitlist_8#30583: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.3
+ },
+ {
+  "id": "n04-union-root/02",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 6,
+  "official_bad": 30,
+  "kinds": {
+   "root differs": 6
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: root differs",
+   "CompatibleUnionA#6551: root differs",
+   "CompatibleUnionA#6552: root differs",
+   "CompatibleUnionA#6583: root differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.0
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/05",
+  "type": "bitvector_7",
+  "cases": 27,
+  "official": 3,
+  "corpus_bad": 2,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_7#32278: ref rejects, mutant accepts",
+   "bitvector_7#32281: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 9.1
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/03",
+  "type": "bitvector_9",
+  "cases": 46,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_9#32334: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 9.4
+ },
+ {
+  "id": "q02-fixed-composite-list/10",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 22.6
+ },
+ {
+  "id": "m05-container-root/04",
+  "type": "FuluCheckpoint",
+  "cases": 265,
+  "official": 5,
+  "corpus_bad": 239,
+  "official_bad": 5,
+  "kinds": {
+   "root differs": 239
+  },
+  "timeouts": 0,
+  "examples": [
+   "Checkpoint#5980: root differs",
+   "Checkpoint#5981: root differs",
+   "Checkpoint#5982: root differs",
+   "Checkpoint#5983: root differs",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 11.2
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/02",
+  "type": "bitlist_8",
+  "cases": 56,
+  "official": 29,
+  "corpus_bad": 16,
+  "official_bad": 12,
+  "kinds": {
+   "re-encoding differs": 16
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_8#30581: re-encoding differs",
+   "bitlist_8#30582: re-encoding differs",
+   "bitlist_8#30584: re-encoding differs",
+   "bitlist_8#30585: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_3"
+  ],
+  "B": "KILLED",
+  "secs": 7.5
+ },
+ {
+  "id": "u04-uint-range/01",
+  "type": "uint8",
+  "cases": 16,
+  "official": 11,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.5
+ },
+ {
+  "id": "bv01-bitvector-length/01",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_5#31361: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 9.0
+ },
+ {
+  "id": "n04-union-root/05",
+  "type": "CompatibleUnionBC",
+  "cases": 190,
+  "official": 156,
+  "corpus_bad": 25,
+  "official_bad": 60,
+  "kinds": {
+   "root differs": 25
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionBC#6679: root differs",
+   "CompatibleUnionBC#6680: root differs",
+   "CompatibleUnionBC#6681: root differs",
+   "CompatibleUnionBC#6682: root differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionBC_lengthy_selector_2_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionBC_lengthy_selector_2_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionBC_lengthy_selector_2_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.8
+ },
+ {
+  "id": "v02-vector-length-encode/05",
+  "type": "vec_uint8_3",
+  "cases": 91,
+  "official": 16,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.4
+ },
+ {
+  "id": "m05-container-root/05",
+  "type": "SingleFieldTestStruct",
+  "cases": 11,
+  "official": 22,
+  "corpus_bad": 5,
+  "official_bad": 21,
+  "kinds": {
+   "root differs": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "SingleFieldTestStruct#25854: root differs",
+   "SingleFieldTestStruct#25855: root differs",
+   "SingleFieldTestStruct#25859: root differs",
+   "SingleFieldTestStruct#25860: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/SingleFieldTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/SingleFieldTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/SingleFieldTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "c01-fixed-container-scope/02",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 11,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 11
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13377: ref rejects, mutant accepts",
+   "FixedTestStruct#13380: ref rejects, mutant accepts",
+   "FixedTestStruct#13381: ref rejects, mutant accepts",
+   "FixedTestStruct#13418: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "c03-first-offset-decode/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.1
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/02",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 3,
+  "official_bad": 6,
+  "kinds": {
+   "ref accepts, mutant rejects": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30207: ref accepts, mutant rejects",
+   "bitlist_5#30215: ref accepts, mutant rejects",
+   "bitlist_5#30224: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "p01-progressive-growth/04",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 127,
+  "official_bad": 35,
+  "kinds": {
+   "root differs": 127
+  },
+  "timeouts": 0,
+  "examples": [
+   "proglist_uint16#32812: root differs",
+   "proglist_uint16#32813: root differs",
+   "proglist_uint16#32814: root differs",
+   "proglist_uint16#32817: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1366"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "b04-boolean-packed-validity/03",
+  "type": "vec_bool_5",
+  "cases": 88,
+  "official": 19,
+  "corpus_bad": 9,
+  "official_bad": 5,
+  "kinds": {
+   "ref rejects, mutant accepts": 9
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_bool_5#34880: ref rejects, mutant accepts",
+   "vec_bool_5#34881: ref rejects, mutant accepts",
+   "vec_bool_5#34882: ref rejects, mutant accepts",
+   "vec_bool_5#34885: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_max_one_byte_less",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_max_one_less",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_nil"
+  ],
+  "B": "KILLED",
+  "secs": 8.0
+ },
+ {
+  "id": "bv01-bitvector-length/02",
+  "type": "bitvector_9",
+  "cases": 46,
+  "official": 6,
+  "corpus_bad": 11,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 11
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_9#32332: ref rejects, mutant accepts",
+   "bitvector_9#32336: ref rejects, mutant accepts",
+   "bitvector_9#32344: ref rejects, mutant accepts",
+   "bitvector_9#32345: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 9.9
+ },
+ {
+  "id": "c03-first-offset-decode/03",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 35,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 35
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28072: ref rejects, mutant accepts",
+   "VarTestStruct#28074: ref rejects, mutant accepts",
+   "VarTestStruct#28076: ref rejects, mutant accepts",
+   "VarTestStruct#28080: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 18.9
+ },
+ {
+  "id": "b01-boolean-decode/04",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 4,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 4
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32376: ref rejects, mutant accepts",
+   "boolean#32378: ref rejects, mutant accepts",
+   "boolean#32380: ref rejects, mutant accepts",
+   "boolean#32381: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "m05-container-root/03",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 216,
+  "official_bad": 21,
+  "kinds": {
+   "root differs": 216
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13372: root differs",
+   "FixedTestStruct#13373: root differs",
+   "FixedTestStruct#13374: root differs",
+   "FixedTestStruct#13375: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 18.1
+ },
+ {
+  "id": "f03-attestation-bitlist/01",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#412: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 16.4
+ },
+ {
+  "id": "f01-bytevector-root/03",
+  "type": "FuluBytes96",
+  "cases": 291,
+  "official": 0,
+  "corpus_bad": 266,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 266
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes96#5280: root differs",
+   "Bytes96#5281: root differs",
+   "Bytes96#5282: root differs",
+   "Bytes96#5283: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 9.5
+ },
+ {
+  "id": "l04-list-tail-bytes/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.6
+ },
+ {
+  "id": "l03-list-limit-encode/03",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.7
+ },
+ {
+  "id": "u01-uint-encode-byte-order/07",
+  "type": "uint256",
+  "cases": 164,
+  "official": 11,
+  "corpus_bad": 147,
+  "official_bad": 8,
+  "kinds": {
+   "re-encoding differs": 147
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint256#34032: re-encoding differs",
+   "uint256#34033: re-encoding differs",
+   "uint256#34034: re-encoding differs",
+   "uint256#34042: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_max",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_0"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "u05-uint-root-chunk/01",
+  "type": "uint16",
+  "cases": 44,
+  "official": 11,
+  "corpus_bad": 26,
+  "official_bad": 7,
+  "kinds": {
+   "root differs": 26
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint16#33989: root differs",
+   "uint16#33990: root differs",
+   "uint16#33991: root differs",
+   "uint16#33998: root differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_max",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_random_0"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "m02-depth-from-limit/09",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 251,
+  "official_bad": 5,
+  "kinds": {
+   "root differs": 251
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#387: root differs",
+   "Attestation#388: root differs",
+   "Attestation#389: root differs",
+   "Attestation#390: root differs",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "q02-fixed-composite-list/02",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 45,
+  "official_bad": 1,
+  "kinds": {
+   "ref accepts, mutant rejects": 45
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionRequests#12682: ref accepts, mutant rejects",
+   "ExecutionRequests#12685: ref accepts, mutant rejects",
+   "ExecutionRequests#12704: ref accepts, mutant rejects",
+   "ExecutionRequests#12705: ref accepts, mutant rejects",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_4"
+  ],
+  "B": "KILLED",
+  "secs": 25.1
+ },
+ {
+  "id": "l01-list-limit-decode/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28064: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 18.2
+ },
+ {
+  "id": "m05-container-root/08",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 19.1
+ },
+ {
+  "id": "n01-union-selector-decode/04",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 10.0
+ },
+ {
+  "id": "u01-uint-encode-byte-order/03",
+  "type": "uint64,FixedTestStruct",
+  "cases": 337,
+  "official": 33,
+  "corpus_bad": 151,
+  "official_bad": 15,
+  "kinds": {
+   "re-encoding differs": 151
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "FixedTestStruct#13382: re-encoding differs",
+   "FixedTestStruct#13383: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_random_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 26.7
+ },
+ {
+  "id": "q02-fixed-composite-list/06",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 159,
+  "official_bad": 5,
+  "kinds": {
+   "root differs": 159
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionRequests#12681: root differs",
+   "ExecutionRequests#12682: root differs",
+   "ExecutionRequests#12683: root differs",
+   "ExecutionRequests#12684: root differs",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 24.2
+ },
+ {
+  "id": "n03-union-encode/01",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 6,
+  "official_bad": 30,
+  "kinds": {
+   "re-encoding differs": 6
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: re-encoding differs",
+   "CompatibleUnionA#6551: re-encoding differs",
+   "CompatibleUnionA#6552: re-encoding differs",
+   "CompatibleUnionA#6583: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "m02-depth-from-limit/08",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 251,
+  "official_bad": 5,
+  "kinds": {
+   "root differs": 251
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#387: root differs",
+   "Attestation#388: root differs",
+   "Attestation#389: root differs",
+   "Attestation#390: root differs",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/Attestation/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 14.8
+ },
+ {
+  "id": "n03-union-encode/03",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 5,
+  "official_bad": 28,
+  "kinds": {
+   "re-encoding differs": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6551: re-encoding differs",
+   "CompatibleUnionA#6552: re-encoding differs",
+   "CompatibleUnionA#6583: re-encoding differs",
+   "CompatibleUnionA#6584: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.1
+ },
+ {
+  "id": "v02-vector-length-encode/03",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.3
+ },
+ {
+  "id": "p02-progressive-length-mix/03",
+  "type": "progbitlist",
+  "cases": 69,
+  "official": 703,
+  "corpus_bad": 3,
+  "official_bad": 213,
+  "kinds": {
+   "root differs": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "progbitlist#32382: root differs",
+   "progbitlist#32402: root differs",
+   "progbitlist#32403: root differs",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_0",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_1",
+   "tests/general/phase0/ssz_generic/progressive_bitlist/valid/progbitlist_lengthy_0_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.3
+ },
+ {
+  "id": "q02-fixed-composite-list/05",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 21.9
+ },
+ {
+  "id": "bl06-bitlist-root/03",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 17,
+  "official_bad": 25,
+  "kinds": {
+   "root differs": 17
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30204: root differs",
+   "bitlist_5#30205: root differs",
+   "bitlist_5#30206: root differs",
+   "bitlist_5#30207: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.0
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/03",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 17,
+  "official_bad": 25,
+  "kinds": {
+   "re-encoding differs": 17
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30204: re-encoding differs",
+   "bitlist_5#30205: re-encoding differs",
+   "bitlist_5#30206: re-encoding differs",
+   "bitlist_5#30207: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.7
+ },
+ {
+  "id": "c03-first-offset-decode/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.0
+ },
+ {
+  "id": "c04-offset-order-and-range/09",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 119,
+  "official_bad": 84,
+  "kinds": {
+   "ref accepts, mutant rejects": 100,
+   "ref rejects, mutant accepts": 19
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: ref accepts, mutant rejects",
+   "ComplexTestStruct#6870: ref accepts, mutant rejects",
+   "ComplexTestStruct#6871: ref accepts, mutant rejects",
+   "ComplexTestStruct#6872: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_extra_byte",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_last_offset_11_wrong_byte_length",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_last_offset_2_wrong_byte_length"
+  ],
+  "B": "KILLED",
+  "secs": 16.8
+ },
+ {
+  "id": "b03-boolean-root/02",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32372: root differs",
+   "tests/general/phase0/ssz_generic/boolean/valid/false"
+  ],
+  "B": "KILLED",
+  "secs": 8.5
+ },
+ {
+  "id": "n01-union-selector-decode/03",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 0,
+  "official_bad": 6,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_lengthy_selector_129_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_max_selector_129_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_nil_selector_129_invalid"
+  ],
+  "B": "KILLED",
+  "secs": 8.5
+ },
+ {
+  "id": "v01-vector-length-decode/02",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 14,
+  "official_bad": 6,
+  "kinds": {
+   "ref rejects, mutant accepts": 14
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint16_5#38771: ref rejects, mutant accepts",
+   "vec_uint16_5#38772: ref rejects, mutant accepts",
+   "vec_uint16_5#38806: ref rejects, mutant accepts",
+   "vec_uint16_5#38807: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_max_one_byte_more",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_max_one_more",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_random_one_byte_more"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "m01-zero-subtree-levels/05",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 51,
+  "official_bad": 9,
+  "kinds": {
+   "root differs": 51
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_513#30414: root differs",
+   "bitlist_513#30415: root differs",
+   "bitlist_513#30416: root differs",
+   "bitlist_513#30417: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.5
+ },
+ {
+  "id": "c02-fixed-field-offsets/01",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 173,
+  "official_bad": 17,
+  "kinds": {
+   "re-encoding differs": 173
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "FixedTestStruct#13376: re-encoding differs",
+   "FixedTestStruct#13394: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_random_0"
+  ],
+  "B": "KILLED",
+  "secs": 16.2
+ },
+ {
+  "id": "n01-union-selector-decode/02",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 11,
+  "official_bad": 42,
+  "kinds": {
+   "ref rejects, mutant accepts": 11
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6559: ref rejects, mutant accepts",
+   "CompatibleUnionA#6562: ref rejects, mutant accepts",
+   "CompatibleUnionA#6565: ref rejects, mutant accepts",
+   "CompatibleUnionA#6568: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_lengthy_selector_127_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_lengthy_selector_128_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_lengthy_selector_129_invalid"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "n01-union-selector-decode/05",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 9.1
+ },
+ {
+  "id": "q01-composite-list-offsets/02",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 17.1
+ },
+ {
+  "id": "c02-fixed-field-offsets/04",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 216,
+  "official_bad": 21,
+  "kinds": {
+   "re-encoding differs": 216
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13372: re-encoding differs",
+   "FixedTestStruct#13373: re-encoding differs",
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 15.4
+ },
+ {
+  "id": "f03-attestation-bitlist/04",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 14.5
+ },
+ {
+  "id": "m02-depth-from-limit/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.0
+ },
+ {
+  "id": "c05-offset-encode/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.1
+ },
+ {
+  "id": "f01-bytevector-root/04",
+  "type": "FuluBytes96",
+  "cases": 291,
+  "official": 0,
+  "corpus_bad": 266,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 266
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes96#5280: root differs",
+   "Bytes96#5281: root differs",
+   "Bytes96#5282: root differs",
+   "Bytes96#5283: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "f02-hash-message-length/01",
+  "type": "FuluBytes48",
+  "cases": 290,
+  "official": 0,
+  "corpus_bad": 265,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 265
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes48#4784: root differs",
+   "Bytes48#4785: root differs",
+   "Bytes48#4786: root differs",
+   "Bytes48#4787: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.2
+ },
+ {
+  "id": "q02-fixed-composite-list/09",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 22.4
+ },
+ {
+  "id": "m05-container-root/02",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 201,
+  "official_bad": 19,
+  "kinds": {
+   "root differs": 201
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13373: root differs",
+   "FixedTestStruct#13374: root differs",
+   "FixedTestStruct#13375: root differs",
+   "FixedTestStruct#13376: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 15.4
+ },
+ {
+  "id": "u05-uint-root-chunk/03",
+  "type": "uint64",
+  "cases": 96,
+  "official": 11,
+  "corpus_bad": 66,
+  "official_bad": 7,
+  "kinds": {
+   "root differs": 66
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint64#34250: root differs",
+   "uint64#34251: root differs",
+   "uint64#34259: root differs",
+   "uint64#34260: root differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_max",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_random_0"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "b01-boolean-decode/01",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32374: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/boolean/invalid/byte_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "q02-fixed-composite-list/08",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 3,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionRequests#12715: ref rejects, mutant accepts",
+   "ExecutionRequests#12791: ref rejects, mutant accepts",
+   "ExecutionRequests#12939: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 22.0
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/02",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 3,
+  "official_bad": 6,
+  "kinds": {
+   "re-encoding differs": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30207: re-encoding differs",
+   "bitlist_5#30215: re-encoding differs",
+   "bitlist_5#30224: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "c04-offset-order-and-range/03",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 59,
+  "official_bad": 12,
+  "kinds": {
+   "ref accepts, mutant rejects": 59
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: ref accepts, mutant rejects",
+   "ComplexTestStruct#6872: ref accepts, mutant rejects",
+   "ComplexTestStruct#6874: ref accepts, mutant rejects",
+   "ComplexTestStruct#6875: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_nil_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_nil_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_nil_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.8
+ },
+ {
+  "id": "c06-container-validity-composition/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.6
+ },
+ {
+  "id": "bl06-bitlist-root/06",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 53,
+  "official_bad": 20,
+  "kinds": {
+   "root differs": 53
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_513#30414: root differs",
+   "bitlist_513#30415: root differs",
+   "bitlist_513#30416: root differs",
+   "bitlist_513#30417: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "p03-progressive-container/08",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "cases": 11,
+  "official": 54,
+  "corpus_bad": 4,
+  "official_bad": 17,
+  "kinds": {
+   "root differs": 4
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveSingleFieldContainerTestStruct#21671: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21675: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21676: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21680: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 14.3
+ },
+ {
+  "id": "m04-mix-in-length/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 126,
+  "official_bad": 67,
+  "kinds": {
+   "root differs": 126
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "VarTestStruct#28057: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.7
+ },
+ {
+  "id": "n04-union-root/04",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 1,
+  "official_bad": 30,
+  "examples": [
+   "CompatibleUnionABCA#6613: root differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_4_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.7
+ },
+ {
+  "id": "bv04-bitvector-root/01",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 9,
+  "official_bad": 2,
+  "examples": [
+   "bitvector_5#31355: root differs",
+   "bitvector_5#31356: root differs",
+   "bitvector_5#31357: root differs",
+   "bitvector_5#31358: root differs",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_5_max",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_5_random"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "n02-union-payload-window/04",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 0,
+  "official_bad": 30,
+  "examples": [
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_3_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_3_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_3_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.8
+ },
+ {
+  "id": "p01-progressive-growth/03",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 132,
+  "official_bad": 45,
+  "examples": [
+   "proglist_uint16#32812: root differs",
+   "proglist_uint16#32813: root differs",
+   "proglist_uint16#32814: root differs",
+   "proglist_uint16#32815: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1366"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "bl06-bitlist-root/04",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 54,
+  "official_bad": 25,
+  "examples": [
+   "bitlist_513#30413: root differs",
+   "bitlist_513#30414: root differs",
+   "bitlist_513#30415: root differs",
+   "bitlist_513#30416: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "n03-union-encode/05",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.7
+ },
+ {
+  "id": "p03-progressive-container/02",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 136,
+  "corpus_bad": 114,
+  "official_bad": 80,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 13.4
+ },
+ {
+  "id": "c01-fixed-container-scope/03",
+  "type": "FuluCheckpoint",
+  "cases": 265,
+  "official": 5,
+  "corpus_bad": 240,
+  "official_bad": 5,
+  "examples": [
+   "Checkpoint#5979: ref accepts, mutant rejects",
+   "Checkpoint#5980: ref accepts, mutant rejects",
+   "Checkpoint#5981: ref accepts, mutant rejects",
+   "Checkpoint#5982: ref accepts, mutant rejects",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/Checkpoint/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 10.9
+ },
+ {
+  "id": "q02-fixed-composite-list/03",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 10,
+  "official_bad": 0,
+  "kinds": {
+   "timeout": 12,
+   "ref rejects, mutant accepts": 10
+  },
+  "timeouts": 12,
+  "examples": [
+   "ExecutionRequests#12720: ref rejects, mutant accepts",
+   "ExecutionRequests#12802: ref rejects, mutant accepts",
+   "ExecutionRequests#12814: ref rejects, mutant accepts",
+   "ExecutionRequests#12831: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 202.3
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/06",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 13,
+  "official_bad": 6,
+  "kinds": {
+   "ref accepts, mutant rejects": 10,
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_5#31354: ref accepts, mutant rejects",
+   "bitvector_5#31355: ref accepts, mutant rejects",
+   "bitvector_5#31356: ref accepts, mutant rejects",
+   "bitvector_5#31357: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_max_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_random_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_zero_6"
+  ],
+  "B": "KILLED",
+  "secs": 9.2
+ },
+ {
+  "id": "c03-first-offset-decode/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 13,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 13
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28080: ref rejects, mutant accepts",
+   "VarTestStruct#28131: ref rejects, mutant accepts",
+   "VarTestStruct#28157: ref rejects, mutant accepts",
+   "VarTestStruct#28181: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 17.8
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/01",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 17,
+  "official_bad": 25,
+  "kinds": {
+   "re-encoding differs": 17
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30204: re-encoding differs",
+   "bitlist_5#30205: re-encoding differs",
+   "bitlist_5#30206: re-encoding differs",
+   "bitlist_5#30207: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "m04-mix-in-length/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: root differs",
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.2
+ },
+ {
+  "id": "c04-offset-order-and-range/11",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 134,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22639: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 14.3
+ },
+ {
+  "id": "u01-uint-encode-byte-order/02",
+  "type": "uint64,FixedTestStruct",
+  "cases": 337,
+  "official": 33,
+  "corpus_bad": 76,
+  "official_bad": 6,
+  "kinds": {
+   "re-encoding differs": 76
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint64#34251: re-encoding differs",
+   "uint64#34259: re-encoding differs",
+   "uint64#34260: re-encoding differs",
+   "uint64#34261: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_64_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 23.6
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/03",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 5,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_513#30439: ref rejects, mutant accepts",
+   "bitlist_513#30446: ref rejects, mutant accepts",
+   "bitlist_513#30447: ref rejects, mutant accepts",
+   "bitlist_513#30448: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/03",
+  "type": "bitvector_9",
+  "cases": 46,
+  "official": 6,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.5
+ },
+ {
+  "id": "u03-uint-width/02",
+  "type": "uint64",
+  "cases": 96,
+  "official": 11,
+  "corpus_bad": 9,
+  "official_bad": 2,
+  "kinds": {
+   "ref rejects, mutant accepts": 9
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint64#34253: ref rejects, mutant accepts",
+   "uint64#34256: ref rejects, mutant accepts",
+   "uint64#34257: ref rejects, mutant accepts",
+   "uint64#34283: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_64_one_byte_longer",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_64_one_too_high"
+  ],
+  "B": "KILLED",
+  "secs": 8.4
+ },
+ {
+  "id": "c02-fixed-field-offsets/03",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 193,
+  "official_bad": 19,
+  "kinds": {
+   "re-encoding differs": 193
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13373: re-encoding differs",
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "FixedTestStruct#13376: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 16.0
+ },
+ {
+  "id": "u02-uint-decode/03",
+  "type": "uint256",
+  "cases": 164,
+  "official": 11,
+  "corpus_bad": 86,
+  "official_bad": 6,
+  "kinds": {
+   "re-encoding differs": 86
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint256#34034: re-encoding differs",
+   "uint256#34057: re-encoding differs",
+   "uint256#34058: re-encoding differs",
+   "uint256#34059: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 8.0
+ },
+ {
+  "id": "b04-boolean-packed-validity/02",
+  "type": "vec_bool_5",
+  "cases": 88,
+  "official": 19,
+  "corpus_bad": 10,
+  "official_bad": 8,
+  "kinds": {
+   "ref rejects, mutant accepts": 10
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_bool_5#34898: ref rejects, mutant accepts",
+   "vec_bool_5#34899: ref rejects, mutant accepts",
+   "vec_bool_5#34917: ref rejects, mutant accepts",
+   "vec_bool_5#34918: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_max_0x80",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_max_0xff",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_bool_5_max_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "m03-chunk-count-packing/08",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 85,
+  "official_bad": 56,
+  "kinds": {
+   "re-encoding differs": 85
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28057: re-encoding differs",
+   "VarTestStruct#28059: re-encoding differs",
+   "VarTestStruct#28061: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.3
+ },
+ {
+  "id": "v02-vector-length-encode/01",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.7
+ },
+ {
+  "id": "m02-depth-from-limit/03",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 181,
+  "official_bad": 3,
+  "kinds": {
+   "root differs": 181
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint16_5#38763: root differs",
+   "vec_uint16_5#38764: root differs",
+   "vec_uint16_5#38765: root differs",
+   "vec_uint16_5#38766: root differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_max",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_random",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_zero"
+  ],
+  "B": "KILLED",
+  "secs": 8.0
+ },
+ {
+  "id": "q01-composite-list-offsets/09",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 35,
+  "official_bad": 19,
+  "kinds": {
+   "ref accepts, mutant rejects": 32,
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21895: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21896: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21897: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21898: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/invalid/ProgressiveTestStruct_one_last_offset_0_wrong_byte_length",
+   "tests/general/phase0/ssz_generic/containers/invalid/ProgressiveTestStruct_one_last_offset_12_wrong_byte_length",
+   "tests/general/phase0/ssz_generic/containers/invalid/ProgressiveTestStruct_one_last_offset_4_wrong_byte_length"
+  ],
+  "B": "KILLED",
+  "secs": 18.6
+ },
+ {
+  "id": "f01-bytevector-root/02",
+  "type": "FuluBytes48",
+  "cases": 290,
+  "official": 0,
+  "corpus_bad": 264,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 264
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes48#4785: root differs",
+   "Bytes48#4786: root differs",
+   "Bytes48#4787: root differs",
+   "Bytes48#4788: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "u01-uint-encode-byte-order/05",
+  "type": "uint128",
+  "cases": 142,
+  "official": 11,
+  "corpus_bad": 92,
+  "official_bad": 5,
+  "kinds": {
+   "re-encoding differs": 92
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint128#33848: re-encoding differs",
+   "uint128#33859: re-encoding differs",
+   "uint128#33860: re-encoding differs",
+   "uint128#33861: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_1",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "q03-vector-of-variable/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.4
+ },
+ {
+  "id": "u03-uint-width/03",
+  "type": "uint256",
+  "cases": 164,
+  "official": 11,
+  "corpus_bad": 17,
+  "official_bad": 3,
+  "kinds": {
+   "ref rejects, mutant accepts": 17
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint256#34035: ref rejects, mutant accepts",
+   "uint256#34036: ref rejects, mutant accepts",
+   "uint256#34037: ref rejects, mutant accepts",
+   "uint256#34038: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_256_one_byte_longer",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_256_one_byte_shorter",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_256_one_too_high"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "q03-vector-of-variable/02",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 38.5
+ },
+ {
+  "id": "m02-depth-from-limit/02",
+  "type": "vec_uint64_5",
+  "cases": 247,
+  "official": 16,
+  "corpus_bad": 220,
+  "official_bad": 3,
+  "kinds": {
+   "root differs": 220
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint64_5#45495: root differs",
+   "vec_uint64_5#45496: root differs",
+   "vec_uint64_5#45497: root differs",
+   "vec_uint64_5#45498: root differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_max",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_random",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_zero"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "m04-mix-in-length/03",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 126,
+  "official_bad": 67,
+  "kinds": {
+   "root differs": 126
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "VarTestStruct#28057: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 18.4
+ },
+ {
+  "id": "c01-fixed-container-scope/04",
+  "type": "FuluCheckpoint",
+  "cases": 265,
+  "official": 5,
+  "corpus_bad": 14,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 14
+  },
+  "timeouts": 0,
+  "examples": [
+   "Checkpoint#5985: ref rejects, mutant accepts",
+   "Checkpoint#5986: ref rejects, mutant accepts",
+   "Checkpoint#6026: ref rejects, mutant accepts",
+   "Checkpoint#6027: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 12.9
+ },
+ {
+  "id": "l03-list-limit-encode/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 1,
+  "official_bad": 15,
+  "kinds": {
+   "re-encoding differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28063: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.7
+ },
+ {
+  "id": "m04-mix-in-length/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 126,
+  "official_bad": 67,
+  "kinds": {
+   "root differs": 126
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "VarTestStruct#28057: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 18.8
+ },
+ {
+  "id": "bl06-bitlist-root/05",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 54,
+  "official_bad": 25,
+  "kinds": {
+   "root differs": 54
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_513#30413: root differs",
+   "bitlist_513#30414: root differs",
+   "bitlist_513#30415: root differs",
+   "bitlist_513#30416: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.4
+ },
+ {
+  "id": "n04-union-root/01",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 6,
+  "official_bad": 30,
+  "kinds": {
+   "root differs": 6
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: root differs",
+   "CompatibleUnionA#6551: root differs",
+   "CompatibleUnionA#6552: root differs",
+   "CompatibleUnionA#6583: root differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.8
+ },
+ {
+  "id": "c04-offset-order-and-range/04",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.0
+ },
+ {
+  "id": "q01-composite-list-offsets/07",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.2
+ },
+ {
+  "id": "l02-list-element-alignment/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 61,
+  "official_bad": 28,
+  "kinds": {
+   "re-encoding differs": 61
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "VarTestStruct#28058: re-encoding differs",
+   "VarTestStruct#28059: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_max_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_max_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.2
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/01",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 10,
+  "official_bad": 2,
+  "kinds": {
+   "ref rejects, mutant accepts": 10
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30218: ref rejects, mutant accepts",
+   "bitlist_5#30219: ref rejects, mutant accepts",
+   "bitlist_5#30222: ref rejects, mutant accepts",
+   "bitlist_5#30230: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitlist/invalid/bitlist_5_no_delimiter_zero_byte",
+   "tests/general/phase0/ssz_generic/bitlist/invalid/bitlist_5_no_delimiter_zeroes"
+  ],
+  "B": "KILLED",
+  "secs": 8.2
+ },
+ {
+  "id": "m01-zero-subtree-levels/01",
+  "type": "bitlist_513,VarTestStruct",
+  "cases": 405,
+  "official": 120,
+  "corpus_bad": 188,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 188
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: root differs",
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_2"
+  ],
+  "B": "KILLED",
+  "secs": 23.0
+ },
+ {
+  "id": "m02-depth-from-limit/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: root differs",
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.9
+ },
+ {
+  "id": "m02-depth-from-limit/01",
+  "type": "vec_uint64_5",
+  "cases": 247,
+  "official": 16,
+  "corpus_bad": 220,
+  "official_bad": 3,
+  "kinds": {
+   "root differs": 220
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint64_5#45495: root differs",
+   "vec_uint64_5#45496: root differs",
+   "vec_uint64_5#45497: root differs",
+   "vec_uint64_5#45498: root differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_max",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_random",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_zero"
+  ],
+  "B": "KILLED",
+  "secs": 7.3
+ },
+ {
+  "id": "c04-offset-order-and-range/01",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 17.2
+ },
+ {
+  "id": "l03-list-limit-encode/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.5
+ },
+ {
+  "id": "u03-uint-width/04",
+  "type": "uint32",
+  "cases": 53,
+  "official": 11,
+  "corpus_bad": 43,
+  "official_bad": 9,
+  "kinds": {
+   "ref accepts, mutant rejects": 39,
+   "ref rejects, mutant accepts": 4
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint32#34196: ref accepts, mutant rejects",
+   "uint32#34197: ref accepts, mutant rejects",
+   "uint32#34198: ref accepts, mutant rejects",
+   "uint32#34199: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/uints/invalid/uint_32_one_byte_shorter",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_32_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_32_max"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "m05-container-root/09",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "m01-zero-subtree-levels/03",
+  "type": "bitlist_513,VarTestStruct",
+  "cases": 405,
+  "official": 120,
+  "corpus_bad": 125,
+  "official_bad": 29,
+  "kinds": {
+   "root differs": 125
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "VarTestStruct#28057: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_nil_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_nil_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_nil_2"
+  ],
+  "B": "KILLED",
+  "secs": 23.6
+ },
+ {
+  "id": "v02-vector-length-encode/02",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.2
+ },
+ {
+  "id": "p03-progressive-container/01",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 134,
+  "corpus_bad": 114,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 13.5
+ },
+ {
+  "id": "f03-attestation-bitlist/05",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 4,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 4
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#450: ref rejects, mutant accepts",
+   "Attestation#488: ref rejects, mutant accepts",
+   "Attestation#675: ref rejects, mutant accepts",
+   "Attestation#695: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 15.3
+ },
+ {
+  "id": "l03-list-limit-encode/04",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 1,
+  "official_bad": 15,
+  "kinds": {
+   "re-encoding differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28063: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "m03-chunk-count-packing/06",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "cases": 734,
+  "official": 218,
+  "corpus_bad": 38,
+  "official_bad": 53,
+  "kinds": {
+   "re-encoding differs": 38
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "ComplexTestStruct#6888: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.9
+ },
+ {
+  "id": "v01-vector-length-decode/04",
+  "type": "vec_uint64_5",
+  "cases": 247,
+  "official": 16,
+  "corpus_bad": 220,
+  "official_bad": 3,
+  "kinds": {
+   "ref accepts, mutant rejects": 220
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint64_5#45495: ref accepts, mutant rejects",
+   "vec_uint64_5#45496: ref accepts, mutant rejects",
+   "vec_uint64_5#45497: ref accepts, mutant rejects",
+   "vec_uint64_5#45498: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_max",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_random",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_5_zero"
+  ],
+  "B": "KILLED",
+  "secs": 8.1
+ },
+ {
+  "id": "n03-union-encode/04",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 6,
+  "official_bad": 30,
+  "kinds": {
+   "re-encoding differs": 6
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: re-encoding differs",
+   "CompatibleUnionA#6551: re-encoding differs",
+   "CompatibleUnionA#6552: re-encoding differs",
+   "CompatibleUnionA#6583: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.5
+ },
+ {
+  "id": "c05-offset-encode/08",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: re-encoding differs",
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.6
+ },
+ {
+  "id": "q01-composite-list-offsets/03",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.8
+ },
+ {
+  "id": "b01-boolean-decode/03",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.1
+ },
+ {
+  "id": "b02-boolean-encode/02",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 2,
+  "official_bad": 2,
+  "kinds": {
+   "re-encoding differs": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32372: re-encoding differs",
+   "boolean#32373: re-encoding differs",
+   "tests/general/phase0/ssz_generic/boolean/valid/false",
+   "tests/general/phase0/ssz_generic/boolean/valid/true"
+  ],
+  "B": "KILLED",
+  "secs": 7.5
+ },
+ {
+  "id": "c01-fixed-container-scope/01",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 14,
+  "official_bad": 1,
+  "kinds": {
+   "ref rejects, mutant accepts": 14
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13378: ref rejects, mutant accepts",
+   "FixedTestStruct#13379: ref rejects, mutant accepts",
+   "FixedTestStruct#13419: ref rejects, mutant accepts",
+   "FixedTestStruct#13420: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/containers/invalid/FixedTestStruct_extra_byte"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "u02-uint-decode/04",
+  "type": "uint128",
+  "cases": 142,
+  "official": 11,
+  "corpus_bad": 88,
+  "official_bad": 5,
+  "kinds": {
+   "re-encoding differs": 88
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint128#33848: re-encoding differs",
+   "uint128#33862: re-encoding differs",
+   "uint128#33863: re-encoding differs",
+   "uint128#33864: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_1",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.1
+ },
+ {
+  "id": "c05-offset-encode/10",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 44,
+  "official_bad": 66,
+  "kinds": {
+   "re-encoding differs": 44
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "ComplexTestStruct#6900: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "q01-composite-list-offsets/01",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.0
+ },
+ {
+  "id": "c05-offset-encode/06",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.2
+ },
+ {
+  "id": "b03-boolean-root/01",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32373: root differs",
+   "tests/general/phase0/ssz_generic/boolean/valid/true"
+  ],
+  "B": "KILLED",
+  "secs": 7.3
+ },
+ {
+  "id": "u01-uint-encode-byte-order/06",
+  "type": "uint256",
+  "cases": 164,
+  "official": 11,
+  "corpus_bad": 86,
+  "official_bad": 6,
+  "kinds": {
+   "re-encoding differs": 86
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint256#34034: re-encoding differs",
+   "uint256#34057: re-encoding differs",
+   "uint256#34058: re-encoding differs",
+   "uint256#34059: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 8.4
+ },
+ {
+  "id": "n02-union-payload-window/01",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 7,
+  "official_bad": 31,
+  "kinds": {
+   "ref accepts, mutant rejects": 6,
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: ref accepts, mutant rejects",
+   "CompatibleUnionA#6551: ref accepts, mutant rejects",
+   "CompatibleUnionA#6552: ref accepts, mutant rejects",
+   "CompatibleUnionA#6556: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_selector_1_none",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 9.5
+ },
+ {
+  "id": "p03-progressive-container/06",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "cases": 11,
+  "official": 54,
+  "corpus_bad": 5,
+  "official_bad": 21,
+  "kinds": {
+   "root differs": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveSingleFieldContainerTestStruct#21670: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21671: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21675: root differs",
+   "ProgressiveSingleFieldContainerTestStruct#21676: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveSingleFieldContainerTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 13.0
+ },
+ {
+  "id": "u04-uint-range/03",
+  "type": "uint8,FixedTestStruct",
+  "cases": 257,
+  "official": 33,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.8
+ },
+ {
+  "id": "q01-composite-list-offsets/10",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 32,
+  "official_bad": 15,
+  "kinds": {
+   "re-encoding differs": 32
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21895: re-encoding differs",
+   "ProgressiveTestStruct#21896: re-encoding differs",
+   "ProgressiveTestStruct#21897: re-encoding differs",
+   "ProgressiveTestStruct#21898: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_max_6",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_nil_chaos_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_one_0"
+  ],
+  "B": "KILLED",
+  "secs": 17.8
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/01",
+  "type": "bitvector_5",
+  "cases": 28,
+  "official": 6,
+  "corpus_bad": 3,
+  "official_bad": 3,
+  "kinds": {
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_5#31359: ref rejects, mutant accepts",
+   "bitvector_5#31362: ref rejects, mutant accepts",
+   "bitvector_5#31363: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_max_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_random_6",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_5_zero_6"
+  ],
+  "B": "KILLED",
+  "secs": 9.0
+ },
+ {
+  "id": "c04-offset-order-and-range/07",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 75,
+  "official_bad": 70,
+  "examples": [
+   "ComplexTestStruct#6869: ref accepts, mutant rejects",
+   "ComplexTestStruct#6872: ref accepts, mutant rejects",
+   "ComplexTestStruct#6873: ref accepts, mutant rejects",
+   "ComplexTestStruct#6874: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_offset_7_minus_one",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_offset_7_plus_one",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "c02-fixed-field-offsets/02",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 194,
+  "official_bad": 18,
+  "examples": [
+   "FixedTestStruct#13373: re-encoding differs",
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "FixedTestStruct#13376: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 15.2
+ },
+ {
+  "id": "m02-depth-from-limit/05",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "examples": [
+   "VarTestStruct#28053: root differs",
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.3
+ },
+ {
+  "id": "c03-first-offset-decode/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 22,
+  "official_bad": 0,
+  "examples": [
+   "VarTestStruct#28072: ref rejects, mutant accepts",
+   "VarTestStruct#28074: ref rejects, mutant accepts",
+   "VarTestStruct#28076: ref rejects, mutant accepts",
+   "VarTestStruct#28126: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 16.1
+ },
+ {
+  "id": "c04-offset-order-and-range/02",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.7
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/04",
+  "type": "bitvector_9",
+  "cases": 46,
+  "official": 6,
+  "corpus_bad": 16,
+  "official_bad": 2,
+  "examples": [
+   "bitvector_9#32327: ref accepts, mutant rejects",
+   "bitvector_9#32328: ref accepts, mutant rejects",
+   "bitvector_9#32329: ref accepts, mutant rejects",
+   "bitvector_9#32334: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_9_max",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_9_random"
+  ],
+  "B": "KILLED",
+  "secs": 8.8
+ },
+ {
+  "id": "n01-union-selector-decode/06",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 8,
+  "official_bad": 35,
+  "examples": [
+   "CompatibleUnionABCA#6602: ref rejects, mutant accepts",
+   "CompatibleUnionABCA#6616: ref rejects, mutant accepts",
+   "CompatibleUnionABCA#6619: ref rejects, mutant accepts",
+   "CompatibleUnionABCA#6622: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_lengthy_selector_0_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_lengthy_selector_127_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionABCA_lengthy_selector_128_invalid"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/03",
+  "type": "bitlist_8",
+  "cases": 56,
+  "official": 29,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "examples": [
+   "bitlist_8#30588: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_zero_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "c04-offset-order-and-range/08",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 4,
+  "official_bad": 57,
+  "examples": [
+   "ComplexTestStruct#6885: ref accepts, mutant rejects",
+   "ComplexTestStruct#6886: ref accepts, mutant rejects",
+   "ComplexTestStruct#6890: ref accepts, mutant rejects",
+   "ComplexTestStruct#6891: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "n02-union-payload-window/02",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.7
+ },
+ {
+  "id": "p03-progressive-container/04",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 136,
+  "corpus_bad": 114,
+  "official_bad": 80,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 14.2
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/04",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 23,
+  "official_bad": 1,
+  "examples": [
+   "bitlist_5#30216: ref rejects, mutant accepts",
+   "bitlist_5#30220: ref rejects, mutant accepts",
+   "bitlist_5#30221: ref rejects, mutant accepts",
+   "bitlist_5#30223: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitlist/invalid/bitlist_5_but_6"
+  ],
+  "B": "KILLED",
+  "secs": 7.2
+ },
+ {
+  "id": "q02-fixed-composite-list/04",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 71,
+  "official_bad": 3,
+  "kinds": {
+   "ref accepts, mutant rejects": 71,
+   "timeout": 1
+  },
+  "timeouts": 1,
+  "examples": [
+   "ExecutionRequests#12682: ref accepts, mutant rejects",
+   "ExecutionRequests#12684: ref accepts, mutant rejects",
+   "ExecutionRequests#12685: ref accepts, mutant rejects",
+   "ExecutionRequests#12702: ref accepts, mutant rejects",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_3",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_4"
+  ],
+  "B": "KILLED",
+  "secs": 52.6
+ },
+ {
+  "id": "p03-progressive-container/03",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 134,
+  "corpus_bad": 114,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 13.3
+ },
+ {
+  "id": "c05-offset-encode/03",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "bv01-bitvector-length/03",
+  "type": "bitvector_512",
+  "cases": 290,
+  "official": 6,
+  "corpus_bad": 279,
+  "official_bad": 6,
+  "kinds": {
+   "ref accepts, mutant rejects": 265,
+   "ref rejects, mutant accepts": 14
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_512#31672: ref accepts, mutant rejects",
+   "bitvector_512#31673: ref accepts, mutant rejects",
+   "bitvector_512#31674: ref accepts, mutant rejects",
+   "bitvector_512#31675: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_512_max_513",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_512_random_513",
+   "tests/general/phase0/ssz_generic/bitvector/invalid/bitvec_512_zero_513"
+  ],
+  "B": "KILLED",
+  "secs": 6.9
+ },
+ {
+  "id": "q02-fixed-composite-list/07",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 159,
+  "official_bad": 5,
+  "kinds": {
+   "root differs": 159
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionRequests#12681: root differs",
+   "ExecutionRequests#12682: root differs",
+   "ExecutionRequests#12683: root differs",
+   "ExecutionRequests#12684: root differs",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_0",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_1",
+   "tests/mainnet/fulu/ssz_static/ExecutionRequests/ssz_random/case_2"
+  ],
+  "B": "KILLED",
+  "secs": 21.7
+ },
+ {
+  "id": "c05-offset-encode/09",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: re-encoding differs",
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.9
+ },
+ {
+  "id": "l01-list-limit-decode/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 1,
+  "official_bad": 12,
+  "kinds": {
+   "ref accepts, mutant rejects": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6886: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.8
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/05",
+  "type": "bitlist_8",
+  "cases": 56,
+  "official": 29,
+  "corpus_bad": 16,
+  "official_bad": 12,
+  "kinds": {
+   "re-encoding differs": 16
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_8#30581: re-encoding differs",
+   "bitlist_8#30582: re-encoding differs",
+   "bitlist_8#30584: re-encoding differs",
+   "bitlist_8#30585: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_8_max_3"
+  ],
+  "B": "KILLED",
+  "secs": 7.7
+ },
+ {
+  "id": "n02-union-payload-window/03",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 5,
+  "official_bad": 28,
+  "kinds": {
+   "re-encoding differs": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6551: re-encoding differs",
+   "CompatibleUnionA#6552: re-encoding differs",
+   "CompatibleUnionA#6583: re-encoding differs",
+   "CompatibleUnionA#6584: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.5
+ },
+ {
+  "id": "p03-progressive-container/05",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 134,
+  "corpus_bad": 114,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/progressive_containers/valid/ProgressiveVarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 13.3
+ },
+ {
+  "id": "b01-boolean-decode/05",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32377: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 7.3
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/01",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.5
+ },
+ {
+  "id": "l01-list-limit-decode/03",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 2,
+  "official_bad": 35,
+  "kinds": {
+   "ref accepts, mutant rejects": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28062: ref accepts, mutant rejects",
+   "VarTestStruct#28063: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 15.6
+ },
+ {
+  "id": "c05-offset-encode/07",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 57,
+  "official_bad": 63,
+  "kinds": {
+   "re-encoding differs": 57
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "ComplexTestStruct#6874: re-encoding differs",
+   "ComplexTestStruct#6875: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.1
+ },
+ {
+  "id": "v02-vector-length-encode/04",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.6
+ },
+ {
+  "id": "c05-offset-encode/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.2
+ },
+ {
+  "id": "m03-chunk-count-packing/07",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "cases": 734,
+  "official": 218,
+  "corpus_bad": 144,
+  "official_bad": 102,
+  "kinds": {
+   "re-encoding differs": 144
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6873: re-encoding differs",
+   "ComplexTestStruct#6875: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.0
+ },
+ {
+  "id": "u04-uint-range/02",
+  "type": "uint16",
+  "cases": 44,
+  "official": 11,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.3
+ },
+ {
+  "id": "m06-vector-composite/01",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.6
+ },
+ {
+  "id": "p02-progressive-length-mix/01",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 132,
+  "official_bad": 45,
+  "kinds": {
+   "root differs": 132
+  },
+  "timeouts": 0,
+  "examples": [
+   "proglist_uint16#32812: root differs",
+   "proglist_uint16#32813: root differs",
+   "proglist_uint16#32814: root differs",
+   "proglist_uint16#32815: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1366"
+  ],
+  "B": "KILLED",
+  "secs": 7.3
+ },
+ {
+  "id": "v01-vector-length-decode/01",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 13,
+  "official_bad": 7,
+  "kinds": {
+   "ref rejects, mutant accepts": 13
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint16_5#38768: ref rejects, mutant accepts",
+   "vec_uint16_5#38769: ref rejects, mutant accepts",
+   "vec_uint16_5#38770: ref rejects, mutant accepts",
+   "vec_uint16_5#38773: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_max_one_byte_less",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_max_one_less",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint16_5_nil"
+  ],
+  "B": "KILLED",
+  "secs": 6.9
+ },
+ {
+  "id": "l01-list-limit-decode/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28064: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 16.0
+ },
+ {
+  "id": "u01-uint-encode-byte-order/01",
+  "type": "uint16",
+  "cases": 44,
+  "official": 11,
+  "corpus_bad": 24,
+  "official_bad": 6,
+  "kinds": {
+   "re-encoding differs": 24
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint16#33990: re-encoding differs",
+   "uint16#33991: re-encoding differs",
+   "uint16#33998: re-encoding differs",
+   "uint16#33999: re-encoding differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_16_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 7.0
+ },
+ {
+  "id": "n01-union-selector-decode/01",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 3,
+  "official_bad": 6,
+  "kinds": {
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6554: ref rejects, mutant accepts",
+   "CompatibleUnionA#6588: ref rejects, mutant accepts",
+   "CompatibleUnionA#6595: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_lengthy_selector_0_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_max_selector_0_invalid",
+   "tests/general/phase0/ssz_generic/compatible_unions/invalid/CompatibleUnionA_nil_selector_0_invalid"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/06",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "kinds": {
+   "re-encoding differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30209: re-encoding differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_max_2"
+  ],
+  "B": "KILLED",
+  "secs": 6.9
+ },
+ {
+  "id": "v01-vector-length-decode/03",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 16,
+  "corpus_bad": 181,
+  "official_bad": 3,
+  "kinds": {
+   "re-encoding differs": 181
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint16_5#38763: re-encoding differs",
+   "vec_uint16_5#38764: re-encoding differs",
+   "vec_uint16_5#38765: re-encoding differs",
+   "vec_uint16_5#38766: re-encoding differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_max",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_random",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint16_5_zero"
+  ],
+  "B": "KILLED",
+  "secs": 6.9
+ },
+ {
+  "id": "q03-vector-of-variable/01",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.3
+ },
+ {
+  "id": "u05-uint-root-chunk/05",
+  "type": "uint128",
+  "cases": 142,
+  "official": 11,
+  "corpus_bad": 103,
+  "official_bad": 7,
+  "kinds": {
+   "root differs": 103
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint128#33847: root differs",
+   "uint128#33848: root differs",
+   "uint128#33856: root differs",
+   "uint128#33857: root differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_max",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_128_random_0"
+  ],
+  "B": "KILLED",
+  "secs": 6.8
+ },
+ {
+  "id": "u05-uint-root-chunk/04",
+  "type": "uint256",
+  "cases": 164,
+  "official": 11,
+  "corpus_bad": 82,
+  "official_bad": 6,
+  "kinds": {
+   "root differs": 82
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint256#34034: root differs",
+   "uint256#34057: root differs",
+   "uint256#34058: root differs",
+   "uint256#34059: root differs",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_last_byte_empty",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_0",
+   "tests/general/phase0/ssz_generic/uints/valid/uint_256_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "b01-boolean-decode/02",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 3,
+  "official_bad": 4,
+  "kinds": {
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32374: ref rejects, mutant accepts",
+   "boolean#32375: ref rejects, mutant accepts",
+   "boolean#32379: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/boolean/invalid/byte_0x80",
+   "tests/general/phase0/ssz_generic/boolean/invalid/byte_0xff",
+   "tests/general/phase0/ssz_generic/boolean/invalid/byte_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "n03-union-encode/02",
+  "type": "CompatibleUnionA",
+  "cases": 48,
+  "official": 106,
+  "corpus_bad": 6,
+  "official_bad": 30,
+  "kinds": {
+   "re-encoding differs": 6
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionA#6550: re-encoding differs",
+   "CompatibleUnionA#6551: re-encoding differs",
+   "CompatibleUnionA#6552: re-encoding differs",
+   "CompatibleUnionA#6583: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionA_lengthy_selector_1_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.9
+ },
+ {
+  "id": "f03-attestation-bitlist/03",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 5,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#412: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 17.1
+ },
+ {
+  "id": "f02-hash-message-length/02",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 216,
+  "official_bad": 21,
+  "kinds": {
+   "root differs": 216
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13372: root differs",
+   "FixedTestStruct#13373: root differs",
+   "FixedTestStruct#13374: root differs",
+   "FixedTestStruct#13375: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 18.2
+ },
+ {
+  "id": "c03-first-offset-decode/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.1
+ },
+ {
+  "id": "bv04-bitvector-root/02",
+  "type": "bitvector_512",
+  "cases": 290,
+  "official": 6,
+  "corpus_bad": 263,
+  "official_bad": 1,
+  "kinds": {
+   "root differs": 263
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_512#31674: root differs",
+   "bitvector_512#31675: root differs",
+   "bitvector_512#31676: root differs",
+   "bitvector_512#31679: root differs",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_512_random"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "m03-chunk-count-packing/04",
+  "type": "vec_uint64_8",
+  "cases": 247,
+  "official": 16,
+  "corpus_bad": 218,
+  "official_bad": 1,
+  "kinds": {
+   "root differs": 218
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint64_8#46251: root differs",
+   "vec_uint64_8#46252: root differs",
+   "vec_uint64_8#46253: root differs",
+   "vec_uint64_8#46261: root differs",
+   "tests/general/phase0/ssz_generic/basic_vector/valid/vec_uint64_8_random"
+  ],
+  "B": "KILLED",
+  "secs": 18.4
+ },
+ {
+  "id": "q02-fixed-composite-list/01",
+  "type": "FuluExecutionRequests",
+  "cases": 397,
+  "official": 5,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionRequests#12706: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 25.2
+ },
+ {
+  "id": "l02-list-element-alignment/01",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 21,
+  "official_bad": 2,
+  "kinds": {
+   "ref rejects, mutant accepts": 21
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28066: ref rejects, mutant accepts",
+   "VarTestStruct#28067: ref rejects, mutant accepts",
+   "VarTestStruct#28101: ref rejects, mutant accepts",
+   "VarTestStruct#28102: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/containers/invalid/VarTestStruct_extra_byte",
+   "tests/general/phase0/ssz_generic/containers/invalid/VarTestStruct_one_last_offset_2_wrong_byte_length"
+  ],
+  "B": "KILLED",
+  "secs": 18.8
+ },
+ {
+  "id": "c04-offset-order-and-range/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.7
+ },
+ {
+  "id": "l03-list-limit-encode/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.7
+ },
+ {
+  "id": "m01-zero-subtree-levels/04",
+  "type": "bitlist_513",
+  "cases": 71,
+  "official": 25,
+  "corpus_bad": 51,
+  "official_bad": 9,
+  "kinds": {
+   "root differs": 51
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_513#30414: root differs",
+   "bitlist_513#30415: root differs",
+   "bitlist_513#30416: root differs",
+   "bitlist_513#30417: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 8.4
+ },
+ {
+  "id": "v01-vector-length-decode/05",
+  "type": "vec_uint8_3",
+  "cases": 91,
+  "official": 16,
+  "corpus_bad": 20,
+  "official_bad": 13,
+  "kinds": {
+   "ref rejects, mutant accepts": 20
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint8_3#46863: ref rejects, mutant accepts",
+   "vec_uint8_3#46864: ref rejects, mutant accepts",
+   "vec_uint8_3#46865: ref rejects, mutant accepts",
+   "vec_uint8_3#46866: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint8_3_max_one_byte_less",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint8_3_max_one_byte_more",
+   "tests/general/phase0/ssz_generic/basic_vector/invalid/vec_uint8_3_max_one_less"
+  ],
+  "B": "KILLED",
+  "secs": 8.3
+ },
+ {
+  "id": "bl06-bitlist-root/01",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.0
+ },
+ {
+  "id": "c05-offset-encode/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 18.2
+ },
+ {
+  "id": "l01-list-limit-decode/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 1,
+  "official_bad": 15,
+  "kinds": {
+   "ref accepts, mutant rejects": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28063: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 18.3
+ },
+ {
+  "id": "p01-progressive-growth/01",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 8,
+  "official_bad": 18,
+  "kinds": {
+   "root differs": 8
+  },
+  "timeouts": 0,
+  "examples": [
+   "proglist_uint16#32824: root differs",
+   "proglist_uint16#32825: root differs",
+   "proglist_uint16#32826: root differs",
+   "proglist_uint16#32827: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1365",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_1366",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_20"
+  ],
+  "B": "KILLED",
+  "secs": 8.4
+ },
+ {
+  "id": "m03-chunk-count-packing/05",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "cases": 734,
+  "official": 218,
+  "corpus_bad": 40,
+  "official_bad": 59,
+  "kinds": {
+   "re-encoding differs": 40
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs",
+   "ComplexTestStruct#6881: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 17.0
+ },
+ {
+  "id": "u02-uint-decode/02",
+  "type": "FixedTestStruct,uint64",
+  "cases": 337,
+  "official": 33,
+  "corpus_bad": 227,
+  "official_bad": 21,
+  "kinds": {
+   "re-encoding differs": 227
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13374: re-encoding differs",
+   "FixedTestStruct#13375: re-encoding differs",
+   "FixedTestStruct#13382: re-encoding differs",
+   "FixedTestStruct#13383: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_random_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_random_1"
+  ],
+  "B": "KILLED",
+  "secs": 25.1
+ },
+ {
+  "id": "p01-progressive-growth/06",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.3
+ },
+ {
+  "id": "n03-union-encode/06",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 12,
+  "official_bad": 30,
+  "kinds": {
+   "re-encoding differs": 12
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6599: re-encoding differs",
+   "CompatibleUnionABCA#6633: re-encoding differs",
+   "CompatibleUnionABCA#6635: re-encoding differs",
+   "CompatibleUnionABCA#6662: re-encoding differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.5
+ },
+ {
+  "id": "b02-boolean-encode/01",
+  "type": "boolean",
+  "cases": 10,
+  "official": 6,
+  "corpus_bad": 1,
+  "official_bad": 1,
+  "kinds": {
+   "re-encoding differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32373: re-encoding differs",
+   "tests/general/phase0/ssz_generic/boolean/valid/true"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "bl06-bitlist-root/02",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 17,
+  "official_bad": 25,
+  "kinds": {
+   "root differs": 17
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30204: root differs",
+   "bitlist_5#30205: root differs",
+   "bitlist_5#30206: root differs",
+   "bitlist_5#30207: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_5_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 7.7
+ },
+ {
+  "id": "p01-progressive-growth/05",
+  "type": "proglist_uint16",
+  "cases": 157,
+  "official": 131,
+  "corpus_bad": 1,
+  "official_bad": 3,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "proglist_uint16#32811: root differs",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_max_0",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_random_0",
+   "tests/general/phase0/ssz_generic/basic_progressive_list/valid/proglist_uint16_zero_0"
+  ],
+  "B": "KILLED",
+  "secs": 8.1
+ },
+ {
+  "id": "n04-union-root/03",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 259,
+  "corpus_bad": 12,
+  "official_bad": 30,
+  "kinds": {
+   "root differs": 12
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6599: root differs",
+   "CompatibleUnionABCA#6633: root differs",
+   "CompatibleUnionABCA#6635: root differs",
+   "CompatibleUnionABCA#6662: root differs",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_0",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_1",
+   "tests/general/phase0/ssz_generic/compatible_unions/valid/CompatibleUnionABCA_lengthy_selector_2_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 9.5
+ },
+ {
+  "id": "q03-vector-of-variable/03",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {
+   "timeout": 2
+  },
+  "timeouts": 2,
+  "examples": [],
+  "B": "TIMEOUT-ONLY",
+  "secs": 47.5
+ },
+ {
+  "id": "c04-offset-order-and-range/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.8
+ },
+ {
+  "id": "l04-list-tail-bytes/02",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 95,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.9
+ },
+ {
+  "id": "l01-list-limit-decode/05",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6887: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 16.3
+ },
+ {
+  "id": "m01-zero-subtree-levels/02",
+  "type": "bitlist_513,VarTestStruct",
+  "cases": 405,
+  "official": 120,
+  "corpus_bad": 175,
+  "official_bad": 45,
+  "kinds": {
+   "root differs": 175
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: root differs",
+   "VarTestStruct#28055: root differs",
+   "VarTestStruct#28056: root differs",
+   "VarTestStruct#28057: root differs",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_0",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_1",
+   "tests/general/phase0/ssz_generic/bitlist/valid/bitlist_513_max_2"
+  ],
+  "B": "KILLED",
+  "secs": 23.5
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/01",
+  "type": "bitlist_5",
+  "cases": 51,
+  "official": 29,
+  "corpus_bad": 2,
+  "official_bad": 1,
+  "kinds": {
+   "ref rejects, mutant accepts": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_5#30216: ref rejects, mutant accepts",
+   "bitlist_5#30225: ref rejects, mutant accepts",
+   "tests/general/phase0/ssz_generic/bitlist/invalid/bitlist_5_but_6"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "f01-bytevector-root/01",
+  "type": "FuluBytes48",
+  "cases": 290,
+  "official": 0,
+  "corpus_bad": 265,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 265
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes48#4784: root differs",
+   "Bytes48#4785: root differs",
+   "Bytes48#4786: root differs",
+   "Bytes48#4787: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "s01-size-overflow/01",
+  "type": "bitlist_513,progbitlist",
+  "cases": 140,
+  "official": 728,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 14.9
+ },
+ {
+  "id": "s01-size-overflow/02",
+  "type": "progbitlist",
+  "cases": 69,
+  "official": 703,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.4
+ },
+ {
+  "id": "s01-size-overflow/03",
+  "type": "VarTestStruct,bitlist_513",
+  "cases": 405,
+  "official": 120,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.8
+ },
+ {
+  "id": "s01-size-overflow/04",
+  "type": "VarTestStruct,progbitlist",
+  "cases": 403,
+  "official": 798,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 24.2
+ },
+ {
+  "id": "s01-size-overflow/05",
+  "type": "progbitlist,FuluAttestation",
+  "cases": 435,
+  "official": 708,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 22.6
+ },
+ {
+  "id": "bv04-bitvector-root/03",
+  "type": "bitvector_512",
+  "cases": 290,
+  "official": 6,
+  "corpus_bad": 265,
+  "official_bad": 3,
+  "kinds": {
+   "root differs": 265
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_512#31672: root differs",
+   "bitvector_512#31673: root differs",
+   "bitvector_512#31674: root differs",
+   "bitvector_512#31675: root differs",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_512_max",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_512_random",
+   "tests/general/phase0/ssz_generic/bitvector/valid/bitvec_512_zero"
+  ],
+  "B": "KILLED",
+  "secs": 7.9
+ },
+ {
+  "id": "m05-container-root/01",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 22,
+  "corpus_bad": 216,
+  "official_bad": 21,
+  "kinds": {
+   "root differs": 216
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13372: root differs",
+   "FixedTestStruct#13373: root differs",
+   "FixedTestStruct#13374: root differs",
+   "FixedTestStruct#13375: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/FixedTestStruct_max_chaos_1"
+  ],
+  "B": "KILLED",
+  "secs": 16.0
+ },
+ {
+  "id": "m05-container-root/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 100,
+  "official_bad": 80,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.0
+ },
+ {
+  "id": "q01-composite-list-offsets/05",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 15.8
+ },
+ {
+  "id": "q01-composite-list-offsets/06",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.4
+ },
+ {
+  "id": "q01-composite-list-offsets/08",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 56,
+  "corpus_bad": 28,
+  "official_bad": 4,
+  "kinds": {
+   "ref accepts, mutant rejects": 25,
+   "ref rejects, mutant accepts": 3
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21895: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21896: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21898: ref accepts, mutant rejects",
+   "ProgressiveTestStruct#21954: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_max_6",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_nil_chaos_1",
+   "tests/general/phase0/ssz_generic/containers/valid/ProgressiveTestStruct_one_chaos_2"
+  ],
+  "B": "KILLED",
+  "secs": 16.4
+ },
+ {
+  "id": "q03-vector-of-variable/06",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 123,
+  "official_bad": 83,
+  "kinds": {
+   "ref accepts, mutant rejects": 100,
+   "ref rejects, mutant accepts": 23
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: ref accepts, mutant rejects",
+   "ComplexTestStruct#6870: ref accepts, mutant rejects",
+   "ComplexTestStruct#6871: ref accepts, mutant rejects",
+   "ComplexTestStruct#6872: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_last_offset_11_wrong_byte_length",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_last_offset_2_wrong_byte_length",
+   "tests/general/phase0/ssz_generic/containers/invalid/ComplexTestStruct_one_last_offset_7_wrong_byte_length"
+  ],
+  "B": "KILLED",
+  "secs": 16.2
+ },
+ {
+  "id": "q03-vector-of-variable/07",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 123,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 17.3
+ },
+ {
+  "id": "p02-progressive-length-mix/04",
+  "type": "progbitlist,ProgressiveBitsStruct,ProgressiveVarTestStruct",
+  "cases": 842,
+  "official": 994,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 37.2
+ },
+ {
+  "id": "u02-uint-decode/01",
+  "type": "uint16,VarTestStruct",
+  "cases": 378,
+  "official": 106,
+  "corpus_bad": 138,
+  "official_bad": 80,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 26.7
+ },
+ {
+  "id": "u02-uint-decode/05",
+  "type": "uint32,VarTestStruct",
+  "cases": 387,
+  "official": 106,
+  "corpus_bad": 81,
+  "official_bad": 68,
+  "kinds": {
+   "ref accepts, mutant rejects": 81
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28054: ref accepts, mutant rejects",
+   "VarTestStruct#28055: ref accepts, mutant rejects",
+   "VarTestStruct#28056: ref accepts, mutant rejects",
+   "VarTestStruct#28057: ref accepts, mutant rejects",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_0",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_1",
+   "tests/general/phase0/ssz_generic/containers/valid/VarTestStruct_lengthy_2"
+  ],
+  "B": "KILLED",
+  "secs": 24.8
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/02",
+  "type": "bitlist_5,bitvector_5",
+  "cases": 79,
+  "official": 35,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.3
+ },
+ {
+  "id": "m03-chunk-count-packing/01",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "cases": 734,
+  "official": 218,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.5
+ },
+ {
+  "id": "m03-chunk-count-packing/02",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "cases": 734,
+  "official": 218,
+  "corpus_bad": 14,
+  "official_bad": 26,
+  "kinds": {
+   "root differs": 14
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6882: root differs",
+   "ComplexTestStruct#6900: root differs",
+   "ComplexTestStruct#6949: root differs",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_0",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_lengthy_chaos_2",
+   "tests/general/phase0/ssz_generic/containers/valid/ComplexTestStruct_max"
+  ],
+  "B": "KILLED",
+  "secs": 16.6
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/02",
+  "type": "bitlist_5,BitsStruct",
+  "cases": 401,
+  "official": 152,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.5
+ }
+]

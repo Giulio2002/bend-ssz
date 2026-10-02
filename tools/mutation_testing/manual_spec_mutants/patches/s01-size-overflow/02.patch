@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT s01-size-overflow/02
+# type: progbitlist
+# ops: decode
+# spec: a Bitlist without limit still has a bit count that fits 32 bits (8 * (len - 1) + position < 2^32)
+# fault: the unbounded Bitlist decoder drops the 2^29-byte guard (bit count may wrap)
+# why: no limit means no check
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1134,3 +1134,3 @@
+   (buf, bsel(U32.is_eq(v, 0), False{},
+-    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
++    bsel(big, True{}, Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
+ 

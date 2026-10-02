@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT m03-chunk-count-packing/05
-# type: VarTestStruct
+# type: VarTestStruct,ComplexTestStruct
 # ops: decode
 # spec: the last (partial) chunk is padded with zero bytes: bytes after the data in the last word are zero
 # fault: the decoder's copy does not mask the last word (the bytes of the next field remain)

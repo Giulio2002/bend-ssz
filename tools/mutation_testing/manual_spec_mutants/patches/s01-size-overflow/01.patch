@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT s01-size-overflow/01
+# type: bitlist_513,progbitlist,FuluAttestation,FuluPendingAttestation
+# ops: root,encode
+# spec: the byte count of a Bitlist of n bits is ceil(n/8) for every n (no 32-bit wrap)
+# fault: ceil(n/8) is computed as (n + 7) >> 3 in 32-bit arithmetic (wraps above 2^32 - 8)
+# why: the textbook formula, overflowing for huge bit counts
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -946,3 +946,3 @@
+ # ceil(nbits / 8), for every U32 nbits: (nbits >> 3) + ((nbits & 7) + 7 >> 3) (nbits + 7 would wrap above 2^32 - 8).
+-def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
++def bits_nbytes(+nbits: U32) -> U32: U32.shrn((nbits + 7 : U32), 3n)
+ 

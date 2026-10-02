@@ -1,14 +1,14 @@
 # MANUAL SPEC MUTANT z01-designed-equivalent/01
-# type: bitlist_5
-# ops: decode
-# spec: designed control: the bit-list high-bit table, entry for v >= 2: pick(v>=2, 1, 0)
-# fault: the last table entry returns 1 for v >= 2 and 0 otherwise: change nothing semantically (v>=2 vs v>=3 differ only for v=2: delimiter at bit 1)
-# why: mutation of the lowest threshold: v=2 yields bit 0 instead of 1
-# file: src/obj.bend
---- a/src/obj.bend
-+++ b/src/obj.bend
-@@ -963,3 +963,3 @@
-   pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 16), 4,
--    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 0)))))))
-+    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 3), 1, 0)))))))
+# type: uint16
+# ops: encode
+# spec: designed control: encoder buffer capacity is not part of the contract (out_at(0n) holds 1 word, 2 bytes need 1 word)
+# fault: the output buffer is allocated with depth 1 instead of 0 (capacity only)
+# why: over-allocation
+# file: types/uint16_encode_ssz_generated.bend
+--- a/types/uint16_encode_ssz_generated.bend
++++ b/types/uint16_encode_ssz_generated.bend
+@@ -13,3 +13,3 @@
+ 
+-def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))
++def uint16_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(1n), 0, o))
  

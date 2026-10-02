@@ -1,5 +1,5 @@
 # MANUAL SPEC MUTANT c02-fixed-field-offsets/05
-# type: FixedTestStruct
+# type: FixedTestStruct,ComplexTestStruct
 # ops: encode
 # spec: a container value is valid only if all its fields are valid
 # fault: the container validity checks no field (field A is not range-checked)

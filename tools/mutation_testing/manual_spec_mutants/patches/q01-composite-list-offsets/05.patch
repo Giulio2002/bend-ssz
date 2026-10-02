@@ -10,5 +10,5 @@
 @@ -67,3 +67,3 @@
    (buf, +b) = pair
 -  pl_VarTestStruct_eb(b, O.and_pair(acc, pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
-+  pl_VarTestStruct_eb(b, O.and_pair(acc, pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(b, len))), buf, off, a, b)))
++  pl_VarTestStruct_eb(b, O.and_pair(acc, pl_VarTestStruct_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)))
  

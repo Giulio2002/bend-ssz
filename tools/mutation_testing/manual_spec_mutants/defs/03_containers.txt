@@ -72,7 +72,7 @@ why: size constant off by one
 -O.out_done(13, FixedTestStruct_put(O.out_at(2n), 0, o))
 +O.out_done(12, FixedTestStruct_put(O.out_at(2n), 0, o))
 === c02-fixed-field-offsets
-type: FixedTestStruct
+type: FixedTestStruct,ComplexTestStruct
 ops: encode
 file: types/FixedTestStruct_encode_ssz_generated.bend
 spec: a container value is valid only if all its fields are valid
@@ -343,3 +343,30 @@ fault: the poison of the scalar fields is not merged into the final flag
 why: dropping the carry
 -(c .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
 +c
+=== c06-container-validity-composition
+type: SmallTestStruct,ProgressiveTestStruct,ProgressiveComplexTestStruct
+ops: encode
+file: types/SmallTestStruct_encode_ssz_generated.bend
+spec: a container value is valid only if every field is valid (SmallTestStruct has two uint16 fields)
+fault: the validity of field B is not checked
+why: checking only the first field
+-Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B))
++uint16_e.u16_valid(f_A)
+=== c06-container-validity-composition
+type: SingleFieldTestStruct
+ops: encode
+file: types/SingleFieldTestStruct_encode_ssz_generated.bend
+spec: a container value is valid only if its field is valid (uint8 range)
+fault: the field validity is not checked
+why: assuming the single field is in range
+-    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: uint8_e.u8_valid(f_A)
++    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: True{}
+=== c06-container-validity-composition
+type: ProgressiveSingleFieldContainerTestStruct,CompatibleUnionA,CompatibleUnionABCA
+ops: encode
+file: types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend
+spec: a progressive container value is valid only if its field is valid (uint8 range)
+fault: the field validity is not checked
+why: assuming the single field is in range
+-    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+f_A}: uint8_e.u8_valid(f_A)
++    case ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{+f_A}: True{}
