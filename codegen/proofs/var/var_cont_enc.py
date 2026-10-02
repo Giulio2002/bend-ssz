@@ -2176,7 +2176,7 @@ def _iface_rt_chain(rq, cs, K, OBJF, F, OAS, VV):
             if fw_.p in rvec_names():
                 vt_ = fw_.valid([f'ok_{hn}({OAS}, h)' for hn in fw_.hargs])
                 cs.setdefault(fw_.p, []).append((None, fw_.vt, fw_.obj, None, None, vt_))
-    def chain_rt(entry, lawname, result_t, final_rhs, pair_second):
+    def chain_rt(entry, result_t, final_rhs, pair_second):
         """The runtime's pass `entry` (size / valid) over the children, each child's call rewritten by its law."""
         body_ = fn_body(f'{K.p}_{entry}')
         mm = re.search(r'case (\w+)\{([^}]*)\}: (.*)$', body_, re.M)
@@ -2225,7 +2225,7 @@ def _iface_rtv(C, K, OBJF, SZC, F, OAS, szx_ok, RTS, rq, cs, chain_rt):
     """the round-trip value statement"""
     RTV = None
     if szx_ok:
-        RTV = chain_rt('valid', 'validx', f'T.{C} & Bool', f'(K.OBJC({OAS}), True{{}})', 'Bool')
+        RTV = chain_rt('valid', f'T.{C} & Bool', f'(K.OBJC({OAS}), True{{}})', 'Bool')
     if szx_ok:
         body_ = fn_body(f'{K.p}_size')
         mm = re.search(r'case (\w+)\{([^}]*)\}: (.*)$', body_, re.M)
