@@ -515,7 +515,6 @@ def main():
             stale.append(o + ' (orphan)')
         else:
             (E2E / o).unlink()
-    ndefs = sum(t.count('\ndef ') for t in outs.values())
     if check:
         if stale:
             print('stale: ' + ', '.join(stale))
