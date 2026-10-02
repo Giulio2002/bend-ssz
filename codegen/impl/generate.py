@@ -3557,7 +3557,7 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
 
 
 # the benchmark programs (benchmarks/objprog/): static Bend text, with @K@ (the group) and @MOD@ (the runtime module) filled in
-TEMPLATES = _pathlib.Path(__file__).resolve().parent / 'templates'
+TEMPLATES = ROOT / 'codegen/impl/templates'
 PROGRAM = (TEMPLATES / 'objprog.bend.in').read_text()
 PROGRAM_FUZZ = (TEMPLATES / 'objprog_fuzz.bend.in').read_text()
 
