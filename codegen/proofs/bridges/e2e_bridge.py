@@ -2918,8 +2918,8 @@ def bit_lists(amap_map):
             rows.append((X, int(ml.group(1)), mo.group(1) != '0n'))
     return rows
 
-def outputs():
-    # the generic bit lists' decode view lemmas (e2e_bview)
+def _register_view_modules():
+    """register the variable-size views and the module shapes of the bit lists, containers and the beacon state"""
     for X0, N0, big0 in bit_lists(None):
         if (OBJ / f'var_bits_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.bl_view(X0, *BVG.bl_params(OBJ, X0)))
@@ -2970,6 +2970,10 @@ def outputs():
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
     VROOT_SHAPES.setdefault('Attestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'T.Bytes96', 'T.Bitvector64']))
+
+
+def _collect_families():
+    """the families of roots to bridge (from the API map), their coverage and the file batches"""
     from codegen.core import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
     readable = NM.mapping()
@@ -3009,6 +3013,11 @@ def outputs():
         key = k
     if cur:
         batches.append(cur)
+    return amap, readable, cache, vidx, fam, uncovered, batches
+
+
+def _emit_family_batches(amap, cache, fam, uncovered, batches):
+    """the support files, the bridges of the families in batches, and the decode batches"""
     out = {OUT / 'e2e_support.bend': SUPPORT, OUT / 'e2e_bytes.bend': BYTES_HEAD + lwb_text() + '\n' + BYTES_TAIL,
            OUT / 'e2e_bits.bend': BITS, OUT / 'e2e_tree.bend': TREE, OUT / 'e2e_load.bend': LOAD,
            OUT / 'e2e_cap.bend': CAP, OUT / 'e2e_ulist.bend': ULIST, OUT / 'e2e_emit.bend': emit_text()}
@@ -3051,6 +3060,11 @@ def outputs():
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_encode'] + ([f'{r["R"]}_e2e_root'] if r['vx'] else [])} for r in rows]
     # (i) for word storage from the any-depth laws: the generic vectors (rep) and the arrays and
     # branches the older laws did not cover
+    return out, wrows, man
+
+
+def _emit_any_rows(amap, cache, uncovered, out, wrows, man, row):
+    """the rows of the any-valued laws and their batches"""
     wrows.sort(key=lambda r: (r['ee']['file'], r['R']))
     arows = []
     for r in wrows:
@@ -3111,6 +3125,11 @@ def outputs():
         if not P0 or not ms0 or [v for v, _ in P0] != [x.strip() for x in ms0.group(2).split(',')]:
             continue
         r.update({'xs': [v for v, _ in P0], 'value': ms0.group(3), 'ename': r['X'], 'es': es0[0], 'ee': es0[0]})
+    return wrows_extra
+
+
+def _emit_decode_rows(amap, cache, out, wrows, man, wrows_extra):
+    """the decoded-value rows and their batches, the word-storage and bit-list rows"""
     wd = []
     for r in wrows + [x for x in wrows_extra if x.get('xs')]:
         d = decode_w(r, amap['map'][r['X']], cache)
@@ -3167,6 +3186,10 @@ def outputs():
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_root'], 'premise': 'the root law\'s binders (t, dw, hd, pf, cap)'} for r in brows]
     for r in brows:
         r['vf'] = 'gvalid_words.bend'
+
+
+def _emit_view_outputs(uncovered, out, man):
+    """the uncovered roots' views and the bit-list view modules"""
     for R0, u in sorted(uncovered.items()):
         X0 = u['generated_name']
         info = vdec_info(R0) if X0 in VDEC_VIEWS else None
@@ -3210,6 +3233,10 @@ def outputs():
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+
+
+def _emit_conditional_modules(amap, uncovered, out, man):
+    """the modules that exist only when their encode bridges do, and the bit lists' decode batches"""
     if (OBJ / 'encx_l8_Attestation.bend').exists():
         from codegen.proofs.bridges import e2e_bbatt_gen as EBB
         out[OUT / 'e2e_bbatt.bend'] = EBB.text()
@@ -3266,6 +3293,10 @@ def outputs():
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_root'], 'premise': 'rep: bitlist_obj.rep_bits(o, GS.X())'} for R0, X0 in rows]
         for R0, X0 in rows:
             uncovered[R0]['root'] = fn
+
+
+def _finish_manifest(amap, readable, cache, vidx, uncovered, out, wrows, man, wrows_extra):
+    """the fixed-size decoders, the manifest and its input bounds"""
     fd = EFD.build(sys.modules[__name__], amap, cache, vidx)
     for _f, _txt in list(fd['support'].items()) + list(fd['files'].items()):
         out[OUT / _f] = _txt
@@ -3343,6 +3374,19 @@ def outputs():
                 e['ii'] = 'exact'
     out[OUT / 'manifest.json'] = json.dumps(man, indent=1) + '\n'
     return out
+
+
+def outputs():
+    # the generic bit lists' decode view lemmas (e2e_bview)
+    row = None  # bound only on some paths below; the helpers take them
+    _register_view_modules()
+    amap, readable, cache, vidx, fam, uncovered, batches = _collect_families()
+    out, wrows, man = _emit_family_batches(amap, cache, fam, uncovered, batches)
+    wrows_extra = _emit_any_rows(amap, cache, uncovered, out, wrows, man, row)
+    _emit_decode_rows(amap, cache, out, wrows, man, wrows_extra)
+    _emit_view_outputs(uncovered, out, man)
+    _emit_conditional_modules(amap, uncovered, out, man)
+    return _finish_manifest(amap, readable, cache, vidx, uncovered, out, wrows, man, wrows_extra)
 
 
 def main():

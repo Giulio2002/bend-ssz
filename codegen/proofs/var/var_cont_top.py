@@ -70,7 +70,8 @@ def CE_split(s):
     return out
 
 
-def top_text(C, generic=False):
+def _top_container(C, generic, pfacts, plain_tot):
+    """the container's object names (K, parameters, field objects, groups, the plain steps)"""
     from codegen.impl import generate as G
     from codegen.core import schema
     if generic:
@@ -123,6 +124,11 @@ def top_text(C, generic=False):
     # the size pass: the linear groups' sizes in order (emit_wide), each group's variable fields in order (emit_fieldset)
     lin = [(gk, idx) for gk, idx in groups if any(not F[i][1].data for i in idx)]
     var_of = {gk: [i for i in idx if not F[i][1].fixed] for gk, idx in groups}
+    return pfacts, plain_tot, K, P, OA, imps, OAS, FIX, p, fnames, OBJF, groups, gobj, OBJ, plain_steps, lin, var_of
+
+
+def _top_steps(K, FIX, p, fnames, OBJF, groups, gobj, plain_steps, pfacts, plain_tot, lin, var_of):
+    """the grouped sizes: the size step of each group of variable fields"""
     steps, facts, sizes = [], [], {}
     tacc = str(FIX)
     for j, (gk, idx) in enumerate(lin):
@@ -154,6 +160,11 @@ def top_text(C, generic=False):
         steps, facts, tot = plain_steps, pfacts, plain_tot
     else:
         tot = f'O.padd({tacc}, {sizes[lin[-1][0]]})'
+    return steps, facts, tot
+
+
+def _top_header_laws(C, P, OAS, FIX, p, OBJ, steps, facts, tot):
+    """the module's header lemmas and the encode chain terms"""
     L = []
     w = L.append
     RT = f'T.{C} & U32'
@@ -197,172 +208,172 @@ def sizeC({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}) -> {{{start} == {end} : {RT}}}:
     PT = ['0']
     for sz in SZt:
         PT.append(f'O.padd({PT[-1]}, {sz})')
-    if plain_steps is not None:
-        # E_0 = FIX, E_(s+1) = E_s + L_s (the interface's ENDC is E_n); C_0 = FIX, C_(s+1) = padd(C_s, size_s)
-        ls = []
-        a = ls.append
-        n = len(Ls)
-        EP_ = [f'{FIX}n']
-        CP_ = [str(FIX)]
-        for i2 in range(n):
-            EP_.append(f'Nat.add({EP_[-1]}, {Ls[i2]})')
-            CP_.append(f'O.padd({CP_[-1]}, {SZt[i2]})')
-        a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
-        a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
-        a(f'+b{n} = bnd')
-        for i2 in range(n - 1, 0, -1):
-            a(f'+b{i2} = FD.nat__le_trans({EP_[i2]}, {EP_[i2 + 1]}, {Q}, Order.below_sum({EP_[i2]}, {Ls[i2]}), b{i2 + 1})')
-        for i2, (f, ch, sz) in enumerate(facts):
-            a(f'+bl{i2} = FD.nat__le_trans({Ls[i2]}, {EP_[i2 + 1]}, {Q}, Order.left_below_sum({EP_[i2]}, {Ls[i2]}), b{i2 + 1})')
-            a(f'+z{i2} = {szx_term(f, ch, f"bl{i2}")}')
-        for i2 in range(n):
-            cur, sz = CP_[i2], SZt[i2]
-            ec = '{==}' if i2 == 0 else f'c{i2 - 1}'
-            a(f'+ea{i2} = Equal.trans(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), Nat.add({EP_[i2]}, U32.to_nat({sz})), {EP_[i2 + 1]}, '
-              f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({sz})), U32.to_nat({cur}), {EP_[i2]}, {ec}), Equal.cong(Nat, Nat, z => Nat.add({EP_[i2]}, z), U32.to_nat({sz}), {Ls[i2]}, z{i2}))')
-            a(f'+c{i2} = Equal.trans(Nat, U32.to_nat(O.padd({cur}, {sz})), Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), {EP_[i2 + 1]}, '
-              f'VCN.padd_dd({cur}, {sz}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {EP_[i2 + 1]}, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), '
-              f'Equal.sym(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), {EP_[i2 + 1]}, ea{i2}), b{i2 + 1})), ea{i2})')
-        body = '\n  '.join(ls)
-        w(f'''
+    return L, w, ENDC, Ls, SZt, Q
+
+
+def _top_size_chain_flat(P, OAS, FIX, facts, w, ENDC, Ls, SZt, Q):
+    """the size laws of a container whose sizes chain without groups"""
+    ls = []
+    a = ls.append
+    n = len(Ls)
+    EP_ = [f'{FIX}n']
+    CP_ = [str(FIX)]
+    for i2 in range(n):
+        EP_.append(f'Nat.add({EP_[-1]}, {Ls[i2]})')
+        CP_.append(f'O.padd({CP_[-1]}, {SZt[i2]})')
+    a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
+    a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
+    a(f'+b{n} = bnd')
+    for i2 in range(n - 1, 0, -1):
+        a(f'+b{i2} = FD.nat__le_trans({EP_[i2]}, {EP_[i2 + 1]}, {Q}, Order.below_sum({EP_[i2]}, {Ls[i2]}), b{i2 + 1})')
+    for i2, (f, ch, sz) in enumerate(facts):
+        a(f'+bl{i2} = FD.nat__le_trans({Ls[i2]}, {EP_[i2 + 1]}, {Q}, Order.left_below_sum({EP_[i2]}, {Ls[i2]}), b{i2 + 1})')
+        a(f'+z{i2} = {szx_term(f, ch, f"bl{i2}")}')
+    for i2 in range(n):
+        cur, sz = CP_[i2], SZt[i2]
+        ec = '{==}' if i2 == 0 else f'c{i2 - 1}'
+        a(f'+ea{i2} = Equal.trans(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), Nat.add({EP_[i2]}, U32.to_nat({sz})), {EP_[i2 + 1]}, '
+          f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({sz})), U32.to_nat({cur}), {EP_[i2]}, {ec}), Equal.cong(Nat, Nat, z => Nat.add({EP_[i2]}, z), U32.to_nat({sz}), {Ls[i2]}, z{i2}))')
+        a(f'+c{i2} = Equal.trans(Nat, U32.to_nat(O.padd({cur}, {sz})), Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), {EP_[i2 + 1]}, '
+          f'VCN.padd_dd({cur}, {sz}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {EP_[i2 + 1]}, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), '
+          f'Equal.sym(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), {EP_[i2 + 1]}, ea{i2}), b{i2 + 1})), ea{i2})')
+    body = '\n  '.join(ls)
+    w(f'''
 # The size pass's value is the byte count.
 def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZS({OAS})) == {ENDC} : Nat}}:
   {body}
   c{n - 1}
 ''')
-    else:
-        # the size pass's value as a tree of padd over the fields' sizes: its Nat twin, bounded by the byte count
-        ls = []
-        a = ls.append
-        a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
-        a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
-        it = iter(range(len(facts)))
-        atoms = {}
-        for i2, (f, ch, sz) in enumerate(facts):
-            atoms[f] = i2
 
-        def gtree(gk):
-            t = ('lit', '0', '0n')
-            for i in var_of[gk]:
-                t = ('padd', t, ('atom', atoms[fnames[i]]))
-            return t
-        T = ('lit', str(FIX), f'{FIX}n')
-        for gk, _ in lin:
-            T = ('padd', T, gtree(gk))
 
-        def u32(t):
-            if t[0] == 'lit':
-                return t[1]
-            if t[0] == 'atom':
-                return SZt[t[1]]
-            return f'O.padd({u32(t[1])}, {u32(t[2])})'
+def _top_size_chain_grouped(P, OAS, FIX, fnames, lin, var_of, facts, tot, w, ENDC, Ls, SZt, Q):
+    """the size laws of a grouped container: the size tree, its Nat and U32 readings and the proof of the bound"""
+    ls = []
+    a = ls.append
+    a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
+    a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
+    it = iter(range(len(facts)))
+    atoms = {}
+    for i2, (f, ch, sz) in enumerate(facts):
+        atoms[f] = i2
 
-        def nat(t):
-            if t[0] == 'lit':
-                return t[2]
-            if t[0] == 'atom':
-                return Ls[t[1]]
-            return f'Nat.add({nat(t[1])}, {nat(t[2])})'
-        assert u32(T) == tot, (u32(T), tot)
-        # N == ENDC: fold each group's sum into the running left-associated sum
-        cnt = [0]
+    def gtree(gk):
+        t = ('lit', '0', '0n')
+        for i in var_of[gk]:
+            t = ('padd', t, ('atom', atoms[fnames[i]]))
+        return t
+    T = ('lit', str(FIX), f'{FIX}n')
+    for gk, _ in lin:
+        T = ('padd', T, gtree(gk))
 
-        def fresh(pre):
-            cnt[0] += 1
-            return f'{pre}{cnt[0]}'
+    def u32(t):
+        if t[0] == 'lit':
+            return t[1]
+        if t[0] == 'atom':
+            return SZt[t[1]]
+        return f'O.padd({u32(t[1])}, {u32(t[2])})'
 
-        def flat(X, Ls_):
-            """(Nat.add(X, G(Ls_)) == X + L1 + ... + Ln left-associated, as a let name; the right side)"""
-            if not Ls_:
-                return None, X
-            G = Ls_[0]
-            for x in Ls_[1:]:
-                G = f'Nat.add({G}, {x})'
-            if len(Ls_) == 1:
-                return '{==}', f'Nat.add({X}, {Ls_[0]})'
-            pr, rhs0 = flat(X, Ls_[:-1])
-            Gp = Ls_[0]
-            for x in Ls_[1:-1]:
-                Gp = f'Nat.add({Gp}, {x})'
-            last = Ls_[-1]
-            nm = fresh('fa')
-            a(f'+{nm} = Equal.trans(Nat, Nat.add({X}, Nat.add({Gp}, {last})), Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({rhs0}, {last}), '
-              f'Equal.sym(Nat, Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({X}, Nat.add({Gp}, {last})), FD.nat__add_assoc({X}, {Gp}, {last})), '
-              f'Equal.cong(Nat, Nat, z => Nat.add(z, {last}), Nat.add({X}, {Gp}), {rhs0}, {pr}))')
-            return nm, f'Nat.add({rhs0}, {last})'
-        # the tree's Nat twin: ((FIX + G0) + G1) + ...; G_j = ((0n + L) + L') ... == L + L' + ...
-        Xn = f'{FIX}n'
-        cur_nat = Xn
-        eqs = []
-        NT = Xn
-        for gk, _ in lin:
-            Lg = [Ls[atoms[fnames[i]]] for i in var_of[gk]]
-            Gt = nat(gtree(gk))
-            NT2 = f'Nat.add({NT}, {Gt})'
-            if not Lg:
-                # G = 0n: Nat.add(X, 0n) == X
-                nm = fresh('fz')
-                a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, 0n), {cur_nat}, Equal.cong(Nat, Nat, z => Nat.add(z, 0n), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), FD.nat__add_zero({cur_nat}))')
-                eqs.append(nm)
-                NT = NT2
-                continue
-            pr, rhs = flat(cur_nat, Lg)
-            nm = fresh('fg')
-            # Nat.add(NT, Gt) == Nat.add(cur_nat, G(Lg)) (Gt's leading 0n + L reduces) == rhs
-            a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, {Gt}), {rhs}, Equal.cong(Nat, Nat, z => Nat.add(z, {Gt}), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), {pr})')
+    def nat(t):
+        if t[0] == 'lit':
+            return t[2]
+        if t[0] == 'atom':
+            return Ls[t[1]]
+        return f'Nat.add({nat(t[1])}, {nat(t[2])})'
+    assert u32(T) == tot, (u32(T), tot)
+    # N == ENDC: fold each group's sum into the running left-associated sum
+    cnt = [0]
+
+    def fresh(pre):
+        cnt[0] += 1
+        return f'{pre}{cnt[0]}'
+
+    def flat(X, Ls_):
+        """(Nat.add(X, G(Ls_)) == X + L1 + ... + Ln left-associated, as a let name; the right side)"""
+        if not Ls_:
+            return None, X
+        G = Ls_[0]
+        for x in Ls_[1:]:
+            G = f'Nat.add({G}, {x})'
+        if len(Ls_) == 1:
+            return '{==}', f'Nat.add({X}, {Ls_[0]})'
+        pr, rhs0 = flat(X, Ls_[:-1])
+        Gp = Ls_[0]
+        for x in Ls_[1:-1]:
+            Gp = f'Nat.add({Gp}, {x})'
+        last = Ls_[-1]
+        nm = fresh('fa')
+        a(f'+{nm} = Equal.trans(Nat, Nat.add({X}, Nat.add({Gp}, {last})), Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({rhs0}, {last}), '
+          f'Equal.sym(Nat, Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({X}, Nat.add({Gp}, {last})), FD.nat__add_assoc({X}, {Gp}, {last})), '
+          f'Equal.cong(Nat, Nat, z => Nat.add(z, {last}), Nat.add({X}, {Gp}), {rhs0}, {pr}))')
+        return nm, f'Nat.add({rhs0}, {last})'
+    # the tree's Nat twin: ((FIX + G0) + G1) + ...; G_j = ((0n + L) + L') ... == L + L' + ...
+    Xn = f'{FIX}n'
+    cur_nat = Xn
+    eqs = []
+    NT = Xn
+    for gk, _ in lin:
+        Lg = [Ls[atoms[fnames[i]]] for i in var_of[gk]]
+        Gt = nat(gtree(gk))
+        NT2 = f'Nat.add({NT}, {Gt})'
+        if not Lg:
+            # G = 0n: Nat.add(X, 0n) == X
+            nm = fresh('fz')
+            a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, 0n), {cur_nat}, Equal.cong(Nat, Nat, z => Nat.add(z, 0n), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), FD.nat__add_zero({cur_nat}))')
             eqs.append(nm)
             NT = NT2
-            cur_nat = rhs
-        assert NT == nat(T), (NT, nat(T))
-        assert cur_nat == ENDC or True
-        a(f'+eN = {eqs[-1]}')
-        a(f'+bN = FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {ENDC}, {NT}, Equal.sym(Nat, {NT}, {ENDC}, eN), bnd)')
-        for i2, (f, ch, sz) in enumerate(facts):
-            pass
+            continue
+        pr, rhs = flat(cur_nat, Lg)
+        nm = fresh('fg')
+        # Nat.add(NT, Gt) == Nat.add(cur_nat, G(Lg)) (Gt's leading 0n + L reduces) == rhs
+        a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, {Gt}), {rhs}, Equal.cong(Nat, Nat, z => Nat.add(z, {Gt}), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), {pr})')
+        eqs.append(nm)
+        NT = NT2
+        cur_nat = rhs
+    assert NT == nat(T), (NT, nat(T))
+    assert cur_nat == ENDC or True
+    a(f'+eN = {eqs[-1]}')
+    a(f'+bN = FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {ENDC}, {NT}, Equal.sym(Nat, {NT}, {ENDC}, eN), bnd)')
+    for i2, (f, ch, sz) in enumerate(facts):
+        pass
 
-        def prove(t, bname):
-            """a let name proving to_nat(u32 t) == nat t; bname proves nat t <= Q"""
-            if t[0] == 'lit':
-                return '{==}'
-            if t[0] == 'atom':
-                i2 = t[1]
-                f, ch, sz = facts[i2]
-                nm = fresh('z')
-                a(f'+{nm} = {szx_term(f, ch, bname)}')
-                return nm
-            l, r = t[1], t[2]
-            bl = fresh('b')
-            a(f'+{bl} = FD.nat__le_trans({nat(l)}, {nat(t)}, {Q}, Order.below_sum({nat(l)}, {nat(r)}), {bname})')
-            br = fresh('b')
-            a(f'+{br} = FD.nat__le_trans({nat(r)}, {nat(t)}, {Q}, Order.left_below_sum({nat(l)}, {nat(r)}), {bname})')
-            pl = prove(l, bl)
-            pr_ = prove(r, br)
-            lu, ru = u32(l), u32(r)
-            ea = fresh('ea')
-            a(f'+{ea} = Equal.trans(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), Nat.add({nat(l)}, U32.to_nat({ru})), {nat(t)}, '
-              f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({ru})), U32.to_nat({lu}), {nat(l)}, {pl}), Equal.cong(Nat, Nat, z => Nat.add({nat(l)}, z), U32.to_nat({ru}), {nat(r)}, {pr_}))')
-            c = fresh('c')
-            a(f'+{c} = Equal.trans(Nat, U32.to_nat(O.padd({lu}, {ru})), Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, '
-              f'VCN.padd_dd({lu}, {ru}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {nat(t)}, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), '
-              f'Equal.sym(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, {ea}), {bname})), {ea})')
-            return c
-        root = prove(T, 'bN')
-        body = '\n  '.join(ls)
-        w(f'''
+    def prove(t, bname):
+        """a let name proving to_nat(u32 t) == nat t; bname proves nat t <= Q"""
+        if t[0] == 'lit':
+            return '{==}'
+        if t[0] == 'atom':
+            i2 = t[1]
+            f, ch, sz = facts[i2]
+            nm = fresh('z')
+            a(f'+{nm} = {szx_term(f, ch, bname)}')
+            return nm
+        l, r = t[1], t[2]
+        bl = fresh('b')
+        a(f'+{bl} = FD.nat__le_trans({nat(l)}, {nat(t)}, {Q}, Order.below_sum({nat(l)}, {nat(r)}), {bname})')
+        br = fresh('b')
+        a(f'+{br} = FD.nat__le_trans({nat(r)}, {nat(t)}, {Q}, Order.left_below_sum({nat(l)}, {nat(r)}), {bname})')
+        pl = prove(l, bl)
+        pr_ = prove(r, br)
+        lu, ru = u32(l), u32(r)
+        ea = fresh('ea')
+        a(f'+{ea} = Equal.trans(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), Nat.add({nat(l)}, U32.to_nat({ru})), {nat(t)}, '
+          f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({ru})), U32.to_nat({lu}), {nat(l)}, {pl}), Equal.cong(Nat, Nat, z => Nat.add({nat(l)}, z), U32.to_nat({ru}), {nat(r)}, {pr_}))')
+        c = fresh('c')
+        a(f'+{c} = Equal.trans(Nat, U32.to_nat(O.padd({lu}, {ru})), Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, '
+          f'VCN.padd_dd({lu}, {ru}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {nat(t)}, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), '
+          f'Equal.sym(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, {ea}), {bname})), {ea})')
+        return c
+    root = prove(T, 'bN')
+    body = '\n  '.join(ls)
+    w(f'''
 # The size pass's value is the byte count.
 def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZS({OAS})) == {ENDC} : Nat}}:
   {body}
   Equal.trans(Nat, U32.to_nat(SZS({OAS})), {NT}, {ENDC}, {root}, eN)
 ''')
-    if K.wide:
-        vt_ = valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin)
-        if vt_:
-            w(vt_)
-    cut = len(L)
-    if C not in TOPS:
-        return L, [], K, P, OA, imps
-    # ---- encode_eval / encode_spec ----
-    # the writer's hypotheses, as the window's putx lists them (after the object's parameters, before dd)
+
+
+def _top_putx_law(C, P, OA, OAS, OBJ, w, ENDC):
+    """the top-level writer law: the runtime's put against the model and its size"""
     ptxt = (ROOT / f'proofs/obj/encx_{C}.bend').read_text()
     ph = re.search(r'^def putx\((.*?)\+dd: Nat, \+D: ', ptxt, re.M | re.S).group(1)
     pn = [x.split(':')[0].strip().lstrip('+') for x in CE_split(ph.rstrip().rstrip(','))]
@@ -467,6 +478,29 @@ def encode_spec(m, hok):
   match m:
     case CI.MW{{{", ".join("+" + x for x in OA)}}}: spec_go({OAS}, hok)
 """)
+
+
+def top_text(C, generic=False):
+    pfacts = plain_tot = None  # bound only on some paths below; the helpers take them
+    pfacts, plain_tot, K, P, OA, imps, OAS, FIX, p, fnames, OBJF, groups, gobj, OBJ, plain_steps, lin, var_of = _top_container(C, generic, pfacts, plain_tot)
+    steps, facts, tot = _top_steps(K, FIX, p, fnames, OBJF, groups, gobj, plain_steps, pfacts, plain_tot, lin, var_of)
+    L, w, ENDC, Ls, SZt, Q = _top_header_laws(C, P, OAS, FIX, p, OBJ, steps, facts, tot)
+    if plain_steps is not None:
+        # E_0 = FIX, E_(s+1) = E_s + L_s (the interface's ENDC is E_n); C_0 = FIX, C_(s+1) = padd(C_s, size_s)
+        _top_size_chain_flat(P, OAS, FIX, facts, w, ENDC, Ls, SZt, Q)
+    else:
+        # the size pass's value as a tree of padd over the fields' sizes: its Nat twin, bounded by the byte count
+        _top_size_chain_grouped(P, OAS, FIX, fnames, lin, var_of, facts, tot, w, ENDC, Ls, SZt, Q)
+    if K.wide:
+        vt_ = valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin)
+        if vt_:
+            w(vt_)
+    cut = len(L)
+    if C not in TOPS:
+        return L, [], K, P, OA, imps
+    # ---- encode_eval / encode_spec ----
+    # the writer's hypotheses, as the window's putx lists them (after the object's parameters, before dd)
+    _top_putx_law(C, P, OA, OAS, OBJ, w, ENDC)
     return L[:cut], L[cut:], K, P, OA, imps
 
 

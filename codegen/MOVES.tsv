@@ -194,3 +194,5 @@ codegen/bitz.py	codegen/proofs/collections/bitz.py
 codegen/encset_t.py	codegen/proofs/collections/encset_t.py
 codegen/v16.py	codegen/proofs/collections/v16.py
 codegen/sym_bs.py	codegen/proofs/witnesses/sym_bs.py
+codegen/encset_r.py	codegen/proofs/collections/encset_r.py
+codegen/halfword16.py	codegen/proofs/collections/halfword16.py

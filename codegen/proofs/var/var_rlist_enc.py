@@ -237,9 +237,8 @@ def pvl_{p}(+dd: Nat, +D: {TR}, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {{U32.
 '''
 
 
-def big_text(HEAD, LS):
-    """var_codec_ExecutionRequests_enc.bend: encode_eval (and, appended by spec_text,
-    encode_spec). LS: per list dict(p, R, RS, W, LIM)."""
+def _bg_names(HEAD, LS):
+    """the three lists' names, parameters, premises and the bounds of the encoder window"""
     X = 'ExecutionRequests'
     L = list(HEAD) + ['import ./vfix.bend as VF', 'import ./venc.bend as VE', 'import ./vme.bend as VME', 'import ./vmul.bend as VM',
                       'import ./vzeros.bend as VZ', 'import ./vrc.bend as VRC', 'import ./var_rlenc_ExecutionRequests.bend as EN',
@@ -279,6 +278,11 @@ def big_text(HEAD, LS):
     QW = f'U32.add(U32.add({QXV}, {QXV}), U32.add({QXV}, {QXV}))'
     QXS = 'Nat.add(Nat.add(Nat.add(3n, MX0()), MX1()), MX2())'
     QXT = f'U32.to_nat({QXV})'
+    return X, L, w, p, R, RS, W, LIM, NP, NA, DP, DA, ALLP, ALLA, DOe, SEQ, OE, QXV, QW, QXS, QXT
+
+
+def _bg_offsets(w, RS, W, LIM, NP, NA, QXV, QW, QXS, QXT):
+    """the offsets of the three lists in the output and the per-list size facts"""
     w(f'''
 # ---- sizes ------------------------------------------------------------------------------------
 
@@ -364,6 +368,10 @@ def qle({NP}, +x: Nat, +h: {{Nat.is_le(x, QN(n0, n1, n2)) == {TRUE}}})
       Equal.sym(Nat, Nat.mul(U32.to_nat(n{k}), A.quad({W[k]}n)), A.quad(M{k}(n{k})), VRL.mul_quad(U32.to_nat(n{k}), {W[k]}n)), qle({NA}, M{k}(n{k}), lM{k}N(n0, n1, n2)))),
     VRL.mul_quad(U32.to_nat(n{k}), {W[k]}n))
 ''')
+
+
+def _bg_models(X, w, p, W, NP, NA, DP, DA, ALLP, DOe, SEQ, QXT):
+    """the models D1 .. D6 of the output after each list, and the encoder's thaw"""
     w(f'''
 def eS1({NP}) -> {{U32.to_nat(S1(n0)) == A.quad(Q1(n0)) : Nat}}:
   +h = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(U32.to_nat(12), z), U32.to_nat(16777216)) == {TRUE}}}, A.quad(M0(n0)), U32.to_nat(N0(n0)), Equal.sym(Nat, U32.to_nat(N0(n0)), A.quad(M0(n0)), eN0({NA})),
@@ -459,6 +467,11 @@ def pvs0({ALLP})
   EN.pvl_{p[0]}({DOe}, ZD({DA}), 0n, 0, 12, 3n, {{==}}, n0, U32.to_nat(n0), {{==}}, da0, A0, {HD29}, FD.array__trep_perfect(U32, {DOe}, 0), ltP({NA}, 0n, {{==}}), {{==}},
     hbd0({NA}), pfa0, hda0, hca0, hl0, {{==}}, {{==}})
 ''')
+    return TH, RT, HD29
+
+
+def _bg_perfect_and_size(X, w, p, R, RS, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29):
+    """the perfect trees of the models, the capacities and the size law"""
     PF = {'ZD': f'FD.array__trep_perfect(U32, {DOe}, 0)'}
     PF['D1'] = f'VF.updv_perfect([12], {DOe}, ZD({DA}), 0n, {PF["ZD"]})'
     PF['D2'] = f'EN.pfLW_{p[0]}(U32.is_eq(n0, 0), n0, {DOe}, D1({DA}), 3n, A0, {PF["D1"]})'
@@ -537,6 +550,15 @@ def encode_eval({ALLP})
     {{T.{X}_enc_put(S3(n0, n1, n2), _) == RHS : T.{X} & B.Buf}}
   {{==}}
 """)
+
+
+def big_text(HEAD, LS):
+    """var_codec_ExecutionRequests_enc.bend: encode_eval (and, appended by spec_text,
+    encode_spec). LS: per list dict(p, R, RS, W, LIM)."""
+    X, L, w, p, R, RS, W, LIM, NP, NA, DP, DA, ALLP, ALLA, DOe, SEQ, OE, QXV, QW, QXS, QXT = _bg_names(HEAD, LS)
+    _bg_offsets(w, RS, W, LIM, NP, NA, QXV, QW, QXS, QXT)
+    TH, RT, HD29 = _bg_models(X, w, p, W, NP, NA, DP, DA, ALLP, DOe, SEQ, QXT)
+    _bg_perfect_and_size(X, w, p, R, RS, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29)
     return L, dict(NP=NP, NA=NA, DP=DP, DA=DA, ALLP=ALLP, ALLA=ALLA, OE=OE, DOe=DOe, SEQ=SEQ, TH=TH, p=p, R=R, RS=RS, W=W, LIM=LIM)
 
 

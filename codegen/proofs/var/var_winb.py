@@ -1153,7 +1153,8 @@ VALUES = ['BooleanValue{+b0}', 'UnsignedValue{+u0}', 'BytesValue{+xs0}', 'BitsVa
           'Selected{+sel0, +sv0}', 'NullValue{}']
 
 
-def inv_text(L):
+def _inv_builders(L):
+    """the layout's facts and the text builders of the window's parts (declarations, arguments, prefixes, chains)"""
     k = L.k
     FS = L.FS
     FSN = L.FSN
@@ -1212,6 +1213,11 @@ def inv_text(L):
 
     def absurd():
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
+    return k, FS, FSN, nf, w, part, sdecl, sargs, prefix0, prefix, chain, absurd
+
+
+def _inv_parts_bytes(L, nf, w, part, sdecl, sargs, prefix0):
+    """the parts, their widths and the bytes the window holds (symbolic or concrete layout)"""
     CP = L.sym
     PS = '[' + ', '.join(part(f) for f in L.fields) + ']'
     WS = '[' + ', '.join(f'Some{{{L.SZ(f["size"])}}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
@@ -1255,6 +1261,11 @@ def inv_text(L):
     else:
         SD = f'{CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}'
         SA = f'{CWA}, {sargs(nf)}eq'
+    return CP, PS, WS, PLD, PLA, FP, PL, BYTES, SD, SA
+
+
+def _inv_window_lengths(L, FSN, nf, w, sdecl, sargs, CP, PS, WS, PLD, FP, PL, BYTES, SD, SA):
+    """the lengths: the parts' widths (ewid), the fixed size (efs) and the window's length (eL)"""
     fixed = [f for f in L.fields if f['kind'] == 'fix']
     # the widths of the parts
     LXD = ''.join(f'+lx{f["i"]}: {{Some{{{L.SZ(f["size"])}}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}, ' for f in L.fields if f['kind'] == 'fix')
@@ -1296,6 +1307,11 @@ def inv_text(L):
     w.append(f'    Equal.trans(Nat, List.length(&2, U32, {WBL}), List.length(&2, U32, {BYTES}), {END},')
     w.append(f'      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), {WBL}, {BYTES}, Equal.sym(+List<U32>, {BYTES}, {WBL}, eq)), lenB))')
     w.append('')
+    return LXA, EW, END
+
+
+def _inv_variable_parts(L, k, FS, FSN, nf, w, sdecl, sargs, CP, PS, WS, PLD, PLA, FP, PL, BYTES, SD, SA, EW, END):
+    """the offsets and windows of the variable parts"""
     if CP:
         w.append(f'def offz({PLD}+o: Nat) -> {{LY.OFF({PS}, {L.vars[0]["i"]}n, o) == o : Nat}}: {{==}}')
     OFFS = []
@@ -1373,6 +1389,11 @@ def inv_text(L):
         w.append(f'    hwj({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), pf, h{j},')
         w.append(f'    FD.logic__subst(+List<U32>, z => {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{z}}]}} : {MP}}}, y{j}, {L.Y(j)}, Equal.sym(+List<U32>, {L.Y(j)}, y{j}, ypay{j}({SA})), ev{j}))')
     w.append('')
+    return OFFS
+
+
+def _inv_checks(L, k, FS, FSN, nf, w, sdecl, sargs, absurd, CP, PS, WS, PLD, PLA, PL, BYTES, SD, SA, LXA, EW, END, OFFS):
+    """the checks the window passes: the fixed-size parts' checks and fin"""
     for f in L.fchk:
         i, c, sz, P = f['i'], f['c'], f['size'], L.pos(f['c'])
         w.append(f'def eposF{i}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {L.PN(c)} : Nat}}:')
@@ -1425,7 +1446,11 @@ def inv_text(L):
     w.append(f'    case False{{}}: {absurd()}')
     w.append(f'    case True{{}}: contra({CWA}, {sargs(nf)}var_inj({BYTES}, {WBL}, e))')
     w.append('')
+    return body, bexpr
 
+
+def _inv_item_matches(L, nf, w, sdecl, sargs, prefix, chain, absurd, CP, body, bexpr, fact):
+    """the match on the value's items, one step per field from the last"""
     def match_items(var, keep, body):
         out = [f'  match {var}:']
         for v in VALUES:
@@ -1498,6 +1523,18 @@ def inv_text(L):
         w.append(f'def st{i}({CW}, {sdecl(i)}+items: S.Value, +e: {e_st}) -> {GOAL}:')
         w.extend(match_items('items', 'Items', ('S.Items{+h, +r}', f'fm{i}({CWA}, {sargs(i)}h, Codec.parts(h, {sp}), {fact}, {{==}}, r, e)')))
         w.append('')
+    return match_items
+
+
+def inv_text(L):
+    fact = None  # bound only on some paths below; the helpers take them
+    k, FS, FSN, nf, w, part, sdecl, sargs, prefix0, prefix, chain, absurd = _inv_builders(L)
+    CP, PS, WS, PLD, PLA, FP, PL, BYTES, SD, SA = _inv_parts_bytes(L, nf, w, part, sdecl, sargs, prefix0)
+    LXA, EW, END = _inv_window_lengths(L, FSN, nf, w, sdecl, sargs, CP, PS, WS, PLD, FP, PL, BYTES, SD, SA)
+    OFFS = _inv_variable_parts(L, k, FS, FSN, nf, w, sdecl, sargs, CP, PS, WS, PLD, PLA, FP, PL, BYTES, SD, SA, EW, END)
+    body, bexpr = _inv_checks(L, k, FS, FSN, nf, w, sdecl, sargs, absurd, CP, PS, WS, PLD, PLA, PL, BYTES, SD, SA, LXA, EW, END, OFFS)
+
+    match_items = _inv_item_matches(L, nf, w, sdecl, sargs, prefix, chain, absurd, CP, body, bexpr, fact)
     w.append('# Every value whose parts are the window\'s bytes passes the checks.')
     w.append(f'def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, {L.top}) == {TGT} : {MP}}}) -> {GOAL}:')
     w.extend(match_items('v', 'Sequence', ('S.Sequence{+items}', f'st0({CWA}, items, e)')))

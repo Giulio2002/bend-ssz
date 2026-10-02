@@ -74,7 +74,8 @@ def vq_defs():
     return blk[k:].rstrip()
 
 
-def text(c):
+def _dvp_config(c):
+    """the list's configuration (its names, window facts, element maps) and the text builders"""
     P = LISTS[c]
     H31 = P.get('H31', False)
     H31E = P.get('H31E', 31)   # the window facts' bound: len < 2^H31E (the encode premise needs < 2^31)
@@ -132,7 +133,11 @@ def text(c):
         t = re.sub(r'(?<![\w.])W\.', 'V.', t)
         assert 'Attestation' not in t, [l for l in t.split('\n') if 'Attestation' in l][:2]
         return t
+    return P, H31, H31E, HWN, H31T, WSIG, WARG, H31U, H31S, H31A, X, ELT, SEQ, D, VD_, EL_, LNF, PRV, PM, tr, vl
 
+
+def _dvp_header_and_eqe(c, P, H31, H31E, H31T, WSIG, X, ELT, VD_, vl):
+    """the module header, the reader's array facts and eqE"""
     out = []
     A_ = out.append
     imps = ['Base', '../src/obj.bend as O', '../src/buffer.bend as B', '../types/schema.bend as S', P['SPECI'], P['ELTI'], P['LSTI'],
@@ -199,6 +204,11 @@ def text(c):
             s = s.replace(a, b)
     A_(s)
     A_('')
+    return out, A_, EEP, HK
+
+
+def _dvp_element_facts(c, P, WSIG, WARG, X, ELT, D, EL_, tr, A_, EEP, HK):
+    """the elements' facts at a window: XE, the canonical object, the sums and the induction lemmas"""
     A_('# ---- the elements\' facts at a window ----')
     HEAD = '(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, %s, +a: U32, +b: U32, %s' % (WSIG, EEP)
     A_('def XE(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +s: U32, +e: U32) -> RT.MB<RT.M_%s>: RT.fz_%s_bx(V.OBJE(d, t, x, off, s, e))' % (X, X))
@@ -265,7 +275,10 @@ def text(c):
     for n in ['fill_am', 'rvt_pf', 'hc_of', 'evb_of', 'hcA', 'hcC', 'quadN', 'nn1', 'succ_pred', 'inv0', 'nxk0', 'ev_start', 'ee0_of', 'ev0_of']:
         A_(tr(D[n]))
         A_('')
-    # the progressive check has no count limit: the tree's depth is the window's (hd, hw)
+
+
+def _dvp_count_bounds(A_):
+    """the count of records is at most 2^d: nnD, dw_lt and dw_cov"""
     WN = 'V.NN(t, x)'
     A_('# the count of records is at most 2^d: four times it is the first offset, which is within the window')
     A_(f'def nnD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hc: {{V.HC(V.W0(t, x), len) == True{{}} : Bool}},\n'
@@ -290,7 +303,11 @@ def text(c):
     A_('')
     DWL = 'dw_lt(d, t, x, len, hc, hd, hw, hw32)'
     DWC = 'dw_cov(d, t, x, len, hc, hd, hw, hw32)'
-    # arr_eq / obj_eq as in e2e_dvl
+    return DWL, DWC
+
+
+def _dvp_object_laws(c, P, WSIG, WARG, D, tr, A_, DWL, DWC):
+    """the array, object and representation laws of the list window"""
     s = tr(D['arr_eq'])
     s = s.replace('+hchk: {V.CHKw(t, x, off, len) == True{} : Bool})', '+hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, %s)' % WSIG, 1)
     s = s.replace('dw_lt(t, x, len, hc)', DWL).replace('dw_cov(t, x, len, hc)', DWC)
@@ -323,7 +340,10 @@ def text(c):
     A_(f'def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {WSIG}, +s: S.Schema, +ee: {{SH.ProgressiveList_element(s) == {P["ESCH"]} : S.Schema}}, +hchk: {{V.CHKw(t, x, off, len) == True{{}} : Bool}})\n'
        f'    -> RT.rep_{c}(V.OBJw(d, t, x, off, len), s):\n  rep_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk, s, ee)')
     A_('')
-    # the byte count
+
+
+def _dvp_byte_sums(c, P, WARG, X, SEQ, D, EL_, LNF, tr, A_, DWL, DWC):
+    """the bytes of the elements: blsum, lnT and the list's length law"""
     A_(f'def blsum(k: Nat, +W: List<&2, RT.MB<RT.M_{X}>>, +i: Nat) -> {{W8.BL(k, {EL_["LM"]}(W), i) == SUMN(k, W, i) : Nat}}:\n'
        f'  match k:\n    case 0n: {{==}}\n    case 1n+ +q:\n'
        f'      Equal.trans(Nat, W8.BL(1n+q, {EL_["LM"]}(W), i), Nat.add(List.length(&2, U32, W8.YE(W8.xat_{c}({EL_["LM"]}(W), i))), W8.BL(q, {EL_["LM"]}(W), 1n+i)), SUMN(1n+q, W, i), W8.bl_cons(q, {EL_["LM"]}(W), i),\n'
@@ -363,7 +383,11 @@ def text(c):
     s = s[:r] + inner + s[rc + 1:]
     A_(s)
     A_('')
-    # the encode premise: PM of the tree of the writes
+    return TM, inner
+
+
+def _dvp_root_laws(c, P, WSIG, WARG, H31U, H31S, H31A, X, SEQ, LNF, PRV, PM, A_, DWL, DWC, TM, inner):
+    """the root-side laws: lengths, premises, the reader's facts and the thaw of the first element"""
     TREP = f'FD.array__trep(RT.MB<RT.M_{X}>, B.words_depth(V.NN(t, x)), RT.MNone{{}})'
     K0 = 'U32.to_nat(U32.sub(V.NN(t, x), 1))'
     WD = 'B.words_depth(V.NN(t, x))'
@@ -415,6 +439,21 @@ def text(c):
         A_(f'def thfz({WINS}, {WSIG}, {HCK}) -> {{RT.th_{c}(RT.fz_{c}(V.OBJw(d, t, x, off, len))) == V.OBJw(d, t, x, off, len) : {SEQ}}}:\n'
            f'  thfz_c(U32.is_eq(len, 0), d, t, x, off, len, {{==}}, {WARG}, hchk)')
         A_('')
+
+
+def text(c):
+    P, H31, H31E, HWN, H31T, WSIG, WARG, H31U, H31S, H31A, X, ELT, SEQ, D, VD_, EL_, LNF, PRV, PM, tr, vl = _dvp_config(c)
+
+    out, A_, EEP, HK = _dvp_header_and_eqe(c, P, H31, H31E, H31T, WSIG, X, ELT, VD_, vl)
+    _dvp_element_facts(c, P, WSIG, WARG, X, ELT, D, EL_, tr, A_, EEP, HK)
+    # the progressive check has no count limit: the tree's depth is the window's (hd, hw)
+    DWL, DWC = _dvp_count_bounds(A_)
+    # arr_eq / obj_eq as in e2e_dvl
+    _dvp_object_laws(c, P, WSIG, WARG, D, tr, A_, DWL, DWC)
+    # the byte count
+    TM, inner = _dvp_byte_sums(c, P, WARG, X, SEQ, D, EL_, LNF, tr, A_, DWL, DWC)
+    # the encode premise: PM of the tree of the writes
+    _dvp_root_laws(c, P, WSIG, WARG, H31U, H31S, H31A, X, SEQ, LNF, PRV, PM, A_, DWL, DWC, TM, inner)
     res = '\n'.join(out) + '\n'
     if HWN:
         res = res.replace('Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n))', 'Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX()))')

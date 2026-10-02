@@ -638,66 +638,9 @@ def {p}_any_bytes({P})
 
 # ---- SyncCommittee: the 512 pubkeys' packed words (put_words) then the aggregate pubkey (b48) ----
 
-def sc_text():
-    """T.SyncCommittee_putk at any X = 4 q + r: its pubkeys' storage check and O.put_words of
-    their 24576 bytes (vuwd.putw_any), then the aggregate pubkey's b48_put at X + 24576
-    (vuwv_b48); its bytes the pubkeys' 24576 bytes then the aggregate's 48. One proof at a
-    symbolic r (the models PWM / PX_b48 stay stuck on r, so no big tree is ever unfolded); only
-    the byte counts 24624 = (24576 + pad) + (48 - pad) are split on r."""
-    ws = [f'a{k}' for k in range(12)]
-    A_ = ', '.join(ws)
-    AP = ', '.join(f'+{w}: U32' for w in ws)
-    WO = 'O.Words{FD.array__thaw(U32, TB), 24576}'
-    AGG = f'T.Bytes48{{{A_}}}'
-    OBJ = f'T.SyncCommittee{{{WO}, {AGG}}}'
-    TY = 'Array<U32> & (T.SyncCommittee & U32)'
-    NB = 'U32.to_nat(24576)'
-    DATA = f'VS.bt({NB}, FX.limbs(UW.SLW(TB)))'
-    Y48 = f'FX.limbs([{A_}])'
-    TD = TH.format('D')
-    PX = lambda r: f'PX_SyncCommittee({r}, dd, D, q, TB, {A_})'  # noqa: E731
-    RT = lambda r: f'{{T.SyncCommittee_putk({TD}, X, {OBJ}) == ({TH.format(PX(r))}, ({OBJ}, 0)) : {TY}}}'  # noqa: E731
-    BY = lambda r, x: f'{{UA.BYT({PX(r)}) == UW.SPL(UA.BYT(D), {x}, List.append(&2, U32, {DATA}, {Y48})) : +List<U32>}}'  # noqa: E731
-    P = ('+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, ' + AP + ', ' + E_ + ',\n'
-         '    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{} : Bool},\n'
-         '    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},\n'
-         '    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool},\n'
-         '    +hz: {VS.bt(24624n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(24624n) : +List<U32>}')
-    ARGS = f'dd, D, X, q, r, dB, TB, {A_}, e, hr, hd, hl, pf, pfB, hdB, hrB, hz'
-    X0 = 'Nat.add(A.quad(q), r)'
-    PAD = f'UWD.PADB(r, {NB})'
-    DL = f'Nat.sub(48n, {PAD})'
-    W1 = f'Nat.add({NB}, {PAD})'
-    Y0 = f'List.append(&2, U32, {DATA}, UW.ZB({PAD}))'
-    Z = f'List.append(&2, U32, {DATA}, UW.ZB(48n))'
-    PW = 'UWD.PWM(r, dd, D, q, TB, 24576)'
-    PB48 = f'V_b48.PX_b48(r, dd, {PW}, Nat.add(6144n, q), {A_})'
-    POS = 'Nat.add(A.quad(Nat.add(6144n, q)), r)'
-    K = 'A.quad(6144n)'
-    XK = f'Nat.add({X0}, {K})'
-    NBv = 'U32.to_nat(n)'
-    WOv = 'O.Words{FD.array__thaw(U32, TB), n}'
-    OBJv = f'T.SyncCommittee{{{WOv}, {AGG}}}'
-    DATAv = f'VS.bt({NBv}, FX.limbs(UW.SLW(TB)))'
-    PADv = f'UWD.PADB(r, {NBv})'
-    DLv = f'Nat.sub(48n, {PADv})'
-    W1v = f'Nat.add({NBv}, {PADv})'
-    Y0v = f'List.append(&2, U32, {DATAv}, UW.ZB({PADv}))'
-    Zv = f'List.append(&2, U32, {DATAv}, UW.ZB(48n))'
-    PWv = 'UWD.PWM(r, dd, D, q, TB, n)'
-    PB48v = f'V_b48.PX_b48(r, dd, {PWv}, Nat.add(6144n, q), {A_})'
-    XKv = 'Nat.add(Nat.add(A.quad(q), r), K)'
-    RTv = f'{{T.SyncCommittee_putk({TD}, X, {OBJv}) == ({TH.format(PB48v)}, ({OBJv}, 0)) : {TY}}}'
-    BYv = f'{{UA.BYT({PB48v}) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, {DATAv}, {Y48})) : +List<U32>}}'
-    LEN = lambda x: f'List.length(&2, U32, {x})'  # noqa: E731
-    LB = '+List<U32>'
-    ab = lambda t: f'Empty.absurd({t}, FD.nat__lt_zero_absurd(t, hr))'  # noqa: E731
-
-    E24 = f'{{24624n == Nat.add({W1}, {DL}) : Nat}}'
-    E24T = lambda r, m: f'Nat.add(Nat.add({m}, UWD.PADB({r}, {m})), Nat.sub(48n, UWD.PADB({r}, {m})))'  # noqa: E731
-    E24M = lambda r, m: f'{{24624n == {E24T(r, m)} : Nat}}'  # noqa: E731
-    EDL = f'{{Nat.add({PAD}, {DL}) == 48n : Nat}}'
-    body = f'''
+def _sc_closed_facts(NB, WO):
+    """the pair projections and the closed facts on 24576 = 4 * 6144 and the pubkeys' storage check, each decided once"""
+    return f'''
 def DK2(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:
   (+a, +b) = p
   a
@@ -723,7 +666,12 @@ def sc_hv(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB,
     -> {{T.v512_b48_valid({WO}) == ({WO}, True{{}}) : O.Words & Bool}}:
   VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {{==}}, sc_hy(), sc_hlo(), sc_hlo(), sc_hroom(dB, hrB), {{==}}, 48, sc_hu())
 
-# Its storage check holds on a valid pubkeys tree (the runtime's T.SyncCommittee_valid).
+'''
+
+
+def _sc_valid_and_model(AP, OBJ, WO, AGG, A_, PX):
+    """the pubkeys' storage check on a valid tree, the model after the aggregate and its perfect tree"""
+    return f'''# Its storage check holds on a valid pubkeys tree (the runtime's T.SyncCommittee_valid).
 def SyncCommittee_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, {AP}, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
     +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le(6144n, VB.pw(dB)) == True{{}} : Bool}})
     -> {{T.SyncCommittee_valid({OBJ}) == ({OBJ}, True{{}}) : T.SyncCommittee & Bool}}:
@@ -738,7 +686,12 @@ def SyncCommitteex_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, 
     -> {{FD.array__perfect(U32, dd, {PX("r")}) == True{{}} : Bool}}:
   V_b48.b48x_perfect(r, dd, UWD.PWM(r, dd, D, q, TB, 24576), Nat.add(6144n, q), {A_}, UWD.pwm_perfect(r, dd, D, q, TB, 24576, pf))
 
-# PADB(r, 4 K) = PADB(r, 0): the padding to the word boundary does not see whole words. Over a
+'''
+
+
+def _sc_padding_facts(ab, NB, E24M, EDL):
+    """the padding to the word boundary does not see whole words; the byte counts at r < 4"""
+    return f'''# PADB(r, 4 K) = PADB(r, 0): the padding to the word boundary does not see whole words. Over a
 # symbolic K, so no 24576-sized Nat is reduced; the byte-count facts then split only on r < 4.
 def sc_add4(+r: Nat, +m: Nat) -> {{Nat.add(r, 4n+m) == 4n+Nat.add(r, m) : Nat}}:
   match r:
@@ -812,7 +765,12 @@ def sc_edl(+r: Nat, +hr: {{Nat.is_lt(r, 4n) == True{{}} : Bool}}) -> {EDL}:
   FD.logic__subst(Nat, z => {{Nat.add(UWD.PADB(r, z), Nat.sub(48n, UWD.PADB(r, z))) == 48n : Nat}}, A.quad(6144n), {NB},
     Equal.sym(Nat, {NB}, A.quad(6144n), sc_eK()), sc_edlK(r, hr, 6144n))
 
-# The runtime, over any byte count n and models PW (after the pubkeys) and PXt (after the aggregate).
+'''
+
+
+def _sc_runtime_pieces(AP, WOv, TD, AGG, OBJv, TY, LB, LEN, Y48):
+    """the runtime over any byte count and the splice of the aggregate over the zeros"""
+    return f'''# The runtime, over any byte count n and models PW (after the pubkeys) and PXt (after the aggregate).
 def sc_rt(+D: FD.array__Tree<U32>, +X: U32, +TB: FD.array__Tree<U32>, {AP}, +n: U32, +PW: FD.array__Tree<U32>, +PXt: FD.array__Tree<U32>,
     +hv: {{T.v512_b48_valid({WOv}) == ({WOv}, True{{}}) : O.Words & Bool}},
     +pw1: {{O.put_words({TD}, U32.add(X, 0), {WOv}) == ({TH.format("PW")}, {WOv}) : Array<U32> & O.Words}},
@@ -843,7 +801,12 @@ def sc_cat(+n: Nat, +L: {LB}, +K: Nat, {AP}, +eL: {{{LEN("VS.bt(n, L)")} == n : 
     {{List.append(&2, U32, _, List.append(&2, U32, {Y48}, Nil{{}})) == List.append(&2, U32, DT, {Y48}) : {LB}}}
   {{==}}
 
-# The runtime and the bytes at any r < 4, over a symbolic byte count n (K its value): no closed
+'''
+
+
+def _sc_core(AP, WOv, NB, NBv, W1, W1v, DL, DLv, X0, LB, P, PADv, POS, RT, RTv, BY, BYv, LEN, DATAv, Y0v, Zv, PWv, XKv, A_, PB48v, Y48, K):
+    """the runtime and the bytes at any r < 4 over a symbolic byte count, and the core at n = 24576"""
+    return f'''# The runtime and the bytes at any r < 4, over a symbolic byte count n (K its value): no closed
 # 24576-sized Nat is ever reduced here (a reduced Nat.add(24576, _) overflows the checker's stack).
 def sc_core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, {AP}, +n: U32, +K: Nat, {E_},
     +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{{}} : Bool}},
@@ -928,7 +891,12 @@ def sc_at({P})
   +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {{==}}, hl)
   sc_core(dd, D, X, q, r, dB, TB, {A_}, 24576, {K}, e, hr, hd, hl, pf, pfB, hdB, hv, sc_hy(), {{==}}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
 
-# |a ++ b| = T when |a| = m, |b| = 48 and m + 48 = T (over symbolic m: no closed 24576 in a conversion).
+'''
+
+
+def _sc_lengths_and_any(AP, LEN, DATA, Y48, K, NB, P, RT, BY, ARGS, X0):
+    """the bytes' count, then T.SyncCommittee_putk at any byte position and its bytes"""
+    return f'''# |a ++ b| = T when |a| = m, |b| = 48 and m + 48 = T (over symbolic m: no closed 24576 in a conversion).
 def sc_len3(+m: Nat, +a: +List<U32>, +b: +List<U32>, +T: Nat, +ea: {{List.length(&2, U32, a) == m : Nat}}, +eb: {{List.length(&2, U32, b) == 48n : Nat}},
     +e: {{Nat.add(m, 48n) == T : Nat}}) -> {{List.length(&2, U32, List.append(&2, U32, a, b)) == T : Nat}}:
   Equal.trans(Nat, List.length(&2, U32, List.append(&2, U32, a, b)), Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), T, VS.len_app(a, b),
@@ -961,6 +929,74 @@ def SyncCommittee_any_bytes({P})
     -> {BY("r", X0)}:
   DK3({RT("r")}, {BY("r", X0)}, sc_at({ARGS}))
 '''
+
+
+def sc_text():
+    """T.SyncCommittee_putk at any X = 4 q + r: its pubkeys' storage check and O.put_words of
+    their 24576 bytes (vuwd.putw_any), then the aggregate pubkey's b48_put at X + 24576
+    (vuwv_b48); its bytes the pubkeys' 24576 bytes then the aggregate's 48. One proof at a
+    symbolic r (the models PWM / PX_b48 stay stuck on r, so no big tree is ever unfolded); only
+    the byte counts 24624 = (24576 + pad) + (48 - pad) are split on r."""
+    ws = [f'a{k}' for k in range(12)]
+    A_ = ', '.join(ws)
+    AP = ', '.join(f'+{w}: U32' for w in ws)
+    WO = 'O.Words{FD.array__thaw(U32, TB), 24576}'
+    AGG = f'T.Bytes48{{{A_}}}'
+    OBJ = f'T.SyncCommittee{{{WO}, {AGG}}}'
+    TY = 'Array<U32> & (T.SyncCommittee & U32)'
+    NB = 'U32.to_nat(24576)'
+    DATA = f'VS.bt({NB}, FX.limbs(UW.SLW(TB)))'
+    Y48 = f'FX.limbs([{A_}])'
+    TD = TH.format('D')
+    PX = lambda r: f'PX_SyncCommittee({r}, dd, D, q, TB, {A_})'  # noqa: E731
+    RT = lambda r: f'{{T.SyncCommittee_putk({TD}, X, {OBJ}) == ({TH.format(PX(r))}, ({OBJ}, 0)) : {TY}}}'  # noqa: E731
+    BY = lambda r, x: f'{{UA.BYT({PX(r)}) == UW.SPL(UA.BYT(D), {x}, List.append(&2, U32, {DATA}, {Y48})) : +List<U32>}}'  # noqa: E731
+    P = ('+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, ' + AP + ', ' + E_ + ',\n'
+         '    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{} : Bool},\n'
+         '    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},\n'
+         '    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool},\n'
+         '    +hz: {VS.bt(24624n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(24624n) : +List<U32>}')
+    ARGS = f'dd, D, X, q, r, dB, TB, {A_}, e, hr, hd, hl, pf, pfB, hdB, hrB, hz'
+    X0 = 'Nat.add(A.quad(q), r)'
+    PAD = f'UWD.PADB(r, {NB})'
+    DL = f'Nat.sub(48n, {PAD})'
+    W1 = f'Nat.add({NB}, {PAD})'
+    Y0 = f'List.append(&2, U32, {DATA}, UW.ZB({PAD}))'
+    Z = f'List.append(&2, U32, {DATA}, UW.ZB(48n))'
+    PW = 'UWD.PWM(r, dd, D, q, TB, 24576)'
+    PB48 = f'V_b48.PX_b48(r, dd, {PW}, Nat.add(6144n, q), {A_})'
+    POS = 'Nat.add(A.quad(Nat.add(6144n, q)), r)'
+    K = 'A.quad(6144n)'
+    XK = f'Nat.add({X0}, {K})'
+    NBv = 'U32.to_nat(n)'
+    WOv = 'O.Words{FD.array__thaw(U32, TB), n}'
+    OBJv = f'T.SyncCommittee{{{WOv}, {AGG}}}'
+    DATAv = f'VS.bt({NBv}, FX.limbs(UW.SLW(TB)))'
+    PADv = f'UWD.PADB(r, {NBv})'
+    DLv = f'Nat.sub(48n, {PADv})'
+    W1v = f'Nat.add({NBv}, {PADv})'
+    Y0v = f'List.append(&2, U32, {DATAv}, UW.ZB({PADv}))'
+    Zv = f'List.append(&2, U32, {DATAv}, UW.ZB(48n))'
+    PWv = 'UWD.PWM(r, dd, D, q, TB, n)'
+    PB48v = f'V_b48.PX_b48(r, dd, {PWv}, Nat.add(6144n, q), {A_})'
+    XKv = 'Nat.add(Nat.add(A.quad(q), r), K)'
+    RTv = f'{{T.SyncCommittee_putk({TD}, X, {OBJv}) == ({TH.format(PB48v)}, ({OBJv}, 0)) : {TY}}}'
+    BYv = f'{{UA.BYT({PB48v}) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, {DATAv}, {Y48})) : +List<U32>}}'
+    LEN = lambda x: f'List.length(&2, U32, {x})'  # noqa: E731
+    LB = '+List<U32>'
+    ab = lambda t: f'Empty.absurd({t}, FD.nat__lt_zero_absurd(t, hr))'  # noqa: E731
+
+    E24 = f'{{24624n == Nat.add({W1}, {DL}) : Nat}}'
+    E24T = lambda r, m: f'Nat.add(Nat.add({m}, UWD.PADB({r}, {m})), Nat.sub(48n, UWD.PADB({r}, {m})))'  # noqa: E731
+    E24M = lambda r, m: f'{{24624n == {E24T(r, m)} : Nat}}'  # noqa: E731
+    EDL = f'{{Nat.add({PAD}, {DL}) == 48n : Nat}}'
+    body = (
+        _sc_closed_facts(NB, WO) +
+        _sc_valid_and_model(AP, OBJ, WO, AGG, A_, PX) +
+        _sc_padding_facts(ab, NB, E24M, EDL) +
+        _sc_runtime_pieces(AP, WOv, TD, AGG, OBJv, TY, LB, LEN, Y48) +
+        _sc_core(AP, WOv, NB, NBv, W1, W1v, DL, DLv, X0, LB, P, PADv, POS, RT, RTv, BY, BYv, LEN, DATAv, Y0v, Zv, PWv, XKv, A_, PB48v, Y48, K) +
+        _sc_lengths_and_any(AP, LEN, DATA, Y48, K, NB, P, RT, BY, ARGS, X0))
     imports = ['import ./vbenc.bend as VBE', 'import ./vuwv_b48.bend as V_b48', 'import ./vrecx.bend as VRX', 'import ./dk.bend as DK', 'import ./vcopy.bend as VC', 'import ./vbytes.bend as VY']
     return module(imports, 'T.SyncCommittee_putk (512 pubkeys and the aggregate pubkey, 24624 bytes)', body)
 

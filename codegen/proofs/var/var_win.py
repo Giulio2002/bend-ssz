@@ -1322,6 +1322,142 @@ def posx(c):
     return 'x' if c == 0 else f'{c}n+x'
 
 
+def _cx_reader(x, chrep, FS, P, Tn, CW, CWA, HA, w, CHK_child):
+    """the reader: the object read from the window, and rd_go with the child reads"""
+    CHOBJ = 'CH.OBJw(d, t, JW(x), OWc(off), LLw(len))'
+    objs = []
+    for f in x.fields:
+        if f['kind'] == 'fix':
+            objs.append(f['ft'].obj([f'UR.RWN(t, {posx(f["c"] + 4 * j)})' for j in range(f['ft'].W)]))
+        else:
+            objs.append(f'O.BSome{{{CHOBJ}, O.BNone{{}}}}' if x.boxed else CHOBJ)
+    OBJ = f'{Tn}{{' + ', '.join(objs) + '}'
+    RHS = '(BF(t, n), OBJw(d, t, x, off, len))'
+    TY = f'B.Buf & {Tn}'
+    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
+    w('')
+    w(f'def rd_go({CW}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, +hc: {{{CHK_child} == True{{}} : Bool}})')
+    w(f'    -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:')
+    w(f'  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, {P})), (BF(t, n), SPOw(t, x)), rdpo({CWA}, ha)) :')
+    w(f'    {{{Tn}_rd0(off, len, _) == {RHS} : {TY}}}')
+
+    def read_term(f, o):
+        if f['kind'] == 'fix':
+            ft = f['ft']
+            return f'T.{ft.p}_read(BF(t, n), U32.add(off, {f["c"]}), {ft.size})'
+        return f'T.{x.rdf}_read(BF(t, n), U32.add(off, {o}), U32.sub(len, {o}))'
+    w(f'  %Equal.sym(U32, SPOw(t, x), {FS}, epo) :')
+    w(f'    {{{Tn}_rd1(off, len, _, {read_term(x.fields[0], "_")}) == {RHS} : {TY}}}')
+    for j, f in enumerate(x.fields):
+        args = ', '.join(['off', 'len', f'{FS}'] + objs[:j])
+        if f['kind'] == 'fix':
+            ft = f['ft']
+            c = f['c']
+            w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
+            w(f'      VTX.rdxd_{ft.p}(d, t, n, U32.add(off, {c}), {posx(c)}, eoc({CWA}, {c}, {c}n, {{==}}, {{==}}, ha), hd, pf,')
+            w(f'        roomF({CWA}, ha, {c}n, {ft.size}n, {{==}}))) :')
+            w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
+        else:
+            base = x.rdf[:-3] if x.boxed else x.rdf
+            cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'
+            w(f'  %Equal.sym(B.Buf & {chrep}, {cur}, (BF(t, n), {CHOBJ}),')
+            w(f'      CH.readwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc)) :')
+            hole = f'T.{x.rdf}_rd(_)' if x.boxed else '_'
+            w(f'    {{{Tn}_rd{j + 1}({args}, {hole}) == {RHS} : {TY}}}')
+    w('  {==}')
+    w(f"""
+# The reader on the window, when the checks hold.
+def readw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:
+  +a = U32.is_le({FS}, len)
+  +b = U32.is_eq(SPOw(t, x), {FS})
+  +c = {CHK_child}
+  rd_go({CWA}, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPOw(t, x), {FS}, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
+""")
+
+
+def _cx_spec_value(g, x, CSCH, FS, po, CWA):
+    """the spec side: the value, schema and parts of each field and the fixed-field definitions"""
+    nodes = VL.field_nodes(g, x, lambda k: f'UR.RWN(t, {posx(4 * k)})')
+    vi = [f['kind'] for f in x.fields].index('var')
+    Y = 'UW.WX(t, JW(x), U32.to_nat(LLw(len)))'
+    vals, schs, parts = [], [], []
+    for f, nd in zip(x.fields, nodes):
+        if f['kind'] == 'fix':
+            vals.append(nd['val'])
+            schs.append(nd['sch'])
+            parts.append(f'S.Fixed{{F.limbs([{", ".join(nd["words"])}])}}')
+        else:
+            vals.append('CH.VALw(t, JW(x), LLw(len))')
+            schs.append(CSCH)
+            parts.append(f'S.Variable{{{Y}}}')
+
+    def items(i):
+        return 'S.EmptyItems{}' if i == len(vals) else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
+
+    # definitions per step: the fixed fields' values as small refs (FVc<i>), their parts facts as lemmas (fxc<i>)
+    svals = [f'FVc{i}(t, x)' if f['kind'] == 'fix' else v for i, (f, v) in enumerate(zip(x.fields, vals))]
+
+    def sitems(i):
+        return 'S.EmptyItems{}' if i == len(vals) else f'S.Items{{{svals[i]}, {sitems(i + 1)}}}'
+
+    def chain(i):
+        return 'S.End{}' if i == len(vals) else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
+
+    def cat(i):
+        if i == len(vals):
+            return '{==}'
+        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        if x.fields[i]['kind'] == 'fix':
+            return (f'gcf_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, fxc{i}(t, x), {cat(i + 1)})')
+        return (f'gcv_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, {Y}, {rest}, '
+                f'CH.specwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc), {cat(i + 1)})')
+    PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
+    POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
+    hdr = []
+    for f, nd in zip(x.fields, nodes):
+        hdr += nd['words'] if f['kind'] == 'fix' else [str(FS)]
+    HDR = '[' + ', '.join(hdr) + ']'
+    HDRh = '[' + ', '.join(h if k != po else '_' for k, h in enumerate(hdr)) + ']'
+    ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), {Y})'
+    WBL = 'UW.WX(t, x, U32.to_nat(len))'
+    MP = 'Maybe<&2, +List<S.Part>>'
+    M = 'Maybe<&2, +List<U32>>'
+    LLn = 'U32.to_nat(LLw(len))'
+    TXL = '+t: FD.array__Tree<U32>, +x: Nat, +len: U32'
+    FXR = lambda i: f'Some{{[S.Fixed{{F.limbs([{", ".join(nodes[i]["words"])}])}}]}} : {MP}'
+    fxdefs = ''.join(f'def FVc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: {vals[i]}\n\n'
+                     f'def fvq{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{{vals[i]} == FVc{i}(t, x) : S.Value}}:\n  {{==}}\n\n'
+                     f'def fxc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{Codec.parts(FVc{i}(t, x), {schs[i]}) == {FXR(i)}}}:\n'
+                     f'  %fvq{i}(t, x) : {{Codec.parts(_, {schs[i]}) == {FXR(i)}}}\n'
+                     f'  {nodes[i]["proof"]}\n\n' for i, f in enumerate(x.fields) if f['kind'] == 'fix')
+    LH = 'LHc(t, x, len)'
+    SMALL = (f'def ITc({TXL}) -> S.Value: {sitems(0)}\n\n'
+             f'def PSc({TXL}) -> +List<S.Part>: VS.fpv({PRE}, {Y}, {POST})\n\n'
+             f'def ENCc({TXL}) -> +List<U32>: {ENCR}\n\n'
+             f'def LHc({TXL}) -> +List<U32>: List.append(&2, U32, F.limbs({HDR}), {Y})\n\n')
+    return Y, items, chain, cat, PRE, POST, HDR, HDRh, WBL, MP, M, LLn, fxdefs, LH, SMALL
+
+
+def _cx_inv(x, CSCH, FS, H, po, P, CW, CWA, kids, w, CHK_child, Y, WBL):
+    """the invariant lemma, its window facts re-stated over the offset tree"""
+    inv = inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL).replace('CH.invw(', 'CH.invwD(')
+    RF = FS - P - 4
+    for a, b in [('CHKw(t, i, off, len)', 'CHKw(t, x, off, len)'),
+                 ('VR.lenWB(d, t, i, U32.to_nat(len), pf, hw)', 'UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)'),
+                 (f'+W2 = VR.WB(t, i, Nat.add({FS}n, lY))', f'+W2 = UW.WX(t, x, Nat.add({FS}n, lY))'),
+                 ('z => VR.WB(t, i, z)', 'z => UW.WX(t, x, z)'),
+                 ('Nat.add(A.quad(i), z)', 'Nat.add(x, z)'),
+                 (f'VWN.byteW(d, t, i, {po}n, Nat.add({RF}n, lY), pf, hw2)', f'UW.byteWX(d, t, x, {P}n, Nat.add({RF}n, lY), pf, hw2)'),
+                 ('SPOw(t, i)', 'SPOw(t, x)'),
+                 (f'VWN.tailW(t, i, {H}n, lY)', f'UW.tailWX(t, x, {FS}n, lY)'),
+                 ('VR.WB(t, JW(i), ', 'UW.WX(t, JW(x), '), ('JW(i)', 'JW(x)'),
+                 ('def chk_t(+t: FD.array__Tree<U32>, +i: Nat,', 'def chk_t(+t: FD.array__Tree<U32>, +x: Nat,'), ('chk_t(t, i, ', 'chk_t(t, x, ')]:
+        assert a in inv or a in ('Nat.add(A.quad(i), z)',), a
+        inv = inv.replace(a, b)
+    w(inv)
+
+
 def contx_text(g, x, chmod, CSCH, chrep):
     """Byte-offset window module of container x (the interface of
     proofs/obj/vua_win.bend) whose variable field is read by the child byte
@@ -1450,115 +1586,9 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {{chk3(a, b, c) == True{{}} : Bool}})
     case True{{}} True{{}}: h
 """)
     # ---- the reader ----
-    CHOBJ = 'CH.OBJw(d, t, JW(x), OWc(off), LLw(len))'
-    objs = []
-    for f in x.fields:
-        if f['kind'] == 'fix':
-            objs.append(f['ft'].obj([f'UR.RWN(t, {posx(f["c"] + 4 * j)})' for j in range(f['ft'].W)]))
-        else:
-            objs.append(f'O.BSome{{{CHOBJ}, O.BNone{{}}}}' if x.boxed else CHOBJ)
-    OBJ = f'{Tn}{{' + ', '.join(objs) + '}'
-    RHS = '(BF(t, n), OBJw(d, t, x, off, len))'
-    TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w(f'def rd_go({CW}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}}, +hc: {{{CHK_child} == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:')
-    w(f'  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, {P})), (BF(t, n), SPOw(t, x)), rdpo({CWA}, ha)) :')
-    w(f'    {{{Tn}_rd0(off, len, _) == {RHS} : {TY}}}')
-
-    def read_term(f, o):
-        if f['kind'] == 'fix':
-            ft = f['ft']
-            return f'T.{ft.p}_read(BF(t, n), U32.add(off, {f["c"]}), {ft.size})'
-        return f'T.{x.rdf}_read(BF(t, n), U32.add(off, {o}), U32.sub(len, {o}))'
-    w(f'  %Equal.sym(U32, SPOw(t, x), {FS}, epo) :')
-    w(f'    {{{Tn}_rd1(off, len, _, {read_term(x.fields[0], "_")}) == {RHS} : {TY}}}')
-    for j, f in enumerate(x.fields):
-        args = ', '.join(['off', 'len', f'{FS}'] + objs[:j])
-        if f['kind'] == 'fix':
-            ft = f['ft']
-            c = f['c']
-            w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
-            w(f'      VTX.rdxd_{ft.p}(d, t, n, U32.add(off, {c}), {posx(c)}, eoc({CWA}, {c}, {c}n, {{==}}, {{==}}, ha), hd, pf,')
-            w(f'        roomF({CWA}, ha, {c}n, {ft.size}n, {{==}}))) :')
-            w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
-        else:
-            base = x.rdf[:-3] if x.boxed else x.rdf
-            cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'
-            w(f'  %Equal.sym(B.Buf & {chrep}, {cur}, (BF(t, n), {CHOBJ}),')
-            w(f'      CH.readwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc)) :')
-            hole = f'T.{x.rdf}_rd(_)' if x.boxed else '_'
-            w(f'    {{{Tn}_rd{j + 1}({args}, {hole}) == {RHS} : {TY}}}')
-    w('  {==}')
-    w(f"""
-# The reader on the window, when the checks hold.
-def readw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{{Tn}_read(BF(t, n), off, len) == {RHS} : {TY}}}:
-  +a = U32.is_le({FS}, len)
-  +b = U32.is_eq(SPOw(t, x), {FS})
-  +c = {CHK_child}
-  rd_go({CWA}, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPOw(t, x), {FS}, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
-""")
+    _cx_reader(x, chrep, FS, P, Tn, CW, CWA, HA, w, CHK_child)
     # ---- the spec side ----
-    nodes = VL.field_nodes(g, x, lambda k: f'UR.RWN(t, {posx(4 * k)})')
-    vi = [f['kind'] for f in x.fields].index('var')
-    Y = 'UW.WX(t, JW(x), U32.to_nat(LLw(len)))'
-    vals, schs, parts = [], [], []
-    for f, nd in zip(x.fields, nodes):
-        if f['kind'] == 'fix':
-            vals.append(nd['val'])
-            schs.append(nd['sch'])
-            parts.append(f'S.Fixed{{F.limbs([{", ".join(nd["words"])}])}}')
-        else:
-            vals.append('CH.VALw(t, JW(x), LLw(len))')
-            schs.append(CSCH)
-            parts.append(f'S.Variable{{{Y}}}')
-
-    def items(i):
-        return 'S.EmptyItems{}' if i == len(vals) else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
-
-    # definitions per step: the fixed fields' values as small refs (FVc<i>), their parts facts as lemmas (fxc<i>)
-    svals = [f'FVc{i}(t, x)' if f['kind'] == 'fix' else v for i, (f, v) in enumerate(zip(x.fields, vals))]
-
-    def sitems(i):
-        return 'S.EmptyItems{}' if i == len(vals) else f'S.Items{{{svals[i]}, {sitems(i + 1)}}}'
-
-    def chain(i):
-        return 'S.End{}' if i == len(vals) else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
-
-    def cat(i):
-        if i == len(vals):
-            return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
-        if x.fields[i]['kind'] == 'fix':
-            return (f'gcf_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'{rest}, fxc{i}(t, x), {cat(i + 1)})')
-        return (f'gcv_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, {Y}, {rest}, '
-                f'CH.specwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc), {cat(i + 1)})')
-    PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
-    POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
-    hdr = []
-    for f, nd in zip(x.fields, nodes):
-        hdr += nd['words'] if f['kind'] == 'fix' else [str(FS)]
-    HDR = '[' + ', '.join(hdr) + ']'
-    HDRh = '[' + ', '.join(h if k != po else '_' for k, h in enumerate(hdr)) + ']'
-    ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), {Y})'
-    WBL = 'UW.WX(t, x, U32.to_nat(len))'
-    MP = 'Maybe<&2, +List<S.Part>>'
-    M = 'Maybe<&2, +List<U32>>'
-    LLn = 'U32.to_nat(LLw(len))'
-    TXL = '+t: FD.array__Tree<U32>, +x: Nat, +len: U32'
-    FXR = lambda i: f'Some{{[S.Fixed{{F.limbs([{", ".join(nodes[i]["words"])}])}}]}} : {MP}'
-    fxdefs = ''.join(f'def FVc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: {vals[i]}\n\n'
-                     f'def fvq{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{{vals[i]} == FVc{i}(t, x) : S.Value}}:\n  {{==}}\n\n'
-                     f'def fxc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{Codec.parts(FVc{i}(t, x), {schs[i]}) == {FXR(i)}}}:\n'
-                     f'  %fvq{i}(t, x) : {{Codec.parts(_, {schs[i]}) == {FXR(i)}}}\n'
-                     f'  {nodes[i]["proof"]}\n\n' for i, f in enumerate(x.fields) if f['kind'] == 'fix')
-    LH = 'LHc(t, x, len)'
-    SMALL = (f'def ITc({TXL}) -> S.Value: {sitems(0)}\n\n'
-             f'def PSc({TXL}) -> +List<S.Part>: VS.fpv({PRE}, {Y}, {POST})\n\n'
-             f'def ENCc({TXL}) -> +List<U32>: {ENCR}\n\n'
-             f'def LHc({TXL}) -> +List<U32>: List.append(&2, U32, F.limbs({HDR}), {Y})\n\n')
+    Y, items, chain, cat, PRE, POST, HDR, HDRh, WBL, MP, M, LLn, fxdefs, LH, SMALL = _cx_spec_value(g, x, CSCH, FS, po, CWA)
     w(f"""def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{items(0)}}}
 
 def fitw({CW}, {HA}) -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y}))) == True{{}} : Bool}}:
@@ -1627,21 +1657,7 @@ def specw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Codec.p
   +c = {CHK_child}
   specg({CWA}, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPOw(t, x), {FS}, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
 """)
-    inv = inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL).replace('CH.invw(', 'CH.invwD(')
-    RF = FS - P - 4
-    for a, b in [('CHKw(t, i, off, len)', 'CHKw(t, x, off, len)'),
-                 ('VR.lenWB(d, t, i, U32.to_nat(len), pf, hw)', 'UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)'),
-                 (f'+W2 = VR.WB(t, i, Nat.add({FS}n, lY))', f'+W2 = UW.WX(t, x, Nat.add({FS}n, lY))'),
-                 ('z => VR.WB(t, i, z)', 'z => UW.WX(t, x, z)'),
-                 ('Nat.add(A.quad(i), z)', 'Nat.add(x, z)'),
-                 (f'VWN.byteW(d, t, i, {po}n, Nat.add({RF}n, lY), pf, hw2)', f'UW.byteWX(d, t, x, {P}n, Nat.add({RF}n, lY), pf, hw2)'),
-                 ('SPOw(t, i)', 'SPOw(t, x)'),
-                 (f'VWN.tailW(t, i, {H}n, lY)', f'UW.tailWX(t, x, {FS}n, lY)'),
-                 ('VR.WB(t, JW(i), ', 'UW.WX(t, JW(x), '), ('JW(i)', 'JW(x)'),
-                 ('def chk_t(+t: FD.array__Tree<U32>, +i: Nat,', 'def chk_t(+t: FD.array__Tree<U32>, +x: Nat,'), ('chk_t(t, i, ', 'chk_t(t, x, ')]:
-        assert a in inv or a in ('Nat.add(A.quad(i), z)',), a
-        inv = inv.replace(a, b)
-    w(inv)
+    _cx_inv(x, CSCH, FS, H, po, P, CW, CWA, kids, w, CHK_child, Y, WBL)
     text = '\n'.join(L) + '\n'
     for bad in ['A.quad(i)', 'VR.WB(', '(t, i,', 'JW(i)']:
         assert bad not in text, bad

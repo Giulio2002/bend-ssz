@@ -260,6 +260,347 @@ def sch(s, i, cf='SH.Container_fields'):
     return f'SH.Chain_head({tails(f"{cf}({s})", i)})'
 
 
+def _ct_layout(self, s, PCL, PK_, ACT):
+    """the container's fields, groups and the text builders of its object and its matches"""
+    p = s.p
+    R = RA.qual(s.rep)
+    F = s.fields
+    n = len(F)
+    kinds = []
+    for f, fs in F:
+        k = self.fk(fs)
+        if k in ('boxD', 'boxT'):
+            self.box(fs, k)
+        kinds.append(k)
+    wide = n > G.GROUP
+    groups = [list(range(j, min(n, j + G.GROUP))) for j in range(0, n, G.GROUP)] if wide else None
+    xs = [f'x{i}' for i in range(n)]
+    isdata = [k in ('data', 'datar', 'bvr') for k in kinds]
+    L = []
+    w = L.append
+    w(f'# ---- {p} (Type-kind container, {n} fields{", in groups" if wide else ""}) ----')
+
+    # pattern of the object from field binders
+    def gname(j):
+        return f'T.{p}_g{j}'
+
+    def obj(args):
+        if not wide:
+            return f'{R}{{' + ', '.join(args) + '}'
+        return f'{R}{{' + ', '.join(f'{gname(j)}{{' + ', '.join(args[i] for i in grp) + '}' for j, grp in enumerate(groups)) + '}'
+
+    def match_lines(binders, body, ind='  '):
+        """match o on the object's structure, then `body`."""
+        if not wide:
+            w(f'{ind}match o:')
+            w(f'{ind}  case {R}{{' + ', '.join(binders) + f'}}: {body}')
+            return
+        gb = []
+        for j, grp in enumerate(groups):
+            gdata = all(isdata[i] for i in grp)
+            gb.append(('+' if gdata else '') + f'g{j}')
+        w(f'{ind}match o:')
+        w(f'{ind}  case {R}{{' + ', '.join(gb) + '}:')
+        cur = ind + '    '
+        for j, grp in enumerate(groups):
+            w(f'{cur}match g{j}:')
+            w(f'{cur}  case {gname(j)}{{' + ', '.join(binders[i] for i in grp) + '}:')
+            cur += '    '
+        w(f'{cur}{body}')
+
+    binders = [('+' if isdata[i] else '') + xs[i] for i in range(n)]
+    # projections of the Type-kind fields
+    for i in range(n):
+        if isdata[i]:
+            continue
+        w(f'def pj_{p}_{i}(o: {R}) -> {RA.qual(F[i][1].rep)}:')
+        match_lines(binders, xs[i])
+    args = [xs[i] if isdata[i] else f'pj_{p}_{i}(o)' for i in range(n)]
+    # a progressive container (generic forms): the progressive schema's
+    # accessors, its active list, and the progressive root tree (pcont.bend)
+    prog = s.t is not None and s.t.kind == 'pcontainer'
+    if prog:
+        from codegen.proofs.laws import pcont_laws as PCL
+        if wide:
+            raise Skip(f'{p}: wide progressive container')
+        PK_ = PCL.key(s.t.active)
+        ACT = PCL.act_term(s.t.active)
+    cf = 'SH.ProgressiveContainer_fields' if prog else 'SH.Container_fields'
+    cpred = 'SH.is_ProgressiveContainer' if prog else 'SH.is_Container'
+    return PCL, PK_, ACT, p, R, F, n, kinds, wide, groups, xs, isdata, L, w, gname, obj, match_lines, binders, args, prog, cf, cpred
+
+
+def _ct_view_digest_rep(self, s, ACT, kact, p, R, F, n, kinds, xs, isdata, w, obj, match_lines, binders, args, prog, PCL, cf, cpred):
+    """the view, the digest, the representation predicate, the checks and the equations of the container"""
+    def digexpr(ds):
+        if prog:
+            return f'O.mix_len(hl, {PCL.expr(PCL.tree(s.t.active), ds)}, {PCL.mask(s.t.active)})'
+        return f'MD.rtree({depth}n, True{{}}, hl, [' + ', '.join(ds) + '], 0n)'
+    sx = [sch('s', i, cf) for i in range(n)]
+    # view and digest
+    items = 'S.EmptyItems{}'
+    for i in range(n - 1, -1, -1):
+        items = f'S.Items{{{self.view(F[i][1], kinds[i], xs[i])}, {items}}}'
+    w(f'def v_{p}(o: {R}) -> S.Value:')
+    match_lines(binders, f'S.Sequence{{{items}}}')
+    depth = G.log2ceil(n)
+    w(f'def d_{p}(+hl: Nat, o: {R}) -> D.Digest:')
+    match_lines(binders, digexpr([self.dig(F[i][1], kinds[i], xs[i]) for i in range(n)]))
+    # rep
+    reps = [self.rep(F[i][1], kinds[i], args[i], sx[i]) for i in range(n)]
+    inner = fold_p2([f'{{o == {obj(args)} : {R}}}'] + [r for r in reps if r])
+    rt = inner
+    for i in range(n - 1, -1, -1):
+        if isdata[i]:
+            rt = f'DK.Ex({RA.qual(F[i][1].rep)}, {xs[i]} => {rt})'
+    w(f'def rep_{p}(o: {R}, +s: S.Schema) -> Data:')
+    w(f'  {rt}')
+    # ok
+    f0 = f'{cf}(s)'
+    conj = [f'{cpred}(s)'] + [f'SH.is_Chain({tails(f0, j)})' for j in range(n)] + [f'SH.is_End({tails(f0, n)})']
+    oks = [self.ok(F[i][1], kinds[i], sx[i]) for i in range(n)]
+    ok_at = {}
+    subs = {}
+    leafsym = {}
+    for i in range(n):
+        if oks[i]:
+            ok_at[i] = len(conj)
+            if oks[i].startswith('ok_'):
+                subs[len(conj)] = (F[i][1].p, sx[i])
+            elif F[i][1].p in LIMIT_LEMMAS:
+                leafsym[len(conj)] = (F[i][1].p, sx[i])
+            conj.append(oks[i])
+    if prog:
+        kact = len(conj)
+        conj.append(f'PCN.beq(SH.ProgressiveContainer_active(s), {ACT})')
+    self.okinfo[p] = ('and', list(conj), subs, leafsym) if leafsym else ('and', list(conj), subs)
+    w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: {fold_and(conj)}')
+    w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{{cpred}(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
+    # eqs
+    eqt = [(i, self.eqs_type(F[i][1], kinds[i], sx[i])) for i in range(n)]
+    eqt = [(i, t) for i, t in eqt if t]
+    w(f'def eqs_{p}(+s: S.Schema) -> Data: {fold_p2([t for _, t in eqt])}')
+    self.meta[p] = dict(sx=sx, kinds=kinds, F=F, eqt=[i for i, _ in eqt], cf=cf)
+    return kact, digexpr, sx, depth, reps, f0, conj, ok_at, eqt
+
+
+def _ct_lets_and_shape(self, p, n, xs, isdata, w, sx, reps, f0, conj, eqt):
+    """the let-lines that unpack the checks and representation, and the shape lemma"""
+    def conj_lets(ind='  '):
+        """let-bind every ok conjunct: +k{j}."""
+        m = len(conj) - 1
+        prev = 'ok'
+        for j in range(m + 1):
+            rest = fold_and(conj[j + 1:])
+            if j < m:
+                w(f'{ind}+k{j} = DK.and_l({conj[j]}, {rest}, {prev})')
+                w(f'{ind}+r{j + 1} = DK.and_r({conj[j]}, {rest}, {prev})')
+                prev = f'r{j + 1}'
+        self.klast = (m, prev)
+        return lambda j: prev if j == m else f'k{j}'
+
+    def rep_lets(ind='  '):
+        """destructure rep: Data fields, eo, the reps of Type fields."""
+        cur = 'rep'
+        c = 0
+        for i in range(n):
+            if isdata[i]:
+                w(f'{ind}(+{xs[i]}, +q{c}) = {cur}')
+                cur = f'q{c}'
+                c += 1
+        rs_ = [i for i in range(n) if reps[i]]
+        if not rs_:
+            self.eo_name = cur
+            return {}
+        self.eo_name = 'eo'
+        names_ = {}
+        w(f'{ind}(+eo, +q{c}) = {cur}')
+        cur = f'q{c}'
+        c += 1
+        for j, i in enumerate(rs_):
+            if j == len(rs_) - 1:
+                names_[i] = cur
+            else:
+                w(f'{ind}(+rp{i}, +q{c}) = {cur}')
+                cur = f'q{c}'
+                c += 1
+                names_[i] = f'rp{i}'
+        return names_
+
+    def eqs_lets(ind='  '):
+        names_ = {}
+        idx = [i for i, _ in eqt]
+        cur = 'ev'
+        for j, i in enumerate(idx):
+            if j == len(idx) - 1:
+                names_[i] = cur
+            else:
+                w(f'{ind}(+qe{i}, +qv{j}) = {cur}')
+                cur = f'qv{j}'
+                names_[i] = f'qe{i}'
+        return names_
+
+    # the fields' chain shape
+    chain = 'S.End{}'
+    for i in range(n - 1, -1, -1):
+        chain = f'S.Chain{{{sx[i]}, {chain}}}'
+    w(f'def fsh_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{{f0} == {chain} : S.Schema}}:')
+    kn = conj_lets()
+    for j in range(n + 1):
+        t = tails(f0, j)
+        ctx = '_'
+        for i in range(j - 1, -1, -1):
+            ctx = f'S.Chain{{{sx[i]}, {ctx}}}'
+        if j < n:
+            w(f'  %Equal.sym(S.Schema, {t}, S.Chain{{SH.Chain_head({t}), SH.Chain_tail({t})}}, SH.Chain_shape({t}, {kn(j + 1)})) :')
+        else:
+            w(f'  %Equal.sym(S.Schema, {t}, S.End{{}}, SH.End_shape({t}, {kn(j + 1)})) :')
+        w(f'    {{{ctx} == {chain} : S.Schema}}')
+    w('  {==}')
+    return conj_lets, rep_lets, eqs_lets, chain
+
+
+def _ct_root_step(self, p, R, F, n, kinds, wide, groups, isdata, w, gname, obj, args, sx, reps, rep_lets):
+    """the root law: the container's root is the digest of its fields"""
+    TY = f'B.Buf & ({R} & D.Digest)'
+    w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {R}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
+    w(f'    -> {{T.{p}_root(hl, h, o, seg) == (h, (o, d_{p}(hl, o))) : {TY}}}:')
+    rpn = rep_lets()
+    O_ = obj(args)
+    w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) :')
+    w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, d_{p}(hl, _))) : {TY}}}')
+    RHS = f'(h, ({O_}, d_{p}(hl, {O_})))'
+    if not wide:
+        self.chain_rewrites(w, f'T.{p}', list(range(n)), F, kinds, args, isdata, sx, rpn, RHS, TY)
+    else:
+        # the outer chain over the groups, each group's root by its own law
+        gargs = [f'{gname(j)}{{' + ', '.join(args[i] for i in grp) + '}' for j, grp in enumerate(groups)]
+        gdata = [all(isdata[i] for i in grp) for grp in groups]
+        gdig = [f'MD.rtree(3n, True{{}}, hl, [' + ', '.join(self.dig(F[i][1], kinds[i], args[i]) for i in grp) + '], 0n)' for grp in groups]
+        ng = len(groups)
+        gd = G.log2ceil(n) - 3
+        counts = [ng]
+        for lv in range(gd):
+            counts.append((counts[-1] + 1) // 2)
+        zl = [lv for lv in range(gd) if counts[lv] % 2 == 1]
+        steps = [('g', j) for j in range(ng)] + [('z', 3 + lv) for lv in zl]
+        done = []
+        for k2, st in enumerate(steps):
+            if st[0] == 'z':
+                done.append(f'D.zconst({st[1]}n)')
+                continue
+            j = st[1]
+            held = [gargs[jj] for jj in range(ng) if not (jj == j and not gdata[jj])]
+            ctx = f'T.{p}_rt{k2}(' + ', '.join(['hl', 'seg'] + held + done + ['_']) + ')'
+            grp = groups[j]
+            gparams = []
+            for i in grp:
+                gparams.append(args[i])
+            for i in grp:
+                if reps[i]:
+                    gparams += [sx[i], rpn[i]]
+            lhs = f'T.{p}_g{j}_root(hl, h, {gargs[j]}, seg)'
+            if gdata[j]:
+                rhs, ty = f'(h, {gdig[j]})', 'B.Buf & D.Digest'
+            else:
+                rhs, ty = f'(h, ({gargs[j]}, {gdig[j]}))', f'B.Buf & ({gname(j)} & D.Digest)'
+            w(f'  %Equal.sym({ty}, {lhs}, {rhs}, stg_{p}_{j}(hl, h, ' + ', '.join(gparams) + ', seg)) :')
+            w(f'    {{{ctx} == {RHS} : {TY}}}')
+            done.append(gdig[j])
+    w('  {==}')
+    return O_
+
+
+def _ct_digest_witnesses(self, p, R, F, n, kinds, wide, groups, isdata, w, args, digexpr, sx, reps, rep_lets, O_):
+    """the digest's witnesses and rewrites, and the witness lemma wd"""
+    pre = []
+    if wide:
+        for j, grp in enumerate(groups):
+            pre.extend(self.group_law(p, j, grp, F, kinds, isdata, reps))
+
+    digs0 = [self.dig(F[i][1], kinds[i], args[i]) for i in range(n)]
+
+    def witnesses(rpn):
+        """digest witnesses of the Type-kind fields: (list of digests with
+            witnesses, [(i, witness, proof)])."""
+        ws_ = []
+        for i in range(n):
+            if isdata[i]:
+                continue
+            dd, de = self.witness(F[i][1], kinds[i], args[i], sx[i], rpn[i], i, w)
+            ws_.append((i, dd, de))
+        digw = list(digs0)
+        for i, dd, _ in ws_:
+            digw[i] = dd
+        return digw, ws_
+
+    def dig_rewrites(digw, ws_, ctx):
+        """rewrite the fields' digests to their witnesses inside ctx(L)."""
+        cur = list(digs0)
+        for i, dd, de in ws_:
+            hole = list(cur)
+            hole[i] = '_'
+            w(f'  %Equal.sym(D.Digest, {digs0[i]}, {dd}, {de}) :')
+            w(f'    {ctx(digexpr(hole))}')
+            cur[i] = dd
+
+    # the digest as a value (from the invariant)
+    w(f'def wd_{p}(+hl: Nat, -o: {R}, +s: S.Schema, +rep: rep_{p}(o, s)) -> OS.DW(d_{p}(hl, o)):')
+    rpn = rep_lets()
+    digw, ws_ = witnesses(rpn)
+    w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : OS.DW(d_{p}(hl, _))')
+    dig_rewrites(digw, ws_, lambda t: f'OS.DW({t})')
+    w(f'  ({digexpr(digw)}, {{==}})')
+    return pre, digs0, witnesses, dig_rewrites
+
+
+def _ct_roots_law(self, p, R, F, n, kinds, w, args, prog, PK_, ACT, sx, depth, ok_at, kact, conj_lets, rep_lets, eqs_lets, chain, O_, digs0, witnesses, dig_rewrites):
+    """the roots law: the container's root among the schema's roots, by its items"""
+    w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {R}, +s: S.Schema, +rep: rep_{p}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}, +ev: eqs_{p}(s))')
+    w(f'    -> RR.roots(v_{p}(o), s, [D.bytes(d_{p}(hl, o))]):')
+    rpn = rep_lets()
+    eqn = eqs_lets()
+    digw, ws_ = witnesses(rpn)
+    kn = conj_lets()
+    w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : RR.roots(v_{p}(_), s, [D.bytes(d_{p}(hl, _))])')
+    if prog:
+        PN, PF, PA = 'SH.ProgressiveContainer_names(s)', 'SH.ProgressiveContainer_fields(s)', 'SH.ProgressiveContainer_active(s)'
+        w(f'  %Equal.sym(S.Schema, s, S.ProgressiveContainer{{{PN}, {PF}, {PA}}}, SH.ProgressiveContainer_shape(s, {kn(0)})) :')
+        w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
+        w(f'  %Equal.sym(S.Schema, {PF}, {chain}, fsh_{p}(s, dv, ok)) :')
+        w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, _, {PA}}}, [D.bytes(d_{p}(hl, {O_}))])')
+        w(f'  %Equal.sym(+List<Bool>, {PA}, {ACT}, PCN.beq_eq({PA}, {ACT}, {kn(kact)})) :')
+        w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, _}}, [D.bytes(d_{p}(hl, {O_}))])')
+        dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, {ACT}}}, [D.bytes({t})])')
+    else:
+        w(f'  %Equal.sym(S.Schema, s, S.Container{{SH.Container_names(s), SH.Container_fields(s)}}, SH.Container_shape(s, {kn(0)})) :')
+        w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
+        w(f'  %Equal.sym(S.Schema, SH.Container_fields(s), {chain}, fsh_{p}(s, dv, ok)) :')
+        w(f'    RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), _}}, [D.bytes(d_{p}(hl, {O_}))])')
+        dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), {chain}}}, [D.bytes({t})])')
+    wmap = {i: (dd, de) for i, dd, de in ws_}
+    digs = digw
+    Lda = '[' + ', '.join(digs) + ']'
+
+    def items_proof(i):
+        if i == n:
+            return '{==}'
+        rest = '[' + ', '.join(digs[i + 1:]) + ']'
+        fs, k = F[i][1], kinds[i]
+        okp = kn(ok_at[i]) if i in ok_at else None
+        eqp = eqn.get(i)
+        rsx = self.rs(fs, k, args[i], sx[i], rpn.get(i), okp, eqp)
+        if i in wmap:
+            rsx = f'OS.dtrans({self.view(fs, k, args[i])}, {sx[i]}, {wmap[i][0]}, {digs0[i]}, {wmap[i][1]}, {rsx})'
+        return f'([D.bytes({digs[i]})], (MD.bytes_list({rest}), ({rsx}, ({items_proof(i + 1)}, {{==}}))))'
+    w(f'  (MD.bytes_list({Lda}), ({items_proof(0)},')
+    if prog:
+        w(f'    PCN.{PK_}_ar(hl, ehl, {", ".join(digs)})))')
+    else:
+        w(f'    RS.aggregate_digests({n}n, {depth}n, hl, {Lda}, {{==}}, {{==}}, {{==}}, ehl)))')
+    w('')
+
+
 class Gen:
     def __init__(self):
         self.names = schema.load(ROOT / 'codegen/fulu.yaml')
@@ -2306,325 +2647,21 @@ class Gen:
         self.out.extend(L)
 
     def container(self, s):
-        p = s.p
-        R = RA.qual(s.rep)
-        F = s.fields
-        n = len(F)
-        kinds = []
-        for f, fs in F:
-            k = self.fk(fs)
-            if k in ('boxD', 'boxT'):
-                self.box(fs, k)
-            kinds.append(k)
-        wide = n > G.GROUP
-        groups = [list(range(j, min(n, j + G.GROUP))) for j in range(0, n, G.GROUP)] if wide else None
-        xs = [f'x{i}' for i in range(n)]
-        isdata = [k in ('data', 'datar', 'bvr') for k in kinds]
-        L = []
-        w = L.append
-        w(f'# ---- {p} (Type-kind container, {n} fields{", in groups" if wide else ""}) ----')
+        PCL = None  # bound only on some paths below; the helpers take them
+        PK_ = ACT = kact = None  # bound only on some paths below; the helpers take them
+        PCL, PK_, ACT, p, R, F, n, kinds, wide, groups, xs, isdata, L, w, gname, obj, match_lines, binders, args, prog, cf, cpred = _ct_layout(self, s, PCL, PK_, ACT)
 
-        # pattern of the object from field binders
-        def gname(j):
-            return f'T.{p}_g{j}'
+        kact, digexpr, sx, depth, reps, f0, conj, ok_at, eqt = _ct_view_digest_rep(self, s, ACT, kact, p, R, F, n, kinds, xs, isdata, w, obj, match_lines, binders, args, prog, PCL, cf, cpred)
 
-        def obj(args):
-            if not wide:
-                return f'{R}{{' + ', '.join(args) + '}'
-            return f'{R}{{' + ', '.join(f'{gname(j)}{{' + ', '.join(args[i] for i in grp) + '}' for j, grp in enumerate(groups)) + '}'
-
-        def match_lines(binders, body, ind='  '):
-            """match o on the object's structure, then `body`."""
-            if not wide:
-                w(f'{ind}match o:')
-                w(f'{ind}  case {R}{{' + ', '.join(binders) + f'}}: {body}')
-                return
-            gb = []
-            for j, grp in enumerate(groups):
-                gdata = all(isdata[i] for i in grp)
-                gb.append(('+' if gdata else '') + f'g{j}')
-            w(f'{ind}match o:')
-            w(f'{ind}  case {R}{{' + ', '.join(gb) + '}:')
-            cur = ind + '    '
-            for j, grp in enumerate(groups):
-                w(f'{cur}match g{j}:')
-                w(f'{cur}  case {gname(j)}{{' + ', '.join(binders[i] for i in grp) + '}:')
-                cur += '    '
-            w(f'{cur}{body}')
-
-        binders = [('+' if isdata[i] else '') + xs[i] for i in range(n)]
-        # projections of the Type-kind fields
-        for i in range(n):
-            if isdata[i]:
-                continue
-            w(f'def pj_{p}_{i}(o: {R}) -> {RA.qual(F[i][1].rep)}:')
-            match_lines(binders, xs[i])
-        args = [xs[i] if isdata[i] else f'pj_{p}_{i}(o)' for i in range(n)]
-        # a progressive container (generic forms): the progressive schema's
-        # accessors, its active list, and the progressive root tree (pcont.bend)
-        prog = s.t is not None and s.t.kind == 'pcontainer'
-        if prog:
-            from codegen.proofs.laws import pcont_laws as PCL
-            if wide:
-                raise Skip(f'{p}: wide progressive container')
-            PK_ = PCL.key(s.t.active)
-            ACT = PCL.act_term(s.t.active)
-        cf = 'SH.ProgressiveContainer_fields' if prog else 'SH.Container_fields'
-        cpred = 'SH.is_ProgressiveContainer' if prog else 'SH.is_Container'
-
-        def digexpr(ds):
-            if prog:
-                return f'O.mix_len(hl, {PCL.expr(PCL.tree(s.t.active), ds)}, {PCL.mask(s.t.active)})'
-            return f'MD.rtree({depth}n, True{{}}, hl, [' + ', '.join(ds) + '], 0n)'
-        sx = [sch('s', i, cf) for i in range(n)]
-        # view and digest
-        items = 'S.EmptyItems{}'
-        for i in range(n - 1, -1, -1):
-            items = f'S.Items{{{self.view(F[i][1], kinds[i], xs[i])}, {items}}}'
-        w(f'def v_{p}(o: {R}) -> S.Value:')
-        match_lines(binders, f'S.Sequence{{{items}}}')
-        depth = G.log2ceil(n)
-        w(f'def d_{p}(+hl: Nat, o: {R}) -> D.Digest:')
-        match_lines(binders, digexpr([self.dig(F[i][1], kinds[i], xs[i]) for i in range(n)]))
-        # rep
-        reps = [self.rep(F[i][1], kinds[i], args[i], sx[i]) for i in range(n)]
-        inner = fold_p2([f'{{o == {obj(args)} : {R}}}'] + [r for r in reps if r])
-        rt = inner
-        for i in range(n - 1, -1, -1):
-            if isdata[i]:
-                rt = f'DK.Ex({RA.qual(F[i][1].rep)}, {xs[i]} => {rt})'
-        w(f'def rep_{p}(o: {R}, +s: S.Schema) -> Data:')
-        w(f'  {rt}')
-        # ok
-        f0 = f'{cf}(s)'
-        conj = [f'{cpred}(s)'] + [f'SH.is_Chain({tails(f0, j)})' for j in range(n)] + [f'SH.is_End({tails(f0, n)})']
-        oks = [self.ok(F[i][1], kinds[i], sx[i]) for i in range(n)]
-        ok_at = {}
-        subs = {}
-        leafsym = {}
-        for i in range(n):
-            if oks[i]:
-                ok_at[i] = len(conj)
-                if oks[i].startswith('ok_'):
-                    subs[len(conj)] = (F[i][1].p, sx[i])
-                elif F[i][1].p in LIMIT_LEMMAS:
-                    leafsym[len(conj)] = (F[i][1].p, sx[i])
-                conj.append(oks[i])
-        if prog:
-            kact = len(conj)
-            conj.append(f'PCN.beq(SH.ProgressiveContainer_active(s), {ACT})')
-        self.okinfo[p] = ('and', list(conj), subs, leafsym) if leafsym else ('and', list(conj), subs)
-        w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: {fold_and(conj)}')
-        w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{{cpred}(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
-        # eqs
-        eqt = [(i, self.eqs_type(F[i][1], kinds[i], sx[i])) for i in range(n)]
-        eqt = [(i, t) for i, t in eqt if t]
-        w(f'def eqs_{p}(+s: S.Schema) -> Data: {fold_p2([t for _, t in eqt])}')
-        self.meta[p] = dict(sx=sx, kinds=kinds, F=F, eqt=[i for i, _ in eqt], cf=cf)
-
-        def conj_lets(ind='  '):
-            """let-bind every ok conjunct: +k{j}."""
-            m = len(conj) - 1
-            prev = 'ok'
-            for j in range(m + 1):
-                rest = fold_and(conj[j + 1:])
-                if j < m:
-                    w(f'{ind}+k{j} = DK.and_l({conj[j]}, {rest}, {prev})')
-                    w(f'{ind}+r{j + 1} = DK.and_r({conj[j]}, {rest}, {prev})')
-                    prev = f'r{j + 1}'
-            self.klast = (m, prev)
-            return lambda j: prev if j == m else f'k{j}'
-
-        def rep_lets(ind='  '):
-            """destructure rep: Data fields, eo, the reps of Type fields."""
-            cur = 'rep'
-            c = 0
-            for i in range(n):
-                if isdata[i]:
-                    w(f'{ind}(+{xs[i]}, +q{c}) = {cur}')
-                    cur = f'q{c}'
-                    c += 1
-            rs_ = [i for i in range(n) if reps[i]]
-            if not rs_:
-                self.eo_name = cur
-                return {}
-            self.eo_name = 'eo'
-            names_ = {}
-            w(f'{ind}(+eo, +q{c}) = {cur}')
-            cur = f'q{c}'
-            c += 1
-            for j, i in enumerate(rs_):
-                if j == len(rs_) - 1:
-                    names_[i] = cur
-                else:
-                    w(f'{ind}(+rp{i}, +q{c}) = {cur}')
-                    cur = f'q{c}'
-                    c += 1
-                    names_[i] = f'rp{i}'
-            return names_
-
-        def eqs_lets(ind='  '):
-            names_ = {}
-            idx = [i for i, _ in eqt]
-            cur = 'ev'
-            for j, i in enumerate(idx):
-                if j == len(idx) - 1:
-                    names_[i] = cur
-                else:
-                    w(f'{ind}(+qe{i}, +qv{j}) = {cur}')
-                    cur = f'qv{j}'
-                    names_[i] = f'qe{i}'
-            return names_
-
-        # the fields' chain shape
-        chain = 'S.End{}'
-        for i in range(n - 1, -1, -1):
-            chain = f'S.Chain{{{sx[i]}, {chain}}}'
-        w(f'def fsh_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{{f0} == {chain} : S.Schema}}:')
-        kn = conj_lets()
-        for j in range(n + 1):
-            t = tails(f0, j)
-            ctx = '_'
-            for i in range(j - 1, -1, -1):
-                ctx = f'S.Chain{{{sx[i]}, {ctx}}}'
-            if j < n:
-                w(f'  %Equal.sym(S.Schema, {t}, S.Chain{{SH.Chain_head({t}), SH.Chain_tail({t})}}, SH.Chain_shape({t}, {kn(j + 1)})) :')
-            else:
-                w(f'  %Equal.sym(S.Schema, {t}, S.End{{}}, SH.End_shape({t}, {kn(j + 1)})) :')
-            w(f'    {{{ctx} == {chain} : S.Schema}}')
-        w('  {==}')
+        conj_lets, rep_lets, eqs_lets, chain = _ct_lets_and_shape(self, p, n, xs, isdata, w, sx, reps, f0, conj, eqt)
 
         # the state law
-        TY = f'B.Buf & ({R} & D.Digest)'
-        w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {R}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
-        w(f'    -> {{T.{p}_root(hl, h, o, seg) == (h, (o, d_{p}(hl, o))) : {TY}}}:')
-        rpn = rep_lets()
-        O_ = obj(args)
-        w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) :')
-        w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, d_{p}(hl, _))) : {TY}}}')
-        RHS = f'(h, ({O_}, d_{p}(hl, {O_})))'
-        if not wide:
-            self.chain_rewrites(w, f'T.{p}', list(range(n)), F, kinds, args, isdata, sx, rpn, RHS, TY)
-        else:
-            # the outer chain over the groups, each group's root by its own law
-            gargs = [f'{gname(j)}{{' + ', '.join(args[i] for i in grp) + '}' for j, grp in enumerate(groups)]
-            gdata = [all(isdata[i] for i in grp) for grp in groups]
-            gdig = [f'MD.rtree(3n, True{{}}, hl, [' + ', '.join(self.dig(F[i][1], kinds[i], args[i]) for i in grp) + '], 0n)' for grp in groups]
-            ng = len(groups)
-            gd = G.log2ceil(n) - 3
-            counts = [ng]
-            for lv in range(gd):
-                counts.append((counts[-1] + 1) // 2)
-            zl = [lv for lv in range(gd) if counts[lv] % 2 == 1]
-            steps = [('g', j) for j in range(ng)] + [('z', 3 + lv) for lv in zl]
-            done = []
-            for k2, st in enumerate(steps):
-                if st[0] == 'z':
-                    done.append(f'D.zconst({st[1]}n)')
-                    continue
-                j = st[1]
-                held = [gargs[jj] for jj in range(ng) if not (jj == j and not gdata[jj])]
-                ctx = f'T.{p}_rt{k2}(' + ', '.join(['hl', 'seg'] + held + done + ['_']) + ')'
-                grp = groups[j]
-                gparams = []
-                for i in grp:
-                    gparams.append(args[i])
-                for i in grp:
-                    if reps[i]:
-                        gparams += [sx[i], rpn[i]]
-                lhs = f'T.{p}_g{j}_root(hl, h, {gargs[j]}, seg)'
-                if gdata[j]:
-                    rhs, ty = f'(h, {gdig[j]})', 'B.Buf & D.Digest'
-                else:
-                    rhs, ty = f'(h, ({gargs[j]}, {gdig[j]}))', f'B.Buf & ({gname(j)} & D.Digest)'
-                w(f'  %Equal.sym({ty}, {lhs}, {rhs}, stg_{p}_{j}(hl, h, ' + ', '.join(gparams) + ', seg)) :')
-                w(f'    {{{ctx} == {RHS} : {TY}}}')
-                done.append(gdig[j])
-        w('  {==}')
+        O_ = _ct_root_step(self, p, R, F, n, kinds, wide, groups, isdata, w, gname, obj, args, sx, reps, rep_lets)
         # group state laws come first in the file: emit them before this block
-        pre = []
-        if wide:
-            for j, grp in enumerate(groups):
-                pre.extend(self.group_law(p, j, grp, F, kinds, isdata, reps))
-
-        digs0 = [self.dig(F[i][1], kinds[i], args[i]) for i in range(n)]
-
-        def witnesses(rpn):
-            """digest witnesses of the Type-kind fields: (list of digests with
-            witnesses, [(i, witness, proof)])."""
-            ws_ = []
-            for i in range(n):
-                if isdata[i]:
-                    continue
-                dd, de = self.witness(F[i][1], kinds[i], args[i], sx[i], rpn[i], i, w)
-                ws_.append((i, dd, de))
-            digw = list(digs0)
-            for i, dd, _ in ws_:
-                digw[i] = dd
-            return digw, ws_
-
-        def dig_rewrites(digw, ws_, ctx):
-            """rewrite the fields' digests to their witnesses inside ctx(L)."""
-            cur = list(digs0)
-            for i, dd, de in ws_:
-                hole = list(cur)
-                hole[i] = '_'
-                w(f'  %Equal.sym(D.Digest, {digs0[i]}, {dd}, {de}) :')
-                w(f'    {ctx(digexpr(hole))}')
-                cur[i] = dd
-
-        # the digest as a value (from the invariant)
-        w(f'def wd_{p}(+hl: Nat, -o: {R}, +s: S.Schema, +rep: rep_{p}(o, s)) -> OS.DW(d_{p}(hl, o)):')
-        rpn = rep_lets()
-        digw, ws_ = witnesses(rpn)
-        w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : OS.DW(d_{p}(hl, _))')
-        dig_rewrites(digw, ws_, lambda t: f'OS.DW({t})')
-        w(f'  ({digexpr(digw)}, {{==}})')
+        pre, digs0, witnesses, dig_rewrites = _ct_digest_witnesses(self, p, R, F, n, kinds, wide, groups, isdata, w, args, digexpr, sx, reps, rep_lets, O_)
 
         # the spec law
-        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {R}, +s: S.Schema, +rep: rep_{p}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}, +ev: eqs_{p}(s))')
-        w(f'    -> RR.roots(v_{p}(o), s, [D.bytes(d_{p}(hl, o))]):')
-        rpn = rep_lets()
-        eqn = eqs_lets()
-        digw, ws_ = witnesses(rpn)
-        kn = conj_lets()
-        w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : RR.roots(v_{p}(_), s, [D.bytes(d_{p}(hl, _))])')
-        if prog:
-            PN, PF, PA = 'SH.ProgressiveContainer_names(s)', 'SH.ProgressiveContainer_fields(s)', 'SH.ProgressiveContainer_active(s)'
-            w(f'  %Equal.sym(S.Schema, s, S.ProgressiveContainer{{{PN}, {PF}, {PA}}}, SH.ProgressiveContainer_shape(s, {kn(0)})) :')
-            w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
-            w(f'  %Equal.sym(S.Schema, {PF}, {chain}, fsh_{p}(s, dv, ok)) :')
-            w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, _, {PA}}}, [D.bytes(d_{p}(hl, {O_}))])')
-            w(f'  %Equal.sym(+List<Bool>, {PA}, {ACT}, PCN.beq_eq({PA}, {ACT}, {kn(kact)})) :')
-            w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, _}}, [D.bytes(d_{p}(hl, {O_}))])')
-            dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, {ACT}}}, [D.bytes({t})])')
-        else:
-            w(f'  %Equal.sym(S.Schema, s, S.Container{{SH.Container_names(s), SH.Container_fields(s)}}, SH.Container_shape(s, {kn(0)})) :')
-            w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
-            w(f'  %Equal.sym(S.Schema, SH.Container_fields(s), {chain}, fsh_{p}(s, dv, ok)) :')
-            w(f'    RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), _}}, [D.bytes(d_{p}(hl, {O_}))])')
-            dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), {chain}}}, [D.bytes({t})])')
-        wmap = {i: (dd, de) for i, dd, de in ws_}
-        digs = digw
-        Lda = '[' + ', '.join(digs) + ']'
-
-        def items_proof(i):
-            if i == n:
-                return '{==}'
-            rest = '[' + ', '.join(digs[i + 1:]) + ']'
-            fs, k = F[i][1], kinds[i]
-            okp = kn(ok_at[i]) if i in ok_at else None
-            eqp = eqn.get(i)
-            rsx = self.rs(fs, k, args[i], sx[i], rpn.get(i), okp, eqp)
-            if i in wmap:
-                rsx = f'OS.dtrans({self.view(fs, k, args[i])}, {sx[i]}, {wmap[i][0]}, {digs0[i]}, {wmap[i][1]}, {rsx})'
-            return f'([D.bytes({digs[i]})], (MD.bytes_list({rest}), ({rsx}, ({items_proof(i + 1)}, {{==}}))))'
-        w(f'  (MD.bytes_list({Lda}), ({items_proof(0)},')
-        if prog:
-            w(f'    PCN.{PK_}_ar(hl, ehl, {", ".join(digs)})))')
-        else:
-            w(f'    RS.aggregate_digests({n}n, {depth}n, hl, {Lda}, {{==}}, {{==}}, {{==}}, ehl)))')
-        w('')
+        _ct_roots_law(self, p, R, F, n, kinds, w, args, prog, PK_, ACT, sx, depth, ok_at, kact, conj_lets, rep_lets, eqs_lets, chain, O_, digs0, witnesses, dig_rewrites)
         return pre + L
 
     def chain_rewrites(self, w, Tp, idx, F, kinds, args, isdata, sx, rpn, RHS, TY):

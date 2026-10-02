@@ -446,7 +446,8 @@ def cont_fname(x):
     return ROOT / f'proofs/obj/{"" if VBI.is_big(x) else ""}var_bitc_enc_{x.n}.bend'
 
 
-def cont_module(g, x, src):
+def _cm_names(x, src):
+    """the bit list's facts (sizes, bounds, objects) and the name bundles of the module"""
     from codegen.proofs.var import var_laws as VL
     from codegen.proofs.var import var_bitc as VBI
     n, FS, H, po, N, lp = x.n, x.FS, x.H, x.po, x.N, x.p
@@ -494,6 +495,11 @@ def cont_module(g, x, src):
     SO = f'FD.array__slots(U32, {OUT})'
     ST = 'FD.array__slots(U32, T)'
     SA = 'FD.array__slots(U32, OUTA(T, K))'
+    return VL, n, FS, H, po, N, lp, vi, LIMN, Tn, kb, KY, KO, PB, kb2, fixed, WS, WA, V, fobj, OBB, objs, OBJ, FIXOBJS, NC, NCa, ALLP, ALLa, HN, TD, OUT, SO, ST, SA
+
+
+def _cm_header(x, VL, n, FS, H, po, N, vi, Tn, fixed, WS, V, objs, TD):
+    """the module header: imports, the header words and the type definitions"""
     hdr = []
     for f in x.fields:
         hdr += [f'w{f["k"] + j}' for j in range(f['ft'].W)] if f['kind'] == 'fix' else [str(FS)]
@@ -531,6 +537,11 @@ def cont_module(g, x, src):
   +hb = FD.nat__le_lt_trans(b, 7n, 8n, RD.and_le(K, 7), {==})
   +cf = BW.cfj(j, b, hj, hb)
   +cD = DL.p1(DL.TD(j), DL.CE(j, b), DL.p2(DL.TC(j, b), DL.CD(j, b), DL.p2(DL.TB(b), DL.CC(j, b), DL.p2(DL.TA(j, b), DL.CB(j, b), cf))))'''
+    return HDRL, LT, M, MP, q, L, w, CF
+
+
+def _cm_tree_laws(FS, H, po, N, kb, KY, KO, PB, kb2, fixed, WS, WA, V, NC, NCa, ALLP, HN, TD, LT, q, w, CF):
+    """the output tree: the field objects, perfect-tree laws and the zero-bytes facts"""
     w(f"""
 # The closed bounds, compared on VB.pw.
 def hNk0() -> {{Nat.is_le(Nat.add({N}n, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}:
@@ -639,6 +650,11 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
       FD.nat__add_comm({H}n, VY.QL(O.bits_nbytes(K))), Order.below_sum({H}n, VY.QL(O.bits_nbytes(K))))))
 ''')
     # ---- size and put ----
+    return pfd, hb
+
+
+def _cm_size_put_eval(FS, H, po, N, lp, Tn, kb, fixed, fobj, OBB, OBJ, FIXOBJS, NCa, ALLP, ALLa, HN, TD, OUT, w, pfd, hb):
+    """size_eval and put_eval: the runtime's size pass and its put against the model"""
     RS = f'({OBJ}, SFS(K))'
     w(f'''def size_eval({ALLP})
     -> {{{Tn}_size({OBJ}) == {RS} : {Tn} & U32}}:
@@ -681,6 +697,11 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
         w(f'    {{({puts(j + 1, "_")}, ({OBJ}, SFS(K))) == {RP} : {TP}}}')
     w('  {==}')
     w('')
+    return RS, RP, TP
+
+
+def _cm_encode_eval(Tn, KO, OBJ, NCa, ALLP, ALLa, HN, OUT, w, RS, RP, TP):
+    """encode_eval: the encoder returns the object and the output tree's buffer"""
     w(ZD.zeros_at_text(KO, 'FD'))
     RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {OUT}), SFS(K)}})'
     TE = f'{Tn} & B.Buf'
@@ -703,6 +724,11 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
     w(f'    {{{Tn}_enc_put(SFS(K), _) == {RE} : {TE}}}')
     w('  {==}')
     w('')
+    return ps
+
+
+def _cm_hdstw(H, kb, WS, WA, NC, NCa, q, w, CF):
+    """the header-words room (hdstW) and the parameter lists of the window lemmas"""
     w(f'''def hdstW({NC}) -> {{Nat.is_le(Nat.add(VC.NW(O.bits_nbytes(K)), {H}n), VB.pw(DO(K))) == True{{}} : Bool}}:
 {CF}
   +cA = DL.p1(DL.TA(j, b), DL.CB(j, b), cf)
@@ -720,7 +746,11 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
     # ---- windows ----
     SP_ = f'{WS}, {NC}, +T: FD.array__Tree<U32>'
     SPa = f'{WA}, {NCa}, T'
+    return SP_, SPa
 
+
+def _cm_windows(x, FS, H, po, fixed, V, NCa, TD, ST, SA, LT, q, w, pfd, hb, SP_):
+    """the window builders and the header window of each field"""
     def win(m, p, j):
         return f'VF.WIN({m}, {p}, FD.array__slots(U32, {TD(j)}))'
 
@@ -768,6 +798,11 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
             w('  ' + body)
             w('')
     # header window
+    return win, peel_chain
+
+
+def _cm_window_eqs(x, FS, H, kb, fixed, WA, V, NC, NCa, ALLP, HN, OUT, SO, SA, HDRL, LT, q, w, SP_, SPa, win, peel_chain):
+    """the header and payload windows against the header list and the payload bytes"""
     S3 = SO
     w(f'def hdr_eq({SP_}) -> {{{win(f"{H}n", "0n", len(fixed))} == {HDRL} : {LT}}}:')
     segs = []
@@ -830,7 +865,11 @@ def out_eq({ALLP})
     {{List.append(&2, U32, F.limbs({HDRL}), _) == {RHS} : +List<U32>}}
   {{==}}
 ''')
-    # ---- spec ----
+    return Y, BY, RHS
+
+
+def _cm_spec_side(g, x, VL, n, FS, H, N, vi, LIMN, WS, WA, OBB, NCa, ALLP, ALLa, HN, SA, M, MP, L, w, ps, Y, BY, RHS):
+    """the spec side: the value, schema and parts of the object, and encode_spec"""
     nodes = VL.field_nodes(g, x, lambda k: f'w{k}')
     VALB = f'S.BitsValue{{BO.bview({OBB})}}'
     vals, schs, parts = [], [], []
@@ -931,6 +970,20 @@ def encE({ALLP})
     if LIMN != f'{N}n':
         txt = re.sub(rf'\b{N}n\b', LIMN, txt)
     return txt
+
+
+def cont_module(g, x, src):
+    VL, n, FS, H, po, N, lp, vi, LIMN, Tn, kb, KY, KO, PB, kb2, fixed, WS, WA, V, fobj, OBB, objs, OBJ, FIXOBJS, NC, NCa, ALLP, ALLa, HN, TD, OUT, SO, ST, SA = _cm_names(x, src)
+    HDRL, LT, M, MP, q, L, w, CF = _cm_header(x, VL, n, FS, H, po, N, vi, Tn, fixed, WS, V, objs, TD)
+    pfd, hb = _cm_tree_laws(FS, H, po, N, kb, KY, KO, PB, kb2, fixed, WS, WA, V, NC, NCa, ALLP, HN, TD, LT, q, w, CF)
+    RS, RP, TP = _cm_size_put_eval(FS, H, po, N, lp, Tn, kb, fixed, fobj, OBB, OBJ, FIXOBJS, NCa, ALLP, ALLa, HN, TD, OUT, w, pfd, hb)
+    ps = _cm_encode_eval(Tn, KO, OBJ, NCa, ALLP, ALLa, HN, OUT, w, RS, RP, TP)
+    SP_, SPa = _cm_hdstw(H, kb, WS, WA, NC, NCa, q, w, CF)
+
+    win, peel_chain = _cm_windows(x, FS, H, po, fixed, V, NCa, TD, ST, SA, LT, q, w, pfd, hb, SP_)
+    Y, BY, RHS = _cm_window_eqs(x, FS, H, kb, fixed, WA, V, NC, NCa, ALLP, HN, OUT, SO, SA, HDRL, LT, q, w, SP_, SPa, win, peel_chain)
+    # ---- spec ----
+    return _cm_spec_side(g, x, VL, n, FS, H, N, vi, LIMN, WS, WA, OBB, NCa, ALLP, ALLa, HN, SA, M, MP, L, w, ps, Y, BY, RHS)
 
 
 def main():
