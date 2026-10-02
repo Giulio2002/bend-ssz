@@ -128,6 +128,18 @@ def boolvec_equiv(x,line):
     if x['operator']=='valid' and 'case True{}: (buf, True{})' in line:
         return 'the True{} branch of ok_nz is taken only when empty = is_eq(n, 0) with the literal n = %d != 0: it is never reached' % N if N>=1 else None
 
+def le_eq_equiv(x, line):
+    """is_eq(pos .&. 3, 0) -> is_le(...) at a `_pwd(` guard: U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x. The law
+    le_eq of proofs/obj/zpwdcmp_lib.bend states it, and the facade imports that library (checked here)."""
+    if x['operator'] != 'cmp' or x['before'] != 'U32.is_eq(' or x['after'] != 'U32.is_le(' or '_pwd(' not in line or '.&. 3' not in line:
+        return None
+    lib = pathlib.Path('proofs/obj/zpwdcmp_lib.bend')
+    api = pathlib.Path(x['checked'])
+    if not lib.exists() or not re.search(r'^def le_eq\b', lib.read_text(), re.M) or 'zpwdcmp_lib' not in api.read_text():
+        return None
+    return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/obj/zpwdcmp_lib.bend, imported by the facade'
+
+
 def proof_equiv(x):
     line=pathlib.Path(x['file']).read_text().split('\n')[x['line']-1]
     if x['operator'].startswith('const'):
@@ -135,7 +147,7 @@ def proof_equiv(x):
         if u and u[0]=='NEVER READ': return f'argument never read: {u[1]} ignores its parameter {u[2]}'
         r=pk_equiv(x,line) or bits_equiv(x,line) or words_equiv(x,line)
         if r: return r
-    return boolvec_equiv(x,line)
+    return boolvec_equiv(x,line) or le_eq_equiv(x,line)
 
 
 def classify_survivor(x):

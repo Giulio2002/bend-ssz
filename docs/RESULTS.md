@@ -185,6 +185,10 @@ after and line text); fresh = a new seed over every name and operation (up to 4 
 | 2 (stale facades, invalid) | cdae9e94 | replay 606 + seed 20261003 | 3438 | 2929 | 509 | not used |
 | 3 | df8dbcf9 | replay 722 + seed 20261004 | 3494 | 3154 | 340 | 46 |
 | 4 | 80cef74d | replay 565 + seed 20261005 | 3342 | 3270 | 72 | **9** (+41 open) |
+| 5 (discarded: main moved) | 00cf555b | seed 20261006 | - | - | - | not used |
+| 6 | 9e96b9d5 | replay 727 + seed 20261007 | 3504 | 3452 | 52 | 11 + 18 (all `_pwd` alignment guards, below) |
+| 7 | 3ff8d509 | seed 20261008 | 2777 | 2736 | 41 | 9 (8 `is_le` guards, 1 accumulator flag) |
+| 8 | 376669ac | replay 17 + seed 20261010 | 2794 | 2754 | 40 | **0** |
 
 A stack overflow is a tooling accident, not a detection. The proving-law files (`proofs/obj`) also pass with every round-1
 survivor applied: the facades only named the generated definitions, and no locked statement pinned them. Four rounds of
@@ -192,15 +196,29 @@ proof laws (validity, offsets and reported sizes, constants and root constants, 
 closed the rest. The `out_at(d) -> out_at(d+1)` mutants were once excluded as harmless; the capacity laws kill them, so
 they are drawn again.
 
-**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (open, below), 21 proof-equivalent and 10 gap records (one site was found by
-both the replay and the fresh draw: 9 distinct gaps, one of them the proglist_bool case). Proof-level reading:
 
-| cause | mutants | reading |
-| --- | --- | --- |
-| reported-size | 4: `HistoricalBatch_size` 524288 -> 524287, `SyncCommittee_size` 24624 -> 24625 and 24623, `LightClientBootstrap` 24820 -> 24821 | gap: no law ties the reported size of these types to the encoded length |
-| offset | 3: `CompatibleUnionA_decode` and `CompatibleUnionABCA_decode`, the union arm's `read(buf, off + 1, len - 1)` | gap: the arm's offset and length after the selector byte are not pinned |
-| arithmetic | 1: `MatrixEntry_encode`, `b48_put(out, pos + 2048, ...)` `+` -> `-` | gap: one field offset of an encoder |
-| validity | 1: `proglist_bool_decode`, `pl_bool_ok_len`, `case False{}: (buf, False{})` -> `True{}` | equivalent by an arithmetic lemma that no law states: the test `is_eq(len, len/1*1)` is always True for unit 1, so the branch is dead if `U32.div(x, 1) = x`; the checker does not fold it, so the lemma must be proved or the case stays open |
+**Round 4 in detail.** The 72 survivors: 41 aligned-or-slow (then open), 21 proof-equivalent and 10 gap records (one site
+was found by both the replay and the fresh draw: 9 distinct gaps): reported sizes of three types, the offsets of the union
+arms, one encoder field offset, and a proglist_bool case. Fixer C and fixer D closed them with proof laws (small2, cmp2, cmp3).
+
+**Round 8, the first with no gap.** Replay of the 8 `is_lt` survivors of round 6 and the 9 survivors of round 7: 9 killed (the
+`is_lt` guards now fail the checker: their facades import the `zpwdcmp_*` laws; on the tree where they survived, the facades
+imported no comparison law, which is why a replay on the tree of record is the rule), 8 survive, all `is_le`. Fresh round: 2777
+mutants, 2745 killed, 32 survived: 29 proof-equivalent by the rules below and 3 more `is_le` guards. The `is_le` guards
+(`is_eq(pos .&. 3, 0)` -> `is_le(pos .&. 3, 0)`) are **proof-equivalent**: for an unsigned U32, `x <= 0` holds exactly when
+`x == 0`, and the law `le_eq` of `proofs/obj/zpwdcmp_lib.bend` states it; the facade imports that library.
+
+**Library targets (first pilot, seed 20261009, 10 files per group, 4 mutants per file, 120 s per check, none too slow).** The
+loop also mutates the code the proofs rely on, not only the generated codec files (`--lib collections|e2e|sha256|spec`): each
+mutant runs alone in a private tree; the checkers are the file itself and the two smallest proof files that import it; the
+mutant is killed if any fails; a check over 120 s is reported as `too slow`, never as a kill. Pilot: collections 40 mutants, 40
+killed; e2e 34, 33 killed; sha256 (vendored bend-collections 1.0.0.0) 36, 32 killed; spec 39, 36 killed. Survivors: e2e
+`e2e_aapw.bend:64:129` (`eoF(d, t, 0 -> 1, ...)`: the argument is not in the result type; probably equivalent, to be confirmed);
+sha256 `stream_correct` `&2 -> &1` twice (an erased label: equivalent) and `hex_digit`/`hex_word_go` in `packed/core_model.bend`
+(the hex rendering of digests, not used by our laws, in a vendored package we cannot change: a gap of the package); **spec**:
+`spec/byte_list.bend:11:100` (`Length.fits(4n -> 3n, ...)`), `spec/bytes.bend:6:54` (`size_fits`, `256n -> 255n`) and
+`spec/bytes.bend:13:37` (`vector_domain`, `1n -> 2n` in the pattern `1n+p`): constants of the specification transcription that no
+law catches. The spec is frozen: only copies in private trees were mutated.
 
 **Excluded** (`tests_generated/mutation_exclusions.json`; rules and reasons in `tests_generated/mutation_equivalence.py`): only
 what has a proof-level reason, never "the tests pass": an argument the callee never reads (hl and seg of the hash_tree_root

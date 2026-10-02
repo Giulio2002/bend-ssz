@@ -1,557 +1,179 @@
 {
- "evidence": "proof-side mutation testing on main 80cef74d; conformance and fuzz are triage only (docs/RESULTS.md)",
+ "evidence": "proof-side mutation testing on main 376669ac; conformance and fuzz are triage only (docs/RESULTS.md)",
  "precondition": "regen_all --check: every generator up to date on the tree under test",
  "replay": {
-  "mutants": 565,
-  "killed": 518,
-  "survived": 47
+  "mutants": 17,
+  "killed": 9,
+  "survived": 8
  },
  "fresh_round": {
-  "seed": 20261005,
+  "seed": 20261010,
   "proof_per_file": 4,
   "mutants": 2777,
-  "killed": 2752,
-  "survived": 25,
+  "killed": 2745,
+  "survived": 32,
   "by_cause": {
-   "offset": 17,
-   "reported-size": 1,
-   "arithmetic": 1,
-   "validity-check": 5,
-   "constant": 1
+   "offset": 22,
+   "comparison": 3,
+   "constant": 1,
+   "validity-check": 6
   }
  },
  "survivor_classes_this_round": {
-  "open (unproved): aligned-or-slow path": 41,
-  "gap": 10,
-  "proof-equivalent": 21
+  "proof-equivalent": 40
  },
  "gaps": {
-  "total": 9,
-  "by_cause": {
-   "reported-size": 4,
-   "arithmetic": 1,
-   "offset": 3,
-   "validity-check": 1
+  "total": 0
+ },
+ "library_pilot": {
+  "e2e": {
+   "mutants": 34,
+   "killed": 33,
+   "survived": 1,
+   "too_slow": 0
+  },
+  "sha256": {
+   "mutants": 36,
+   "killed": 32,
+   "survived": 4,
+   "too_slow": 0
+  },
+  "spec": {
+   "mutants": 39,
+   "killed": 36,
+   "survived": 3,
+   "too_slow": 0
+  },
+  "collections": {
+   "mutants": 40,
+   "killed": 40,
+   "survived": 0,
+   "too_slow": 0
   }
  },
- "open_unproved": {
-  "aligned_or_slow_path": "is_lt / is_le of pos .&. 3 == 0: equivalent only at sampled positions, not drawn"
- },
- "excluded_entries": {
-  "file": "tests_generated/mutation_exclusions.json",
-  "by_class": {
-   "open (unproved): aligned-or-slow path": 42,
-   "proof-equivalent": 218,
-   "uncoverable": 1
-  }
- },
- "gap_list": [
+ "library_survivors": [
   {
-   "type": "HistoricalBatch",
-   "file": "types/FuluHistoricalBatch_encode_ssz_generated.bend",
-   "line": 12,
-   "col": 119,
-   "operator": "const-1",
-   "before": "524288",
-   "after": "524287",
-   "def": "HistoricalBatch_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluHistoricalBatch_encode_ssz_proof_generated.bend",
-   "text": "def HistoricalBatch_size(o: FuluHistoricalBatch_d.HistoricalBatch) -> FuluHistoricalBatch_d.HistoricalBatch & U32: (o, 524288)"
-  },
-  {
-   "type": "SyncCommittee",
-   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
-   "line": 14,
-   "col": 109,
+   "file": "e2e/e2e_aapw.bend",
+   "line": 64,
+   "col": 129,
    "operator": "const+1",
-   "before": "24624",
-   "after": "24625",
-   "def": "SyncCommittee_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
-   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+   "before": "0",
+   "after": "1",
+   "def": "saap_w",
+   "text": "+e1 = aap_w(d, t, WS.JW(i), WS.OWc(off), WS.LLw(len), WS.eoF(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), hd, WS.hwc(d, t, 0, i, off, len, eo, hd, hw, hw32, pf, ha), WS.hwc32(d, t, 0, i, off, len,",
+   "checked": [
+    "e2e/e2e_aapw.bend",
+    "e2e/FuluAggregateAndProof_e2e_dec_generated.bend",
+    "e2e/FuluSignedAggregateAndProof_e2e_dec_generated.bend"
+   ]
   },
   {
-   "type": "LightClientBootstrap",
-   "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
-   "line": 22,
-   "col": 201,
-   "operator": "const+1",
-   "before": "24820",
-   "after": "24821",
-   "def": "LightClientBootstrap_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend",
-   "text": "case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_sz0(current_sync_committee, current_sync_committee_branch, 248"
-  },
-  {
-   "type": "MatrixEntry",
-   "file": "types/FuluMatrixEntry_encode_ssz_generated.bend",
-   "line": 20,
-   "col": 68,
-   "operator": "addsub",
-   "before": " + ",
-   "after": " - ",
-   "def": "MatrixEntry_pw0",
-   "in": "encode",
-   "cause": "arithmetic",
-   "checked": "proofs/api/FuluMatrixEntry_encode_ssz_proof_generated.bend",
-   "text": "(uint64_e.u64_put(uint64_e.u64_put(FuluBytes48_e.b48_put(out, (pos + 2048 : U32), kzg_proof), (pos + 2096 : U32), column_index), (pos + 2104 : U32), row_index), (FuluMatrixEntry_d.MatrixEntry{cell, kz"
-  },
-  {
-   "type": "CompatibleUnionA",
-   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
-   "line": 36,
-   "col": 142,
-   "operator": "const+1",
-   "before": "1",
-   "after": "2",
-   "def": "CompatibleUnionA_rd0",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
-  },
-  {
-   "type": "CompatibleUnionABCA",
-   "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend",
-   "line": 67,
-   "col": 142,
-   "operator": "addsub",
-   "before": " + ",
-   "after": " - ",
-   "def": "CompatibleUnionABCA_rd3",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
-  },
-  {
-   "type": "SyncCommittee",
-   "file": "types/FuluSyncCommittee_encode_ssz_generated.bend",
-   "line": 14,
-   "col": 109,
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/conformance.bend",
+   "line": 2323,
+   "col": 30,
    "operator": "const-1",
-   "before": "24624",
-   "after": "24623",
-   "def": "SyncCommittee_size",
-   "in": "encode",
-   "cause": "reported-size",
-   "checked": "proofs/api/FuluSyncCommittee_encode_ssz_proof_generated.bend",
-   "text": "def SyncCommittee_size(o: FuluSyncCommittee_d.SyncCommittee) -> FuluSyncCommittee_d.SyncCommittee & U32: (o, 24624)"
+   "before": "2",
+   "after": "1",
+   "def": "stream_correct",
+   "text": "mod_tail(List.length(&2, U32, b0 <> b1 <> b2 <> b3 <> b4 <> b5 <> b6 <> b7 <> b8 <> b9 <> b10 <> b11 <> b12 <> b13 <> b14 <> b15 <> b16 <> b17 <> b18 <> Nil{}), k)) :",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/conformance.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/correctness.bend"
+   ]
   },
   {
-   "type": "CompatibleUnionA",
-   "file": "types/CompatibleUnionA_decode_ssz_generated.bend",
-   "line": 36,
-   "col": 159,
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/conformance.bend",
+   "line": 2195,
+   "col": 29,
    "operator": "const-1",
-   "before": "1",
-   "after": "0",
-   "def": "CompatibleUnionA_rd0",
-   "in": "decode",
-   "cause": "offset",
-   "checked": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
-   "text": "case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))"
+   "before": "2",
+   "after": "1",
+   "def": "stream_correct",
+   "text": "Nat.mod(List.length(&2, U32, b0 <> b1 <> b2 <> Nil{}), 64n),",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/conformance.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/proof.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend"
+   ]
   },
   {
-   "type": "proglist_bool",
-   "file": "types/proglist_bool_decode_ssz_generated.bend",
-   "line": 30,
-   "col": 24,
-   "operator": "valid",
-   "before": "False{}",
-   "after": "True{}",
-   "def": "pl_bool_ok_len",
-   "in": "decode",
-   "cause": "validity-check",
-   "checked": "proofs/api/proglist_bool_decode_ssz_proof_generated.bend",
-   "text": "case False{}: (buf, False{})"
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+   "line": 674,
+   "col": 18,
+   "operator": "cmp",
+   "before": "U32.is_lt(",
+   "after": "U32.is_le(",
+   "def": "hex_digit",
+   "text": "hex_digit_if(x, U32.is_lt(x, 10))",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/packed_proof.bend"
+   ]
+  },
+  {
+   "file": "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+   "line": 681,
+   "col": 33,
+   "operator": "const-1",
+   "before": "4n",
+   "after": "3n",
+   "def": "hex_word_go",
+   "text": "hex_word_go(p, U32.shrn(x, 4n), SCon{hex_digit((x .&. 15 : U32)), acc})",
+   "checked": [
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/core_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/legacy_model.bend",
+    "vendor/bendhub/0xd9a2fae439ac7ff9e21e0853948f94fe/proofs/crypto/sha/packed/packed_proof.bend"
+   ]
+  },
+  {
+   "file": "spec/byte_list.bend",
+   "line": 11,
+   "col": 100,
+   "operator": "const-1",
+   "before": "4n",
+   "after": "3n",
+   "def": "domain",
+   "text": "Bool.and(Bool.and(P.bytes_domain(xs), Nat.is_le(List.length(&2, U32, xs), capacity)), Length.fits(4n, List.length(&2, U32, xs)))",
+   "checked": [
+    "spec/byte_list.bend",
+    "spec/list_alias.bend",
+    "proofs/obj/gvalid_Transaction.bend"
+   ]
+  },
+  {
+   "file": "spec/bytes.bend",
+   "line": 6,
+   "col": 54,
+   "operator": "const-1",
+   "before": "256n",
+   "after": "255n",
+   "def": "size_fits",
+   "text": "Nat.is_eq(Nat.div(Nat.div(Nat.div(Nat.div(n, 256n), 256n), 256n), 256n), 0n)",
+   "checked": [
+    "spec/bytes.bend",
+    "spec/byte_alias.bend",
+    "spec/byte_root.bend"
+   ]
+  },
+  {
+   "file": "spec/bytes.bend",
+   "line": 13,
+   "col": 37,
+   "operator": "const+1",
+   "before": "1n",
+   "after": "2n",
+   "def": "vector_domain",
+   "text": "case 1n+p: Bool.and(P.byte_scope(1n+p, xs), size_fits(1n+p))",
+   "checked": [
+    "spec/bytes.bend",
+    "spec/byte_alias.bend",
+    "spec/byte_root.bend"
+   ]
   }
  ],
- "history": "docs/RESULTS.md table: rounds 1-4",
+ "history": "docs/RESULTS.md rounds table",
  "provenance": {
-  "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
-  "git_dirty": false,
-  "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
-  "utc": "2026-10-01T23:38:42Z",
-  "runtime": {
-   "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
-   "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
-  },
-  "executables": {
-   "obj-g0": {
-    "sha256": "6e13e9bfdde86293697aef1dd6193dbdbd71956cb4907091b7d849e013e37f20",
-    "cache_entry": "g0-a9491484139f46e09ecc",
-    "source": "benchmarks/objprog/g0.bend",
-    "expected_key": "a9491484139f46e09ecc"
-   },
-   "obj-g1": {
-    "sha256": "b8b6e15c5bd551571ec0f8ed1837f3c542acf04f041d5c2fad1f0220618d83ad",
-    "cache_entry": "g1-2b828500bfda11ce869e",
-    "source": "benchmarks/objprog/g1.bend",
-    "expected_key": "2b828500bfda11ce869e"
-   },
-   "obj-g2": {
-    "sha256": "6c3cbaabc8f0334ef656592334760b48130346a1cbb410797f1dbe288a989edc",
-    "cache_entry": "g2-bb3eee4c1b9eb1da54fa",
-    "source": "benchmarks/objprog/g2.bend",
-    "expected_key": "bb3eee4c1b9eb1da54fa"
-   },
-   "obj-g3": {
-    "sha256": "d2fcdd2e2621183df4e6b26b0e4e2703d913dd5d92ef2da38bd719303111db34",
-    "cache_entry": "g3-3f4cd7dc1e0ccf8f46ae",
-    "source": "benchmarks/objprog/g3.bend",
-    "expected_key": "3f4cd7dc1e0ccf8f46ae"
-   },
-   "obj-g4": {
-    "sha256": "626929db6d89e66587afe3226d2ca2ac56ce7450538c8ef5e2723e16674c4a9f",
-    "cache_entry": "g4-d9263550716ceaedc615",
-    "source": "benchmarks/objprog/g4.bend",
-    "expected_key": "d9263550716ceaedc615"
-   },
-   "obj-g5": {
-    "sha256": "80020b47452273a3b1a7193a26bdddeb8dd10ff886b0bdde9f9dc3c8fd8302f1",
-    "cache_entry": "g5-8b08442a3cf637ab7576",
-    "source": "benchmarks/objprog/g5.bend",
-    "expected_key": "8b08442a3cf637ab7576"
-   },
-   "obj-g6": {
-    "sha256": "aab8ff2ac7e316ed0db79aae9f96ee6b3497906aa4bd5c7ff60c25a286a32b92",
-    "cache_entry": "g6-e1eec9a5da3c4ee520fa",
-    "source": "benchmarks/objprog/g6.bend",
-    "expected_key": "e1eec9a5da3c4ee520fa"
-   },
-   "obj-g7": {
-    "sha256": "a2bd63224a5921b7737aa3af9698f02ca952a0c7bbd3b05c2042729eb7c57c92",
-    "cache_entry": "g7-0f964ca47cb54f49aee3",
-    "source": "benchmarks/objprog/g7.bend",
-    "expected_key": "0f964ca47cb54f49aee3"
-   },
-   "obj-g8": {
-    "sha256": "a1c0ffe8303daa08391a71db3d69369d4069ec9d276910f47cf7598a5f9f8e1a",
-    "cache_entry": "g8-009a4c371ac8086f2a64",
-    "source": "benchmarks/objprog/g8.bend",
-    "expected_key": "009a4c371ac8086f2a64"
-   },
-   "obj-g9": {
-    "sha256": "fc1d9fa28cbb70e3328e2f9397bcef95044d8019c3992ac81f004bbdcedd6a91",
-    "cache_entry": "g9-c869de9506a4a9b21eac",
-    "source": "benchmarks/objprog/g9.bend",
-    "expected_key": "c869de9506a4a9b21eac"
-   },
-   "obj-x0": {
-    "sha256": "5665a807448753f35f12c769dadb21faa5b4afe9795d2256b08855669137297f",
-    "cache_entry": "x0-d522fe9d1552b8d49535",
-    "source": "benchmarks/objprog/x0.bend",
-    "expected_key": "d522fe9d1552b8d49535"
-   },
-   "obj-x1": {
-    "sha256": "de8c56c6bda925d958168446db08e1d8dfee1fa95b0a57027d776db58da3165e",
-    "cache_entry": "x1-7ed0725bf147255afcde",
-    "source": "benchmarks/objprog/x1.bend",
-    "expected_key": "7ed0725bf147255afcde"
-   },
-   "obj-x10": {
-    "sha256": "607c2b4a7593101a8302a1e82b1cfb5880caf6375a6971d3477423fee7eb3f38",
-    "cache_entry": "x10-17b15391e5e0d4a1ca07",
-    "source": "benchmarks/objprog/x10.bend",
-    "expected_key": "17b15391e5e0d4a1ca07"
-   },
-   "obj-x11": {
-    "sha256": "317404c2a3ff34502a138d3c71dc338e9647fa39b32d2512d5d632818023cade",
-    "cache_entry": "x11-e2442aaec0e5a8e41f20",
-    "source": "benchmarks/objprog/x11.bend",
-    "expected_key": "e2442aaec0e5a8e41f20"
-   },
-   "obj-x12": {
-    "sha256": "889dc264bbb8123c6657b819389eaf2ca1e8d334199cb4d7e492e5efa716d654",
-    "cache_entry": "x12-1104f6d78f5ad4c18b5f",
-    "source": "benchmarks/objprog/x12.bend",
-    "expected_key": "1104f6d78f5ad4c18b5f"
-   },
-   "obj-x13": {
-    "sha256": "d61a7c543f994bb897699b42201abcfd86cd8e6d8a161fda7111bb40c2978f16",
-    "cache_entry": "x13-67b59ce4ef65154b95bd",
-    "source": "benchmarks/objprog/x13.bend",
-    "expected_key": "67b59ce4ef65154b95bd"
-   },
-   "obj-x14": {
-    "sha256": "0f37f2fa59f48355956d326e57eb799f8eadc714bf7c8b721a38fce46d1adfab",
-    "cache_entry": "x14-2f607f2f3d6788f7d8a9",
-    "source": "benchmarks/objprog/x14.bend",
-    "expected_key": "2f607f2f3d6788f7d8a9"
-   },
-   "obj-x15": {
-    "sha256": "1d5c4ec0103fe101ce4c5f98871de89d0c179265754876eaa45a51f93277b93c",
-    "cache_entry": "x15-e2ba243fc03ba43dde43",
-    "source": "benchmarks/objprog/x15.bend",
-    "expected_key": "e2ba243fc03ba43dde43"
-   },
-   "obj-x16": {
-    "sha256": "7ba57dd596143b27f4a35eeb7a472f0c76a13ac641dcb835d7311b69304966d9",
-    "cache_entry": "x16-e1ff629911ef4e62e05d",
-    "source": "benchmarks/objprog/x16.bend",
-    "expected_key": "e1ff629911ef4e62e05d"
-   },
-   "obj-x2": {
-    "sha256": "1d8085b873d2193da1727681def1f07c0ed99eb7983786f1f6cf13d633efc405",
-    "cache_entry": "x2-1280266d97bd606ca6da",
-    "source": "benchmarks/objprog/x2.bend",
-    "expected_key": "1280266d97bd606ca6da"
-   },
-   "obj-x3": {
-    "sha256": "4b1071dd1d7b177a54241817cbcb67e79b2aa9f284a6bd3de3a632df5e011add",
-    "cache_entry": "x3-197f8d0d35fff0d99934",
-    "source": "benchmarks/objprog/x3.bend",
-    "expected_key": "197f8d0d35fff0d99934"
-   },
-   "obj-x4": {
-    "sha256": "3cd9b7833a951c56d1cf897ca5ad0491ea890cc5056575f0fd9c5cf0cfb92cf6",
-    "cache_entry": "x4-5b218e910006013effd7",
-    "source": "benchmarks/objprog/x4.bend",
-    "expected_key": "5b218e910006013effd7"
-   },
-   "obj-x5": {
-    "sha256": "6f3dcc20c62e19abc128bff39ca722be1aa7af4785a4df44ae9d608b3156848d",
-    "cache_entry": "x5-92d9f08572aeb031c3d5",
-    "source": "benchmarks/objprog/x5.bend",
-    "expected_key": "92d9f08572aeb031c3d5"
-   },
-   "obj-x6": {
-    "sha256": "1c77ff916b12c322f30b2358bf65ade3aa328e5cdfe7c41cc9064b1c20206a4a",
-    "cache_entry": "x6-848953d2707049f85843",
-    "source": "benchmarks/objprog/x6.bend",
-    "expected_key": "848953d2707049f85843"
-   },
-   "obj-x7": {
-    "sha256": "f7db2e73aea28b3af1601326e56b7bbc294a4005725c0f9ee9c826ab1eca5759",
-    "cache_entry": "x7-ae273d599d8f0e9829c0",
-    "source": "benchmarks/objprog/x7.bend",
-    "expected_key": "ae273d599d8f0e9829c0"
-   },
-   "obj-x8": {
-    "sha256": "cdfe2f24a39053b9af9f98d5887ef955b2d36c86a018a2d3010aafef9cf518c6",
-    "cache_entry": "x8-5e1ef2197c1ddb39b724",
-    "source": "benchmarks/objprog/x8.bend",
-    "expected_key": "5e1ef2197c1ddb39b724"
-   },
-   "obj-x9": {
-    "sha256": "11dc66b965f803f2dfd7750163ed199c4bda8e8e8dbcf58e0dac87ea93800614",
-    "cache_entry": "x9-134c54b0d2070815a386",
-    "source": "benchmarks/objprog/x9.bend",
-    "expected_key": "134c54b0d2070815a386"
-   },
-   "fuzz-f0": {
-    "sha256": "e7bdd5be75342f2ae934156753ffc5428805ccf772615514b9891521729188fa",
-    "cache_entry": "f0-8d0054d5850d72013722",
-    "source": "benchmarks/objprog/f0.bend",
-    "expected_key": "8d0054d5850d72013722"
-   },
-   "fuzz-f1": {
-    "sha256": "86409e831ad86a2455bd60bbb6e60137fc0070a460dd54f781ede3685aa9b460",
-    "cache_entry": "f1-0014921b5c01d6fc62b3",
-    "source": "benchmarks/objprog/f1.bend",
-    "expected_key": "0014921b5c01d6fc62b3"
-   },
-   "fuzz-f10": {
-    "sha256": "e9b8f9ff1c898d27737ca9fd3463b58adb6e769ba9bb9b6099ad63b70981103e",
-    "cache_entry": "f10-6dc2168b9714eb36cb16",
-    "source": "benchmarks/objprog/f10.bend",
-    "expected_key": "6dc2168b9714eb36cb16"
-   },
-   "fuzz-f11": {
-    "sha256": "6b71320e501028fc09087174f99d063bcc58e53b45aa675af3fd0761a39529e4",
-    "cache_entry": "f11-fbb212647d2a171931a1",
-    "source": "benchmarks/objprog/f11.bend",
-    "expected_key": "fbb212647d2a171931a1"
-   },
-   "fuzz-f12": {
-    "sha256": "04b5c24d581701bc3dc43c1c58fb6d7b65d2ca5c4db6d891ac9343ed5e35d336",
-    "cache_entry": "f12-3273a137ba4b532af1d8",
-    "source": "benchmarks/objprog/f12.bend",
-    "expected_key": "3273a137ba4b532af1d8"
-   },
-   "fuzz-f13": {
-    "sha256": "fe6730c0a4a4e671956f4d1f0599c6e3925b8516918c653e1f17dd502dceab43",
-    "cache_entry": "f13-9030bc6bdd12aa860a98",
-    "source": "benchmarks/objprog/f13.bend",
-    "expected_key": "9030bc6bdd12aa860a98"
-   },
-   "fuzz-f14": {
-    "sha256": "b668db188ae0878d6ef1285239d6341ee5fa471a37b89f0a0ddd3b3a43f79160",
-    "cache_entry": "f14-cabd74feac0208a8d104",
-    "source": "benchmarks/objprog/f14.bend",
-    "expected_key": "cabd74feac0208a8d104"
-   },
-   "fuzz-f15": {
-    "sha256": "a0dede5c7a79b4c4b367fde42b8eec1b83ecdf788f8451f7812b9bc01d45d3d9",
-    "cache_entry": "f15-72fa0856703b9693fae1",
-    "source": "benchmarks/objprog/f15.bend",
-    "expected_key": "72fa0856703b9693fae1"
-   },
-   "fuzz-f16": {
-    "sha256": "2491ac93b4dc752ce00c106032eae9abaa37cd5d3818da603c95502b8e046cf1",
-    "cache_entry": "f16-d925317a88a6d8d3f01b",
-    "source": "benchmarks/objprog/f16.bend",
-    "expected_key": "d925317a88a6d8d3f01b"
-   },
-   "fuzz-f17": {
-    "sha256": "5627ced66b05d21b59d5ba072fe6dfffa73c0f1d266e8dee77279679797389ff",
-    "cache_entry": "f17-cd8f69f911a8c4b9482c",
-    "source": "benchmarks/objprog/f17.bend",
-    "expected_key": "cd8f69f911a8c4b9482c"
-   },
-   "fuzz-f18": {
-    "sha256": "ff83c44d9b069e56664639e3a5b77a9636cfe5b08f2173a1249dd588423395ed",
-    "cache_entry": "f18-b42b98af910bc9bdbf09",
-    "source": "benchmarks/objprog/f18.bend",
-    "expected_key": "b42b98af910bc9bdbf09"
-   },
-   "fuzz-f19": {
-    "sha256": "6da3eca7bcd6e0b1304426d040a5e483c904e10c3b102e3f2a3de188f11fdbf1",
-    "cache_entry": "f19-6535f672591f46d9abe7",
-    "source": "benchmarks/objprog/f19.bend",
-    "expected_key": "6535f672591f46d9abe7"
-   },
-   "fuzz-f2": {
-    "sha256": "64fcf7c1476f7a265e4dafe245b8887ad6ddf764ddfb0a870487a153a56d8223",
-    "cache_entry": "f2-66d765dea1176a53bb49",
-    "source": "benchmarks/objprog/f2.bend",
-    "expected_key": "66d765dea1176a53bb49"
-   },
-   "fuzz-f20": {
-    "sha256": "15a2631bbe8a14dae18d48d9d9873b57786eb48cc03fc24d8b9dea5ed6c82b7b",
-    "cache_entry": "f20-dd841506454eb241d31c",
-    "source": "benchmarks/objprog/f20.bend",
-    "expected_key": "dd841506454eb241d31c"
-   },
-   "fuzz-f21": {
-    "sha256": "ca76a5d0b2455145862620d644c0d0a119600d597187716438d340bf8be41b7f",
-    "cache_entry": "f21-397cb298a6713eac3d6e",
-    "source": "benchmarks/objprog/f21.bend",
-    "expected_key": "397cb298a6713eac3d6e"
-   },
-   "fuzz-f22": {
-    "sha256": "a401a854b0535032cf59b0ca4192af2ad6df4d231073a93d53bf243d4be42ac7",
-    "cache_entry": "f22-a657e5c141d6e56eefa5",
-    "source": "benchmarks/objprog/f22.bend",
-    "expected_key": "a657e5c141d6e56eefa5"
-   },
-   "fuzz-f23": {
-    "sha256": "47fd57d21aad841e29cc6b89b10095efdad9421c300db86e599138851673ac37",
-    "cache_entry": "f23-f2754ee1e2744a8731e5",
-    "source": "benchmarks/objprog/f23.bend",
-    "expected_key": "f2754ee1e2744a8731e5"
-   },
-   "fuzz-f24": {
-    "sha256": "43cd15277998d02756dfd8c2e7a09be97aca6e46b9bdb0beca564d322badf580",
-    "cache_entry": "f24-8c13daaad1813188660d",
-    "source": "benchmarks/objprog/f24.bend",
-    "expected_key": "8c13daaad1813188660d"
-   },
-   "fuzz-f25": {
-    "sha256": "872df143805e4115c8873e62858a452e6c83ced79b56879b10860f6860a84788",
-    "cache_entry": "f25-2a72becc58e9f42d2db0",
-    "source": "benchmarks/objprog/f25.bend",
-    "expected_key": "2a72becc58e9f42d2db0"
-   },
-   "fuzz-f26": {
-    "sha256": "9ef0dfdb939a7bf3aa2b02d40f6a016402396e883f1a476417c13d9fc9e43e88",
-    "cache_entry": "f26-b8bb6d53e83b31c19f7a",
-    "source": "benchmarks/objprog/f26.bend",
-    "expected_key": "b8bb6d53e83b31c19f7a"
-   },
-   "fuzz-f27": {
-    "sha256": "0ac8e6909650ce9f4941fdda2b4984bde98c31720eaac27f70d5bed2b488d195",
-    "cache_entry": "f27-111700d399fafa9a5e38",
-    "source": "benchmarks/objprog/f27.bend",
-    "expected_key": "111700d399fafa9a5e38"
-   },
-   "fuzz-f3": {
-    "sha256": "1f26c25843c6ca7090840364a228d792f2a88ce58fead515d90a20119b6b126c",
-    "cache_entry": "f3-30e7855d4a4ec5735908",
-    "source": "benchmarks/objprog/f3.bend",
-    "expected_key": "30e7855d4a4ec5735908"
-   },
-   "fuzz-f4": {
-    "sha256": "0662ce17eeea5cd47e137bbf4f1e8e0069986ce033f36ca857ea5058be17d54d",
-    "cache_entry": "f4-7579ad12f02179744c87",
-    "source": "benchmarks/objprog/f4.bend",
-    "expected_key": "7579ad12f02179744c87"
-   },
-   "fuzz-f5": {
-    "sha256": "3186da63019e1096ac7beac8b32adba026705e5a193fe2166ecc989c10753f26",
-    "cache_entry": "f5-c7ddaafcac7126d4be9e",
-    "source": "benchmarks/objprog/f5.bend",
-    "expected_key": "c7ddaafcac7126d4be9e"
-   },
-   "fuzz-f6": {
-    "sha256": "625211714d380302b2cb4104a6505e455de577930e95d167368aa7b1c9ff057d",
-    "cache_entry": "f6-386d381cbe569d76c8e3",
-    "source": "benchmarks/objprog/f6.bend",
-    "expected_key": "386d381cbe569d76c8e3"
-   },
-   "fuzz-f7": {
-    "sha256": "ee881fde77c7435a6275cfb825b49c6bb44b093ab1ca69d12d739ea691958eea",
-    "cache_entry": "f7-152611713a13bec31afd",
-    "source": "benchmarks/objprog/f7.bend",
-    "expected_key": "152611713a13bec31afd"
-   },
-   "fuzz-f8": {
-    "sha256": "2f8225bd434a6630cad90ddf5d83716b22cb837ef5def6b46bc9c251bf32bc7b",
-    "cache_entry": "f8-d617f4e772e88ac48501",
-    "source": "benchmarks/objprog/f8.bend",
-    "expected_key": "d617f4e772e88ac48501"
-   },
-   "fuzz-f9": {
-    "sha256": "09f6fb6876e9c22c3ddf04bb2be314f19cc1a5e82c2adf3e15bb1f22106b6c99",
-    "cache_entry": "f9-6362939de31fb6ef561e",
-    "source": "benchmarks/objprog/f9.bend",
-    "expected_key": "6362939de31fb6ef561e"
-   },
-   "compact-ocache": {
-    "sha256": "d55f878cda64f88ec8d32dabbaabde79b06ffb63521656ae1af893fb9d5f8fbc",
-    "cache_entry": "c-ocache-9710b3d998f4469bf797",
-    "source": "benchmarks/compact/ocache.bend",
-    "expected_key": "9710b3d998f4469bf797"
-   },
-   "compact-oinvalid": {
-    "sha256": "9ec49b81dea68f84706eaf6ac4deba9f9aec3c3fd9fc1b677287c6e1c9857240",
-    "cache_entry": "c-oinvalid-c1f9266228235958e903",
-    "source": "benchmarks/compact/oinvalid.bend",
-    "expected_key": "c1f9266228235958e903"
-   },
-   "compact-omut": {
-    "sha256": "b5114f8b547c1dbfbf8c285d8d17fa21cd4591c1008421bb2b3b90d825947b83",
-    "cache_entry": "c-omut-df578b742bd2e199857e",
-    "source": "benchmarks/compact/omut.bend",
-    "expected_key": "df578b742bd2e199857e"
-   }
-  },
-  "argv": [
-   "--restamp",
-   "benchmarks/evidence/mutation_testing.json"
-  ],
-  "sources_sha256": {
-   "types/*.bend": "5986e63da4fe6fc5de235e2e31a62e385fdb60f95b245d611b0f2884e51ded63",
-   "src/*.bend": "dfba9a73df93a3dfc883c6de5c16be56b3c44f3f421d6866cebfec10f0ec7a4b",
-   "benchmarks/objprog/*.bend": "193e62dbc986be45d7c11b677ff958420fc23921cde1a9fce56f50dec34d9ff7",
-   "benchmarks/compact/*.bend": "a8a2cb947594a27ab7d48867d661b666fd2f457ef2fbceb302322b7351f67e6e",
-   "cases.json": "046028487a69b7661ede94092dcaafdbc8fa9056d8b730cc33e19a07b6d866bf",
-   "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
-  },
-  "harness_sha256": {
-   "tests_generated/mutation_testing.py": "4b075c7243be7ad19482ff30b2c2fbdc3d557bb340ff619e0ff161872496c5e5",
-   "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
-   "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
-   "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
-   "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
-   "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
-  }
+  "skipped": "EVIDENCE_NO_STAMP"
  }
 }
