@@ -536,11 +536,19 @@ def lib_wide(S, a):
             if len(extra) >= 3:
                 break
         t['checkers'] = list(dict.fromkeys(t['checkers'] + extra))
+    if a.lib_pins:
+        pins = sorted(pathlib.Path(g).resolve() for g in glob.glob(str(S / a.lib_pins)))
+        for t in tasks:
+            t['checkers'] = list(dict.fromkeys(t['checkers'] + [c for c in pins if t['file'] in cone_of(c)]))
+    random.Random(f'{a.seed}:order').shuffle(tasks)
+    deadline = time.monotonic() + a.lib_budget if a.lib_budget else None
     print(f'lib {a.lib}: {len(tasks)} mutants over {len(files)} files', flush=True)
     tmp = pathlib.Path(os.environ.get('MUT_TMP', '/tmp')) / f'mutlib-{os.getpid()}'
 
     def run(i, t):
         st, f = t['site'], t['file']
+        if deadline and time.monotonic() > deadline:
+            return {'outcome': 'not run', 'seconds': 0}
         d = tmp / str(i)
         hub = (S / 'vendor/bendhub' / HUB).resolve()
         inhub = hub in f.parents
@@ -613,6 +621,8 @@ def main():
     ap.add_argument('--lib', default=None, choices=sorted(LIB_GROUPS), help='mutate the library code of this group (collections, e2e, sha256, spec) instead of the generated codec files')
     ap.add_argument('--lib-per-file', type=int, default=4)
     ap.add_argument('--lib-files', type=int, default=0, help='only the first N files of the group (a pilot)')
+    ap.add_argument('--lib-budget', type=int, default=0, help='seconds: after this no new mutant starts (it is reported `not run`)')
+    ap.add_argument('--lib-pins', default=None, help='glob of extra checkers (relative to the root) added for every mutant whose cone they reach, e.g. proofs/obj/specpin_*.bend')
     ap.add_argument('--lib-only', default=None, help='only these files of the group (comma-separated paths relative to the root)')
     ap.add_argument('--lib-timeout', type=int, default=120, help='a mutant check over this many seconds is `too slow`, not a kill')
     ap.add_argument('--replay', default=None, help='with --proof-wide: instead of drawing, re-check the survivors of this earlier report (by file, def, operator, before, after and line text) on the current tree')
@@ -656,8 +666,9 @@ def main():
         res = lib_wide(S, a)
         sv = [r for r in res if r['outcome'] == 'survived']
         slow = [r for r in res if r['outcome'] == 'too slow']
+        notrun = sum(1 for r in res if r['outcome'] == 'not run')
         rep = {'group': a.lib, 'seed': a.seed, 'lib_per_file': a.lib_per_file, 'mutants': len(res),
-               'killed': sum(1 for r in res if r['outcome'] == 'killed'), 'survived': len(sv), 'too_slow': len(slow),
+               'killed': sum(1 for r in res if r['outcome'] == 'killed'), 'survived': len(sv), 'too_slow': len(slow), 'not_run': notrun,
                'survivors_by_operator': dict(collections.Counter(r['operator'] for r in sv)),
                'survivors': sv, 'too_slow_list': slow, 'results': res, 'elapsed_s': round(time.monotonic() - started, 1),
                'provenance': stamp(__file__)}
