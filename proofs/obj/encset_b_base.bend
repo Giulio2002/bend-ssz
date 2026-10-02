@@ -9,6 +9,7 @@ import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
 import ./packed_bytes_light.bend as PB
+import ./pb_min.bend as PM
 import ./vbitenc.bend as VBT
 import ./encset_w_base.bend as EB
 
@@ -40,3 +41,15 @@ def vv_bt(+X: F.array__Tree<U32>, +N: U32) -> {PB.vview1(O.Words{F.array__thaw(U
     {S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))} == S.Sequence{PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} : S.Value}
   Equal.cong(+List<U32>, S.Value, z => S.Sequence{PB.it1(U32.to_nat(N), z)}, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))),
     VBT.btake_bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))
+
+# the two definitions of the uint8 items (pb_min.bend, packed_bytes_light.bend) agree
+def it1_eq(+k: Nat, +xs: +List<U32>) -> {PM.it1(k, xs) == PB.it1(k, xs) : S.Value}:
+  match k xs:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+x, +t}:
+      %Equal.sym(S.Value, PM.it1(c, t), PB.it1(c, t), it1_eq(c, t)) : {S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, _} == S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, PB.it1(c, t)} : S.Value}
+      {==}
+
+def it1_seq(+N: U32, +X: F.array__Tree<U32>) -> {S.Sequence{PM.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} == S.Sequence{PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} : S.Value}:
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PM.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))), PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))), it1_eq(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))))

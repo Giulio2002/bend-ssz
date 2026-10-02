@@ -102,7 +102,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed encode statement of a mutated list of the byte lists, the list of uint8, the lists of uint16 (no set laws) and the bit lists (see the design note below); and
+composed encode statement of a mutated list of the lists of uint16 (no set laws) and the bit lists (see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/encset_b.py`, with `tz_merge.bend`'s zero-tail lemma); and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 

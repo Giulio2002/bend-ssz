@@ -18,6 +18,7 @@ import ./words_win.bend as WW
 import ./view_bytes.bend as VW
 import ./u32split.bend as USP
 import ../nat_order.bend as Order
+import ./pb_min.bend as PM
 import ./vbytes.bend as VYS
 import ./tz_merge.bend as TZ
 import ./encset_w_base.bend as EB
@@ -31,7 +32,7 @@ import ./vvlb_bl256.bend as W
 # The encode of the list bl256 after one byte is written, stated per element: see codegen/proofs/collections/encset_b.py.
 
 # ---- the premises of the encode bridge for the written mirror ----
-def bl256_tz_f(+eb: {Nat.is_eq(q, VYS.QL(N)) == False{} : Bool}, +dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat})
+def bl256_tz_f(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat}, +eb: {Nat.is_eq(q, VYS.QL(N)) == False{} : Bool})
     -> {O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))) == True{} : Bool}:
   +r0 = h
   +r1 = EB.and_r(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)))), h)
@@ -55,7 +56,7 @@ def bl256_tz_f(+eb: {Nat.is_eq(q, VYS.QL(N)) == False{} : Bool}, +dw: Nat, +T: F
   +e1 = Equal.trans(U32, VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), WR.at(F.array__slots(U32, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), VYS.QL(N)), VB.slot(T, VYS.QL(N)), WW.wd_at(F.array__slots(U32, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), VYS.QL(N)), Equal.trans(U32, WR.at(F.array__slots(U32, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), VYS.QL(N)), WR.at(F.array__slots(U32, T), VYS.QL(N)), VB.slot(T, VYS.QL(N)), hat, Equal.sym(U32, VB.slot(T, VYS.QL(N)), WR.at(F.array__slots(U32, T), VYS.QL(N)), WW.wd_at(F.array__slots(U32, T), VYS.QL(N)))))
   F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, VB.slot(T, VYS.QL(N)), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), Equal.sym(U32, VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), VB.slot(T, VYS.QL(N)), e1), p3)
 
-def bl256_tz_t(+eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool}, +dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat})
+def bl256_tz_t(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat}, +eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool})
     -> {O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))) == True{} : Bool}:
   +r0 = h
   +r1 = EB.and_r(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(T, VYS.QL(N))), U32.is_le(N, 256)))), h)
@@ -80,7 +81,9 @@ def bl256_tz_t(+eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool}, +dw: Nat, +T: F.
   +spN = USP.split2(N)
   +hX = F.logic__subst(Nat, z => {Nat.is_lt(J, Nat.add(r_, A.quad(z))) == True{} : Bool}, VYS.QL(N), U32.to_nat(U32.shrn(i, 2n)), Equal.trans(Nat, VYS.QL(N), q, U32.to_nat(U32.shrn(i, 2n)), Equal.sym(Nat, q, VYS.QL(N), eQ), Equal.sym(Nat, U32.to_nat(U32.shrn(i, 2n)), q, hq)), F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, U32.to_nat(N), Nat.add(r_, A.quad(VYS.QL(N))), spN, hs))
   +hY = F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n))))) == True{} : Bool}, J, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), sp, hX)
-  +hlt = EB2.lt_cancel(A.quad(U32.to_nat(U32.shrn(i, 2n))), s, r_, F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), z) == True{} : Bool}, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_), F.nat__add_comm(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n))))) == True{} : Bool}, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), s), F.nat__add_comm(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY)))
+  +hY1 = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), z) == True{} : Bool}, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_), F.nat__add_comm(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY)
+  +hY2 = F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_)) == True{} : Bool}, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), s), F.nat__add_comm(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY1)
+  +hlt = EB2.lt_cancel(A.quad(U32.to_nat(U32.shrn(i, 2n))), s, r_, hY2)
   +hsb = F.logic__subst(Nat, z => {Nat.is_le(z, r_) == True{} : Bool}, 1n+s, Nat.add(s, U32.to_nat(1)), Equal.sym(Nat, Nat.add(s, 1n), 1n+s, EB.add_one(s)), F.nat__lt_succ_le_succ(s, r_, hlt))
   +old = F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, VB.slot(T, VYS.QL(N)), WR.at(F.array__slots(U32, T), q), Equal.trans(U32, VB.slot(T, VYS.QL(N)), VB.slot(T, q), WR.at(F.array__slots(U32, T), q), Equal.cong(Nat, U32, z => VB.slot(T, z), VYS.QL(N), q, Equal.sym(Nat, q, VYS.QL(N), eQ)), WW.wd_at(F.array__slots(U32, T), q)), p3)
   +new = TZ.tz_merge(U32.and(N, 3), U32.and(i, 3), 1, WR.at(F.array__slots(U32, T), q), v, hsb, RD.and_le(N, 3), {==}, {==}, old)
@@ -88,11 +91,11 @@ def bl256_tz_t(+eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool}, +dw: Nat, +T: F.
   +e2 = Equal.trans(U32, VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), q), O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1), Equal.cong(Nat, U32, z => VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), z), VYS.QL(N), q, Equal.sym(Nat, q, VYS.QL(N), eQ)), Equal.trans(U32, VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), q), WR.at(F.array__slots(U32, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), q), O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1), WW.wd_at(F.array__slots(U32, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), q), at2))
   F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), Equal.sym(U32, VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N)), O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1), e2), new)
 
-def bl256_tz_go(+b: Bool, +eb: {Nat.is_eq(q, VYS.QL(N)) == b : Bool}, +dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat})
+def bl256_tz_go(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat}, +b: Bool, +eb: {Nat.is_eq(q, VYS.QL(N)) == b : Bool})
     -> {O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))) == True{} : Bool}:
   match b:
-    case False{}: bl256_tz_f(eb, dw, T, N, i, q, v, h, hv, hs, hq)
-    case True{}: bl256_tz_t(eb, dw, T, N, i, q, v, h, hv, hs, hq)
+    case False{}: bl256_tz_f(dw, T, N, i, q, v, h, hv, hs, hq, eb)
+    case True{}: bl256_tz_t(dw, T, N, i, q, v, h, hv, hs, hq, eb)
 
 def bl256_okt_set(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +h: {E.OKT(dw, T, N) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat})
     -> {E.OKT(dw, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), N) == True{} : Bool}:
@@ -114,7 +117,7 @@ def bl256_okt_set(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +
   +hqk = F.nat__lt_le_trans(A.quad(q), U32.to_nat(N), A.quad(VB.pw(dw)), F.nat__le_lt_trans(A.quad(q), J, U32.to_nat(N), hqi, hs), p2)
   +hk = EB2.qlt_rev(q, VB.pw(dw), hqk)
   +pf2 = F.array__upd_perfect(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1), p0)
-  +tz2 = bl256_tz_go(Nat.is_eq(q, VYS.QL(N)), {==}, dw, T, N, i, q, v, h, hv, hs, hq)
+  +tz2 = bl256_tz_go(dw, T, N, i, q, v, h, hv, hs, hq, Nat.is_eq(q, VYS.QL(N)), {==})
   EB.and_i(FD.array__perfect(U32, dw, F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1))), Bool.and(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))), U32.is_le(N, 256)))), pf2, EB.and_i(Nat.is_lt(dw, 28n), Bool.and(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))), U32.is_le(N, 256))), p1, EB.and_i(Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))), Bool.and(O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))), U32.is_le(N, 256)), p2, EB.and_i(O.tail_zero(U32.and(N, 3), VB.slot(F.array__upd(U32, dw, T, q, O.merge_word(WR.at(F.array__slots(U32, T), q), v, U32.and(i, 3), 1)), VYS.QL(N))), U32.is_le(N, 256), tz2, p4))))
 
 # ---- the value of the written mirror: the old value with byte i replaced ----

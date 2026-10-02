@@ -39,6 +39,7 @@ import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
 import ./packed_bytes_light.bend as PB
+import ./pb_min.bend as PM
 import ./vbitenc.bend as VBT
 import ./encset_w_base.bend as EB
 
@@ -70,6 +71,18 @@ def vv_bt(+X: F.array__Tree<U32>, +N: U32) -> {PB.vview1(O.Words{F.array__thaw(U
     {S.Sequence{PB.it1(U32.to_nat(N), WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, _))))} == S.Sequence{PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} : S.Value}
   Equal.cong(+List<U32>, S.Value, z => S.Sequence{PB.it1(U32.to_nat(N), z)}, WS.btake(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))),
     VBT.btake_bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))
+
+# the two definitions of the uint8 items (pb_min.bend, packed_bytes_light.bend) agree
+def it1_eq(+k: Nat, +xs: +List<U32>) -> {PM.it1(k, xs) == PB.it1(k, xs) : S.Value}:
+  match k xs:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+x, +t}:
+      %Equal.sym(S.Value, PM.it1(c, t), PB.it1(c, t), it1_eq(c, t)) : {S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, _} == S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, PB.it1(c, t)} : S.Value}
+      {==}
+
+def it1_seq(+N: U32, +X: F.array__Tree<U32>) -> {S.Sequence{PM.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} == S.Sequence{PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X))))} : S.Value}:
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PM.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))), PB.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))), it1_eq(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, X)))))
 '''
 
 
@@ -113,14 +126,14 @@ def text(c, kind):
     L.append('# ---- the premises of the encode bridge for the written mirror ----')
     # the tail: the slot of the word N >> 2, by the cases of whether it is the written word
     TZG = 'O.tail_zero(U32.and(N, 3), VB.slot(%s, VYS.QL(N))) == True{} : Bool' % T2
-    L.append('def %s_tz_f(+eb: {Nat.is_eq(q, VYS.QL(N)) == False{} : Bool}, %s)\n    -> {%s}:' % (c, pre, TZG))
+    L.append('def %s_tz_f(%s, +eb: {Nat.is_eq(q, VYS.QL(N)) == False{} : Bool})\n    -> {%s}:' % (c, pre, TZG))
     L += common()
     L.append('  +hat = WR.at_upd_other(dw, T, q, VYS.QL(N), %s, eb, hk, p%d)' % (NW, ik['pf']))
     L.append('  +e1 = Equal.trans(U32, VB.slot(%s, VYS.QL(N)), WR.at(F.array__slots(U32, %s), VYS.QL(N)), VB.slot(T, VYS.QL(N)),'
              ' WW.wd_at(F.array__slots(U32, %s), VYS.QL(N)), Equal.trans(U32, WR.at(F.array__slots(U32, %s), VYS.QL(N)), WR.at(F.array__slots(U32, T), VYS.QL(N)), VB.slot(T, VYS.QL(N)), hat, Equal.sym(U32, VB.slot(T, VYS.QL(N)), WR.at(F.array__slots(U32, T), VYS.QL(N)), WW.wd_at(F.array__slots(U32, T), VYS.QL(N)))))' % (T2, T2, T2, T2))
     L.append('  F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, VB.slot(T, VYS.QL(N)), VB.slot(%s, VYS.QL(N)), Equal.sym(U32, VB.slot(%s, VYS.QL(N)), VB.slot(T, VYS.QL(N)), e1), p%d)' % (T2, T2, ik['tz']))
     L.append('')
-    L.append('def %s_tz_t(+eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool}, %s)\n    -> {%s}:' % (c, pre, TZG))
+    L.append('def %s_tz_t(%s, +eb: {Nat.is_eq(q, VYS.QL(N)) == True{} : Bool})\n    -> {%s}:' % (c, pre, TZG))
     L += common()
     L.append('  +eQ = F.nat__eq_from_is_eq(q, VYS.QL(N), eb)')
     L.append('  +r_ = U32.to_nat(U32.and(N, 3))')
@@ -128,8 +141,9 @@ def text(c, kind):
     L.append('  +hX = F.logic__subst(Nat, z => {Nat.is_lt(J, Nat.add(r_, A.quad(z))) == True{} : Bool}, VYS.QL(N), U32.to_nat(U32.shrn(i, 2n)), Equal.trans(Nat, VYS.QL(N), q, U32.to_nat(U32.shrn(i, 2n)), Equal.sym(Nat, q, VYS.QL(N), eQ), Equal.sym(Nat, U32.to_nat(U32.shrn(i, 2n)), q, hq)),'
              ' F.logic__subst(Nat, z => {Nat.is_lt(J, z) == True{} : Bool}, U32.to_nat(N), Nat.add(r_, A.quad(VYS.QL(N))), spN, hs))')
     L.append('  +hY = F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n))))) == True{} : Bool}, J, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), sp, hX)')
-    L.append('  +hlt = EB2.lt_cancel(A.quad(U32.to_nat(U32.shrn(i, 2n))), s, r_, F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), z) == True{} : Bool}, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_), F.nat__add_comm(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))),'
-             ' F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n))))) == True{} : Bool}, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), s), F.nat__add_comm(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY)))')
+    L.append('  +hY1 = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), z) == True{} : Bool}, Nat.add(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_), F.nat__add_comm(r_, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY)')
+    L.append('  +hY2 = F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), r_)) == True{} : Bool}, Nat.add(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), Nat.add(A.quad(U32.to_nat(U32.shrn(i, 2n))), s), F.nat__add_comm(s, A.quad(U32.to_nat(U32.shrn(i, 2n)))), hY1)')
+    L.append('  +hlt = EB2.lt_cancel(A.quad(U32.to_nat(U32.shrn(i, 2n))), s, r_, hY2)')
     L.append('  +hsb = F.logic__subst(Nat, z => {Nat.is_le(z, r_) == True{} : Bool}, 1n+s, Nat.add(s, U32.to_nat(1)), Equal.sym(Nat, Nat.add(s, 1n), 1n+s, EB.add_one(s)), F.nat__lt_succ_le_succ(s, r_, hlt))')
     L.append('  +old = F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, VB.slot(T, VYS.QL(N)), WR.at(F.array__slots(U32, T), q),'
              ' Equal.trans(U32, VB.slot(T, VYS.QL(N)), VB.slot(T, q), WR.at(F.array__slots(U32, T), q), Equal.cong(Nat, U32, z => VB.slot(T, z), VYS.QL(N), q, Equal.sym(Nat, q, VYS.QL(N), eQ)), WW.wd_at(F.array__slots(U32, T), q)), p%d)' % ik['tz'])
@@ -138,14 +152,14 @@ def text(c, kind):
     L.append('  +e2 = Equal.trans(U32, VB.slot(%s, VYS.QL(N)), VB.slot(%s, q), %s, Equal.cong(Nat, U32, z => VB.slot(%s, z), VYS.QL(N), q, Equal.sym(Nat, q, VYS.QL(N), eQ)), Equal.trans(U32, VB.slot(%s, q), WR.at(F.array__slots(U32, %s), q), %s, WW.wd_at(F.array__slots(U32, %s), q), at2))' % (T2, T2, NW, T2, T2, T2, NW, T2))
     L.append('  F.logic__subst(U32, z => {O.tail_zero(U32.and(N, 3), z) == True{} : Bool}, %s, VB.slot(%s, VYS.QL(N)), Equal.sym(U32, VB.slot(%s, VYS.QL(N)), %s, e2), new)' % (NW, T2, T2, NW))
     L.append('')
-    L.append('def %s_tz_go(+b: Bool, +eb: {Nat.is_eq(q, VYS.QL(N)) == b : Bool}, %s)\n    -> {%s}:' % (c, pre, TZG))
+    L.append('def %s_tz_go(%s, +b: Bool, +eb: {Nat.is_eq(q, VYS.QL(N)) == b : Bool})\n    -> {%s}:' % (c, pre, TZG))
     L.append('  match b:')
-    L.append('    case False{}: %s_tz_f(eb, %s)' % (c, args))
-    L.append('    case True{}: %s_tz_t(eb, %s)' % (c, args))
+    L.append('    case False{}: %s_tz_f(%s, eb)' % (c, args))
+    L.append('    case True{}: %s_tz_t(%s, eb)' % (c, args))
     L.append('')
     L.append('def %s_okt_set(%s)\n    -> {E.OKT(dw, %s, N) == True{} : Bool}:' % (c, pre, T2))
     L += common()
-    L.append('  +tz2 = %s_tz_go(Nat.is_eq(q, VYS.QL(N)), {==}, %s)' % (c, args))
+    L.append('  +tz2 = %s_tz_go(%s, Nat.is_eq(q, VYS.QL(N)), {==})' % (c, args))
     prf = {ik['pf']: 'pf2', ik['tz']: 'tz2'}
 
     def chain(k):
@@ -180,9 +194,16 @@ def text(c, kind):
     else:
         e_new = 'Equal.sym(S.Value, %s, %s, %s(%s, N))' % (vw(T2), NEWF(T2), lem, T2)
         e_old = 'Equal.cong(S.Value, S.Value, z => VSE.field_set(z, U32.to_nat(i), %s), %s, %s, %s(T, N))' % (UV, vw('T'), NEWF('T'), lem)
-        L.append('  +e1 = Equal.trans(S.Value, %s, %s, VSE.field_set(%s, U32.to_nat(i), %s), %s,' % (NEWF(T2), vw(T2), NEWF('T'), UV, e_new))
+        L.append('  +e0 = Equal.trans(S.Value, %s, %s, VSE.field_set(%s, U32.to_nat(i), %s), %s,' % (NEWF(T2), vw(T2), NEWF('T'), UV, e_new))
         L.append('    Equal.trans(S.Value, %s, VSE.field_set(%s, U32.to_nat(i), %s), VSE.field_set(%s, U32.to_nat(i), %s), %s, %s))' % (vw(T2), vw('T'), UV, NEWF('T'), UV, vs, e_old))
-    L.append('  e1')
+    if kind == 'b':
+        L.append('  e1')
+    else:
+        SQPM = lambda t_: 'S.Sequence{PM.it1(U32.to_nat(N), VS.bt(U32.to_nat(N), FX.limbs(F.array__slots(U32, %s))))}' % t_
+        L.append('  +e1 = Equal.trans(S.Value, %s, %s, VSE.field_set(%s, U32.to_nat(i), %s), EB2.it1_seq(N, %s),' % (SQPM(T2), NEWF(T2), SQPM('T'), UV, T2))
+        L.append('    Equal.trans(S.Value, %s, VSE.field_set(%s, U32.to_nat(i), %s), VSE.field_set(%s, U32.to_nat(i), %s), e0,' % (NEWF(T2), NEWF('T'), UV, SQPM('T'), UV))
+        L.append('      Equal.cong(S.Value, S.Value, z => VSE.field_set(z, U32.to_nat(i), %s), %s, %s, Equal.sym(S.Value, %s, %s, EB2.it1_seq(N, T)))))' % (UV, NEWF('T'), SQPM('T'), SQPM('T'), NEWF('T')))
+        L.append('  e1')
     L.append('')
     L.append('# ---- the written object: the mirror of the updated tree is the runtime\'s word write of the old one ----')
     L.append('def %s_written(+dw: Nat, +T: F.array__Tree<U32>, +N: U32, +i: U32, +q: Nat, +v: U32, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, dw, T) == True{} : Bool}, '
@@ -199,7 +220,7 @@ def text(c, kind):
     fixed = {'S': '../../types/schema.bend', 'P': '../../types/primitive.bend', 'F': '../compact/found.bend', 'FD': '../compact/found.bend', 'A': '../compact/arith.bend', 'RD': '../compact/reads.bend',
              'O': '../../src/obj.bend', 'VS': './vspec.bend', 'VSE': './value_set.bend', 'VB': './vbuf.bend', 'FX': './spec_fixed.bend', 'WS': './words_spec.bend', 'WO': './words_obj_light.bend',
              'PB': './packed_bytes_light.bend', 'WR': './words_rw.bend', 'WW': './words_win.bend', 'VW': './view_bytes.bend', 'USP': './u32split.bend', 'Order': '../nat_order.bend',
-             'VYS': './vbytes.bend', 'TZ': './tz_merge.bend', 'EB': './encset_w_base.bend', 'EB2': './encset_b_base.bend', 'Codec': '../../spec/codec.bend', 'Spec': '../../spec/fulu_schemas.bend',
+             'PM': './pb_min.bend', 'VYS': './vbytes.bend', 'TZ': './tz_merge.bend', 'EB': './encset_w_base.bend', 'EB2': './encset_b_base.bend', 'Codec': '../../spec/codec.bend', 'Spec': '../../spec/fulu_schemas.bend',
              'E': './encx_%s.bend' % c, 'W': f['W']}
     head = ['import Base'] + ['import %s as %s' % (pth, a) for a, pth in fixed.items()]
     head += ['', '# GENERATED by encset_b (codegen). Do not edit.',
