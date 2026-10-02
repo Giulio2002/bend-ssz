@@ -114,6 +114,7 @@ GENERATORS = (
     # codegen/proofs/collections/
     Gen('bits_view', 'proofs/collections'),
     Gen('u64_tail', 'proofs/collections'),
+    Gen('encset', 'proofs/collections'),
     Gen('boxedview', 'proofs/collections'),
     Gen('coll_laws', 'proofs/collections'),
     Gen('e2e_setters', 'proofs/collections', stage='last', after=('e2e_bridge',)),
