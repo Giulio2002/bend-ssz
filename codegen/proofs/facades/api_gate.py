@@ -257,7 +257,7 @@ def scan():
                 X = f.stem[len(pre.group(0)):]
                 mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
-                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1) in ('dec', 'build') else 'serialize_valid'), (f.name, n)))
+                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (f.name, n)))
     for key, v in late:      # after every other law: the bridges read the first law of a kind
         ent.setdefault(key, []).append(v)
     return fulu, gen, ent, parsed

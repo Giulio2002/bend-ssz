@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
+import ../../types/uint64_def_generated.bend as uint64_d
 import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../../types/FuluPendingAttestation_def_generated.bend as FuluPendingAttestation_d
 import ../../types/FuluPendingAttestation_encode_ssz_generated.bend as FuluPendingAttestation_e
@@ -11,5 +12,5 @@ import ../../types/FuluPendingAttestation_encode_ssz_generated.bend as FuluPendi
 # (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.
 
 def PendingAttestation_mc_ser()
-    -> {FuluPendingAttestation_e.PendingAttestation_serialize(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481))) == (Pair.fst(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481)))), O.encoded(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271560481)))))) : FuluPendingAttestation_d.PendingAttestation & O.Encoded}:
+    -> {FuluPendingAttestation_e.PendingAttestation_serialize(FuluPendingAttestation_d.PendingAttestation_set_proposer_index(FuluPendingAttestation_d.PendingAttestation_set_inclusion_delay(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271621528)), uint64_d.u64_seed(2271621545)), uint64_d.u64_seed(2271621562))) == (Pair.fst(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_proposer_index(FuluPendingAttestation_d.PendingAttestation_set_inclusion_delay(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271621528)), uint64_d.u64_seed(2271621545)), uint64_d.u64_seed(2271621562)))), O.encoded(Pair.snd(FuluPendingAttestation_d.PendingAttestation, B.Buf, FuluPendingAttestation_e.PendingAttestation_encode(FuluPendingAttestation_d.PendingAttestation_set_proposer_index(FuluPendingAttestation_d.PendingAttestation_set_inclusion_delay(FuluPendingAttestation_d.PendingAttestation_set_data(FuluPendingAttestation_d.PendingAttestation_default(), FuluAttestationData_d.AttestationData_seed(2271621528)), uint64_d.u64_seed(2271621545)), uint64_d.u64_seed(2271621562)))))) : FuluPendingAttestation_d.PendingAttestation & O.Encoded}:
   {==}

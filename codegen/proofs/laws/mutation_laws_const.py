@@ -168,6 +168,23 @@ def seeds_of(tx):
     return _SEEDS[id(tx)]
 
 
+def split_top_args(s):
+    ps, cur, d = [], '', 0
+    for ch in s:
+        if ch in '([{<':
+            d += 1
+        elif ch in ')]}>':
+            d -= 1
+        if ch == ',' and d == 0:
+            ps.append(cur.strip())
+            cur = ''
+        else:
+            cur += ch
+    if cur.strip():
+        ps.append(cur.strip())
+    return ps
+
+
 def pname(p):
     return p.split(':')[0].strip().lstrip('+-@').strip()
 
@@ -301,13 +318,12 @@ def build_name_laws(tx, X, idx, files, syms):
                 w = f'T.{sd}(2271560481)'
             elif tx.get(f'{X}_default') and tx.get(f'{X}_default')[1] == R and (default_size(X) or 0) <= SER_MAX:
                 w = f'T.{X}_default()'
-                # a default is all zeros when nothing is variable: set one field that has a seed
-                for nm in sorted(tx.blk):
-                    ms = re.fullmatch(rf'{re.escape(X)}_set_\w+', nm)
-                    sg = tx.get(nm) if ms else None
+                # a default is all zeros when nothing is variable: set every field that has a seed
+                for i, nm in enumerate(sorted(tx.blk)):
+                    ms_ = re.fullmatch(rf'{re.escape(X)}_set_\w+', nm)
+                    sg = tx.get(nm) if ms_ else None
                     if sg and len(sg[0]) == 2 and sg[1] == R and ptype(sg[0][0]) == R and ptype(sg[0][1]) in seeds_of(tx):
-                        w = f'T.{nm}({w}, T.{seeds_of(tx)[ptype(sg[0][1])]}(2271560481))'
-                        break
+                        w = f'T.{nm}({w}, T.{seeds_of(tx)[ptype(sg[0][1])]}({2271560481 + 17 * i}))'
         if w:
             QR = qual(R)
             enc_ = f'T.{X}_encode({w})'
