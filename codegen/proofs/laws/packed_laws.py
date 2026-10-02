@@ -25,6 +25,7 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import sync_pairs  # noqa: E402
 OUT = ROOT / 'proofs/obj/packed_obj.bend'
 OUT2 = ROOT / 'proofs/obj/packed_bytes.bend'
 WID = {4: 'P.U32Width{}', 8: 'P.U64{}', 16: 'P.U128{}', 32: 'P.U256{}'}
@@ -930,16 +931,7 @@ def main():
                       './packed_bytes_light.bend', 'packed_laws (codegen)')
     outs = [(p, LS.light(t)) for p, t in [(OUT, t1), (OUT.with_name('packed_obj_light.bend'), l1),
                                           (OUT2, t2), (OUT2.with_name('packed_bytes_light.bend'), l2)]]
-    if '--check' in sys.argv:
-        for path, text in outs:
-            if not path.exists() or path.read_text() != text:
-                print(f'{path} is stale; run codegen/proofs/laws/packed_laws.py')
-                return 1
-        print('packed laws are current')
-        return 0
-    for path, text in outs:
-        path.write_text(text)
-    return 0
+    return sync_pairs(outs, 'packed_laws', 'packed laws are current')
 
 
 if __name__ == '__main__':
