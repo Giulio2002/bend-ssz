@@ -9,8 +9,8 @@ import argparse, concurrent.futures as cf, json, os, shutil, subprocess, sys, ti
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from runner import header, cone   # noqa: E402
 
-PROBE = 'tools/mutation_testing/manual_spec_mutants/r2/probes/api_probe.bend'
-CASES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 25, 26, 27, 30, 31, 32, 33, 34, 35, 36, 37]
+PROBE = os.environ.get('PROBE', 'tools/mutation_testing/manual_spec_mutants/r2/probes/api_probe.bend')
+CASES = [int(x) for x in os.environ.get('CASES', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,37').split(',')]
 
 
 def build(tree, work, name, patch, bend):
