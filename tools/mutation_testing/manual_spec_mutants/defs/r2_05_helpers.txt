@@ -1,0 +1,822 @@
+## ROUND 2, area 5: shared helpers of src/obj.bend not mutated in round 1 (bulk word copies, unaligned writers and their carries, in-place element setters and getters, validity helpers of the packed collections, poison and size accumulators)
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_c7,ac_blk,copy_into,ci_pick
+spec: a byte range is copied word for word (eight words per block, the rest one at a time)
+fault: the last lane of a block stores to b + 6 (overwrites lane 6, lane 7 is left zero)
+why: lane index slip in the unrolled copy
+-  (Array.set(U32, dst, (b + 7 : U32), w), src)
++  (Array.set(U32, dst, (b + 6 : U32), w), src)
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_c4,ac_c3,ac_blk,copy_into
+spec: a byte range is copied word for word
+fault: lane 3 reads source word a + 3 instead of a + 4 (one lane repeated)
+why: source index slip in the unrolled copy
+-  ac_c4(a, b, Array.set(U32, dst, (b + 3 : U32), w), Array.get(U32, src, (a + 4 : U32)))
++  ac_c4(a, b, Array.set(U32, dst, (b + 3 : U32), w), Array.get(U32, src, (a + 3 : U32)))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_blk,copy_into
+spec: each block advances source and destination by eight words
+fault: the destination advances by 7 words per block
+why: stride mismatch
+-      ac_blk(t, (a + 8 : U32), (b + 8 : U32), ac_c0(a, b, dst, Array.get(U32, src, a)))
++      ac_blk(t, (a + 8 : U32), (b + 7 : U32), ac_c0(a, b, dst, Array.get(U32, src, a)))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_tail,copy_into
+spec: the words past the last whole block are copied one at a time
+fault: the tail loop advances the destination by 2
+why: stride mismatch
+-      ac_tail(t, (a + 1 : U32), (b + 1 : U32), ac_w(b, dst, Array.get(U32, src, a)))
++      ac_tail(t, (a + 1 : U32), (b + 2 : U32), ac_w(b, dst, Array.get(U32, src, a)))
+=== r2-s01-bulk-copy
+type: FuluBytes48
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_tail,copy_into
+spec: nw mod 8 words remain after the whole blocks (the tail count is nw & 7)
+fault: the tail count is nw & 3 (words 4..7 of the remainder are not copied)
+why: mask constant
+-  ac_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
++  ac_tail(U32.to_nat((nw .&. 3 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: acopy,ac_blk
+spec: nw / 8 whole blocks are copied
+fault: the block count is nw / 4
+why: shift constant
+-    ac_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, (dst, src)))
++    ac_blk(U32.to_nat(U32.shrn(nw, 2n)), a, b, (dst, src)))
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into,ci_pick,scopy1,scopy2,scopy3,acopy
+spec: a range starting s = off mod 4 bytes into a word is copied with the shift for s (0: plain, 1, 2, 3)
+fault: offset 1 mod 4 uses the plain copy
+why: case mapping
+-    case 1: scopy1(nw, a, 0, dst, src)
++    case 1: acopy(nw, a, 0, dst, src)
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into,ci_pick,scopy1,scopy2,scopy3
+spec: a range starting 2 bytes into a word is copied with the 16-bit shift
+fault: offset 2 mod 4 uses the 24-bit shift (scopy3)
+why: case mapping
+-    case 2: scopy2(nw, a, 0, dst, src)
++    case 2: scopy3(nw, a, 0, dst, src)
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into,ci_go
+spec: an empty range copies nothing
+fault: an empty range is copied as if it had a word (the empty test is n = 1)
+why: empty test mistyped
+-      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
++      ci_fin(len, n, ci_go(U32.is_eq(n, 1), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into
+spec: the source word index is off >> 2
+fault: the source word index is off >> 3
+why: shift constant
+-      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
++      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 3n), U32.shrn((n + 3 : U32), 2n),
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into
+spec: ceil(n / 4) words are copied
+fault: floor(n / 4) words are copied (a partial last word is dropped)
+why: ceil written as floor
+-      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
++      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn(n, 2n),
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: copy_into,mask_last
+spec: bytes past the logical length are zeroed in the last word
+fault: the mask applies to the word before the last
+why: index off by one
+-  ml_go(U32.is_eq((n .&. 3 : U32), 0), (n .&. 3 : U32), (U32.shrn((n + 3 : U32), 2n) - 1 : U32), dst)
++  ml_go(U32.is_eq((n .&. 3 : U32), 0), (n .&. 3 : U32), (U32.shrn((n + 3 : U32), 2n) - 2 : U32), dst)
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: scopy1,sc1_w,sc1_tail,copy_into
+spec: a range starting 1 byte into a word: word j = (src[j] >> 8) | (src[j+1] << 24)
+fault: the tail word uses << 16 (the constant of the 2-byte shift)
+why: constant of the wrong lane family
+-  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), (src, w))
++  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 65536 : U32) : U32)), (src, w))
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: scopy2,sc2_w,sc2_tail,copy_into
+spec: a range starting 2 bytes into a word: word j = (src[j] >> 16) | (src[j+1] << 16)
+fault: the tail word shifts the carry by 8 (not 16)
+why: constant
+-  (Array.set(U32, dst, b, (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), (src, w))
++  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 65536 : U32) : U32)), (src, w))
+=== r2-s01-bulk-copy
+type: ComplexTestStruct
+ops: decode
+file: src/obj.bend
+sym: scopy3,sc3_w,sc3_tail,copy_into
+spec: a range starting 3 bytes into a word: word j = (src[j] >> 24) | (src[j+1] << 8)
+fault: the tail word uses << 16
+why: constant
+-  (Array.set(U32, dst, b, (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), (src, w))
++  (Array.set(U32, dst, b, (U32.shrn(c, 24n) .|. (w * 65536 : U32) : U32)), (src, w))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: scopy1,sc1_c5,copy_into
+spec: a range starting 1 byte into a word (lane 5 of a block): shifts 8 and 24
+fault: lane 5 uses << 8 for the high part
+why: constant
+-  sc1_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
++  sc1_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 8n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: scopy2,sc2_c2,copy_into
+spec: a range starting 2 bytes into a word (lane 2 of a block): shifts 16 and 16
+fault: lane 2 reads the next source word one too far (a + 5)
+why: index slip
+-  sc2_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 4 : U32)))
++  sc2_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 5 : U32)))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: scopy3,sc3_c6,copy_into
+spec: a range starting 3 bytes into a word (lane 6): shifts 24 and 8
+fault: lane 6 shifts the carry by 16
+why: constant
+-  sc3_c7(a, b, w, Array.set(U32, dst, (b + 6 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 8 : U32)))
++  sc3_c7(a, b, w, Array.set(U32, dst, (b + 6 : U32), (U32.shrn(c, 16n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 8 : U32)))
+=== r2-s01-bulk-copy
+type: FuluBytes96
+ops: decode
+file: src/obj.bend
+sym: scopy1,sc1_blk,copy_into
+spec: each block advances by eight words
+fault: the block advances the destination by 9
+why: stride
+-      sc1_blk(q, (a + 8 : U32), (b + 8 : U32), sc1_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
++      sc1_blk(q, (a + 8 : U32), (b + 9 : U32), sc1_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_un,pw_run1,pw_run2,pw_run3,pw_or1
+spec: a byte range written at a position 1 mod 4 uses the 8-bit shift
+fault: position 1 mod 4 uses the 16-bit family (pw_run2)
+why: case mapping
+-    case 1: pw_carry((q + nw : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
++    case 1: pw_carry((q + nw : U32), pw_run2(nw, pw_mid(n, s, nw), q, out, ws))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_un,pw_run2,pw_run3
+spec: a byte range written at a position 2 mod 4 uses the 16-bit shift
+fault: position 2 mod 4 uses the 24-bit family (pw_run3)
+why: case mapping
+-    case 2: pw_carry((q + nw : U32), pw_run2(nw, pw_mid(n, s, nw), q, out, ws))
++    case 2: pw_carry((q + nw : U32), pw_run3(nw, pw_mid(n, s, nw), q, out, ws))
+=== r2-s02-unaligned-writer
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_un,pw_or3,pw_run3
+spec: a range at position 3 mod 4: the bytes shifted out of word j are carried into word j + 1 (<< 24 and >> 8)
+fault: the carry shift is >> 16
+why: constant
+-      pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
++      pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+=== r2-s02-unaligned-writer
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_or3,pw_run3
+spec: a range at position 3 mod 4: the first byte lands in the top byte of its word (<< 24)
+fault: the word is shifted by 16 on the last step
+why: constant
+-      (or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
++      (or_word(out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_or1,pw_run1
+spec: a range at position 1 mod 4: the carry of a word is its top byte (>> 24)
+fault: the carry is >> 16
+why: constant
+-      pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
++      pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_or2,pw_run2
+spec: a range at position 2 mod 4: the carry of a word is its top two bytes (>> 16)
+fault: the carry is >> 8
+why: constant
+-      pw_or2(e, (j + 1 : U32), q, U32.shrn(w, 16n),
++      pw_or2(e, (j + 1 : U32), q, U32.shrn(w, 8n),
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_mid,pw_un
+spec: the interior words of an unaligned run are those fully inside the range: (n + s - 4) >> 2
+fault: the interior count is (n + s - 3) >> 2 (one word too many when n + s is 3 mod 4)
+why: constant
+count: 2
+-U32.shrn((n + s - 4 : U32), 2n)
++U32.shrn((n + s - 3 : U32), 2n)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_mid
+spec: a range shorter than 4 - s bytes has no interior word
+fault: the short-range test is n + s <= 4
+why: strictness
+-  pick(U32.is_lt((n + s : U32), 4), 0,
++  pick(U32.is_le((n + s : U32), 4), 0,
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_carry_skip,pw_carry_at
+spec: the carry word after the range is OR-ed only when it is non-zero
+fault: the carry is skipped when it is at most 1 (a carry of exactly 1 is lost)
+why: zero test mistyped
+-  pw_carry_skip(U32.is_eq(c, 0), i, out, ws, c)
++  pw_carry_skip(U32.is_le(c, 1), i, out, ws, c)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_carry,pw_un
+spec: the carry of the last source word lands at word q + nw
+fault: the carry lands at word q + nw - 1
+why: index slip
+-    case 1: pw_carry((q + nw : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
++    case 1: pw_carry((q + nw - 1 : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
+=== r2-s02-unaligned-writer
+type: FuluBytes96
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_aligned,pw_al_tail,pw_al_or
+spec: an aligned range: whole words stored, a partial last word OR-ed in
+fault: the partial-word test is n & 3 = 1 (a 2 or 3 byte tail is stored whole and overwrites its neighbour)
+why: tail test mistyped
+-  pw_al_tail(U32.is_eq((n .&. 3 : U32), 0), nw, q,
++  pw_al_tail(U32.is_eq((n .&. 3 : U32), 1), nw, q,
+=== r2-s02-unaligned-writer
+type: FuluBytes96
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_aligned,pw_al_or_w
+spec: the partial last word of an aligned run is OR-ed at word q + nw - 1
+fault: it is OR-ed at word q + nw
+why: index slip
+-  (or_word(out, (q + nw - 1 : U32), w), ws)
++  (or_word(out, (q + nw : U32), w), ws)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_empty
+spec: an empty range writes nothing
+fault: an empty range is written as a one-word range (the empty test is n = 1)
+why: empty test mistyped
+-      put_fin(n, pw_empty(U32.is_eq(n, 0), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
++      put_fin(n, pw_empty(U32.is_eq(n, 1), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: put_words,pw_empty
+spec: the destination word of a range at byte p is p >> 2
+fault: the destination word is p >> 3
+why: shift constant
+-        U32.shrn(p, 2n), out, ws))
++        U32.shrn(p, 3n), out, ws))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w32,w32_split,shr_over
+spec: an unaligned 4-byte write at p = 1 mod 4 puts x >> 24 into the next word
+fault: the spill constant for p = 1 mod 4 is x >> 16
+why: constant
+-    case 1: U32.shrn(x, 24n)
++    case 1: U32.shrn(x, 16n)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w32,w32_split,shr_over
+spec: an unaligned 4-byte write at p = 2 mod 4 puts x >> 16 into the next word
+fault: the spill constant for p = 2 mod 4 is x >> 24
+why: constant
+-    case 2: U32.shrn(x, 16n)
++    case 2: U32.shrn(x, 24n)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w32,w32_split,shr_over
+spec: an unaligned 4-byte write at p = 3 mod 4 puts x >> 8 into the next word
+fault: the spill constant for p = 3 mod 4 is x >> 16
+why: constant
+-    case _: U32.shrn(x, 8n)
++    case _: U32.shrn(x, 16n)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w32,w32_split
+spec: an unaligned 4-byte write touches words p >> 2 and p >> 2 + 1
+fault: the spill goes to word p >> 2 + 2
+why: index slip
+-  or_word(or_word(out, U32.shrn(p, 2n), shl_bytes(x, s)), (U32.shrn(p, 2n) + 1 : U32), shr_over(x, s))
++  or_word(or_word(out, U32.shrn(p, 2n), shl_bytes(x, s)), (U32.shrn(p, 2n) + 2 : U32), shr_over(x, s))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w8,shl_bytes
+spec: a byte at position p is shifted by 8 (p mod 4) bits
+fault: shift by 2 bytes becomes 1 byte (x * 256)
+why: constant
+-    case 2: (x * 65536 : U32)
++    case 2: (x * 256 : U32)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w8,shl_bytes
+spec: a byte at position p is shifted by 8 (p mod 4) bits
+fault: shift by 3 bytes becomes 2 bytes
+why: constant
+-    case _: (x * 16777216 : U32)
++    case _: (x * 65536 : U32)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w8
+spec: a byte write lands at byte p mod 4 of word p >> 2
+fault: the byte position is p mod 2
+why: mask constant
+-  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 3 : U32)))
++  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 1 : U32)))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w16
+spec: a 16-bit value is written little-endian at p and p + 1
+fault: the high byte is written at p + 2
+why: index slip
+-  w8(w8(out, p, x), (p + 1 : U32), U32.shrn(x, 8n))
++  w8(w8(out, p, x), (p + 2 : U32), U32.shrn(x, 8n))
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w64,w64_at
+spec: an unaligned 64-bit write stores lo at p and hi at p + 4
+fault: hi is stored at p + 8
+why: index slip
+-    case False{}: w32(w32(out, p, lo), (p + 4 : U32), hi)
++    case False{}: w32(w32(out, p, lo), (p + 8 : U32), hi)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: w64,w64_at
+spec: an aligned 64-bit write stores lo then hi in consecutive words
+fault: hi goes to word + 2
+why: index slip
+-    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 1 : U32), hi)
++    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 2 : U32), hi)
+=== r2-s02-unaligned-writer
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wbool
+spec: false writes nothing (the output is pre-zeroed), true writes the byte 1
+fault: true writes the byte 2
+why: constant
+-    case True{}: w8(out, p, 1)
++    case True{}: w8(out, p, 2)
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,put_in,merge_word,mask_at,byte_mask
+spec: a write replaces  bytes at byte position p inside the packed value
+fault: a 3-byte write uses the 2-byte mask
+why: mask table
+-    case 3: 16777215
++    case 3: 65535
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,put_in,merge_word,mask_at,byte_mask
+spec: a write replaces  bytes at byte position p
+fault: a 2-byte write uses the 1-byte mask
+why: mask table
+-    case 2: 65535
+-    case 3: 16777215
++    case 2: 255
++    case 3: 16777215
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,put_in,merge_word
+spec: a write replaces the old bytes (it masks the word first)
+fault: the old word is not cleared (the new bytes are OR-ed into the old ones)
+why: replace written as or
+-  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
++  (old .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,put_in,merge_word
+spec: the written value is cut to its  bytes
+fault: the written value is not masked (a wide value spills into the neighbours)
+why: mask forgotten
+-  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
++  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. shl_bytes(x, s) : U32)
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,mask_at
+spec: the mask covers the bytes at position s
+fault: the mask is not shifted to position s
+why: shift forgotten
+-def mask_at(+s: U32, +bytes: U32) -> U32: shl_bytes(byte_mask(bytes), s)
++def mask_at(+s: U32, +bytes: U32) -> U32: byte_mask(bytes)
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_write,put_in
+spec: the in-word position of byte p is p mod 4
+fault: the in-word position is p mod 2
+why: mask constant
+-  put_in(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in(U32.shrn(p, 2n), x, (p .&. 1 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_byte_at,read_at,shr_bytes
+spec: a read returns the  bytes at byte p
+fault: the in-word shift is ignored (always the first byte of the word)
+why: shift forgotten
+-  (w, keep(bytes, shr_bytes(x, (p .&. 3 : U32))))
++  (w, keep(bytes, x))
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_byte_at,read_at,keep
+spec: a read keeps the low  bytes
+fault: a 3-byte read keeps 2 bytes
+why: mask table
+-    case 3: (w .&. 16777215 : U32)
++    case 3: (w .&. 65535 : U32)
+=== r2-s03-element-access
+type: bytelist_256
+ops: encode
+file: src/obj.bend
+sym: words_byte_at,read_at,shr_bytes
+spec: an in-word shift of 3 bytes is x >> 24
+fault: a shift of 3 bytes is x >> 16
+why: constant
+-    case _: U32.shrn(x, 24n)
++    case _: U32.shrn(x, 16n)
+=== r2-s03-element-access
+type: Fulu_list_uint64_128
+ops: encode
+file: src/obj.bend
+sym: words_u64_at,u64_lo,u64_pair
+spec: a uint64 element is (lo word, hi word) at consecutive words
+fault: the pair is (hi, lo)
+why: word order
+-  (w, U64{lo, hi})
++  (w, U64{hi, lo})
+=== r2-s03-element-access
+type: Fulu_list_uint64_128
+ops: encode
+file: src/obj.bend
+sym: words_u64_at,u64_lo
+spec: the high word of a uint64 element is the word after the low one
+fault: it is read two words later
+why: index slip
+-  u64_pair(lo, words_word(w, (U32.shrn(p, 2n) + 1 : U32)))
++  u64_pair(lo, words_word(w, (U32.shrn(p, 2n) + 2 : U32)))
+=== r2-s03-element-access
+type: Fulu_list_uint64_128
+ops: encode
+file: src/obj.bend
+sym: words_write_u64
+spec: a uint64 element is written as (lo, hi) at consecutive words
+fault: hi is written two words later
+why: index slip
+-    case U64{+lo, +hi}: words_setw(words_setw(w, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 1 : U32), hi)
++    case U64{+lo, +hi}: words_setw(words_setw(w, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 2 : U32), hi)
+=== r2-s03-element-access
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_get,bit_of,bits_word
+spec: bit i is bit i mod 32 of word i / 32
+fault: bit i is bit i mod 16 of word i / 32
+why: mask constant
+-  (b, U32.is_eq((M.shr_by(x, (i .&. 31 : U32)) .&. 1 : U32), 1))
++  (b, U32.is_eq((M.shr_by(x, (i .&. 15 : U32)) .&. 1 : U32), 1))
+=== r2-s03-element-access
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_set,bit_put,bit_merge
+spec: setting bit i touches bit i mod 32 of word i / 32
+fault: the word index of the write is i / 16
+why: shift constant
+-  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
++  bits_setw(b, U32.shrn(i, 4n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
+=== r2-s03-element-access
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_set,bit_put
+spec: setting bit i touches bit i mod 32
+fault: the bit position is i mod 16
+why: mask constant
+-  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 31 : U32))))
++  bits_setw(b, U32.shrn(i, 5n), bit_merge(v, x, M.shl_by(1, (i .&. 15 : U32))))
+=== r2-s03-element-access
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: src/obj.bend
+sym: words_slice,sl_go,sl_fin
+spec: an element slice copies ceil(n / 4) words starting at word p >> 2
+fault: the slice copies floor(n / 4) words
+why: ceil written as floor
+-  sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
++  sl_fin(n, sl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
+=== r2-s03-element-access
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: src/obj.bend
+sym: words_slice,sl_go
+spec: an element slice starts at word p >> 2
+fault: it starts at word p >> 2 + 1
+why: index slip
+-      sl_go(q, (j + 1 : U32), base, Array.set(U32, out, j, x), words_word(o, (base + j + 1 : U32)))
++      sl_go(q, (j + 1 : U32), base, Array.set(U32, out, j, x), words_word(o, (base + j + 2 : U32)))
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: words_ok,unit_ok
+spec: a packed collection of 2-byte elements has an even byte count
+fault: the evenness test is n & 3 = 0
+why: mask constant
+-    case 2: U32.is_eq((n .&. 1 : U32), 0)
++    case 2: U32.is_eq((n .&. 3 : U32), 0)
+=== r2-s04-packed-validity
+type: Fulu_list_uint64_128
+ops: encode
+file: src/obj.bend
+sym: words_ok,unit_ok
+spec: a packed collection of 8-byte elements has a byte count divisible by 8
+fault: the divisibility test is n & 3 = 0
+why: mask constant
+-    case 8: U32.is_eq((n .&. 7 : U32), 0)
++    case 8: U32.is_eq((n .&. 3 : U32), 0)
+=== r2-s04-packed-validity
+type: Fulu_list_uint64_128
+ops: encode
+file: src/obj.bend
+sym: words_ok,unit_ok
+spec: a packed collection of 4-byte elements has a byte count divisible by 4
+fault: the divisibility test is n & 1 = 0
+why: mask constant
+-    case 4: U32.is_eq((n .&. 3 : U32), 0)
++    case 4: U32.is_eq((n .&. 1 : U32), 0)
+=== r2-s04-packed-validity
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: src/obj.bend
+sym: words_ok,unit_ok
+spec: a packed collection of 32-byte elements has a byte count divisible by 32
+fault: the divisibility test is n & 15 = 0
+why: mask constant
+-    case 32: U32.is_eq((n .&. 31 : U32), 0)
++    case 32: U32.is_eq((n .&. 15 : U32), 0)
+=== r2-s04-packed-validity
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: src/obj.bend
+sym: words_ok,unit_ok
+spec: any other element size is tested by n mod unit = 0
+fault: the general case tests n / unit = 0
+why: mod written as div
+-    case _: U32.is_eq(U32.mod(n, unit), 0)
++    case _: U32.is_eq(U32.div(n, unit), 0)
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: words_ok
+spec: a packed collection's length is at least lo
+fault: the lower bound is strict (n > lo)
+why: strictness
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_lt(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: words_ok
+spec: a bounded packed collection has at most hi bytes (unless big)
+fault: the upper bound applies only when big (and instead of or)
+why: Bool.or written as Bool.and
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.and(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: wk_cap,wk_last,words_ok
+spec: the storage holds ceil(n / 4) words
+fault: the storage test is ceil(n / 4) < capacity (a full array is refused)
+why: strictness
+-  wk_last(Bool.and(ok, U32.is_le(U32.shrn((n + 3 : U32), 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
++  wk_last(Bool.and(ok, U32.is_lt(U32.shrn((n + 3 : U32), 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: wk_cap,wk_last,words_ok
+spec: the storage holds ceil(n / 4) words
+fault: the storage check counts n / 4 words (floor: a partial last word may be missing)
+why: ceil written as floor
+-  wk_last(Bool.and(ok, U32.is_le(U32.shrn((n + 3 : U32), 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
++  wk_last(Bool.and(ok, U32.is_le(U32.shrn(n, 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
+=== r2-s04-packed-validity
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: wk_last,tail_zero
+spec: the bytes of the last word past n are zero (r = n mod 4)
+fault: the tail test uses n mod 2 (r = 3 is tested like r = 1)
+why: mask constant
+-  (Words{ws, n}, Bool.and(ok, tail_zero((n .&. 3 : U32), x)))
++  (Words{ws, n}, Bool.and(ok, tail_zero((n .&. 1 : U32), x)))
+=== r2-s04-packed-validity
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_ok,bk_cap,bk_last
+spec: a bit list's storage holds the word of bit nbits (the delimiter is OR-ed there)
+fault: storage is required only through word nbits >> 5 - 1
+why: word count off by one
+-  bk_last(Bool.and(ok, U32.is_le((U32.shrn(k, 5n) + 1 : U32), c)), k, Array.get(U32, ws, U32.shrn(k, 5n)))
++  bk_last(Bool.and(ok, U32.is_le(U32.shrn(k, 5n), c)), k, Array.get(U32, ws, U32.shrn(k, 5n)))
+=== r2-s04-packed-validity
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_ok,bk_cap,bk_last
+spec: bits from nbits up to the end of its word are zero (r = nbits mod 32)
+fault: r is nbits mod 16
+why: mask constant
+-  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
++  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 15 : U32), x)))
+=== r2-s04-packed-validity
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_ok
+spec: a bit list has at most cputime         unlimited
+filesize        unlimited
+datasize        unlimited
+stacksize       7MB
+coredumpsize    0kB
+addressspace    unlimited
+memorylocked    unlimited
+maxproc         2666
+descriptors     1048576 bits unless there is no declared limit
+fault: the limit applies only when big (and instead of or)
+why: Bool.or written as Bool.and
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.and(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
+=== r2-s04-packed-validity
+type: bitvector_9
+ops: encode
+file: src/obj.bend
+sym: bitvec_tail,bv_fin
+spec: the bits of a bit vector past its k bits are zero in the last word
+fault: the check reads word k >> 5 + 1
+why: index slip
+-    case Words{ws, +n}: bv_fin(n, ok, k, Array.get(U32, ws, U32.shrn(k, 5n)))
++    case Words{ws, +n}: bv_fin(n, ok, k, Array.get(U32, ws, (U32.shrn(k, 5n) + 1 : U32)))
+=== r2-s05-poison
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned,pz
+spec: a size accumulator keeps bit 31 once any addend carries it
+fault: the poison bit is not kept (a plain sum)
+why: poison propagation forgotten
+-def padd(+a: U32, +b: U32) -> U32: ((a + b : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
++def padd(+a: U32, +b: U32) -> U32: (a + b : U32)
+=== r2-s05-poison
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done
+spec: a final length with bit 31 set means an invalid value
+fault: the poison test is strictly above 2^31 (exactly 2^31 is not detected)
+why: strictness
+-def is_poisoned(+m: U32) -> Bool: U32.is_le(2147483648, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(2147483648, m)
+=== r2-s05-poison
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: pz,padd
+spec: a validity flag contributes bit 31 when false
+fault: a false flag contributes bit 30
+why: constant
+-    case False{}: 2147483648
++    case False{}: 1073741824
+=== r2-s05-poison
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: the size pass poisons a packed collection whose storage cannot hold its length
+fault: the storage test is ceil(n / 4) < capacity
+why: strictness
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
++  (Words{ws, n}, pick(U32.is_lt(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+=== r2-s05-poison
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: the size pass of a bit list poisons a list whose storage lacks the word of bit k
+fault: the storage test is (k >> 5) + 1 < capacity
+why: strictness
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
++  (Bits{ws, k}, pick(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
+=== r2-s05-poison
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: ser_done
+spec: a poisoned encoding is refused, a valid one returns its bytes
+fault: the output length is m + 1
+why: length off by one
+-    case False{}: Encoded{True{}, B.Buf{out, m}}
++    case False{}: Encoded{True{}, B.Buf{out, (m + 1 : U32)}}

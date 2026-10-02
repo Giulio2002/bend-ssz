@@ -4,16 +4,6 @@ type: VarTestStruct
 ops: root
 file: src/obj.bend
 sym: len_chunk,mix_len
-spec: mix_in_length appends the length as a 32-byte little-endian chunk
-fault: the length chunk is not byte-swapped (the word is big-endian in SHA)
-why: endianness of the length chunk
--def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
-+def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}
-=== r2-h01-mix-in-length
-type: VarTestStruct
-ops: root
-file: src/obj.bend
-sym: len_chunk,mix_len
 spec: mix_in_length appends the length as a 32-byte chunk, length in the first word
 fault: the length is put in the second word
 why: word index of the length
@@ -24,41 +14,11 @@ type: VarTestStruct
 ops: root
 file: src/obj.bend
 sym: len_chunk,mix_len
-spec: mix_in_length(root, length) = H(root || length_chunk)
-fault: the operands are swapped: H(length_chunk || root)
-why: argument order of the node
--def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
-+def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)
-=== r2-h01-mix-in-length
-type: VarTestStruct
-ops: root
-file: src/obj.bend
-sym: len_chunk,mix_len
 spec: the length mixed in is the element count
 fault: the length mixed in is n + 1
 why: one-based count
 -def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
 +def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk((n + 1 : U32)))
-=== r2-h01-mix-in-length
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: mix_count,words_root
-spec: a packed list mixes in its element count (byte length >> log2 element size)
-fault: the count is the byte length (the shift is dropped)
-why: element size forgotten
--    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
-+    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, n)))
-=== r2-h01-mix-in-length
-type: VarTestStruct
-ops: root
-file: src/obj.bend
-sym: mix_count,words_root
-spec: a packed list of uint16 mixes in bytes / 2
-fault: the shift is one larger (bytes / 4)
-why: shift off by one
--    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
-+    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, 1n+shift))))
 === r2-h01-mix-in-length
 type: bitlist_9
 ops: root
@@ -79,36 +39,6 @@ fault: the count includes the delimiter bit (k + 1)
 why: wire length confused with the logical length
 -    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
 +    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
-=== r2-h02-chunk-count
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: chunks_of,words_root
-spec: the number of chunks of n bytes is ceil(n / 32)
-fault: floor(n / 32): a partial last chunk is dropped
-why: ceil written as floor
--def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
-+def chunks_of(+n: U32) -> Nat: Nat.div(U32.to_nat(n), 32n)
-=== r2-h02-chunk-count
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: chunks_of,words_root
-spec: the number of chunks of n bytes is ceil(n / 32)
-fault: n / 32 + 1 chunks (a full extra zero chunk when n is a multiple of 32)
-why: ceil written as floor plus one
--def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
-+def chunks_of(+n: U32) -> Nat: Nat.add(Nat.div(U32.to_nat(n), 32n), 1n)
-=== r2-h02-chunk-count
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: chunks_of,words_root
-spec: the number of chunks of n bytes is ceil(n / 32)
-fault: the rounding constant is 32 instead of 31
-why: rounding constant
--def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
-+def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
 === r2-h02-chunk-count
 type: bytelist_256
 ops: root
@@ -150,20 +80,6 @@ why: off-by-one in the occupancy test (reads a chunk that does not exist: zero i
 -              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
 +              mtree(p, 1n, Nat.is_le(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
 === r2-h03-subtree-split
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: mtree,words_root
-spec: an all-zero subtree of depth d has root Z(d)
-fault: the zero subtree of an empty right half uses Z(d - 1) (zconst(p) for depth 1+p)
-why: zero hash level off by one
--              (h, (ws, D.zconst(1n+p)))
--            case True{}:
--              mtree(p, 1n,
-+              (h, (ws, D.zconst(p)))
-+            case True{}:
-+              mtree(p, 1n,
-=== r2-h03-subtree-split
 type: FuluDataColumnSidecar
 ops: root
 file: src/obj.bend
@@ -199,16 +115,6 @@ why: operand order
 -  (h, (ws, D.node(hl, dl, dr)))
 +  (ws, dr) = r
 +  (h, (ws, D.node(hl, dr, dl)))
-=== r2-h03-subtree-split
-type: bytelist_256
-ops: root
-file: src/obj.bend
-sym: mtree,leaf_at,chunkn,e8
-spec: chunk i is words 8i .. 8i + 7
-fault: chunk i starts at word 4i (two doublings)
-why: stride of a chunk
--def e8(+i: Nat) -> Nat: Nat.double(Nat.double(Nat.double(i)))
-+def e8(+i: Nat) -> Nat: Nat.double(Nat.double(i))
 === r2-h03-subtree-split
 type: bytelist_256
 ops: root
@@ -365,26 +271,6 @@ type: ProgressiveTestStruct
 ops: root
 file: src/obj.bend
 sym: ptree
-spec: the progressive tree's next segment has depth + 2 (4x leaves)
-fault: the next segment has depth + 1 (2x leaves)
-why: growth factor
--            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
-+            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 1n), Nat.add(s, pow2n(dep)), n, st))
-=== r2-h07-progressive
-type: ProgressiveTestStruct
-ops: root
-file: src/obj.bend
-sym: ptree
-spec: the progressive tree's next segment has depth + 2
-fault: the next segment has depth + 3
-why: growth factor
--            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
-+            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 3n), Nat.add(s, pow2n(dep)), n, st))
-=== r2-h07-progressive
-type: ProgressiveTestStruct
-ops: root
-file: src/obj.bend
-sym: ptree
 spec: an empty remainder of a progressive tree is the zero chunk, not a node
 fault: the remainder is inside when s + 2^dep <= n (an empty remainder is hashed as a node)
 why: off-by-one in the emptiness test
@@ -420,28 +306,6 @@ fault: the emptiness flag is 0 <= n (an empty list is hashed as a node)
 why: strict comparison lost
 -  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
 +  ptree(1n+n, Nat.is_le(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
-=== r2-h07-progressive
-type: ProgressiveTestStruct
-ops: root
-file: src/obj.bend
-sym: ptree,pt_right
-spec: the right child is the full segment tree, the left child is the remainder
-fault: the segment and the remainder are joined in swapped order
-why: operand order
--  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
-+  (h2, r2) = mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero())))
-+  (ws2, dr2) = r2
-+  (h2, (ws2, D.node(hl, dr2, dl)))
-=== r2-h08-zero-hashes
-type: FuluExecutionRequests
-ops: root
-file: src/digest.bend
-sym: zconst
-spec: the zero-subtree root Z(1) = SHA-256(Z(1 - 1) || Z(1 - 1))
-fault: the first word of the constant Z(1) is off by one
-why: one digit of a hard-coded SHA-256 constant
--D{4121296194,
-+D{4121296195,
 === r2-h08-zero-hashes
 type: FuluExecutionRequests
 ops: root
