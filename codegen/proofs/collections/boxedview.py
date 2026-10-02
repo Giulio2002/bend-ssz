@@ -13,9 +13,8 @@ replaced (view_seq.bend's induction over the items, the same `<list>_view_set` t
 import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
-import sys
-
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_single  # noqa: E402
 
 
 P_ = 'F.spec_common__pow2'
@@ -222,16 +221,7 @@ def text():
 
 
 def main():
-    t = text()
-    if '--check' in sys.argv:
-        if not OUT.exists() or OUT.read_text() != t:
-            print('stale: tfz_boxed.bend')
-            sys.exit(1)
-        print('boxedview: up to date')
-        return
-    if not OUT.exists() or OUT.read_text() != t:
-        OUT.write_text(t)
-    print('boxedview: proofs/obj/tfz_boxed.bend')
+    run_single('boxedview', OUT, text())
 
 
 if __name__ == '__main__':
