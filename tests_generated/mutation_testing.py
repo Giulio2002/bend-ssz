@@ -515,9 +515,9 @@ def lib_wide(S, a):
                     picked.append(pool[o].pop())
         imps = sorted((i for i in rev.get(f, ()) if i != f), key=lambda i: i.stat().st_size)[:2]
         # the spec pins (proofs/mutation_coverage/spec, codegen/proofs/mutation_coverage/spec_constants*.py) exist to fail a mutated
-        # spec constant: every one that imports the mutated file is a checker, whatever its size
+        # spec constant: every one whose import cone contains the mutated file is a checker, whatever its size
         pin_dir = (S / 'proofs/mutation_coverage/spec').resolve()
-        imps += sorted((i for i in rev.get(f, ()) if pin_dir in i.parents and i not in imps), key=lambda i: i.name)
+        imps += sorted((i for i in pin_dir.glob('*.bend') if i not in imps and f in cone_of(i)), key=lambda i: i.name)
         for st in picked:
             tasks.append({'file': f, 'site': st, 'checkers': [f] + imps, 'def': def_name(text, st[0])})
     # also check against the proof files that USE the mutated definition: a facade that names Schema10 fails when
