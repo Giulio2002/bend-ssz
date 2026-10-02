@@ -139,7 +139,7 @@ boundaries; `tests/layout.test.ts` checks `src/layout.bend` against `spec/layout
 `benchmarks/toolchain.json` (`BEND_RUNTIME` names it where it is not at the lock's path; on the
 ssz server `/srv/ssz-optimization/toolchain-2.0.34/bin/bend`) and fails on any failure,
 compile error or empty run; with no arguments it runs every `tests/**/*.test.ts`. Last run
-<!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
+<!-- fig:evidence_date -->2026-10-02<!-- /fig --> on the ssz server: <!-- fig:rt_tests -->3<!-- /fig --> tests, <!-- fig:rt_assertions -->2,694<!-- /fig --> assertions (`benchmarks/evidence/runtime_tests.json`). The thirteen older Bun tests of the
 list-model layer (`tests/new/`, with their helpers `tools/primitive_backend.ts` and
 `tools/generic_transport.ts`) were removed on 2026-09-30: each imported `types/fulu*.bend`,
 which the runtime compiler cannot compile as an entry (above), so none of them had run since the
