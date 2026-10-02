@@ -3,6 +3,7 @@ import ../../../../../src/obj.bend as O
 import ../../../../../types/bytelist_256_def_generated.bend as BL
 import ../../../../../types/bitlist_9_def_generated.bend as BB
 import ../../../../../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as WL
+import ../../../../../types/Fulu_list_bytevec_2048_4096_def_generated.bend as CL
 import ../../../../../types/FuluWithdrawalRequest_def_generated.bend as WD
 import ../../../../../benchmarks/compact/objio.bend as IOx
 
@@ -94,6 +95,23 @@ def c35() -> IO(Unit): wget("wl_get_at_len", WL.l16_WithdrawalRequest_get(wl_n(5
 def c36() -> IO(Unit): wget("wl_get_last_after_9", WL.l16_WithdrawalRequest_get(wl_n(9n), 8))
 def c37() -> IO(Unit): wlen("wl_len_after_16", WL.l16_WithdrawalRequest_len(wl_n(16n)))
 
+def c38() -> IO(Unit): bget("bits_get_0_after_true_push", BB.bits9_get(Pair.fst(O.Bits, Bool, BB.bits9_append(BB.bits9_default(), True{})), 0))
+def cells2() -> O.Words: O.Words{Array.new(U32, 11n, 0), 4096}
+def c39() -> IO(Unit): len_p("cells_len_3", CL.l4096_b2048_len(O.Words{Array.new(U32, 11n, 0), 6144}))
+def wlen_p(label: String, pair: O.Words & Maybe<&1, O.Words>) -> IO(Unit):
+  (o, m) = pair
+  match m:
+    case Some{O.Words{ws, +n}}: IO.print(label ++ "=some len " ++ U32.show(n))
+    case None{}: IO.print(label ++ "=none")
+def c40() -> IO(Unit): wlen_p("cells_get_1_len", CL.l4096_b2048_get(cells2(), 1))
+def set1() -> O.Words: Pair.fst(O.Words, Bool, CL.l4096_b2048_set(cells2(), 1, O.Words{Array.new(U32, 9n, 7), 2048}))
+def word0(label: String, pair: O.Words & Maybe<&1, O.Words>) -> IO(Unit):
+  (o, m) = pair
+  match m:
+    case Some{O.Words{ws, +n}}: IO.print(label ++ "=" ++ U32.show(Pair.snd(Array<U32>, U32, Array.get(U32, ws, 0))))
+    case None{}: IO.print(label ++ "=none")
+def c41() -> IO(Unit): word0("cells_word0_after_set_1", CL.l4096_b2048_get(set1(), 1))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: c1()
@@ -118,6 +136,10 @@ def dispatch(+c: U32) -> IO(Unit):
     case 25: c25()
     case 26: c26()
     case 27: c27()
+    case 38: c38()
+    case 39: c39()
+    case 40: c40()
+    case 41: c41()
     case 30: c30()
     case 31: c31()
     case 32: c32()

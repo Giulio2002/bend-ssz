@@ -14,6 +14,9 @@ import ../../../../../types/FuluCheckpoint_def_generated.bend as CpD
 import ../../../../../types/FuluCheckpoint_decode_ssz_generated.bend as CpR
 import ../../../../../types/ComplexTestStruct_def_generated.bend as CtD
 import ../../../../../types/ComplexTestStruct_encode_ssz_generated.bend as CtE
+import ../../../../../types/VarTestStruct_def_generated.bend as VD
+import ../../../../../types/VarTestStruct_encode_ssz_generated.bend as VE
+import ../../../../../types/list_uint16_1024_def_generated.bend as L16
 import ../../../../../benchmarks/compact/objio.bend as IOx
 
 # Round-2 validity probe: X_serialize of objects built with the public record constructors (each is invalid except the controls), the
@@ -56,6 +59,12 @@ def ct_line(pair: CtD.ComplexTestStruct & O.Encoded) -> IO(Unit):
   match e:
     case O.Encoded{ok, b}: IO.print("complex_default_serialize_ok=" ++ O.pick_str(ok) ++ " size=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
 def c13() -> IO(Unit): ct_line(CtE.ComplexTestStruct_serialize(CtD.ComplexTestStruct_default()))
+
+def vt(label: String, pair: VD.VarTestStruct & O.Encoded) -> IO(Unit):
+  (o, e) = pair
+  ok_s(label, e)
+def c14() -> IO(Unit): vt("vts_c_300", VE.VarTestStruct_serialize(VD.VarTestStruct{1, L16.l1024_u16_default(), 300}))
+def c15() -> IO(Unit): vt("vts_c_7_control", VE.VarTestStruct_serialize(VD.VarTestStruct{1, L16.l1024_u16_default(), 7}))
 
 def dispatch(+c: U32) -> IO(Unit):
   match c:
