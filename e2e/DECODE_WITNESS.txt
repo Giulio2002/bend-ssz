@@ -17,11 +17,11 @@ FuluExecutionPayloadHeader	witnessed
 FuluExecutionPayload	witnessed
 FuluExecutionRequests	witnessed
 FuluIndexedAttestation	witnessed
-FuluLightClientBootstrap	witnessed
+FuluLightClientBootstrap	witnessed (offsets-only skeleton, sym_skel.py)
 FuluLightClientFinalityUpdate	witnessed
 FuluLightClientHeader	witnessed
 FuluLightClientOptimisticUpdate	witnessed
-FuluLightClientUpdate	witnessed
+FuluLightClientUpdate	witnessed (offsets-only skeleton, sym_skel.py)
 FuluPendingAttestation	witnessed
 FuluSignedAggregateAndProof	witnessed
 FuluSignedBeaconBlock	witnessed

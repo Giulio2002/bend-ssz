@@ -34,10 +34,12 @@ TOO_BIG = {
 }
 # names whose witness is built from separate modules (one per costly hypothesis, each evaluated once, so each file stays under the
 # checker's time budget) and the symbolic length lemma (e2e/e2e_obytes_len_generated.bend); the file that applies the composed theorems imports them all
-BIG = ('FuluLightClientBootstrap', 'FuluLightClientUpdate')
+BIG = ()   # the shape for an input too large to evaluate: kept for a name the skeleton below cannot take
+# the names witnessed over the offsets-only skeleton by sym_skel.py (their witness files are its output)
+SKEL = ('FuluLightClientBootstrap', 'FuluLightClientUpdate')
 # of those, the names whose three theorems are applied in separate files (each with the acceptance proof it needs): one file with all three takes
 # over twice the time of the sum (measured on the update: 1327 s together; 456, 420 s apart)
-SPLIT = ('FuluLightClientUpdate',)
+SPLIT = ()
 
 
 # names whose input holds one element in every list: a default with an EMPTY last progressive list is no input the premise hPB can be evaluated at
@@ -259,6 +261,9 @@ def main():
         name = cp.name[:-len('_e2e_comp_generated.bend')]
         if only and name not in only:
             continue
+        if name in SKEL:
+            rows.append(f'{name}\twitnessed (offsets-only skeleton, sym_skel.py)')
+            continue
         if name in TOO_BIG or name in skip:
             rows.append(f'{name}\tpending: {TOO_BIG.get(name, "skipped")}')
             continue
@@ -286,7 +291,7 @@ def main():
                 p.write_text(t)
     if not only:
         for p in sorted(list(E2E.glob('*_e2e_decode_witness_generated.bend')) + list(E2E.glob('*_e2e_dwh_*_generated.bend'))):
-            if p not in outs:
+            if p not in outs and p.name not in {f'{n}_e2e_decode_witness_generated.bend' for n in SKEL}:
                 if check:
                     stale.append(p.name + ' (orphan)')
                 else:

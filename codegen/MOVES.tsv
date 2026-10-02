@@ -183,3 +183,4 @@ codegen/encset.py	codegen/proofs/collections/encset.py
 codegen/zero_run.py	codegen/proofs/witnesses/zero_run.py
 codegen/encset_w.py	codegen/proofs/collections/encset_w.py
 codegen/sym_decode.py	codegen/proofs/witnesses/sym_decode.py
+codegen/sym_skel.py	codegen/proofs/witnesses/sym_skel.py
