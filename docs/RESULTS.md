@@ -257,13 +257,19 @@ the proof term of a lemma, statement unchanged; 2 statement survivors, `e2e_mw` 
 bound, and `e2e_gvt` v2dD `shrn(8, 2n)` -> `shrn(9, 2n)`, the same value, both shown equivalent by fixer D), 9 too slow. **sha256**
 (sample of 10 files): 36 mutants, 34 killed, 2 survived, both out of scope (a test-vector statement `stream_correct` and the hex
 rendering `hex_digit`). **collections** (167 files): 616 mutants, 604 killed, 11 survived (all inside lemma proof terms), 1 too slow.
-**spec** (33 files, 8 per file, seed 20261016, final main): 232 mutants, 224 killed, **8 survived and I cannot show any of them
-equivalent**: `bit_root.bend:11:35` and `:11:28` (`chunk_limit`, `256n` -> `255n`, `255n` -> `256n`), `bit_root.bend:16:29`
-(`Pack.scan(.., 31n, ..)` -> `30n`), `fulu_schemas.bend:216:42` (Schema110, `2048n` -> `2049n`), `fulu_schemas.bend:26:41`
-(Schema10, `8n` -> `7n`), `root_relation.bend:163:128` (`ProgressiveList` `0n` -> `1n`), `tree.bend:29:35` (`zero_subtree(1n+p)` `1n` -> `2n`),
-`type_legality.bend:63:157` (`127n` -> `128n`). They are **CRITICAL** by the stated rule (not provably equivalent, in code the proofs must
-pin) and are open; the spec pass keeps finding new sites because each draw takes 8 sites per file of a transcription that has
-several hundred constants.
+**spec, exhaustive** (every mutation site of the 32 spec files that has one; main dc852a8f; checkers: the file, its two smallest importers,
+up to 3 proof files that mention the mutated definition, and every `specpin_*` module; 40 minute budget, 706 s used): 1049 mutants, 1018
+killed, **31 survived**, 0 too slow, 0 not run. An earlier sampled pass (232 mutants, 8 per file) had found 8 of them. **Open: pins in
+progress.** None is proved equivalent except the four progressive-limit sites, which are provisionally equivalent by fixer C's lemma
+(a progressive limit that only reaches a branch that ignores it; not yet verified for all four sites). The 31 (each pair is `+1`, `-1`):
+`bit_root.bend:11:28`, `:11:35` (`chunk_limit` `255n`/`256n`); `bit_root.bend:16:29` (`Pack.scan(.., 31n, ..)`, 2); `fulu_schemas.bend`
+Schema5 `16:40`, Schema10 `26:41`, Schema14 `44:40`, Schema23 `64:40`, Schema108 `213:49`, Schema110 `216:42` (a size or length constant of the
+type's schema, 12); `root_relation.bend:55:24` (2) and `:56:12` (`count`); `:147:49` (Null `zero_bytes(32n)`, 2); `root_relation.bend:143:52`,
+`:163:128` and `root_relation_serializable.bend:44:54`, `:64:181` (progressive aggregate limit `0n` -> `1n`, the four provisionally equivalent
+sites); `tree.bend:29:35` (`zero_subtree(1n+p)`, 2); `type_legality.bend:53:66`, `:57:71` (`0n` -> `1n` in `is_lt(0n, n)`: would make a length-1
+vector illegal), `:63:157`, `:64:99` (`127n` -> `128n`, the union field-count limit). The other 27 are **critical** (not shown equivalent, in
+code the proofs must pin). **The loop is not finished:** it stops when the pins for this list are on main and one confirming exhaustive
+pass leaves only survivors that are proved equivalent or documented as limitations.
 
 | pass | mutants | killed | survived | critical |
 | --- | --- | --- | --- | --- |
@@ -272,7 +278,7 @@ several hundred constants.
 | collections | 616 | 604 | 11 (proof terms) + 1 too slow | 0 |
 | e2e | 822 | 783 | 30 (28 proof terms, 2 equivalent) + 9 too slow | 0 |
 | sha256 (sample) | 36 | 34 | 2 (out of scope) | 0 |
-| spec (final main) | 232 | 224 | 8 | **8** |
+| spec, exhaustive (main dc852a8f) | 1049 | 1018 | 31 (4 provisionally equivalent) | **27, open** |
 
 **Final limitations.** (1) 9 e2e mutants exceeded the 120 s budget and are unjudged: `e2e_bbsl.bend:395:50`, `e2e_dbb.bend:153:1175`,
 `e2e_dbk.bend:72:3384` and `:64:210`, `e2e_dpx_tot.bend:60:3293`, `e2e_ml_l16_Deposit.bend:178:273`, `e2e_support.bend:18:87`,
