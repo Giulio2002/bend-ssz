@@ -22,6 +22,8 @@ from codegen.proofs.var.var_finish import finish  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.var import var_bits as VB  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
+from codegen.core.shared_var_b import Templates  # noqa: E402
+TPL = Templates('var_pbits', globals())
 
 
 def names():
@@ -56,11 +58,7 @@ def dec_text(X, p):
     # no bit limit: drop cC, hB, hdzK (and the storage bounds from the limit); the check's own
     # representation bound (len - 1 < 2^29, cL) bounds the storage instead, at any tree depth
     body = cut(body, 'def cC(', 'def c1(')
-    body = body.replace('def c1(', '''def cL(+t: FD.array__Tree<U32>, +n: U32, +h: {chk1(True{}, t, n) == True{} : Bool}, +nz: {U32.is_eq(V(t, n), 0) == False{} : Bool})
-    -> {@LT29 == True{} : Bool}:
-  FD.logic__subst(Bool, z => {O.bsel(z, False{}, O.bsel(True{}, True{}, Nat.is_le(BD(t, n), U32.to_nat(@N)))) == True{} : Bool}, U32.is_eq(V(t, n), 0), False{}, nz, h)
-
-def c1(''', 1)
+    body = body.replace('def c1(', TPL.text('dec_text'), 1)
     body = cut(body, '# n <= @BMAX: the checks bound the length.', 'def NBu(')
     # the reader: the storage depth from the check's bound, the zero array symbolically
     body = body.replace(''',
