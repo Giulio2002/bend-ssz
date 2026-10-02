@@ -873,6 +873,10 @@
     {
      "file": "zcapsym_uint256.bend",
      "law": "uint256_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_uint256.bend",
+     "law": "uint256_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1013,6 +1017,10 @@
     {
      "file": "zcapsym_Bytes1.bend",
      "law": "Bytes1_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes1.bend",
+     "law": "Bytes1_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1125,6 +1133,10 @@
     {
      "file": "zcapsym_Bytes4.bend",
      "law": "Bytes4_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes4.bend",
+     "law": "Bytes4_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1265,6 +1277,10 @@
     {
      "file": "zcapsym_Bytes32.bend",
      "law": "Bytes32_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes32.bend",
+     "law": "Bytes32_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1405,6 +1421,10 @@
     {
      "file": "zcapsym_Bytes48.bend",
      "law": "Bytes48_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes48.bend",
+     "law": "Bytes48_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1541,6 +1561,10 @@
     {
      "file": "zcapsym_Bytes96.bend",
      "law": "Bytes96_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes96.bend",
+     "law": "Bytes96_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1681,6 +1705,10 @@
     {
      "file": "zcapsym_Bytes8.bend",
      "law": "Bytes8_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes8.bend",
+     "law": "Bytes8_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -1821,6 +1849,10 @@
     {
      "file": "zcapsym_Bytes20.bend",
      "law": "Bytes20_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Bytes20.bend",
+     "law": "Bytes20_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -2317,6 +2349,10 @@
     {
      "file": "zcapsym_Hash32.bend",
      "law": "Hash32_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Hash32.bend",
+     "law": "Hash32_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -2453,6 +2489,10 @@
     {
      "file": "zcapsym_Version.bend",
      "law": "Version_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Version.bend",
+     "law": "Version_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -2589,6 +2629,10 @@
     {
      "file": "zcapsym_DomainType.bend",
      "law": "DomainType_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_DomainType.bend",
+     "law": "DomainType_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -2725,6 +2769,10 @@
     {
      "file": "zcapsym_BLSSignature.bend",
      "law": "BLSSignature_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_BLSSignature.bend",
+     "law": "BLSSignature_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -3001,6 +3049,10 @@
     {
      "file": "zcapsym_VersionedHash.bend",
      "law": "VersionedHash_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_VersionedHash.bend",
+     "law": "VersionedHash_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -3137,6 +3189,10 @@
     {
      "file": "zcapsym_G1Point.bend",
      "law": "G1Point_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_G1Point.bend",
+     "law": "G1Point_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -3273,6 +3329,10 @@
     {
      "file": "zcapsym_G2Point.bend",
      "law": "G2Point_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_G2Point.bend",
+     "law": "G2Point_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -4681,6 +4741,10 @@
     {
      "file": "zcapsym_Root.bend",
      "law": "Root_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Root.bend",
+     "law": "Root_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -5069,6 +5133,10 @@
     {
      "file": "zcapsym_ContributionAndProof.bend",
      "law": "ContributionAndProof_encode_capsym"
+    },
+    {
+     "file": "zflag_ContributionAndProof.bend",
+     "law": "ContributionAndProof_cf_flag"
     }
    ],
    "encode_spec": [
@@ -5189,6 +5257,10 @@
     {
      "file": "zcapsym_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_encode_capsym"
+    },
+    {
+     "file": "zflag_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_cf_flag"
     }
    ],
    "encode_spec": [
@@ -5829,6 +5901,10 @@
     {
      "file": "zcapsym_ProposerSlashing.bend",
      "law": "ProposerSlashing_encode_capsym"
+    },
+    {
+     "file": "zflag_ProposerSlashing.bend",
+     "law": "ProposerSlashing_cf_flag"
     }
    ],
    "encode_spec": [
@@ -7217,6 +7293,10 @@
     {
      "file": "zcapsym_ForkDigest.bend",
      "law": "ForkDigest_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_ForkDigest.bend",
+     "law": "ForkDigest_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -7353,6 +7433,10 @@
     {
      "file": "zcapsym_Domain.bend",
      "law": "Domain_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_Domain.bend",
+     "law": "Domain_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -7617,6 +7701,10 @@
     {
      "file": "zcapsym_BLSPubkey.bend",
      "law": "BLSPubkey_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_BLSPubkey.bend",
+     "law": "BLSPubkey_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -8236,6 +8324,10 @@
     {
      "file": "zcapsym_Deposit.bend",
      "law": "Deposit_encode_capsym"
+    },
+    {
+     "file": "zflag_Deposit.bend",
+     "law": "Deposit_cf_flag"
     }
    ],
    "encode_spec": [
@@ -8608,6 +8700,10 @@
     {
      "file": "zcapsym_NodeID.bend",
      "law": "NodeID_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_NodeID.bend",
+     "law": "NodeID_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -9462,6 +9558,10 @@
     {
      "file": "zcapsym_ExecutionAddress.bend",
      "law": "ExecutionAddress_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_ExecutionAddress.bend",
+     "law": "ExecutionAddress_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -10294,6 +10394,10 @@
     {
      "file": "zcapsym_PayloadId.bend",
      "law": "PayloadId_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_PayloadId.bend",
+     "law": "PayloadId_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -11679,6 +11783,10 @@
     {
      "file": "zcapsym_KZGCommitment.bend",
      "law": "KZGCommitment_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_KZGCommitment.bend",
+     "law": "KZGCommitment_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -12061,6 +12169,10 @@
     {
      "file": "zcapsym_KZGProof.bend",
      "law": "KZGProof_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_KZGProof.bend",
+     "law": "KZGProof_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -13085,6 +13197,10 @@
     {
      "file": "zcapsym_MatrixEntry.bend",
      "law": "MatrixEntry_encode_capsym"
+    },
+    {
+     "file": "zflag_MatrixEntry.bend",
+     "law": "MatrixEntry_cf_flag"
     }
    ],
    "encode_spec": [
@@ -25869,6 +25985,10 @@
     {
      "file": "zcapsym_bitvector_15.bend",
      "law": "bitvector_15_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_15.bend",
+     "law": "bitvector_15_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -25972,6 +26092,10 @@
     {
      "file": "zcapsym_bitvector_16.bend",
      "law": "bitvector_16_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_16.bend",
+     "law": "bitvector_16_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26079,6 +26203,10 @@
     {
      "file": "zcapsym_bitvector_17.bend",
      "law": "bitvector_17_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_17.bend",
+     "law": "bitvector_17_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26186,6 +26314,10 @@
     {
      "file": "zcapsym_bitvector_1.bend",
      "law": "bitvector_1_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_1.bend",
+     "law": "bitvector_1_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26293,6 +26425,10 @@
     {
      "file": "zcapsym_bitvector_2.bend",
      "law": "bitvector_2_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_2.bend",
+     "law": "bitvector_2_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26400,6 +26536,10 @@
     {
      "file": "zcapsym_bitvector_31.bend",
      "law": "bitvector_31_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_31.bend",
+     "law": "bitvector_31_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26503,6 +26643,10 @@
     {
      "file": "zcapsym_bitvector_32.bend",
      "law": "bitvector_32_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_32.bend",
+     "law": "bitvector_32_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26639,6 +26783,10 @@
     {
      "file": "zcapsym_bitvector_33.bend",
      "law": "bitvector_33_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_33.bend",
+     "law": "bitvector_33_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26746,6 +26894,10 @@
     {
      "file": "zcapsym_bitvector_3.bend",
      "law": "bitvector_3_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_3.bend",
+     "law": "bitvector_3_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26853,6 +27005,10 @@
     {
      "file": "zcapsym_bitvector_4.bend",
      "law": "bitvector_4_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_4.bend",
+     "law": "bitvector_4_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -26960,6 +27116,10 @@
     {
      "file": "zcapsym_bitvector_511.bend",
      "law": "bitvector_511_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_511.bend",
+     "law": "bitvector_511_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27063,6 +27223,10 @@
     {
      "file": "zcapsym_bitvector_512.bend",
      "law": "bitvector_512_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_512.bend",
+     "law": "bitvector_512_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27199,6 +27363,10 @@
     {
      "file": "zcapsym_bitvector_513.bend",
      "law": "bitvector_513_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_513.bend",
+     "law": "bitvector_513_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27306,6 +27474,10 @@
     {
      "file": "zcapsym_bitvector_5.bend",
      "law": "bitvector_5_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_5.bend",
+     "law": "bitvector_5_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27413,6 +27585,10 @@
     {
      "file": "zcapsym_bitvector_6.bend",
      "law": "bitvector_6_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_6.bend",
+     "law": "bitvector_6_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27520,6 +27696,10 @@
     {
      "file": "zcapsym_bitvector_7.bend",
      "law": "bitvector_7_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_7.bend",
+     "law": "bitvector_7_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27623,6 +27803,10 @@
     {
      "file": "zcapsym_bitvector_8.bend",
      "law": "bitvector_8_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_8.bend",
+     "law": "bitvector_8_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27730,6 +27914,10 @@
     {
      "file": "zcapsym_bitvector_9.bend",
      "law": "bitvector_9_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_bitvector_9.bend",
+     "law": "bitvector_9_cmp_pwd"
     }
    ],
    "encode_spec": [
@@ -27781,6 +27969,38 @@
     {
      "file": "var_codec_CompatibleUnionBC.bend",
      "law": "ok_eval"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_ok1_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_ok1_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_ok0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_ok0_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_rd1_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_rd1_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_rd0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionBC.bend",
+     "law": "CompatibleUnionBC_ua_rd0_f"
     }
    ],
    "decode_accept": [
@@ -27859,6 +28079,70 @@
     {
      "file": "var_codec_CompatibleUnionABCA.bend",
      "law": "ok_eval"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok3_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok3_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok2_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok2_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok1_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok1_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_ok0_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd3_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd3_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd2_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd2_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd1_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd1_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ua_rd0_f"
     }
    ],
    "decode_accept": [
@@ -27950,6 +28234,22 @@
     {
      "file": "var_codec_CompatibleUnionA.bend",
      "law": "ok_eval"
+    },
+    {
+     "file": "zuarm_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ua_ok0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ua_ok0_f"
+    },
+    {
+     "file": "zuarm_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ua_rd0_t"
+    },
+    {
+     "file": "zuarm_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ua_rd0_f"
     }
    ],
    "decode_accept": [
@@ -28187,6 +28487,10 @@
     {
      "file": "zcapsym_uint128.bend",
      "law": "uint128_encode_capsym"
+    },
+    {
+     "file": "zpwdcmp_uint128.bend",
+     "law": "uint128_cmp_pwd"
     }
    ],
    "encode_spec": [
