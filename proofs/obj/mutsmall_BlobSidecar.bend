@@ -1,6 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
 import ../../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
 import ../../types/FuluBlobSidecar_encode_ssz_generated.bend as FuluBlobSidecar_e
 
@@ -17,4 +19,8 @@ def BlobSidecar_ms_senc_out(out: Array<U32>, o: FuluBlobSidecar_d.BlobSidecar)
 
 def BlobSidecar_ms_encout(out: Array<U32>, o: FuluBlobSidecar_d.BlobSidecar)
     -> {FuluBlobSidecar_e.BlobSidecar_enc_out((out, o)) == (o, B.Buf{out, 131928}) : FuluBlobSidecar_d.BlobSidecar & B.Buf}:
+  {==}
+
+def BlobSidecar_ms_sizesym(index: O.U64, blob: O.Words, kzg_commitment: FuluBytes48_d.Bytes48, kzg_proof: FuluBytes48_d.Bytes48, signed_block_header: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, kzg_commitment_inclusion_proof: O.Words)
+    -> {Pair.snd(FuluBlobSidecar_d.BlobSidecar, U32, FuluBlobSidecar_e.BlobSidecar_size(FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof})) == 131928 : U32}:
   {==}

@@ -17,3 +17,6 @@ def HistoricalBatch__serialize_valid__HistoricalBatch_ms_senc_out(out: Array<U32
 def HistoricalBatch__serialize_valid__HistoricalBatch_ms_serdepth(o: FuluHistoricalBatch_d.HistoricalBatch) -> {FuluHistoricalBatch_e.HistoricalBatch_serialize(o) == FuluHistoricalBatch_e.HistoricalBatch_senc_out(FuluHistoricalBatch_e.HistoricalBatch_putk(O.out_at(17n), 0, o)) : FuluHistoricalBatch_d.HistoricalBatch & O.Encoded}:
   PRV.HistoricalBatch_ms_serdepth(o)
 
+def HistoricalBatch__serialize_valid__HistoricalBatch_ms_sizesym(block_roots: O.Words, state_roots: O.Words) -> {Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, U32, FuluHistoricalBatch_e.HistoricalBatch_size(FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots})) == 524288 : U32}:
+  PRV.HistoricalBatch_ms_sizesym(block_roots, state_roots)
+

@@ -3865,6 +3865,7 @@
    "op": "decode_ssz",
    "files": [
     "var_plist_proglist_bool_top.bend",
+    "zokf_proglist_bool.bend",
     "var_plist_proglist_bool_top_unique.bend",
     "offset_laws_proglist_bool.bend"
    ]
@@ -3885,6 +3886,7 @@
     "sub_vec_bool_16.bend",
     "wordpos_vec_bool_16.bend",
     "zcapsym_vec_bool_16.bend",
+    "zcmpeq_vec_bool_16.bend",
     "capacity_vec_bool_16.bend",
     "mutval_generic_vec_bool_16.bend",
     "mutconst_vec_bool_16.bend",
@@ -4051,6 +4053,7 @@
     "sub_vec_bool_4.bend",
     "wordpos_vec_bool_4.bend",
     "zcapsym_vec_bool_4.bend",
+    "zcmpeq_vec_bool_4.bend",
     "capacity_vec_bool_4.bend",
     "mutval_generic_vec_bool_4.bend",
     "mutconst_vec_bool_4.bend",
@@ -4184,6 +4187,7 @@
     "sub_vec_bool_8.bend",
     "wordpos_vec_bool_8.bend",
     "zcapsym_vec_bool_8.bend",
+    "zcmpeq_vec_bool_8.bend",
     "capacity_vec_bool_8.bend",
     "mutval_generic_vec_bool_8.bend",
     "mutconst_vec_bool_8.bend",
@@ -7923,6 +7927,7 @@
    "files": [
     "var_codec_CompatibleUnionABCA.bend",
     "var_codec_CompatibleUnionABCA_unique.bend",
+    "mutsmall_CompatibleUnionABCA.bend",
     "offset_laws_CompatibleUnionABCA.bend"
    ]
   },
@@ -7952,6 +7957,7 @@
    "files": [
     "var_codec_CompatibleUnionA.bend",
     "var_codec_CompatibleUnionA_unique.bend",
+    "mutsmall_CompatibleUnionA.bend",
     "offset_laws_CompatibleUnionA.bend"
    ]
   },

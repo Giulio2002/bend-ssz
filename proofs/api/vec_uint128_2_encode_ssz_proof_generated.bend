@@ -19,6 +19,9 @@ import ../../src/obj.bend as P2_O
 import ../obj/zcapsym_vec_uint128_2.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
+import ../compact/found.bend as P3_F
+import ../obj/arr_copy.bend as P3_AC
+import ../obj/zcmpeq_lib.bend as P3_ZL
 import ../obj/zcmpeq_vec_uint128_2.bend as P3_PRV
 import ../../src/buffer.bend as P4_B
 import ../../src/obj.bend as P4_O
@@ -46,29 +49,11 @@ def vec_uint128_2__encode_eval__vec_uint128_2_arith_putw() -> {vec_uint128_2_e.v
 def vec_uint128_2__encode_eval__vec_uint128_2_encode_capsym(o: P2_O.Words) -> {vec_uint128_2_e.vec_uint128_2_encode(o) == vec_uint128_2_e.vec_uint128_2_enc_out(vec_uint128_2_e.v2_u128_put(P2_O.out_at(3n), 0, o)) : P2_O.Words & P2_B.Buf}:
   P2_PRV.vec_uint128_2_encode_capsym(o)
 
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_a0(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 0, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 0, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_a0(x0, x1, x2, x3, x4, x5, x6, x7)
+def vec_uint128_2__encode_eval__vec_uint128_2_cmp_all(+pos: U32, +Q: Nat, +ds: Nat, +dd: Nat, +S: P3_F.array__Tree<U32>, +D: P3_F.array__Tree<U32>, +e3: {(pos .&. 3 : U32) == 0 : U32}, +eq: {U32.to_nat(U32.shrn(pos, 2n)) == Q : Nat}, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hA: {Nat.is_le(Nat.add(8n, 0n), P3_F.spec_common__pow2(ds)) == True{} : Bool}, +hB: {Nat.is_le(Nat.add(8n, Q), P3_F.spec_common__pow2(dd)) == True{} : Bool}, +ps: {P3_F.array__perfect(U32, ds, S) == True{} : Bool}, +pd: {P3_F.array__perfect(U32, dd, D) == True{} : Bool}) -> {vec_uint128_2_e.v2_u128_put(P3_F.array__thaw(U32, D), pos, P3_O.Words{P3_F.array__thaw(U32, S), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_F.array__thaw(U32, D), pos, P3_F.array__thaw(U32, S), 32) : Array<U32> & P3_O.Words}:
+  P3_PRV.vec_uint128_2_cmp_all(pos, Q, ds, dd, S, D, e3, eq, hs, hdd, hA, hB, ps, pd)
 
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_a1(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 4, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 4, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_a1(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_a2(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 8, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 8, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_a2(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_a3(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 12, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 12, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_a3(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_a8(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 32, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_a8(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_u5(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 5, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 5, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_u5(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_u6(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 6, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 6, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_u6(x0, x1, x2, x3, x4, x5, x6, x7)
-
-def vec_uint128_2__encode_eval__vec_uint128_2_cmp_u7(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint128_2_e.v2_u128_put(P3_O.out_at(4n), 7, P3_O.Words{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32}) == vec_uint128_2_e.v2_u128_pw(False{}, P3_O.out_at(4n), 7, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, P3_O.out_at(3n), 0, x0), 1, x1), 2, x2), 3, x3), 4, x4), 5, x5), 6, x6), 7, x7), 32) : Array<U32> & P3_O.Words}:
-  P3_PRV.vec_uint128_2_cmp_u7(x0, x1, x2, x3, x4, x5, x6, x7)
+def vec_uint128_2__encode_eval__vec_uint128_2_cmp_unal(out: Array<U32>, ws: Array<U32>, +pos: U32, +n: U32, +eu: {U32.is_eq((pos .&. 3 : U32), 0) == False{} : Bool}) -> {vec_uint128_2_e.v2_u128_put(out, pos, P3_O.Words{ws, n}) == vec_uint128_2_e.v2_u128_pw(False{}, out, pos, ws, n) : Array<U32> & P3_O.Words}:
+  P3_PRV.vec_uint128_2_cmp_unal(out, ws, pos, n, eu)
 
 def vec_uint128_2__encode_spec__vec_uint128_2_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> P0_Decoding.decodes(P0_Spec.vec_uint128_2(), P0_F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), P0_S.Sequence{P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x0, x1, x2, x3, 0, 0, 0, 0}}, P0_S.Items{P0_S.UnsignedValue{P0_P.UInt{x4, x5, x6, x7, 0, 0, 0, 0}}, P0_S.EmptyItems{}}}}):
   P0_PRV.vec_uint128_2_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7)

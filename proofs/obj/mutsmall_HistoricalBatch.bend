@@ -18,3 +18,7 @@ def HistoricalBatch_ms_senc_out(out: Array<U32>, o: FuluHistoricalBatch_d.Histor
 def HistoricalBatch_ms_encout(out: Array<U32>, o: FuluHistoricalBatch_d.HistoricalBatch)
     -> {FuluHistoricalBatch_e.HistoricalBatch_enc_out((out, o)) == (o, B.Buf{out, 524288}) : FuluHistoricalBatch_d.HistoricalBatch & B.Buf}:
   {==}
+
+def HistoricalBatch_ms_sizesym(block_roots: O.Words, state_roots: O.Words)
+    -> {Pair.snd(FuluHistoricalBatch_d.HistoricalBatch, U32, FuluHistoricalBatch_e.HistoricalBatch_size(FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots})) == 524288 : U32}:
+  {==}

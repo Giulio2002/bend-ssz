@@ -55,13 +55,13 @@ CORE = KINDS[:9]
 # law-name forms per kind (<X> the name; bare names are the per-name modules' laws)
 LAW_FORMS = {
     'root': [r'<X>_root_correct'],
-    'ok_eval': [r'ok_eval', r'<X>_ok_eval'],
+    'ok_eval': [r'ok_eval', r'<X>_ok_eval', r'<X>_okf_len'],
     'decode_accept': [r'decode_accept', r'<X>_spec_decode', r'<X>_spec_decode_[01]', r'<X>_arith_dec'],
     'decode_spec': [r'decode_spec', r'<X>_spec_decoded', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode', r'<X>_spec_value'],
     'decode_unique': [r'decode_unique', r'<X>_spec_unique', r'<X>_spec_unique_[01]'],
     'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside', r'<X>_decode_reject'],
     'decode_none': [r'decode_none', r'<X>_spec_reject', r'<X>_spec_reject_(bool|pad)', r'<X>_spec_decode_reject'],
-    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym', r'<X>_cmp_[au]\d+'],
+    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym', r'<X>_cmp_(all|unal)'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
     'roundtrip': [r'<X>(_[tf])?_roundtrip'],
     'encoded_size': [r'<X>(_[tf])?_encoded_size'],
@@ -84,7 +84,8 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'root':
         return 'RR.roots(' in concl and f'T.{X}_hash_tree_root(' in concl
     if kind == 'ok_eval':
-        return concl.startswith(f'{{T.{X}_ok(') or (X in VALIDATOR and concl.startswith(f'{{T.{VALIDATOR[X]}_ok('))
+        return (concl.startswith(f'{{T.{X}_ok(') or (X in VALIDATOR and concl.startswith(f'{{T.{VALIDATOR[X]}_ok('))
+                or (X in VALIDATOR and concl.startswith(f'{{T.{VALIDATOR[X]}_ok_len(False')))
     if kind in ('decode_accept', 'decode_input', 'decode_tree'):
         return concl.startswith('{' + dec) and 'Some{' in concl
     if kind in ('decode_none', 'reject_short', 'reject_long'):
@@ -239,7 +240,7 @@ def scan():
                 xs.add(n[:-len('_ok_eval')])
             if n.endswith('_serialize_vsym'):     # codegen/proofs/laws/mutation_laws_validity.py: the statement names the validity pass
                 xs.add(n[:-len('_serialize_vsym')])
-            ma = re.match(r'(\w+?)_(?:arith|cmp)_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
+            ma = re.match(r'(\w+?)_(?:arith|cmp|okf)_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
@@ -257,7 +258,7 @@ def scan():
                 X = f.stem[len(pre.group(0)):]
                 mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
-                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1) in ('dec', 'build') else 'serialize_valid'), (f.name, n)))
+                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (f.name, n)))
     for key, v in late:      # after every other law: the bridges read the first law of a kind
         ent.setdefault(key, []).append(v)
     return fulu, gen, ent, parsed
