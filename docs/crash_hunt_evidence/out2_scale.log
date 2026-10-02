@@ -1,0 +1,22 @@
+no ExecutionPayload zero seed of 528 bytes; skipped (seed len None)
+{"verdict": "ACCEPT", "sec": 0.07, "maxrss_mb": 235, "input_mb": 0.06, "type": "proglist_uint8", "label": "bytes 2^16"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 1.0, "type": "proglist_uint8", "label": "bytes 2^20"}
+{"verdict": "ACCEPT", "sec": 0.77, "maxrss_mb": 235, "input_mb": 16.0, "type": "proglist_uint8", "label": "bytes 2^24"}
+{"verdict": "ACCEPT", "sec": 4.48, "maxrss_mb": 388, "input_mb": 128.0, "type": "proglist_uint8", "label": "bytes 2^27"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 0.06, "type": "proglist_uint64", "label": "u64 2^16 bytes"}
+{"verdict": "ACCEPT", "sec": 0.07, "maxrss_mb": 235, "input_mb": 0.06, "type": "proglist_bool", "label": "bool 2^16 bytes"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 0.06, "type": "progbitlist", "label": "bits 2^16 bytes"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 1.0, "type": "proglist_uint64", "label": "u64 2^20 bytes"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 1.0, "type": "proglist_bool", "label": "bool 2^20 bytes"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 1.0, "type": "progbitlist", "label": "bits 2^20 bytes"}
+{"verdict": "ACCEPT", "sec": 0.41, "maxrss_mb": 235, "input_mb": 8.0, "type": "proglist_uint64", "label": "u64 2^23 bytes"}
+{"verdict": "ACCEPT", "sec": 0.42, "maxrss_mb": 235, "input_mb": 8.0, "type": "proglist_bool", "label": "bool 2^23 bytes"}
+{"verdict": "ACCEPT", "sec": 0.42, "maxrss_mb": 235, "input_mb": 8.0, "type": "progbitlist", "label": "bits 2^23 bytes"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 0.06, "type": "Transaction", "label": "bytes 2^16"}
+{"verdict": "ACCEPT", "sec": 0.06, "maxrss_mb": 235, "input_mb": 1.0, "type": "Transaction", "label": "bytes 2^20"}
+{"verdict": "ACCEPT", "sec": 0.67, "maxrss_mb": 235, "input_mb": 16.0, "type": "Transaction", "label": "bytes 2^24"}
+no program for proglist_SmallTestStruct
+no program for proglist_SmallTestStruct
+no program for proglist_VarTestStruct
+no program for proglist_VarTestStruct
+no program for proglist_VarTestStruct

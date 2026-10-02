@@ -1,0 +1,114 @@
+{
+  "audit": "crash-hunt",
+  "branch": "agent/crash-hunt",
+  "base": "origin/main b1764b5a8",
+  "counts": {"total": 9, "CRASH": 3, "WRONG": 5, "INFO": 1, "OK_suites": 5},
+  "ok_suites": [
+    {"id": "OK-1", "what": "hostile _decode, 240 names, byte-level mutators", "runs": 40508, "crash": 0, "wrong": 0},
+    {"id": "OK-2", "what": "mutation driver (set_elem/append/set_field) with extreme indices and seeds", "runs": 10656, "crash": 0, "wrong": 0},
+    {"id": "OK-3", "what": "large and wide inputs, count bomb of 2^20 empty transactions", "runs": 25, "crash": 0, "wrong": 0},
+    {"id": "OK-4", "what": "cached root vs plain root, boundaries and index 2^32-1", "runs": 30, "crash": 0, "wrong": 0},
+    {"id": "OK-5", "what": "serialize refuses objects whose storage is smaller than the length (uint8 300, 2^32-1 claims)", "runs": 4, "crash": 0, "wrong": 0}
+  ],
+  "findings": [
+    {
+      "id": "CH-01", "severity": "high", "class": "WRONG",
+      "entry_point": "Fulu_list_bytevec_2048_4096: l4096_b2048_set(o, i, v) and l4096_b2048_append(o, v) (DataColumnSidecar.column)",
+      "input": "v : O.Words of length 0, 64 or 4096 bytes into a List[Cell, 4096] whose storage is 4096 bytes",
+      "repro": "SSZ_CASE=1 (v.n=0), 2 (v.n=4096 at index 1), 3 (v.n=64), 4 (append v.n=0) of build/ch/pa from tools/crash_hunt/pa_objects.bend; observed: set_ok=1 in all four; case 1 and 4 loop 2^32 times (3 s); case 2 corrupts element 0 (cell_w0=4294967295)",
+      "call_chain": "l4096_b2048_set -> set_n -> put_at (types/Fulu_list_bytevec_2048_4096_def_generated.bend:43) -> O.words_blit (src/obj.bend:1354) -> bl_go count ((n+3)>>2)-1 underflows for n=0; copies by the length of v, not of the element",
+      "why": "the setter guards only i < len; words_blit trusts the source length and underflows its loop count at 0",
+      "fix_proposal": "generator codegen/impl/typed_object_runtime.py:703-704,737: guard put_at with Bool.and(U32.is_lt(i,n), U32.is_eq(words_len(v), es)); harden O.words_blit to copy exactly es/4 words (constant count, no n-1)",
+      "proof_impact": "guard text of set/append of the bytevec_2048_4096 collection is stated by generated coll_api laws (public statements in e2e/STATEMENTS.txt): regenerate and refresh the lock for that collection only; words_blit hardening alone changes no statement",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-02", "severity": "medium", "class": "CRASH",
+      "entry_point": "<Name>_encode(o) of every variable-size name without a literal output depth (e.g. proglist_uint8_encode)",
+      "input": "O.Words{Array.new(U32,2n,0), 1000} (16-byte storage, length 1000) and O.Words{..., 4294967295}",
+      "repro": "SSZ_CASE=7 SSZ_ARG=1000 / 4294967295 build/ch/pa: encode_size=2147483648 (a 2 GiB allocation, 1 s) / encode_size=4294967295 over a one-word array",
+      "call_chain": "X_encode -> X_enc_sized(X_size(o)) -> O.out_new(n) (src/obj.bend:690) -> B.zeros_bytes (src/buffer.bend:401): the size pass returns poison 2^31 and the plain (non-serialize) path allocates it; (n+3)>>2 wraps for n >= 2^32-3",
+      "why": "only the serialize variant tests O.is_poisoned(n) before allocating",
+      "fix_proposal": "typed_object_runtime.py:3098-3128 plain enc_sized: test O.is_poisoned(n) first and return an empty buffer; or document _encode as requiring X_valid(o)",
+      "proof_impact": "_e2e_encode bridges are stated under rep and lack the bound size < 2^31; an added branch needs it (medium to high); the documentation option has none",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-03", "severity": "medium", "class": "CRASH",
+      "entry_point": "<Name>_hash_tree_root(h, o) of every name holding O.Words or O.Bits",
+      "input": "O.Words{Array.new(U32,2n,0), n} with n = 2^30 / 2^32-1; O.Bits{..., 2^32-1}",
+      "repro": "SSZ_CASE=6 SSZ_ARG=1073741824 (19 s), 4294967295 (75 s) build/ch/pa; SSZ_CASE=11 SSZ_ARG=4294967295 (10 s, bit list)",
+      "call_chain": "X_hash_tree_root -> X_root -> O.words_root (src/obj.bend:897) / O.bits_root (1012) -> mtree over chunks_of(n) leaves reading masked words",
+      "why": "the chunk count comes from the claimed length; the storage capacity is never consulted",
+      "fix_proposal": "clamp the chunk count in words_root, words_root_prog, bits_root, bits_root_prog, elems_root, elems_root_prog to the storage capacity (min(chunks_of(n), cap_words/8)); the value for every valid object is unchanged",
+      "proof_impact": "root laws assume rep (capacity >= chunks): the clamp equals chunks_of(n) under rep; one extra equation per law family, no statement changes",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-04", "severity": "medium", "class": "WRONG",
+      "entry_point": "progbitlist_append (pbits_append); bitsN_append guard n+1 <= N; pl_u8_append",
+      "input": "a valid 536870912-byte progressive bit list (decodes to 4294967295 bits), then append; Bitlist[2048] object claiming 4294967295 bits",
+      "repro": "SSZ_CASE=3 SSZ_ARG=536870912 SSZ_DEPTH=27 SSZ_FILL=2155905152 build/ch/pc (tools/crash_hunt/pc_bigdecode.bend): append_ok=1 bits_after=0; SSZ_CASE=8 and 9 of build/ch/pa; SSZ_CASE=14 SSZ_ARG=4294967295",
+      "call_chain": "pbits_append -> pbits_app_n (guard True{}) -> pbits_push -> O.bits_push (src/obj.bend:1303): (k + 1 : U32) wraps to 0",
+      "why": "append guards compute (n + 1 : U32) without overflow protection",
+      "fix_proposal": "generator typed_object_runtime.py:739,796,870,1980 (within('(n + 1 : U32)', limit)): finite limit U32.is_lt(n, N); no limit Bool.not(U32.is_eq(n, 4294967295)); same for (n+1)*es in grow",
+      "proof_impact": "the stated guard of C_append changes form (equivalent below 2^32-1); coll_api append laws are regenerated; one lemma n+1<=N <=> n<N without wrap",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-05", "severity": "low", "class": "WRONG",
+      "entry_point": "X_decode of big byte or packed lists (proglist_*, Fulu_list_uint8_1099511627776, ...) at sizes 2^32-31 .. 2^32-1; O.words_new(n); B.alloc(n)",
+      "input": "4294967295 and 4294967280 bytes",
+      "repro": "SSZ_CASE=1 SSZ_ARG=4294967295|4294967280 SSZ_DEPTH=30 SSZ_FILL=1431655765 build/ch/pc: decode=some len=<n> with an 8-word storage",
+      "call_chain": "X_decode -> X_ok (no upper bound for big lists) -> X_read -> O.copy_in -> O.zeros_for/depth_for (src/obj.bend:50-56): (n+31) and (n+3) wrap; also B.capacity/zeros_bytes/alloc (src/buffer.bend:209,401,522)",
+      "why": "ceil computations in U32 wrap near 2^32",
+      "fix_proposal": "wrap-free ceilings as bits_nbytes does; or add U32.is_le(len, 4294967264) to _ok of big lists",
+      "proof_impact": "ceiling lemmas are stated under n < 2^31 and hold for the wrap-free form; the _ok conjunct changes l*_ok statements of the 6 big-list names",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-06", "severity": "low", "class": "WRONG",
+      "entry_point": "<Name>_decode(buf, size)",
+      "input": "B.empty() (one-word array) with size 40 for Checkpoint",
+      "repro": "SSZ_CASE=1 build/ch/pb (tools/crash_hunt/pb_api.bend): decode_empty_buf_size40=some",
+      "call_chain": "X_decode (typed_object_runtime.py:3041) -> X_ok(buf, 0, size): reads past the buffer wrap through the Array.get mask",
+      "why": "size is a second, unchecked copy of B.size(buf)",
+      "fix_proposal": "X_decode adds U32.is_le(size, B.size(buf)) and returns None otherwise",
+      "proof_impact": "decode witnesses use alloc(n) with size n (n <= n holds); general decode bridges need the premise n <= size(buf)",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-07", "severity": "low", "class": "WRONG",
+      "entry_point": "<Name>_serialize(o) for objects of 2^31 bytes or more; composite lists with n*es >= 2^32",
+      "input": "a valid 2147483648-byte progressive byte list; (reasoned) 35,495,598 Validators",
+      "repro": "SSZ_CASE=15 SSZ_ARG=2147483647 -> ok=1; SSZ_ARG=2147483648 -> ok=0 (build/ch/pa)",
+      "call_chain": "X_serialize -> X_size (O.words_sizek / l*_szf) -> padd/is_poisoned: bit 31 of a size is the invalid marker; n*es wraps without it",
+      "why": "size and invalid flag share one U32",
+      "fix_proposal": "separate flag or wider size; fail closed for n*es >= 2^32 (is_le(n, 2^32/es))",
+      "proof_impact": "the writer-size bound is an open item already (docs/PREMISES.md section 1); the fix states it; low for proofs",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-08", "severity": "info", "class": "INFO",
+      "entry_point": "<Name>_hash_tree_root(h, o) on objects outside their type",
+      "input": "SmallTestStruct{70000, 5} (uint16 field); ContributionAndProof with O.BNone{} box",
+      "repro": "SSZ_CASE=2,3,6,7 build/ch/pb: root(70000) != root(4464); root(box BNone) != root(default box); SSZ_CASE=4: serialize refuses",
+      "call_chain": "X_hash_tree_root -> X_root -> u32_chunk / bx_root (BNone -> D.zero())",
+      "why": "no error channel; the checked entry is _serialize/_valid",
+      "fix_proposal": "document the precondition X_valid(o), or add _hash_tree_root_checked returning Maybe",
+      "proof_impact": "none (new symbol) or documentation",
+      "status": "reported, not fixed"
+    },
+    {
+      "id": "CH-09", "severity": "low", "class": "CRASH",
+      "entry_point": "<Name>_build(buf, size) and <Name>_read(buf, off, len) (unchecked reader, public symbols)",
+      "input": "4 bytes: first offset word 4096 (count 1024) .. 0xFFFFFFFC for List[Attestation, 8] read without _ok",
+      "repro": "SSZ_ARG=4096|4294967292 build/ch/pe (tools/crash_hunt/pe_build.bend): bend: out of memory after 11..33 s",
+      "call_chain": "l8_Attestation_read -> rv_count (count = first >> 2 unchecked) -> fill(cap(n)) and per-element reads over unvalidated windows",
+      "why": "precondition X_ok not enforced; the symbol is exported",
+      "fix_proposal": "rename to X_unchecked_build/X_unchecked_read in the generator, or document the precondition",
+      "proof_impact": "none for a rename: the e2e statements call _decode",
+      "status": "reported, not fixed"
+    }
+  ]
+}

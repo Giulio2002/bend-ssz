@@ -1,0 +1,7 @@
+{"verdict": "ACCEPT", "sec": 0.05, "maxrss_mb": 13, "input_mb": 0.0, "type": "ExecutionPayload", "label": "0 empty transactions (offset table 0 bytes)"}
+{"verdict": "ACCEPT", "sec": 0.05, "maxrss_mb": 13, "input_mb": 0.0, "type": "ExecutionPayload", "label": "1 empty transactions (offset table 4 bytes)"}
+{"verdict": "ACCEPT", "sec": 0.05, "maxrss_mb": 13, "input_mb": 0.0, "type": "ExecutionPayload", "label": "1024 empty transactions (offset table 4096 bytes)"}
+{"verdict": "ACCEPT", "sec": 0.15, "maxrss_mb": 15, "input_mb": 0.25, "type": "ExecutionPayload", "label": "65536 empty transactions (offset table 262144 bytes)"}
+{"verdict": "ACCEPT", "sec": 1.91, "maxrss_mb": 99, "input_mb": 4.0, "type": "ExecutionPayload", "label": "1048576 empty transactions (offset table 4194304 bytes)"}
+{"verdict": "CRASH(rc=1 DECODED=0 )", "sec": 0.05, "maxrss_mb": 31, "input_mb": 4.0, "type": "ExecutionPayload", "label": "1048577 empty transactions (offset table 4194308 bytes)"}
+{"verdict": "CRASH(rc=1 DECODED=0 )", "sec": 0.16, "maxrss_mb": 46, "input_mb": 16.0, "type": "ExecutionPayload", "label": "4194304 empty transactions (offset table 16777216 bytes)"}
