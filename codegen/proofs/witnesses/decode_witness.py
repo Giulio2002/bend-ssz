@@ -36,7 +36,7 @@ TOO_BIG = {
 # checker's time budget) and the symbolic length lemma (e2e/e2e_obytes_len_generated.bend); the file that applies the composed theorems imports them all
 BIG = ()   # the shape for an input too large to evaluate: kept for a name the skeleton below cannot take
 # the names witnessed over the offsets-only skeleton by sym_skel.py (their witness files are its output)
-SKEL = ('FuluLightClientBootstrap', 'FuluLightClientUpdate')
+SKEL = ('FuluLightClientBootstrap', 'FuluLightClientUpdate', 'FuluLightClientFinalityUpdate', 'FuluLightClientOptimisticUpdate')
 # of those, the names whose three theorems are applied in separate files (each with the acceptance proof it needs): one file with all three takes
 # over twice the time of the sum (measured on the update: 1327 s together; 456, 420 s apart)
 SPLIT = ()

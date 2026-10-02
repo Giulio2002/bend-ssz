@@ -161,7 +161,60 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/vuw.bend as UW
 import ../proofs/obj/vcopy.bend as VC
 import ../spec/primitives.bend as SP
+import ../src/buffer.bend as B
 import ./e2e_load.bend as L
+"""
+
+# one step of the chain (a zero run or a four-byte word in front of a tail R), each over variables: the tail is a parameter, so nothing is
+# compared or evaluated through the concrete bytes behind it
+STEP_LEMMAS = r"""
+def and_t(+x: Bool, +y: Bool, +hx: {x == True{} : Bool}) -> {Bool.and(x, y) == y : Bool}:
+  match x:
+    case True{}: {==}
+    case False{}: Empty.absurd({Bool.and(x, y) == y : Bool}, FD.logic__false_true(hx))
+
+def dom1(+a: U32, +t: +List<U32>, +h: {U32.is_lt(a, 256) == True{} : Bool}) -> {SP.bytes_domain(Con{a, t}) == SP.bytes_domain(t) : Bool}:
+  and_t(U32.is_lt(a, 256), SP.bytes_domain(t), h)
+
+def dom_ws(+b0: U32, +b1: U32, +b2: U32, +b3: U32, +R: +List<U32>, +h0: {U32.is_lt(b0, 256) == True{} : Bool}, +h1: {U32.is_lt(b1, 256) == True{} : Bool},
+    +h2: {U32.is_lt(b2, 256) == True{} : Bool}, +h3: {U32.is_lt(b3, 256) == True{} : Bool}, +h: {SP.bytes_domain(R) == True{} : Bool})
+    -> {SP.bytes_domain(Con{b0, Con{b1, Con{b2, Con{b3, R}}}}) == True{} : Bool}:
+  Equal.trans(Bool, SP.bytes_domain(Con{b0, Con{b1, Con{b2, Con{b3, R}}}}), SP.bytes_domain(Con{b1, Con{b2, Con{b3, R}}}), True{}, dom1(b0, Con{b1, Con{b2, Con{b3, R}}}, h0),
+    Equal.trans(Bool, SP.bytes_domain(Con{b1, Con{b2, Con{b3, R}}}), SP.bytes_domain(Con{b2, Con{b3, R}}), True{}, dom1(b1, Con{b2, Con{b3, R}}, h1),
+      Equal.trans(Bool, SP.bytes_domain(Con{b2, Con{b3, R}}), SP.bytes_domain(Con{b3, R}), True{}, dom1(b2, Con{b3, R}, h2),
+        Equal.trans(Bool, SP.bytes_domain(Con{b3, R}), SP.bytes_domain(R), True{}, dom1(b3, R, h3), h))))
+
+def dom_zs(+m: Nat, +R: +List<U32>, +h: {SP.bytes_domain(R) == True{} : Bool}) -> {SP.bytes_domain(List.append(&2, U32, UW.ZB(m), R)) == True{} : Bool}:
+  Equal.trans(Bool, SP.bytes_domain(List.append(&2, U32, UW.ZB(m), R)), SP.bytes_domain(R), True{}, zr_dom(m, R), h)
+
+def wlp_ws(+b0: U32, +b1: U32, +b2: U32, +b3: U32, +R: +List<U32>, +W: List<&2, U32>, +h: {L.wlp(R) == W : List<&2, U32>})
+    -> {L.wlp(Con{b0, Con{b1, Con{b2, Con{b3, R}}}}) == Con{B.word_of(b0, b1, b2, b3), W} : List<&2, U32>}:
+  Equal.trans(List<&2, U32>, L.wlp(Con{b0, Con{b1, Con{b2, Con{b3, R}}}}), Con{B.word_of(b0, b1, b2, b3), L.wlp(R)}, Con{B.word_of(b0, b1, b2, b3), W}, {==},
+    Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{B.word_of(b0, b1, b2, b3), z}, L.wlp(R), W, h))
+
+def wlp_zs(+Q: Nat, +R: +List<U32>, +W: List<&2, U32>, +h: {L.wlp(R) == W : List<&2, U32>})
+    -> {L.wlp(List.append(&2, U32, UW.ZB(A.quad(Q)), R)) == List.append(&2, U32, ZW(Q), W) : List<&2, U32>}:
+  Equal.trans(List<&2, U32>, L.wlp(List.append(&2, U32, UW.ZB(A.quad(Q)), R)), List.append(&2, U32, ZW(Q), L.wlp(R)), List.append(&2, U32, ZW(Q), W), zr_wlp(Q, R),
+    Equal.cong(List<&2, U32>, List<&2, U32>, z => List.append(&2, U32, ZW(Q), z), L.wlp(R), W, h))
+
+def len_ws(+b0: U32, +b1: U32, +b2: U32, +b3: U32, +Nn: U32, +R: +List<U32>, +hl: {List.length(&2, U32, R) == U32.to_nat(Nn) : Nat},
+    +ha: {Nat.is_le(Nat.add(U32.to_nat(4), U32.to_nat(Nn)), U32.to_nat((4 + Nn : U32))) == True{} : Bool})
+    -> {List.length(&2, U32, Con{b0, Con{b1, Con{b2, Con{b3, R}}}}) == U32.to_nat((4 + Nn : U32)) : Nat}:
+  Equal.trans(Nat, List.length(&2, U32, Con{b0, Con{b1, Con{b2, Con{b3, R}}}}), Nat.add(4n, U32.to_nat(Nn)), U32.to_nat((4 + Nn : U32)),
+    Equal.cong(Nat, Nat, z => Nat.add(4n, z), List.length(&2, U32, R), U32.to_nat(Nn), hl),
+    Equal.sym(Nat, U32.to_nat((4 + Nn : U32)), Nat.add(U32.to_nat(4), U32.to_nat(Nn)), A.add_le(4, Nn, (4 + Nn : U32), ha)))
+
+def len_zs(+g: U32, +Nn: U32, +R: +List<U32>, +hl: {List.length(&2, U32, R) == U32.to_nat(Nn) : Nat},
+    +hq: {U32.to_nat(g) == A.quad(U32.to_nat(U32.shrn(g, 2n))) : Nat},
+    +ha: {Nat.is_le(Nat.add(U32.to_nat(g), U32.to_nat(Nn)), U32.to_nat((g + Nn : U32))) == True{} : Bool})
+    -> {List.length(&2, U32, List.append(&2, U32, UW.ZB(A.quad(U32.to_nat(U32.shrn(g, 2n)))), R)) == U32.to_nat((g + Nn : U32)) : Nat}:
+  Equal.trans(Nat, List.length(&2, U32, List.append(&2, U32, UW.ZB(A.quad(U32.to_nat(U32.shrn(g, 2n)))), R)), Nat.add(A.quad(U32.to_nat(U32.shrn(g, 2n))), List.length(&2, U32, R)), U32.to_nat((g + Nn : U32)),
+    zr_len(A.quad(U32.to_nat(U32.shrn(g, 2n))), R),
+    Equal.trans(Nat, Nat.add(A.quad(U32.to_nat(U32.shrn(g, 2n))), List.length(&2, U32, R)), Nat.add(A.quad(U32.to_nat(U32.shrn(g, 2n))), U32.to_nat(Nn)), U32.to_nat((g + Nn : U32)),
+      Equal.cong(Nat, Nat, z => Nat.add(A.quad(U32.to_nat(U32.shrn(g, 2n))), z), List.length(&2, U32, R), U32.to_nat(Nn), hl),
+      Equal.trans(Nat, Nat.add(A.quad(U32.to_nat(U32.shrn(g, 2n))), U32.to_nat(Nn)), Nat.add(U32.to_nat(g), U32.to_nat(Nn)), U32.to_nat((g + Nn : U32)),
+        Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(Nn)), A.quad(U32.to_nat(U32.shrn(g, 2n))), U32.to_nat(g), Equal.sym(Nat, U32.to_nat(g), A.quad(U32.to_nat(U32.shrn(g, 2n))), hq)),
+        Equal.sym(Nat, U32.to_nat((g + Nn : U32)), Nat.add(U32.to_nat(g), U32.to_nat(Nn)), A.add_le(g, Nn, (g + Nn : U32), ha)))))
 """
 
 
@@ -174,7 +227,7 @@ def lib_text():
         return m.group(0).rstrip()
     zr_defs = [grab(zr, n) for n in ('ZW', 'zr_dom', 'zr_len', 'zr_wlp')]
     pos = grab(SD.LIB_BODY, 'pos_lit')
-    return LIB_IMPORTS + '\n' + writer.header('sym_skel') + '\n# the zero-run and position lemmas of the skeleton witnesses (copies of zero_run.py / sym_decode.py)\n\n' + '\n\n'.join(zr_defs + [pos]) + '\n'
+    return LIB_IMPORTS + '\n' + writer.header('sym_skel') + '\n# the zero-run and position lemmas of the skeleton witnesses (copies of zero_run.py / sym_decode.py)\n\n' + '\n\n'.join(zr_defs + [pos]) + '\n' + STEP_LEMMAS
 
 # ---- the module ---------------------------------------------------------------------------------------------------------------
 
@@ -189,6 +242,7 @@ def module(name):
     _, ceonc, _ = cm.signature(de)
     pe = dict(DW.split_param(p) for p in cm.fullp)
     _, croncl, _ = cm.signature(dr)
+    pr = dict(DW.split_param(p) for p in cm.fullp)
     mdec = re.search(r'^\{Pair\.snd\(B\.Buf, Maybe<&1, ([\w.]+)>, (.*?)\) == Some\{o\} : Maybe<&1, [\w.]+>\}$', pe['dec'], re.S)
     menc = re.search(r'\w+\.obytes\(Pair\.snd\([\w.]+, B\.Buf, ([\w.]+\.\w+)\(o\)\)\) == bs', ceonc)
     objr, decr, encr = mdec.group(1), mdec.group(2), menc.group(1)
@@ -242,7 +296,7 @@ def module(name):
         if j == k:
             return 'Nil{}'
         s = segs[j]
-        return lst(f'{ZR}.ZW({Q(s[1])})', WD(j + 1)) if s[0] == 'z' else f'Con{{{s[1]}, {WD(j + 1)}}}'
+        return lst(f'{ZR}.ZW({Q(s[1])})', WD(j + 1)) if s[0] == 'z' else f'Con{{{BA}.word_of({", ".join(map(str, s[2]))}), {WD(j + 1)}}}'
 
     ln = lambda e: f'List.length(&2, U32, {e})'
     defs = []
@@ -253,25 +307,14 @@ def module(name):
         nj = N(j)
         if s[0] == 'z':
             g = s[1]
-            q = f'{A}.quad({Q(g)})'
-            p_len = (f'Equal.trans(Nat, {ln(cur)}, Nat.add({q}, {ln(R)}), U32.to_nat({nj}), {ZR}.zr_len({q}, {R}),\n'
-                     f'    Equal.trans(Nat, Nat.add({q}, {ln(R)}), Nat.add({q}, U32.to_nat({Nn})), U32.to_nat({nj}),\n'
-                     f'      Equal.cong(Nat, Nat, z => Nat.add({q}, z), {ln(R)}, U32.to_nat({Nn}), len{j + 1}()),\n'
-                     f'      Equal.trans(Nat, Nat.add({q}, U32.to_nat({Nn})), Nat.add(U32.to_nat({g}), U32.to_nat({Nn})), U32.to_nat({nj}),\n'
-                     f'        Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({Nn})), {q}, U32.to_nat({g}), Equal.sym(Nat, U32.to_nat({g}), {q}, {SL}.pos_lit({g}, {{==}}))),\n'
-                     f'        Equal.sym(Nat, U32.to_nat({nj}), Nat.add(U32.to_nat({g}), U32.to_nat({Nn})), {A}.add_le({g}, {Nn}, {nj}, {{==}})))))')
-            p_dom = f'Equal.trans(Bool, {SPa}.bytes_domain({cur}), {SPa}.bytes_domain({R}), True{{}}, {ZR}.zr_dom({q}, {R}), dom{j + 1}())'
-            p_wlp = (f'Equal.trans(List<&2, U32>, {L}.wlp({cur}), {lst(f"{ZR}.ZW({Q(g)})", f"{L}.wlp({R})")}, {WD(j)},\n'
-                     f'    {ZR}.zr_wlp({Q(g)}, {R}),\n'
-                     f'    Equal.cong(List<&2, U32>, List<&2, U32>, z => {lst(f"{ZR}.ZW({Q(g)})", "z")}, {L}.wlp({R}), {Wn}, wlp{j + 1}()))')
+            p_len = f'{ZR}.len_zs({g}, {Nn}, {R}, len{j + 1}(), {ZR}.pos_lit({g}, {{==}}), {{==}})'
+            p_dom = f'{ZR}.dom_zs({A}.quad({Q(g)}), {R}, dom{j + 1}())'
+            p_wlp = f'{ZR}.wlp_zs({Q(g)}, {R}, {Wn}, wlp{j + 1}())'
         else:
-            v = s[1]
-            p_len = (f'Equal.trans(Nat, {ln(cur)}, Nat.add(4n, U32.to_nat({Nn})), U32.to_nat({nj}),\n'
-                     f'    Equal.cong(Nat, Nat, z => Nat.add(4n, z), {ln(R)}, U32.to_nat({Nn}), len{j + 1}()),\n'
-                     f'    Equal.sym(Nat, U32.to_nat({nj}), Nat.add(U32.to_nat(4), U32.to_nat({Nn})), {A}.add_le(4, {Nn}, {nj}, {{==}})))')
-            p_dom = f'Equal.trans(Bool, {SPa}.bytes_domain({cur}), {SPa}.bytes_domain({R}), True{{}}, {{==}}, dom{j + 1}())'
-            p_wlp = (f'Equal.trans(List<&2, U32>, {L}.wlp({cur}), Con{{{v}, {L}.wlp({R})}}, {WD(j)}, {{==}},\n'
-                     f'    Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{{{v}, z}}, {L}.wlp({R}), {Wn}, wlp{j + 1}()))')
+            bb = ', '.join(map(str, s[2]))
+            p_len = f'{ZR}.len_ws({bb}, {Nn}, {R}, len{j + 1}(), {{==}})'
+            p_dom = f'{ZR}.dom_ws({bb}, {R}, {{==}}, {{==}}, {{==}}, {{==}}, dom{j + 1}())'
+            p_wlp = f'{ZR}.wlp_ws({bb}, {R}, {Wn}, wlp{j + 1}())'
         defs.append(f'def len{j}() -> {{{ln(cur)} == U32.to_nat({nj}) : Nat}}:\n  {p_len}')
         defs.append(f'def dom{j}() -> {{{SPa}.bytes_domain({cur}) == True{{}} : Bool}}:\n  {p_dom}')
         defs.append(f'def wlp{j}() -> {{{L}.wlp({cur}) == {WD(j)} : List<&2, U32>}}:\n  {p_wlp}')
@@ -297,21 +340,40 @@ def module(name):
     hs_t = re.sub(r'^\{|\}$', '', sub_bn(pe['hS'], cm))
     hk_t = re.sub(r'^\{|\}$', '', sub_bn(HK_TXT, dm))
     tt = f'{DBa}.TT({bs0}, {n0e})'
+    acc_name = f'{name}_e2e_decode_witness_acc()'
+    known = {'bs': bs0, 'n': n0e, 'o': o, 'hn': 'len0()', 'hd': 'dom0()', 'hS': 'hS()', 'h31': 'h31()', 'hchk': 'hchk()', 'h': f'{BA}.alloc(0)', 'dec': acc_name}
+
+    def args_of(names):
+        miss = [x for x in names if x not in known]
+        if miss:
+            raise SystemExit(f'sym_skel: {name}: no argument for {miss}')
+        return ', '.join(known[x] for x in names)
+    d_acc_args = args_of([x for x in dict(DW.split_param(q) for q in dm.fullp) if x != 'bs' or True])
+    def bound_proof(t):
+        """a size bound as the bridge from one U32 compare (n < 2^p), not an evaluation of the Nat power (48 s for 2^29 on a 2 KB input)"""
+        m = re.fullmatch(r'Nat\.is_le\(U32\.to_nat\((.*)\), A\.quad\(FD\.spec_common__pow2\((\d+)n\)\)\) == True\{\} : Bool', t, re.S)
+        if m and m.group(1) == n0e and int(m.group(2)) + 2 < 32:
+            return f'FD.nat__lt_le(U32.to_nat({n0e}), A.quad(FD.spec_common__pow2({m.group(2)}n)), FD.array__lt_bridge({n0e}, {int(m.group(2)) + 2}n, {{==}}, True{{}}, {{==}}))'
+        m = re.fullmatch(r'Nat\.is_lt\(U32\.to_nat\((.*)\), \w+\.pw\((\d+)n\)\) == True\{\} : Bool', t, re.S)
+        if m and m.group(1) == n0e and int(m.group(2)) < 32:
+            return f'FD.array__lt_bridge({n0e}, {m.group(2)}n, {{==}}, True{{}}, {{==}})'
+        return '{==}'
+    h31_t = re.sub(r'^[{]|[}]$', '', sub_bn(pe['h31'], cm)) if 'h31' in pe else None
     final = [
-        f'def hS() -> {{{hs_t}}}:\n  {{==}}',
+        f'def hS() -> {{{hs_t}}}:\n  {bound_proof(hs_t)}',
+        *([f'def h31() -> {{{h31_t}}}:\n  {bound_proof(h31_t)}'] if h31_t else []),
         f'def hchk() -> {{{hk_t}}}:\n'
         f'  Equal.trans(Bool, {DCa}.CHK({tt}, {n0e}), {DCa}.CHK({AC}.segt({cap}, 0n, {wd0}), {n0e}), True{{}},\n'
         f'    Equal.cong(List<&2, U32>, Bool, z => {DCa}.CHK({AC}.segt({cap}, 0n, z), {n0e}), {L}.wlp({bs0}), {wd0}, wlp0()), {{==}})',
-        f'def {name}_e2e_decode_witness_acc() -> {{{dec0} == Some{{{o}}} : Maybe<&1, {OBJT}>}}:\n  {DBa}.d_acc({bs0}, {n0e}, len0(), dom0(), hS(), hchk())',
+        f'def {name}_e2e_decode_witness_acc() -> {{{dec0} == Some{{{o}}} : Maybe<&1, {OBJT}>}}:\n  {DBa}.d_acc({d_acc_args})',
         f'def {name}_e2e_decode_witness() -> {{{CPa}.isS({dec0}) == True{{}} : Bool}}:\n'
         f'  %Equal.sym(Maybe<&1, {OBJT}>, {dec0}, Some{{{o}}}, {name}_e2e_decode_witness_acc()) : {{{CPa}.isS(_) == True{{}} : Bool}}\n  {{==}}',
     ]
     sub3 = {'bs': bs0, 'n': n0e, 'o': o}
-    for tag, law, concl in (('encode', de, ceonc), ('root', dr, croncl)):
+    for tag, law, concl, plist in (('encode', de, ceonc, pe), ('root', dr, croncl, pr)):
         c2 = re.sub(r'(?<![\w.])(bs|n|o)(?![\w.])', lambda m: sub3[m.group(1)], c.lift(cm, concl))
         c2 = re.sub(r'(?<![\w.])h(?=[),])', f'{BA}.alloc(0)', c2)
-        args = ([f'{BA}.alloc(0)'] if tag == 'root' else []) + [bs0, n0e, o, 'len0()', 'dom0()', 'hS()', f'{name}_e2e_decode_witness_acc()']
-        final.append(f'def {name}_e2e_decode_witness_{tag}() -> {c2}:\n  {CPa}.{law}({", ".join(args)})')
+        final.append(f'def {name}_e2e_decode_witness_{tag}() -> {c2}:\n  {CPa}.{law}({args_of(list(plist))})')
     body = '\n\n'.join(ordered + final)
     head = (W.imports_text(c) + '\n\n' + writer.header('sym_skel') + '\n'
             f'# {name}: the decoder accepts the offsets-only skeleton of the default encoding ({n0} bytes: zero runs and {sum(1 for s in segs if s[0] == "w")} non-zero words),\n'
