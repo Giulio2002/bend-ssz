@@ -102,7 +102,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed encode statement of a mutated list of the byte lists, the list of uint8, the lists of uint16 (no set laws) and the bit lists (see the design note below); and
+composed encode statement of a mutated list of the bit lists, and the runtime-level collection set laws of the uint16 lists (read-back, view and other-element laws over the runtime's `l1024_u16_set`; their tree-level composed encode is in `proofs/obj/encset_h_<c>.bend`, `codegen/proofs/collections/encset_h.py`, offsets 0 and 2, over `halfword.bend`; the element value is `v16of(v & 255, (v >> 8) & 255)`, equal to `v` below 65536 is not stated); see the design note below; the byte lists `bl32`, `bl256` and the list of uint8 are in `proofs/obj/encset_b_<c>.bend`, `codegen/proofs/collections/encset_b.py`, with `tz_merge.bend`'s zero-tail lemma); and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
@@ -139,6 +139,17 @@ the chunk tail; (b) the value. The encode value `W.VALw` reads bytes (`PB.it1` /
 `BO.bview`: a bridge lemma per element width from the window to the view (the analogue of `rws_items`: the bytes of the window are the bytes of the slots, `UW.WX` against `UA.BYT` through `VS.bt`), then the
 set laws (`VB.view_set_u8`, `view_bytes.bend`, `bits_view.bend`'s `view_set`) apply. The uint16 lists have an encode bridge but no collection set law yet (`coll_api_*` has none), so their composed
 statement first needs the set and view laws. Everything else (the written mirror, `encx_spec`, the composition) is the same.
+
+Status of that note: (a) is `tz_merge.bend` (`tz_merge`: for `b` in 1..2 and `s + b <= r <= 3`, `tail_zero(r, merge_word(old, x, s, b))` from `tail_zero(r, old)`, by `shrn` over `.&.` / `.|.`
+and the closed masks, `codegen/proofs/collections/subword_tz.py`, checks in 10 s); (b) is done for the byte lists `bl32`, `bl256` and the list of uint8 (`encset_b.bend`, with the `PB.it1` definitions of `pb_min.bend` and
+`packed_bytes_light.bend` bridged) and, at tree level with the offset 0 or 2 as the two laws, for the three lists of uint16 (`encset_h.bend`, over `halfword.bend`: the bytes of a word after a halfword merge, by the
+bit patterns of `byte_bits.bend`'s kind, 20 lemmas in 6 s; `it2_set2` replaces item `j` when the two bytes of element `j` are replaced). Every file checks in under 21 s. What is left is the bit list
+`bits131072` (the only bit list with both a set law and an encode bridge). Its `OKT` has three tails on words of the bit storage: `tail_zero(nbytes(K) & 3, slot(T, nbytes(K) >> 2))`, `DL.HZ(RK(K), slot(T, K >> 5))` and
+`bits_above_zero(K & 31, wd(T, dw, K >> 5))`. The plan: state all three as `zlist(bdrB(r, wbits w))` (`HZ` already is; `bits_above_zero(r, w)` and `tail_zero(r, w)` for the literal `r` are equal to it, one closed
+fact per `r`, by `wbits` of the mask and `zan`), preserve it under the merge by `bits_view.bend`'s `wset_i` (`wbits(bit_merge(v, x, shl_by(1, i & 31))) == lset(wbits x, i & 31, v)`) and one symbolic induction
+(`zlist(bdrB(r, lset(L, k, v))) == zlist(bdrB(r, L))` for `k < r`), and take `k < r` from `n < K` and `n >> 5 == K >> 5` (`USP.split5`, `lt_cancel` of `encset_b_base.bend`) and, for the byte tail, from `n < K <= 8 nbytes(K)`
+(`vbitenc.bend`'s `E3`). The value is `bits_view.bend`'s `view_set` over `CO.BITS(T, K) = btk(K, bitsof(slots T))`. The runtime-level collection set laws of the uint16 lists (read-back and other-element laws over `l1024_u16_set`,
+needing `mul2` for the byte position `2 i`) are not built either: the tree-level laws take `2 j = 4 q + s` as a premise.
 
 ## Mutation testing (do the proofs notice wrong generated code?)
 

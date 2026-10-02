@@ -186,3 +186,7 @@ codegen/zero_run.py	codegen/proofs/witnesses/zero_run.py
 codegen/encset_w.py	codegen/proofs/collections/encset_w.py
 codegen/sym_decode.py	codegen/proofs/witnesses/sym_decode.py
 codegen/sym_skel.py	codegen/proofs/witnesses/sym_skel.py
+codegen/subword_tz.py	codegen/proofs/collections/subword_tz.py
+codegen/encset_b.py	codegen/proofs/collections/encset_b.py
+codegen/halfword.py	codegen/proofs/collections/halfword.py
+codegen/encset_h.py	codegen/proofs/collections/encset_h.py
