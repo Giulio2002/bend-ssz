@@ -1,0 +1,261 @@
+## ROUND 2, area 7: the buffer layer (src/buffer.bend) under every decoder and encoder: byte and word reads, unaligned joins, byte swap, storage sizing
+=== r2-b01-buffer-reads
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: byte_sel,byte_at
+spec: byte j of a word is (w >> 8j) & 255
+fault: byte 1 is selected with a 16-bit shift
+why: constant
+-    case 1: (U32.shrn(w, 8n) .&. 255 : U32)
++    case 1: (U32.shrn(w, 16n) .&. 255 : U32)
+=== r2-b01-buffer-reads
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: byte_sel,byte_at
+spec: byte 3 of a word is w >> 24
+fault: byte 3 is selected with a 16-bit shift
+why: constant
+-    case _: U32.shrn(w, 24n)
++    case _: U32.shrn(w, 16n)
+=== r2-b01-buffer-reads
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: byte_sel,byte_at
+spec: byte 0 of a word is w & 255
+fault: byte 0 keeps seven bits (mask 127)
+why: constant
+-    case 0: (w .&. 255 : U32)
++    case 0: (w .&. 127 : U32)
+=== r2-b01-buffer-reads
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: byte_at
+spec: the byte at offset i is byte i mod 4 of word i / 4
+fault: the in-word index is i mod 2
+why: mask constant
+-  byte_pick((i .&. 3 : U32), word(b, U32.shrn(i, 2n)))
++  byte_pick((i .&. 1 : U32), word(b, U32.shrn(i, 2n)))
+=== r2-b01-buffer-reads
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: byte_at
+spec: the byte at offset i is in word i / 4
+fault: the word index is i / 8
+why: shift constant
+-  byte_pick((i .&. 3 : U32), word(b, U32.shrn(i, 2n)))
++  byte_pick((i .&. 3 : U32), word(b, U32.shrn(i, 3n)))
+=== r2-b02-unaligned-read
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: join_sel,read32
+spec: a uint32 at offset 1 mod 4 is (lo >> 8) | (hi << 24)
+fault: the high part is shifted by 16
+why: constant
+-    case 1: (U32.shrn(lo, 8n) .|. U32.shln(hi, 24n) : U32)
++    case 1: (U32.shrn(lo, 8n) .|. U32.shln(hi, 16n) : U32)
+=== r2-b02-unaligned-read
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: join_sel,read32
+spec: a uint32 at offset 3 mod 4 is (lo >> 24) | (hi << 8)
+fault: the high part is shifted by 16
+why: constant
+-    case _: (U32.shrn(lo, 24n) .|. U32.shln(hi, 8n) : U32)
++    case _: (U32.shrn(lo, 24n) .|. U32.shln(hi, 16n) : U32)
+=== r2-b02-unaligned-read
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: join_sel,read32
+spec: a uint32 at offset 3 mod 4 is (lo >> 24) | (hi << 8)
+fault: the low part is shifted by 16
+why: constant
+-    case _: (U32.shrn(lo, 24n) .|. U32.shln(hi, 8n) : U32)
++    case _: (U32.shrn(lo, 16n) .|. U32.shln(hi, 8n) : U32)
+=== r2-b02-unaligned-read
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: read32_split
+spec: the high part of an unaligned uint32 is the next word
+fault: the high part is two words on
+why: index slip
+-  join_words(j, lo, word(b, (U32.shrn(i, 2n) + 1 : U32)))
++  join_words(j, lo, word(b, (U32.shrn(i, 2n) + 2 : U32)))
+=== r2-b02-unaligned-read
+type: VarTestStruct
+ops: decode
+file: src/buffer.bend
+sym: read32_choose,read32
+spec: an offset is aligned iff i mod 4 = 0
+fault: an offset is taken as aligned iff i mod 2 = 0 (offsets 2 mod 4 read the whole word)
+why: mask constant
+-  read32_choose(i, (i .&. 3 : U32), U32.is_eq((i .&. 3 : U32), 0), b)
++  read32_choose(i, (i .&. 3 : U32), U32.is_eq((i .&. 1 : U32), 0), b)
+=== r2-b02-unaligned-read
+type: ComplexTestStruct
+ops: decode
+file: src/buffer.bend
+sym: read64,read64_lo,read64_hi
+spec: a uint64 at offset i is (read32 i, read32 (i + 4))
+fault: the high word is read at i + 8
+why: index slip
+-  read64_hi(lo, read32(b, (i + 4 : U32)))
++  read64_hi(lo, read32(b, (i + 8 : U32)))
+=== r2-b02-unaligned-read
+type: ComplexTestStruct
+ops: decode
+file: src/buffer.bend
+sym: read64,read64_hi
+spec: a uint64 is the pair (low word, high word)
+fault: the pair is (high, low)
+why: word order
+-  (b, (lo, hi))
++  (b, (hi, lo))
+=== r2-b03-byte-swap
+type: FuluCheckpoint
+ops: root
+file: src/buffer.bend
+sym: swap32,be_word_at
+spec: SHA-256 words are big-endian: byte 1 goes to bits 16..23
+fault: byte 1 goes to bits 8..15
+why: constant
+-    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 24n) : U32)
++    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 16n) .|. U32.shrn(w, 24n) : U32)
+=== r2-b03-byte-swap
+type: FuluCheckpoint
+ops: root
+file: src/buffer.bend
+sym: swap32
+spec: the lane of byte 1 is masked to 8 bits (designed equivalent: the shift-left by 24 already drops the upper bits)
+fault: the mask of byte 0 is dropped
+why: redundant mask
+-  (U32.shln((w .&. 255 : U32), 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
++  (U32.shln(w, 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
+=== r2-b03-byte-swap
+type: FuluCheckpoint
+ops: root
+file: src/buffer.bend
+sym: swap32
+spec: SHA-256 words are big-endian: the top byte of the input goes to the low byte
+fault: the top byte is shifted by 16
+why: constant
+-    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 24n) : U32)
++    .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 16n) : U32)
+=== r2-b04-storage-depth
+type: VarTestStruct
+ops: encode
+file: src/buffer.bend
+sym: ubits2,ubits1,words_depth_u,zeros_bytes
+spec: the output array has 2^ceil(log2 w) words for w words
+fault: the threshold of the 2-bit step is 3 (w = 3 words gets depth 1: an array of two words)
+why: threshold off by one
+-    case False{}: ubits1(U32.is_le(2, m), m, acc)
++    case False{}: ubits1(U32.is_le(3, m), m, acc)
+=== r2-b04-storage-depth
+type: VarTestStruct
+ops: encode
+file: src/buffer.bend
+sym: ubits4,ubits2,words_depth_u,zeros_bytes
+spec: the output array has 2^ceil(log2 w) words for w words
+fault: the threshold of the 4-bit step is 5
+why: threshold off by one
+-    case False{}: ubits2(U32.is_le(4, m), m, acc)
++    case False{}: ubits2(U32.is_le(5, m), m, acc)
+=== r2-b04-storage-depth
+type: ComplexTestStruct
+ops: encode
+file: src/buffer.bend
+sym: ubits8,ubits4,words_depth_u,zeros_bytes
+spec: the output array has 2^ceil(log2 w) words for w words
+fault: the threshold of the 8-bit step is 17
+why: threshold off by one
+-    case False{}: ubits4(U32.is_le(16, m), m, acc)
++    case False{}: ubits4(U32.is_le(17, m), m, acc)
+=== r2-b04-storage-depth
+type: FuluDataColumnSidecar
+ops: encode
+file: src/buffer.bend
+sym: ubits16,ubits8,words_depth_u,zeros_bytes
+spec: the output array has 2^ceil(log2 w) words for w words
+fault: the threshold of the 16-bit step is 257
+why: threshold off by one
+-    case False{}: ubits8(U32.is_le(256, m), m, 0)
++    case False{}: ubits8(U32.is_le(257, m), m, 0)
+=== r2-b04-storage-depth
+type: FuluDataColumnSidecar
+ops: encode
+file: src/buffer.bend
+sym: words_depth_unz,words_depth_u,zeros_bytes
+spec: a value with w - 1 >= 65536 takes the two-level path
+fault: the two-level threshold is 65537
+why: threshold off by one
+-    case False{}: ubits16(U32.is_le(65536, (w - 1 : U32)), (w - 1 : U32))
++    case False{}: ubits16(U32.is_le(65537, (w - 1 : U32)), (w - 1 : U32))
+=== r2-b04-storage-depth
+type: bytelist_256
+ops: decode
+file: src/buffer.bend
+sym: bits2,bits1,words_depth,zeros_for,capacity
+spec: the zero storage of a decoded Words has 2^ceil(log2 w) words (the Nat twin of ubits)
+fault: the threshold of the 2-bit step is 3
+why: threshold off by one
+-    case False{}: bits1(U32.is_le(2, m), m, acc)
++    case False{}: bits1(U32.is_le(3, m), m, acc)
+=== r2-b04-storage-depth
+type: bytelist_256
+ops: decode
+file: src/buffer.bend
+sym: bits4,bits2,words_depth,zeros_for,capacity
+spec: the zero storage of a decoded Words has 2^ceil(log2 w) words
+fault: the threshold of the 4-bit step is 5
+why: threshold off by one
+-    case False{}: bits2(U32.is_le(4, m), m, acc)
++    case False{}: bits2(U32.is_le(5, m), m, acc)
+=== r2-b04-storage-depth
+type: bytelist_256
+ops: decode
+file: src/buffer.bend
+sym: bits1,words_depth
+spec: the zero storage of a decoded Words has 2^ceil(log2 w) words
+fault: the last bit adds nothing (m = 1 is not rounded up)
+why: rounding step dropped
+-    case False{}: U32.to_nat((acc + 1 : U32))
++    case False{}: U32.to_nat(acc)
+=== r2-b04-storage-depth
+type: FuluBytes48
+ops: decode
+file: src/buffer.bend
+sym: capacity_small,capacity
+spec: the small-buffer depth table is ceil(log2 w): 5 words need depth 3
+fault: 5 words get depth 2 (an array of four words for five)
+why: table entry
+-    case 5: 3n
++    case 5: 2n
+=== r2-b04-storage-depth
+type: FuluBytes48
+ops: decode
+file: src/buffer.bend
+sym: capacity_small,capacity
+spec: the small-buffer depth table is ceil(log2 w): 9 words need depth 4
+fault: 9 words get depth 3
+why: table entry
+-    case 9: 4n
++    case 9: 3n
+=== r2-b04-storage-depth
+type: FuluBytes48
+ops: decode
+file: src/buffer.bend
+sym: capacity_go,capacity_small,capacity
+spec: the halving loop gives ceil(log2 w) for w > 16
+fault: the loop halves with floor ((need) >> 1 instead of (need + 1) >> 1)
+why: ceil written as floor
+-        case _: capacity_go(p, U32.shrn((need + 1 : U32), 1n), 1n+depth)
++        case _: capacity_go(p, U32.shrn(need, 1n), 1n+depth)
