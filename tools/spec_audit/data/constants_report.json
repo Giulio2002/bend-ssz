@@ -1,0 +1,5257 @@
+{
+ "tag": "v1.6.1",
+ "rows": [
+  {
+   "table": "A scalar constants",
+   "item": "BYTES_PER_FIELD_ELEMENT",
+   "bend": "32 (codegen/fulu.yaml:12)",
+   "ref": "32 (specs/deneb/polynomial-commitments.md:85)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "BYTES_PER_LOGS_BLOOM",
+   "bend": "256 (codegen/fulu.yaml:13)",
+   "ref": "256 (presets/mainnet/bellatrix.yaml:19)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "CURRENT_SYNC_COMMITTEE_GINDEX_ELECTRA",
+   "bend": "86 (codegen/fulu.yaml:14)",
+   "ref": "86 (specs/electra/light-client/sync-protocol.md:57)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "DEPOSIT_CONTRACT_TREE_DEPTH",
+   "bend": "32 (codegen/fulu.yaml:15)",
+   "ref": "32 (specs/phase0/beacon-chain.md:193)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "EPOCHS_PER_ETH1_VOTING_PERIOD",
+   "bend": "64 (codegen/fulu.yaml:16)",
+   "ref": "64 (presets/mainnet/phase0.yaml:40)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "EPOCHS_PER_HISTORICAL_VECTOR",
+   "bend": "65536 (codegen/fulu.yaml:17)",
+   "ref": "65536 (presets/mainnet/phase0.yaml:49)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "EPOCHS_PER_SLASHINGS_VECTOR",
+   "bend": "8192 (codegen/fulu.yaml:18)",
+   "ref": "8192 (presets/mainnet/phase0.yaml:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "EXECUTION_PAYLOAD_GINDEX",
+   "bend": "25 (codegen/fulu.yaml:19)",
+   "ref": "25 (specs/capella/light-client/sync-protocol.md:44)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "FIELD_ELEMENTS_PER_BLOB",
+   "bend": "4096 (codegen/fulu.yaml:20)",
+   "ref": "4096 (presets/mainnet/deneb.yaml:16)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "FIELD_ELEMENTS_PER_CELL",
+   "bend": "64 (codegen/fulu.yaml:21)",
+   "ref": "64 (presets/mainnet/fulu.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "FINALIZED_ROOT_GINDEX_ELECTRA",
+   "bend": "169 (codegen/fulu.yaml:22)",
+   "ref": "169 (specs/electra/light-client/sync-protocol.md:56)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "HISTORICAL_ROOTS_LIMIT",
+   "bend": "16777216 (codegen/fulu.yaml:23)",
+   "ref": "16777216 (presets/mainnet/phase0.yaml:53)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "JUSTIFICATION_BITS_LENGTH",
+   "bend": "4 (codegen/fulu.yaml:24)",
+   "ref": "4 (specs/phase0/beacon-chain.md:194)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "KZG_COMMITMENTS_INCLUSION_PROOF_DEPTH",
+   "bend": "4 (codegen/fulu.yaml:25)",
+   "ref": "4 (presets/mainnet/fulu.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "KZG_COMMITMENT_INCLUSION_PROOF_DEPTH",
+   "bend": "17 (codegen/fulu.yaml:26)",
+   "ref": "17 (presets/mainnet/deneb.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_ATTESTATIONS_ELECTRA",
+   "bend": "8 (codegen/fulu.yaml:27)",
+   "ref": "8 (presets/mainnet/electra.yaml:31)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_ATTESTER_SLASHINGS_ELECTRA",
+   "bend": "1 (codegen/fulu.yaml:28)",
+   "ref": "1 (presets/mainnet/electra.yaml:29)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_BLOB_COMMITMENTS_PER_BLOCK",
+   "bend": "4096 (codegen/fulu.yaml:29)",
+   "ref": "4096 (presets/mainnet/deneb.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_BLS_TO_EXECUTION_CHANGES",
+   "bend": "16 (codegen/fulu.yaml:30)",
+   "ref": "16 (presets/mainnet/capella.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_BYTES_PER_TRANSACTION",
+   "bend": "1073741824 (codegen/fulu.yaml:31)",
+   "ref": "1073741824 (presets/mainnet/bellatrix.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_COMMITTEES_PER_SLOT",
+   "bend": "64 (codegen/fulu.yaml:32)",
+   "ref": "64 (presets/mainnet/phase0.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD",
+   "bend": "2 (codegen/fulu.yaml:33)",
+   "ref": "2 (presets/mainnet/electra.yaml:40)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_DEPOSITS",
+   "bend": "16 (codegen/fulu.yaml:34)",
+   "ref": "16 (presets/mainnet/phase0.yaml:81)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_DEPOSIT_REQUESTS_PER_PAYLOAD",
+   "bend": "8192 (codegen/fulu.yaml:35)",
+   "ref": "8192 (presets/mainnet/electra.yaml:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_EXTRA_DATA_BYTES",
+   "bend": "32 (codegen/fulu.yaml:36)",
+   "ref": "32 (presets/mainnet/bellatrix.yaml:21)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_PROPOSER_SLASHINGS",
+   "bend": "16 (codegen/fulu.yaml:37)",
+   "ref": "16 (presets/mainnet/phase0.yaml:75)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_TRANSACTIONS_PER_PAYLOAD",
+   "bend": "1048576 (codegen/fulu.yaml:38)",
+   "ref": "1048576 (presets/mainnet/bellatrix.yaml:17)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_VALIDATORS_PER_COMMITTEE",
+   "bend": "2048 (codegen/fulu.yaml:39)",
+   "ref": "2048 (presets/mainnet/phase0.yaml:10)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_VOLUNTARY_EXITS",
+   "bend": "16 (codegen/fulu.yaml:40)",
+   "ref": "16 (presets/mainnet/phase0.yaml:83)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_WITHDRAWALS_PER_PAYLOAD",
+   "bend": "16 (codegen/fulu.yaml:41)",
+   "ref": "16 (presets/mainnet/capella.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD",
+   "bend": "16 (codegen/fulu.yaml:42)",
+   "ref": "16 (presets/mainnet/electra.yaml:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "MIN_SEED_LOOKAHEAD",
+   "bend": "1 (codegen/fulu.yaml:43)",
+   "ref": "1 (presets/mainnet/phase0.yaml:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "NEXT_SYNC_COMMITTEE_GINDEX_ELECTRA",
+   "bend": "87 (codegen/fulu.yaml:44)",
+   "ref": "87 (specs/electra/light-client/sync-protocol.md:58)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "NUMBER_OF_COLUMNS",
+   "bend": "128 (codegen/fulu.yaml:45)",
+   "ref": "128 (presets/mainnet/fulu.yaml:17)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "PENDING_CONSOLIDATIONS_LIMIT",
+   "bend": "262144 (codegen/fulu.yaml:46)",
+   "ref": "262144 (presets/mainnet/electra.yaml:24)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "PENDING_DEPOSITS_LIMIT",
+   "bend": "134217728 (codegen/fulu.yaml:47)",
+   "ref": "134217728 (presets/mainnet/electra.yaml:20)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "PENDING_PARTIAL_WITHDRAWALS_LIMIT",
+   "bend": "134217728 (codegen/fulu.yaml:48)",
+   "ref": "134217728 (presets/mainnet/electra.yaml:22)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "SLOTS_PER_EPOCH",
+   "bend": "32 (codegen/fulu.yaml:49)",
+   "ref": "32 (presets/mainnet/phase0.yaml:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "SLOTS_PER_HISTORICAL_ROOT",
+   "bend": "8192 (codegen/fulu.yaml:50)",
+   "ref": "8192 (presets/mainnet/phase0.yaml:42)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "SYNC_COMMITTEE_SIZE",
+   "bend": "512 (codegen/fulu.yaml:51)",
+   "ref": "512 (presets/mainnet/altair.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "SYNC_COMMITTEE_SUBNET_COUNT",
+   "bend": "4 (codegen/fulu.yaml:52)",
+   "ref": "4 (specs/altair/validator.md:80)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A scalar constants",
+   "item": "VALIDATOR_REGISTRY_LIMIT",
+   "bend": "1099511627776 (codegen/fulu.yaml:53)",
+   "ref": "1099511627776 (presets/mainnet/phase0.yaml:55)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "AGGREGATE_DUE_BPS",
+   "bend": "6667 (specs/phase0/validator.md:114)",
+   "ref": "6667 (configs/mainnet.yaml:90)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ALTAIR_FORK_EPOCH",
+   "bend": "74240 (specs/altair/fork.md:23)",
+   "ref": "74240 (configs/mainnet.yaml:42)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ATTESTATION_DUE_BPS",
+   "bend": "3333 (specs/phase0/validator.md:113)",
+   "ref": "3333 (configs/mainnet.yaml:88)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ATTESTATION_PROPAGATION_SLOT_RANGE",
+   "bend": "32 (specs/phase0/p2p-interface.md:254)",
+   "ref": "32 (configs/mainnet.yaml:170)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ATTESTATION_SUBNET_COUNT",
+   "bend": "64 (specs/phase0/p2p-interface.md:259)",
+   "ref": "64 (configs/mainnet.yaml:178)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ATTESTATION_SUBNET_EXTRA_BITS",
+   "bend": "0 (specs/phase0/p2p-interface.md:260)",
+   "ref": "0 (configs/mainnet.yaml:180)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ATTESTATION_SUBNET_PREFIX_BITS",
+   "bend": "6 (specs/phase0/p2p-interface.md:261)",
+   "ref": "6 (configs/mainnet.yaml:182)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BALANCE_PER_ADDITIONAL_CUSTODY_GROUP",
+   "bend": "32000000000 (specs/fulu/validator.md:51)",
+   "ref": "32000000000 (configs/mainnet.yaml:218)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BASE_REWARD_FACTOR",
+   "bend": "64 (specs/phase0/beacon-chain.md:284)",
+   "ref": "64 (presets/mainnet/phase0.yaml:60)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BELLATRIX_FORK_EPOCH",
+   "bend": "144896 (specs/bellatrix/fork.md:22)",
+   "ref": "144896 (configs/mainnet.yaml:45)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BLOB_SIDECAR_SUBNET_COUNT",
+   "bend": "6 (specs/deneb/p2p-interface.md:89)",
+   "ref": "6 (configs/mainnet.yaml:190)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BLOB_SIDECAR_SUBNET_COUNT_ELECTRA",
+   "bend": "9 (specs/electra/p2p-interface.md:65)",
+   "ref": "9 (configs/mainnet.yaml:198)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "BYTES_PER_LOGS_BLOOM",
+   "bend": "256 (specs/bellatrix/beacon-chain.md:84)",
+   "ref": "256 (presets/mainnet/bellatrix.yaml:19)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "CAPELLA_FORK_EPOCH",
+   "bend": "194048 (specs/capella/fork.md:22)",
+   "ref": "194048 (configs/mainnet.yaml:48)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "CELLS_PER_EXT_BLOB",
+   "bend": "128 (specs/fulu/polynomial-commitments-sampling.md:100)",
+   "ref": "128 (presets/mainnet/fulu.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "CHURN_LIMIT_QUOTIENT",
+   "bend": "65536 (specs/phase0/beacon-chain.md:350)",
+   "ref": "65536 (configs/mainnet.yaml:129)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "CONTRIBUTION_DUE_BPS",
+   "bend": "6667 (specs/altair/validator.md:89)",
+   "ref": "6667 (configs/mainnet.yaml:96)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "CUSTODY_REQUIREMENT",
+   "bend": "4 (specs/fulu/das-core.md:62)",
+   "ref": "4 (configs/mainnet.yaml:214)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "DATA_COLUMN_SIDECAR_SUBNET_COUNT",
+   "bend": "128 (specs/fulu/p2p-interface.md:90)",
+   "ref": "128 (configs/mainnet.yaml:208)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "DENEB_FORK_EPOCH",
+   "bend": "269568 (specs/deneb/fork.md:24)",
+   "ref": "269568 (configs/mainnet.yaml:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EFFECTIVE_BALANCE_INCREMENT",
+   "bend": "1000000000 (specs/phase0/beacon-chain.md:257)",
+   "ref": "1000000000 (presets/mainnet/phase0.yaml:27)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EJECTION_BALANCE",
+   "bend": "16000000000 (specs/phase0/beacon-chain.md:348)",
+   "ref": "16000000000 (configs/mainnet.yaml:125)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ELECTRA_FORK_EPOCH",
+   "bend": "364032 (specs/electra/fork.md:24)",
+   "ref": "364032 (configs/mainnet.yaml:54)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EPOCHS_PER_ETH1_VOTING_PERIOD",
+   "bend": "64 (specs/phase0/beacon-chain.md:268)",
+   "ref": "64 (presets/mainnet/phase0.yaml:40)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EPOCHS_PER_HISTORICAL_VECTOR",
+   "bend": "65536 (specs/phase0/beacon-chain.md:275)",
+   "ref": "65536 (presets/mainnet/phase0.yaml:49)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EPOCHS_PER_SLASHINGS_VECTOR",
+   "bend": "8192 (specs/phase0/beacon-chain.md:276)",
+   "ref": "8192 (presets/mainnet/phase0.yaml:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EPOCHS_PER_SUBNET_SUBSCRIPTION",
+   "bend": "256 (specs/phase0/p2p-interface.md:252)",
+   "ref": "256 (configs/mainnet.yaml:166)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "EPOCHS_PER_SYNC_COMMITTEE_PERIOD",
+   "bend": "256 (specs/altair/beacon-chain.md:128)",
+   "ref": "256 (presets/mainnet/altair.yaml:17)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "ETH1_FOLLOW_DISTANCE",
+   "bend": "2048 (specs/phase0/beacon-chain.md:342)",
+   "ref": "2048 (configs/mainnet.yaml:84)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "FIELD_ELEMENTS_PER_BLOB",
+   "bend": "4096 (specs/deneb/polynomial-commitments.md:97)",
+   "ref": "4096 (presets/mainnet/deneb.yaml:16)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "FIELD_ELEMENTS_PER_CELL",
+   "bend": "64 (specs/fulu/polynomial-commitments-sampling.md:98)",
+   "ref": "64 (presets/mainnet/fulu.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "FIELD_ELEMENTS_PER_EXT_BLOB",
+   "bend": "8192 (specs/fulu/polynomial-commitments-sampling.md:97)",
+   "ref": "8192 (presets/mainnet/fulu.yaml:13)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "FULU_FORK_EPOCH",
+   "bend": "411392 (specs/fulu/fork.md:25)",
+   "ref": "411392 (configs/mainnet.yaml:57)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "GENESIS_DELAY",
+   "bend": "604800 (specs/phase0/beacon-chain.md:331)",
+   "ref": "604800 (configs/mainnet.yaml:32)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "HISTORICAL_ROOTS_LIMIT",
+   "bend": "16777216 (specs/phase0/beacon-chain.md:277)",
+   "ref": "16777216 (presets/mainnet/phase0.yaml:53)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "HYSTERESIS_DOWNWARD_MULTIPLIER",
+   "bend": "1 (specs/phase0/beacon-chain.md:240)",
+   "ref": "1 (presets/mainnet/phase0.yaml:16)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "HYSTERESIS_QUOTIENT",
+   "bend": "4 (specs/phase0/beacon-chain.md:239)",
+   "ref": "4 (presets/mainnet/phase0.yaml:14)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "HYSTERESIS_UPWARD_MULTIPLIER",
+   "bend": "5 (specs/phase0/beacon-chain.md:241)",
+   "ref": "5 (presets/mainnet/phase0.yaml:18)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "INACTIVITY_PENALTY_QUOTIENT",
+   "bend": "67108864 (specs/phase0/beacon-chain.md:287)",
+   "ref": "67108864 (presets/mainnet/phase0.yaml:66)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "INACTIVITY_PENALTY_QUOTIENT_ALTAIR",
+   "bend": "50331648 (specs/altair/beacon-chain.md:119)",
+   "ref": "50331648 (presets/mainnet/altair.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "INACTIVITY_PENALTY_QUOTIENT_BELLATRIX",
+   "bend": "16777216 (specs/bellatrix/beacon-chain.md:74)",
+   "ref": "16777216 (presets/mainnet/bellatrix.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "INACTIVITY_SCORE_BIAS",
+   "bend": "4 (specs/altair/beacon-chain.md:136)",
+   "ref": "4 (configs/mainnet.yaml:121)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "INACTIVITY_SCORE_RECOVERY_RATE",
+   "bend": "16 (specs/altair/beacon-chain.md:137)",
+   "ref": "16 (configs/mainnet.yaml:123)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "KZG_COMMITMENTS_INCLUSION_PROOF_DEPTH",
+   "bend": "4 (specs/fulu/p2p-interface.md:82)",
+   "ref": "4 (presets/mainnet/fulu.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "KZG_COMMITMENT_INCLUSION_PROOF_DEPTH",
+   "bend": "17 (specs/deneb/p2p-interface.md:78)",
+   "ref": "17 (presets/mainnet/deneb.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAXIMUM_GOSSIP_CLOCK_DISPARITY",
+   "bend": "500 (specs/phase0/p2p-interface.md:255)",
+   "ref": "500 (configs/mainnet.yaml:172)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_ATTESTATIONS",
+   "bend": "128 (specs/phase0/beacon-chain.md:313)",
+   "ref": "128 (presets/mainnet/phase0.yaml:79)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_ATTESTATIONS_ELECTRA",
+   "bend": "8 (specs/electra/beacon-chain.md:180)",
+   "ref": "8 (presets/mainnet/electra.yaml:31)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_ATTESTER_SLASHINGS",
+   "bend": "2 (specs/phase0/beacon-chain.md:312)",
+   "ref": "2 (presets/mainnet/phase0.yaml:77)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_ATTESTER_SLASHINGS_ELECTRA",
+   "bend": "1 (specs/electra/beacon-chain.md:179)",
+   "ref": "1 (presets/mainnet/electra.yaml:29)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_BLOBS_PER_BLOCK",
+   "bend": "6 (specs/deneb/beacon-chain.md:88)",
+   "ref": "6 (configs/mainnet.yaml:192)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_BLOBS_PER_BLOCK_ELECTRA",
+   "bend": "9 (specs/electra/beacon-chain.md:208)",
+   "ref": "9 (configs/mainnet.yaml:200)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_BLOB_COMMITMENTS_PER_BLOCK",
+   "bend": "4096 (specs/deneb/beacon-chain.md:80)",
+   "ref": "4096 (presets/mainnet/deneb.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_BLS_TO_EXECUTION_CHANGES",
+   "bend": "16 (specs/capella/beacon-chain.md:78)",
+   "ref": "16 (presets/mainnet/capella.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_BYTES_PER_TRANSACTION",
+   "bend": "1073741824 (specs/bellatrix/beacon-chain.md:82)",
+   "ref": "1073741824 (presets/mainnet/bellatrix.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_COMMITTEES_PER_SLOT",
+   "bend": "64 (specs/phase0/beacon-chain.md:235)",
+   "ref": "64 (presets/mainnet/phase0.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD",
+   "bend": "2 (specs/electra/beacon-chain.md:188)",
+   "ref": "2 (presets/mainnet/electra.yaml:40)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_DEPOSITS",
+   "bend": "16 (specs/phase0/beacon-chain.md:314)",
+   "ref": "16 (presets/mainnet/phase0.yaml:81)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_DEPOSIT_REQUESTS_PER_PAYLOAD",
+   "bend": "8192 (specs/electra/beacon-chain.md:186)",
+   "ref": "8192 (presets/mainnet/electra.yaml:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_EFFECTIVE_BALANCE",
+   "bend": "32000000000 (specs/phase0/beacon-chain.md:256)",
+   "ref": "32000000000 (presets/mainnet/phase0.yaml:25)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_EFFECTIVE_BALANCE_ELECTRA",
+   "bend": "2048000000000 (specs/electra/beacon-chain.md:158)",
+   "ref": "2048000000000 (presets/mainnet/electra.yaml:8)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_EXTRA_DATA_BYTES",
+   "bend": "32 (specs/bellatrix/beacon-chain.md:85)",
+   "ref": "32 (presets/mainnet/bellatrix.yaml:21)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PAYLOAD_SIZE",
+   "bend": "10485760 (specs/phase0/p2p-interface.md:250)",
+   "ref": "10485760 (configs/mainnet.yaml:162)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PENDING_DEPOSITS_PER_EPOCH",
+   "bend": "16 (specs/electra/beacon-chain.md:200)",
+   "ref": "16 (presets/mainnet/electra.yaml:50)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PENDING_PARTIALS_PER_WITHDRAWALS_SWEEP",
+   "bend": "8 (specs/electra/beacon-chain.md:194)",
+   "ref": "8 (presets/mainnet/electra.yaml:45)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PER_EPOCH_ACTIVATION_CHURN_LIMIT",
+   "bend": "8 (specs/deneb/beacon-chain.md:99)",
+   "ref": "8 (configs/mainnet.yaml:133)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PER_EPOCH_ACTIVATION_EXIT_CHURN_LIMIT",
+   "bend": "256000000000 (specs/electra/beacon-chain.md:215)",
+   "ref": "256000000000 (configs/mainnet.yaml:139)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_PROPOSER_SLASHINGS",
+   "bend": "16 (specs/phase0/beacon-chain.md:311)",
+   "ref": "16 (presets/mainnet/phase0.yaml:75)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_REQUEST_BLOB_SIDECARS",
+   "bend": "768 (specs/deneb/p2p-interface.md:87)",
+   "ref": "768 (configs/mainnet.yaml:194)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_REQUEST_BLOB_SIDECARS_ELECTRA",
+   "bend": "1152 (specs/electra/p2p-interface.md:64)",
+   "ref": "1152 (configs/mainnet.yaml:202)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_REQUEST_BLOCKS",
+   "bend": "1024 (specs/phase0/p2p-interface.md:251)",
+   "ref": "1024 (configs/mainnet.yaml:164)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_REQUEST_BLOCKS_DENEB",
+   "bend": "128 (specs/deneb/p2p-interface.md:86)",
+   "ref": "128 (configs/mainnet.yaml:186)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_REQUEST_DATA_COLUMN_SIDECARS",
+   "bend": "16384 (specs/fulu/p2p-interface.md:91)",
+   "ref": "16384 (configs/mainnet.yaml:210)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_SEED_LOOKAHEAD",
+   "bend": "4 (specs/phase0/beacon-chain.md:266)",
+   "ref": "4 (presets/mainnet/phase0.yaml:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_TRANSACTIONS_PER_PAYLOAD",
+   "bend": "1048576 (specs/bellatrix/beacon-chain.md:83)",
+   "ref": "1048576 (presets/mainnet/bellatrix.yaml:17)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_VALIDATORS_PER_COMMITTEE",
+   "bend": "2048 (specs/phase0/beacon-chain.md:237)",
+   "ref": "2048 (presets/mainnet/phase0.yaml:10)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_VALIDATORS_PER_WITHDRAWALS_SWEEP",
+   "bend": "16384 (specs/capella/beacon-chain.md:90)",
+   "ref": "16384 (presets/mainnet/capella.yaml:16)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_VOLUNTARY_EXITS",
+   "bend": "16 (specs/phase0/beacon-chain.md:315)",
+   "ref": "16 (presets/mainnet/phase0.yaml:83)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_WITHDRAWALS_PER_PAYLOAD",
+   "bend": "16 (specs/capella/beacon-chain.md:84)",
+   "ref": "16 (presets/mainnet/capella.yaml:11)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD",
+   "bend": "16 (specs/electra/beacon-chain.md:187)",
+   "ref": "16 (presets/mainnet/electra.yaml:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_ACTIVATION_BALANCE",
+   "bend": "32000000000 (specs/electra/beacon-chain.md:157)",
+   "ref": "32000000000 (presets/mainnet/electra.yaml:6)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_ATTESTATION_INCLUSION_DELAY",
+   "bend": "1 (specs/phase0/beacon-chain.md:263)",
+   "ref": "1 (presets/mainnet/phase0.yaml:32)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_DEPOSIT_AMOUNT",
+   "bend": "1000000000 (specs/phase0/beacon-chain.md:255)",
+   "ref": "1000000000 (presets/mainnet/phase0.yaml:23)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_EPOCHS_FOR_BLOB_SIDECARS_REQUESTS",
+   "bend": "4096 (specs/deneb/p2p-interface.md:88)",
+   "ref": "4096 (configs/mainnet.yaml:188)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_EPOCHS_FOR_BLOCK_REQUESTS",
+   "bend": "33024 (specs/phase0/p2p-interface.md:253)",
+   "ref": "33024 (configs/mainnet.yaml:168)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_EPOCHS_FOR_DATA_COLUMN_SIDECARS_REQUESTS",
+   "bend": "4096 (specs/fulu/p2p-interface.md:92)",
+   "ref": "4096 (configs/mainnet.yaml:220)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_EPOCHS_TO_INACTIVITY_PENALTY",
+   "bend": "4 (specs/phase0/beacon-chain.md:267)",
+   "ref": "4 (presets/mainnet/phase0.yaml:44)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_GENESIS_ACTIVE_VALIDATOR_COUNT",
+   "bend": "16384 (specs/phase0/beacon-chain.md:328)",
+   "ref": "16384 (configs/mainnet.yaml:26)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_GENESIS_TIME",
+   "bend": "1606824000 (specs/phase0/beacon-chain.md:329)",
+   "ref": "1606824000 (configs/mainnet.yaml:28)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_PER_EPOCH_CHURN_LIMIT",
+   "bend": "4 (specs/phase0/beacon-chain.md:349)",
+   "ref": "4 (configs/mainnet.yaml:127)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_PER_EPOCH_CHURN_LIMIT_ELECTRA",
+   "bend": "128000000000 (specs/electra/beacon-chain.md:214)",
+   "ref": "128000000000 (configs/mainnet.yaml:137)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SEED_LOOKAHEAD",
+   "bend": "1 (specs/phase0/beacon-chain.md:265)",
+   "ref": "1 (presets/mainnet/phase0.yaml:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SLASHING_PENALTY_QUOTIENT",
+   "bend": "128 (specs/phase0/beacon-chain.md:288)",
+   "ref": "128 (presets/mainnet/phase0.yaml:68)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SLASHING_PENALTY_QUOTIENT_ALTAIR",
+   "bend": "64 (specs/altair/beacon-chain.md:120)",
+   "ref": "64 (presets/mainnet/altair.yaml:8)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SLASHING_PENALTY_QUOTIENT_BELLATRIX",
+   "bend": "32 (specs/bellatrix/beacon-chain.md:75)",
+   "ref": "32 (presets/mainnet/bellatrix.yaml:8)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SLASHING_PENALTY_QUOTIENT_ELECTRA",
+   "bend": "4096 (specs/electra/beacon-chain.md:164)",
+   "ref": "4096 (presets/mainnet/electra.yaml:13)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_SYNC_COMMITTEE_PARTICIPANTS",
+   "bend": "1 (specs/altair/light-client/sync-protocol.md:82)",
+   "ref": "1 (presets/mainnet/altair.yaml:22)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "MIN_VALIDATOR_WITHDRAWABILITY_DELAY",
+   "bend": "256 (specs/phase0/beacon-chain.md:340)",
+   "ref": "256 (configs/mainnet.yaml:80)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "NUMBER_OF_COLUMNS",
+   "bend": "128 (specs/fulu/das-core.md:70)",
+   "ref": "128 (presets/mainnet/fulu.yaml:17)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "NUMBER_OF_CUSTODY_GROUPS",
+   "bend": "128 (specs/fulu/das-core.md:61)",
+   "ref": "128 (configs/mainnet.yaml:206)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PENDING_CONSOLIDATIONS_LIMIT",
+   "bend": "262144 (specs/electra/beacon-chain.md:173)",
+   "ref": "262144 (presets/mainnet/electra.yaml:24)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PENDING_DEPOSITS_LIMIT",
+   "bend": "134217728 (specs/electra/beacon-chain.md:171)",
+   "ref": "134217728 (presets/mainnet/electra.yaml:20)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PENDING_PARTIAL_WITHDRAWALS_LIMIT",
+   "bend": "134217728 (specs/electra/beacon-chain.md:172)",
+   "ref": "134217728 (presets/mainnet/electra.yaml:22)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPORTIONAL_SLASHING_MULTIPLIER",
+   "bend": "1 (specs/phase0/beacon-chain.md:289)",
+   "ref": "1 (presets/mainnet/phase0.yaml:70)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPORTIONAL_SLASHING_MULTIPLIER_ALTAIR",
+   "bend": "2 (specs/altair/beacon-chain.md:121)",
+   "ref": "2 (presets/mainnet/altair.yaml:10)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPORTIONAL_SLASHING_MULTIPLIER_BELLATRIX",
+   "bend": "3 (specs/bellatrix/beacon-chain.md:76)",
+   "ref": "3 (presets/mainnet/bellatrix.yaml:10)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPOSER_REORG_CUTOFF_BPS",
+   "bend": "1667 (specs/phase0/fork-choice.md:128)",
+   "ref": "1667 (configs/mainnet.yaml:86)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPOSER_REWARD_QUOTIENT",
+   "bend": "8 (specs/phase0/beacon-chain.md:286)",
+   "ref": "8 (presets/mainnet/phase0.yaml:64)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "PROPOSER_SCORE_BOOST",
+   "bend": "40 (specs/phase0/fork-choice.md:115)",
+   "ref": "40 (configs/mainnet.yaml:144)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "REORG_HEAD_WEIGHT_THRESHOLD",
+   "bend": "20 (specs/phase0/fork-choice.md:116)",
+   "ref": "20 (configs/mainnet.yaml:146)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "REORG_MAX_EPOCHS_SINCE_FINALIZATION",
+   "bend": "2 (specs/phase0/fork-choice.md:118)",
+   "ref": "2 (configs/mainnet.yaml:150)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "REORG_PARENT_WEIGHT_THRESHOLD",
+   "bend": "160 (specs/phase0/fork-choice.md:117)",
+   "ref": "160 (configs/mainnet.yaml:148)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SAMPLES_PER_SLOT",
+   "bend": "8 (specs/fulu/das-core.md:60)",
+   "ref": "8 (configs/mainnet.yaml:212)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SECONDS_PER_ETH1_BLOCK",
+   "bend": "14 (specs/phase0/beacon-chain.md:339)",
+   "ref": "14 (configs/mainnet.yaml:78)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SHARD_COMMITTEE_PERIOD",
+   "bend": "256 (specs/phase0/beacon-chain.md:341)",
+   "ref": "256 (configs/mainnet.yaml:82)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SHUFFLE_ROUND_COUNT",
+   "bend": "90 (specs/phase0/beacon-chain.md:238)",
+   "ref": "90 (presets/mainnet/phase0.yaml:12)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SLOTS_PER_EPOCH",
+   "bend": "32 (specs/phase0/beacon-chain.md:264)",
+   "ref": "32 (presets/mainnet/phase0.yaml:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SLOTS_PER_HISTORICAL_ROOT",
+   "bend": "8192 (specs/phase0/beacon-chain.md:269)",
+   "ref": "8192 (presets/mainnet/phase0.yaml:42)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SLOT_DURATION_MS",
+   "bend": "12000 (specs/phase0/beacon-chain.md:338)",
+   "ref": "12000 (configs/mainnet.yaml:76)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SUBNETS_PER_NODE",
+   "bend": "2 (specs/phase0/p2p-interface.md:258)",
+   "ref": "2 (configs/mainnet.yaml:176)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SYNC_COMMITTEE_SIZE",
+   "bend": "512 (specs/altair/beacon-chain.md:127)",
+   "ref": "512 (presets/mainnet/altair.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "SYNC_MESSAGE_DUE_BPS",
+   "bend": "3333 (specs/altair/validator.md:88)",
+   "ref": "3333 (configs/mainnet.yaml:94)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "TARGET_COMMITTEE_SIZE",
+   "bend": "128 (specs/phase0/beacon-chain.md:236)",
+   "ref": "128 (presets/mainnet/phase0.yaml:8)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "TERMINAL_BLOCK_HASH_ACTIVATION_EPOCH",
+   "bend": "18446744073709551615 (specs/bellatrix/beacon-chain.md:95)",
+   "ref": "18446744073709551615 (configs/mainnet.yaml:21)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "TERMINAL_TOTAL_DIFFICULTY",
+   "bend": "58750000000000000000000 (specs/bellatrix/beacon-chain.md:93)",
+   "ref": "58750000000000000000000 (configs/mainnet.yaml:18)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "UPDATE_TIMEOUT",
+   "bend": "8192 (specs/altair/light-client/sync-protocol.md:83)",
+   "ref": "8192 (presets/mainnet/altair.yaml:24)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "VALIDATOR_CUSTODY_REQUIREMENT",
+   "bend": "8 (specs/fulu/validator.md:50)",
+   "ref": "8 (configs/mainnet.yaml:216)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "VALIDATOR_REGISTRY_LIMIT",
+   "bend": "1099511627776 (specs/phase0/beacon-chain.md:278)",
+   "ref": "1099511627776 (presets/mainnet/phase0.yaml:55)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "WHISTLEBLOWER_REWARD_QUOTIENT",
+   "bend": "512 (specs/phase0/beacon-chain.md:285)",
+   "ref": "512 (presets/mainnet/phase0.yaml:62)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "A2 reference preset yaml vs markdown table",
+   "item": "WHISTLEBLOWER_REWARD_QUOTIENT_ELECTRA",
+   "bend": "4096 (specs/electra/beacon-chain.md:165)",
+   "ref": "4096 (presets/mainnet/electra.yaml:15)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "AggregateAndProof",
+   "bend": "json schemas/fulu_mainnet.json:1111; bend spec/fulu_schemas.bend:97; yaml codegen/fulu.yaml:171",
+   "ref": "Container(aggregator_index,aggregate,selection_proof) specs/electra/validator.md:70",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Attestation",
+   "bend": "json schemas/fulu_mainnet.json:1012; bend spec/fulu_schemas.bend:95; yaml codegen/fulu.yaml:166",
+   "ref": "Container(aggregation_bits,data,signature,committee_bits) specs/electra/beacon-chain.md:351",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "AttestationData",
+   "bend": "json schemas/fulu_mainnet.json:843; bend spec/fulu_schemas.bend:89; yaml codegen/fulu.yaml:155",
+   "ref": "Container(slot,index,beacon_block_root,source,target) specs/phase0/beacon-chain.md:406",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "AttesterSlashing",
+   "bend": "json schemas/fulu_mainnet.json:1563; bend spec/fulu_schemas.bend:107; yaml codegen/fulu.yaml:187",
+   "ref": "Container(attestation_1,attestation_2) specs/electra/beacon-chain.md:317",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BLSPubkey",
+   "bend": "json schemas/fulu_mainnet.json:1812; bend spec/fulu_schemas.bend:114; yaml codegen/fulu.yaml:198",
+   "ref": "ByteVector[48] specs/phase0/beacon-chain.md:175",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BLSSignature",
+   "bend": "json schemas/fulu_mainnet.json:74; bend spec/fulu_schemas.bend:36; yaml codegen/fulu.yaml:73",
+   "ref": "ByteVector[96] specs/phase0/beacon-chain.md:176",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BLSToExecutionChange",
+   "bend": "json schemas/fulu_mainnet.json:2301; bend spec/fulu_schemas.bend:151; yaml codegen/fulu.yaml:255",
+   "ref": "Container(validator_index,from_bls_pubkey,to_execution_address) specs/capella/beacon-chain.md:109",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BeaconBlock",
+   "bend": "json schemas/fulu_mainnet.json:5995; bend spec/fulu_schemas.bend:207; yaml codegen/fulu.yaml:390",
+   "ref": "Container(slot,proposer_index,parent_root,state_root,body) specs/phase0/beacon-chain.md:554",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BeaconBlockBody",
+   "bend": "json schemas/fulu_mainnet.json:5037; bend spec/fulu_schemas.bend:205; yaml codegen/fulu.yaml:376",
+   "ref": "Container(randao_reveal,eth1_data,graffiti,proposer_slashings,attester_slashings,attestations,deposits,voluntary_exits,sync_aggregate,execution_payload,bls_to_execution_changes,blob_kzg_commitments,execution_requests) specs/electra/beacon-chain.md:327",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BeaconBlockHeader",
+   "bend": "json schemas/fulu_mainnet.json:555; bend spec/fulu_schemas.bend:76; yaml codegen/fulu.yaml:133",
+   "ref": "Container(slot,proposer_index,parent_root,state_root,body_root) specs/phase0/beacon-chain.md:474",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BeaconState",
+   "bend": "json schemas/fulu_mainnet.json:2694; bend spec/fulu_schemas.bend:180; yaml codegen/fulu.yaml:305",
+   "ref": "Container(genesis_time,genesis_validators_root,slot,fork,latest_block_header,block_roots,state_roots,historical_roots,eth1_data,eth1_data_votes,eth1_deposit_index,validators,balances,randao_mixes,slashings,previous_epoch_participation,current_epoch_participation,justification_bits,previous_justified_checkpoint,current_justified_checkpoint,finalized_checkpoint,inactivity_scores,current_sync_committee,next_sync_committee,latest_execution_payload_header,next_withdrawal_index,next_withdrawal_validator_index,historical_summaries,deposit_requests_start_index,deposit_balance_to_consume,exit_balance_to_consume,earliest_exit_epoch,consolidation_balance_to_consume,earliest_consolidation_epoch,pending_deposits,pending_partial_withdrawals,pending_consolidations,proposer_lookahead) specs/fulu/beacon-chain.md:135",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Blob",
+   "bend": "json schemas/fulu_mainnet.json:8002; bend spec/fulu_schemas.bend:212; yaml codegen/fulu.yaml:400",
+   "ref": "ByteVector[131072] specs/deneb/polynomial-commitments.md:69",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BlobIdentifier",
+   "bend": "json schemas/fulu_mainnet.json:5014; bend spec/fulu_schemas.bend:195; yaml codegen/fulu.yaml:372",
+   "ref": "Container(block_root,index) specs/deneb/p2p-interface.md:114",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BlobIndex",
+   "bend": "json schemas/fulu_mainnet.json:5010; bend spec/fulu_schemas.bend:193; yaml codegen/fulu.yaml:371",
+   "ref": "uint64 specs/deneb/beacon-chain.md:64",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "BlobSidecar",
+   "bend": "json schemas/fulu_mainnet.json:8006; bend spec/fulu_schemas.bend:215; yaml codegen/fulu.yaml:401",
+   "ref": "Container(index,blob,kzg_commitment,kzg_proof,signed_block_header,kzg_commitment_inclusion_proof) specs/deneb/p2p-interface.md:100",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes1",
+   "bend": "json schemas/fulu_mainnet.json:22; bend spec/fulu_schemas.bend:17; yaml codegen/fulu.yaml:60",
+   "ref": "ByteVector[1] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes20",
+   "bend": "json schemas/fulu_mainnet.json:46; bend spec/fulu_schemas.bend:29; yaml codegen/fulu.yaml:66",
+   "ref": "ByteVector[20] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes32",
+   "bend": "json schemas/fulu_mainnet.json:30; bend spec/fulu_schemas.bend:21; yaml codegen/fulu.yaml:62",
+   "ref": "ByteVector[32] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes4",
+   "bend": "json schemas/fulu_mainnet.json:26; bend spec/fulu_schemas.bend:19; yaml codegen/fulu.yaml:61",
+   "ref": "ByteVector[4] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes48",
+   "bend": "json schemas/fulu_mainnet.json:34; bend spec/fulu_schemas.bend:23; yaml codegen/fulu.yaml:63",
+   "ref": "ByteVector[48] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes8",
+   "bend": "json schemas/fulu_mainnet.json:42; bend spec/fulu_schemas.bend:27; yaml codegen/fulu.yaml:65",
+   "ref": "ByteVector[8] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Bytes96",
+   "bend": "json schemas/fulu_mainnet.json:38; bend spec/fulu_schemas.bend:25; yaml codegen/fulu.yaml:64",
+   "ref": "ByteVector[96] None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Cell",
+   "bend": "json schemas/fulu_mainnet.json:8108; bend spec/fulu_schemas.bend:217; yaml codegen/fulu.yaml:408",
+   "ref": "ByteVector[2048] specs/fulu/polynomial-commitments-sampling.md:75",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "CellIndex",
+   "bend": "json schemas/fulu_mainnet.json:8112; bend spec/fulu_schemas.bend:218; yaml codegen/fulu.yaml:409",
+   "ref": "uint64 specs/fulu/polynomial-commitments-sampling.md:76",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Checkpoint",
+   "bend": "json schemas/fulu_mainnet.json:824; bend spec/fulu_schemas.bend:87; yaml codegen/fulu.yaml:152",
+   "ref": "Container(epoch,root) specs/phase0/beacon-chain.md:384",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ColumnIndex",
+   "bend": "json schemas/fulu_mainnet.json:8124; bend spec/fulu_schemas.bend:221; yaml codegen/fulu.yaml:412",
+   "ref": "uint64 specs/fulu/das-core.md:51",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "CommitmentIndex",
+   "bend": "json schemas/fulu_mainnet.json:8116; bend spec/fulu_schemas.bend:219; yaml codegen/fulu.yaml:410",
+   "ref": "uint64 specs/fulu/polynomial-commitments-sampling.md:77",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "CommitteeIndex",
+   "bend": "json schemas/fulu_mainnet.json:188; bend spec/fulu_schemas.bend:51; yaml codegen/fulu.yaml:92",
+   "ref": "uint64 specs/phase0/beacon-chain.md:166",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ConsolidationRequest",
+   "bend": "json schemas/fulu_mainnet.json:2131; bend spec/fulu_schemas.bend:142; yaml codegen/fulu.yaml:243",
+   "ref": "Container(source_address,source_pubkey,target_pubkey) specs/electra/beacon-chain.md:284",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ContributionAndProof",
+   "bend": "json schemas/fulu_mainnet.json:357; bend spec/fulu_schemas.bend:68; yaml codegen/fulu.yaml:117",
+   "ref": "Container(aggregator_index,contribution,selection_proof) specs/altair/validator.md:117",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "CurrentSyncCommitteeBranch",
+   "bend": "json schemas/fulu_mainnet.json:2107; bend spec/fulu_schemas.bend:136; yaml codegen/fulu.yaml:239",
+   "ref": "Vector[ByteVector[32],6] specs/electra/light-client/sync-protocol.md:36",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "CustodyIndex",
+   "bend": "json schemas/fulu_mainnet.json:8298; bend spec/fulu_schemas.bend:230; yaml codegen/fulu.yaml:428",
+   "ref": "uint64 specs/fulu/das-core.md:52",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DataColumnSidecar",
+   "bend": "json schemas/fulu_mainnet.json:8184; bend spec/fulu_schemas.bend:229; yaml codegen/fulu.yaml:421",
+   "ref": "Container(index,column,kzg_commitments,kzg_proofs,signed_block_header,kzg_commitments_inclusion_proof) specs/fulu/das-core.md:77",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DataColumnsByRootIdentifier",
+   "bend": "json schemas/fulu_mainnet.json:8128; bend spec/fulu_schemas.bend:224; yaml codegen/fulu.yaml:413",
+   "ref": "Container(block_root,columns) specs/fulu/p2p-interface.md:99",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Deposit",
+   "bend": "json schemas/fulu_mainnet.json:1952; bend spec/fulu_schemas.bend:126; yaml codegen/fulu.yaml:219",
+   "ref": "Container(proof,data) specs/phase0/beacon-chain.md:522",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DepositData",
+   "bend": "json schemas/fulu_mainnet.json:1919; bend spec/fulu_schemas.bend:123; yaml codegen/fulu.yaml:214",
+   "ref": "Container(pubkey,withdrawal_credentials,amount,signature) specs/phase0/beacon-chain.md:464",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DepositMessage",
+   "bend": "json schemas/fulu_mainnet.json:2004; bend spec/fulu_schemas.bend:128; yaml codegen/fulu.yaml:222",
+   "ref": "Container(pubkey,withdrawal_credentials,amount) specs/phase0/beacon-chain.md:453",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DepositRequest",
+   "bend": "json schemas/fulu_mainnet.json:1816; bend spec/fulu_schemas.bend:116; yaml codegen/fulu.yaml:199",
+   "ref": "Container(pubkey,withdrawal_credentials,amount,signature,index) specs/electra/beacon-chain.md:260",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Domain",
+   "bend": "json schemas/fulu_mainnet.json:1789; bend spec/fulu_schemas.bend:111; yaml codegen/fulu.yaml:194",
+   "ref": "ByteVector[32] specs/phase0/beacon-chain.md:174",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "DomainType",
+   "bend": "json schemas/fulu_mainnet.json:70; bend spec/fulu_schemas.bend:35; yaml codegen/fulu.yaml:72",
+   "ref": "ByteVector[4] specs/phase0/beacon-chain.md:172",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Epoch",
+   "bend": "json schemas/fulu_mainnet.json:54; bend spec/fulu_schemas.bend:31; yaml codegen/fulu.yaml:68",
+   "ref": "uint64 specs/phase0/beacon-chain.md:165",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Eth1Block",
+   "bend": "json schemas/fulu_mainnet.json:529; bend spec/fulu_schemas.bend:74; yaml codegen/fulu.yaml:129",
+   "ref": "Container(timestamp,deposit_root,deposit_count) specs/phase0/validator.md:121",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Eth1Data",
+   "bend": "json schemas/fulu_mainnet.json:798; bend spec/fulu_schemas.bend:85; yaml codegen/fulu.yaml:148",
+   "ref": "Container(deposit_root,deposit_count,block_hash) specs/phase0/beacon-chain.md:436",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Ether",
+   "bend": "json schemas/fulu_mainnet.json:2099; bend spec/fulu_schemas.bend:133; yaml codegen/fulu.yaml:237",
+   "ref": "uint64 specs/phase0/weak-subjectivity.md:42",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ExecutionAddress",
+   "bend": "json schemas/fulu_mainnet.json:2127; bend spec/fulu_schemas.bend:140; yaml codegen/fulu.yaml:242",
+   "ref": "ByteVector[20] specs/bellatrix/beacon-chain.md:60",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ExecutionBranch",
+   "bend": "json schemas/fulu_mainnet.json:3479; bend spec/fulu_schemas.bend:182; yaml codegen/fulu.yaml:344",
+   "ref": "Vector[ByteVector[32],4] specs/capella/light-client/sync-protocol.md:38",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ExecutionPayload",
+   "bend": "json schemas/fulu_mainnet.json:2533; bend spec/fulu_schemas.bend:165; yaml codegen/fulu.yaml:287",
+   "ref": "Container(parent_hash,fee_recipient,state_root,receipts_root,logs_bloom,prev_randao,block_number,gas_limit,gas_used,timestamp,extra_data,base_fee_per_gas,block_hash,transactions,withdrawals,blob_gas_used,excess_blob_gas) specs/deneb/beacon-chain.md:130",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ExecutionPayloadHeader",
+   "bend": "json schemas/fulu_mainnet.json:2368; bend spec/fulu_schemas.bend:157; yaml codegen/fulu.yaml:262",
+   "ref": "Container(parent_hash,fee_recipient,state_root,receipts_root,logs_bloom,prev_randao,block_number,gas_limit,gas_used,timestamp,extra_data,base_fee_per_gas,block_hash,transactions_root,withdrawals_root,blob_gas_used,excess_blob_gas) specs/deneb/beacon-chain.md:155",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ExecutionRequests",
+   "bend": "json schemas/fulu_mainnet.json:2183; bend spec/fulu_schemas.bend:149; yaml codegen/fulu.yaml:251",
+   "ref": "Container(deposits,withdrawals,consolidations) specs/electra/beacon-chain.md:293",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "FinalityBranch",
+   "bend": "json schemas/fulu_mainnet.json:78; bend spec/fulu_schemas.bend:38; yaml codegen/fulu.yaml:74",
+   "ref": "Vector[ByteVector[32],7] specs/electra/light-client/sync-protocol.md:35",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Fork",
+   "bend": "json schemas/fulu_mainnet.json:98; bend spec/fulu_schemas.bend:43; yaml codegen/fulu.yaml:78",
+   "ref": "Container(previous_version,current_version,epoch) specs/phase0/beacon-chain.md:367",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ForkData",
+   "bend": "json schemas/fulu_mainnet.json:1766; bend spec/fulu_schemas.bend:109; yaml codegen/fulu.yaml:190",
+   "ref": "Container(current_version,genesis_validators_root) specs/phase0/beacon-chain.md:376",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ForkDigest",
+   "bend": "json schemas/fulu_mainnet.json:1785; bend spec/fulu_schemas.bend:110; yaml codegen/fulu.yaml:193",
+   "ref": "ByteVector[4] specs/phase0/beacon-chain.md:173",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "G1Point",
+   "bend": "json schemas/fulu_mainnet.json:90; bend spec/fulu_schemas.bend:40; yaml codegen/fulu.yaml:76",
+   "ref": "ByteVector[48] specs/deneb/polynomial-commitments.md:65",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "G2Point",
+   "bend": "json schemas/fulu_mainnet.json:94; bend spec/fulu_schemas.bend:41; yaml codegen/fulu.yaml:77",
+   "ref": "ByteVector[96] specs/deneb/polynomial-commitments.md:66",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Gwei",
+   "bend": "json schemas/fulu_mainnet.json:58; bend spec/fulu_schemas.bend:32; yaml codegen/fulu.yaml:69",
+   "ref": "uint64 specs/phase0/beacon-chain.md:168",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Hash32",
+   "bend": "json schemas/fulu_mainnet.json:62; bend spec/fulu_schemas.bend:33; yaml codegen/fulu.yaml:70",
+   "ref": "ByteVector[32] specs/phase0/beacon-chain.md:170",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "HistoricalBatch",
+   "bend": "json schemas/fulu_mainnet.json:771; bend spec/fulu_schemas.bend:83; yaml codegen/fulu.yaml:145",
+   "ref": "Container(block_roots,state_roots) specs/phase0/beacon-chain.md:445",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "HistoricalSummary",
+   "bend": "json schemas/fulu_mainnet.json:298; bend spec/fulu_schemas.bend:63; yaml codegen/fulu.yaml:108",
+   "ref": "Container(block_summary_root,state_summary_root) specs/capella/beacon-chain.md:129",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "IndexedAttestation",
+   "bend": "json schemas/fulu_mainnet.json:1467; bend spec/fulu_schemas.bend:105; yaml codegen/fulu.yaml:183",
+   "ref": "Container(attesting_indices,data,signature) specs/electra/beacon-chain.md:363",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "KZGCommitment",
+   "bend": "json schemas/fulu_mainnet.json:5033; bend spec/fulu_schemas.bend:196; yaml codegen/fulu.yaml:375",
+   "ref": "ByteVector[48] specs/deneb/polynomial-commitments.md:67",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "KZGProof",
+   "bend": "json schemas/fulu_mainnet.json:7998; bend spec/fulu_schemas.bend:210; yaml codegen/fulu.yaml:399",
+   "ref": "ByteVector[48] specs/deneb/polynomial-commitments.md:68",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "LightClientBootstrap",
+   "bend": "json schemas/fulu_mainnet.json:4779; bend spec/fulu_schemas.bend:192; yaml codegen/fulu.yaml:367",
+   "ref": "Container(header,current_sync_committee,current_sync_committee_branch) specs/capella/light-client/sync-protocol.md:62",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "LightClientFinalityUpdate",
+   "bend": "json schemas/fulu_mainnet.json:3896; bend spec/fulu_schemas.bend:188; yaml codegen/fulu.yaml:353",
+   "ref": "Container(attested_header,finalized_header,finality_branch,sync_aggregate,signature_slot) specs/capella/light-client/sync-protocol.md:87",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "LightClientHeader",
+   "bend": "json schemas/fulu_mainnet.json:3487; bend spec/fulu_schemas.bend:184; yaml codegen/fulu.yaml:345",
+   "ref": "Container(beacon,execution,execution_branch) specs/capella/light-client/sync-protocol.md:51",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "LightClientOptimisticUpdate",
+   "bend": "json schemas/fulu_mainnet.json:3673; bend spec/fulu_schemas.bend:186; yaml codegen/fulu.yaml:349",
+   "ref": "Container(attested_header,sync_aggregate,signature_slot) specs/capella/light-client/sync-protocol.md:100",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "LightClientUpdate",
+   "bend": "json schemas/fulu_mainnet.json:4319; bend spec/fulu_schemas.bend:190; yaml codegen/fulu.yaml:359",
+   "ref": "Container(attested_header,next_sync_committee,next_sync_committee_branch,finalized_header,finality_branch,sync_aggregate,signature_slot) specs/capella/light-client/sync-protocol.md:72",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "MatrixEntry",
+   "bend": "json schemas/fulu_mainnet.json:8151; bend spec/fulu_schemas.bend:226; yaml codegen/fulu.yaml:416",
+   "ref": "Container(cell,kzg_proof,column_index,row_index) specs/fulu/das-core.md:89",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "NextSyncCommitteeBranch",
+   "bend": "json schemas/fulu_mainnet.json:2115; bend spec/fulu_schemas.bend:137; yaml codegen/fulu.yaml:240",
+   "ref": "Vector[ByteVector[32],6] specs/electra/light-client/sync-protocol.md:37",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "NodeID",
+   "bend": "json schemas/fulu_mainnet.json:2091; bend spec/fulu_schemas.bend:131; yaml codegen/fulu.yaml:235",
+   "ref": "uint256 specs/phase0/p2p-interface.md:235",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ParticipationFlags",
+   "bend": "json schemas/fulu_mainnet.json:2103; bend spec/fulu_schemas.bend:134; yaml codegen/fulu.yaml:238",
+   "ref": "uint8 specs/altair/beacon-chain.md:68",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PayloadId",
+   "bend": "json schemas/fulu_mainnet.json:2492; bend spec/fulu_schemas.bend:158; yaml codegen/fulu.yaml:280",
+   "ref": "ByteVector[8] specs/bellatrix/fork-choice.md:38",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PendingAttestation",
+   "bend": "json schemas/fulu_mainnet.json:1368; bend spec/fulu_schemas.bend:102; yaml codegen/fulu.yaml:178",
+   "ref": "Container(aggregation_bits,data,inclusion_delay,proposer_index) specs/phase0/beacon-chain.md:426",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PendingConsolidation",
+   "bend": "json schemas/fulu_mainnet.json:196; bend spec/fulu_schemas.bend:54; yaml codegen/fulu.yaml:94",
+   "ref": "Container(source_index,target_index) specs/electra/beacon-chain.md:250",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PendingDeposit",
+   "bend": "json schemas/fulu_mainnet.json:1856; bend spec/fulu_schemas.bend:118; yaml codegen/fulu.yaml:205",
+   "ref": "Container(pubkey,withdrawal_credentials,amount,signature,slot) specs/electra/beacon-chain.md:226",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PendingPartialWithdrawal",
+   "bend": "json schemas/fulu_mainnet.json:215; bend spec/fulu_schemas.bend:56; yaml codegen/fulu.yaml:97",
+   "ref": "Container(validator_index,amount,withdrawable_epoch) specs/electra/beacon-chain.md:239",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "PowBlock",
+   "bend": "json schemas/fulu_mainnet.json:162; bend spec/fulu_schemas.bend:50; yaml codegen/fulu.yaml:88",
+   "ref": "Container(block_hash,parent_hash,total_difficulty) specs/bellatrix/fork-choice.md:210",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ProposerSlashing",
+   "bend": "json schemas/fulu_mainnet.json:650; bend spec/fulu_schemas.bend:80; yaml codegen/fulu.yaml:142",
+   "ref": "Container(signed_header_1,signed_header_2) specs/phase0/beacon-chain.md:495",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Root",
+   "bend": "json schemas/fulu_mainnet.json:294; bend spec/fulu_schemas.bend:61; yaml codegen/fulu.yaml:107",
+   "ref": "ByteVector[32] specs/phase0/beacon-chain.md:169",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "RowIndex",
+   "bend": "json schemas/fulu_mainnet.json:8120; bend spec/fulu_schemas.bend:220; yaml codegen/fulu.yaml:411",
+   "ref": "uint64 specs/fulu/das-core.md:50",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedAggregateAndProof",
+   "bend": "json schemas/fulu_mainnet.json:1232; bend spec/fulu_schemas.bend:99; yaml codegen/fulu.yaml:175",
+   "ref": "Container(message,signature) specs/electra/validator.md:80",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedBLSToExecutionChange",
+   "bend": "json schemas/fulu_mainnet.json:2327; bend spec/fulu_schemas.bend:153; yaml codegen/fulu.yaml:259",
+   "ref": "Container(message,signature) specs/capella/beacon-chain.md:118",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedBeaconBlock",
+   "bend": "json schemas/fulu_mainnet.json:6989; bend spec/fulu_schemas.bend:209; yaml codegen/fulu.yaml:396",
+   "ref": "Container(message,signature) specs/phase0/beacon-chain.md:604",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedBeaconBlockHeader",
+   "bend": "json schemas/fulu_mainnet.json:595; bend spec/fulu_schemas.bend:78; yaml codegen/fulu.yaml:139",
+   "ref": "Container(message,signature) specs/phase0/beacon-chain.md:612",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedContributionAndProof",
+   "bend": "json schemas/fulu_mainnet.json:419; bend spec/fulu_schemas.bend:70; yaml codegen/fulu.yaml:121",
+   "ref": "Container(message,signature) specs/altair/validator.md:126",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SignedVoluntaryExit",
+   "bend": "json schemas/fulu_mainnet.json:260; bend spec/fulu_schemas.bend:60; yaml codegen/fulu.yaml:104",
+   "ref": "Container(message,signature) specs/phase0/beacon-chain.md:596",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SigningData",
+   "bend": "json schemas/fulu_mainnet.json:1793; bend spec/fulu_schemas.bend:113; yaml codegen/fulu.yaml:195",
+   "ref": "Container(object_root,domain) specs/phase0/beacon-chain.md:485",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SingleAttestation",
+   "bend": "json schemas/fulu_mainnet.json:913; bend spec/fulu_schemas.bend:91; yaml codegen/fulu.yaml:161",
+   "ref": "Container(committee_index,attester_index,data,signature) specs/electra/beacon-chain.md:305",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Slot",
+   "bend": "json schemas/fulu_mainnet.json:50; bend spec/fulu_schemas.bend:30; yaml codegen/fulu.yaml:67",
+   "ref": "uint64 specs/phase0/beacon-chain.md:164",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SubnetID",
+   "bend": "json schemas/fulu_mainnet.json:2095; bend spec/fulu_schemas.bend:132; yaml codegen/fulu.yaml:236",
+   "ref": "uint64 specs/phase0/p2p-interface.md:236",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SyncAggregate",
+   "bend": "json schemas/fulu_mainnet.json:124; bend spec/fulu_schemas.bend:46; yaml codegen/fulu.yaml:82",
+   "ref": "Container(sync_committee_bits,sync_committee_signature) specs/altair/beacon-chain.md:199",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SyncAggregatorSelectionData",
+   "bend": "json schemas/fulu_mainnet.json:143; bend spec/fulu_schemas.bend:48; yaml codegen/fulu.yaml:85",
+   "ref": "Container(slot,subcommittee_index) specs/altair/validator.md:134",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SyncCommittee",
+   "bend": "json schemas/fulu_mainnet.json:1896; bend spec/fulu_schemas.bend:121; yaml codegen/fulu.yaml:211",
+   "ref": "Container(pubkeys,aggregate_pubkey) specs/altair/beacon-chain.md:207",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SyncCommitteeContribution",
+   "bend": "json schemas/fulu_mainnet.json:317; bend spec/fulu_schemas.bend:66; yaml codegen/fulu.yaml:111",
+   "ref": "Container(slot,beacon_block_root,subcommittee_index,aggregation_bits,signature) specs/altair/validator.md:106",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "SyncCommitteeMessage",
+   "bend": "json schemas/fulu_mainnet.json:496; bend spec/fulu_schemas.bend:72; yaml codegen/fulu.yaml:124",
+   "ref": "Container(slot,beacon_block_root,validator_index,signature) specs/altair/validator.md:96",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Transaction",
+   "bend": "json schemas/fulu_mainnet.json:2123; bend spec/fulu_schemas.bend:139; yaml codegen/fulu.yaml:241",
+   "ref": "ByteList[1073741824] specs/bellatrix/beacon-chain.md:59",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Validator",
+   "bend": "json schemas/fulu_mainnet.json:2030; bend spec/fulu_schemas.bend:130; yaml codegen/fulu.yaml:226",
+   "ref": "Container(pubkey,withdrawal_credentials,effective_balance,slashed,activation_eligibility_epoch,activation_epoch,exit_epoch,withdrawable_epoch) specs/phase0/beacon-chain.md:392",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "ValidatorIndex",
+   "bend": "json schemas/fulu_mainnet.json:192; bend spec/fulu_schemas.bend:52; yaml codegen/fulu.yaml:93",
+   "ref": "uint64 specs/phase0/beacon-chain.md:167",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Version",
+   "bend": "json schemas/fulu_mainnet.json:66; bend spec/fulu_schemas.bend:34; yaml codegen/fulu.yaml:71",
+   "ref": "ByteVector[4] specs/phase0/beacon-chain.md:171",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "VersionedHash",
+   "bend": "json schemas/fulu_mainnet.json:86; bend spec/fulu_schemas.bend:39; yaml codegen/fulu.yaml:75",
+   "ref": "ByteVector[32] specs/deneb/beacon-chain.md:63",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "VoluntaryExit",
+   "bend": "json schemas/fulu_mainnet.json:241; bend spec/fulu_schemas.bend:58; yaml codegen/fulu.yaml:101",
+   "ref": "Container(epoch,validator_index) specs/phase0/beacon-chain.md:530",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "Withdrawal",
+   "bend": "json schemas/fulu_mainnet.json:2500; bend spec/fulu_schemas.bend:161; yaml codegen/fulu.yaml:282",
+   "ref": "Container(index,validator_index,address,amount) specs/capella/beacon-chain.md:99",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "WithdrawalIndex",
+   "bend": "json schemas/fulu_mainnet.json:2496; bend spec/fulu_schemas.bend:159; yaml codegen/fulu.yaml:281",
+   "ref": "uint64 specs/capella/beacon-chain.md:64",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "WithdrawalRequest",
+   "bend": "json schemas/fulu_mainnet.json:2157; bend spec/fulu_schemas.bend:144; yaml codegen/fulu.yaml:247",
+   "ref": "Container(source_address,validator_pubkey,amount) specs/electra/beacon-chain.md:273",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "boolean",
+   "bend": "json schemas/fulu_mainnet.json:2; bend spec/fulu_schemas.bend:7; yaml codegen/fulu.yaml:55",
+   "ref": "boolean None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "uint256",
+   "bend": "json schemas/fulu_mainnet.json:18; bend spec/fulu_schemas.bend:15; yaml codegen/fulu.yaml:59",
+   "ref": "uint256 None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "uint32",
+   "bend": "json schemas/fulu_mainnet.json:10; bend spec/fulu_schemas.bend:11; yaml codegen/fulu.yaml:57",
+   "ref": "uint32 None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "uint64",
+   "bend": "json schemas/fulu_mainnet.json:14; bend spec/fulu_schemas.bend:13; yaml codegen/fulu.yaml:58",
+   "ref": "uint64 None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "B Fulu names",
+   "item": "uint8",
+   "bend": "json schemas/fulu_mainnet.json:6; bend spec/fulu_schemas.bend:9; yaml codegen/fulu.yaml:56",
+   "ref": "uint8 None",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes1",
+   "bend": "1 (types/byte_alias.bend:32)",
+   "ref": "ByteVector[1] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes4",
+   "bend": "4 (types/byte_alias.bend:33)",
+   "ref": "ByteVector[4] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes32",
+   "bend": "32 (types/byte_alias.bend:34)",
+   "ref": "ByteVector[32] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes48",
+   "bend": "48 (types/byte_alias.bend:35)",
+   "ref": "ByteVector[48] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes96",
+   "bend": "96 (types/byte_alias.bend:36)",
+   "ref": "ByteVector[96] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes8",
+   "bend": "8 (types/byte_alias.bend:37)",
+   "ref": "ByteVector[8] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Bytes20",
+   "bend": "20 (types/byte_alias.bend:38)",
+   "ref": "ByteVector[20] (ssz basic)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Hash32",
+   "bend": "32 (types/byte_alias.bend:39)",
+   "ref": "ByteVector[32] (specs/phase0/beacon-chain.md:170)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Version",
+   "bend": "4 (types/byte_alias.bend:40)",
+   "ref": "ByteVector[4] (specs/phase0/beacon-chain.md:171)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "DomainType",
+   "bend": "4 (types/byte_alias.bend:41)",
+   "ref": "ByteVector[4] (specs/phase0/beacon-chain.md:172)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "BLSSignature",
+   "bend": "96 (types/byte_alias.bend:42)",
+   "ref": "ByteVector[96] (specs/phase0/beacon-chain.md:176)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "VersionedHash",
+   "bend": "32 (types/byte_alias.bend:43)",
+   "ref": "ByteVector[32] (specs/deneb/beacon-chain.md:63)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "G1Point",
+   "bend": "48 (types/byte_alias.bend:44)",
+   "ref": "ByteVector[48] (specs/deneb/polynomial-commitments.md:65)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "G2Point",
+   "bend": "96 (types/byte_alias.bend:45)",
+   "ref": "ByteVector[96] (specs/deneb/polynomial-commitments.md:66)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Root",
+   "bend": "32 (types/byte_alias.bend:46)",
+   "ref": "ByteVector[32] (specs/phase0/beacon-chain.md:169)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "ForkDigest",
+   "bend": "4 (types/byte_alias.bend:47)",
+   "ref": "ByteVector[4] (specs/phase0/beacon-chain.md:173)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Domain",
+   "bend": "32 (types/byte_alias.bend:48)",
+   "ref": "ByteVector[32] (specs/phase0/beacon-chain.md:174)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "BLSPubkey",
+   "bend": "48 (types/byte_alias.bend:49)",
+   "ref": "ByteVector[48] (specs/phase0/beacon-chain.md:175)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "ExecutionAddress",
+   "bend": "20 (types/byte_alias.bend:50)",
+   "ref": "ByteVector[20] (specs/bellatrix/beacon-chain.md:60)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "PayloadId",
+   "bend": "8 (types/byte_alias.bend:51)",
+   "ref": "ByteVector[8] (specs/bellatrix/fork-choice.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "KZGCommitment",
+   "bend": "48 (types/byte_alias.bend:52)",
+   "ref": "ByteVector[48] (specs/deneb/polynomial-commitments.md:67)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "KZGProof",
+   "bend": "48 (types/byte_alias.bend:53)",
+   "ref": "ByteVector[48] (specs/deneb/polynomial-commitments.md:68)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Blob",
+   "bend": "131072 (types/byte_alias.bend:54)",
+   "ref": "ByteVector[131072] (specs/deneb/polynomial-commitments.md:69)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Cell",
+   "bend": "2048 (types/byte_alias.bend:55)",
+   "ref": "ByteVector[2048] (specs/fulu/polynomial-commitments-sampling.md:75)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "C byte aliases",
+   "item": "Transaction",
+   "bend": "1073741824 (types/list_alias.bend:9)",
+   "ref": "ByteList[1073741824] (specs/bellatrix/beacon-chain.md:59)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "BitsStruct",
+   "bend": "proofs/obj/generic_specs.bend:91",
+   "ref": "Container(A,B,C,D,E) (tests/generators/runners/ssz_generic_cases/ssz_container.py:65)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "CompatibleUnionA",
+   "bend": "proofs/obj/generic_specs.bend:136",
+   "ref": "compatunion (tests/generators/runners/ssz_generic_cases/ssz_compatible_union.py:22)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "CompatibleUnionABCA",
+   "bend": "proofs/obj/generic_specs.bend:135",
+   "ref": "compatunion (tests/generators/runners/ssz_generic_cases/ssz_compatible_union.py:28)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "CompatibleUnionBC",
+   "bend": "proofs/obj/generic_specs.bend:134",
+   "ref": "compatunion (tests/generators/runners/ssz_generic_cases/ssz_compatible_union.py:24)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ComplexTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:96",
+   "ref": "Container(A,B,C,D,E,F,G) (tests/generators/runners/ssz_generic_cases/ssz_container.py:48)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "FixedTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:93",
+   "ref": "Container(A,B,C) (tests/generators/runners/ssz_generic_cases/ssz_container.py:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct1",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:57",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct2",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:62",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct3",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:67",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct4",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:73",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct5",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:78",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct6",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:83",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct7",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:91",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct8",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:97",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ModifiedTestStruct9",
+   "bend": "-",
+   "ref": "tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:113",
+   "status": "only in reference",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveBitsStruct",
+   "bend": "proofs/obj/generic_specs.bend:92",
+   "ref": "Container(A,B,C,D,E,F,G,H,I,J,K,L) (tests/generators/runners/ssz_generic_cases/ssz_container.py:73)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveComplexTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:10",
+   "ref": "progcontainer (tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:42)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveSingleFieldContainerTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:12",
+   "ref": "progcontainer (tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:28)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveSingleListContainerTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:9",
+   "ref": "progcontainer (tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:32)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:90",
+   "ref": "Container(A,B,C,D) (tests/generators/runners/ssz_generic_cases/ssz_container.py:58)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "ProgressiveVarTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:11",
+   "ref": "progcontainer (tests/generators/runners/ssz_generic_cases/ssz_progressive_container.py:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "SingleFieldTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:94",
+   "ref": "Container(A) (tests/generators/runners/ssz_generic_cases/ssz_container.py:27)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "SmallTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:97",
+   "ref": "Container(A,B) (tests/generators/runners/ssz_generic_cases/ssz_container.py:31)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "VarTestStruct",
+   "bend": "proofs/obj/generic_specs.bend:95",
+   "ref": "Container(A,B,C) (tests/generators/runners/ssz_generic_cases/ssz_container.py:42)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_1",
+   "bend": "proofs/obj/generic_specs.bend:101",
+   "ref": "Bitlist[1] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_15",
+   "bend": "proofs/obj/generic_specs.bend:98",
+   "ref": "Bitlist[15] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_16",
+   "bend": "proofs/obj/generic_specs.bend:99",
+   "ref": "Bitlist[16] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_17",
+   "bend": "proofs/obj/generic_specs.bend:100",
+   "ref": "Bitlist[17] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_2",
+   "bend": "proofs/obj/generic_specs.bend:102",
+   "ref": "Bitlist[2] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_3",
+   "bend": "proofs/obj/generic_specs.bend:106",
+   "ref": "Bitlist[3] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_31",
+   "bend": "proofs/obj/generic_specs.bend:103",
+   "ref": "Bitlist[31] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_32",
+   "bend": "proofs/obj/generic_specs.bend:104",
+   "ref": "Bitlist[32] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_33",
+   "bend": "proofs/obj/generic_specs.bend:105",
+   "ref": "Bitlist[33] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_4",
+   "bend": "proofs/obj/generic_specs.bend:107",
+   "ref": "Bitlist[4] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_5",
+   "bend": "proofs/obj/generic_specs.bend:111",
+   "ref": "Bitlist[5] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_511",
+   "bend": "proofs/obj/generic_specs.bend:108",
+   "ref": "Bitlist[511] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_512",
+   "bend": "proofs/obj/generic_specs.bend:109",
+   "ref": "Bitlist[512] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_513",
+   "bend": "proofs/obj/generic_specs.bend:110",
+   "ref": "Bitlist[513] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_6",
+   "bend": "proofs/obj/generic_specs.bend:112",
+   "ref": "Bitlist[6] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_7",
+   "bend": "proofs/obj/generic_specs.bend:113",
+   "ref": "Bitlist[7] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_8",
+   "bend": "proofs/obj/generic_specs.bend:114",
+   "ref": "Bitlist[8] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitlist_9",
+   "bend": "proofs/obj/generic_specs.bend:115",
+   "ref": "Bitlist[9] (tests/generators/runners/ssz_generic_cases/ssz_bitlist.py:34)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_1",
+   "bend": "proofs/obj/generic_specs.bend:119",
+   "ref": "Bitvector[1] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_15",
+   "bend": "proofs/obj/generic_specs.bend:116",
+   "ref": "Bitvector[15] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_16",
+   "bend": "proofs/obj/generic_specs.bend:117",
+   "ref": "Bitvector[16] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_17",
+   "bend": "proofs/obj/generic_specs.bend:118",
+   "ref": "Bitvector[17] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_2",
+   "bend": "proofs/obj/generic_specs.bend:120",
+   "ref": "Bitvector[2] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_3",
+   "bend": "proofs/obj/generic_specs.bend:124",
+   "ref": "Bitvector[3] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_31",
+   "bend": "proofs/obj/generic_specs.bend:121",
+   "ref": "Bitvector[31] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_32",
+   "bend": "proofs/obj/generic_specs.bend:122",
+   "ref": "Bitvector[32] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_33",
+   "bend": "proofs/obj/generic_specs.bend:123",
+   "ref": "Bitvector[33] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_4",
+   "bend": "proofs/obj/generic_specs.bend:125",
+   "ref": "Bitvector[4] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_5",
+   "bend": "proofs/obj/generic_specs.bend:129",
+   "ref": "Bitvector[5] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_511",
+   "bend": "proofs/obj/generic_specs.bend:126",
+   "ref": "Bitvector[511] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_512",
+   "bend": "proofs/obj/generic_specs.bend:127",
+   "ref": "Bitvector[512] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_513",
+   "bend": "proofs/obj/generic_specs.bend:128",
+   "ref": "Bitvector[513] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_6",
+   "bend": "proofs/obj/generic_specs.bend:130",
+   "ref": "Bitvector[6] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_7",
+   "bend": "proofs/obj/generic_specs.bend:131",
+   "ref": "Bitvector[7] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_8",
+   "bend": "proofs/obj/generic_specs.bend:132",
+   "ref": "Bitvector[8] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "bitvector_9",
+   "bend": "proofs/obj/generic_specs.bend:133",
+   "ref": "Bitvector[9] (tests/generators/runners/ssz_generic_cases/ssz_bitvector.py:33)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "progbitlist",
+   "bend": "proofs/obj/generic_specs.bend:137",
+   "ref": "progbits (tests/generators/runners/ssz_generic_cases/ssz_progressive_bitlist.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_bool",
+   "bend": "proofs/obj/generic_specs.bend:13",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint128",
+   "bend": "proofs/obj/generic_specs.bend:24",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint16",
+   "bend": "proofs/obj/generic_specs.bend:46",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint256",
+   "bend": "proofs/obj/generic_specs.bend:57",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint32",
+   "bend": "proofs/obj/generic_specs.bend:68",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint64",
+   "bend": "proofs/obj/generic_specs.bend:79",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "proglist_uint8",
+   "bend": "proofs/obj/generic_specs.bend:35",
+   "ref": "proglist (tests/generators/runners/ssz_generic_cases/ssz_basic_progressive_list.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "uint128",
+   "bend": "proofs/obj/generic_specs.bend:138",
+   "ref": "uint128 (tests/generators/runners/ssz_generic_cases/ssz_uints.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "uint16",
+   "bend": "proofs/obj/generic_specs.bend:139",
+   "ref": "uint16 (tests/generators/runners/ssz_generic_cases/ssz_uints.py)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_1",
+   "bend": "proofs/obj/generic_specs.bend:15",
+   "ref": "Vector[boolean,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_16",
+   "bend": "proofs/obj/generic_specs.bend:14",
+   "ref": "Vector[boolean,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_2",
+   "bend": "proofs/obj/generic_specs.bend:16",
+   "ref": "Vector[boolean,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_3",
+   "bend": "proofs/obj/generic_specs.bend:18",
+   "ref": "Vector[boolean,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_31",
+   "bend": "proofs/obj/generic_specs.bend:17",
+   "ref": "Vector[boolean,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_4",
+   "bend": "proofs/obj/generic_specs.bend:19",
+   "ref": "Vector[boolean,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_5",
+   "bend": "proofs/obj/generic_specs.bend:22",
+   "ref": "Vector[boolean,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_512",
+   "bend": "proofs/obj/generic_specs.bend:20",
+   "ref": "Vector[boolean,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_513",
+   "bend": "proofs/obj/generic_specs.bend:21",
+   "ref": "Vector[boolean,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_bool_8",
+   "bend": "proofs/obj/generic_specs.bend:23",
+   "ref": "Vector[boolean,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_1",
+   "bend": "proofs/obj/generic_specs.bend:26",
+   "ref": "Vector[uint128,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_16",
+   "bend": "proofs/obj/generic_specs.bend:25",
+   "ref": "Vector[uint128,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_2",
+   "bend": "proofs/obj/generic_specs.bend:27",
+   "ref": "Vector[uint128,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_3",
+   "bend": "proofs/obj/generic_specs.bend:29",
+   "ref": "Vector[uint128,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_31",
+   "bend": "proofs/obj/generic_specs.bend:28",
+   "ref": "Vector[uint128,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_4",
+   "bend": "proofs/obj/generic_specs.bend:30",
+   "ref": "Vector[uint128,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_5",
+   "bend": "proofs/obj/generic_specs.bend:33",
+   "ref": "Vector[uint128,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_512",
+   "bend": "proofs/obj/generic_specs.bend:31",
+   "ref": "Vector[uint128,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_513",
+   "bend": "proofs/obj/generic_specs.bend:32",
+   "ref": "Vector[uint128,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint128_8",
+   "bend": "proofs/obj/generic_specs.bend:34",
+   "ref": "Vector[uint128,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_1",
+   "bend": "proofs/obj/generic_specs.bend:48",
+   "ref": "Vector[uint16,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_16",
+   "bend": "proofs/obj/generic_specs.bend:47",
+   "ref": "Vector[uint16,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_2",
+   "bend": "proofs/obj/generic_specs.bend:49",
+   "ref": "Vector[uint16,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_3",
+   "bend": "proofs/obj/generic_specs.bend:51",
+   "ref": "Vector[uint16,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_31",
+   "bend": "proofs/obj/generic_specs.bend:50",
+   "ref": "Vector[uint16,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_4",
+   "bend": "proofs/obj/generic_specs.bend:52",
+   "ref": "Vector[uint16,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_5",
+   "bend": "proofs/obj/generic_specs.bend:55",
+   "ref": "Vector[uint16,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_512",
+   "bend": "proofs/obj/generic_specs.bend:53",
+   "ref": "Vector[uint16,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_513",
+   "bend": "proofs/obj/generic_specs.bend:54",
+   "ref": "Vector[uint16,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint16_8",
+   "bend": "proofs/obj/generic_specs.bend:56",
+   "ref": "Vector[uint16,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_1",
+   "bend": "proofs/obj/generic_specs.bend:59",
+   "ref": "Vector[uint256,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_16",
+   "bend": "proofs/obj/generic_specs.bend:58",
+   "ref": "Vector[uint256,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_2",
+   "bend": "proofs/obj/generic_specs.bend:60",
+   "ref": "Vector[uint256,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_3",
+   "bend": "proofs/obj/generic_specs.bend:62",
+   "ref": "Vector[uint256,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_31",
+   "bend": "proofs/obj/generic_specs.bend:61",
+   "ref": "Vector[uint256,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_4",
+   "bend": "proofs/obj/generic_specs.bend:63",
+   "ref": "Vector[uint256,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_5",
+   "bend": "proofs/obj/generic_specs.bend:66",
+   "ref": "Vector[uint256,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_512",
+   "bend": "proofs/obj/generic_specs.bend:64",
+   "ref": "Vector[uint256,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_513",
+   "bend": "proofs/obj/generic_specs.bend:65",
+   "ref": "Vector[uint256,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint256_8",
+   "bend": "proofs/obj/generic_specs.bend:67",
+   "ref": "Vector[uint256,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_1",
+   "bend": "proofs/obj/generic_specs.bend:70",
+   "ref": "Vector[uint32,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_16",
+   "bend": "proofs/obj/generic_specs.bend:69",
+   "ref": "Vector[uint32,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_2",
+   "bend": "proofs/obj/generic_specs.bend:71",
+   "ref": "Vector[uint32,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_3",
+   "bend": "proofs/obj/generic_specs.bend:73",
+   "ref": "Vector[uint32,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_31",
+   "bend": "proofs/obj/generic_specs.bend:72",
+   "ref": "Vector[uint32,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_4",
+   "bend": "proofs/obj/generic_specs.bend:74",
+   "ref": "Vector[uint32,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_5",
+   "bend": "proofs/obj/generic_specs.bend:77",
+   "ref": "Vector[uint32,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_512",
+   "bend": "proofs/obj/generic_specs.bend:75",
+   "ref": "Vector[uint32,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_513",
+   "bend": "proofs/obj/generic_specs.bend:76",
+   "ref": "Vector[uint32,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint32_8",
+   "bend": "proofs/obj/generic_specs.bend:78",
+   "ref": "Vector[uint32,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_1",
+   "bend": "proofs/obj/generic_specs.bend:81",
+   "ref": "Vector[uint64,1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_16",
+   "bend": "proofs/obj/generic_specs.bend:80",
+   "ref": "Vector[uint64,16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_2",
+   "bend": "proofs/obj/generic_specs.bend:82",
+   "ref": "Vector[uint64,2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_3",
+   "bend": "proofs/obj/generic_specs.bend:84",
+   "ref": "Vector[uint64,3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_31",
+   "bend": "proofs/obj/generic_specs.bend:83",
+   "ref": "Vector[uint64,31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_4",
+   "bend": "proofs/obj/generic_specs.bend:85",
+   "ref": "Vector[uint64,4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_5",
+   "bend": "proofs/obj/generic_specs.bend:88",
+   "ref": "Vector[uint64,5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_512",
+   "bend": "proofs/obj/generic_specs.bend:86",
+   "ref": "Vector[uint64,512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_513",
+   "bend": "proofs/obj/generic_specs.bend:87",
+   "ref": "Vector[uint64,513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint64_8",
+   "bend": "proofs/obj/generic_specs.bend:89",
+   "ref": "Vector[uint64,8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_1",
+   "bend": "proofs/obj/generic_specs.bend:37",
+   "ref": "ByteVector[1] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_16",
+   "bend": "proofs/obj/generic_specs.bend:36",
+   "ref": "ByteVector[16] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_2",
+   "bend": "proofs/obj/generic_specs.bend:38",
+   "ref": "ByteVector[2] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_3",
+   "bend": "proofs/obj/generic_specs.bend:40",
+   "ref": "ByteVector[3] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_31",
+   "bend": "proofs/obj/generic_specs.bend:39",
+   "ref": "ByteVector[31] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_4",
+   "bend": "proofs/obj/generic_specs.bend:41",
+   "ref": "ByteVector[4] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_5",
+   "bend": "proofs/obj/generic_specs.bend:44",
+   "ref": "ByteVector[5] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_512",
+   "bend": "proofs/obj/generic_specs.bend:42",
+   "ref": "ByteVector[512] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_513",
+   "bend": "proofs/obj/generic_specs.bend:43",
+   "ref": "ByteVector[513] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "D generic names",
+   "item": "vec_uint8_8",
+   "bend": "proofs/obj/generic_specs.bend:45",
+   "ref": "ByteVector[8] (tests/generators/runners/ssz_generic_cases/ssz_basic_vector.py:51)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: a variable part occupies one offset in the fixed region",
+   "bend": "4 spec/layout.bend:13",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: the offset is serialized as uint32",
+   "bend": "4 spec/layout.bend:34",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: sum(fixed_lengths + variable_lengths) < 2**(OFFSET*8)",
+   "bend": "4 spec/layout.bend:47",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: every offset is representable in uint32",
+   "bend": "4 spec/layout.bend:58",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: slot of a variable field while decoding",
+   "bend": "4 spec/layout_decoding.bend:26",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: total size < 2**32 on decode",
+   "bend": "4 spec/layout_decoding.bend:108",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_LENGTH_OFFSET: ByteList: sequence-serialization size assertion",
+   "bend": "4 spec/byte_list.bend:11",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Vector[byte,N] size < 2**32: nested divisions by 256n in size_fits",
+   "bend": "4 divisions, spec/bytes.bend:6",
+   "ref": "4 (ssz/simple-serialize.md:37)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "2**BITS_PER_BYTE: byte radix of a length digit (div)",
+   "bend": "256 spec/nat_bytes.bend:10",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "2**BITS_PER_BYTE: byte radix of a length digit (div)",
+   "bend": "256 spec/nat_bytes.bend:15",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "2**BITS_PER_BYTE: byte radix of a length digit (mod)",
+   "bend": "256 spec/nat_bytes.bend:15",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "2**BITS_PER_BYTE: byte radix of a limb digit",
+   "bend": "256 spec/primitives.bend:47",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "limb digit weights 256**1, 256**2, 256**3",
+   "bend": "[256, 65536, 16777216] spec/primitives.bend:47,48,48",
+   "ref": "[256, 65536, 16777216] (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "limb digit weights (byte at limb position 1..3)",
+   "bend": "[256, 65536, 16777216] spec/primitives.bend:114,115,115",
+   "ref": "[256, 65536, 16777216] (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: a hash input child is one chunk",
+   "bend": "32 spec/merkle.bend:12",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: the zero chunk",
+   "bend": "32 spec/merkle.bend:18",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: every packed chunk is BYTES_PER_CHUNK bytes",
+   "bend": "32 spec/packing.bend:32",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: a root is one chunk",
+   "bend": "32 spec/mixing.bend:14",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: a root is one chunk",
+   "bend": "32 spec/mixing.bend:19",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: chunk fragment length",
+   "bend": "32 spec/bytes.bend:24",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: right-pad a chunk fragment",
+   "bend": "32 spec/bytes.bend:28",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: uint root: right-pad to a chunk",
+   "bend": "32 spec/primitives.bend:131",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK: mix_in_active_fields: pack_bits padded to a chunk",
+   "bend": "32 spec/root_relation.bend:117",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: pack: slots-left counter starts at CHUNK-1",
+   "bend": "31 spec/packing.bend:23",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: pack: counter restarts after a full chunk",
+   "bend": "31 spec/packing.bend:17",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: pack_bits",
+   "bend": "31 spec/bit_root.bend:16",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: pack of a byte vector",
+   "bend": "31 spec/byte_root.bend:10",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: pack of a byte list",
+   "bend": "31 spec/byte_list.bend:26",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: mix_in_selector: selector chunk = 1 byte + 31 zero bytes",
+   "bend": "31 spec/mixing.bend:22",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: boolean root = 1 byte + 31 zero bytes",
+   "bend": "31 spec/primitives.bend:34",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: boolean root",
+   "bend": "31 spec/root_relation.bend:128",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "BYTES_PER_CHUNK-1: boolean root (pre-correction snapshot)",
+   "bend": "31 spec/root_relation_serializable.bend:29",
+   "ref": "31 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count basic: (N * size + 31) pad",
+   "bend": "31 spec/root_relation.bend:102",
+   "ref": "31 (ssz/simple-serialize.md:355)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count basic: // 32",
+   "bend": "32 spec/root_relation.bend:102",
+   "ref": "32 (ssz/simple-serialize.md:355)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count ByteList (basic of size 1): (N + 31) pad",
+   "bend": "31 spec/byte_list.bend:20",
+   "ref": "31 (ssz/simple-serialize.md:355)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count ByteList: // 32",
+   "bend": "32 spec/byte_list.bend:20",
+   "ref": "32 (ssz/simple-serialize.md:355)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count Bitlist/Bitvector: (N + 255) pad",
+   "bend": "255 spec/bit_root.bend:11",
+   "ref": "255 (ssz/simple-serialize.md:352)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "chunk_count Bitlist/Bitvector: // 256",
+   "bend": "256 spec/bit_root.bend:11",
+   "ref": "256 (ssz/simple-serialize.md:352)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "256 bits per chunk = BYTES_PER_CHUNK * BITS_PER_BYTE",
+   "bend": "256 spec/bit_root.bend:11",
+   "ref": "256 (ssz/simple-serialize.md:36, ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/bit_root.bend:42",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/byte_list.bend:26",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/root_relation.bend:42",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/value_domain.bend:31",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/value_domain.bend:32",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/value_domain.bend:36",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/value_domain.bend:46",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_length: the length is a uint256 = 32 bytes",
+   "bend": "32 spec/value_domain.bend:47",
+   "ref": "32 (ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Bitvector bytes: (N + 7) pad (schema)",
+   "bend": "7 spec/schema.bend:22",
+   "ref": "7 (ssz/simple-serialize.md:214)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Bitvector bytes: // 8 (schema)",
+   "bend": "8 spec/schema.bend:22",
+   "ref": "8 (ssz/simple-serialize.md:214)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Bitvector bytes: (N + 7) pad (codec)",
+   "bend": "7 spec/codec.bend:78",
+   "ref": "7 (ssz/simple-serialize.md:214)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Bitvector bytes: // 8 (codec)",
+   "bend": "8 spec/codec.bend:78",
+   "ref": "8 (ssz/simple-serialize.md:214)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "bit_packing.byte_count: 8 bits per byte",
+   "bend": "8 spec/bit_packing.bend:30",
+   "ref": "8 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "bitlist: at most 7 unused bits below the delimiter (BITS_PER_BYTE-1)",
+   "bend": "7 spec/bit_decode.bend:67",
+   "ref": "7 (ssz/simple-serialize.md:230)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "bit weights of a packed octet: bit i has weight 2**i",
+   "bend": "[1, 2, 4, 8, 16, 32, 64, 128] spec/bit_packing.bend:5,5,5,5,5,5,5,5",
+   "ref": "[1, 2, 4, 8, 16, 32, 64, 128] (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "bit weights: arithmetic decoding divisors (floor(x / 2**i) mod 2)",
+   "bend": "[1, 2, 4, 8, 16, 32, 64, 128] spec/bit_decoding.bend:5,5,5,5,5,5,5,5",
+   "ref": "[1, 2, 4, 8, 16, 32, 64, 128] (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U8) = N // BITS_PER_BYTE",
+   "bend": "1 spec/primitives.bend:38",
+   "ref": "1 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U16) = N // BITS_PER_BYTE",
+   "bend": "2 spec/primitives.bend:39",
+   "ref": "2 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U32Width) = N // BITS_PER_BYTE",
+   "bend": "4 spec/primitives.bend:40",
+   "ref": "4 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U64) = N // BITS_PER_BYTE",
+   "bend": "8 spec/primitives.bend:41",
+   "ref": "8 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U128) = N // BITS_PER_BYTE",
+   "bend": "16 spec/primitives.bend:42",
+   "ref": "16 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "byte_width(U256) = N // BITS_PER_BYTE",
+   "bend": "32 spec/primitives.bend:43",
+   "ref": "32 (ssz/simple-serialize.md:38, ssz/simple-serialize.md:200; N in [8, 16, 32, 64, 128, 256])",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "the set of uint widths (T.Width constructors of types/primitive.bend)",
+   "bend": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    256
+   ],
+   "ref": "[8, 16, 32, 64, 128, 256] (ssz/simple-serialize.md:200)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "integer_value: 8 limbs of BYTES_PER_LENGTH_OFFSET bytes = 32 bytes = uint256 (BYTES_PER_CHUNK)",
+   "bend": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+   ],
+   "ref": "[0, 4, 8, 12, 16, 20, 24, 28] (ssz/simple-serialize.md:37, ssz/simple-serialize.md:36)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Union: at most 127 options after the first (selectors 0..127)",
+   "bend": "127 spec/type_legality.bend:63",
+   "ref": "127 (ssz/simple-serialize.md:264)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Union: at most 127 options after the first (selectors 0..127)",
+   "bend": "127 spec/type_legality.bend:64",
+   "ref": "127 (ssz/simple-serialize.md:264)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "CompatibleUnion selector upper bound: selector < 128 = 127 + 1",
+   "bend": "128 spec/type_legality.bend:47",
+   "ref": "128 (ssz/simple-serialize.md:165)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "CompatibleUnion selector lower bound: 0 < selector, i.e. >= 1",
+   "bend": "0 spec/type_legality.bend:47",
+   "ref": "0 (ssz/simple-serialize.md:164)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "Union with None first needs at least 2 options (0 < options after None)",
+   "bend": "0 spec/type_legality.bend:63",
+   "ref": "0 (ssz/simple-serialize.md:268)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "mix_in_selector: the selector is a uint8 (< 2**BITS_PER_BYTE)",
+   "bend": "256 spec/mixing.bend:19",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "ProgressiveContainer: active_fields has at most 256 entries",
+   "bend": "256 spec/type_legality.bend:62",
+   "ref": "256 (ssz/simple-serialize.md:155)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "merkleize_progressive: num_leaves starts at 1 (depth 0)",
+   "bend": "0 spec/progressive.bend:23",
+   "ref": "0 (ssz/simple-serialize.md:386)",
+   "status": "match",
+   "note": "literal is the depth log2(num_leaves)"
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "merkleize_progressive: num_leaves * 4 (depth increases by log2(4) = 2)",
+   "bend": "2 spec/progressive.bend:18",
+   "ref": "2 (ssz/simple-serialize.md:393)",
+   "status": "match",
+   "note": "literal is log2(growth factor)"
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "merkleize_progressive (completeness predicate): depth increases by 2",
+   "bend": "2 spec/progressive.bend:39",
+   "ref": "2 (ssz/simple-serialize.md:393)",
+   "status": "match",
+   "note": "literal is log2(growth factor)"
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "perfect tree: one level halves the width (depth step)",
+   "bend": "1 spec/merkle.bend:19",
+   "ref": "1 (ssz/simple-serialize.md merkleize (binary tree))",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "limit 0 or 1 pads to one chunk: depth 0",
+   "bend": "0 spec/limits.bend:9",
+   "ref": "0 (ssz/simple-serialize.md next_pow_of_two 0->1)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "illegal: empty Vector / ByteVector / Bitvector (0 < N)",
+   "bend": "0 spec/type_legality.bend:53",
+   "ref": "0 (ssz/simple-serialize.md Illegal types)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "illegal: empty Vector / ByteVector / Bitvector (0 < N)",
+   "bend": "0 spec/type_legality.bend:55",
+   "ref": "0 (ssz/simple-serialize.md Illegal types)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "illegal: empty Vector / ByteVector / Bitvector (0 < N)",
+   "bend": "0 spec/type_legality.bend:57",
+   "ref": "0 (ssz/simple-serialize.md Illegal types)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "a byte is < 2**BITS_PER_BYTE (byte_scope, bytes_domain)",
+   "bend": "256 spec/primitives.bend:103",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "a byte is < 2**BITS_PER_BYTE (byte_scope, bytes_domain)",
+   "bend": "256 spec/primitives.bend:137",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "little-endian value of a byte string: radix 2**BITS_PER_BYTE",
+   "bend": "256 spec/nat_bytes.bend:25",
+   "ref": "256 (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "empty merkleize_progressive is a zero chunk (BYTES_PER_CHUNK bytes)",
+   "bend": "32 spec/progressive.bend:14",
+   "ref": "32 (ssz/simple-serialize.md merkleize_progressive: Bytes32())",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "empty merkleize_progressive is a zero chunk (BYTES_PER_CHUNK bytes)",
+   "bend": "32 spec/progressive.bend:17",
+   "ref": "32 (ssz/simple-serialize.md merkleize_progressive: Bytes32())",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "inactive progressive-container slot is a zero chunk",
+   "bend": "32 spec/root_relation.bend:112",
+   "ref": "32 (ssz/simple-serialize.md (EIP-7495 active slots))",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "root of None in a Union is Bytes32() (zero chunk)",
+   "bend": "32 spec/root_relation.bend:147",
+   "ref": "32 (ssz/simple-serialize.md hash_tree_root: mix_in_selector(Bytes32(), 0))",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "root of None in a Union is Bytes32() (pre-correction snapshot)",
+   "bend": "32 spec/root_relation_serializable.bend:48",
+   "ref": "32 (ssz/simple-serialize.md hash_tree_root: mix_in_selector(Bytes32(), 0))",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "E protocol constants in spec/*.bend",
+   "item": "bit_packing.byte_count base cases n = 0..7 equal ceil(n / BITS_PER_BYTE)",
+   "bend": "lines 21-29 of spec/bit_packing.bend",
+   "ref": "ceil(n / 8) (ssz/simple-serialize.md:38)",
+   "status": "match",
+   "note": "[]"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_1",
+   "bend": "types/bitlist_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_2",
+   "bend": "types/bitlist_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_3",
+   "bend": "types/bitlist_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_4",
+   "bend": "types/bitlist_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_5",
+   "bend": "types/bitlist_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_6",
+   "bend": "types/bitlist_6_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_7",
+   "bend": "types/bitlist_7_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_8",
+   "bend": "types/bitlist_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_9",
+   "bend": "types/bitlist_9_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_15",
+   "bend": "types/bitlist_15_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_16",
+   "bend": "types/bitlist_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_17",
+   "bend": "types/bitlist_17_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_31",
+   "bend": "types/bitlist_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_32",
+   "bend": "types/bitlist_32_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_33",
+   "bend": "types/bitlist_33_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_256",
+   "bend": "types/bitlist_256_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_257",
+   "bend": "types/bitlist_257_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_511",
+   "bend": "types/bitlist_511_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_512",
+   "bend": "types/bitlist_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_513",
+   "bend": "types/bitlist_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_1280",
+   "bend": "types/bitlist_1280_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_1281",
+   "bend": "types/bitlist_1281_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_2048",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitlist_131072",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_1",
+   "bend": "types/bitvector_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_2",
+   "bend": "types/bitvector_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_3",
+   "bend": "types/bitvector_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_4",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_5",
+   "bend": "types/bitvector_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_6",
+   "bend": "types/bitvector_6_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_7",
+   "bend": "types/bitvector_7_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_8",
+   "bend": "types/bitvector_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_9",
+   "bend": "types/bitvector_9_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_15",
+   "bend": "types/bitvector_15_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_16",
+   "bend": "types/bitvector_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_17",
+   "bend": "types/bitvector_17_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_31",
+   "bend": "types/bitvector_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_32",
+   "bend": "types/bitvector_32_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_33",
+   "bend": "types/bitvector_33_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_64",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_128",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_256",
+   "bend": "types/bitvector_256_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_257",
+   "bend": "types/bitvector_257_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_511",
+   "bend": "types/bitvector_511_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_512",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_513",
+   "bend": "types/bitvector_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_1280",
+   "bend": "types/bitvector_1280_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "bitvector_1281",
+   "bend": "types/bitvector_1281_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_1",
+   "bend": "types/vec_bool_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_2",
+   "bend": "types/vec_bool_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_3",
+   "bend": "types/vec_bool_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_4",
+   "bend": "types/vec_bool_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_5",
+   "bend": "types/vec_bool_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_8",
+   "bend": "types/vec_bool_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_16",
+   "bend": "types/vec_bool_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_31",
+   "bend": "types/vec_bool_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_512",
+   "bend": "types/vec_bool_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_bool_513",
+   "bend": "types/vec_bool_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_1",
+   "bend": "types/vec_uint128_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_2",
+   "bend": "types/vec_uint128_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_3",
+   "bend": "types/vec_uint128_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_4",
+   "bend": "types/vec_uint128_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_5",
+   "bend": "types/vec_uint128_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_8",
+   "bend": "types/vec_uint128_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_16",
+   "bend": "types/vec_uint128_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_31",
+   "bend": "types/vec_uint128_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_512",
+   "bend": "types/vec_uint128_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint128_513",
+   "bend": "types/vec_uint128_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_1",
+   "bend": "types/vec_uint16_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_2",
+   "bend": "types/vec_uint16_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_3",
+   "bend": "types/vec_uint16_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_4",
+   "bend": "types/vec_uint16_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_5",
+   "bend": "types/vec_uint16_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_8",
+   "bend": "types/vec_uint16_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_16",
+   "bend": "types/vec_uint16_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_31",
+   "bend": "types/vec_uint16_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_512",
+   "bend": "types/vec_uint16_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint16_513",
+   "bend": "types/vec_uint16_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_1",
+   "bend": "types/vec_uint256_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_2",
+   "bend": "types/vec_uint256_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_3",
+   "bend": "types/vec_uint256_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_4",
+   "bend": "types/vec_uint256_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_5",
+   "bend": "types/vec_uint256_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_8",
+   "bend": "types/vec_uint256_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_16",
+   "bend": "types/vec_uint256_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_31",
+   "bend": "types/vec_uint256_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_512",
+   "bend": "types/vec_uint256_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint256_513",
+   "bend": "types/vec_uint256_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_1",
+   "bend": "types/vec_uint32_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_2",
+   "bend": "types/vec_uint32_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_3",
+   "bend": "types/vec_uint32_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_4",
+   "bend": "types/vec_uint32_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_5",
+   "bend": "types/vec_uint32_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_8",
+   "bend": "types/vec_uint32_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_16",
+   "bend": "types/vec_uint32_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_31",
+   "bend": "types/vec_uint32_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_512",
+   "bend": "types/vec_uint32_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint32_513",
+   "bend": "types/vec_uint32_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_1",
+   "bend": "types/vec_uint64_1_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_2",
+   "bend": "types/vec_uint64_2_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_3",
+   "bend": "types/vec_uint64_3_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_4",
+   "bend": "types/vec_uint64_4_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_5",
+   "bend": "types/vec_uint64_5_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_8",
+   "bend": "types/vec_uint64_8_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_16",
+   "bend": "types/vec_uint64_16_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_31",
+   "bend": "types/vec_uint64_31_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_64",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_512",
+   "bend": "types/vec_uint64_512_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_513",
+   "bend": "types/vec_uint64_513_def_generated.bend",
+   "ref": "occurs in the reference types",
+   "status": "match",
+   "note": ""
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint64_8192",
+   "bend": "-",
+   "ref": "occurs in the reference types",
+   "status": "only in reference",
+   "note": "no generated file of that name (the runtime may generate it under another shape)"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_1",
+   "bend": "types/vec_uint8_1_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_2",
+   "bend": "types/vec_uint8_2_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_3",
+   "bend": "types/vec_uint8_3_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_4",
+   "bend": "types/vec_uint8_4_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_5",
+   "bend": "types/vec_uint8_5_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_8",
+   "bend": "types/vec_uint8_8_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_16",
+   "bend": "types/vec_uint8_16_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_31",
+   "bend": "types/vec_uint8_31_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_512",
+   "bend": "types/vec_uint8_512_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  },
+  {
+   "table": "F generated type files",
+   "item": "vec_uint8_513",
+   "bend": "types/vec_uint8_513_def_generated.bend",
+   "ref": "-",
+   "status": "only in Bend",
+   "note": "generated type with no occurrence in the Fulu/generic reference types"
+  }
+ ],
+ "count": {
+  "scalar": 172,
+  "attr": 3413,
+  "name": 3180,
+  "rule": 76
+ },
+ "status": {
+  "match": 626,
+  "only in reference": 17,
+  "only in Bend": 10
+ },
+ "unclaimed": []
+}
