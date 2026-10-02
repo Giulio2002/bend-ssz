@@ -18,7 +18,7 @@ in the header of its patch).
 | (A) proofs: UNJUDGED (the checker exhausts its stack on the mutant, with the pinned settings of `tools/check.sh`: no verdict, **not counted as a detection**) | **66** |
 | (A) proofs: SURVIVED (`ALL PROOFS CHECK` on every checked facade) | **6** (4 real, 2 equivalent) |
 | (B) reference corpus + official vectors, run for all 270: faults the corpus kills / does not kill | 201 (+1 by timeouts only) / 68 |
-| Killed **only** by the corpus (proofs survive, corpus kills) | **0** |
+| Killed only by the corpus: proofs survive, corpus kills / proofs UNJUDGED, corpus kills | **0** / 39 |
 | Killed by neither proofs (judged) nor corpus | **5 critical**: 4 survivors (4.1 to 4.4) and 1 unjudged decoder fault that only a probe sees (4.5) |
 | Equivalent (no behavior change, argued) | 14 (6 survive A, 8 are killed by A anyway) |
 
@@ -106,8 +106,8 @@ Full records with patch lines, call chains and reachability: `results/survivors.
 
 All are validators of variable-size types (offset order and range, first offset, list limit and alignment, union selector and payload window, composite-list offsets). Per rule: `c04` 11, `q01` 10, `n01` 7, `q02` 7, `q03` 7, `l01` 6, `c03` 6, `n02` 4, `l04` 2, `m03` 2, one each in `l02`, `bl04`, `c05`, `c06`.
 On the mutant the checker does not report a mismatching law; it recurses until the stack is gone (also with 1 GB). A CI run would fail (non-zero exit), but the failure names no law and gives no counterexample, so it is not counted as a detection.
-Of the 66: 39 are killed by the corpus (behavior changes), 1 is the critical 4.5, and 22 show no difference on the corpus and on up to 17,617 probe inputs each: these are checks the later validators make redundant (a decreasing or out-of-range offset
-yields a wrapped window length that the child's length-bounded validator rejects). They are *not* proven equivalent in general: for an element type with no length bound the check would matter. Three of the 66 (`c03/04`, `c03/06`, `n01/04`) are marked equivalent with an argument (a too-short input cannot satisfy the later offset checks; an empty union input reads selector 0, which is no option).
+Of the 66: 39 are killed by the corpus (behavior changes), 1 is the critical 4.5, 4 are equivalent with an argument, and 22 show no difference on the corpus and on up to 17,617 probe inputs each: these are checks the later validators make redundant (a decreasing or out-of-range offset
+yields a wrapped window length that the child's length-bounded validator rejects). They are *not* proven equivalent in general: for an element type with no length bound the check would matter. Four of the 66 (`c03/04`, `c03/06`, `n01/04`, `q03/04`) are marked equivalent with an argument (a too-short input cannot satisfy the later offset checks; an empty union input reads selector 0, which is no option; `first == 8` implies the alignment test).
 An open question for the maintainers: why does a changed comparison in these validators make the checker diverge (the laws appear to normalize a symbolic input until the stack is exhausted)? A bounded-fuel formulation would turn the 66 into judged kills.
 
 ## 6. Method findings
