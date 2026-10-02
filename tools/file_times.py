@@ -140,8 +140,23 @@ def cpu_of(r):
     return r['cpu'] if r.get('cpu') is not None else r['seconds']
 
 
+def imports_of(f):
+    """the root-relative paths of the .bend files `f` imports directly (relative imports only)"""
+    out = []
+    try:
+        text = (ROOT / f).read_text()
+    except OSError:
+        return out
+    for m in re.finditer(r'^import (\S+\.bend)\b', text, re.M):
+        q = os.path.normpath(os.path.join(os.path.dirname(f), m.group(1)))
+        if not q.startswith('..') and (ROOT / q).exists():
+            out.append(Path(q).as_posix())
+    return out
+
+
 def report(out, limit):
     rows = [json.loads(l) for l in open(Path(out) / 'results.jsonl')]
+    by = {r['file']: r for r in rows}
     over = [r for r in rows if cpu_of(r) > limit or r['result'] in ('timeout', 'error')]
     artifact = [r for r in rows if r['seconds'] > limit and cpu_of(r) <= limit]
     fam = {}
@@ -151,7 +166,9 @@ def report(out, limit):
     for k, v in sorted(fam.items(), key=lambda kv: -sum(cpu_of(x) for x in kv[1])):
         print(f'\n{k}: {len(v)} files, {sum(cpu_of(x) for x in v):.0f} cpu s')
         for r in sorted(v, key=lambda x: -cpu_of(x))[:40]:
-            print(f'  cpu {cpu_of(r):8.1f} s  wall {r["seconds"]:7.1f} s  {r["peak_mb"]:6d} MB {r["result"]:7s} {r["file"]}')
+            slow = [(cpu_of(by[i]), i) for i in imports_of(r['file']) if i in by]
+            hint = f'  [slowest import: {max(slow)[1]} {max(slow)[0]:.0f} s]' if slow else ''
+            print(f'  cpu {cpu_of(r):8.1f} s  wall {r["seconds"]:7.1f} s  {r["peak_mb"]:6d} MB {r["result"]:7s} {r["file"]}{hint}')
 
 
 def main():
