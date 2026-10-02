@@ -29,12 +29,11 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 
 from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 
 IN_MAX = 4096  # bytes: `_in` computes the whole encoding (Blob's 131072 bytes did not check in 600 s)
 BX = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+)>\) -> [^\n]*: \(o, (\d+)\)$', re.M)
@@ -92,17 +91,13 @@ def module(runtime, tmod):
 
 def main():
     out, cnt = {}, []
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
+    for runtime, tmod in RUNTIMES:
         t, n = module(runtime, tmod)
         if n:
-            out[ROOT / f'proofs/obj/mutation_laws_{runtime}.bend'] = t
+            out[OBJ / f'mutation_laws_{runtime}.bend'] = t
         cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('mutation_laws_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale mutation laws: ', 'mutation laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws')
+    if finish(out, ('mutation_laws_*.bend',), 'stale mutation laws: ', 'mutation laws are current'):
+        print(f'{cnt} laws')
 
 
 if __name__ == '__main__':
