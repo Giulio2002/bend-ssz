@@ -180,4 +180,6 @@ why: the element-presence flag is 0 <= k
 base: 29af0ebcc
 proofs: proofs/obj/words_cap.bend
 -  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
+-    LElems{
 +  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl,
++    LElems{

@@ -35,15 +35,16 @@ def candidates(a, h, idx):
     if syms and not a.no_sym:
         rev, cost = idx['rev'], idx['cost']
         pool = [r for r in rev.get(h['file'], []) if not r.startswith(('types/', 'proofs/api/')) and r not in out]
-        pool = [r for r in pool if cost.get(r, 60) <= (600 if a.wide else 150)]
+        pool = [r for r in pool if cost.get(r, 60) <= (600 if a.wide else 60)]
         pool.sort(key=lambda r: cost.get(r, 60))
         hit = [r for r in pool if mentions(a.tree, r, syms)]
         out += hit[:(100 if a.wide else a.k)]
     direct = [r for r, ds in idx.get("direct", {}).items() if h["file"] in ds and not r.startswith(("types/", "proofs/api/", "benchmarks/", "tools/")) and r not in out]
     direct.sort(key=lambda r: idx["cost"].get(r, 60))
-    out += [r for r in direct if idx["cost"].get(r, 60) <= (600 if a.wide else 150)][:(20 if a.wide else 3)]
+    out += [r for r in direct if idx["cost"].get(r, 60) <= (600 if a.wide else 60)][:(20 if a.wide else 2)]
     if h.get('type') and h.get('ops'):
-        out += [f for _, _, f in facades(h) if f not in out and os.path.exists(os.path.join(a.tree, f))]
+        fac = [f for _, _, f in facades(h) if f not in out and os.path.exists(os.path.join(a.tree, f))]
+        out += fac if a.wide else fac[:2]
     return out
 
 
