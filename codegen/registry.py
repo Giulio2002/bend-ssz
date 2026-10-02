@@ -61,6 +61,7 @@ GENERATORS = (
     Gen('mutation_laws_capsym', 'proofs/laws'),
     Gen('mutation_laws_const', 'proofs/laws'),
     Gen('mutation_laws_small', 'proofs/laws'),
+    Gen('spec_pins', 'proofs/laws'),
     Gen('mutation_laws_arith', 'proofs/laws'),
     Gen('mutation_laws_offset', 'proofs/laws'),
     Gen('mutation_laws_validity', 'proofs/laws'),
