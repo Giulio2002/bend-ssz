@@ -25,9 +25,8 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
-
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import run_each  # noqa: E402
 from codegen.proofs.collections import viewseq as VQS  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
@@ -357,22 +356,7 @@ def out_path(c):
 
 
 def main():
-    stale = False
-    for c in LISTS + REC_LISTS:
-        t = text(c) if c in LISTS else rec_text(c)
-        o = out_path(c)
-        if '--check' in sys.argv:
-            if not o.exists() or o.read_text() != t:
-                print('stale: %s' % o.name)
-                stale = True
-            continue
-        if not o.exists() or o.read_text() != t:
-            o.write_text(t)
-        print('encset: proofs/obj/%s' % o.name)
-    if '--check' in sys.argv:
-        if stale:
-            sys.exit(1)
-        print('encset: up to date')
+    run_each('encset', [(out_path(c), text(c) if c in LISTS else rec_text(c)) for c in LISTS + REC_LISTS])
 
 
 if __name__ == '__main__':
