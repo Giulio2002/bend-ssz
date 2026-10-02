@@ -173,10 +173,13 @@ the assembly module therefore stops at the premises and restates the three bridg
 modules instead of importing it (that import alone added 80 s). The application is one definition: `COMP.FuluBeaconState_e2e_decode_encode(bs0, 2737812, o0, SK.sk_len(),
 SK.sk_dom(), hS(), h31(), accepts())`, to be added when comp is split.
 
-**The budget.** The assembly's cost is the union of its imports (an import is re-evaluated by every file that has it): the import set alone is 87 s loaded
-(about 65 s quiet), its own proofs (the 15 facts handed to `chk_from_bs` and the bridges) 71 s loaded (about 53 s quiet): about 118 s quiet, at the limit.
-What is already cut: the bound facts (`Nat.is_lt(1n+Q, pow2(20n))`, 4 to 5 s each by `{==}`) are binary (`lt_pw`, `lt_pw_s`); the decode module is not imported (-80 s);
-`h31` is `lt_pw` (22 s by `{==}`).
+**The budget.** The assembly's cost is the union of its imports (an import is re-evaluated by every file that has it). On the loaded server the file takes 158 s;
+the same file with the body replaced by one trivial definition (the imports alone) takes 87 to 126 s depending on what else ran, and each single fact applied
+(one offset read, the bits, the header) is within that noise of the imports alone, so the own proofs are small and the import set is the cost. At the recorded
+quiet/loaded ratio of 1.3 that is about 110 to 120 s quiet: at the limit, to be confirmed on a quiet server. What is already cut: the bound facts
+(`Nat.is_lt(1n+Q, pow2(20n))`, 4 to 5 s each by `{==}`) are binary (`lt_pw`, `lt_pw_s`); the decode module is not imported (-80 s); `h31` is `lt_pw` (22 s by `{==}`).
+If it is still over: the conditional form (`acc2` proved for any list and any `hchk`, in a module that imports only the loader and the codec, and the skeleton's check
+in a module that does not import the codec) gives two files of about 60 s each, whose application to each other is the one-line closure above.
 
 **Hazards found in these stages (the generator keeps all of them out).**
 4. A closed application such as `EW.O4(t, 0n)` is unfolded by the checker (heads differ, so the rigid comparison fails and both sides are evaluated: 150 s at 2.7M): every
