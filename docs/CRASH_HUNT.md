@@ -6,6 +6,24 @@ runtime) must return a value or an error value for every input a caller can cons
 frozen files (`spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN, PROOF, HASH_PROOF, `frozen.lock.json`, `law-statements.json`) are untouched.
 Machine-readable list: `docs/crash_hunt_findings.json`. Raw outputs: `docs/crash_hunt_evidence/`. Probes and runners: `tools/crash_hunt/`.
 
+
+## 0. Status after the fix series (agent/crash-fix)
+
+| finding | status | what changed | regression |
+|---|---|---|---|
+| CH-01 | FIXED (statements and lock moved, authorized: docs/crash_hunt_statement_diff.md) | the cell list's setter and appender refuse a cell whose length is not 2048 (guard and `words_blit` on an empty source) | `regress.sh` cases 1-5; `proofs/slop/crash/` laws; regenerated `l4096_b2048_api_*` statements |
+| CH-02 | DOCUMENTED, not changed | `_encode` has the precondition `X_valid(o)`; `_serialize` refuses before allocating. A guard in `_encode` or in `O.out_new` changes the unfolding of `out_new(n)` that every encode bridge reasons with at a symbolic `n`; `_serialize` is the checked entry (docs/API_CONTRACTS.md) | - |
+| CH-03 | DOCUMENTED, not changed | `_hash_tree_root` has the precondition `X_valid(o)`. Clamping the chunk count to the storage rewrites `words_root`'s `chunks_of(n)` that the root laws of every collection family unfold symbolically; the root of a valid object is the same, only the root of an invalid object differs | - |
+| CH-04 | FIXED (statements and lock moved, authorized) | `n + 1 <= N` became `n < min(N, 2^32 - 1)` for every list that can reach 2^32 - 1 | `regress.sh` cases 6-8; `proofs/slop/crash/` laws; regenerated `*_api_append_*` statements |
+| CH-05 | FIXED in the checked entry | `X_decode_checked` refuses a window of 2^31 bytes or more; `_decode` itself is unchanged (its statements are frozen and it is the subject of the decode bridges) | `regress.sh` case 11; slop law `decode_checked_2gib_refused` |
+| CH-06 | FIXED in the checked entry | `X_decode_checked(buf, size)` refuses `size > B.size(buf)`; `X_decode` keeps its precondition (every decode statement is over `(buf, n)` with the buffer of size n, and a refusing `_decode` would need `n <= n` at every symbolic n) | `regress.sh` cases 9-10; slop laws |
+| CH-07 | DOCUMENTED | the 2^31 byte size limit is part of the contract (docs/API_CONTRACTS.md) | - |
+| CH-08 | DOCUMENTED | `_hash_tree_root` precondition `X_valid(o)`; no error channel | - |
+| CH-09 | DOCUMENTED | `_build` / `_read` are unchecked by design (precondition `_ok`), with `_decode_checked` as the safe entry | - |
+| CH-10 | FIXED | see section 2, CH-10 | `regress.sh` case 12; slop laws |
+
+Reproduce the fixed behaviour: `tools/crash_hunt/regress.sh` (server). Sections 1-5 below are the hunter's report as filed.
+
 ## 1. Result in one page
 
 | | |
@@ -89,6 +107,16 @@ Proposed: a `_hash_tree_root_checked` returning `Maybe` from `_valid`, or a docu
 `X_build(buf, size)` / `X_read` are public symbols (emit_api) and are the half of decode that runs after `X_ok`. On 4 bytes `FC FF FF FF` the list reader for `List[Attestation, 8]` takes the count from the first offset (2^30), and every `first` word of 4096 or more ends in `bend: out of memory` after 11 to 33 s (probe E; `first = 4` and `8` are fine). Not reachable through `_decode`, which validates first.
 Fix: do not export `_build` / `_read` (rename `_unchecked_*` in the generator) or document the `_ok` precondition; folding the validation into `_build` would double the work for `_decode`.
 Proof impact: none for a rename of a non-statement symbol; the e2e statements call `_decode`, not `_build`.
+
+### CH-10 (MEDIUM, WRONG): `serialize(default())` of a container with a vector of variable-size elements writes offsets and no element bytes
+Found by the corpus work after the hunt. `ComplexTestStruct_serialize(ComplexTestStruct_default())` is accepted and writes 86 bytes where
+the reference zero value has 100. The default of `vec_VarTestStruct_2` (a vector of two variable-size elements) held two ABSENT boxes
+(`O.BNone`); the serializer writes the offset of every element but no bytes for an absent one, so the output is shorter than its own offsets.
+Only one type has the pattern (vectors of variable-size elements are `vec_VarTestStruct_2` and the containers that hold it: ComplexTestStruct).
+Repro: `SSZ_CASE=12 build/pf` of `tools/crash_hunt/pf_fixed.bend` (`complex_default_serialize_ok=1 size=86` before, `size=100` after).
+Fix (generator `typed_object_runtime.py`, `emit_seq`): the default of a vector whose elements have storage of their own builds `count` present
+default elements (`X_dfill`); lists and vectors of fixed-size elements are unchanged. Law: `complex_default_serialize_ok` and
+`complex_default_serialize_100` (`proofs/slop/crash/crash_fix_laws_generated.bend`).
 
 ## 3. What was run, and what held
 
