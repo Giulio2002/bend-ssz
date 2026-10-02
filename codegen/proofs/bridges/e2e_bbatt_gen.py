@@ -9,6 +9,7 @@ The encoder records (encx_l8_Attestation: a tree of optional element records EM.
 root_types' mirror tree (rep_l8_Attestation's t) element by element (cvE / CV), after e2e-b's e2e_ml_*.
 """
 from codegen.proofs.bridges import e2e_bview_gen as BVG
+from codegen.core.shared_bridges import import_list  # noqa: E402
 
 L = 'l8_Attestation'
 SEQ = 'Fulu_list_Attestation_8_d.l8_Attestation_Seq'
@@ -19,23 +20,11 @@ NB = 'U32.to_nat(131072)'
 MBE = f'EXb.MB{{ER.LDEP(U32, tb), tb, k, {NB}, 18n, 18n}}'
 
 IMPORTS = [
-    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/compact/reads.bend as RD',
-    'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vbuf.bend as VB',
-    'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vbytes.bend as VY', 'import ../proofs/obj/vbitenc.bend as VBT',
-    'import ../proofs/obj/vbitdl.bend as DL', 'import ../proofs/obj/vbitcore.bend as CO', 'import ../proofs/obj/vbitrep.bend as VBR',
-    'import ../proofs/obj/vua_lay.bend as LY', 'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vbig.bend as VG',
-    'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/schema_shapes.bend as SH',
-    'import ../proofs/obj/spec_bits.bend as FB',
-    'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
-    'import ../proofs/obj/encx_bits131072.bend as EXb', 'import ../proofs/obj/encx_Attestation_iface.bend as EM',
-    'import ../proofs/obj/encx_l8_Attestation.bend as W8',
-    'import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d', 'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d',
-    'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d', 'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d',
-    'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d', 'import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d',
-    'import ../types/Fulu_list_Attestation_8_def_generated.bend as Fulu_list_Attestation_8_d',
-    'import ./e2e_bitl.bend as BLB', 'import ./e2e_encp.bend as EP', 'import ./e2e_u64l.bend as ER', 'import ./e2e_bits.bend as E2B',
-    'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vrej.bend as VR8']
+    *import_list(
+        'Base O S P FD A RD Order DK VB VD VY=vbytes VBT DL CO VBR=vbitrep LY VU VG BO=bitlist_obj '
+        'BK SH FB RT=root_types RN_L EXb EM=encx_Attestation_iface W8 FuluAttestation_d '
+        'FuluAttestationData_d FuluCheckpoint_d FuluBytes32_d FuluBytes96_d Fulu_bitvector_64_d '
+        'Fulu_list_Attestation_8_d BLB EP ER E2B VS=vspec VRL VR8')]
 
 
 def _wp(n, p='w'):
@@ -530,22 +519,11 @@ ES8 = '{SH.BitList_limit(SH.Chain_head(SH.Container_fields(sE))) == U32.to_nat(1
 ES8L = '{SH.BitList_limit(SH.Chain_head(SH.Container_fields(SH.ListOf_element(s)))) == U32.to_nat(131072) : Nat}'
 
 IMPORTS1 = [
-    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
-    'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vdepth.bend as VD',
-    'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_lay.bend as LY',
-    'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vbig.bend as VG', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/venc.bend as VEN',
-    'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/vbytes.bend as VY',
-    'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/list_obj.bend as LO',
-    'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names_light.bend as RN_L',
-    'import ../proofs/obj/encx_l131072_u64.bend as EXu', 'import ../proofs/obj/var_winx_l131072_u64.bend as WU',
-    'import ../proofs/obj/encx_IndexedAttestation_iface.bend as EI', 'import ../proofs/obj/encx_AttesterSlashing_iface.bend as ES',
-    'import ../proofs/obj/encx_l1_AttesterSlashing.bend as W1',
-    'import ../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d', 'import ../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d',
-    'import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d', 'import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d',
-    'import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d', 'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d',
-    'import ../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d',
-    'import ./e2e_ulist.bend as ULW', 'import ./e2e_u64l.bend as U', 'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vrej.bend as VR8']
+    *import_list(
+        'Base O S P FD A Order DK VB VD VS=vspec VC LY VU VG VBG VEN UR SH UL=ulist_obj VY=vbytes '
+        'WO=words_obj LO RT=root_types RN_L EXu WU EI ES W1 FuluAttesterSlashing_d '
+        'FuluIndexedAttestation_d FuluAttestationData_d FuluCheckpoint_d FuluBytes32_d '
+        'FuluBytes96_d Fulu_list_AttesterSlashing_1_d ULW U=e2e_u64l VRL VR8')]
 
 
 def _list_generic(t8):
@@ -841,13 +819,9 @@ def _defs(text, names):
 
 
 U64L_IMPORTS = [
-    'import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-    'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
-    'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vspec.bend as VS',
-    'import ../proofs/obj/vbytes.bend as VY', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vcopy.bend as VC',
-    'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/obj/vua.bend as UA', 'import ../proofs/obj/vua_rd.bend as UR',
-    'import ../proofs/obj/vua_fix.bend as VTX', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/words_spec.bend as WS',
-    'import ../proofs/obj/ulist_obj.bend as UL', 'import ../spec/primitives.bend as SP', 'import ./e2e_tz.bend as TZ']
+    *import_list(
+        'Base O S P FD A Order DK VB VS=vspec VY=vbytes VD VC VU UA UR VTX WO=words_obj WS '
+        'UL=ulist_obj SP TZ')]
 
 
 def u64l_text():
